@@ -208,6 +208,14 @@ $video-thumb-url: '../themes/stanford/images/stanford-video-thumb.png';
 // Header
 //-----------------
 
-body header.global h1.logo {
-    margin: 2px 39px 0px 0px;
+body header.global {
+    h1.logo {
+        margin: 2px 39px 0px 0px;
+    }
 }
+
+.header-border {
+    height: 27px;
+    background-color: #002960;
+}
+
