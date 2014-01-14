@@ -33,9 +33,6 @@ $mckinsey-bright-red: #CD202C;
 $mckinsey-bright-pink: #AD005B;
 $mckinsey-bright-purple: #66307C;
 
-// Additional
-$white: #fff;
-
 
 //----------------
 // Original colors
@@ -64,7 +61,6 @@ $gray-75: lighten($gray, 18.25%); //Lighter Text Color
 $gray-3: #e9e6df; //Block/Course BG Color
 $gray-2: #f2f1eb;
 $gray-1: #fbfbf9; //Main BG Color
-$white: $gray-1;
 
 $black: #2e2d29;
 $black-80: #585754;
@@ -95,6 +91,7 @@ $login-register-bg: $white;
 $content-wrapper-bg: $white;
 $header-image: none;
 $header-bg: $white;
+$course-header-bg: $header-bg;
 $courseware-header-image: none;
 $courseware-header-bg: $white;
 $footer-bg: $white;
@@ -192,10 +189,10 @@ $dot-color: $beige-60;
 
 $course-bg-color: $gray-3;
 $course-bg-image: none;
-$account-content-wrapper-bg: $gray-1;
+$account-content-wrapper-bg: $content-wrapper-bg;
 
 $course-profile-bg: $gray-1;
-$course-header-bg: transparentize($gray-1, .1);
+$course-header-bg: $white;
 
 $sidebar-chapter-bg-top: transparentize($gray-1, .3);
 $sidebar-chapter-bg-bottom: transparentize($gray-1, .9);
