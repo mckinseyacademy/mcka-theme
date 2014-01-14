@@ -1,6 +1,6 @@
 Overview
 ========
-This directory stores Stanford's theming files for its edX instance.
+This directory stores McKinsey Academy's theming files for its edX instance.
 We're storing the stuff here and then pulling it in to our instance
 when we deploy.
 
