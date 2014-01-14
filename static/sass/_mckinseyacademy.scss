@@ -1,7 +1,7 @@
 /****************************************************************************************************
-*   Stanford Theming File
+*   McKinsey Academy Theming File
 *
-*   Contains all the theme color definitions for the Stanford Open Source MOOC Project
+*   Contains all the theme color definitions
 *
 ****************************************************************************************************/
 
@@ -202,4 +202,12 @@ $video-thumb-url: '../themes/stanford/images/stanford-video-thumb.png';
 @mixin footer_references_style {
     margin: 0 !important;
     text-align: right;
+}
+
+//-----------------
+// Header
+//-----------------
+
+body header.global h1.logo {
+    margin: 2px 39px 0px 0px;
 }
