@@ -5,9 +5,41 @@
 *
 ****************************************************************************************************/
 
-//-----------------
-//  Color variables (from Stanford palette unless noted)
-//-----------------
+//----------------
+// McKinsey colors
+//----------------
+
+// Primary colors
+$mckinsey-primary-blue: #002960;
+$mckinsey-primary-cyan: #0093D3;
+$mckinsey-primary-gray: #868685;
+
+// Primary colors - Tints
+$mckinsey-primary-cyan-light: lighten($mckinsey-primary-cyan, 20%);
+
+// Support colors
+$mckinsey-support-blue-bright: #0065BD;
+$mckinsey-support-turquoise: #009AA6;
+$mckinsey-support-turquoise-dark: #006983;
+$mckinsey-support-stone: #C4B796;
+$mckinsey-support-gray-light: #939D98;
+$mckinsey-support-gray-blue: #7D9AAA;
+
+// Bright colors
+$mckinsey-bright-yellow: #D4BA00;
+$mckinsey-bright-green: #A2AD00;
+$mckinsey-bright-orange: #E37222;
+$mckinsey-bright-red: #CD202C;
+$mckinsey-bright-pink: #AD005B;
+$mckinsey-bright-purple: #66307C;
+
+// Additional
+$white: #fff;
+
+
+//----------------
+// Original colors
+//----------------
 
 //Cardinal Color Variables
 $cardinal-red: #8C1515;
@@ -57,15 +89,15 @@ $serif: $theme-serif-font, $serif;
 //  Theme Element Assignments
 //-----------------
 
-$body-bg: $gray-1;
-$container-bg: $gray-1;
-$login-register-bg: $gray-1;
-$content-wrapper-bg: $gray-1;
+$body-bg: $white;
+$container-bg: $white;
+$login-register-bg: $white;
+$content-wrapper-bg: $white;
 $header-image: none;
-$header-bg: transparentize(lighten($sandstone, 18.5%), .25);
+$header-bg: $white;
 $courseware-header-image: none;
-$courseware-header-bg: transparentize(lighten($sandstone, 18.5%), .25);
-$footer-bg: $sandstone-25;
+$courseware-header-bg: $white;
+$footer-bg: $white;
 $courseware-footer-border: 1px solid $beige-60;
 $courseware-footer-shadow: box-shadow(2px 1px 0 rgba(0, 0, 0, .1));
 $courseware-footer-margin: 50px;
@@ -81,19 +113,19 @@ $base-font-color: $black;
 $lighter-base-font-color: $black-80;
 $very-light-text: $gray-1;
 
-$link-color: $dark-red;
-$link-color-d1: $dark-red;
-$link-hover: $cardinal-light;
-$site-status-color: $cardinal-bg;
+$link-color: $mckinsey-primary-cyan;
+$link-color-d1: $mckinsey-primary-cyan;
+$link-hover: $mckinsey-primary-cyan-light;
+$site-status-color: $mckinsey-support-blue-bright;
 
-$header-graphic-super-color: $dark-red;
+$header-graphic-super-color: $mckinsey-primary-cyan;
 $header-graphic-sub-color: $lighter-base-font-color;
 
-$header-link-color: $dark-red;
-$header-link-hover: $cardinal-light;
+$header-link-color: $mckinsey-primary-cyan;
+$header-link-hover: $mckinsey-primary-cyan-light;
 
-$button-color: $cardinal-red;
-$button-archive-color: $gray-3;
+$button-color: $mckinsey-primary-cyan;
+$button-archive-color: $mckinsey-primary-gray;
 
 $shadow-color: $gray;
 
@@ -103,16 +135,16 @@ $button-bg-color: $gray-3;
 $button-bg-hover-color: $gray-1;
 
 // actions - primary
-$action-primary-bg: $cardinal-red;
+$action-primary-bg: $mckinsey-primary-cyan;
 $action-primary-fg: $gray-2;
 $action-primary-shadow: none;
 
 // focused - hover/active pseudo states
-$action-primary-focused-bg: $dark-red;
+$action-primary-focused-bg: $mckinsey-primary-cyan-light;
 $action-primary-focused-fg: $gray-1;
 
 // current or active navigation item
-$action-primary-active-bg: $dark-red;
+$action-primary-active-bg: $mckinsey-primary-cyan-light;
 $action-primary-active-fg: $gray-1;
 $action-primary-active-shadow: none;
 $action-primary-active-focused-fg: $gray-2;
@@ -216,6 +248,15 @@ body header.global {
 
 .header-border {
     height: 27px;
-    background-color: #002960;
+    background-color: $mckinsey-primary-blue;
 }
 
+//-----------------
+// Courses listing
+//-----------------
+
+body .highlighted-courses, body .find-courses {
+    .courses .course header.course-preview hgroup h2 {
+        color: $mckinsey-support-blue-bright;
+    }
+}
