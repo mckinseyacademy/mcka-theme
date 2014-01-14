@@ -3,7 +3,7 @@
 
 <%inherit file="/main.html" />
 
-<%block name="title"><title>About Stanford Online</title></%block>
+<%block name="title"><title>About McKinsey Academy</title></%block>
 
 <%block name="js_extra">
   <script type="text/javascript">
@@ -47,11 +47,10 @@
 ## About Section ##
     <section class="message left" id="about">
       <div class="photo">
-        <img src="${static.url('themes/stanford/images/quad.jpg')}" alt="Stanford Quad with Hoover Tower" />
-          <!-- Image Copyright owned by Giulio Gratta -->
+        <img src="${static.url('themes/mckinseyacademy/images/quad.jpg')}" alt="Stanford Quad with Hoover Tower" />
       </div>
       <article>
-        <h2>About <span class="edx">Stanford Online</span></h2>
+        <h2>About <span class="edx">McKinsey Academy</span></h2>
         
         <p>Stanford is developing new online course material in order to improve on-campus courses and provide broader public access to exciting learning opportunities.</p>
         <p>The engineering team at Stanford's office of the Vice Provost for Online Learning is running and developing on an instance of the <a href="http://code.edx.org">OpenEdX platform</a>. More details are in <a href="http://news.stanford.edu/news/2013/june/open-source-platform-061113.html">this article</a>.</p>
@@ -63,8 +62,7 @@
 ## FAQ Section ##
     <section class="message left" id="faq">
       <div class="photo">
-        <img src="${static.url('themes/stanford/images/memchu.jpg')}" alt="Stanford Memorial Church Facade" />
-          <!-- Image Copyright owned by Giulio Gratta -->
+        <img src="${static.url('themes/mckinseyacademy/images/memchu.jpg')}" alt="Stanford Memorial Church Facade" />
       </div>
       <article>
         <h2>FAQs</h2>
@@ -87,10 +85,9 @@
 ## Contact Section ##
     <section class="message left" id="contact">
       <div class="photo">
-        <img src="${static.url('themes/stanford/images/dish.jpg')}" alt="Stanford Dish by Twilight" />
-          <!-- Image Copyright owned by Stanford University -->
+        <img src="${static.url('themes/mckinseyacademy/images/dish.jpg')}" alt="Stanford Dish by Twilight" />
       </div>
-      <article id="stanford-OpenEdX-contact">
+      <article id="mckinseyacademy-OpenEdX-contact">
         <h2>Contact Information</h2>
         <p><strong>For general information email us at:</strong><br />
         <a href="mailto:contact@class.stanford.edu">contact@class.stanford.edu</a></p>
@@ -127,7 +124,7 @@
         $(function() {
           var ua = navigator.userAgent;
           
-          $('#stanford-OpenEdX-contact a').each(function() {
+          $('#mckinseyacademy-OpenEdX-contact a').each(function() {
             var href = $(this).attr('href') + "?body=User Agent String: " + ua + " (Please do not delete, this text helps us help you.)";
             if (!$(this).hasClass('external')) {
               $(this).attr('href', href);
