@@ -260,3 +260,19 @@ body .highlighted-courses, body .find-courses {
         color: $mckinsey-support-blue-bright;
     }
 }
+
+//-----------------
+// Login / Register
+//-----------------
+
+body.view-register, body.view-login, body.view-passwordreset {
+    .introduction header .title {
+        top: 0;
+        color: #ca1eff;
+
+        .title-sub {
+            margin-left: 0;
+        }
+    }
+}
+
