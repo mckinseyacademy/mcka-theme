@@ -33,6 +33,10 @@ $mckinsey-bright-red: #CD202C;
 $mckinsey-bright-pink: #AD005B;
 $mckinsey-bright-purple: #66307C;
 
+// Additional
+$mckinsey-links-turquoise: #33BDF2;
+$mckinsey-links-turquoise-dark: darken($mckinsey-links-turquoise, 10%);
+
 
 //----------------
 // Original colors
@@ -110,18 +114,18 @@ $base-font-color: $black;
 $lighter-base-font-color: $black-80;
 $very-light-text: $gray-1;
 
-$link-color: $mckinsey-primary-cyan;
-$link-color-d1: $mckinsey-primary-cyan;
-$link-hover: $mckinsey-primary-cyan-light;
+$link-color: $mckinsey-links-turquoise;
+$link-color-d1: $mckinsey-links-turquoise;
+$link-hover: $mckinsey-links-turquoise-dark;
 $site-status-color: $mckinsey-support-blue-bright;
 
 $header-graphic-super-color: $mckinsey-primary-cyan;
 $header-graphic-sub-color: $lighter-base-font-color;
 
-$header-link-color: $mckinsey-primary-cyan;
-$header-link-hover: $mckinsey-primary-cyan-light;
+$header-link-color: $mckinsey-links-turquoise;
+$header-link-hover: $mckinsey-links-turquoise-dark;
 
-$button-color: $mckinsey-primary-cyan;
+$button-color: $mckinsey-links-turquoise;
 $button-archive-color: $mckinsey-primary-gray;
 
 $shadow-color: $gray;
@@ -132,16 +136,16 @@ $button-bg-color: $gray-3;
 $button-bg-hover-color: $gray-1;
 
 // actions - primary
-$action-primary-bg: $mckinsey-primary-cyan;
+$action-primary-bg: $mckinsey-links-turquoise;
 $action-primary-fg: $gray-2;
 $action-primary-shadow: none;
 
 // focused - hover/active pseudo states
-$action-primary-focused-bg: $mckinsey-primary-cyan-light;
+$action-primary-focused-bg: $mckinsey-links-turquoise-dark;
 $action-primary-focused-fg: $gray-1;
 
 // current or active navigation item
-$action-primary-active-bg: $mckinsey-primary-cyan-light;
+$action-primary-active-bg: $mckinsey-links-turquoise-dark;
 $action-primary-active-fg: $gray-1;
 $action-primary-active-shadow: none;
 $action-primary-active-focused-fg: $gray-2;
@@ -254,7 +258,11 @@ body header.global {
 
 body .highlighted-courses, body .find-courses {
     .courses .course header.course-preview hgroup h2 {
-        color: $mckinsey-support-blue-bright;
+        color: $mckinsey-links-turquoise;
+
+        &:hover {
+            color: $mckinsey-links-turquoise-dark;
+        }
     }
 }
 
@@ -265,7 +273,6 @@ body .highlighted-courses, body .find-courses {
 body.view-register, body.view-login, body.view-passwordreset {
     .introduction header .title {
         top: 0;
-        color: #ca1eff;
 
         .title-sub {
             margin-left: 0;
