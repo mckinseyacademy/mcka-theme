@@ -280,3 +280,20 @@ body.view-register, body.view-login, body.view-passwordreset {
     }
 }
 
+//-----------------
+// About pages
+//-----------------
+
+body .container.about .vision .message > article {
+    h3 {
+        margin: 30px 0 20px;
+        font-weight: bold;
+    }
+
+    li {
+        font: 1em/1.6em $serif;
+    }
+    li + li {
+        margin-top: 5px;
+    }
+}
