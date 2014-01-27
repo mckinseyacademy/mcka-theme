@@ -253,6 +253,22 @@ body header.global {
 }
 
 //-----------------
+// Home
+//-----------------
+
+body .home header {
+    .title .banner-title {
+        text-shadow: 0px 1px rgba(255, 255, 255, 0.6);
+        font: 1.8em/1.3em $body-font-family; /*"Source Sans","Open Sans",Verdana,Geneva,sans-serif,sans-serif;*/
+        letter-spacing: 1px;
+    }
+
+    .media .hero .play-intro:after {
+        margin-top: -19px;
+    }
+}
+
+//-----------------
 // Courses listing
 //-----------------
 
@@ -297,3 +313,4 @@ body .container.about .vision .message > article {
         margin-top: 5px;
     }
 }
+
