@@ -257,6 +257,7 @@ body header.global {
 //-----------------
 
 body .home header {
+    background: url($homepage-bg-image) repeat scroll 0% 0% / cover #fff;
     .title .banner-title {
         text-shadow: 0px 1px rgba(255, 255, 255, 0.6);
         font: 1.8em/1.3em $body-font-family; /*"Source Sans","Open Sans",Verdana,Geneva,sans-serif,sans-serif;*/
