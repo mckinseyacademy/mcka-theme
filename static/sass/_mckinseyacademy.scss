@@ -274,6 +274,10 @@ body .home header {
 //-----------------
 
 body .highlighted-courses, body .find-courses {
+    header.search .inner-wrapper.main-search .logo {
+        display: none;
+    }
+
     .courses .course header.course-preview hgroup h2 {
         color: $mckinsey-links-turquoise;
 
