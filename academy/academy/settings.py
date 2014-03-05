@@ -28,6 +28,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+AUTH_USER_MODEL = 'remote_auth.RemoteUser'
 
 DEFAULT_APPS = (
     'django.contrib.admin',
@@ -45,6 +46,7 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'api_client',
+    'remote_auth',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -62,6 +64,10 @@ ROOT_URLCONF = 'academy.urls'
 
 WSGI_APPLICATION = 'academy.wsgi.application'
 
+AUTHENTICATION_BACKENDS = (
+    #'django.contrib.auth.backends.ModelBackend',
+    'remote_auth.json_backend.JsonBackend',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
