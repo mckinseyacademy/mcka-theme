@@ -43,7 +43,9 @@ THIRD_PARTY_APPS = (
     'foundation',
 )
 
-LOCAL_APPS = ()
+LOCAL_APPS = (
+    'api_client',
+)
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
