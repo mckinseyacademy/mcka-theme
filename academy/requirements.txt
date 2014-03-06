@@ -1,4 +1,7 @@
 Django==1.6.2
+Mako==0.9.1
+MarkupSafe==0.19
 South==0.8.4
+django-mako==0.1.3
 django-zurb-foundation==5.1.1
 wsgiref==0.1.2
