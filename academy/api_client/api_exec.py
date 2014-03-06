@@ -13,3 +13,9 @@ def get_user(user_id):
     response = url_access.urlopen('{}/users/{}'.format(API_SERVER_ADDRESS, user_id))
     return JP.from_json(response.read(), UserResponse)
 
+def _open_url_with_session(url):
+    headers = {}
+    if request["session_key"]:
+        headers["session_key"] = request["session_key"]
+    return url_access.urlopen(url, headers)
+
