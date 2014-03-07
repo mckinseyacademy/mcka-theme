@@ -14,6 +14,7 @@
 
   - # Custom CSS
   %%block(name="css")
+    %link(rel="stylesheet", href="/static/css/base.css")
 
   - # Override if you need another version of modernizr
   %%block(name="foundation_modernizer")
@@ -21,7 +22,7 @@
 
   - # Custom head JS
   %%block(name="head_js")
-
+  
 %body
 
   - # Header
@@ -38,6 +39,7 @@
         .user-info
           .user-name
             Martyn James
+            .drop-down-indicator              
           .user-image
             %img(src="http://www.gravatar.com/avatar/9bd53f3b1e7213a1837c5e17800f3b20.png?s=40")
       - else:
@@ -50,8 +52,8 @@
   %%block(name="base_body")
 
   - # Footer
-  .row.footer
-    .large-12.columns
+  .row
+    .large-12.columns.footer
       %ul
         %li Terms of Service
         %li Privacy Policy
