@@ -61,9 +61,9 @@ MIDDLEWARE_CLASSES = (
     'djangomako.middleware.MakoMiddleware',    
 )
 
-ROOT_URLCONF = 'academy.urls'
+ROOT_URLCONF = 'mcka_apros.urls'
 
-WSGI_APPLICATION = 'academy.wsgi.application'
+WSGI_APPLICATION = 'mcka_apros.wsgi.application'
 
 AUTHENTICATION_BACKENDS = (
     #'django.contrib.auth.backends.ModelBackend',
