@@ -2,7 +2,8 @@ from json_object import JsonParser as JP, JsonObject
 import urllib2 as url_access
 import models
 
-API_SERVER_ADDRESS = 'http://localhost:8005'
+API_SERVER_ADDRESS = 'http://localhost:8000'
+USER_API = 'user_api/v1/users'
 
 def authenticate(username, password):
     response = url_access.urlopen('{}/session'.format(API_SERVER_ADDRESS))
@@ -10,8 +11,8 @@ def authenticate(username, password):
     return ar.session_key
 
 def get_user(user_id):
-    response = url_access.urlopen('{}/users/{}'.format(API_SERVER_ADDRESS, user_id))
-    return JP.from_json(response.read(), UserResponse)
+    response = url_access.urlopen('{}/{}/{}'.format(API_SERVER_ADDRESS, USER_API, user_id))
+    return JP.from_json(response.read(), models.UserResponse)
 
 def _open_url_with_session(url):
     headers = {}

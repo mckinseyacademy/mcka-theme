@@ -38,10 +38,10 @@
       - if True:#is_user_logged_in
         .user-info
           .user-name
-            Martyn James
-            .drop-down-indicator              
+            = user.name
+            .drop-down-indicator
           .user-image
-            %img(src="http://www.gravatar.com/avatar/9bd53f3b1e7213a1837c5e17800f3b20.png?s=40")
+            %img(src= user.image_url())
       - else:
         %button.small.button
           Log in
