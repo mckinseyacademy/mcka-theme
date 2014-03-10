@@ -1,3 +1,4 @@
+- from django.utils.translation import ugettext as _
 !!! 5
 %html.no-js(lang="en")
 %head
@@ -29,12 +30,12 @@
   .row.header
     .large-12.columns
       .logo
-      .application-name McKinsey Academy
+      .application-name= _("McKinsey Academy")
       .header-menu
         %ul
-          %li About
-          %li Programs
-          %li Contact
+          %li= _("About")
+          %li= _("Programs")
+          %li= _("Contact")
       - if True:#is_user_logged_in
         .user-info
           .user-name
@@ -55,11 +56,11 @@
   .row
     .large-12.columns.footer
       %ul
-        %li Terms of Service
-        %li Privacy Policy
-        %li About
-        %li Programs
-        %li Contact
+        %li= _("Terms of Service")
+        %li= _("Privacy Policy")
+        %li= _("About")
+        %li= _("Programs")
+        %li= _("Contact")
 
   - # Override if you need another version of jQuery
   %%block(name="foundation_jquery")
