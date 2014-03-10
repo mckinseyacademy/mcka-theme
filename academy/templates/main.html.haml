@@ -1,0 +1,78 @@
+- from django.utils.translation import ugettext as _
+!!! 5
+%html.no-js(lang="en")
+%head
+  %meta(charset="utf-8")
+  %meta(name="viewport", content="width=device-width", initialScale="1.0")
+  %%block(name="meta")
+  %title
+    %%block(name="title") My McKinsey Academy
+
+  - # Base Foundation CSS
+  %%block(name="foundation_css")
+    %link(rel="stylesheet", href="/static/foundation/css/normalize.css")
+    %link(rel="stylesheet", href="/static/foundation/css/foundation.min.css")
+
+  - # Custom CSS
+  %%block(name="css")
+    %link(rel="stylesheet", href="/static/css/base.css")
+
+  - # Override if you need another version of modernizr
+  %%block(name="foundation_modernizer")
+    %script(src="/static/foundation/js/vendor/modernizr.js")
+
+  - # Custom head JS
+  %%block(name="head_js")
+  
+%body
+
+  - # Header
+  .row.header
+    .large-12.columns
+      .logo
+      .application-name= _("McKinsey Academy")
+      .header-menu
+        %ul
+          %li= _("About")
+          %li= _("Programs")
+          %li= _("Contact")
+      - if True:#is_user_logged_in
+        .user-info
+          .user-name
+            Martyn James
+            .drop-down-indicator              
+          .user-image
+            %img(src="http://www.gravatar.com/avatar/9bd53f3b1e7213a1837c5e17800f3b20.png?s=40")
+      - else:
+        %button.small.button
+          Log in
+
+
+  
+  - # Main content goes here
+  %%block(name="base_body")
+
+  - # Footer
+  .row
+    .large-12.columns.footer
+      %ul
+        %li= _("Terms of Service")
+        %li= _("Privacy Policy")
+        %li= _("About")
+        %li= _("Programs")
+        %li= _("Contact")
+
+  - # Override if you need another version of jQuery
+  %%block(name="foundation_jquery")
+    %script(src="/static/foundation/js/vendor/jquery.js")
+
+  - # Foundation JS
+  %%block(name="foundation_js")
+    %script(src="/static/foundation/js/foundation.min.js")
+
+  - # Custom JS
+  %%block(name="body_js")
+
+  - # Init Foundation
+  %%block(name="foundation_js_init")
+    %script $(document).foundation();

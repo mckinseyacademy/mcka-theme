@@ -1,0 +1,127 @@
+$rowWidth: 960px;
+// Mc Kinsey Named Colours
+
+// Primary
+$mckinsey-blue: #002960;
+$mckinsey-cyan: #0093D3;
+$mckinsey-grey: #868685;
+
+// Support
+$mckinsey-brightblue: #0065BD;
+$mckinsey-turquoise: #009AA6;
+$mckinsey-dk-turquoise: #006983;
+$mckinsey-stone: #C4B796;
+$mckinsey-light-gray: #939D98;
+$mckinsey-blue-gray: #7D9AAA;
+
+// Bright
+$mckinsey-yellow: #D4BA00;
+$mckinsey-green: #A2AD00;
+$mckinsey-orange: #E37222;
+$mckinsey-red: #CD202C;
+$mckinsey-pink: #AD005B;
+$mckinsey-purple: #66307C;
+
+// Main Colour Elements
+$background-tint: #E5EBEE;
+$border-line: #E0E0E0;
+$link-color: #3384CA;
+
+// Header
+$header-background: $mckinsey-blue;
+$header-text: #FFFFFF;
+$user-text: $mckinsey-turquoise;
+
+// Program Bar
+$program-bar-background: $mckinsey-brightblue;
+$program-bar-program-title: $mckinsey-blue;
+$program-bar-course-title: #FFFFFF;
+
+// Paged Nav
+$top-page: #FFFFFF;
+$bottom-page: #FAFAFA;
+
+// Courseware Area
+$nav-title: #3384CA;
+$nav-title-selected: $mckinsey-grey;
+$stage-title: #333333;
+$stage-title-selected: $mckinsey-grey;
+$lesson-title: #333333;
+$lesson-subtitle: $mckinsey-grey;
+$module-title: #66A5B5;
+$module-subtitle: #333333;
+$module-text: #333333;
+
+// Footer
+$footer-background: $background-tint;
+$footer-text: #3384CA;
+$footer-text-selected: $mckinsey-grey;
+$footer-separator: $mckinsey-grey;
+
+body{
+  background-color: $background-tint;
+  font-family: "Open Sans", sans-serif;
+}
+
+.header{
+  background-color: $header-background;
+  color: $header-text;
+  height: 40px;
+  max-height: 40px;
+  font-size: 20px;
+  font-size: 1.0rem;
+  .columns{
+    padding: 0;
+  }
+  ul{
+    li{
+      list-style: none;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-size: 0.6rem;
+      margin: 0 0.5rem;
+    }
+  }
+  div, ul, li{
+    display: inline;
+  }
+  div{
+    height: 100%;
+    margin: auto 0;
+  }
+  .user-info{
+    float: right;
+    color: $user-text;
+    font-size: 10px;
+    font-size: 1.0rem;
+  }
+  .application-name{
+    display: inline-block;
+    padding: 10px 10px;
+  }
+}
+
+.footer{
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  background-color: $background-tint;
+  color: $footer-text;
+  padding: 0;
+  ul{
+    margin: 0;
+    li{
+      list-style: none;
+      padding-right: 9px;
+      font-size: 10px;
+      font-size: 1.0rem;
+    }
+    li+li{
+      border-left: 1px solid $footer-separator;
+      padding-left: 10px;
+    }
+  }
+  ul, li{
+    display: inline;
+  }
+}
