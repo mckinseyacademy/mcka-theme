@@ -5,10 +5,12 @@ class Objectifier(object):
     '''
     Class to build class-instance accessors from provided dictionary object
     '''
+    object_map = {}
+
     @staticmethod
     def _objectify_if_iterable(value):
         if isinstance(value, collections.Iterable):
-            return Objectifier(value)
+            return __class__(dictionary = value)
         else:
             return value
 
@@ -17,12 +19,21 @@ class Objectifier(object):
 
     def _build_from_dictionary(self, dictionary):
         for item in dictionary:
+            object_type = self._object_type_for_name(item)
+
             if isinstance(dictionary[item], dict):
-                self.__setattr__(item, Objectifier(dictionary[item]))
+                self.__setattr__(item, object_type(dictionary = dictionary[item]))
             elif isinstance(dictionary[item], list):
-                self.__setattr__(item, map(Objectifier._objectify_if_iterable, dictionary[item]))
+                self.__setattr__(item, map(object_type._objectify_if_iterable, dictionary[item]))
             else:
                 self.__setattr__(item, dictionary[item])
+
+    def _object_type_for_name(self, item_name):
+        object_type = Objectifier
+        if item_name in self.object_map:
+            object_type = self.object_map[item_name]
+
+        return object_type
 
 class MissingRequiredFieldError(Exception):
     '''
