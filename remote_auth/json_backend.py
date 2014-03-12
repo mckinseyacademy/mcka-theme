@@ -10,8 +10,10 @@ class JsonBackend(object):
     """
 
     def authenticate(self, username = None, password = None):
-        session_key = api_exec.authenticate(username, password)
-        return get_user_model(session_key)
+        auth_info = api_exec.authenticate(username, password)
+        user = get_user_model()()
+        user.update_from_auth_response(auth_info)
+        return user
 
     def get_user(self, user_id):
         return None
