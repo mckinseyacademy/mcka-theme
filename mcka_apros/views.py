@@ -22,7 +22,6 @@ def login(request):
         form = LoginForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             user = auth.authenticate(username = request.POST['username'], password = request.POST['password'])
-            request.session['user_id'] = user.id
             auth.login(request, user)
             return HttpResponseRedirect('/') # Redirect after POST
     else:
@@ -35,9 +34,8 @@ def login(request):
 def home(request):
     template = get_haml_template('main.html.haml')
     use_user = None
-    # TODO - Why doens't request.user.is_authenticated() work correctly?
-    if 'user_id' in request.session:
-        use_user = get_user(request.session['user_id'])
+    if request.user.is_authenticated():
+        use_user = request.user
     return HttpResponse(template.render_unicode(user = use_user))
 
 # TODO: Move this to it's own helper

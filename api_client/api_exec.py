@@ -3,7 +3,7 @@ import urllib2 as url_access
 import models
 import json
 
-API_SERVER_ADDRESS = 'http://localhost:8000'
+API_SERVER_ADDRESS = 'http://localhost:56480'
 AUTH_API = 'system_manager/sessions'
 USER_API = 'user_api/v1/users'
 

@@ -12,11 +12,18 @@ class JsonBackend(object):
     def authenticate(self, username = None, password = None):
         auth_info = api_exec.authenticate(username, password)
         user = get_user_model()()
-        user.update_from_auth_response(auth_info)
+        user.update_response_fields(auth_info.user, auth_info.token)
+        user.save()
         return user
 
     def get_user(self, user_id):
-        return None
+        user = get_user_model().cached_fetch(user_id)
+        if None == user:
+            user_response = api_exec.get_user(user_id)
+            user = get_user_model()()
+            user.update_response_fields(user_response)
+            user.save()
+        return user
 
     def has_perm(self, user_obj, perm, obj = None):
         return True
