@@ -4,7 +4,7 @@ import models
 import json
 
 API_SERVER_ADDRESS = 'http://localhost:56480'
-AUTH_API = 'system_manager/sessions'
+AUTH_API = 'api/system/1/sessions'
 USER_API = 'user_api/v1/users'
 
 def authenticate(username, password):
@@ -12,7 +12,7 @@ def authenticate(username, password):
         "username" : username,
         "password" : password
     }
-    url_request = url_access.Request(url='{}/{}/'.format(API_SERVER_ADDRESS, AUTH_API), headers={"Content-Type" : "application/json"})
+    url_request = url_access.Request(url='{}/{}'.format(API_SERVER_ADDRESS, AUTH_API), headers={"Content-Type" : "application/json"})
     response = url_access.urlopen(url_request, json.dumps(data))
     return JP.from_json(response.read(), models.AuthenticationResponse)
 
