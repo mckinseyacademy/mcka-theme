@@ -35,21 +35,22 @@
           %li= _("About")
           %li= _("Programs")
           %li= _("Contact")
-      - if True:#is_user_logged_in
+      - if user != None:
         .user-info
           .user-name
-            = user.name
+            = user.username
             .drop-down-indicator
           .user-image
-            %img(src= user.image_url())
+            %img(src=user.image_url())
       - else:
-        %button.small.button
-          Log in
+        .user-info
+          %button.small.button#login
+            Log in
 
 
   
   - # Main content goes here
-  %%block(name="base_body")
+  %%block(name="content")
 
   - # Footer
   .row
@@ -71,6 +72,14 @@
 
   - # Custom JS
   %%block(name="body_js")
+    - # TODO: Move this to js file, but focusing on getting login working for now
+    :javascript
+      $(function(){
+        $('#login').on('click', function(){
+          location.href = './login'
+        });
+      }
+      );
 
   - # Init Foundation
   %%block(name="foundation_js_init")

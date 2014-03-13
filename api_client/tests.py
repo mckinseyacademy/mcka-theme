@@ -1,5 +1,6 @@
 from django.test import TestCase
 from json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError
+from models import UserResponse, AuthenticationResponse
 
 import collections
 
@@ -13,6 +14,15 @@ class JsonObjectTestRequiredAndValidFieldsClass(JsonObject):
     required_fields = ['name', 'age']
     valid_fields = ['name', 'age', 'gender']
 
+class JsonObjectTestNestedClass(JsonObject):
+    required_fields = ['one', 'two', 'three']
+
+class JsonObjectTestNestingClass(JsonObject):
+    required_fields = ['id', 'info']
+    object_map = {
+        'info' : JsonObjectTestNestedClass
+    }
+
 
 # Create your tests here.
 class JsonObjectTest(TestCase):
@@ -22,6 +32,16 @@ class JsonObjectTest(TestCase):
         '''
         self.json_string = '{"name":"Martyn", "age":21}'
         self.json_array = '[{"name":"Martyn", "age":21},{"name":"Matt", "age":19}]'
+
+        self.nested_json = '{"id":22, "info":{"one":"a", "two":"b", "three":"c"}}'
+        self.nested_array = '[{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]'
+
+    def test_authentication_response(self):
+        json_string = '{"token": "ceac67d033b98fbc5edd483a0e609193","expires": 1209600,"user": {"id": 4,"email": "staff@example.com","username": "staff"}}'
+        output = JP.from_json(json_string, AuthenticationResponse)
+
+        self.assertTrue(isinstance(output, AuthenticationResponse))
+        self.assertTrue(isinstance(output.user, UserResponse))
 
     def test_parsed_object_from_json_string(self):
         '''
@@ -167,3 +187,23 @@ class JsonObjectTest(TestCase):
         self.assertEqual(output.name, "Martyn")
         self.assertEqual(output.age, 21)
         self.assertEqual(output.gender, "male")
+
+    def test_nested_type(self):
+        '''
+        Consider when object type is nested within another
+        '''
+        output = JP.from_json(self.nested_json, JsonObjectTestNestingClass)
+
+        self.assertTrue(isinstance(output, JsonObjectTestNestingClass))
+        self.assertTrue(isinstance(output.info, JsonObjectTestNestedClass))
+
+    def test_nested_array(self):
+        '''
+        Consider when object type is nested within another
+        '''
+        output = JP.from_json(self.nested_array, JsonObjectTestNestingClass)
+
+        self.assertTrue(isinstance(output[0], JsonObjectTestNestingClass))
+        self.assertTrue(isinstance(output[0].info, JsonObjectTestNestedClass))
+        self.assertTrue(isinstance(output[1], JsonObjectTestNestingClass))
+        self.assertTrue(isinstance(output[1].info, JsonObjectTestNestedClass))
