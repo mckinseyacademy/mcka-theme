@@ -4,28 +4,34 @@ from models import UserResponse, AuthenticationResponse
 
 import collections
 
+
 class JsonObjectTestRequiredFieldsClass(JsonObject):
     required_fields = ['name', 'age']
 
+
 class JsonObjectTestValidFieldsClass(JsonObject):
     valid_fields = ['name', 'age']
+
 
 class JsonObjectTestRequiredAndValidFieldsClass(JsonObject):
     required_fields = ['name', 'age']
     valid_fields = ['name', 'age', 'gender']
 
+
 class JsonObjectTestNestedClass(JsonObject):
     required_fields = ['one', 'two', 'three']
+
 
 class JsonObjectTestNestingClass(JsonObject):
     required_fields = ['id', 'info']
     object_map = {
-        'info' : JsonObjectTestNestedClass
+        'info': JsonObjectTestNestedClass
     }
 
 
 # Create your tests here.
 class JsonObjectTest(TestCase):
+
     def setUp(self):
         '''
         Setup json strings for objects and arrays
