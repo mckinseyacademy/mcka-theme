@@ -34,17 +34,18 @@ body {
       color: white;
       height: auto;
       display: block;
-      border-left: 1px solid #002960;
-      border-right: 1px solid #002960;
-      background-color: #0065bd; }
+      border-left: 1px solid #868685;
+      border-right: 1px solid #868685;
+      background-color: #002960; }
       .header .user-info .user-profile div {
         display: block; }
       .header .user-info .user-profile .user-detail {
         width: 100%; }
         .header .user-info .user-profile .user-detail > div {
           padding-top: 3px;
+          padding-left: 10px;
           text-align: left;
-          border-bottom: 1px solid #002960;
+          border-bottom: 1px solid #868685;
           height: 30px;
           vertical-align: middle; }
           .header .user-info .user-profile .user-detail > div.username {

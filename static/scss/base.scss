@@ -107,9 +107,9 @@ body{
       color: $header-text;
       height: auto;
       display: block;
-      border-left: 1px solid $mckinsey-blue;
-      border-right: 1px solid $mckinsey-blue;
-      background-color: $mckinsey-brightblue;
+      border-left: 1px solid $mckinsey-grey;
+      border-right: 1px solid $mckinsey-grey;
+      background-color: $mckinsey-blue;
       div{
         display: block;
       }
@@ -117,8 +117,9 @@ body{
         width: 100%;
         >div{
           padding-top: 3px;
+          padding-left: 10px;
           text-align: left;
-          border-bottom: 1px solid $mckinsey-blue;
+          border-bottom: 1px solid $mckinsey-grey;
           height: 30px;
           vertical-align: middle;
           &.username{

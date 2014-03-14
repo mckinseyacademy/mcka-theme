@@ -6,13 +6,22 @@
     .username
       = user.username
     .fullname
-      .fieldtitle = _("Full Name")
+      .fieldtitle
+        = _("Full Name")
+        %a.editfield
+          = _("(edit)")
       .fieldcontent = user.name
     .title
-      .fieldtitle = _("Title")
+      .fieldtitle
+        = _("Title")
+        %a.editfield
+          = _("(edit)")
       .fieldcontent Academy Superstar
     .email
-      .fieldtitle = _("Email")
+      .fieldtitle
+        = _("Email")
+        %a.editfield
+          = _("(edit)")
       .fieldcontent = user.email
     .logout
       Log out
