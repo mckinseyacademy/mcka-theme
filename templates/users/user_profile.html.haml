@@ -1,0 +1,26 @@
+- from django.utils.translation import ugettext as _
+.user-profile
+  .user-image
+    %img(src = user.image_url(160))
+  .user-detail
+    .username
+      = user.username
+    .fullname
+      .fieldtitle = _("Full Name")
+      .fieldcontent = user.name
+    .title
+      .fieldtitle = _("Title")
+      .fieldcontent Academy Superstar
+    .email
+      .fieldtitle = _("Email")
+      .fieldcontent = user.email
+    .logout
+      Log out
+
+  :javascript
+    $(function(){
+        $('.user-profile .logout').on('click', function(){
+          window.location.href = '/logout';
+        })
+      }
+    );

@@ -1,19 +1,14 @@
 import haml
 import mako.template
-from api_client.api_exec import get_user
-from django.http import HttpResponse
-
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware import csrf
 from forms import LoginForm
-
-import remote_auth
+from api_client import api_exec
+from remote_auth.models import RemoteUser
 
 from importlib import import_module
 from django.conf import settings
 SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
-from django.contrib.auth.models import User
 
 from django.contrib import auth
 
@@ -22,6 +17,7 @@ def login(request):
         form = LoginForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             user = auth.authenticate(username = request.POST['username'], password = request.POST['password'])
+            request.session["remote_session_key"] = user.session_key
             auth.login(request, user)
             return HttpResponseRedirect('/') # Redirect after POST
     else:
@@ -30,6 +26,20 @@ def login(request):
     template = get_haml_template('login.html.haml')
     return HttpResponse(template.render_unicode(user = None, form = form, csrf_token = csrf_token(request)))
 
+def logout(request):
+    # destory the remote session
+    try:
+        api_exec.delete_session(request.session["remote_session_key"])
+    except:
+        pass
+
+    # clean user from the local cache
+    RemoteUser.remove_from_cache(request.user.id)
+
+    # destroy this session
+    auth.logout(request)
+
+    return HttpResponseRedirect('/') # Redirect after POST
 
 def home(request):
     template = get_haml_template('main.html.haml')

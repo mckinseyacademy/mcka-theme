@@ -32,7 +32,11 @@ class RemoteUser(AbstractUser):
     def cached_fetch(user_id):
         if user_id in RemoteUser.temp_user_cache:
             return RemoteUser.temp_user_cache[user_id]
-        return None            
+        return None  
+
+    @staticmethod
+    def remove_from_cache(user_id):
+        del RemoteUser.temp_user_cache[user_id]          
 
 #    def is_authenticated(self):
 #        return True

@@ -26,3 +26,9 @@ def _open_url_with_session(url):
         headers["session_key"] = request["session_key"]
     return url_access.urlopen(url, headers)
 
+def delete_session(session_key):
+    opener = url_access.build_opener(url_access.HTTPHandler)
+    request = url_access.Request(url = '{}/{}/{}'.format(API_SERVER_ADDRESS, AUTH_API, session_key), headers={"Content-Type" : "application/json"})
+    request.get_method = lambda: 'DELETE'
+    url = opener.open(request)    
+

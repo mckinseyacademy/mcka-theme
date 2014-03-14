@@ -1,7 +1,15 @@
 %%inherit(file="main.html.haml")
 
+%%block(name="user_region")
+
 %%block(name="content")
-  %form(action="/login/", method="POST")
-    = csrf_token
-    = form
-    %input(type="submit", value="Login")
+  .row
+    .large-4.medium-4.columns
+      &nbsp;
+    .login-form.large-4.medium-4.columns
+      %form(action="/login/", method="POST")
+        = csrf_token
+        = form
+        %input(type="submit", value="Login")
+    .large-4.medium-4.columns
+      &nbsp;
