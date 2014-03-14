@@ -28,26 +28,26 @@
   - # Header
   .row.header
     .large-12.columns
-      .logo
-      .application-name= _("McKinsey Academy")
-      .header-menu
+      %span.logo
+      %span.application-name= _("McKinsey Academy")
+      %span.header-menu
         %ul
           %li= _("About")
           %li= _("Programs")
           %li= _("Contact")
-      - if user != None:
-        .user-info
-          .user-name
-            = user.username
-            .drop-down-indicator
-          .user-image
-            %img(src=user.image_url())
-      - else:
-        .user-info
-          %button.small.button#login
-            Log in
-
-
+      %%block(name="user_region")
+        - if user != None:
+          .user-info
+            .user-name
+              = user.username
+              .drop-down-indicator
+            .user-image
+              %img(src=user.image_url())
+            #profile-container
+        - else:
+          .login-action
+            %button.small.button#login
+              Log in
   
   - # Main content goes here
   %%block(name="content")
@@ -72,14 +72,10 @@
 
   - # Custom JS
   %%block(name="body_js")
-    - # TODO: Move this to js file, but focusing on getting login working for now
-    :javascript
-      $(function(){
-        $('#login').on('click', function(){
-          location.href = './login'
-        });
-      }
-      );
+    %script(src="/static/js/application.js")
+
+  - # JS - custom snippets
+  %%block(name="js_snippets")
 
   - # Init Foundation
   %%block(name="foundation_js_init")
