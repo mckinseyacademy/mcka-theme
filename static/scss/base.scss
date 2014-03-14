@@ -186,6 +186,9 @@ body{
 
 .login-form{
   margin-top: 50px;
+  .error{
+    color: $mckinsey-red;
+  }
 }
 
 .user-profile{

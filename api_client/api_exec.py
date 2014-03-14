@@ -3,8 +3,8 @@ import urllib2 as url_access
 import models
 import json
 
-API_SERVER_ADDRESS = 'http://localhost:56480'
-AUTH_API = 'api/system/1/sessions'
+API_SERVER_ADDRESS = 'http://localhost:8000'
+AUTH_API = 'api/system/v1/sessions'
 USER_API = 'user_api/v1/users'
 
 def authenticate(username, password):

@@ -92,6 +92,8 @@ body {
 
 .login-form {
   margin-top: 50px; }
+  .login-form .error {
+    color: #cd202c; }
 
 .user-profile {
   width: 160px; }
