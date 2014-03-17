@@ -1,7 +1,9 @@
 import json
 import collections
 
+
 class Objectifier(object):
+
     '''
     Class to build class-instance accessors from provided dictionary object
     '''
@@ -10,7 +12,7 @@ class Objectifier(object):
     @staticmethod
     def _objectify_if_iterable(value):
         if isinstance(value, collections.Iterable):
-            return __class__(dictionary = value)
+            return __class__(dictionary=value)
         else:
             return value
 
@@ -22,7 +24,7 @@ class Objectifier(object):
             object_type = self._object_type_for_name(item)
 
             if isinstance(dictionary[item], dict):
-                self.__setattr__(item, object_type(dictionary = dictionary[item]))
+                self.__setattr__(item, object_type(dictionary=dictionary[item]))
             elif isinstance(dictionary[item], list):
                 self.__setattr__(item, map(object_type._objectify_if_iterable, dictionary[item]))
             else:
@@ -35,10 +37,13 @@ class Objectifier(object):
 
         return object_type
 
+
 class MissingRequiredFieldError(Exception):
+
     '''
     Exception to be thrown when a required field is missing
     '''
+
     def __init__(self, value):
         self.value = value
 
@@ -46,8 +51,10 @@ class MissingRequiredFieldError(Exception):
         return "Missing required field '{}'".format(self.value)
 
 
-# Can create one of these, and add some class-specific checks for required values, even strip bad values
+# Can create one of these, and add some class-specific checks for required
+# values, even strip bad values
 class JsonObject(Objectifier):
+
     '''
     Create an python object from a json object
     Can inherit from this class if you like, specifying member overrides
@@ -58,10 +65,10 @@ class JsonObject(Objectifier):
     required_fields = []
     valid_fields = None
 
-    def __init__(self, json_data = None, dictionary = None):
+    def __init__(self, json_data=None, dictionary=None):
         if(dictionary == None and json_data != None):
             dictionary = json.loads(json_data)
-        
+
         if(dictionary != None):
             self._validate_fields(dictionary)
             self._build_from_dictionary(dictionary)
@@ -78,15 +85,17 @@ class JsonObject(Objectifier):
             for remove_field in remove_fields:
                 del dictionary[remove_field]
 
+
 class JsonParser:
+
     @staticmethod
-    def from_json(json_data, object_type = JsonObject):
+    def from_json(json_data, object_type=JsonObject):
         parsed_json = json.loads(json_data)
         if isinstance(parsed_json, list):
             out_objects = []
             for jo in parsed_json:
-                out_objects.append(object_type(dictionary = jo))
-                
+                out_objects.append(object_type(dictionary=jo))
+
             return out_objects
         else:
             return object_type(json_data)
@@ -100,7 +109,7 @@ if __name__ == "__main__":
     class StrictPupil(JsonObject):
         required_fields = ['name', 'age']
         valid_fields = ['name', 'age', 'children']
-    
+
     pupil1 = '{"name":"Martyn", "age":21}'
     pupil2 = '{"name":"Martyn"}'
     pupil3 = '{"age":21}'
@@ -110,7 +119,6 @@ if __name__ == "__main__":
 
     p1 = Pupil(pupil1)
     print p1.name, p1.age
-    #print p1.to_json()
 
     p4 = Pupil(pupil4)
     print p4.name, p4.age, p4.children, p4.wife
@@ -127,4 +135,3 @@ if __name__ == "__main__":
 
     pups = JsonParser.from_json(pupils, Pupil)
     print pups[0].name, pups[0].age
-

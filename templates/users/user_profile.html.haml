@@ -6,30 +6,29 @@
     .username
       = user.username
     .fullname
-      .fieldtitle
-        = _("Full Name")
-        %a.editfield
-          = _("(edit)")
-      .fieldcontent = user.name
+      %i.fa.fa-user
+      .field-group
+        .fieldtitle
+          = _("Full Name")
+          %a.editfield
+            = _("(edit)")
+        .fieldcontent = user.name
     .title
-      .fieldtitle
-        = _("Title")
-        %a.editfield
-          = _("(edit)")
-      .fieldcontent Academy Superstar
+      %i.fa.fa-info
+      .field-group
+        .fieldtitle
+          = _("Title")
+          %a.editfield
+            = _("(edit)")
+        .fieldcontent Academy Superstar
     .email
-      .fieldtitle
-        = _("Email")
-        %a.editfield
-          = _("(edit)")
-      .fieldcontent = user.email
+      %i.fa.fa-envelope
+      .field-group      
+        .fieldtitle
+          = _("Email")
+          %a.editfield
+            = _("(edit)")
+        .fieldcontent = user.email
     .logout
-      Log out
-
-  :javascript
-    $(function(){
-        $('.user-profile .logout').on('click', function(){
-          window.location.href = '/logout';
-        })
-      }
-    );
+      %a.button.small.radius(href="/logout")
+        Log out

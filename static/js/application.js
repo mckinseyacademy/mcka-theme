@@ -1,9 +1,7 @@
 $(function(){
   /* Javascript to initialise on ready as defined by jquery */
-  $('#login').on('click', function(){
-    location.href = './login'
-  });
 
+  // Toggle user profile information
   $('.user-info >.user-name, .user-info >.user-image').on('click', function(){
     var $profile = $('#profile-container');
     var $user_profile = $profile.find('.user-profile');
@@ -13,6 +11,7 @@ $(function(){
     else{
       $user_profile.toggle();
     }
+    $('.user-info >.fa').toggleClass('fa-sort-asc, fa-sort-desc');
   });
 }
 );

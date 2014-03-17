@@ -59,7 +59,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'djangomako.middleware.MakoMiddleware',    
+    'djangomako.middleware.MakoMiddleware',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
