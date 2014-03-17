@@ -73,21 +73,31 @@ body{
   .columns{
     padding: 0;
   }
-  ul{
-    li{
-      list-style: none;
-      text-transform: uppercase;
-      font-size: 12px;
-      //font-size: 0.6rem;
-      margin: 0 0.5rem;
+  .header-menu{
+    top:-14px;
+    position: relative;
+    ul{
+      li{
+        list-style: none;
+        text-transform: uppercase;
+        font-size: 12px;
+        //font-size: 0.6rem;
+        margin: 0 0.5rem;
+      }
     }
   }
   ul, li{
-    display: inline;
+    display: inline-block;
   }
   >div{
     height: 100%;
     //margin: auto 0;
+  }
+  .logo{
+    background: url(/static/image/McK_McKA_cobranding.png) no-repeat left center;
+    width: 330px;
+    height: 100%;
+    display: inline-block;
   }
   .user-info{
     cursor: pointer;
@@ -96,6 +106,16 @@ body{
     font-size: 12px;
     //font-size: 1.0rem;
     text-align: right;
+    $drop_down_offset: 3px;
+    .fa{
+      position:relative;
+      &.fa-sort-asc{
+        top: -1*$drop_down_offset;
+      }
+      &.fa-sort-desc{
+        top: $drop_down_offset;
+      }
+    }
     div{
       display: inline;
     }
@@ -104,12 +124,12 @@ body{
       height: 40px;
     }
     .user-profile{
-      color: $header-text;
+      color: #000000;
       height: auto;
       display: block;
       border-left: 1px solid $mckinsey-grey;
       border-right: 1px solid $mckinsey-grey;
-      background-color: $mckinsey-blue;
+      background-color: #FFFFFF;
       div{
         display: block;
       }
@@ -127,22 +147,40 @@ body{
             font-size: 20px;
           }
           &.logout{
-            padding-top: 8px;
-            &:hover{
-              opacity: 0.8;
+            height: auto;
+            vertical-align: middle;
+            text-align: center;
+            .button{
+              margin: 0 0 5px;
             }
           }
         }
-        .fieldtitle{
-          font-size: 10px;
+        $detail_icon_size: 20px;
+        .fa{
+          width: $detail_icon_size;          
+          font-size: $detail_icon_size;
+          color: $mckinsey-light-gray;
+          text-align: center;
         }
-        .fieldcontent{
-          font-size: 12px;
+        .field-group{
+          margin-left: $detail_icon_size + 5;
+          margin-top: -1*$detail_icon_size;          
+          .fieldtitle{
+            font-size: 10px;
+          }
+          .fieldcontent{
+            font-size: 12px;
+          }
         }
       }
-      .user-image img{
+      .user-image {
         width: 160px;
         height: 160px;
+        img{
+          margin: 20px;
+          width: 120px;
+          height: 120px;
+        }
       }
     }  
   }

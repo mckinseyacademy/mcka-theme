@@ -11,6 +11,7 @@
   %%block(name="foundation_css")
     %link(rel="stylesheet", href="/static/foundation/css/normalize.css")
     %link(rel="stylesheet", href="/static/foundation/css/foundation.min.css")
+    %link(rel="stylesheet", href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css")
 
   - # Custom CSS
   %%block(name="css")
@@ -28,8 +29,7 @@
   - # Header
   .row.header
     .large-12.columns
-      %span.logo
-      %span.application-name= _("McKinsey Academy")
+      .logo
       %span.header-menu
         %ul
           %li= _("About")
@@ -40,13 +40,13 @@
           .user-info
             .user-name
               = user.username
-              .drop-down-indicator
+            %i.fa.fa-sort-asc
             .user-image
               %img(src=user.image_url())
             #profile-container
         - else:
           .login-action
-            %button.small.button#login
+            %a.tiny.radius.button#login(href="/login")
               Log in
   
   - # Main content goes here
