@@ -1,9 +1,26 @@
-// Mc Kinsey Named Colours
+// Mc Kinsey Named Colours have names starting with 'mckinsey'
+// Colours used in mckinsey academy not listed in Mckinsey style guide have names starting with 'mckinsey-academy'
 
-// Primary
+// McKinsey Academy main colours
 $mckinsey-blue: #002960;
-$mckinsey-cyan: #0093D3;
+$mckinsey-academy-alt-blue: #3384CA;
+$mckinsey-academy-black: #333333;
 $mckinsey-grey: #868685;
+$mckinsey-academy-turquoise: #66A5B5;
+$mckinsey-orange: #E37222;
+$mckinsey-green: #A2AD00;
+$mckinsey-red: #CD202C;
+$mckinsey-academy-blue-gray: #B1C2CC;
+$mckinsey-academy-warm-gray: #D3D1BA;
+$mckinsey-academy-bright-gray: #E5EBEE;
+$mckinsey-academy-light-gray: #E0E0E0;
+
+$almost-white: #CCCCCC;
+$pure-white: #FFFFFF;
+$pure-black: #000000;
+
+/* Other McKinsey specified colours that we are not using currently
+$mckinsey-cyan: #0093D3;
 
 // Support
 $mckinsey-brightblue: #0065BD;
@@ -15,46 +32,44 @@ $mckinsey-blue-gray: #7D9AAA;
 
 // Bright
 $mckinsey-yellow: #D4BA00;
-$mckinsey-green: #A2AD00;
-$mckinsey-orange: #E37222;
-$mckinsey-red: #CD202C;
 $mckinsey-pink: #AD005B;
 $mckinsey-purple: #66307C;
+*/
 
 // Main Colour Elements
-$background-tint: #E5EBEE;
-$border-line: #E0E0E0;
-$link-color: #3384CA;
+$background-tint: $mckinsey-academy-bright-gray;
+$border-line: $mckinsey-academy-light-gray;
+$link-color: $mckinsey-academy-alt-blue;
 
 // Header
 $header-background: $mckinsey-blue;
 $header-left-color: #284670;
 $header-right-color: $header-background;
-$header-text: #FFFFFF;
-$user-text: $mckinsey-turquoise;
+$header-text: $pure-white;
+$user-text: $mckinsey-academy-alt-blue;
 
 // Program Bar
-$program-bar-background: #3384CA;
+$program-bar-background: $mckinsey-academy-alt-blue;
 $program-bar-program-title: $mckinsey-blue;
-$program-bar-course-title: #FFFFFF;
+$program-bar-course-title: $pure-white;
 
 // Paged Nav
-$top-page: #FFFFFF;
+$top-page: $pure-white;
 $bottom-page: #FAFAFA;
 
 // Courseware Area
-$nav-title: #3384CA;
+$nav-title: $mckinsey-academy-alt-blue;
 $nav-title-selected: $mckinsey-grey;
-$stage-title: #333333;
+$stage-title: $mckinsey-academy-black;
 $stage-title-selected: $mckinsey-grey;
-$lesson-title: #333333;
+$lesson-title: $mckinsey-academy-black;
 $lesson-subtitle: $mckinsey-grey;
-$module-title: #66A5B5;
-$module-subtitle: #333333;
-$module-text: #333333;
+$module-title: $mckinsey-academy-turquoise;
+$module-subtitle: $mckinsey-academy-black;
+$module-text: $mckinsey-academy-black;
 
 // Footer
 $footer-background: $background-tint;
-$footer-text: #3384CA;
+$footer-text: $mckinsey-academy-alt-blue;
 $footer-text-selected: $mckinsey-grey;
 $footer-separator: $mckinsey-grey;

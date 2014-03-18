@@ -42,8 +42,8 @@ body{
     //margin: auto 0;
   }
   .logo{
-    background: url(/static/image/McK_McKA_cobranding.png) no-repeat left center;
-    width: 330px;
+    background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;
+    width: 340px;
     height: 100%;
     display: inline-block;
   }
@@ -69,29 +69,34 @@ body{
     .user-image img{
       @include square-size($header-bar-height);
     }
+    $user-profile-width: 220px;
     .user-profile{
-      $border-color: rgb(224,224,224);
-      color: rgb(51,51,51);
+      width: $user-profile-width;
+      div{
+        display:block;
+      }
+      color: $mckinsey-academy-black;
       height: auto;
       display: block;
-      border-left: 1px solid $border-color;
-      border-right: 1px solid $border-color;
-      background-color: #FFFFFF;
+      border-left: 1px solid $border-line;
+      border-right: 1px solid $border-line;
+      background-color: $pure-white;
       div{
         display: block;
       }
       .user-detail{
         width: 100%;
         >div{
-          padding-top: 3px;
-          padding-left: 10px;
+          padding: 10px 10px;
           text-align: left;
-          border-bottom: 1px solid $border-color;
-          height: 30px;
+          border-bottom: 1px solid $border-line;
+          height: 40px;
           vertical-align: middle;
           &.username{
             text-align: center;
             font-size: rem-calc(20);
+            height: 30px;
+            padding-top: 3px;
           }
           &.logout{
             height: auto;
@@ -106,7 +111,7 @@ body{
         .fa{
           width: $detail_icon_size;          
           font-size: rem-calc($detail_icon_size);
-          color: rgb(177,194,203);
+          color: $mckinsey-academy-blue-gray;
           text-align: center;
         }
         .field-group{
@@ -117,7 +122,7 @@ body{
             font-weight: bold;
             .editfield{
               padding-left: 4px;
-              border-left: 1px solid $border-color;
+              border-left: 1px solid $border-line;
             }
           }
           .fieldcontent{
@@ -132,7 +137,7 @@ body{
           @include square-size(160px);
         }
         padding-bottom: 20px;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid $border-line;
       }
     }  
   }
@@ -149,6 +154,22 @@ body{
   }
 }
 
+.program-bar{
+  height: 48px;
+  background-color: $program-bar-background;
+  padding: 12px 0;
+  .program-name{
+    font-size: rem-calc(10);
+    color: $program-bar-program-title;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .course-name{
+    font-size: rem-calc(14);
+    color: $program-bar-course-title;
+  }
+}
+
 .footer{
   position: fixed;
   bottom: 0;
@@ -156,20 +177,27 @@ body{
   background-color: $background-tint;
   color: $footer-text;
   padding: 0;
+  .copyright{
+    font-size: rem-calc(10);
+    color: $mckinsey-grey;
+    padding-right: 10px;
+  }
   ul{
     margin: 0;
     li{
-      list-style: none;
-      padding-right: 9px;
       font-size: rem-calc(10);
-    }
-    li+li{
+      list-style: none;
+      padding: 0 9px 0 10px;
       border-left: 1px solid $footer-separator;
-      padding-left: 10px;
     }
   }
   ul, li{
     display: inline;
+  }
+  .built-on{
+    font-size: rem-calc(10);
+    float:right;
+    margin: 6px 50px;
   }
 }
 
@@ -177,12 +205,5 @@ body{
   margin-top: 50px;
   .error{
     color: $mckinsey-red;
-  }
-}
-
-.user-profile{
-  width: 220px;
-  div{
-    display:block;
   }
 }

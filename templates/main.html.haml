@@ -1,4 +1,4 @@
-- from django.utils.translation import ugettext as _
+﻿- from django.utils.translation import ugettext as _
 !!! 5
 %html.no-js(lang="en")
 %head
@@ -48,19 +48,37 @@
           .login-action
             %a.tiny.radius.button(href="/login")
               = _("Log In")
-  
+  - if user != None:
+    .row.program-bar
+      .large-12.columns
+        - # Hardcoded values for now, so not translated
+        .program-name
+          McKinsey Management Program
+        .course-name
+          Mastering Difficult Conversations
+
+
+
   - # Main content goes here
   %%block(name="content")
 
   - # Footer
   .row
     .large-12.columns.footer
+      %span.copyright
+        © 2014
+        = _("McKinsey Academy")
       %ul
         %li= _("Terms of Service")
         %li= _("Privacy Policy")
         %li= _("About")
         %li= _("Programs")
         %li= _("Contact")
+        %li= _("FAQ")
+      %span.built-on
+        = _("Build on")
+        %a(href="http://www.openedx.org", target="_blank")
+          = _("OpenEdx")
 
   - # Override if you need another version of jQuery
   %%block(name="foundation_jquery")
