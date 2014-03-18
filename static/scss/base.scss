@@ -12,6 +12,7 @@ body{
 }
 
 .header{
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   $header-bar-height: 48px;
   background-color: $header-background;
   @include left-right-gradient($header-left-color, $header-right-color, 320px);
@@ -72,6 +73,7 @@ body{
     $user-profile-width: 220px;
     .user-profile{
       width: $user-profile-width;
+      @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
       div{
         display:block;
       }
@@ -155,6 +157,7 @@ body{
 }
 
 .program-bar{
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   height: 48px;
   background-color: $program-bar-background;
   padding: 12px 0;

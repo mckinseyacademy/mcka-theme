@@ -20,3 +20,15 @@
     width: $size;
     height: $size;
   }
+
+@mixin drop-shadow(
+  $color: #333333,
+  $opacity: 0.2,
+  $horiz-offset: 3px,
+  $vert-offset: 3px,
+  $blur-radius: 0px,
+  $spread-radius: 0px){
+    -moz-box-shadow:    $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);
+    -webkit-box-shadow: $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);
+    box-shadow:         $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);  
+  }
