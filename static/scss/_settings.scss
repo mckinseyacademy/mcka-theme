@@ -57,6 +57,8 @@
 // We use these as default colors throughout
 // $primary-color: #008CBA;
 // $secondary-color: #e7e7e7;
+$primary-color: rgb(56,133,199);
+$secondary-color: #002960;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
 // $warning-color: #f08a24;
@@ -64,6 +66,7 @@
 
 // We use these to make sure border radius matches unless we want it different.
 // $global-radius: 3px;
+$global-radius: 5px;
 // $global-rounded: 1000px;
 
 // We use these to control inset shadow shiny edges and depressions.

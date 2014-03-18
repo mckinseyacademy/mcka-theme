@@ -3,6 +3,7 @@
 %%block(name="user_region")
 
 %%block(name="content")
+  - from django.utils.translation import ugettext as _
   .row
     .large-4.medium-4.columns
       &nbsp;
@@ -13,7 +14,7 @@
             = error
         = csrf_token
         = form
-        %input.button.radius.small(type="submit", value="Login")
+        %input.button.radius.small(type="submit", value=_("Log In"))
     .large-4.medium-4.columns
       &nbsp;
 

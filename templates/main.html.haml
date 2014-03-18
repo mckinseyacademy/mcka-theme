@@ -9,8 +9,7 @@
 
   - # Base Foundation CSS
   %%block(name="foundation_css")
-    %link(rel="stylesheet", href="/static/foundation/css/normalize.css")
-    %link(rel="stylesheet", href="/static/foundation/css/foundation.min.css")
+    %link(rel="stylesheet", href="/static/css/normalize.css")
     %link(rel="stylesheet", href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css")
 
   - # Custom CSS
@@ -19,7 +18,7 @@
 
   - # Override if you need another version of modernizr
   %%block(name="foundation_modernizer")
-    %script(src="/static/foundation/js/vendor/modernizr.js")
+    %script(src="/static/js/vendor/modernizr.js")
 
   - # Custom head JS
   %%block(name="head_js")
@@ -36,6 +35,7 @@
           %li= _("Programs")
           %li= _("Contact")
       %%block(name="user_region")
+        - from django.utils.translation import ugettext as _
         - if user != None:
           .user-info
             .user-name
@@ -46,8 +46,8 @@
             #profile-container
         - else:
           .login-action
-            %a.tiny.radius.button#login(href="/login")
-              Log in
+            %a.tiny.radius.button(href="/login")
+              = _("Log In")
   
   - # Main content goes here
   %%block(name="content")
@@ -64,11 +64,11 @@
 
   - # Override if you need another version of jQuery
   %%block(name="foundation_jquery")
-    %script(src="/static/foundation/js/vendor/jquery.js")
+    %script(src="/static/js/vendor/jquery.js")
 
   - # Foundation JS
   %%block(name="foundation_js")
-    %script(src="/static/foundation/js/foundation.min.js")
+    %script(src="/static/js/foundation.min.js")
 
   - # Custom JS
   %%block(name="body_js")

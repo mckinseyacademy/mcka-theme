@@ -1,0 +1,8 @@
+.button{
+  font-weight: bold;
+  &.small{
+    $top-bottom-padding: 10px;
+    padding-top: $top-bottom-padding;
+    padding-bottom: $top-bottom-padding;
+  }
+}

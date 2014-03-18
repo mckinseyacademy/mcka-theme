@@ -1,0 +1,22 @@
+@mixin left-right-gradient(
+  $left-color: #284670,
+  $right-color: #002960,
+  $gradient-width: 320px){
+    background: -moz-linear-gradient(left, $left-color 0%, $right-color $gradient-width);  
+    background: -webkit-linear-gradient(left, $left-color 0%, $right-color $gradient-width);
+    background: linear-gradient(left, $left-color 0%, $right-color $gradient-width);
+  }
+
+@mixin top-bottom-gradient(
+  $top-color: #284670,
+  $bottom-color: #002960){
+    background: -moz-linear-gradient(top, $top-color 0%, $bottom-color 100%);  
+    background: -webkit-linear-gradient(top, $top-color 0%, $bottom-color 100%);
+    background: linear-gradient(top, $top-color 0%, $bottom-color 100%);
+  }
+
+@mixin square-size(
+  $size: 40px){
+    width: $size;
+    height: $size;
+  }
