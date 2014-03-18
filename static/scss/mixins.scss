@@ -1,0 +1,34 @@
+@mixin left-right-gradient(
+  $left-color: #284670,
+  $right-color: #002960,
+  $gradient-width: 320px){
+    background: -moz-linear-gradient(left, $left-color 0%, $right-color $gradient-width);  
+    background: -webkit-linear-gradient(left, $left-color 0%, $right-color $gradient-width);
+    background: linear-gradient(left, $left-color 0%, $right-color $gradient-width);
+  }
+
+@mixin top-bottom-gradient(
+  $top-color: #284670,
+  $bottom-color: #002960){
+    background: -moz-linear-gradient(top, $top-color 0%, $bottom-color 100%);  
+    background: -webkit-linear-gradient(top, $top-color 0%, $bottom-color 100%);
+    background: linear-gradient(top, $top-color 0%, $bottom-color 100%);
+  }
+
+@mixin square-size(
+  $size: 40px){
+    width: $size;
+    height: $size;
+  }
+
+@mixin drop-shadow(
+  $color: #333333,
+  $opacity: 0.2,
+  $horiz-offset: 3px,
+  $vert-offset: 3px,
+  $blur-radius: 0px,
+  $spread-radius: 0px){
+    -moz-box-shadow:    $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);
+    -webkit-box-shadow: $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);
+    box-shadow:         $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);  
+  }

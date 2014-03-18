@@ -41,7 +41,6 @@ DEFAULT_APPS = (
 
 THIRD_PARTY_APPS = (
     #'south', south is OFF for the moment since there'll be significant change in database while setting up authentication through API
-    'foundation',
 )
 
 LOCAL_APPS = (

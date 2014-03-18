@@ -11,7 +11,7 @@
         .fieldtitle
           = _("Full Name")
           %a.editfield
-            = _("(edit)")
+            = _("edit")
         .fieldcontent = user.name
     .title
       %i.fa.fa-info
@@ -19,7 +19,7 @@
         .fieldtitle
           = _("Title")
           %a.editfield
-            = _("(edit)")
+            = _("edit")
         .fieldcontent Academy Superstar
     .email
       %i.fa.fa-envelope
@@ -27,8 +27,8 @@
         .fieldtitle
           = _("Email")
           %a.editfield
-            = _("(edit)")
+            = _("edit")
         .fieldcontent = user.email
     .logout
       %a.button.small.radius(href="/logout")
-        Log out
+        = _("Log Out")

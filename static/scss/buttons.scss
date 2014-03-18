@@ -1,0 +1,9 @@
+.button{
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+  &.small{
+    $top-bottom-padding: 10px;
+    padding-top: $top-bottom-padding;
+    padding-bottom: $top-bottom-padding;
+  }
+}
