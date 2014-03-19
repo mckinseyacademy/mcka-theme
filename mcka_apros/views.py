@@ -1,7 +1,5 @@
 from django.utils.translation import ugettext as _
 
-import haml
-import mako.template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware import csrf
 from forms import LoginForm
@@ -15,6 +13,7 @@ SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from django.contrib import auth
 import urllib2 as url_access
 
+import haml_mako.templates as haml
 
 def login(request):
     error = None
@@ -39,7 +38,7 @@ def login(request):
     else:
         form = LoginForm()  # An unbound form
 
-    template = get_haml_template('login.html.haml')
+    template = haml.get_haml_template('login.html.haml')
     return HttpResponse(template.render_unicode(user=None, form=form, csrf_token=csrf_token(request), error=error))
 
 
@@ -60,21 +59,11 @@ def logout(request):
 
 
 def home(request):
-    template = get_haml_template('main.html.haml')
+    template = haml.get_haml_template('main.html.haml')
     use_user = None
     if request.user.is_authenticated():
         use_user = request.user
     return HttpResponse(template.render_unicode(user=use_user))
-
-# TODO: Move this to it's own helper
-
-
-def get_haml_template(template_name, locations=["templates"]):
-    lookup = mako.lookup.TemplateLookup(locations, preprocessor=haml.preprocessor)
-
-    template = lookup.get_template(template_name)
-
-    return template
 
 
 def csrf_token(context):

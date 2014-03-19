@@ -47,6 +47,7 @@ LOCAL_APPS = (
     'api_client',
     'remote_auth',
     'users',
+    'haml_mako',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
