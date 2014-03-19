@@ -6405,7 +6405,15 @@ body {
     float: right;
     color: #3384ca;
     font-size: 0.75rem;
-    text-align: right; }
+    text-align: right;
+    position: fixed;
+    top: 0;
+    right: 0; }
+    @media only screen and (min-width: 64.063em) {
+      .header .user-info {
+        position: inherit;
+        top: inherit;
+        right: inherit; } }
     .header .user-info .fa {
       position: relative; }
       .header .user-info .fa.fa-sort-asc {
@@ -6526,10 +6534,10 @@ body {
 
 .login-form, .registration-form {
   margin-top: 50px; }
-  .login-form .error, .registration-form .error {
-    color: #cd202c; }
-  .login-form .errorlist, .registration-form .errorlist {
+  .login-form .error, .login-form .errorlist, .registration-form .error, .registration-form .errorlist {
     color: #cd202c;
+    padding: 10px 0;
+    line-height: 1.3rem;
     list-style: none;
     margin-left: 0; }
   .login-form .other, .registration-form .other {

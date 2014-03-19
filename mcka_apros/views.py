@@ -15,6 +15,7 @@ import urllib2 as url_access
 
 import haml_mako.templates as haml
 
+
 def login(request):
     error = None
     if request.method == 'POST':  # If the form has been submitted...
@@ -26,7 +27,6 @@ def login(request):
                 auth.login(request, user)
                 return HttpResponseRedirect('/')  # Redirect after POST
             except url_access.HTTPError, err:
-                form = LoginForm()
                 error = _("An error occurred during login")
                 error_messages = {
                     403: _("User account not activated"),
@@ -34,8 +34,17 @@ def login(request):
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]
+    elif 'username' in request.GET:
+        # password fields get cleaned upon rendering the form, but we must
+        # provide something here, otherwise the error (password field is
+        # required) will appear
+        form = LoginForm({"username": request.GET['username'], "password": "fake_password"})
+        # set focus to password field
+        form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
     else:
         form = LoginForm()  # An unbound form
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
     template = haml.get_haml_template('login.html.haml')
     return HttpResponse(template.render_unicode(user=None, form=form, csrf_token=csrf_token(request), error=error))
@@ -64,9 +73,9 @@ def register(request):
         if form.is_valid():  # All validation rules pass
             try:
                 api_exec.register_user(request.POST)
-                return HttpResponseRedirect('/login')  # Redirect after POST
+                # Redirect after POST
+                return HttpResponseRedirect('/login?username=' + request.POST["username"])
             except url_access.HTTPError, err:
-                form = RegistrationForm()
                 error = _("An error occurred during registration")
                 error_messages = {
                     409: _("User with matching username or email already exists")
@@ -75,8 +84,10 @@ def register(request):
                     error = error_messages[err.code]
     else:
         form = RegistrationForm()  # An unbound form
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    template = get_haml_template('register.html.haml')
+    template = haml.get_haml_template('register.html.haml')
     return HttpResponse(template.render_unicode(user=None, form=form, csrf_token=csrf_token(request), error=error))
 
 
