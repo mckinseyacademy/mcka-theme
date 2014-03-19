@@ -26,60 +26,16 @@
 %body
 
   - # Header
-  .row.header
-    .large-12.columns
-      .logo
-      %span.header-menu
-        %ul
-          %li= _("About")
-          %li= _("Programs")
-          %li= _("Contact")
-      %%block(name="user_region")
-        - from django.utils.translation import ugettext as _
-        - if user != None:
-          .user-info
-            .user-name
-              = user.username
-            %i.fa.fa-sort-asc
-            .user-image
-              %img(src=user.image_url())
-            #profile-container
-        - else:
-          .login-action
-            %a.tiny.radius.button(href="/login")
-              = _("Log In")
-  - if user != None:
-    .row.program-bar
-      .large-12.columns
-        - # Hardcoded values for now, so not translated
-        .program-name
-          McKinsey Management Program
-        .course-name
-          Mastering Difficult Conversations
+  %%include(file="header.html.haml")
 
-
+  %%block(name="program_bar")
 
   - # Main content goes here
   %%block(name="content")
 
   - # Footer
-  .row
-    .large-12.columns.footer
-      %span.copyright
-        © 2014
-        = _("McKinsey Academy")
-      %ul
-        %li= _("Terms of Service")
-        %li= _("Privacy Policy")
-        %li= _("About")
-        %li= _("Programs")
-        %li= _("Contact")
-        %li= _("FAQ")
-      %span.built-on
-        = _("Build on")
-        %a(href="http://www.openedx.org", target="_blank")
-          = _("OpenEdx")
-
+  %%include(file="footer.html.haml")
+  
   - # Override if you need another version of jQuery
   %%block(name="foundation_jquery")
     %script(src="/static/js/vendor/jquery.js")
