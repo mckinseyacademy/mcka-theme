@@ -5,6 +5,7 @@
 @import "buttons";
 
 $rowWidth: 960px;
+$header-bar-height: 48px;
 
 body{
   background-color: $background-tint;
@@ -12,8 +13,7 @@ body{
 }
 
 .header{
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-  $header-bar-height: 48px;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);  
   background-color: $header-background;
   @include left-right-gradient($header-left-color, $header-right-color, 320px);
   color: $header-text;
@@ -228,3 +228,5 @@ body{
     font-size: 12px;    
   }
 }
+
+@import "course"

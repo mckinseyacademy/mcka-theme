@@ -1,0 +1,17 @@
+.lesson-menu
+  Lesson:
+  %ul
+    - lesson_index = 0
+    - for lesson in course.lessons:
+      - lesson_index += 1
+      %li.lesson
+        - if lesson == course.current_lesson:
+          %span.lesson-index.selected
+            = lesson_index
+        - elif lesson.is_released:
+          %a.lesson-index(href=lesson.url,title=lesson.name)
+            = lesson_index
+        - else:
+          %span.lesson-index
+            = lesson_index
+.progress
