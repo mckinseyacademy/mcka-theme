@@ -55,6 +55,14 @@ body{
     font-size: rem-calc(12);
     text-align: right;
     $drop_down_offset: 3px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    @media #{$large-up}{
+      position: inherit;
+      top: inherit;
+      right: inherit;
+    }
     .fa{
       position:relative;
       &.fa-sort-asc{
@@ -204,9 +212,19 @@ body{
   }
 }
 
-.login-form{
+.login-form, .registration-form{
   margin-top: 50px;
-  .error{
+  .error, .errorlist{
     color: $mckinsey-red;
+    padding: 10px 0;
+    line-height: 1.3rem;
+    list-style: none;
+    margin-left:0;
+  }
+  .other{
+    float:right;
+    position:relative;
+    top: -34px;
+    font-size: 12px;    
   }
 }

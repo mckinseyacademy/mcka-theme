@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     url(r'^$', 'mcka_apros.views.home', name='home'),
     url(r'^login/', 'mcka_apros.views.login', name='login'),
     url(r'^logout/', 'mcka_apros.views.logout', name='logout'),
+    url(r'^register/', 'mcka_apros.views.register', name='register'),
     url(r'^users/', include('users.urls'), name='users'),
 )

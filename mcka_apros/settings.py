@@ -47,6 +47,7 @@ LOCAL_APPS = (
     'api_client',
     'remote_auth',
     'users',
+    'haml_mako',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -103,3 +104,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+# Api address
+API_SERVER_ADDRESS = 'http://localhost:8000'
+# API_SERVER_ADDRESS = 'http://localhost:56480'
+# API_SERVER_ADDRESS = 'http://docs.openedxapi.apiary.io'
+# API_SERVER_ADDRESS = 'http://localhost:52167'

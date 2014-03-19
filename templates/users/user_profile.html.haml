@@ -1,4 +1,4 @@
-- from django.utils.translation import ugettext as _
+﻿- from django.utils.translation import ugettext as _
 .user-profile
   .user-image
     %img(src = user.image_url(160))
@@ -12,7 +12,7 @@
           = _("Full Name")
           %a.editfield
             = _("edit")
-        .fieldcontent = user.name
+        .fieldcontent = user.formatted_name()
     .title
       %i.fa.fa-info
       .field-group

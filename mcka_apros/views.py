@@ -1,10 +1,8 @@
 from django.utils.translation import ugettext as _
 
-import haml
-import mako.template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware import csrf
-from forms import LoginForm
+from forms import LoginForm, RegistrationForm
 from api_client import api_exec
 from remote_auth.models import RemoteUser
 
@@ -14,6 +12,8 @@ SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from django.contrib import auth
 import urllib2 as url_access
+
+import haml_mako.templates as haml
 
 
 def login(request):
@@ -27,19 +27,26 @@ def login(request):
                 auth.login(request, user)
                 return HttpResponseRedirect('/')  # Redirect after POST
             except url_access.HTTPError, err:
-                form = LoginForm()
                 error = _("An error occurred during login")
                 error_messages = {
-                    404: _("Username or password invalid"),
                     403: _("User account not activated"),
                     401: _("Username or password invalid"),
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]
+    elif 'username' in request.GET:
+        # password fields get cleaned upon rendering the form, but we must
+        # provide something here, otherwise the error (password field is
+        # required) will appear
+        form = LoginForm({"username": request.GET['username'], "password": "fake_password"})
+        # set focus to password field
+        form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
     else:
         form = LoginForm()  # An unbound form
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    template = get_haml_template('login.html.haml')
+    template = haml.get_haml_template('login.html.haml')
     return HttpResponse(template.render_unicode(user=None, form=form, csrf_token=csrf_token(request), error=error))
 
 
@@ -59,22 +66,37 @@ def logout(request):
     return HttpResponseRedirect('/')  # Redirect after POST
 
 
+def register(request):
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        form = RegistrationForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            try:
+                api_exec.register_user(request.POST)
+                # Redirect after POST
+                return HttpResponseRedirect('/login?username=' + request.POST["username"])
+            except url_access.HTTPError, err:
+                error = _("An error occurred during registration")
+                error_messages = {
+                    409: _("User with matching username or email already exists")
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+    else:
+        form = RegistrationForm()  # An unbound form
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+
+    template = haml.get_haml_template('register.html.haml')
+    return HttpResponse(template.render_unicode(user=None, form=form, csrf_token=csrf_token(request), error=error))
+
+
 def home(request):
-    template = get_haml_template('main.html.haml')
+    template = haml.get_haml_template('main.html.haml')
     use_user = None
     if request.user.is_authenticated():
         use_user = request.user
     return HttpResponse(template.render_unicode(user=use_user))
-
-# TODO: Move this to it's own helper
-
-
-def get_haml_template(template_name, locations=["templates"]):
-    lookup = mako.lookup.TemplateLookup(locations, preprocessor=haml.preprocessor)
-
-    template = lookup.get_template(template_name)
-
-    return template
 
 
 def csrf_token(context):
