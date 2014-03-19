@@ -2,7 +2,7 @@ from django.utils.translation import ugettext as _
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware import csrf
-from forms import LoginForm
+from forms import LoginForm, RegistrationForm
 from api_client import api_exec
 from remote_auth.models import RemoteUser
 
@@ -29,7 +29,6 @@ def login(request):
                 form = LoginForm()
                 error = _("An error occurred during login")
                 error_messages = {
-                    404: _("Username or password invalid"),
                     403: _("User account not activated"),
                     401: _("Username or password invalid"),
                 }
@@ -56,6 +55,29 @@ def logout(request):
     auth.logout(request)
 
     return HttpResponseRedirect('/')  # Redirect after POST
+
+
+def register(request):
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        form = RegistrationForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            try:
+                api_exec.register_user(request.POST)
+                return HttpResponseRedirect('/login')  # Redirect after POST
+            except url_access.HTTPError, err:
+                form = RegistrationForm()
+                error = _("An error occurred during registration")
+                error_messages = {
+                    409: _("User with matching username or email already exists")
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+    else:
+        form = RegistrationForm()  # An unbound form
+
+    template = get_haml_template('register.html.haml')
+    return HttpResponse(template.render_unicode(user=None, form=form, csrf_token=csrf_token(request), error=error))
 
 
 def home(request):

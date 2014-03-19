@@ -1,11 +1,11 @@
 from json_object import JsonParser as JP, JsonObject
-import urllib2 as url_access
 import models
-import json
+from json_requests import GET, POST, DELETE, PUT
 
-API_SERVER_ADDRESS = 'http://localhost:8000'
+API_SERVER_ADDRESS = 'http://localhost:56480'
+MOCK_API_SERVER_ADDRESS = 'http://docs.openedxapi.apiary.io'
 AUTH_API = 'api/system/v1/sessions'
-USER_API = 'user_api/v1/users'
+USER_API = 'api/system/v1/users'
 
 
 def authenticate(username, password):
@@ -13,25 +13,22 @@ def authenticate(username, password):
         "username": username,
         "password": password
     }
-    url_request = url_access.Request(url='{}/{}'.format(API_SERVER_ADDRESS, AUTH_API), headers={"Content-Type": "application/json"})
-    response = url_access.urlopen(url_request, json.dumps(data))
+    response = POST('{}/{}'.format(API_SERVER_ADDRESS, AUTH_API), data)
     return JP.from_json(response.read(), models.AuthenticationResponse)
 
 
 def get_user(user_id):
-    response = url_access.urlopen('{}/{}/{}'.format(API_SERVER_ADDRESS, USER_API, user_id))
+    response = GET('{}/{}/{}'.format(API_SERVER_ADDRESS, USER_API, user_id))
     return JP.from_json(response.read(), models.UserResponse)
 
 
-def _open_url_with_session(url):
-    headers = {}
-    if request["session_key"]:
-        headers["session_key"] = request["session_key"]
-    return url_access.urlopen(url, headers)
-
-
 def delete_session(session_key):
-    opener = url_access.build_opener(url_access.HTTPHandler)
-    request = url_access.Request(url='{}/{}/{}'.format(API_SERVER_ADDRESS, AUTH_API, session_key), headers={"Content-Type": "application/json"})
-    request.get_method = lambda: 'DELETE'
-    url = opener.open(request)
+    DELETE('{}/{}/{}'.format(API_SERVER_ADDRESS, AUTH_API, session_key))
+
+
+def register_user(user_hash):
+    user_keys = ["username", "first_name", "last_name", "email", "password"]
+    data = {user_key: user_hash[user_key] for user_key in user_keys}
+
+    response = POST('{}/{}'.format(API_SERVER_ADDRESS, USER_API), data)
+    return JP.from_json(response.read())

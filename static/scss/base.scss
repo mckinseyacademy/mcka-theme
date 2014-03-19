@@ -204,9 +204,20 @@ body{
   }
 }
 
-.login-form{
+.login-form, .registration-form{
   margin-top: 50px;
   .error{
     color: $mckinsey-red;
+  }
+  .errorlist{
+    color: $mckinsey-red;
+    list-style: none;
+    margin-left:0;
+  }
+  .other{
+    float:right;
+    position:relative;
+    top: -34px;
+    font-size: 12px;    
   }
 }

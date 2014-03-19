@@ -7,16 +7,16 @@
   .row
     .large-4.medium-4.columns
       &nbsp;
-    .login-form.large-4.medium-4.columns
-      %form(action="/login/", method="POST")
+    .registration-form.large-4.medium-4.columns
+      %form(action="/register/", method="POST")
         .error
           - if None != error:
             = error
         = csrf_token
         = form
-        %input.button.radius.small(type="submit", value=_("Log In"))
-      %a.other(href="/register")
-        = _("Register")
+        %input.button.radius.small(type="submit", value=_("Register"))
+      %a.other(href="/login")
+        = _("Log In")
     .large-4.medium-4.columns
       &nbsp;
 
