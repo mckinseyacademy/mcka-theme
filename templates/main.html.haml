@@ -7,14 +7,11 @@
   %%block(name="meta")
   %title= _("McKinsey Academy")
 
-  - # Base Foundation CSS
-  %%block(name="foundation_css")
-    %link(rel="stylesheet", href="/static/css/normalize.css")
-    %link(rel="stylesheet", href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css")
-
-  - # Custom CSS
+  - # CSS
   %%block(name="css")
-    %link(rel="stylesheet", href="/static/css/base.css")
+    %link(rel="stylesheet", href="/static/css/normalize.css")
+    %link(rel="stylesheet", href="/static/css/font-awesome.css")
+    %link(rel="stylesheet", href="/static/css/app.css")
 
   - # Override if you need another version of modernizr
   %%block(name="foundation_modernizer")

@@ -1,9 +1,27 @@
 //$content_page_top: 2*$header-bar-height + 40;
 //$content_page_bottom: $header-bar-height + 10;
 
+.program-bar{
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+  height: 48px;
+  background-color: $program-bar-background;
+  padding-top: 12px;
+  .program-name{
+    font-size: rem-calc(10);
+    color: $program-bar-program-title;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .course-name{
+    font-size: rem-calc(14);
+    color: $program-bar-course-title;
+  }
+}
+
+
 .program-menu{
   color: $mckinsey-academy-alt-blue;
-  margin-top: 10px;;
+  padding-top: 12px;
 }
 
 .content-page{
