@@ -48,6 +48,7 @@ LOCAL_APPS = (
     'users',
     'assets',
     'haml_mako',
+    'courses',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS

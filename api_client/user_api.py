@@ -1,5 +1,5 @@
 from json_object import JsonParser as JP, JsonObject
-import models
+import user_models
 from json_requests import GET, POST, DELETE, PUT
 
 from django.conf import settings
@@ -13,11 +13,11 @@ def authenticate(username, password):
         "password": password
     }
     response = POST('{}/{}/'.format(settings.API_SERVER_ADDRESS, AUTH_API), data)
-    return JP.from_json(response.read(), models.AuthenticationResponse)
+    return JP.from_json(response.read(), user_models.AuthenticationResponse)
 
 def get_user(user_id):
     response = GET('{}/{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API, user_id))
-    return JP.from_json(response.read(), models.UserResponse)
+    return JP.from_json(response.read(), user_models.UserResponse)
 
 def delete_session(session_key):
     DELETE('{}/{}/{}'.format(settings.API_SERVER_ADDRESS, AUTH_API, session_key))

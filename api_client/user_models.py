@@ -1,4 +1,3 @@
-from django.db import models
 from json_object import JsonObject
 
 import hashlib

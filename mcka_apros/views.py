@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware import csrf
 from forms import LoginForm, RegistrationForm
-from api_client import api_exec
+from api_client import user_api
 from remote_auth.models import RemoteUser
 
 from importlib import import_module
@@ -53,7 +53,7 @@ def login(request):
 def logout(request):
     # destory the remote session
     try:
-        api_exec.delete_session(request.session["remote_session_key"])
+        user_api.delete_session(request.session["remote_session_key"])
     except:
         pass
 
@@ -72,7 +72,7 @@ def register(request):
         form = RegistrationForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                api_exec.register_user(request.POST)
+                user_api.register_user(request.POST)
                 # Redirect after POST
                 return HttpResponseRedirect('/login?username=' + request.POST["username"])
             except url_access.HTTPError, err:
@@ -97,7 +97,7 @@ def home(request):
     current_course = None
     if request.user.is_authenticated():
         use_user = request.user
-        current_course = api_exec.fetch_current_course_for_user(request.user.id)
+        current_course = user_api.fetch_current_course_for_user(request.user.id)
         if None != current_course:
             template_name = 'course/course_main.html.haml'
 

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
-from api_client import api_exec
+from api_client import user_api
 
 
 class JsonBackend(object):
@@ -12,7 +12,7 @@ class JsonBackend(object):
     """
 
     def authenticate(self, username=None, password=None):
-        auth_info = api_exec.authenticate(username, password)
+        auth_info = user_api.authenticate(username, password)
         user = get_user_model()()
         user.update_response_fields(auth_info.user, auth_info.token)
         user.save()
@@ -21,7 +21,7 @@ class JsonBackend(object):
     def get_user(self, user_id):
         user = get_user_model().cached_fetch(user_id)
         if None == user:
-            user_response = api_exec.get_user(user_id)
+            user_response = user_api.get_user(user_id)
             user = get_user_model()()
             user.update_response_fields(user_response)
             user.save()
