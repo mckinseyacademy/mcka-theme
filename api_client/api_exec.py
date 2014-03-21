@@ -13,24 +13,24 @@ def authenticate(username, password):
         "username": username,
         "password": password
     }
-    response = POST('{}/{}'.format(settings.API_SERVER_ADDRESS, AUTH_API), data)
+    response = POST('{}/{}/'.format(settings.API_SERVER_ADDRESS, AUTH_API), data)
     return JP.from_json(response.read(), models.AuthenticationResponse)
 
 
 def get_user(user_id):
-    response = GET('{}/{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API, user_id))
+    response = GET('{}/{}/{}/'.format(settings.API_SERVER_ADDRESS, USER_API, user_id))
     return JP.from_json(response.read(), models.UserResponse)
 
 
 def delete_session(session_key):
-    DELETE('{}/{}/{}'.format(settings.API_SERVER_ADDRESS, AUTH_API, session_key))
+    DELETE('{}/{}/{}/'.format(settings.API_SERVER_ADDRESS, AUTH_API, session_key))
 
 
 def register_user(user_hash):
     user_keys = ["username", "first_name", "last_name", "email", "password"]
     data = {user_key: user_hash[user_key] for user_key in user_keys}
 
-    response = POST('{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API), data)
+    response = POST('{}/{}/'.format(settings.API_SERVER_ADDRESS, USER_API), data)
     return JP.from_json(response.read())
 
 
