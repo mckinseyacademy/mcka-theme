@@ -25,7 +25,7 @@ def login(request):
                 user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
-                return HttpResponseRedirect('/course')  # Redirect after POST
+                return HttpResponseRedirect('/')  # Redirect after POST
             except url_access.HTTPError, err:
                 error = _("An error occurred during login")
                 error_messages = {
