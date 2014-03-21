@@ -2,7 +2,7 @@
   font-weight: bold;
   font-family: "Open Sans", sans-serif;
   &.small{
-    $top-bottom-padding: 10px;
+    $top-bottom-padding: rem-calc(10);
     padding-top: $top-bottom-padding;
     padding-bottom: $top-bottom-padding;
   }

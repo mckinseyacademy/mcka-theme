@@ -12,7 +12,6 @@ body{
   color: $header-text;
   height: $header-bar-height;
   max-height: $header-bar-height;
-  font-size: rem-calc(20);
   .columns{
     padding: 0;
   }
@@ -21,9 +20,9 @@ body{
     position: relative;
     ul{
       li{
+        @include font-spec(12, semibold, 14);
         list-style: none;
         text-transform: uppercase;
-        font-size: rem-calc(12);
         margin: 0 0.5rem;
       }
     }
@@ -45,7 +44,7 @@ body{
     cursor: pointer;
     float: right;
     color: $user-text;
-    font-size: rem-calc(12);
+    @include font-spec(10, semibold, 12);
     text-align: right;
     $drop_down_offset: 3px;
     position: fixed;
@@ -97,7 +96,7 @@ body{
           vertical-align: middle;
           &.username{
             text-align: center;
-            font-size: rem-calc(20);
+            @include font-spec(14, semibold);
             height: 30px;
             padding-top: 3px;
           }
@@ -118,12 +117,13 @@ body{
           text-align: center;
         }
         .field-group{
-          font-size: rem-calc(10);
+          @include font-spec(10, semibold);
           margin-left: $detail_icon_size + 5;
           margin-top: -1*$detail_icon_size;          
           .fieldtitle{
             font-weight: bold;
             .editfield{
+              font-weight: boldness(semibold);
               padding-left: 4px;
               border-left: 1px solid $border-line;
             }
@@ -165,14 +165,14 @@ body{
   color: $footer-text;
   padding: 0;
   .copyright{
-    font-size: rem-calc(10);
+    @include font-spec(10, semibold);
     color: $mckinsey-grey;
     padding-right: 10px;
   }
   ul{
     margin: 0;
     li{
-      font-size: rem-calc(10);
+      @include font-spec(10, semibold);
       list-style: none;
       padding: 0 9px 0 10px;
       border-left: 1px solid $footer-separator;
@@ -182,7 +182,7 @@ body{
     display: inline;
   }
   .built-on{
-    font-size: rem-calc(10);
+    @include font-spec(10, semibold);
     float:right;
     margin: 6px 50px;
   }
@@ -198,10 +198,10 @@ body{
     margin-left:0;
   }
   .other{
+    @include font-spec(12);
     float:right;
     position:relative;
     top: -34px;
-    font-size: 12px;    
   }
 }
 

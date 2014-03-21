@@ -6358,12 +6358,15 @@ $mckinsey-yellow: #D4BA00;
 $mckinsey-pink: #AD005B;
 $mckinsey-purple: #66307C;
 */
+/* McKinsey font defintions all specify size, normal|semibold|bold, line-spacing
+ - with this we ensure that the font implementations match their definition
+ */
 .button {
   font-weight: bold;
   font-family: "Open Sans", sans-serif; }
   .button.small {
-    padding-top: 10px;
-    padding-bottom: 10px; }
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem; }
 
 body {
   background-color: #e5ebee;
@@ -6379,17 +6382,20 @@ body {
   background: linear-gradient(left, #284670 0%, #002960 320px);
   color: white;
   height: 48px;
-  max-height: 48px;
-  font-size: 1.25rem; }
+  max-height: 48px; }
   .header .columns {
     padding: 0; }
   .header .header-menu {
     top: -18px;
     position: relative; }
     .header .header-menu ul li {
+      font-size: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 14px;
+      line-height: 0.875rem;
       list-style: none;
       text-transform: uppercase;
-      font-size: 0.75rem;
       margin: 0 0.5rem; }
   .header ul, .header li {
     display: inline-block; }
@@ -6404,7 +6410,11 @@ body {
     cursor: pointer;
     float: right;
     color: #3384ca;
-    font-size: 0.75rem;
+    font-size: 10px;
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 12px;
+    line-height: 0.75rem;
     text-align: right;
     position: fixed;
     top: 0;
@@ -6450,7 +6460,11 @@ body {
           vertical-align: middle; }
           .header .user-info .user-profile .user-detail > div.username {
             text-align: center;
-            font-size: 1.25rem;
+            font-size: 14px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 14px;
+            line-height: 0.875rem;
             height: 30px;
             padding-top: 3px; }
           .header .user-info .user-profile .user-detail > div.logout {
@@ -6465,12 +6479,17 @@ body {
           color: #b1c2cc;
           text-align: center; }
         .header .user-info .user-profile .user-detail .field-group {
+          font-size: 10px;
           font-size: 0.625rem;
+          font-weight: 500;
+          line-height: 10px;
+          line-height: 0.625rem;
           margin-left: 23px;
           margin-top: -18px; }
           .header .user-info .user-profile .user-detail .field-group .fieldtitle {
             font-weight: bold; }
             .header .user-info .user-profile .user-detail .field-group .fieldtitle .editfield {
+              font-weight: 500;
               padding-left: 4px;
               border-left: 1px solid #e0e0e0; }
       .header .user-info .user-profile .user-image {
@@ -6499,20 +6518,32 @@ body {
   color: #3384ca;
   padding: 0; }
   .footer .copyright {
+    font-size: 10px;
     font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 10px;
+    line-height: 0.625rem;
     color: #868685;
     padding-right: 10px; }
   .footer ul {
     margin: 0; }
     .footer ul li {
+      font-size: 10px;
       font-size: 0.625rem;
+      font-weight: 500;
+      line-height: 10px;
+      line-height: 0.625rem;
       list-style: none;
       padding: 0 9px 0 10px;
       border-left: 1px solid #868685; }
   .footer ul, .footer li {
     display: inline; }
   .footer .built-on {
+    font-size: 10px;
     font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 10px;
+    line-height: 0.625rem;
     float: right;
     margin: 6px 50px; }
 
@@ -6525,10 +6556,14 @@ body {
     list-style: none;
     margin-left: 0; }
   .login-form .other, .registration-form .other {
+    font-size: 12px;
+    font-size: 0.75rem;
+    font-weight: normal;
+    line-height: 12px;
+    line-height: 0.75rem;
     float: right;
     position: relative;
-    top: -34px;
-    font-size: 12px; }
+    top: -34px; }
 
 .program-bar {
   -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
@@ -6538,12 +6573,19 @@ body {
   background-color: #3384ca;
   padding-top: 12px; }
   .program-bar .program-name {
+    font-size: 10px;
     font-size: 0.625rem;
+    font-weight: bold;
+    line-height: 12px;
+    line-height: 0.75rem;
     color: #002960;
-    text-transform: uppercase;
-    font-weight: bold; }
+    text-transform: uppercase; }
   .program-bar .course-name {
+    font-size: 14px;
     font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 14px;
+    line-height: 0.875rem;
     color: white; }
 
 .program-menu {
@@ -6559,14 +6601,15 @@ body {
   overflow-x: hidden;
   overflow-y: auto; }
   .content-page ul {
-    font-size: 0.75rem;
-    line-height: 0.875rem;
     list-style: none;
-    font-weight: normal;
     display: inline;
     margin: 15px 0; }
     .content-page ul li {
+      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: bold;
+      line-height: 14px;
+      line-height: 0.875rem;
       display: inline-block; }
   .content-page .course-menu {
     margin: 10px 0; }
@@ -6577,13 +6620,15 @@ body {
       .content-page .course-menu ul li.selected {
         color: #868685; }
   .content-page .lesson-menu {
+    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: bold;
+    line-height: 14px;
+    line-height: 0.875rem;
     border-top: 1px solid #d3d1ba;
     border-bottom: 1px solid #d3d1ba;
     margin: 10px 0;
     padding: 5px 0;
-    font-size: 0.75rem;
-    line-height: 0.875rem;
     color: #333333; }
     .content-page .lesson-menu .lesson {
       color: #d3d1ba;
@@ -6607,12 +6652,19 @@ body {
   background-color: #3384ca;
   padding-top: 12px; }
   .program-bar .program-name {
+    font-size: 10px;
     font-size: 0.625rem;
+    font-weight: bold;
+    line-height: 12px;
+    line-height: 0.75rem;
     color: #002960;
-    text-transform: uppercase;
-    font-weight: bold; }
+    text-transform: uppercase; }
   .program-bar .course-name {
+    font-size: 14px;
     font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 14px;
+    line-height: 0.875rem;
     color: white; }
 
 .program-menu {
@@ -6628,14 +6680,15 @@ body {
   overflow-x: hidden;
   overflow-y: auto; }
   .content-page ul {
-    font-size: 0.75rem;
-    line-height: 0.875rem;
     list-style: none;
-    font-weight: normal;
     display: inline;
     margin: 15px 0; }
     .content-page ul li {
+      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: bold;
+      line-height: 14px;
+      line-height: 0.875rem;
       display: inline-block; }
   .content-page .course-menu {
     margin: 10px 0; }
@@ -6646,13 +6699,15 @@ body {
       .content-page .course-menu ul li.selected {
         color: #868685; }
   .content-page .lesson-menu {
+    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: bold;
+    line-height: 14px;
+    line-height: 0.875rem;
     border-top: 1px solid #d3d1ba;
     border-bottom: 1px solid #d3d1ba;
     margin: 10px 0;
     padding: 5px 0;
-    font-size: 0.75rem;
-    line-height: 0.875rem;
     color: #333333; }
     .content-page .lesson-menu .lesson {
       color: #d3d1ba;

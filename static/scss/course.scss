@@ -7,13 +7,12 @@
   background-color: $program-bar-background;
   padding-top: 12px;
   .program-name{
-    font-size: rem-calc(10);
+    @include font-spec(10, bold, 12);
     color: $program-bar-program-title;
     text-transform: uppercase;
-    font-weight: bold;
   }
   .course-name{
-    font-size: rem-calc(14);
+    @include font-spec(14, semibold, 14);
     color: $program-bar-course-title;
   }
 }
@@ -32,14 +31,11 @@
   overflow-y: auto;
   
   ul{
-    font-size:  rem-calc(12);
-    line-height: rem-calc(14);
     list-style: none;
-    font-weight: normal;
     display: inline;
     margin: 15px 0;
     li{
-      font-weight: bold;
+      @include font-spec(12, bold, 14);
       display: inline-block;
     }
   }
@@ -59,13 +55,11 @@
   }
   
   .lesson-menu{
-    font-weight: bold;
+    @include font-spec(12, bold, 14);
     border-top: 1px solid $mckinsey-academy-warm-gray;
     border-bottom: 1px solid $mckinsey-academy-warm-gray;
     margin: 10px 0;
     padding: 5px 0;
-    font-size:  rem-calc(12);
-    line-height: rem-calc(14);
     color: $mckinsey-academy-black;
     .lesson{
       color: $mckinsey-academy-warm-gray;
