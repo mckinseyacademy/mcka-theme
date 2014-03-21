@@ -32,3 +32,24 @@
     -webkit-box-shadow: $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);
     box-shadow:         $horiz-offset $vert-offset $blur-radius $spread-radius rgba($color, $opacity);  
   }
+
+@function boldness($value) {
+  @if $value == semibold { @return 500; }
+  @return $value;
+}
+
+/* McKinsey font defintions all specify size, normal|semibold|bold, line-spacing
+ - with this we ensure that the font implementations match their definition
+ */
+@mixin font-spec(
+  $size: 10,
+  $weight: normal,
+  $line-spacing: $size){
+    // first value to fall-back for browsers that don't support rems
+    // second value for browsers that do support rems
+    font-size: $size + px;
+    font-size: rem-calc($size);
+    font-weight: boldness($weight);
+    line-height: $line-spacing + px;
+    line-height: rem-calc($line-spacing);
+  }

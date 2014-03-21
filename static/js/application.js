@@ -11,7 +11,8 @@ $(function(){
     else{
       $user_profile.toggle();
     }
-    $('.user-info >.fa').toggleClass('fa-sort-asc, fa-sort-desc');
+    $('.user-info >.fa').toggleClass('fa-sort-asc fa-sort-desc');
   });
+
 }
 );

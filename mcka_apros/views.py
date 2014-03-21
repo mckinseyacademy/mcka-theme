@@ -25,7 +25,7 @@ def login(request):
                 user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
-                return HttpResponseRedirect('/')  # Redirect after POST
+                return HttpResponseRedirect('/course')  # Redirect after POST
             except url_access.HTTPError, err:
                 error = _("An error occurred during login")
                 error_messages = {
@@ -92,11 +92,17 @@ def register(request):
 
 
 def home(request):
-    template = haml.get_haml_template('main.html.haml')
+    template_name = 'main.html.haml'
     use_user = None
+    current_course = None
     if request.user.is_authenticated():
         use_user = request.user
-    return HttpResponse(template.render_unicode(user=use_user))
+        current_course = api_exec.fetch_current_course_for_user(request.user.id)
+        if None != current_course:
+            template_name = 'course/course_main.html.haml'
+
+    template = haml.get_haml_template(template_name)
+    return HttpResponse(template.render_unicode(user=use_user,course=current_course))
 
 
 def csrf_token(context):

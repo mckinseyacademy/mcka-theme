@@ -1,10 +1,4 @@
-@import "settings";
-@import "foundation";
-@import "colors";
-@import "mixins";
-@import "buttons";
-
-$rowWidth: 960px;
+$header-bar-height: 48px;
 
 body{
   background-color: $background-tint;
@@ -12,14 +6,15 @@ body{
 }
 
 .header{
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-  $header-bar-height: 48px;
+  // TODO: replace with extend depth5
+  position: relative;
+  z-index: 100000;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);  
   background-color: $header-background;
   @include left-right-gradient($header-left-color, $header-right-color, 320px);
   color: $header-text;
   height: $header-bar-height;
   max-height: $header-bar-height;
-  font-size: rem-calc(20);
   .columns{
     padding: 0;
   }
@@ -28,9 +23,9 @@ body{
     position: relative;
     ul{
       li{
+        @include font-spec(12, semibold, 14);
         list-style: none;
         text-transform: uppercase;
-        font-size: rem-calc(12);
         margin: 0 0.5rem;
       }
     }
@@ -52,7 +47,7 @@ body{
     cursor: pointer;
     float: right;
     color: $user-text;
-    font-size: rem-calc(12);
+    @include font-spec(10, semibold, 12);
     text-align: right;
     $drop_down_offset: 3px;
     position: fixed;
@@ -104,7 +99,7 @@ body{
           vertical-align: middle;
           &.username{
             text-align: center;
-            font-size: rem-calc(20);
+            @include font-spec(14, semibold);
             height: 30px;
             padding-top: 3px;
           }
@@ -125,12 +120,13 @@ body{
           text-align: center;
         }
         .field-group{
-          font-size: rem-calc(10);
+          @include font-spec(10, semibold);
           margin-left: $detail_icon_size + 5;
           margin-top: -1*$detail_icon_size;          
           .fieldtitle{
             font-weight: bold;
             .editfield{
+              font-weight: boldness(semibold);
               padding-left: 4px;
               border-left: 1px solid $border-line;
             }
@@ -164,23 +160,6 @@ body{
   }
 }
 
-.program-bar{
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-  height: 48px;
-  background-color: $program-bar-background;
-  padding: 12px 0;
-  .program-name{
-    font-size: rem-calc(10);
-    color: $program-bar-program-title;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-  .course-name{
-    font-size: rem-calc(14);
-    color: $program-bar-course-title;
-  }
-}
-
 .footer{
   position: fixed;
   bottom: 0;
@@ -189,14 +168,14 @@ body{
   color: $footer-text;
   padding: 0;
   .copyright{
-    font-size: rem-calc(10);
+    @include font-spec(10, semibold);
     color: $mckinsey-grey;
     padding-right: 10px;
   }
   ul{
     margin: 0;
     li{
-      font-size: rem-calc(10);
+      @include font-spec(10, semibold);
       list-style: none;
       padding: 0 9px 0 10px;
       border-left: 1px solid $footer-separator;
@@ -206,7 +185,7 @@ body{
     display: inline;
   }
   .built-on{
-    font-size: rem-calc(10);
+    @include font-spec(10, semibold);
     float:right;
     margin: 6px 50px;
   }
@@ -222,9 +201,11 @@ body{
     margin-left:0;
   }
   .other{
+    @include font-spec(12);
     float:right;
     position:relative;
     top: -34px;
-    font-size: 12px;    
   }
 }
+
+@import "course"

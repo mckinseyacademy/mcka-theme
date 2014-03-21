@@ -1,0 +1,17 @@
+﻿- from django.utils.translation import ugettext as _
+.row
+  .large-12.columns.footer
+    %span.copyright
+      © 2014
+      = _("McKinsey Academy")
+    %ul
+      %li= _("Terms of Service")
+      %li= _("Privacy Policy")
+      %li= _("About")
+      %li= _("Programs")
+      %li= _("Contact")
+      %li= _("FAQ")
+    %span.built-on
+      = _("Build on")
+      %a(href="http://www.openedx.org", target="_blank")
+        = _("OpenEdx")
