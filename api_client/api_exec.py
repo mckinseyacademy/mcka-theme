@@ -48,12 +48,128 @@ def fetch_current_course_for_user(user_id):
                 "url": "course/DEF/lesson/YXW",
                 "is_released": True,
                 "percent_complete": 100,
+                "modules": [
+                    {
+                        "name": "Lesson 2, Module 1",
+                        "percent_complete": 100,
+                    },
+                    {
+                        "name": "Lesson 2, Module 2",
+                        "percent_complete": 100,
+                    },
+                    {
+                        "name": "Lesson 2, Module 3",
+                        "percent_complete": 100,
+                    },
+                    {
+                        "name": "Lesson 2, Module 4",
+                        "percent_complete": 80,
+                    },
+                    {
+                        "name": "Lesson 2, Module 5",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 6",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 7",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 8",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 9",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 10",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 11",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 12",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 13",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 14",
+                        "percent_complete": 0,
+                    },
+                ]
             },
             {
                 "name": "Name of Lesson 3",
                 "url": "course/DEF/lesson/XWV",
                 "is_released": True,
                 "percent_complete": 80,
+                "modules": [
+                    {
+                        "name": "Lesson 2, Module 1",
+                        "percent_complete": 100,
+                    },
+                    {
+                        "name": "Lesson 2, Module 2",
+                        "percent_complete": 100,
+                    },
+                    {
+                        "name": "Lesson 2, Module 3",
+                        "percent_complete": 100,
+                    },
+                    {
+                        "name": "Lesson 2, Module 4",
+                        "percent_complete": 80,
+                    },
+                    {
+                        "name": "Lesson 2, Module 5",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 6",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 7",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 8",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 9",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 10",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 11",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 12",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 13",
+                        "percent_complete": 0,
+                    },
+                    {
+                        "name": "Lesson 2, Module 14",
+                        "percent_complete": 0,
+                    },
+                ]
             },
             {
                 "name": "Name of Lesson 4",
@@ -111,5 +227,6 @@ def fetch_current_course_for_user(user_id):
     course = JsonObject(json.dumps(fake_course))
 
     course.current_lesson = course.lessons[2]
+    course.current_lesson.current_module = course.lessons[2].modules[3]
 
     return course

@@ -14,4 +14,15 @@
         - else:
           %span.lesson-index
             = lesson_index
-.progress
+.lesson-progress
+  - found_current = False
+  - add_class = "complete"
+  - for lesson_module in course.current_lesson.modules:
+    - is_current = course.current_lesson.current_module == lesson_module
+    - if is_current:
+      - add_class = "current"
+      - found_current = True
+    - elif found_current:
+      - add_class = "incomplete"
+    .lesson-module-status(class_=add_class)
+

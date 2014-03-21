@@ -22,3 +22,22 @@
           %img(src='http://dummyimage.com/50x50/aaa/000')
           .author Albert Einstein
           .occupation Theoretical Physicist
+      %%include(file="content_page/lesson_menu.html.haml")
+      .course-title
+      .lesson-content
+      .lesson-discussion
+      %%include(file="content_page/lesson_pager.html.haml")
+    .large-1.medium-1.small-0.columns
+      &nbsp;
+
+%%block(name="js_snippets")
+  :javascript
+    var set_page_height = function(){
+      var $page = $('.content-page');
+      var $footer = $('.footer');
+
+      var new_height = $footer.position().top - $page.position().top - (2 * parseInt($page.css('margin-top')));
+      $page.css({height: new_height + "px"});
+    }
+    $(window).on('resize', set_page_height);
+    $(window).trigger('resize');

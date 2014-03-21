@@ -1,17 +1,29 @@
 $(function(){
   /* Javascript to initialise on ready as defined by jquery */
 
-  // Toggle user profile information
-  $('.user-info >.user-name, .user-info >.user-image').on('click', function(){
-    var $profile = $('#profile-container');
-    var $user_profile = $profile.find('.user-profile');
-    if($user_profile.length < 1){
-      $profile.load('/users/user_profile.html')
+  var toggle_menu = function(container_selector, menu_selector, menu_content_url, fn_callback){
+    var $container = $(container_selector);
+    var $pop_up = $container.find(menu_selector);
+    if($pop_up.length < 1){
+      $container.load(menu_content_url);
     }
     else{
-      $user_profile.toggle();
+      $pop_up.toggle();
     }
-    $('.user-info >.fa').toggleClass('fa-sort-asc fa-sort-desc');
+
+    if(fn_callback)
+      fn_callback();
+  }
+  // Toggle user profile information
+  $('.user-info >.user-name, .user-info >.user-image').on('click', function(){
+    toggle_menu('#profile-container', '.user-profile', '/users/user_profile.html', function(){
+      $('.user-info >.fa').toggleClass('fa-sort-asc fa-sort-desc');
+    });
+  });
+
+  // Toggle course navigation menu
+  $('.program-menu >.fa').on('click', function(){
+    toggle_menu('.program-menu', '.program-menu-content', '/course/program_menu.html');
   });
 
 }
