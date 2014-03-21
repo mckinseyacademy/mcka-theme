@@ -18,12 +18,12 @@ def authenticate(username, password):
 
 
 def get_user(user_id):
-    response = GET('{}/{}/{}/'.format(settings.API_SERVER_ADDRESS, USER_API, user_id))
+    response = GET('{}/{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API, user_id))
     return JP.from_json(response.read(), models.UserResponse)
 
 
 def delete_session(session_key):
-    DELETE('{}/{}/{}/'.format(settings.API_SERVER_ADDRESS, AUTH_API, session_key))
+    DELETE('{}/{}/{}'.format(settings.API_SERVER_ADDRESS, AUTH_API, session_key))
 
 
 def register_user(user_hash):
