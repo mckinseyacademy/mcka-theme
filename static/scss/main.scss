@@ -6,6 +6,9 @@ body{
 }
 
 .header{
+  // TODO: replace with extend depth5
+  position: relative;
+  z-index: 100000;
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);  
   background-color: $header-background;
   @include left-right-gradient($header-left-color, $header-right-color, 320px);
