@@ -14,24 +14,5 @@
 
 %%block(name="content")
   .row
-    .large-12.columns.content-page
+    .large-11.large-centered.columns.content-page
       %%include(file="content_page/course_menu.html.haml")
-      %%include(file="content_page/lesson_menu.html.haml")
-      .course-title
-      .lesson-content
-      .lesson-pager
-      .lesson-discussion
-    .large-1.medium-1.small-0.columns
-      &nbsp;
-
-%%block(name="js_snippets")
-  :javascript
-    var set_page_height = function(){
-      var $page = $('.content-page');
-      var $footer = $('footer[role=contentinfo]');
-
-      var new_height = $footer.position().top - $page.position().top - (2 * parseInt($page.css('margin-top')));
-      $page.height(new_height);
-    }
-    $(window).on('resize', set_page_height);
-    $(window).trigger('resize');

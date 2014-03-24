@@ -23,11 +23,6 @@
 }
 
 .content-page{
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-  background-color: $pure-white;
-  margin-top: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
 
   ul{
     list-style: none;
@@ -41,23 +36,59 @@
 
   .course-menu{
     margin: 10px 0;
+    padding: 20px 27px;
+    border-bottom: 1px solid #ccc;
 
-    ul {
-      white-space: nowrap;
+    .title {
+      color: #ccc;
+      margin-bottom: 10px;
+      @include font-spec(14, semibold, 14);
+    }
 
-      li {
-        display: inline-block;
-        vertical-align: top;
-        margin-right: 20px;
-        background-color: $pure-white;
-        width: 140px;
-        height: 180px;
-        @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-        &:last-child { margin-right: none; }
+    .rotator {
+      overflow: hidden;
 
-        .name {
-          color: $mckinsey-orange;
-          @include font-spec(18, semibold, 18);
+      ul {
+        white-space: nowrap;
+
+        li {
+          position: relative;
+          padding: 10px;
+          display: inline-block;
+          vertical-align: top;
+          margin-right: 20px;
+          background-color: $pure-white;
+          width: 140px;
+          height: 180px;
+          white-space: normal;
+          @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+          &:last-child { margin-right: none; }
+
+          .index {
+            color: $mckinsey-orange;
+            margin-bottom: 20px;
+            @include font-spec(12, semibold, 14);
+          }
+
+          .name {
+            color: #666;
+            @include font-spec(18, semibold, 20);
+          }
+
+          .lesson-progress {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+
+            .tick {
+              width: 5px;
+              height: 5px;
+              margin-right: 1px;
+              float: left;
+              background: #e0e0e0;
+              &.on { background: $mckinsey-green; }
+            }
+          }
         }
       }
     }

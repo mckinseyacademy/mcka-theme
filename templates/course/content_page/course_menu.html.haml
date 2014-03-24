@@ -1,8 +1,15 @@
 .course-menu
   .title LESSONS:
-  %ul
-    - for idx, lesson in enumerate(course.lessons, start=1):
-      %li
-        %a(href="/${lesson.url}")
-          .index LESSON ${idx}:
-          .name= lesson.name
+  .rotator
+    %ul
+      - for idx, lesson in enumerate(course.lessons, start=1):
+        %li
+          %a(href="/${lesson.url}")
+            .index LESSON ${idx}:
+            .name= lesson.name
+            .lesson-progress
+              - for i in range(1,6):
+                - if i * 20 <= lesson.percent_complete:
+                  .tick.on
+                - else:
+                  .tick
