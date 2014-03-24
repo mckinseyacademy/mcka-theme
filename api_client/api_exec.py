@@ -4,8 +4,8 @@ from json_requests import GET, POST, DELETE, PUT
 
 from django.conf import settings
 
-AUTH_API = 'api/system/sessions'
-USER_API = 'api/system/users'
+AUTH_API = 'api/sessions'
+USER_API = 'api/users'
 
 
 def authenticate(username, password):
