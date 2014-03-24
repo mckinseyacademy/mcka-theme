@@ -17,7 +17,6 @@
   }
 }
 
-
 .program-menu{
   color: $mckinsey-academy-alt-blue;
   padding-top: 12px;
@@ -29,7 +28,7 @@
   margin-top: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  
+
   ul{
     list-style: none;
     display: inline;
@@ -39,21 +38,31 @@
       display: inline-block;
     }
   }
-  
+
   .course-menu{
     margin: 10px 0;
-    ul{
-      li{
-        text-transform: uppercase;
-        margin-right: 10px;
-        color: $mckinsey-academy-alt-blue;
-        &.selected{
-          color: $mckinsey-grey;
+
+    ul {
+      white-space: nowrap;
+
+      li {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 20px;
+        background-color: $pure-white;
+        width: 140px;
+        height: 180px;
+        @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+        &:last-child { margin-right: none; }
+
+        .name {
+          color: $mckinsey-orange;
+          @include font-spec(18, semibold, 18);
         }
       }
     }
   }
-  
+
   .lesson-menu{
     @include font-spec(12, bold, 14);
     border-top: 1px solid $mckinsey-academy-warm-gray;

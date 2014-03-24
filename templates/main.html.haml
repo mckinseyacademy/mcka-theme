@@ -19,7 +19,7 @@
 
   - # Custom head JS
   %%block(name="head_js")
-  
+
 %body
 
   - # Header
@@ -28,11 +28,12 @@
   %%block(name="program_bar")
 
   - # Main content goes here
-  %%block(name="content")
+  %main(role="main")
+    %%block(name="content")
 
   - # Footer
   %%include(file="footer.html.haml")
-  
+
   - # Override if you need another version of jQuery
   %%block(name="foundation_jquery")
     %script(src="/static/js/vendor/jquery.js")

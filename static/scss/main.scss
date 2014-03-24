@@ -5,11 +5,11 @@ body{
   font-family: "Open Sans", sans-serif;
 }
 
-.header{
+header[role=banner]{
   // TODO: replace with extend depth5
   position: relative;
   z-index: 100000;
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);  
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   background-color: $header-background;
   @include left-right-gradient($header-left-color, $header-right-color, 320px);
   color: $header-text;
@@ -114,7 +114,7 @@ body{
         }
         $detail_icon_size: 18px;
         .fa{
-          width: $detail_icon_size;          
+          width: $detail_icon_size;
           font-size: rem-calc($detail_icon_size);
           color: $mckinsey-academy-blue-gray;
           text-align: center;
@@ -122,7 +122,7 @@ body{
         .field-group{
           @include font-spec(10, semibold);
           margin-left: $detail_icon_size + 5;
-          margin-top: -1*$detail_icon_size;          
+          margin-top: -1*$detail_icon_size;
           .fieldtitle{
             font-weight: bold;
             .editfield{
@@ -145,7 +145,7 @@ body{
         padding-bottom: 20px;
         border-bottom: 1px solid $border-line;
       }
-    }  
+    }
   }
   .login-action{
     float: right;
@@ -160,7 +160,7 @@ body{
   }
 }
 
-.footer{
+footer[role=contentinfo]{
   position: fixed;
   bottom: 0;
   margin: 0 auto;

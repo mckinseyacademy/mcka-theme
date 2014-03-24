@@ -5,18 +5,16 @@
     .large-12.columns.program-bar
       - # Hardcoded values for now, so not translated
       .program-name
-        McKinsey Management Program
+        = course.program_name
       .course-name
-        Mastering Difficult Conversations
+        = course.name
   .row
     .large-12.columns.program-menu
       %i.fa.fa-bars
 
 %%block(name="content")
   .row
-    .large-1.medium-1.small-0.columns
-      &nbsp;
-    .large-10.medium-10.small-12.columns.content-page
+    .large-12.columns.content-page
       %%include(file="content_page/course_menu.html.haml")
       %%include(file="content_page/lesson_menu.html.haml")
       .course-title
@@ -30,10 +28,10 @@
   :javascript
     var set_page_height = function(){
       var $page = $('.content-page');
-      var $footer = $('.footer');
+      var $footer = $('footer[role=contentinfo]');
 
       var new_height = $footer.position().top - $page.position().top - (2 * parseInt($page.css('margin-top')));
-      $page.css({height: new_height + "px"});
+      $page.height(new_height);
     }
     $(window).on('resize', set_page_height);
     $(window).trigger('resize');

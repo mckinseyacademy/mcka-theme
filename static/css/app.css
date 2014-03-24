@@ -3036,6 +3036,7 @@ select::-ms-expand {
 
   select:hover {
     background: #f3f3f3; } }
+
 /* Attach elements to the beginning or end of an input */
 .prefix,
 .postfix {
@@ -3591,24 +3592,28 @@ kbd {
 
   to {
     -webkit-transform: rotate(360deg); } }
+
 @-moz-keyframes rotate {
   from {
     -moz-transform: rotate(0deg); }
 
   to {
     -moz-transform: rotate(360deg); } }
+
 @-o-keyframes rotate {
   from {
     -o-transform: rotate(0deg); }
 
   to {
     -o-transform: rotate(360deg); } }
+
 @keyframes rotate {
   from {
     transform: rotate(0deg); }
 
   to {
     transform: rotate(360deg); } }
+
 /* Orbit Graceful Loading */
 .slideshow-wrapper {
   position: relative; }
@@ -3770,7 +3775,7 @@ kbd {
     left: 10px;
     font-size: 12px;
     color: white;
-    background: transparent;
+    background: rgba(0, 0, 0, 0);
     z-index: 10; }
     .orbit-container .orbit-slide-number span {
       font-weight: 700;
@@ -4202,7 +4207,13 @@ dialog[open] {
 
 @media only screen and (min-width: 40.063em) {
   dialog, .reveal-modal {
-    padding: 1.875rem; } }
+    padding: 1.875rem; }
+  dialog.full, .reveal-modal.full {
+    top: 0;
+    left: 0;
+    height: 100vh;
+    min-height: 100vh;
+    margin-left: 0 !important; } }
   @media only screen and (min-width: 40.063em) and (min-width: 40.063em) {
     dialog, .reveal-modal {
       top: 6.25rem; } }
@@ -4227,13 +4238,6 @@ dialog[open] {
       margin-left: -47.5%;
       width: 95%; } }
 
-@media only screen and (min-width: 40.063em) {
-  dialog.full, .reveal-modal.full {
-    top: 0;
-    left: 0;
-    height: 100vh;
-    min-height: 100vh;
-    margin-left: 0 !important; } }
   @media only screen and (min-width: 40.063em) and (min-width: 40.063em) {
     dialog.full, .reveal-modal.full {
       margin-left: -50vw;
@@ -4555,6 +4559,7 @@ div.switch {
 
   to {
     position: relative; } }
+
 table {
   background: white;
   margin-bottom: 1.25rem;
@@ -5710,6 +5715,7 @@ blockquote p {
 
   @page {
     margin: 0.5cm; }
+
   p,
   h2,
   h3 {
@@ -6040,7 +6046,7 @@ ul.off-canvas-list {
   left: 0;
   right: 0;
   z-index: 1002;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   @media only screen and (min-width: 40.063em) {
     .move-right .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
@@ -6064,7 +6070,7 @@ ul.off-canvas-list {
   left: 0;
   right: 0;
   z-index: 1002;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   @media only screen and (min-width: 40.063em) {
     .move-left .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
@@ -6342,22 +6348,6 @@ th.hide-for-touch {
 .touch th.show-for-touch {
   display: table-cell !important; }
 
-/* Other McKinsey specified colours that we are not using currently
-$mckinsey-cyan: #0093D3;
-
-// Support
-$mckinsey-brightblue: #0065BD;
-$mckinsey-turquoise: #009AA6;
-$mckinsey-dk-turquoise: #006983;
-$mckinsey-stone: #C4B796;
-$mckinsey-light-gray: #939D98;
-$mckinsey-blue-gray: #7D9AAA;
-
-// Bright
-$mckinsey-yellow: #D4BA00;
-$mckinsey-pink: #AD005B;
-$mckinsey-purple: #66307C;
-*/
 /* McKinsey font defintions all specify size, normal|semibold|bold, line-spacing
  - with this we ensure that the font implementations match their definition
  */
@@ -6372,7 +6362,7 @@ body {
   background-color: #e5ebee;
   font-family: "Open Sans", sans-serif; }
 
-.header {
+header[role=banner] {
   position: relative;
   z-index: 100000;
   -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
@@ -6385,12 +6375,12 @@ body {
   color: white;
   height: 48px;
   max-height: 48px; }
-  .header .columns {
+  header[role=banner] .columns {
     padding: 0; }
-  .header .header-menu {
+  header[role=banner] .header-menu {
     top: -18px;
     position: relative; }
-    .header .header-menu ul li {
+    header[role=banner] .header-menu ul li {
       font-size: 12px;
       font-size: 0.75rem;
       font-weight: 500;
@@ -6399,16 +6389,16 @@ body {
       list-style: none;
       text-transform: uppercase;
       margin: 0 0.5rem; }
-  .header ul, .header li {
+  header[role=banner] ul, header[role=banner] li {
     display: inline-block; }
-  .header > div {
+  header[role=banner] > div {
     height: 100%; }
-  .header .logo {
+  header[role=banner] .logo {
     background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;
     width: 340px;
     height: 100%;
     display: inline-block; }
-  .header .user-info {
+  header[role=banner] .user-info {
     cursor: pointer;
     float: right;
     color: #3384ca;
@@ -6422,22 +6412,22 @@ body {
     top: 0;
     right: 0; }
     @media only screen and (min-width: 64.063em) {
-      .header .user-info {
+      header[role=banner] .user-info {
         position: inherit;
         top: inherit;
         right: inherit; } }
-    .header .user-info .fa {
+    header[role=banner] .user-info .fa {
       position: relative; }
-      .header .user-info .fa.fa-sort-asc {
+      header[role=banner] .user-info .fa.fa-sort-asc {
         top: -3px; }
-      .header .user-info .fa.fa-sort-desc {
+      header[role=banner] .user-info .fa.fa-sort-desc {
         top: 3px; }
-    .header .user-info div {
+    header[role=banner] .user-info div {
       display: inline; }
-    .header .user-info .user-image img {
+    header[role=banner] .user-info .user-image img {
       width: 48px;
       height: 48px; }
-    .header .user-info .user-profile {
+    header[role=banner] .user-info .user-profile {
       width: 220px;
       -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
       -webkit-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
@@ -6448,19 +6438,19 @@ body {
       border-left: 1px solid #e0e0e0;
       border-right: 1px solid #e0e0e0;
       background-color: white; }
-      .header .user-info .user-profile div {
+      header[role=banner] .user-info .user-profile div {
         display: block; }
-      .header .user-info .user-profile div {
+      header[role=banner] .user-info .user-profile div {
         display: block; }
-      .header .user-info .user-profile .user-detail {
+      header[role=banner] .user-info .user-profile .user-detail {
         width: 100%; }
-        .header .user-info .user-profile .user-detail > div {
+        header[role=banner] .user-info .user-profile .user-detail > div {
           padding: 10px 10px;
           text-align: left;
           border-bottom: 1px solid #e0e0e0;
           height: 40px;
           vertical-align: middle; }
-          .header .user-info .user-profile .user-detail > div.username {
+          header[role=banner] .user-info .user-profile .user-detail > div.username {
             text-align: center;
             font-size: 14px;
             font-size: 0.875rem;
@@ -6469,18 +6459,18 @@ body {
             line-height: 0.875rem;
             height: 30px;
             padding-top: 3px; }
-          .header .user-info .user-profile .user-detail > div.logout {
+          header[role=banner] .user-info .user-profile .user-detail > div.logout {
             height: auto;
             vertical-align: middle;
             text-align: center; }
-            .header .user-info .user-profile .user-detail > div.logout .button {
+            header[role=banner] .user-info .user-profile .user-detail > div.logout .button {
               margin: 0 0 5px; }
-        .header .user-info .user-profile .user-detail .fa {
+        header[role=banner] .user-info .user-profile .user-detail .fa {
           width: 18px;
           font-size: 1.125rem;
           color: #b1c2cc;
           text-align: center; }
-        .header .user-info .user-profile .user-detail .field-group {
+        header[role=banner] .user-info .user-profile .user-detail .field-group {
           font-size: 10px;
           font-size: 0.625rem;
           font-weight: 500;
@@ -6488,38 +6478,38 @@ body {
           line-height: 0.625rem;
           margin-left: 23px;
           margin-top: -18px; }
-          .header .user-info .user-profile .user-detail .field-group .fieldtitle {
+          header[role=banner] .user-info .user-profile .user-detail .field-group .fieldtitle {
             font-weight: bold; }
-            .header .user-info .user-profile .user-detail .field-group .fieldtitle .editfield {
+            header[role=banner] .user-info .user-profile .user-detail .field-group .fieldtitle .editfield {
               font-weight: 500;
               padding-left: 4px;
               border-left: 1px solid #e0e0e0; }
-      .header .user-info .user-profile .user-image {
+      header[role=banner] .user-info .user-profile .user-image {
         width: 100%;
         height: 180px;
         padding-bottom: 20px;
         border-bottom: 1px solid #e0e0e0; }
-        .header .user-info .user-profile .user-image img {
+        header[role=banner] .user-info .user-profile .user-image img {
           margin: 10px 30px;
           width: 160px;
           height: 160px; }
-  .header .login-action {
+  header[role=banner] .login-action {
     float: right; }
-    .header .login-action .button {
+    header[role=banner] .login-action .button {
       padding: 8px 15px;
       margin: 10px; }
-  .header .application-name {
+  header[role=banner] .application-name {
     display: inline-block;
     padding: 10px 10px; }
 
-.footer {
+footer[role=contentinfo] {
   position: fixed;
   bottom: 0;
   margin: 0 auto;
   background-color: #e5ebee;
   color: #3384ca;
   padding: 0; }
-  .footer .copyright {
+  footer[role=contentinfo] .copyright {
     font-size: 10px;
     font-size: 0.625rem;
     font-weight: 500;
@@ -6527,9 +6517,9 @@ body {
     line-height: 0.625rem;
     color: #868685;
     padding-right: 10px; }
-  .footer ul {
+  footer[role=contentinfo] ul {
     margin: 0; }
-    .footer ul li {
+    footer[role=contentinfo] ul li {
       font-size: 10px;
       font-size: 0.625rem;
       font-weight: 500;
@@ -6538,9 +6528,9 @@ body {
       list-style: none;
       padding: 0 9px 0 10px;
       border-left: 1px solid #868685; }
-  .footer ul, .footer li {
+  footer[role=contentinfo] ul, footer[role=contentinfo] li {
     display: inline; }
-  .footer .built-on {
+  footer[role=contentinfo] .built-on {
     font-size: 10px;
     font-size: 0.625rem;
     font-weight: 500;
@@ -6615,12 +6605,27 @@ body {
       display: inline-block; }
   .content-page .course-menu {
     margin: 10px 0; }
-    .content-page .course-menu ul li {
-      text-transform: uppercase;
-      margin-right: 10px;
-      color: #3384ca; }
-      .content-page .course-menu ul li.selected {
-        color: #868685; }
+    .content-page .course-menu ul {
+      white-space: nowrap; }
+      .content-page .course-menu ul li {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 20px;
+        background-color: white;
+        width: 140px;
+        height: 180px;
+        -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
+        -webkit-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
+        box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2); }
+        .content-page .course-menu ul li:last-child {
+          margin-right: none; }
+        .content-page .course-menu ul li .name {
+          color: #e37222;
+          font-size: 18px;
+          font-size: 1.125rem;
+          font-weight: 500;
+          line-height: 18px;
+          line-height: 1.125rem; }
   .content-page .lesson-menu {
     font-size: 12px;
     font-size: 0.75rem;
@@ -6694,12 +6699,27 @@ body {
       display: inline-block; }
   .content-page .course-menu {
     margin: 10px 0; }
-    .content-page .course-menu ul li {
-      text-transform: uppercase;
-      margin-right: 10px;
-      color: #3384ca; }
-      .content-page .course-menu ul li.selected {
-        color: #868685; }
+    .content-page .course-menu ul {
+      white-space: nowrap; }
+      .content-page .course-menu ul li {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 20px;
+        background-color: white;
+        width: 140px;
+        height: 180px;
+        -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
+        -webkit-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
+        box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2); }
+        .content-page .course-menu ul li:last-child {
+          margin-right: none; }
+        .content-page .course-menu ul li .name {
+          color: #e37222;
+          font-size: 18px;
+          font-size: 1.125rem;
+          font-weight: 500;
+          line-height: 18px;
+          line-height: 1.125rem; }
   .content-page .lesson-menu {
     font-size: 12px;
     font-size: 0.75rem;
