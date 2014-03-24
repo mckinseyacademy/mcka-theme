@@ -2,14 +2,14 @@
   Lesson:
   %ul
     - lesson_index = 0
-    - for lesson in course.lessons:
+    - for lesson in course.chapters:
       - lesson_index += 1
       %li.lesson
-        - if lesson == course.current_lesson:
+        - if lesson.chapter_id == current_chapter.chapter_id:
           %span.lesson-index.selected
             = lesson_index
         - elif lesson.is_released:
-          %a.lesson-index(href=lesson.url,title=lesson.name)
+          %a.lesson-index(href=lesson.navigation_url,title=lesson.chapter_name)
             = lesson_index
         - else:
           %span.lesson-index
@@ -17,12 +17,12 @@
 .lesson-progress
   - found_current = False
   - add_class = "complete"
-  - for lesson_module in course.current_lesson.modules:
-    - is_current = course.current_lesson.current_module == lesson_module
+  - for lesson_module in current_chapter.pages:
+    - is_current = current_page.page_id == lesson_module.page_id
     - if is_current:
       - add_class = "current"
       - found_current = True
     - elif found_current:
       - add_class = "incomplete"
-    .lesson-module-status(class_=add_class)
+    %a.lesson-module-status(class_=add_class,href=lesson_module.navigation_url)
 

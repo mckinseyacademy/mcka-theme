@@ -9,13 +9,10 @@ class Objectifier(object):
     '''
     object_map = {}
 
-    @staticmethod
-    def _objectify_if_iterable(value, object_type = None):
+    @classmethod
+    def _objectify_if_iterable(class_instance, value):
         if isinstance(value, collections.Iterable):
-            if object_type == None:
-                object_type = Objectifier
-
-            return object_type(dictionary=value)
+            return class_instance(dictionary=value)
         else:
             return value
 

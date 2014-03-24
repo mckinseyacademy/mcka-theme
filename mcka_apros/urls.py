@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^logout/', 'mcka_apros.views.logout', name='logout'),
     url(r'^register/', 'mcka_apros.views.register', name='register'),
     url(r'^users/', include('users.urls'), name='users'),
+    url(r'^courses/', include('courses.urls'), name='courses'),
 )

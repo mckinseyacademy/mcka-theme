@@ -9,7 +9,7 @@
         %li= _("Contact")
     %%block(name="user_region")
       - from django.utils.translation import ugettext as _
-      - if user != None:
+      - if user != None and user.is_authenticated():
         .user-info
           .user-name
             = user.username

@@ -94,15 +94,11 @@ def register(request):
 def home(request):
     template_name = 'main.html.haml'
     use_user = None
-    current_course = None
     if request.user.is_authenticated():
         use_user = request.user
-        current_course = user_api.fetch_current_course_for_user(request.user.id)
-        if None != current_course:
-            template_name = 'course/course_main.html.haml'
 
     template = haml.get_haml_template(template_name)
-    return HttpResponse(template.render_unicode(user=use_user,course=current_course))
+    return HttpResponse(template.render_unicode(user=use_user))
 
 
 def csrf_token(context):

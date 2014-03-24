@@ -28,6 +28,11 @@ class JsonObjectTestNestingClass(JsonObject):
         'info': JsonObjectTestNestedClass
     }
 
+class JsonObjectTestNestedNestingClass(JsonObject):
+    required_fields = ['id', 'info']
+    object_map = {
+        'info': JsonObjectTestNestingClass
+    }
 
 # Create your tests here.
 class JsonObjectTest(TestCase):
@@ -41,6 +46,9 @@ class JsonObjectTest(TestCase):
 
         self.nested_json = '{"id":22, "info":{"one":"a", "two":"b", "three":"c"}}'
         self.nested_array = '[{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]'
+
+        self.nested_nest = '{"id":101, "info": [{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]}'
+
 
     def test_authentication_response(self):
         json_string = '{"token": "ceac67d033b98fbc5edd483a0e609193","expires": 1209600,"user": {"id": 4,"email": "staff@example.com","username": "staff"}}'
@@ -213,3 +221,10 @@ class JsonObjectTest(TestCase):
         self.assertTrue(isinstance(output[0].info, JsonObjectTestNestedClass))
         self.assertTrue(isinstance(output[1], JsonObjectTestNestingClass))
         self.assertTrue(isinstance(output[1].info, JsonObjectTestNestedClass))
+
+    def test_nested_nest(self):
+        output = JP.from_json(self.nested_nest, JsonObjectTestNestedNestingClass)
+
+        self.assertTrue(isinstance(output, JsonObjectTestNestedNestingClass))
+        self.assertTrue(isinstance(output.info[0], JsonObjectTestNestingClass))
+        self.assertTrue(isinstance(output.info[0].info, JsonObjectTestNestedClass))
