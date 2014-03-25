@@ -8,13 +8,10 @@
   %title= _("McKinsey Academy")
 
   - # CSS
-  / %%block(name="css")
-  /   %link(rel="stylesheet", href="/static/css/normalize.css")
-  /   %link(rel="stylesheet", href="/static/css/font-awesome.css")
-  /   %link(rel="stylesheet", href="/static/css/app.css")
-  <%! from django.template import Template, Context %>
-  <% tpl = {% load compressed %}{% compressed_css 'app'%} %>
-  ${Template(tpl).render(Context(dict_=dict(request=request)))}
+  %%block(name="css")
+    %link(rel="stylesheet", href="/static/css/normalize.css")
+    %link(rel="stylesheet", href="/static/css/font-awesome.css")
+    %link(rel="stylesheet", href="/static/css/app.css")
 
   - # Override if you need another version of modernizr; or comment out for now - we dont' need it yet
   %%block(name="foundation_modernizer")
