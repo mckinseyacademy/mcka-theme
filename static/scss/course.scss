@@ -64,6 +64,12 @@
           @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
           &:last-child { margin-right: none; }
 
+          a {
+            display: block;
+            width: 100%;
+            height: 100%;
+          }
+
           .index {
             color: $mckinsey-orange;
             margin-bottom: 20px;
