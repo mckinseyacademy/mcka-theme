@@ -6678,7 +6678,10 @@ footer[role=contentinfo] {
     border-right: 1px solid #cccccc; }
     .content-page .course-discover section:last-child {
       border-right: none; }
+    .content-page .course-discover section ul li {
+      margin-bottom: 20px; }
     .content-page .course-discover section .article-title {
+      margin-bottom: 10px;
       font-size: 18px;
       font-size: 1.125rem;
       font-weight: normal;
@@ -6878,7 +6881,10 @@ footer[role=contentinfo] {
     border-right: 1px solid #cccccc; }
     .content-page .course-discover section:last-child {
       border-right: none; }
+    .content-page .course-discover section ul li {
+      margin-bottom: 20px; }
     .content-page .course-discover section .article-title {
+      margin-bottom: 10px;
       font-size: 18px;
       font-size: 1.125rem;
       font-weight: normal;
