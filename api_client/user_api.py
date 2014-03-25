@@ -30,8 +30,7 @@ def register_user(user_hash):
     return JP.from_json(response.read())
 
 def get_user_course_status(user_id):
-    response = GET('{}/{}/{}/courses'.format(
-        settings.API_SERVER_ADDRESS, USER_API, user_id))
+    response = GET('{}/{}/{}/courses'.format(settings.API_SERVER_ADDRESS, USER_API, user_id))
     return JP.from_json(response.read(), user_models.UserStatus)
 
 def set_user_bookmark(user_id, course_id, chapter_id, page_id):
