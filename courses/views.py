@@ -1,5 +1,3 @@
-import haml
-import mako.template
 from django.http import HttpResponse, HttpResponseRedirect
 import haml_mako.templates as haml
 

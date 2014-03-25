@@ -1,5 +1,3 @@
-import haml
-import mako.template
 from django.http import HttpResponse
 from api_client import user_api
 
