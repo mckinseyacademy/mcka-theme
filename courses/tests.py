@@ -168,18 +168,22 @@ class CoursesAPITest(TestCase):
         self.assertEqual(test_current_page.page_name, "Test Page 3")
 
         prev_url = None
-        for x in [0,2]:
-            test_course.chapters[0].navigation_url, "/courses/0/lessons/{}".format(10+x)
-            for y in [0,3]:
-                test_course.chapters[0].pages[y].navigation_url, "/courses/0/lessons/{}/modules/{}".format(10 + x, 100 + (x * 10) + y)
-                test_course.chapters[0].pages[y].prev_url, prev_url
+        for x in range(0,3):
+            self.assertEqual(test_course.chapters[x].navigation_url, "/courses/0/lessons/{}".format(10+x))
+            #print test_course.chapters[x].navigation_url
+            for y in range(0,4):
+                self.assertEqual(test_course.chapters[x].pages[y].navigation_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y))
+                self.assertEqual(test_course.chapters[x].pages[y].prev_url, prev_url)
                 if x == 2 and y == 3:
-                    test_course.chapters[0].pages[y].next_url, None
+                    self.assertEqual(test_course.chapters[x].pages[y].next_url, None)
                 elif y == 3:    
-                    test_course.chapters[0].pages[y].next_url, "/courses/0/lessons/{}/modules/{}".format(10 + x + 1, 100 + ((x+1) * 10))
+                    self.assertEqual(test_course.chapters[x].pages[y].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x + 1, 100 + ((x+1) * 10)))
                 else:
-                    test_course.chapters[0].pages[y].next_url, "/courses/0/lessons/{}/modules/{}".format(10 + x, 100 + (x * 10) + y + 1)
-                prev_url = test_course.chapters[0].pages[y].navigation_url
+                    self.assertEqual(test_course.chapters[x].pages[y].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y + 1))
+                prev_url = test_course.chapters[x].pages[y].navigation_url
+
+                #print "x = {}; y = {}; nav_url = {}; prev_url = {}; next_url = {}".format(x, y, test_course.chapters[x].pages[y].navigation_url, test_course.chapters[x].pages[y].prev_url, test_course.chapters[x].pages[y].next_url)
+
 
     def test_locate_chapter_page(self):
         # specified up to chapter id, should get bookmarked page
