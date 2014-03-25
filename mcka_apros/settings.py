@@ -102,17 +102,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/cached')
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-
 PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
 )
-
 PIPELINE_CSS = {
     'app': {
       'source_filenames': (
-        'static/scss/app.scss'
+        'static/scss/app.scss',
       ),
       'output_filename': 'static/css/app.css',
     }
