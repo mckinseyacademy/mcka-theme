@@ -4,12 +4,15 @@
     %ul
       - for idx, lesson in enumerate(course.lessons, start=1):
         %li
-          %a(href="/${lesson.url}")
-            .index LESSON ${idx}:
-            .name= lesson.name
-            .lesson-progress
-              - for i in range(1,6):
-                - if i * 20 <= lesson.percent_complete:
-                  .tick.on
-                - else:
-                  .tick
+          %a.card-flip(href="/${lesson.url}")
+            .front
+              .index LESSON ${idx}:
+              .name= lesson.name
+              .lesson-progress
+                - for i in range(1,6):
+                  - if i * 20 <= lesson.percent_complete:
+                    .tick.on
+                  - else:
+                    .tick
+            .back
+              .description Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute in.
