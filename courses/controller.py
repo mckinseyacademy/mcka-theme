@@ -61,3 +61,26 @@ def locate_chapter_page(user_id, course_id, chapter_id, user_api = user_api, cou
     page = chapter.pages[0]
 
     return course_id, chapter.chapter_id, page.page_id
+
+def program_for_course(user_id, course_id, user_api = user_api):
+    user_status = user_api.get_user_course_status(user_id)
+    course_program = None
+
+    # Check that the specified course is part of this program
+    for program in user_status.programs:
+        if int(course_id) in program.courses:
+            course_program = program
+            break
+
+    # Now add the courses therein:
+    if course_program:
+        course_ids = course_program.courses
+        course_program.courses = []
+        for course in user_status.courses:
+            if int(course.course_id) in course_ids:
+                course_program.courses.append(course)
+
+    return course_program
+
+def update_bookmark(user_id, program_id, course_id, chapter_id, page_id, user_api = user_api):
+    user_api.set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id)

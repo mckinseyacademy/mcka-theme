@@ -100,7 +100,16 @@ class MockUserAPI(object):
     @staticmethod
     def _get_user_course_status(user_id, current_course_id):
         user_status_dictionary = {
+            "current_program_id": 1001,
             "current_course_id": current_course_id,
+            "programs": 
+                [
+                    {
+                        "program_id": 1001,
+                        "program_name": "Different Transportation Methods",
+                        "courses": [1,2,3,4]
+                    }
+                ],
             "courses": 
             [
                 {
@@ -129,6 +138,15 @@ class MockUserAPI(object):
                     "course_id": 4,
                     "percent_complete": 0,
                     "start_date": "2014-05-01T00:14:00.00Z"
+                },
+                {
+                    "course_id": 5,
+                    "percent_complete": 50,
+                    "bookmark":
+                        {
+                            "chapter_id": 10,
+                            "page_id": 101
+                        }
                 }
             ]
         }
@@ -235,4 +253,14 @@ class CoursesAPITest(TestCase):
         self.assertEqual(chapter_id, 10)
         self.assertEqual(page_id, 100)
 
+    def test_program_for_course(self):
+        # course within a program
+        test_program = controller.program_for_course(0, 2, MockUserAPI)
+        self.assertEqual(test_program.program_id, 1001)
+        self.assertEqual(test_program.program_name, "Different Transportation Methods")
 
+        self.assertEqual(len(test_program.courses), 4)
+
+        # course not within a program
+        test_program = controller.program_for_course(0, 5, MockUserAPI)
+        self.assertEqual(test_program, None)

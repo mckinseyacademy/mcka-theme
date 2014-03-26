@@ -33,13 +33,14 @@ def get_user_course_status(user_id):
     response = GET('{}/{}/{}/courses'.format(settings.API_SERVER_ADDRESS, USER_API, user_id))
     return JP.from_json(response.read(), user_models.UserStatus)
 
-def set_user_bookmark(user_id, course_id, chapter_id, page_id):
+def set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id):
     data = {
+        "program_id": program_id,
         "course_id": course_id,
         "bookmark": {
             "chapter_id": chapter_id,
             "page_id": page_id,
         }
     }
-    response = POST('{}/{}/{}/course_bookmark/'.format(settings.API_SERVER_ADDRESS, USER_API, user_id), data)
+    response = POST('{}/{}/{}/course_bookmark'.format(settings.API_SERVER_ADDRESS, USER_API, user_id), data)
     return JP.from_json(response.read())

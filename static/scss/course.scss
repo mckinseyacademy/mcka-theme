@@ -312,4 +312,33 @@
       }
     }
   }
+  
+  .lesson-title{
+    @include font-spec(10, semibold, 12);
+    color: $mckinsey-grey;
+    padding-top: 45px;
+    .lesson-index{
+      font-weight: bold;
+    }
+    .page-desc{
+      border-left: 1px solid $mckinsey-grey;
+      padding-left: 5px;
+      margin-left: 3px;
+    }
+  }
+  
+  .page-title{
+    @include font-spec(22, normal, 24);
+    color: $mckinsey-academy-turquoise;
+  }
+  
+}
+
+.program-menu-content{
+  display: none;
+  float: left;
+  position: fixed;
+  z-index: 100000;
+  background-color: $pure-white;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
 }

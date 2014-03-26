@@ -30,10 +30,14 @@ class UserCourseStatus(JsonObject):
         "bookmark": UserCourseBookmark
     }
 
+class UserPrograms(JsonObject):
+    required_fields = ["program_id"]
+
 class UserStatus(JsonObject):
     required_fields = []
     object_map = {
-        "courses": UserCourseStatus
+        "courses": UserCourseStatus,
+        "programs": UserPrograms,
     }
 
     def get_bookmark_for_course(self, course_id):

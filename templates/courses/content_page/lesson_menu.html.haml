@@ -6,6 +6,7 @@
       - lesson_index += 1
       %li.lesson
         - if lesson.chapter_id == current_chapter.chapter_id:
+          - current_chapter.index = lesson_index
           %span.lesson-index.selected
             = lesson_index
         - elif lesson.is_released:

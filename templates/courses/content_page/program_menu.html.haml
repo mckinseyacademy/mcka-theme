@@ -1,0 +1,16 @@
+﻿.program-menu-content
+  %i.fa.fa-bars
+  .program-title
+    = course.program.program_name
+  %ul.courses
+    - for program_course in course.program.courses:
+      %li
+        - if hasattr(program_course, 'start_date'):
+          .course-name
+            = program_course.course_name
+        - else:
+          - nav_url = '/courses/{}'.format(program_course.course_id)
+          %a.course-name(href=nav_url,title=program_course.course_name)
+            = program_course.course_name
+        .status
+          = "{}% complete".format(program_course.percent_complete)

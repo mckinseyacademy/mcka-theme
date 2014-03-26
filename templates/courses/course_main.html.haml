@@ -3,13 +3,15 @@
 %%block(name="program_bar")
   .row
     .large-12.columns.program-bar
-      .program-name
-        = course.program_name
+      - if course.program:
+        .program-name
+          = course.program.program_name
       .course-name
         = course.name
   .row
     .large-12.columns.program-menu
       %i.fa.fa-bars
+      %%include(file="content_page/program_menu.html.haml")
 
 %%block(name="content")
   .row
@@ -23,7 +25,12 @@
           .author Albert Einstein
           .occupation Theoretical Physicist
       %%include(file="content_page/lesson_menu.html.haml")
-      .course-title
+      .lesson-title
+        %span.lesson-index = "Lesson {}:".format(current_chapter.index)
+        %span.lesson-name = current_chapter.chapter_name
+        %span.page-desc = current_page.description
+      %h1.page-title
+        = current_page.page_name
       .lesson-content
       .lesson-discussion
       %%include(file="content_page/lesson_pager.html.haml")
