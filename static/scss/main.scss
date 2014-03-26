@@ -160,6 +160,10 @@ header[role=banner]{
   }
 }
 
+main[role=main] {
+  margin-bottom: 100px;
+}
+
 footer[role=contentinfo]{
   position: fixed;
   bottom: 0;

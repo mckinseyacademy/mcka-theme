@@ -3,7 +3,6 @@
 %%block(name="program_bar")
   .row
     .large-12.columns.program-bar
-      - # Hardcoded values for now, so not translated
       .program-name
         = course.program_name
       .course-name
@@ -16,3 +15,10 @@
   .row
     .large-11.large-centered.columns.content-page
       %%include(file="content_page/course_menu.html.haml")
+      %%include(file="content_page/course_discover.html.haml")
+      %article.course-quote
+        %blockquote If I had an hour to solve a problem I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions.
+        .attribution
+          %img(src='http://dummyimage.com/50x50/aaa/000')
+          .author Albert Einstein
+          .occupation Theoretical Physicist
