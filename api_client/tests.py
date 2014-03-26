@@ -1,9 +1,13 @@
+''' Tests for api_client calls '''
 from django.test import TestCase
-from json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError
-from models import UserResponse, AuthenticationResponse
+from api_client.json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError
+from api_client.user_models import UserResponse, AuthenticationResponse
 
 import collections
 
+# disable no-member 'cos the members are getting created from the json
+# and some others that we don't care about for tests
+# pylint: disable=no-member,line-too-long,too-few-public-methods,missing-docstring,too-many-public-methods,pointless-statement
 
 class JsonObjectTestRequiredFieldsClass(JsonObject):
     required_fields = ['name', 'age']
@@ -28,6 +32,7 @@ class JsonObjectTestNestingClass(JsonObject):
         'info': JsonObjectTestNestedClass
     }
 
+
 class JsonObjectTestNestedNestingClass(JsonObject):
     required_fields = ['id', 'info']
     object_map = {
@@ -35,6 +40,8 @@ class JsonObjectTestNestedNestingClass(JsonObject):
     }
 
 # Create your tests here.
+
+
 class JsonObjectTest(TestCase):
 
     def setUp(self):
@@ -49,7 +56,6 @@ class JsonObjectTest(TestCase):
 
         self.nested_nest = '{"id":101, "info": [{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]}'
 
-
     def test_authentication_response(self):
         json_string = '{"token": "ceac67d033b98fbc5edd483a0e609193","expires": 1209600,"user": {"id": 4,"email": "staff@example.com","username": "staff"}}'
         output = JP.from_json(json_string, AuthenticationResponse)
@@ -57,7 +63,7 @@ class JsonObjectTest(TestCase):
         self.assertTrue(isinstance(output, AuthenticationResponse))
         self.assertTrue(isinstance(output.user, UserResponse))
 
-    def test_parsed_object_from_json_string(self):
+    def test_parsed_object_from_json(self):
         '''
         Default behaviour yeilds base class JsonObject with appropriate fields
         '''
@@ -86,7 +92,8 @@ class JsonObjectTest(TestCase):
         '''
         When requesting specific class, result yeilds specific class
         '''
-        output = JP.from_json(self.json_string, JsonObjectTestRequiredFieldsClass)
+        output = JP.from_json(
+            self.json_string, JsonObjectTestRequiredFieldsClass)
 
         self.assertTrue(isinstance(output, JsonObject))
         self.assertTrue(isinstance(output, JsonObjectTestRequiredFieldsClass))
@@ -95,12 +102,14 @@ class JsonObjectTest(TestCase):
         '''
         Corresponding array of requested specific class
         '''
-        output = JP.from_json(self.json_array, JsonObjectTestRequiredFieldsClass)
+        output = JP.from_json(
+            self.json_array, JsonObjectTestRequiredFieldsClass)
 
         self.assertTrue(isinstance(output, collections.Iterable))
         for json_object in output:
             self.assertTrue(isinstance(json_object, JsonObject))
-            self.assertTrue(isinstance(json_object, JsonObjectTestRequiredFieldsClass))
+            self.assertTrue(
+                isinstance(json_object, JsonObjectTestRequiredFieldsClass))
 
         self.assertEqual(output[0].name, "Martyn")
         self.assertEqual(output[0].age, 21)
@@ -135,7 +144,7 @@ class JsonObjectTest(TestCase):
         self.assertEqual(output.name, "Martyn")
         self.assertEqual(output.age, 21)
         with self.assertRaises(AttributeError):
-            undefined_value = output.gender
+            output.gender
 
     def test_array_valid_fields(self):
         '''
@@ -149,21 +158,22 @@ class JsonObjectTest(TestCase):
         self.assertTrue(isinstance(output, collections.Iterable))
         for json_object in output:
             self.assertTrue(isinstance(json_object, JsonObject))
-            self.assertTrue(isinstance(json_object, JsonObjectTestValidFieldsClass))
+            self.assertTrue(
+                isinstance(json_object, JsonObjectTestValidFieldsClass))
 
         self.assertEqual(output[0].name, "Martyn")
         self.assertEqual(output[0].age, 21)
         with self.assertRaises(AttributeError):
-            undefined_value = output[0].gender
+            output[0].gender
         with self.assertRaises(AttributeError):
-            undefined_value = output[0].sport
+            output[0].sport
 
         self.assertEqual(output[1].name, "Matt")
         self.assertEqual(output[1].age, 19)
         with self.assertRaises(AttributeError):
-            undefined_value = output[1].gender
+            output[1].gender
         with self.assertRaises(AttributeError):
-            undefined_value = output[1].sport
+            output[1].sport
 
     def test_valid_not_required_fields(self):
         json_string = '{"name":"Martyn"}'
@@ -194,10 +204,12 @@ class JsonObjectTest(TestCase):
     def test_valid_and_required(self):
         json_string = '{"name":"Martyn", "age":21, "gender":"male"}'
 
-        output = JP.from_json(json_string, JsonObjectTestRequiredAndValidFieldsClass)
+        output = JP.from_json(
+            json_string, JsonObjectTestRequiredAndValidFieldsClass)
 
         self.assertTrue(isinstance(output, JsonObject))
-        self.assertTrue(isinstance(output, JsonObjectTestRequiredAndValidFieldsClass))
+        self.assertTrue(
+            isinstance(output, JsonObjectTestRequiredAndValidFieldsClass))
         self.assertEqual(output.name, "Martyn")
         self.assertEqual(output.age, 21)
         self.assertEqual(output.gender, "male")
@@ -223,8 +235,10 @@ class JsonObjectTest(TestCase):
         self.assertTrue(isinstance(output[1].info, JsonObjectTestNestedClass))
 
     def test_nested_nest(self):
-        output = JP.from_json(self.nested_nest, JsonObjectTestNestedNestingClass)
+        output = JP.from_json(
+            self.nested_nest, JsonObjectTestNestedNestingClass)
 
         self.assertTrue(isinstance(output, JsonObjectTestNestedNestingClass))
         self.assertTrue(isinstance(output.info[0], JsonObjectTestNestingClass))
-        self.assertTrue(isinstance(output.info[0].info, JsonObjectTestNestedClass))
+        self.assertTrue(
+            isinstance(output.info[0].info, JsonObjectTestNestedClass))
