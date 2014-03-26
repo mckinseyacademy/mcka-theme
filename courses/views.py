@@ -8,7 +8,7 @@ from controller import build_page_info_for_course, locate_chapter_page, program_
 
 def navigate_to_page(request, course_id, chapter_id, page_id):
     # Get course info
-    course, current_chapter, current_page = build_page_info_for_course(course_id, chapter_id, page_id);
+    course, current_chapter, current_page = build_page_info_for_course(int(course_id), int(chapter_id), int(page_id));
 
     course.program = program_for_course(request.user.id, course_id)
 
@@ -20,7 +20,7 @@ def navigate_to_page(request, course_id, chapter_id, page_id):
     return HttpResponse(template.render_unicode(user=request.user, course=course, current_chapter=current_chapter, current_page=current_page))
 
 def infer_chapter_navigation(request, course_id, chapter_id):
-    course_id, chapter_id, page_id = locate_chapter_page(request.user.id, course_id, chapter_id)
+    course_id, chapter_id, page_id = locate_chapter_page(request.user.id, int(course_id), int(chapter_id))
     
     return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
 
@@ -30,11 +30,3 @@ def infer_course_navigation(request, course_id):
 def infer_default_navigation(request):
     return infer_chapter_navigation(request, None, None)
 
-def program_menu(request):
-    # Get course info
-    course, current_chapter, current_page = build_page_info_for_course(2, 11, 111);
-
-    course.program = program_for_course(request.user.id, 2)
-
-    template = haml.get_haml_template('courses/content_page/program_menu.html.haml')
-    return HttpResponse(template.render_unicode(user=request.user, course=course, current_chapter=current_chapter, current_page=current_page))

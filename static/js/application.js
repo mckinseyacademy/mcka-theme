@@ -4,7 +4,7 @@ $(function(){
   var toggle_menu = function(container_selector, menu_selector, menu_content_url, fn_callback){
     var $container = $(container_selector);
     var $pop_up = $container.find(menu_selector);
-    if($pop_up.length < 1){
+    if($pop_up.length < 1 && menu_content_url){
       $container.load(menu_content_url);
     }
     else{
@@ -23,7 +23,7 @@ $(function(){
 
   // Toggle course navigation menu
   $('.program-menu >.fa').on('click', function(){
-    toggle_menu('.program-menu', '.program-menu-content', '/course/program_menu.html');
+    toggle_menu('.program-menu', '.program-menu-content');
   });
 
 }
