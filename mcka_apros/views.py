@@ -16,6 +16,16 @@ import urllib2 as url_access
 
 import haml_mako.templates as haml
 
+import urlparse
+
+
+def _get_qs_value_from_url(value_name, url):
+    parsed_url = urlparse.urlparse(url)
+    qs = urlparse.parse_qs(parsed_url.query)
+    if value_name in qs and len(qs[value_name]) > 0:
+        return qs[value_name][0]
+    return None
+
 
 def login(request):
     ''' handles requests for login form and their submission '''
@@ -30,7 +40,12 @@ def login(request):
                 )
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
-                return HttpResponseRedirect('/')  # Redirect after POST
+
+                redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER']) if 'HTTP_REFERER' in request.META else None
+                if not redirect_to:
+                    redirect_to = '/'
+                
+                return HttpResponseRedirect(redirect_to)  # Redirect after POST
             except url_access.HTTPError, err:
                 error = _("An error occurred during login")
                 error_messages = {

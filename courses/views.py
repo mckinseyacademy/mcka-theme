@@ -1,4 +1,5 @@
 ''' rendering templates from requests related to courses '''
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 import haml_mako.templates as haml
 
@@ -7,6 +8,7 @@ from courses.controller import build_page_info_for_course, locate_chapter_page, 
 # Create your views here.
 
 
+@login_required
 def navigate_to_page(request, course_id, chapter_id, page_id):
     ''' go to given page within given chapter within given course '''
     if course_id:
@@ -38,6 +40,7 @@ def navigate_to_page(request, course_id, chapter_id, page_id):
         )
 
 
+@login_required
 def infer_chapter_navigation(request, course_id, chapter_id):
     '''
     Go to the bookmarked page for given chapter within given course
