@@ -12,7 +12,6 @@ futures==2.1.6
 httpretty==0.8.0
 jsmin==2.0.9
 pyparsing==2.0.1
-scss==0.8.72
 six==1.5.2
 urllib3==1.8
 webassets==0.8

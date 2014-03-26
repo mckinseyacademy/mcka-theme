@@ -1,4 +1,7 @@
 from django_assets import Bundle, register
+import os
+
+os.environ['SASS_USE_SCSS'] = 'false'
 
 # Javascript squashing
 js = Bundle(
