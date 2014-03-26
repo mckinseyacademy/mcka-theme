@@ -38,6 +38,7 @@ DEFAULT_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'django_assets',
     #'south', south is OFF for the moment since there'll be significant change in database while setting up authentication through API
 )
 
@@ -45,8 +46,8 @@ LOCAL_APPS = (
     'api_client',
     'remote_auth',
     'users',
+    'assets',
     'haml_mako',
-    'pipeline',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -99,22 +100,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_cache')
+ASSETS_ROOT = 'static/gen'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static/gen"),
 )
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/cached')
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-PIPELINE_COMPILERS = (
-    'pipeline.compilers.sass.SASSCompiler',
-)
-PIPELINE_CSS = {
-    'app': {
-      'source_filenames': (
-        'static/scss/app.scss',
-      ),
-      'output_filename': 'static/css/app.css',
-    }
-}
+
 
 # Api address
 # API_SERVER_ADDRESS = 'http://localhost:8000'
