@@ -6585,6 +6585,8 @@ footer[role=contentinfo] {
     line-height: 0.75rem;
     color: #002960;
     text-transform: uppercase; }
+    .program-bar .program-name::after {
+      content: ':'; }
   .program-bar .course-name {
     font-size: 14px;
     font-size: 0.875rem;
@@ -6592,12 +6594,6 @@ footer[role=contentinfo] {
     line-height: 14px;
     line-height: 0.875rem;
     color: white; }
-
-.program-menu {
-  color: #3384ca;
-  padding-top: 12px; }
-  .program-menu .fa {
-    cursor: pointer; }
 
 .card-flip {
   position: relative;
@@ -6875,15 +6871,66 @@ footer[role=contentinfo] {
   line-height: 1.5rem;
   color: #66a5b5; }
 
+.program-menu {
+  color: #3384ca;
+  padding: 10px; }
+  .program-menu > * {
+    float: right; }
+  .program-menu .fa {
+    cursor: pointer; }
+
 .program-menu-content {
   display: none;
-  float: left;
-  position: fixed;
+  position: absolute;
+  right: 0;
+  top: 0;
   z-index: 100000;
   background-color: white;
-  -moz-box-shadow: 3px 3px 4px 0px rgba(51, 51, 51, 0.2);
-  -webkit-box-shadow: 3px 3px 4px 0px rgba(51, 51, 51, 0.2);
-  box-shadow: 3px 3px 4px 0px rgba(51, 51, 51, 0.2); }
+  -moz-box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
+  -webkit-box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
+  box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2); }
+  .program-menu-content .program-title {
+    margin: 12px 20px 0;
+    font-size: 10px;
+    font-size: 0.625rem;
+    font-weight: bold;
+    line-height: 10px;
+    line-height: 0.625rem;
+    text-transform: uppercase; }
+    .program-menu-content .program-title::after {
+      content: ':'; }
+  .program-menu-content a.course-name, .program-menu-content .course-name {
+    font-size: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    line-height: 12px;
+    line-height: 0.75rem;
+    padding: 5px 0;
+    color: black; }
+    .program-menu-content a.course-name.unavailable, .program-menu-content .course-name.unavailable {
+      color: #868685; }
+  .program-menu-content a.course-name:hover {
+    color: #e37222; }
+  .program-menu-content .status {
+    font-size: 10px;
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 10px;
+    line-height: 0.625rem;
+    font-style: italic; }
+    .program-menu-content .status.complete {
+      color: #a2ad00; }
+    .program-menu-content .status.unavailable {
+      color: #cccccc; }
+  .program-menu-content ul {
+    margin: 0 12px;
+    list-style: none; }
+    .program-menu-content ul li {
+      padding: 0 8px 8px;
+      border-top: 1px solid #cccccc; }
+      .program-menu-content ul li:first-child {
+        border-top: none;
+        margin-top: 0; }
 
 .program-bar {
   -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
@@ -6900,6 +6947,8 @@ footer[role=contentinfo] {
     line-height: 0.75rem;
     color: #002960;
     text-transform: uppercase; }
+    .program-bar .program-name::after {
+      content: ':'; }
   .program-bar .course-name {
     font-size: 14px;
     font-size: 0.875rem;
@@ -6907,12 +6956,6 @@ footer[role=contentinfo] {
     line-height: 14px;
     line-height: 0.875rem;
     color: white; }
-
-.program-menu {
-  color: #3384ca;
-  padding-top: 12px; }
-  .program-menu .fa {
-    cursor: pointer; }
 
 .card-flip {
   position: relative;
@@ -7190,12 +7233,63 @@ footer[role=contentinfo] {
   line-height: 1.5rem;
   color: #66a5b5; }
 
+.program-menu {
+  color: #3384ca;
+  padding: 10px; }
+  .program-menu > * {
+    float: right; }
+  .program-menu .fa {
+    cursor: pointer; }
+
 .program-menu-content {
   display: none;
-  float: left;
-  position: fixed;
+  position: absolute;
+  right: 0;
+  top: 0;
   z-index: 100000;
   background-color: white;
-  -moz-box-shadow: 3px 3px 4px 0px rgba(51, 51, 51, 0.2);
-  -webkit-box-shadow: 3px 3px 4px 0px rgba(51, 51, 51, 0.2);
-  box-shadow: 3px 3px 4px 0px rgba(51, 51, 51, 0.2); }
+  -moz-box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
+  -webkit-box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
+  box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2); }
+  .program-menu-content .program-title {
+    margin: 12px 20px 0;
+    font-size: 10px;
+    font-size: 0.625rem;
+    font-weight: bold;
+    line-height: 10px;
+    line-height: 0.625rem;
+    text-transform: uppercase; }
+    .program-menu-content .program-title::after {
+      content: ':'; }
+  .program-menu-content a.course-name, .program-menu-content .course-name {
+    font-size: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    line-height: 12px;
+    line-height: 0.75rem;
+    padding: 5px 0;
+    color: black; }
+    .program-menu-content a.course-name.unavailable, .program-menu-content .course-name.unavailable {
+      color: #868685; }
+  .program-menu-content a.course-name:hover {
+    color: #e37222; }
+  .program-menu-content .status {
+    font-size: 10px;
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 10px;
+    line-height: 0.625rem;
+    font-style: italic; }
+    .program-menu-content .status.complete {
+      color: #a2ad00; }
+    .program-menu-content .status.unavailable {
+      color: #cccccc; }
+  .program-menu-content ul {
+    margin: 0 12px;
+    list-style: none; }
+    .program-menu-content ul li {
+      padding: 0 8px 8px;
+      border-top: 1px solid #cccccc; }
+      .program-menu-content ul li:first-child {
+        border-top: none;
+        margin-top: 0; }

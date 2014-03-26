@@ -10,18 +10,13 @@
     @include font-spec(10, bold, 12);
     color: $program-bar-program-title;
     text-transform: uppercase;
+    &::after{
+      content: ':';
+    }
   }
   .course-name{
     @include font-spec(14, semibold, 14);
     color: $program-bar-course-title;
-  }
-}
-
-.program-menu{
-  color: $mckinsey-academy-alt-blue;
-  padding-top: 12px;
-  .fa{
-    cursor: pointer;
   }
 }
 
@@ -334,11 +329,66 @@
   
 }
 
+.program-menu{
+  color: $mckinsey-academy-alt-blue;
+  padding: 10px;
+  > *{
+    float: right;
+  }
+  .fa{
+    cursor: pointer;
+  }
+}
+
 .program-menu-content{
   display: none;
-  float: left;
-  position: fixed;
+  position: absolute;
+  right:0;
+  top: 0;
   z-index: 100000;
   background-color: $pure-white;
-  @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
+  @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
+  .program-title{
+    margin: 12px 20px 0;
+    @include font-spec(10, bold);
+    text-transform: uppercase;
+    &::after{
+      content: ':';
+    }
+  }
+  a.course-name, .course-name{
+    @include font-spec(12, bold);
+    padding: 5px 0;
+    color: $pure-black;
+    &.unavailable{
+      color: $mckinsey-grey;
+    }
+  }
+  a.course-name{
+    &:hover{
+      color: $mckinsey-orange;
+    }
+  }
+  .status{
+    @include font-spec(10, semibold);
+    font-style: italic;
+    &.complete{
+      color: $mckinsey-green;
+    }
+    &.unavailable{
+      color: $almost-white;
+    }
+  }
+  ul{
+    margin: 0 12px;
+    list-style: none;
+    li{
+      padding: 0 8px 8px;
+      border-top: 1px solid $almost-white;
+      &:first-child{
+        border-top: none;
+        margin-top: 0;
+      }
+    }
+  }
 }
