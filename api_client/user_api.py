@@ -26,7 +26,7 @@ def register_user(user_hash):
     user_keys = ["username", "first_name", "last_name", "email", "password"]
     data = {user_key: user_hash[user_key] for user_key in user_keys}
 
-    response = POST('{}/{}/'.format(settings.API_SERVER_ADDRESS, USER_API), data)
+    response = POST('{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API), data)
     return JP.from_json(response.read())
 
 def get_user_course_status(user_id):
