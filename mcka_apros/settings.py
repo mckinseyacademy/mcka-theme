@@ -112,6 +112,7 @@ STATICFILES_DIRS = (
 # Api address
 # API_SERVER_ADDRESS = 'http://localhost:8000'
 API_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
+API_MOCK_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
 
 try:
     from local_settings import *

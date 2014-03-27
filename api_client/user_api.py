@@ -52,8 +52,9 @@ def register_user(user_hash):
 def get_user_course_status(user_id):
     ''' get the user's summary for their courses '''
     response = GET(
-        '{}/{}/{}/courses'.format(
-            settings.API_SERVER_ADDRESS,
+        '{}/{}/{}/enrollments'.format(
+            # TODO: remove forced MOCK reference when real API becomes available
+            settings.API_MOCK_SERVER_ADDRESS,
             USER_API,
             user_id
         )
@@ -72,7 +73,8 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id):
     }
     response = POST(
         '{}/{}/{}/course_bookmark'.format(
-            settings.API_SERVER_ADDRESS,
+            # TODO: remove forced MOCK reference when real API becomes available
+            settings.API_MOCK_SERVER_ADDRESS,
             USER_API,
             user_id
         ),
