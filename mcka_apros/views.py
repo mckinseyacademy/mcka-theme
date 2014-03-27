@@ -18,6 +18,8 @@ import haml_mako.templates as haml
 
 import urlparse
 
+from courses.views import homepage
+
 
 def _get_qs_value_from_url(value_name, url):
     parsed_url = urlparse.urlparse(url)
@@ -134,13 +136,13 @@ def register(request):
 
 def home(request):
     ''' show me the home page '''
-    template_name = 'main.html.haml'
-    use_user = None
-    if request.user.is_authenticated():
-        use_user = request.user
 
-    template = haml.get_haml_template(template_name)
-    return HttpResponse(template.render_unicode(user=use_user))
+    # if we have an authenticated user, show them their course-based homepage
+    if request.user and request.user.is_authenticated():
+        return homepage(request)
+
+    template = haml.get_haml_template('main.html.haml')
+    return HttpResponse(template.render_unicode(user=None))
 
 
 def csrf_token(context):

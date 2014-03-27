@@ -7,6 +7,30 @@ from courses.controller import build_page_info_for_course, locate_chapter_page, 
 
 # Create your views here.
 
+@login_required
+def homepage(request):
+    '''
+    Logged in user's homepage which will infer current program, course,
+    etc. from user settings
+    '''
+    course_id, chapter_id, page_id = locate_chapter_page(
+        request.user.id, None, None)
+
+    course, current_chapter, current_page = build_page_info_for_course(
+        course_id, chapter_id, page_id)
+
+    course.program = program_for_course(request.user.id, course_id)
+
+    template = haml.get_haml_template('courses/course_main.html.haml')
+    return HttpResponse(
+        template.render_unicode(
+                user=request.user,
+                course=course,
+                current_chapter=current_chapter,
+                current_page=current_page
+            )
+        )
+
 
 @login_required
 def navigate_to_page(request, course_id, chapter_id, page_id):
@@ -29,7 +53,7 @@ def navigate_to_page(request, course_id, chapter_id, page_id):
     update_bookmark(
         request.user.id, program_id, course_id, chapter_id, page_id)
 
-    template = haml.get_haml_template('courses/course_main.html.haml')
+    template = haml.get_haml_template('courses/course_navigation.html.haml')
     return HttpResponse(
         template.render_unicode(
                 user=request.user,

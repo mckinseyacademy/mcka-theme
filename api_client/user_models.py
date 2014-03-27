@@ -63,7 +63,7 @@ class UserStatus(JsonObject):
     def get_bookmark_for_course(self, course_id):
         ''' returns bookmark for specific course if present '''
         for course_status in self.courses:
-            if course_status.course_id == course_id and None != course_status.bookmark:
+            if course_status.course_id == course_id and hasattr(course_status, 'bookmark'):
                 return course_status.bookmark
 
         return None

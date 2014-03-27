@@ -23,4 +23,3 @@ class Command(BaseCommand):
             os.kill(assets_pid, signal.SIGTERM)
 
     atexit.register(kill_child)
-        

@@ -1,21 +1,22 @@
-﻿%%inherit(file="../main.html.haml")
+%%inherit(file="../layout.html.haml")
 
 %%block(name="program_bar")
   .row
     .large-12.columns.program-bar
-      - if course.program:
+      - if hasattr(course, 'program'):
         .program-name
           = course.program.program_name
       .course-name
-        = course.name
-  .row
-    .large-12.columns.program-menu
-      %i.fa.fa-bars
-      %%include(file="content_page/program_menu.html.haml")
+        = course.course_name
+  - if hasattr(course, 'program'):
+    .row
+      .large-12.columns.program-menu
+        %i.fa.fa-bars
+        %%include(file="content_page/program_menu.html.haml")
 
 %%block(name="content")
   .row
-    .large-11.large-centered.columns.content-page
+    .large-11.large-centered.columns.home-page
       %%include(file="content_page/course_menu.html.haml")
       %%include(file="content_page/course_discover.html.haml")
       %article.course-quote
@@ -24,27 +25,7 @@
           %img(src='http://dummyimage.com/50x50/aaa/000')
           .author Albert Einstein
           .occupation Theoretical Physicist
-      %%include(file="content_page/lesson_menu.html.haml")
-      .lesson-title
-        %span.lesson-index = "Lesson {}:".format(current_chapter.index)
-        %span.lesson-name = current_chapter.chapter_name
-        %span.page-desc = current_page.description
-      %h1.page-title
-        = current_page.page_name
-      .lesson-content
-      .lesson-discussion
-      %%include(file="content_page/lesson_pager.html.haml")
-    .large-1.medium-1.small-0.columns
-      &nbsp;
-
-%%block(name="js_snippets")
-  :javascript
-    var set_page_height = function(){
-      var $page = $('.content-page');
-      var $footer = $('.footer');
-
-      var new_height = $footer.position().top - $page.position().top - (2 * parseInt($page.css('margin-top')));
-      $page.css({height: new_height + "px"});
-    }
-    $(window).on('resize', set_page_height);
-    $(window).trigger('resize');
+  .row
+    .current_course_link
+      %a(href="/courses")
+        Where I last left things...

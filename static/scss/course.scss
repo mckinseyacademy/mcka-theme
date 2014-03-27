@@ -55,7 +55,7 @@
   }
 }
 
-.content-page{
+.home-page{
   article {
     margin: 10px 0;
     padding: 20px 27px;
@@ -391,4 +391,133 @@
       }
     }
   }
+}
+
+.content-page{
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+  background-color: $pure-white;
+  margin-top: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  
+  ul{
+    list-style: none;
+    display: inline;
+    margin: 15px 0;
+    li{
+      @include font-spec(12, bold, 14);
+      display: inline-block;
+    }
+  }
+  
+  .course-tabs{
+    margin: 10px 0;
+    ul{
+      li{
+        text-transform: uppercase;
+        margin-right: 10px;
+        color: $mckinsey-academy-alt-blue;
+        &.selected{
+          color: $mckinsey-grey;
+        }
+      }
+    }
+  }
+  
+  .lesson-menu{
+    @include font-spec(12, bold, 14);
+    border-top: 1px solid $mckinsey-academy-warm-gray;
+    border-bottom: 1px solid $mckinsey-academy-warm-gray;
+    margin: 10px 0;
+    padding: 5px 0;
+    color: $mckinsey-academy-black;
+    .lesson{
+      color: $mckinsey-academy-warm-gray;
+      width: 40px;
+      text-align: center;
+      border-left: 1px solid $mckinsey-academy-warm-gray;
+      a{
+        color: $mckinsey-academy-alt-blue;
+        &:hover{
+          color: $mckinsey-academy-blue-gray;
+        }
+      }
+      &:first-child{
+        border-left: none;
+      }
+      .selected{
+        color: $mckinsey-grey;
+      }
+    }
+  }
+  
+  .lesson-module-status{
+    display: inline-block;
+    font-family: FontAwesome;
+    @include font-spec(10);
+    color: $mckinsey-grey;
+    &::before{
+      content: "\f10c";
+    }
+    &.complete{
+      color: $mckinsey-green;
+    }
+    &.complete, &.current{
+      &::before{
+        content: "\f111"
+      }
+    }
+    &:hover{
+      color: $mckinsey-academy-alt-blue;
+      &.current{
+        color: $mckinsey-grey;
+      }
+    }
+  }
+  
+  .lesson-pager{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    padding-bottom: rem-calc(80);
+    .page-to{
+      margin: 0 10px;
+      @include font-spec(30);
+      @include square-size(50px);
+      @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
+      border-radius: 50%;
+      display: inline-block;
+      background-color: $mckinsey-academy-alt-blue;
+      color: $pure-white;
+      padding: 8px;
+      &.previous{
+        padding-right: 12px;
+      }
+      &.next{
+        padding-left: 12px;
+      }
+    }
+  }
+  
+  .lesson-title{
+    @include font-spec(10, semibold, 12);
+    color: $mckinsey-grey;
+    padding-top: 45px;
+    .lesson-index{
+      font-weight: bold;
+    }
+    .page-desc{
+      border-left: 1px solid $mckinsey-grey;
+      padding-left: 5px;
+      margin-left: 3px;
+    }
+  }
+  
+  .page-title{
+    @include font-spec(22, normal, 24);
+    color: $mckinsey-academy-turquoise;
+  }
+  
 }
