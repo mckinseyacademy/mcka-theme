@@ -190,7 +190,7 @@ footer[role=contentinfo]{
   }
   .built-on{
     @include font-spec(10, semibold);
-    float:right;
+    float: right;
     margin: 6px 50px;
   }
 }
@@ -202,12 +202,12 @@ footer[role=contentinfo]{
     padding: 10px 0;
     line-height: 1.3rem;
     list-style: none;
-    margin-left:0;
+    margin-left: 0;
   }
   .other{
     @include font-spec(12);
-    float:right;
-    position:relative;
+    float: right;
+    position: relative;
     top: -34px;
   }
 }

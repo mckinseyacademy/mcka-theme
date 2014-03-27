@@ -22,17 +22,17 @@
 
 .card-flip {
   position: relative;
-  -webkit-perspective: 400px;
+  @include perspective(1000px);
 
   &:hover {
     .front {
       z-index: 5;
-      -webkit-transform: rotateY(180deg);
+      @include transform(rotateY(180deg));
     }
 
     .back {
       z-index: 5;
-      -webkit-transform: rotateX(0deg);
+      @include transform(rotateX(0deg));
     }
   }
 
@@ -40,18 +40,18 @@
     position: absolute;
     top: 0;
     left: 0;
-    -webkit-transform-style: preserve-3d;
-    -webkit-transition: all 400ms ease-in-out;
-    -webkit-backface-visibility: hidden;
+    @include transition(all 400ms ease-in-out);
+    @include transform-style(preserve-3d);
+    @include backface-visibility(hidden);
   }
 
   .front {
     z-index: 10;
-    -webkit-transform: rotateX(0deg);
+    @include transform(rotateX(0deg));
   }
 
   .back {
-    -webkit-transform: rotateY(-180deg);
+    @include transform(rotateY(-180deg));
   }
 }
 
@@ -257,7 +257,7 @@
       }
     }
   }
-  
+
   .lesson-module-status{
     display: inline-block;
     font-family: FontAwesome;
@@ -281,7 +281,7 @@
       }
     }
   }
-  
+
   .lesson-pager{
     position: fixed;
     bottom: 0;
@@ -307,7 +307,7 @@
       }
     }
   }
-  
+
   .lesson-title{
     @include font-spec(10, semibold, 12);
     color: $mckinsey-grey;
@@ -321,12 +321,12 @@
       margin-left: 3px;
     }
   }
-  
+
   .page-title{
     @include font-spec(22, normal, 24);
     color: $mckinsey-academy-turquoise;
   }
-  
+
 }
 
 .program-menu{
@@ -399,7 +399,7 @@
   margin-top: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  
+
   ul{
     list-style: none;
     display: inline;
@@ -409,7 +409,7 @@
       display: inline-block;
     }
   }
-  
+
   .course-tabs{
     margin: 10px 0;
     ul{
@@ -423,7 +423,7 @@
       }
     }
   }
-  
+
   .lesson-menu{
     @include font-spec(12, bold, 14);
     border-top: 1px solid $mckinsey-academy-warm-gray;
@@ -450,7 +450,7 @@
       }
     }
   }
-  
+
   .lesson-module-status{
     display: inline-block;
     font-family: FontAwesome;
@@ -474,7 +474,7 @@
       }
     }
   }
-  
+
   .lesson-pager{
     position: fixed;
     bottom: 0;
@@ -500,7 +500,7 @@
       }
     }
   }
-  
+
   .lesson-title{
     @include font-spec(10, semibold, 12);
     color: $mckinsey-grey;
@@ -514,10 +514,10 @@
       margin-left: 3px;
     }
   }
-  
+
   .page-title{
     @include font-spec(22, normal, 24);
     color: $mckinsey-academy-turquoise;
   }
-  
+
 }
