@@ -39,7 +39,7 @@ DEFAULT_APPS = (
 
 THIRD_PARTY_APPS = (
     'django_assets',
-    #'south', south is OFF for the moment since there'll be significant change in database while setting up authentication through API
+    'south',
 )
 
 LOCAL_APPS = (
@@ -47,6 +47,7 @@ LOCAL_APPS = (
     'remote_auth',
     'users',
     'assets',
+    'main',
     'haml_mako',
     'courses',
 )
@@ -77,10 +78,23 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+# Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'mcka_apros',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',   
+        'PORT': '3306',
+    },
+    'edx': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'edx',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',   
+        'PORT': '3306',
     }
 }
 
