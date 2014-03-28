@@ -11,8 +11,10 @@
   - if hasattr(course, 'program'):
     .row
       .large-12.columns.program-menu
-        %i.fa.fa-bars
-        %%include(file="content_page/program_menu.html.haml")
+        %a(href="#", data={"dropdown":"program-menu-content"})
+          %i.fa.fa-bars
+        #program-menu-content.program-menu-content(data={"dropdown-content":"true"})
+          %%include(file="content_page/program_menu.html.haml")
 
 %%block(name="content")
   .row

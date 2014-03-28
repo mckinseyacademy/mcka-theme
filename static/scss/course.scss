@@ -342,10 +342,17 @@
 
 .program-menu-content{
   display: none;
-  position: absolute;
-  right:0;
-  top: 0;
-  z-index: 100000;
+  &.open{
+    display: block;
+  }
+
+  // The next few items are marked as !important to prevent the foundation dropdown code from re-positioning the dropdown - it's goping where we want it to go
+  position: absolute !important;
+  right:0 !important;
+  top: 0 !important;
+  left: auto !important;
+  z-index: 10000;
+  width: auto;
   background-color: $pure-white;
   @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
   .program-title{
