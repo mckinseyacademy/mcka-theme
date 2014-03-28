@@ -12,7 +12,8 @@ def get_course(course_id):
     Retrieves course structure information from the API for specified course
     '''
     response = GET('{}/{}/{}'.format(
-        settings.API_SERVER_ADDRESS,
+        # TODO: remove forced MOCK reference when real API becomes available
+        settings.API_MOCK_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id)
     )
@@ -24,7 +25,8 @@ def get_page_content(page_content_id):
     Retrieves specific page content including xblock
     '''
     response = GET('{}/{}/page_content/{}'.format(
-        settings.API_SERVER_ADDRESS,
+        # TODO: remove forced MOCK reference when real API becomes available
+        settings.API_MOCK_SERVER_ADDRESS,
         COURSEWARE_API,
         page_content_id)
     )
