@@ -6,12 +6,10 @@ Mckinsey Academy custom front end instance
 Notes:
 
 * Best to install requirements
-  $ pip install - requirements.txt
+  $ pip install -r requirements.txt
 
-* To compile sass => css execute the following command
-  $ sass static/scss/app.scss static/css/app.css
-
-  I am currently checking in the generated app.css for ease of use, but we should set up the project to recompile automagically
+* CSS and JS are compiled automatically upon save (for dev) when you run
+  $ ./manage.py rundev
 
 * We ARE using Mako templates, but we are preprocessing them with haml preprocessor (installed via pip)
 haml is a lovely markup, quick reference:
