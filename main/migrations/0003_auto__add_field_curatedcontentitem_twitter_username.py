@@ -8,33 +8,28 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'CuratedContentItem'
-        db.create_table(u'curated_content_item', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255, null=True)),
-            ('body', self.gf('django.db.models.fields.CharField')(max_length=1000, null=True)),
-            ('byline', self.gf('django.db.models.fields.CharField')(max_length=255, null=True)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('image_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('content_type', self.gf('django.db.models.fields.CharField')(default='txt', max_length=3)),
-        ))
-        db.send_create_signal(u'main', ['CuratedContentItem'])
+        # Adding field 'CuratedContentItem.twitter_username'
+        db.add_column('curated_content_item', 'twitter_username',
+                      self.gf('django.db.models.fields.CharField')(max_length=255, null=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'CuratedContentItem'
-        db.delete_table(u'curated_content_item')
+        # Deleting field 'CuratedContentItem.twitter_username'
+        db.delete_column('curated_content_item', 'twitter_username')
 
 
     models = {
         u'main.curatedcontentitem': {
-            'Meta': {'object_name': 'CuratedContentItem'},
+            'Meta': {'object_name': 'CuratedContentItem', 'db_table': "'curated_content_item'"},
             'body': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'null': 'True'}),
             'byline': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True'}),
             'content_type': ('django.db.models.fields.CharField', [], {'default': "'txt'", 'max_length': '3'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'sequence': ('django.db.models.fields.IntegerField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True'}),
+            'twitter_username': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True'}),
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         }
     }
