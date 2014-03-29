@@ -10,13 +10,13 @@
     %%block(name="user_region")
       - from django.utils.translation import ugettext as _
       - if user != None and user.is_authenticated():
-        .user-info
+        %a.user-info(href="#", data={"dropdown":"profile-container"})
           .user-name
             = user.username
           %i.fa.fa-sort-asc
           .user-image
             %img(src=user.image_url())
-          #profile-container
+          #profile-container(data={"dropdown-content":"true"})
       - else:
         .login-action
           %a.tiny.radius.button(href="/login")

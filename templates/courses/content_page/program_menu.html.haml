@@ -1,24 +1,23 @@
 ﻿- import datetime
-.program-menu-content
-  .program-title
-    = course.program.program_name
-  %ul.courses
-    - for program_course in course.program.courses:
-      %li
-        - available_date = None
-        - if hasattr(program_course, 'start_date'):
-          - available_date = datetime.datetime.strptime(program_course.start_date, '%Y-%m-%dT%H:%M:%S.%fZ')
-        - if available_date and datetime.datetime.utcnow() < available_date:
-          .course-name.unavailable
-            = program_course.course_name
-          .status.unavailable
-            = "Available {}".format(available_date.strftime('%B %d, %Y'))
+.program-title
+  = course.program.program_name
+%ul.courses
+  - for program_course in course.program.courses:
+    %li
+      - available_date = None
+      - if hasattr(program_course, 'start_date'):
+        - available_date = datetime.datetime.strptime(program_course.start_date, '%Y-%m-%dT%H:%M:%S.%fZ')
+      - if available_date and datetime.datetime.utcnow() < available_date:
+        .course-name.unavailable
+          = program_course.course_name
+        .status.unavailable
+          = "Available {}".format(available_date.strftime('%B %d, %Y'))
+      - else:
+        - nav_url = '/courses/{}'.format(program_course.course_id)
+        %a.course-name(href=nav_url,title=program_course.course_name)
+          = program_course.course_name
+        - if program_course.percent_complete < 100:
+          .status
+            = "{}% complete".format(program_course.percent_complete)
         - else:
-          - nav_url = '/courses/{}'.format(program_course.course_id)
-          %a.course-name(href=nav_url,title=program_course.course_name)
-            = program_course.course_name
-          - if program_course.percent_complete < 100:
-            .status
-              = "{}% complete".format(program_course.percent_complete)
-          - else:
-            .status.complete Completed
+          .status.complete Completed
