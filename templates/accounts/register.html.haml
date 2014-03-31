@@ -10,7 +10,7 @@
     .registration-form.large-4.medium-4.columns
       %form(action="/accounts/register/", method="POST")
         .error
-          - if None != error:
+          - if error is not None:
             = error
         = csrf_token
         = form

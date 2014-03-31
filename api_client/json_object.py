@@ -86,10 +86,10 @@ class JsonObject(Objectifier):
     valid_fields = None
 
     def __init__(self, json_data=None, dictionary=None):
-        if dictionary == None and json_data != None:
+        if dictionary is None and json_data is not None:
             dictionary = json.loads(json_data)
 
-        if dictionary != None:
+        if dictionary is not None:
             self._validate_fields(dictionary)
             super(JsonObject, self).__init__(dictionary)
             # self._build_from_dictionary(dictionary)

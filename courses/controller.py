@@ -47,7 +47,7 @@ def build_page_info_for_course(course_id, chapter_id, page_id, course_api_impl=c
             if _is_int_equal(page.page_id, page_id):
                 current_page = page
 
-            if None != prev_page:
+            if prev_page is not None:
                 page.prev_url = prev_page.navigation_url
                 prev_page.next_url = page.navigation_url
             prev_page = page
@@ -71,7 +71,7 @@ def locate_chapter_page(user_id, course_id, chapter_id, user_api_impl=user_api, 
         course_id = user_status.current_course_id
 
     bookmark = user_status.get_bookmark_for_course(course_id)
-    if None != bookmark and (chapter_id == None or bookmark.chapter_id == chapter_id):
+    if bookmark is not None and (chapter_id is None or bookmark.chapter_id == chapter_id):
         return course_id, bookmark.chapter_id, bookmark.page_id
 
     course = course_api_impl.get_course(course_id)

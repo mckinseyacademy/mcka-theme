@@ -19,7 +19,7 @@ class RemoteUser(AbstractUser):
 
     def update_response_fields(self, user_response, session_key=None):
         ''' take api response and blend the results into this user object '''
-        if session_key != None:
+        if session_key is not None:
             self.session_key = session_key
         self.email = user_response.email
         self.username = user_response.username
