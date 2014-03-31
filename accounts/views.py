@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware import csrf
 from mcka_apros.forms import LoginForm, RegistrationForm
 from api_client import user_api
-from remote_auth.models import RemoteUser
+from accounts.models import RemoteUser
 
 from importlib import import_module
 from django.conf import settings
@@ -20,12 +20,15 @@ import urlparse
 
 from courses.views import homepage
 
+from django.contrib.auth.decorators import login_required
+
 
 def _get_qs_value_from_url(value_name, url):
+    ''' gets querystring value from url that contains a querystring '''
     parsed_url = urlparse.urlparse(url)
-    qs = urlparse.parse_qs(parsed_url.query)
-    if value_name in qs and len(qs[value_name]) > 0:
-        return qs[value_name][0]
+    query_strings = urlparse.parse_qs(parsed_url.query)
+    if value_name in query_strings and len(query_strings[value_name]) > 0:
+        return query_strings[value_name][0]
     return None
 
 
@@ -43,10 +46,13 @@ def login(request):
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
 
-                redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER']) if 'HTTP_REFERER' in request.META else None
+                redirect_to = _get_qs_value_from_url(
+                    'next',
+                    request.META['HTTP_REFERER']
+                ) if 'HTTP_REFERER' in request.META else None
                 if not redirect_to:
                     redirect_to = '/'
-                
+
                 return HttpResponseRedirect(redirect_to)  # Redirect after POST
             except url_access.HTTPError, err:
                 error = _("An error occurred during login")
@@ -70,7 +76,7 @@ def login(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    template = haml.get_haml_template('login.html.haml')
+    template = haml.get_haml_template('accounts/login.html.haml')
     return HttpResponse(
         template.render_unicode(
             user=None,
@@ -87,7 +93,7 @@ def logout(request):
     # our local stuff to go
     try:
         user_api.delete_session(request.session["remote_session_key"])
-    except:
+    except url_access.HTTPError:
         pass
 
     # clean user from the local cache
@@ -109,7 +115,9 @@ def register(request):
                 user_api.register_user(request.POST)
                 # Redirect after POST
                 return HttpResponseRedirect(
-                    '/login?username={}'.format(request.POST["username"])
+                    '/accounts/login?username={}'.format(
+                        request.POST["username"]
+                    )
                 )
             except url_access.HTTPError, err:
                 error = _("An error occurred during registration")
@@ -123,7 +131,7 @@ def register(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    template = haml.get_haml_template('register.html.haml')
+    template = haml.get_haml_template('accounts/register.html.haml')
     return HttpResponse(
         template.render_unicode(
             user=None,
@@ -152,3 +160,14 @@ def csrf_token(context):
         return ''
     return (u'<div style="display:none"><input type="hidden"'
             ' name="csrfmiddlewaretoken" value="%s" /></div>' % (csrf_token_value))
+
+
+@login_required
+def user_profile(request):
+    ''' gets user_profile information in html snippet '''
+    template = haml.get_haml_template('accounts/user_profile.html.haml')
+    return HttpResponse(
+        template.render_unicode(
+            user=user_api.get_user(request.user.id)
+        )
+    )

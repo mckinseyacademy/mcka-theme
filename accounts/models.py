@@ -13,6 +13,7 @@ class RemoteUser(AbstractUser):
     ''' user object that exists only in cache '''
     # TODO: replace with memcached on server
     temp_user_cache = {}
+    _image_url = None
 
     session_key = models.CharField('session_key', max_length=255, unique=True)
 
