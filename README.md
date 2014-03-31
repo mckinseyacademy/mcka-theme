@@ -6,7 +6,15 @@ Mckinsey Academy custom front end instance
 Notes:
 
 * Best to install requirements
-  $ pip install -r requirements.txt
+`
+    $ pip install -r requirements.txt
+`
+
+    _(if you experience an error when installing mySql package on Mavericks try this command instead
+`
+    $ CFLAGS=-Wunused-command-line-argument-hard-error-in-future pip install -r requirements.txt
+`
+    )_
 
 * CSS and JS are compiled automatically upon save (for dev) when you run
   $ ./manage.py rundev
