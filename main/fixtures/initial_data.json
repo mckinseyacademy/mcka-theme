@@ -1,0 +1,72 @@
+[
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 1,
+    "fields": {
+      "sequence": 1,
+      "title": "This is an Article",
+      "body": "Here is the blurb!",
+      "byline": "",
+      "url": "http://www.google.com",
+      "image_url": "http://placekitten.com/200/300",
+      "twitter_username": "",
+      "content_type": "art"
+    }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 2,
+    "fields": {
+      "sequence": 2,
+      "title": "This is a Video",
+      "body": "Lennon",
+      "byline": "Lennon",
+      "url": "Lennon",
+      "image_url": "Lennon",
+      "twitter_username": "",
+      "content_type": "vid"
+    }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 3,
+    "fields": {
+      "sequence": 3,
+      "title": "",
+      "body": "",
+      "byline": "",
+      "url": "",
+      "image_url": "",
+      "twitter_username": "",
+      "content_type": "twt"
+    }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 4,
+    "fields": {
+      "sequence": 4,
+      "title": "This is a Quotation",
+      "body": "Thre once was a man from New York.",
+      "byline": "Joe Schmoe",
+      "url": "",
+      "image_url": "",
+      "twitter_username": "",
+      "content_type": "quo"
+    }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 5,
+    "fields": {
+      "sequence": 5,
+      "title": "This is a Video",
+      "body": "Lennon",
+      "byline": "Lennon",
+      "url": "Lennon",
+      "image_url": "Lennon",
+      "twitter_username": "",
+      "content_type": "vid"
+    }
+  }
+]
