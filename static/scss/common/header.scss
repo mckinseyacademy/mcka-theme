@@ -1,0 +1,160 @@
+header[role=banner] {
+  // TODO: replace with extend depth5
+  position: relative;
+  z-index: 100000;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+  background-color: $header-background;
+  @include left-right-gradient($header-left-color, $header-right-color, 320px);
+  color: $header-text;
+  height: $header-bar-height;
+  max-height: $header-bar-height;
+  .columns{
+    padding: 0;
+  }
+
+  .header-menu{
+    top:-18px;
+    position: relative;
+    ul{
+      li{
+        @include font-spec(12, semibold, 14);
+        list-style: none;
+        text-transform: uppercase;
+        margin: 0 0.5rem;
+      }
+    }
+  }
+  ul, li{
+    display: inline-block;
+  }
+  >div{
+    height: 100%;
+    //margin: auto 0;
+  }
+  .logo{
+    background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;
+    width: 340px;
+    height: 100%;
+    display: inline-block;
+  }
+  .user-info{
+    cursor: pointer;
+    float: right;
+    color: $user-text;
+    @include font-spec(10, semibold, 12);
+    text-align: right;
+    $drop_down_offset: 3px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    @media #{$large-up}{
+      position: inherit;
+      top: inherit;
+      right: inherit;
+    }
+    .fa{
+      position:relative;
+      &.fa-sort-asc{
+        top: -1*$drop_down_offset;
+      }
+      &.fa-sort-desc{
+        top: $drop_down_offset;
+      }
+    }
+    div{
+      display: inline;
+    }
+    .user-image img{
+      @include square-size($header-bar-height);
+    }
+    $user-profile-width: 220px;
+    .user-profile{
+      width: $user-profile-width;
+      @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+      div{
+        display:block;
+      }
+      color: $mckinsey-academy-black;
+      height: auto;
+      display: block;
+      border-left: 1px solid $border-line;
+      border-right: 1px solid $border-line;
+      background-color: $pure-white;
+      div{
+        display: block;
+      }
+      .user-detail{
+        width: 100%;
+        >div{
+          padding: 10px 10px;
+          text-align: left;
+          border-bottom: 1px solid $border-line;
+          height: 40px;
+          vertical-align: middle;
+          &.username{
+            text-align: center;
+            @include font-spec(14, semibold);
+            height: 30px;
+            padding-top: 3px;
+          }
+          &.logout{
+            height: auto;
+            vertical-align: middle;
+            text-align: center;
+            .button{
+              margin: 0 0 5px;
+            }
+          }
+        }
+        $detail_icon_size: 18px;
+        .fa{
+          width: $detail_icon_size;
+          font-size: rem-calc($detail_icon_size);
+          color: $mckinsey-academy-blue-gray;
+          text-align: center;
+        }
+        .field-group{
+          @include font-spec(10, semibold);
+          margin-left: $detail_icon_size + 5;
+          margin-top: -1*$detail_icon_size;
+          .fieldtitle{
+            font-weight: bold;
+            .editfield{
+              font-weight: boldness(semibold);
+              padding-left: 4px;
+              border-left: 1px solid $border-line;
+            }
+          }
+          .fieldcontent{
+          }
+        }
+      }
+      .user-image {
+        width: 100%;
+        height: 180px;
+        img{
+          margin: 10px 30px;
+          @include square-size(160px);
+        }
+        padding-bottom: 20px;
+        border-bottom: 1px solid $border-line;
+      }
+    }
+  }
+  .login-action{
+    float: right;
+    .button{
+      padding: 8px 15px;
+      margin: 10px;
+    }
+  }
+  .application-name{
+    display: inline-block;
+    padding: 10px 10px;
+  }
+  #profile-container.open{
+    // !important to override foundation dropdown positioning
+    right: 0 !important;
+    left: auto !important;
+  }
+}

@@ -1,54 +1,60 @@
 ﻿
 !!! 5
 %html.no-js{lang:"en"}
-%head
-  %meta{charset: "utf-8"}
-  %meta{name: "viewport", content: "width=device-width", initialScale: "1.0"}
-  - block meta
-  %title= _("McKinsey Academy")
+  %head
+    %meta{charset: "utf-8"}
+    %meta{name: "viewport", content: "width=device-width", initialScale: "1.0"}
+    - block meta
+    %title= _("McKinsey Academy")
 
-  -# CSS
-  - block css
-    %link{rel: "stylesheet", href: "/static/css/normalize.css"}
-    %link{rel: "stylesheet", href: "/static/css/font-awesome.css"}
-    %link{rel: "stylesheet", href: "/static/css/app.css"}
+    -# CSS
+    - block css
+      %link{rel: "stylesheet", href: "/static/css/normalize.css"}
+      %link{rel: "stylesheet", href: "/static/css/font-awesome.css"}
 
-  -# Override if you need another version of modernizr; or comment out for now - we dont' need it yet
-  - block foundation_modernizer
-    -# %script(src="/static/js/vendor/modernizr.js")
+    - load assets
+    {% assets "css_all" %}
+      %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
+    {% endassets %}
 
-  -# Custom head JS
-  - block head_js
-  
-%body
-  -# Header
-  - block header
-    - include 'header.html.haml'
+    -# Override if you need another version of modernizr; or comment out for now - we dont' need it yet
+    - block foundation_modernizer
+      -# %script(src="/static/js/vendor/modernizr.js")
 
-  - block program_bar
+    -# Custom head JS
+    - block head_js
 
-  -# Main content goes here
-  - block content
+  %body
 
-  -# Footer
-  - block footer
-    - include 'footer.html.haml'
-  
-  -# Override if you need another version of jQuery
-  - block foundation_jquery
-    %script{src: "/static/js/vendor/jquery.js"}
+    -# Header
+    - block header
+      - include 'header.html.haml'
 
-  -# Foundation JS
-  - block foundation_js
-    %script{src: "/static/js/foundation.min.js"}
+    - block program_bar
 
-  -# Custom JS
-  - block body_js
-    %script{src: "/static/js/application.js"}
+    -# Main content goes here
+    %main{role: "main"}
+      - block content
 
-  -# JS - custom snippets
-  - block js_snippets
+    -# Footer
+    - block footer
+      - include 'footer.html.haml'
 
-  -# Init Foundation
-  - block foundation_js_init
-    %script $(document).foundation();
+    -# Override if you need another version of jQuery
+    - block foundation_jquery
+      %script{src: "/static/js/vendor/jquery.js"}
+
+    -# Foundation JS
+    - block foundation_js
+      %script{src: "/static/js/foundation.min.js"}
+
+    -# Custom JS
+    - block body_js
+      %script{src: "/static/js/application.js"}
+
+    -# JS - custom snippets
+    - block js_snippets
+
+    -# Init Foundation
+    - block foundation_js_init
+      %script $(document).foundation();

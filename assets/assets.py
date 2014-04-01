@@ -15,9 +15,9 @@ register('js_all', js)
 # CSS compilation and squashing
 scss = Bundle(
     'scss/app.scss',
-    filters='sass', 
+    filters='sass',
     output='app.css',
-    depends=('scss/*.scss')
+    depends=('scss/**/*.scss')
 )
 register('scss_all', scss)
 
