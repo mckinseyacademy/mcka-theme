@@ -158,6 +158,11 @@ header[role=banner]{
     display: inline-block;
     padding: 10px 10px;
   }
+  #profile-container.open{
+    // !important to override foundation dropdown positioning
+    right: 0 !important;
+    left: auto !important;
+  }
 }
 
 main[role=main] {
@@ -212,4 +217,3 @@ footer[role=contentinfo]{
   }
 }
 
-@import "course"
