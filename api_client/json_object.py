@@ -1,6 +1,7 @@
 ''' Base classes to read json responses into objects '''
 import json
 import collections
+import datetime
 
 # ignore too few public methods witin this file - these models almost always
 # don't need a public method because they inherit from the base implementation
@@ -84,10 +85,17 @@ class JsonObject(Objectifier):
     '''
     required_fields = []
     valid_fields = None
+    date_fields = []
 
     def __init__(self, json_data=None, dictionary=None):
         if dictionary is None and json_data is not None:
             dictionary = json.loads(json_data)
+
+        for date_field in self.date_fields:
+            if date_field in dictionary:
+                date_value = self._build_date_field(dictionary[date_field])
+                if date_value:
+                    dictionary[date_field] = date_value
 
         if dictionary is not None:
             self._validate_fields(dictionary)
@@ -109,6 +117,12 @@ class JsonObject(Objectifier):
                     remove_fields.append(element)
             for remove_field in remove_fields:
                 del dictionary[remove_field]
+
+    def _build_date_field(self, json_date_string_value):
+        try:
+            return datetime.datetime.strptime(json_date_string_value, '%Y-%m-%dT%H:%M:%S.%fZ')
+        except:
+            return None
 
 
 class JsonParser(object):

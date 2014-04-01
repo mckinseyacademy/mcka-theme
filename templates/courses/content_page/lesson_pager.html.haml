@@ -1,8 +1,9 @@
+
 .lesson-pager
   %div
-    %a(href=current_page.prev_url)
+    %a{href: "{{ current_page.prev_url }}"}
       .page-to.previous
         %i.fa.fa-chevron-left
-    %a(href=current_page.next_url)
+    %a{href: "{{ current_page.next_url }}"}
       .page-to.next
         %i.fa.fa-chevron-right

@@ -1,6 +1,6 @@
-﻿- from django.utils.translation import ugettext as _
+﻿
 .row
-  %footer.large-12.columns(role="contentinfo")
+  %footer.large-12.columns{role: "contentinfo"}
     %span.copyright
       &copy; 2014
       = _("McKinsey Academy")
@@ -12,6 +12,7 @@
       %li= _("Contact")
       %li= _("FAQ")
     %span.built-on
+
       = _("Build on")
-      %a(href="http://www.openedx.org", target="_blank")
+      %a{href: "http://www.openedx.org", target: "_blank"}
         = _("OpenEdx")

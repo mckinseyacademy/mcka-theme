@@ -14,7 +14,7 @@ SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from django.contrib import auth
 import urllib2 as url_access
 
-import haml_mako.templates as haml
+from django.shortcuts import render
 
 import urlparse
 
@@ -76,15 +76,13 @@ def login(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    template = haml.get_haml_template('accounts/login.html.haml')
-    return HttpResponse(
-        template.render_unicode(
-            user=None,
-            form=form,
-            csrf_token=csrf_token(request),
-            error=error
-        )
-    )
+    data = {
+        "user": None,
+        "form": form,
+        "csrf_token": csrf_token(request),
+        "error": error,
+        }
+    return render(request, 'accounts/login.html.haml', data)
 
 
 def logout(request):
@@ -131,15 +129,13 @@ def register(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    template = haml.get_haml_template('accounts/register.html.haml')
-    return HttpResponse(
-        template.render_unicode(
-            user=None,
-            form=form,
-            csrf_token=csrf_token(request),
-            error=error
-        )
-    )
+    data = {
+        "user": None,
+        "form": form,
+        "csrf_token": csrf_token(request),
+        "error": error,
+        }
+    return render(request, 'accounts/register.html.haml', data)
 
 
 def home(request):
@@ -149,8 +145,7 @@ def home(request):
     if request.user and request.user.is_authenticated():
         return homepage(request)
 
-    template = haml.get_haml_template('main.html.haml')
-    return HttpResponse(template.render_unicode(user=None))
+    return render(request, 'main.html.haml', {"user": None})
 
 
 def csrf_token(context):
@@ -158,16 +153,16 @@ def csrf_token(context):
     csrf_token_value = csrf.get_token(context)
     if csrf_token_value == 'NOTPROVIDED':
         return ''
-    return (u'<div style="display:none"><input type="hidden"'
-            ' name="csrfmiddlewaretoken" value="%s" /></div>' % (csrf_token_value))
+    return csrf_token_value
 
 
 @login_required
 def user_profile(request):
     ''' gets user_profile information in html snippet '''
-    template = haml.get_haml_template('accounts/user_profile.html.haml')
-    return HttpResponse(
-        template.render_unicode(
-            user=user_api.get_user(request.user.id)
-        )
-    )
+    user = user_api.get_user(request.user.id)
+    user_data = {
+        "user_image_url": user.image_url(160),
+        "user_formatted_name": user.formatted_name(),
+        "user_email": user.email,
+    }
+    return render(request, 'accounts/user_profile.html.haml', user_data)

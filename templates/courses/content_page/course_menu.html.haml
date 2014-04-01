@@ -1,18 +1,21 @@
+
 %article.course-menu
   .title LESSONS:
   .rotator
     %ul
-      - for idx, lesson in enumerate(course.chapters, start=1):
+      - for lesson in course.chapters
         %li
-          %a.card-flip(href="/courses/${course.course_id}/lessons/${lesson.chapter_id}")
+          %a.card-flip{href: "/courses/{{ course.course_id }}/lessons/{{ lesson.chapter_id }}"}
             .front
-              .index LESSON ${idx}:
-              .name= lesson.chapter_name
+              .index LESSON {{lesson.index}}
+              .name
+                = lesson.chapter_name
               .lesson-progress
-                - for i in range(1,6):
-                  - if i * 20 <= 100: #lesson.percent_complete:
+                - for tick_mark in lesson.tick_marks
+                  - if tick_mark
                     .tick.on
-                  - else:
+                  - else
                     .tick
             .back
-              .description = lesson.description
+              .description
+                = lesson.description

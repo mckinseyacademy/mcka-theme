@@ -1,5 +1,6 @@
-%%inherit(file="layout.html.haml")
 
-%%block(name="content")
-  .row(style="margin:50px auto;text-align:center;")
+- extends "layout.html.haml"
+
+- block content
+  .row{style: "margin:50px auto;text-align:center;"}
     No user is logged in. Marketing content will appear on this page.

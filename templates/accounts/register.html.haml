@@ -1,26 +1,27 @@
-﻿%%inherit(file="../layout.html.haml")
+﻿
+- extends "layout.html.haml"
 
-%%block(name="user_region")
+- block header
+  - include 'accounts/login_header.html.haml'
 
-%%block(name="content")
-  - from django.utils.translation import ugettext as _
+- block content
   .row
     .large-4.medium-4.columns
       &nbsp;
     .registration-form.large-4.medium-4.columns
-      %form(action="/accounts/register/", method="POST")
+      %form{action: "/accounts/register/", method: "POST"}
         .error
-          - if error is not None:
+          - if error
             = error
-        = csrf_token
+        %input{type: "hidden", name: "csrfmiddlewaretoken", value: "#{csrf_token}"}
         = form
-        %input.button.radius.small(type="submit", value=_("Register"))
-      %a.other(href="/accounts/login")
+        %input.button.radius.small{type: "submit", value: "Register"}
+      %a.other{href: "/accounts/login"}
         = _("Log In")
     .large-4.medium-4.columns
       &nbsp;
 
-%%block(name="js_snippets")
+- block js_snippets
   :javascript
     $('form input[type="text"]').on('keypress', function(){
       $('.error').text('');

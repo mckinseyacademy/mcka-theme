@@ -47,7 +47,6 @@ LOCAL_APPS = (
     'accounts',
     'assets',
     'main',
-    'haml_mako',
     'courses',
 )
 
@@ -60,7 +59,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'djangomako.middleware.MakoMiddleware',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
@@ -73,6 +71,11 @@ AUTHENTICATION_BACKENDS = (
 )
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+TEMPLATE_LOADERS = (
+    'hamlpy.template.loaders.HamlPyFilesystemLoader',
+    'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

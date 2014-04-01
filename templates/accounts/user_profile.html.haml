@@ -1,7 +1,7 @@
-﻿- from django.utils.translation import ugettext as _
+﻿
 .user-profile
   .user-image
-    %img(src = user.image_url(160))
+    %img{src: "{{ user_image_url }}"}
   .user-detail
     .username
       = user.username
@@ -12,7 +12,8 @@
           = _("Full Name")
           %a.editfield
             = _("edit")
-        .fieldcontent = user.formatted_name()
+        .fieldcontent
+          = user_formatted_name
     .title
       %i.fa.fa-info
       .field-group
@@ -28,7 +29,8 @@
           = _("Email")
           %a.editfield
             = _("edit")
-        .fieldcontent = user.email
+        .fieldcontent
+          = user_email
     .logout
-      %a.button.small.radius(href="/accounts/logout")
+      %a.button.small.radius{href: "/accounts/logout"}
         = _("Log Out")
