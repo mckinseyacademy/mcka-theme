@@ -1,4 +1,3 @@
-﻿
 .program-title
   = program.program_name
 %ul.courses
@@ -10,7 +9,7 @@
         .status.unavailable
           = program_course.formatted_start_date
       - else
-        %a.course-name{href: "{{ program_course.nav_url }}", title: "{{ program_course.course_name }}"}
+        %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.course_name}"}
           = program_course.course_name
         - if program_course.percent_complete < 100
           .status
