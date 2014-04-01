@@ -13,7 +13,7 @@
         .error
           - if error
             = error
-        %input{type: "hidden", name: "csrfmiddlewaretoken", value: "#{csrf_token}"}
+        - csrf_token
         = form
         -# TODO: fix translatable for "Log In"
         %input.button.radius.small{type: "submit", value: "Log In"}

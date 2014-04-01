@@ -15,5 +15,5 @@
             = lesson.index
 .lesson-progress
   - for lesson_module in current_chapter.pages
-    %a.lesson-module-status{class_: "{{ lesson_module.status_class }}", href: "{{ lesson_module.navigation_url }}"}
+    %a.lesson-module-status{class: "{{ lesson_module.status_class }}", href: "{{ lesson_module.navigation_url }}"}
 

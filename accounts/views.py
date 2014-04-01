@@ -79,7 +79,6 @@ def login(request):
     data = {
         "user": None,
         "form": form,
-        "csrf_token": csrf_token(request),
         "error": error,
         }
     return render(request, 'accounts/login.html.haml', data)
@@ -132,7 +131,6 @@ def register(request):
     data = {
         "user": None,
         "form": form,
-        "csrf_token": csrf_token(request),
         "error": error,
         }
     return render(request, 'accounts/register.html.haml', data)
@@ -146,14 +144,6 @@ def home(request):
         return homepage(request)
 
     return render(request, 'main.html.haml', {"user": None})
-
-
-def csrf_token(context):
-    """A csrf token that can be included in a form."""
-    csrf_token_value = csrf.get_token(context)
-    if csrf_token_value == 'NOTPROVIDED':
-        return ''
-    return csrf_token_value
 
 
 @login_required
