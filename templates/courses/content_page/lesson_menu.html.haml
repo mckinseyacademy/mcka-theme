@@ -8,12 +8,12 @@
           %span.lesson-index.selected
             = lesson.index
         - elif lesson.is_released
-          %a.lesson-index{href: "{{ lesson.navigation_url }}", title: "{{ lesson.chapter_name }}"}
+          %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.chapter_name}"}
             = lesson.index
         - else
           %span.lesson-index
             = lesson.index
 .lesson-progress
   - for lesson_module in current_chapter.pages
-    %a.lesson-module-status{class_: "{{ lesson_module.status_class }}", href: "{{ lesson_module.navigation_url }}"}
+    %a.lesson-module-status{class: "#{lesson_module.status_class}", href: "#{lesson_module.navigation_url}"}
 
