@@ -26,7 +26,7 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-AUTH_USER_MODEL = 'remote_auth.RemoteUser'
+AUTH_USER_MODEL = 'accounts.RemoteUser'
 
 DEFAULT_APPS = (
     'django.contrib.admin',
@@ -44,11 +44,9 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'api_client',
-    'remote_auth',
-    'users',
+    'accounts',
     'assets',
     'main',
-    'haml_mako',
     'courses',
 )
 
@@ -61,7 +59,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'djangomako.middleware.MakoMiddleware',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
@@ -70,10 +67,15 @@ WSGI_APPLICATION = 'mcka_apros.wsgi.application'
 
 AUTHENTICATION_BACKENDS = (
     #'django.contrib.auth.backends.ModelBackend',
-    'remote_auth.json_backend.JsonBackend',
+    'accounts.json_backend.JsonBackend',
 )
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+TEMPLATE_LOADERS = (
+    'hamlpy.template.loaders.HamlPyFilesystemLoader',
+    'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

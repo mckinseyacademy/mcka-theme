@@ -1,33 +1,34 @@
-%%inherit(file="../layout.html.haml")
 
-%%block(name="program_bar")
+- extends "layout.html.haml"
+
+- block program_bar
   .row
     .large-12.columns.program-bar
-      - if hasattr(course, 'program'):
+      - if program
         .program-name
-          = course.program.program_name
+          = program.program_name
       .course-name
         = course.course_name
-  - if hasattr(course, 'program'):
+  - if program
     .row
       .large-12.columns.program-menu
-        %a(href="#", data={"dropdown":"program-menu-content"})
+        %a{href:"#", "data-dropdown":"program-menu-content"}
           %i.fa.fa-bars
-        #program-menu-content.program-menu-content(data={"dropdown-content":"true"})
-          %%include(file="content_page/program_menu.html.haml")
+        #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
+          - include "courses/content_page/program_menu.html.haml"
 
-%%block(name="content")
+- block content
   .row
     .large-11.large-centered.columns.home-page
-      %%include(file="content_page/course_menu.html.haml")
-      %%include(file="content_page/course_discover.html.haml")
+      - include "courses/content_page/course_menu.html.haml"
+      - include "courses/content_page/course_discover.html.haml"
       %article.course-quote
         %blockquote If I had an hour to solve a problem I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions.
         .attribution
-          %img(src='http://dummyimage.com/50x50/aaa/000')
+          %img{src:'http://dummyimage.com/50x50/aaa/000'}
           .author Albert Einstein
           .occupation Theoretical Physicist
   .row
     .current_course_link
-      %a(href="/courses")
+      %a{href:"/courses"}
         Where I last left things...

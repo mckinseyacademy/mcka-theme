@@ -13,12 +13,13 @@ class RemoteUser(AbstractUser):
     ''' user object that exists only in cache '''
     # TODO: replace with memcached on server
     temp_user_cache = {}
+    _image_url = None
 
     session_key = models.CharField('session_key', max_length=255, unique=True)
 
     def update_response_fields(self, user_response, session_key=None):
         ''' take api response and blend the results into this user object '''
-        if session_key != None:
+        if session_key is not None:
             self.session_key = session_key
         self.email = user_response.email
         self.username = user_response.username

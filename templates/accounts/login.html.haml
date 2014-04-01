@@ -1,0 +1,29 @@
+﻿
+- extends "layout.html.haml"
+
+- block header
+  - include 'accounts/login_header.html.haml'
+
+- block content
+  .row
+    .large-4.medium-4.columns
+      &nbsp;
+    .login-form.large-4.medium-4.columns
+      %form{action: "/accounts/login/", method: "POST"}
+        .error
+          - if error
+            = error
+        %input{type: "hidden", name: "csrfmiddlewaretoken", value: "#{csrf_token}"}
+        = form
+        -# TODO: fix translatable for "Log In"
+        %input.button.radius.small{type: "submit", value: "Log In"}
+      %a.other{href: "/accounts/register"}
+        = _("Register")
+    .large-4.medium-4.columns
+      &nbsp;
+
+- block js_snippets
+  :javascript
+    $('form input[type="text"]').on('keypress', function(){
+      $('.error').text('');
+    });
