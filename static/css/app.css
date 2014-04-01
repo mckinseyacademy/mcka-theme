@@ -6381,7 +6381,7 @@ header[role=banner] {
   background-color: #002960;
   background: -moz-linear-gradient(left, #284670 0%, #002960 320px);
   background: -webkit-linear-gradient(left, #284670 0%, #002960 320px);
-  background: linear-gradient(left, #284670 0%, #002960 320px);
+  background: linear, left, #284670 0%, #002960 320px;
   color: white;
   height: 48px;
   max-height: 48px; }
@@ -6597,25 +6597,50 @@ footer[role=contentinfo] {
 
 .card-flip {
   position: relative;
-  -webkit-perspective: 400px; }
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  perspective: 1000px; }
   .card-flip:hover .front {
     z-index: 5;
-    -webkit-transform: rotateY(180deg); }
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg); }
   .card-flip:hover .back {
     z-index: 5;
-    -webkit-transform: rotateX(0deg); }
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg); }
   .card-flip .front, .card-flip .back {
     position: absolute;
     top: 0;
     left: 0;
-    -webkit-transform-style: preserve-3d;
     -webkit-transition: all 400ms ease-in-out;
-    -webkit-backface-visibility: hidden; }
+    -moz-transition: all 400ms ease-in-out;
+    transition: all 400ms ease-in-out;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden; }
   .card-flip .front {
     z-index: 10;
-    -webkit-transform: rotateX(0deg); }
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg); }
   .card-flip .back {
-    -webkit-transform: rotateY(-180deg); }
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    transform: rotateY(-180deg); }
 
 .home-page article {
   margin: 10px 0;
@@ -7079,25 +7104,50 @@ footer[role=contentinfo] {
 
 .card-flip {
   position: relative;
-  -webkit-perspective: 400px; }
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  perspective: 1000px; }
   .card-flip:hover .front {
     z-index: 5;
-    -webkit-transform: rotateY(180deg); }
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg); }
   .card-flip:hover .back {
     z-index: 5;
-    -webkit-transform: rotateX(0deg); }
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg); }
   .card-flip .front, .card-flip .back {
     position: absolute;
     top: 0;
     left: 0;
-    -webkit-transform-style: preserve-3d;
     -webkit-transition: all 400ms ease-in-out;
-    -webkit-backface-visibility: hidden; }
+    -moz-transition: all 400ms ease-in-out;
+    transition: all 400ms ease-in-out;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden; }
   .card-flip .front {
     z-index: 10;
-    -webkit-transform: rotateX(0deg); }
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg); }
   .card-flip .back {
-    -webkit-transform: rotateY(-180deg); }
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    transform: rotateY(-180deg); }
 
 .home-page article {
   margin: 10px 0;
