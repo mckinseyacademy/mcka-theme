@@ -80,6 +80,7 @@ def login(request):
         "user": None,
         "form": form,
         "error": error,
+        "login_label": _("Log In"),
         }
     return render(request, 'accounts/login.html.haml', data)
 
@@ -132,6 +133,7 @@ def register(request):
         "user": None,
         "form": form,
         "error": error,
+        "register_label": _("Register"),
         }
     return render(request, 'accounts/register.html.haml', data)
 
