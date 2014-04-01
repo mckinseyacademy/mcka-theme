@@ -1,53 +1,54 @@
-﻿- from django.utils.translation import ugettext as _
+﻿
 !!! 5
-%html.no-js(lang="en")
+%html.no-js{lang:"en"}
 %head
-  %meta(charset="utf-8")
-  %meta(name="viewport", content="width=device-width", initialScale="1.0")
-  %%block(name="meta")
+  %meta{charset: "utf-8"}
+  %meta{name: "viewport", content: "width=device-width", initialScale: "1.0"}
+  - block meta
   %title= _("McKinsey Academy")
 
-  - # CSS
-  %%block(name="css")
-    %link(rel="stylesheet", href="/static/css/normalize.css")
-    %link(rel="stylesheet", href="/static/css/font-awesome.css")
-    %link(rel="stylesheet", href="/static/css/app.css")
+  -# CSS
+  - block css
+    %link{rel: "stylesheet", href: "/static/css/normalize.css"}
+    %link{rel: "stylesheet", href: "/static/css/font-awesome.css"}
+    %link{rel: "stylesheet", href: "/static/css/app.css"}
 
-  - # Override if you need another version of modernizr; or comment out for now - we dont' need it yet
-  %%block(name="foundation_modernizer")
+  -# Override if you need another version of modernizr; or comment out for now - we dont' need it yet
+  - block foundation_modernizer
     -# %script(src="/static/js/vendor/modernizr.js")
 
-  - # Custom head JS
-  %%block(name="head_js")
+  -# Custom head JS
+  - block head_js
   
 %body
+  -# Header
+  - block header
+    - include 'header.html.haml'
 
-  - # Header
-  %%include(file="header.html.haml")
+  - block program_bar
 
-  %%block(name="program_bar")
+  -# Main content goes here
+  - block content
 
-  - # Main content goes here
-  %%block(name="content")
-
-  - # Footer
-  %%include(file="footer.html.haml")
+  -# Footer
+  - block footer
+    - include 'footer.html.haml'
   
-  - # Override if you need another version of jQuery
-  %%block(name="foundation_jquery")
-    %script(src="/static/js/vendor/jquery.js")
+  -# Override if you need another version of jQuery
+  - block foundation_jquery
+    %script{src: "/static/js/vendor/jquery.js"}
 
-  - # Foundation JS
-  %%block(name="foundation_js")
-    %script(src="/static/js/foundation.min.js")
+  -# Foundation JS
+  - block foundation_js
+    %script{src: "/static/js/foundation.min.js"}
 
-  - # Custom JS
-  %%block(name="body_js")
-    %script(src="/static/js/application.js")
+  -# Custom JS
+  - block body_js
+    %script{src: "/static/js/application.js"}
 
-  - # JS - custom snippets
-  %%block(name="js_snippets")
+  -# JS - custom snippets
+  - block js_snippets
 
-  - # Init Foundation
-  %%block(name="foundation_js_init")
+  -# Init Foundation
+  - block foundation_js_init
     %script $(document).foundation();

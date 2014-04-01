@@ -1,29 +1,19 @@
+
 .lesson-menu
   Lesson:
   %ul
-    - lesson_index = 0
-    - for lesson in course.chapters:
-      - lesson_index += 1
+    - for lesson in course.chapters
       %li.lesson
-        - if lesson.chapter_id == current_chapter.chapter_id:
-          - current_chapter.index = lesson_index
+        - if lesson.chapter_id == current_chapter.chapter_id
           %span.lesson-index.selected
-            = lesson_index
-        - elif lesson.is_released:
-          %a.lesson-index(href=lesson.navigation_url,title=lesson.chapter_name)
-            = lesson_index
-        - else:
+            = lesson.index
+        - elif lesson.is_released
+          %a.lesson-index{href: "{{ lesson.navigation_url }}", title: "{{ lesson.chapter_name }}"}
+            = lesson.index
+        - else
           %span.lesson-index
-            = lesson_index
+            = lesson.index
 .lesson-progress
-  - found_current = False
-  - add_class = "complete"
-  - for lesson_module in current_chapter.pages:
-    - is_current = current_page.page_id == lesson_module.page_id
-    - if is_current:
-      - add_class = "current"
-      - found_current = True
-    - elif found_current:
-      - add_class = "incomplete"
-    %a.lesson-module-status(class_=add_class,href=lesson_module.navigation_url)
+  - for lesson_module in current_chapter.pages
+    %a.lesson-module-status{class_: "{{ lesson_module.status_class }}", href: "{{ lesson_module.navigation_url }}"}
 

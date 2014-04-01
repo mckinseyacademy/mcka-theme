@@ -1,25 +1,26 @@
-%%inherit(file="course_main.html.haml")
 
-%%block(name="content")
+- extends "courses/course_main.html.haml"
+
+- block content
   .row
     .large-1.medium-1.small-0.columns
       &nbsp;
     .large-10.medium-10.small-12.columns.content-page
-      %%include(file="content_page/course_tabs.html.haml")
-      %%include(file="content_page/lesson_menu.html.haml")
+      - include "courses/content_page/course_tabs.html.haml"
+      - include "courses/content_page/lesson_menu.html.haml"
       .lesson-title
-        %span.lesson-index = "Lesson {}:".format(current_chapter.index)
-        %span.lesson-name = current_chapter.chapter_name
-        %span.page-desc = current_page.description
+        %span.lesson-index Lesson {{current_chapter.index}}:
+        %span.lesson-name= current_chapter.chapter_name
+        %span.page-desc= current_page.description
       %h1.page-title
         = current_page.page_name
       .lesson-content
       .lesson-discussion
-      %%include(file="content_page/lesson_pager.html.haml")
+      - include "courses/content_page/lesson_pager.html.haml"
     .large-1.medium-1.small-0.columns
       &nbsp;
 
-%%block(name="js_snippets")
+- block js_snippets
   :javascript
     var set_page_height = function(){
       var $page = $('.content-page');

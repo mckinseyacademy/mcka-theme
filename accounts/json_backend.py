@@ -30,7 +30,7 @@ class JsonBackend(object):
         Fetches user model from cache or via API
         '''
         user = get_user_model().cached_fetch(user_id)
-        if None == user:
+        if user is None:
             user_response = user_api.get_user(user_id)
             user = get_user_model()()
             user.update_response_fields(user_response)

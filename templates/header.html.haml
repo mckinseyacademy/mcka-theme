@@ -1,23 +1,22 @@
-﻿- from django.utils.translation import ugettext as _
-%header.row(role="banner")
+﻿
+%header.row{role: "banner"}
   .large-12.columns
-    %a.logo(href="/")
+    %a.logo{href: "/"}
     %span.header-menu
       %ul
         %li= _("About")
         %li= _("Programs")
         %li= _("Contact")
-    %%block(name="user_region")
-      - from django.utils.translation import ugettext as _
-      - if user != None and user.is_authenticated():
-        %a.user-info(href="#", data={"dropdown":"profile-container"})
+    - block user_region
+      - if user
+        %a.user-info{href: "#", data-dropdown: "profile-container"}
           .user-name
             = user.username
           %i.fa.fa-sort-asc
           .user-image
-            %img(src=user.image_url())
-          #profile-container(data={"dropdown-content":"true"})
-      - else:
+            %img{src: "#{user.image_url}"}
+          #profile-container{data-dropdown-content: "true"}
+      - else
         .login-action
-          %a.tiny.radius.button(href="/login")
+          %a.tiny.radius.button{href: "/accounts/login"}
             = _("Log In")

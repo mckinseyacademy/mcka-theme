@@ -8,11 +8,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'mcka_apros.views.home', name='home'),
-    url(r'^login/', 'mcka_apros.views.login', name='login'),
-    url(r'^accounts/login/', 'mcka_apros.views.login', name='login'),
-    url(r'^logout/', 'mcka_apros.views.logout', name='logout'),
-    url(r'^register/', 'mcka_apros.views.register', name='register'),
-    url(r'^users/', include('users.urls'), name='users'),
+    url(r'^$', 'accounts.views.home', name='home'),
+    url(r'^accounts/', include('accounts.urls'), name='accounts'),
     url(r'^courses/', include('courses.urls'), name='courses'),
 )

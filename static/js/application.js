@@ -5,8 +5,16 @@ $(function(){
   $('.user-info').one('click', function(){
     if($('#profile-container .user-profile').length < 1){
       $('body, .user-info').css('cursor', 'wait');
-      $('#profile-container').load('/users/user_profile.html', function(){
+      $('#profile-container').load('/accounts/user_profile.html', function(){
         $('body, .user-info').css('cursor', 'inherit');
+
+        // Need this, for some reason, the anchor links are not hooked up properly... perhaps investigate more later
+        $('.user-profile a').on('click', function(){
+          var href = $(this).attr('href');
+          if(href.length > 1){
+            window.location.href = href;
+          }
+        });
       });
     }
   });
