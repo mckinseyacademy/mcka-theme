@@ -10,8 +10,8 @@ meta.foundation-mq-medium {
   width: 40.063em; }
 
 meta.foundation-mq-large {
-  font-family: "/only screen and (min-width:64.063em)/";
-  width: 64.063em; }
+  font-family: "/only screen and (min-width:60.063em)/";
+  width: 60.063em; }
 
 meta.foundation-mq-xlarge {
   font-family: "/only screen and (min-width:90.063em)/";
@@ -729,7 +729,7 @@ select {
     position: relative;
     right: 91.66667%;
     left: auto; } }
-@media only screen and (min-width: 64.063em) {
+@media only screen and (min-width: 60.063em) {
   .column.large-centered,
   .columns.large-centered {
     margin-left: auto;
@@ -1834,7 +1834,7 @@ select {
     .medium-block-grid-12 > li:nth-child(12n) {
       padding-left: 1.71875rem;
       padding-right: 0rem; } }
-@media only screen and (min-width: 64.063em) {
+@media only screen and (min-width: 60.063em) {
   .large-block-grid-1 > li {
     width: 100%;
     list-style: none; }
@@ -5193,7 +5193,7 @@ meta.foundation-mq-topbar {
 
   .small-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+@media only screen and (min-width: 40.063em) and (max-width: 60em) {
   .medium-only-text-left {
     text-align: left !important; }
 
@@ -5217,7 +5217,7 @@ meta.foundation-mq-topbar {
 
   .medium-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+@media only screen and (min-width: 60.063em) and (max-width: 90em) {
   .large-only-text-left {
     text-align: left !important; }
 
@@ -5229,7 +5229,7 @@ meta.foundation-mq-topbar {
 
   .large-only-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 64.063em) {
+@media only screen and (min-width: 60.063em) {
   .large-text-left {
     text-align: left !important; }
 
@@ -5325,7 +5325,7 @@ meta.foundation-mq-topbar {
 
   .small-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+@media only screen and (min-width: 40.063em) and (max-width: 60em) {
   .medium-only-text-left {
     text-align: left !important; }
 
@@ -5349,7 +5349,7 @@ meta.foundation-mq-topbar {
 
   .medium-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+@media only screen and (min-width: 60.063em) and (max-width: 90em) {
   .large-only-text-left {
     text-align: left !important; }
 
@@ -5361,7 +5361,7 @@ meta.foundation-mq-topbar {
 
   .large-only-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 64.063em) {
+@media only screen and (min-width: 60.063em) {
   .large-text-left {
     text-align: left !important; }
 
@@ -5767,7 +5767,7 @@ blockquote p {
 
   .small-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+@media only screen and (min-width: 40.063em) and (max-width: 60em) {
   .medium-only-text-left {
     text-align: left !important; }
 
@@ -5791,7 +5791,7 @@ blockquote p {
 
   .medium-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+@media only screen and (min-width: 60.063em) and (max-width: 90em) {
   .large-only-text-left {
     text-align: left !important; }
 
@@ -5803,7 +5803,7 @@ blockquote p {
 
   .large-only-text-justify {
     text-align: justify !important; } }
-@media only screen and (min-width: 64.063em) {
+@media only screen and (min-width: 60.063em) {
   .large-text-left {
     text-align: left !important; }
 
@@ -6148,7 +6148,7 @@ ul.off-canvas-list {
   th.hide-for-small-only, td.hide-for-small-only, th.show-for-small-up, td.show-for-small-up, th.hide-for-small, td.hide-for-small, th.hide-for-small-down, td.hide-for-small-down, th.show-for-medium-only, td.show-for-medium-only, th.show-for-medium-up, td.show-for-medium-up, th.show-for-medium, td.show-for-medium, th.show-for-medium-down, td.show-for-medium-down, th.hide-for-large-only, td.hide-for-large-only, th.hide-for-large-up, td.hide-for-large-up, th.hide-for-large, td.hide-for-large, th.show-for-large-down, td.show-for-large-down, th.hide-for-xlarge-only, td.hide-for-xlarge-only, th.hide-for-xlarge-up, td.hide-for-xlarge-up, th.hide-for-xlarge, td.hide-for-xlarge, th.show-for-xlarge-down, td.show-for-xlarge-down, th.hide-for-xxlarge-only, td.hide-for-xxlarge-only, th.hide-for-xxlarge-up, td.hide-for-xxlarge-up, th.hide-for-xxlarge, td.hide-for-xxlarge, th.show-for-xxlarge-down, td.show-for-xxlarge-down {
     display: table-cell !important; } }
 /* large displays */
-@media only screen and (min-width: 64.063em) {
+@media only screen and (min-width: 60.063em) {
   .hide-for-small-only, .show-for-small-up, .hide-for-small, .hide-for-small-down, .hide-for-medium-only, .show-for-medium-up, .hide-for-medium, .hide-for-medium-down, .show-for-large-only, .show-for-large-up, .show-for-large, .show-for-large-down, .hide-for-xlarge-only, .hide-for-xlarge-up, .hide-for-xlarge, .show-for-xlarge-down, .hide-for-xxlarge-only, .hide-for-xxlarge-up, .hide-for-xxlarge, .show-for-xxlarge-down {
     display: inherit !important; }
 
@@ -6390,23 +6390,15 @@ header[role=banner] {
   header[role=banner] .header-menu {
     top: -18px;
     position: relative; }
-    header[role=banner] .header-menu ul {
-      display: none;
-      list-style: none; }
-      header[role=banner] .header-menu ul.open {
-        display: block; }
-      header[role=banner] .header-menu ul > li {
-        font-size: 12px;
-        font-size: 0.75rem;
-        font-weight: 500;
-        line-height: 14px;
-        line-height: 0.875rem;
-        list-style: none;
-        text-transform: uppercase;
-        margin: 0 0.5rem;
-        color: white; }
-        header[role=banner] .header-menu ul > li:hover {
-          color: #cccccc; }
+    header[role=banner] .header-menu ul li {
+      font-size: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 14px;
+      line-height: 0.875rem;
+      list-style: none;
+      text-transform: uppercase;
+      margin: 0 0.5rem; }
   header[role=banner] ul, header[role=banner] li {
     display: inline-block; }
   header[role=banner] > div {
@@ -6429,7 +6421,7 @@ header[role=banner] {
     position: fixed;
     top: 0;
     right: 0; }
-    @media only screen and (min-width: 64.063em) {
+    @media only screen and (min-width: 60.063em) {
       header[role=banner] .user-info {
         position: inherit;
         top: inherit;
