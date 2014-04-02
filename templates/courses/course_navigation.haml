@@ -30,3 +30,13 @@
     }
     $(window).on('resize', set_page_height);
     $(window).trigger('resize');
+
+  :javascript
+    $(function(){
+      $('.content-page .lesson-content').xblock({
+        usageId: '{{ vertical_usage_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+      });
+    });

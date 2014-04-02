@@ -283,9 +283,6 @@
   }
   
   .lesson-pager{
-    position: fixed;
-    bottom: 0;
-    left: 0;
     text-align: center;
     width: 100%;
     padding-bottom: rem-calc(80);
@@ -486,12 +483,10 @@
   }
   
   .lesson-pager{
-    position: fixed;
-    bottom: 0;
-    left: 0;
     text-align: center;
     width: 100%;
-    padding-bottom: rem-calc(80);
+    padding-top: rem-calc(40);
+    padding-bottom: rem-calc(60);
     .page-to{
       margin: 0 10px;
       @include font-spec(30);
