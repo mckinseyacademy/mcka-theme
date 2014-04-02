@@ -4,11 +4,11 @@
   %ul
     - for lesson in course.chapters
       %li.lesson
-        - if lesson.chapter_id == current_chapter.chapter_id
+        - if lesson.id == current_chapter.id
           %span.lesson-index.selected
             = lesson.index
         - elif lesson.is_released
-          %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.chapter_name}"}
+          %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
             = lesson.index
         - else
           %span.lesson-index

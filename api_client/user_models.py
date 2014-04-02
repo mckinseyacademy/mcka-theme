@@ -42,7 +42,7 @@ class UserCourseBookmark(JsonObject):
 
 class UserCourseStatus(JsonObject):
     ''' object representing a user's course status from api json response '''
-    required_fields = ["course_id", "percent_complete"]
+    required_fields = ["id", "percent_complete"]
     object_map = {
         "bookmark": UserCourseBookmark
     }
@@ -58,7 +58,7 @@ class UserCourseStatus(JsonObject):
 
 class UserPrograms(JsonObject):
     ''' object representing a users's program(s) from api json response '''
-    required_fields = ["program_id"]
+    required_fields = ["id"]
 
 
 class UserStatus(JsonObject):
@@ -72,7 +72,7 @@ class UserStatus(JsonObject):
     def get_bookmark_for_course(self, course_id):
         ''' returns bookmark for specific course if present '''
         for course_status in self.courses:
-            if course_status.course_id == course_id and hasattr(course_status, 'bookmark'):
+            if course_status.id == course_id and hasattr(course_status, 'bookmark'):
                 return course_status.bookmark
 
         return None
