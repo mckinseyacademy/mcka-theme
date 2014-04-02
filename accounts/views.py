@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware import csrf
-from mcka_apros.forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm
 from api_client import user_api
 from accounts.models import RemoteUser
 
