@@ -66,7 +66,7 @@ def homepage(request):
         "current_page": current_page,
         "program": program,
     }
-    return render(request, 'courses/course_main.html.haml', data)
+    return render(request, 'courses/course_main.haml', data)
 
 
 @login_required
@@ -92,7 +92,7 @@ def navigate_to_page(request, course_id, chapter_id, page_id):
         "current_page": current_page,
         "program": program,
     }
-    return render(request, 'courses/course_navigation.html.haml', data)
+    return render(request, 'courses/course_navigation.haml', data)
 
 
 @login_required

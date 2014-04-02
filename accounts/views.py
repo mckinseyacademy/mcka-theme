@@ -82,7 +82,7 @@ def login(request):
         "error": error,
         "login_label": _("Log In"),
         }
-    return render(request, 'accounts/login.html.haml', data)
+    return render(request, 'accounts/login.haml', data)
 
 
 def logout(request):
@@ -135,7 +135,7 @@ def register(request):
         "error": error,
         "register_label": _("Register"),
         }
-    return render(request, 'accounts/register.html.haml', data)
+    return render(request, 'accounts/register.haml', data)
 
 
 def home(request):
@@ -145,7 +145,7 @@ def home(request):
     if request.user and request.user.is_authenticated():
         return homepage(request)
 
-    return render(request, 'main.html.haml', {"user": None})
+    return render(request, 'main.haml', {"user": None})
 
 
 @login_required
@@ -157,4 +157,4 @@ def user_profile(request):
         "user_formatted_name": user.formatted_name(),
         "user_email": user.email,
     }
-    return render(request, 'accounts/user_profile.html.haml', user_data)
+    return render(request, 'accounts/user_profile.haml', user_data)
