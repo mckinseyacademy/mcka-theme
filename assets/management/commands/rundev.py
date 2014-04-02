@@ -19,7 +19,6 @@ class Command(BaseCommand):
         path = os.path.join(os.path.abspath('.'), 'manage.py')
         assets_proc = subprocess.Popen([path, 'assets', 'watch'])
         assets_pid = assets_proc.pid
-        run_server_cmd = "runserver {0}".format(port)
         call_command('runserver', port)
 
     def kill_child():
