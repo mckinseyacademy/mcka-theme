@@ -1,0 +1,21 @@
+mkdir ./djtemp
+mkdir ./djtemp/accounts
+mkdir ./djtemp/courses
+mkdir ./djtemp/courses/content_page
+
+hamlpy ./templates/accounts/login.html.haml ./djtemp/accounts/login.html.haml
+hamlpy ./templates/accounts/login_header.html.haml ./djtemp/accounts/login_header.html.haml
+hamlpy ./templates/accounts/register.html.haml ./djtemp/accounts/register.html.haml
+hamlpy ./templates/accounts/user_profile.html.haml ./djtemp/accounts/user_profile.html.haml
+hamlpy ./templates/courses/content_page/course_discover.html.haml ./djtemp/courses/content_page/course_discover.html.haml
+hamlpy ./templates/courses/content_page/course_menu.html.haml ./djtemp/courses/content_page/course_menu.html.haml
+hamlpy ./templates/courses/content_page/course_tabs.html.haml ./djtemp/courses/content_page/course_tabs.html.haml
+hamlpy ./templates/courses/content_page/lesson_menu.html.haml ./djtemp/courses/content_page/lesson_menu.html.haml
+hamlpy ./templates/courses/content_page/lesson_pager.html.haml ./djtemp/courses/content_page/lesson_pager.html.haml
+hamlpy ./templates/courses/content_page/program_menu.html.haml ./djtemp/courses/content_page/program_menu.html.haml
+hamlpy ./templates/courses/course_main.html.haml ./djtemp/courses/course_main.html.haml
+hamlpy ./templates/courses/course_navigation.html.haml ./djtemp/courses/course_navigation.html.haml
+hamlpy ./templates/footer.html.haml ./djtemp/footer.html.haml
+hamlpy ./templates/header.html.haml ./djtemp/header.html.haml
+hamlpy ./templates/layout.html.haml ./djtemp/layout.html.haml
+hamlpy ./templates/main.html.haml ./djtemp/main.html.haml
