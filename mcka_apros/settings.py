@@ -48,6 +48,7 @@ LOCAL_APPS = (
     'assets',
     'main',
     'courses',
+    'admin',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
