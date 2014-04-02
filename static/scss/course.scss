@@ -330,7 +330,7 @@
 }
 
 .program-menu{
-  color: $mckinsey-academy-alt-blue;
+  color: $mckinsey-blue;
   padding: 10px;
   > *{
     float: right;
@@ -370,10 +370,13 @@
     &.unavailable{
       color: $mckinsey-grey;
     }
+    &.current{
+      color: $mckinsey-orange;
+    }
   }
   a.course-name{
     &:hover{
-      color: $mckinsey-orange;
+      opacity: 0.6;
     }
   }
   .status{

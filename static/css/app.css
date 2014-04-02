@@ -6875,7 +6875,7 @@ footer[role=contentinfo] {
   color: #66a5b5; }
 
 .program-menu {
-  color: #3384ca;
+  color: #002960;
   padding: 10px; }
   .program-menu > * {
     float: right; }
@@ -6916,8 +6916,10 @@ footer[role=contentinfo] {
     color: black; }
     .program-menu-content a.course-name.unavailable, .program-menu-content .course-name.unavailable {
       color: #868685; }
+    .program-menu-content a.course-name.current, .program-menu-content .course-name.current {
+      color: #e37222; }
   .program-menu-content a.course-name:hover {
-    color: #e37222; }
+    opacity: 0.6; }
   .program-menu-content .status {
     font-size: 10px;
     font-size: 0.625rem;
