@@ -13,6 +13,9 @@ from courses.controller import build_page_info_for_course, locate_chapter_page, 
 def _inject_formatted_data(program, course, page_id):
     for program_course in program.courses:
         program_course.nav_url = '/courses/{}'.format(program_course.id)
+        program_course.course_class = ""
+        if program_course.id == course.id:
+            program_course.course_class = "current"
         if hasattr(program_course, 'start_date'):
             program_course.formatted_start_date = "{} {}".format(
                 _("Available"),
