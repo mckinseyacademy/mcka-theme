@@ -12,7 +12,7 @@ from courses.controller import build_page_info_for_course, locate_chapter_page, 
 
 def _inject_formatted_data(program, course, page_id):
     for program_course in program.courses:
-        program_course.nav_url = '/courses/{}'.format(program_course.course_id)
+        program_course.nav_url = '/courses/{}'.format(program_course.id)
         if hasattr(program_course, 'start_date'):
             program_course.formatted_start_date = "{} {}".format(
                 _("Available"),
@@ -34,7 +34,7 @@ def _inject_formatted_data(program, course, page_id):
         found_current_page = False
         for page in lesson.pages:
             page.status_class = "complete"
-            is_current = page_id == page.page_id
+            is_current = page_id == page.id
             if is_current:
                 page.status_class = "current"
                 found_current_page = True
@@ -72,20 +72,13 @@ def homepage(request):
 @login_required
 def navigate_to_page(request, course_id, chapter_id, page_id):
     ''' go to given page within given chapter within given course '''
-    if course_id:
-        course_id = int(course_id)
-    if chapter_id:
-        chapter_id = int(chapter_id)
-    if page_id:
-        page_id = int(page_id)
-
     # Get course info
     course, current_chapter, current_page = build_page_info_for_course(
         course_id, chapter_id, page_id)
 
     # Take note that the user has gone here
     program = program_for_course(request.user.id, course_id)
-    program_id = program.program_id if program else None
+    program_id = program.id if program else None
     update_bookmark(
         request.user.id, program_id, course_id, chapter_id, page_id)
 
@@ -109,11 +102,6 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     If no chapter or course given, system tries to go to location within last
     visited course
     '''
-    if course_id:
-        course_id = int(course_id)
-    if chapter_id:
-        chapter_id = int(chapter_id)
-
     course_id, chapter_id, page_id = locate_chapter_page(
         request.user.id, course_id, chapter_id)
 
