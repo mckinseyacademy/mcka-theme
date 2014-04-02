@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         global assets_pid
         
-        port = 8000
+        port = '8000'
         if len(args) > 0:
             port = args[0]
 
