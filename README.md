@@ -1,9 +1,9 @@
 mcka-apros
 ==========
 
-Mckinsey Academy custom front end instance
+Mckinsey Academy custom front end application
 
-Notes:
+### Notes:
 
 * Best to install requirements
 `$ pip install -r requirements.txt`
@@ -15,7 +15,8 @@ Notes:
 * CSS and JS are compiled automatically upon save (for dev) when you run
 `$ ./manage.py rundev`
 
-* We are using standard Django templates, but we are preprocessing them with haml preprocessor (installed via pip)
+#### Templates
+We are using standard Django templates, but we are preprocessing them with haml preprocessor (installed via pip)
 haml is a lovely markup, quick reference:
 
   * to execute python code within template prefix with a - sign
@@ -50,7 +51,7 @@ haml is a lovely markup, quick reference:
   <span class="important">love life</span>
 </div>`
 
-  * Font Specification
+#### Font Specification
   McKinsey font defintions all specify size, normal|semibold|bold, line-spacing - just like photoshop does
   To facilitate the CSS for these situations use the mixin "font-spec"
 `@include font-spec(size, weight, line-spacing)`
@@ -59,6 +60,6 @@ haml is a lovely markup, quick reference:
     weight defaults to normal (yet supports semibold as a specifier)
     line-spacing defaults to same as size
 
-* Override settings
-    Override settings in local_settings.py file
+#### Override settings
+Override settings in a local_settings.py file
 
