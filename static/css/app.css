@@ -6524,7 +6524,8 @@ footer[role=contentinfo] {
   margin: 0 auto;
   background-color: #e5ebee;
   color: #3384ca;
-  padding: 0; }
+  padding: 0;
+  max-width: 60rem; }
   footer[role=contentinfo] .copyright {
     font-size: 10px;
     font-size: 0.625rem;
@@ -6552,8 +6553,10 @@ footer[role=contentinfo] {
     font-weight: 500;
     line-height: 10px;
     line-height: 0.625rem;
-    float: right;
-    margin: 6px 50px; }
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 6px; }
 
 .login-form, .registration-form {
   margin-top: 50px; }
