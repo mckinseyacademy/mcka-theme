@@ -1,9 +1,9 @@
 ''' rendering templates from requests related to courses '''
-import datetime
-from django.utils.translation import ugettext as _
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.utils.translation import ugettext as _
 
 from courses.controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark
 
@@ -88,12 +88,23 @@ def navigate_to_page(request, course_id, chapter_id, page_id):
     # Inject formatted data for view
     _inject_formatted_data(program, course, page_id)
 
+    remote_session_key = request.session.get("remote_session_key")
+    lms_base_domain = settings.LMS_BASE_DOMAIN
+    lms_sub_domain = settings.LMS_SUB_DOMAIN
+
+    # TODO-API: Retreive this from the API response and remove from settings
+    vertical_usage_id = settings.VERTICAL_USAGE_ID
+
     data = {
         "user": request.user,
         "course": course,
         "current_chapter": current_chapter,
         "current_page": current_page,
+        "lms_base_domain": lms_base_domain,
+        "lms_sub_domain": lms_sub_domain,
         "program": program,
+        "remote_session_key": remote_session_key,
+        "vertical_usage_id": vertical_usage_id,
     }
     return render(request, 'courses/course_navigation.haml', data)
 
