@@ -242,3 +242,9 @@ class JsonObjectTest(TestCase):
         self.assertTrue(isinstance(output.info[0], JsonObjectTestNestingClass))
         self.assertTrue(
             isinstance(output.info[0].info, JsonObjectTestNestedClass))
+
+    def test_groups(self):
+        output = JP.from_json('[{"name": "super_admin","id":1234,"uri": "/api/users/14/groups/1234"},{"name": "sub_admin","id":1357,"uri": "/api/users/14/groups/1357"},{"name": "company_admin","id":5678,"uri": "/api/users/14/groups/5678"},{"name": "arbitrary_group","id":2468,"uri": "/api/users/14/groups/2468"}]')
+
+        self.assertTrue(len(output)==4)
+        self.assertTrue(output[0].name == "super_admin")

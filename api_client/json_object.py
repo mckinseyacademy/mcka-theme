@@ -147,4 +147,35 @@ class JsonParser(object):
 
             return out_objects
         else:
-            return object_type(json_data)
+            return object_type(dictionary=parsed_json)
+
+
+class CategorisedJsonParser(object):
+
+    _category_property_name = "category"
+    _category_dictionary = {}
+
+    def __init__(self, category_dictionary, category_property_name = "category"):
+        self._category_dictionary = category_dictionary
+        self._category_property_name = category_property_name
+
+    def from_json(self, json_data):
+        ''' takes json => dictionary / array and processes it accordingly '''
+        return self.from_dictionary(json.loads(json_data))
+
+    def from_dictionary(self, parsed_json):
+        ''' takes dictionary / array and processes it accordingly '''
+        if isinstance(parsed_json, list):
+            out_objects = []
+            for json_dictionary in parsed_json:
+                out_objects.append(self.from_dictionary(json_dictionary))
+
+            return out_objects
+        else:
+            object_type = JsonObject
+            if self._category_property_name in parsed_json:
+                if parsed_json[self._category_property_name] in self._category_dictionary:
+                    object_type = self._category_dictionary[parsed_json[self._category_property_name]]
+            
+            return object_type(dictionary=parsed_json)
+

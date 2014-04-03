@@ -9,26 +9,27 @@ from .json_object import JsonObject
 
 
 class Page(JsonObject):
-    ''' object representing a page / module within a chapter / lesson'''
-    required_fields = []
+
+    ''' object representing a page / module within a subsection '''
+    required_fields = ["id", "name", "uri", "modules", ]
+
+    def vertical_usage_id(self):
+        return self.id.replace('/', ';_')
+
+
+class Sequential(JsonObject):
+
+    ''' object representing a subsection within a chapter / lesson '''
+    required_fields = ["id", "name", "uri", "modules", ]
 
 
 class Chapter(JsonObject):
+
     ''' object representing a chapter / lesson within a course '''
-    required_fields = []
-    object_map = {
-        "pages": Page,
-    }
+    required_fields = ["id", "name", "uri", "modules", ]
 
 
 class Course(JsonObject):
+
     ''' object representing a course '''
-    required_fields = []
-    object_map = {
-        "chapters": Chapter,
-    }
-
-
-class PageContent(JsonObject):
-    ''' object for loading page content from the API server '''
-    required_fields = []
+    required_fields = ["id", "name", "uri", "modules", ]
