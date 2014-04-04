@@ -1,7 +1,7 @@
 ''' Tests for api_client calls '''
 from django.test import TestCase
-from api_client.json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError
-from api_client.user_models import UserResponse, AuthenticationResponse
+from .json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError
+from .user_models import UserResponse, AuthenticationResponse
 
 import collections
 

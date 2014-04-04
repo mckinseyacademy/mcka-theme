@@ -1,15 +1,14 @@
 ''' views for auth, sessions, users '''
 from django.utils.translation import ugettext as _
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.middleware import csrf
-from mcka_apros.forms import LoginForm, RegistrationForm
+from django.http import HttpResponseRedirect
+from .forms import LoginForm, RegistrationForm
 from api_client import user_api
-from accounts.models import RemoteUser
+from .models import RemoteUser
 
-from importlib import import_module
-from django.conf import settings
-SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+# from importlib import import_module
+# from django.conf import settings
+# SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from django.contrib import auth
 import urllib2 as url_access
@@ -82,7 +81,7 @@ def login(request):
         "error": error,
         "login_label": _("Log In"),
         }
-    return render(request, 'accounts/login.html.haml', data)
+    return render(request, 'accounts/login.haml', data)
 
 
 def logout(request):
@@ -120,7 +119,8 @@ def register(request):
             except url_access.HTTPError, err:
                 error = _("An error occurred during registration")
                 error_messages = {
-                    409: _("User with matching username or email already exists")
+                    409: _(("User with matching username "
+                            "or email already exists"))
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]
@@ -135,7 +135,7 @@ def register(request):
         "error": error,
         "register_label": _("Register"),
         }
-    return render(request, 'accounts/register.html.haml', data)
+    return render(request, 'accounts/register.haml', data)
 
 
 def home(request):
@@ -145,7 +145,7 @@ def home(request):
     if request.user and request.user.is_authenticated():
         return homepage(request)
 
-    return render(request, 'main.html.haml', {"user": None})
+    return render(request, 'main.haml', {"user": None})
 
 
 @login_required
@@ -157,4 +157,4 @@ def user_profile(request):
         "user_formatted_name": user.formatted_name(),
         "user_email": user.email,
     }
-    return render(request, 'accounts/user_profile.html.haml', user_data)
+    return render(request, 'accounts/user_profile.haml', user_data)

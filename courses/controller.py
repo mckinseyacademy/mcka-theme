@@ -5,20 +5,15 @@ from api_client import course_api, user_api
 # pylint: disable=maybe-no-member
 
 
-def _is_int_equal(elem1, elem2):
-    ''' tests equality of integer values; upon error tests simple equality '''
-    result = False
-    try:
-        result = (int(elem1) == int(elem2))
-    except ValueError:
-        result = (elem1 == elem2)
-
-    return result
-
 # logic functions - recieve api implementor for test
 
 
-def build_page_info_for_course(course_id, chapter_id, page_id, course_api_impl=course_api):
+def build_page_info_for_course(
+    course_id,
+    chapter_id,
+    page_id,
+    course_api_impl=course_api
+):
     '''
     Returns course structure and user's status within course
         course_api_impl - optional api client module to use (useful in mocks)
@@ -33,18 +28,18 @@ def build_page_info_for_course(course_id, chapter_id, page_id, course_api_impl=c
     for chapter in course.chapters:
         chapter.navigation_url = '/courses/{}/lessons/{}'.format(
             course_id,
-            chapter.chapter_id
+            chapter.id
         )
-        if _is_int_equal(chapter.chapter_id, chapter_id):
+        if chapter.id == chapter_id:
             current_chapter = chapter
 
         for page in chapter.pages:
             page.prev_url = None
             page.next_url = None
             page.navigation_url = '{}/module/{}'.format(
-                chapter.navigation_url, page.page_id)
+                chapter.navigation_url, page.id)
 
-            if _is_int_equal(page.page_id, page_id):
+            if page.id == page_id:
                 current_page = page
 
             if prev_page is not None:
@@ -58,7 +53,13 @@ def build_page_info_for_course(course_id, chapter_id, page_id, course_api_impl=c
     return course, current_chapter, current_page
 
 
-def locate_chapter_page(user_id, course_id, chapter_id, user_api_impl=user_api, course_api_impl=course_api):
+def locate_chapter_page(
+    user_id,
+    course_id,
+    chapter_id,
+    user_api_impl=user_api,
+    course_api_impl=course_api
+):
     '''
     Returns current chapter and page for given course from user's status
     Chapter defaults to bookmark if not provided, to 1st chapter if no bookmark
@@ -78,12 +79,12 @@ def locate_chapter_page(user_id, course_id, chapter_id, user_api_impl=user_api, 
     chapter = course.chapters[0]
     if chapter_id:
         for course_chapter in course.chapters:
-            if course_chapter.chapter_id == chapter_id:
+            if course_chapter.id == chapter_id:
                 chapter = course_chapter
                 break
     page = chapter.pages[0]
 
-    return course_id, chapter.chapter_id, page.page_id
+    return course_id, chapter.id, page.id
 
 
 def program_for_course(user_id, course_id, user_api_impl=user_api):
@@ -97,16 +98,16 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
 
     # Check that the specified course is part of this program
     for program in user_status.programs:
-        if int(course_id) in program.courses:
+        if course_id in [course.id for course in program.courses]:
             course_program = program
             break
 
     # Now add the courses therein:
     if course_program:
-        course_ids = course_program.courses
+        course_ids = [course.id for course in course_program.courses]
         course_program.courses = []
         for course in user_status.courses:
-            if int(course.course_id) in course_ids:
+            if course.id in course_ids:
                 course_program.courses.append(course)
 
     return course_program

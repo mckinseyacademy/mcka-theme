@@ -125,6 +125,18 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/gen"),
 )
 
+# We want a different name for cookies than on the LMS to allow to set
+# the LMS cookies at the domain level from apros
+SESSION_COOKIE_NAME = 'apros_sessionid'
+CSRF_COOKIE_NAME = 'apros_csrftoken'
+
+# LMS
+LMS_BASE_DOMAIN = 'mckinseyacademy.com'
+LMS_SUB_DOMAIN = 'lms'
+
+# TODO-API: Remove setting once this is retreived from the API
+VERTICAL_USAGE_ID = 'i4x:;_;_TestX;_TST-BRGT;_vertical;_0c4f0ca3c3f54a1b8ad5d9830c1d16b0'
+
 # Api address
 # API_SERVER_ADDRESS = 'http://localhost:8000'
 API_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'

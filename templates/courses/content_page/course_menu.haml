@@ -4,11 +4,11 @@
     %ul
       - for lesson in course.chapters
         %li
-          %a.card-flip{href: "/courses/#{course.course_id}/lessons/#{lesson.chapter_id}"}
+          %a.card-flip{href: "/courses/#{course.id}/lessons/#{lesson.id}"}
             .front
               .index LESSON {{lesson.index}}
               .name
-                = lesson.chapter_name
+                = lesson.name
               .lesson-progress
                 - for tick_mark in lesson.tick_marks
                   - if tick_mark

@@ -1,26 +1,26 @@
-- extends "layout.html.haml"
+- extends "layout.haml"
 
 - block program_bar
   .row
     .large-12.columns.program-bar
       - if program
         .program-name
-          = program.program_name
+          = program.name
       .course-name
-        = course.course_name
+        = course.name
   - if program
     .row
       .large-12.columns.program-menu
         %a{href:"#", "data-dropdown":"program-menu-content"}
           %i.fa.fa-bars
         #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
-          - include "courses/content_page/program_menu.html.haml"
+          - include "courses/content_page/program_menu.haml"
 
 - block content
   .row
     .large-11.large-centered.columns.home-page
-      - include "courses/content_page/course_menu.html.haml"
-      - include "courses/content_page/course_discover.html.haml"
+      - include "courses/content_page/course_menu.haml"
+      - include "courses/content_page/course_discover.haml"
       %article.course-quote
         %blockquote If I had an hour to solve a problem I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions.
         .attribution
