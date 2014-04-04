@@ -23,7 +23,6 @@ register('scss_all', SCSS)
 
 CSS = Bundle(
     SCSS,
-    filters='cssmin',
     output='packed.css'
 )
 register('css_all', CSS)

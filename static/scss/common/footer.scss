@@ -1,10 +1,6 @@
 footer[role=contentinfo]{
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  margin-left: rem-calc(-960/2);
-  background-color: $background-tint;
   color: $footer-text;
+  background-color: $background-tint;
 
   .copyright{
     color: $mckinsey-grey;
