@@ -1,3 +1,5 @@
+$header-bar-height: 48px;
+
 header[role=banner] {
   // TODO: replace with extend depth5
   position: relative;
@@ -8,9 +10,7 @@ header[role=banner] {
   color: $header-text;
   height: $header-bar-height;
   max-height: $header-bar-height;
-  .columns{
-    padding: 0;
-  }
+  margin-bottom: 85px;
 
   .header-menu{
     top:-18px;
@@ -29,7 +29,6 @@ header[role=banner] {
   }
   >div{
     height: 100%;
-    //margin: auto 0;
   }
   .logo{
     background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;

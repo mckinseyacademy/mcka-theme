@@ -1,0 +1,151 @@
+#about-page,
+#programs-page,
+#contact-page {
+  section {
+    padding: 0 rem-calc(20);
+    margin: rem-calc(15) 0;
+  }
+}
+
+#about-page {
+  .what-is {
+    @include font-spec(20, normal, 26);
+  }
+
+  ul {
+    &.info {
+      padding-left: rem-calc(35);
+      li { padding-left: rem-calc(30); }
+    }
+
+    &.people {
+      margin-left: 0;
+      list-style-type: none;
+
+      li {
+        margin-bottom: rem-calc(20);
+        @include clearfix;
+
+        img {
+          float: left;
+          margin-right: rem-calc(20);
+        }
+
+        > div {
+          float: left;
+          width: rem-calc(620);
+        }
+      }
+    }
+
+    &.team {
+      margin-left: 0;
+      list-style-type: none;
+
+      li {
+        margin-bottom: rem-calc(10);
+
+        .card-flip {
+          width: 180px;
+          height: 125px;
+          margin-bottom: rem-calc(10);
+
+          .front, .back {
+            width: 180px;
+            height: 125px;
+            @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+          }
+
+          .back {
+            padding: 10px;
+            .label-1 {
+              margin-bottom: rem-calc(15);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#programs-page {
+  ul.programs {
+    margin: 0;
+    list-style-type: none;
+
+    li {
+      margin-bottom: rem-calc(15);
+
+      .card-flip {
+        width: 180px;
+        height: 125px;
+        margin-bottom: rem-calc(10);
+
+        .front, .back {
+          width: 180px;
+          height: 125px;
+          @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+        }
+
+        .back { padding: 10px; }
+      }
+
+      .title { width: rem-calc(180); }
+    }
+  }
+
+  ul.faculty {
+    margin: 0;
+    list-style-type: none;
+    @include clearfix;
+
+    li {
+      float: left;
+      width: 50%;
+      margin-bottom: rem-calc(25);
+
+      img {
+        float: left;
+        margin-right: rem-calc(10);
+      }
+
+      > div { float: left; }
+    }
+  }
+}
+
+#contact-page {
+  .forms {
+    @include clearfix;
+    @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+
+    .col-left, .col-right {
+      float: left;
+      margin: 20px 0;
+      padding: 0 20px;
+      width: 50%;
+      height: 330px;
+      position: relative;
+    }
+
+    .col-left {
+      border-right: 1px solid $almost-white;
+
+      .support {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+      }
+    }
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0;
+
+      div:last-child {
+        text-align: right;
+      }
+    }
+  }
+}

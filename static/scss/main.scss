@@ -1,42 +1,189 @@
-$header-bar-height: 48px;
-
 body{
+  color: $mckinsey-academy-black;
   background-color: $background-tint;
   font-family: "Open Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-main[role=main] {
-  margin-bottom: 100px;
+main[role=main] { margin-bottom: 100px; }
+
+h1 {
+  color: $mckinsey-academy-turquoise;
+  @include font-spec(22, normal, 24);
 }
 
-footer[role=contentinfo]{
-  position: fixed;
-  bottom: 0;
-  margin: 0 auto;
-  background-color: $background-tint;
-  color: $footer-text;
-  padding: 0;
-  .copyright{
-    @include font-spec(10, semibold);
-    color: $mckinsey-grey;
-    padding-right: 10px;
+h2 {
+  @include font-spec(18, normal, 20);
+}
+
+.sub-1,
+.sub-2
+{
+  text-transform: uppercase;
+  @include font-spec(14, semibold, 18);
+}
+
+.sub-2 { color: $almost-white; }
+
+p {
+  margin: 0;
+  @include font-spec(14, normal, 22);
+  &.style-2 { @include font-spec(14, semibold, 22); }
+  &.style-3 { @include font-spec(12, semibold, 19); }
+  &.style-4 { @include font-spec(12, normal, 14); }
+  &.style-5 { font-style: italic; }
+}
+
+a,
+a:visited {
+  color: $mckinsey-academy-alt-blue;
+  text-decoration: none;
+  @include font-spec(14, semibold, 16);
+}
+
+a:hover { color: $mckinsey-academy-blue-gray; }
+
+hr {
+  border: none;
+  height: 0;
+  margin: 20px 0;
+  background: none;
+  border-top: 1px solid $almost-white;
+}
+
+img { max-width: 100%; height: auto; }
+
+blockquote {
+  @include font-spec(20, normal, 26);
+
+  &.user-quote {
+    color: $mckinsey-academy-alt-blue;
+    @include font-spec(18, normal, 20);
   }
-  ul{
-    margin: 0;
-    li{
-      @include font-spec(10, semibold);
-      list-style: none;
-      padding: 0 9px 0 10px;
-      border-left: 1px solid $footer-separator;
-    }
+}
+
+.label-1,
+.label-5,
+.label-6 {
+  text-transform: uppercase;
+}
+
+.label-1 {
+  @include font-spec(10, semibold, 12);
+}
+
+.label-2 {
+  @include font-spec(10, bold, 12);
+  &.selected { color: $mckinsey-grey; }
+}
+
+.label-3 {
+  color: $mckinsey-grey;
+  @include font-spec(10, semibold, 12);
+}
+
+.label-4 {
+  color: $mckinsey-grey;
+  @include font-spec(10, bold, 12);
+}
+
+.label-5 {
+  color: $mckinsey-orange;
+  @include font-spec(12, semibold, 14);
+}
+
+.label-6 {
+  color: $mckinsey-blue;
+  @include font-spec(10, bold, 12);
+}
+
+.label-7 {
+  @include font-spec(10, bold, 12);
+}
+
+.label-8 {
+  @include font-spec(12, bold, 14);
+}
+
+.nav-1,
+.nav-2 {
+  @include font-spec(12, bold, 14);
+  &.selected { color: $mckinsey-grey; }
+}
+
+.nav-1 {
+  color: $mckinsey-academy-alt-blue;
+  text-transform: uppercase;
+}
+
+.nav-2 {
+  &.completed { color: $mckinsey-green; }
+}
+
+.divider {
+  color: $mckinsey-academy-light-gray;
+}
+
+.person-name,
+.person-title {
+  @include font-spec(12, semibold, 14);
+}
+
+.person-title {
+  color: $mckinsey-grey;
+  font-style: italic;
+}
+
+.background-white {
+  background-color: $pure-white;
+}
+
+.background-blue {
+  color: $pure-white;
+  background-color: $mckinsey-blue;
+
+  a, a:visited {
+    color: $mckinsey-academy-bright-gray;
+    @include font-spec(12, semibold, 14);
   }
-  ul, li{
-    display: inline;
+
+  a:hover {
+    color: $mckinsey-academy-blue-gray;
   }
-  .built-on{
-    @include font-spec(10, semibold);
-    float: right;
-    margin: 6px 50px;
+
+  .person-name {
+    color: $mckinsey-academy-alt-blue;
+    @include font-spec(10, semibold, 12);
+  }
+}
+
+.background-alt-blue {
+  color: $pure-white;
+  background-color: $mckinsey-academy-alt-blue;
+
+  .label-4 {
+    color: $mckinsey-blue;
+    text-transform: uppercase;
+  }
+}
+
+.flexible {
+  font-size: 0.1px;
+  text-align: justify;
+  -ms-text-justify: distribute-all-lines;
+  text-justify: distribute-all-lines;
+
+  > * {
+    text-align: left;
+    vertical-align: top;
+    display: inline-block;
+  }
+
+  &:after {
+    content: '';
+    width: 100%;
+    display: inline-block;
   }
 }
 
@@ -56,4 +203,3 @@ footer[role=contentinfo]{
     top: -34px;
   }
 }
-

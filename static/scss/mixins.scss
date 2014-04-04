@@ -34,7 +34,7 @@
   }
 
 @function boldness($value) {
-  @if $value == semibold { @return 500; }
+  @if $value == semibold { @return 600; }
   @return $value;
 }
 

@@ -7,7 +7,7 @@
 //
 
 // This is the default html and body font-size for the base rem value.
-// $rem-base: 16px;
+$rem-base: 14px;
 
 // Allows the use of rem-calc() or lower-bound() in your settings
 @import "foundation/functions";
@@ -20,7 +20,7 @@
 // Since the typical default browser font-size is 16px, that makes the calculation for grid size.
 // If you want your base font-size to be different and not have it affect the grid breakpoints,
 // set $rem-base to $base-font-size and make sure $base-font-size is a px value.
-// $base-font-size: 100%;
+$base-font-size: 14px;
 
 // The $base-line-height is 100% while $base-font-size is 150%
 // $base-line-height: 150%;
@@ -819,7 +819,6 @@ $global-radius: 5px;
 // $price-money-size: rem-calc(32);
 // $price-money-font-family: $body-font-family;
 
-
 // We use these to control the description styles
 // $price-bg: #fff;
 // $price-desc-color: #777;
@@ -918,8 +917,6 @@ $global-radius: 5px;
 // $side-nav-font-family: $body-font-family;
 // $side-nav-active-font-family: $side-nav-font-family;
 
-
-
 // We use these to control border styles
 // $side-nav-divider-size: 1px;
 // $side-nav-divider-style: solid;
@@ -979,7 +976,6 @@ $global-radius: 5px;
 // $sub-nav-text-decoration: none;
 // $sub-nav-border-radius: 3px;
 // $sub-nav-font-color-hover: scale-color($sub-nav-font-color, $lightness: -25%);
-
 
 // We use these to control the active item styles
 

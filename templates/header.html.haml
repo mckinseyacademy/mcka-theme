@@ -1,11 +1,14 @@
-%header.row{role: "banner"}
+%header.row.collapse.background-blue{role: "banner"}
   .large-12.columns
     %a.logo{href: "/"}
     %span.header-menu
       %ul
-        %li= _("About")
-        %li= _("Programs")
-        %li= _("Contact")
+        %li
+          %a{href: '/about'}= _("About")
+        %li
+          %a{href: '/programs'}= _("Programs")
+        %li
+          %a{href: '/contact'}= _("Contact")
     - block user_region
       - if user
         %a.user-info{href: "#", data-dropdown: "profile-container"}
