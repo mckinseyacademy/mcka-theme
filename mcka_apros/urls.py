@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^$', 'accounts.views.home', name='home'),
     url(r'^accounts/', include('accounts.urls'), name='accounts'),
     url(r'^courses/', include('courses.urls'), name='courses'),
-    url(r'^', include('marketing.urls'), name='marketing'),
+    url(r'^(?P<page_name>.*)/$', include('marketing.urls'), name='marketing'),
 )
