@@ -1,0 +1,38 @@
+- extends "layout.haml"
+
+- block content
+  %article#contact-page.row.collapse
+    .large-10.large-centered.columns
+      %section
+        %h1 Contact McKinsey Academy
+      %section
+        .sub-1 RESERVE PLACES SUBHEAD
+        %p We have set aside a limited number of places (250) for our alumni and their staff in the first cohort of the McKinsey Management Program. This will give alumni the exclusive opportunity to reserve places for high performing employees on their teams.  Text here.
+      %section
+        %a.button.small.radius{href: '#'} Reserve Places
+      %hr
+      %section
+        .forms.background-white
+          .col-left
+            .sub-1 STAY INFORMED
+            %p To stay informed about McKinsey Academy, please enter your email address below. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.
+            %form{action: '/', method: 'post'}
+              %fieldset
+                %div
+                  %input{type: 'email', placeholder: 'Email'}
+                %div
+                  %input.button.tiny.radius{type: 'submit', value: 'Submit'}
+            %a.support{href: '#'} support link here
+          .col-right
+            .sub-1 REFER
+            %p Please enter up to three email addresses of colleagues or peers who you think might be interested in McKinsey Academy.
+            %form{action: '/', method: 'post'}
+              %fieldset
+                %div
+                  %input{type: 'email', placeholder: 'Email'}
+                %div
+                  %input{type: 'email', placeholder: 'Email'}
+                %div
+                  %input{type: 'email', placeholder: 'Email'}
+                %div
+                  %input.button.tiny.radius{type: 'submit', value: 'Submit'}

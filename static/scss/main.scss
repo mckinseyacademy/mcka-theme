@@ -1,207 +1,228 @@
-$header-bar-height: 48px;
-
 body{
+  color: $mckinsey-academy-black;
   background-color: $background-tint;
-  font-family: "Open Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-header[role=banner]{
-  // TODO: replace with extend depth5
-  position: relative;
-  z-index: 100000;
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-  background-color: $header-background;
-  @include left-right-gradient($header-left-color, $header-right-color, 320px);
-  color: $header-text;
-  height: $header-bar-height;
-  max-height: $header-bar-height;
-  .columns{
-    padding: 0;
+main[role=main] { margin-bottom: 100px; }
+
+h1 {
+  color: $mckinsey-academy-turquoise;
+  @include font-spec(22, normal, 24);
+}
+
+h2 {
+  @include font-spec(18, normal, 20);
+}
+
+.sub-1,
+.sub-2
+{
+  text-transform: uppercase;
+  @include font-spec(14, semibold, 18);
+}
+
+.sub-2 { color: $almost-white; }
+
+p {
+  margin: 0;
+  @include font-spec(14, normal, 22);
+  &.style-2 { @include font-spec(14, semibold, 22); }
+  &.style-3 { @include font-spec(12, semibold, 19); }
+  &.style-4 { @include font-spec(12, normal, 14); }
+  &.style-5 { font-style: italic; }
+}
+
+a,
+a:visited {
+  color: $mckinsey-academy-alt-blue;
+  text-decoration: none;
+  @include font-spec(14, semibold, 16);
+}
+
+a:hover { color: $mckinsey-academy-blue-gray; }
+
+hr {
+  border: none;
+  height: 0;
+  margin: 20px 0;
+  background: none;
+  border-top: 1px solid $almost-white;
+}
+
+img { max-width: 100%; height: auto; }
+
+blockquote {
+  @include font-spec(20, normal, 26);
+
+  &.user-quote {
+    color: $mckinsey-academy-alt-blue;
+    @include font-spec(18, normal, 20);
   }
-  .header-menu{
-    top:-18px;
-    position: relative;
-    ul{
-      li{
-        @include font-spec(12, semibold, 14);
-        list-style: none;
-        text-transform: uppercase;
-        margin: 0 0.5rem;
-      }
-    }
+}
+
+.label-1,
+.label-5,
+.label-6 {
+  text-transform: uppercase;
+}
+
+.label-1 {
+  @include font-spec(10, semibold, 12);
+}
+
+.label-2 {
+  @include font-spec(10, bold, 12);
+  &.selected { color: $mckinsey-grey; }
+}
+
+.label-3 {
+  color: $mckinsey-grey;
+  @include font-spec(10, semibold, 12);
+}
+
+.label-4 {
+  color: $mckinsey-grey;
+  @include font-spec(10, bold, 12);
+}
+
+.label-5 {
+  color: $mckinsey-orange;
+  @include font-spec(12, semibold, 14);
+}
+
+.label-6 {
+  color: $mckinsey-blue;
+  @include font-spec(10, bold, 12);
+}
+
+.label-7 {
+  @include font-spec(10, bold, 12);
+}
+
+.label-8 {
+  @include font-spec(12, bold, 14);
+}
+
+.nav-1,
+.nav-2 {
+  @include font-spec(12, bold, 14);
+  &.selected { color: $mckinsey-grey; }
+}
+
+.nav-1 {
+  color: $mckinsey-academy-alt-blue;
+  text-transform: uppercase;
+}
+
+.nav-2 {
+  &.completed { color: $mckinsey-green; }
+}
+
+.divider {
+  color: $mckinsey-academy-light-gray;
+}
+
+.person-name,
+.person-title {
+  @include font-spec(12, semibold, 14);
+}
+
+.person-title {
+  color: $mckinsey-grey;
+  font-style: italic;
+}
+
+.background-white {
+  background-color: $pure-white;
+}
+
+.background-blue {
+  color: $pure-white;
+  background-color: $mckinsey-blue;
+
+  a, a:visited {
+    color: $mckinsey-academy-bright-gray;
+    @include font-spec(12, semibold, 14);
   }
-  ul, li{
-    display: inline-block;
+
+  a:hover {
+    color: $mckinsey-academy-blue-gray;
   }
-  >div{
-    height: 100%;
-    //margin: auto 0;
-  }
-  .logo{
-    background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;
-    width: 340px;
-    height: 100%;
-    display: inline-block;
-  }
-  .user-info{
-    cursor: pointer;
-    float: right;
-    color: $user-text;
+
+  .person-name {
+    color: $mckinsey-academy-alt-blue;
     @include font-spec(10, semibold, 12);
-    text-align: right;
-    $drop_down_offset: 3px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    @media #{$large-up}{
-      position: inherit;
-      top: inherit;
-      right: inherit;
-    }
-    .fa{
-      position:relative;
-      &.fa-sort-asc{
-        top: -1*$drop_down_offset;
-      }
-      &.fa-sort-desc{
-        top: $drop_down_offset;
-      }
-    }
-    div{
-      display: inline;
-    }
-    .user-image img{
-      @include square-size($header-bar-height);
-    }
-    $user-profile-width: 220px;
-    .user-profile{
-      width: $user-profile-width;
-      @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-      div{
-        display:block;
-      }
-      color: $mckinsey-academy-black;
-      height: auto;
-      display: block;
-      border-left: 1px solid $border-line;
-      border-right: 1px solid $border-line;
-      background-color: $pure-white;
-      div{
-        display: block;
-      }
-      .user-detail{
-        width: 100%;
-        >div{
-          padding: 10px 10px;
-          text-align: left;
-          border-bottom: 1px solid $border-line;
-          height: 40px;
-          vertical-align: middle;
-          &.username{
-            text-align: center;
-            @include font-spec(14, semibold);
-            height: 30px;
-            padding-top: 3px;
-          }
-          &.logout{
-            height: auto;
-            vertical-align: middle;
-            text-align: center;
-            .button{
-              margin: 0 0 5px;
-            }
-          }
-        }
-        $detail_icon_size: 18px;
-        .fa{
-          width: $detail_icon_size;
-          font-size: rem-calc($detail_icon_size);
-          color: $mckinsey-academy-blue-gray;
-          text-align: center;
-        }
-        .field-group{
-          @include font-spec(10, semibold);
-          margin-left: $detail_icon_size + 5;
-          margin-top: -1*$detail_icon_size;
-          .fieldtitle{
-            font-weight: bold;
-            .editfield{
-              font-weight: boldness(semibold);
-              padding-left: 4px;
-              border-left: 1px solid $border-line;
-            }
-          }
-          .fieldcontent{
-          }
-        }
-      }
-      .user-image {
-        width: 100%;
-        height: 180px;
-        img{
-          margin: 10px 30px;
-          @include square-size(160px);
-        }
-        padding-bottom: 20px;
-        border-bottom: 1px solid $border-line;
-      }
-    }
   }
-  .login-action{
-    position: absolute;
-    right: 0;
-    top: 0;
-    .button{
-      padding: 8px 15px;
-      margin: 10px;
-    }
+}
+
+.background-alt-blue {
+  color: $pure-white;
+  background-color: $mckinsey-academy-alt-blue;
+
+  .label-4 {
+    color: $mckinsey-blue;
+    text-transform: uppercase;
   }
-  .application-name{
+
+  h4 {
+    color: $pure-white;
+    @include font-spec(14, semibold, 14);
+  }
+}
+
+.flexible {
+  font-size: 0.1px;
+  text-align: justify;
+  -ms-text-justify: distribute-all-lines;
+  text-justify: distribute-all-lines;
+
+  > * {
+    text-align: left;
+    vertical-align: top;
     display: inline-block;
-    padding: 10px 10px;
   }
-  #profile-container.open{
-    // !important to override foundation dropdown positioning
-    right: 0 !important;
-    left: auto !important;
+
+  &:after {
+    content: '';
+    width: 100%;
+    display: inline-block;
   }
 }
 
-main[role=main] {
-  margin-bottom: 100px;
-}
+.card-flip {
+  position: relative;
+  @include perspective(1000px);
 
-footer[role=contentinfo]{
-  position: fixed;
-  bottom: 0;
-  margin: 0 auto;
-  background-color: $background-tint;
-  color: $footer-text;
-  padding: 0;
-  max-width: $row-width;
-  .copyright{
-    @include font-spec(10, semibold);
-    color: $mckinsey-grey;
-    padding-right: 10px;
-  }
-  ul{
-    margin: 0;
-    li{
-      @include font-spec(10, semibold);
-      list-style: none;
-      padding: 0 9px 0 10px;
-      border-left: 1px solid $footer-separator;
+  &:hover {
+    .front {
+      z-index: 5;
+      @include transform(rotateY(180deg));
+    }
+
+    .back {
+      z-index: 5;
+      @include transform(rotateX(0deg));
     }
   }
-  ul, li{
-    display: inline;
-  }
-  .built-on{
-    @include font-spec(10, semibold);
+
+  .front, .back {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    margin: 6px;
+    top: 0;
+    left: 0;
+    @include transition(all 400ms ease-in-out);
+    @include transform-style(preserve-3d);
+    @include backface-visibility(hidden);
+  }
+
+  .front {
+    z-index: 10;
+    @include transform(rotateX(0deg));
+  }
+
+  .back {
+    @include transform(rotateY(-180deg));
   }
 }
 
@@ -212,13 +233,12 @@ footer[role=contentinfo]{
     padding: 10px 0;
     line-height: 1.3rem;
     list-style: none;
-    margin-left:0;
+    margin-left: 0;
   }
   .other{
     @include font-spec(12);
-    float:right;
-    position:relative;
+    float: right;
+    position: relative;
     top: -34px;
   }
 }
-

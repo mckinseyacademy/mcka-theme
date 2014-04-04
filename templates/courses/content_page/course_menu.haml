@@ -1,13 +1,13 @@
 %article.course-menu
-  .title LESSONS:
+  .sub-2 LESSONS:
   .rotator
     %ul
       - for lesson in course.chapters
         %li
           %a.card-flip{href: "/courses/#{course.id}/lessons/#{lesson.id}"}
-            .front
-              .index LESSON {{lesson.index}}
-              .name
+            .front.background-white
+              .label-5.index LESSON {{lesson.index}}
+              %h2.name
                 = lesson.name
               .lesson-progress
                 - for tick_mark in lesson.tick_marks
@@ -15,6 +15,6 @@
                     .tick.on
                   - else
                     .tick
-            .back
-              .description
+            .back.background-alt-blue
+              .label-2.description
                 = lesson.description

@@ -1,17 +1,23 @@
-.row
-  %footer.large-12.columns{role: "contentinfo"}
-    %span.copyright
+%footer.row.collapse{role: "contentinfo"}
+  .large-12.columns
+    .copyright
       &copy; 2014
       = _("McKinsey Academy")
-    %ul
-      %li= _("Terms of Service")
-      %li= _("Privacy Policy")
-      %li= _("About")
-      %li= _("Programs")
-      %li= _("Contact")
-      %li= _("FAQ")
+    %nav{role: 'navigation'}
+      %ul
+        %li
+          %a{href: '/tos'}= _("Terms of Service")
+        %li
+          %a{href: '/privacy'}= _("Privacy Policy")
+        %li
+          %a{href: '/about'}= _("About")
+        %li
+          %a{href:'/programs'}= _("Programs")
+        %li
+          %a{href: '/contact'}= _("Contact")
+        %li
+          %a{href: '/faq'}= _("FAQ")
     %span.built-on
-
       = _("Built on")
       %a{href: "http://www.openedx.org", target: "_blank"}
         = _("OpenEdx")

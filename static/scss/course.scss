@@ -2,56 +2,12 @@
 //$content_page_bottom: $header-bar-height + 10;
 
 .program-bar{
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   height: 48px;
-  background-color: $program-bar-background;
   padding-top: 12px;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+
   .program-name{
-    @include font-spec(10, bold, 12);
-    color: $program-bar-program-title;
-    text-transform: uppercase;
-    &::after{
-      content: ':';
-    }
-  }
-  .course-name{
-    @include font-spec(14, semibold, 14);
-    color: $program-bar-course-title;
-  }
-}
-
-.card-flip {
-  position: relative;
-  -webkit-perspective: 400px;
-
-  &:hover {
-    .front {
-      z-index: 5;
-      -webkit-transform: rotateY(180deg);
-    }
-
-    .back {
-      z-index: 5;
-      -webkit-transform: rotateX(0deg);
-    }
-  }
-
-  .front, .back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-transform-style: preserve-3d;
-    -webkit-transition: all 400ms ease-in-out;
-    -webkit-backface-visibility: hidden;
-  }
-
-  .front {
-    z-index: 10;
-    -webkit-transform: rotateX(0deg);
-  }
-
-  .back {
-    -webkit-transform: rotateY(-180deg);
+    &:after{ content: ':'; }
   }
 }
 
@@ -67,17 +23,8 @@
     list-style-type: none;
   }
 
-  .title {
-    color: $almost-white;
-    margin-bottom: 10px;
-    @include font-spec(14, semibold, 14);
-  }
-
-  .sub-title {
-    color: $mckinsey-blue;
-    margin-bottom: 10px;
-    @include font-spec(10, normal, 10);
-  }
+  .sub-2 { margin-bottom: 10px; }
+  .sub-title { margin-bottom: 10px; }
 
   .course-menu{
     margin: 10px 0;
@@ -111,26 +58,7 @@
             @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
           }
 
-          .front {
-            background: $pure-white;
-          }
-
-          .back {
-            color: $pure-white;
-            background-color: $mckinsey-academy-alt-blue;
-            @include font-spec(10, normal, 12);
-          }
-
-          .index {
-            color: $mckinsey-orange;
-            margin-bottom: 20px;
-            @include font-spec(12, semibold, 14);
-          }
-
-          .name {
-            color: #666;
-            @include font-spec(18, semibold, 20);
-          }
+          .index { margin-bottom: 20px; }
 
           .lesson-progress {
             position: absolute;
@@ -202,7 +130,6 @@
       padding: 0 100px;
       border: none;
       quotes: "\201C""\201D""\2018""\2019";
-      @include font-spec(20, normal, 25);
 
       &:before, &:after {
         font-family: Georgia;
@@ -257,7 +184,7 @@
       }
     }
   }
-  
+
   .lesson-module-status{
     display: inline-block;
     font-family: FontAwesome;
@@ -281,7 +208,7 @@
       }
     }
   }
-  
+
   .lesson-pager{
     text-align: center;
     width: 100%;
@@ -304,7 +231,7 @@
       }
     }
   }
-  
+
   .lesson-title{
     @include font-spec(10, semibold, 12);
     color: $mckinsey-grey;
@@ -318,12 +245,12 @@
       margin-left: 3px;
     }
   }
-  
+
   .page-title{
     @include font-spec(22, normal, 24);
     color: $mckinsey-academy-turquoise;
   }
-  
+
 }
 
 .program-menu{
@@ -406,7 +333,7 @@
   margin-top: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  
+
   ul{
     list-style: none;
     display: inline;
@@ -416,7 +343,7 @@
       display: inline-block;
     }
   }
-  
+
   .course-tabs{
     margin: 10px 0;
     ul{
@@ -430,7 +357,7 @@
       }
     }
   }
-  
+
   .lesson-menu{
     @include font-spec(12, bold, 14);
     border-top: 1px solid $mckinsey-academy-warm-gray;
@@ -457,7 +384,7 @@
       }
     }
   }
-  
+
   .lesson-module-status{
     display: inline-block;
     font-family: FontAwesome;
@@ -481,7 +408,7 @@
       }
     }
   }
-  
+
   .lesson-pager{
     text-align: center;
     width: 100%;
@@ -505,7 +432,7 @@
       }
     }
   }
-  
+
   .lesson-title{
     @include font-spec(10, semibold, 12);
     color: $mckinsey-grey;
@@ -519,10 +446,10 @@
       margin-left: 3px;
     }
   }
-  
+
   .page-title{
     @include font-spec(22, normal, 24);
     color: $mckinsey-academy-turquoise;
   }
-  
+
 }

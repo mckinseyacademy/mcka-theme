@@ -1,5 +1,6 @@
 @import "settings";
 @import "foundation";
+@import 'bourbon/bourbon';
 // Or selectively include components
 // @import
 //   "foundation/components/accordion",
@@ -42,4 +43,7 @@
 @import "mixins";
 @import "buttons";
 @import "main";
+@import "common/header";
+@import "common/footer";
 @import "course";
+@import "marketing";
