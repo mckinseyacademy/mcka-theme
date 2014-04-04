@@ -6418,7 +6418,7 @@ header[role=banner] {
     line-height: 12px;
     line-height: 0.75rem;
     text-align: right;
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0; }
     @media only screen and (min-width: 60.063em) {
@@ -6504,7 +6504,9 @@ header[role=banner] {
           width: 160px;
           height: 160px; }
   header[role=banner] .login-action {
-    float: right; }
+    position: absolute;
+    right: 0;
+    top: 0; }
     header[role=banner] .login-action .button {
       padding: 8px 15px;
       margin: 10px; }
@@ -6828,9 +6830,6 @@ footer[role=contentinfo] {
     .home-page .lesson-module-status:hover.current {
       color: #868685; }
 .home-page .lesson-pager {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   text-align: center;
   width: 100%;
   padding-bottom: 5rem; }
@@ -7015,12 +7014,10 @@ footer[role=contentinfo] {
       .content-page .lesson-module-status:hover.current {
         color: #868685; }
   .content-page .lesson-pager {
-    position: fixed;
-    bottom: 0;
-    left: 0;
     text-align: center;
     width: 100%;
-    padding-bottom: 5rem; }
+    padding-top: 2.5rem;
+    padding-bottom: 3.75rem; }
     .content-page .lesson-pager .page-to {
       margin: 0 10px;
       font-size: 30px;
