@@ -48,6 +48,7 @@ LOCAL_APPS = (
     'assets',
     'main',
     'courses',
+    'admin',
     'marketing',
 )
 
@@ -136,6 +137,15 @@ LMS_SUB_DOMAIN = 'lms'
 
 # TODO-API: Remove setting once this is retreived from the API
 VERTICAL_USAGE_ID = 'i4x:;_;_TestX;_TST-BRGT;_vertical;_0c4f0ca3c3f54a1b8ad5d9830c1d16b0'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'global-cache',
+        'TIMEOUT': 3600,
+    }
+}
+
 
 # Api address
 # API_SERVER_ADDRESS = 'http://localhost:8000'
