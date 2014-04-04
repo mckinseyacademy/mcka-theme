@@ -1,6 +1,6 @@
 from django.conf.urls import include, patterns, url
 
-from courses import views
+from . import views
 
 urlpatterns = patterns('',
     url(r'^(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)$', views.navigate_to_page, name='navigate_to_page'),

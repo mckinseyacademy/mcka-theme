@@ -1,7 +1,7 @@
 ''' API calls with respect to courses '''
-from api_client.json_object import JsonParser as JP
-from api_client import course_models
-from api_client.json_requests import GET
+from .json_object import JsonParser as JP
+from . import course_models
+from .json_requests import GET
 
 from django.conf import settings
 

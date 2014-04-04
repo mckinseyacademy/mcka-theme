@@ -1,7 +1,7 @@
 from django.test import TestCase
 from api_client import course_models, user_models
 
-from courses import controller
+from . import controller
 
 # disable no-member 'cos the members are getting created from the json
 # and some others that we don't care about for tests
@@ -115,7 +115,7 @@ class MockUserAPI(object):
                     {
                         "id": "1001",
                         "name": "Different Transportation Methods",
-                        "courses": 
+                        "courses":
                         [
                             {"id":"1"},
                             {"id":"2"},
