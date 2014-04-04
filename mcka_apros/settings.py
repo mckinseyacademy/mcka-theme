@@ -126,6 +126,15 @@ STATICFILES_DIRS = (
 )
 
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'global-cache',
+        'TIMEOUT': 3600,
+    }
+}
+
+
 # Api address
 # API_SERVER_ADDRESS = 'http://localhost:8000'
 API_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'

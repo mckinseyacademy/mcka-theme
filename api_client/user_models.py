@@ -4,7 +4,6 @@ from api_client.json_object import JsonObject
 import hashlib
 import datetime
 
-# Create your models here.
 
 # ignore too few public methods witin this file - these models almost always
 # don't need a public method because they inherit from the base implementation
@@ -23,7 +22,7 @@ class UserResponse(JsonObject):
         )
 
     def formatted_name(self):
-        ''' returns formatted name from first name and last name'''
+        ''' returns formatted name from first name and last name '''
         return "{} {}".format(self.first_name, self.last_name)
 
 
@@ -76,3 +75,8 @@ class UserStatus(JsonObject):
                 return course_status.bookmark
 
         return None
+
+
+class Group(JsonObject):
+    ''' object representing a group of which a user can be a member '''
+    required_fields = ['id', 'name']

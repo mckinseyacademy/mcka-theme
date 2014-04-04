@@ -7,6 +7,8 @@ from django.conf import settings
 
 AUTH_API = 'api/sessions'
 USER_API = 'api/users'
+GROUP_API = 'api/groups'
+
 
 def authenticate(username, password):
     ''' authenticate to the API server '''
@@ -53,8 +55,7 @@ def get_user_course_status(user_id):
     ''' get the user's summary for their courses '''
     response = GET(
         '{}/{}/{}/enrollments'.format(
-            # TODO: remove forced MOCK reference when real API becomes available
-            settings.API_MOCK_SERVER_ADDRESS,
+            settings.API_SERVER_ADDRESS,
             USER_API,
             user_id
         )
@@ -73,11 +74,36 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id):
     }
     response = POST(
         '{}/{}/{}/course_bookmark'.format(
-            # TODO: remove forced MOCK reference when real API becomes available
-            settings.API_MOCK_SERVER_ADDRESS,
+            settings.API_SERVER_ADDRESS,
             USER_API,
             user_id
         ),
         data
     )
     return JP.from_json(response.read())
+
+def get_groups():
+    ''' gets all groups '''
+    response = GET(
+       '{}/{}'.format(settings.API_SERVER_ADDRESS, GROUP_API)
+    )
+    groups_json = JP.from_json(response.read())
+    rd = {}
+    for group in groups_json:
+        rd[group.name] = group.id
+    return rd
+
+def is_user_in_group(user_id, group_id):
+    ''' checks group membership '''
+    response = GET(
+       '{}/{}/{}/users/{}'.format(
+            settings.API_SERVER_ADDRESS, 
+            GROUP_API,
+            group_id,
+            user_id)
+    )
+    if response.code == 200:
+        return True
+    return False
+
+
