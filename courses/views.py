@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 
-from courses.controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark
+from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark
 
 # Create your views here.
 

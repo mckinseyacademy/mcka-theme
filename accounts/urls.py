@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from accounts import views
+from . import views
 
 urlpatterns = patterns('accounts',
     url(r'^user_profile.html$', views.user_profile, name='user_profile'),

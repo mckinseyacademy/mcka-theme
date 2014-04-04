@@ -1,20 +1,23 @@
 from django.test import TestCase
 
-from accounts.forms import RegistrationForm
+from .forms import RegistrationForm
 
 # Create your tests here.
 
+
 class AccountsFormsTests(TestCase):
+
+    ''' Test Accounts Forms '''
 
     def test_RegistrationForm(self):
         # valid if data is good
         reg_data = {
-            'username' : 'testuser',
-            'email' : 'testuser@edx.org',
-            'password' : 'p455w0rd',
-            'confirm_password' : 'p455w0rd',
-            'first_name' : 'Test',
-            'last_name' : 'User',
+            'username': 'testuser',
+            'email': 'testuser@edx.org',
+            'password': 'p455w0rd',
+            'confirm_password': 'p455w0rd',
+            'first_name': 'Test',
+            'last_name': 'User',
         }
         registration_form = RegistrationForm(reg_data)
 

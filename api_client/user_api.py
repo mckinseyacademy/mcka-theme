@@ -1,7 +1,7 @@
 ''' API calls with respect to users and authentication '''
-from api_client.json_object import JsonParser as JP
-from api_client import user_models
-from api_client.json_requests import GET, POST, DELETE
+from .json_object import JsonParser as JP
+from . import user_models
+from .json_requests import GET, POST, DELETE
 
 from django.conf import settings
 

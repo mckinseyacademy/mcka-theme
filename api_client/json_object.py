@@ -69,6 +69,16 @@ class MissingRequiredFieldError(Exception):
         return "Missing required field '{}'".format(self.value)
 
 
+def _build_date_field(json_date_string_value):
+    ''' converts json date string to date object '''
+    try:
+        return datetime.datetime.strptime(
+            json_date_string_value,
+            '%Y-%m-%dT%H:%M:%S.%fZ'
+        )
+    except ValueError:
+        return None
+
 # Can create one of these, and add some class-specific checks for required
 # values, even strip bad values
 class JsonObject(Objectifier):
@@ -93,7 +103,7 @@ class JsonObject(Objectifier):
 
         for date_field in self.date_fields:
             if date_field in dictionary:
-                date_value = self._build_date_field(dictionary[date_field])
+                date_value = _build_date_field(dictionary[date_field])
                 if date_value:
                     dictionary[date_field] = date_value
 
@@ -117,12 +127,6 @@ class JsonObject(Objectifier):
                     remove_fields.append(element)
             for remove_field in remove_fields:
                 del dictionary[remove_field]
-
-    def _build_date_field(self, json_date_string_value):
-        try:
-            return datetime.datetime.strptime(json_date_string_value, '%Y-%m-%dT%H:%M:%S.%fZ')
-        except:
-            return None
 
 
 class JsonParser(object):
