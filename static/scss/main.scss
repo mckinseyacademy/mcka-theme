@@ -166,6 +166,11 @@ blockquote {
     color: $mckinsey-blue;
     text-transform: uppercase;
   }
+
+  h4 {
+    color: $pure-white;
+    @include font-spec(14, semibold, 14);
+  }
 }
 
 .flexible {
@@ -184,6 +189,41 @@ blockquote {
     content: '';
     width: 100%;
     display: inline-block;
+  }
+}
+
+.card-flip {
+  position: relative;
+  @include perspective(1000px);
+
+  &:hover {
+    .front {
+      z-index: 5;
+      @include transform(rotateY(180deg));
+    }
+
+    .back {
+      z-index: 5;
+      @include transform(rotateX(0deg));
+    }
+  }
+
+  .front, .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include transition(all 400ms ease-in-out);
+    @include transform-style(preserve-3d);
+    @include backface-visibility(hidden);
+  }
+
+  .front {
+    z-index: 10;
+    @include transform(rotateX(0deg));
+  }
+
+  .back {
+    @include transform(rotateY(-180deg));
   }
 }
 

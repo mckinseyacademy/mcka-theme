@@ -2,56 +2,12 @@
 //$content_page_bottom: $header-bar-height + 10;
 
 .program-bar{
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   height: 48px;
-  background-color: $program-bar-background;
   padding-top: 12px;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+
   .program-name{
-    @include font-spec(10, bold, 12);
-    color: $program-bar-program-title;
-    text-transform: uppercase;
-    &::after{
-      content: ':';
-    }
-  }
-  .course-name{
-    @include font-spec(14, semibold, 14);
-    color: $program-bar-course-title;
-  }
-}
-
-.card-flip {
-  position: relative;
-  @include perspective(1000px);
-
-  &:hover {
-    .front {
-      z-index: 5;
-      @include transform(rotateY(180deg));
-    }
-
-    .back {
-      z-index: 5;
-      @include transform(rotateX(0deg));
-    }
-  }
-
-  .front, .back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    @include transition(all 400ms ease-in-out);
-    @include transform-style(preserve-3d);
-    @include backface-visibility(hidden);
-  }
-
-  .front {
-    z-index: 10;
-    @include transform(rotateX(0deg));
-  }
-
-  .back {
-    @include transform(rotateY(-180deg));
+    &:after{ content: ':'; }
   }
 }
 
@@ -67,17 +23,8 @@
     list-style-type: none;
   }
 
-  .title {
-    color: $almost-white;
-    margin-bottom: 10px;
-    @include font-spec(14, semibold, 14);
-  }
-
-  .sub-title {
-    color: $mckinsey-blue;
-    margin-bottom: 10px;
-    @include font-spec(10, normal, 10);
-  }
+  .sub-2 { margin-bottom: 10px; }
+  .sub-title { margin-bottom: 10px; }
 
   .course-menu{
     margin: 10px 0;
@@ -111,26 +58,7 @@
             @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
           }
 
-          .front {
-            background: $pure-white;
-          }
-
-          .back {
-            color: $pure-white;
-            background-color: $mckinsey-academy-alt-blue;
-            @include font-spec(10, normal, 12);
-          }
-
-          .index {
-            color: $mckinsey-orange;
-            margin-bottom: 20px;
-            @include font-spec(12, semibold, 14);
-          }
-
-          .name {
-            color: #666;
-            @include font-spec(18, semibold, 20);
-          }
+          .index { margin-bottom: 20px; }
 
           .lesson-progress {
             position: absolute;
@@ -202,7 +130,6 @@
       padding: 0 100px;
       border: none;
       quotes: "\201C""\201D""\2018""\2019";
-      @include font-spec(20, normal, 25);
 
       &:before, &:after {
         font-family: Georgia;
