@@ -283,9 +283,6 @@
   }
   
   .lesson-pager{
-    position: fixed;
-    bottom: 0;
-    left: 0;
     text-align: center;
     width: 100%;
     padding-bottom: rem-calc(80);
@@ -330,7 +327,7 @@
 }
 
 .program-menu{
-  color: $mckinsey-academy-alt-blue;
+  color: $mckinsey-blue;
   padding: 10px;
   > *{
     float: right;
@@ -370,10 +367,13 @@
     &.unavailable{
       color: $mckinsey-grey;
     }
+    &.current{
+      color: $mckinsey-orange;
+    }
   }
   a.course-name{
     &:hover{
-      color: $mckinsey-orange;
+      opacity: 0.6;
     }
   }
   .status{
@@ -483,12 +483,10 @@
   }
   
   .lesson-pager{
-    position: fixed;
-    bottom: 0;
-    left: 0;
     text-align: center;
     width: 100%;
-    padding-bottom: rem-calc(80);
+    padding-top: rem-calc(40);
+    padding-bottom: rem-calc(60);
     .page-to{
       margin: 0 10px;
       @include font-spec(30);

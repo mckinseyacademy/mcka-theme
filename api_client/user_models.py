@@ -1,5 +1,5 @@
 ''' Objects for users / authentication built from json responses from API '''
-from api_client.json_object import JsonObject
+from .json_object import JsonObject
 
 import hashlib
 import datetime

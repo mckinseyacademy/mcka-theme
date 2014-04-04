@@ -1,5 +1,5 @@
 ''' Objects for courses built from json responses from API '''
-from api_client.json_object import JsonObject
+from .json_object import JsonObject
 
 # Create your models here.
 

@@ -8,7 +8,12 @@ from api_client import course_api, user_api
 # logic functions - recieve api implementor for test
 
 
-def build_page_info_for_course(course_id, chapter_id, page_id, course_api_impl=course_api):
+def build_page_info_for_course(
+    course_id,
+    chapter_id,
+    page_id,
+    course_api_impl=course_api
+):
     '''
     Returns course structure and user's status within course
         course_api_impl - optional api client module to use (useful in mocks)
@@ -48,7 +53,13 @@ def build_page_info_for_course(course_id, chapter_id, page_id, course_api_impl=c
     return course, current_chapter, current_page
 
 
-def locate_chapter_page(user_id, course_id, chapter_id, user_api_impl=user_api, course_api_impl=course_api):
+def locate_chapter_page(
+    user_id,
+    course_id,
+    chapter_id,
+    user_api_impl=user_api,
+    course_api_impl=course_api
+):
     '''
     Returns current chapter and page for given course from user's status
     Chapter defaults to bookmark if not provided, to 1st chapter if no bookmark

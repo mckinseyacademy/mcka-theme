@@ -1,15 +1,14 @@
 ''' views for auth, sessions, users '''
 from django.utils.translation import ugettext as _
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.middleware import csrf
-from mcka_apros.forms import LoginForm, RegistrationForm
+from django.http import HttpResponseRedirect
+from .forms import LoginForm, RegistrationForm
 from api_client import user_api
-from accounts.models import RemoteUser
+from .models import RemoteUser
 
-from importlib import import_module
-from django.conf import settings
-SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+# from importlib import import_module
+# from django.conf import settings
+# SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from django.contrib import auth
 import urllib2 as url_access
@@ -120,7 +119,8 @@ def register(request):
             except url_access.HTTPError, err:
                 error = _("An error occurred during registration")
                 error_messages = {
-                    409: _("User with matching username or email already exists")
+                    409: _(("User with matching username "
+                            "or email already exists"))
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]

@@ -4,26 +4,26 @@ import os
 os.environ['SASS_USE_SCSS'] = 'false'
 
 # Javascript squashing
-js = Bundle(
+JS = Bundle(
     'js/vendor/jquery.js',
     'js/application.js',
     filters='jsmin',
     output='packed.js'
 )
-register('js_all', js)
+register('js_all', JS)
 
 # CSS compilation and squashing
-scss = Bundle(
+SCSS = Bundle(
     'scss/app.scss',
-    filters='sass', 
+    filters='sass',
     output='app.css',
     depends=('scss/*.scss')
 )
-register('scss_all', scss)
+register('scss_all', SCSS)
 
-css = Bundle(
-    scss,
+CSS = Bundle(
+    SCSS,
     filters='cssmin',
     output='packed.css'
 )
-register('css_all', css)
+register('css_all', CSS)
