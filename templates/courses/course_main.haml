@@ -2,11 +2,11 @@
 
 - block program_bar
   .row
-    .large-12.columns.program-bar
+    .large-12.columns.background-alt-blue.program-bar
       - if program
-        .program-name
+        .label-4.program-name
           = program.name
-      .course-name
+      %h4.course-name
         = course.name
   - if program
     .row
@@ -30,4 +30,4 @@
   .row
     .current_course_link
       %a{href:"/courses"}
-        Where I last left things...
+        Where I last left things&hellip;

@@ -6,4 +6,5 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('accounts.urls'), name='accounts'),
     url(r'^courses/', include('courses.urls'), name='courses'),
     url(r'^admin/', include('admin.urls'), name='admin'),
+    url(r'^(?P<page_name>.*)/$', include('marketing.urls'), name='marketing'),
 )

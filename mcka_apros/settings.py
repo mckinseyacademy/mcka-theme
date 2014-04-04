@@ -49,6 +49,7 @@ LOCAL_APPS = (
     'main',
     'courses',
     'admin',
+    'marketing',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -84,19 +85,19 @@ TEMPLATE_LOADERS = (
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mcka_apros',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',   
+        'HOST': 'localhost',
         'PORT': '3306',
     },
     'edx': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'edx',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',   
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

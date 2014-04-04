@@ -17,13 +17,12 @@ SCSS = Bundle(
     'scss/app.scss',
     filters='sass',
     output='app.css',
-    depends=('scss/*.scss')
+    depends=('scss/**/*.scss')
 )
 register('scss_all', SCSS)
 
 CSS = Bundle(
     SCSS,
-    filters='cssmin',
     output='packed.css'
 )
 register('css_all', CSS)
