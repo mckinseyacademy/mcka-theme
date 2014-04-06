@@ -22,13 +22,16 @@ def authenticate(username, password):
     )
     return JP.from_json(response.read(), user_models.AuthenticationResponse)
 
+
 def get_user(user_id):
     ''' get specified user '''
     response = GET(
-        '{}/{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API,
-        user_id)
+        '{}/{}/{}'.format(
+            settings.API_SERVER_ADDRESS, USER_API, user_id
+        )
     )
     return JP.from_json(response.read(), user_models.UserResponse)
+
 
 def delete_session(session_key):
     ''' delete associated openedx session '''
@@ -39,6 +42,7 @@ def delete_session(session_key):
             session_key
         )
     )
+
 
 def register_user(user_hash):
     ''' register the given user within the openedx server '''
@@ -51,6 +55,7 @@ def register_user(user_hash):
     )
     return JP.from_json(response.read())
 
+
 def get_user_course_status(user_id):
     ''' get the user's summary for their courses '''
     response = GET(
@@ -61,6 +66,7 @@ def get_user_course_status(user_id):
         )
     )
     return JP.from_json(response.read(), user_models.UserStatus)
+
 
 def set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id):
     ''' let the openedx server know the most recently visited page '''
@@ -82,10 +88,13 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id):
     )
     return JP.from_json(response.read())
 
+
 def get_groups():
     ''' gets all groups '''
     response = GET(
-       '{}/{}'.format(settings.API_SERVER_ADDRESS, GROUP_API)
+        '{}/{}'.format(
+            settings.API_SERVER_ADDRESS, GROUP_API
+        )
     )
     groups_json = JP.from_json(response.read())
     rd = {}
@@ -93,17 +102,17 @@ def get_groups():
         rd[group.name] = group.id
     return rd
 
+
 def is_user_in_group(user_id, group_id):
     ''' checks group membership '''
     response = GET(
-       '{}/{}/{}/users/{}'.format(
-            settings.API_SERVER_ADDRESS, 
+        '{}/{}/{}/users/{}'.format(
+            settings.API_SERVER_ADDRESS,
             GROUP_API,
             group_id,
-            user_id)
+            user_id
+        )
     )
     if response.code == 200:
         return True
     return False
-
-

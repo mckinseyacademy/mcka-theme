@@ -12,7 +12,7 @@ class CuratedContentItem(models.Model):
     image_url = models.URLField(blank=True, null=True)
     twitter_username = models.CharField(max_length=255, null=True)
     sequence = models.IntegerField(null=False)
-    
+
     TEXT = 'txt'
     VIDEO = 'vid'
     QUOTE = 'quo'
@@ -29,5 +29,3 @@ class CuratedContentItem(models.Model):
     content_type = models.CharField(max_length=3,
                                     choices=CONTENT_TYPES,
                                     default=TEXT)
-    
-    

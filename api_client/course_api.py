@@ -7,6 +7,7 @@ from django.conf import settings
 
 COURSEWARE_API = 'api/courses'
 
+
 def get_course(course_id):
     '''
     Retrieves course structure information from the API for specified course

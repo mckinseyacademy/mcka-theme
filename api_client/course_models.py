@@ -7,23 +7,27 @@ from .json_object import JsonObject
 # don't need a public method because they inherit from the base implementation
 # pylint: disable=too-few-public-methods
 
+
 class Page(JsonObject):
     ''' object representing a page / module within a chapter / lesson'''
     required_fields = []
+
 
 class Chapter(JsonObject):
     ''' object representing a chapter / lesson within a course '''
     required_fields = []
     object_map = {
-        "pages" : Page,
+        "pages": Page,
     }
+
 
 class Course(JsonObject):
     ''' object representing a course '''
     required_fields = []
     object_map = {
-        "chapters" : Chapter,
+        "chapters": Chapter,
     }
+
 
 class PageContent(JsonObject):
     ''' object for loading page content from the API server '''

@@ -13,7 +13,6 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.IntegerField')(default=1),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'CuratedContentItem.sequence'
         db.delete_column('curated_content_item', 'sequence')

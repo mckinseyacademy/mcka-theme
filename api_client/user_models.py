@@ -45,14 +45,13 @@ class UserCourseStatus(JsonObject):
     object_map = {
         "bookmark": UserCourseBookmark
     }
-    date_fields = ["start_date",]
+    date_fields = ["start_date", ]
 
     def is_future_start(self):
         if hasattr(self, 'start_date'):
             return datetime.datetime.utcnow() < self.start_date
 
         return False
-
 
 
 class UserPrograms(JsonObject):

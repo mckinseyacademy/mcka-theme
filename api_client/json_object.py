@@ -3,10 +3,10 @@ import json
 import collections
 import datetime
 
+
 # ignore too few public methods witin this file - these models almost always
 # don't need a public method because they inherit from the base implementation
 # pylint: disable=too-few-public-methods
-
 class Objectifier(object):
 
     '''
@@ -26,7 +26,7 @@ class Objectifier(object):
         self._build_from_dictionary(dictionary)
 
     def _build_from_dictionary(self, dictionary):
-        ''' Construct the attributes of the object from the given dictionary '''
+        ''' Set the attributes of the object from the given dictionary '''
         for item in dictionary:
             object_type = self._object_type_for_name(item)
 
@@ -79,6 +79,7 @@ def _build_date_field(json_date_string_value):
     except ValueError:
         return None
 
+
 # Can create one of these, and add some class-specific checks for required
 # values, even strip bad values
 class JsonObject(Objectifier):
@@ -118,12 +119,12 @@ class JsonObject(Objectifier):
         if specified, that only valid_fields remain
         '''
         for required in self.required_fields:
-            if not required in dictionary:
+            if required not in dictionary:
                 raise MissingRequiredFieldError(required)
         if self.valid_fields:
             remove_fields = []
             for element in dictionary:
-                if not element in self.valid_fields:
+                if element not in self.valid_fields:
                     remove_fields.append(element)
             for remove_field in remove_fields:
                 del dictionary[remove_field]
