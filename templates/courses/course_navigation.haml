@@ -21,17 +21,6 @@
 
 - block js_snippets
   :javascript
-    var set_page_height = function(){
-      var $page = $('.content-page');
-      var $footer = $('footer');
-
-      var new_height = $footer.position().top - $page.position().top - (2 * parseInt($page.css('margin-top')));
-      $page.css({height: new_height + "px"});
-    }
-    $(window).on('resize', set_page_height);
-    $(window).trigger('resize');
-
-  :javascript
     $(function(){
       $('.content-page .lesson-content').xblock({
         usageId: '{{ vertical_usage_id }}',
