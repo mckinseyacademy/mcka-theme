@@ -1,6 +1,8 @@
 #about-page,
 #programs-page,
-#contact-page {
+#contact-page,
+#experience-page,
+#styleguide-page {
   margin-top: 85px;
   section {
     padding: 0 rem-calc(20);
@@ -147,6 +149,71 @@
       div:last-child {
         text-align: right;
       }
+    }
+  }
+}
+
+#experience-page {
+  ul.features {
+    li {
+      margin-bottom: 20px;
+
+      img {
+        margin-bottom: 10px;
+        @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+      }
+
+      p { width: 245px; }
+    }
+  }
+
+  .course-sample {
+    padding: 20px;
+    @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+  }
+
+  ol.pedagogy {
+    > li { margin-bottom: 30px; }
+
+    ul {
+      li {
+        list-style-type: disc;
+      }
+    }
+  }
+
+  .design {
+    margin: 0;
+    padding: 25px;
+    @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+
+    li { margin-bottom: 15px; }
+  }
+}
+
+#styleguide-page {
+  ul.colors {
+    margin: 0;
+    width: 450px;
+    list-style-type: none;
+
+    li {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 15px;
+
+      &.mckinsey-blue { background-color: $mckinsey-blue; }
+      &.mckinsey-academy-alt-blue { background-color: $mckinsey-academy-alt-blue; }
+      &.mckinsey-academy-black { background-color: $mckinsey-academy-black; }
+      &.mckinsey-grey { background-color: $mckinsey-grey; }
+      &.mckinsey-academy-turquoise { background-color: $mckinsey-academy-turquoise; }
+      &.mckinsey-orange { background-color: $mckinsey-orange; }
+      &.mckinsey-green { background-color: $mckinsey-green; }
+      &.mckinsey-red { background-color: $mckinsey-red; }
+      &.mckinsey-academy-blue-gray { background-color: $mckinsey-academy-blue-gray; }
+      &.mckinsey-academy-warm-gray { background-color: $mckinsey-academy-warm-gray; }
+      &.mckinsey-academy-bright-gray { background-color: $mckinsey-academy-bright-gray; }
+      &.mckinsey-academy-light-gray { background-color: $mckinsey-academy-light-gray; }
     }
   }
 }
