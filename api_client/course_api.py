@@ -1,6 +1,6 @@
 ''' API calls with respect to courses '''
 from .json_object import CategorisedJsonParser
-from .json_object import JsonObject
+from .json_object import CategorisedJsonObject
 from . import course_models
 from .json_requests import GET
 from urllib2 import HTTPError
@@ -17,10 +17,10 @@ OBJECT_CATEGORY_MAP = {
     "vertical": course_models.Page,
     
     # Others that may become important in the future:
-    "html": JsonObject,
-    "video": JsonObject,
-    "discussion": JsonObject,
-    "problem": JsonObject,
+    "html": CategorisedJsonObject,
+    "video": CategorisedJsonObject,
+    "discussion": CategorisedJsonObject,
+    "problem": CategorisedJsonObject,
 }
 
 CJP = CategorisedJsonParser(OBJECT_CATEGORY_MAP)
@@ -72,7 +72,6 @@ def get_course(course_id):
         chapter.sequentials = [CJP.from_json(GET(module.uri).read()) for module in chapter.modules if module.category == "sequential"]
 
         for sequential in chapter.sequentials:
-            sequential.pages = [CJP.from_json(GET(module.uri).read()) for module in sequential.modules if module.category == "vertical"]
-            #sequential.pages = [module for module in sequential.modules if module.category == "vertical"]
+            sequential.pages = [module for module in sequential.modules if module.category == "vertical"]
 
     return course

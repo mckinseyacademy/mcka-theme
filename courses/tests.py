@@ -65,72 +65,172 @@ class MockCourseAPI(object):
     @staticmethod
     def _get_course(course_id, force_course_id=0):
         course_dictionary = {
+            "category": "course",
             "id": force_course_id,
             "name": "Test Course Name",
             "chapters": [
                 {
+                    "category": "chapter",
                     "id": "10",
                     "name": "Test Chapter 1",
-                    "pages": [
+                    "sequentials": [
                         {
-                            "id": "100",
-                            "name": "Test Page 1",
+                            "category": "sequential",
+                            "id": "9100",
+                            "name": "Test Sequential 1",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "100",
+                                    "name": "Test Page 1"
+                                }
+                            ]
                         },
                         {
-                            "id": "101",
-                            "name": "Test Page 2",
+                            "category": "sequential",
+                            "id": "9101",
+                            "name": "Test Sequential 2",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "101",
+                                    "name": "Test Page 2"
+                                }
+                            ]
                         },
                         {
-                            "id": "102",
-                            "name": "Test Page 3",
+                            "category": "sequential",
+                            "id": "9102",
+                            "name": "Test Sequential 3",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "102",
+                                    "name": "Test Page 3"
+                                }
+                            ]
                         },
                         {
-                            "id": "103",
-                            "name": "Test Page 4",
+                            "category": "sequential",
+                            "id": "9103",
+                            "name": "Test Sequential 4",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "103",
+                                    "name": "Test Page 4"
+                                }
+                            ]
                         },
                     ]
                 },
                 {
+                    "category": "chapter",
                     "id": "11",
                     "name": "Test Chapter 2",
-                    "pages": [
+                    "sequentials": [
                         {
-                            "id": "110",
-                            "name": "Test Page 1",
+                            "category": "sequential",
+                            "id": "9110",
+                            "name": "Test Sequential 1",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "110",
+                                    "name": "Test Page 1"
+                                }
+                            ]
                         },
                         {
-                            "id": "111",
-                            "name": "Test Page 2",
+                            "category": "sequential",
+                            "id": "9111",
+                            "name": "Test Sequential 2",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "111",
+                                    "name": "Test Page 2"
+                                }
+                            ]
                         },
                         {
-                            "id": "112",
-                            "name": "Test Page 3",
+                            "category": "sequential",
+                            "id": "9112",
+                            "name": "Test Sequential 3",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "112",
+                                    "name": "Test Page 3"
+                                }
+                            ]
                         },
                         {
-                            "id": "113",
-                            "name": "Test Page 4",
+                            "category": "sequential",
+                            "id": "9113",
+                            "name": "Test Sequential 4",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "113",
+                                    "name": "Test Page 4"
+                                }
+                            ]
                         },
                     ]
                 },
                 {
+                    "category": "chapter",
                     "id": "12",
                     "name": "Test Chapter 3",
-                    "pages": [
+                    "sequentials": [
                         {
-                            "id": "120",
-                            "name": "Test Page 1",
+                            "category": "sequential",
+                            "id": "9120",
+                            "name": "Test Sequential 1",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "120",
+                                    "name": "Test Page 1"
+                                }
+                            ]
                         },
                         {
-                            "id": "121",
-                            "name": "Test Page 2",
+                            "category": "sequential",
+                            "id": "9121",
+                            "name": "Test Sequential 2",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "121",
+                                    "name": "Test Page 2"
+                                }
+                            ]
                         },
                         {
-                            "id": "122",
-                            "name": "Test Page 3",
+                            "category": "sequential",
+                            "id": "9122",
+                            "name": "Test Sequential 3",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "122",
+                                    "name": "Test Page 3"
+                                }
+                            ]
                         },
                         {
-                            "id": "123",
-                            "name": "Test Page 4",
+                            "category": "sequential",
+                            "id": "9123",
+                            "name": "Test Sequential 4",
+                            "pages":[
+                                {
+                                    "category": "vertical",
+                                    "id": "123",
+                                    "name": "Test Page 4"
+                                }
+                            ]
                         },
                     ]
                 },
@@ -243,15 +343,15 @@ class CoursesAPITest(TestCase):
             self.assertEqual(test_course.chapters[x].navigation_url, "/courses/0/lessons/{}".format(10 + x))
             # print test_course.chapters[x].navigation_url
             for y in range(0, 4):
-                self.assertEqual(test_course.chapters[x].pages[y].navigation_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y))
-                self.assertEqual(test_course.chapters[x].pages[y].prev_url, prev_url)
+                self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].navigation_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y))
+                self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].prev_url, prev_url)
                 if x == 2 and y == 3:
-                    self.assertEqual(test_course.chapters[x].pages[y].next_url, None)
+                    self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].next_url, None)
                 elif y == 3:
-                    self.assertEqual(test_course.chapters[x].pages[y].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x + 1, 100 + ((x + 1) * 10)))
+                    self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x + 1, 100 + ((x + 1) * 10)))
                 else:
-                    self.assertEqual(test_course.chapters[x].pages[y].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y + 1))
-                prev_url = test_course.chapters[x].pages[y].navigation_url
+                    self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y + 1))
+                prev_url = test_course.chapters[x].sequentials[y].pages[0].navigation_url
 
                 #print "x = {}; y = {}; nav_url = {}; prev_url = {}; next_url = {}".format(x, y, test_course.chapters[x].pages[y].navigation_url, test_course.chapters[x].pages[y].prev_url, test_course.chapters[x].pages[y].next_url)
 
