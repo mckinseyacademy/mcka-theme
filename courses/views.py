@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark
+from lib.authorization import is_user_in_group
 
 # Create your views here.
 
@@ -68,6 +69,7 @@ def homepage(request):
         "current_chapter": current_chapter,
         "current_page": current_page,
         "program": program,
+        "is_admin": is_user_in_group(request.user, 'super_admin')
     }
     return render(request, 'courses/course_main.haml', data)
 
