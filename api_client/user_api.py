@@ -56,17 +56,21 @@ def register_user(user_hash):
     return JP.from_json(response.read())
 
 
-def get_user_course_status(user_id):
+def get_user_courses(user_id):
     ''' get the user's summary for their courses '''
     response = GET(
-        '{}/{}/{}/enrollments'.format(
-            # TODO: remove forced MOCK reference when real API becomes available
-            settings.API_MOCK_SERVER_ADDRESS,
+        '{}/{}/{}/courses'.format(
+            settings.API_SERVER_ADDRESS,
             USER_API,
             user_id
         )
     )
-    return JP.from_json(response.read(), user_models.UserStatus)
+    courses = JP.from_json(response.read(), user_models.UserCourse)
+    # TODO: Faking status for now, need to remove somehow
+    for course in courses:
+        course.percent_complete = 25
+    
+    return courses
 
 
 def set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id):

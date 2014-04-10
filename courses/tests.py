@@ -254,72 +254,43 @@ class OtherMockCourseAPI(MockCourseAPI):
 class MockUserAPI(object):
 
     @staticmethod
-    def _get_user_course_status(user_id, current_course_id):
-        user_status_dictionary = {
-            "current_program_id": "1001",
-            "current_course_id": current_course_id,
-            "programs":
-                [
-                    {
-                        "id": "1001",
-                        "name": "Different Transportation Methods",
-                        "courses":
-                        [
-                            {"id":"1"},
-                            {"id":"2"},
-                            {"id":"3"},
-                            {"id":"4"}
-                        ]
-                    }
-                ],
-            "courses":
-                [
-                    {
-                        "id": "1",
-                        "name": "Walking",
-                        "percent_complete": 100
-                    },
-                    {
-                        "id": "2",
-                        "name": "Cycling to Work",
-                        "percent_complete": 40,
-                        "bookmark":
-                            {
-                                "chapter_id": "10",
-                                "page_id": "101"
-                            }
-                    },
-                    {
-                        "id": "3",
-                        "name": "Trains and Buses",
-                        "percent_complete": 10,
-                        "bookmark":
-                            {
-                                "chapter_id": "10",
-                                "page_id": "101"
-                            }
-                    },
-                    {
-                        "id": "4",
-                        "name": "Drive Yourself",
-                        "percent_complete": 0,
-                        "start_date": "2014-06-01T00:14:00.00Z"
-                    }
-                ]
-        }
+    def _get_user_courses(user_id, current_course_id):
+        user_courses = [
+            {
+                "id": current_course_id,
+                "name": "Cycling to Work",
+                "percent_complete": 40,
+            },
+            {
+                "id": "1",
+                "name": "Walking",
+                "percent_complete": 100
+            },
+            {
+                "id": "3",
+                "name": "Trains and Buses",
+                "percent_complete": 10,
+            },
+            {
+                "id": "4",
+                "name": "Drive Yourself",
+                "percent_complete": 0,
+                "start_date": "2014-06-01T00:14:00.00Z"
+            }
+        ]
 
-        return user_models.UserStatus(dictionary=user_status_dictionary)
+        return [user_models.UserCourse(dictionary=user_course) for user_course in user_courses]
 
     @staticmethod
-    def get_user_course_status(user_id):
-        return MockUserAPI._get_user_course_status(user_id, "2")
+    def get_user_courses(user_id):
+        return MockUserAPI._get_user_courses(user_id, "2")
 
 
 class NotBookmarkedMockUserAPI(MockUserAPI):
 
     @staticmethod
-    def get_user_course_status(user_id):
-        return NotBookmarkedMockUserAPI._get_user_course_status(user_id, "0")
+    def get_user_courses(user_id):
+        return NotBookmarkedMockUserAPI._get_user_courses(user_id, "0")
 
 # Create your tests here.
 
@@ -362,21 +333,23 @@ class CoursesAPITest(TestCase):
 
         self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "10")
-        self.assertEqual(page_id, "101")
+        self.assertEqual(page_id, "100")
 
         # specified course-only should get bookmarked page
         course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", None, MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "10")
-        self.assertEqual(page_id, "101")
+        # TODO :RE-enable once bookmarking is in place
+        # self.assertEqual(page_id, "101")
 
         # specified user-only should get bookmarked page
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", None, None, MockUserAPI, MockCourseAPI)
+        # TODO :RE-enable once bookmarking is in place
+        # course_id, chapter_id, page_id = controller.locate_chapter_page("0", None, None, MockUserAPI, MockCourseAPI)
 
-        self.assertEqual(course_id, "2")
-        self.assertEqual(chapter_id, "10")
-        self.assertEqual(page_id, "101")
+        # self.assertEqual(course_id, "2")
+        # self.assertEqual(chapter_id, "10")
+        # self.assertEqual(page_id, "101")
 
         # specified up to chapter id not bookmarked should get first page in specified chapter
         course_id, chapter_id, page_id = controller.locate_chapter_page("0", "0", "11", NotBookmarkedMockUserAPI, MockCourseAPI)
@@ -411,11 +384,13 @@ class CoursesAPITest(TestCase):
     def test_program_for_course(self):
         # course within a program
         test_program = controller.program_for_course("0", "2", MockUserAPI)
-        self.assertEqual(test_program.id, "1001")
-        self.assertEqual(test_program.name, "Different Transportation Methods")
+        # TODO: Generated DEFAULT program for now
+        self.assertEqual(test_program.id, "DEFAULT_PROGRAM")
+        self.assertEqual(test_program.name, "McKinsey Academy Program")
 
-        self.assertEqual(len(test_program.courses), 4)
+        #self.assertEqual(len(test_program.courses), 4)
 
         # course not within a program
-        test_program = controller.program_for_course("0", "5", MockUserAPI)
-        self.assertEqual(test_program, None)
+        # TODO: Generated DEFAULT program always for now
+        # test_program = controller.program_for_course("0", "5", MockUserAPI)
+        # self.assertTrue(test_program is None)

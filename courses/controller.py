@@ -1,5 +1,5 @@
 ''' Core logic to sanitise information for views '''
-from api_client import course_api, user_api
+from api_client import course_api, user_api, user_models
 #from urllib import quote_plus, unquote_plus
 
 # warnings associated with members generated from json response
@@ -80,13 +80,16 @@ def locate_chapter_page(
         course_api_impl - optional api client module to use (useful in mocks)
         user_api_impl - optional api client module to use (useful in mocks)
     '''
-    user_status = user_api_impl.get_user_course_status(user_id)
     if not course_id:
-        course_id = user_status.current_course_id
+        courses = user_api_impl.get_user_courses(user_id)
+        if len(courses) < 1:
+            return None, None, None
+        course_id = courses[0].id
 
-    bookmark = user_status.get_bookmark_for_course(course_id)
-    if bookmark is not None and (chapter_id is None or bookmark.chapter_id == chapter_id):
-        return course_id, bookmark.chapter_id, bookmark.page_id
+    # TODO No bookmarks for now
+    # bookmark = courses.get_bookmark_for_course(course_id)
+    # if bookmark is not None and (chapter_id is None or bookmark.chapter_id == chapter_id):
+    #     return course_id, bookmark.chapter_id, bookmark.page_id
 
     course = course_api_impl.get_course(course_id)
     chapter = course.chapters[0]
@@ -106,22 +109,23 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
     or None if program is not present
         user_api_impl - optional api client module to use (useful in mocks)
     '''
-    user_status = user_api_impl.get_user_course_status(user_id)
-    course_program = None
+    courses = user_api_impl.get_user_courses(user_id)
+    course_program = user_models.UserProgram(dictionary={"id": "DEFAULT_PROGRAM", "name": "McKinsey Academy Program"})
+    course_program.courses = courses
 
     # Check that the specified course is part of this program
-    for program in user_status.programs:
-        if course_id in [course.id for course in program.courses]:
-            course_program = program
-            break
+    # for program in courses.programs:
+    #     if course_id in [course.id for course in program.courses]:
+    #         course_program = program
+    #         break
 
-    # Now add the courses therein:
-    if course_program:
-        course_ids = [course.id for course in course_program.courses]
-        course_program.courses = []
-        for course in user_status.courses:
-            if course.id in course_ids:
-                course_program.courses.append(course)
+    # # Now add the courses therein:
+    # if course_program:
+    #     course_ids = [course.id for course in course_program.courses]
+    #     course_program.courses = []
+    #     for course in courses.courses:
+    #         if course.id in course_ids:
+    #             course_program.courses.append(course)
 
     return course_program
 

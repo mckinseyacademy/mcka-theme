@@ -53,13 +53,20 @@ def homepage(request):
     course_id, chapter_id, page_id = locate_chapter_page(
         request.user.id, None, None)
 
-    course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-        course_id, chapter_id, page_id)
+    if course_id and chapter_id and page_id:
+        course, current_chapter, current_sequential, current_page = build_page_info_for_course(
+            course_id, chapter_id, page_id)
 
-    program = program_for_course(request.user.id, course_id)
+        program = program_for_course(request.user.id, course_id)
 
-    # Inject formatted data for view
-    _inject_formatted_data(program, course, page_id)
+        # Inject formatted data for view
+        _inject_formatted_data(program, course, page_id)
+    else:
+        course = None
+        current_chapter = None
+        current_sequential = None
+        current_page = None
+        program = None
 
     data = {
         "user": request.user,
