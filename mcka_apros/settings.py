@@ -152,6 +152,10 @@ CACHES = {
 API_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
 API_MOCK_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
 
+# EdX Api Key
+# Set this on OpenEdx server, and within production environment to whichever value is desired
+EDX_API_KEY = 'test_api_key'
+
 try:
     from local_settings import *
 except ImportError:
