@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
+from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark
 from lib.authorization import is_user_in_group
@@ -67,7 +68,11 @@ def homepage(request):
         "current_chapter": current_chapter,
         "current_page": current_page,
         "program": program,
-        "is_admin": is_user_in_group(request.user, 'super_admin')
+        "is_admin": is_user_in_group(request.user, 'super_admin'),
+        "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE),
+        "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO),
+        "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
+        "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
     }
     return render(request, 'courses/course_main.haml', data)
 

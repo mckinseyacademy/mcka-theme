@@ -16,6 +16,14 @@ h2 {
   @include font-spec(18, normal, 20);
 }
 
+h4 {
+  @include font-spec(14, semibold, 14);
+}
+
+h5 {
+  @include font-spec(14, normal, 14);
+}
+
 .sub-1,
 .sub-2
 {
@@ -31,7 +39,10 @@ p {
   &.style-2 { @include font-spec(14, semibold, 22); }
   &.style-3 { @include font-spec(12, semibold, 19); }
   &.style-4 { @include font-spec(12, normal, 14); }
-  &.style-5 { font-style: italic; }
+  &.style-5 {
+    font-style: italic;
+    @include font-spec(12, normal, 14);
+  }
 }
 
 a,
@@ -54,6 +65,7 @@ hr {
 img { max-width: 100%; height: auto; }
 
 blockquote {
+  color: $mckinsey-academy-black;
   @include font-spec(20, normal, 26);
 
   &.user-quote {
@@ -69,7 +81,7 @@ blockquote {
 }
 
 .label-1 {
-  @include font-spec(10, semibold, 12);
+  @include font-spec(10, bold, 12);
 }
 
 .label-2 {
@@ -98,11 +110,16 @@ blockquote {
 }
 
 .label-7 {
+  color: $pure-white;
   @include font-spec(10, bold, 12);
 }
 
 .label-8 {
   @include font-spec(12, bold, 14);
+}
+
+.label-9 {
+  @include font-spec(10, semibold, 12);
 }
 
 .nav-1,
@@ -166,10 +183,8 @@ blockquote {
     text-transform: uppercase;
   }
 
-  h4 {
-    color: $pure-white;
-    @include font-spec(14, semibold, 14);
-  }
+  h4,
+  h5 { color: $pure-white; }
 }
 
 .flexible {

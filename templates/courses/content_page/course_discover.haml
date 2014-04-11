@@ -1,29 +1,36 @@
-%article.course-discover
+%article#home-discover
   .sub-2 DISCOVERED:
   %section.articles
-    .label-6.sub-title ARTICLES
+    .label-6 ARTICLES
     %ul
-      %li
-        .article-title Are you solving the right problem?
-        .attribution
-          .when
-            %time{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
-            %span.publication HARVARD BUSINESS REVIEW
-          .author Dwayne Spradlin
-      %li
-        .article-title Performance from problem solving
-        .attribution
-          .when
-            %time{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
-            %span.publication Mckinsey insights
-      %li
-        .article-title The 4 most effective ways leaders solve problems
-        .attribution
-          .when
-            %time{datetime: '2014-03-09T05:00:00.000Z'} MAR 9, 2014
-            %span.publication Forbes
-          .author Glenn Llopis
+      - for article in articles
+        %li
+          .article-title= article.title
+          .attribution
+            .when
+              %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
+              %span.label-2= article.byline
+            .person-title= article.author
   %section.infographic
-    .label-6.sub-title INFOGRAPHIC
+    .label-6 INFOGRAPHIC
+    %hr
+    .label-6 ON TWITTER
+    .tweet
+      %img{src:'http://dummyimage.com/48x48/aaa/000'}
+      .content
+        %div
+          %span.label-8= tweet.twitter_username
+          %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
+          %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10
+        .label-1= tweet.body
   %section.videos
-    .label-6.sub-title VIDEOS
+    .label-6 VIDEOS
+    %ul
+      - for video in videos
+        %li
+          .article-title= video.title
+          .attribution
+            .when
+              %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
+              %span.label-2= video.byline
+            .label-9= video.body
