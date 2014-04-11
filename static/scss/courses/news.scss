@@ -1,0 +1,21 @@
+#course-news {
+  h1 {
+    margin-bottom: 25px;
+  }
+
+  section {
+    p {
+      margin-bottom: 30px;
+      &:last-child { margin-bottom: 0; }
+    }
+
+    .news-image {
+      margin-bottom: 30px;
+    }
+  }
+
+  .load-more {
+    margin-top: 30px;
+    text-align: center;
+  }
+}

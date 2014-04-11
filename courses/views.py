@@ -10,7 +10,6 @@ from lib.authorization import is_user_in_group
 
 # Create your views here.
 
-
 def _inject_formatted_data(program, course, page_id):
     for program_course in program.courses:
         program_course.nav_url = '/courses/{}'.format(program_course.id)
@@ -45,7 +44,6 @@ def _inject_formatted_data(program, course, page_id):
             elif found_current_page:
                 page.status_class = "incomplete"
 
-
 @login_required
 def homepage(request):
     '''
@@ -73,9 +71,8 @@ def homepage(request):
     }
     return render(request, 'courses/course_main.haml', data)
 
-
 @login_required
-def navigate_to_page(request, course_id, chapter_id, page_id):
+def navigate_to_page(request, course_id, chapter_id, page_id, current_view='overview'):
     ''' go to given page within given chapter within given course '''
     # Get course info
     course, current_chapter, current_page = build_page_info_for_course(
@@ -107,9 +104,10 @@ def navigate_to_page(request, course_id, chapter_id, page_id):
         "program": program,
         "remote_session_key": remote_session_key,
         "vertical_usage_id": vertical_usage_id,
+        "current_view": current_view,
+        "current_template": "courses/course_{0}.haml".format(current_view),
     }
     return render(request, 'courses/course_navigation.haml', data)
-
 
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):
@@ -129,11 +127,9 @@ def infer_chapter_navigation(request, course_id, chapter_id):
         )
     )
 
-
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
     return infer_chapter_navigation(request, course_id, None)
-
 
 def infer_default_navigation(request):
     ''' handler to call infer chapter nav with no course '''

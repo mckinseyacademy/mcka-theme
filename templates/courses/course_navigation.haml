@@ -1,31 +1,7 @@
 - extends "courses/course_main.haml"
 
 - block content
-  .row
-    .large-1.medium-1.small-0.columns
-      &nbsp;
-    .large-10.medium-10.small-12.columns.content-page
+  %article.row
+    .large-10.large-centered.columns.course-page
       - include "courses/content_page/course_tabs.haml"
-      - include "courses/content_page/lesson_menu.haml"
-      .lesson-title
-        %span.lesson-index Lesson {{current_chapter.index}}:
-        %span.lesson-name= current_chapter.name
-        %span.page-desc= current_page.description
-      %h1.page-title
-        = current_page.name
-      .lesson-content
-      .lesson-discussion
-      - include "courses/content_page/lesson_pager.haml"
-    .large-1.medium-1.small-0.columns
-      &nbsp;
-
-- block js_snippets
-  :javascript
-    $(function(){
-      $('.content-page .lesson-content').xblock({
-        usageId: '{{ vertical_usage_id }}',
-        sessionId: '{{ remote_session_key }}',
-        baseDomain: '{{ lms_base_domain }}',
-        lmsSubDomain: '{{ lms_sub_domain }}',
-      });
-    });
+      - include current_template

@@ -1,0 +1,12 @@
+#course-resources {
+
+  h1 {
+    margin-bottom: 25px;
+  }
+
+  .resource {
+    margin-bottom: 25px;
+    line-height: 25px;
+    &:last-child { margin-bottom: 0; }
+  }
+}

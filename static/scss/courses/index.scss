@@ -1,0 +1,48 @@
+.course-page {
+  padding: 20px;
+  background-color: $pure-white;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+
+  .course-tabs {
+    margin: 0;
+    list-style-type: none;
+    @include clearfix;
+
+    + hr { margin: 15px 0; }
+
+    li {
+      float: left;
+      margin-right: 10px;
+    }
+  }
+
+  .lesson-menu {
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    list-style-type: none;
+    border-bottom: 1px solid $almost-white;
+    @include clearfix;
+
+    li {
+      float: left;
+      padding: 0 10px;
+      border-right: 1px solid $almost-white;
+      @include font-spec(10, bold, 12);
+      &:first-child,
+      &:last-child {
+        border-right: none;
+      }
+
+      &:first-child { padding: 0; }
+
+      a {
+        @include font-spec(10, bold, 12);
+      }
+    }
+  }
+}
+
+@import './overview';
+@import './lessons';
+@import './news';
+@import './resources';
