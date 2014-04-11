@@ -1,21 +1,20 @@
-.course-tabs
-  %ul
-    %li
-      Overview
-    %li.selected
-      Lessons
-    %li
-      News
-    %li
-      Discussion
-    %li
-      Progress
-    %li
-      Cohort
-    %li
-      Syllabus
-    %li
-      Materials
-    %li
-      Group Work
-
+%ul.course-tabs
+  %li
+    %a.nav-1.selected{href: "/courses/#{course.id}/lessons/#{current_chapter.id}"}= _("Overview")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/lessons"}= _("Lessons")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/news"}= _("News")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/discussion"}= _("Discussion")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/progress"}= _("Progress")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/cohort"}= _("Cohort")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/syllabus"}= _("Syllabus")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/materials"}= _("Materials")
+  %li
+    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/group_work"}= _("Group Work")
+%hr

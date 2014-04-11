@@ -1,0 +1,88 @@
+#course-overview {
+  .meta-info {
+    list-style-type: none;
+    margin: 0;
+    @include clearfix;
+
+    li {
+      float: left;
+      padding: 0 5px;
+      border-right: 1px solid $mckinsey-grey;
+
+      &:first-child {
+        border-right: none;
+        padding: 0;
+      }
+
+      &:last-child { border-right: none; }
+    }
+  }
+
+  h1 { margin-bottom: 30px; }
+
+  .overview {
+    p {
+      margin-bottom: 25px;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .col-left {
+    .video-preview {
+      .thumb { margin-bottom: 10px; }
+
+      .video-overview {
+        span {
+          margin-right: 2px;
+          @include font-spec(18, normal, 22);
+        }
+
+        time {
+          display: inline-block;
+          padding-left: 4px;
+          border-left: 1px solid $mckinsey-academy-black;
+          @include font-spec(10, bold, 10);
+        }
+      }
+    }
+
+    .faculty {
+      .sub-1 { margin-bottom: 10px; }
+
+      .thumbs {
+        margin: 0 0 15px;
+        list-style-type: none;
+        @include clearfix;
+
+        li {
+          float: left;
+          margin-right: 10px;
+          width: 50px;
+          height: 50px;
+
+          &.selected {
+            img {
+              clip: rect(4px 4px 4px 4px);
+              border: 4px solid $mckinsey-orange;
+            }
+          }
+        }
+      }
+
+      %h2 { margin-bottom: 20px; }
+    }
+  }
+
+  .col-right {
+    padding-left: 20px;
+
+    ul {
+      margin: rem-calc(15) 0 0;
+
+      li {
+        margin-bottom: rem-calc(15);
+        list-style-position: inside;
+      }
+    }
+  }
+}
