@@ -5,3 +5,15 @@
     .large-10.large-centered.columns.course-page
       - include "courses/content_page/course_tabs.haml"
       - include current_template
+
+- block js_snippets
+  - if current_view == "lessons"
+    :javascript
+      $(function(){
+        $('.content-page .lesson-content').xblock({
+          usageId: '{{ vertical_usage_id }}',
+          sessionId: '{{ remote_session_key }}',
+          baseDomain: '{{ lms_base_domain }}',
+          lmsSubDomain: '{{ lms_sub_domain }}',
+        });
+      });

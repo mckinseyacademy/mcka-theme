@@ -6,44 +6,45 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from main.models import CuratedContentItem
 
-from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark
+from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark, decode_id, encode_id
 from lib.authorization import is_user_in_group
+from api_client import course_api
 
 # Create your views here.
 
 def _inject_formatted_data(program, course, page_id):
-    for program_course in program.courses:
-        program_course.nav_url = '/courses/{}'.format(program_course.id)
-        program_course.course_class = ""
-        if program_course.id == course.id:
-            program_course.course_class = "current"
-        if hasattr(program_course, 'start_date'):
-            program_course.formatted_start_date = "{} {}".format(
-                _("Available"),
-                program_course.start_date.strftime('%B %d, %Y')
-            )
-            program_course.has_future_start_date = program_course.is_future_start()
-        else:
-            program_course.formatted_start_date = None
-            program_course.percent_complete_message = "{}% {}".format(
-                program_course.percent_complete,
-                _("complete")
-            )
+    if program:
+        for program_course in program.courses:
+            program_course.nav_url = '/courses/{}'.format(program_course.id)
+            program_course.course_class = ""
+            if program_course.id == course.id:
+                program_course.course_class = "current"
+            if hasattr(program_course, 'start_date'):
+                program_course.formatted_start_date = "{} {}".format(
+                    _("Available"),
+                    program_course.start_date.strftime('%B %d, %Y')
+                )
+                program_course.has_future_start_date = program_course.is_future_start()
+            else:
+                program_course.formatted_start_date = None
+                program_course.percent_complete_message = "{}% {}".format(
+                    program_course.percent_complete,
+                    _("complete")
+                )
 
     for idx, lesson in enumerate(course.chapters, start=1):
         lesson.index = idx
-        lesson.tick_marks = []
-        for i in range(1, 6):
-            lesson.tick_marks.append(i * 20 <= 100)  # lesson.percent_complete
+        lesson.tick_marks = [i * 20 <= 100 for i in range(1, 6)]
         found_current_page = False
-        for page in lesson.pages:
-            page.status_class = "complete"
-            is_current = page_id == page.id
-            if is_current:
-                page.status_class = "current"
-                found_current_page = True
-            elif found_current_page:
-                page.status_class = "incomplete"
+        for sequential in lesson.sequentials:
+            for page in sequential.pages:
+                page.status_class = "complete"
+                is_current = page_id == page.id
+                if is_current:
+                    page.status_class = "current"
+                    found_current_page = True
+                elif found_current_page:
+                    page.status_class = "incomplete"
 
 @login_required
 def homepage(request):
@@ -54,18 +55,26 @@ def homepage(request):
     course_id, chapter_id, page_id = locate_chapter_page(
         request.user.id, None, None)
 
-    course, current_chapter, current_page = build_page_info_for_course(
-        course_id, chapter_id, page_id)
+    if course_id and chapter_id and page_id:
+        course, current_chapter, current_sequential, current_page = build_page_info_for_course(
+            course_id, chapter_id, page_id)
 
-    program = program_for_course(request.user.id, course_id)
+        program = program_for_course(request.user.id, course_id)
 
-    # Inject formatted data for view
-    _inject_formatted_data(program, course, page_id)
+        # Inject formatted data for view
+        _inject_formatted_data(program, course, page_id)
+    else:
+        course = None
+        current_chapter = None
+        current_sequential = None
+        current_page = None
+        program = None
 
     data = {
         "user": request.user,
         "course": course,
         "current_chapter": current_chapter,
+        "current_sequential": current_sequential,
         "current_page": current_page,
         "program": program,
         "is_admin": is_user_in_group(request.user, 'super_admin'),
@@ -77,10 +86,51 @@ def homepage(request):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
-def navigate_to_page(request, course_id, chapter_id, page_id, current_view='overview'):
+def navigate_to_page(request, course_id, current_view = 'overview'):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
+    course_id = decode_id(course_id)
+
+    # Get course info
+    course = course_api.get_course(course_id)
+
+    # Take note that the user has gone here
+    program = program_for_course(request.user.id, course_id)
+
+    # Inject formatted data for view
+    _inject_formatted_data(program, course, None)
+
+    #remote_session_key = request.session.get("remote_session_key")
+    #lms_base_domain = settings.LMS_BASE_DOMAIN
+    #lms_sub_domain = settings.LMS_SUB_DOMAIN
+
+    #vertical_usage_id = current_page.vertical_usage_id()
+
+    data = {
+        "user": request.user,
+        "course": course,
+        #"current_chapter": current_chapter,
+        #"current_sequential": current_sequential,
+        #"current_page": current_page,
+        #"lms_base_domain": lms_base_domain,
+        #"lms_sub_domain": lms_sub_domain,
+        "program": program,
+        #"remote_session_key": remote_session_key,
+        #"vertical_usage_id": vertical_usage_id,
+        "current_view": current_view,
+        "current_template": "courses/course_{0}.haml".format(current_view),
+    }
+    return render(request, 'courses/course_navigation.haml', data)
+
+@login_required
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
+    course_id = decode_id(course_id)
+    chapter_id = decode_id(chapter_id)
+    page_id = decode_id(page_id)
+
     ''' go to given page within given chapter within given course '''
     # Get course info
-    course, current_chapter, current_page = build_page_info_for_course(
+    course, current_chapter, current_sequential, current_page = build_page_info_for_course(
         course_id, chapter_id, page_id)
 
     # Take note that the user has gone here
@@ -96,21 +146,21 @@ def navigate_to_page(request, course_id, chapter_id, page_id, current_view='over
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
 
-    # TODO-API: Retreive this from the API response and remove from settings
-    vertical_usage_id = settings.VERTICAL_USAGE_ID
+    vertical_usage_id = current_page.vertical_usage_id()
 
     data = {
         "user": request.user,
         "course": course,
         "current_chapter": current_chapter,
+        "current_sequential": current_sequential,
         "current_page": current_page,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "program": program,
         "remote_session_key": remote_session_key,
         "vertical_usage_id": vertical_usage_id,
-        "current_view": current_view,
-        "current_template": "courses/course_{0}.haml".format(current_view),
+        "current_view": "lessons",
+        "current_template": "courses/course_lessons.haml",
     }
     return render(request, 'courses/course_navigation.haml', data)
 
@@ -121,14 +171,20 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     If no chapter or course given, system tries to go to location within last
     visited course
     '''
+    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
+    if course_id:
+        course_id = decode_id(course_id)
+    if chapter_id:
+        chapter_id = decode_id(chapter_id)
+
     course_id, chapter_id, page_id = locate_chapter_page(
         request.user.id, course_id, chapter_id)
 
     return HttpResponseRedirect(
         '/courses/{}/lessons/{}/module/{}'.format(
-            course_id,
-            chapter_id,
-            page_id
+            encode_id(course_id),
+            encode_id(chapter_id),
+            encode_id(page_id)
         )
     )
 

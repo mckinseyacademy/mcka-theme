@@ -1,5 +1,5 @@
 ''' Objects for courses built from json responses from API '''
-from .json_object import JsonObject
+from .json_object import CategorisedJsonObject
 
 # Create your models here.
 
@@ -8,27 +8,28 @@ from .json_object import JsonObject
 # pylint: disable=too-few-public-methods
 
 
-class Page(JsonObject):
-    ''' object representing a page / module within a chapter / lesson'''
-    required_fields = []
+class Page(CategorisedJsonObject):
+
+    ''' object representing a page / module within a subsection '''
+    required_fields = ["id", "name", ]
+
+    def vertical_usage_id(self):
+        return self.id.replace('/', ';_')
 
 
-class Chapter(JsonObject):
+class Sequential(CategorisedJsonObject):
+
+    ''' object representing a subsection within a chapter / lesson '''
+    required_fields = ["id", "name", ]
+
+
+class Chapter(CategorisedJsonObject):
+
     ''' object representing a chapter / lesson within a course '''
-    required_fields = []
-    object_map = {
-        "pages": Page,
-    }
+    required_fields = ["id", "name", ]
 
 
-class Course(JsonObject):
+class Course(CategorisedJsonObject):
+
     ''' object representing a course '''
-    required_fields = []
-    object_map = {
-        "chapters": Chapter,
-    }
-
-
-class PageContent(JsonObject):
-    ''' object for loading page content from the API server '''
-    required_fields = []
+    required_fields = ["id", "name", ]

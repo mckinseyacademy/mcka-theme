@@ -192,7 +192,7 @@
     .lesson-index{
       font-weight: bold;
     }
-    .page-desc{
+    .page-name{
       border-left: 1px solid $mckinsey-grey;
       padding-left: 5px;
       margin-left: 3px;
@@ -393,16 +393,26 @@
     .lesson-index{
       font-weight: bold;
     }
-    .page-desc{
+    .page-name{
       border-left: 1px solid $mckinsey-grey;
       padding-left: 5px;
       margin-left: 3px;
     }
   }
 
-  .page-title{
+  .lesson-content h2{
     @include font-spec(22, normal, 24);
     color: $mckinsey-academy-turquoise;
   }
+  // Hide page title, this is only used to provide any search engine with an h1, because the real page title is an h2 inside the page content
+  .page-title{
+    display: none;
+  }
 
+}
+
+// Icons for correctness and failure
+.choice-result, .answer-checkmark{
+  font-family: FontAwesome;
+  text-align: center !important;
 }

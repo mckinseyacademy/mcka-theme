@@ -14,11 +14,9 @@ class Objectifier(object):
     '''
     object_map = {}
 
-    @classmethod
-    def objectify_if_iterable(cls, value):
-        ''' Create an array of objects of this type if value is an array '''
+    def _make_data_object(self, value, object_type):
         if isinstance(value, collections.Iterable):
-            return cls(dictionary=value)
+            return object_type(dictionary=value)
         else:
             return value
 
@@ -28,22 +26,23 @@ class Objectifier(object):
     def _build_from_dictionary(self, dictionary):
         ''' Set the attributes of the object from the given dictionary '''
         for item in dictionary:
-            object_type = self._object_type_for_name(item)
+            object_type = self._object_type_for_name(item, dictionary[item])
 
             if isinstance(dictionary[item], dict):
                 self.__setattr__(
                     item,
-                    object_type(dictionary=dictionary[item])
+                    self._make_data_object(dictionary[item], object_type)
                 )
             elif isinstance(dictionary[item], list):
+                new_list = [self._make_data_object(item_value, object_type) for item_value in dictionary[item]]
                 self.__setattr__(
                     item,
-                    map(object_type.objectify_if_iterable, dictionary[item])
+                    new_list
                 )
             else:
                 self.__setattr__(item, dictionary[item])
 
-    def _object_type_for_name(self, item_name):
+    def _object_type_for_name(self, item_name, item_dictionary):
         '''
         Configure object types in child classes; used when we desire a
         child object for an attribute instead of default Objectifier object
@@ -147,4 +146,67 @@ class JsonParser(object):
 
             return out_objects
         else:
-            return object_type(json_data)
+            return object_type(dictionary=parsed_json)
+
+
+class CategorisedJsonObject(JsonObject):
+
+    _categorised_parser = None
+
+    def __init__(self, json_data=None, dictionary=None, parser=None):
+        self._categorised_parser = parser
+        super(CategorisedJsonObject, self).__init__(json_data=json_data, dictionary=dictionary)
+
+    def _object_type_for_name(self, item_name, item_dictionary):
+        '''
+        Configure object types in child classes; used when we desire a
+        child object for an attribute instead of default Objectifier object
+        '''
+        object_type = CategorisedJsonObject
+        if self._categorised_parser and self._categorised_parser._category_property_name in item_dictionary:
+            object_type = self._categorised_parser._category_dictionary[item_dictionary[self._categorised_parser._category_property_name]]
+        elif item_name in self.object_map:
+            object_type = self.object_map[item_name]
+
+        return object_type
+
+    def _make_data_object(self, value, object_type):
+        if isinstance(value, collections.Iterable):
+
+            if self._categorised_parser and self._categorised_parser._category_property_name in value:
+                return self._categorised_parser.from_dictionary(value)
+
+            return object_type(dictionary=value, parser=self._categorised_parser)
+
+        return value
+
+
+class CategorisedJsonParser(object):
+
+    _category_property_name = "category"
+    _category_dictionary = {}
+
+    def __init__(self, category_dictionary, category_property_name = "category"):
+        self._category_dictionary = category_dictionary
+        self._category_property_name = category_property_name
+
+    def from_json(self, json_data):
+        ''' takes json => dictionary / array and processes it accordingly '''
+        return self.from_dictionary(json.loads(json_data))
+
+    def from_dictionary(self, parsed_json):
+        ''' takes dictionary / array and processes it accordingly '''
+        if isinstance(parsed_json, list):
+            out_objects = []
+            for json_dictionary in parsed_json:
+                out_objects.append(self.from_dictionary(json_dictionary))
+
+            return out_objects
+        else:
+            object_type = CategorisedJsonObject
+            if self._category_property_name in parsed_json:
+                if parsed_json[self._category_property_name] in self._category_dictionary:
+                    object_type = self._category_dictionary[parsed_json[self._category_property_name]]
+            
+            return object_type(dictionary=parsed_json, parser=self)
+

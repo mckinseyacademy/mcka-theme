@@ -4,7 +4,7 @@
     %ul
       - for lesson in course.chapters
         %li
-          %a.card-flip{href: "/courses/#{course.id}/lessons/#{lesson.id}"}
+          %a.card-flip{href: "#{lesson.navigation_url}"}
             .front.background-white
               .label-5.index LESSON {{lesson.index}}
               %h2.name

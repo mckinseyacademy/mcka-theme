@@ -1,7 +1,8 @@
 ''' Tests for api_client calls '''
 from django.test import TestCase
-from .json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError
+from .json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError, CategorisedJsonParser, CategorisedJsonObject
 from .user_models import UserResponse, AuthenticationResponse
+from .course_models import Course, Chapter
 
 import collections
 
@@ -242,3 +243,131 @@ class JsonObjectTest(TestCase):
         self.assertTrue(isinstance(output.info[0], JsonObjectTestNestingClass))
         self.assertTrue(
             isinstance(output.info[0].info, JsonObjectTestNestedClass))
+
+    def test_groups(self):
+        output = JP.from_json('[{"name": "super_admin","id":1234,"uri": "/api/users/14/groups/1234"},{"name": "sub_admin","id":1357,"uri": "/api/users/14/groups/1357"},{"name": "company_admin","id":5678,"uri": "/api/users/14/groups/5678"},{"name": "arbitrary_group","id":2468,"uri": "/api/users/14/groups/2468"}]')
+
+        self.assertTrue(len(output)==4)
+        self.assertTrue(output[0].name == "super_admin")
+
+class OneLevelCategorised(CategorisedJsonObject):
+    def has_correct_category(self):
+        return self.category == "one"
+
+class TwoLevelCategorised(CategorisedJsonObject):
+    def has_correct_category(self):
+        return self.category == "two"
+
+class ThreeLevelCategorised(CategorisedJsonObject):
+    def has_correct_category(self):
+        return self.category == "three"
+
+class FourLevelCategorised(CategorisedJsonObject):
+    def has_correct_category(self):
+        return self.category == "four"
+
+class CategorisedJsonParserTest(TestCase):
+
+    CJP = CategorisedJsonParser({
+            "chapter": Chapter,
+            "course": Course,
+        })
+
+    TJP = CategorisedJsonParser({
+            "one": OneLevelCategorised,
+            "two": TwoLevelCategorised,
+            "three": ThreeLevelCategorised,
+            "four": FourLevelCategorised,
+        })
+
+    def test_categorised_json_parser(self):
+        output = self.CJP.from_json('{"category": "course", "name": "edX Demonstration Course", "modules": [{"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", "name": "Introduction"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", "name": "Example Week 1: Getting Started"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/graded_interactions", "id": "i4x://edX/Open_DemoX/chapter/graded_interactions", "name": "Example Week 2: Get Interactive"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/social_integration", "id": "i4x://edX/Open_DemoX/chapter/social_integration", "name": "Example Week 3: Be Social"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", "name": "About Exams and Certificates"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", "id": "i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", "name": "holding section"}], "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course", "number": "Open_DemoX", "org": "edX", "id": "edX/Open_DemoX/edx_demo_course"}')
+
+        self.assertTrue(isinstance(output, Course))
+        self.assertTrue(isinstance(output.modules[0], Chapter))
+
+    def test_level_deep(self):
+        test_dict = {
+            "category": "one",
+            "child": {
+                "category": "two",
+                "child": {
+                    "category": "three",
+                    "child": {
+                        "category": "four"
+                    }
+                }
+            }
+        }
+        output = self.TJP.from_dictionary(test_dict)
+
+        self.assertTrue(isinstance(output, OneLevelCategorised))
+        self.assertTrue(output.has_correct_category())
+
+        self.assertTrue(isinstance(output.child, TwoLevelCategorised))
+        self.assertTrue(output.child.has_correct_category())
+
+        self.assertTrue(isinstance(output.child.child, ThreeLevelCategorised))
+        self.assertTrue(output.child.child.has_correct_category())
+
+        self.assertTrue(isinstance(output.child.child.child, FourLevelCategorised))
+        self.assertTrue(output.child.child.child.has_correct_category())
+
+    def test_level_many(self):
+        test_dict = {
+            "category": "one",
+            "children": [
+                {
+                    "category": "two",
+                    "child": {
+                        "category": "three",
+                        "children": [
+                            {
+                                "category": "four"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "three",
+                    "children": [
+                        {
+                            "category": "four"
+                        },
+                        {
+                            "category": "four"
+                        }
+                    ]
+                },
+                {
+                    "category": "four"
+                },
+            ]
+        }
+
+        output = self.TJP.from_dictionary(test_dict)
+
+        self.assertTrue(isinstance(output, OneLevelCategorised))
+        self.assertTrue(output.has_correct_category())
+        
+        self.assertTrue(isinstance(output.children[0], TwoLevelCategorised))
+        self.assertTrue(output.children[0].has_correct_category())
+        
+        self.assertTrue(isinstance(output.children[0].child, ThreeLevelCategorised))
+        self.assertTrue(output.children[0].child.has_correct_category())
+        
+        self.assertTrue(isinstance(output.children[0].child.children[0], FourLevelCategorised))
+        self.assertTrue(output.children[0].child.children[0].has_correct_category())
+        
+        self.assertTrue(isinstance(output.children[1], ThreeLevelCategorised))
+        self.assertTrue(output.children[1].has_correct_category())
+        
+        self.assertTrue(isinstance(output.children[1].children[0], FourLevelCategorised))
+        self.assertTrue(output.children[1].children[0].has_correct_category())
+        
+        self.assertTrue(isinstance(output.children[1].children[1], FourLevelCategorised))
+        self.assertTrue(output.children[1].children[1].has_correct_category())
+        
+        self.assertTrue(isinstance(output.children[2], FourLevelCategorised))
+        self.assertTrue(output.children[2].has_correct_category())
+        
