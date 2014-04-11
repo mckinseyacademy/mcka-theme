@@ -8,8 +8,8 @@
           .article-title= article.title
           .attribution
             .when
-              %time.label-7{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
-              %span.label-7= article.byline
+              %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
+              %span.label-2= article.byline
             .person-title= article.author
   %section.infographic
     .label-6 INFOGRAPHIC
@@ -21,7 +21,7 @@
         %div
           %span.label-8= tweet.twitter_username
           %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
-          %time.label-7{datetime: '2014-03-10T04:00:00.000Z'} MAR 10
+          %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10
         .label-1= tweet.body
   %section.videos
     .label-6 VIDEOS
@@ -31,6 +31,6 @@
           .article-title= video.title
           .attribution
             .when
-              %time.label-7{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
-              %span.label-7= video.byline
-            .label-7= video.body
+              %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
+              %span.label-2= video.byline
+            .label-9= video.body
