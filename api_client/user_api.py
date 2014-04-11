@@ -99,7 +99,7 @@ def get_groups():
     ''' gets all groups '''
     response = GET(
         '{}/{}'.format(
-            settings.API_SERVER_ADDRESS, GROUP_API
+            settings.API_MOCK_SERVER_ADDRESS, GROUP_API
         )
     )
     groups_json = JP.from_json(response.read())
@@ -113,7 +113,7 @@ def is_user_in_group(user_id, group_id):
     ''' checks group membership '''
     response = GET(
         '{}/{}/{}/users/{}'.format(
-            settings.API_SERVER_ADDRESS,
+            settings.API_MOCK_SERVER_ADDRESS,
             GROUP_API,
             group_id,
             user_id

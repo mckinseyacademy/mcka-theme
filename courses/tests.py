@@ -12,15 +12,15 @@ from . import controller
 class UrlsTest(TestCase):
 
     def test_infer_course_navigation_url(self):
-        resolver = resolve('/courses/c152')
+        resolver = resolve('/courses/c152/lessons')
         self.assertEqual(resolver.view_name, 'infer_course_navigation')
         self.assertEqual(resolver.kwargs['course_id'], 'c152')
 
-        resolver = resolve('/courses/ABC/123/456/789')
+        resolver = resolve('/courses/ABC/123/456/789/lessons')
         self.assertEqual(resolver.view_name, 'infer_course_navigation')
         self.assertEqual(resolver.kwargs['course_id'], 'ABC/123/456/789')
 
-        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course')
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/lessons')
         self.assertEqual(resolver.view_name, 'infer_course_navigation')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
 
@@ -40,24 +40,44 @@ class UrlsTest(TestCase):
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
         self.assertEqual(resolver.kwargs['chapter_id'], 'i4x://edX/Open_DemoX/chapter/interactive_demonstrations')
 
-    def test_navigate_to_page_url(self):
+    def test_navigate_to_lesson_module_url(self):
         resolver = resolve('/courses/c152/lessons/ch153/module/p154')
-        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        self.assertEqual(resolver.view_name, 'navigate_to_lesson_module')
         self.assertEqual(resolver.kwargs['course_id'], 'c152')
         self.assertEqual(resolver.kwargs['chapter_id'], 'ch153')
         self.assertEqual(resolver.kwargs['page_id'], 'p154')
 
         resolver = resolve('/courses/ABC/123/456/789/lessons/XYZ/987/654/321/module/LMN/ZXC/LAKSJDFLASKJFLWE/444')
-        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        self.assertEqual(resolver.view_name, 'navigate_to_lesson_module')
         self.assertEqual(resolver.kwargs['course_id'], 'ABC/123/456/789')
         self.assertEqual(resolver.kwargs['chapter_id'], 'XYZ/987/654/321')
         self.assertEqual(resolver.kwargs['page_id'], 'LMN/ZXC/LAKSJDFLASKJFLWE/444')
 
         resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/lessons/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b/module/i4x://edX/Open_DemoX/sequential/edx_introduction')
-        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        self.assertEqual(resolver.view_name, 'navigate_to_lesson_module')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
         self.assertEqual(resolver.kwargs['chapter_id'], 'i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b')
         self.assertEqual(resolver.kwargs['page_id'], 'i4x://edX/Open_DemoX/sequential/edx_introduction')
+
+    def test_navigate_to_page_url(self):
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/lessons')
+        self.assertEqual(resolver.view_name, 'infer_course_navigation')
+        self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
+
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/view/overview')
+        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
+        self.assertEqual(resolver.kwargs['current_view'], 'overview')
+
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/view/news')
+        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
+        self.assertEqual(resolver.kwargs['current_view'], 'news')
+
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/view/resources')
+        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
+        self.assertEqual(resolver.kwargs['current_view'], 'resources')
 
 
 class MockCourseAPI(object):

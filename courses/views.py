@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark, decode_id, encode_id
 from lib.authorization import is_user_in_group
+from api_client import course_api
 
 # Create your views here.
 
@@ -80,7 +81,43 @@ def homepage(request):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
-def navigate_to_page(request, course_id, chapter_id, page_id, current_view='overview'):
+def navigate_to_page(request, course_id, current_view = 'overview'):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
+    course_id = decode_id(course_id)
+
+    # Get course info
+    course = course_api.get_course(course_id)
+
+    # Take note that the user has gone here
+    program = program_for_course(request.user.id, course_id)
+
+    # Inject formatted data for view
+    _inject_formatted_data(program, course, None)
+
+    #remote_session_key = request.session.get("remote_session_key")
+    #lms_base_domain = settings.LMS_BASE_DOMAIN
+    #lms_sub_domain = settings.LMS_SUB_DOMAIN
+
+    #vertical_usage_id = current_page.vertical_usage_id()
+
+    data = {
+        "user": request.user,
+        "course": course,
+        #"current_chapter": current_chapter,
+        #"current_sequential": current_sequential,
+        #"current_page": current_page,
+        #"lms_base_domain": lms_base_domain,
+        #"lms_sub_domain": lms_sub_domain,
+        "program": program,
+        #"remote_session_key": remote_session_key,
+        #"vertical_usage_id": vertical_usage_id,
+        "current_view": current_view,
+        "current_template": "courses/course_{0}.haml".format(current_view),
+    }
+    return render(request, 'courses/course_navigation.haml', data)
+
+@login_required
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     # TODO - Figure out why nginx munges the id's so that we can get rid of this step
     course_id = decode_id(course_id)
     chapter_id = decode_id(chapter_id)
@@ -117,8 +154,8 @@ def navigate_to_page(request, course_id, chapter_id, page_id, current_view='over
         "program": program,
         "remote_session_key": remote_session_key,
         "vertical_usage_id": vertical_usage_id,
-        "current_view": current_view,
-        "current_template": "courses/course_{0}.haml".format(current_view),
+        "current_view": "lessons",
+        "current_template": "courses/course_lessons.haml",
     }
     return render(request, 'courses/course_navigation.haml', data)
 
