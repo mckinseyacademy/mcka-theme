@@ -1,20 +1,18 @@
 %ul.course-tabs
   %li
-    %a.nav-1.selected{href: "/courses/#{course.id}/lessons/#{current_chapter.id}"}= _("Overview")
+    %a{class: "nav-1 {% ifequal current_view 'overview' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}"}= _("Overview")
   %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/lessons"}= _("Lessons")
+    %a{class: "nav-1 {% ifequal current_view 'lessons' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}/view/lessons"}= _("Lessons")
   %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/news"}= _("News")
+    %a{class: "nav-1 {% ifequal current_view 'news' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}/view/news"}= _("News")
   %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/discussion"}= _("Discussion")
+    %a{class: "nav-1 {% ifequal current_view 'discussion' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}/view/discussion"}= _("Discussion")
   %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/progress"}= _("Progress")
+    %a{class: "nav-1 {% ifequal current_view 'progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}/view/progress"}= _("Progress")
   %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/cohort"}= _("Cohort")
+    %a{class: "nav-1 {% ifequal current_view 'cohort' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}/view/cohort"}= _("Cohort")
   %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/syllabus"}= _("Syllabus")
+    %a{class: "nav-1 {% ifequal current_view 'resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}/view/resources"}= _("Resources")
   %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/materials"}= _("Materials")
-  %li
-    %a.nav-1{href: "/courses/#{course.id}/lessons/#{current_chapter.id}/tab/group_work"}= _("Group Work")
+    %a{class: "nav-1 {% ifequal current_view 'group_work' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons/#{current_chapter.id}/module/#{current_page.id}/view/group_work"}= _("Group Work")
 %hr

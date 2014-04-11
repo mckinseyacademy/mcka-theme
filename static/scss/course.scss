@@ -341,6 +341,20 @@
     }
   }
 
+  .course-tabs{
+    margin: 10px 0;
+    ul{
+      li{
+        text-transform: uppercase;
+        margin-right: 10px;
+        color: $mckinsey-academy-alt-blue;
+        &.selected{
+          color: $mckinsey-grey;
+        }
+      }
+    }
+  }
+
   .lesson-menu{
     @include font-spec(12, bold, 14);
     border-top: 1px solid $mckinsey-academy-warm-gray;

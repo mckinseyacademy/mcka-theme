@@ -70,7 +70,7 @@ def homepage(request):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
-def navigate_to_page(request, course_id, chapter_id, page_id):
+def navigate_to_page(request, course_id, chapter_id, page_id, current_view='overview'):
     ''' go to given page within given chapter within given course '''
     # Get course info
     course, current_chapter, current_page = build_page_info_for_course(
@@ -102,10 +102,10 @@ def navigate_to_page(request, course_id, chapter_id, page_id):
         "program": program,
         "remote_session_key": remote_session_key,
         "vertical_usage_id": vertical_usage_id,
-        "current_tab": "courses/course_{0}.haml".format('overview'),
+        "current_view": current_view,
+        "current_template": "courses/course_{0}.haml".format(current_view),
     }
-    #return render(request, 'courses/course_navigation.haml', data)
-    return render(request, 'courses/course_nav.haml', data)
+    return render(request, 'courses/course_navigation.haml', data)
 
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):

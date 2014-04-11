@@ -1,0 +1,14 @@
+#course-resources
+  %ul.lesson-index
+    %li.label-2 Lesson:
+    - for lesson in course.chapters
+      %li
+        %a{href: '#'}= lesson.index
+  %h1 Resources
+  - for lesson in course.chapters
+    %section
+      .resource
+        .sub-1 Lesson {{lesson.index}}: {{lesson.name}}
+        %a Lesson {{lesson.index}}: Key Takeaway
+        .person-title Takeaway | McKinsey
+    %hr
