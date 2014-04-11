@@ -11,7 +11,7 @@ from api_client import user_api
 
 
 def load_groups():
-    """ Loads and caches group names and ids via the edX platform """
+    ''' Loads and caches group names and ids via the edX platform '''
     groups_map = user_api.get_groups()
     cache.set('edx_groups_map', groups_map)
 
@@ -27,8 +27,9 @@ def is_user_in_group(user, *group_names):
 
 
 def group_required(*group_names):
-    """ View decorator which requires user membership in
-        at least one of the groups in a list of groups """
+    ''' View decorator which requires user membership in
+        at least one of the groups in a list of groups
+    '''
     def decorator(view_fn):
         def _wrapped_view(request, *args, **kwargs):
             if request.user.is_authenticated():
