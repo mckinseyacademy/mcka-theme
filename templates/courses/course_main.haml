@@ -22,11 +22,11 @@
       - include "courses/content_page/course_menu.haml"
       - include "courses/content_page/course_discover.haml"
       %article.course-quote
-        %blockquote If I had an hour to solve a problem I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions.
+        %blockquote= quote.body
         .attribution
           %img{src:'http://dummyimage.com/50x50/aaa/000'}
-          .author Albert Einstein
-          .occupation Theoretical Physicist
+          .person-name= quote.byline
+          .person-title Theoretical Physicist
   .row
     .current_course_link
       %a{href:"/courses"}

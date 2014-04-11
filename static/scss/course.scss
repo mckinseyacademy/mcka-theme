@@ -76,48 +76,6 @@
     }
   }
 
-  .course-discover {
-    @include clearfix;
-
-    section {
-      width: 33.3336%;
-      float: left;
-      padding: 0 10px;
-      border-right: 1px solid $almost-white;
-      &:last-child { border-right: none; }
-
-      ul {
-        li {
-          margin-bottom: 20px;
-        }
-      }
-
-      .article-title {
-        margin-bottom: 10px;
-        @include font-spec(18, normal, 20);
-      }
-
-      .attribution {
-        @include font-spec(9, normal, 15);
-
-        .when {
-          text-transform: uppercase;
-          font-weight: 600;
-
-          time {
-            margin-right: 1px;
-            border-right: 1px solid $mckinsey-academy-black;
-            padding-right: 5px;
-          }
-        }
-
-        .author {
-          font-style: italic;
-        }
-      }
-    }
-  }
-
   .course-quote {
     text-align: center;
 
@@ -149,9 +107,7 @@
     }
 
     .attribution {
-      @include font-spec(12, normal, 15);
       img { margin-bottom: 10px; }
-      .occupation { color: #999; }
     }
   }
 
