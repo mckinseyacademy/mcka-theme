@@ -1,18 +1,13 @@
-.lesson-menu
-  Lesson:
-  %ul
-    - for lesson in course.chapters
-      %li.lesson
-        - if lesson.id == current_chapter.id
-          %span.lesson-index.selected
-            = lesson.index
-        - elif lesson.is_released
-          %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
-            = lesson.index
-        - else
-          %span.lesson-index
-            = lesson.index
-.lesson-progress
-  - for lesson_module in current_chapter.pages
-    %a.lesson-module-status{class: "#{lesson_module.status_class}", href: "#{lesson_module.navigation_url}"}
-
+%ul.lesson-menu
+  %li.label-2 Lesson:
+  - for lesson in course.chapters
+    %li.lesson
+      - if lesson.id == current_chapter.id
+        %span.lesson-index.selected
+          = lesson.index
+      - elif lesson.is_released
+        %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
+          = lesson.index
+      - else
+        %span.lesson-index
+          = lesson.index
