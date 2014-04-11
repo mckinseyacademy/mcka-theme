@@ -11,6 +11,9 @@
           %a{href: '/experience'}= _("Experience")
         %li
           %a{href: '/contact'}= _("Contact")
+        - if is_admin
+          %li
+            %a{href: '/admin'}= _("Admin")
     - block user_region
       - if user
         %a.user-info{href: "#", data-dropdown: "profile-container"}
