@@ -10,10 +10,12 @@
   - if current_view == "lessons"
     :javascript
       $(function(){
-        $('.content-page .lesson-content').xblock({
+        var lesson_content = $('#course-lessons .lesson-content');
+        var lesson_data = {
           usageId: '{{ vertical_usage_id }}',
           sessionId: '{{ remote_session_key }}',
           baseDomain: '{{ lms_base_domain }}',
           lmsSubDomain: '{{ lms_sub_domain }}',
-        });
+        };
+        lesson_content.xblock(lesson_data);
       });
