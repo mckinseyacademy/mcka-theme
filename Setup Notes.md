@@ -129,12 +129,12 @@ You should find the FEATURES section already existing. _It appears that these ar
 #### (Optional for development) Configure the API_KEY
 This will need to match the API_KEY that the client is using.
 
-    "EDX_API_KEY": {"test_api_key"}
+    "EDX_API_KEY": "test_api_key"
 
 #### (If you are setting EDX_API_KEY) Configure the API_KEY in lms.auth.json
 EDX_API_KEY also needs to be set in lms.auth.json - we are not sure why this is
 
-    "EDX_API_KEY": {"test_api_key"}
+    "EDX_API_KEY": "test_api_key"
 
 **Now your LMS system is ready to receive communication from Apros**
 
@@ -155,6 +155,8 @@ To allow your machine to address those names locally add the following entries t
 
 
 ### Install nginx
+
+This proxy setup is required for xblocks authoring to work properly, since the lms and cms must be able to share cookies.
 
 * On Mac - `brew install nginx`
 * On Windows - Follow the instuctions at http://nginx.org/en/docs/windows.html
