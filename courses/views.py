@@ -137,7 +137,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     program = program_for_course(request.user.id, course_id)
     program_id = program.id if program else None
     update_bookmark(
-        request.user.id, program_id, course_id, chapter_id, page_id)
+        request.user.id, program_id, course_id, chapter_id, current_sequential.id, page_id)
 
     # Inject formatted data for view
     _inject_formatted_data(program, course, page_id)
