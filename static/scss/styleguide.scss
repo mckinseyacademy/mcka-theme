@@ -1,0 +1,114 @@
+#styleguide-page {
+  margin-top: rem-calc(85);
+
+  input[type=radio] {
+    display: none;
+
+    &#menu-typography:checked {
+      ~ aside label[for=menu-typography] {
+        border-left-color: $mckinsey-orange;
+        font-weight: 700;
+      }
+      ~ article #styleguide-typography { display: block; }
+    }
+
+    &#menu-colors:checked {
+      ~ aside label[for=menu-colors] {
+        border-left-color: $mckinsey-orange;
+        font-weight: 700;
+      }
+      ~ article #styleguide-colors { display: block; }
+    }
+
+    &#menu-icons:checked {
+      ~ aside label[for=menu-icons] {
+        border-left-color: $mckinsey-orange;
+        font-weight: 700;
+      }
+      ~ article #styleguide-icons { display: block; }
+    }
+
+    &#menu-buttons:checked {
+      ~ aside label[for=menu-buttons] {
+        border-left-color: $mckinsey-orange;
+        font-weight: 700;
+      }
+      ~ article #styleguide-buttons { display: block; }
+    }
+  }
+
+  aside {
+    ul {
+      margin: 0;
+      line-height: 1.15;
+      list-style-type: none;
+
+      li {
+        margin-bottom: 5px;
+
+        label {
+          padding-left: 10px;
+          border-left: 2px solid transparent;
+          @include font-spec(14, normal, 16);
+        }
+      }
+    }
+  }
+
+  article {
+    div[id|=styleguide] {
+      display: none;
+    }
+
+    section {
+      margin-bottom: 25px;
+
+      .intro {
+        margin: 15px 0;
+        border-bottom: 1px solid $almost-white;
+      }
+
+      ul {
+        margin: 0;
+        list-style-type: none;
+
+        li {
+          position: relative;
+          margin-bottom: 15px;
+
+          .class-name {
+            position: absolute;
+            top: 0;
+            right: 0;
+            @include font-spec(10);
+          }
+
+          i.fa {
+            @include font-spec(20);
+          }
+        }
+      }
+
+      .color-block {
+        margin: 10px 0;
+        padding: 0 25px;
+        border-radius: rem-calc(10);
+        @include font-spec(16, semibold, 65);
+        &.dark { color: $pure-white; }
+
+        &.mckinsey-blue { background-color: $mckinsey-blue; }
+        &.mckinsey-academy-alt-blue { background-color: $mckinsey-academy-alt-blue; }
+        &.mckinsey-academy-black { background-color: $mckinsey-academy-black; }
+        &.mckinsey-grey { background-color: $mckinsey-grey; }
+        &.mckinsey-academy-turquoise { background-color: $mckinsey-academy-turquoise; }
+        &.mckinsey-orange { background-color: $mckinsey-orange; }
+        &.mckinsey-green { background-color: $mckinsey-green; }
+        &.mckinsey-red { background-color: $mckinsey-red; }
+        &.mckinsey-academy-blue-gray { background-color: $mckinsey-academy-blue-gray; }
+        &.mckinsey-academy-warm-gray { background-color: $mckinsey-academy-warm-gray; }
+        &.mckinsey-academy-bright-gray { background-color: $mckinsey-academy-bright-gray; }
+        &.mckinsey-academy-light-gray { background-color: $mckinsey-academy-light-gray; }
+      }
+    }
+  }
+}

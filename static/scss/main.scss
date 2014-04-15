@@ -66,6 +66,8 @@ img { max-width: 100%; height: auto; }
 
 blockquote {
   color: $mckinsey-academy-black;
+  padding: 0;
+  border: none;
   @include font-spec(20, normal, 26);
 
   &.user-quote {
@@ -149,6 +151,20 @@ blockquote {
 .person-title {
   color: $mckinsey-grey;
   font-style: italic;
+}
+
+button,
+.button {
+  background-color: $mckinsey-academy-alt-blue;
+  @include box-shadow(0px 3px 3.84px 0.16px rgba(153, 153, 153, 0.3));
+
+  &:hover {
+    background-color: $mckinsey-academy-blue-gray;
+  }
+
+  &.disabled {
+    background-color: $almost-white;
+  }
 }
 
 .background-white {
