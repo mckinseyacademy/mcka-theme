@@ -87,11 +87,11 @@ The value of `EDX_API_KEY` will need to match the API_KEY as configured within t
 
 **Now your Apros system is ready to talk to an LMS system**
 
-#### Run Apros on port 3000
+#### Run Apros (on port 3000)
 
 The edX virtual environment has LMS running on port 8000. You will wish to run Apros on a different port than LMS. _This document assumes that this port is 3000, but you can choose any free port you like_
 
-Start up Apros in development mode, which automatically updates assets from the source code therein. This is done with the following command:
+Start up Apros in development mode, which automatically updates assets from the source code therein. This is done with the following command (note that the defaul port is 3000 so it can be left off unless you want to override):
     
     ./manage.py rundev 3000
 
