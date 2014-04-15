@@ -131,7 +131,7 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
 
 
 # pylint: disable=too-many-arguments
-def update_bookmark(user_id, program_id, course_id, chapter_id, page_id, user_api_impl=user_api):
+def update_bookmark(user_id, program_id, course_id, chapter_id, sequential_id, page_id, user_api_impl=user_api):
     '''
     Informs the openedx api of user's location
         user_api_impl - optional api client module to use (useful in mocks)
@@ -141,5 +141,6 @@ def update_bookmark(user_id, program_id, course_id, chapter_id, page_id, user_ap
         program_id,
         course_id,
         chapter_id,
+        sequential_id,
         page_id
     )

@@ -73,31 +73,39 @@ def get_user_courses(user_id):
     return courses
 
 
-def set_user_bookmark(user_id, program_id, course_id, chapter_id, page_id):
-    ''' let the openedx server know the most recently visited page '''
+def _set_course_position(user_id, course_id, parent_id, child_id):
     data = {
-        "program_id": program_id,
-        "course_id": course_id,
-        "bookmark": {
-            "chapter_id": chapter_id,
-            "page_id": page_id,
+        "position": {
+            "parent_module_id": parent_id,
+            "child_module_id": child_id,
         }
     }
     
-# removed from mock for now, ignore in order to get things running    
+    # removed from mock for now, ignore in order to get things running    
     # response = POST(
-    #     '{}/{}/{}/course_bookmark'.format(
-    #         # TODO: remove forced MOCK reference when real API becomes available
-    #         settings.API_MOCK_SERVER_ADDRESS,
+    #     '{}/{}/{}/courses/{}'.format(
+    #         settings.API_SERVER_ADDRESS,
     #         USER_API,
-    #         user_id
+    #         user_id,
+    #         course_id
     #     ),
     #     data
     # )
+
     # return JP.from_json(response.read())
 
     return True
 
+def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id, page_id):
+    ''' let the openedx server know the most recently visited page '''
+
+    positions = []
+
+    positions.append(_set_course_position(user_id, course_id, course_id, chapter_id))
+    positions.append(_set_course_position(user_id, course_id, chapter_id, sequential_id))
+    positions.append(_set_course_position(user_id, course_id, sequential_id, page_id))
+
+    return positions
 
 def get_groups():
     ''' gets all groups '''
