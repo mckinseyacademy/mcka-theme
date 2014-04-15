@@ -131,8 +131,12 @@ This will need to match the API_KEY that the client is using.
 
     "EDX_API_KEY": {"test_api_key"}
 
-**Now your
- LMS system is ready to receive communication from Apros**
+#### (If you are setting EDX_API_KEY) Configure the API_KEY in lms.auth.json
+EDX_API_KEY also needs to be set in lms.auth.json - we are not sure why this is
+
+    "EDX_API_KEY": {"test_api_key"}
+
+**Now your LMS system is ready to receive communication from Apros**
 
 
 
