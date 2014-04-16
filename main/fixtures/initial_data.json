@@ -4,11 +4,16 @@
     "pk": 1,
     "fields": {
       "sequence": 1,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
       "title": "This is an Article",
       "body": "Here is the blurb!",
-      "byline": "",
+      "byline": "Harvard Business Review",
+      "byline_title": "",
+      "source": "",
       "url": "http://www.google.com",
-      "image_url": "http://placekitten.com/200/300",
+      "image_url": "",
+      "thumbnail_url": "",
       "twitter_username": "",
       "content_type": "art"
     }
@@ -18,11 +23,15 @@
     "pk": 2,
     "fields": {
       "sequence": 2,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
       "title": "This is a Video",
-      "body": "Lennon",
-      "byline": "Lennon",
-      "url": "Lennon",
-      "image_url": "Lennon",
+      "body": "",
+      "byline": "",
+      "byline_title": "",
+      "source": "",
+      "url": "",
+      "image_url": "",
       "twitter_username": "",
       "content_type": "vid"
     }
@@ -32,12 +41,17 @@
     "pk": 3,
     "fields": {
       "sequence": 3,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
       "title": "",
-      "body": "",
+      "body": "This is a fine, fine tweet. Wow, it's good.",
       "byline": "",
+      "byline_title": "",
+      "source": "",
       "url": "",
       "image_url": "",
-      "twitter_username": "",
+      "thumbnail_url": "",
+      "twitter_username": "tivs",
       "content_type": "twt"
     }
   },
@@ -46,11 +60,15 @@
     "pk": 4,
     "fields": {
       "sequence": 4,
-      "title": "This is a Quotation",
-      "body": "Thre once was a man from New York.",
-      "byline": "Joe Schmoe",
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "",
+      "body": "If I had an hour to solve a problem I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions.",
+      "byline": "Albert Einstein",
+      "byline_title": "Respectable Scientist",
       "url": "",
-      "image_url": "",
+      "image_url": "http://placekitten.com/200/300",
+      "thumbnail_url": "",
       "twitter_username": "",
       "content_type": "quo"
     }
@@ -60,11 +78,16 @@
     "pk": 5,
     "fields": {
       "sequence": 5,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
       "title": "This is a Video",
       "body": "Lennon",
       "byline": "Lennon",
+      "byline_title": "",
+      "source": "",
       "url": "Lennon",
       "image_url": "Lennon",
+      "thumbnail_url": "",
       "twitter_username": "",
       "content_type": "vid"
     }
@@ -74,9 +97,13 @@
     "pk": 6,
     "fields": {
       "sequence": 6,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
       "title": "This is an Infographic that links out.",
       "body": "",
-      "byline": "",
+      "byline": "TED Talks",
+      "byline_title": "",
+      "source": "",
       "url": "http://www.happify.com/hd/the-science-behind-a-happy-relationship/",
       "thumbnail_url": "https://s3.amazonaws.com/happify-marty-prod-user-uploads/the-science-of-happy.png",
       "image_url": "",
