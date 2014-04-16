@@ -208,3 +208,26 @@ If you edit the nginx.conf file at any time, you will need to reload nginx with 
 To stop nginx use the command:
 
     (sudo) nginx -s quit
+
+## After you're done
+
+You may wish to enable to local mock server if you so desire. To do this, add the following to your local_settings.py file:
+
+    RUN_LOCAL_MOCK_API = True
+
+    API_MOCK_SERVER_ADDRESS = 'http://localhost:3000/mockapi'
+    API_SERVER_ADDRESS = API_MOCK_SERVER_ADDRESS
+    
+    LOCAL_MOCK_API_FILES = [
+        os.path.join(BASE_DIR, 'apiary.apib'),
+        os.path.join(BASE_DIR, 'mock_supplementals.apib'),
+    ]
+
+`RUN_LOCAL_MOCK_API` indicates that the local system wants to accept mock requests
+`API_MOCK_SERVER_ADDRESS` sets the mock address to use
+`API_SERVER_ADDRESS` is the core server, this sets it to be the local mock server
+
+The LOCAL_MOCK_API_FILES can be amended with additional files from which to take mock server content
+apiary.apib - contains a copy of the API Blueprint from apiary
+mock_supplementals.apib - currently contains specific responses for demo course in edX LMS as setup within devstack
+
