@@ -68,5 +68,20 @@
       "twitter_username": "",
       "content_type": "vid"
     }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 6,
+    "fields": {
+      "sequence": 6,
+      "title": "This is an Infographic that links out.",
+      "body": "",
+      "byline": "",
+      "url": "http://www.happify.com/hd/the-science-behind-a-happy-relationship/",
+      "thumbnail_url": "https://s3.amazonaws.com/happify-marty-prod-user-uploads/the-science-of-happy.png"
+      "image_url": "",
+      "twitter_username": "",
+      "content_type": "vid"
+    }
   }
 ]
