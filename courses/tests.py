@@ -305,6 +305,16 @@ class MockUserAPI(object):
     def get_user_courses(user_id):
         return MockUserAPI._get_user_courses(user_id, "2")
 
+    @staticmethod
+    def get_user_course_detail(user_id, course_id):
+        course_detail = {
+            "course_id": course_id,
+            "position": 2,
+            "user_id": user_id, 
+            "uri": "/api/users/{}/courses/{}".format(user_id, course_id)
+        }
+        return user_models.UserCourseStatus(dictionary=course_detail)
+
 
 class NotBookmarkedMockUserAPI(MockUserAPI):
 
@@ -321,7 +331,7 @@ class CoursesAPITest(TestCase):
         pass
 
     def test_build_page_info_for_course(self):
-        test_course, test_current_chapter, test_current_sequential, test_current_page = controller.build_page_info_for_course("0", "11", "112", MockCourseAPI)
+        test_course, test_current_chapter, test_current_sequential, test_current_page = controller.build_page_info_for_course("0", "11", "112", None, MockCourseAPI)
 
         self.assertEqual(len(test_course.chapters), 3)
         self.assertEqual(test_current_chapter.id, "11")
@@ -349,57 +359,55 @@ class CoursesAPITest(TestCase):
 
     def test_locate_chapter_page(self):
         # specified up to chapter id, should get bookmarked page
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", "10", MockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "2", "10", MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "10")
         self.assertEqual(page_id, "100")
 
         # specified course-only should get bookmarked page
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", None, MockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "2", None, MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
-        self.assertEqual(chapter_id, "10")
-        # TODO :RE-enable once bookmarking is in place
-        # self.assertEqual(page_id, "101")
+        self.assertEqual(chapter_position, 2)
+        self.assertEqual(chapter_id, "11")
 
         # specified user-only should get bookmarked page
-        # TODO :RE-enable once bookmarking is in place
-        # course_id, chapter_id, page_id = controller.locate_chapter_page("0", None, None, MockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", None, None, MockUserAPI, MockCourseAPI)
 
-        # self.assertEqual(course_id, "2")
-        # self.assertEqual(chapter_id, "10")
-        # self.assertEqual(page_id, "101")
+        self.assertEqual(course_id, "2")
+        self.assertEqual(chapter_id, "11")
+        self.assertEqual(page_id, "110")
 
         # specified up to chapter id not bookmarked should get first page in specified chapter
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "0", "11", NotBookmarkedMockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "0", "12", NotBookmarkedMockUserAPI, MockCourseAPI)
+
+        self.assertEqual(course_id, "0")
+        self.assertEqual(chapter_id, "12")
+        self.assertEqual(page_id, "120")
+
+        # specified course-only without bookmark should get first page of first chapter
+        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "0", None, NotBookmarkedMockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "0")
         self.assertEqual(chapter_id, "11")
         self.assertEqual(page_id, "110")
 
-        # specified course-only without bookmark should get first page of first chapter
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "0", None, NotBookmarkedMockUserAPI, MockCourseAPI)
-
-        self.assertEqual(course_id, "0")
-        self.assertEqual(chapter_id, "10")
-        self.assertEqual(page_id, "100")
-
         # specified course-only without bookmark should get first page of first
         # chapter of specified course, even if "current" course is something
         # different
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "9", None, NotBookmarkedMockUserAPI, OtherMockCourseAPI)
+        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "9", None, NotBookmarkedMockUserAPI, OtherMockCourseAPI)
 
         self.assertEqual(course_id, "9")
-        self.assertEqual(chapter_id, "10")
-        self.assertEqual(page_id, "100")
+        self.assertEqual(chapter_id, "11")
+        self.assertEqual(page_id, "110")
 
         # specified user-only should get first page of first chapter too
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", None, None, NotBookmarkedMockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", None, None, NotBookmarkedMockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "0")
-        self.assertEqual(chapter_id, "10")
-        self.assertEqual(page_id, "100")
+        self.assertEqual(chapter_id, "11")
+        self.assertEqual(page_id, "110")
 
     def test_program_for_course(self):
         # course within a program

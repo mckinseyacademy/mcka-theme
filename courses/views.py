@@ -52,12 +52,12 @@ def homepage(request):
     Logged in user's homepage which will infer current program, course,
     etc. from user settings
     '''
-    course_id, chapter_id, page_id = locate_chapter_page(
+    course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
         request.user.id, None, None)
 
     if course_id and chapter_id and page_id:
         course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-            course_id, chapter_id, page_id)
+            course_id, chapter_id, page_id, chapter_position)
 
         program = program_for_course(request.user.id, course_id)
 
@@ -177,7 +177,7 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     if chapter_id:
         chapter_id = decode_id(chapter_id)
 
-    course_id, chapter_id, page_id = locate_chapter_page(
+    course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
         request.user.id, course_id, chapter_id)
 
     return HttpResponseRedirect(
