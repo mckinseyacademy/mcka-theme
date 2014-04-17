@@ -28,9 +28,7 @@
     padding: 20px 27px;
     border-bottom: 1px solid $almost-white;
 
-    $bookmark-width: 15px;
-    $bookmark-offset: 5px;
-    $bookmark-height: 45px;
+    $bookmark-offset: 4px;
     .rotator {
       overflow-x: hidden;
       padding-top: $bookmark-offset;
@@ -47,15 +45,13 @@
           &:last-child { margin-right: none; }
 
           .bookmark{
-            @include rounded(4px);
-            background-color: transparent;
+            .fa{
+              color: $mckinsey-orange;
+              font-size: rem-calc(30);
+            }
             position: absolute;
             right: $bookmark-offset;
             top: -1*$bookmark-offset;
-            width: $bookmark-width;
-            height: $bookmark-height;
-            border: $bookmark-width solid $mckinsey-orange;
-            border-bottom: $bookmark-width solid transparent;
           }
 
           a {
