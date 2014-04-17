@@ -21,6 +21,7 @@ def build_page_info_for_course(
     course_id,
     chapter_id,
     page_id,
+    chapter_position=None,
     course_api_impl=course_api
 ):
     '''
@@ -35,6 +36,10 @@ def build_page_info_for_course(
     current_page = None
 
     prev_page = None
+
+    if chapter_position and len(course.chapters) >= chapter_position:
+        course.chapters[chapter_position - 1].bookmark = True
+
     for chapter in course.chapters:
         chapter.navigation_url = '/courses/{}/lessons/{}'.format(
             encode_id(course_id),
@@ -86,13 +91,15 @@ def locate_chapter_page(
             return None, None, None
         course_id = courses[0].id
 
-    # TODO No bookmarks for now
-    # bookmark = courses.get_bookmark_for_course(course_id)
-    # if bookmark is not None and (chapter_id is None or bookmark.chapter_id == chapter_id):
-    #     return course_id, bookmark.chapter_id, bookmark.page_id
-
     course = course_api_impl.get_course(course_id)
-    chapter = course.chapters[0]
+
+    course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
+    if len(course.chapters) >= course_detail.position:
+        chapter = course.chapters[course_detail.position - 1]
+        chapter.bookmark = True
+    else:
+        chapter = course.chapters[0]
+
     if chapter_id:
         for course_chapter in course.chapters:
             if course_chapter.id == chapter_id:
@@ -100,7 +107,7 @@ def locate_chapter_page(
                 break
     page = chapter.sequentials[0].pages[0]
 
-    return course_id, chapter.id, page.id
+    return course_id, chapter.id, page.id, course_detail.position
 
 
 def program_for_course(user_id, course_id, user_api_impl=user_api):

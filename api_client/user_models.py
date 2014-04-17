@@ -34,25 +34,9 @@ class AuthenticationResponse(JsonObject):
     }
 
 
-class UserCourseBookmark(JsonObject):
-    ''' object representing a course bookmark from api json response '''
-    required_fields = ["chapter_id", "page_id"]
-
-
 class UserCourseStatus(JsonObject):
     ''' object representing a user's course status from api json response '''
-    required_fields = ["id", "percent_complete"]
-    object_map = {
-        "bookmark": UserCourseBookmark
-    }
-    date_fields = ["start_date", ]
-
-    def is_future_start(self):
-        if hasattr(self, 'start_date'):
-            return datetime.datetime.utcnow() < self.start_date
-
-        return False
-
+    required_fields = ["position"]
 
 class UserProgram(JsonObject):
     ''' object representing a users's program from api json response '''
