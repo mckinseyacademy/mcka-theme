@@ -1,0 +1,8 @@
+- extends 'admin/admin_layout.haml'
+- block content
+  .admin-list.row
+    .large-12.large-centered.columns
+      .message
+        %span= _("Client detail for ")
+        %span= client.name
+        %span= _(" will appear here")

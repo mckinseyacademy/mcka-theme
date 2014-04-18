@@ -10288,15 +10288,16 @@ footer[role=contentinfo] .built-on {
   padding: 20px 27px;
   border-bottom: 1px solid #cccccc;
 }
-/* line 31, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 32, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator {
   overflow-x: hidden;
+  padding-top: 4px;
 }
-/* line 34, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 36, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul {
   white-space: nowrap;
 }
-/* line 37, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 39, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li {
   position: relative;
   display: inline-block;
@@ -10304,17 +10305,28 @@ footer[role=contentinfo] .built-on {
   margin-right: 20px;
   white-space: normal;
 }
-/* line 43, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 45, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li:last-child {
   margin-right: none;
 }
-/* line 45, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 47, /Users/martyn/mcka_apros/static/scss/course.scss */
+.home-page .course-menu .rotator ul li .bookmark {
+  position: absolute;
+  right: 4px;
+  top: -4px;
+}
+/* line 48, /Users/martyn/mcka_apros/static/scss/course.scss */
+.home-page .course-menu .rotator ul li .bookmark .fa {
+  color: #e37222;
+  font-size: 2.14286rem;
+}
+/* line 57, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li a {
   display: block;
   width: 140px;
   height: 180px;
 }
-/* line 51, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 63, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li .front, .home-page .course-menu .rotator ul li .back {
   width: 140px;
   height: 180px;
@@ -10323,17 +10335,17 @@ footer[role=contentinfo] .built-on {
   -webkit-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
   box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
 }
-/* line 58, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 70, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li .index {
   margin-bottom: 20px;
 }
-/* line 60, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 72, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li .lesson-progress {
   position: absolute;
   bottom: 20px;
   left: 20px;
 }
-/* line 65, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 77, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li .lesson-progress .tick {
   width: 5px;
   height: 5px;
@@ -10341,15 +10353,15 @@ footer[role=contentinfo] .built-on {
   float: left;
   background: #e0e0e0;
 }
-/* line 71, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 83, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-menu .rotator ul li .lesson-progress .tick.on {
   background: #629b2b;
 }
-/* line 79, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 91, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote {
   text-align: center;
 }
-/* line 82, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 94, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote blockquote {
   position: relative;
   margin: 0 0 20px;
@@ -10357,7 +10369,7 @@ footer[role=contentinfo] .built-on {
   border: none;
   quotes: "\201C" "\201D" "\2018" "\2019";
 }
-/* line 89, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 101, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote blockquote:before, .home-page .course-quote blockquote:after {
   font-family: Georgia;
   color: #e37222;
@@ -10366,21 +10378,21 @@ footer[role=contentinfo] .built-on {
   font-size: 6em;
   line-height: 0.1em;
 }
-/* line 98, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 110, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote blockquote:before {
   content: open-quote;
   left: 0;
 }
-/* line 103, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 115, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote blockquote:after {
   content: close-quote;
   right: 0;
 }
-/* line 110, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 122, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote .attribution img {
   margin-bottom: 10px;
 }
-/* line 114, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 126, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-menu {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10393,30 +10405,30 @@ footer[role=contentinfo] .built-on {
   padding: 5px 0;
   color: #333333;
 }
-/* line 121, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 133, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-menu .lesson {
   color: #d3d1ba;
   width: 40px;
   text-align: center;
   border-left: 1px solid #d3d1ba;
 }
-/* line 126, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 138, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-menu .lesson a {
   color: #3384ca;
 }
-/* line 128, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 140, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-menu .lesson a:hover {
   color: #b1c2cc;
 }
-/* line 132, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 144, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-menu .lesson:first-child {
   border-left: none;
 }
-/* line 135, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 147, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-menu .lesson .selected {
   color: #868685;
 }
-/* line 141, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 153, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-module-status {
   display: inline-block;
   font-family: FontAwesome;
@@ -10427,33 +10439,33 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   color: #868685;
 }
-/* line 146, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 158, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-module-status::before {
   content: "\f10c";
 }
-/* line 149, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 161, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-module-status.complete {
   color: #629b2b;
 }
-/* line 153, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 165, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-module-status.complete::before, .home-page .lesson-module-status.current::before {
   content: "\f111";
 }
-/* line 157, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 169, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-module-status:hover {
   color: #3384ca;
 }
-/* line 159, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 171, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-module-status:hover.current {
   color: #868685;
 }
-/* line 165, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 177, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-pager {
   text-align: center;
   width: 100%;
   padding-bottom: 5.71429rem;
 }
-/* line 169, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 181, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-pager .page-to {
   margin: 0 10px;
   font-size: 30px;
@@ -10472,15 +10484,15 @@ footer[role=contentinfo] .built-on {
   color: white;
   padding: 8px;
 }
-/* line 179, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 191, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-pager .page-to.previous {
   padding-right: 12px;
 }
-/* line 182, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 194, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-pager .page-to.next {
   padding-left: 12px;
 }
-/* line 188, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 200, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-title {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -10490,17 +10502,17 @@ footer[role=contentinfo] .built-on {
   color: #868685;
   padding-top: 25px;
 }
-/* line 192, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 204, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-title .lesson-index {
   font-weight: bold;
 }
-/* line 195, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 207, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-title .page-name {
   border-left: 1px solid #868685;
   padding-left: 5px;
   margin-left: 3px;
 }
-/* line 202, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 214, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .page-title {
   font-size: 22px;
   font-size: 1.57143rem;
@@ -10510,21 +10522,21 @@ footer[role=contentinfo] .built-on {
   color: #66a5b5;
 }
 
-/* line 209, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 221, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu {
   color: #002960;
   padding: 10px;
 }
-/* line 212, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 224, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu > * {
   float: right;
 }
-/* line 215, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 227, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu .fa {
   cursor: pointer;
 }
 
-/* line 220, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 232, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content {
   display: none;
   position: absolute !important;
@@ -10538,11 +10550,11 @@ footer[role=contentinfo] .built-on {
   -webkit-box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
   box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
 }
-/* line 222, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 234, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content.open {
   display: block;
 }
-/* line 235, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 247, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content .program-title {
   margin: 12px 20px 0;
   font-size: 10px;
@@ -10552,11 +10564,11 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   text-transform: uppercase;
 }
-/* line 239, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 251, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content .program-title::after {
   content: ':';
 }
-/* line 243, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 255, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content a.course-name, .program-menu-content .course-name {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10566,19 +10578,19 @@ footer[role=contentinfo] .built-on {
   padding: 5px 0;
   color: black;
 }
-/* line 247, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 259, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content a.course-name.unavailable, .program-menu-content .course-name.unavailable {
   color: #868685;
 }
-/* line 250, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 262, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content a.course-name.current, .program-menu-content .course-name.current {
   color: #e37222;
 }
-/* line 255, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 267, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content a.course-name:hover {
   opacity: 0.6;
 }
-/* line 259, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 271, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content .status {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -10587,31 +10599,31 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   font-style: italic;
 }
-/* line 262, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 274, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content .status.complete {
   color: #629b2b;
 }
-/* line 265, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 277, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content .status.unavailable {
   color: #cccccc;
 }
-/* line 269, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 281, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content ul {
   margin: 0 12px;
   list-style: none;
 }
-/* line 272, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 284, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content ul li {
   padding: 0 8px 8px;
   border-top: 1px solid #cccccc;
 }
-/* line 275, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 287, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content ul li:first-child {
   border-top: none;
   margin-top: 0;
 }
 
-/* line 283, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 295, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page {
   -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
   -webkit-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
@@ -10621,13 +10633,13 @@ footer[role=contentinfo] .built-on {
   overflow-x: hidden;
   overflow-y: auto;
 }
-/* line 290, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 302, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page ul {
   list-style: none;
   display: inline;
   margin: 15px 0;
 }
-/* line 294, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 306, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page ul li {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10636,21 +10648,21 @@ footer[role=contentinfo] .built-on {
   line-height: 1rem;
   display: inline-block;
 }
-/* line 300, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 312, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .course-tabs {
   margin: 10px 0;
 }
-/* line 303, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 315, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .course-tabs ul li {
   text-transform: uppercase;
   margin-right: 10px;
   color: #3384ca;
 }
-/* line 307, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 319, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .course-tabs ul li.selected {
   color: #868685;
 }
-/* line 314, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 326, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-menu {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10663,30 +10675,30 @@ footer[role=contentinfo] .built-on {
   padding: 5px 0;
   color: #333333;
 }
-/* line 321, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 333, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-menu .lesson {
   color: #d3d1ba;
   width: 40px;
   text-align: center;
   border-left: 1px solid #d3d1ba;
 }
-/* line 326, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 338, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-menu .lesson a {
   color: #3384ca;
 }
-/* line 328, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 340, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-menu .lesson a:hover {
   color: #b1c2cc;
 }
-/* line 332, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 344, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-menu .lesson:first-child {
   border-left: none;
 }
-/* line 335, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 347, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-menu .lesson .selected {
   color: #868685;
 }
-/* line 341, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 353, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-module-status {
   display: inline-block;
   font-family: FontAwesome;
@@ -10697,34 +10709,34 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   color: #868685;
 }
-/* line 346, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 358, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-module-status::before {
   content: "\f10c";
 }
-/* line 349, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 361, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-module-status.complete {
   color: #629b2b;
 }
-/* line 353, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 365, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-module-status.complete::before, .content-page .lesson-module-status.current::before {
   content: "\f111";
 }
-/* line 357, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 369, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-module-status:hover {
   color: #3384ca;
 }
-/* line 359, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 371, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-module-status:hover.current {
   color: #868685;
 }
-/* line 365, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 377, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-pager {
   text-align: center;
   width: 100%;
   padding-top: 2.85714rem;
   padding-bottom: 4.28571rem;
 }
-/* line 370, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 382, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-pager .page-to {
   margin: 0 10px;
   font-size: 30px;
@@ -10743,15 +10755,15 @@ footer[role=contentinfo] .built-on {
   color: white;
   padding: 8px;
 }
-/* line 380, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 392, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-pager .page-to.previous {
   padding-right: 12px;
 }
-/* line 383, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 395, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-pager .page-to.next {
   padding-left: 12px;
 }
-/* line 389, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 401, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-title {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -10761,17 +10773,17 @@ footer[role=contentinfo] .built-on {
   color: #868685;
   padding-top: 45px;
 }
-/* line 393, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 405, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-title .lesson-index {
   font-weight: bold;
 }
-/* line 396, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 408, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-title .page-name {
   border-left: 1px solid #868685;
   padding-left: 5px;
   margin-left: 3px;
 }
-/* line 403, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 415, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-content h2 {
   font-size: 22px;
   font-size: 1.57143rem;
@@ -10780,12 +10792,12 @@ footer[role=contentinfo] .built-on {
   line-height: 1.71429rem;
   color: #66a5b5;
 }
-/* line 408, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 420, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .page-title {
   display: none;
 }
 
-/* line 415, /Users/martyn/mcka_apros/static/scss/course.scss */
+/* line 427, /Users/martyn/mcka_apros/static/scss/course.scss */
 .choice-result, .answer-checkmark {
   font-family: FontAwesome;
   text-align: center !important;
