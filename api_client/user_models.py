@@ -16,9 +16,10 @@ class UserResponse(JsonObject):
 
     def image_url(self, size=40):
         ''' returns gravatar image based on user's email '''
+        # double-size and shrink so that these look good on retina displays
         return "http://www.gravatar.com/avatar/{}?s={}".format(
             hashlib.md5(self.email.lower()).hexdigest(),
-            size
+            size * 2
         )
 
     def formatted_name(self):
