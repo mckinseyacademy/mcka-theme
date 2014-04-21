@@ -4,7 +4,8 @@ from lib.authorization import group_required
 import urllib2 as url_access
 from django.http import HttpResponseRedirect
 
-from api_client.admin_api import create_client, get_client_list, get_client_detail
+#from api_client.admin_api import create_client, get_client_list, get_client_detail
+from .models import Client
 from api_client.admin_api import create_program, get_program_list, get_program_detail
 
 from .forms import ClientForm
@@ -30,7 +31,7 @@ def course_meta_content(request):
 @group_required('super_admin')
 def client_list(request):
     ''' handles requests for login form and their submission '''
-    clients = get_client_list()
+    clients = Client.objects.all()
     for client in clients:
         client.detail_url = '/admin/clients/{}'.format(client.id)
 
@@ -54,7 +55,7 @@ def client_new(request):
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                client = create_client(request.POST)
+                client = form.save()
                 return HttpResponseRedirect('/admin/clients/{}'.format(client.id))  # Redirect after POST
 
             except url_access.HTTPError, err:
@@ -69,8 +70,8 @@ def client_new(request):
         ''' adds a new client '''
         form = ClientForm()  # An unbound form
     
-    # set focus to company field
-    form.fields["company"].widget.attrs.update({'autofocus': 'autofocus'})
+    # set focus to company name field
+    form.fields["name"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "form": form,
@@ -86,7 +87,7 @@ def client_new(request):
 
 @group_required('super_admin')
 def client_detail(request, client_id):
-    client = get_client_detail(client_id)
+    client = Client.objects.get(id=client_id)
 
     return render(
         request,
@@ -138,7 +139,7 @@ def program_new(request):
         form = ProgramForm()  # An unbound form
     
     # set focus to public name field
-    form.fields["public_name"].widget.attrs.update({'autofocus': 'autofocus'})
+    form.fields["name"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "form": form,

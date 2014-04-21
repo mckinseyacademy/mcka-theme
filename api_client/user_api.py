@@ -118,19 +118,6 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id,
 
     return positions
 
-def get_groups():
-    ''' gets all groups '''
-    response = GET(
-        '{}/{}'.format(
-            settings.API_MOCK_SERVER_ADDRESS, GROUP_API
-        )
-    )
-    groups_json = JP.from_json(response.read())
-    rd = {}
-    for group in groups_json:
-        rd[group.name] = group.id
-    return rd
-
 
 def is_user_in_group(user_id, group_id):
     ''' checks group membership '''

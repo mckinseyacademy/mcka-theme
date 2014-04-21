@@ -548,3 +548,79 @@ The API root is the top-level resource for Open edX, providing listings of the p
 
 ### DELETE /api/users/{user_id}/groups/{group_id}
 + Response 204
+
+### GET /api/admin/programs/{program_id}
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 4567,
+                "name": "edX Humanities Program",
+                "private_name": "edX Humanities X-Series",
+                "start_date": "2014-05-01T00:00:00.00Z",
+                "end_date": "2014-12-12T00:00:00.00Z"
+            }
+
+### DELETE /api/admin/programs/{program_id}
++ Response 204
+
+### POST /api/admin/programs/
++ Request (application/json)
+
+    + Body
+    
+            { 
+                "name": "edX Humanities Program",
+                "private_name": "edX Humanities X-Series",
+                "start_date": "2014-05-01T00:00:00.00Z",
+                "end_date": "2014-12-12T00:00:00.00Z"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "id": 4567,
+                "name": "edX Humanities Program",
+                "private_name": "edX Humanities X-Series",
+                "start_date": "2014-05-01T00:00:00.00Z",
+                "end_date": "2014-12-12T00:00:00.00Z"
+            }
+
+### GET /api/admin/programs
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "id": 4567,
+                    "name": "edX Humanities Program",
+                    "private_name": "edX Humanities X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                },
+                {
+                    "id": 5678,
+                    "name": "edX Mathematics Program",
+                    "private_name": "edX Mathematics X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                },
+                {
+                    "id": 6789,
+                    "name": "edX Science Program",
+                    "private_name": "edX Science X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                },
+                {
+                    "id": 7890,
+                    "name": "edX Legal Program",
+                    "private_name": "edX Legal X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                }   
+            ]
