@@ -4,6 +4,36 @@ HOST: http://api.edx.org
 # Open edX API Mock Supplmentals
 This is used to supply additional mock results so that we can provide a complete course via the API
 
+### GET /api/groups
+ + Response 200 (application/json)
+ 
+     + Body
+         
+             [
+                 {
+                     "name": "super_admin",
+                     "id":1234,
+                     "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1234"
+                 },
+                 {
+                     "name": "sub_admin",
+                     "id":1357,
+                     "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1357"
+                 },
+                 {
+                     "name": "company_admin",
+                     "id":5678,
+                     "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/5678"
+                 },
+                 {
+                     "name": "arbitrary_group",
+                     "id":2468,
+                     "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468"
+                 }
+             ]
+             
+ 
+
 ### GET /api/courses/edX/Open_DemoX/edx_demo_course
 + Response 200 (application/json)
 
