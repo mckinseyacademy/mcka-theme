@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: http://api.edx.org
 
-# Open edX API Modified
+# Open edX API
 Open edX API is the machine interface for the world-reknowned MOOC platform.
 
 
@@ -28,7 +28,7 @@ Open edX API is the machine interface for the world-reknowned MOOC platform.
         "field_conflict":"fieldname"
     }
 
-## Group Resources and Operations
+## Group API
 The API root is the top-level resource for Open edX, providing listings of the primary entity collections currently present in the system.
 
 ### GET /api
@@ -37,34 +37,305 @@ The API root is the top-level resource for Open edX, providing listings of the p
     + Body
 
             {
+ 
                 "documentation": "http://docs.openedxapi.apiary.io", 
                 "name": "Open edX API", 
-                "uri": "/api", 
-                "description": "Machine interface for interactions with Open edX."
-                "resources":[
+                "uri": "http://openedxapi.apiary-mock.com/api/", 
+                "description": "Machine interface for interactions with Open edX.",
+                "resources": [
                     {
-                        "uri":"/api/groups",
-                        "uri":"/api/sessions",                        
-                        "uri":"/api/system",
-                        "uri":"/api/users",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses"
+                    }, 
+                    {
+                        "uri": "http://openedxapi.apiary-mock.com/api/groups"
+                    }, 
+                    {
+                        "uri": "http://openedxapi.apiary-mock.com/api/sessions"
+                    }, 
+                    {
+                        "uri": "http://openedxapi.apiary-mock.com/api/system"
+                    }, 
+                    {
+                        "uri": "http://openedxapi.apiary-mock.com/api/users"
                     }
                 ]
             }
 
-## Group System
 
-### GET /api/system
-+ Response 200 (application/json)
+## Group Courses
+
+### GET /api/courses
++ Response 200
+    
+    + Body
+    
+            [
+                {
+                    "category": "course", 
+                    "name": "edX Demonstration Course", 
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course", 
+                    "number": "Open_DemoX", 
+                    "org": "edX", 
+                    "id": "edX/Open_DemoX/edx_demo_course"
+                },
+                {
+                    "category": "course", 
+                    "name": "edX Demonstration Course 2", 
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course2", 
+                    "number": "Open_DemoX2", 
+                    "org": "edX", 
+                    "id": "edX/Open_DemoX/edx_demo_course2"
+                }
+            
+            ]
+
+### GET /api/courses/{course_id}
++ Response 200
 
     + Body
 
             {
-                "documentation": "http://docs.openedxapi.apiary.io/#get-%2Fapi%2Fsystem", 
-                "name": "Open edX System API", 
-                "uri": "/api/system", 
-                "description": "System interface for Open edX."
+                "category": "course", 
+                "name": "edX Demonstration Course", 
+                "modules": [
+                    {
+                        "category": "chapter", 
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
+                        "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
+                        "name": "Introduction"
+                    }, 
+                    {
+                        "category": "chapter", 
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
+                        "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
+                        "name": "Example Week 1: Getting Started"
+                    }, 
+                    {
+                        "category": "chapter", 
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/graded_interactions", 
+                        "id": "i4x://edX/Open_DemoX/chapter/graded_interactions", 
+                        "name": "Example Week 2: Get Interactive"
+                    }, 
+                    {
+                        "category": "chapter", 
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/social_integration", 
+                        "id": "i4x://edX/Open_DemoX/chapter/social_integration", 
+                        "name": "Example Week 3: Be Social"
+                    }, 
+                    {
+                        "category": "chapter", 
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
+                        "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
+                        "name": "About Exams and Certificates"
+                    }
+                ], 
+                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course", 
+                "number": "Open_DemoX", 
+                "org": "edX", 
+                "id": "edX/Open_DemoX/edx_demo_course"
             }
 
+### GET /api/courses/{course_id}/modules/{module_id}
++ Response 200
+
+    + Body
+        
+            {
+                "category": "chapter", 
+                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
+                "modules": [
+                    {
+                        "category": "sequential", 
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/edx_introduction", 
+                        "id": "i4x://edX/Open_DemoX/sequential/edx_introduction", 
+                        "name": "Demo Course Overview"
+                    }
+                ], 
+                "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
+                "name": "Introduction"
+            }            
+
+### GET /api/courses/{course_id}/modules/{module_id}/submodules{?type}
++ Parameters
+    + type (optional, string) ... module category filter
++ Response 200
+
+    + Body
+
+            [
+                {
+                    "category": "html", 
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4", 
+                    "id": "i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4", 
+                    "name": "Blank HTML Page"
+                }, 
+                {
+                    "category": "video", 
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd", 
+                    "id": "i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd", 
+                    "name": "Welcome!"
+                }
+            ]
+
+## Group Groups
+
+
+
+### GET /api/groups
++ Response 200 (application/json)
+
+    + Body
+        
+            [
+                {
+                    "name": "super_admin",
+                    "id":1234,
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1234"
+                },
+                {
+                    "name": "sub_admin",
+                    "id":1357,
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1357"
+                },
+                {
+                    "name": "company_admin",
+                    "id":5678,
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/5678"
+                },
+                {
+                    "name": "arbitrary_group",
+                    "id":2468,
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468"
+                }
+            ]
+            
+
+### POST /api/groups
++ Request (application/json)
+
+    + Body
+    
+            { 
+                "name": "Alpha Group"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "name": "Alpha Group",
+                "id": 98734,
+                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468"
+            }
+
+### GET /api/groups/{group_id}
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "name": "Alpha Group",
+                "id": 98734,
+                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468",
+                "resources": 
+                [
+                    { "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/users" },
+                    { "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/groups" }                  
+                ]
+            }
+
+### DELETE /api/groups/{group_id}
++ Response 204
+
+
+
+### POST /api/groups/{group_id}/groups
++ Request (application/json)
+
+    + Body
+    
+            { 
+                "group_id": 9876
+            }
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "from_group_id": 2468,
+                "to_group_id": 9876,
+                "relationship_type":"h|g",
+                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/groups/9876"
+            }
+
+### GET /api/groups/{group_id}/groups
++ Response 200 (application/json)
+
+    + Body
+    
+            [
+                {
+                    "id":9876,
+                    "relationship_type":"h|g",
+                    "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/groups/9876"
+                }
+            ]
+
+### GET /api/groups/{from_group_id}/groups/{to_group_id}
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "from_group_id":2468,
+                "to_group_id": 9876,
+                "relationship_type":"h|g",
+                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/groups/9876"
+            }
+
+### DELETE /api/groups/{from_group_id}/groups/{to_group_id}
++ Response 204
+
+
+
+### POST /api/groups/{group_id}/users
++ Request (application/json)
+
+    + Body
+    
+            { 
+                "user_id": 14
+            }
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "group_id": 2468,
+                "user_id": 14,
+                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/users/14"
+            }
+
+### GET /api/groups/{group_id}/users/{user_id}
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "group_id": 2468,
+                "user_id": 14,
+                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/users/14"
+            }
+
+### DELETE /api/groups/{group_id}/users/{user_id}
++ Response 204
+
+
+
+## Group Sessions
 
 ### POST /api/sessions/
 + Request (application/json)
@@ -88,7 +359,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
                     "email": "testuser@edx.org", 
                     "username": "TestUser"
                 },
-                "uri":"/api/sessions/71b2485519a7b8cbe0c425b4b93b957d"
+                "uri":"http://openedxapi.apiary-mock.com/api/sessions/71b2485519a7b8cbe0c425b4b93b957d"
             }
 
 
@@ -100,7 +371,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
             {
                 "token": "71b2485519a7b8cbe0c425b4b93b957d", 
                 "expires": 1209600,
-                "uri":"/api/sessions/71b2485519a7b8cbe0c425b4b93b957d"
+                "uri": "http://openedxapi.apiary-mock.com/api/sessions/71b2485519a7b8cbe0c425b4b93b957d",
                 "id": 10
             }
 
@@ -109,6 +380,22 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 204
 
 
+## Group System
+
+### GET /api/system
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "documentation": "http://docs.openedxapi.apiary.io/#get-%2Fapi%2Fsystem", 
+                "name": "Open edX System API", 
+                "uri": "http://openedxapi.apiary-mock.com/api/system", 
+                "description": "System interface for managing groups, users, and sessions."
+            }
+
+
+## Group Users
 
 ### POST /api/users
 + Request (application/json)
@@ -131,7 +418,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
                 "first_name": "Test", 
                 "id": 14, 
                 "last_name": "User", 
-                "uri": "/api/users/14", 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14", 
                 "username": "testuser"
             }
 
@@ -145,16 +432,85 @@ The API root is the top-level resource for Open edX, providing listings of the p
                 "first_name": "Test", 
                 "id": 14, 
                 "last_name": "User", 
-                "uri": "/api/users/14", 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14", 
                 "username": "testuser", 
                 "resources": 
                 [
-                    { "uri": "/api/users/1/groups" }
+                    { "uri": "http://openedxapi.apiary-mock.com/api/users/1/groups" }
                 ]
             }
 
 
 ### DELETE /api/users/{user_id}
++ Response 204
+
+### GET /api/users/{user_id}/courses
++ Response 200
+
+    + Body
+    
+            [
+                {
+                    "is_active": true, 
+                    "id": "edX/Open_DemoX/edx_demo_course", 
+                    "name": "edX Demonstration Course", 
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course"
+                },
+                {
+                    "is_active": true, 
+                    "id": "edX/Open_DemoX/edx_demo_course2", 
+                    "name": "edX Demonstration Course 2", 
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course2"
+                }        
+            ]
+
+### POST /api/users/{user_id}/courses
++ Request (application/json)
+
+    + Body
+    
+            {
+                "course_id": "edX/Open_DemoX/edx_demo_course",
+            }
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "is_active": true, 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course", 
+                "name": "edX Demonstration Course", 
+                "id": "edX/Open_DemoX/edx_demo_course"
+            }
+
+
+
+### POST /api/users/{user_id}/courses/{course_id}
++ Request (application/json)
+
+    + Body
+    
+            {
+                "position": {
+                    "parent_module_id": "edX/Open_DemoX/edx_demo_course",
+                    "child_module_id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b"
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "course_id": "edX/Open_DemoX/edx_demo_course", 
+                "position": 2, 
+                "user_id": 3, 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course"
+            }
+
+
+### DELETE /api/users/{user_id}/courses/{course_id}
 + Response 204
 
 
@@ -173,7 +529,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
     
             {
                 "group_id": 2468,
-                "uri": "/api/users/14/groups/2468", 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468", 
                 "id":14
             }
 
@@ -185,7 +541,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
     
             {
                 "group_id":2468,
-                "uri": "/api/users/14/groups/2468", 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468", 
                 "id":14
             }
 
@@ -193,43 +549,32 @@ The API root is the top-level resource for Open edX, providing listings of the p
 ### DELETE /api/users/{user_id}/groups/{group_id}
 + Response 204
 
-
-### GET /api/groups
+### GET /api/admin/programs/{program_id}
 + Response 200 (application/json)
 
     + Body
-        
-            [
-                {
-                    "name": "super_admin",
-                    "id":1234,
-                    "uri": "/api/users/14/groups/1234"
-                },
-                {
-                    "name": "sub_admin",
-                    "id":1357,
-                    "uri": "/api/users/14/groups/1357"
-                },
-                {
-                    "name": "company_admin",
-                    "id":5678,
-                    "uri": "/api/users/14/groups/5678"
-                },
-                {
-                    "name": "arbitrary_group",
-                    "id":2468,
-                    "uri": "/api/users/14/groups/2468"
-                }
-            ]
-            
 
-### POST /api/groups
+            {
+                "id": 4567,
+                "name": "edX Humanities Program",
+                "private_name": "edX Humanities X-Series",
+                "start_date": "2014-05-01T00:00:00.00Z",
+                "end_date": "2014-12-12T00:00:00.00Z"
+            }
+
+### DELETE /api/admin/programs/{program_id}
++ Response 204
+
+### POST /api/admin/programs/
 + Request (application/json)
 
     + Body
     
             { 
-                "name": "Alpha Group"
+                "name": "edX Humanities Program",
+                "private_name": "edX Humanities X-Series",
+                "start_date": "2014-05-01T00:00:00.00Z",
+                "end_date": "2014-12-12T00:00:00.00Z"
             }
 
 + Response 201 (application/json)
@@ -237,429 +582,45 @@ The API root is the top-level resource for Open edX, providing listings of the p
     + Body
     
             {
-                "name": "Alpha Group",
-                "id": 98734,
-                "uri": "/api/groups/2468"
+                "id": 4567,
+                "name": "edX Humanities Program",
+                "private_name": "edX Humanities X-Series",
+                "start_date": "2014-05-01T00:00:00.00Z",
+                "end_date": "2014-12-12T00:00:00.00Z"
             }
 
-### GET /api/groups/{group_id}
+### GET /api/admin/programs
 + Response 200 (application/json)
-
-    + Body
-    
-            {
-                "name": "Alpha Group",
-                "id": 98734,
-                "uri": "/api/groups/2468",
-                "resources": 
-                [
-                    { "uri": "/api/groups/2468/users" },
-                    { "uri": "/api/groups/2468/groups" }                  
-                ]
-            }
-
-### DELETE /api/groups/{group_id}
-+ Response 204
-
-
-### POST /api/groups/{group_id}/users
-+ Request (application/json)
-
-    + Body
-    
-            { 
-                "user_id": 14
-            }
-
-+ Response 201 (application/json)
-
-    + Body
-    
-            {
-                "group_id": 2468,
-                "user_id": 14,
-                "uri": "/api/groups/2468/users/14"
-            }
-
-### GET /api/groups/{group_id}/users/{user_id}
-+ Response 200 (application/json)
-
-    + Body
-    
-            {
-                "group_id":2468
-                "user_id": 14,
-                "uri": "/api/groups/2468/users/14"
-            }
-
-### DELETE /api/groups/{group_id}/users/{user_id}
-+ Response 204
-
-
-### POST /api/groups/{group_id}/groups
-+ Request (application/json)
-
-    + Body
-    
-            { 
-                "group_id": 9876
-            }
-
-+ Response 201 (application/json)
-
-    + Body
-    
-            {
-                "from_group_id": 2468,
-                "to_group_id": 9876,
-                "relationship_type":"h|g",
-                "uri": "/api/groups/2468/groups/9876"
-            }
-
-### GET /api/groups/{group_id}/groups
-+ Response 200 (application/json)
-
-    + Body
-    
-            [
-                {
-                    "id":9876,
-                    "relationship_type":"h|g",
-                    "uri": "/api/groups/2468/groups/9876"
-                }
-            ]
-
-### GET /api/groups/{group_id}/groups/{group_id}
-+ Response 200 (application/json)
-
-    + Body
-    
-            {
-                "from_group_id":2468,
-                "to_group_id": 9876,
-                "relationship_type":"h|g",
-                "uri": "/api/groups/2468/groups/9876"
-            }
-
-### DELETE /api/groups/{group_id}/groups/{group_id}
-+ Response 204
-
-### GET /api/courses
-+ Response 200
 
     + Body
 
             [
                 {
-                    "category": "course", 
-                    "name": "edX Demonstration Course", 
-                    "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course", 
-                    "number": "Open_DemoX", 
-                    "org": "edX", 
-                    "id": "edX/Open_DemoX/edx_demo_course"
-                }
+                    "id": 4567,
+                    "name": "edX Humanities Program",
+                    "private_name": "edX Humanities X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                },
+                {
+                    "id": 5678,
+                    "name": "edX Mathematics Program",
+                    "private_name": "edX Mathematics X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                },
+                {
+                    "id": 6789,
+                    "name": "edX Science Program",
+                    "private_name": "edX Science X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                },
+                {
+                    "id": 7890,
+                    "name": "edX Legal Program",
+                    "private_name": "edX Legal X-Series",
+                    "start_date": "2014-05-01T00:00:00.00Z",
+                    "end_date": "2014-12-12T00:00:00.00Z"
+                }   
             ]
-
-### GET /api/courses/edX/Open_DemoX/edx_demo_course
-+ Response 200
-
-    + Body
-
-            {
-                "category": "course", 
-                "name": "edX Demonstration Course", 
-                "modules": [
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
-                        "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
-                        "name": "Introduction"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
-                        "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
-                        "name": "Example Week 1: Getting Started"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/graded_interactions", 
-                        "id": "i4x://edX/Open_DemoX/chapter/graded_interactions", 
-                        "name": "Example Week 2: Get Interactive"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/social_integration", 
-                        "id": "i4x://edX/Open_DemoX/chapter/social_integration", 
-                        "name": "Example Week 3: Be Social"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
-                        "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
-                        "name": "About Exams and Certificates"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", 
-                        "id": "i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", 
-                        "name": "holding section"
-                    }
-                ], 
-                "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course", 
-                "number": "Open_DemoX", 
-                "org": "edX", 
-                "id": "edX/Open_DemoX/edx_demo_course"
-            }
-
-
-### GET /api/courses/{course_id}
-+ Response 200
-
-    + Body
-
-            {
-                "category": "course", 
-                "name": "edX Demonstration Course", 
-                "modules": [
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
-                        "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
-                        "name": "Introduction"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
-                        "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
-                        "name": "Example Week 1: Getting Started"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/graded_interactions", 
-                        "id": "i4x://edX/Open_DemoX/chapter/graded_interactions", 
-                        "name": "Example Week 2: Get Interactive"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/social_integration", 
-                        "id": "i4x://edX/Open_DemoX/chapter/social_integration", 
-                        "name": "Example Week 3: Be Social"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
-                        "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
-                        "name": "About Exams and Certificates"
-                    }, 
-                    {
-                        "category": "chapter", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", 
-                        "id": "i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", 
-                        "name": "holding section"
-                    }
-                ], 
-                "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course", 
-                "number": "Open_DemoX", 
-                "org": "edX", 
-                "id": "edX/Open_DemoX/edx_demo_course"
-            }
-
-### GET /api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/basic_questions
-+ Response 200
-
-    + Body
-
-            {
-                "category": "sequential", 
-                "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/basic_questions", 
-                "modules": [
-                    {
-                        "category": "vertical", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/2152d4a4aadc4cb0af5256394a3d1fc7", 
-                        "id": "i4x://edX/Open_DemoX/vertical/2152d4a4aadc4cb0af5256394a3d1fc7", 
-                        "name": "Pointing on a Picture"
-                    }, 
-                    {
-                        "category": "vertical", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/47dbd5f836544e61877a483c0b75606c", 
-                        "id": "i4x://edX/Open_DemoX/vertical/47dbd5f836544e61877a483c0b75606c", 
-                        "name": "Drag and Drop"
-                    }, 
-                    {
-                        "category": "vertical", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/54bb9b142c6c4c22afc62bcb628f0e68", 
-                        "id": "i4x://edX/Open_DemoX/vertical/54bb9b142c6c4c22afc62bcb628f0e68", 
-                        "name": "Multiple Choice Questions"
-                    }, 
-                    {
-                        "category": "vertical", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/vertical_0c92347a5c00", 
-                        "id": "i4x://edX/Open_DemoX/vertical/vertical_0c92347a5c00", 
-                        "name": "Mathematical Expressions"
-                    }, 
-                    {
-                        "category": "vertical", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/vertical_1fef54c2b23b", 
-                        "id": "i4x://edX/Open_DemoX/vertical/vertical_1fef54c2b23b", 
-                        "name": "Chemical Equations"
-                    }, 
-                    {
-                        "category": "vertical", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/2889db1677a549abb15eb4d886f95d1c", 
-                        "id": "i4x://edX/Open_DemoX/vertical/2889db1677a549abb15eb4d886f95d1c", 
-                        "name": "Numerical Input"
-                    }, 
-                    {
-                        "category": "vertical", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/e8a5cc2aed424838853defab7be45e42", 
-                        "id": "i4x://edX/Open_DemoX/vertical/e8a5cc2aed424838853defab7be45e42", 
-                        "name": "Text input"
-                    }
-                ], 
-                "id": "i4x://edX/Open_DemoX/sequential/basic_questions", 
-                "name": "Homework - Question Styles"
-            }    
-
-
-### GET /api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/2152d4a4aadc4cb0af5256394a3d1fc7
-+ Response 200
-
-    + Body
-
-            {
-                "category": "vertical", 
-                "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/vertical/2152d4a4aadc4cb0af5256394a3d1fc7", 
-                "modules": [
-                    {
-                        "category": "problem", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/problem/c554538a57664fac80783b99d9d6da7c", 
-                        "id": "i4x://edX/Open_DemoX/problem/c554538a57664fac80783b99d9d6da7c", 
-                        "name": "Pointing on a Picture"
-                    }, 
-                    {
-                        "category": "discussion", 
-                        "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/discussion/e5eac7e1a5a24f5fa7ed77bb6d136591", 
-                        "id": "i4x://edX/Open_DemoX/discussion/e5eac7e1a5a24f5fa7ed77bb6d136591", 
-                        "name": ""
-                    }
-                ], 
-                "id": "i4x://edX/Open_DemoX/vertical/2152d4a4aadc4cb0af5256394a3d1fc7", 
-                "name": "Pointing on a Picture"
-            }
-
-
-### GET /api/courses/{course_id}/modules/{module_id}
-+ Response 200
-
-    + Body
-
-            {
-                "category": "chapter", 
-                "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
-                "modules": [
-                    {
-                        "category": "sequential", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/19a30717eff543078a5d94ae9d6c18a5", 
-                        "id": "i4x://edX/Open_DemoX/sequential/19a30717eff543078a5d94ae9d6c18a5", 
-                        "name": "Lesson 1 - Getting Started"
-                    }, 
-                    {
-                        "category": "sequential", 
-                        "uri": "http://martynjames.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/basic_questions", 
-                        "id": "i4x://edX/Open_DemoX/sequential/basic_questions", 
-                        "name": "Homework - Question Styles"
-                    }
-                ], 
-                "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
-                "name": "Example Week 1: Getting Started"
-            }
-
-
-### GET /api/users/{user_id}/enrollments
-+ Response 200
-
-    + Body
-    
-            {
-                "current_program_id": "1001",
-                "current_course_id": "TestX4/TST104/now4",
-                "programs": 
-                    [
-                        {
-                            "id": "1001",
-                            "name": "Different Transportation Methods",
-                            "courses": 
-                            [
-                                {"id":"edX/Open_DemoX/edx_demo_course1"},
-                                {"id":"edX/Open_DemoX/edx_demo_course"},
-                                {"id":"edX/Open_DemoX/edx_demo_course3"},
-                                {"id":"edX/Open_DemoX/edx_demo_course4"}
-                            ]
-                        }
-                    ],
-                "courses": 
-                    [
-                        {
-                            "id": "edX/Open_DemoX/edx_demo_course1",
-                            "name": "Walking",
-                            "percent_complete": 100
-                        },
-                        {
-                            "id": "edX/Open_DemoX/edx_demo_course",
-                            "name": "Cycling to Work",
-                            "percent_complete": 40,
-                            "bookmark": 
-                                {
-                                    "chapter_id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
-                                    "page_id": "i4x://edX/Open_DemoX/vertical/54bb9b142c6c4c22afc62bcb628f0e68"
-                                }
-                        },
-                        {
-                            "id": "edX/Open_DemoX/edx_demo_course3",
-                            "name": "Trains and Buses",
-                            "percent_complete": 10,
-                            "bookmark": 
-                                {
-                                    "chapter_id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
-                                    "page_id": "i4x://edX/Open_DemoX/vertical/54bb9b142c6c4c22afc62bcb628f0e68"
-                                }
-                        },
-                        {
-                            "id": "edX/Open_DemoX/edx_demo_course4",
-                            "name": "Drive Yourself",
-                            "percent_complete": 0,
-                            "start_date": "2014-06-01T00:14:00.00Z"
-                        }
-                    ]
-            }
-
-### POST /api/users/{user_id}/course_bookmark
-+ Request (application/json)
-
-    + Body
-    
-            {
-                "program_id": 1001,
-                "course_id": "edX/Open_DemoX/edx_demo_course",
-                "bookmark": 
-                    {
-                        "chapter_id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
-                        "page_id": "i4x://edX/Open_DemoX/vertical/54bb9b142c6c4c22afc62bcb628f0e68"
-                    }
-            }
-
-+ Response 201 (application/json)
-
-    + Body
-    
-            {
-                "program_id": 1001,
-                "course_id": "edX/Open_DemoX/edx_demo_course",
-                "percent_complete": 40,
-                "bookmark": 
-                    {
-                        "chapter_id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
-                        "page_id": "i4x://edX/Open_DemoX/vertical/54bb9b142c6c4c22afc62bcb628f0e68"
-                    }
-            }
