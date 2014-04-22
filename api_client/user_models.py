@@ -16,9 +16,10 @@ class UserResponse(JsonObject):
 
     def image_url(self, size=40):
         ''' returns gravatar image based on user's email '''
+        # double-size and shrink so that these look good on retina displays
         return "http://www.gravatar.com/avatar/{}?s={}".format(
             hashlib.md5(self.email.lower()).hexdigest(),
-            size
+            size * 2
         )
 
     def formatted_name(self):
@@ -34,47 +35,34 @@ class AuthenticationResponse(JsonObject):
     }
 
 
-class UserCourseBookmark(JsonObject):
-    ''' object representing a course bookmark from api json response '''
-    required_fields = ["chapter_id", "page_id"]
-
-
 class UserCourseStatus(JsonObject):
     ''' object representing a user's course status from api json response '''
-    required_fields = ["id", "percent_complete"]
-    object_map = {
-        "bookmark": UserCourseBookmark
-    }
-    date_fields = ["start_date", ]
+    required_fields = ["position"]
 
-    def is_future_start(self):
-        if hasattr(self, 'start_date'):
-            return datetime.datetime.utcnow() < self.start_date
-
-        return False
-
-
-class UserPrograms(JsonObject):
-    ''' object representing a users's program(s) from api json response '''
+class UserProgram(JsonObject):
+    ''' object representing a users's program from api json response '''
     required_fields = ["id"]
 
 
-class UserStatus(JsonObject):
-    ''' object representing a user's status from api json response '''
+# TODO UserStatus removed for now until bookmarking available
+# class UserStatus(JsonObject):
+#     ''' object representing a user's status from api json response '''
+#     required_fields = []
+#     object_map = {
+#         "courses": UserCourse,
+#         "programs": UserProgram,
+#     }
+
+#     def get_bookmark_for_course(self, course_id):
+#         ''' returns bookmark for specific course if present '''
+#         for course_status in self.courses:
+#             if course_status.id == course_id and hasattr(course_status, 'bookmark'):
+#                 return course_status.bookmark
+
+#         return None
+
+class UserCourse(JsonObject):
     required_fields = []
-    object_map = {
-        "courses": UserCourseStatus,
-        "programs": UserPrograms,
-    }
-
-    def get_bookmark_for_course(self, course_id):
-        ''' returns bookmark for specific course if present '''
-        for course_status in self.courses:
-            if course_status.id == course_id and hasattr(course_status, 'bookmark'):
-                return course_status.bookmark
-
-        return None
-
 
 class Group(JsonObject):
     ''' object representing a group of which a user can be a member '''

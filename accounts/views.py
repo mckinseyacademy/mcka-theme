@@ -89,7 +89,7 @@ def logout(request):
     # destory the remote session, protect against bad API response, still want
     # our local stuff to go
     try:
-        user_api.delete_session(request.session["remote_session_key"])
+        user_api.delete_session(request.session.get("remote_session_key"))
     except url_access.HTTPError:
         pass
 

@@ -3,6 +3,7 @@
 *.sqlite3
 *.esproj
 local_settings.py
+Gemfile.lock
 
 /static/gen/
 /util/djtemp/*

@@ -152,7 +152,23 @@ CACHES = {
 API_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
 API_MOCK_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
 
+RUN_LOCAL_MOCK_API = False
+LOCAL_MOCK_API_FILES = [
+    os.path.join(BASE_DIR, 'apiary.apib'),
+    os.path.join(BASE_DIR, 'mock_supplementals.apib'),
+]
+
+# EdX Api Key
+# Set this on OpenEdx server, and within production environment to whichever value is desired
+EDX_API_KEY = 'test_api_key'
+
 try:
     from local_settings import *
 except ImportError:
     pass
+
+# Include any apps added from switch set in local_settings
+if RUN_LOCAL_MOCK_API:
+    INSTALLED_APPS += (
+        'mockapi',
+    )

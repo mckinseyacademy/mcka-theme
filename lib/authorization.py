@@ -7,12 +7,12 @@ from django.utils.decorators import available_attrs
 from django.template import loader, RequestContext
 from django.utils.http import urlquote
 
-from api_client import user_api
+from api_client import user_api, group_api
 
 
 def load_groups():
     ''' Loads and caches group names and ids via the edX platform '''
-    groups_map = user_api.get_groups()
+    groups_map = group_api.get_groups()
     cache.set('edx_groups_map', groups_map)
 
     return groups_map

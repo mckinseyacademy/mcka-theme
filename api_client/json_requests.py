@@ -1,11 +1,12 @@
 ''' GET, POST, DELETE, PUT requests for json client '''
 import urllib2 as url_access
 import json
+from django.conf import settings
 
 # nice to have capitalised names for familiar GET, POST, DELETE, PUT
 # pylint: disable=invalid-name
 
-JSON_HEADERS = {"Content-Type": "application/json"}
+JSON_HEADERS = {"Content-Type": "application/json", "X-Edx-Api-Key": settings.EDX_API_KEY, "Cookie": "edx_splash_screen=mckinsey%2Bacademy"}
 
 
 def GET(url_path):

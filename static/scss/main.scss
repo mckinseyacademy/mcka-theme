@@ -273,3 +273,9 @@ button,
     top: -34px;
   }
 }
+
+.close-reveal-modal{
+  &::after{
+    content: "\00d7";
+  }
+}

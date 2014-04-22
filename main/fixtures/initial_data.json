@@ -4,11 +4,16 @@
     "pk": 1,
     "fields": {
       "sequence": 1,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
       "title": "This is an Article",
       "body": "Here is the blurb!",
       "byline": "",
+      "byline_title": "",
+      "source": "Harvard Business Review",
       "url": "http://www.google.com",
-      "image_url": "http://placekitten.com/200/300",
+      "image_url": "",
+      "thumbnail_url": "",
       "twitter_username": "",
       "content_type": "art"
     }
@@ -18,13 +23,18 @@
     "pk": 2,
     "fields": {
       "sequence": 2,
-      "title": "This is a Video",
-      "body": "Lennon",
-      "byline": "Lennon",
-      "url": "Lennon",
-      "image_url": "Lennon",
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "Performance and Problem Solving",
+      "body": "Here is the blurb!",
+      "byline": "",
+      "byline_title": "",
+      "source": "McKinsey Insights",
+      "url": "http://www.google.com",
+      "image_url": "",
+      "thumbnail_url": "",
       "twitter_username": "",
-      "content_type": "vid"
+      "content_type": "art"
     }
   },
   {
@@ -32,13 +42,18 @@
     "pk": 3,
     "fields": {
       "sequence": 3,
-      "title": "",
-      "body": "",
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "The 4 Most Effective Ways Laders Solve Problems",
+      "body": "Here is the blurb!",
       "byline": "",
-      "url": "",
+      "byline_title": "",
+      "source": "Forbes",
+      "url": "http://www.google.com",
       "image_url": "",
+      "thumbnail_url": "",
       "twitter_username": "",
-      "content_type": "twt"
+      "content_type": "art"
     }
   },
   {
@@ -46,13 +61,17 @@
     "pk": 4,
     "fields": {
       "sequence": 4,
-      "title": "This is a Quotation",
-      "body": "Thre once was a man from New York.",
-      "byline": "Joe Schmoe",
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "This is a Video, and Here is it's Title",
+      "body": "",
+      "byline": "",
+      "byline_title": "",
+      "source": "TED Talks",
       "url": "",
       "image_url": "",
       "twitter_username": "",
-      "content_type": "quo"
+      "content_type": "vid"
     }
   },
   {
@@ -60,11 +79,72 @@
     "pk": 5,
     "fields": {
       "sequence": 5,
-      "title": "This is a Video",
-      "body": "Lennon",
-      "byline": "Lennon",
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "",
+      "body": "This is a fine, fine tweet. Wow, it's good.",
+      "byline": "",
+      "byline_title": "",
+      "source": "",
+      "url": "",
+      "image_url": "",
+      "thumbnail_url": "",
+      "twitter_username": "tivs",
+      "content_type": "twt"
+    }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 6,
+    "fields": {
+      "sequence": 6,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "",
+      "body": "If I had an hour to solve a problem I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions.",
+      "byline": "Albert Einstein",
+      "byline_title": "Respectable Scientist",
+      "url": "",
+      "image_url": "http://placekitten.com/200/300",
+      "thumbnail_url": "",
+      "twitter_username": "",
+      "content_type": "quo"
+    }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 7,
+    "fields": {
+      "sequence": 7,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "This is Also a Video with Some Key Insights",
+      "body": "",
+      "byline": "",
+      "byline_title": "",
+      "source": "Center For Awesome Video",
       "url": "Lennon",
       "image_url": "Lennon",
+      "thumbnail_url": "",
+      "twitter_username": "",
+      "content_type": "vid"
+    }
+  },
+  {
+    "model": "main.CuratedContentItem",
+    "pk": 8,
+    "fields": {
+      "sequence": 8,
+      "created_at": "2013-03-16 17:41:28",
+      "display_date": "2013-03-16 17:41:28",
+      "title": "This is an Infographic that links out.",
+      "body": "",
+      "byline": "TED Talks",
+      "byline_title": "",
+      "source": "",
+      "url": "http://www.happify.com/hd/the-science-behind-a-happy-relationship/",
+      "thumbnail_url": "https://s3.amazonaws.com/happify-marty-prod-user-uploads/the-science-of-happy.png",
+      "image_url": "",
       "twitter_username": "",
       "content_type": "vid"
     }

@@ -1,0 +1,15 @@
+%header= _("Create New Client")
+.subhead= _("Add a client")
+.description
+  Add a client using this form
+
+.close-reveal-modal
+  %i.fa.fa-remove
+.admin-form
+  %form{action: "/admin/clients/client_new", method: "POST"}
+    .error
+      - if error
+        = error
+    - csrf_token
+    = form
+    %input.button.radius.small{type: "submit", value: "#{submit_label}"}
