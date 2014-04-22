@@ -1,9 +1,10 @@
 ''' API calls with respect to users and authentication '''
+from django.conf import settings
+from urllib2 import HTTPError
+
 from .json_object import JsonParser as JP
 from . import user_models
 from .json_requests import GET, POST, DELETE
-
-from django.conf import settings
 
 AUTH_API = 'api/sessions'
 USER_API = 'api/users'
@@ -121,14 +122,19 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id,
 
 def is_user_in_group(user_id, group_id):
     ''' checks group membership '''
-    response = GET(
-        '{}/{}/{}/users/{}'.format(
-            settings.API_MOCK_SERVER_ADDRESS,
-            GROUP_API,
-            group_id,
-            user_id
+    try:
+        response = GET(
+            '{}/{}/{}/users/{}'.format(
+                settings.API_MOCK_SERVER_ADDRESS,
+                GROUP_API,
+                group_id,
+                user_id
+            )
         )
-    )
-    if response.code == 200:
-        return True
-    return False
+    except HTTPError, e:
+        if e.code == 404:
+            return False
+        else:
+            raise e
+
+    return (response.code == 200)

@@ -30,7 +30,6 @@ def get_course_list():
     Retrieves list of courses from openedx server
     '''
     response = GET('{}/{}'.format(
-        # TODO: remove forced MOCK reference when real API becomes available
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API)
     )

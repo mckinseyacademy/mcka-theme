@@ -1,0 +1,25 @@
+%ul
+  %li
+    - if selected_client_tab == 'detail'
+      %span.selected= _("Overview")
+    - else
+      %a{href:"/admin/clients/#{client.id}"}
+        = _("Overview")
+  %li
+    - if selected_client_tab == 'programs'
+      %span.selected= _("Assign Students to Program")
+    - else
+      %a{href:"/admin/clients/#{client.id}/programs"}
+        = _("Assign Students to Program")
+  %li
+    - if selected_client_tab == 'courses'
+      %span.selected= _("Assign Students to Courses")
+    - else
+      %a{href:"/admin/clients/#{client.id}/courses"}
+        = _("Assign Students to Courses")
+  %li
+    - if selected_client_tab == 'groups'
+      %span.selected= _("Cohort Courses")
+    - else
+      %a{href:"/admin/clients/#{client.id}/groups"}
+        = _("Cohort Courses")
