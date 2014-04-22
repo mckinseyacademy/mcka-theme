@@ -69,7 +69,7 @@ def get_user_courses(user_id):
     # TODO: Faking status for now, need to remove somehow
     for course in courses:
         course.percent_complete = 25
-    
+
     return courses
 
 
@@ -80,8 +80,8 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
             "child_module_id": child_id,
         }
     }
-    
-    # removed from mock for now, ignore in order to get things running    
+
+    # removed from mock for now, ignore in order to get things running
     # response = POST(
     #     '{}/{}/{}/courses/{}'.format(
     #         settings.API_SERVER_ADDRESS,
@@ -96,6 +96,7 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
 
     return True
 
+
 def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id, page_id):
     ''' let the openedx server know the most recently visited page '''
 
@@ -106,6 +107,7 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id,
     positions.append(_set_course_position(user_id, course_id, sequential_id, page_id))
 
     return positions
+
 
 def get_groups():
     ''' gets all groups '''
@@ -121,11 +123,23 @@ def get_groups():
     return rd
 
 
+def create_group(group_name):
+    ''' creates a group '''
+    data = {
+        "name": group_name
+    }
+
+    url = '{}/{}/'.format(settings.API_SERVER_ADDRESS, GROUP_API)
+    response = POST(url, data)
+
+    return JP.from_json(response.read())
+
+
 def is_user_in_group(user_id, group_id):
     ''' checks group membership '''
     response = GET(
         '{}/{}/{}/users/{}'.format(
-            settings.API_MOCK_SERVER_ADDRESS,
+            settings.API_SERVER_ADDRESS,
             GROUP_API,
             group_id,
             user_id
