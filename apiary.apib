@@ -37,24 +37,24 @@ The API root is the top-level resource for Open edX, providing listings of the p
     + Body
 
             {
- 
-                "documentation": "http://docs.openedxapi.apiary.io", 
-                "name": "Open edX API", 
-                "uri": "http://openedxapi.apiary-mock.com/api/", 
+
+                "documentation": "http://docs.openedxapi.apiary.io",
+                "name": "Open edX API",
+                "uri": "http://openedxapi.apiary-mock.com/api/",
                 "description": "Machine interface for interactions with Open edX.",
                 "resources": [
                     {
                         "uri": "http://openedxapi.apiary-mock.com/api/courses"
-                    }, 
+                    },
                     {
                         "uri": "http://openedxapi.apiary-mock.com/api/groups"
-                    }, 
+                    },
                     {
                         "uri": "http://openedxapi.apiary-mock.com/api/sessions"
-                    }, 
+                    },
                     {
                         "uri": "http://openedxapi.apiary-mock.com/api/system"
-                    }, 
+                    },
                     {
                         "uri": "http://openedxapi.apiary-mock.com/api/users"
                     }
@@ -66,27 +66,27 @@ The API root is the top-level resource for Open edX, providing listings of the p
 
 ### GET /api/courses
 + Response 200
-    
+
     + Body
-    
+
             [
                 {
-                    "category": "course", 
-                    "name": "edX Demonstration Course", 
-                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course", 
-                    "number": "Open_DemoX", 
-                    "org": "edX", 
+                    "category": "course",
+                    "name": "edX Demonstration Course",
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course",
+                    "number": "Open_DemoX",
+                    "org": "edX",
                     "id": "edX/Open_DemoX/edx_demo_course"
                 },
                 {
-                    "category": "course", 
-                    "name": "edX Demonstration Course 2", 
-                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course2", 
-                    "number": "Open_DemoX2", 
-                    "org": "edX", 
+                    "category": "course",
+                    "name": "edX Demonstration Course 2",
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course2",
+                    "number": "Open_DemoX2",
+                    "org": "edX",
                     "id": "edX/Open_DemoX/edx_demo_course2"
                 }
-            
+
             ]
 
 ### GET /api/courses/{course_id}
@@ -95,43 +95,43 @@ The API root is the top-level resource for Open edX, providing listings of the p
     + Body
 
             {
-                "category": "course", 
-                "name": "edX Demonstration Course", 
+                "category": "course",
+                "name": "edX Demonstration Course",
                 "modules": [
                     {
-                        "category": "chapter", 
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
-                        "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
+                        "category": "chapter",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
+                        "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
                         "name": "Introduction"
-                    }, 
+                    },
                     {
-                        "category": "chapter", 
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
-                        "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", 
+                        "category": "chapter",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
+                        "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
                         "name": "Example Week 1: Getting Started"
-                    }, 
+                    },
                     {
-                        "category": "chapter", 
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/graded_interactions", 
-                        "id": "i4x://edX/Open_DemoX/chapter/graded_interactions", 
+                        "category": "chapter",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/graded_interactions",
+                        "id": "i4x://edX/Open_DemoX/chapter/graded_interactions",
                         "name": "Example Week 2: Get Interactive"
-                    }, 
+                    },
                     {
-                        "category": "chapter", 
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/social_integration", 
-                        "id": "i4x://edX/Open_DemoX/chapter/social_integration", 
+                        "category": "chapter",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/social_integration",
+                        "id": "i4x://edX/Open_DemoX/chapter/social_integration",
                         "name": "Example Week 3: Be Social"
-                    }, 
+                    },
                     {
-                        "category": "chapter", 
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
-                        "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", 
+                        "category": "chapter",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7",
+                        "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7",
                         "name": "About Exams and Certificates"
                     }
-                ], 
-                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course", 
-                "number": "Open_DemoX", 
-                "org": "edX", 
+                ],
+                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course",
+                "number": "Open_DemoX",
+                "org": "edX",
                 "id": "edX/Open_DemoX/edx_demo_course"
             }
 
@@ -139,21 +139,21 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200
 
     + Body
-        
+
             {
-                "category": "chapter", 
-                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
+                "category": "chapter",
+                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
                 "modules": [
                     {
-                        "category": "sequential", 
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/edx_introduction", 
-                        "id": "i4x://edX/Open_DemoX/sequential/edx_introduction", 
+                        "category": "sequential",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/edx_introduction",
+                        "id": "i4x://edX/Open_DemoX/sequential/edx_introduction",
                         "name": "Demo Course Overview"
                     }
-                ], 
-                "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", 
+                ],
+                "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
                 "name": "Introduction"
-            }            
+            }
 
 ### GET /api/courses/{course_id}/modules/{module_id}/submodules{?type}
 + Parameters
@@ -164,84 +164,218 @@ The API root is the top-level resource for Open edX, providing listings of the p
 
             [
                 {
-                    "category": "html", 
-                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4", 
-                    "id": "i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4", 
+                    "category": "html",
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
+                    "id": "i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
                     "name": "Blank HTML Page"
-                }, 
+                },
                 {
-                    "category": "video", 
-                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd", 
-                    "id": "i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd", 
+                    "category": "video",
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
+                    "id": "i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
                     "name": "Welcome!"
                 }
             ]
 
-## Group Groups
-
-
-
-### GET /api/groups
+### GET /api/courses/{course_id}/overview{?parse}
++ Parameters
+    + parse (optional, boolean) ... whether to returned a parsed dataset of the Course Overview HTML content
 + Response 200 (application/json)
 
     + Body
-        
-            [
+        {
+            "sections": [
                 {
-                    "name": "super_admin",
-                    "id":1234,
-                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1234"
+                    "class": "about",
+                    "body": "<h2>About This Course</h2>\n  <p>Include your long course description here. The long course description should contain 150-400 words.</p>\n\n  <p>This is paragraph 2 of the long course description. Add more paragraphs as needed. Make sure to enclose them in paragraph tags.</p>\n"
                 },
                 {
-                    "name": "sub_admin",
-                    "id":1357,
-                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1357"
+                    "class": "prerequisites",
+                    "body": "<h2>Prerequisites</h2>\n  <p>Add information about course prerequisites here.</p>\n"
                 },
                 {
-                    "name": "company_admin",
-                    "id":5678,
-                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/5678"
+                    "class": "course-staff",
+                    "articles": [
+                        {
+                            "class": "teacher",
+                            "name": "Staff Member #1",
+                            "image_src": "/static/images/pl-faculty.png",
+                            "bio": "<p>Biography of instructor/staff member #1</p>\n "
+                        },
+                        {
+                            "class": "teacher",
+                            "name": "Staff Member #2",
+                            "image_src": "/static/images/pl-faculty.png",
+                            "bio": "<p>Biography of instructor/staff member #2</p>\n "
+                        }
+                    ]
                 },
                 {
-                    "name": "arbitrary_group",
-                    "id":2468,
-                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468"
+                    "class": "faq",
+                    "body": "<p>HTML in this section</p>"
                 }
             ]
-            
+        }
+
+### GET /api/courses/{course_id}/static_tabs{?detail}
++ Parameters
+    + detail (optional, boolean) ... whether to return the HTML content in each of the static tabs
++ Response 200 (application/json)
+    + Body
+        {
+            "tabs": [
+                {
+                    "id": "01356a17b5924b17a04b7fc2426a3798",
+                    "name": "Syllabus",
+                    "content": "<p>HTML in the tab</p>"
+                },
+                {
+                    "id": "57e9991c0d794ff58f7defae3e042e39",
+                    "name": "Advice for Participants",
+                    "content": "<p>HTML in the tab</p>"
+                }
+            ]
+        }
+
+### GET /api/courses/{course_id}/static_tabs/{tab_id}
++ Response 200 (application/json)
+    + Body
+        {
+            "id": "01356a17b5924b17a04b7fc2426a3798",
+            "name": "Syllabus",
+            "content": "<p>The HTML content for the tab </p>"
+        }
+
+### GET /api/courses/{course_id}/updates{?parse}
++ Parameters
+    + parse (optional, boolean) ... whether parse out the individual update posts
++ Response 200 (application/json)
+    + Body
+        {
+            "postings": [
+                {
+                    "date": "August 8, 2013",
+                    "content": "<p>First posting HTML</p>"
+                },
+                {
+                    "date": "July 29, 2013",
+                    "content": "<p>Second posting HTML</p>"
+                }
+            ]
+        }
+
+### GET /api/courses/{course_id}/users
+
++ Response 200 (application/json)
+    + Body
+        {
+            "enrollments": [
+                {
+                    "id": 1,
+                    "email": "registered_user@edx.org",
+                    "username": "registered_user"
+                },
+                {
+                    "id": 2,
+                    "email": "second_user@edx.org",
+                    "username": "second_user"
+                },
+                {
+                    "id": 1,
+                    "email": "cdodge@edx.org",
+                    "username": "cdodge"
+                },
+                {
+                    "id": 9,
+                    "email": "cdodge+student2@edx.org",
+                    "username": "cdodge_student2"
+                }
+            ],
+            "pending_enrollments": [
+                "not_registered_user@edx.org"
+            ]
+        }
+
+### POST /api/courses/{course_id}/users
++ Request (application/json)
+    + Body
+            {
+                "email": "registered_user@edx.org"
+            }
+
++ Response 201 (application/json)
+
+## Group Groups
+
+
+### GET /api/groups{?type}
++ Parameters
+    + parse (required, string) ... what group types to query
+
++ Response 200 (application/json)
+    + Body
+            [
+                {
+                    "name": "first_series",
+                    "id":1234,
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1234",
+                    "group_type": "series",
+                    "data": {
+                        "display_name": "My first series"
+                    }
+                },
+                {
+                    "name": "second_series",
+                    "id":1357,
+                    "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/1357",
+                    "group_type": "series",
+                    "data": {
+                        "display_name": "My second series"
+                    }
+                }
+            ]
+
 
 ### POST /api/groups
 + Request (application/json)
 
     + Body
-    
-            { 
-                "name": "Alpha Group"
+
+            {
+                "name": "Alpha Group",
+                "group_type": "company",
+                "data": {
+                    "display_name": "Alpha Group Users"
+                }
             }
 
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "name": "Alpha Group",
                 "id": 98734,
-                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468"
+                "uri": "http://openedxapi.apiary-mock.com/api/groups/2468",
+                "group_type": "company",
+                "data": {
+                    "display_name": "Alpha Group Users"
+                }
             }
 
 ### GET /api/groups/{group_id}
 + Response 200 (application/json)
 
     + Body
-    
+
             {
                 "name": "Alpha Group",
                 "id": 98734,
                 "uri": "http://openedxapi.apiary-mock.com/api/groups/2468",
-                "resources": 
+                "resources":
                 [
                     { "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/users" },
-                    { "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/groups" }                  
+                    { "uri": "http://openedxapi.apiary-mock.com/api/groups/2468/groups" }
                 ]
             }
 
@@ -254,15 +388,15 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Request (application/json)
 
     + Body
-    
-            { 
+
+            {
                 "group_id": 9876
             }
 
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "from_group_id": 2468,
                 "to_group_id": 9876,
@@ -274,7 +408,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200 (application/json)
 
     + Body
-    
+
             [
                 {
                     "id":9876,
@@ -287,7 +421,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200 (application/json)
 
     + Body
-    
+
             {
                 "from_group_id":2468,
                 "to_group_id": 9876,
@@ -304,15 +438,15 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Request (application/json)
 
     + Body
-    
-            { 
+
+            {
                 "user_id": 14
             }
 
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "group_id": 2468,
                 "user_id": 14,
@@ -323,7 +457,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200 (application/json)
 
     + Body
-    
+
             {
                 "group_id": 2468,
                 "user_id": 14,
@@ -341,22 +475,22 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Request (application/json)
 
     + Body
-    
-            { 
-                "username": "TestUser", 
+
+            {
+                "username": "TestUser",
                 "password": "testpass"
             }
 
 + Response 201 (application/json)
 
     + Body
-        
+
             {
-                "token": "71b2485519a7b8cbe0c425b4b93b957d", 
-                "expires": 1209600, 
+                "token": "71b2485519a7b8cbe0c425b4b93b957d",
+                "expires": 1209600,
                 "user": {
-                    "id": 10, 
-                    "email": "testuser@edx.org", 
+                    "id": 10,
+                    "email": "testuser@edx.org",
                     "username": "TestUser"
                 },
                 "uri":"http://openedxapi.apiary-mock.com/api/sessions/71b2485519a7b8cbe0c425b4b93b957d"
@@ -367,9 +501,9 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200 (application/json)
 
     + Body
-    
+
             {
-                "token": "71b2485519a7b8cbe0c425b4b93b957d", 
+                "token": "71b2485519a7b8cbe0c425b4b93b957d",
                 "expires": 1209600,
                 "uri": "http://openedxapi.apiary-mock.com/api/sessions/71b2485519a7b8cbe0c425b4b93b957d",
                 "id": 10
@@ -388,9 +522,9 @@ The API root is the top-level resource for Open edX, providing listings of the p
     + Body
 
             {
-                "documentation": "http://docs.openedxapi.apiary.io/#get-%2Fapi%2Fsystem", 
-                "name": "Open edX System API", 
-                "uri": "http://openedxapi.apiary-mock.com/api/system", 
+                "documentation": "http://docs.openedxapi.apiary.io/#get-%2Fapi%2Fsystem",
+                "name": "Open edX System API",
+                "uri": "http://openedxapi.apiary-mock.com/api/system",
                 "description": "System interface for managing groups, users, and sessions."
             }
 
@@ -401,8 +535,8 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Request (application/json)
 
     + Body
-    
-            { 
+
+            {
                 "username": "testuser",
                 "first_name": "Test",
                 "last_name": "User",
@@ -412,13 +546,13 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "email": "testuser@test.com",
-                "first_name": "Test", 
-                "id": 14, 
-                "last_name": "User", 
-                "uri": "http://openedxapi.apiary-mock.com/api/users/14", 
+                "first_name": "Test",
+                "id": 14,
+                "last_name": "User",
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14",
                 "username": "testuser"
             }
 
@@ -426,15 +560,15 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200 (application/json)
 
     + Body
-    
+
             {
                 "email": "testuser@test.com",
-                "first_name": "Test", 
-                "id": 14, 
-                "last_name": "User", 
-                "uri": "http://openedxapi.apiary-mock.com/api/users/14", 
-                "username": "testuser", 
-                "resources": 
+                "first_name": "Test",
+                "id": 14,
+                "last_name": "User",
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14",
+                "username": "testuser",
+                "resources":
                 [
                     { "uri": "http://openedxapi.apiary-mock.com/api/users/1/groups" }
                 ]
@@ -448,27 +582,27 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200
 
     + Body
-    
+
             [
                 {
-                    "is_active": true, 
-                    "id": "edX/Open_DemoX/edx_demo_course", 
-                    "name": "edX Demonstration Course", 
+                    "is_active": true,
+                    "id": "edX/Open_DemoX/edx_demo_course",
+                    "name": "edX Demonstration Course",
                     "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course"
                 },
                 {
-                    "is_active": true, 
-                    "id": "edX/Open_DemoX/edx_demo_course2", 
-                    "name": "edX Demonstration Course 2", 
+                    "is_active": true,
+                    "id": "edX/Open_DemoX/edx_demo_course2",
+                    "name": "edX Demonstration Course 2",
                     "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course2"
-                }        
+                }
             ]
 
 ### POST /api/users/{user_id}/courses
 + Request (application/json)
 
     + Body
-    
+
             {
                 "course_id": "edX/Open_DemoX/edx_demo_course",
             }
@@ -476,11 +610,11 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 201 (application/json)
 
     + Body
-    
+
             {
-                "is_active": true, 
-                "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course", 
-                "name": "edX Demonstration Course", 
+                "is_active": true,
+                "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course",
+                "name": "edX Demonstration Course",
                 "id": "edX/Open_DemoX/edx_demo_course"
             }
 
@@ -490,7 +624,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Request (application/json)
 
     + Body
-    
+
             {
                 "position": {
                     "parent_module_id": "edX/Open_DemoX/edx_demo_course",
@@ -501,11 +635,11 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 201 (application/json)
 
     + Body
-    
+
             {
-                "course_id": "edX/Open_DemoX/edx_demo_course", 
-                "position": 2, 
-                "user_id": 3, 
+                "course_id": "edX/Open_DemoX/edx_demo_course",
+                "position": 2,
+                "user_id": 3,
                 "uri": "http://openedxapi.apiary-mock.com/api/users/3/courses/edX/Open_DemoX/edx_demo_course"
             }
 
@@ -518,18 +652,18 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Request (application/json)
 
     + Body
-    
-            { 
+
+            {
                 "group_id": "2468"
             }
 
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "group_id": 2468,
-                "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468", 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468",
                 "id":14
             }
 
@@ -538,10 +672,10 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200 (application/json)
 
     + Body
-    
+
             {
                 "group_id":2468,
-                "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468", 
+                "uri": "http://openedxapi.apiary-mock.com/api/users/14/groups/2468",
                 "id":14
             }
 
@@ -569,8 +703,8 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Request (application/json)
 
     + Body
-    
-            { 
+
+            {
                 "name": "edX Humanities Program",
                 "private_name": "edX Humanities X-Series",
                 "start_date": "2014-05-01T00:00:00.00Z",
@@ -580,7 +714,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "id": 4567,
                 "name": "edX Humanities Program",
@@ -622,5 +756,5 @@ The API root is the top-level resource for Open edX, providing listings of the p
                     "private_name": "edX Legal X-Series",
                     "start_date": "2014-05-01T00:00:00.00Z",
                     "end_date": "2014-12-12T00:00:00.00Z"
-                }   
+                }
             ]
