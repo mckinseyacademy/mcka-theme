@@ -6,6 +6,9 @@
         %li
           %a.card-flip{href: "#{lesson.navigation_url}"}
             .front.background-white
+              - if lesson.bookmark
+                .bookmark
+                  %i.fa.fa-bookmark
               .label-5.index LESSON {{lesson.index}}
               %h2.name
                 = lesson.name

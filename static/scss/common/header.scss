@@ -12,7 +12,7 @@ header[role=banner] {
   max-height: $header-bar-height;
 
   .header-menu{
-    top:-18px;
+    top:-19px;
     position: relative;
     ul{
       li{
@@ -31,7 +31,8 @@ header[role=banner] {
   }
   .logo{
     background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;
-    width: 340px;
+    background-size: 100%;
+    width: 328px;
     height: 100%;
     display: inline-block;
   }

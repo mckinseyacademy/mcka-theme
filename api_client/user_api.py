@@ -72,6 +72,18 @@ def get_user_courses(user_id):
 
     return courses
 
+def get_user_course_detail(user_id, course_id):
+    ''' get details for the user for this course'''
+    response = GET(
+        '{}/{}/{}/courses/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            course_id
+        )
+    )
+
+    return JP.from_json(response.read(), user_models.UserCourseStatus)
 
 def _set_course_position(user_id, course_id, parent_id, child_id):
     data = {
@@ -80,17 +92,16 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
             "child_module_id": child_id,
         }
     }
-
-    # removed from mock for now, ignore in order to get things running
-    # response = POST(
-    #     '{}/{}/{}/courses/{}'.format(
-    #         settings.API_SERVER_ADDRESS,
-    #         USER_API,
-    #         user_id,
-    #         course_id
-    #     ),
-    #     data
-    # )
+    
+    response = POST(
+        '{}/{}/{}/courses/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            course_id
+        ),
+        data
+    )
 
     # return JP.from_json(response.read())
 
@@ -108,19 +119,6 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id,
 
     return positions
 
-
-def get_groups():
-    ''' gets all groups '''
-    response = GET(
-        '{}/{}'.format(
-            settings.API_MOCK_SERVER_ADDRESS, GROUP_API
-        )
-    )
-    groups_json = JP.from_json(response.read())
-    rd = {}
-    for group in groups_json:
-        rd[group.name] = group.id
-    return rd
 
 
 def create_group(group_name):

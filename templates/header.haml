@@ -1,19 +1,20 @@
 %header.row.collapse.background-blue{role: "banner"}
   .large-12.columns
     %a.logo{href: "/"}
-    %span.header-menu
-      %ul
-        %li
-          %a{href: '/about'}= _("About")
-        %li
-          %a{href: '/programs'}= _("Programs")
-        %li
-          %a{href: '/experience'}= _("Experience")
-        %li
-          %a{href: '/contact'}= _("Contact")
-        - if is_admin
+    - block header_menu
+      %span.header-menu
+        %ul
           %li
-            %a{href: '/admin'}= _("Admin")
+            %a{href: '/about'}= _("About")
+          %li
+            %a{href: '/programs'}= _("Programs")
+          %li
+            %a{href: '/experience'}= _("Experience")
+          %li
+            %a{href: '/contact'}= _("Contact")
+          - if is_admin
+            %li
+              %a{href: '/admin'}= _("Admin")
     - block user_region
       - if user
         %a.user-info{href: "#", data-dropdown: "profile-container"}

@@ -53,3 +53,9 @@
     line-height: $line-spacing + px;
     line-height: rem-calc($line-spacing);
   }
+
+@mixin rounded($radius: 0.5em) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
