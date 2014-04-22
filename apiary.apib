@@ -183,127 +183,133 @@ The API root is the top-level resource for Open edX, providing listings of the p
 + Response 200 (application/json)
 
     + Body
-        {
-            "sections": [
-                {
-                    "class": "about",
-                    "body": "<h2>About This Course</h2>\n  <p>Include your long course description here. The long course description should contain 150-400 words.</p>\n\n  <p>This is paragraph 2 of the long course description. Add more paragraphs as needed. Make sure to enclose them in paragraph tags.</p>\n"
-                },
-                {
-                    "class": "prerequisites",
-                    "body": "<h2>Prerequisites</h2>\n  <p>Add information about course prerequisites here.</p>\n"
-                },
-                {
-                    "class": "course-staff",
-                    "articles": [
-                        {
-                            "class": "teacher",
-                            "name": "Staff Member #1",
-                            "image_src": "/static/images/pl-faculty.png",
-                            "bio": "<p>Biography of instructor/staff member #1</p>\n "
-                        },
-                        {
-                            "class": "teacher",
-                            "name": "Staff Member #2",
-                            "image_src": "/static/images/pl-faculty.png",
-                            "bio": "<p>Biography of instructor/staff member #2</p>\n "
-                        }
-                    ]
-                },
-                {
-                    "class": "faq",
-                    "body": "<p>HTML in this section</p>"
-                }
-            ]
-        }
+    
+            {
+                "sections": [
+                    {
+                        "class": "about",
+                        "body": "<h2>About This Course</h2>\n  <p>Include your long course description here. The long course description should contain 150-400 words.</p>\n\n  <p>This is paragraph 2 of the long course description. Add more paragraphs as needed. Make sure to enclose them in paragraph tags.</p>\n"
+                    },
+                    {
+                        "class": "prerequisites",
+                        "body": "<h2>Prerequisites</h2>\n  <p>Add information about course prerequisites here.</p>\n"
+                    },
+                    {
+                        "class": "course-staff",
+                        "articles": [
+                            {
+                                "class": "teacher",
+                                "name": "Staff Member #1",
+                                "image_src": "/static/images/pl-faculty.png",
+                                "bio": "<p>Biography of instructor/staff member #1</p>\n "
+                            },
+                            {
+                                "class": "teacher",
+                                "name": "Staff Member #2",
+                                "image_src": "/static/images/pl-faculty.png",
+                                "bio": "<p>Biography of instructor/staff member #2</p>\n "
+                            }
+                        ]
+                    },
+                    {
+                        "class": "faq",
+                        "body": "<p>HTML in this section</p>"
+                    }
+                ]
+            }
 
 ### GET /api/courses/{course_id}/static_tabs{?detail}
 + Parameters
     + detail (optional, boolean) ... whether to return the HTML content in each of the static tabs
 + Response 200 (application/json)
     + Body
-        {
-            "tabs": [
-                {
-                    "id": "01356a17b5924b17a04b7fc2426a3798",
-                    "name": "Syllabus",
-                    "content": "<p>HTML in the tab</p>"
-                },
-                {
-                    "id": "57e9991c0d794ff58f7defae3e042e39",
-                    "name": "Advice for Participants",
-                    "content": "<p>HTML in the tab</p>"
-                }
-            ]
-        }
+
+            {
+                "tabs": [
+                    {
+                        "id": "01356a17b5924b17a04b7fc2426a3798",
+                        "name": "Syllabus",
+                        "content": "<p>HTML in the tab</p>"
+                    },
+                    {
+                        "id": "57e9991c0d794ff58f7defae3e042e39",
+                        "name": "Advice for Participants",
+                        "content": "<p>HTML in the tab</p>"
+                    }
+                ]
+            }
 
 ### GET /api/courses/{course_id}/static_tabs/{tab_id}
 + Response 200 (application/json)
     + Body
-        {
-            "id": "01356a17b5924b17a04b7fc2426a3798",
-            "name": "Syllabus",
-            "content": "<p>The HTML content for the tab </p>"
-        }
+
+            {
+                "id": "01356a17b5924b17a04b7fc2426a3798",
+                "name": "Syllabus",
+                "content": "<p>The HTML content for the tab </p>"
+            }
 
 ### GET /api/courses/{course_id}/updates{?parse}
 + Parameters
     + parse (optional, boolean) ... whether parse out the individual update posts
 + Response 200 (application/json)
     + Body
-        {
-            "postings": [
-                {
-                    "date": "August 8, 2013",
-                    "content": "<p>First posting HTML</p>"
-                },
-                {
-                    "date": "July 29, 2013",
-                    "content": "<p>Second posting HTML</p>"
-                }
-            ]
-        }
+
+            {
+                "postings": [
+                    {
+                        "date": "August 8, 2013",
+                        "content": "<p>First posting HTML</p>"
+                    },
+                    {
+                        "date": "July 29, 2013",
+                        "content": "<p>Second posting HTML</p>"
+                    }
+                ]
+            }
 
 ### GET /api/courses/{course_id}/users
 
 + Response 200 (application/json)
     + Body
-        {
-            "enrollments": [
-                {
-                    "id": 1,
-                    "email": "registered_user@edx.org",
-                    "username": "registered_user"
-                },
-                {
-                    "id": 2,
-                    "email": "second_user@edx.org",
-                    "username": "second_user"
-                },
-                {
-                    "id": 1,
-                    "email": "cdodge@edx.org",
-                    "username": "cdodge"
-                },
-                {
-                    "id": 9,
-                    "email": "cdodge+student2@edx.org",
-                    "username": "cdodge_student2"
-                }
-            ],
-            "pending_enrollments": [
-                "not_registered_user@edx.org"
-            ]
-        }
+
+            {
+                "enrollments": [
+                    {
+                        "id": 1,
+                        "email": "registered_user@edx.org",
+                        "username": "registered_user"
+                    },
+                    {
+                        "id": 2,
+                        "email": "second_user@edx.org",
+                        "username": "second_user"
+                    },
+                    {
+                        "id": 1,
+                        "email": "cdodge@edx.org",
+                        "username": "cdodge"
+                    },
+                    {
+                        "id": 9,
+                        "email": "cdodge+student2@edx.org",
+                        "username": "cdodge_student2"
+                    }
+                ],
+                "pending_enrollments": [
+                    "not_registered_user@edx.org"
+                ]
+            }
 
 ### POST /api/courses/{course_id}/users
 + Request (application/json)
     + Body
+
             {
                 "email": "registered_user@edx.org"
             }
 
-+ Response 201 (application/json)
++ Response 201
 
 ## Group Groups
 
@@ -314,6 +320,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
 
 + Response 200 (application/json)
     + Body
+
             [
                 {
                     "name": "first_series",
