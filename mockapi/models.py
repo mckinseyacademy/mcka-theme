@@ -76,8 +76,9 @@ class MockHttpResponse(object):
             for option in options:
                 self._process_option(option.strip())
 
-            if not self._is_valid():
-                raise Exception("Could not parse item")
+            is_valid, error = self._is_valid()
+            if not is_valid:
+                raise Exception("Invalid item = {}\n\n{}".format(error, init_data))
 
         except Exception, ex:
             print ex.message
@@ -103,10 +104,15 @@ class MockHttpResponse(object):
             processor(line_info, remainder)
 
     def _is_valid(self):
+        error_message = None
         valid = self._method is not None
+        if not valid:
+            error_message = "No method given"
         valid = valid and (self._response_body is not None or self._code == 204)
+        if not error_message and not valid:
+            error_message = "No body given"
 
-        return valid
+        return valid, error_message
 
     def check_post_format(self, request_body):
         if not self._request_format:
