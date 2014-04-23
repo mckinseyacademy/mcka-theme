@@ -1,13 +1,45 @@
 - extends 'admin/admin_layout.haml'
 - block content
-  .admin-list.row
-    .large-12.large-centered.columns
-      .message
-        %span= _("Client detail for ")
-        %span= client.name
-        %span= _(" will appear here")
-      .client
-        = client.contact_name
-        = client.email
-        = client.phone
-        = client.client_group_id
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/client/detail_header.haml'    
+  .admin-detail.row
+    .large-10.large.columns
+      - block admin_detail
+        %h1
+          %span= _("Client: ")
+          %span= client.display_name
+        %hr
+        %section
+          %header
+            %span Client Details:
+            %span.edit-client
+          .company
+            %span Client Company:
+            %span= client.display_name
+          .contact
+            %span Client Contact:
+            %span.contact-info
+              %span= client.contact_name
+              %span= client.email
+              %span= client.phone
+        %hr
+        %section
+          %header Students:
+          %div Add additional students to client or download all students
+          .manage-student-list
+            %a.button.small
+              Upload Student List
+            %a.button.small
+              Download Student List
+        %hr
+        %section
+          %header Add a Program:
+          %div Add a program to a client
+          .manage-programs
+            %a.button.small
+              Add Program
+        %hr
+        %section
+          %header Programs:
+          - include 'admin/client/program_list.haml'

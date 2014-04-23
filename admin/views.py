@@ -4,12 +4,12 @@ from lib.authorization import group_required
 import urllib2 as url_access
 from django.http import HttpResponseRedirect
 
-#from api_client.admin_api import create_client, get_client_list, get_client_detail
 from .models import Client
-from api_client.admin_api import create_program, get_program_list, get_program_detail
+from .models import Program
 
 from .forms import ClientForm
 from .forms import ProgramForm
+
 
 @group_required('super_admin')
 def home(request):
@@ -28,10 +28,11 @@ def course_meta_content(request):
         {'is_admin': True}
     )
 
+
 @group_required('super_admin')
 def client_list(request):
     ''' handles requests for login form and their submission '''
-    clients = Client.objects.all()
+    clients = Client.list()
     for client in clients:
         client.detail_url = '/admin/clients/{}'.format(client.id)
 
@@ -40,13 +41,14 @@ def client_list(request):
         "principal_name_plural": _("Clients"),
         "principal_new_url": "/admin/clients/client_new",
         "principals": clients,
-        }
+    }
 
     return render(
         request,
         'admin/client/list.haml',
         data
     )
+
 
 @group_required('super_admin')
 def client_new(request):
@@ -55,8 +57,10 @@ def client_new(request):
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                client = form.save()
-                return HttpResponseRedirect('/admin/clients/{}'.format(client.id))  # Redirect after POST
+                name = request.POST["display_name"].lower().replace(' ', '_')
+                client = Client.create(name, request.POST)
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
 
             except url_access.HTTPError, err:
                 error = _("An error occurred during client creation")
@@ -69,15 +73,15 @@ def client_new(request):
     else:
         ''' adds a new client '''
         form = ClientForm()  # An unbound form
-    
+
     # set focus to company name field
-    form.fields["name"].widget.attrs.update({'autofocus': 'autofocus'})
+    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "form": form,
         "error": error,
         "submit_label": _("Save Client"),
-        }
+    }
 
     return render(
         request,
@@ -85,19 +89,26 @@ def client_new(request):
         data
     )
 
+
 @group_required('super_admin')
-def client_detail(request, client_id):
-    client = Client.objects.get(id=client_id)
+def client_detail(request, client_id, detail_view="detail"):
+    client = Client.fetch(client_id)
+    view = 'admin/client/{}.haml'.format(detail_view)
+    data = {
+        "client": client,
+        "selected_client_tab": detail_view,
+    }
 
     return render(
         request,
-        'admin/client/detail.haml',
-        {"client": client},
+        view,
+        data,
     )
+
 
 @group_required('super_admin')
 def program_list(request):
-    programs = get_program_list()
+    programs = Program.list()
     for program in programs:
         program.detail_url = '/admin/programs/{}'.format(program.id)
 
@@ -106,13 +117,14 @@ def program_list(request):
         "principal_name_plural": _("Programs"),
         "principal_new_url": "/admin/programs/program_new",
         "principals": programs,
-        }
+    }
 
     return render(
         request,
         'admin/program/list.haml',
         data
     )
+
 
 @group_required('super_admin')
 def program_new(request):
@@ -122,8 +134,9 @@ def program_new(request):
         form = ProgramForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                program = create_program(request.POST)
-                return HttpResponseRedirect('/admin/programs/{}'.format(program.id))  # Redirect after POST
+                program = Program.create(request.POST["name"], request.POST)
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/programs/{}'.format(program.id))
 
             except url_access.HTTPError, err:
                 error = _("An error occurred during program creation")
@@ -133,19 +146,19 @@ def program_new(request):
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]
-    
+
     else:
         ''' adds a new client '''
         form = ProgramForm()  # An unbound form
-    
+
     # set focus to public name field
-    form.fields["name"].widget.attrs.update({'autofocus': 'autofocus'})
+    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "form": form,
         "error": error,
         "submit_label": _("Save Program"),
-        }
+    }
 
     return render(
         request,
@@ -153,15 +166,17 @@ def program_new(request):
         data
     )
 
+
 @group_required('super_admin')
 def program_detail(request, program_id):
-    program = get_program_detail(program_id)
+    program = Program.fetch(program_id)
 
     return render(
         request,
         'admin/program/detail.haml',
         {"program": program},
     )
+
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')

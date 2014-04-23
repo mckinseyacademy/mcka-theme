@@ -30,46 +30,30 @@ def get_course_list():
     Retrieves list of courses from openedx server
     '''
     response = GET('{}/{}'.format(
-        # TODO: remove forced MOCK reference when real API becomes available
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API)
     )
     return CJP.from_json(response.read())
 
-def get_course(course_id):
+def get_course(course_id, depth = 3):
     '''
     Retrieves course structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}?level=deep'.format(
+    response = GET('{}/{}/{}/tree/{}'.format(
         # TODO: remove forced MOCK reference when real API becomes available
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
-        course_id)
+        course_id,
+        depth)
     )
-
-    # TODO: Remove this stuff once the deep level load has been implemented
-    #return CJP.from_json(response.read())
 
     # Load the depth from the API
     course = CJP.from_json(response.read())
-    course.chapters = []
-
-    for module in course.modules:
-        # Can't just use a list comprehension because we need the try except handling here
-        if module.category == "chapter":
-            chapter = None
-            try:
-                chapter = CJP.from_json(GET(module.uri).read())
-            except HTTPError:
-                # Something wrong - we're ignoring for now, since the demo course has something bad therein
-                chapter = None
-
-            if chapter:
-                chapter.is_released = True
-                course.chapters.append(chapter)
+    course.chapters = [module for module in course.modules if module.category == "chapter"]
 
     for chapter in course.chapters:
-        chapter.sequentials = [CJP.from_json(GET(module.uri).read()) for module in chapter.modules if module.category == "sequential"]
+        chapter.sequentials = [module for module in chapter.modules if module.category == "sequential"]
+        chapter.is_released = True
 
         for sequential in chapter.sequentials:
             sequential.pages = [module for module in sequential.modules if module.category == "vertical"]

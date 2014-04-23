@@ -11509,3 +11509,15 @@ footer[role=contentinfo] .built-on {
 #styleguide-page ul.colors li.mckinsey-academy-light-gray {
   background-color: #e0e0e0;
 }
+
+/* line 2, /Users/martyn/mcka_apros/static/scss/_admin.scss */
+.admin-detail ul {
+  list-style: none;
+  padding: 0;
+}
+/* line 5, /Users/martyn/mcka_apros/static/scss/_admin.scss */
+.admin-detail ul li {
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 20px 5px;
+}
