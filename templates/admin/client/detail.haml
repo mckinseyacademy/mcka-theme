@@ -28,18 +28,20 @@
           %header Students:
           %div Add additional students to client or download all students
           .manage-student-list
-            %a.button.small
+            %a.button.radius.small{"data-reveal-id": "upload_student_list", "data-reveal-ajax": "true", href: "/admin/clients/#{client.id}/upload_student_list"}
               Upload Student List
-            %a.button.small
+            %a.button.radius.small{href: "/admin/clients/#{client.id}/download_student_list", target: "_blank"}
               Download Student List
         %hr
         %section
           %header Add a Program:
           %div Add a program to a client
           .manage-programs
-            %a.button.small
+            %a.button.radius.small{"data-reveal-id": "add_program", "data-reveal-ajax": "true", href: "/admin/clients/#{client.id}/program_association"}
               Add Program
         %hr
         %section
           %header Programs:
           - include 'admin/client/program_list.haml'
+  #upload_student_list.reveal-modal{"data-reveal": "true"}
+  #add_program.reveal-modal{"data-reveal": "true"}

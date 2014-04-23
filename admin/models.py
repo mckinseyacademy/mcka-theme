@@ -20,12 +20,30 @@ class BaseGroupModel(group_models.GroupInfo):
         return self.name
 
 
-class Client(BaseGroupModel):
-    data_fields = ["display_name", "contact_name", "phone", "email", ]
-    group_type = "organization"
-
-
 class Program(BaseGroupModel):
     data_fields = ["display_name", "start_date", "end_date", ]
     date_fields = ["start_date", "end_date"]
     group_type = "series"
+
+
+class Client(BaseGroupModel):
+    data_fields = ["display_name", "contact_name", "phone", "email", ]
+    group_type = "organization"
+
+    def fetch_programs(self):
+        # Would be nice to filter groups based upon their group type, but we
+        # don't have that available in results yet
+        groups = self.get_groups()
+        programs = []
+        for group in groups:
+            # we will filter later, so we protect ourselves against
+            # non-programs herein
+            try:
+                programs.append(Program.fetch(group.id))
+            except:
+                pass
+
+        return programs
+
+    def add_program(self, program_id):
+        return group_api.add_group_to_group(program_id, self.id)
