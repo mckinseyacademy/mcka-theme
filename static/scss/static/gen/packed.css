@@ -9570,7 +9570,11 @@ h2 {
   line-height: 1.42857rem;
 }
 
+<<<<<<< HEAD
+/* line 19, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 19, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 h4 {
   font-size: 14px;
   font-size: 1rem;
@@ -9579,7 +9583,11 @@ h4 {
   line-height: 1rem;
 }
 
+<<<<<<< HEAD
+/* line 23, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 23, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 h5 {
   font-size: 14px;
   font-size: 1rem;
@@ -9588,7 +9596,11 @@ h5 {
   line-height: 1rem;
 }
 
+<<<<<<< HEAD
+/* line 27, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 29, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .sub-1,
 .sub-2 {
   text-transform: uppercase;
@@ -9599,12 +9611,20 @@ h5 {
   line-height: 1.28571rem;
 }
 
+<<<<<<< HEAD
+/* line 34, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 34, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .sub-2 {
   color: #cccccc;
 }
 
+<<<<<<< HEAD
+/* line 36, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 36, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 p {
   margin: 0;
   font-size: 14px;
@@ -9613,7 +9633,11 @@ p {
   line-height: 22px;
   line-height: 1.57143rem;
 }
+<<<<<<< HEAD
+/* line 39, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 39, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 p.style-2 {
   font-size: 14px;
   font-size: 1rem;
@@ -9621,7 +9645,11 @@ p.style-2 {
   line-height: 22px;
   line-height: 1.57143rem;
 }
+<<<<<<< HEAD
+/* line 40, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 40, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 p.style-3 {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -9629,7 +9657,11 @@ p.style-3 {
   line-height: 19px;
   line-height: 1.35714rem;
 }
+<<<<<<< HEAD
+/* line 41, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 41, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 p.style-4 {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -9637,7 +9669,11 @@ p.style-4 {
   line-height: 14px;
   line-height: 1rem;
 }
+<<<<<<< HEAD
+/* line 42, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 42, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 p.style-5 {
   font-style: italic;
   font-size: 12px;
@@ -9647,7 +9683,11 @@ p.style-5 {
   line-height: 1rem;
 }
 
+<<<<<<< HEAD
+/* line 48, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 49, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 a,
 a:visited {
   color: #3384ca;
@@ -9659,12 +9699,20 @@ a:visited {
   line-height: 1.14286rem;
 }
 
+<<<<<<< HEAD
+/* line 55, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 55, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 a:hover {
   color: #b1c2cc;
 }
 
+<<<<<<< HEAD
+/* line 57, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 57, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 hr {
   border: none;
   height: 0;
@@ -9673,13 +9721,21 @@ hr {
   border-top: 1px solid #cccccc;
 }
 
+<<<<<<< HEAD
+/* line 65, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 65, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 img {
   max-width: 100%;
   height: auto;
 }
 
+<<<<<<< HEAD
+/* line 67, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 67, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 blockquote {
   color: #333333;
   font-size: 20px;
@@ -9688,7 +9744,11 @@ blockquote {
   line-height: 26px;
   line-height: 1.85714rem;
 }
+<<<<<<< HEAD
+/* line 71, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 71, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 blockquote.user-quote {
   color: #3384ca;
   font-size: 18px;
@@ -9698,14 +9758,22 @@ blockquote.user-quote {
   line-height: 1.42857rem;
 }
 
+<<<<<<< HEAD
+/* line 77, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 79, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-1,
 .label-5,
 .label-6 {
   text-transform: uppercase;
 }
 
+<<<<<<< HEAD
+/* line 83, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 83, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-1 {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -9714,7 +9782,11 @@ blockquote.user-quote {
   line-height: 0.85714rem;
 }
 
+<<<<<<< HEAD
+/* line 87, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 87, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-2 {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -9722,12 +9794,20 @@ blockquote.user-quote {
   line-height: 12px;
   line-height: 0.85714rem;
 }
+<<<<<<< HEAD
+/* line 89, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 89, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-2.selected {
   color: #868685;
 }
 
+<<<<<<< HEAD
+/* line 92, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 92, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-3 {
   color: #868685;
   font-size: 10px;
@@ -9737,7 +9817,11 @@ blockquote.user-quote {
   line-height: 0.85714rem;
 }
 
+<<<<<<< HEAD
+/* line 97, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 97, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-4 {
   color: #868685;
   font-size: 10px;
@@ -9747,7 +9831,11 @@ blockquote.user-quote {
   line-height: 0.85714rem;
 }
 
+<<<<<<< HEAD
+/* line 102, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 102, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-5 {
   color: #e37222;
   font-size: 12px;
@@ -9757,7 +9845,11 @@ blockquote.user-quote {
   line-height: 1rem;
 }
 
+<<<<<<< HEAD
+/* line 107, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 107, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-6 {
   color: #002960;
   font-size: 10px;
@@ -9767,7 +9859,11 @@ blockquote.user-quote {
   line-height: 0.85714rem;
 }
 
+<<<<<<< HEAD
+/* line 112, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 112, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-7 {
   color: white;
   font-size: 10px;
@@ -9777,7 +9873,11 @@ blockquote.user-quote {
   line-height: 0.85714rem;
 }
 
+<<<<<<< HEAD
+/* line 117, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 117, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-8 {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -9786,7 +9886,11 @@ blockquote.user-quote {
   line-height: 1rem;
 }
 
+<<<<<<< HEAD
+/* line 121, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 121, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .label-9 {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -9795,7 +9899,11 @@ blockquote.user-quote {
   line-height: 0.85714rem;
 }
 
+<<<<<<< HEAD
+/* line 125, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 126, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .nav-1,
 .nav-2 {
   font-size: 12px;
@@ -9804,29 +9912,49 @@ blockquote.user-quote {
   line-height: 14px;
   line-height: 1rem;
 }
+<<<<<<< HEAD
+/* line 128, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 128, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .nav-1.selected,
 .nav-2.selected {
   color: #868685;
 }
 
+<<<<<<< HEAD
+/* line 131, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 131, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .nav-1 {
   color: #3384ca;
   text-transform: uppercase;
 }
 
+<<<<<<< HEAD
+/* line 137, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 137, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .nav-2.completed {
   color: #629b2b;
 }
 
+<<<<<<< HEAD
+/* line 140, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 140, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .divider {
   color: #e0e0e0;
 }
 
+<<<<<<< HEAD
+/* line 144, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 145, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .person-name,
 .person-title {
   font-size: 12px;
@@ -9836,23 +9964,39 @@ blockquote.user-quote {
   line-height: 1rem;
 }
 
+<<<<<<< HEAD
+/* line 149, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 149, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .person-title {
   color: #868685;
   font-style: italic;
 }
 
+<<<<<<< HEAD
+/* line 154, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 154, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .background-white {
   background-color: white;
 }
 
+<<<<<<< HEAD
+/* line 158, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 158, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .background-blue {
   color: white;
   background-color: #002960;
 }
+<<<<<<< HEAD
+/* line 162, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 162, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .background-blue a, .background-blue a:visited {
   color: #e5ebee;
   font-size: 12px;
@@ -9861,11 +10005,19 @@ blockquote.user-quote {
   line-height: 14px;
   line-height: 1rem;
 }
+<<<<<<< HEAD
+/* line 167, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+.background-blue a:hover {
+  color: #b1c2cc;
+}
+/* line 171, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 167, /Users/martyn/mcka_apros/static/scss/main.scss */
 .background-blue a:hover {
   color: #b1c2cc;
 }
 /* line 171, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .background-blue .person-name {
   color: #3384ca;
   font-size: 10px;
@@ -9875,50 +10027,82 @@ blockquote.user-quote {
   line-height: 0.85714rem;
 }
 
+<<<<<<< HEAD
+/* line 177, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 177, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .background-alt-blue {
   color: white;
   background-color: #3384ca;
 }
+<<<<<<< HEAD
+/* line 181, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 181, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .background-alt-blue .label-4 {
   color: #002960;
   text-transform: uppercase;
 }
+<<<<<<< HEAD
+/* line 186, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 187, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .background-alt-blue h4,
 .background-alt-blue h5 {
   color: white;
 }
 
+<<<<<<< HEAD
+/* line 190, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 190, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .flexible {
   font-size: 0.1px;
   text-align: justify;
   -ms-text-justify: distribute-all-lines;
   text-justify: distribute-all-lines;
 }
+<<<<<<< HEAD
+/* line 196, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 196, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .flexible > * {
   text-align: left;
   vertical-align: top;
   display: inline-block;
 }
+<<<<<<< HEAD
+/* line 202, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 202, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .flexible:after {
   content: '';
   width: 100%;
   display: inline-block;
 }
 
+<<<<<<< HEAD
+/* line 209, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 209, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .card-flip {
   position: relative;
   -webkit-perspective: 1000px;
   -moz-perspective: 1000px;
   perspective: 1000px;
 }
+<<<<<<< HEAD
+/* line 214, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 214, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .card-flip:hover .front {
   z-index: 5;
   -webkit-transform: rotateY(180deg);
@@ -9927,7 +10111,11 @@ blockquote.user-quote {
   -o-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
+<<<<<<< HEAD
+/* line 219, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 219, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .card-flip:hover .back {
   z-index: 5;
   -webkit-transform: rotateX(0deg);
@@ -9936,7 +10124,11 @@ blockquote.user-quote {
   -o-transform: rotateX(0deg);
   transform: rotateX(0deg);
 }
+<<<<<<< HEAD
+/* line 225, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 225, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .card-flip .front, .card-flip .back {
   position: absolute;
   top: 0;
@@ -9952,7 +10144,11 @@ blockquote.user-quote {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
+<<<<<<< HEAD
+/* line 234, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 234, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .card-flip .front {
   z-index: 10;
   -webkit-transform: rotateX(0deg);
@@ -9961,7 +10157,11 @@ blockquote.user-quote {
   -o-transform: rotateX(0deg);
   transform: rotateX(0deg);
 }
+<<<<<<< HEAD
+/* line 239, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 239, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .card-flip .back {
   -webkit-transform: rotateY(-180deg);
   -moz-transform: rotateY(-180deg);
@@ -9970,11 +10170,19 @@ blockquote.user-quote {
   transform: rotateY(-180deg);
 }
 
+<<<<<<< HEAD
+/* line 244, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+.login-form, .registration-form {
+  margin-top: 50px;
+}
+/* line 246, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 244, /Users/martyn/mcka_apros/static/scss/main.scss */
 .login-form, .registration-form {
   margin-top: 50px;
 }
 /* line 246, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .login-form .error, .login-form .errorlist, .registration-form .error, .registration-form .errorlist {
   color: #cd202c;
   padding: 10px 0;
@@ -9982,7 +10190,11 @@ blockquote.user-quote {
   list-style: none;
   margin-left: 0;
 }
+<<<<<<< HEAD
+/* line 253, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/main.scss */
+=======
 /* line 253, /Users/martyn/mcka_apros/static/scss/main.scss */
+>>>>>>> master
 .login-form .other, .registration-form .other {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10245,6 +10457,8 @@ footer[role=contentinfo] nav ul li a {
   line-height: 12px;
   line-height: 0.85714rem;
 }
+<<<<<<< HEAD
+=======
 /* line 30, /Users/martyn/mcka_apros/static/scss/common/footer.scss */
 footer[role=contentinfo] .built-on {
   float: right;
@@ -10255,6 +10469,7 @@ footer[role=contentinfo] .built-on {
   line-height: 10px;
   line-height: 0.71429rem;
 }
+>>>>>>> master
 
 /* line 2, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-bar {
@@ -10363,11 +10578,19 @@ footer[role=contentinfo] .built-on {
 .home-page .course-menu .rotator ul li .lesson-progress .tick.on {
   background: #629b2b;
 }
+<<<<<<< HEAD
+/* line 79, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .course-quote {
+  text-align: center;
+}
+/* line 82, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 92, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote {
   text-align: center;
 }
 /* line 95, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .course-quote blockquote {
   position: relative;
   margin: 0 0 20px;
@@ -10375,7 +10598,11 @@ footer[role=contentinfo] .built-on {
   border: none;
   quotes: "\201C" "\201D" "\2018" "\2019";
 }
+<<<<<<< HEAD
+/* line 89, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 102, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .course-quote blockquote:before, .home-page .course-quote blockquote:after {
   font-family: Georgia;
   color: #e37222;
@@ -10384,21 +10611,37 @@ footer[role=contentinfo] .built-on {
   font-size: 6em;
   line-height: 0.1em;
 }
+<<<<<<< HEAD
+/* line 98, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 111, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .course-quote blockquote:before {
   content: open-quote;
   left: 0;
 }
+<<<<<<< HEAD
+/* line 103, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 116, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .course-quote blockquote:after {
   content: close-quote;
   right: 0;
 }
+<<<<<<< HEAD
+/* line 110, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .course-quote .attribution img {
+  margin-bottom: 10px;
+}
+/* line 114, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 123, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .course-quote .attribution img {
   margin-bottom: 10px;
 }
 /* line 127, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .lesson-menu {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10411,13 +10654,36 @@ footer[role=contentinfo] .built-on {
   padding: 5px 0;
   color: #333333;
 }
+<<<<<<< HEAD
+/* line 121, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 134, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .lesson-menu .lesson {
   color: #d3d1ba;
   width: 40px;
   text-align: center;
   border-left: 1px solid #d3d1ba;
 }
+<<<<<<< HEAD
+/* line 126, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-menu .lesson a {
+  color: #3384ca;
+}
+/* line 128, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-menu .lesson a:hover {
+  color: #b1c2cc;
+}
+/* line 132, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-menu .lesson:first-child {
+  border-left: none;
+}
+/* line 135, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-menu .lesson .selected {
+  color: #868685;
+}
+/* line 141, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 139, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-menu .lesson a {
   color: #3384ca;
@@ -10435,6 +10701,7 @@ footer[role=contentinfo] .built-on {
   color: #868685;
 }
 /* line 154, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .lesson-module-status {
   display: inline-block;
   font-family: FontAwesome;
@@ -10445,6 +10712,29 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   color: #868685;
 }
+<<<<<<< HEAD
+/* line 146, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-module-status::before {
+  content: "\f10c";
+}
+/* line 149, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-module-status.complete {
+  color: #629b2b;
+}
+/* line 153, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-module-status.complete::before, .home-page .lesson-module-status.current::before {
+  content: "\f111";
+}
+/* line 157, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-module-status:hover {
+  color: #3384ca;
+}
+/* line 159, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-module-status:hover.current {
+  color: #868685;
+}
+/* line 165, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 159, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-module-status::before {
   content: "\f10c";
@@ -10466,12 +10756,17 @@ footer[role=contentinfo] .built-on {
   color: #868685;
 }
 /* line 178, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .lesson-pager {
   text-align: center;
   width: 100%;
   padding-bottom: 5.71429rem;
 }
+<<<<<<< HEAD
+/* line 169, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 182, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .lesson-pager .page-to {
   margin: 0 10px;
   font-size: 30px;
@@ -10490,6 +10785,17 @@ footer[role=contentinfo] .built-on {
   color: white;
   padding: 8px;
 }
+<<<<<<< HEAD
+/* line 179, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-pager .page-to.previous {
+  padding-right: 12px;
+}
+/* line 182, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-pager .page-to.next {
+  padding-left: 12px;
+}
+/* line 188, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 192, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-pager .page-to.previous {
   padding-right: 12px;
@@ -10499,6 +10805,7 @@ footer[role=contentinfo] .built-on {
   padding-left: 12px;
 }
 /* line 201, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .lesson-title {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -10508,17 +10815,30 @@ footer[role=contentinfo] .built-on {
   color: #868685;
   padding-top: 25px;
 }
+<<<<<<< HEAD
+/* line 192, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-title .lesson-index {
+  font-weight: bold;
+}
+/* line 195, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.home-page .lesson-title .page-desc {
+=======
 /* line 205, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-title .lesson-index {
   font-weight: bold;
 }
 /* line 208, /Users/martyn/mcka_apros/static/scss/course.scss */
 .home-page .lesson-title .page-name {
+>>>>>>> master
   border-left: 1px solid #868685;
   padding-left: 5px;
   margin-left: 3px;
 }
+<<<<<<< HEAD
+/* line 202, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 215, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .home-page .page-title {
   font-size: 22px;
   font-size: 1.57143rem;
@@ -10528,6 +10848,18 @@ footer[role=contentinfo] .built-on {
   color: #66a5b5;
 }
 
+<<<<<<< HEAD
+/* line 209, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu {
+  color: #002960;
+  padding: 10px;
+}
+/* line 212, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu > * {
+  float: right;
+}
+/* line 215, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 224, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu {
   position: absolute;
@@ -10535,6 +10867,7 @@ footer[role=contentinfo] .built-on {
   top: 0;
 }
 /* line 228, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu .fa {
   font-size: 1.42857rem;
   margin: 14px 10px;
@@ -10546,7 +10879,11 @@ footer[role=contentinfo] .built-on {
   color: #b1c2cc;
 }
 
+<<<<<<< HEAD
+/* line 220, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 239, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu-content {
   color: #002960;
   display: none;
@@ -10561,11 +10898,19 @@ footer[role=contentinfo] .built-on {
   -webkit-box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
   box-shadow: -3px 3px 4px 0px rgba(51, 51, 51, 0.2);
 }
+<<<<<<< HEAD
+/* line 222, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu-content.open {
+  display: block;
+}
+/* line 235, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 242, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content.open {
   display: block;
 }
 /* line 255, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu-content .program-title {
   margin: 12px 20px 0;
   font-size: 10px;
@@ -10575,11 +10920,19 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   text-transform: uppercase;
 }
+<<<<<<< HEAD
+/* line 239, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu-content .program-title::after {
+  content: ':';
+}
+/* line 243, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 259, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content .program-title::after {
   content: ':';
 }
 /* line 263, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu-content a.course-name, .program-menu-content .course-name {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10589,6 +10942,21 @@ footer[role=contentinfo] .built-on {
   padding: 5px 0;
   color: black;
 }
+<<<<<<< HEAD
+/* line 247, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu-content a.course-name.unavailable, .program-menu-content .course-name.unavailable {
+  color: #868685;
+}
+/* line 250, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu-content a.course-name.current, .program-menu-content .course-name.current {
+  color: #e37222;
+}
+/* line 255, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu-content a.course-name:hover {
+  opacity: 0.6;
+}
+/* line 259, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 267, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content a.course-name.unavailable, .program-menu-content .course-name.unavailable {
   color: #868685;
@@ -10602,6 +10970,7 @@ footer[role=contentinfo] .built-on {
   opacity: 0.6;
 }
 /* line 279, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu-content .status {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -10610,6 +10979,17 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   font-style: italic;
 }
+<<<<<<< HEAD
+/* line 262, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu-content .status.complete {
+  color: #629b2b;
+}
+/* line 265, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.program-menu-content .status.unavailable {
+  color: #cccccc;
+}
+/* line 269, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 282, /Users/martyn/mcka_apros/static/scss/course.scss */
 .program-menu-content .status.complete {
   color: #629b2b;
@@ -10619,22 +10999,35 @@ footer[role=contentinfo] .built-on {
   color: #cccccc;
 }
 /* line 289, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu-content ul {
   margin: 0 12px;
   list-style: none;
 }
+<<<<<<< HEAD
+/* line 272, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 292, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu-content ul li {
   padding: 0 8px 8px;
   border-top: 1px solid #cccccc;
 }
+<<<<<<< HEAD
+/* line 275, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 295, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .program-menu-content ul li:first-child {
   border-top: none;
   margin-top: 0;
 }
 
+<<<<<<< HEAD
+/* line 283, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 303, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page {
   -moz-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
   -webkit-box-shadow: 0px 3px 4px 0px rgba(51, 51, 51, 0.2);
@@ -10644,13 +11037,21 @@ footer[role=contentinfo] .built-on {
   overflow-x: hidden;
   overflow-y: auto;
 }
+<<<<<<< HEAD
+/* line 290, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 310, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page ul {
   list-style: none;
   display: inline;
   margin: 15px 0;
 }
+<<<<<<< HEAD
+/* line 294, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 314, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page ul li {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10659,21 +11060,37 @@ footer[role=contentinfo] .built-on {
   line-height: 1rem;
   display: inline-block;
 }
+<<<<<<< HEAD
+/* line 300, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .course-tabs {
+  margin: 10px 0;
+}
+/* line 303, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 320, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .course-tabs {
   margin: 10px 0;
 }
 /* line 323, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page .course-tabs ul li {
   text-transform: uppercase;
   margin-right: 10px;
   color: #3384ca;
 }
+<<<<<<< HEAD
+/* line 307, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .course-tabs ul li.selected {
+  color: #868685;
+}
+/* line 314, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 327, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .course-tabs ul li.selected {
   color: #868685;
 }
 /* line 334, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page .lesson-menu {
   font-size: 12px;
   font-size: 0.85714rem;
@@ -10686,13 +11103,36 @@ footer[role=contentinfo] .built-on {
   padding: 5px 0;
   color: #333333;
 }
+<<<<<<< HEAD
+/* line 321, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 341, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page .lesson-menu .lesson {
   color: #d3d1ba;
   width: 40px;
   text-align: center;
   border-left: 1px solid #d3d1ba;
 }
+<<<<<<< HEAD
+/* line 326, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-menu .lesson a {
+  color: #3384ca;
+}
+/* line 328, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-menu .lesson a:hover {
+  color: #b1c2cc;
+}
+/* line 332, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-menu .lesson:first-child {
+  border-left: none;
+}
+/* line 335, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-menu .lesson .selected {
+  color: #868685;
+}
+/* line 341, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 346, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-menu .lesson a {
   color: #3384ca;
@@ -10710,6 +11150,7 @@ footer[role=contentinfo] .built-on {
   color: #868685;
 }
 /* line 361, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page .lesson-module-status {
   display: inline-block;
   font-family: FontAwesome;
@@ -10720,6 +11161,29 @@ footer[role=contentinfo] .built-on {
   line-height: 0.71429rem;
   color: #868685;
 }
+<<<<<<< HEAD
+/* line 346, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-module-status::before {
+  content: "\f10c";
+}
+/* line 349, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-module-status.complete {
+  color: #629b2b;
+}
+/* line 353, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-module-status.complete::before, .content-page .lesson-module-status.current::before {
+  content: "\f111";
+}
+/* line 357, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-module-status:hover {
+  color: #3384ca;
+}
+/* line 359, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-module-status:hover.current {
+  color: #868685;
+}
+/* line 365, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 366, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-module-status::before {
   content: "\f10c";
@@ -10741,13 +11205,18 @@ footer[role=contentinfo] .built-on {
   color: #868685;
 }
 /* line 385, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page .lesson-pager {
   text-align: center;
   width: 100%;
   padding-top: 2.85714rem;
   padding-bottom: 4.28571rem;
 }
+<<<<<<< HEAD
+/* line 370, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 390, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page .lesson-pager .page-to {
   margin: 0 10px;
   font-size: 30px;
@@ -10766,6 +11235,17 @@ footer[role=contentinfo] .built-on {
   color: white;
   padding: 8px;
 }
+<<<<<<< HEAD
+/* line 380, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-pager .page-to.previous {
+  padding-right: 12px;
+}
+/* line 383, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-pager .page-to.next {
+  padding-left: 12px;
+}
+/* line 389, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+=======
 /* line 400, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-pager .page-to.previous {
   padding-right: 12px;
@@ -10775,6 +11255,7 @@ footer[role=contentinfo] .built-on {
   padding-left: 12px;
 }
 /* line 409, /Users/martyn/mcka_apros/static/scss/course.scss */
+>>>>>>> master
 .content-page .lesson-title {
   font-size: 10px;
   font-size: 0.71429rem;
@@ -10784,18 +11265,32 @@ footer[role=contentinfo] .built-on {
   color: #868685;
   padding-top: 45px;
 }
+<<<<<<< HEAD
+/* line 393, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-title .lesson-index {
+  font-weight: bold;
+}
+/* line 396, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .lesson-title .page-desc {
+=======
 /* line 413, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-title .lesson-index {
   font-weight: bold;
 }
 /* line 416, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-title .page-name {
+>>>>>>> master
   border-left: 1px solid #868685;
   padding-left: 5px;
   margin-left: 3px;
 }
+<<<<<<< HEAD
+/* line 403, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/course.scss */
+.content-page .page-title {
+=======
 /* line 423, /Users/martyn/mcka_apros/static/scss/course.scss */
 .content-page .lesson-content h2 {
+>>>>>>> master
   font-size: 22px;
   font-size: 1.57143rem;
   font-weight: normal;
@@ -10814,35 +11309,74 @@ footer[role=contentinfo] .built-on {
   text-align: center !important;
 }
 
+<<<<<<< HEAD
+/* line 1, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+#home-discover {
+  *zoom: 1;
+}
+/* line 17, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
+=======
 /* line 1, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
 #home-discover {
   *zoom: 1;
 }
 /* line 18, /Users/martyn/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
+>>>>>>> master
 #home-discover:before, #home-discover:after {
   content: " ";
   display: table;
 }
+<<<<<<< HEAD
+/* line 23, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
+#home-discover:after {
+  clear: both;
+}
+/* line 4, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+=======
 /* line 23, /Users/martyn/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
 #home-discover:after {
   clear: both;
 }
 /* line 4, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
+>>>>>>> master
 #home-discover section {
   float: left;
   width: 33.33333%;
   padding: 0 10px;
   border-right: 1px solid #cccccc;
 }
+<<<<<<< HEAD
+/* line 9, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+#home-discover section:first-of-type {
+  padding-left: 0;
+}
+/* line 11, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+=======
 /* line 9, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
 #home-discover section:first-of-type {
   padding-left: 0;
 }
 /* line 11, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
+>>>>>>> master
 #home-discover section:last-of-type {
   padding-right: 0;
   border-right: none;
 }
+<<<<<<< HEAD
+/* line 16, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+#home-discover section .label-6 {
+  margin-bottom: 20px;
+}
+/* line 20, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+#home-discover section ul {
+  list-style-type: none;
+}
+/* line 23, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+#home-discover section ul li {
+  margin-bottom: 20px;
+}
+/* line 26, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+=======
 /* line 16, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
 #home-discover section .label-6 {
   margin-bottom: 20px;
@@ -10856,6 +11390,7 @@ footer[role=contentinfo] .built-on {
   margin-bottom: 20px;
 }
 /* line 26, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
+>>>>>>> master
 #home-discover section ul li .article-title {
   font-size: 18px;
   font-size: 1.28571rem;
@@ -10863,36 +11398,64 @@ footer[role=contentinfo] .built-on {
   line-height: 20px;
   line-height: 1.42857rem;
 }
+<<<<<<< HEAD
+/* line 30, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+=======
 /* line 30, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
+>>>>>>> master
 #home-discover section ul li time {
   margin-right: 1px;
   border-right: 1px solid #333333;
   padding-right: 5px;
 }
+<<<<<<< HEAD
+/* line 38, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+#home-discover section .tweet {
+  *zoom: 1;
+}
+/* line 17, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
+=======
 /* line 38, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
 #home-discover section .tweet {
   *zoom: 1;
 }
 /* line 18, /Users/martyn/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
+>>>>>>> master
 #home-discover section .tweet:before, #home-discover section .tweet:after {
   content: " ";
   display: table;
 }
+<<<<<<< HEAD
+/* line 23, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
+#home-discover section .tweet:after {
+  clear: both;
+}
+/* line 40, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+=======
 /* line 23, /Users/martyn/mcka_apros/static/scss/bourbon/addons/_clearfix.scss */
 #home-discover section .tweet:after {
   clear: both;
 }
 /* line 40, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
+>>>>>>> master
 #home-discover section .tweet img {
   float: left;
   margin-right: 10px;
 }
+<<<<<<< HEAD
+/* line 45, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+=======
 /* line 45, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
+>>>>>>> master
 #home-discover section .tweet .content {
   float: left;
   width: 185px;
 }
+<<<<<<< HEAD
+/* line 50, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/home/discover.scss */
+=======
 /* line 50, /Users/martyn/mcka_apros/static/scss/home/discover.scss */
+>>>>>>> master
 #home-discover section .tweet .content .twitter-handle:before {
   content: '@';
 }
@@ -11449,18 +12012,73 @@ footer[role=contentinfo] .built-on {
   margin-bottom: 15px;
 }
 
+<<<<<<< HEAD
+/* line 2, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+=======
 /* line 195, /Users/martyn/mcka_apros/static/scss/marketing.scss */
+>>>>>>> master
 #styleguide-page ul.colors {
   margin: 0;
   width: 450px;
   list-style-type: none;
 }
+<<<<<<< HEAD
+/* line 7, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+=======
 /* line 200, /Users/martyn/mcka_apros/static/scss/marketing.scss */
+>>>>>>> master
 #styleguide-page ul.colors li {
   width: 100px;
   height: 100px;
   margin-bottom: 15px;
 }
+<<<<<<< HEAD
+/* line 12, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-blue {
+  background-color: #002960;
+}
+/* line 13, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-academy-alt-blue {
+  background-color: #3384ca;
+}
+/* line 14, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-academy-black {
+  background-color: #333333;
+}
+/* line 15, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-grey {
+  background-color: #868685;
+}
+/* line 16, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-academy-turquoise {
+  background-color: #66a5b5;
+}
+/* line 17, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-orange {
+  background-color: #e37222;
+}
+/* line 18, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-green {
+  background-color: #629b2b;
+}
+/* line 19, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-red {
+  background-color: #cd202c;
+}
+/* line 20, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-academy-blue-gray {
+  background-color: #b1c2cc;
+}
+/* line 21, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-academy-warm-gray {
+  background-color: #d3d1ba;
+}
+/* line 22, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+#styleguide-page ul.colors li.mckinsey-academy-bright-gray {
+  background-color: #e5ebee;
+}
+/* line 23, /Users/Tivs/Documents/github/mcka/mcka_apros/static/scss/styleguide.scss */
+=======
 /* line 205, /Users/martyn/mcka_apros/static/scss/marketing.scss */
 #styleguide-page ul.colors li.mckinsey-blue {
   background-color: #002960;
@@ -11506,6 +12124,7 @@ footer[role=contentinfo] .built-on {
   background-color: #e5ebee;
 }
 /* line 216, /Users/martyn/mcka_apros/static/scss/marketing.scss */
+>>>>>>> master
 #styleguide-page ul.colors li.mckinsey-academy-light-gray {
   background-color: #e0e0e0;
 }

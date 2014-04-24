@@ -19,3 +19,21 @@
         };
         lesson_content.xblock(lesson_data);
       });
+
+  - if current_view == "cohort"
+    %link{rel: "stylesheet", href: "http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css"}
+    %script{src: "http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"}
+    :javascript
+      $(function(){
+        var map = L.map('map-cohort', {zoomControl: false}).setView([51.505, -0.09], 1);
+        L.tileLayer('https://{s}.tiles.mapbox.com/v3/tivs.i2cjlb1l/{z}/{x}/{y}.png',{
+          maxZoom: 18
+        }).addTo(map);
+        $.getJSON('http://api.tiles.mapbox.com/v3/examples.map-zr0njcqy/geocode/london;new%20york%20city;san%20francisco.json').done(function(data){
+          for(var i=0, l=data.length; i<l; i++ ) {
+            var loc = data[i].results[0][0];
+            var radius = Math.floor(Math.random() * 10) + 5
+            L.circleMarker([loc.lat, loc.lon]).setRadius(radius).addTo(map);
+          }
+        })
+      });
