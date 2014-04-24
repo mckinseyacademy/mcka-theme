@@ -40,7 +40,7 @@
             console.log('Loading XBlock resource', resource);
 
             if (resource.kind === 'url') {
-                var resourceURL = this.getLmsBaseURL(options) + resource.data,
+                var resourceURL = resource.data,
                     deferred = $.Deferred().resolve(); // By default, don't wait for the resource to load
 
                 if (resource.mimetype === 'text/css') {
@@ -75,7 +75,7 @@
                         courseId = $(element).data('course-id'),
                         lmsBaseURL = $this.getLmsBaseURL(options);
 
-                    return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId + 
+                    return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId +
                             '/handler/' + handlerName);
                 },
             };
