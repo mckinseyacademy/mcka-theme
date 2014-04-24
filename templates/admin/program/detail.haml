@@ -1,8 +1,17 @@
 - extends 'admin/admin_layout.haml'
 - block content
-  .admin-list.row
-    .large-12.large-centered.columns
-      .message
-        %span= _("Program detail for ")
-        %span= program.name
-        %span= _(" will appear here")
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/program/detail_header.haml'    
+  .admin-detail.row
+    .large-12.large.columns
+      - block admin_detail
+        %h1
+          %span= _("Program: ")
+          %span= program.display_name
+        %hr
+        %section
+          %header Clients:
+          - include 'admin/program/client_list.haml'
+        %a.button.radius.small{href: "/admin/programs/#{program.id}/download_program_report", target: "_blank"}
+          Download Report for Program

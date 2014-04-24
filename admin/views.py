@@ -8,11 +8,12 @@ from django.http import HttpResponse
 from lib.authorization import group_required
 from .models import Client
 from .models import Program
-from .controller import process_uploaded_student_list, get_student_list_as_file
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
+from api_client import course_api
 
 
 @group_required('super_admin')
@@ -179,13 +180,23 @@ def program_new(request):
 
 
 @group_required('super_admin')
-def program_detail(request, program_id):
+def program_detail(request, program_id, detail_view="detail"):
     program = Program.fetch(program_id)
+    view = 'admin/program/{}.haml'.format(detail_view)
+    data = {
+        "program": program,
+        "selected_program_tab": detail_view,
+    }
+
+    if detail_view == "detail":
+        data["clients"] = fetch_clients_with_program(program.id)
+    elif detail_view == "courses":
+        data["courses"] = course_api.get_course_list()
 
     return render(
         request,
-        'admin/program/detail.haml',
-        {"program": program},
+        view,
+        data,
     )
 
 

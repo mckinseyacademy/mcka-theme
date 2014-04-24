@@ -1,0 +1,10 @@
+%table.program-clients
+  - for client in clients
+    %tr.client
+      %td.course-toggle
+      %td.title
+        = client.name
+      %td.places{style: "color: red;"}
+        000
+      %td.enrolled{style: "color: red;"}
+        000

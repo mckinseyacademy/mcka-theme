@@ -14,6 +14,8 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/(?P<detail_view>.*)', views.client_detail, name='client_detail'),
     url(r'^clients', views.client_list, name='client_list'),
     url(r'^programs/program_new', views.program_new, name='program_new'),
-    url(r'^programs/(?P<program_id>.*)', views.program_detail, name='program_detail'),
+    url(r'^programs/(?P<program_id>[0-9]+)$', views.program_detail, name='program_detail'),
+    url(r'^programs/(?P<program_id>[0-9]+)/download_student_list', views.download_student_list, name='download_student_list'),
+    url(r'^programs/(?P<program_id>[0-9]+)/(?P<detail_view>.*)', views.program_detail, name='program_detail'),
     url(r'^programs', views.program_list, name='program_list'),
 )
