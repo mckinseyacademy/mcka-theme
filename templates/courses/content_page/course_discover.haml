@@ -12,9 +12,11 @@
               %span.label-2= article.byline
             .person-title= article.author
           %a{href: "#{article.url}"}
-            %i.fa-arrow-circle-right
+            %i.fa.fa-arrow-circle-right
   %section.infographic
     .label-6 INFOGRAPHIC
+    .infographic
+      %img{src: "#{infographic.thumbnail_url}", alt: "#{infographic.title}"}
     %hr
     .label-6 ON TWITTER
     .tweet

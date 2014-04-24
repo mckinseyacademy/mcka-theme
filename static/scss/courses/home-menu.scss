@@ -8,6 +8,7 @@
     padding: 10px 0;
 
     ul {
+      margin: 0;
       white-space: nowrap;
 
       li {
@@ -22,6 +23,14 @@
           display: block;
           width: 140px;
           height: 180px;
+        }
+
+        .bookmark {
+          color: $mckinsey-orange;
+          position: absolute;
+          top: rem-calc(-5);
+          right: rem-calc(5);
+          @include font-spec(25);
         }
 
         .front, .back {
