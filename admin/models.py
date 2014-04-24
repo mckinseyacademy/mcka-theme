@@ -1,20 +1,31 @@
-from django.db import models
 from api_client import group_api
+from api_client import group_models
 
-# Create your models here.
-class Client(models.Model):
-    name = models.CharField(max_length=255)
-    contact_name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=20)
-    email = models.CharField(max_length=255)
 
-    client_group_id = models.CharField(max_length=255)
+class BaseGroupModel(group_models.GroupInfo):
 
-    def save(self, **kwargs):
-        if not self.client_group_id:
-            self.client_group_id = group_api.create_group("{}_COMPANY".format(self.name)).id
+    def __init__(self, json_data=None, dictionary=None):
+        super(BaseGroupModel, self).__init__(
+            json_data=json_data,
+            dictionary=dictionary
+        )
 
-        super(Client, self).save(**kwargs)
+        if not hasattr(self, "id") and hasattr(self, "group_id"):
+            self.id = self.group_id
+
+        if not hasattr(self, "name") and hasattr(self, "display_name"):
+            self.name = self.display_name
 
     def __unicode__(self):
         return self.name
+
+
+class Client(BaseGroupModel):
+    data_fields = ["display_name", "contact_name", "phone", "email", ]
+    group_type = "organization"
+
+
+class Program(BaseGroupModel):
+    data_fields = ["display_name", "start_date", "end_date", ]
+    date_fields = ["start_date", "end_date"]
+    group_type = "series"

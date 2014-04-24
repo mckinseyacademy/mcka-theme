@@ -49,7 +49,7 @@ class AdminFormsTests(TestCase):
     def test_ClientForm(self):
         # valid if data is good
         client_data = {
-            "name": "company",
+            "display_name": "company",
             "contact_name": "contact_name",
             "phone": "phone",
             "email": "email",
@@ -61,8 +61,8 @@ class AdminFormsTests(TestCase):
     def test_ProgramForm(self):
         # valid if data is good
         program_data = {
-            "name": "public_name",
-            "private_name": "private_name",
+            "display_name": "public_name",
+            "name": "private_name",
             "start_date": datetime.datetime(2014, 1, 1),
             "end_date": datetime.datetime(2014, 12, 12),
         }
