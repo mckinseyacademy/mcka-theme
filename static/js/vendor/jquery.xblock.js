@@ -40,8 +40,12 @@
             console.log('Loading XBlock resource', resource);
 
             if (resource.kind === 'url') {
-                var resourceURL = this.getLmsBaseURL(options) + resource.data,
-                    deferred = $.Deferred().resolve(); // By default, don't wait for the resource to load
+                var deferred = $.Deferred().resolve(), // By default, don't wait for the resource to load
+                    resourceURL = resource.data; // By default, the resource url contains the SITENAME
+
+                if (!resource.data.match(/^\/\//) && !resource.data.match(/^(http|https):\/\//)) {
+                    resourceURL = this.getLmsBaseURL(options) + resource.data;
+                }
 
                 if (resource.mimetype === 'text/css') {
                     $('head').append('<link href="' + resourceURL + '" rel="stylesheet" />')
@@ -75,7 +79,7 @@
                         courseId = $(element).data('course-id'),
                         lmsBaseURL = $this.getLmsBaseURL(options);
 
-                    return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId + 
+                    return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId +
                             '/handler/' + handlerName);
                 },
             };
