@@ -43,7 +43,7 @@
                 var deferred = $.Deferred().resolve(), // By default, don't wait for the resource to load
                     resourceURL = resource.data; // By default, the resource url contains the SITENAME
 
-                if (!resource.data.match(/^\/\//)) {
+                if (!resource.data.match(/^\/\//) && !resource.data.match(/^(http|https):\/\//)) {
                     resourceURL = this.getLmsBaseURL(options) + resource.data;
                 }
 
