@@ -1,0 +1,18 @@
+%header= _("Upload Student List")
+.subhead= _("Add student(s) to client")
+.description
+  %span Upload a file of email addresses to create student records associated with
+  %span= client.display_name
+
+.close-reveal-modal
+  %i.fa.fa-remove
+.admin-form
+  %form{action: "/admin/clients/#{client_id}/upload_student_list", method: "POST", enctype: "multipart/form-data"}
+    - csrf_token
+    = form
+    .error
+      - if error
+        = error
+    %input.button.radius.small{type: "submit", value: "Add Student(s)"}
+  .allowed-format
+    Use CSV formatted file (Comma Separated Value)
