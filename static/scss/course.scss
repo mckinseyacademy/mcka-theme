@@ -10,84 +10,8 @@ $program-bar-height: 48px;
 }
 
 .home-page{
-  article {
-    margin: 10px 0;
-    padding: 20px 27px;
-    border-bottom: 1px solid $almost-white;
-  }
-
-  ul {
-    margin: 0;
-    list-style-type: none;
-  }
-
   .sub-2 { margin-bottom: 10px; }
   .sub-title { margin-bottom: 10px; }
-
-  .course-menu{
-    margin: 10px 0;
-    padding: 20px 27px;
-    border-bottom: 1px solid $almost-white;
-
-    $bookmark-offset: 4px;
-    .rotator {
-      overflow-x: hidden;
-      padding-top: $bookmark-offset;
-
-      ul {
-        white-space: nowrap;
-
-        li {
-          position: relative;
-          display: inline-block;
-          vertical-align: top;
-          margin-right: 20px;
-          white-space: normal;
-          &:last-child { margin-right: none; }
-
-          .bookmark{
-            .fa{
-              color: $mckinsey-orange;
-              font-size: rem-calc(30);
-            }
-            position: absolute;
-            right: $bookmark-offset;
-            top: -1*$bookmark-offset;
-          }
-
-          a {
-            display: block;
-            width: 140px;
-            height: 180px;
-          }
-
-          .front, .back {
-            width: 140px;
-            height: 180px;
-            padding: 10px;
-            @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-          }
-
-          .index { margin-bottom: 20px; }
-
-          .lesson-progress {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-
-            .tick {
-              width: 5px;
-              height: 5px;
-              margin-right: 1px;
-              float: left;
-              background: #e0e0e0;
-              &.on { background: $mckinsey-green; }
-            }
-          }
-        }
-      }
-    }
-  }
 
   .course-quote {
     text-align: center;
