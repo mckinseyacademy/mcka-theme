@@ -40,8 +40,12 @@
             console.log('Loading XBlock resource', resource);
 
             if (resource.kind === 'url') {
-                var resourceURL = resource.data,
-                    deferred = $.Deferred().resolve(); // By default, don't wait for the resource to load
+                var deferred = $.Deferred().resolve(), // By default, don't wait for the resource to load
+                    resourceURL = resource.data; // By default, the resource url contains the SITENAME
+
+                if (!resource.data.match(/^\/\//)) {
+                    resourceURL = this.getLmsBaseURL(options) + resource.data;
+                }
 
                 if (resource.mimetype === 'text/css') {
                     $('head').append('<link href="' + resourceURL + '" rel="stylesheet" />')
