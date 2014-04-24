@@ -1,0 +1,14 @@
+#course-syllabus {
+  h1 {
+    margin-bottom: rem-calc(20);
+  }
+
+  ol {
+    list-style-type: none;
+    margin: 25px 0 0;
+
+    li {
+      margin-bottom: rem-calc(25);
+    }
+  }
+}

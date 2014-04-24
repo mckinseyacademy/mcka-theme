@@ -1,0 +1,53 @@
+#course-menu {
+  margin: 10px 0;
+  padding: 20px 27px;
+  border-bottom: 1px solid $almost-white;
+
+  .rotator {
+    overflow: hidden;
+    padding: 10px 0;
+
+    ul {
+      white-space: nowrap;
+
+      li {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 20px;
+        white-space: normal;
+        &:last-child { margin-right: none; }
+
+        a {
+          display: block;
+          width: 140px;
+          height: 180px;
+        }
+
+        .front, .back {
+          width: 140px;
+          height: 180px;
+          padding: 10px;
+          @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+        }
+
+        .index { margin-bottom: 20px; }
+
+        .lesson-progress {
+          position: absolute;
+          bottom: 20px;
+          left: 20px;
+
+          .tick {
+            width: 5px;
+            height: 5px;
+            margin-right: 1px;
+            float: left;
+            background: #e0e0e0;
+            &.on { background: $mckinsey-green; }
+          }
+        }
+      }
+    }
+  }
+}

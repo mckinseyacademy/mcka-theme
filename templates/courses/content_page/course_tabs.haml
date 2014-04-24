@@ -12,6 +12,8 @@
   %li
     %a{class: "nav-1 {% ifequal current_view 'cohort' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/cohort"}= _("Cohort")
   %li
+    %a{class: "nav-1 {% ifequal current_view 'syllabus' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/syllabus"}= _("Syllabus")
+  %li
     %a{class: "nav-1 {% ifequal current_view 'resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/resources"}= _("Resources")
   %li
     %a{class: "nav-1 {% ifequal current_view 'group_work' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/group_work"}= _("Group Work")

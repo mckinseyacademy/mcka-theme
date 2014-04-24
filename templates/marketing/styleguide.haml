@@ -3,86 +3,23 @@
 - block content
   %article#styleguide-page.row.collapse
     .large-10.large-centered.columns
-      %section
-        .sub-1 Headers
-        %h1 H1
-        %h2 H2
-        %h3 H3
-        %h4 H4
-        %h5 H5
-        %h6 H6
-      %hr
-      %section
-        .sub-1 Sub Headers
-        .sub-1 .sub-1
-        .sub-2 .sub-2
-      %hr
-      %section
-        .sub-1 Nav Items
-        .nav-1 .nav-1
-        .nav-1.selected .nav-1.selected
-        .nav-2 .nav-2
-        .nav-2.selected .nav-2.selected
-        .nav-2.completed .nav-2.completed
-      %hr
-      %section
-        .sub-1 Paragraphs
-        %p P
-        %p.style-2 P.style-2
-        %p.style-3 P.style-3
-        %p.style-4 P.style-4
-        %p.style-5 P.style-5
-      %hr
-      %section
-        .sub-1 Anchors
-        %a A
-      %hr
-      %section
-        .sub-1 Quotes
-        %blockquote Blockquote
-        %Blockquote.user-quote Blockquote.user-quote
-      %hr
-      %section
-        .sub-1 Labels
-        .label-1 .label-1
-        .label-2 .label-2
-        .label-3 .label-3
-        .label-4 .label-4
-        .label-5 .label-5
-        .label-6 .label-6
-        .label-7 .label-7
-        .label-8 .label-8
-        .label-9 .label-9
-      %hr
-      %section
-        .sub-1 Person
-        .person-name .person-name
-        .person-title .person-title
-      %hr
-      %section
-        .sub-1 Backgrounds
-        .background-blue
-          %div Text
-          %a A
-          .person-name .person-name
-        .background-alt-blue
-          %div Text
-          %h4 H4
-          %h5 H5
-          .label-4 .label-4
-      %hr
-      %section
-        .sub-1 Colors
-        %ul.flexible.colors
-          %li.mckinsey-blue
-          %li.mckinsey-academy-alt-blue
-          %li.mckinsey-academy-black
-          %li.mckinsey-grey
-          %li.mckinsey-academy-turquoise
-          %li.mckinsey-orange
-          %li.mckinsey-green
-          %li.mckinsey-red
-          %li.mckinsey-academy-blue-gray
-          %li.mckinsey-academy-warm-gray
-          %li.mckinsey-academy-bright-gray
-          %li.mckinsey-academy-light-gray
+      .row
+        %input#menu-typography{type: 'radio', name: 'styleguide-radio', checked: None}
+        %input#menu-colors{type: 'radio', name: 'styleguide-radio'}
+        %input#menu-icons{type: 'radio', name: 'styleguide-radio'}
+        %input#menu-buttons{type: 'radio', name: 'styleguide-radio'}
+        %aside.large-3.columns
+          %ul
+            %li
+              %label{for: 'menu-typography'} Typography
+            %li
+              %label{for: 'menu-colors'} Colors
+            %li
+              %label{for: 'menu-icons'} Icons
+            %li
+              %label{for: 'menu-buttons'} Buttons
+        %article.large-9.columns.background-white
+          - include "marketing/styleguide/typography.haml"
+          - include "marketing/styleguide/colors.haml"
+          - include "marketing/styleguide/icons.haml"
+          - include "marketing/styleguide/buttons.haml"

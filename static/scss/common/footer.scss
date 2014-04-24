@@ -26,10 +26,4 @@ footer[role=contentinfo]{
       }
     }
   }
-
-  .built-on{
-    float: right;
-    margin: 6px 50px;
-    @include font-spec(10, semibold);
-  }
 }

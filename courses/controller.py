@@ -88,7 +88,7 @@ def locate_chapter_page(
     if not course_id:
         courses = user_api_impl.get_user_courses(user_id)
         if len(courses) < 1:
-            return None, None, None
+            return None, None, None, None
         course_id = courses[0].id
 
     course = course_api_impl.get_course(course_id)
