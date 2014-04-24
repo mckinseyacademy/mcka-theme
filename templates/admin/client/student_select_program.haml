@@ -1,0 +1,15 @@
+%table
+  %thead
+    %th Name
+    %th Email
+    %th Date Added
+    %th Added By
+    %th Status
+  %tbody
+    - for student in students
+      %tr
+        %td= student.username
+        %td= student.email
+        %td{style: "color: red;"} 1/1/2014
+        %td{style: "color: red;"} admin
+        %td{style: "color: red;"} enrolled

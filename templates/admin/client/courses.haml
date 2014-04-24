@@ -1,3 +1,35 @@
 - extends 'admin/client/detail.haml'
 - block admin_detail
-  Assign Students to courses
+  %h1
+    %span= _("Client: ")
+    %span= client.display_name
+  %hr
+  %section
+    .large-8.columns#student-list
+      - include "admin/client/student_select_course.haml"
+    .large-4.columns.program-selection
+      %a.button.radius.tiny#student-course-action
+        %span= _("Move Selected Students into Course(s)")
+      %h2= _("Select a Program:")
+      %div= _("Expand a program below, select one or more courses and assign courses to students.")
+      - for program in programs
+        .select-program-course-box
+          .name= program.display_name
+          .prog-info
+            %span= _("Program Run:")
+            %span= program.start_date
+            %span -
+            %span= program.end_date
+          - for course in program.courses
+            .course-box
+              %input{type: "checkbox", id:"course_#{course.id}"}
+              %label{for: "course_#{course.id}"}
+                .title= course.display_name
+                .course-info
+                  %span= _("Course Run:")
+                  %span= course.start_date
+                  %span -
+                  %span= course.end_date
+                .course-info
+                  %span= _("Company Participants:")
+                  %span{style: "color: red;"} 000

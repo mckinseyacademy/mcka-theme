@@ -104,6 +104,12 @@ def client_detail(request, client_id, detail_view="detail"):
         "programs": client.fetch_programs(),
     }
 
+    if detail_view == "programs" or detail_view == "courses":
+        data["students"] = client.fetch_students()
+        if detail_view == "courses":
+            for program in data["programs"]:
+                program.courses = program.fetch_courses()
+
     return render(
         request,
         view,

@@ -1,0 +1,11 @@
+%table
+  %thead
+    %th Name
+    %th Email
+    %th Enrolled in
+  %tbody
+    - for student in students
+      %tr
+        %td= student.username
+        %td= student.email
+        %td{style: "color: red;"} 000 courses

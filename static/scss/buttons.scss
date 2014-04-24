@@ -7,3 +7,9 @@
     padding-bottom: $top-bottom-padding;
   }
 }
+a.button{
+  color: white;
+  &:visited{
+    color: white;
+  }
+}

@@ -33,3 +33,9 @@ class Course(CategorisedJsonObject):
 
     ''' object representing a course '''
     required_fields = ["id", "name", ]
+
+
+class CourseList(CategorisedJsonObject):
+    object_map = {
+        "courses": Course
+    }
