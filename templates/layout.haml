@@ -24,7 +24,7 @@
     -# Custom head JS
     - block head_js
 
-  %body
+  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}"}
 
     -# Header
     - block header
