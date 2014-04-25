@@ -14,3 +14,31 @@
     display: none;
   }
 }
+.course-list .course,
+.student-list .student{
+  cursor: pointer;
+  &:hover{
+    background-color: $mckinsey-academy-blue-gray;
+  }
+  &.selected{
+    background-color: $mckinsey-academy-alt-blue;
+  }
+}
+
+.program-selection .select-program-box{
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid $border-line;
+  &:hover{
+    background-color: $mckinsey-academy-blue-gray;
+  }
+  .course-box{
+    display: none;
+  }
+  &.selected{
+    background-color: $mckinsey-academy-alt-blue;
+    .course-box{
+      display: block;
+    }
+  }
+}

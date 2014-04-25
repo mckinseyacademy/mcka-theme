@@ -26,10 +26,13 @@ class Program(BaseGroupModel):
     group_type = "series"
 
     def add_course(self, course_id):
-        return group_api.add_group_to_group(course_id, self.id)
+        return group_api.add_course_to_group(course_id, self.id)
 
     def fetch_courses(self):
         return group_api.get_courses_in_group(self.id)
+
+    def add_user(self, user_id):
+        return group_api.add_user_to_group(user_id, self.id)
 
 
 class Client(BaseGroupModel):

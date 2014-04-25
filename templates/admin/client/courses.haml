@@ -1,4 +1,5 @@
 - extends 'admin/client/detail.haml'
+- load staticfiles
 - block admin_detail
   %h1
     %span= _("Client: ")
@@ -8,12 +9,12 @@
     .large-8.columns#student-list
       - include "admin/client/student_select_course.haml"
     .large-4.columns.program-selection
-      %a.button.radius.tiny#student-course-action
+      %a#student-course-action.button.radius.tiny{href: "/admin/clients/#{client.id}/add_students_to_course"}
         %span= _("Move Selected Students into Course(s)")
       %h2= _("Select a Program:")
       %div= _("Expand a program below, select one or more courses and assign courses to students.")
       - for program in programs
-        .select-program-course-box
+        .select-program-box{id: "#{program.id}"}
           .name= program.display_name
           .prog-info
             %span= _("Program Run:")
@@ -22,8 +23,8 @@
             %span= program.end_date
           - for course in program.courses
             .course-box
-              %input{type: "checkbox", id:"course_#{course.id}"}
-              %label{for: "course_#{course.id}"}
+              %input{type: "checkbox", id:"#{course.course_id}"}
+              %label{for: "#{course.course_id}"}
                 .title= course.display_name
                 .course-info
                   %span= _("Course Run:")
@@ -33,3 +34,5 @@
                 .course-info
                   %span= _("Company Participants:")
                   %span{style: "color: red;"} 000
+- block js_snippets
+  %script{src: "{% static 'js/course_students.js' %}"}

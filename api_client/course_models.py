@@ -1,5 +1,5 @@
 ''' Objects for courses built from json responses from API '''
-from .json_object import CategorisedJsonObject
+from .json_object import CategorisedJsonObject, JsonObject
 
 # Create your models here.
 
@@ -35,7 +35,11 @@ class Course(CategorisedJsonObject):
     required_fields = ["id", "name", ]
 
 
-class CourseList(CategorisedJsonObject):
+class CourseListCourse(JsonObject):
+    required_fields = ["course_id", "display_name", ]
+
+
+class CourseList(JsonObject):
     object_map = {
-        "courses": Course
+        "courses": CourseListCourse
     }

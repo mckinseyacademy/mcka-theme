@@ -1,11 +1,11 @@
-%table
+%table.student-list
   %thead
     %th Name
     %th Email
     %th Enrolled in
   %tbody
     - for student in students
-      %tr
+      %tr.student{id: "#{student.id}"}
         %td= student.username
         %td= student.email
         %td{style: "color: red;"} 000 courses
