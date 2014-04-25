@@ -1,27 +1,29 @@
-%table
-- for program in programs
-  %tr.program
-    %td.course-toggle
-    %td.title
-      = program.name
-    %td.dates
-      = "#{program.start_date} - #{program.end_date}"
-    %td.places
-      000
-    %td.enrolled
-      000
-  %tr.courses{class: "course_for_#{program.id}"}
-    %td
-    %td
-    %td{colspan: "3"}
-      %table
-        - for course in program.courses
-          %tr
-            %td.name
-              = "#{course.name}"
-            %td.dates
-              = "#{course.start_date} - #{course.end_date}"
-            %td.places
-              000
-            %td.enrolled
-              000
+%table.client-programs
+  - for program in programs
+    %tr.program
+      %td.course-toggle
+      %td.title
+        = program.name
+      %td.dates
+        %span= program.start_date
+        %span -
+        %span= program.end_date
+      %td.places
+        000
+      %td.enrolled
+        000
+    %tr.courses{class: "course_for_#{program.id}"}
+      %td
+      %td
+      %td{colspan: "3"}
+        %table
+          - for course in program.courses
+            %tr
+              %td.name
+                = "#{course.name}"
+              %td.dates
+                = "#{course.start_date} - #{course.end_date}"
+              %td.places
+                000
+              %td.enrolled
+                000

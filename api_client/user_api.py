@@ -73,6 +73,7 @@ def get_user_courses(user_id):
 
     return courses
 
+
 def get_user_course_detail(user_id, course_id):
     ''' get details for the user for this course'''
     response = GET(
@@ -86,6 +87,7 @@ def get_user_course_detail(user_id, course_id):
 
     return JP.from_json(response.read(), user_models.UserCourseStatus)
 
+
 def _set_course_position(user_id, course_id, parent_id, child_id):
     data = {
         "position": {
@@ -93,7 +95,7 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
             "child_module_id": child_id,
         }
     }
-    
+
     response = POST(
         '{}/{}/{}/courses/{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -114,9 +116,27 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id,
 
     positions = []
 
-    positions.append(_set_course_position(user_id, course_id, course_id, chapter_id))
-    positions.append(_set_course_position(user_id, course_id, chapter_id, sequential_id))
-    positions.append(_set_course_position(user_id, course_id, sequential_id, page_id))
+    positions.append(_set_course_position(
+            user_id,
+            course_id,
+            course_id,
+            chapter_id
+        )
+    )
+    positions.append(_set_course_position(
+            user_id,
+            course_id,
+            chapter_id,
+            sequential_id
+        )
+    )
+    positions.append(_set_course_position(
+            user_id,
+            course_id,
+            sequential_id,
+            page_id
+        )
+    )
 
     return positions
 
@@ -142,7 +162,7 @@ def is_user_in_group(user_id, group_id):
                 settings.API_MOCK_SERVER_ADDRESS,
                 GROUP_API,
                 group_id,
-                user_id
+                user_id,
             )
         )
     except HTTPError, e:

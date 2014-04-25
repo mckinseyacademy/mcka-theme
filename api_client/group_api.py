@@ -1,6 +1,7 @@
 ''' API calls with respect to groups '''
 from .json_object import JsonParser as JP
 from . import group_models
+from . import user_models
 from .json_requests import GET, POST, DELETE
 
 from django.conf import settings
@@ -79,3 +80,64 @@ def delete_group(group_id):
     )
 
     return (response.code == 204)
+
+
+def add_user_to_group(user_id, group_id, group_object=group_models.GroupInfo):
+    ''' adds user to group '''
+    data = {"user_id": user_id}
+    response = POST(
+        '{}/{}/{}/users'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+        ),
+        data
+    )
+
+    return JP.from_json(response.read(), group_object)
+
+
+def add_group_to_group(child_group_id, group_id, group_object=group_models.GroupInfo, relationship_type='h'):
+    ''' adds user to group '''
+    data = {
+        "group_id": child_group_id,
+        "relationship_type": relationship_type
+    }
+    response = POST(
+        '{}/{}/{}/groups'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+        ),
+        data
+    )
+
+    return JP.from_json(response.read(), group_object)
+
+
+def get_users_in_group(group_id):
+    ''' get list of users associated with a specific group '''
+    response = GET(
+        '{}/{}/{}/users'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+        )
+    )
+
+    user_list = JP.from_json(response.read(), user_models.UserList)
+
+    return user_list.users
+
+
+def get_groups_in_group(group_id, group_object=group_models.GroupInfo):
+    ''' get list of groups associated with a specific group '''
+    response = GET(
+        '{}/{}/{}/groups'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+        )
+    )
+
+    return JP.from_json(response.read(), group_object)

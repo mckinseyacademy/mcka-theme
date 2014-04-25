@@ -82,6 +82,7 @@ def homepage(request):
         "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO),
         "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
+        "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
     }
     return render(request, 'courses/course_main.haml', data)
 

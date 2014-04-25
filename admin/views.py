@@ -1,14 +1,18 @@
+import urllib2 as url_access
+from datetime import datetime
 from django.utils.translation import ugettext as _
 from django.shortcuts import render
-from lib.authorization import group_required
-import urllib2 as url_access
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 
+from lib.authorization import group_required
 from .models import Client
 from .models import Program
-
+from .controller import process_uploaded_student_list, get_student_list_as_file
 from .forms import ClientForm
 from .forms import ProgramForm
+from .forms import UploadStudentListForm
+from .forms import ProgramAssociationForm
 
 
 @group_required('super_admin')
@@ -97,6 +101,7 @@ def client_detail(request, client_id, detail_view="detail"):
     data = {
         "client": client,
         "selected_client_tab": detail_view,
+        "programs": client.fetch_programs(),
     }
 
     return render(
@@ -175,6 +180,91 @@ def program_detail(request, program_id):
         request,
         'admin/program/detail.haml',
         {"program": program},
+    )
+
+
+@group_required('super_admin')
+def upload_student_list(request, client_id):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = UploadStudentListForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+            try:
+                process_uploaded_student_list(
+                    request.FILES['student_list'],
+                    client_id
+                )
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/clients/{}'.format(client_id))
+
+            except url_access.HTTPError, err:
+                error = _("An error occurred during student upload")
+                error_messages = {
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+
+    else:
+        ''' adds a new client '''
+        form = UploadStudentListForm()  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+    }
+
+    return render(
+        request,
+        'admin/client/upload_list_dialog.haml',
+        data
+    )
+
+
+@group_required('super_admin')
+def download_student_list(request, client_id):
+    client = Client.fetch(client_id)
+    filename = "Student List for {} on {}.csv".format(
+        client.display_name,
+        datetime.now().isoformat()
+    )
+
+    response = HttpResponse(
+        get_student_list_as_file(client),
+        content_type='text/csv'
+    )
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
+
+@group_required('super_admin')
+def program_association(request, client_id):
+    client = Client.fetch(client_id)
+    error = None
+    if request.method == 'POST':
+        form = ProgramAssociationForm(request.POST)
+        if form.is_valid():
+            client.add_program(request.POST.get('select_program'))
+            return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
+    else:
+        form = ProgramAssociationForm()
+
+    data = {
+        "form": form,
+        "client": client,
+        "error": error,
+        "programs": Program.list(),
+    }
+
+    return render(
+        request,
+        'admin/client/add_program_dialog.haml',
+        data
     )
 
 
