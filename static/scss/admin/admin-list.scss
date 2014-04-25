@@ -1,0 +1,25 @@
+.admin-list {
+  margin-top: 80px;
+
+  header {
+    > * {
+      margin-bottom: 10px;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .principal-list {
+
+    ul {
+      margin: 0;
+      list-style-type: none;
+
+      li {
+        padding: 0 20px;
+        line-height: rem-calc(35);
+        border-bottom: 1px solid $almost-white;
+        &:last-child { border-bottom: none; }
+      }
+    }
+  }
+}
