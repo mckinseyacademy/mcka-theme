@@ -34,7 +34,8 @@ class Objectifier(object):
                     self._make_data_object(dictionary[item], object_type)
                 )
             elif isinstance(dictionary[item], list):
-                new_list = [self._make_data_object(item_value, object_type) for item_value in dictionary[item]]
+                new_list = [self._make_data_object(item_value, object_type)
+                            for item_value in dictionary[item]]
                 self.__setattr__(
                     item,
                     new_list
@@ -136,10 +137,15 @@ class JsonParser(object):
     JsonObject impementations
     '''
     @staticmethod
-    def from_json(json_data, object_type=JsonObject):
+    def from_json(json_data, object_type=JsonObject, data_filter=None):
         ''' takes json => dictionary / array and processes it accordingly '''
         parsed_json = json.loads(json_data)
+
         if isinstance(parsed_json, list):
+            if data_filter:
+                for key, value in data_filter.iteritems():
+                    parsed_json = [jo for jo in parsed_json if jo[key] == value]
+
             out_objects = []
             for json_dictionary in parsed_json:
                 out_objects.append(object_type(dictionary=json_dictionary))
@@ -155,7 +161,10 @@ class CategorisedJsonObject(JsonObject):
 
     def __init__(self, json_data=None, dictionary=None, parser=None):
         self._categorised_parser = parser
-        super(CategorisedJsonObject, self).__init__(json_data=json_data, dictionary=dictionary)
+        super(CategorisedJsonObject, self).__init__(
+            json_data=json_data,
+            dictionary=dictionary
+        )
 
     def _object_type_for_name(self, item_name, item_dictionary):
         '''
@@ -164,7 +173,8 @@ class CategorisedJsonObject(JsonObject):
         '''
         object_type = CategorisedJsonObject
         if self._categorised_parser and self._categorised_parser._category_property_name in item_dictionary:
-            object_type = self._categorised_parser._category_dictionary[item_dictionary[self._categorised_parser._category_property_name]]
+            object_type = self._categorised_parser._category_dictionary[
+                item_dictionary[self._categorised_parser._category_property_name]]
         elif item_name in self.object_map:
             object_type = self.object_map[item_name]
 
@@ -186,7 +196,7 @@ class CategorisedJsonParser(object):
     _category_property_name = "category"
     _category_dictionary = {}
 
-    def __init__(self, category_dictionary, category_property_name = "category"):
+    def __init__(self, category_dictionary, category_property_name="category"):
         self._category_dictionary = category_dictionary
         self._category_property_name = category_property_name
 
@@ -206,7 +216,7 @@ class CategorisedJsonParser(object):
             object_type = CategorisedJsonObject
             if self._category_property_name in parsed_json:
                 if parsed_json[self._category_property_name] in self._category_dictionary:
-                    object_type = self._category_dictionary[parsed_json[self._category_property_name]]
-            
-            return object_type(dictionary=parsed_json, parser=self)
+                    object_type = self._category_dictionary[
+                        parsed_json[self._category_property_name]]
 
+            return object_type(dictionary=parsed_json, parser=self)

@@ -1,14 +1,23 @@
+import urllib2 as url_access
+import json
+from datetime import datetime
 from django.utils.translation import ugettext as _
 from django.shortcuts import render
-from lib.authorization import group_required
-import urllib2 as url_access
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from urllib2 import HTTPError
 
+from lib.authorization import group_required
 from .models import Client
 from .models import Program
-
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program
 from .forms import ClientForm
 from .forms import ProgramForm
+from .forms import UploadStudentListForm
+from .forms import ProgramAssociationForm
+from api_client import course_api
+from api_client import user_api
 
 
 @group_required('super_admin')
@@ -97,7 +106,14 @@ def client_detail(request, client_id, detail_view="detail"):
     data = {
         "client": client,
         "selected_client_tab": detail_view,
+        "programs": client.fetch_programs(),
     }
+
+    if detail_view == "programs" or detail_view == "courses":
+        data["students"] = client.fetch_students()
+        if detail_view == "courses":
+            for program in data["programs"]:
+                program.courses = program.fetch_courses()
 
     return render(
         request,
@@ -168,13 +184,176 @@ def program_new(request):
 
 
 @group_required('super_admin')
-def program_detail(request, program_id):
+def program_detail(request, program_id, detail_view="detail"):
     program = Program.fetch(program_id)
+    view = 'admin/program/{}.haml'.format(detail_view)
+    data = {
+        "program": program,
+        "selected_program_tab": detail_view,
+    }
+
+    if detail_view == "detail":
+        data["clients"] = fetch_clients_with_program(program.id)
+    elif detail_view == "courses":
+        data["courses"] = course_api.get_course_list()
+        selected_ids = [course.course_id for course in program.fetch_courses()]
+        for course in data["courses"]:
+            course.class_name = "selected" if course.id in selected_ids else None
 
     return render(
         request,
-        'admin/program/detail.haml',
-        {"program": program},
+        view,
+        data,
+    )
+
+
+@group_required('super_admin')
+def upload_student_list(request, client_id):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = UploadStudentListForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+            try:
+                process_uploaded_student_list(
+                    request.FILES['student_list'],
+                    client_id
+                )
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/clients/{}'.format(client_id))
+
+            except url_access.HTTPError, err:
+                error = _("An error occurred during student upload")
+                error_messages = {
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+
+    else:
+        ''' adds a new client '''
+        form = UploadStudentListForm()  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+    }
+
+    return render(
+        request,
+        'admin/client/upload_list_dialog.haml',
+        data
+    )
+
+
+@group_required('super_admin')
+def download_student_list(request, client_id):
+    client = Client.fetch(client_id)
+    filename = "Student List for {} on {}.csv".format(
+        client.display_name,
+        datetime.now().isoformat()
+    )
+
+    response = HttpResponse(
+        get_student_list_as_file(client),
+        content_type='text/csv'
+    )
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
+@group_required('super_admin')
+def download_program_report(request, program_id):
+    filename = "Empty Report.csv"
+    response = HttpResponse(
+        "Report is TBD",
+        content_type='text/csv'
+    )
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
+
+@group_required('super_admin')
+def program_association(request, client_id):
+    client = Client.fetch(client_id)
+    error = None
+    if request.method == 'POST':
+        form = ProgramAssociationForm(request.POST)
+        if form.is_valid():
+            client.add_program(request.POST.get('select_program'))
+            return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
+    else:
+        form = ProgramAssociationForm()
+
+    data = {
+        "form": form,
+        "client": client,
+        "error": error,
+        "programs": Program.list(),
+    }
+
+    return render(
+        request,
+        'admin/client/add_program_dialog.haml',
+        data
+    )
+
+@group_required('super_admin')
+def add_courses(request, program_id):
+    program = Program.fetch(program_id)
+    courses = request.POST.getlist("courses[]")
+    for course_id in courses:
+        try:
+            program.add_course(course_id)
+        except HTTPError, e:
+            # Ignore 409 errors, because they indicate a course already added
+            if e.code != 409:
+                raise
+
+    return HttpResponse(
+        json.dumps({"message": _("Successfully saved courses to {} program").format(program.display_name)}),
+        content_type='application/json'
+    )
+
+@group_required('super_admin')
+def add_students_to_program(request, client_id):
+    program = Program.fetch(request.POST.get("program"))
+    students = request.POST.getlist("students[]")
+    for student_id in students:
+        try:
+            program.add_user(student_id)
+        except HTTPError, e:
+            # Ignore 409 errors, because they indicate a user already added
+            if e.code != 409:
+                raise
+
+    return HttpResponse(
+        json.dumps({"message": _("Successfully associated students to {} program").format(program.display_name)}),
+        content_type='application/json'
+    )
+
+@group_required('super_admin')
+def add_students_to_course(request, client_id):
+    courses = request.POST.getlist("courses[]")
+    students = request.POST.getlist("students[]")
+    for student_id in students:
+        for course_id in courses:
+            try:
+                user_api.enroll_user_in_course(student_id, course_id)
+            except HTTPError, e:
+                # Ignore 409 errors, because they indicate a user already added
+                if e.code != 409:
+                    raise
+
+    return HttpResponse(
+        json.dumps({"message": _("Successfully associated students to courses")}),
+        content_type='application/json'
     )
 
 

@@ -70,8 +70,23 @@ def get_user_courses(user_id):
     # TODO: Faking status for now, need to remove somehow
     for course in courses:
         course.percent_complete = 25
-    
+
     return courses
+
+def enroll_user_in_course(user_id, course_id):
+    ''' enrolls the user summary in the given course '''
+    data = {"course_id": course_id}
+    response = POST(
+        '{}/{}/{}/courses'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id
+        ),
+        data
+    )
+
+    courses = JP.from_json(response.read(), user_models.UserCourse)
+
 
 def get_user_course_detail(user_id, course_id):
     ''' get details for the user for this course'''
@@ -86,6 +101,7 @@ def get_user_course_detail(user_id, course_id):
 
     return JP.from_json(response.read(), user_models.UserCourseStatus)
 
+
 def _set_course_position(user_id, course_id, parent_id, child_id):
     data = {
         "position": {
@@ -93,7 +109,7 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
             "child_module_id": child_id,
         }
     }
-    
+
     response = POST(
         '{}/{}/{}/courses/{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -108,14 +124,33 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
 
     return True
 
+
 def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id, page_id):
     ''' let the openedx server know the most recently visited page '''
 
     positions = []
 
-    positions.append(_set_course_position(user_id, course_id, course_id, chapter_id))
-    positions.append(_set_course_position(user_id, course_id, chapter_id, sequential_id))
-    positions.append(_set_course_position(user_id, course_id, sequential_id, page_id))
+    positions.append(_set_course_position(
+            user_id,
+            course_id,
+            course_id,
+            chapter_id
+        )
+    )
+    positions.append(_set_course_position(
+            user_id,
+            course_id,
+            chapter_id,
+            sequential_id
+        )
+    )
+    positions.append(_set_course_position(
+            user_id,
+            course_id,
+            sequential_id,
+            page_id
+        )
+    )
 
     return positions
 
@@ -128,7 +163,7 @@ def is_user_in_group(user_id, group_id):
                 settings.API_MOCK_SERVER_ADDRESS,
                 GROUP_API,
                 group_id,
-                user_id
+                user_id,
             )
         )
     except HTTPError, e:

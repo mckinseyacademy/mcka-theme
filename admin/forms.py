@@ -1,9 +1,10 @@
 ''' forms for login and registration '''
+from datetime import date
 from django import forms
 from django.utils.translation import ugettext as _
-from .models import Client
-from datetime import date
 from django.forms.extras.widgets import SelectDateWidget
+
+from .models import Client, Program
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -32,3 +33,19 @@ class ProgramForm(forms.Form):
     end_date = forms.DateField(
         widget=SelectDateWidget(years=PROGRAM_YEAR_CHOICES)
     )
+
+
+class UploadStudentListForm(forms.Form):
+
+    ''' form to upload file for student list '''
+    student_list = forms.FileField(help_text="ClientStudentList.csv")
+
+
+class ProgramAssociationForm(forms.Form):
+
+    ''' form to select program to add to client '''
+    select_program = forms.ChoiceField(
+        choices=((program.id, program.display_name)
+                 for program in Program.list())
+    )
+    places = forms.IntegerField(required=False)

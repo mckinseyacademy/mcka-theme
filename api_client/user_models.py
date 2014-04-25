@@ -1,8 +1,7 @@
 ''' Objects for users / authentication built from json responses from API '''
-from .json_object import JsonObject
-
 import hashlib
-import datetime
+
+from .json_object import JsonObject
 
 
 # ignore too few public methods witin this file - these models almost always
@@ -11,6 +10,7 @@ import datetime
 
 
 class UserResponse(JsonObject):
+
     ''' object representing a user from api json response '''
     required_fields = ["email", "username"]
 
@@ -28,6 +28,7 @@ class UserResponse(JsonObject):
 
 
 class AuthenticationResponse(JsonObject):
+
     ''' object representing an authenticated session from api json response '''
     required_fields = ['token', 'user']
     object_map = {
@@ -36,10 +37,13 @@ class AuthenticationResponse(JsonObject):
 
 
 class UserCourseStatus(JsonObject):
+
     ''' object representing a user's course status from api json response '''
     required_fields = ["position"]
 
+
 class UserProgram(JsonObject):
+
     ''' object representing a users's program from api json response '''
     required_fields = ["id"]
 
@@ -64,6 +68,8 @@ class UserProgram(JsonObject):
 class UserCourse(JsonObject):
     required_fields = []
 
-class Group(JsonObject):
-    ''' object representing a group of which a user can be a member '''
-    required_fields = ['id', 'name']
+
+class UserList(JsonObject):
+    object_map = {
+        "users": UserResponse
+    }

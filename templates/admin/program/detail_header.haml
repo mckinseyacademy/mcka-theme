@@ -1,0 +1,13 @@
+%ul
+  %li
+    - if selected_program_tab == 'detail'
+      %span.selected= _("Overview")
+    - else
+      %a{href:"/admin/programs/#{program.id}"}
+        = _("Overview")
+  %li
+    - if selected_program_tab == 'courses'
+      %span.selected= _("Assign Courses to Program")
+    - else
+      %a{href:"/admin/programs/#{program.id}/courses"}
+        = _("Assign Courses to Program")
