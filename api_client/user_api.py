@@ -73,6 +73,20 @@ def get_user_courses(user_id):
 
     return courses
 
+def enroll_user_in_course(user_id, course_id):
+    ''' enrolls the user summary in the given course '''
+    data = {"course_id": course_id}
+    response = POST(
+        '{}/{}/{}/courses'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id
+        ),
+        data
+    )
+
+    courses = JP.from_json(response.read(), user_models.UserCourse)
+
 
 def get_user_course_detail(user_id, course_id):
     ''' get details for the user for this course'''

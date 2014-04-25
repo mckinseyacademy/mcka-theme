@@ -2,6 +2,7 @@
 from .json_object import JsonParser as JP
 from . import group_models
 from . import user_models
+from . import course_models
 from .json_requests import GET, POST, DELETE
 
 from django.conf import settings
@@ -97,6 +98,21 @@ def add_user_to_group(user_id, group_id, group_object=group_models.GroupInfo):
     return JP.from_json(response.read(), group_object)
 
 
+def add_course_to_group(course_id, group_id, group_object=group_models.GroupInfo):
+    ''' adds course to group '''
+    data = {"course_id": course_id}
+    response = POST(
+        '{}/{}/{}/courses'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+        ),
+        data
+    )
+
+    return JP.from_json(response.read(), group_object)
+
+
 def add_group_to_group(child_group_id, group_id, group_object=group_models.GroupInfo, relationship_type='h'):
     ''' adds user to group '''
     data = {
@@ -128,6 +144,21 @@ def get_users_in_group(group_id):
     user_list = JP.from_json(response.read(), user_models.UserList)
 
     return user_list.users
+
+
+def get_courses_in_group(group_id):
+    ''' get list of courses associated with a specific group '''
+    response = GET(
+        '{}/{}/{}/courses'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+        )
+    )
+
+    courses_list = JP.from_json(response.read(), course_models.CourseList)
+
+    return courses_list.courses
 
 
 def get_groups_in_group(group_id, group_object=group_models.GroupInfo):

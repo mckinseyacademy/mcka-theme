@@ -3,6 +3,7 @@ from urllib2 import HTTPError
 from django.core.servers.basehttp import FileWrapper
 
 from api_client import user_api, group_api
+from .models import Client
 
 
 def _process_line(user_line):
@@ -95,3 +96,7 @@ def get_student_list_as_file(client):
     user_strings = [_formatted_user_string(user) for user in user_list]
 
     return '\n'.join(user_strings)
+
+
+def fetch_clients_with_program(program_id):
+    return [client for client in Client.list() if program_id in [program.id for program in client.fetch_programs()]]

@@ -48,4 +48,4 @@ class ProgramAssociationForm(forms.Form):
         choices=((program.id, program.display_name)
                  for program in Program.list())
     )
-    places = forms.IntegerField()
+    places = forms.IntegerField(required=False)
