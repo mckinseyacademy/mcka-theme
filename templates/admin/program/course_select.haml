@@ -1,0 +1,7 @@
+%table.course-list
+  %thead
+    %th Name
+  %tbody
+    - for course in courses
+      %tr.course{id: "#{course.id}", class: "#{course.class_name}"}
+        %td= course.name

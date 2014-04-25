@@ -1,16 +1,17 @@
 - extends 'admin/admin_layout.haml'
 - block content
   .admin-list.row
-    .large-10.large-centered.columns
+    .large-12.large-centered.columns
       %h1.principal-title= principal_name_plural
       .add= _("Add a new ")
         %span= principal_name
       .add-message
       - block principal_message
         Use this block to update the message describing the principal at hand
-      %a.button.radius.small{"data-reveal-id": "new-principal", "data-reveal-ajax": "true", href: "#{principal_new_url}"}
-        = _("Add ")
-        %span= principal_name
+      %div 
+        %a.button.radius.small{"data-reveal-id": "new-principal", "data-reveal-ajax": "true", href: "#{principal_new_url}"}
+          = _("Add ")
+          %span= principal_name
       %hr
       .principal-list
         .title= principal_list_plural
