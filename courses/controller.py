@@ -1,4 +1,5 @@
 ''' Core logic to sanitise information for views '''
+from urllib2 import HTTPError
 from api_client import course_api, user_api, user_models
 #from urllib import quote_plus, unquote_plus
 
@@ -31,6 +32,9 @@ def build_page_info_for_course(
     course = course_api_impl.get_course(course_id)
 
     # something sensible if we fail...
+    if len(course.chapters) < 1:
+        return course, None, None, None
+
     current_chapter = course.chapters[0]
     current_sequential = None
     current_page = None
@@ -92,12 +96,18 @@ def locate_chapter_page(
         course_id = courses[0].id
 
     course = course_api_impl.get_course(course_id)
+    chapter = None
+    page = None
 
-    course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
+    try:
+        course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
+    except HTTPError, e:
+        course_detail = user_models.UserCourseStatus(dictionary={"position": None})
+
     if course_detail.position and len(course.chapters) >= course_detail.position:
         chapter = course.chapters[course_detail.position - 1]
         chapter.bookmark = True
-    else:
+    elif len(course.chapters) > 0:
         chapter = course.chapters[0]
 
     if chapter_id:
@@ -105,9 +115,13 @@ def locate_chapter_page(
             if course_chapter.id == chapter_id:
                 chapter = course_chapter
                 break
-    page = chapter.sequentials[0].pages[0]
+    if chapter and chapter.sequentials and len(chapter.sequentials) > 0 and chapter.sequentials[0].pages and len(chapter.sequentials[0].pages) > 0:
+        page = chapter.sequentials[0].pages[0]
 
-    return course_id, chapter.id, page.id, course_detail.position
+    chapter_id = chapter.id if chapter else None
+    page_id = page.id if page else None
+
+    return course_id, chapter_id, page_id, course_detail.position
 
 
 def program_for_course(user_id, course_id, user_api_impl=user_api):
