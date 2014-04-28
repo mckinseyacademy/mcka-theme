@@ -1,9 +1,14 @@
 from django.test import TestCase
-from django.test.client import Client
+from django.test.client import Client, RequestFactory
 from django.core.urlresolvers import resolve
 
 from .forms import ClientForm, ProgramForm
 import datetime
+import controller
+import tempfile
+
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Create your tests here.
 
@@ -26,9 +31,34 @@ class UrlsTest(TestCase):
         resolver = resolve('/admin/clients/client_new')
         self.assertEqual(resolver.view_name, 'client_new')
 
-        resolver = resolve('/admin/clients/XYXYZ')
+        resolver = resolve('/admin/clients/12345')
         self.assertEqual(resolver.view_name, 'client_detail')
-        self.assertEqual(resolver.kwargs['client_id'], 'XYXYZ')
+        self.assertEqual(resolver.kwargs['client_id'], '12345')
+
+        resolver = resolve('/admin/clients/12345/upload_student_list')
+        self.assertEqual(resolver.view_name, 'upload_student_list')
+        self.assertEqual(resolver.kwargs['client_id'], '12345')
+
+        resolver = resolve('/admin/clients/12345/download_student_list')
+        self.assertEqual(resolver.view_name, 'download_student_list')
+        self.assertEqual(resolver.kwargs['client_id'], '12345')
+
+        resolver = resolve('/admin/clients/12345/program_association')
+        self.assertEqual(resolver.view_name, 'program_association')
+        self.assertEqual(resolver.kwargs['client_id'], '12345')
+
+        resolver = resolve('/admin/clients/12345/add_students_to_program')
+        self.assertEqual(resolver.view_name, 'add_students_to_program')
+        self.assertEqual(resolver.kwargs['client_id'], '12345')
+
+        resolver = resolve('/admin/clients/12345/add_students_to_course')
+        self.assertEqual(resolver.view_name, 'add_students_to_course')
+        self.assertEqual(resolver.kwargs['client_id'], '12345')
+
+        resolver = resolve('/admin/clients/12345/other_named_detail')
+        self.assertEqual(resolver.view_name, 'client_detail')
+        self.assertEqual(resolver.kwargs['client_id'], '12345')
+        self.assertEqual(resolver.kwargs['detail_view'], 'other_named_detail')
 
         resolver = resolve('/admin/clients')
         self.assertEqual(resolver.view_name, 'client_list')
@@ -36,12 +66,27 @@ class UrlsTest(TestCase):
         resolver = resolve('/admin/programs/program_new')
         self.assertEqual(resolver.view_name, 'program_new')
 
-        resolver = resolve('/admin/programs/XYXYZ')
+        resolver = resolve('/admin/programs/987')
         self.assertEqual(resolver.view_name, 'program_detail')
-        self.assertEqual(resolver.kwargs['program_id'], 'XYXYZ')
+        self.assertEqual(resolver.kwargs['program_id'], '987')
+
+        resolver = resolve('/admin/programs/987/add_courses')
+        self.assertEqual(resolver.view_name, 'add_courses')
+        self.assertEqual(resolver.kwargs['program_id'], '987')
+
+        resolver = resolve('/admin/programs/987/download_program_report')
+        self.assertEqual(resolver.view_name, 'download_program_report')
+        self.assertEqual(resolver.kwargs['program_id'], '987')
+
+        resolver = resolve('/admin/programs/987/other_named_detail')
+        self.assertEqual(resolver.view_name, 'program_detail')
+        self.assertEqual(resolver.kwargs['program_id'], '987')
+        self.assertEqual(resolver.kwargs['detail_view'], 'other_named_detail')
 
         resolver = resolve('/admin/programs')
         self.assertEqual(resolver.view_name, 'program_list')
+
+
 
 class AdminFormsTests(TestCase):
     ''' Test Admin Forms '''
@@ -83,3 +128,52 @@ class AdminFormsTests(TestCase):
 #     #     # c.login(username='gooduser', password='password')
 #     #     response = c.get('/admin/')
 #     #     self.assertEqual(response.status_code, 200)
+
+class AdminControllerTests(TestCase):
+
+    def test__process_line(self):
+        # format is email,username,password,firstname,lastname
+        test_line = "email@testorg.org,test_user,test_password,Test,User"
+        user_info = controller._process_line(test_line)
+        self.assertEqual(user_info["email"], "email@testorg.org")
+        self.assertEqual(user_info["username"], "test_user")
+        self.assertEqual(user_info["password"], "test_password")
+        self.assertEqual(user_info["first_name"], "Test")
+        self.assertEqual(user_info["last_name"], "User")
+
+        test_line = "email@testorg.org,test_user,test_password"
+        user_info = controller._process_line(test_line)
+        self.assertEqual(user_info["email"], "email@testorg.org")
+        self.assertEqual(user_info["username"], "test_user")
+        self.assertEqual(user_info["password"], "test_password")
+        self.assertFalse("first_name" in user_info)
+        self.assertFalse("last_name" in user_info)
+
+    def test__build_student_list_from_file(self):
+        # build temp file to fake stream to student list
+        user_objects = []
+        c = RequestFactory()
+        test_file_path = os.path.join(BASE_DIR, 'admin/test_data/test_user_list.csv')
+        with open(test_file_path) as test_file_content:
+            request = c.post('/admin/clients/12345/upload_student_list', {'student_list': test_file_content})
+
+        user_objects = controller._build_student_list_from_file(request.FILES['student_list'])
+        self.assertEqual(len(user_objects), 3)
+
+        self.assertEqual(user_objects[0]["email"], "email@testorg.org")
+        self.assertEqual(user_objects[0]["username"], "test_user")
+        self.assertEqual(user_objects[0]["password"], "test_password")
+        self.assertEqual(user_objects[0]["first_name"], "Test")
+        self.assertEqual(user_objects[0]["last_name"], "User")
+        
+        self.assertEqual(user_objects[1]["email"], "email2@testorg.org")
+        self.assertEqual(user_objects[1]["username"], "test_user2")
+        self.assertEqual(user_objects[1]["password"], "test_password")
+        self.assertFalse("first_name" in user_objects)
+        self.assertFalse("last_name" in user_objects)
+
+        self.assertEqual(user_objects[2]["email"], "email3@testorg.org")
+        self.assertEqual(user_objects[2]["username"], "test_user3")
+        self.assertEqual(user_objects[2]["password"], "test_password")
+        self.assertEqual(user_objects[2]["first_name"], "Test3")
+        self.assertEqual(user_objects[2]["last_name"], "User3")
