@@ -1,23 +1,35 @@
 %article#course-menu
   .sub-2 LESSONS:
   .rotator
-    %ul
-      - for lesson in course.chapters
-        %li
-          %a.card-flip{href: "#{lesson.navigation_url}"}
-            .front.background-white
-              - if lesson.bookmark
-                .bookmark
-                  %i.fa.fa-bookmark
-              .label-5.index LESSON {{lesson.index}}
-              %h2.name
-                = lesson.name
-              .lesson-progress
-                - for tick_mark in lesson.tick_marks
-                  - if tick_mark
-                    .tick.on
-                  - else
-                    .tick
-            .back.background-alt-blue
-              .label-2.description
-                = lesson.description
+    -for idx in course_slide_count
+      - if idx == 0
+        %input{id: "rotator_slide_#{idx}", type: 'radio', name: 'course_rotator', 'data-slide': "#{idx}", checked: None}
+      - else
+        %input{id: "rotator_slide_#{idx}", type: 'radio', name: 'course_rotator', 'data-slide': "#{idx}"}
+      %label{for: "rotator_slide_{{idx|add:-1}}", 'data-dir': 'left'}
+        %i.fa.fa-chevron-left
+      %label{for: "rotator_slide_{{idx|add:1}}", 'data-dir': 'right'}
+        %i.fa.fa-chevron-right
+
+    .frame
+      .slides
+        %ul
+          - for lesson in course.chapters
+            %li
+              %a.card-flip{href: "#{lesson.navigation_url}"}
+                .front.background-white
+                  - if lesson.bookmark
+                    .bookmark
+                      %i.fa.fa-bookmark
+                  .label-5.index LESSON {{lesson.index}}
+                  %h2.name
+                    = lesson.name
+                  .lesson-progress
+                    - for tick_mark in lesson.tick_marks
+                      - if tick_mark
+                        .tick.on
+                      - else
+                        .tick
+                .back.background-alt-blue
+                  .label-2.description
+                    = lesson.description

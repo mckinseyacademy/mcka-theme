@@ -1,4 +1,5 @@
 ''' rendering templates from requests related to courses '''
+import math
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -70,6 +71,8 @@ def homepage(request):
         current_page = None
         program = None
 
+    course_slide_count = math.ceil(len(course.chapters)/float(5))
+
     data = {
         "user": request.user,
         "course": course,
@@ -83,6 +86,7 @@ def homepage(request):
         "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
         "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
+        "course_slide_count": range(0, int(course_slide_count))
     }
     return render(request, 'courses/course_main.haml', data)
 
