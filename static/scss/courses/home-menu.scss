@@ -1,11 +1,28 @@
 #course-menu {
   margin: 10px 0;
-  padding: 20px 27px;
+  position: relative;
+  padding: 20px 0;
   border-bottom: 1px solid $almost-white;
 
   .rotator {
-    overflow: hidden;
-    padding: 10px 0;
+    width: 800px;
+    margin: 0 auto;
+
+    label {
+      color: $almost-white;
+      position: absolute;
+      top: 50%;
+      margin-top: rem-calc(-35/2);
+      z-index: 2;
+      @include font-spec(35);
+
+      &[data-dir='left'] { left: -45px; }
+      &[data-dir='right'] { right: -45px; }
+    }
+
+    .frame {
+      padding: 10px 0;
+    }
 
     ul {
       margin: 0;
