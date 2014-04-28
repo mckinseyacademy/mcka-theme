@@ -7,7 +7,7 @@ from .models import Client
 
 
 def _process_line(user_line):
-    fields = user_line.split(',')
+    fields = user_line.strip().split(',')
     # format is email,username,password,firstname,lastname
 
     # Must have the first 3 fields
