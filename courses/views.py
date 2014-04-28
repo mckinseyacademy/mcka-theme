@@ -55,7 +55,7 @@ def homepage(request):
     course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
         request.user.id, None, None)
 
-    if course_id and chapter_id and page_id:
+    if course_id:
         course, current_chapter, current_sequential, current_page = build_page_info_for_course(
             course_id, chapter_id, page_id, chapter_position)
 
@@ -181,13 +181,20 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
         request.user.id, course_id, chapter_id)
 
-    return HttpResponseRedirect(
-        '/courses/{}/lessons/{}/module/{}'.format(
-            encode_id(course_id),
-            encode_id(chapter_id),
-            encode_id(page_id)
+    if course_id and chapter_id and page_id:
+        return HttpResponseRedirect(
+            '/courses/{}/lessons/{}/module/{}'.format(
+                encode_id(course_id),
+                encode_id(chapter_id),
+                encode_id(page_id)
+            )
         )
-    )
+    else:
+        return HttpResponseRedirect(
+            '/courses/{}/view/notready'.format(
+                encode_id(course_id),
+            )
+        )
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''

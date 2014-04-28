@@ -4,6 +4,12 @@
   background-color: $pure-white;
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
+  .error{
+    color: $mckinsey-red;
+    text-align: center;
+    width: 100%;
+  }
+
   .course-tabs {
     margin: 0;
     list-style-type: none;

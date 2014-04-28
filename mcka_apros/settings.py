@@ -146,7 +146,6 @@ CACHES = {
     }
 }
 
-
 # Api address
 # API_SERVER_ADDRESS = 'http://localhost:8000'
 API_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
@@ -172,3 +171,9 @@ if RUN_LOCAL_MOCK_API:
     INSTALLED_APPS += (
         'mockapi',
     )
+
+# Add request object to templates
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+)

@@ -1,15 +1,18 @@
-%header= _("Create New Program")
-.subhead= _("Add a program")
-.description
-  Add a program using this form
+%header
+  %h1= _("Create a New Program")
+  .sub-1= _("Add a program")
+  %p.description Add a program using this form
 
 .close-reveal-modal
-  %i.fa.fa-remove
-.admin-form
-  %form{action: "/admin/programs/program_new", method: "POST"}
-    .error
-      - if error
-        = error
-    - csrf_token
+  %i.fa.fa-times-circle
+
+%form.admin-form{action: "/admin/programs/program_new", method: "POST"}
+  .error
+    - if error
+      = error
+  - csrf_token
+  %fieldset
+    %legend.sub-1= _("Create New Program")
     = form
+  .submit-area
     %input.button.radius.small{type: "submit", value: "#{submit_label}"}
