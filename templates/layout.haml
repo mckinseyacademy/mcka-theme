@@ -11,6 +11,7 @@
     - block css
       %link{rel: "stylesheet", href: "{% static 'css/normalize.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/font-awesome.css' %}"}
+      %link{rel: "stylesheet", href: "{% static 'css/leaflet.css' %}"}
 
     - load assets
     {% assets "css_all" %}
@@ -59,6 +60,7 @@
     -# Custom JS
     - block body_js
       %script{src: "{% static 'js/application.js' %}"}
+      %script{src: "{% static 'js/vendor/leaflet.js' %}"}
 
     -# JS - custom snippets
     - block js_snippets
