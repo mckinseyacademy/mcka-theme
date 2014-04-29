@@ -18,6 +18,7 @@ from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from api_client import course_api
 from api_client import user_api
+from api_client.json_object import Objectifier
 
 
 @group_required('super_admin')
@@ -99,10 +100,20 @@ def client_new(request):
     )
 
 
+def _format_upload_results(upload_results):
+    results_object = Objectifier(upload_results)
+    results_object.message = _("Successfully processed {} of {} records").format(
+        results_object.attempted - results_object.failed,
+        results_object.attempted,
+    )
+
+    return results_object
+
 @group_required('super_admin')
-def client_detail(request, client_id, detail_view="detail"):
+def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
     view = 'admin/client/{}.haml'.format(detail_view)
+
     data = {
         "client": client,
         "selected_client_tab": detail_view,
@@ -114,6 +125,9 @@ def client_detail(request, client_id, detail_view="detail"):
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
+
+    if upload_results:
+        data["upload_results"] = _format_upload_results(upload_results)
 
     return render(
         request,
@@ -216,12 +230,11 @@ def upload_student_list(request, client_id):
         form = UploadStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
             try:
-                process_uploaded_student_list(
+                upload_results = process_uploaded_student_list(
                     request.FILES['student_list'],
                     client_id
                 )
-                # Redirect after POST
-                return HttpResponseRedirect('/admin/clients/{}'.format(client_id))
+                return client_detail(request, client_id, detail_view="detail", upload_results=upload_results)
 
             except url_access.HTTPError, err:
                 error = _("An error occurred during student upload")
