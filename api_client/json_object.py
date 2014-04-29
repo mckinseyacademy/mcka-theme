@@ -15,7 +15,7 @@ class Objectifier(object):
     object_map = {}
 
     def _make_data_object(self, value, object_type):
-        if isinstance(value, collections.Iterable):
+        if isinstance(value, dict) or isinstance(value, list):
             return object_type(dictionary=value)
         else:
             return value
