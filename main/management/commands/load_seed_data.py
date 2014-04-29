@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api_client import course_api, user_api
+from api_client import course_api, group_api, user_api
 
 
 class Command(BaseCommand):
@@ -24,18 +24,27 @@ class Command(BaseCommand):
         # user_api.register_user(user_data)
 
         ''' Create roles '''
-        existing_group_names = user_api.get_groups().keys()
+        group_type = 'permission'
+        existing_groups = group_api.get_groups_of_type(group_type)
+        existing_group_names = [existing_group.name for existing_group in existing_groups]
         group_names = (
             'mcka_role_mcka_admin',
+            'mcka_role_mcka_subadmin',
+            
             'mcka_role_client_admin',
+            'mcka_role_client_subadmin',
+            
             'mcka_role_mcka_ta',
             'mcka_role_client_ta'
         )
+        
         for group_name in group_names:
-            import pdb;pdb.set_trace()
             if group_name not in existing_group_names:
                 self.stdout.write("Creating group: %s" % group_name)
-                user_api.create_group(group_name)
+                # TODO: the group_data param should not be required but there is a 
+                # db constraint as of 4/29/2014. Remove the param when this is fixed in 
+                # edx-platform
+                group_api.create_group(group_name, group_type, group_data='placeholder')
             else:
                 self.stdout.write("Skipping %s, already exists" % group_name)
 

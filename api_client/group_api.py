@@ -34,6 +34,7 @@ def get_groups_of_type(group_type, group_object=group_models.GroupInfo):
             group_type,
         )
     )
+    
     return JP.from_json(response.read(), group_object)
 
 
@@ -67,6 +68,7 @@ def fetch_group(group_id, group_object=group_models.GroupInfo):
             group_id,
         )
     )
+
     return JP.from_json(response.read(), group_object)
 
 

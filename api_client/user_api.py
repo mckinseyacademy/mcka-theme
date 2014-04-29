@@ -155,19 +155,6 @@ def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id,
     return positions
 
 
-
-def create_group(group_name):
-    ''' creates a group '''
-    data = {
-        "name": group_name
-    }
-
-    url = '{}/{}/'.format(settings.API_SERVER_ADDRESS, GROUP_API)
-    response = POST(url, data)
-
-    return JP.from_json(response.read())
-
-
 def is_user_in_group(user_id, group_id):
     ''' checks group membership '''
     try:
