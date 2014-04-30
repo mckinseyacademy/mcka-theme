@@ -1,6 +1,6 @@
 ''' API calls with respect to groups '''
 from .json_object import JsonParser as JP
-from . import group_models
+from .json_object import JsonObject
 from . import user_models
 from . import course_models
 from .json_requests import GET, POST, DELETE
@@ -10,7 +10,7 @@ from django.conf import settings
 GROUP_API = 'api/groups'
 
 
-def get_groups(group_object=group_models.GroupInfo):
+def get_groups(group_object=JsonObject):
     ''' gets all groups '''
     response = GET(
         '{}/{}'.format(
@@ -25,7 +25,7 @@ def get_groups(group_object=group_models.GroupInfo):
     return rd
 
 
-def get_groups_of_type(group_type, group_object=group_models.GroupInfo):
+def get_groups_of_type(group_type, group_object=JsonObject):
     ''' gets all groups of provided type'''
     response = GET(
         '{}/{}?type={}'.format(
@@ -38,7 +38,7 @@ def get_groups_of_type(group_type, group_object=group_models.GroupInfo):
     return JP.from_json(response.read(), group_object)
 
 
-def create_group(group_name, group_type, group_data=None, group_object=group_models.GroupInfo):
+def create_group(group_name, group_type, group_data=None, group_object=JsonObject):
     ''' create a new group '''
     data = {
         "name": group_name,
@@ -59,7 +59,7 @@ def create_group(group_name, group_type, group_data=None, group_object=group_mod
     return JP.from_json(response.read(), group_object)
 
 
-def fetch_group(group_id, group_object=group_models.GroupInfo):
+def fetch_group(group_id, group_object=JsonObject):
     ''' fetch group by id '''
     response = GET(
         '{}/{}/{}'.format(
@@ -85,7 +85,7 @@ def delete_group(group_id):
     return (response.code == 204)
 
 
-def add_user_to_group(user_id, group_id, group_object=group_models.GroupInfo):
+def add_user_to_group(user_id, group_id, group_object=JsonObject):
     ''' adds user to group '''
     data = {"user_id": user_id}
     response = POST(
@@ -100,7 +100,7 @@ def add_user_to_group(user_id, group_id, group_object=group_models.GroupInfo):
     return JP.from_json(response.read(), group_object)
 
 
-def add_course_to_group(course_id, group_id, group_object=group_models.GroupInfo):
+def add_course_to_group(course_id, group_id, group_object=JsonObject):
     ''' adds course to group '''
     data = {"course_id": course_id}
     response = POST(
@@ -115,7 +115,7 @@ def add_course_to_group(course_id, group_id, group_object=group_models.GroupInfo
     return JP.from_json(response.read(), group_object)
 
 
-def add_group_to_group(child_group_id, group_id, group_object=group_models.GroupInfo, relationship_type='h'):
+def add_group_to_group(child_group_id, group_id, group_object=JsonObject, relationship_type='g'):
     ''' adds user to group '''
     data = {
         "group_id": child_group_id,
@@ -163,7 +163,7 @@ def get_courses_in_group(group_id):
     return courses_list.courses
 
 
-def get_groups_in_group(group_id, group_object=group_models.GroupInfo):
+def get_groups_in_group(group_id, group_object=JsonObject):
     ''' get list of groups associated with a specific group '''
     response = GET(
         '{}/{}/{}/groups'.format(

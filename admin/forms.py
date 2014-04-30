@@ -50,4 +50,4 @@ class ProgramAssociationForm(forms.Form):
             choices=((program.id, program.display_name)
                      for program in program_list)
         )
-        self.fields['places'] = forms.IntegerField(required=False)
+        self.fields['places'] = forms.IntegerField()
