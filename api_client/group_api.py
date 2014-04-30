@@ -4,10 +4,20 @@ from . import group_models
 from . import user_models
 from . import course_models
 from .json_requests import GET, POST, DELETE
+from lib.util import DottableDict
 
 from django.conf import settings
 
 GROUP_API = 'api/groups'
+
+PERMISSION_GROUPS = DottableDict(
+    MCKA_ADMIN='mcka_role_mcka_admin',
+    MCKA_SUBADMIN='mcka_role_mcka_subadmin',
+    CLIENT_ADMIN='mcka_role_client_admin',
+    CLIENT_SUBADMIN='mcka_role_client_subadmin',
+    MCKA_TA='mcka_role_mcka_ta',
+    CLIENT_TA='mcka_role_client_ta'
+)
 
 
 def get_groups(group_object=group_models.GroupInfo):
@@ -34,7 +44,7 @@ def get_groups_of_type(group_type, group_object=group_models.GroupInfo):
             group_type,
         )
     )
-    
+
     return JP.from_json(response.read(), group_object)
 
 
