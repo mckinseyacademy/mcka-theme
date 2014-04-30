@@ -40,7 +40,7 @@ header[role=banner] {
     cursor: pointer;
     float: right;
     color: $user-text;
-    @include font-spec(10, semibold, 12);
+    @include font-spec(10, bold, 12);
     text-align: right;
     $drop_down_offset: 3px;
     position: fixed;
