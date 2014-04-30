@@ -4,9 +4,7 @@ Don't save in database, but we must inherit from AbstractUser (which in turn
 inherits from model) and therefore tables get contructed
 '''
 from django.db import models
-from django.contrib.auth.models import AbstractUser  # , AbstractBaseUser
-
-# Create your models here.
+from django.contrib.auth.models import User, AbstractUser 
 
 
 class RemoteUser(AbstractUser):
@@ -61,3 +59,45 @@ class RemoteUser(AbstractUser):
 
 #    def get_short_name(self):
 #        return self.username
+
+    def is_mcka_admin(self):
+        return True
+
+    def is_mcka_subadmin(self):
+        return True
+
+    def is_client_admin(self):
+        return True
+
+    def is_client_subadmin(self):
+        return True
+
+    def is_mcka_ta(self):
+        return True
+
+    def is_client_ta(self):
+        return True
+
+
+# class AprosUser(RemoteUser):
+#     def set_user_attributes(self, user):
+#         for k, v in user.__dict__:
+#             setattr(self, k, v)
+
+#     def is_mcka_admin():
+#         return True
+
+#     def is_mcka_subadmin():
+#         return True
+
+#     def is_client_admin():
+#         return True
+
+#     def is_client_subadmin():
+#         return True
+
+#     def is_mcka_ta():
+#         return True
+
+#     def is_client_ta():
+#         return True
