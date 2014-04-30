@@ -17,6 +17,22 @@
     }
   }
 
+  input[type=submit]{
+    &[disabled]{
+      cursor: not-allowed;
+    }
+  }
+
+  #upload_error_list{
+    li{
+      @include font-spec(12);
+      color: $mckinsey-red;
+      text-transform: none;
+      padding: 10px;
+      width: auto;
+    }
+  }
+
   @import './admin-list';
   @import './principal-overlay';
 }

@@ -13,8 +13,8 @@ class BaseGroupModel(group_models.GroupInfo):
         if not hasattr(self, "id") and hasattr(self, "group_id"):
             self.id = self.group_id
 
-        if not hasattr(self, "name") and hasattr(self, "display_name"):
-            self.name = self.display_name
+        if not hasattr(self, "display_name") and hasattr(self, "name"):
+            self.display_name = self.name
 
     def __unicode__(self):
         return self.name

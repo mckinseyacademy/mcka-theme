@@ -1,24 +1,30 @@
 import tempfile
 from urllib2 import HTTPError
 from django.core.servers.basehttp import FileWrapper
+from django.utils.translation import ugettext as _
 
 from api_client import user_api, group_api
 from .models import Client
 
 
 def _process_line(user_line):
-    fields = user_line.strip().split(',')
-    # format is email,username,password,firstname,lastname
+    try:
+        fields = user_line.strip().split(',')
+        # format is email,username,password,firstname,lastname
 
-    # Must have the first 3 fields
-    user_info = {
-        "email": fields[0],
-        "username": fields[1],
-        "password": fields[2],
-    }
-    if len(fields) > 4:
-        user_info["first_name"] = fields[3]
-        user_info["last_name"] = fields[4]
+        # Must have the first 3 fields
+        user_info = {
+            "email": fields[0],
+            "username": fields[1],
+            "password": fields[2],
+        }
+        if len(fields) > 4:
+            user_info["first_name"] = fields[3]
+            user_info["last_name"] = fields[4]
+    except Exception, e:
+        user_info = {
+            "error": _("Could not parse user info from {}").format(user_line)
+        }
 
     return user_info
 
@@ -31,7 +37,8 @@ def _build_student_list_from_file(file_stream):
             temp_file.write(chunk)
 
         temp_file.seek(0)
-        user_objects = [_process_line(user_line) for user_line in temp_file]
+
+        user_objects = [_process_line(user_line) for user_line in temp_file.read().splitlines()]
 
     return user_objects
 
@@ -60,8 +67,8 @@ def _register_users_in_list(user_list, client_id):
             try:
                 group_api.add_user_to_group(user.id, client_id)
             except HTTPError, e:
-                reason = "Error associating user with client"
-                errors.append("User not associated with client {} - {} ({})".format(
+                reason = _("Error associating user with client")
+                errors.append(_("User not associated with client {} - {} ({})").format(
                         reason,
                         user_dict["email"],
                         user_dict["username"]
@@ -74,12 +81,21 @@ def _register_users_in_list(user_list, client_id):
 def process_uploaded_student_list(file_stream, client_id):
     # 1) Build user list
     user_list = _build_student_list_from_file(file_stream)
+    attempted_count = len(user_list)
+
+    errors = [user_info["error"] for user_info in user_list if "error" in user_info]
+    user_list = [user_info for user_info in user_list if "error" not in user_info]
 
     # 2) Register the users, and associate them with
-    errors = _register_users_in_list(user_list, client_id)
+    errors.extend(_register_users_in_list(user_list, client_id))
+    failed_count = len(errors)
 
     # 3) Return any error information
-    return errors
+    return {
+        "attempted": attempted_count,
+        "failed": failed_count,
+        "errors": errors
+    }
 
 
 def _formatted_user_string(user):

@@ -1,3 +1,4 @@
+- load staticfiles
 %header= _("Upload Student List")
 .subhead= _("Add student(s) to client")
 .description
@@ -13,6 +14,14 @@
     .error
       - if error
         = error
-    %input.button.radius.small{type: "submit", value: "Add Student(s)"}
+    %input.button.radius.small{type: "submit", value: "Add Student(s)", disabled: "disabled"}
   .allowed-format
     Use CSV formatted file (Comma Separated Value)
+
+  -# %script{src: "{% static 'js/submit_form.js' %}"}
+  :javascript
+    $(function(){
+      $('#id_student_list').on("change", function(){
+        $('input[type=submit]').removeAttr('disabled');
+      });
+    });
