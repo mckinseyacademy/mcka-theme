@@ -295,20 +295,21 @@ def download_program_report(request, program_id):
 @group_required('super_admin')
 def program_association(request, client_id):
     client = Client.fetch(client_id)
+    program_list = Program.list()
     error = None
     if request.method == 'POST':
-        form = ProgramAssociationForm(request.POST)
+        form = ProgramAssociationForm(program_list, request.POST)
         if form.is_valid():
             client.add_program(request.POST.get('select_program'))
             return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
     else:
-        form = ProgramAssociationForm()
+        form = ProgramAssociationForm(program_list)
 
     data = {
         "form": form,
         "client": client,
         "error": error,
-        "programs": Program.list(),
+        "programs": program_list,
     }
 
     return render(

@@ -44,8 +44,10 @@ class UploadStudentListForm(forms.Form):
 class ProgramAssociationForm(forms.Form):
 
     ''' form to select program to add to client '''
-    select_program = forms.ChoiceField(
-        choices=((program.id, program.display_name)
-                 for program in Program.list())
-    )
-    places = forms.IntegerField(required=False)
+    def __init__(self, program_list, *args, **kwargs):
+        super(ProgramAssociationForm, self).__init__(*args, **kwargs)
+        self.fields['select_program'] = forms.ChoiceField(
+            choices=((program.id, program.display_name)
+                     for program in program_list)
+        )
+        self.fields['places'] = forms.IntegerField(required=False)
