@@ -13,6 +13,6 @@
   - csrf_token
   %fieldset
     %legend.sub-1= _("Create New Program")
-    = form
+    = form.as_p
   .submit-area
     %input.button.radius.small{type: "submit", value: "#{submit_label}"}
