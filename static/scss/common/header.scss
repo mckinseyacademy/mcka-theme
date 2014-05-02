@@ -94,14 +94,19 @@ header[role=banner] {
             text-align: center;
             @include font-spec(14, semibold);
             height: 30px;
-            padding-top: 3px;
+            padding-top: 8px;
           }
           &.logout{
             height: auto;
             vertical-align: middle;
             text-align: center;
             .button{
+              @include font-spec(14,bold);
               margin: 0 0 5px;
+              color: $pure-white;
+              &:hover{
+                color: $pure-white;
+              }
             }
           }
         }
@@ -119,7 +124,8 @@ header[role=banner] {
           .fieldtitle{
             font-weight: bold;
             .editfield{
-              font-weight: boldness(semibold);
+              color: $mckinsey-academy-alt-blue;
+              @include font-spec(10, semibold);
               padding-left: 4px;
               border-left: 1px solid $border-line;
             }
