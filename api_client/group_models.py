@@ -61,3 +61,6 @@ class GroupInfo(JsonObject):
     @classmethod
     def delete(cls, group_id):
         return group_api.delete_group(group_id)
+    @classmethod
+    def update(cls, group_id, group_data):
+        return group_api.update_group(group_id, cls.group_type, group_data, group_object=cls)

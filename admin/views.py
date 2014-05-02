@@ -113,6 +113,47 @@ def client_new(request):
         data
     )
 
+@group_required('super_admin')
+def client_edit(request, client_id):
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        form = ClientForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            try:
+                client = Client.fetch(client_id).update(client_id, request.POST)
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/clients/')
+
+            except url_access.HTTPError, err:
+                error = _("An error occurred during client creation")
+                error_messages = {
+                    403: _("You are not permitted to add new clients"),
+                    401: _("Invalid data"),
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+    else:
+        ''' edit a client '''
+        client = Client.fetch(client_id)
+        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'email': client.email, 'phone': client.phone}
+        form = ClientForm(data_dict)
+
+    # set focus to company name field
+    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
+
+    data = {
+        "form": form,
+        "client_id": client_id, 
+        "error": error,
+        "submit_label": _("Save Client"),
+    }
+
+    return render(
+        request,
+        'admin/client/edit.haml',
+        data
+    )
+
 
 def _format_upload_results(upload_results):
     results_object = Objectifier(upload_results)
@@ -126,6 +167,7 @@ def _format_upload_results(upload_results):
 @group_required('super_admin')
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
+
     view = 'admin/client/{}.haml'.format(detail_view)
 
     data = {
