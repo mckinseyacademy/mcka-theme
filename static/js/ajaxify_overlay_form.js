@@ -2,12 +2,12 @@
 // submits forms via ajax and re-renders the html
 function ajaxify_overlay_form(overlay, formSelector) {
   overlay.on('submit', formSelector, function(e) {
-    var form = $(this);
     e.preventDefault();
+    var form = $(this);
 
-    form.find(':submit').attr('disabled', 'disabled');
+    form.find(':submit').prop('disabled', true);
 
-    var xhr = $.ajax({
+    $.ajax({
       method: 'POST',
       url: form.attr('action'),
       data: form.serialize()
@@ -19,6 +19,7 @@ function ajaxify_overlay_form(overlay, formSelector) {
       else
         form.parent().html(data);
 
-      form.find(':submit').removeAttr('disabled'); });
+      form.find(':submit').prop('disabled', false);
+    });
   });
 }
