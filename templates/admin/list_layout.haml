@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load staticfiles
 - block content
   .admin-list
     .row
@@ -27,3 +28,8 @@
                   %a.principal{href: "#{principal.detail_url}"}
                     = principal.display_name
         #new-principal.reveal-modal.medium{"data-reveal": "true"}
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form($('#new-principal'), 'form');
