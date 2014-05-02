@@ -63,4 +63,16 @@ class GroupInfo(JsonObject):
         return group_api.delete_group(group_id)
     @classmethod
     def update(cls, group_id, group_data):
-        return group_api.update_group(group_id, cls.group_type, group_data, group_object=cls)
+        clean_data = {
+            key: value for key, value in group_data.iteritems() if key in cls.data_fields
+        }
+        
+        for date_field in cls.date_fields:
+            date_components = ["{}_{}".format(date_field, component_value)
+                               for component_value in ['year', 'month', 'day']]
+            component_values = [int(group_data[component])
+                                for component in date_components if component in group_data]
+            if len(component_values) == 3:
+                clean_data[date_field]= datetime(component_values[0],component_values[1],component_values[2]).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+
+        return group_api.update_group(group_id, cls.group_type, clean_data, group_object=cls)
