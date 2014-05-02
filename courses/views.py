@@ -54,7 +54,7 @@ def homepage(request):
     etc. from user settings
     '''
     course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
-        request.user.id, None, None)
+        request.user.id, request.session.get("current_course_id"), None)
 
     if course_id:
         course, current_chapter, current_sequential, current_page = build_page_info_for_course(
@@ -141,6 +141,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     # Take note that the user has gone here
     program = program_for_course(request.user.id, course_id)
     program_id = program.id if program else None
+    request.session["current_course_id"] = course_id
     update_bookmark(
         request.user.id, program_id, course_id, chapter_id, current_sequential.id, page_id)
 

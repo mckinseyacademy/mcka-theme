@@ -1,6 +1,9 @@
 ''' Core logic to sanitise information for views '''
 from urllib2 import HTTPError
+from django.conf import settings
 from api_client import course_api, user_api, user_models
+from license import controller as license_controller
+from admin.models import Program
 #from urllib import quote_plus, unquote_plus
 
 # warnings associated with members generated from json response
@@ -8,7 +11,6 @@ from api_client import course_api, user_api, user_models
 
 
 # logic functions - recieve api implementor for test
-
 
 def decode_id(encoded_id):
     #return unquote_plus(encoded_id)
@@ -131,22 +133,25 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
         user_api_impl - optional api client module to use (useful in mocks)
     '''
     courses = user_api_impl.get_user_courses(user_id)
-    course_program = user_models.UserProgram(dictionary={"id": "DEFAULT_PROGRAM", "name": "McKinsey Management Program"})
-    course_program.courses = courses
+    if not course_id:
+        if len(courses) < 1:
+            return None
+        course_id = courses[0].id
 
-    # Check that the specified course is part of this program
-    # for program in courses.programs:
-    #     if course_id in [course.id for course in program.courses]:
-    #         course_program = program
-    #         break
+    course_program = None
+    for program in Program.programs_with_course(course_id):
+        if license_controller.fetch_granted_license(program.id, user_id) is not None:
+            course_program = program
+            break
 
-    # # Now add the courses therein:
-    # if course_program:
-    #     course_ids = [course.id for course in course_program.courses]
-    #     course_program.courses = []
-    #     for course in courses.courses:
-    #         if course.id in course_ids:
-    #             course_program.courses.append(course)
+    if course_program:
+        program_course_ids = [course.course_id for course in course_program.fetch_courses()]
+        course_program.courses = [course for course in courses if course.id in program_course_ids]
+        course_program.outside_courses = [course for course in courses if course.id not in program_course_ids]
+    else:
+        course_program = Program(dictionary={"id": "NO_PROGRAM", "name": settings.NO_PROGRAM_NAME})
+        course_program.courses = courses
+        course_program.outside_courses = None
 
     return course_program
 

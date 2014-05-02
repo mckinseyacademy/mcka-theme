@@ -98,7 +98,7 @@ class AdminFormsTests(TestCase):
             "display_name": "company",
             "contact_name": "contact_name",
             "phone": "phone",
-            "email": "email",
+            "email": "email@email.com",
         }
         client_form = ClientForm(client_data)
 
