@@ -39,8 +39,7 @@ def get_course(course_id, depth = 3):
     '''
     Retrieves course structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}/tree/{}'.format(
-        # TODO: remove forced MOCK reference when real API becomes available
+    response = GET('{}/{}/{}?depth={}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,

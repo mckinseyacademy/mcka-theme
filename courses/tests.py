@@ -414,7 +414,7 @@ class CoursesAPITest(TestCase):
         test_program = controller.program_for_course("0", "2", MockUserAPI)
         # TODO: Generated DEFAULT program for now
         self.assertEqual(test_program.id, "DEFAULT_PROGRAM")
-        self.assertEqual(test_program.name, "McKinsey Academy Program")
+        self.assertEqual(test_program.name, "McKinsey Management Program")
 
         #self.assertEqual(len(test_program.courses), 4)
 

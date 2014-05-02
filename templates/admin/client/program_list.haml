@@ -5,13 +5,9 @@
       %td.title
         = program.display_name
       %td.dates
-        %span= program.start_date
-        %span -
-        %span= program.end_date
-      %td.places
-        000
-      %td.enrolled
-        000
+        %span= program.date_range
+      %td.places= program.places_allocated
+      %td.enrolled= program.places_assigned
     %tr.courses{class: "course_for_#{program.id}"}
       %td
       %td
@@ -20,9 +16,9 @@
           - for course in program.courses
             %tr
               %td.name
-                = "#{course.name}"
+                = course.name
               %td.dates
-                = "#{course.start_date} - #{course.end_date}"
+                = course.date_range
               %td.places
                 000
               %td.enrolled

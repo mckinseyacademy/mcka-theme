@@ -131,7 +131,7 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
         user_api_impl - optional api client module to use (useful in mocks)
     '''
     courses = user_api_impl.get_user_courses(user_id)
-    course_program = user_models.UserProgram(dictionary={"id": "DEFAULT_PROGRAM", "name": "McKinsey Academy Program"})
+    course_program = user_models.UserProgram(dictionary={"id": "DEFAULT_PROGRAM", "name": "McKinsey Management Program"})
     course_program.courses = courses
 
     # Check that the specified course is part of this program
