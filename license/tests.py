@@ -95,3 +95,16 @@ class TestLicenses(TestCase):
         allocated, assigned = controller.licenses_report(2, 12)
         self.assertEqual(allocated, 100)
         self.assertEqual(assigned, 100)
+
+    def test_already_licensed(self):
+        licensor = controller.LicenseBroker(3, 13)
+        licensor.create(1)
+
+        # assign to a user
+        licensor.assign(101)
+
+        with self.assertRaises(controller.NoAvailableLicensesError):
+            licensor.assign(102)
+
+        # try to assign when already assigned, should be okay
+        licensor.assign(101)
