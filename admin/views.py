@@ -23,8 +23,9 @@ from license import controller as license_controller
 
 
 def ajaxify_http_redirects(func):
-    def wrapper(request):
-        obj = func(request)
+    def wrapper(*args, **kwargs):
+        obj = func(*args, **kwargs)
+        request = args[0]
         if request.is_ajax() and isinstance(obj, HttpResponseRedirect):
             data = { "redirect": obj.url }
             return HttpResponse(json.dumps(data), content_type="application/json")
@@ -113,6 +114,7 @@ def client_new(request):
         data
     )
 
+@ajaxify_http_redirects
 @group_required('super_admin')
 def client_edit(request, client_id):
     error = None
