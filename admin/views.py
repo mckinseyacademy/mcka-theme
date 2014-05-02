@@ -127,9 +127,9 @@ def client_edit(request, client_id):
                 return HttpResponseRedirect('/admin/clients/')
 
             except url_access.HTTPError, err:
-                error = _("An error occurred during client creation")
+                error = _("An error occurred during client update")
                 error_messages = {
-                    403: _("You are not permitted to add new clients"),
+                    403: _("You are not permitted to edit clients"),
                     401: _("Invalid data"),
                 }
                 if err.code in error_messages:
@@ -252,6 +252,48 @@ def program_new(request):
     return render(
         request,
         'admin/program/new.haml',
+        data
+    )
+
+@ajaxify_http_redirects
+@group_required('super_admin')
+def program_edit(request, program_id):
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        form = ProgramForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            try:
+                program = Program.fetch(program_id).update(program_id, request.POST)
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/programs/')
+
+            except url_access.HTTPError, err:
+                error = _("An error occurred during program update")
+                error_messages = {
+                    403: _("You are not permitted to add edit programs"),
+                    401: _("Invalid data"),
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+    else:
+        ''' edit a program '''
+        program = Program.fetch(program_id)
+        data_dict = {'name': program.name, 'display_name': program.display_name, 'start_date': program.start_date, 'end_date': program.end_date}
+        form = ProgramForm(data_dict)
+
+    # set focus to company name field
+    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
+
+    data = {
+        "form": form,
+        "program_id": program_id, 
+        "error": error,
+        "submit_label": _("Save Client"),
+    }
+
+    return render(
+        request,
+        'admin/program/edit.haml',
         data
     )
 
