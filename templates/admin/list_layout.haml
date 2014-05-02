@@ -26,4 +26,7 @@
                 %li
                   %a.principal{href: "#{principal.detail_url}"}
                     = principal.display_name
+                  %a.edit-principal{"data-reveal-id": "edit-principal", "data-reveal-ajax": "true", href: "#{principal.detail_url}/edit"}
+                    = 'Edit'
         #new-principal.reveal-modal.medium{"data-reveal": "true"}
+        #edit-principal.reveal-modal.medium{"data-reveal": "true"}

@@ -84,7 +84,27 @@ def delete_group(group_id):
 
     return (response.code == 204)
 
+def update_group(group_id, group_type, group_data=None, group_object=JsonObject):
+    ''' update existing group '''
+    # group_name is fixed, does not get updated, so no need to include it
+    data = {
+        "group_type": group_type,
+    }
 
+    if group_data:
+        data["data"] = group_data
+
+    response = POST(
+        '{}/{}/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+        ),
+        data
+    )
+
+    return JP.from_json(response.read(), group_object)
+    
 def add_user_to_group(user_id, group_id, group_object=JsonObject):
     ''' adds user to group '''
     data = {"user_id": user_id}
