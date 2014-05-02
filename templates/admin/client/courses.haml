@@ -18,9 +18,7 @@
           .name= program.display_name
           .prog-info
             %span= _("Program Run:")
-            %span= program.start_date
-            %span -
-            %span= program.end_date
+            %span= program.date_range
           - for course in program.courses
             .course-box
               %input{type: "checkbox", id:"#{course.course_id}"}
@@ -28,9 +26,7 @@
                 .title= course.display_name
                 .course-info
                   %span= _("Course Run:")
-                  %span= course.start_date
-                  %span -
-                  %span= course.end_date
+                  %span= course.date_range
                 .course-info
                   %span= _("Company Participants:")
                   %span{style: "color: red;"} 000

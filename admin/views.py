@@ -19,6 +19,7 @@ from .forms import ProgramAssociationForm
 from api_client import course_api
 from api_client import user_api
 from api_client.json_object import Objectifier
+from license import controller as license_controller
 
 
 @group_required('super_admin')
@@ -117,7 +118,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
     data = {
         "client": client,
         "selected_client_tab": detail_view,
-        "programs": client.fetch_programs(),
+        "programs": [_prepare_program_display(program) for program in client.fetch_programs()],
     }
 
     if detail_view == "programs" or detail_view == "courses":
@@ -202,7 +203,7 @@ def program_detail(request, program_id, detail_view="detail"):
     program = Program.fetch(program_id)
     view = 'admin/program/{}.haml'.format(detail_view)
     data = {
-        "program": program,
+        "program": _prepare_program_display(program),
         "selected_program_tab": detail_view,
     }
 
@@ -213,6 +214,7 @@ def program_detail(request, program_id, detail_view="detail"):
         selected_ids = [course.course_id for course in program.fetch_courses()]
         for course in data["courses"]:
             course.class_name = "selected" if course.id in selected_ids else None
+        data["course_count"] = len(selected_ids)
 
     return render(
         request,
@@ -292,6 +294,16 @@ def download_program_report(request, program_id):
     return response
 
 
+def _prepare_program_display(program):
+    date_format = _('%m/%d/%Y')
+
+    program.date_range = "{} - {}".format(
+        program.start_date.strftime(date_format),
+        program.end_date.strftime(date_format),
+        )
+
+    return program
+
 @group_required('super_admin')
 def program_association(request, client_id):
     client = Client.fetch(client_id)
@@ -300,7 +312,8 @@ def program_association(request, client_id):
     if request.method == 'POST':
         form = ProgramAssociationForm(program_list, request.POST)
         if form.is_valid():
-            client.add_program(request.POST.get('select_program'))
+            number_places = int(request.POST.get('places'))
+            client.add_program(request.POST.get('select_program'), number_places)
             return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
     else:
         form = ProgramAssociationForm(program_list)
@@ -309,6 +322,7 @@ def program_association(request, client_id):
         "form": form,
         "client": client,
         "error": error,
+        #"programs": [program for program in _prepare_program_display(program_list)],
         "programs": program_list,
     }
 
@@ -339,9 +353,17 @@ def add_courses(request, program_id):
 def add_students_to_program(request, client_id):
     program = Program.fetch(request.POST.get("program"))
     students = request.POST.getlist("students[]")
+    allocated, assigned = license_controller.licenses_report(program.id, client_id)
+    remaining = allocated - assigned
+    if len(students) > remaining:
+        return HttpResponse(
+            json.dumps({"message": _("Not enough places available for {} program - {} left").format(program.display_name, remaining)}),
+            content_type='application/json'
+        )
+
     for student_id in students:
         try:
-            program.add_user(student_id)
+            program.add_user(client_id, student_id)
         except HTTPError, e:
             # Ignore 409 errors, because they indicate a user already added
             if e.code != 409:
