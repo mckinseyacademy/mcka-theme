@@ -25,7 +25,7 @@ from license import controller as license_controller
 def ajaxify_http_redirects(func):
     def wrapper(request):
         obj = func(request)
-        if isinstance(obj, HttpResponseRedirect):
+        if request.is_ajax() and isinstance(obj, HttpResponseRedirect):
             data = { "redirect": obj.url }
             return HttpResponse(json.dumps(data), content_type="application/json")
         else:
