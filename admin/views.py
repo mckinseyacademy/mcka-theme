@@ -295,12 +295,13 @@ def download_program_report(request, program_id):
 
 
 def _prepare_program_display(program):
-    date_format = _('%m/%d/%Y')
+    if hasattr(program, "start_date") and hasattr(program, "end_date"):
+        date_format = _('%m/%d/%Y')
 
-    program.date_range = "{} - {}".format(
-        program.start_date.strftime(date_format),
-        program.end_date.strftime(date_format),
-        )
+        program.date_range = "{} - {}".format(
+            program.start_date.strftime(date_format),
+            program.end_date.strftime(date_format),
+            )
 
     return program
 
