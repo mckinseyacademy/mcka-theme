@@ -27,7 +27,6 @@ class GroupInfo(JsonObject):
             dictionary=dictionary
         )
 
-
     def get_users(self):
         return group_api.get_users_in_group(self.id)
 
@@ -35,20 +34,28 @@ class GroupInfo(JsonObject):
         return group_api.get_groups_in_group(self.id)
 
     @classmethod
-    def create(cls, name, data):
+    def _clean_group_data(cls, group_data):
         clean_data = {
-            key: value for key, value in data.iteritems() if key in cls.data_fields
+            key: value for key, value in group_data.iteritems() if key in cls.data_fields
         }
 
         for date_field in cls.date_fields:
             date_components = ["{}_{}".format(date_field, component_value)
                                for component_value in ['year', 'month', 'day']]
-            component_values = [int(data[component])
-                                for component in date_components if component in data]
+            component_values = [int(group_data[component])
+                                for component in date_components if component in group_data]
             if len(component_values) == 3:
-                clean_data[date_field]= datetime(component_values[0],component_values[1],component_values[2]).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+                clean_data[date_field]= datetime(
+                    component_values[0],
+                    component_values[1],
+                    component_values[2]
+                ).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
-        return group_api.create_group(name, cls.group_type, group_data=clean_data, group_object=cls)
+        return clean_data
+
+    @classmethod
+    def create(cls, name, group_data):
+        return group_api.create_group(name, cls.group_type, group_data=cls._clean_group_data(group_data), group_object=cls)
 
     @classmethod
     def list(cls):
@@ -61,18 +68,7 @@ class GroupInfo(JsonObject):
     @classmethod
     def delete(cls, group_id):
         return group_api.delete_group(group_id)
+
     @classmethod
     def update(cls, group_id, group_data):
-        clean_data = {
-            key: value for key, value in group_data.iteritems() if key in cls.data_fields
-        }
-        
-        for date_field in cls.date_fields:
-            date_components = ["{}_{}".format(date_field, component_value)
-                               for component_value in ['year', 'month', 'day']]
-            component_values = [int(group_data[component])
-                                for component in date_components if component in group_data]
-            if len(component_values) == 3:
-                clean_data[date_field]= datetime(component_values[0],component_values[1],component_values[2]).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
-
-        return group_api.update_group(group_id, cls.group_type, clean_data, group_object=cls)
+        return group_api.update_group(group_id, cls.group_type, cls._clean_group_data(group_data), group_object=cls)

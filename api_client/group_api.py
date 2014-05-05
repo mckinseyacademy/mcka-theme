@@ -104,7 +104,7 @@ def update_group(group_id, group_type, group_data=None, group_object=JsonObject)
     )
 
     return JP.from_json(response.read(), group_object)
-    
+
 def add_user_to_group(user_id, group_id, group_object=JsonObject):
     ''' adds user to group '''
     data = {"user_id": user_id}
