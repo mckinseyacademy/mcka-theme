@@ -4,7 +4,9 @@ Don't save in database, but we must inherit from AbstractUser (which in turn
 inherits from model) and therefore tables get contructed
 '''
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser 
+from django.contrib.auth.models import User, AbstractUser
+from lib.authorization import is_user_in_group
+from api_client.group_api import PERMISSION_GROUPS
 
 
 class RemoteUser(AbstractUser):
@@ -61,22 +63,22 @@ class RemoteUser(AbstractUser):
 #        return self.username
 
     def is_mcka_admin(self):
-        return True
+        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_ADMIN)
 
     def is_mcka_subadmin(self):
-        return True
+        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_SUBADMIN)
 
     def is_client_admin(self):
-        return True
+        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
 
     def is_client_subadmin(self):
-        return True
+        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
 
     def is_mcka_ta(self):
-        return True
+        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_TA)
 
     def is_client_ta(self):
-        return True
+        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_TA)
 
 
 # class AprosUser(RemoteUser):
