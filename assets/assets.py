@@ -5,7 +5,7 @@ os.environ['SASS_USE_SCSS'] = 'false'
 
 # Javascript squashing
 JS = Bundle(
-    'js/vendor/jquery.js',
+    'js/vendor/leaflet.js',
     'js/application.js',
     filters='jsmin',
     output='packed.js'
