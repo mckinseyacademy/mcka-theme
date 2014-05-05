@@ -395,12 +395,13 @@ def download_program_report(request, program_id):
 
 
 def _prepare_program_display(program):
-    date_format = _('%m/%d/%Y')
+    if hasattr(program, "start_date") and hasattr(program, "end_date"):
+        date_format = _('%m/%d/%Y')
 
-    program.date_range = "{} - {}".format(
-        program.start_date.strftime(date_format),
-        program.end_date.strftime(date_format),
-        )
+        program.date_range = "{} - {}".format(
+            program.start_date.strftime(date_format),
+            program.end_date.strftime(date_format),
+            )
 
     return program
 
@@ -456,10 +457,12 @@ def add_students_to_program(request, client_id):
     allocated, assigned = license_controller.licenses_report(program.id, client_id)
     remaining = allocated - assigned
     if len(students) > remaining:
-        return HttpResponse(
+        response = HttpResponse(
             json.dumps({"message": _("Not enough places available for {} program - {} left").format(program.display_name, remaining)}),
-            content_type='application/json'
+            content_type='application/json',
         )
+        response.status_code = 403
+        return response
 
     for student_id in students:
         try:

@@ -42,29 +42,6 @@ class UserCourseStatus(JsonObject):
     required_fields = ["position"]
 
 
-class UserProgram(JsonObject):
-
-    ''' object representing a users's program from api json response '''
-    required_fields = ["id"]
-
-
-# TODO UserStatus removed for now until bookmarking available
-# class UserStatus(JsonObject):
-#     ''' object representing a user's status from api json response '''
-#     required_fields = []
-#     object_map = {
-#         "courses": UserCourse,
-#         "programs": UserProgram,
-#     }
-
-#     def get_bookmark_for_course(self, course_id):
-#         ''' returns bookmark for specific course if present '''
-#         for course_status in self.courses:
-#             if course_status.id == course_id and hasattr(course_status, 'bookmark'):
-#                 return course_status.bookmark
-
-#         return None
-
 class UserCourse(JsonObject):
     required_fields = []
 

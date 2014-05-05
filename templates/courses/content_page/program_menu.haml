@@ -1,18 +1,8 @@
 .program-title<
-  = program.name
-%ul.courses
-  - for program_course in program.courses
-    %li
-      - if program_course.has_future_start_date
-        .course-name.unavailable
-          = program_course.name
-        .status.unavailable
-          = program_course.formatted_start_date
-      - else
-        %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
-          = program_course.name
-        - if program_course.percent_complete < 100
-          .status
-            = program_course.percent_complete_message
-        - else
-          .status.complete Completed
+  = program.display_name
+- include 'courses/content_page/courses_menu_list.haml' with courses=program.courses
+- if program.outside_courses
+  %hr
+  .program-title.other-courses<
+    = _("Other Enrolled Courses")
+  - include 'courses/content_page/courses_menu_list.haml' with courses=program.outside_courses

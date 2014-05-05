@@ -19,7 +19,7 @@ class ClientForm(forms.Form):
     display_name = forms.CharField(max_length=255)
     contact_name = forms.CharField(max_length=255)
     phone = forms.CharField(max_length=20)
-    email = forms.CharField(max_length=255)
+    email = forms.EmailField()
 
 
 class ProgramForm(forms.Form):

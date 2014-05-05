@@ -2,8 +2,6 @@ from api_client import group_api
 from api_client import group_models
 from license import controller as license_controller
 
-from django.db import models
-
 class BaseGroupModel(group_models.GroupInfo):
 
     def __init__(self, json_data=None, dictionary=None):
@@ -35,6 +33,14 @@ class Program(BaseGroupModel):
 
     def add_user(self, client_id, user_id):
         return license_controller.assign_license(self.id, client_id, user_id)
+
+    @classmethod
+    def programs_with_course(cls, course_id):
+        programs = [program for program in cls.list() if course_id in [course.course_id for course in program.fetch_courses()]]
+        if not programs:
+            programs = []
+
+        return programs
 
 
 class Client(BaseGroupModel):
