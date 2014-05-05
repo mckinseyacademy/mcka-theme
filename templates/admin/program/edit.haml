@@ -1,0 +1,15 @@
+%header
+  %h1= _("Edit Program details")
+  %p.description Edit Program details using this form
+
+.close-reveal-modal
+  %i.fa.fa-times-circle 
+  
+%form.admin-form{action: "/admin/programs/#{program_id}/edit", method: "POST"}
+  .error
+    - if error
+      = error
+  - csrf_token
+  %fieldset= form.as_p
+  .submit-area
+    %input.button.radius.small{type: "submit", value: "#{submit_label}"}

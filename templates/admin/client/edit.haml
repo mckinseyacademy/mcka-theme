@@ -10,6 +10,6 @@
     - if error
       = error
   - csrf_token
-  %fieldset= form
+  %fieldset= form.as_p
   .submit-area
     %input.button.radius.small{type: "submit", value: "#{submit_label}"}
