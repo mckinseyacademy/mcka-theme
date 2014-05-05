@@ -71,7 +71,10 @@ def homepage(request):
         current_page = None
         program = None
 
-    course_slide_count = math.ceil(len(course.chapters)/float(5))
+    if current_chapter is not None:
+        bookmark_index = current_chapter.index-1
+    else:
+        bookmark_index = 0
 
     data = {
         "user": request.user,
@@ -86,7 +89,8 @@ def homepage(request):
         "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
         "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
-        "course_slide_count": range(0, int(course_slide_count))
+        "bookmark_index": bookmark_index,
+        "lesson_count": len(course.chapters),
     }
     return render(request, 'courses/course_main.haml', data)
 
