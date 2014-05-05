@@ -3,7 +3,8 @@
   %p.description Edit clients details using this form
 
 .close-reveal-modal
-  %i.fa.fa-time-circle
+  %i.fa.fa-times-circle 
+  
 %form.admin-form{action: "/admin/clients/#{client_id}/edit", method: "POST"}
   .error
     - if error
