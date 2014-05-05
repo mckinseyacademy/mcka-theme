@@ -22,6 +22,18 @@ from api_client.json_object import Objectifier
 from license import controller as license_controller
 
 
+def ajaxify_http_redirects(func):
+    def wrapper(request):
+        obj = func(request)
+        if request.is_ajax() and isinstance(obj, HttpResponseRedirect):
+            data = { "redirect": obj.url }
+            return HttpResponse(json.dumps(data), content_type="application/json")
+        else:
+            return obj
+
+    return wrapper
+
+
 @group_required('super_admin')
 def home(request):
     return render(
@@ -61,6 +73,7 @@ def client_list(request):
     )
 
 
+@ajaxify_http_redirects
 @group_required('super_admin')
 def client_new(request):
     error = None
@@ -157,6 +170,7 @@ def program_list(request):
     )
 
 
+@ajaxify_http_redirects
 @group_required('super_admin')
 def program_new(request):
     ''' handles requests for login form and their submission '''
