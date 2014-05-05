@@ -19,7 +19,7 @@ class ClientForm(forms.Form):
     display_name = forms.CharField(max_length=255)
     contact_name = forms.CharField(max_length=255)
     phone = forms.CharField(max_length=20)
-    email = forms.CharField(max_length=255)
+    email = forms.EmailField()
 
 
 class ProgramForm(forms.Form):
@@ -44,8 +44,10 @@ class UploadStudentListForm(forms.Form):
 class ProgramAssociationForm(forms.Form):
 
     ''' form to select program to add to client '''
-    select_program = forms.ChoiceField(
-        choices=((program.id, program.display_name)
-                 for program in Program.list())
-    )
-    places = forms.IntegerField(required=False)
+    def __init__(self, program_list, *args, **kwargs):
+        super(ProgramAssociationForm, self).__init__(*args, **kwargs)
+        self.fields['select_program'] = forms.ChoiceField(
+            choices=((program.id, program.display_name)
+                     for program in program_list)
+        )
+        self.fields['places'] = forms.IntegerField()

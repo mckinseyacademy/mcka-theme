@@ -1,6 +1,6 @@
 from api_client import group_api
 from api_client import group_models
-
+from license import controller as license_controller
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -13,8 +13,8 @@ class BaseGroupModel(group_models.GroupInfo):
         if not hasattr(self, "id") and hasattr(self, "group_id"):
             self.id = self.group_id
 
-        if not hasattr(self, "name") and hasattr(self, "display_name"):
-            self.name = self.display_name
+        if not hasattr(self, "display_name") and hasattr(self, "name"):
+            self.display_name = self.name
 
     def __unicode__(self):
         return self.name
@@ -31,8 +31,16 @@ class Program(BaseGroupModel):
     def fetch_courses(self):
         return group_api.get_courses_in_group(self.id)
 
-    def add_user(self, user_id):
-        return group_api.add_user_to_group(user_id, self.id)
+    def add_user(self, client_id, user_id):
+        return license_controller.assign_license(self.id, client_id, user_id)
+
+    @classmethod
+    def programs_with_course(cls, course_id):
+        programs = [program for program in cls.list() if course_id in [course.course_id for course in program.fetch_courses()]]
+        if not programs:
+            programs = []
+
+        return programs
 
 
 class Client(BaseGroupModel):
@@ -50,12 +58,27 @@ class Client(BaseGroupModel):
         for group in groups:
             # we will filter later, so we protect ourselves against
             # non-programs herein
+            program = None
             try:
-                programs.append(Program.fetch(group.id))
+                program = Program.fetch(group.id)
             except:
                 pass
+            if program:
+                try:
+                    program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id, self.id)
+                except:
+                    program.places_allocated = None
+                    program.places_assigned = None
+
+            programs.append(program)
 
         return programs
 
-    def add_program(self, program_id):
-        return group_api.add_group_to_group(program_id, self.id)
+    def add_program(self, program_id, places):
+        # Add program group to this client
+        group_info = group_api.add_group_to_group(program_id, self.id)
+
+        # set up licenses
+        license_controller.create_licenses(program_id, self.id, places)
+
+        return group_info

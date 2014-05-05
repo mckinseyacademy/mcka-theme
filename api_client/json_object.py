@@ -15,7 +15,7 @@ class Objectifier(object):
     object_map = {}
 
     def _make_data_object(self, value, object_type):
-        if isinstance(value, collections.Iterable):
+        if isinstance(value, dict) or isinstance(value, list):
             return object_type(dictionary=value)
         else:
             return value
@@ -141,18 +141,22 @@ class JsonParser(object):
         ''' takes json => dictionary / array and processes it accordingly '''
         parsed_json = json.loads(json_data)
 
-        if isinstance(parsed_json, list):
+        return JsonParser.from_dictionary(parsed_json, object_type, data_filter)
+
+    @staticmethod
+    def from_dictionary(dictionary_info, object_type=JsonObject, data_filter=None):
+        if isinstance(dictionary_info, list):
             if data_filter:
                 for key, value in data_filter.iteritems():
-                    parsed_json = [jo for jo in parsed_json if jo[key] == value]
+                    dictionary_info = [jo for jo in dictionary_info if jo[key] == value]
 
             out_objects = []
-            for json_dictionary in parsed_json:
+            for json_dictionary in dictionary_info:
                 out_objects.append(object_type(dictionary=json_dictionary))
 
             return out_objects
         else:
-            return object_type(dictionary=parsed_json)
+            return object_type(dictionary=dictionary_info)
 
 
 class CategorisedJsonObject(JsonObject):

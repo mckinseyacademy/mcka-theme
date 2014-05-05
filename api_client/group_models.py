@@ -1,5 +1,6 @@
 ''' Objects for users / authentication built from json responses from API '''
-from datetime import date
+import json
+from datetime import datetime
 from .json_object import JsonObject
 import group_api
 
@@ -12,20 +13,20 @@ class GroupInfo(JsonObject):
     group_type = None
 
     def __init__(self, json_data=None, dictionary=None):
+        if json_data and dictionary is None:
+            dictionary = json.loads(json_data)
+
+        # has additional attributes in embedded data
+        if "data" in dictionary:
+            for data_attr in self.data_fields:
+                if data_attr in dictionary["data"]:
+                    dictionary[data_attr] = dictionary["data"][data_attr]
+
         super(GroupInfo, self).__init__(
-            json_data=json_data,
+            json_data=None,
             dictionary=dictionary
         )
 
-        # has additional attributes in embedded data
-        if hasattr(self, "data"):
-            for data_attr in self.data_fields:
-                if hasattr(self.data, data_attr):
-                    setattr(
-                        self,
-                        data_attr,
-                        getattr(self.data, data_attr, None)
-                    )
 
     def get_users(self):
         return group_api.get_users_in_group(self.id)
@@ -42,14 +43,10 @@ class GroupInfo(JsonObject):
         for date_field in cls.date_fields:
             date_components = ["{}_{}".format(date_field, component_value)
                                for component_value in ['year', 'month', 'day']]
-            component_values = [data[component]
+            component_values = [int(data[component])
                                 for component in date_components if component in data]
             if len(component_values) == 3:
-                clean_data[date_field] = "{}-{}-{}T00:00:00.00000Z".format(
-                    component_values[0],
-                    component_values[1],
-                    component_values[2],
-                )
+                clean_data[date_field]= datetime(component_values[0],component_values[1],component_values[2]).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
         return group_api.create_group(name, cls.group_type, group_data=clean_data, group_object=cls)
 

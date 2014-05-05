@@ -15,11 +15,23 @@
         .name= program.display_name
         .prog-info
           %span= _("Program Run:")
-          %span= program.start_date
-          %span -
-          %span= program.end_date
+          %span= program.date_range
         .prog-info
           %span= _("Number of Courses:")
-          %span{style: "color: red"} 000
+          %span= course_count
 - block js_snippets
-  %script{src: "{% static 'js/program_courses.js' %}"}
+  %script{src: "{% static 'js/select_and_assign.js' %}"}
+  :javascript
+    $(function(){
+      selection = {
+        selector: '.course-list .course',
+        submit_name: 'courses',
+        minimum_count: 1,
+        minimum_count_message: "Please select at least one course"
+      };
+
+      activator = {
+        selector: '#course-program-action'
+      }    
+      enable_selection(selection, activator);
+    });

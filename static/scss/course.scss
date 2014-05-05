@@ -197,12 +197,13 @@ $program-bar-topbottom-margin: ($program-bar-height - $program-menu-size)/2;
   }
   a.course-name{
     &:hover{
-      opacity: 0.6;
+      color: $mckinsey-academy-blue-gray;
     }
   }
   .status{
     @include font-spec(10, semibold);
     font-style: italic;
+    color: $mckinsey-grey;
     &.complete{
       color: $mckinsey-green;
     }

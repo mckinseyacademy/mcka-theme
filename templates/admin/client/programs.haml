@@ -18,14 +18,33 @@
           .name= program.display_name
           .prog-info
             %span= _("Program Run:")
-            %span= program.start_date
-            %span -
-            %span= program.end_date
+            %span= program.date_range
           .prog-info
             %span= _("Places:")
-            %span{style: "color: red"} 100
+            %span= program.places_allocated
           .prog-info
             %span= _("Enrolled Students:")
-            %span{style: "color: red"} 000
+            %span= program.places_assigned
 - block js_snippets
-  %script{src: "{% static 'js/program_students.js' %}"}
+  %script{src: "{% static 'js/select_and_assign.js' %}"}
+  :javascript
+    $(function(){
+      selections = [
+        {
+          selector: ".student-list .student",
+          submit_name: "students",
+          minimum_count_message: "Please select at least one student"
+        },
+        {
+          selector: ".program-selection .select-program-box",
+          submit_name: "program",
+          minimum_count_message: "Please select one program",
+          single_select: true
+        }
+      ];
+
+      activator = {
+        selector: '#student-program-action'
+      };
+      enable_selection(selections, activator);
+    });

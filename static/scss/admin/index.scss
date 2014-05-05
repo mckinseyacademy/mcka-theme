@@ -17,6 +17,56 @@
     }
   }
 
+  input[type=submit]{
+    &[disabled]{
+      cursor: not-allowed;
+    }
+  }
+
+  #upload_error_list{
+    li{
+      @include font-spec(12);
+      color: $mckinsey-red;
+      text-transform: none;
+      padding: 10px;
+      width: auto;
+    }
+  }
+
+  .client-programs{
+    .courses{
+      display: none;
+    }
+  }
+  .course-list .course,
+  .student-list .student{
+    cursor: pointer;
+    &:hover{
+      background-color: $mckinsey-academy-blue-gray;
+    }
+    &.selected{
+      background-color: $mckinsey-academy-alt-blue;
+    }
+  }
+  
+  .program-selection .select-program-box{
+    cursor: pointer;
+    margin: 5px;
+    border: 1px solid $border-line;
+    &:hover{
+      background-color: $mckinsey-academy-blue-gray;
+    }
+    .course-box{
+      display: none;
+    }
+    &.selected{
+      background-color: $mckinsey-academy-alt-blue;
+      .course-box{
+        display: block;
+      }
+    }
+  }
+
   @import './admin-list';
   @import './principal-overlay';
 }

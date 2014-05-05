@@ -50,6 +50,7 @@ LOCAL_APPS = (
     'courses',
     'admin',
     'marketing',
+    'license',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -135,8 +136,7 @@ CSRF_COOKIE_NAME = 'apros_csrftoken'
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
 LMS_SUB_DOMAIN = 'lms'
 
-# TODO-API: Remove setting once this is retreived from the API
-VERTICAL_USAGE_ID = 'i4x:;_;_TestX;_TST-BRGT;_vertical;_0c4f0ca3c3f54a1b8ad5d9830c1d16b0'
+NO_PROGRAM_NAME = "McKinsey Management Program"
 
 CACHES = {
     'default': {
