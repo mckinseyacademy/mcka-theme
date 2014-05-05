@@ -36,12 +36,47 @@
             lmsSecureURL: false, // Is the LMS on HTTPS?
         },
 
-        loadResource: function(resource, options, root) {
-            console.log('Loading XBlock resource', resource);
+        loadResources: function(resources, options, root) {
+            var $this = this,
+                numResources = resources.length,
+                deferred = $.Deferred(),
+                applyResource;
+
+            applyResource = function(index) {
+                var hash, resource, head, value, promise;
+
+                if (index >= numResources) {
+                    deferred.resolve();
+                    return;
+                }
+
+                value = resources[index];
+                hash = value[0];
+                resource = value[1];
+                $this.loadResource(hash, resource, options, root).done(function() {
+                    applyResource(index + 1);
+                }).fail(function() {
+                    deferred.reject();
+                });
+            };
+            applyResource(0);
+
+            return deferred;
+        },
+
+        loadResource: function(resource_hash, resource, options, root) {
+            var deferred = $.Deferred().resolve(), // By default, don't wait for the resource to load
+                resourceURL;
+
+            console.log('Loading XBlock resource', resource_hash, resource);
+
+            if (!this.register_resource_hash(resource_hash, options, root)) {
+                console.log('Ignoring already loaded XBlock resource', resource_hash, resource);
+                return deferred;
+            }
 
             if (resource.kind === 'url') {
-                var deferred = $.Deferred().resolve(), // By default, don't wait for the resource to load
-                    resourceURL = resource.data; // By default, the resource url contains the SITENAME
+                resourceURL = resource.data; // By default, the resource url contains the SITENAME
 
                 if (!resource.data.match(/^\/\//) && !resource.data.match(/^(http|https):\/\//)) {
                     resourceURL = this.getLmsBaseURL(options) + resource.data;
@@ -68,6 +103,16 @@
                 console.log('Unknown XBlock resource kind', resource.kind);
             }
             return deferred;
+        },
+
+        register_resource_hash: function(resource_hash, options, root) {
+            var loaded_resource_hashes = root.data('loaded_resource_hashes') || [];
+
+            if ($.inArray(resource_hash, loaded_resource_hashes) !== -1) {
+                return false;
+            }
+            loaded_resource_hashes.push(resource_hash);
+            return true;
         },
 
         getRuntime: function(options, root) {
@@ -195,23 +240,19 @@
                 url: blockURL,
                 dataType: 'json',
                 xhrFields: {
-                    withCredentials: true,
-                },
+                    withCredentials: true
+                }
             }).done(function(response) {
-                var deferreds = $.map(response.resources, function(resource) {
-                    return $this.loadResource(resource, options, root);
-                })
-
                 root.html(response.html);
 
-                $.when.apply($, deferreds).then(function() {
+                $this.loadResources(response.resources, options, root).done(function() {
                     console.log('All XBlock resources successfully loaded');
                     $this.eventsInit(options, root);
                     $this.jsInit(options, root);
                 });
 
                 $this.setAjaxCSRFToken(response.csrf_token, options, root);
-            }).error(function(response, text_status, error_msg) {
+            }).fail(function(response, text_status, error_msg) {
                 console.log('Error getting XBlock: ' + text_status);
                 console.log('Can be caused by a wrong session id, or missing CORS headers from the LMS');
             });
