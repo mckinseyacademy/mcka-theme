@@ -5,10 +5,18 @@ function enable_selection(selections, activator){
 
   var _default_success = function(response){
     alert(response.message);
+    window.location.reload();
   };
 
   var _default_error = function(jqXHR, textStatus, errorThrown){
-    alert(textStatus + " - " + errorThrown);
+    var message = textStatus + " - " + errorThrown;
+    if(jqXHR.responseJSON){
+      message = jqXHR.responseJSON.message;
+    }
+    else if(jqXHR.responseText){
+      message = jqXHR.responseText;
+    }
+    alert(message);
   };
 
   if(!$.isArray(selections)){

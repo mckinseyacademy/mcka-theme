@@ -357,10 +357,12 @@ def add_students_to_program(request, client_id):
     allocated, assigned = license_controller.licenses_report(program.id, client_id)
     remaining = allocated - assigned
     if len(students) > remaining:
-        return HttpResponse(
+        response = HttpResponse(
             json.dumps({"message": _("Not enough places available for {} program - {} left").format(program.display_name, remaining)}),
-            content_type='application/json'
+            content_type='application/json',
         )
+        response.status_code = 403
+        return response
 
     for student_id in students:
         try:
