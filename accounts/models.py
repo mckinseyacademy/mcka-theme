@@ -4,7 +4,7 @@ Don't save in database, but we must inherit from AbstractUser (which in turn
 inherits from model) and therefore tables get contructed
 '''
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from lib.authorization import is_user_in_group
 from api_client.group_api import PERMISSION_GROUPS
 
