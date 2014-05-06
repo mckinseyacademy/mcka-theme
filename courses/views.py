@@ -129,6 +129,8 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
         "current_template": "courses/course_{0}.haml".format(current_view),
     }
 
+    print vars(course)
+
     if current_view == "overview":
         data["overview"] = course_api.get_course_overview(course_id)
     elif current_view == "syllabus":

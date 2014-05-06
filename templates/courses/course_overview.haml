@@ -43,11 +43,6 @@
     .large-5.columns.col-right
       .sub-1 WHAT YOU WILL LEARN
       %p After this course, you will be able to:
-      %ul
-        %li Distill an ambiguous business situation with many confounding elements into the basic question that needs to be answered
-        %li Disaggregate a complex problem into smaller, more manageable pieces and identify issues that are MECE (mutually exclusive, collectively exhaustive)
-        %li Categorize and prioritize issues into actionable categories, by evaluating them on specific criteria such as impact and feasibility
-        %li Set-up, plan, and structure appropriate analyses through several different types of workplans
-        %li Extract the most relevant data by using a suite of creative data-collection and analysis techniques
-        %li Step back and distinguish the most important aspects of work to be communicated to stakeholders through a top-down, structured storyline
-        %li Create recommendations that are actionable and feasible for stakeholders, as well as appropriate for a senior-management audience
+      {% autoescape off %}
+      %p= overview.what_you_will_learn
+      {% endautoescape %}

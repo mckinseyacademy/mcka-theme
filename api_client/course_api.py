@@ -44,28 +44,37 @@ def get_course_overview(course_id):
         COURSEWARE_API,
         course_id)
     )
+
     overview = CJP.from_json(response.read())
-    overview.about = [item for item in overview.sections if getattr(item, "class") == "about"][0].body
-    overview.faq = [item for item in overview.sections if getattr(item, "class") == "faq"][0].body
-    overview.prerequisites = [item for item in overview.sections if getattr(item, "class") == "prerequisites"][0].body
-    overview.faculty = [item for item in overview.sections if getattr(item, "class") == "course-staff"][0].articles
-    for idx, teacher in enumerate(overview.faculty):
-        teacher.idx = idx
+    about = [item for item in overview.sections if getattr(item, "class") == "about"]
+    if len(about) > 0:
+        overview.about = about[0].body
+
+    faculty = [item for item in overview.sections if getattr(item, "class") == "course-staff"]
+    if len(faculty) > 0:
+        overview.faculty = faculty[0].articles
+        for idx, teacher in enumerate(overview.faculty):
+            teacher.idx = idx
+
+    what_you_will_learn = [item for item in overview.sections if getattr(item, "class") == "what-you-will-learn"]
+    if len(what_you_will_learn) > 0:
+        overview.what_you_will_learn = what_you_will_learn[0].body
+
     return overview
 
 def get_course_syllabus(course_id):
     '''
     Retrieves course syllabus information from the API for specified course
     '''
-    response = GET('{}/{}/{}/static_tabs?detail=true'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id)
-    )
-    content = CJP.from_json(response.read())
+
     try:
-        return [item for item in content.tabs if getattr(item, "id") == "syllabus"][0].content
-    except IndexError:
+        response = GET('{}/{}/{}/static_tabs/syllabus'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id)
+        )
+        return CJP.from_json(response.read()).content
+    except HTTPError:
         return ""
 
 def get_course_news(course_id):
