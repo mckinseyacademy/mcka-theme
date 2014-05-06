@@ -10,8 +10,9 @@
   %h1= course.name
   .overview
     .sub-1 Overview
-    %p What are the biggest, most challenging problems facing you today? How would you go about solving them?
-    %p In "7-Step Approach to Problem Solving", partner Adam Kendall will teach you a structured approach to solving problems, ranging from his experience in electrifying an entire continent to planning a vacation with his family. Guest faculty will also introduce a variety of advanced problem solving techniques. With these tools, you will be able to take the most complex problems facing you today and break them down into something much more manageable, and thus, solvable.
+    {% autoescape off %}
+    %p= overview.about
+    {% endautoescape %}
   %hr
   .row.collapse
     .large-7.columns.col-left
@@ -24,15 +25,19 @@
       %hr
       .faculty
         .sub-1 Faculty
-        %ul.thumbs
-          %li.selected
-            %img{src: 'http://dummyimage.com/50x50/000/fff&text=faculty'}
-          %li
-            %img{src: 'http://dummyimage.com/50x50/000/fff&text=faculty'}
-          %li
-            %img{src: 'http://dummyimage.com/50x50/000/fff&text=faculty'}
-        %h2 Adam Kendall
-        %p.style-2 Adam Kendall is a partner in McKinsey &amp; Company’s sub-Saharan Office based in Johannesburg.  Adam is leading McKinsey’s electric power and natural gas practice work in Sub-Saharan Africa, and does a significant amount of work in the mining sector as well. Since joining the firm in 2000, his work has focused on projects in the energy, electricity and mining sectors, with particular attention paid to capital project delivery, regulatory strategies, transformations, and operations work in emerging markets.
+        - for teacher in overview.faculty
+          - if teacher.idx == 0
+            %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs', checked: None}
+          - else
+            %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs'}
+          %label{for: "faculty_#{teacher.idx}"}
+            %img{src: "#{teacher.image_src}"}
+        - for teacher in overview.faculty
+          %div.teacher{id: "teacher_#{teacher.idx}"}
+            %h2= teacher.name
+            {% autoescape off %}
+            %p.style-2= teacher.bio
+            {% endautoescape %}
     .large-5.columns.col-right
       .sub-1 WHAT YOU WILL LEARN
       %p After this course, you will be able to:

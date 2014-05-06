@@ -128,6 +128,10 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
         "current_view": current_view,
         "current_template": "courses/course_{0}.haml".format(current_view),
     }
+
+    if current_view == "overview":
+        data["overview"] = course_api.get_course_overview(course_id)
+
     return render(request, 'courses/course_navigation.haml', data)
 
 @login_required

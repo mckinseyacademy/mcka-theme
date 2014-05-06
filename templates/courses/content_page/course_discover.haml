@@ -1,40 +1,43 @@
 %article#home-discover
-  .sub-2 DISCOVERED:
-  %section.articles
-    .label-6 ARTICLES
-    %ul
-      - for article in articles
-        %li
-          .article-title= article.title
-          .attribution
-            .when
-              %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
-              %span.label-2= article.byline
-            .person-title= article.author
-          %a{href: "#{article.url}"}
-            %i.fa.fa-arrow-circle-right
-  %section.infographic
-    .label-6 INFOGRAPHIC
-    .infographic
-      %img{src: "#{infographic.thumbnail_url}", alt: "#{infographic.title}"}
-    %hr
-    .label-6 ON TWITTER
-    .tweet
-      %img{src:'http://dummyimage.com/48x48/aaa/000'}
-      .content
-        %div
-          %span.label-8= tweet.twitter_username
-          %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
-          %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10
-        .label-1= tweet.body
-  %section.videos
-    .label-6 VIDEOS
-    %ul
-      - for video in videos
-        %li
-          .article-title= video.title
-          .attribution
-            .when
-              %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
-              %span.label-2= video.byline
-            .label-9= video.body
+  .sub-2 DISCOVER:
+  .wrapper
+    %section.articles
+      .label-6 ARTICLES
+      %ul
+        - for article in articles
+          %li
+            .article-title= article.title
+            .attribution
+              .when
+                %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
+                %span.label-2= article.byline
+              .person-title= article.author
+            %a{href: "#{article.url}"}
+              %i.fa.fa-arrow-circle-right
+    %section.infographic
+      .label-6 INFOGRAPHIC
+      .infographic
+        %img{src: "#{infographic.thumbnail_url}", alt: "#{infographic.title}"}
+      %hr
+      .label-6 ON TWITTER
+      .tweet
+        %img{src:'http://dummyimage.com/50x50/aaa/000'}
+        .content
+          %div
+            %span.label-8= tweet.twitter_username
+            %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
+            %time.label-3{datetime: '2014-03-10T04:00:00.000Z'} MAR 10
+          .label-1= tweet.body
+    %section.videos
+      .label-6 VIDEOS
+      %ul
+        - for video in videos
+          %li
+            .article-title= video.title
+            .attribution
+              .when
+                %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014
+                %span.label-2= video.byline
+              .label-9= video.body
+            %a{href: "#{video.url}"}
+              %i.fa.fa-play-circle
