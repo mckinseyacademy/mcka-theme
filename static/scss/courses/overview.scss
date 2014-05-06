@@ -32,6 +32,13 @@
       .thumb { margin-bottom: 10px; }
 
       .video-overview {
+
+        .fa {
+          color: $mckinsey-academy-alt-blue;
+          margin-right: 2px;
+          @include font-spec(18);
+        }
+
         span {
           margin-right: 2px;
           @include font-spec(18, normal, 22);
@@ -84,7 +91,9 @@
 
       .teacher {
         display: none;
-        %h2 { margin-bottom: 20px; }
+        p {
+          @include font-spec(12, semibold, 19);
+        }
       }
     }
   }
