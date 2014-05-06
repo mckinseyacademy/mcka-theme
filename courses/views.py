@@ -131,6 +131,10 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
 
     if current_view == "overview":
         data["overview"] = course_api.get_course_overview(course_id)
+    elif current_view == "syllabus":
+        data["syllabus"] = course_api.get_course_syllabus(course_id)
+    elif current_view == "news":
+        data["news"] = course_api.get_course_news(course_id)
 
     return render(request, 'courses/course_navigation.haml', data)
 

@@ -1,24 +1,12 @@
 #course-news
   %h1 News
-  %section
-    .sub-1 MARCH 21, 2014
-    %p Please complete <a>Survey #5</a> by <b>3/26 EOD</b>. As we wrap up Alpha and move into Beta, we will be focusing on developing group work which is more closely tied to the issues that Jefferies employees face. This form will start collecting some of the input we need to design this work.
-    %p Note that we have also made the content for the final lessons in "Problem Solving" available, although filling out the above survey does not require you to go through that content.
-  %hr
-  %section
-    .sub-1 MARCH 14, 2014
-    %p Thanks everyone for the engaging session this past Wednesday. We've released the content for Lessons 7 and 8 -- for the next survey, we will be focusing on going through Lesson 7 and thinking about how you may interact with your peers around some of the content.
-    %p Please complete <a>Survey #4</a> by <b>Wednesday (3/19), EOD</b>.
-  %section
-    .sub-1 MARCH 7, 2014
-    %p We have just released the content for Lessons 5 and 6. For the next week, you will be going through an entire subsection within Lesson 5, as well as completing the Lesson 5 assessment. Afterwards, complete <a>Survey #3</a>.
-    .news-image
-      %img{src: 'http://dummyimage.com/500x200/000/fff&text=placeholder'}
-      .person-title Meet your TAs! Back row, (l to r): Sarah, Sally, Karen, Eva, Kris, Joan, Mary. Front row, (l to r): Brian, Becky, Inez.
-    %p Please complete these portions of Lesson 5 as well as the survey before next <b>Wednesday (3/12), EOD</b>, and check your calendar for the invite to Wednesday's in-person group discussion at 520 Madison Avenue.
-  %hr
-  %section
-    .sub-1 FEBRUARY 25, 2014
-    %p Thanks for participating in Week 1 of Alpha. We have just released the content for Lessons 3 and 4. Please follow the <a>instructions in Survey #2</a>, and complete it by <b>Wednesday, March 5 (EOD)</b>. Note that our first check-in call will take place this week on <b>Thursday, February 27</b>, where we will discuss some of the topics from the first week of Alpha. Please check your email for the invite, and join if possible.
+  - for entry in news
+    %section
+      .sub-1= entry.date
+      %p
+        {% autoescape off %}
+        = entry.content
+        {% endautoescape %}
+    %hr
   .load-more
     %a load more
