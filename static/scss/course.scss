@@ -241,10 +241,11 @@ $program-bar-topbottom-margin: ($program-bar-height - $program-menu-size)/2;
     }
   }
 
-  .course-tabs{
+  .course-tabs {
     margin: 10px 0;
-    ul{
-      li{
+
+    ul {
+      li {
         text-transform: uppercase;
         margin-right: 10px;
         color: $mckinsey-academy-alt-blue;

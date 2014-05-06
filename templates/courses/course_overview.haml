@@ -20,6 +20,7 @@
         .thumb
           %img{src: 'http://dummyimage.com/450x255/000/fff&text=preview'}
         .video-overview
+          %i.fa.fa-play-circle
           %span Course Overview
           %time.label-2 2:08
       %hr
@@ -35,9 +36,10 @@
         - for teacher in overview.faculty
           %div.teacher{id: "teacher_#{teacher.idx}"}
             %h2= teacher.name
-            {% autoescape off %}
-            %p.style-2= teacher.bio
-            {% endautoescape %}
+            %p.style-3
+              {% autoescape off %}
+              = teacher.bio
+              {% endautoescape %}
     .large-5.columns.col-right
       .sub-1 WHAT YOU WILL LEARN
       %p After this course, you will be able to:
