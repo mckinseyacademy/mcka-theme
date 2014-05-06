@@ -64,7 +64,7 @@ def _register_users_in_list(user_list, client_id):
                 409: _("Username or email already registered")
             }
             if e.code in error_messages:
-                reason = error_messages[err.code]
+                reason = error_messages[e.code]
 
             errors.append(_("User not registered {} - {} ({})").format(
                     reason, user_dict["email"],

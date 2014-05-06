@@ -10,8 +10,7 @@ AUTH_API = 'api/sessions'
 USER_API = 'api/users'
 GROUP_API = 'api/groups'
 
-VALID_USER_KEYS = ["username", "first_name", "last_name", "email", "password", "is_active"]
-
+VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "highest_level_of_education", "password", "is_active"]
 
 def _clean_user_keys(user_hash):
     return {user_key: user_hash[user_key] for user_key in VALID_USER_KEYS if user_key in user_hash}

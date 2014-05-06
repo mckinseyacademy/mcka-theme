@@ -5,6 +5,20 @@ from django.utils.translation import ugettext as _
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
 
+EDUCATION_LEVEL_CHOICES = (
+    (" ", "---"),
+    ("p", "Doctorate"),
+    ("m", "Master's or professional degree"),
+    ("b", "Bachelor's degree"),
+    ("a", "Associate's degree"),
+    ("hs", "Secondary/high school"),
+    ("jhs", "Junior secondary/junior high/middle school"),
+    ("el", "Elementary/primary school"),
+    ("none", "None"),
+    ("other", "Other"),
+)
+
+
 class LoginForm(forms.Form):
     ''' login form for system '''
     username = forms.CharField(max_length=255)
@@ -13,12 +27,18 @@ class LoginForm(forms.Form):
 
 class ActivationForm(forms.Form):
     ''' activation form for system '''
-    username = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    #first_name = forms.CharField(max_length=255)
+    #last_name = forms.CharField(max_length=255)
+
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    full_name = forms.CharField(max_length=512)
+    city = forms.CharField(max_length=255)
+    country = forms.CharField(max_length=255)
+
+    username = forms.CharField(max_length=255)
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
-    first_name = forms.CharField(max_length=255)
-    last_name = forms.CharField(max_length=255)
+    highest_level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES)
 
     def clean(self):
         ''' override clean to check for password matches '''

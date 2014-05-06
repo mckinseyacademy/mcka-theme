@@ -20,7 +20,7 @@ import urlparse
 from courses.views import homepage
 
 from django.contrib.auth.decorators import login_required
-
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "highest_level_of_education", "password", "is_active"]
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -58,9 +58,13 @@ def login(request):
                 error_messages = {
                     403: _("User account not activated"),
                     401: _("Username or password invalid"),
+                    404: _("Username or password invalid"),
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]
+
+                print err, error
+
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
         # provide something here, otherwise the error (password field is
@@ -114,9 +118,13 @@ def activate(request, activation_code):
             raise
 
         user_data = {}
-        for field_name in ["username", "email", "first_name", "last_name"]:
-            if hasattr(user, field_name):
+        for field_name in VALID_USER_FIELDS:
+            if field_name == "full_name":
+                user_data[field_name] = user.formatted_name()
+            elif hasattr(user, field_name):
                 user_data[field_name] = getattr(user, field_name)
+            else:
+                user_data[field_name] = " "
 
         # Add a fake password, or we'll get an error that the password does not match
         user_data["password"] = user_data["confirm_password"] = "fake_password"
@@ -127,8 +135,7 @@ def activate(request, activation_code):
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
         
-        # username and email should never be changed
-        user_data["username"] = user.username
+        # email should never be changed
         user_data["email"] = user.email
 
         # activate the user
