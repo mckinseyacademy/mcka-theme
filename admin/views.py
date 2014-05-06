@@ -495,6 +495,62 @@ def add_students_to_course(request, client_id):
         content_type='application/json'
     )
 
+@group_required('super_admin')
+def groupwork_list(request):
+    ''' handles requests for login form and their submission '''
+
+    if request.method == 'POST':
+        if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
+            return HttpResponseRedirect('/admin/groupworks/course/{}'.format(request.POST['select-course']))
+
+
+    programs = Program.list()
+
+    data = {
+        "principal_name": _("Group Work"),
+        "principal_name_plural": _("Group Work"),
+        "principal_new_url": "/admin/groupworks/groupwork_new",
+        "programs": programs, 
+
+#        "principals": groupworks,
+    }
+
+    return render(
+        request,
+        'admin/groupwork/list.haml',
+        data
+    )
+
+@group_required('super_admin')
+def groupwork_programs_list(request):
+    ''' handles requests for login form and their submission '''
+
+    if request.method == 'POST':
+        group_id = request.POST["group_id"]
+    if request.method == 'GET': 
+        group_id = request.GET["group_id"]
+
+    if group_id == 'select':
+        return render(
+            request,
+            'admin/groupwork/courses_list.haml',
+            {
+                "courses": {}, 
+            }
+        )
+    else:
+        program = Program.fetch(group_id)
+        courses = program.fetch_courses()
+
+        data = {
+            "courses": courses, 
+        }
+
+    return render(
+        request,
+        'admin/groupwork/courses_list.haml',
+        data
+    )
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')

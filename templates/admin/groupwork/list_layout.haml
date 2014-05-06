@@ -1,0 +1,57 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-list
+    .row
+      .large-10.large-centered.columns
+        %header
+          %h1.principal-title {{principal_name_plural}}: Overview
+          .sub-1.add= _("Subhead")
+          .add-message
+            - block principal_message
+              Use this block to update the message describing the principal at hand
+        %hr
+        .principal-list
+          .title= principal_list_plural
+          .message
+            - block principal_list_message
+              Add a message here to describe the list of principals
+          %form.admin-form{action: "/admin/groupworks", method: "POST"}
+            - csrf_token
+            .div.select-group-wrapper
+              %select.select-program{'data-programid-call': "/admin/groupworks/programs/list", 'name': 'select-program'}
+                  %option{'value': 'select'}
+                    = ' - Select - '
+                - for program in programs
+                  %option{'value': '#{program.group_id}'}
+                    = program.name
+              %select.select-course{'name': 'select-course'}
+            .submit-area
+              %input.button.radius.small{type: "submit", value: "Ok"}
+          - block principal_list_filter
+          - block principal_list
+            %ul
+              - for principal in principals
+                %li
+                  %a.edit-principal{ class: 'fa fa-pencil', "data-reveal-id": "edit-principal", "data-reveal-ajax": "true", href: "#{principal.detail_url}/edit"}
+                    = ' '
+                  %a.principal{href: "#{principal.detail_url}"}
+                    = principal.display_name
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    $(document).ready(function(){
+      $('select.select-program').on('change', function(){
+        var that = $(this); 
+        var url = that.data('programid-call');
+        var group_id = that.find('option:selected').val();
+        var csrftoken = $.cookie('apros_csrftoken');
+        $.ajax({
+          method: 'POST',
+          url: url, 
+          data: {group_id: group_id, csrfmiddlewaretoken: csrftoken}
+        }).done(function(data){
+          $('select.select-course').html(data);
+        });
+      });
+    });

@@ -82,3 +82,8 @@ class Client(BaseGroupModel):
         license_controller.create_licenses(program_id, self.id, places)
 
         return group_info
+
+class GroupWork(BaseGroupModel): 
+    data_fields = ["display_name"]
+    group_type = "group"
+
