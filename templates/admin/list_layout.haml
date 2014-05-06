@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load staticfiles
 - block content
   .admin-list
     .row
@@ -24,6 +25,15 @@
             %ul
               - for principal in principals
                 %li
+                  %a.edit-principal{ class: 'fa fa-pencil', "data-reveal-id": "edit-principal", "data-reveal-ajax": "true", href: "#{principal.detail_url}/edit"}
+                    = ' '
                   %a.principal{href: "#{principal.detail_url}"}
                     = principal.display_name
         #new-principal.reveal-modal.medium{"data-reveal": "true"}
+        #edit-principal.reveal-modal.medium{"data-reveal": "true"}
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form($('#new-principal'), 'form');
+    ajaxify_overlay_form($('#edit-principal'), 'form');

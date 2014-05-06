@@ -27,17 +27,8 @@ class Command(BaseCommand):
         group_type = 'permission'
         existing_groups = group_api.get_groups_of_type(group_type)
         existing_group_names = [existing_group.name for existing_group in existing_groups]
-        group_names = (
-            'mcka_role_mcka_admin',
-            'mcka_role_mcka_subadmin',
-            
-            'mcka_role_client_admin',
-            'mcka_role_client_subadmin',
-            
-            'mcka_role_mcka_ta',
-            'mcka_role_client_ta'
-        )
-        
+        group_names = [group_api.PERMISSION_GROUPS[key] for key in group_api.PERMISSION_GROUPS.keys()]
+
         for group_name in group_names:
             if group_name not in existing_group_names:
                 self.stdout.write("Creating group: %s" % group_name)

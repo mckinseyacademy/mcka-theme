@@ -1,0 +1,15 @@
+%header
+  %h1= _("Edit Client details")
+  %p.description Edit clients details using this form
+
+.close-reveal-modal
+  %i.fa.fa-times-circle 
+  
+%form.admin-form{action: "/admin/clients/#{client_id}/edit", method: "POST"}
+  .error
+    - if error
+      = error
+  - csrf_token
+  %fieldset= form.as_p
+  .submit-area
+    %input.button.radius.small{type: "submit", value: "#{submit_label}"}

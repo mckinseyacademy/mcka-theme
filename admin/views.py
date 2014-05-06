@@ -22,6 +22,19 @@ from api_client.json_object import Objectifier
 from license import controller as license_controller
 
 
+def ajaxify_http_redirects(func):
+    def wrapper(*args, **kwargs):
+        obj = func(*args, **kwargs)
+        request = args[0]
+        if request.is_ajax() and isinstance(obj, HttpResponseRedirect):
+            data = { "redirect": obj.url }
+            return HttpResponse(json.dumps(data), content_type="application/json")
+        else:
+            return obj
+
+    return wrapper
+
+
 @group_required('super_admin')
 def home(request):
     return render(
@@ -61,6 +74,7 @@ def client_list(request):
     )
 
 
+@ajaxify_http_redirects
 @group_required('super_admin')
 def client_new(request):
     error = None
@@ -100,6 +114,48 @@ def client_new(request):
         data
     )
 
+@ajaxify_http_redirects
+@group_required('super_admin')
+def client_edit(request, client_id):
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        form = ClientForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            try:
+                client = Client.fetch(client_id).update(client_id, request.POST)
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/clients/')
+
+            except url_access.HTTPError, err:
+                error = _("An error occurred during client update")
+                error_messages = {
+                    403: _("You are not permitted to edit clients"),
+                    401: _("Invalid data"),
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+    else:
+        ''' edit a client '''
+        client = Client.fetch(client_id)
+        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'email': client.email, 'phone': client.phone}
+        form = ClientForm(data_dict)
+
+    # set focus to company name field
+    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
+
+    data = {
+        "form": form,
+        "client_id": client_id, 
+        "error": error,
+        "submit_label": _("Save Client"),
+    }
+
+    return render(
+        request,
+        'admin/client/edit.haml',
+        data
+    )
+
 
 def _format_upload_results(upload_results):
     results_object = Objectifier(upload_results)
@@ -113,6 +169,7 @@ def _format_upload_results(upload_results):
 @group_required('super_admin')
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
+
     view = 'admin/client/{}.haml'.format(detail_view)
 
     data = {
@@ -157,6 +214,7 @@ def program_list(request):
     )
 
 
+@ajaxify_http_redirects
 @group_required('super_admin')
 def program_new(request):
     ''' handles requests for login form and their submission '''
@@ -194,6 +252,48 @@ def program_new(request):
     return render(
         request,
         'admin/program/new.haml',
+        data
+    )
+
+@ajaxify_http_redirects
+@group_required('super_admin')
+def program_edit(request, program_id):
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        form = ProgramForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            try:
+                program = Program.fetch(program_id).update(program_id, request.POST)
+                # Redirect after POST
+                return HttpResponseRedirect('/admin/programs/')
+
+            except url_access.HTTPError, err:
+                error = _("An error occurred during program update")
+                error_messages = {
+                    403: _("You are not permitted to add edit programs"),
+                    401: _("Invalid data"),
+                }
+                if err.code in error_messages:
+                    error = error_messages[err.code]
+    else:
+        ''' edit a program '''
+        program = Program.fetch(program_id)
+        data_dict = {'name': program.name, 'display_name': program.display_name, 'start_date': program.start_date, 'end_date': program.end_date}
+        form = ProgramForm(data_dict)
+
+    # set focus to company name field
+    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
+
+    data = {
+        "form": form,
+        "program_id": program_id, 
+        "error": error,
+        "submit_label": _("Save Client"),
+    }
+
+    return render(
+        request,
+        'admin/program/edit.haml',
         data
     )
 
@@ -357,10 +457,12 @@ def add_students_to_program(request, client_id):
     allocated, assigned = license_controller.licenses_report(program.id, client_id)
     remaining = allocated - assigned
     if len(students) > remaining:
-        return HttpResponse(
+        response = HttpResponse(
             json.dumps({"message": _("Not enough places available for {} program - {} left").format(program.display_name, remaining)}),
-            content_type='application/json'
+            content_type='application/json',
         )
+        response.status_code = 403
+        return response
 
     for student_id in students:
         try:
