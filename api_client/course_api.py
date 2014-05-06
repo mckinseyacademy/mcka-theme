@@ -15,7 +15,7 @@ OBJECT_CATEGORY_MAP = {
     "chapter": course_models.Chapter,
     "sequential": course_models.Sequential,
     "vertical": course_models.Page,
-    
+
     # Others that may become important in the future:
     "html": CategorisedJsonObject,
     "video": CategorisedJsonObject,
@@ -34,6 +34,24 @@ def get_course_list():
         COURSEWARE_API)
     )
     return CJP.from_json(response.read())
+
+def get_course_overview(course_id):
+    '''
+    Retrieves course overview information from the API for specified course
+    '''
+    response = GET('{}/{}/{}/overview?parse=true'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+    overview = CJP.from_json(response.read())
+    overview.about = [item for item in overview.sections if getattr(item, "class") == "about"][0].body
+    overview.faq = [item for item in overview.sections if getattr(item, "class") == "faq"][0].body
+    overview.prerequisites = [item for item in overview.sections if getattr(item, "class") == "prerequisites"][0].body
+    overview.faculty = [item for item in overview.sections if getattr(item, "class") == "course-staff"][0].articles
+    for idx, teacher in enumerate(overview.faculty):
+        teacher.idx = idx
+    return overview
 
 def get_course(course_id, depth = 3):
     '''
