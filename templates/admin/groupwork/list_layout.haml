@@ -16,10 +16,10 @@
           .message
             - block principal_list_message
               Add a message here to describe the list of principals
-          %form.admin-form{action: "/admin/groupworks", method: "POST"}
+          %form.admin-form{action: "/admin/groupwork", method: "POST"}
             - csrf_token
             .div.select-group-wrapper
-              %select.select-program{'data-programid-call': "/admin/groupworks/programs/list", 'name': 'select-program'}
+              %select.select-program{'data-programid-call': "/admin/groupwork/programs/list", 'name': 'select-program'}
                   %option{'value': 'select'}
                     = ' - Select - '
                 - for program in programs

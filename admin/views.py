@@ -501,7 +501,7 @@ def groupwork_list(request):
 
     if request.method == 'POST':
         if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
-            return HttpResponseRedirect('/admin/groupworks/course/{}'.format(request.POST['select-course']))
+            return HttpResponseRedirect('/admin/groupwork/course/{}'.format(request.POST['select-course']))
 
 
     programs = Program.list()
@@ -509,10 +509,8 @@ def groupwork_list(request):
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
-        "principal_new_url": "/admin/groupworks/groupwork_new",
+        "principal_new_url": "/admin/groupwork/groupwork_new",
         "programs": programs, 
-
-#        "principals": groupworks,
     }
 
     return render(
