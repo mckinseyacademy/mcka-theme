@@ -497,7 +497,7 @@ def add_students_to_course(request, client_id):
         content_type='application/json'
     )
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def groupwork_list(request):
     ''' handles requests for login form and their submission '''
 
@@ -521,7 +521,7 @@ def groupwork_list(request):
         data
     )
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def groupwork_programs_list(request):
     ''' handles requests for login form and their submission '''
 
@@ -552,7 +552,7 @@ def groupwork_programs_list(request):
         data
     )
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def groupwork_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
@@ -607,7 +607,7 @@ def groupwork_course_detail(request, course_id):
     )
 
 @ajaxify_http_redirects
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def groupwork_group_create(request, course_id):
 
     if request.method == 'POST':
@@ -620,7 +620,7 @@ def groupwork_group_create(request, course_id):
 
     return HttpResponseRedirect('admin/groupwork/course/{}'.format(course_id))
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def groupwork_group_remove(request, group_id):
 
     students = [
