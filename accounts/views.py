@@ -12,6 +12,7 @@ from admin.models import Client
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from django.contrib import auth
+import logout
 import urllib2 as url_access
 
 from django.shortcuts import render
@@ -90,21 +91,7 @@ def login(request):
 
 
 def logout(request):
-    ''' handles requests to logout '''
-    # destory the remote session, protect against bad API response, still want
-    # our local stuff to go
-    try:
-        user_api.delete_session(request.session.get("remote_session_key"))
-    except url_access.HTTPError:
-        pass
-
-    # clean user from the local cache
-    RemoteUser.remove_from_cache(request.user.id)
-
-    # destroy this session
-    auth.logout(request)
-
-    return HttpResponseRedirect('/')  # Redirect after POST
+    return logout.logout(request)
 
 
 def activate(request, activation_code):
@@ -173,7 +160,7 @@ def activate(request, activation_code):
                     error = error_messages[err.code]
     else:
         form = ActivationForm(user_data)
-        
+
         # set focus to username field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
 
