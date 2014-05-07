@@ -23,6 +23,7 @@ urlpatterns = patterns(
     url(r'^programs/(?P<program_id>[0-9]+)/download_program_report', views.download_program_report, name='download_program_report'),
     url(r'^programs/(?P<program_id>[0-9]+)/(?P<detail_view>.*)', views.program_detail, name='program_detail'),
     url(r'^programs', views.program_list, name='program_list'),
+    url(r'^groupwork/course/(?P<course_id>.*)', views.groupwork_course_detail, name='groupwork_course_detail'),
     url(r'^groupwork/programs/list', views.groupwork_programs_list, name='groupwork_programs_list'),
     url(r'^groupwork', views.groupwork_list, name='groupwork_list'),
 )

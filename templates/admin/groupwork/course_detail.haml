@@ -1,0 +1,13 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-list
+    .row
+      .large-10.large-centered.columns
+        %header
+          %h1.principal-title {{principal_name_plural}}: {{course.name}}
+          .sub-1.add= _("Create Groups")
+          .add-message
+            - block principal_message
+              %p= _("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore")
+        %hr

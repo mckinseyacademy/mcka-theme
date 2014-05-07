@@ -83,7 +83,3 @@ class Client(BaseGroupModel):
 
         return group_info
 
-class GroupWork(BaseGroupModel): 
-    data_fields = ["display_name"]
-    group_type = "group"
-

@@ -26,6 +26,8 @@
                   %option{'value': '#{program.group_id}'}
                     = program.name
               %select.select-course{'name': 'select-course'}
+                  %option{'value': 'select'}
+                    = ' - Select - '
             .submit-area
               %input.button.radius.small{type: "submit", value: "Ok"}
           - block principal_list_filter
@@ -54,4 +56,5 @@
           $('select.select-course').html(data);
         });
       });
+      $('select.select-program').trigger('change');
     });

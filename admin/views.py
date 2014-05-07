@@ -543,10 +543,33 @@ def groupwork_programs_list(request):
         data = {
             "courses": courses, 
         }
-
+#    return HttpResponse(json.dumps(dir(courses[0])))
     return render(
         request,
         'admin/groupwork/courses_list.haml',
+        data
+    )
+
+@group_required('super_admin')
+def groupwork_course_detail(request, course_id):
+    ''' handles requests for login form and their submission '''
+
+#    if request.method == 'POST':
+#        group_id = request.POST["group_id"]
+#    if request.method == 'GET': 
+#        group_id = request.GET["group_id"]
+
+    course = course_api.get_course(course_id)
+
+    data = {
+        "principal_name": _("Group Work"),
+        "principal_name_plural": _("Group Work"),
+        'course': course, 
+    }
+#    return HttpResponse(json.dumps(dir(course)))
+    return render(
+        request,
+        'admin/groupwork/course_detail.haml',
         data
     )
 
