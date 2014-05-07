@@ -8,13 +8,13 @@
     .large-4.medium-4.columns
       &nbsp;
     .registration-form.large-4.medium-4.columns
-      %form{action: "/accounts/register/", method: "POST"}
+      %form{action: "/accounts/activate/#{activation_code}", method: "POST"}
         .error
           - if error
             = error
         - csrf_token
         = form
-        %input.button.radius.small{type: "submit", value: "#{register_label}"}
+        %input.button.radius.small{type: "submit", value: "#{activate_label}"}
       %a.other{href: "/accounts/login"}
         = _("Log In")
     .large-4.medium-4.columns

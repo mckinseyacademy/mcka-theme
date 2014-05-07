@@ -10,6 +10,12 @@ AUTH_API = 'api/sessions'
 USER_API = 'api/users'
 GROUP_API = 'api/groups'
 
+VALID_USER_KEYS = ["username", "first_name", "last_name", "email", "password", "is_active"]
+
+
+def _clean_user_keys(user_hash):
+    return {user_key: user_hash[user_key] for user_key in VALID_USER_KEYS if user_key in user_hash}
+
 
 def authenticate(username, password):
     ''' authenticate to the API server '''
@@ -47,12 +53,18 @@ def delete_session(session_key):
 
 def register_user(user_hash):
     ''' register the given user within the openedx server '''
-    user_keys = ["username", "first_name", "last_name", "email", "password"]
-    data = {user_key: user_hash[user_key] for user_key in user_keys}
-
     response = POST(
         '{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API),
-        data
+        _clean_user_keys(user_hash)
+    )
+    return JP.from_json(response.read())
+
+
+def update_user(user_id, user_hash):
+    ''' update the given user's information within the openedx server '''
+    response = POST(
+        '{}/{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API, user_id),
+        _clean_user_keys(user_hash)
     )
     return JP.from_json(response.read())
 

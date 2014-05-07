@@ -2,9 +2,9 @@
 from django.utils.translation import ugettext as _
 
 from django.http import HttpResponseRedirect
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, ActivationForm
 from api_client import user_api
-from .models import RemoteUser
+from .models import RemoteUser, UserActivation
 
 # from importlib import import_module
 # from django.conf import settings
@@ -102,22 +102,50 @@ def logout(request):
     return HttpResponseRedirect('/')  # Redirect after POST
 
 
-def register(request):
-    ''' handles requests for registration form and their submission '''
+def activate(request, activation_code):
+    ''' handles requests for activation form and their submission '''
     error = None
-    if request.method == 'POST':  # If the form has been submitted...
-        form = RegistrationForm(request.POST)  # A form bound to the POST data
+    user = None
+    user_data = None
+    try:
+        activation_record = UserActivation.objects.get(activation_key=activation_code)
+        user = user_api.get_user(activation_record.user_id)
+        if user.is_active:
+            raise
+
+        user_data = {}
+        for field_name in ["username", "email", "first_name", "last_name"]:
+            if hasattr(user, field_name):
+                user_data[field_name] = getattr(user, field_name)
+
+        # Add a fake password, or we'll get an error that the password does not match
+        user_data["password"] = user_data["confirm_password"] = "fake_password"
+    except:
+        user_data = None
+        error = _("Invalid Activation Code")
+
+    if request.method == 'POST' and error is None:  # If the form has been submitted...
+        user_data = request.POST.copy()
+        
+        # username and email should never be changed
+        user_data["username"] = user.username
+        user_data["email"] = user.email
+
+        # activate the user
+        user_data["is_active"] = True
+
+        form = ActivationForm(user_data)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                user_api.register_user(request.POST)
+                user_api.update_user(user.id, user_data)
                 # Redirect after POST
                 return HttpResponseRedirect(
                     '/accounts/login?username={}'.format(
-                        request.POST["username"]
+                        user_data["username"]
                     )
                 )
             except url_access.HTTPError, err:
-                error = _("An error occurred during registration")
+                error = _("An error occurred during user activation")
                 error_messages = {
                     409: _(("User with matching username "
                             "or email already exists"))
@@ -125,17 +153,19 @@ def register(request):
                 if err.code in error_messages:
                     error = error_messages[err.code]
     else:
-        form = RegistrationForm()  # An unbound form
+        form = ActivationForm(user_data)
+        
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
-        "user": None,
+        "user": user,
         "form": form,
         "error": error,
-        "register_label": _("Register"),
+        "activation_code": activation_code,
+        "activate_label": _("Activate Account"),
         }
-    return render(request, 'accounts/register.haml', data)
+    return render(request, 'accounts/activate.haml', data)
 
 
 def home(request):
