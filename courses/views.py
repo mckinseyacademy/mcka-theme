@@ -76,6 +76,11 @@ def homepage(request):
     else:
         bookmark_index = 0
 
+    if course and course.chapters:
+        lesson_count = len(course.chapters)
+    else:
+        lesson_count = 0
+
     data = {
         "user": request.user,
         "course": course,
@@ -90,7 +95,7 @@ def homepage(request):
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
         "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
         "bookmark_index": bookmark_index,
-        "lesson_count": len(course.chapters),
+        "lesson_count": lesson_count,
     }
     return render(request, 'courses/course_main.haml', data)
 

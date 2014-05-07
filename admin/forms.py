@@ -1,4 +1,4 @@
-''' forms for login and registration '''
+''' forms for administration objects '''
 from datetime import date
 from django import forms
 from django.utils.translation import ugettext as _

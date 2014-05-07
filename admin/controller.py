@@ -4,20 +4,26 @@ from django.core.servers.basehttp import FileWrapper
 from django.utils.translation import ugettext as _
 
 from api_client import user_api, group_api
+from accounts.models import UserActivation
 from .models import Client
 
 
 def _process_line(user_line):
     try:
         fields = user_line.strip().split(',')
-        # format is email,username,password,firstname,lastname
+        # format is email,username,password,firstname,lastname (last 3 are optional)
 
-        # Must have the first 3 fields
+        # Must have the first 2 fields
         user_info = {
             "email": fields[0],
             "username": fields[1],
-            "password": fields[2],
+            "is_active": False,
         }
+        if len(fields) > 2 and len(fields[2].strip()) > 1:
+            user_info["password"] = fields[2]
+        else:
+            user_info["password"] = "initial_P455w0RD!#"
+
         if len(fields) > 4:
             user_info["first_name"] = fields[3]
             user_info["last_name"] = fields[4]
@@ -53,11 +59,14 @@ def _register_users_in_list(user_list, client_id):
             user = None
             # Error code 409 means that they already exist somehow;
             # build list of errors
-            reason = "Error processing user registration"
-            if e.code == 409:
-                reason = "Username or email already registered"
+            reason = _("Error processing user registration")
+            error_messages = {
+                409: _("Username or email already registered")
+            }
+            if e.code in error_messages:
+                reason = error_messages[err.code]
 
-            errors.append("User not registered {} - {} ({})".format(
+            errors.append(_("User not registered {} - {} ({})").format(
                     reason, user_dict["email"],
                     user_dict["username"]
                 )
@@ -65,6 +74,7 @@ def _register_users_in_list(user_list, client_id):
 
         if user:
             try:
+                UserActivation.user_activation(user)
                 group_api.add_user_to_group(user.id, client_id)
             except HTTPError, e:
                 reason = _("Error associating user with client")
