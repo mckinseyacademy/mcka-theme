@@ -5,6 +5,7 @@ Need to implement authenticate, get_user and has_perm
 '''
 from django.contrib.auth import get_user_model
 from urllib2 import HTTPError
+#from models import AprosUser
 
 from api_client import user_api
 
@@ -24,6 +25,7 @@ class JsonBackend(object):
         user = get_user_model()()
         user.update_response_fields(auth_info.user, auth_info.token)
         user.save()
+
         return user
 
     def get_user(self, user_id):
@@ -39,6 +41,7 @@ class JsonBackend(object):
                 user.save()
             except HTTPError:
                 user = None
+        
         return user
 
 # pylint: disable=unused-argument

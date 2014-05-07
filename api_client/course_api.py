@@ -15,7 +15,7 @@ OBJECT_CATEGORY_MAP = {
     "chapter": course_models.Chapter,
     "sequential": course_models.Sequential,
     "vertical": course_models.Page,
-    
+
     # Others that may become important in the future:
     "html": CategorisedJsonObject,
     "video": CategorisedJsonObject,
@@ -34,6 +34,59 @@ def get_course_list():
         COURSEWARE_API)
     )
     return CJP.from_json(response.read())
+
+def get_course_overview(course_id):
+    '''
+    Retrieves course overview information from the API for specified course
+    '''
+    response = GET('{}/{}/{}/overview?parse=true'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+
+    overview = CJP.from_json(response.read())
+    about = [item for item in overview.sections if getattr(item, "class") == "about"]
+    if len(about) > 0:
+        overview.about = about[0].body
+
+    faculty = [item for item in overview.sections if getattr(item, "class") == "course-staff"]
+    if len(faculty) > 0:
+        overview.faculty = faculty[0].articles
+        for idx, teacher in enumerate(overview.faculty):
+            teacher.idx = idx
+
+    what_you_will_learn = [item for item in overview.sections if getattr(item, "class") == "what-you-will-learn"]
+    if len(what_you_will_learn) > 0:
+        overview.what_you_will_learn = what_you_will_learn[0].body
+
+    return overview
+
+def get_course_syllabus(course_id):
+    '''
+    Retrieves course syllabus information from the API for specified course
+    '''
+
+    try:
+        response = GET('{}/{}/{}/static_tabs/syllabus'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id)
+        )
+        return CJP.from_json(response.read()).content
+    except HTTPError:
+        return ""
+
+def get_course_news(course_id):
+    '''
+    Retrieves course updates from the API for specified course
+    '''
+    response = GET('{}/{}/{}/updates?parse=true'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+    return CJP.from_json(response.read()).postings
 
 def get_course(course_id, depth = 3):
     '''

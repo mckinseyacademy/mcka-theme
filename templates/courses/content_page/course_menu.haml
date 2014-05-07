@@ -1,21 +1,16 @@
 %article#course-menu
   .sub-2 LESSONS:
-  .rotator
-    -for idx in course_slide_count
-      - if idx == 0
-        %input{id: "rotator_slide_#{idx}", type: 'radio', name: 'course_rotator', 'data-slide': "#{idx}", checked: None}
-      - else
-        %input{id: "rotator_slide_#{idx}", type: 'radio', name: 'course_rotator', 'data-slide': "#{idx}"}
-      %label{for: "rotator_slide_{{idx|add:-1}}", 'data-dir': 'left'}
-        %i.fa.fa-chevron-left
-      %label{for: "rotator_slide_{{idx|add:1}}", 'data-dir': 'right'}
-        %i.fa.fa-chevron-right
+  .rotator{'data-count': "#{lesson_count}", 'data-bookmark-index': "#{bookmark_index}"}
+    .nav-left
+      %i.fa.fa-chevron-left
+    .nav-right
+      %i.fa.fa-chevron-right
 
     .frame
       .slides
         %ul
           - for lesson in course.chapters
-            %li
+            %li>
               %a.card-flip{href: "#{lesson.navigation_url}"}
                 .front.background-white
                   - if lesson.bookmark

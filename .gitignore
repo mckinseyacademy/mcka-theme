@@ -6,4 +6,5 @@ local_settings.py
 Gemfile.lock
 
 /static/gen/
+/static/scss/static/gen/
 /util/djtemp/*

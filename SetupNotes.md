@@ -5,6 +5,7 @@ As the edX API starts to mature it becomes more desirable to develop the Apros p
 This document explains how to achieve this in a development environment. The steps we'll follow are as follows:
 
 1. Setup edX Environment
+- Setup Apros Environment
 - Prepare the McKinsey Academy project to talk to specific version of LMS
 - Prepare LMS to respond to API / XBlock requests from Apros
 - Configure your system to use a common domain between Apros and LMS
@@ -41,9 +42,24 @@ or:
 
 
 
+## Step 2 - Setup Apros Environment
+
+### Install Python requirements
+Requirements are configured using the command `$ pip install -r requirements.txt`
+
+_(if you experience an error when installing mySql package on Mavericks try this command instead
+`$ CFLAGS=-Wunused-command-line-argument-hard-error-in-future pip install -r requirements.txt`
+    )_
+
+### Install Other requirements
+We require SASS to be used to build assets
+    `gem install sass`
+
+_If `gem` is not installed, e.g. on a vanilla Windows machine, one may need to install ruby and gem framework to get started - this is left as an excercise to the reader_
 
 
-## Step 2 - Prepare Apros to talk to specific instance of LMS
+
+## Step 3 - Prepare Apros to talk to specific instance of LMS
 
 ### Setup McKinsey Academy project on your machine
 
@@ -99,7 +115,7 @@ Start up Apros in development mode, which automatically updates assets from the 
 
 
 
-## Step 3 - Prepare LMS to accept communication from Apros
+## Step 4 - Prepare LMS to accept communication from Apros
 
 ### Override specific settings in lms.env.json
 
@@ -141,7 +157,7 @@ EDX_API_KEY also needs to be set in lms.auth.json - we are not sure why this is
 
 
 
-## Step 4 - Configure your machine to use a common domain for Apros and LMS
+## Step 5 - Configure your machine to use a common domain for Apros and LMS
 
 So, the systems are now setup to talk to each other using the names `lms.local.org` and `mckinseyacademy.local.org`. Now, we need to ensure that the systems will respond to those names with the correct data. There are a numer of ways of doing this, but a good way is using nginx.
 
