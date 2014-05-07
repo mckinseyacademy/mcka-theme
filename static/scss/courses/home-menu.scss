@@ -8,7 +8,8 @@
     width: 800px;
     margin: 0 auto;
 
-    label {
+    .nav-left, .nav-right {
+      cursor: pointer;
       color: $almost-white;
       position: absolute;
       top: 50%;
@@ -16,8 +17,8 @@
       z-index: 2;
       @include font-spec(35);
 
-      &[data-dir='left'] { left: -45px; }
-      &[data-dir='right'] { right: -45px; }
+      &.nav-left { left: -45px; }
+      &.nav-right { right: -45px; }
     }
 
     .frame {
@@ -26,6 +27,7 @@
 
     ul {
       margin: 0;
+      margin-left: 10px;
       white-space: nowrap;
 
       li {

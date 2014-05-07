@@ -63,3 +63,24 @@ haml is a lovely markup, quick reference:
 #### Override settings
 Override settings in a local_settings.py file
 
+#### Migrations
+Some of the django apps herein are using South Migration to assist with data model changes.
+
+__Creating an Initial Migration__
+To have your django app included in the migration run the following command
+
+    ./manage.py schemamigration --initial <name_of_app>
+
+This will create and initial migration file that creates the database table and enables the app for future migration support
+
+__Incorporating changes into a New Migration__
+To take the current state and create a migration with the differences run the following command:
+
+    ./manage.py schemamigration <name_of_app> --auto <change_description>
+
+This will create a subsequent migration file that will apply the differences to the database model
+
+__Marking a Migration as applied__
+To fix up migration records so that the newly added migration record does not clash with a previously created database object (e.g. The table was already created using `./manage.py syncdb` but the app is now desired to use migrations) use the following command:
+
+    ./manage.py migrate --fake <name_of_app>

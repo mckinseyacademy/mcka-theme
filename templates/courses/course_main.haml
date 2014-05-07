@@ -1,4 +1,5 @@
 - extends "layout.haml"
+- load staticfiles
 
 - block program_bar
   .row
@@ -31,3 +32,6 @@
     .current_course_link
       %a{href:"/courses"}
         Where I last left things&hellip;
+
+- block js_snippets
+  %script{src: "{% static 'js/rotator.js' %}"}

@@ -59,8 +59,9 @@
 
     -# Custom JS
     - block body_js
-      %script{src: "{% static 'js/application.js' %}"}
-      %script{src: "{% static 'js/vendor/leaflet.js' %}"}
+      {% assets "js_all" %}
+        %script{src: "{{ ASSET_URL }}"}
+      {% endassets %}
 
     -# JS - custom snippets
     - block js_snippets

@@ -47,9 +47,9 @@
       display: inline-block;
       background-color: $mckinsey-academy-alt-blue;
       color: $pure-white;
-      padding: 8px;
+      padding: 10px 8px 8px;
       &.previous{ padding-right: 12px; }
-      &.next{ padding-left: 12px; }
+      &.next{ padding-left: 10px; }
     }
   }
 }
