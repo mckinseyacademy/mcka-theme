@@ -3,9 +3,11 @@ User model for use with remote authentication; must inherit from AbstractUser
 Don't save in database, but we must inherit from AbstractUser (which in turn
 inherits from model) and therefore tables get contructed
 '''
-from django.db import models
+import hashlib
+import random
+from django.db import models as db_models
 from django.contrib.auth.models import AbstractUser
-from lib.authorization import is_user_in_group
+from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 
 
@@ -15,7 +17,7 @@ class RemoteUser(AbstractUser):
     temp_user_cache = {}
     _image_url = None
 
-    session_key = models.CharField('session_key', max_length=255, unique=True)
+    session_key = db_models.CharField('session_key', max_length=255, unique=True)
 
     def update_response_fields(self, user_response, session_key=None):
         ''' take api response and blend the results into this user object '''
@@ -63,22 +65,22 @@ class RemoteUser(AbstractUser):
 #        return self.username
 
     def is_mcka_admin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_ADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_ADMIN)
 
     def is_mcka_subadmin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_SUBADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_SUBADMIN)
 
     def is_client_admin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
 
     def is_client_subadmin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
 
     def is_mcka_ta(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_TA)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_TA)
 
     def is_client_ta(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_TA)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_TA)
 
 
 # class AprosUser(RemoteUser):
@@ -103,3 +105,20 @@ class RemoteUser(AbstractUser):
 
 #     def is_client_ta():
 #         return True
+
+
+class UserActivation(db_models.Model):
+    user_id = db_models.IntegerField(unique=True)
+    activation_key = db_models.CharField(max_length=32, unique=True, db_index=True)
+
+    @staticmethod
+    def generate_activation_key(email):
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+        return hashlib.sha1(salt+email).hexdigest()
+
+    @classmethod
+    def user_activation(cls, user):
+        activation_record = cls.objects.create(user_id=user.id, activation_key=cls.generate_activation_key(user.email))
+        activation_record.save()
+
+        return activation_record

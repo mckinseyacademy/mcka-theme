@@ -1,4 +1,4 @@
-''' forms for login and registration '''
+''' forms for login and activation '''
 from django import forms
 from django.utils.translation import ugettext as _
 
@@ -11,10 +11,10 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 
-class RegistrationForm(forms.Form):
-    ''' registration form for system '''
-    username = forms.CharField(max_length=255)
-    email = forms.CharField(max_length=255)
+class ActivationForm(forms.Form):
+    ''' activation form for system '''
+    username = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}))
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
     first_name = forms.CharField(max_length=255)
@@ -22,7 +22,7 @@ class RegistrationForm(forms.Form):
 
     def clean(self):
         ''' override clean to check for password matches '''
-        cleaned_data = super(RegistrationForm, self).clean()
+        cleaned_data = super(ActivationForm, self).clean()
         password_value = cleaned_data.get("password")
         confirm_password_value = cleaned_data.get("confirm_password")
 
