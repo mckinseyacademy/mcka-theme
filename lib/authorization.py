@@ -24,7 +24,7 @@ def permission_groups_map():
 def is_user_in_permission_group(user, *group_names):
     for group_name in group_names:
         if group_name in permission_groups_map().keys():
-            return user_api.is_user_in_group(user.id, groups_map[group_name])
+            return user_api.is_user_in_group(user.id, permission_groups_map()[group_name])
 
     return False
 
@@ -36,7 +36,7 @@ def permission_group_required(*group_names):
     def decorator(view_fn):
         def _wrapped_view(request, *args, **kwargs):
             if request.user.is_authenticated():
-                if is_user_in_group(request.user, *group_names):
+                if is_user_in_permission_group(request.user, *group_names):
                     return view_fn(request, *args, **kwargs)
                 template = loader.get_template('not_authorized.haml')
                 context = RequestContext(request, {'request_path': request.path})

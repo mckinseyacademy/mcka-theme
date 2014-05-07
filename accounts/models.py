@@ -65,22 +65,22 @@ class RemoteUser(AbstractUser):
 #        return self.username
 
     def is_mcka_admin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_ADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_ADMIN)
 
     def is_mcka_subadmin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_SUBADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_SUBADMIN)
 
     def is_client_admin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
 
     def is_client_subadmin(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
 
     def is_mcka_ta(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.MCKA_TA)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_TA)
 
     def is_client_ta(self):
-        return is_user_in_group(self, PERMISSION_GROUPS.CLIENT_TA)
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_TA)
 
 
 # class AprosUser(RemoteUser):

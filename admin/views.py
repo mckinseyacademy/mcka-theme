@@ -8,7 +8,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from urllib2 import HTTPError
 
-from lib.authorization import group_required
+from lib.authorization import permission_group_required
+from api_client.group_api import PERMISSION_GROUPS
 from .models import Client
 from .models import Program
 from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program
@@ -35,7 +36,7 @@ def ajaxify_http_redirects(func):
     return wrapper
 
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def home(request):
     return render(
         request,
@@ -44,7 +45,7 @@ def home(request):
     )
 
 
-@group_required('super_admin')
+@permission_group_required('super_admin')
 def course_meta_content(request):
     return render(
         request,
@@ -53,7 +54,7 @@ def course_meta_content(request):
     )
 
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_list(request):
     ''' handles requests for login form and their submission '''
     clients = Client.list()
@@ -75,7 +76,7 @@ def client_list(request):
 
 
 @ajaxify_http_redirects
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_new(request):
     error = None
     if request.method == 'POST':  # If the form has been submitted...
@@ -115,7 +116,7 @@ def client_new(request):
     )
 
 @ajaxify_http_redirects
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_edit(request, client_id):
     error = None
     if request.method == 'POST':  # If the form has been submitted...
@@ -166,7 +167,7 @@ def _format_upload_results(upload_results):
 
     return results_object
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
 
@@ -194,7 +195,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
     )
 
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_list(request):
     programs = Program.list()
     for program in programs:
@@ -215,7 +216,7 @@ def program_list(request):
 
 
 @ajaxify_http_redirects
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_new(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -256,7 +257,7 @@ def program_new(request):
     )
 
 @ajaxify_http_redirects
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_edit(request, program_id):
     error = None
     if request.method == 'POST':  # If the form has been submitted...
@@ -298,7 +299,7 @@ def program_edit(request, program_id):
     )
 
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_detail(request, program_id, detail_view="detail"):
     program = Program.fetch(program_id)
     view = 'admin/program/{}.haml'.format(detail_view)
@@ -323,7 +324,7 @@ def program_detail(request, program_id, detail_view="detail"):
     )
 
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def upload_student_list(request, client_id):
     ''' handles requests for login form and their submission '''
     error = None
@@ -362,7 +363,7 @@ def upload_student_list(request, client_id):
     )
 
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_student_list(request, client_id):
     client = Client.fetch(client_id)
     filename = "Student List for {} on {}.csv".format(
@@ -380,7 +381,7 @@ def download_student_list(request, client_id):
 
     return response
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_program_report(request, program_id):
     filename = "Empty Report.csv"
     response = HttpResponse(
@@ -405,7 +406,7 @@ def _prepare_program_display(program):
 
     return program
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_association(request, client_id):
     client = Client.fetch(client_id)
     program_list = Program.list()
@@ -433,7 +434,7 @@ def program_association(request, client_id):
         data
     )
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_courses(request, program_id):
     program = Program.fetch(program_id)
     courses = request.POST.getlist("courses[]")
@@ -450,7 +451,7 @@ def add_courses(request, program_id):
         content_type='application/json'
     )
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_program(request, client_id):
     program = Program.fetch(request.POST.get("program"))
     students = request.POST.getlist("students[]")
@@ -477,7 +478,7 @@ def add_students_to_program(request, client_id):
         content_type='application/json'
     )
 
-@group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_course(request, client_id):
     courses = request.POST.getlist("courses[]")
     students = request.POST.getlist("students[]")
