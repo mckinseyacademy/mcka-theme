@@ -10,23 +10,26 @@ from django.utils.http import urlquote
 from api_client import user_api, group_api
 
 
-def load_groups():
+def permission_groups_map():
     ''' Loads and caches group names and ids via the edX platform '''
-    groups_map = group_api.get_groups()
-    cache.set('edx_groups_map', groups_map)
+    permission_groups_map = cache.get('permission_groups_map', None)
+    if permission_groups_map is None:
+        permission_groups = group_api.get_groups_of_type('permission')
+        permission_groups_map = {permission_group.name: permission_group.group_id for permission_group in permission_groups}
+        cache.set('permission_groups_map', permission_groups_map)
 
-    return groups_map
+    return permission_groups_map
 
 
-def is_user_in_group(user, *group_names):
-    groups_map = cache.get('edx_groups_map', load_groups())
+def is_user_in_permission_group(user, *group_names):
     for group_name in group_names:
-        if group_name in groups_map.keys():
+        if group_name in permission_groups_map().keys():
             return user_api.is_user_in_group(user.id, groups_map[group_name])
+
     return False
 
 
-def group_required(*group_names):
+def permission_group_required(*group_names):
     ''' View decorator which requires user membership in
         at least one of the groups in a list of groups
     '''
