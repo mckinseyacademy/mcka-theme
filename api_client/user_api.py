@@ -172,7 +172,7 @@ def is_user_in_group(user_id, group_id):
     try:
         response = GET(
             '{}/{}/{}/users/{}'.format(
-                settings.API_MOCK_SERVER_ADDRESS,
+                settings.API_SERVER_ADDRESS,
                 GROUP_API,
                 group_id,
                 user_id,
