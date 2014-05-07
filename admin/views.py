@@ -602,6 +602,35 @@ def workgroup_course_detail(request, course_id):
     for group in groups: 
         group.students_count = len(group.students)
 
+    students = [
+        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+    ]
+
+    groups = [
+                {
+                    'id': '0', 
+                    'display_name': 'Group 1', 
+                    'students' : [
+                                    { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+                                    { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+                                ]
+                }, 
+                {
+                    'id': '1', 
+                    'display_name': 'Group 2', 
+                    'students' : [
+                                    { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+                                    { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+                                ]
+                }, 
+            ]
+
+    for group in groups: 
+        group['students_count'] = len(group['students'])
+
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
