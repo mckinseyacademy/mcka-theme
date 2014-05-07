@@ -5,20 +5,37 @@
 
 - block content
   .row
-    .large-4.medium-4.columns
-      &nbsp;
-    .registration-form.large-4.medium-4.columns
-      %form{action: "/accounts/activate/#{activation_code}", method: "POST"}
-        .error
-          - if error
-            = error
-        - csrf_token
-        = form
-        %input.button.radius.small{type: "submit", value: "#{activate_label}"}
-      %a.other{href: "/accounts/login"}
-        = _("Log In")
-    .large-4.medium-4.columns
-      &nbsp;
+    .login-form.large-10.medium-10.large-centered.medium-centered.columns
+      .row
+        .large-7.medium-7.columns
+          %h1 Welcome to McKinsey Academy
+          %h4 Create your McKinsey Academy account
+          .description Complete the fields below.
+          .description
+            %span Required fields are noted by an asterisk (
+            %span.required-field><
+            %span )
+          %form{action: "/accounts/activate/#{activation_code}", method: "POST"}
+            .error
+              - if error
+                = error
+            - csrf_token
+            = form
+            %input.button.radius.small{type: "submit", value: "#{activate_label}"}
+        .large-3.medium-3.columns
+          %h4 Already Registered?
+          .sidebar
+            %a{href: "/accounts/login"} Click here to log in.
+          %hr
+          %h4 Welcome
+          .sidebar
+            Registering gives you access to course content and ensures that you receive updates and notifications from McKinsey Academy.
+          %hr
+          %h4 Need Help?
+          .sidebar
+            %a{href: "/"}>< View our FAQ for answers to commonly asked questions
+            , or raise question in course-specific discussion forums.
+
 
 - block js_snippets
   :javascript

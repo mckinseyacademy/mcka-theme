@@ -267,16 +267,6 @@ form {
   }
 }
 
-.login-form, .registration-form{
-  margin-top: 50px;
-  .other{
-    @include font-spec(12);
-    float: right;
-    position: relative;
-    top: -34px;
-  }
-}
-
 .close-reveal-modal{
   &::after{
     content: "\00d7";

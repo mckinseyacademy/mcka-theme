@@ -84,6 +84,21 @@ def get_user_courses(user_id):
 
     return courses
 
+def get_user_groups(user_id, group_type=None):
+    ''' get the groups in which this user is a member '''
+    url = '{}/{}/{}/groups'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
+    )
+
+    if group_type:
+        url += "?type={}".format(group_type)
+
+    response = GET(url)
+
+    return JP.from_json(response.read()).groups
+
 def enroll_user_in_course(user_id, course_id):
     ''' enrolls the user summary in the given course '''
     data = {"course_id": course_id}
