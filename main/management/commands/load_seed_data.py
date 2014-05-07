@@ -35,7 +35,7 @@ class Command(BaseCommand):
                 self.stdout.write("Skipping %s, already exists" % group_name)
 
         ''' Register admin, sub-admin and TA users '''
-        user_suffix = 'andy'
+        user_suffix = '_user'
         user_list = (
             ('admin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_ADMIN),
             ('subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_SUBADMIN),
