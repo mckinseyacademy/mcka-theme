@@ -14,8 +14,9 @@
 
       var accordion = function(el, selector){
         el.find('.name').on('click', function(){
-          $(this).parent().find(selector).toggleClass('expanded').slideToggle();
-          el.find('i.caret').toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+          var that = $(this);
+          that.parent().find(selector).toggleClass('expanded').slideToggle();
+          that.find('i.caret').toggleClass('fa-caret-down').toggleClass('fa-caret-up');
         });
       }
 
@@ -32,11 +33,13 @@
             data: data, 
             method: 'POST'
           }).done(function(data){
+            if(data != ''){
               $('div.large-8.columns').html(data);
               $('.student[name="' + el.find('.remove-student-icon').attr('name') + '"]').fadeOut().remove();
               el.find('span.student-count').html(el.find('span.student-count').html() - 1);
               enable_selection(selections, activator);
-          });
+            }
+          }).fail();
       }
 
       $('.remove-student-icon').on('click', function(e){

@@ -664,7 +664,7 @@ def groupwork_group_remove(request, group_id):
                     data, 
                 )
 
-    return HttpResponse('fail', content_type='application/json')
+    return HttpResponse('', content_type='application/json')
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
