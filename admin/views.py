@@ -11,6 +11,7 @@ from urllib2 import HTTPError
 from lib.authorization import group_required
 from .models import Client
 from .models import Program
+from .models import GroupWork
 from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program
 from .forms import ClientForm
 from .forms import ProgramForm
@@ -561,10 +562,41 @@ def groupwork_course_detail(request, course_id):
 
     course = course_api.get_course(course_id)
 
+    students = [
+        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+    ]
+
+    groups = [
+                {
+                    'id': '0', 
+                    'display_name': 'Group 1', 
+                    'students' : [
+                                    { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+                                    { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+                                ]
+                }, 
+                {
+                    'id': '1', 
+                    'display_name': 'Group 2', 
+                    'students' : [
+                                    { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+                                    { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+                                ]
+                }, 
+            ]
+
+    for group in groups: 
+        group['students_count'] = len(group['students'])
+
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
-        'course': course, 
+        "course": course, 
+        "students": students,
+        "groups": groups,  
     }
 #    return HttpResponse(json.dumps(dir(course)))
     return render(
@@ -572,6 +604,66 @@ def groupwork_course_detail(request, course_id):
         'admin/groupwork/course_detail.haml',
         data
     )
+
+@ajaxify_http_redirects
+@group_required('super_admin')
+def groupwork_group_create(request, course_id):
+
+    if request.method == 'POST':
+
+        students = request.POST.getlist("students[]")
+        groupwork = GroupWork.create('group 1', {})
+        for student_id in students: 
+#            groupwork.add_user(3, student_id)
+            True
+
+    return HttpResponseRedirect('admin/groupwork/course/{}'.format(course_id))
+
+@group_required('super_admin')
+def groupwork_group_remove(request, group_id):
+
+    students = [
+        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+    ]
+
+    groups = [
+                {
+                    'id': '0', 
+                    'display_name': 'Group 1', 
+                    'students' : [
+                                    { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+                                    { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+                                ]
+                }, 
+                {
+                    'id': '1', 
+                    'display_name': 'Group 2', 
+                    'students' : [
+                                    { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+                                    { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+                                ]
+                }, 
+            ]
+
+    if request.method == 'POST':
+        #This is wrong, just searching by index instead of doing api search. remove once api done
+        group = groups[int(group_id)] 
+        for student in group['students']:
+            if str(request.POST['student']) == str(student['email']): 
+                students.append(student)
+                data = {
+                    "students": students, 
+                }
+                return render(
+                    request,
+                    'admin/groupwork/student_table.haml',
+                    data, 
+                )
+
+    return HttpResponse('fail', content_type='application/json')
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')

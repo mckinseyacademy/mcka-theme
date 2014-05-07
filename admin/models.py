@@ -83,3 +83,15 @@ class Client(BaseGroupModel):
 
         return group_info
 
+class GroupWork(BaseGroupModel): 
+    data_fields = ["display_name"]
+    group_type = "groupwork"
+
+    def fetch_students(self):
+        return self.get_users()
+
+    def add_to_course(self, course_id):
+        return group_api.add_groupwork_to_course(self.id, course_id)
+    def add_user(self, client_id, user_id):
+        return license_controller.assign_license(self.id, client_id, user_id)
+

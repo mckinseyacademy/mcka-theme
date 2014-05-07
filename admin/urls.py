@@ -25,5 +25,7 @@ urlpatterns = patterns(
     url(r'^programs', views.program_list, name='program_list'),
     url(r'^groupwork/course/(?P<course_id>.*)', views.groupwork_course_detail, name='groupwork_course_detail'),
     url(r'^groupwork/programs/list', views.groupwork_programs_list, name='groupwork_programs_list'),
+    url(r'^groupwork/group/create/(?P<course_id>.*)', views.groupwork_group_create, name='groupwork_group_create'),
+    url(r'^groupwork/group/(?P<group_id>[0-9]+)/remove', views.groupwork_group_remove, name='groupwork_group_remove'),
     url(r'^groupwork', views.groupwork_list, name='groupwork_list'),
 )
