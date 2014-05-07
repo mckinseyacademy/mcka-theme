@@ -71,8 +71,8 @@ def build_page_info_for_course(
                 prev_page = page
 
     if not current_page:
-        current_sequential = current_chapter.sequentials[0]
-        current_page = current_sequential.pages[0]
+        current_sequential = current_chapter.sequentials[0] if len(current_chapter.sequentials) > 0 else None
+        current_page = current_sequential.pages[0] if current_sequential and len(current_sequential.pages) > 0 else None
 
     return course, current_chapter, current_sequential, current_page
 
