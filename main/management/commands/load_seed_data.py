@@ -46,7 +46,7 @@ class Command(BaseCommand):
                 "first_name": "Uber",
                 "last_name": "Admin",
                 "email": "%s@mckinseyacademy.com" % user_tuple[0],
-                "password": "password"
+                "password": "PassworD12!@"
             }
             try:
                 self.stdout.write("Registering user: %s in the role: %s" % (user_tuple[0], user_tuple[1]))
