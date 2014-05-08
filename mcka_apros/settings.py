@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'accounts.middleware.SessionInactivityTimeout',
+    'accounts.middleware.SessionTimeout',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
@@ -136,6 +136,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 # the LMS cookies at the domain level from apros
 SESSION_COOKIE_NAME = 'apros_sessionid'
 CSRF_COOKIE_NAME = 'apros_csrftoken'
+SESSION_TIMEOUT_SECONDS = 300
 
 # LMS
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
