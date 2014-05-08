@@ -602,12 +602,14 @@ def workgroup_course_detail(request, course_id):
     for group in groups: 
         group.students_count = len(group.students)
 
-    students = [
-        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-    ]
+    students = course_api.get_user_list(course_id)
+
+    # students = [
+    #     { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+    #     { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+    #     { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+    #     { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+    # ]
 
     groups = [
                 {
