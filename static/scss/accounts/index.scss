@@ -1,0 +1,59 @@
+.login-form, .registration-form{
+  margin-top: rem-calc(48);
+  padding: rem-calc(20);
+  background-color: $pure-white;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+
+  h1{
+    padding-bottom: rem-calc(20);
+  }
+  h4{
+    text-transform: uppercase;    
+  }
+  .description{
+    @include font-spec(14, normal, 24);
+    height: rem-calc(20);
+  }
+  .sidebar{
+    @include font-spec(14, normal, 22);
+    a{
+      font-size: rem-calc(12);
+    }
+  }
+  form label{
+    @include font-spec(14, semibold);
+    padding-bottom: rem-calc(10);
+  }
+  .columns + .columns{
+    display: block;
+    border-left: 1px solid $mckinsey-grey;
+    min-height: 500px;
+  }
+  .required-field{
+    color: $mckinsey-red;
+    font-weight: normal;
+    &::after{
+      content: '*';
+    }
+  }
+  input[readonly]{
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    color: $mckinsey-academy-blue-gray;
+    margin-top: -10px;
+  }
+  #id_accept_terms{
+    position: relative;
+    margin: 0;
+    top: -37px;
+  }
+  label[for=id_accept_terms]{
+    position: relative;
+    left: 20px;
+  }
+  input[submit]{
+    padding-top: 20px;
+  }
+}
+
