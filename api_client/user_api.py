@@ -10,8 +10,7 @@ AUTH_API = 'api/sessions'
 USER_API = 'api/users'
 GROUP_API = 'api/groups'
 
-VALID_USER_KEYS = ["username", "first_name", "last_name", "email", "password", "is_active"]
-
+VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "highest_level_of_education", "password", "is_active"]
 
 def _clean_user_keys(user_hash):
     return {user_key: user_hash[user_key] for user_key in VALID_USER_KEYS if user_key in user_hash}
@@ -84,6 +83,21 @@ def get_user_courses(user_id):
         course.percent_complete = 25
 
     return courses
+
+def get_user_groups(user_id, group_type=None):
+    ''' get the groups in which this user is a member '''
+    url = '{}/{}/{}/groups'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
+    )
+
+    if group_type:
+        url += "?type={}".format(group_type)
+
+    response = GET(url)
+
+    return JP.from_json(response.read()).groups
 
 def enroll_user_in_course(user_id, course_id):
     ''' enrolls the user summary in the given course '''

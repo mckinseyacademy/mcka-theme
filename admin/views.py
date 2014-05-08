@@ -336,7 +336,8 @@ def upload_student_list(request, client_id):
             try:
                 upload_results = process_uploaded_student_list(
                     request.FILES['student_list'],
-                    client_id
+                    client_id,
+                    request.build_absolute_uri('/accounts/activate')
                 )
                 return client_detail(request, client_id, detail_view="detail", upload_results=upload_results)
 

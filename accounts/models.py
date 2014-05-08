@@ -109,7 +109,7 @@ class RemoteUser(AbstractUser):
 
 class UserActivation(db_models.Model):
     user_id = db_models.IntegerField(unique=True)
-    activation_key = db_models.CharField(max_length=32, unique=True, db_index=True)
+    activation_key = db_models.CharField(max_length=40, unique=True, db_index=True)
 
     @staticmethod
     def generate_activation_key(email):
