@@ -114,23 +114,10 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
     # Inject formatted data for view
     _inject_formatted_data(program, course, None)
 
-    #remote_session_key = request.session.get("remote_session_key")
-    #lms_base_domain = settings.LMS_BASE_DOMAIN
-    #lms_sub_domain = settings.LMS_SUB_DOMAIN
-
-    #vertical_usage_id = current_page.vertical_usage_id()
-
     data = {
         "user": request.user,
         "course": course,
-        #"current_chapter": current_chapter,
-        #"current_sequential": current_sequential,
-        #"current_page": current_page,
-        #"lms_base_domain": lms_base_domain,
-        #"lms_sub_domain": lms_sub_domain,
         "program": program,
-        #"remote_session_key": remote_session_key,
-        #"vertical_usage_id": vertical_usage_id,
         "current_view": current_view,
         "current_template": "courses/course_{0}.haml".format(current_view),
     }

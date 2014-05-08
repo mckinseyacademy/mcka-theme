@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from .forms import LoginForm, ActivationForm
 from api_client import user_api
 from .models import RemoteUser, UserActivation
+from admin.models import Client
 
 # from importlib import import_module
 # from django.conf import settings
@@ -20,7 +21,7 @@ import urlparse
 from courses.views import homepage
 
 from django.contrib.auth.decorators import login_required
-
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "highest_level_of_education", "password", "is_active", "year_of_birth"]
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -58,9 +59,13 @@ def login(request):
                 error_messages = {
                     403: _("User account not activated"),
                     401: _("Username or password invalid"),
+                    404: _("Username or password invalid"),
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]
+
+                print err, error
+
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
         # provide something here, otherwise the error (password field is
@@ -79,7 +84,7 @@ def login(request):
         "user": None,
         "form": form,
         "error": error,
-        "login_label": _("Log In"),
+        "login_label": _("Log in to my McKinsey Academy account & access my courses"),
         }
     return render(request, 'accounts/login.haml', data)
 
@@ -114,21 +119,35 @@ def activate(request, activation_code):
             raise
 
         user_data = {}
-        for field_name in ["username", "email", "first_name", "last_name"]:
-            if hasattr(user, field_name):
+        for field_name in VALID_USER_FIELDS:
+            if field_name == "full_name":
+                user_data[field_name] = user.formatted_name()
+            elif hasattr(user, field_name):
                 user_data[field_name] = getattr(user, field_name)
 
         # Add a fake password, or we'll get an error that the password does not match
         user_data["password"] = user_data["confirm_password"] = "fake_password"
+
+        # See if we have a company for this user
+        companies = user_api.get_user_groups(user.id, Client.group_type)
+        if len(companies) > 0:
+            company = Client.fetch(companies[0].id)
+            user_data["company"] = company.display_name
+
     except:
         user_data = None
         error = _("Invalid Activation Code")
 
+    if request.method == 'POST':
+        if "accept_terms" not in request.POST or request.POST["accept_terms"] == False:
+            user_data = request.POST.copy()
+            error = _("You must accept terms of service in order to continue")
+
+
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
-        
-        # username and email should never be changed
-        user_data["username"] = user.username
+
+        # email should never be changed
         user_data["email"] = user.email
 
         # activate the user
@@ -156,14 +175,14 @@ def activate(request, activation_code):
         form = ActivationForm(user_data)
         
         # set focus to username field
-        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+        form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "user": user,
         "form": form,
         "error": error,
         "activation_code": activation_code,
-        "activate_label": _("Activate Account"),
+        "activate_label": _("Create my McKinsey Academy account"),
         }
     return render(request, 'accounts/activate.haml', data)
 
