@@ -1,8 +1,10 @@
 ''' API calls with respect to courses '''
 from .json_object import CategorisedJsonParser
 from .json_object import CategorisedJsonObject
+from .json_object import JsonParser as JP
 from . import course_models
 from .json_requests import GET
+from .json_requests import POST
 from urllib2 import HTTPError
 
 from django.conf import settings
@@ -111,3 +113,41 @@ def get_course(course_id, depth = 3):
             sequential.pages = [module for module in sequential.modules if module.category == "vertical"]
 
     return course
+
+def get_user_list_json(course_id):
+    '''
+    Retrieves course user list structure information from the API for specified course
+    '''
+    response = GET('{}/{}/{}/users'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API, 
+        course_id)
+    )
+
+    return response.read()
+
+def get_user_list(course_id):
+
+    return JP.from_json(get_user_list_json(course_id), course_models.CourseEnrollmentList).enrollments
+
+def add_workgroup_to_course(group_id, course_id, module_id):
+    ''' associate workgroup to specific course '''
+
+    data = {
+        'course_id': course_id, 
+        'group_id': group_id, 
+        'module_id': module_id, 
+    }
+
+    response = POST(
+        '{}/{}/{}/modules/{}/groups'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API, 
+            course_id,
+            module_id,
+        ), 
+        data
+    )
+
+    return JP.from_json(response.read())
+

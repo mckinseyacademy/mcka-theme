@@ -1,4 +1,5 @@
     $(function(){
+      var course_id = $('#course_id').val();
       selections = [
         {
           selector: ".student-list .student",
@@ -25,7 +26,8 @@
       var removeStudent = function(el, link){
           data = {
             'student' : el.find('.remove-student-icon').attr('name'), 
-            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken')
+            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'), 
+            'course_id': course_id
             };
           $.ajax(
           {

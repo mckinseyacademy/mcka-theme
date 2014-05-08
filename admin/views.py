@@ -12,7 +12,7 @@ from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
 from .models import Client
 from .models import Program
-from .models import GroupWork
+from .models import WorkGroup
 from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program
 from .forms import ClientForm
 from .forms import ProgramForm
@@ -498,12 +498,12 @@ def add_students_to_course(request, client_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def groupwork_list(request):
+def workgroup_list(request):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
         if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
-            return HttpResponseRedirect('/admin/groupwork/course/{}'.format(request.POST['select-course']))
+            return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
 
     programs = Program.list()
@@ -511,18 +511,18 @@ def groupwork_list(request):
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
-        "principal_new_url": "/admin/groupwork/groupwork_new",
+        "principal_new_url": "/admin/workgroup/workgroup_new",
         "programs": programs, 
     }
 
     return render(
         request,
-        'admin/groupwork/list.haml',
+        'admin/workgroup/list.haml',
         data
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def groupwork_programs_list(request):
+def workgroup_programs_list(request):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
@@ -533,7 +533,7 @@ def groupwork_programs_list(request):
     if group_id == 'select':
         return render(
             request,
-            'admin/groupwork/courses_list.haml',
+            'admin/workgroup/courses_list.haml',
             {
                 "courses": {}, 
             }
@@ -548,12 +548,12 @@ def groupwork_programs_list(request):
 #    return HttpResponse(json.dumps(dir(courses[0])))
     return render(
         request,
-        'admin/groupwork/courses_list.haml',
+        'admin/workgroup/courses_list.haml',
         data
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def groupwork_course_detail(request, course_id):
+def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
 #    if request.method == 'POST':
@@ -563,12 +563,14 @@ def groupwork_course_detail(request, course_id):
 
     course = course_api.get_course(course_id)
 
-    students = [
-        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-    ]
+    students = course_api.get_user_list(course_id)
+
+    # students = [
+    #     { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+    #     { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+    #     { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+    #     { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+    # ]
 
     groups = [
                 {
@@ -602,54 +604,63 @@ def groupwork_course_detail(request, course_id):
 #    return HttpResponse(json.dumps(dir(course)))
     return render(
         request,
-        'admin/groupwork/course_detail.haml',
+        'admin/workgroup/course_detail.haml',
         data
     )
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def groupwork_group_create(request, course_id):
+def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
 
+        course = course_api.get_course(course_id)
+        module = course.chapters[-1]     
         students = request.POST.getlist("students[]")
-        groupwork = GroupWork.create('group 1', {})
-        for student_id in students: 
-#            groupwork.add_user(3, student_id)
-            True
 
-    return HttpResponseRedirect('admin/groupwork/course/{}'.format(course_id))
+        workgroup = WorkGroup.create('Test Group aaa', {})
+
+        group_id = int(workgroup.id)
+
+        course_api.add_workgroup_to_course(group_id, course_id, module.id)
+        for student_id in students: 
+            workgroup.add_user(group_id, student_id)
+
+    return HttpResponseRedirect('admin/workgroup/course/{}'.format(course_id))
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def groupwork_group_remove(request, group_id):
+def workgroup_group_remove(request, group_id):
 
-    students = [
-        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-    ]
-
-    groups = [
-                {
-                    'id': '0', 
-                    'display_name': 'Group 1', 
-                    'students' : [
-                                    { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-                                    { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-                                ]
-                }, 
-                {
-                    'id': '1', 
-                    'display_name': 'Group 2', 
-                    'students' : [
-                                    { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-                                    { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-                                ]
-                }, 
-            ]
-
+    # students = [
+    #     { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+    #     { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+    #     { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+    #     { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+    # ]
     if request.method == 'POST':
+
+        course_id = request.POST['course_id']
+        students = course_api.get_user_list(course_id)
+
+        groups = [
+                    {
+                        'id': '0', 
+                        'display_name': 'Group 1', 
+                        'students' : [
+                                        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
+                                        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
+                                    ]
+                    }, 
+                    {
+                        'id': '1', 
+                        'display_name': 'Group 2', 
+                        'students' : [
+                                        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
+                                        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
+                                    ]
+                    }, 
+                ]
+
         #This is wrong, just searching by index instead of doing api search. remove once api done
         group = groups[int(group_id)] 
         for student in group['students']:
@@ -660,7 +671,7 @@ def groupwork_group_remove(request, group_id):
                 }
                 return render(
                     request,
-                    'admin/groupwork/student_table.haml',
+                    'admin/workgroup/student_table.haml',
                     data, 
                 )
 

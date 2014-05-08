@@ -204,3 +204,4 @@ def get_groups_in_group(group_id, group_object=JsonObject):
     )
 
     return JP.from_json(response.read(), group_object)
+

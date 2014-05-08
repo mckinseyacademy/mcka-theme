@@ -401,3 +401,9 @@ class TestGroupInfoTest(TestCase):
         self.assertEqual(test_info.start_date, datetime(2014,1,1))
         self.assertEqual(test_info.end_date, datetime(2014,12,3))
 
+class HelpMeTest(TestCase):
+
+    def test_me(self):
+        test_json = '{"uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/users", "enrollments": [{"id": 1, "email": "honor@example.com", "username": "honor"}, {"id": 2, "email": "audit@example.com", "username": "audit"}, {"id": 3, "email": "verified@example.com", "username": "verified"}, {"id": 4, "email": "staff@example.com", "username": "staff"}, {"id": 5, "email": "dino@extensionengine.com", "username": "215130"}]}'
+        test_json = '{"uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/users", "enrollments": [{"id": 1, "email": "honor@example.com", "username": "honor"}, {"id": 2, "email": "audit@example.com", "username": "audit"}, {"id": 3, "email": "verified@example.com", "username": "verified"}, {"id": 4, "email": "staff@example.com", "username": "staff"}, {"id": 5, "email": "dino@extensionengine.com", "username": "215130"}]}'
+        output = JP.from_json(test_json)

@@ -4,6 +4,43 @@ HOST: http://api.edx.org
 # Open edX API Mock Supplmentals
 This is used to supply additional mock results so that we can provide a complete course via the API
 
+
+### GET /api/courses/edX/Open_DemoX/edx_demo_course/users
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/users", 
+            "enrollments": [
+                {
+                    "id": 1, 
+                    "email": "honor@example.com", 
+                    "username": "honor"
+                }, 
+                {
+                    "id": 2, 
+                    "email": "audit@example.com", 
+                    "username": "audit"
+                }, 
+                {
+                    "id": 3, 
+                    "email": "verified@example.com", 
+                    "username": "verified"
+                }, 
+                {
+                    "id": 4, 
+                    "email": "staff@example.com", 
+                    "username": "staff"
+                }, 
+                {
+                    "id": 5, 
+                    "email": "dino@extensionengine.com", 
+                    "username": "215130"
+                }
+            ]
+        }
+
 ### GET /api/groups
  + Response 200 (application/json)
  
