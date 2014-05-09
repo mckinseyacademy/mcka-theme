@@ -7,10 +7,10 @@
       - include current_template
 
 - block js_snippets
-  - if current_view == "lessons"
+  - if current_view == "lessons" or current_view == "group_work"
     :javascript
       $(function(){
-        var lesson_content = $('#course-lessons .lesson-content');
+        var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
         var lesson_data = {
           usageId: '{{ vertical_usage_id }}',
           sessionId: '{{ remote_session_key }}',

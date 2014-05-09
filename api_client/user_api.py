@@ -151,25 +151,31 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
     return True
 
 
-def set_user_bookmark(user_id, program_id, course_id, chapter_id, sequential_id, page_id):
-    ''' let the openedx server know the most recently visited page '''
+def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
+    '''
+    Let the openedx server know the most recently visited page
+    Can also provide a None value for chapter_id, then it just sets the page
+    within the sequential_id
+    '''
 
     positions = []
 
-    positions.append(_set_course_position(
-            user_id,
-            course_id,
-            course_id,
-            chapter_id
+    if chapter_id:
+        positions.append(_set_course_position(
+                user_id,
+                course_id,
+                course_id,
+                chapter_id
+            )
         )
-    )
-    positions.append(_set_course_position(
-            user_id,
-            course_id,
-            chapter_id,
-            sequential_id
+        positions.append(_set_course_position(
+                user_id,
+                course_id,
+                chapter_id,
+                sequential_id
+            )
         )
-    )
+
     positions.append(_set_course_position(
             user_id,
             course_id,

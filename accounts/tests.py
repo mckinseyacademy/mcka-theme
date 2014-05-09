@@ -24,13 +24,6 @@ class AccountsFormsTests(TestCase):
 
         self.assertTrue(activation_form.is_valid())
 
-        # invalid if password fields do not match, but otherwise good
-        reg_data['confirm_password'] = 'p455w0rd_not_matched'
-
-        activation_form = ActivationForm(reg_data)
-
-        self.assertFalse(activation_form.is_valid())
-
 class TestUserObject():
     id = None
     email = None
