@@ -131,8 +131,8 @@ def get_user_course_detail(user_id, course_id):
 def _set_course_position(user_id, course_id, parent_id, child_id):
     data = {
         "position": {
-            "parent_module_id": parent_id,
-            "child_module_id": child_id,
+            "parent_content_id": parent_id,
+            "child_content_id": child_id,
         }
     }
 

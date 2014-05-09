@@ -15,7 +15,7 @@ def permission_groups_map():
     permission_groups_map = cache.get('permission_groups_map', None)
     if permission_groups_map is None:
         permission_groups = group_api.get_groups_of_type('permission')
-        permission_groups_map = {permission_group.name: permission_group.group_id for permission_group in permission_groups}
+        permission_groups_map = {permission_group.name: permission_group.id for permission_group in permission_groups}
         cache.set('permission_groups_map', permission_groups_map)
 
     return permission_groups_map
