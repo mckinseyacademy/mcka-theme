@@ -103,14 +103,14 @@ def get_course(course_id, depth = 3):
 
     # Load the depth from the API
     course = CJP.from_json(response.read())
-    course.chapters = [module for module in course.modules if module.category == "chapter"]
+    course.chapters = [module for module in course.content if module.category == "chapter"]
 
     for chapter in course.chapters:
-        chapter.sequentials = [module for module in chapter.modules if module.category == "sequential"]
+        chapter.sequentials = [module for module in chapter.children if module.category == "sequential"]
         chapter.is_released = True
 
         for sequential in chapter.sequentials:
-            sequential.pages = [module for module in sequential.modules if module.category == "vertical"]
+            sequential.pages = [module for module in sequential.children if module.category == "vertical"]
 
     return course
 
@@ -140,7 +140,7 @@ def add_workgroup_to_course(group_id, course_id, module_id):
     }
 
     response = POST(
-        '{}/{}/{}/modules/{}/groups'.format(
+        '{}/{}/{}/content/{}/groups'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API, 
             course_id,
