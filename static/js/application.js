@@ -1,4 +1,17 @@
+window.Apros = {
+  models: {},
+  collections: {},
+  views: {},
+
+  initialize: function() {
+    Backbone.history.start({pushState: true});
+  }
+}
+
+_(Apros).extend(Backbone.Events);
+
 $(function(){
+  Apros.initialize()
   /* Javascript to initialise on ready as defined by jquery */
 
   // Load user profile information on demand

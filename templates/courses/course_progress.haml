@@ -1,0 +1,63 @@
+#course-progress
+  %h1 Course Progress for '={user.username}'
+  .sub-1 PROGRESS
+  %p.style-6 You are 00% of the way through the course based on completion of modules within lessons:
+  %hr
+  .sub-1 GRADES
+  %p.style-6 You need a combined course grade of at least 80% to earn a certificate of completion. Your final grade is calculated as follows:
+  .grades
+    %ul
+      %li End-of-lesson assessments: 00? percent of your grade
+      %li Group work: 00? percent of your grade
+      %li Final assessment: 00? percent of your grade
+    #chart-grades
+      %svg
+  %ul.legend
+    %li.completed.label-3 Completed
+    %li.group-work.label-3 Group Work avg.
+    %li.current-grade.label-3 Current grade
+  %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date
+  %hr
+  - for lesson in course.chapters
+    .lesson
+      .sub-1 LESSON ={lesson.index}: ={lesson.name}
+      .assessment
+        %span Assessment
+        (0/13)
+      .deadline Suggested deadline: April 16th
+    %hr
+  .group-work
+    .sub-1 GROUP WORK
+    .lesson
+      .assessment
+        %span Activity 1
+        (0/99)
+      .deadline Suggested deadline: April 30th
+      %ul.group-grades
+        %li Averaged peer grades:
+        %li 75
+        %li 80
+        %li 85
+        %li 75
+    .lesson
+      .assessment.inactive
+        %span Activity 2
+        (0/99)
+      .deadline Suggested deadline: April 30th
+      %ul.group-grades
+        %li Averaged peer grades:
+        %li -
+        %li -
+        %li -
+        %li -
+    .lesson
+      .assessment.inactive
+        %span Activity 3
+        (0/99)
+      .deadline Suggested deadline: April 30th
+      %ul.group-grades
+        %li Averaged peer grades:
+        %li -
+        %li -
+        %li -
+        %li -
