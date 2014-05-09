@@ -23,7 +23,10 @@ class UserResponse(JsonObject):
         )
 
     def formatted_name(self):
-        ''' returns formatted name from first name and last name '''
+        ''' returns formatted name from first name and last name unless first name is defined'''
+        if hasattr(self, "full_name"):
+            return self.full_name
+
         return "{} {}".format(self.first_name, self.last_name)
 
 

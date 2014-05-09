@@ -5,20 +5,33 @@
 
 - block content
   .row
-    .large-4.medium-4.columns
-      &nbsp;
-    .login-form.large-4.medium-4.columns
-      %form{action: "/accounts/login/", method: "POST"}
-        .error
-          - if error
-            = error
-        - csrf_token
-        = form
-        %input.button.radius.small{type: "submit", value: "#{login_label}"}
-      %a.other{href: "/accounts/register"}
-        = _("Register")
-    .large-4.medium-4.columns
-      &nbsp;
+    .login-form.large-10.medium-10.large-centered.medium-centered.columns
+      .row
+        .large-7.medium-7.columns
+          %h1 Please Log In
+          %h4 Log in to access your account and courses
+          .description Please complete the following fields.
+          .description
+            %span Required fields are noted by an asterisk (
+            %span.required-field><
+            %span )
+          %form{action: "/accounts/login/", method: "POST"}
+            .error
+              - if error
+                = error
+            - csrf_token
+            = form
+            %input.button.radius.small{type: "submit", value: "#{login_label}"}
+        .large-3.medium-3.columns
+          %h4 Not Enrolled?
+          .sidebar
+            %a{href: "/"} Sign up for McKinsey Academy today!
+          %hr
+          %h4 Need Help?
+          .sidebar
+            Looking for help in logging in or with your Mckinsey Academy account?
+            %a{href: "/"} View our help section for answers to commonly asked questions.
+
 
 - block js_snippets
   :javascript

@@ -8,7 +8,8 @@ from django.utils.translation import ugettext as _
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark, decode_id, encode_id
-from lib.authorization import is_user_in_group
+from lib.authorization import is_user_in_permission_group
+from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api
 
 # Create your views here.
@@ -76,6 +77,11 @@ def homepage(request):
     else:
         bookmark_index = 0
 
+    if course and course.chapters:
+        lesson_count = len(course.chapters)
+    else:
+        lesson_count = 0
+
     data = {
         "user": request.user,
         "course": course,
@@ -83,14 +89,14 @@ def homepage(request):
         "current_sequential": current_sequential,
         "current_page": current_page,
         "program": program,
-        "is_admin": is_user_in_group(request.user, 'super_admin'),
+        "is_admin": is_user_in_permission_group(request.user, PERMISSION_GROUPS.MCKA_ADMIN),
         "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE),
         "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO),
         "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
         "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
         "bookmark_index": bookmark_index,
-        "lesson_count": len(course.chapters),
+        "lesson_count": lesson_count,
     }
     return render(request, 'courses/course_main.haml', data)
 
@@ -108,23 +114,10 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
     # Inject formatted data for view
     _inject_formatted_data(program, course, None)
 
-    #remote_session_key = request.session.get("remote_session_key")
-    #lms_base_domain = settings.LMS_BASE_DOMAIN
-    #lms_sub_domain = settings.LMS_SUB_DOMAIN
-
-    #vertical_usage_id = current_page.vertical_usage_id()
-
     data = {
         "user": request.user,
         "course": course,
-        #"current_chapter": current_chapter,
-        #"current_sequential": current_sequential,
-        #"current_page": current_page,
-        #"lms_base_domain": lms_base_domain,
-        #"lms_sub_domain": lms_sub_domain,
         "program": program,
-        #"remote_session_key": remote_session_key,
-        #"vertical_usage_id": vertical_usage_id,
         "current_view": current_view,
         "current_template": "courses/course_{0}.haml".format(current_view),
     }

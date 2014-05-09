@@ -4,20 +4,35 @@ from django.core.servers.basehttp import FileWrapper
 from django.utils.translation import ugettext as _
 
 from api_client import user_api, group_api
+from accounts.models import UserActivation
 from .models import Client
 
+
+def generate_email_text_for_user_activation(activation_record, activation_link_head):
+    email_text = (
+        "",
+        _("An administrator has created an account on McKinsey Academy for your use. To activate your account, please copy and paste this address into your web browser's address bar:"),
+        "{}/{}".format(activation_link_head, activation_record.activation_key),
+    )
+
+    return '\n'.join(email_text)
 
 def _process_line(user_line):
     try:
         fields = user_line.strip().split(',')
-        # format is email,username,password,firstname,lastname
+        # format is email,username,password,firstname,lastname (last 3 are optional)
 
-        # Must have the first 3 fields
+        # Must have the first 2 fields
         user_info = {
             "email": fields[0],
             "username": fields[1],
-            "password": fields[2],
+            "is_active": False,
         }
+        if len(fields) > 2 and len(fields[2].strip()) > 1:
+            user_info["password"] = fields[2]
+        else:
+            user_info["password"] = "initial_P455w0RD!#"
+
         if len(fields) > 4:
             user_info["first_name"] = fields[3]
             user_info["last_name"] = fields[4]
@@ -43,42 +58,53 @@ def _build_student_list_from_file(file_stream):
     return user_objects
 
 
-def _register_users_in_list(user_list, client_id):
+def _register_users_in_list(user_list, client_id, activation_link_head):
     errors = []
     for user_dict in user_list:
         user = None
+        user_error = None
+        activation_record = None
         try:
             user = user_api.register_user(user_dict)
         except HTTPError, e:
             user = None
             # Error code 409 means that they already exist somehow;
             # build list of errors
-            reason = "Error processing user registration"
-            if e.code == 409:
-                reason = "Username or email already registered"
+            reason = _("Error processing user registration")
+            error_messages = {
+                409: _("Username or email already registered")
+            }
+            if e.code in error_messages:
+                reason = error_messages[e.code]
 
-            errors.append("User not registered {} - {} ({})".format(
-                    reason, user_dict["email"],
-                    user_dict["username"]
-                )
+            user_error = _("User not registered {} - {} ({})").format(
+                reason, user_dict["email"],
+                user_dict["username"]
             )
 
         if user:
             try:
+                activation_record = UserActivation.user_activation(user)
                 group_api.add_user_to_group(user.id, client_id)
             except HTTPError, e:
                 reason = _("Error associating user with client")
-                errors.append(_("User not associated with client {} - {} ({})").format(
-                        reason,
-                        user_dict["email"],
-                        user_dict["username"]
-                    )
+
+                user_error = _("User not associated with client {} - {} ({})").format(
+                    reason,
+                    user_dict["email"],
+                    user_dict["username"]
                 )
+
+        if user_error:
+            print user_error
+            errors.append(user_error)
+        else:
+            print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
 
     return errors
 
 
-def process_uploaded_student_list(file_stream, client_id):
+def process_uploaded_student_list(file_stream, client_id, activation_link_head):
     # 1) Build user list
     user_list = _build_student_list_from_file(file_stream)
     attempted_count = len(user_list)
@@ -87,7 +113,7 @@ def process_uploaded_student_list(file_stream, client_id):
     user_list = [user_info for user_info in user_list if "error" not in user_info]
 
     # 2) Register the users, and associate them with
-    errors.extend(_register_users_in_list(user_list, client_id))
+    errors.extend(_register_users_in_list(user_list, client_id, activation_link_head))
     failed_count = len(errors)
 
     # 3) Return any error information

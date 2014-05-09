@@ -2,9 +2,10 @@
 from django.utils.translation import ugettext as _
 
 from django.http import HttpResponseRedirect
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, ActivationForm
 from api_client import user_api
-from .models import RemoteUser
+from .models import RemoteUser, UserActivation
+from admin.models import Client
 
 # from importlib import import_module
 # from django.conf import settings
@@ -20,7 +21,7 @@ import urlparse
 from courses.views import homepage
 
 from django.contrib.auth.decorators import login_required
-
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "highest_level_of_education", "password", "is_active", "year_of_birth"]
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -58,9 +59,13 @@ def login(request):
                 error_messages = {
                     403: _("User account not activated"),
                     401: _("Username or password invalid"),
+                    404: _("Username or password invalid"),
                 }
                 if err.code in error_messages:
                     error = error_messages[err.code]
+
+                print err, error
+
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
         # provide something here, otherwise the error (password field is
@@ -79,7 +84,7 @@ def login(request):
         "user": None,
         "form": form,
         "error": error,
-        "login_label": _("Log In"),
+        "login_label": _("Log in to my McKinsey Academy account & access my courses"),
         }
     return render(request, 'accounts/login.haml', data)
 
@@ -102,22 +107,64 @@ def logout(request):
     return HttpResponseRedirect('/')  # Redirect after POST
 
 
-def register(request):
-    ''' handles requests for registration form and their submission '''
+def activate(request, activation_code):
+    ''' handles requests for activation form and their submission '''
     error = None
-    if request.method == 'POST':  # If the form has been submitted...
-        form = RegistrationForm(request.POST)  # A form bound to the POST data
+    user = None
+    user_data = None
+    try:
+        activation_record = UserActivation.objects.get(activation_key=activation_code)
+        user = user_api.get_user(activation_record.user_id)
+        if user.is_active:
+            raise
+
+        user_data = {}
+        for field_name in VALID_USER_FIELDS:
+            if field_name == "full_name":
+                user_data[field_name] = user.formatted_name()
+            elif hasattr(user, field_name):
+                user_data[field_name] = getattr(user, field_name)
+
+        # Add a fake password, or we'll get an error that the password does not match
+        user_data["password"] = user_data["confirm_password"] = "fake_password"
+
+        # See if we have a company for this user
+        companies = user_api.get_user_groups(user.id, Client.group_type)
+        if len(companies) > 0:
+            company = Client.fetch(companies[0].id)
+            user_data["company"] = company.display_name
+
+    except:
+        user_data = None
+        error = _("Invalid Activation Code")
+
+    if request.method == 'POST':
+        if "accept_terms" not in request.POST or request.POST["accept_terms"] == False:
+            user_data = request.POST.copy()
+            error = _("You must accept terms of service in order to continue")
+
+
+    if request.method == 'POST' and error is None:  # If the form has been submitted...
+        user_data = request.POST.copy()
+
+        # email should never be changed
+        user_data["email"] = user.email
+
+        # activate the user
+        user_data["is_active"] = True
+
+        form = ActivationForm(user_data)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                user_api.register_user(request.POST)
+                user_api.update_user(user.id, user_data)
                 # Redirect after POST
                 return HttpResponseRedirect(
                     '/accounts/login?username={}'.format(
-                        request.POST["username"]
+                        user_data["username"]
                     )
                 )
             except url_access.HTTPError, err:
-                error = _("An error occurred during registration")
+                error = _("An error occurred during user activation")
                 error_messages = {
                     409: _(("User with matching username "
                             "or email already exists"))
@@ -125,17 +172,19 @@ def register(request):
                 if err.code in error_messages:
                     error = error_messages[err.code]
     else:
-        form = RegistrationForm()  # An unbound form
+        form = ActivationForm(user_data)
+        
         # set focus to username field
-        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+        form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
-        "user": None,
+        "user": user,
         "form": form,
         "error": error,
-        "register_label": _("Register"),
+        "activation_code": activation_code,
+        "activate_label": _("Create my McKinsey Academy account"),
         }
-    return render(request, 'accounts/register.haml', data)
+    return render(request, 'accounts/activate.haml', data)
 
 
 def home(request):
