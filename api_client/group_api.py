@@ -19,20 +19,6 @@ PERMISSION_GROUPS = DottableDict(
     CLIENT_TA='mcka_role_client_ta'
 )
 
-def get_groups(group_object=JsonObject):
-    ''' gets all groups '''
-    response = GET(
-        '{}/{}'.format(
-            settings.API_SERVER_ADDRESS,
-            GROUP_API,
-        )
-    )
-    groups_json = JP.from_json(response.read(), group_object)
-    rd = {}
-    for group in groups_json:
-        rd[group.name] = group.id
-    return rd
-
 def get_groups_of_type(group_type, group_object=JsonObject):
     ''' gets all groups of provided type'''
     response = GET(
