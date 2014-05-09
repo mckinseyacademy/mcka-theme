@@ -1,6 +1,7 @@
 ''' API calls with respect to courses '''
 from .json_object import CategorisedJsonParser
 from .json_object import CategorisedJsonObject
+from .json_object import JsonParser as JP
 from . import course_models
 from .json_requests import GET
 from urllib2 import HTTPError
@@ -62,21 +63,30 @@ def get_course_overview(course_id):
 
     return overview
 
-def get_course_syllabus(course_id):
+def get_course_tabs(course_id):
     '''
-    Retrieves course syllabus information from the API for specified course
+    Returns map of tab content key'd on "name" attribute
     '''
     response = GET('{}/{}/{}/static_tabs?detail=true'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id)
     )
-    content = CJP.from_json(response.read())
+    
+    tab_array = JP.from_json(response.read(), course_models.CourseTabs).tabs
 
-    try:
-        return [tab for tab in content.tabs if getattr(tab, "name") == "syllabus"][0].content
-    except IndexError:
-        return ""
+    return {tab.name.lower(): tab for tab in tab_array}
+
+def get_course_syllabus(course_id):
+    '''
+    Retrieves course syllabus information from the API for specified course
+    '''
+    tabs = get_course_tabs(course_id)
+    if "syllabus" in tabs:
+        return tabs["syllabus"].content
+    else:
+        return None
+
 
 def get_course_news(course_id):
     '''
