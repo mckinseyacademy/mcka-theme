@@ -12,7 +12,7 @@
             %a{href: '/experience'}= _("Experience")
           %li
             %a{href: '/contact'}= _("Contact")
-          - if is_admin
+          - if user.is_mcka_admin
             %li
               %a{href: '/admin'}= _("Admin")
     - block user_region
