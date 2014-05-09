@@ -43,3 +43,11 @@ class CourseList(JsonObject):
     object_map = {
         "courses": CourseListCourse
     }
+
+class CourseTab(JsonObject):
+    required_fields = ["name"]
+
+class CourseTabs(JsonObject):
+    object_map = {
+        "tabs": CourseTab
+    }
