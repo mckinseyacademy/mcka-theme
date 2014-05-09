@@ -97,34 +97,34 @@ The API root is the top-level resource for Open edX, providing listings of the p
             {
                 "category": "course",
                 "name": "edX Demonstration Course",
-                "modules": [
+                "content": [
                     {
                         "category": "chapter",
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
                         "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
                         "name": "Introduction"
                     },
                     {
                         "category": "chapter",
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
                         "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations",
                         "name": "Example Week 1: Getting Started"
                     },
                     {
                         "category": "chapter",
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/graded_interactions",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/graded_interactions",
                         "id": "i4x://edX/Open_DemoX/chapter/graded_interactions",
                         "name": "Example Week 2: Get Interactive"
                     },
                     {
                         "category": "chapter",
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/social_integration",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/social_integration",
                         "id": "i4x://edX/Open_DemoX/chapter/social_integration",
                         "name": "Example Week 3: Be Social"
                     },
                     {
                         "category": "chapter",
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7",
                         "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7",
                         "name": "About Exams and Certificates"
                     }
@@ -135,18 +135,18 @@ The API root is the top-level resource for Open edX, providing listings of the p
                 "id": "edX/Open_DemoX/edx_demo_course"
             }
 
-### GET /api/courses/{course_id}/modules/{module_id}
+### GET /api/courses/{course_id}/content/{module_id}
 + Response 200
 
     + Body
 
             {
                 "category": "chapter",
-                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
-                "modules": [
+                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b",
+                "content": [
                     {
                         "category": "sequential",
-                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/sequential/edx_introduction",
+                        "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/sequential/edx_introduction",
                         "id": "i4x://edX/Open_DemoX/sequential/edx_introduction",
                         "name": "Demo Course Overview"
                     }
@@ -155,7 +155,7 @@ The API root is the top-level resource for Open edX, providing listings of the p
                 "name": "Introduction"
             }
 
-### GET /api/courses/{course_id}/modules/{module_id}/submodules{?type}
+### GET /api/courses/{course_id}/content/{module_id}/subcontent{?type}
 + Parameters
     + type (optional, string) ... module category filter
 + Response 200
@@ -165,13 +165,13 @@ The API root is the top-level resource for Open edX, providing listings of the p
             [
                 {
                     "category": "html",
-                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
                     "id": "i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
                     "name": "Blank HTML Page"
                 },
                 {
                     "category": "video",
-                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
+                    "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
                     "id": "i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
                     "name": "Welcome!"
                 }

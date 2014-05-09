@@ -20,6 +20,7 @@ from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from api_client import course_api
 from api_client import user_api
+from api_client import group_api
 from api_client.json_object import Objectifier
 from license import controller as license_controller
 
@@ -566,34 +567,16 @@ def workgroup_course_detail(request, course_id):
 
     students = course_api.get_user_list(course_id)
 
-    # students = [
-    #     { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-    #     { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-    #     { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-    #     { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-    # ]
-
-    groups = [
-                {
-                    'id': '0', 
-                    'display_name': 'Group 1', 
-                    'students' : [
-                                    { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-                                    { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-                                ]
-                }, 
-                {
-                    'id': '1', 
-                    'display_name': 'Group 2', 
-                    'students' : [
-                                    { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-                                    { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-                                ]
-                }, 
-            ]
+    groupsList = WorkGroup.list()
+    groups = []
+    for group in groupsList: 
+        if group.group_type == 'workgroup':
+            users = group_api.get_users_in_group(group.id)
+            group.students = users
+            groups.append(group)
 
     for group in groups: 
-        group['students_count'] = len(group['students'])
+        group.students_count = len(group.students)
 
     data = {
         "principal_name": _("Group Work"),
@@ -624,48 +607,32 @@ def workgroup_group_create(request, course_id):
         group_id = int(workgroup.id)
 
         course_api.add_workgroup_to_course(group_id, course_id, module.id)
-        for student_id in students: 
-            workgroup.add_user(group_id, student_id)
+
+        for student in students: 
+            group_api.add_user_to_group(student, group_id)
 
     return HttpResponseRedirect('admin/workgroup/course/{}'.format(course_id))
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_remove(request, group_id):
 
-    # students = [
-    #     { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-    #     { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-    #     { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-    #     { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-    # ]
     if request.method == 'POST':
 
         course_id = request.POST['course_id']
         students = course_api.get_user_list(course_id)
 
-        groups = [
-                    {
-                        'id': '0', 
-                        'display_name': 'Group 1', 
-                        'students' : [
-                                        { 'id': 1, 'username': 'dino', 'email': 'a@a.com', 'client_id': '3'}, 
-                                        { 'id': 2, 'username': 'davorin', 'email': 'b@b.com', 'client_id': '3'}, 
-                                    ]
-                    }, 
-                    {
-                        'id': '1', 
-                        'display_name': 'Group 2', 
-                        'students' : [
-                                        { 'id': 3, 'username': 'matt', 'email': 'c@c.com', 'client_id': '3'}, 
-                                        { 'id': 4, 'username': 'martyn', 'email': 'd@d.com', 'client_id': '3'}, 
-                                    ]
-                    }, 
-                ]
+        groupsList = WorkGroup.list()
+        groups = []
+        for group in groupsList: 
+            if group.group_type == 'workgroup':
+                users = group_api.get_users_in_group(group.id)
+                group.students = users
+                groups.append(group)
 
-        #This is wrong, just searching by index instead of doing api search. remove once api done
-        group = groups[int(group_id)] 
-        for student in group['students']:
-            if str(request.POST['student']) == str(student['email']): 
+        group = WorkGroup.fetch(group_id) 
+        students = course_api.get_user_list(course_id)
+        for student in students:
+            if str(request.POST['student']) == str(student.email): 
                 students.append(student)
                 data = {
                     "students": students, 

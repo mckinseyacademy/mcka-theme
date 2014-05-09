@@ -24,8 +24,9 @@
       accordion($('.select-group-box'), '.group-info.students');
 
       var removeStudent = function(el, link){
+          var parent = el.parents('.select-group-box');
           data = {
-            'student' : el.find('.remove-student-icon').attr('name'), 
+            'student' : el.attr('name'), 
             'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'), 
             'course_id': course_id
             };
@@ -37,8 +38,8 @@
           }).done(function(data){
             if(data != ''){
               $('div.large-8.columns').html(data);
-              $('.student[name="' + el.find('.remove-student-icon').attr('name') + '"]').fadeOut().remove();
-              el.find('span.student-count').html(el.find('span.student-count').html() - 1);
+              $('.student[name="' + el.attr('name') + '"]').fadeOut().remove();
+              parent.find('span.student-count').html(el.find('span.student-count').html() - 1);
               enable_selection(selections, activator);
             }
           }).fail();
@@ -46,7 +47,7 @@
 
       $('.remove-student-icon').on('click', function(e){
           e.preventDefault();
-          removeStudent($(this).parents('.select-group-box'), $(this).parent('a').attr('href'));
+          removeStudent($(this), $(this).parent('a').attr('href'));
       });
 
     });

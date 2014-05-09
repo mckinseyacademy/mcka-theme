@@ -93,6 +93,3 @@ class WorkGroup(BaseGroupModel):
     def add_to_course(self, course_id):
         return group_api.add_workgroup_to_course(self.id, course_id)
 
-    def add_user(self, client_id, user_id):
-        return license_controller.assign_license(self.id, client_id, user_id)
-

@@ -24,7 +24,7 @@ def get_groups(group_object=JsonObject):
     ''' gets all groups '''
     response = GET(
         '{}/{}'.format(
-            settings.API_MOCK_SERVER_ADDRESS,
+            settings.API_SERVER_ADDRESS,
             GROUP_API,
         )
     )
