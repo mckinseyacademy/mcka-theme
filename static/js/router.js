@@ -5,7 +5,7 @@ var Router = Backbone.Router.extend({
 
   course_progress: function(course_id) {
     var model = new Apros.models.Course({id: course_id});
-    new Apros.views.CourseProgress({model: model, el: $('#course_progress')}).render()
+    new Apros.views.CourseProgress({model: model, el: $('#course-progress')}).render()
   }
 });
 

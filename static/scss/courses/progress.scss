@@ -24,6 +24,19 @@
         @include font-spec(10, bold);
         @include transform(translate(-15px, 5px) rotate(-90deg));
       }
+
+      .course-total {
+        position: absolute;
+        bottom: 65px;
+        right: 17px;
+        text-align: center;
+        @include font-spec(10, bold);
+
+        div {
+          color: $mckinsey-orange;
+          @include font-spec(20, bold);
+        }
+      }
     }
   }
 
@@ -51,6 +64,8 @@
   }
 
   .lesson {
+    position: relative;
+
     > * {
       margin-bottom: 10px;
       &:last-child { margin-bottom: 0; }
@@ -71,6 +86,22 @@
       color: $mckinsey-orange;
       text-transform: uppercase;
       @include font-spec(14, semibold);
+    }
+
+    .module-status {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-family: FontAwesome;
+      @include font-spec(10);
+
+      span {
+        color: $mckinsey-grey;
+        margin-right: 5px;
+        &:before { content: '\f111'; }
+        &:last-child { margin-right: 0; }
+        &.complete { color: $mckinsey-green; }
+      }
     }
   }
 
