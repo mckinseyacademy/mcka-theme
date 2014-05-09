@@ -1,0 +1,134 @@
+#course-progress {
+  h1 {
+    margin-bottom: 40px;
+  }
+
+  .grades {
+
+    ul {
+      margin: 15px 0 30px 25px;
+      list-style-position: inside;
+
+      li {
+        color: $mckinsey-grey;
+        font-style: italic;
+        @include font-spec(12, semibold, 14);
+      }
+    }
+
+    #chart-grades {
+      height: 290px;
+      position: relative;
+
+      .x-axis-label {
+        @include font-spec(10, bold);
+        @include transform(translate(-15px, 5px) rotate(-90deg));
+      }
+
+      .course-total {
+        position: absolute;
+        bottom: 65px;
+        right: 17px;
+        text-align: center;
+        @include font-spec(10, bold);
+
+        div {
+          color: $mckinsey-orange;
+          @include font-spec(20, bold);
+        }
+      }
+    }
+  }
+
+  ul.legend {
+    margin: 35px 0 25px;
+    list-style-type: none;
+    @include clearfix;
+
+    li {
+      float: left;
+      margin-right: 15px;
+
+      &:before {
+        content: '';
+        display: inline-block;
+        margin-right: 2px;
+        vertical-align: middle;
+        @include square-size(10px);
+      }
+
+      &.completed:before { background-color: $mckinsey-academy-blue-gray; }
+      &.group-work:before { background-color: $mckinsey-academy-turquoise; }
+      &.current-grade:before { background-color: $mckinsey-orange; }
+    }
+  }
+
+  .lesson {
+    position: relative;
+
+    > * {
+      margin-bottom: 10px;
+      &:last-child { margin-bottom: 0; }
+    }
+
+    .assessment {
+      span {
+        color: $mckinsey-green;
+        @include font-spec(14, semibold);
+      }
+
+      &.inactive {
+        span { color: $mckinsey-academy-alt-blue; }
+      }
+    }
+
+    .deadline {
+      color: $mckinsey-orange;
+      text-transform: uppercase;
+      @include font-spec(14, semibold);
+    }
+
+    .module-status {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-family: FontAwesome;
+      @include font-spec(10);
+
+      span {
+        color: $mckinsey-grey;
+        margin-right: 5px;
+        &:before { content: '\f111'; }
+        &:last-child { margin-right: 0; }
+        &.complete { color: $mckinsey-green; }
+      }
+    }
+  }
+
+  .group-work {
+    .lesson {
+      margin-bottom: 25px;
+    }
+
+    ul.group-grades {
+      list-style-type: none;
+      margin-left: 0;
+      @include clearfix;
+
+      li {
+        float: left;
+        border-right: 1px solid $mckinsey-grey;
+        padding: 0 8px;
+        @include font-spec(14, bold);
+
+        &:first-child {
+          border-right: none;
+          padding-left: 0;
+          @include font-spec(14, normal);
+        }
+
+        &:last-child { border-right: none; }
+      }
+    }
+  }
+}
