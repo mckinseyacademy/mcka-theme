@@ -43,6 +43,11 @@ p {
     font-style: italic;
     @include font-spec(12, normal, 14);
   }
+  &.style-6 {
+    color: $mckinsey-grey;
+    font-style: italic;
+    @include font-spec(12, semibold, 14);
+  }
 }
 
 a,

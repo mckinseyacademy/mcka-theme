@@ -66,15 +66,16 @@ def get_course_syllabus(course_id):
     '''
     Retrieves course syllabus information from the API for specified course
     '''
+    response = GET('{}/{}/{}/static_tabs?detail=true'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+    content = CJP.from_json(response.read())
 
     try:
-        response = GET('{}/{}/{}/static_tabs/syllabus'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id)
-        )
-        return CJP.from_json(response.read()).content
-    except HTTPError:
+        return [tab for tab in content.tabs if getattr(tab, "name") == "syllabus"][0].content
+    except IndexError:
         return ""
 
 def get_course_news(course_id):
