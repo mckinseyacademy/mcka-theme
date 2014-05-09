@@ -64,47 +64,29 @@ class RemoteUser(AbstractUser):
 #    def get_short_name(self):
 #        return self.username
 
+    @property
     def is_mcka_admin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_ADMIN)
 
+    @property
     def is_mcka_subadmin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_SUBADMIN)
 
+    @property
     def is_client_admin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
 
+    @property
     def is_client_subadmin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
 
+    @property
     def is_mcka_ta(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_TA)
 
+    @property
     def is_client_ta(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_TA)
-
-
-# class AprosUser(RemoteUser):
-#     def set_user_attributes(self, user):
-#         for k, v in user.__dict__:
-#             setattr(self, k, v)
-
-#     def is_mcka_admin():
-#         return True
-
-#     def is_mcka_subadmin():
-#         return True
-
-#     def is_client_admin():
-#         return True
-
-#     def is_client_subadmin():
-#         return True
-
-#     def is_mcka_ta():
-#         return True
-
-#     def is_client_ta():
-#         return True
 
 
 class UserActivation(db_models.Model):
