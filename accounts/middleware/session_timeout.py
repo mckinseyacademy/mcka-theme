@@ -1,9 +1,10 @@
 ''' expire session after a set amount of time '''
 from datetime import datetime, timedelta
 from django.conf import settings
-from logout import logout
+from accounts.logout import logout
 
-class SessionTimeout:
+
+class SessionTimeout(object):
 
     def process_request(self, request):
         if not request.user.is_authenticated():

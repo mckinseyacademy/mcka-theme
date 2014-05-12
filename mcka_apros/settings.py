@@ -62,7 +62,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'accounts.middleware.SessionTimeout',
+    'accounts.middleware.session_timeout.SessionTimeout',
+    'accounts.middleware.thread_local.ThreadLocal',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
