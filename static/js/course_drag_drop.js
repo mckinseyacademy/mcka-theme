@@ -1,5 +1,8 @@
     $(function(){
-      var course_id = $('#course_id').val();
+      var course_id = $('#course_id').val(); 
+      var data_table = $('.student-list').dataTable({
+          paging: false
+        });
       selections = [
         {
           selector: ".student-list .student",
@@ -40,7 +43,11 @@
             method: 'POST'
           }).done(function(data){
             if(data != ''){
-              $('div.large-8.columns').html(data);
+              data_table.fnDestroy();
+              $('#student-list table').html(data);
+              data_table= $('.student-list').dataTable({
+                paging: false
+              });
               $('.student[name="' + el.attr('name') + '"]').fadeOut().remove();
               parent.find('span.student-count').html(parent.find('span.student-count').html() - 1);
               enable_selection(selections, activator);

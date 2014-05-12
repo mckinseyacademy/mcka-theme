@@ -622,7 +622,8 @@ def workgroup_group_create(request, course_id):
     if request.method == 'POST':
 
         course = course_api.load_course(course_id)
-        module = course.group_project    
+#        module = course.group_project    
+        module = course.chapters[-1]
         students = request.POST.getlist("students[]")
 
         groupsList = WorkGroup.list_course_groups(course_id)
@@ -686,7 +687,7 @@ def download_group_list(request, course_id):
     groupsList = WorkGroup.list_course_groups(course_id)
     groups = []
     groupedStudents = []
-    
+
     for group in groupsList: 
         users = group_api.get_users_in_group(group.id)
         group.students = users
