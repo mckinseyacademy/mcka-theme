@@ -13,7 +13,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from .models import Client
 from .models import Program
 from .models import WorkGroup
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -563,9 +563,14 @@ def workgroup_course_detail(request, course_id):
 #    if request.method == 'GET': 
 #        group_id = request.GET["group_id"]
 
-    course = course_api.get_course(course_id)
+    course = course_api.load_course(course_id)
 
     students = course_api.get_user_list(course_id)
+    for student in students: 
+        companies = user_api.get_user_groups(student.id, group_type = 'organization')
+        if len(companies) > 0:
+            company = Client.fetch(companies[0].id)
+            student.company = company.display_name
 
     groupsList = WorkGroup.list_course_groups(course_id)
 
@@ -579,8 +584,12 @@ def workgroup_course_detail(request, course_id):
     for group in groupsList: 
         users = group_api.get_users_in_group(group.id)
         group.students = users
-        for student in students:
-            for user in users:
+        for user in users:
+            companies = user_api.get_user_groups(user.id, group_type = 'organization')
+            if len(companies) > 0:
+                company = Client.fetch(companies[0].id)
+                user.company = company.display_name
+            for student in students:
                 if user.username == student.username:
                     groupedStudents.append(student)
         groups.append(group)
@@ -612,8 +621,8 @@ def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
 
-        course = course_api.get_course(course_id)
-        module = course.chapters[-1]     
+        course = course_api.load_course(course_id)
+        module = course.group_project    
         students = request.POST.getlist("students[]")
 
         groupsList = WorkGroup.list_course_groups(course_id)
@@ -669,6 +678,39 @@ def workgroup_group_remove(request, group_id):
         )
 
     return HttpResponse('', content_type='application/json')
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def download_group_list(request, course_id):
+
+    course = course_api.load_course(course_id)
+    groupsList = WorkGroup.list_course_groups(course_id)
+    groups = []
+    groupedStudents = []
+    
+    for group in groupsList: 
+        users = group_api.get_users_in_group(group.id)
+        group.students = users
+        for user in users:
+            companies = user_api.get_user_groups(user.id, group_type = 'organization')
+            if len(companies) > 0:
+                company = Client.fetch(companies[0].id)
+                user.company = company.display_name
+        groups.append(group)
+
+    filename = "Groups List for {} on {}.csv".format(
+        course.name,
+        datetime.now().isoformat()
+    )
+
+    response = HttpResponse(
+        get_group_list_as_file(groups),
+        content_type='text/csv'
+    )
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')

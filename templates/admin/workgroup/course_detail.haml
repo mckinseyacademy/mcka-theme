@@ -20,6 +20,8 @@
               %div= _("Select a program below to move students into.")
               %a#student-group-action.button.radius.tiny{href: "/admin/workgroup/group/create/#{course.id}"}
                 %span= _("Create Group of Selected Students")
+              %a.button.radius.small{href: "/admin/workgroup/course/#{course.id}/download_group_list", target: "_blank"}
+                Download List of Groups
               - for group in groups
                 .select-group-box{id: "#{group.id}"}
                   .name= group.display_name
@@ -33,7 +35,7 @@
                         %div.student{'name': '#{student.id}'}
                           %span= student.username
                           %span= student.email
-                          %span= student.client_id
+                          %span= student.company
                           %a{href: '/admin/workgroup/group/#{group.id}/remove'}
                             %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
 - block js_snippets

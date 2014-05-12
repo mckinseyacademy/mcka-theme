@@ -23,7 +23,7 @@
                   %option{'value': 'select'}
                     = ' - Select - '
                 - for program in programs
-                  %option{'value': '#{program.group_id}'}
+                  %option{'value': '#{program.id}'}
                     = program.name
               %select.select-course{'name': 'select-course'}
                   %option{'value': 'select'}
@@ -32,13 +32,7 @@
               %input.button.radius.small{type: "submit", value: "Ok"}
           - block principal_list_filter
           - block principal_list
-            %ul
-              - for principal in principals
-                %li
-                  %a.edit-principal{ class: 'fa fa-pencil', "data-reveal-id": "edit-principal", "data-reveal-ajax": "true", href: "#{principal.detail_url}/edit"}
-                    = ' '
-                  %a.principal{href: "#{principal.detail_url}"}
-                    = principal.display_name
+
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   :javascript

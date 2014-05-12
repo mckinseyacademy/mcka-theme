@@ -10,6 +10,7 @@ from urllib2 import HTTPError
 from django.conf import settings
 
 COURSEWARE_API = 'api/courses'
+GROUP_PROJECT_IDENTIFIER = 'GROUP_PROJECT'
 
 OBJECT_CATEGORY_MAP = {
     # Core objects for our desire
@@ -121,6 +122,21 @@ def get_course(course_id, depth = 3):
 
         for sequential in chapter.sequentials:
             sequential.pages = [content for content in sequential.children if content.category == "vertical"]
+
+    return course
+
+def load_course(course_id):
+    '''
+    Gets the course from the API, and performs any post-processing for Apros specific purposes
+    '''
+    course = get_course(course_id)
+
+    # Special chapter for Group Project
+    group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(GROUP_PROJECT_IDENTIFIER)]
+    if len(group_projects) > 0:
+        course.group_project = group_projects[0]
+        course.chapters = [chapter for chapter in course.chapters if chapter.id != course.group_project.id]
+        course.group_project.name = course.group_project.name(len(GROUP_PROJECT_IDENTIFIER))
 
     return course
 

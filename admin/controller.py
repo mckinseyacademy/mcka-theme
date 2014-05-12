@@ -132,12 +132,27 @@ def _formatted_user_string(user):
         user.last_name,
     )
 
+def _formatted_group_string(group):
+    group_string = "{} \n\n".format(
+        group.name
+    )
+
+    user_list = [_formatted_user_string(user) for user in group.students]
+    users_list = '\n'.join(user_list)
+
+    group_string = group_string + users_list + '\n\n'
+
+    return group_string
 
 def get_student_list_as_file(client):
     user_list = client.get_users()
     user_strings = [_formatted_user_string(user) for user in user_list]
 
     return '\n'.join(user_strings)
+
+def get_group_list_as_file(groups):  
+    group_string = [_formatted_group_string(group) for group in groups]
+    return '\n'.join(group_string)
 
 
 def fetch_clients_with_program(program_id):

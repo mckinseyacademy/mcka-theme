@@ -178,12 +178,6 @@ def get_users_in_group(group_id):
 def remove_user_from_group(group_id, user_id):
     ''' remove user association with a specific group '''
 
-    print '{}/{}/{}/users/{}'.format(
-            settings.API_SERVER_ADDRESS,
-            GROUP_API,
-            group_id,
-            user_id,)
-
     response = DELETE(
         '{}/{}/{}/users/{}'.format(
             settings.API_SERVER_ADDRESS,
