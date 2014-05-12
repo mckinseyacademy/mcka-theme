@@ -604,13 +604,27 @@ def workgroup_course_detail(request, course_id):
 
     students = course_api.get_user_list(course_id)
 
-    groupsList = WorkGroup.list()
+    groupsList = WorkGroup.list_course_groups(course_id)
+
+    ''' THIS IS A VERY SLOW PART OF CODE. 
+        Due to api limitations, filtering of user from student list has to be done on client. 
+        It has to have 3 nested "for" loops, and one after (indexes issue in for loop). 
+        This should be replaced once API changes. 
+    '''
     groups = []
+    groupedStudents = []
     for group in groupsList: 
-        if group.group_type == 'workgroup':
-            users = group_api.get_users_in_group(group.id)
-            group.students = users
-            groups.append(group)
+        users = group_api.get_users_in_group(group.id)
+        group.students = users
+        for student in students:
+            for user in users:
+                if user.username == student.username:
+                    groupedStudents.append(student)
+        groups.append(group)
+
+    for student in groupedStudents: 
+        if student in students:
+            students.remove(student)
 
     for group in groups: 
         group.students_count = len(group.students)
