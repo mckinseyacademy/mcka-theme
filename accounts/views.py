@@ -12,7 +12,7 @@ from admin.models import Client
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from django.contrib import auth
-import logout
+import logout as logout_handler
 import urllib2 as url_access
 
 from django.shortcuts import render
@@ -89,7 +89,7 @@ def login(request):
     return render(request, 'accounts/login.haml', data)
 
 def logout(request):
-    return logout.logout(request)
+    return logout_handler.logout(request)
 
 def activate(request, activation_code):
     ''' handles requests for activation form and their submission '''
