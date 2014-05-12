@@ -93,3 +93,12 @@ class WorkGroup(BaseGroupModel):
     def add_to_course(self, course_id):
         return group_api.add_workgroup_to_course(self.id, course_id)
 
+    @classmethod
+    def list_course_groups(self, course_id):
+        groups = self.list()
+        filtered_groups = []
+        for group in groups: 
+            if group.type == self.group_type: 
+                filtered_groups.append(group)
+        return filtered_groups
+

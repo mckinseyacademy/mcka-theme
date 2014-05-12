@@ -567,13 +567,27 @@ def workgroup_course_detail(request, course_id):
 
     students = course_api.get_user_list(course_id)
 
-    groupsList = WorkGroup.list()
+    groupsList = WorkGroup.list_course_groups(course_id)
+
+    ''' THIS IS A VERY SLOW PART OF CODE. 
+        Due to api limitations, filtering of user from student list has to be done on client. 
+        It has to have 3 nested "for" loops, and one after (indexes issue in for loop). 
+        This should be replaced once API changes. 
+    '''
     groups = []
+    groupedStudents = []
     for group in groupsList: 
-        if group.group_type == 'workgroup':
-            users = group_api.get_users_in_group(group.id)
-            group.students = users
-            groups.append(group)
+        users = group_api.get_users_in_group(group.id)
+        group.students = users
+        for student in students:
+            for user in users:
+                if user.username == student.username:
+                    groupedStudents.append(student)
+        groups.append(group)
+
+    for student in groupedStudents: 
+        if student in students:
+            students.remove(student)
 
     for group in groups: 
         group.students_count = len(group.students)
@@ -602,7 +616,11 @@ def workgroup_group_create(request, course_id):
         module = course.chapters[-1]     
         students = request.POST.getlist("students[]")
 
-        workgroup = WorkGroup.create('Test Group aaa', {})
+        groupsList = WorkGroup.list_course_groups(course_id)
+
+        lastId = len(groupsList) 
+
+        workgroup = WorkGroup.create('Group {}'.format(lastId + 1), {})
 
         group_id = int(workgroup.id)
 
@@ -611,37 +629,44 @@ def workgroup_group_create(request, course_id):
         for student in students: 
             group_api.add_user_to_group(student, group_id)
 
-    return HttpResponseRedirect('admin/workgroup/course/{}'.format(course_id))
+    return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_remove(request, group_id):
 
     if request.method == 'POST':
 
+        removeStudent = request.POST['student']
+
+        group_api.remove_user_from_group(group_id, removeStudent)
+
         course_id = request.POST['course_id']
         students = course_api.get_user_list(course_id)
 
-        groupsList = WorkGroup.list()
-        groups = []
+        groupsList = WorkGroup.list_course_groups(course_id)
+        groupedStudents = []   
+        
         for group in groupsList: 
-            if group.group_type == 'workgroup':
-                users = group_api.get_users_in_group(group.id)
-                group.students = users
-                groups.append(group)
-
+            users = group_api.get_users_in_group(group.id)
+            group.students = users
+            for student in students:
+                for user in users:
+                    if user.username == student.username:
+                        groupedStudents.append(student)
+    
         group = WorkGroup.fetch(group_id) 
-        students = course_api.get_user_list(course_id)
-        for student in students:
-            if str(request.POST['student']) == str(student.email): 
-                students.append(student)
-                data = {
-                    "students": students, 
-                }
-                return render(
-                    request,
-                    'admin/workgroup/student_table.haml',
-                    data, 
-                )
+
+        for student in groupedStudents: 
+            students.remove(student)
+
+        data = {
+            "students": students, 
+        }
+        return render(
+            request,
+            'admin/workgroup/student_table.haml',
+            data, 
+        )
 
     return HttpResponse('', content_type='application/json')
 

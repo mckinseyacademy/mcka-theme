@@ -50,7 +50,7 @@ def create_group(group_name, group_type, group_data=None, group_object=JsonObjec
     ''' create a new group '''
     data = {
         "name": group_name,
-        "group_type": group_type,
+        "type": group_type,
     }
 
     if group_data:
@@ -96,7 +96,7 @@ def update_group(group_id, group_type, group_data=None, group_object=JsonObject)
     ''' update existing group '''
     # group_name is fixed, does not get updated, so no need to include it
     data = {
-        "group_type": group_type,
+        "type": group_type,
     }
 
     if group_data:
@@ -175,6 +175,25 @@ def get_users_in_group(group_id):
 
     return user_list.users
 
+def remove_user_from_group(group_id, user_id):
+    ''' remove user association with a specific group '''
+
+    print '{}/{}/{}/users/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+            user_id,)
+
+    response = DELETE(
+        '{}/{}/{}/users/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+            user_id, 
+        )
+    )
+
+    return (response.code == 204)
 
 def get_courses_in_group(group_id):
     ''' get list of courses associated with a specific group '''

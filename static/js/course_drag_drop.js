@@ -9,7 +9,10 @@
       ];
 
       activator = {
-        selector: '#student-group-action'
+        selector: '#student-group-action', 
+        success: function(){
+          window.location = '/admin/workgroup/course/' + course_id;
+        }
       };
       enable_selection(selections, activator);
 
@@ -39,7 +42,7 @@
             if(data != ''){
               $('div.large-8.columns').html(data);
               $('.student[name="' + el.attr('name') + '"]').fadeOut().remove();
-              parent.find('span.student-count').html(el.find('span.student-count').html() - 1);
+              parent.find('span.student-count').html(parent.find('span.student-count').html() - 1);
               enable_selection(selections, activator);
             }
           }).fail();
