@@ -89,7 +89,6 @@ def homepage(request):
         "current_sequential": current_sequential,
         "current_page": current_page,
         "program": program,
-        "is_admin": is_user_in_permission_group(request.user, PERMISSION_GROUPS.MCKA_ADMIN),
         "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE),
         "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO),
         "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
