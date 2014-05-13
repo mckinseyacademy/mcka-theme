@@ -1,6 +1,14 @@
 var Router = Backbone.Router.extend({
   routes: {
+    '': 'home',
     'courses/*course_id/view/progress': 'course_progress'
+  },
+
+  home: function() {
+    el = $('#home-grid');
+    if (el.length) {
+      new Apros.views.HomeGrid({el: el}).render();
+    }
   },
 
   course_progress: function(course_id) {

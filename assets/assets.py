@@ -5,6 +5,7 @@ os.environ['SASS_USE_SCSS'] = 'false'
 
 # Javascript squashing
 JS = Bundle(
+    'js/polyfills/*.js',
     'js/vendor/leaflet.js',
     'js/vendor/json2.js',
     'js/vendor/underscore.js',
