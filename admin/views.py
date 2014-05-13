@@ -13,7 +13,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from .models import Client
 from .models import Program
 from .models import WorkGroup
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -23,6 +23,7 @@ from api_client import user_api
 from api_client import group_api
 from api_client.json_object import Objectifier
 from license import controller as license_controller
+
 
 
 def ajaxify_http_redirects(func):
@@ -563,7 +564,7 @@ def workgroup_course_detail(request, course_id):
 #    if request.method == 'GET': 
 #        group_id = request.GET["group_id"]
 
-    course = course_api.load_course(course_id)
+    course = load_course(course_id)
 
     students = course_api.get_user_list(course_id)
     for student in students: 
@@ -621,7 +622,7 @@ def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
 
-        course = course_api.load_course(course_id)
+        course = load_course(course_id)
 #        module = course.group_project    
         module = course.chapters[-1]
         students = request.POST.getlist("students[]")
@@ -704,7 +705,7 @@ def workgroup_group_remove(request, group_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_group_list(request, course_id):
 
-    course = course_api.load_course(course_id)
+    course = load_course(course_id)
     groupsList = WorkGroup.list_course_groups(course_id)
     groups = []
     groupedStudents = []

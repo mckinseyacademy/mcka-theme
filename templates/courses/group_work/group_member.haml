@@ -1,0 +1,5 @@
+-# %img{src: "#{group_member.image_url()}"}
+.name= group_member.full_name
+.title= group_member.title
+.email
+  %a{href: "mailto:#{group_member.email}"}

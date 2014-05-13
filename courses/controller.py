@@ -4,6 +4,7 @@ from django.conf import settings
 from api_client import course_api, user_api, user_models
 from license import controller as license_controller
 from admin.models import Program
+from admin.controller import load_course
 #from urllib import quote_plus, unquote_plus
 
 # warnings associated with members generated from json response
@@ -31,7 +32,7 @@ def build_page_info_for_course(
     Returns course structure and user's status within course
         course_api_impl - optional api client module to use (useful in mocks)
     '''
-    course = course_api_impl.get_course(course_id)
+    course = load_course(course_id, course_api_impl)
 
     # something sensible if we fail...
     if len(course.chapters) < 1:
@@ -77,6 +78,15 @@ def build_page_info_for_course(
     return course, current_chapter, current_sequential, current_page
 
 
+def get_course_position_information(user_id, course_id, user_api_impl=user_api):
+    try:
+        course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
+    except HTTPError, e:
+        course_detail = user_models.UserCourseStatus(dictionary={"position": None})
+
+    return course_detail
+
+
 def locate_chapter_page(
     user_id,
     course_id,
@@ -97,15 +107,11 @@ def locate_chapter_page(
             return None, None, None, None
         course_id = courses[0].id
 
-    course = course_api_impl.get_course(course_id)
+    course = load_course(course_id, course_api_impl)
     chapter = None
     page = None
 
-    try:
-        course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-    except HTTPError, e:
-        course_detail = user_models.UserCourseStatus(dictionary={"position": None})
-
+    course_detail = get_course_position_information(user_id, course_id)
     if course_detail.position and len(course.chapters) >= course_detail.position:
         chapter = course.chapters[course_detail.position - 1]
         chapter.bookmark = True
@@ -157,16 +163,98 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
 
 
 # pylint: disable=too-many-arguments
-def update_bookmark(user_id, program_id, course_id, chapter_id, sequential_id, page_id, user_api_impl=user_api):
+def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user_api_impl=user_api):
     '''
     Informs the openedx api of user's location
         user_api_impl - optional api client module to use (useful in mocks)
     '''
     user_api_impl.set_user_bookmark(
         user_id,
-        program_id,
         course_id,
         chapter_id,
         sequential_id,
         page_id
     )
+
+class ProjectGroup(object):
+    members = []
+    teaching_assistant = None
+
+def _fake_project_group():
+    members_list = [
+        user_models.UserResponse(dictionary={
+            "username": "jg",
+            "full_name": "Jennifer Gormley",
+            "title": "Director of Product Design",
+            "email": "mjames@edx.org",
+            }),
+        user_models.UserResponse(dictionary={
+            "username": "jg",
+            "full_name": "Jennifer Gormley",
+            "title": "Director of Product Design",
+            "email": "mjames@edx.org",
+            }),
+        user_models.UserResponse(dictionary={
+            "username": "jg",
+            "full_name": "Jennifer Gormley",
+            "title": "Director of Product Design",
+            "email": "mjames@edx.org",
+            }),
+        user_models.UserResponse(dictionary={
+            "username": "jg",
+            "full_name": "Jennifer Gormley",
+            "title": "Director of Product Design",
+            "email": "mjames@edx.org",
+            }),
+    ]
+    ta = user_models.UserResponse(dictionary={
+        "username": "jg",
+        "full_name": "Jennifer Gormley",
+        "title": "Director of Product Design",
+        "email": "mjames@edx.org",
+        })
+
+    project_group = ProjectGroup()
+    project_group.members = members_list
+    project_group.teaching_assistant = ta
+
+    return project_group
+
+
+def group_project_location(user_id, course, sequential_id=None):
+    '''
+    Returns current sequential_id and page_id for the user for their group project
+    '''
+    # Find the user_group(s) with which this user is associated
+    project_groups = user_api.get_user_groups(user_id, "work_group")
+
+    # Find the group_project to which one of these project groups is assigned:
+    group_project = None
+    project_group = None
+    for project in course.group_projects:
+        for group in project_groups:
+            if group.id in group_api.get_groups_in_group(project.id):
+                group_project = project
+                project_group = group
+                break;
+        if group_project:
+            break;
+
+    if not group_project:
+        group_project = course.group_projects[0]
+
+    if not project_group:
+        project_group = _fake_project_group()
+
+    # Get the right location within this group project - can't do this yet
+    #course_detail = get_course_position_information(user_id, course.id)
+
+    sequentials = [sequential for sequential in group_project.sequentials if sequential.id == sequential_id]
+    if len(sequentials) > 0:
+        sequential = sequentials[0]
+    else:
+        sequential = group_project.sequentials[0]
+
+    page = sequential.pages[0]
+
+    return project_group, group_project, sequential, page
