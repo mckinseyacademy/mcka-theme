@@ -1,4 +1,6 @@
 #about-page,
+#terms-page,
+#privacy-page,
 #programs-page,
 #contact-page,
 #experience-page {
@@ -187,5 +189,20 @@
     @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
     li { margin-bottom: 15px; }
+  }
+}
+
+#terms-page, #privacy-page {
+  p { 
+    margin-top: 20px;
+  }
+  table {
+    tr.heading {
+      font-weight: bold;
+    }
+  }
+
+  .address {
+    line-height: 8px;
   }
 }
