@@ -36,7 +36,7 @@ def generate_email_text_for_user_activation(activation_record, activation_link_h
 def _process_line(user_line):
     try:
         fields = user_line.strip().split(',')
-        # format is email,username,password,firstname,lastname (last 3 are optional)
+        # format is email,username,password,firstname,lastname,city,country (last 5 are optional)
 
         # Must have the first 2 fields
         user_info = {
@@ -52,6 +52,13 @@ def _process_line(user_line):
         if len(fields) > 4:
             user_info["first_name"] = fields[3]
             user_info["last_name"] = fields[4]
+
+        if len(fields) > 5:
+            user_info["city"] = fields[5]
+
+        if len(fields) > 6:
+            user_info["country"] = fields[6]
+
     except Exception, e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
@@ -128,7 +135,7 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head):
     errors = [user_info["error"] for user_info in user_list if "error" in user_info]
     user_list = [user_info for user_info in user_list if "error" not in user_info]
 
-    # 2) Register the users, and associate them with
+    # 2) Register the users, and associate them with client
     errors.extend(_register_users_in_list(user_list, client_id, activation_link_head))
     failed_count = len(errors)
 
@@ -141,11 +148,13 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head):
 
 
 def _formatted_user_string(user):
-    return "{},{},,{},{}".format(
+    return "{},{},,{},{},{},{}".format(
         user.email,
         user.username,
         user.first_name,
         user.last_name,
+        user.city,
+        uer.country,
     )
 
 def _formatted_group_string(group):
