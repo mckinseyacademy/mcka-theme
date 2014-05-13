@@ -37,7 +37,7 @@ def create_group(group_name, group_type, group_data=None, group_object=JsonObjec
     ''' create a new group '''
     data = {
         "name": group_name,
-        "group_type": group_type,
+        "type": group_type,
     }
 
     if group_data:
@@ -83,7 +83,7 @@ def update_group(group_id, group_type, group_data=None, group_object=JsonObject)
     ''' update existing group '''
     # group_name is fixed, does not get updated, so no need to include it
     data = {
-        "group_type": group_type,
+        "type": group_type,
     }
 
     if group_data:
@@ -173,9 +173,9 @@ def get_courses_in_group(group_id):
         )
     )
 
-    courses_list = JP.from_json(response.read(), course_models.CourseList)
+    courses_list = JP.from_json(response.read(), course_models.CourseListCourse)
 
-    return courses_list.courses
+    return courses_list
 
 
 def get_groups_in_group(group_id, group_object=JsonObject):
