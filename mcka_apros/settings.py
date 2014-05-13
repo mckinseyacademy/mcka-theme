@@ -38,6 +38,7 @@ DEFAULT_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'debug_toolbar',
     'django_assets',
     'south',
 )
@@ -80,6 +81,8 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 TEMPLATE_LOADERS = (
     'hamlpy.template.loaders.HamlPyFilesystemLoader',
     'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 # Database
