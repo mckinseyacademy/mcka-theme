@@ -199,9 +199,9 @@ def get_courses_in_group(group_id):
         )
     )
 
-    courses_list = JP.from_json(response.read(), course_models.CourseList)
+    courses_list = JP.from_json(response.read(), course_models.CourseListCourse)
 
-    return courses_list.courses
+    return courses_list
 
 
 def get_groups_in_group(group_id, group_object=JsonObject):

@@ -114,14 +114,14 @@ def get_course(course_id, depth = 3):
 
     # Load the depth from the API
     course = CJP.from_json(response.read())
-    course.chapters = [content for content in course.content if content.category == "chapter"]
+    course.chapters = [content_module for content_module in course.content if content_module.category == "chapter"]
 
     for chapter in course.chapters:
-        chapter.sequentials = [content for content in chapter.children if content.category == "sequential"]
+        chapter.sequentials = [content_child for content_child in chapter.children if content_child.category == "sequential"]
         chapter.is_released = True
 
         for sequential in chapter.sequentials:
-            sequential.pages = [content for content in sequential.children if content.category == "vertical"]
+            sequential.pages = [content_child for content_child in sequential.children if content_child.category == "vertical"]
 
     return course
 
