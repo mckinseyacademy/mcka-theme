@@ -17,17 +17,24 @@
           window.location = '/admin/workgroup/course/' + course_id;
         }
       };
-      enable_selection(selections, activator);
+
+      var accordianSlide = function(that, selected){
+          if(selected.hasClass('expanded')){
+              selected.removeClass('expanded').slideUp();
+          }
+          else{
+              selected.addClass('expanded').slideDown();
+          }
+          that.find('i.caret').toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+        }
 
       var accordion = function(el, selector){
         el.find('.name').on('click', function(){
           var that = $(this);
-          that.parent().find(selector).toggleClass('expanded').slideToggle();
-          that.find('i.caret').toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+          var selected = that.parent().find(selector);
+          accordianSlide(that, selected);
         });
-      }
-
-      accordion($('.select-group-box'), '.group-info.students');
+      };
 
       var removeStudent = function(el, link){
           var parent = el.parents('.select-group-box');
@@ -55,24 +62,20 @@
           }).fail();
       }
 
-      $('.remove-student-icon').on('click', function(e){
-          e.preventDefault();
-          removeStudent($(this), $(this).parent('a').attr('href'));
-      });
-
-      var updateGroup = function(group, students, url){
+      var updateGroup = function(group_id, students, url){
         $.ajax({
           url: url, 
           data: {
             students: students, 
-            group: group, 
+            group_id: group_id, 
             'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'), 
           }, 
           method: 'POST'
         }).done(function(data){
           if(data.status == 'success'){
             alert('Group successfully updated');
-            window.location.reload();
+            window.location.hash = group_id;
+            window.location.reload(true);
           }
           else {
             alert(data.status);
@@ -80,15 +83,38 @@
         });
       }
 
-      $('.update-group').on('click', function(){
-        group = $(this).data('group-id');
-        url = $(this).data('url');
-        var students = new Array();
-        $('#student-list tr.student.selected').each(
-          function(){
-            students.push($(this).attr('id'));
-          });
-        updateGroup(group, students, url);
+    // UI EVENTS STUFF
+
+      $(document).ready(function(){
+
+        if(window.location.hash != ''){
+          var group = window.location.hash.split('#')[1];
+          var that = $('#' + group);
+          var selected = that.find('.group-info.students');
+          accordianSlide(that, selected);
+          window.location.hash = '';
+        }
+      
+        enable_selection(selections, activator);
+
+        accordion($('.select-group-box'), '.group-info.students');
+
+        $('.remove-student-icon').on('click', function(e){
+            e.preventDefault();
+            removeStudent($(this), $(this).parent('a').attr('href'));
+        });
+
+        $('.update-group').on('click', function(){
+          group = $(this).data('group-id');
+          url = $(this).data('url');
+          var students = new Array();
+          $('#student-list tr.student.selected').each(
+            function(){
+              students.push($(this).attr('id'));
+            });
+          updateGroup(group, students, url);
+        });
+
       });
 
     });
