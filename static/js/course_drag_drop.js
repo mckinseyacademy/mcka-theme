@@ -84,6 +84,9 @@
 
 
   $(function(){
+
+    var course_id = $('#course_id').val(); 
+    
     selections = [
       {
         selector: ".student-list .student",
@@ -105,7 +108,7 @@
   $(document).ready(function(){
 
     var courseDrag = $.courseDrag();
-    
+
     // Preopening latest opened group
     if(window.location.hash != ''){
       var group = window.location.hash.split('#')[1];
