@@ -15,12 +15,9 @@ class UserResponse(JsonObject):
     required_fields = ["email", "username"]
 
     def image_url(self, size=40):
-        ''' returns gravatar image based on user's email '''
-        # double-size and shrink so that these look good on retina displays
-        return "http://www.gravatar.com/avatar/{}?s={}".format(
-            hashlib.md5(self.email.lower()).hexdigest(),
-            size * 2
-        )
+        ''' return default avatar unless the user has one '''
+        # TODO: is the size param going to be used here?
+        return "/static/image/empty_avatar.png"
 
     def formatted_name(self):
         ''' returns formatted name from first name and last name unless first name is defined'''
