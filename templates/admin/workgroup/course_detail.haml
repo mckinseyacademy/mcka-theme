@@ -45,6 +45,8 @@
                           %span= student.company
                           %a{href: '/admin/workgroup/group/#{group.id}/remove'}
                             %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
+                    .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}'}
+                      Update
 - block js_snippets
   %script{src: "{% static 'js/select_and_assign.js' %}"}
   %script{src: "{% static 'js/course_drag_drop.js' %}"}

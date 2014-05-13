@@ -60,4 +60,35 @@
           removeStudent($(this), $(this).parent('a').attr('href'));
       });
 
+      var updateGroup = function(group, students, url){
+        $.ajax({
+          url: url, 
+          data: {
+            students: students, 
+            group: group, 
+            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'), 
+          }, 
+          method: 'POST'
+        }).done(function(data){
+          if(data.status == 'success'){
+            alert('Group successfully updated');
+            window.location.reload();
+          }
+          else {
+            alert(data.status);
+          }
+        });
+      }
+
+      $('.update-group').on('click', function(){
+        group = $(this).data('group-id');
+        url = $(this).data('url');
+        var students = new Array();
+        $('#student-list tr.student.selected').each(
+          function(){
+            students.push($(this).attr('id'));
+          });
+        updateGroup(group, students, url);
+      });
+
     });

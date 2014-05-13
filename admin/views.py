@@ -644,28 +644,23 @@ def workgroup_group_create(request, course_id):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_update(request, group_id, course_id):
-
     if request.method == 'POST':
 
-        course = course_api.load_course(course_id)
-#        module = course.group_project    
-        module = course.chapters[-1]
         students = request.POST.getlist("students[]")
 
-        groupsList = WorkGroup.list_course_groups(course_id)
+        try: 
+            for student in students: 
+                group_api.add_user_to_group(student, group_id)
 
-        lastId = len(groupsList) 
+            return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
 
-        workgroup = WorkGroup.create('Group {}'.format(lastId + 1), {})
-
-        group_id = int(workgroup.id)
-
-        course_api.add_workgroup_to_course(group_id, course_id, module.id)
-
-        for student in students: 
-            group_api.add_user_to_group(student, group_id)
-
-    return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+        except url_access.HTTPError, err:
+            error = _("An error occurred during student upload")
+            error_messages = {
+            }
+            if err.code in error_messages:
+                error = error_messages[err.code]
+            return HttpResponse(json.dumps({'status': error}), content_type="application/json")
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_remove(request, group_id):
