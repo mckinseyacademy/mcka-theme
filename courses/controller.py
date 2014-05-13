@@ -4,6 +4,7 @@ from django.conf import settings
 from api_client import course_api, user_api, user_models
 from license import controller as license_controller
 from admin.models import Program
+from admin.controller import load_course
 #from urllib import quote_plus, unquote_plus
 
 # warnings associated with members generated from json response
@@ -19,21 +20,6 @@ def decode_id(encoded_id):
 def encode_id(plain_id):
     #return quote_plus(plain_id)
     return plain_id.replace('/', '___')
-
-def load_course(course_id, course_api_impl=course_api):
-    '''
-    Gets the course from the API, and performs any post-processing for Apros specific purposes
-    '''
-    course = course_api_impl.get_course(course_id)
-
-    # Separate Group Projects
-    course.group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
-    #course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
-
-    for group_project in course.group_projects:
-        group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
-
-    return course
 
 def build_page_info_for_course(
     course_id,

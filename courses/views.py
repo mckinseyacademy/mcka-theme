@@ -8,10 +8,11 @@ from django.utils.translation import ugettext as _
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course
-from .controller import update_bookmark, decode_id, encode_id, load_course, group_project_location
+from .controller import update_bookmark, decode_id, encode_id, group_project_location
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api
+from admin.controller import load_course
 
 # Create your views here.
 
