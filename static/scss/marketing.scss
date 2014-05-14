@@ -12,6 +12,13 @@
   }
 }
 
+.bio-pop {
+  p {
+    margin-bottom: 25px;
+    &:last-child { margin-bottom: 0; }
+  }
+}
+
 #about-page {
   .what-is {
     @include font-spec(20, normal, 26);
