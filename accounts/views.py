@@ -12,6 +12,7 @@ from admin.models import Client
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from django.contrib import auth
+import logout as logout_handler
 import urllib2 as url_access
 
 from django.shortcuts import render
@@ -30,7 +31,6 @@ def _get_qs_value_from_url(value_name, url):
     if value_name in query_strings and len(query_strings[value_name]) > 0:
         return query_strings[value_name][0]
     return None
-
 
 def login(request):
     ''' handles requests for login form and their submission '''
@@ -88,24 +88,8 @@ def login(request):
         }
     return render(request, 'accounts/login.haml', data)
 
-
 def logout(request):
-    ''' handles requests to logout '''
-    # destory the remote session, protect against bad API response, still want
-    # our local stuff to go
-    try:
-        user_api.delete_session(request.session.get("remote_session_key"))
-    except url_access.HTTPError:
-        pass
-
-    # clean user from the local cache
-    RemoteUser.remove_from_cache(request.user.id)
-
-    # destroy this session
-    auth.logout(request)
-
-    return HttpResponseRedirect('/')  # Redirect after POST
-
+    return logout_handler.logout(request)
 
 def activate(request, activation_code):
     ''' handles requests for activation form and their submission '''
@@ -143,7 +127,6 @@ def activate(request, activation_code):
             user_data = request.POST.copy()
             error = _("You must accept terms of service in order to continue")
 
-
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
 
@@ -173,7 +156,7 @@ def activate(request, activation_code):
                     error = error_messages[err.code]
     else:
         form = ActivationForm(user_data)
-        
+
         # set focus to username field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
 
@@ -186,7 +169,6 @@ def activate(request, activation_code):
         }
     return render(request, 'accounts/activate.haml', data)
 
-
 def home(request):
     ''' show me the home page '''
 
@@ -194,8 +176,7 @@ def home(request):
     if request.user and request.user.is_authenticated():
         return homepage(request)
 
-    return render(request, 'main.haml', {"user": None})
-
+    return render(request, 'home/landing.haml', {"user": None})
 
 @login_required
 def user_profile(request):

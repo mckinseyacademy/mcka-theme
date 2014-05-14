@@ -58,12 +58,10 @@
 
         .content {
           float: left;
-          width: 185px;
+          width: 170px;
 
           .twitter-handle {
-            &:before {
-              content: '@';
-            }
+            &:before { content: '@'; }
           }
         }
       }
