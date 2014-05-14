@@ -82,3 +82,23 @@ class Client(BaseGroupModel):
         license_controller.create_licenses(program_id, self.id, places)
 
         return group_info
+
+class WorkGroup(BaseGroupModel): 
+    data_fields = ["display_name"]
+    group_type = "workgroup"
+
+    def fetch_students(self):
+        return self.get_users()
+
+    def add_to_course(self, course_id):
+        return group_api.add_workgroup_to_course(self.id, course_id)
+
+    @classmethod
+    def list_course_groups(self, course_id):
+        groups = self.list()
+        filtered_groups = []
+        for group in groups: 
+            if group.type == self.group_type: 
+                filtered_groups.append(group)
+        return filtered_groups
+

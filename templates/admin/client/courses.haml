@@ -6,9 +6,9 @@
     %span= client.display_name
   %hr
   %section
-    .large-8.columns#student-list
+    .large-7.columns#student-list
       - include "admin/client/student_select_course.haml"
-    .large-4.columns.program-selection
+    .large-5.columns.program-selection
       %a#student-course-action.button.radius.tiny{href: "/admin/clients/#{client.id}/add_students_to_course"}
         %span= _("Move Selected Students into Course(s)")
       %h2= _("Select a Program:")
@@ -32,6 +32,8 @@
                   %span{style: "color: red;"} 000
 - block js_snippets
   %script{src: "{% static 'js/select_and_assign.js' %}"}
+  %script{src: "{% static 'js/jquery.dataTables.min.js' %}"}
+  %script{src: "{% static 'js/dataTables.foundation.js' %}"}
   :javascript
     $(function(){
       selections = [
@@ -53,4 +55,9 @@
         selector: '#student-course-action'
       };
       enable_selection(selections, activator);
+
+      $('.student-list').dataTable({
+          paging: false, 
+          "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
+      });
     });

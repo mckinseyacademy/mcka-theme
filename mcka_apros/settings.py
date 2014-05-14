@@ -143,6 +143,7 @@ LMS_BASE_DOMAIN = 'mckinseyacademy.com'
 LMS_SUB_DOMAIN = 'lms'
 
 NO_PROGRAM_NAME = "McKinsey Management Program"
+GROUP_PROJECT_IDENTIFIER = "GROUP_PROJECT_"
 
 CACHES = {
     'default': {

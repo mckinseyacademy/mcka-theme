@@ -7,10 +7,12 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from main.models import CuratedContentItem
 
-from .controller import build_page_info_for_course, locate_chapter_page, program_for_course, update_bookmark, decode_id, encode_id
+from .controller import build_page_info_for_course, locate_chapter_page, program_for_course
+from .controller import update_bookmark, decode_id, encode_id, group_project_location
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api
+from admin.controller import load_course
 
 # Create your views here.
 
@@ -93,7 +95,7 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
     course_id = decode_id(course_id)
 
     # Get course info
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
 
     # Take note that the user has gone here
     program = program_for_course(request.user.id, course_id)
@@ -115,6 +117,29 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
         data["syllabus"] = course_api.get_course_syllabus(course_id)
     elif current_view == "news":
         data["news"] = course_api.get_course_news(course_id)
+    elif current_view == "group_work":
+        seq_id = request.GET.get("seqid", None)
+        project_group, group_project, sequential, page = group_project_location(
+            request.user.id,
+            course,
+            seq_id
+        )
+    
+        remote_session_key = request.session.get("remote_session_key")
+        lms_base_domain = settings.LMS_BASE_DOMAIN
+        lms_sub_domain = settings.LMS_SUB_DOMAIN
+    
+        data.update({
+            "lesson_content_parent_id": "course-group-work",
+            "vertical_usage_id": page.vertical_usage_id(),
+            "remote_session_key": remote_session_key,
+            "lms_base_domain": lms_base_domain,
+            "lms_sub_domain": lms_sub_domain,
+            "project_group": project_group,
+            "group_project": group_project,
+            "current_sequential": sequential,
+            "current_page": page,
+        })
 
     return render(request, 'courses/course_navigation.haml', data)
 
@@ -135,7 +160,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     program_id = program.id if program else None
     request.session["current_course_id"] = course_id
     update_bookmark(
-        request.user.id, program_id, course_id, chapter_id, current_sequential.id, page_id)
+        request.user.id, course_id, chapter_id, current_sequential.id, page_id)
 
     # Inject formatted data for view
     _inject_formatted_data(program, course, page_id)
@@ -152,11 +177,12 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "current_chapter": current_chapter,
         "current_sequential": current_sequential,
         "current_page": current_page,
+        "program": program,
+        "lesson_content_parent_id": "course-lessons",
+        "vertical_usage_id": vertical_usage_id,
+        "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
-        "program": program,
-        "remote_session_key": remote_session_key,
-        "vertical_usage_id": vertical_usage_id,
         "current_view": "lessons",
         "current_template": "courses/course_lessons.haml",
     }

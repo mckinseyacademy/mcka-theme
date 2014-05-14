@@ -1,0 +1,19 @@
+#course-group-work
+  .row
+    - include "courses/group_work/activity_menu.haml"
+  .row
+    .large-8.medium-8.columns
+      .lesson-title
+        %span= _("Group Project:")
+        %span= group_project.name
+      .lesson-content
+    .large-4.medium-4.columns.sidebar
+      .group-members
+        %h4= _("Group Members")
+        - for member in project_group.members
+          - include "courses/group_work/group_member.haml" with group_member=member
+        %a.email-team{href: "#"}= _("Email team")
+      %hr
+      .ask-ta
+        %h4= _("Ask a TA")
+        - include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant

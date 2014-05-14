@@ -19,7 +19,6 @@ PERMISSION_GROUPS = DottableDict(
     CLIENT_TA='mcka_role_client_ta'
 )
 
-
 def get_groups_of_type(group_type, group_object=JsonObject):
     ''' gets all groups of provided type'''
     response = GET(
@@ -162,6 +161,19 @@ def get_users_in_group(group_id):
 
     return user_list.users
 
+def remove_user_from_group(group_id, user_id):
+    ''' remove user association with a specific group '''
+
+    response = DELETE(
+        '{}/{}/{}/users/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+            user_id, 
+        )
+    )
+
+    return (response.code == 204)
 
 def get_courses_in_group(group_id):
     ''' get list of courses associated with a specific group '''
@@ -189,3 +201,4 @@ def get_groups_in_group(group_id, group_object=JsonObject):
     )
 
     return JP.from_json(response.read(), group_object)
+

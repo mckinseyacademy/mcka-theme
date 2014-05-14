@@ -12,15 +12,18 @@ from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
 from .models import Client
 from .models import Program
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program
+from .models import WorkGroup
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from api_client import course_api
 from api_client import user_api
+from api_client import group_api
 from api_client.json_object import Objectifier
 from license import controller as license_controller
+
 
 
 def ajaxify_http_redirects(func):
@@ -497,6 +500,240 @@ def add_students_to_course(request, client_id):
         content_type='application/json'
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_list(request):
+    ''' handles requests for login form and their submission '''
+
+    if request.method == 'POST':
+        if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
+            return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
+
+
+    programs = Program.list()
+
+    data = {
+        "principal_name": _("Group Work"),
+        "principal_name_plural": _("Group Work"),
+        "principal_new_url": "/admin/workgroup/workgroup_new",
+        "programs": programs, 
+    }
+
+    return render(
+        request,
+        'admin/workgroup/list.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_programs_list(request):
+    ''' handles requests for login form and their submission '''
+
+    if request.method == 'POST':
+        group_id = request.POST["group_id"]
+    if request.method == 'GET': 
+        group_id = request.GET["group_id"]
+
+    if group_id == 'select':
+        return render(
+            request,
+            'admin/workgroup/courses_list.haml',
+            {
+                "courses": {}, 
+            }
+        )
+    else:
+        program = Program.fetch(group_id)
+        courses = program.fetch_courses()
+
+        data = {
+            "courses": courses, 
+        }
+#    return HttpResponse(json.dumps(dir(courses[0])))
+    return render(
+        request,
+        'admin/workgroup/courses_list.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_course_detail(request, course_id):
+    ''' handles requests for login form and their submission '''
+
+#    if request.method == 'POST':
+#        group_id = request.POST["group_id"]
+#    if request.method == 'GET': 
+#        group_id = request.GET["group_id"]
+
+    course = load_course(course_id)
+
+    students = course_api.get_user_list(course_id)
+    for student in students: 
+        companies = user_api.get_user_groups(student.id, group_type = 'organization')
+        if len(companies) > 0:
+            company = Client.fetch(companies[0].id)
+            student.company = company.display_name
+
+    groupsList = WorkGroup.list_course_groups(course_id)
+
+    ''' THIS IS A VERY SLOW PART OF CODE. 
+        Due to api limitations, filtering of user from student list has to be done on client. 
+        It has to have 3 nested "for" loops, and one after (indexes issue in for loop). 
+        This should be replaced once API changes. 
+    '''
+    groups = []
+    groupedStudents = []
+    for group in groupsList: 
+        users = group_api.get_users_in_group(group.id)
+        group.students = users
+        for user in users:
+            companies = user_api.get_user_groups(user.id, group_type = 'organization')
+            if len(companies) > 0:
+                company = Client.fetch(companies[0].id)
+                user.company = company.display_name
+            for student in students:
+                if user.username == student.username:
+                    groupedStudents.append(student)
+        groups.append(group)
+
+    for student in groupedStudents: 
+        if student in students:
+            students.remove(student)
+
+    for group in groups: 
+        group.students_count = len(group.students)
+
+    data = {
+        "principal_name": _("Group Work"),
+        "principal_name_plural": _("Group Work"),
+        "course": course, 
+        "students": students,
+        "groups": groups,  
+    }
+#    return HttpResponse(json.dumps(dir(course)))
+    return render(
+        request,
+        'admin/workgroup/course_detail.haml',
+        data
+    )
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_group_create(request, course_id):
+
+    if request.method == 'POST':
+
+        course = load_course(course_id)
+#        module = course.group_project    
+        module = course.chapters[-1]
+        students = request.POST.getlist("students[]")
+
+        groupsList = WorkGroup.list_course_groups(course_id)
+
+        lastId = len(groupsList) 
+
+        workgroup = WorkGroup.create('Group {}'.format(lastId + 1), {})
+
+        group_id = int(workgroup.id)
+
+        course_api.add_workgroup_to_course(group_id, course_id, module.id)
+
+        for student in students: 
+            group_api.add_user_to_group(student, group_id)
+
+    return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_group_update(request, group_id, course_id):
+    if request.method == 'POST':
+
+        students = request.POST.getlist("students[]")
+
+        try: 
+            for student in students: 
+                group_api.add_user_to_group(student, group_id)
+
+            return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
+
+        except url_access.HTTPError, err:
+            error = _("An error occurred during student upload")
+            error_messages = {
+            }
+            if err.code in error_messages:
+                error = error_messages[err.code]
+            return HttpResponse(json.dumps({'status': error}), content_type="application/json")
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_group_remove(request, group_id):
+
+    if request.method == 'POST':
+
+        removeStudent = request.POST['student']
+
+        group_api.remove_user_from_group(group_id, removeStudent)
+
+        course_id = request.POST['course_id']
+        students = course_api.get_user_list(course_id)
+
+        groupsList = WorkGroup.list_course_groups(course_id)
+        groupedStudents = []   
+        
+        for group in groupsList: 
+            users = group_api.get_users_in_group(group.id)
+            group.students = users
+            for student in students:
+                for user in users:
+                    if user.username == student.username:
+                        groupedStudents.append(student)
+    
+        group = WorkGroup.fetch(group_id) 
+
+        for student in groupedStudents: 
+            students.remove(student)
+
+        data = {
+            "students": students, 
+        }
+        return render(
+            request,
+            'admin/workgroup/student_table.haml',
+            data, 
+        )
+
+    return HttpResponse('', content_type='application/json')
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def download_group_list(request, course_id):
+
+    course = load_course(course_id)
+    groupsList = WorkGroup.list_course_groups(course_id)
+    groups = []
+    groupedStudents = []
+
+    for group in groupsList: 
+        users = group_api.get_users_in_group(group.id)
+        group.students = users
+        for user in users:
+            companies = user_api.get_user_groups(user.id, group_type = 'organization')
+            if len(companies) > 0:
+                company = Client.fetch(companies[0].id)
+                user.company = company.display_name
+        groups.append(group)
+
+    filename = "Groups List for {} on {}.csv".format(
+        course.name,
+        datetime.now().isoformat()
+    )
+
+    response = HttpResponse(
+        get_group_list_as_file(groups),
+        content_type='text/csv'
+    )
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')

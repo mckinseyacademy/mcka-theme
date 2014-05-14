@@ -2,10 +2,26 @@ import tempfile
 from urllib2 import HTTPError
 from django.core.servers.basehttp import FileWrapper
 from django.utils.translation import ugettext as _
+from django.conf import settings
 
-from api_client import user_api, group_api
+from api_client import user_api, group_api, course_api
 from accounts.models import UserActivation
 from .models import Client
+
+def load_course(course_id, course_api_impl=course_api):
+    '''
+    Gets the course from the API, and performs any post-processing for Apros specific purposes
+    '''
+    course = course_api_impl.get_course(course_id)
+
+    # Separate Group Projects
+    course.group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+    course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+
+    for group_project in course.group_projects:
+        group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
+
+    return course
 
 
 def generate_email_text_for_user_activation(activation_record, activation_link_head):
@@ -132,12 +148,27 @@ def _formatted_user_string(user):
         user.last_name,
     )
 
+def _formatted_group_string(group):
+    group_string = "{} \n\n".format(
+        group.name
+    )
+
+    user_list = [_formatted_user_string(user) for user in group.students]
+    users_list = '\n'.join(user_list)
+
+    group_string = group_string + users_list + '\n\n'
+
+    return group_string
 
 def get_student_list_as_file(client):
     user_list = client.get_users()
     user_strings = [_formatted_user_string(user) for user in user_list]
 
     return '\n'.join(user_strings)
+
+def get_group_list_as_file(groups):  
+    group_string = [_formatted_group_string(group) for group in groups]
+    return '\n'.join(group_string)
 
 
 def fetch_clients_with_program(program_id):

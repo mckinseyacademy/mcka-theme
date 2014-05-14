@@ -1,0 +1,6 @@
+  %option{'value': 'select'}
+  	= ' - Select - '
+- if courses.count >= 1
+	- for course in courses
+	  %option{'value': '#{course.course_id}'}
+	    = course.display_name
