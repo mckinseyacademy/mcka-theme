@@ -72,16 +72,6 @@ def homepage(request):
         current_page = None
         program = None
 
-    if current_chapter is not None:
-        bookmark_index = current_chapter.index-1
-    else:
-        bookmark_index = 0
-
-    if course and course.chapters:
-        lesson_count = len(course.chapters)
-    else:
-        lesson_count = 0
-
     data = {
         "user": request.user,
         "course": course,
@@ -94,10 +84,8 @@ def homepage(request):
         "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
         "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
-        "bookmark_index": bookmark_index,
-        "lesson_count": lesson_count,
     }
-    return render(request, 'courses/course_main.haml', data)
+    return render(request, 'home/courses.haml', data)
 
 @login_required
 def navigate_to_page(request, course_id, current_view = 'overview'):

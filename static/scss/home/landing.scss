@@ -1,7 +1,16 @@
-#home-grid {
+#home-landing {
   width: 300px * 4;
   margin: 100px auto 0;
   @include clearfix;
+
+  a.cell {
+    display: block;
+    @include transition(all 200ms);
+
+    &:hover {
+      @include transform(scale(1.05));
+    }
+  }
 
   .cell {
     float: left;
@@ -9,12 +18,7 @@
     text-align: center;
     background: $pure-white;
     @include square-size(300px);
-    @include transition(all 200ms);
-
-    &:hover {
-      z-index: 2;
-      @include transform(scale(1.05));
-    }
+    &:hover { z-index: 2; }
 
     i.fa {
       @include font-spec(18);

@@ -4,7 +4,7 @@
   padding: 20px 0;
 
   .rotator {
-    width: 800px;
+    width: 770px;
     margin: 0 auto;
 
     .nav-left, .nav-right {
@@ -15,25 +15,27 @@
       margin-top: rem-calc(-35/2);
       z-index: 2;
       @include font-spec(35);
-
+      &:hover { color: $mckinsey-academy-alt-blue; }
       &.nav-left { left: -45px; }
       &.nav-right { right: -45px; }
+
+      &.disabled:hover {
+        color: $almost-white;
+        cursor: default;
+      }
     }
 
-    .frame {
-      padding: 10px 0;
-    }
+    .frame { padding: 10px 0; }
 
     ul {
       margin: 0;
-      margin-left: 10px;
       white-space: nowrap;
 
       li {
         position: relative;
         display: inline-block;
         vertical-align: top;
-        margin-right: 20px;
+        margin-right: 17px;
         white-space: normal;
         &:last-child { margin-right: none; }
 

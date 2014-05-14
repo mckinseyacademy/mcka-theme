@@ -5,10 +5,10 @@ var Router = Backbone.Router.extend({
   },
 
   home: function() {
-    el = $('#home-grid');
-    if (el.length) {
-      new Apros.views.HomeGrid({el: el}).render();
-    }
+    var landing = $('#home-landing'),
+        courses = $('#home-courses');
+    if (landing.length) return new Apros.views.Homelanding({el: landing}).render();
+    if (courses.length) new Apros.views.HomeCourses({el: courses}).render();
   },
 
   course_progress: function(course_id) {

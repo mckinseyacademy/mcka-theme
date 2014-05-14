@@ -13,12 +13,11 @@
         display: inline-block;
         vertical-align: top;
       }
-    }
 
-    .slides.animate {
-      @include transition(margin 500ms ease-in-out);
+      &.animate {
+        visibility: visible;
+        @include transition(margin 500ms ease-in-out);
+      }
     }
-
   }
-
 }

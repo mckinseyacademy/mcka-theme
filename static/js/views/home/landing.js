@@ -1,4 +1,4 @@
-Apros.views.HomeGrid = Backbone.View.extend({
+Apros.views.HomeLanding = Backbone.View.extend({
 
   scroll_window: function() {
     var $window     = $(window),

@@ -1,0 +1,42 @@
+#home-courses {
+  .sub-title { margin-bottom: 10px; }
+  .large-10 > hr { margin: 20px -20px; }
+
+  .course-quote {
+    text-align: center;
+
+    blockquote {
+      position: relative;
+      margin: 0 0 20px;
+      padding: 0 100px;
+      border: none;
+      quotes: "\201C""\201D""\2018""\2019";
+
+      &:before, &:after {
+        font-family: Georgia;
+        color: $mckinsey-orange;
+        position: absolute;
+        top: 42px;
+        font-size: 6em;
+        line-height: 0.1em;
+      }
+
+      &:before {
+        content: open-quote;
+        left: 0;
+      }
+
+      &:after {
+        content: close-quote;
+        right: 0;
+      }
+    }
+
+    .attribution {
+      img { margin-bottom: 10px; }
+    }
+  }
+
+  @import './course-menu';
+  @import './discover';
+}

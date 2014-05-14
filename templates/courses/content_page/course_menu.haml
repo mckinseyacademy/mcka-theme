@@ -1,7 +1,7 @@
 %article#course-menu
   .sub-2 LESSONS:
-  .rotator{'data-count': "#{lesson_count}", 'data-bookmark-index': "#{bookmark_index}"}
-    .nav-left
+  .rotator
+    .nav-left.disabled
       %i.fa.fa-chevron-left
     .nav-right
       %i.fa.fa-chevron-right
@@ -17,14 +17,10 @@
                     .bookmark
                       %i.fa.fa-bookmark
                   .label-5.index LESSON {{lesson.index}}
-                  %h2.name
-                    = lesson.name
+                  %h2.name= lesson.name
                   .lesson-progress
                     - for tick_mark in lesson.tick_marks
-                      - if tick_mark
-                        .tick.on
-                      - else
-                        .tick
+                      .tick{class: "{% if tick_mark %}on{% endif %}"}
                 .back.background-alt-blue
                   .label-2.description
                     = lesson.description
