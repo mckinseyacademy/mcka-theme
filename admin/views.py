@@ -181,13 +181,14 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         "selected_client_tab": detail_view,
         "programs": [_prepare_program_display(program) for program in client.fetch_programs()],
     }
-
     if detail_view == "programs" or detail_view == "courses":
         data["students"] = client.fetch_students()
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
-
+        #        for course in program.courses: 
+        #            users = course_api.get_users_content_filtered(course.course_id, client_id, [{'key': 'enrolled', 'value': 'True'}])
+        #            course.user_count = len(users)
     if upload_results:
         data["upload_results"] = _format_upload_results(upload_results)
 
