@@ -15,6 +15,9 @@ JSON_HEADERS = {
 
 
 def json_headers():
+    # TODO: Add this in when API can deal with requests that have session but not csrf_token
+    return JSON_HEADERS
+    
     headers = JSON_HEADERS.copy()
     request = get_current_request()
     if request:
