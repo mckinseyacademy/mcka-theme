@@ -7,3 +7,7 @@ def terms(request):
 
 def privacy(request):
     return render(request, 'privacy.haml')
+
+
+def faq(request):
+    return render(request, 'faq.haml')

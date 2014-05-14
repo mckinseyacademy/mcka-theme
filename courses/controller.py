@@ -241,7 +241,10 @@ def group_project_location(user_id, course, sequential_id=None):
             break;
 
     if not group_project:
-        group_project = course.group_projects[0]
+        if len(course.group_projects) > 0:
+            group_project = course.group_projects[0]
+        else:
+            return None, None, None, None
 
     if not project_group:
         project_group = _fake_project_group()
