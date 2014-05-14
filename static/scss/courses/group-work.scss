@@ -25,4 +25,49 @@
   .lesson-pager{
     width: 750px;
   }
+  .lesson-content{
+    h1{
+      padding-bottom: 10px;      
+    }
+  }
+  h4{
+    text-transform: uppercase;
+    margin-top: 15px;
+  }
+  .urgent{
+    color: $mckinsey-orange;
+  }
+  nav{
+    display: none;
+  }
+  .sidebar{
+    margin-top: 20px;
+    border-left: 1px solid $mckinsey-grey;
+    .email-team{
+      float: right;
+      margin: 10px 0 10px 5px;
+    }
+  }
+  .group-member{
+    padding-bottom: 10px;
+    height: 50px;
+    .avatar{
+      width: 40px;
+      height: 40px;
+      float: left;
+    }
+    .user-info{
+      @include font-spec(10, normal, 13);
+      margin-left: 50px;
+      .name{
+        font-weight: bold;
+      }
+      .title{
+        font-style: italic;
+      }
+      .email a{
+        @include font-spec(11, normal, 13);
+      }
+    }
+  }
 }
