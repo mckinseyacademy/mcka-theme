@@ -5,12 +5,12 @@ import subprocess
 import signal
 import atexit
 
-
+assets_pid = None
 class Command(BaseCommand):
     help = 'Runs the dev server and watches compileable assets'
 
     def handle(self, *args, **options):
-        global assets_pid
+        assets_pid = None
 
         port = '3000'
         if len(args) > 0:
