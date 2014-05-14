@@ -16,7 +16,7 @@
             %li
               %a{href: '/admin'}= _("Admin")
     - block user_region
-      - if user
+      - if request.user.is_authenticated
         %a.user-info{href: "#", data-dropdown: "profile-container"}
           .user-name
             = user.username
