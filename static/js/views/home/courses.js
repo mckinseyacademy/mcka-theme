@@ -26,10 +26,10 @@ Apros.views.HomeCourses = Backbone.View.extend({
 
   center_on_bookmark: function() {
     var _this     = this;
-    var center    = Math.ceil(this.per_section / 2);
+    var center    = Math.ceil(this.per_section / 2) - 1;
     var bookmark  = $('.bookmark', this.slider).parents('li');
     if (bookmark.length && bookmark.index() > center) {
-      var el = this.cards.eq(bookmark.index() - center + 1);
+      var el = this.cards.eq(bookmark.index() - center);
       this.slide_to(el);
     }
     _.delay(function() { _this.slides.addClass('animate'); }, 10);

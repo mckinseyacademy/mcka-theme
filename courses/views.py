@@ -87,7 +87,7 @@ def homepage(request):
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
         "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
     }
-    return render(request, 'home/courses.haml', data)
+    return render(request, 'courses/course_main.haml', data)
 
 @login_required
 def navigate_to_page(request, course_id, current_view = 'overview'):
@@ -124,11 +124,11 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
             course,
             seq_id
         )
-    
+
         remote_session_key = request.session.get("remote_session_key")
         lms_base_domain = settings.LMS_BASE_DOMAIN
         lms_sub_domain = settings.LMS_SUB_DOMAIN
-    
+
         data.update({
             "lesson_content_parent_id": "course-group-work",
             "vertical_usage_id": page.vertical_usage_id(),

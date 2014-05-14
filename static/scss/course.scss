@@ -2,6 +2,7 @@ $program-bar-height: 48px;
 .program-bar{
   height: $program-bar-height;
   padding-top: 12px;
+  margin-top: $header-bar-height;
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
   .program-name{
