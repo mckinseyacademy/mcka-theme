@@ -9,17 +9,16 @@
 
     .nav-left, .nav-right {
       cursor: pointer;
-      color: $almost-white;
+      color: $mckinsey-academy-alt-blue;
       position: absolute;
       top: 50%;
       margin-top: rem-calc(-35/2);
       z-index: 2;
       @include font-spec(35);
-      &:hover { color: $mckinsey-academy-alt-blue; }
       &.nav-left { left: -45px; }
       &.nav-right { right: -45px; }
 
-      &.disabled:hover {
+      &.disabled {
         color: $almost-white;
         cursor: default;
       }
