@@ -32,7 +32,6 @@ def _get_qs_value_from_url(value_name, url):
         return query_strings[value_name][0]
     return None
 
-
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -89,10 +88,8 @@ def login(request):
         }
     return render(request, 'accounts/login.haml', data)
 
-
 def logout(request):
     return logout.logout(request)
-
 
 def activate(request, activation_code):
     ''' handles requests for activation form and their submission '''
@@ -129,7 +126,6 @@ def activate(request, activation_code):
         if "accept_terms" not in request.POST or request.POST["accept_terms"] == False:
             user_data = request.POST.copy()
             error = _("You must accept terms of service in order to continue")
-
 
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
@@ -173,7 +169,6 @@ def activate(request, activation_code):
         }
     return render(request, 'accounts/activate.haml', data)
 
-
 def home(request):
     ''' show me the home page '''
 
@@ -181,8 +176,7 @@ def home(request):
     if request.user and request.user.is_authenticated():
         return homepage(request)
 
-    return render(request, 'main.haml', {"user": None})
-
+    return render(request, 'home/landing.haml', {"user": None})
 
 @login_required
 def user_profile(request):

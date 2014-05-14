@@ -1,0 +1,190 @@
+#home-landing {
+  width: 300px * 4;
+  margin: 100px auto 0;
+  @include clearfix;
+
+  a.cell, a.cell:visited {
+    display: block;
+    @include transition(all 200ms);
+    .title,
+    .content,
+    .label-2 {
+      color: $mckinsey-academy-black;
+    }
+
+    &:hover {
+      @include transform(scale(1.05));
+    }
+  }
+
+  .cell {
+    float: left;
+    position: relative;
+    text-align: center;
+    background: $pure-white;
+    @include square-size(300px);
+    &:hover { z-index: 2; }
+
+    i.fa {
+      @include font-spec(18);
+
+      &.fa-play-circle:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        background: $pure-white;
+        z-index: -1;
+        @include radius(50%);
+        @include square-size(35px);
+      }
+    }
+
+    .icon-circled {
+      color: $pure-white;
+      background: #000;
+      text-align: center;
+      margin: 0 auto 20px;
+      @include radius(50%);
+      @include square-size(53px);
+      @include box-shadow(0px 3px 4px 0px rgba(153, 153, 153, 0.3));
+      &.blue-gray { background: $mckinsey-academy-blue-gray; }
+      &.turquoise { background: $mckinsey-academy-turquoise; }
+      &.green { background: $mckinsey-green; }
+
+      i {
+        margin-left: 3px;
+        &.icon-icon1 { @include font-spec(34, normal, 45); }
+
+        &.icon-icon2 {
+          margin-left: 1px;
+          @include font-spec(30, normal, 52);
+        }
+
+        &.icon-icon3 { @include font-spec(30, normal, 52); }
+      }
+    }
+
+    &.col-2 { width: 600px; }
+
+    &.quote {
+      color: $pure-white;
+      padding: 30px;
+      background: $mckinsey-orange;
+
+      blockquote {
+        color: $pure-white;
+        margin-top: 50px;
+        quotes: "\201C""\201D""\2018""\2019";
+        @include font-spec(16, semibold, 20);
+
+        &:before {
+          content: open-quote;
+          display: block;
+          font-family: Georgia;
+          @include font-spec(120, normal, 0.1);
+        }
+
+        &:after {
+          content: close-quote;
+        }
+      }
+
+      .title {
+        font-style: italic;
+        margin-top: 2px;
+        @include font-spec(10, semibold, 12);
+      }
+    }
+
+    &.stock-image { overflow: hidden; }
+
+    &.tagline {
+      color: $pure-white;
+      padding: 45px;
+      display: table;
+      background: $mckinsey-academy-alt-blue;
+      @include font-spec(30, normal, 36);
+
+      span {
+        display: table-cell;
+        vertical-align: middle;
+      }
+    }
+
+    &.distinctive-feature {
+      text-align: left;
+      padding: 20px;
+
+      .nav-1 { margin-bottom: 18px; }
+
+      .title {
+        text-transform: uppercase;
+        @include font-spec(20, bold, 22);
+
+        &.large {
+          @include font-spec(30, bold, 32);
+        }
+      }
+
+      .content {
+        @include font-spec(18, normal, 24);
+      }
+
+      i.fa { margin-top: 25px; }
+
+      &.bg-al {
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_al', 300px 300px, 'jpg');
+      }
+
+      &.bg-cp {
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_cp', 300px 300px, 'jpg');
+      }
+
+      &.bg-df {
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_df', 300px 300px, 'jpg');
+      }
+
+      &.bg-pp {
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_pp', 300px 300px, 'jpg');
+      }
+
+      &.bg-sl {
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_sl', 300px 300px, 'jpg');
+      }
+
+      &.bg-ta {
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_ta', 300px 300px, 'jpg');
+      }
+    }
+
+    &.entry-point {
+      padding: 20px 15px;
+
+      .content {
+        margin-bottom: 20px;
+        @include font-spec(18, normal, 22);
+      }
+
+      .label-2 {
+        @include font-spec(10, bold, 18);
+      }
+
+      i.fa { margin-top: 15px; }
+    }
+
+    &.video {
+      @include retina-image('/static/image/home-grid/McKA_home_tiles_video', 300px 300px, 'jpg');
+
+      .fa-play-circle {
+        position: absolute;
+        z-index: 5;
+        top: 50%;
+        left: 50%;
+        margin: rem-calc(-27) 0 0 rem-calc(-23.5);
+        @include font-spec(55);
+      }
+    }
+  }
+}
