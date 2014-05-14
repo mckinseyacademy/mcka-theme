@@ -3,9 +3,14 @@
   margin: 100px auto 0;
   @include clearfix;
 
-  a.cell {
+  a.cell, a.cell:visited {
     display: block;
     @include transition(all 200ms);
+    .title,
+    .content,
+    .label-2 {
+      color: $mckinsey-academy-black;
+    }
 
     &:hover {
       @include transform(scale(1.05));
@@ -22,6 +27,43 @@
 
     i.fa {
       @include font-spec(18);
+
+      &.fa-play-circle:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        background: $pure-white;
+        z-index: -1;
+        @include radius(50%);
+        @include square-size(35px);
+      }
+    }
+
+    .icon-circled {
+      color: $pure-white;
+      background: #000;
+      text-align: center;
+      margin: 0 auto 20px;
+      @include radius(50%);
+      @include square-size(53px);
+      @include box-shadow(0px 3px 4px 0px rgba(153, 153, 153, 0.3));
+      &.blue-gray { background: $mckinsey-academy-blue-gray; }
+      &.turquoise { background: $mckinsey-academy-turquoise; }
+      &.green { background: $mckinsey-green; }
+
+      i {
+        margin-left: 3px;
+        &.icon-icon1 { @include font-spec(34, normal, 45); }
+
+        &.icon-icon2 {
+          margin-left: 1px;
+          @include font-spec(30, normal, 52);
+        }
+
+        &.icon-icon3 { @include font-spec(30, normal, 52); }
+      }
     }
 
     &.col-2 { width: 600px; }

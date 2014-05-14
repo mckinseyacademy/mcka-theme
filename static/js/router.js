@@ -7,7 +7,7 @@ var Router = Backbone.Router.extend({
   home: function() {
     var landing = $('#home-landing'),
         courses = $('#home-courses');
-    if (landing.length) return new Apros.views.Homelanding({el: landing}).render();
+    if (landing.length) return new Apros.views.HomeLanding({el: landing}).render();
     if (courses.length) new Apros.views.HomeCourses({el: courses}).render();
   },
 
