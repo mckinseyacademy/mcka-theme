@@ -1,7 +1,8 @@
 var Router = Backbone.Router.extend({
   routes: {
     '': 'home',
-    'courses/*course_id/view/progress': 'course_progress'
+    'courses/*course_id/view/progress': 'course_progress',
+    'courses/*course_id/view/cohort':   'course_cohort'
   },
 
   home: function() {
@@ -14,6 +15,11 @@ var Router = Backbone.Router.extend({
   course_progress: function(course_id) {
     var model = new Apros.models.Course({id: course_id});
     new Apros.views.CourseProgress({model: model, el: $('#course-progress')}).render()
+  },
+
+  course_cohort: function(course_id) {
+    var model = new Apros.models.Course({id: course_id});
+    new Apros.views.CourseCohort({model: model, el: $('#course-cohort')}).render()
   }
 });
 

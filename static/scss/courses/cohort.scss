@@ -3,22 +3,33 @@
     height: rem-calc(355);
   }
 
-  .students {
-    margin: 20px 0 0;
-    list-style-type: none;
+  .student-data {
+    margin-top: 20px;
     @include clearfix;
 
-    li {
+    ul.students {
       float: left;
-      padding: 0 5px;
-      border-right: 1px solid $almost-white;
+      margin: 0;
+      list-style-type: none;
+      @include clearfix;
 
-      &:first-child { padding: 0; }
+      li {
+        float: left;
+        padding: 0 5px;
+        border-right: 1px solid $almost-white;
 
-      &:first-child,
-      &:last-child {
-        border-right: none;
+        &:first-child { padding: 0; }
+
+        &:first-child,
+        &:last-child {
+          border-right: none;
+        }
       }
+    }
+
+    a.hide-team {
+      float: right;
+      @include font-spec(12, bold, 14);
     }
   }
 }
