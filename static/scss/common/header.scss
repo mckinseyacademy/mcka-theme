@@ -149,9 +149,12 @@ header[role=banner] {
   }
   .login-action{
     float: right;
+
     .button{
       padding: 8px 15px;
       margin: 10px;
+      @include font-spec(14px, bold);
+      &:hover { color: $pure-white; }
     }
   }
   .application-name{
