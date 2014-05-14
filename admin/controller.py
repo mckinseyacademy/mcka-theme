@@ -16,7 +16,7 @@ def load_course(course_id, course_api_impl=course_api):
 
     # Separate Group Projects
     course.group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
-    #course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+    course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
     for group_project in course.group_projects:
         group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
