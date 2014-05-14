@@ -52,6 +52,11 @@
         margin-left: rem-calc(10);
         margin-right: rem-calc(10);
 
+        .team-list {
+          width: 180px;
+          margin-top: rem-calc(40);
+        }
+
         .card-flip {
           width: 180px;
           height: 125px;
