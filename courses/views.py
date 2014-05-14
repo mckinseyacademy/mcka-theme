@@ -124,6 +124,7 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
             course,
             seq_id
         )
+        vertical_usage_id = page.vertical_usage_id() if page else None
 
         remote_session_key = request.session.get("remote_session_key")
         lms_base_domain = settings.LMS_BASE_DOMAIN
@@ -131,7 +132,7 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
 
         data.update({
             "lesson_content_parent_id": "course-group-work",
-            "vertical_usage_id": page.vertical_usage_id(),
+            "vertical_usage_id": vertical_usage_id,
             "remote_session_key": remote_session_key,
             "lms_base_domain": lms_base_domain,
             "lms_sub_domain": lms_sub_domain,
