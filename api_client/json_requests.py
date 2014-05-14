@@ -13,11 +13,14 @@ JSON_HEADERS = {
     "Cookie": "edx_splash_screen=mckinsey%2Bacademy"
 }
 
+TIMEOUT = 20
+
 
 def json_headers():
-    # TODO: Add this in when API can deal with requests that have session but not csrf_token
+    # TODO: Add this in when API can deal with requests that have session but
+    # not csrf_token
     return JSON_HEADERS
-    
+
     headers = JSON_HEADERS.copy()
     request = get_current_request()
     if request:
@@ -30,13 +33,13 @@ def json_headers():
 def GET(url_path):
     ''' GET request wrapper to json web server '''
     url_request = url_access.Request(url=url_path, headers=json_headers())
-    return url_access.urlopen(url_request)
+    return url_access.urlopen(url=url_request, timeout=TIMEOUT)
 
 
 def POST(url_path, data):
     ''' POST request wrapper to json web server '''
     url_request = url_access.Request(url=url_path, headers=json_headers())
-    return url_access.urlopen(url_request, json.dumps(data))
+    return url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
 
 
 def DELETE(url_path):
@@ -44,7 +47,7 @@ def DELETE(url_path):
     opener = url_access.build_opener(url_access.HTTPHandler)
     request = url_access.Request(url=url_path, headers=json_headers())
     request.get_method = lambda: 'DELETE'
-    return opener.open(request)
+    return opener.open(request, None, TIMEOUT)
 
 
 def PUT(url_path, data):
@@ -53,4 +56,4 @@ def PUT(url_path, data):
     request = url_access.Request(
         url=url_path, headers=json_headers(), data=json.dumps(data))
     request.get_method = lambda: 'PUT'
-    return opener.open(request)
+    return opener.open(request, None, TIMEOUT)
