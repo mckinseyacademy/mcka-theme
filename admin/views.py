@@ -1,11 +1,13 @@
 import urllib2 as url_access
 import json
+
 from datetime import datetime
 from django.utils.translation import ugettext as _
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.text import slugify
 from urllib2 import HTTPError
 
 from lib.authorization import permission_group_required
@@ -371,16 +373,16 @@ def upload_student_list(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_student_list(request, client_id):
     client = Client.fetch(client_id)
-    filename = "Student List for {} on {}.csv".format(
+    filename = slugify(unicode("Student List for {} on {}".format(
         client.display_name,
         datetime.now().isoformat()
-    )
+    )))
 
     response = HttpResponse(
         get_student_list_as_file(client),
         content_type='text/csv'
     )
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(
         filename
     )
 
@@ -624,7 +626,7 @@ def workgroup_group_create(request, course_id):
     if request.method == 'POST':
 
         course = load_course(course_id)
-        if len(course.group_projects) < 0:
+        if len(course.group_projects) < 1:
             return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
         module = course.group_projects[0]
@@ -723,16 +725,17 @@ def download_group_list(request, course_id):
                 user.company = company.display_name
         groups.append(group)
 
-    filename = "Groups List for {} on {}.csv".format(
+    filename = slugify(unicode("Groups List for {} on {}".format(
         course.name,
         datetime.now().isoformat()
-    )
+    )))
+
 
     response = HttpResponse(
         get_group_list_as_file(groups),
         content_type='text/csv'
     )
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(
         filename
     )
 

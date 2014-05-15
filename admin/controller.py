@@ -154,7 +154,16 @@ def _formatted_user_string(user):
         user.first_name,
         user.last_name,
         user.city,
-        uer.country,
+        user.country,
+    )
+
+def _formatted_user_string_group_list(user):
+    return "{},{},,{},{}".format(
+        user.email,
+        user.username,
+        user.first_name,
+        user.last_name,
+
     )
 
 def _formatted_group_string(group):
@@ -162,7 +171,7 @@ def _formatted_group_string(group):
         group.name
     )
 
-    user_list = [_formatted_user_string(user) for user in group.students]
+    user_list = [_formatted_user_string_group_list(user) for user in group.students]
     users_list = '\n'.join(user_list)
 
     group_string = group_string + users_list + '\n\n'
