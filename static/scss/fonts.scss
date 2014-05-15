@@ -19,7 +19,10 @@
 }
 */
 
- [class^="icon-"]:before, [class*=" icon-"]:before {
+.icon-circled:before,
+.icon-icon1:before,
+.icon-icon2:before,
+.icon-icon3:before {
   font-family: "fontello";
   font-style: normal;
   font-weight: normal;
