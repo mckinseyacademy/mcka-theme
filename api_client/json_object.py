@@ -26,15 +26,14 @@ class Objectifier(object):
     def _build_from_dictionary(self, dictionary):
         ''' Set the attributes of the object from the given dictionary '''
         for item in dictionary:
-            object_type = self._object_type_for_name(item, dictionary[item])
-
             if isinstance(dictionary[item], dict):
                 self.__setattr__(
                     item,
-                    self._make_data_object(dictionary[item], object_type)
+                    self._make_data_object(
+                        dictionary[item], self._object_type_for_name(item, dictionary[item]))
                 )
             elif isinstance(dictionary[item], list):
-                new_list = [self._make_data_object(item_value, object_type)
+                new_list = [self._make_data_object(item_value, self._object_type_for_name(item, dictionary[item]))
                             for item_value in dictionary[item]]
                 self.__setattr__(
                     item,

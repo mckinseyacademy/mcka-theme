@@ -3,29 +3,30 @@
 
   .lesson-progress {
     margin-bottom: 45px;
+  }
 
-    .lesson-module-status {
-      color: $mckinsey-grey;
-      display: inline-block;
-      font-family: FontAwesome;
-      @include font-spec(10);
+  .lesson-module-status {
+    color: $mckinsey-grey;
+    display: inline-block;
+    font-family: FontAwesome;
+    @include font-spec(10);
 
-      &:before { content: "\f10c"; }
-      &.complete { color: $mckinsey-green; }
+    &:before { content: "\f10c"; }
+    &.complete { color: $mckinsey-green; }
 
-      &.complete,
+    &.complete,
+    &.current {
+      &:before { content: "\f111"; }
+    }
+
+    &:hover {
+      color: $mckinsey-academy-alt-blue;
       &.current {
-        &:before { content: "\f111"; }
-      }
-
-      &:hover {
-        color: $mckinsey-academy-alt-blue;
-        &.current {
-          color: $mckinsey-grey;
-        }
+        color: $mckinsey-grey;
       }
     }
   }
+ 
 
   .lesson-name {
     padding-right: 8px;

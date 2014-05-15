@@ -36,12 +36,13 @@
       content: '*';
     }
   }
-  input[readonly]{
+  input[readonly], select[disabled]{
     border: none;
     box-shadow: none;
     padding: 0;
     color: $mckinsey-academy-blue-gray;
     margin-top: -10px;
+    background-color: transparent;
   }
   #id_accept_terms{
     position: relative;

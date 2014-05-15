@@ -143,8 +143,8 @@ def get_user_list(course_id, program_id = None, client_id = None):
 
     return JP.from_json(get_user_list_json(course_id, program_id, client_id), course_models.CourseEnrollmentList).enrollments
 
-def add_workgroup_to_course(group_id, course_id, content_id):
-    ''' associate workgroup to specific course '''
+def add_group_to_course_content(group_id, course_id, content_id):
+    ''' associate group to specific course '''
 
     data = {
         'course_id': course_id, 
@@ -182,3 +182,18 @@ def get_users_content_filtered(course_id, content_id, params):
     )
 
     return JP.from_json(response.read())
+
+def get_course_content_groups(course_id, content_id):
+    ''' fetch associates groups to specific content within specific course '''
+
+    response = GET(
+        '{}/{}/{}/content/{}/groups'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API, 
+            course_id,
+            content_id,
+        )
+    )
+
+    return JP.from_json(response.read(), course_models.CourseContentGroup)
+

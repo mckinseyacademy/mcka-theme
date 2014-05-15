@@ -7,3 +7,6 @@
       - else
         %a.selected{href: "./group_work?seqid=#{sequential.id}"}
           = sequential.name
+        - if sequential.is_group_project
+          - include "courses/group_work/activity_dots.haml"
+

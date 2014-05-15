@@ -16,6 +16,12 @@ class Page(CategorisedJsonObject):
     def vertical_usage_id(self):
         return self.id.replace('/', ';_')
 
+    def child_category_list(self):
+        if not hasattr(self, "children"):
+            return []
+
+        return [child.category for child in self.children]
+
 
 class Sequential(CategorisedJsonObject):
 
@@ -60,3 +66,9 @@ class CourseTabs(JsonObject):
     object_map = {
         "tabs": CourseTab
     }
+
+class CourseContentGroup(JsonObject):
+    required_fields = ["group_id", "course_id", "content_id"]
+
+    def __unicode__(self):
+        return "group {} in course {}".format(self.group_id, self.course_id)

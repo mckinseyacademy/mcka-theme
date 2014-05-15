@@ -87,7 +87,7 @@ def homepage(request):
         "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
         "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
     }
-    return render(request, 'home/courses.haml', data)
+    return render(request, 'courses/course_main.haml', data)
 
 @login_required
 def navigate_to_page(request, course_id, current_view = 'overview'):
@@ -95,7 +95,8 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
     course_id = decode_id(course_id)
 
     # Get course info
-    course = load_course(course_id)
+    depth = 4 if current_view == "group_work" else 3
+    course = load_course(course_id, depth)
 
     # Take note that the user has gone here
     program = program_for_course(request.user.id, course_id)
@@ -124,14 +125,15 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
             course,
             seq_id
         )
-    
+        vertical_usage_id = page.vertical_usage_id() if page else None
+
         remote_session_key = request.session.get("remote_session_key")
         lms_base_domain = settings.LMS_BASE_DOMAIN
         lms_sub_domain = settings.LMS_SUB_DOMAIN
-    
+
         data.update({
             "lesson_content_parent_id": "course-group-work",
-            "vertical_usage_id": page.vertical_usage_id(),
+            "vertical_usage_id": vertical_usage_id,
             "remote_session_key": remote_session_key,
             "lms_base_domain": lms_base_domain,
             "lms_sub_domain": lms_sub_domain,

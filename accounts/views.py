@@ -22,7 +22,7 @@ import urlparse
 from courses.views import homepage
 
 from django.contrib.auth.decorators import login_required
-VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "highest_level_of_education", "password", "is_active", "year_of_birth"]
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''

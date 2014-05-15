@@ -4,12 +4,12 @@
     .sub-1 Description
     - autoescape off
       = syllabus
-  %hr
-  %section
-    .sub-1 Lessons
-    %p The course is composed of nine lessons, designed to help you build the skills outlined below.
-    %ol
-      - for lesson in course.chapters
-        %li
-          %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
-            #{lesson.index}. #{lesson.name}
+  / %hr
+  / %section
+  /   .sub-1 Lessons
+  /   %p The course is composed of nine lessons, designed to help you build the skills outlined below.
+  /   %ol
+  /     - for lesson in course.chapters
+  /       %li
+  /         %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
+  /           #{lesson.index}. #{lesson.name}

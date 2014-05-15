@@ -1,6 +1,7 @@
 #about-page,
 #terms-page,
 #privacy-page,
+#faq-page,
 #programs-page,
 #contact-page,
 #experience-page {
@@ -8,6 +9,13 @@
   section {
     padding: 0 rem-calc(20);
     margin: rem-calc(15) 0;
+  }
+}
+
+.bio-pop {
+  p {
+    margin-bottom: 25px;
+    &:last-child { margin-bottom: 0; }
   }
 }
 
@@ -48,6 +56,13 @@
 
       li {
         margin-bottom: rem-calc(10);
+        margin-left: rem-calc(10);
+        margin-right: rem-calc(10);
+
+        .team-list {
+          width: 180px;
+          margin-top: rem-calc(40);
+        }
 
         .card-flip {
           width: 180px;
@@ -192,7 +207,7 @@
   }
 }
 
-#terms-page, #privacy-page {
+#terms-page, #privacy-page, #faq-page {
   p { 
     margin-top: 20px;
   }
