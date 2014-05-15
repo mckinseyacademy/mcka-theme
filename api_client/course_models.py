@@ -60,3 +60,9 @@ class CourseTabs(JsonObject):
     object_map = {
         "tabs": CourseTab
     }
+
+class CourseContentGroup(JsonObject):
+    required_fields = ["group_id", "course_id", "content_id"]
+
+    def __unicode__(self):
+        return "group {} in course {}".format(self.group_id, self.course_id)

@@ -1,5 +1,5 @@
 from api_client import group_api
-from api_client import group_models
+from api_client import group_models, user_models
 from license import controller as license_controller
 
 class BaseGroupModel(group_models.GroupInfo):
@@ -84,21 +84,24 @@ class Client(BaseGroupModel):
         return group_info
 
 class WorkGroup(BaseGroupModel): 
-    data_fields = ["display_name"]
+    # data_fields = []
     group_type = "workgroup"
 
     def fetch_students(self):
         return self.get_users()
 
     def add_to_course(self, course_id):
-        return group_api.add_workgroup_to_course(self.id, course_id)
+        return group_api.add_group_to_course_content(self.id, course_id)
 
     @classmethod
-    def list_course_groups(self, course_id):
-        groups = self.list()
-        filtered_groups = []
-        for group in groups: 
-            if group.type == self.group_type: 
-                filtered_groups.append(group)
-        return filtered_groups
+    def fetch_with_members(cls, workgroup_id):
+        workgroup = cls.fetch(workgroup_id)
+        workgroup.members = workgroup.fetch_students()
+        workgroup.teaching_assistant = user_models.UserResponse(dictionary={
+            "username": "ta",
+            "full_name": "Your TA",
+            "title": "McKinsey Teaching Assistant",
+            "email": "mjames@edx.org",
+        })
 
+        return workgroup

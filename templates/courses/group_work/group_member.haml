@@ -1,7 +1,7 @@
 .group-member
   %img.avatar{src: "#{group_member.image_url}"}
   .user-info
-    .name= group_member.full_name
+    .name= group_member.formatted_name
     .title= group_member.title
     .email
       %a{href: "mailto:#{group_member.email}"}

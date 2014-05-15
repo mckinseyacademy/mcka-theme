@@ -95,7 +95,8 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
     course_id = decode_id(course_id)
 
     # Get course info
-    course = load_course(course_id)
+    depth = 4 if current_view == "group_work" else 3
+    course = load_course(course_id, depth)
 
     # Take note that the user has gone here
     program = program_for_course(request.user.id, course_id)

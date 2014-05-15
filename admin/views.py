@@ -573,7 +573,7 @@ def workgroup_course_detail(request, course_id):
             company = Client.fetch(companies[0].id)
             student.company = company.display_name
 
-    groupsList = WorkGroup.list_course_groups(course_id)
+    groupsList = WorkGroup.list()
 
     ''' THIS IS A VERY SLOW PART OF CODE. 
         Due to api limitations, filtering of user from student list has to be done on client. 
@@ -623,11 +623,13 @@ def workgroup_group_create(request, course_id):
     if request.method == 'POST':
 
         course = load_course(course_id)
-#        module = course.group_project    
-        module = course.chapters[-1]
+        if len(course.group_projects) < 0:
+            return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
+
+        module = course.group_projects[0]
         students = request.POST.getlist("students[]")
 
-        groupsList = WorkGroup.list_course_groups(course_id)
+        groupsList = WorkGroup.list()
 
         lastId = len(groupsList) 
 
@@ -635,7 +637,7 @@ def workgroup_group_create(request, course_id):
 
         group_id = int(workgroup.id)
 
-        course_api.add_workgroup_to_course(group_id, course_id, module.id)
+        course_api.add_group_to_course_content(group_id, course_id, module.id)
 
         for student in students: 
             group_api.add_user_to_group(student, group_id)
@@ -675,7 +677,7 @@ def workgroup_group_remove(request, group_id):
         course_id = request.POST['course_id']
         students = course_api.get_user_list(course_id)
 
-        groupsList = WorkGroup.list_course_groups(course_id)
+        groupsList = WorkGroup.list()
         groupedStudents = []   
         
         for group in groupsList: 
@@ -706,7 +708,7 @@ def workgroup_group_remove(request, group_id):
 def download_group_list(request, course_id):
 
     course = load_course(course_id)
-    groupsList = WorkGroup.list_course_groups(course_id)
+    groupsList = WorkGroup.list()
     groups = []
     groupedStudents = []
 

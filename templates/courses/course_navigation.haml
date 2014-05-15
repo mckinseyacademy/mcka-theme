@@ -18,4 +18,8 @@
           lmsSubDomain: '{{ lms_sub_domain }}',
         };
         lesson_content.xblock(lesson_data);
+
+        $('#course-group-work .lesson-module-status').on('click', function(){
+          $('#' + $(this).data('activate')).click();
+        });
       });
