@@ -16,6 +16,12 @@ class Page(CategorisedJsonObject):
     def vertical_usage_id(self):
         return self.id.replace('/', ';_')
 
+    def child_category_list(self):
+        if not hasattr(self, "children"):
+            return []
+
+        return [child.category for child in self.children]
+
 
 class Sequential(CategorisedJsonObject):
 
