@@ -3,15 +3,16 @@ import urllib2
 from urllib import addinfourl
 from StringIO import StringIO
 import json
+import threading
 
-api_calls = []
+
+threadlocal = threading.local()
+threadlocal.api_calls = []
 
 
 class DebugHandler(urllib2.HTTPHandler):
 
     def http_response(self, request, response):
-        global api_calls
-
         # read the response data
         data = response.read()
         size = len(data)
@@ -21,7 +22,7 @@ class DebugHandler(urllib2.HTTPHandler):
             data = json.dumps(json.loads(data),
                               indent=4, separators=(',', ': '))
 
-        api_calls.append({
+        threadlocal.api_calls.append({
             'request': {
                 'method': request.get_method(),
                 'url': request.get_full_url(),
@@ -55,16 +56,15 @@ class DebugRemoteCalls(DebugPanel):
         return "{} remote calls".format(self.call_count())
 
     def process_request(self, request):
-        global api_calls
-        api_calls = []
+        threadlocal.api_calls = []
         opener = urllib2.build_opener(DebugHandler)
         urllib2.install_opener(opener)
 
     def process_response(self, request, response):
         self.record_stats({
             'call_count': self.call_count(),
-            'api_calls': api_calls
+            'api_calls': threadlocal.api_calls
         })
 
     def call_count(self):
-        return len(api_calls)
+        return len(threadlocal.api_calls)
