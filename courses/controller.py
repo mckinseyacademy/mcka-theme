@@ -186,32 +186,32 @@ def _fake_project_group():
             "username": "jg",
             "formatted_name": "Jennifer Gormley",
             "title": "Director of Product Design",
-            "email": "mjames@edx.org",
+            "email": "Jennifer_Gormley@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
-            "username": "jg",
-            "formatted_name": "Jennifer Gormley",
-            "title": "Director of Product Design",
-            "email": "mjames@edx.org",
+            "username": "ap",
+            "formatted_name": "Andy Parsons",
+            "title": "CTO",
+            "email": "Andy_Parsons@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
-            "username": "jg",
-            "formatted_name": "Jennifer Gormley",
-            "title": "Director of Product Design",
-            "email": "mjames@edx.org",
+            "username": "vg",
+            "formatted_name": "Vishal Ghandi",
+            "title": "Product Manager",
+            "email": "vishalhgandhi@gmail.com",
             }),
         user_models.UserResponse(dictionary={
-            "username": "jg",
-            "formatted_name": "Jennifer Gormley",
-            "title": "Director of Product Design",
-            "email": "mjames@edx.org",
+            "username": "jr",
+            "formatted_name": "Jonathan Rainey",
+            "title": "Front End Specialist",
+            "email": "tivoli@nurfed.com",
             }),
     ]
     ta = user_models.UserResponse(dictionary={
         "username": "ta",
         "formatted_name": "Your TA",
         "title": "McKinsey Teaching Assistant",
-        "email": "mjames@edx.org",
+        "email": "ta@mckinseyacademy.com",
     })
     project_group = ProjectGroup()
     project_group.members = members_list
