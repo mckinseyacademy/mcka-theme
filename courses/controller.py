@@ -239,8 +239,7 @@ def group_project_location(user_id, course, sequential_id=None):
         intersection_ids = [project_group.group_id for project_group in project_groups if project_group.group_id in user_project_group_ids]
         if len(intersection_ids) > 0:
             group_project = project
-            # add this back in when id's are correctly assigned
-            # project_group = WorkGroup.fetch_with_members(intersection_ids[0])
+            project_group = WorkGroup.fetch_with_members(intersection_ids[0])
             break;
 
     if not group_project:
@@ -264,7 +263,7 @@ def group_project_location(user_id, course, sequential_id=None):
             sequential = seq
 
         # Is it a group_project xblock
-        seq.is_group_project = (sequential.pages[0].children[0].category == "group_project")
+        seq.is_group_project = "group-project" in sequential.pages[0].child_category_list()
 
     page = sequential.pages[0]
 
