@@ -21,6 +21,10 @@ header[role=banner] {
         list-style: none;
         text-transform: uppercase;
         margin: 0 0.5rem;
+
+        a.selected {
+          color: $mckinsey-academy-blue-gray;
+        }
       }
     }
   }

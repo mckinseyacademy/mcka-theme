@@ -1,5 +1,15 @@
 Apros.views.CourseCohort = Backbone.View.extend({
 
+  events: {
+    'click .select-board a': 'update_scope'
+  },
+
+  update_scope: function(e) {
+    e.preventDefault();
+    var el = $(e.currentTarget).addClass('selected');
+    this.$('.select-board a').not(el).removeClass('selected');
+  },
+
   render_map: function() {
     var _this = this;
     this.map = L.map('map-cohort', {zoomControl: true, attributionControl: false}).setView([51.505, -0.09], 1);

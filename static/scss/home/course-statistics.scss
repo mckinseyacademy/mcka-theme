@@ -1,0 +1,143 @@
+#course-statistics {
+  @include clearfix;
+
+  section {
+    padding: 0 10px;
+    float: left;
+    position: relative;
+    text-align: center;
+    width: 25%;
+    border-right: 1px solid $almost-white;
+    &:last-child { border-right: none; }
+    &:hover .zero { display: block; }
+
+    &.course-proficiency {
+      .visualization {
+        border-radius: 50%;
+        margin: 20px 0 15px;
+        background: $mckinsey-academy-blue-gray;
+        @include square-size(100px);
+
+        .total {
+          position: absolute;
+          text-align: center;
+          z-index: 10;
+          top: 50%;
+          width: 100%;
+          margin-top: -11px;
+          @include font-spec(22, bold);
+        }
+
+        .inner-circle {
+          background: $pure-white;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          border-radius: 50%;
+          margin: -35px 0 0 -35px;
+          z-index: 5;
+          @include square-size(70px);
+          @include linear-gradient($pure-white, #c9d5dc);
+        }
+      }
+    }
+
+    &.course-progress {
+      width: 50%;
+
+      .visualization {
+        background: $mckinsey-academy-blue-gray;
+        border-radius: 50px;
+        width: 308px;
+        height: 17px;
+        margin: 60px 0 58px;
+
+        .total {
+          position: absolute;
+          top: -18px;
+          left: -5px;
+          @include font-spec(15, bold);
+        }
+      }
+    }
+
+    &.course-engagement {
+      .visualization {
+        background: #d8e1e6;
+        border-radius: 50%;
+        margin: 20px 0 15px;
+        @include square-size(100px);
+
+        .band-1,
+        .band-2 {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          border-radius: 50%;
+        }
+
+        .band-1 {
+          background: $mckinsey-academy-blue-gray;
+          margin: -26px 0 0 -26px;
+          z-index: 8;
+          @include square-size(52px);
+        }
+
+        .band-2 {
+          background: #bbcad2;
+          margin: -37.5px 0 0 -37.5px;
+          z-index: 5;
+          @include square-size(75px);
+        }
+
+        .total {
+          position: absolute;
+          background: $pure-white;
+          text-align: center;
+          z-index: 10;
+          top: 50%;
+          left: 50%;
+          margin: -17.5px 0 0 -17.5px;
+          border-radius: 50%;
+          @include square-size(35px);
+          @include font-spec(15, bold, 35);
+        }
+      }
+    }
+
+    .zero {
+      display: none;
+      color: $pure-white;
+      background: rgba(0,0,0,0.75);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 15;
+      padding: 10px;
+      @include square-size(100%);
+
+      div {
+        display: table;
+        height: 100%;
+
+        span {
+          display: table-cell;
+          vertical-align: middle;
+          @include font-spec(12, bold, 16);
+        }
+      }
+    }
+
+    .info {
+      color: $almost-white;
+      position: absolute;
+      bottom: 0;
+      right: 10px;
+    }
+
+    .visualization {
+      position: relative;
+      display: inline-block;
+    }
+  }
+}
