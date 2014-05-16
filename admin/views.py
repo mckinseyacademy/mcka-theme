@@ -632,7 +632,7 @@ def workgroup_group_create(request, course_id):
         module = course.group_projects[0]
         students = request.POST.getlist("students[]")
 
-        groupsList = WorkGroup.list()
+        groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
 
         lastId = len(groupsList) 
 
