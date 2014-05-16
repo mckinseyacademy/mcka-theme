@@ -49,11 +49,7 @@
 
         a, a:visited {
           @include font-spec(12, bold, 14);
-        }
-
-        &.selected a,
-        &.selected a:visited {
-          color: $mckinsey-academy-black;
+          &.selected { color: $mckinsey-academy-black; }
         }
       }
     }
