@@ -558,25 +558,30 @@ def workgroup_programs_list(request):
         data
     )
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
-#    if request.method == 'POST':
-#        group_id = request.POST["group_id"]
-#    if request.method == 'GET': 
-#        group_id = request.GET["group_id"]
 
     course = load_course(course_id)
 
     students = course_api.get_user_list(course_id)
+    companies = {}
     for student in students: 
-        companies = user_api.get_user_groups(student.id, group_type = 'organization')
-        if len(companies) > 0:
-            company = Client.fetch(companies[0].id)
-            student.company = company.display_name
+        studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
+        if len(studentCompanies) > 0:
+            company = studentCompanies[0]
+            if companies.get(company.id) is None:
+                companies[company.id] = Client.fetch(company.id)
+            student.company = companies[company.id]      
 
-    groupsList = WorkGroup.list()
+    if len(course.group_projects) < 1:
+        return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
+
+    module = course.group_projects[0]
+    groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+
 
     ''' THIS IS A VERY SLOW PART OF CODE. 
         Due to api limitations, filtering of user from student list has to be done on client. 
@@ -589,21 +594,16 @@ def workgroup_course_detail(request, course_id):
         users = group_api.get_users_in_group(group.id)
         group.students = users
         for user in users:
-            companies = user_api.get_user_groups(user.id, group_type = 'organization')
-            if len(companies) > 0:
-                company = Client.fetch(companies[0].id)
-                user.company = company.display_name
             for student in students:
                 if user.username == student.username:
+                    user.company = student.company
                     groupedStudents.append(student)
+        group.students_count = len(group.students)
         groups.append(group)
 
     for student in groupedStudents: 
         if student in students:
             students.remove(student)
-
-    for group in groups: 
-        group.students_count = len(group.students)
 
     data = {
         "principal_name": _("Group Work"),
@@ -678,9 +678,20 @@ def workgroup_group_remove(request, group_id):
         group_api.remove_user_from_group(group_id, removeStudent)
 
         course_id = request.POST['course_id']
+        course = load_course(course_id)
+        module = course.group_projects[0]
         students = course_api.get_user_list(course_id)
+        companies = {}
+        for student in students: 
+            studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
+            if len(studentCompanies) > 0:
+                company = studentCompanies[0]
+                if companies.get(company.id) is None:
+                    companies[company.id] = Client.fetch(company.id)
+                student.company = companies[company.id]   
 
-        groupsList = WorkGroup.list()
+        groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+
         groupedStudents = []   
         
         for group in groupsList: 
@@ -689,9 +700,10 @@ def workgroup_group_remove(request, group_id):
             for student in students:
                 for user in users:
                     if user.username == student.username:
-                        groupedStudents.append(student)
-    
-        group = WorkGroup.fetch(group_id) 
+                        user.company = student.company
+                        groupedStudents.append(student)    
+    #    group = WorkGroup.fetch(group_id) 
+    #    group.students_count = len(group.students)
 
         for student in groupedStudents: 
             students.remove(student)
