@@ -51,6 +51,7 @@
 
       .tweet {
         @include clearfix;
+
         img {
           float: left;
           margin-right: 10px;
@@ -62,6 +63,13 @@
 
           .twitter-handle {
             &:before { content: '@'; }
+          }
+
+          a.tweet-body,
+          a.tweet-body:visited {
+            color: $mckinsey-academy-black;
+            @include font-spec(10, bold, 12);
+
           }
         }
       }
