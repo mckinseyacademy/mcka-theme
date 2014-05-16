@@ -1,30 +1,31 @@
-%header.row.collapse.background-blue{role: "banner"}
-  .large-12.columns
-    %a.logo{href: "/"}
-    - block header_menu
-      %span.header-menu
-        %ul
-          %li
-            %a{href: '/about'}= _("About")
-          %li
-            %a{href: '/programs'}= _("Programs")
-          %li
-            %a{href: '/experience'}= _("Experience")
-          %li
-            %a{href: '/contact'}= _("Contact")
-          - if user.is_mcka_admin
+%header.background-blue{role: 'banner'}
+  .row.collapse
+    .large-12.columns
+      %a.logo{href: "/"}
+      - block header_menu
+        %nav{role: 'navigation'}
+          %ul
             %li
-              %a{href: '/admin'}= _("Admin")
-    - block user_region
-      - if request.user.is_authenticated
-        %a.user-info{href: "#", data-dropdown: "profile-container"}
-          .user-name
-            = user.username
-          %i.fa.fa-sort-asc
-          .user-image
-            %img{src: "#{user.image_url}"}
-          #profile-container{data-dropdown-content: "true"}
-      - else
-        .login-action
-          %a.tiny.radius.button{href: "/accounts/login"}
-            = _("Log In")
+              %a{href: '/about'}= _("About")
+            %li
+              %a{href: '/programs'}= _("Programs")
+            %li
+              %a{href: '/experience'}= _("Experience")
+            %li
+              %a{href: '/contact'}= _("Contact")
+            - if user.is_mcka_admin
+              %li
+                %a{href: '/admin'}= _("Admin")
+      - block user_region
+        - if request.user.is_authenticated
+          %a.user-info{href: "#", data-dropdown: "profile-container"}
+            .user-name
+              = user.username
+            %i.fa.fa-sort-asc
+            .user-image
+              %img{src: "#{user.image_url}"}
+            #profile-container{data-dropdown-content: "true"}
+        - else
+          .login-action
+            %a.tiny.radius.button{href: "/accounts/login"}
+              = _("Log In")

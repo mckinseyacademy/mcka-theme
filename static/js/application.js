@@ -5,7 +5,7 @@ window.Apros = {
 
   initialize: function() {
     var route = window.location.pathname.replace(/\/$/, '');
-    $('.header-menu a[href="' + route + '"]').addClass('selected');
+    $('header[role=banner] a[href="' + route + '"]').addClass('selected');
     Backbone.history.start({pushState: true});
   }
 }

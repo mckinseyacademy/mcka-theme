@@ -1,46 +1,52 @@
 header[role=banner] {
   // TODO: replace with extend depth5
   position: fixed;
-  z-index: 100000;
-  top: 0;
-  right: 0;
-  left: 0;
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   background-color: $header-background;
-  @include left-right-gradient($header-left-color, $header-right-color, 320px);
-  color: $header-text;
-  height: $header-bar-height;
-  max-height: $header-bar-height;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  @include clearfix;
+  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
-  .header-menu{
-    top:-19px;
-    position: relative;
+  .row {
+    @include linear-gradient(to right, $header-right-color, $header-left-color 60px, $header-right-color);
+
+    .columns {
+      height: $header-bar-height;
+    }
+  }
+
+  nav {
+    float: left;
+    height: 100%;
+
     ul{
-      li{
-        @include font-spec(12, semibold, 14);
-        list-style: none;
-        text-transform: uppercase;
-        margin: 0 0.5rem;
+      margin: 0;
+      display: table;
+      height: 100%;
+      list-style-type: none;
 
-        a.selected {
-          color: $mckinsey-academy-blue-gray;
-        }
+      li{
+        display: table-cell;
+        vertical-align: middle;
+        text-transform: uppercase;
+        padding-right: rem-calc(20);
+        &:last-child { padding-right: 0; }
+        a.selected { color: $mckinsey-academy-blue-gray; }
       }
     }
   }
-  ul, li{
-    display: inline-block;
-  }
-  >div{
-    height: 100%;
-  }
+
   .logo{
     background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;
     background-size: 100%;
     width: 328px;
     height: 100%;
-    display: inline-block;
+    float: left;
+    margin-right: rem-calc(15);
   }
+
   .user-info{
     cursor: pointer;
     float: right;
