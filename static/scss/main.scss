@@ -278,3 +278,8 @@ form {
     content: "\00d7";
   }
 }
+
+/* Styles to hide debugging QA content when logged in as a staff user */
+.xqa-modal, .history-modal{
+  display: none !important;
+}
