@@ -1,11 +1,13 @@
 import urllib2 as url_access
 import json
+
 from datetime import datetime
 from django.utils.translation import ugettext as _
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.text import slugify
 from urllib2 import HTTPError
 
 from lib.authorization import permission_group_required
@@ -181,13 +183,14 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         "selected_client_tab": detail_view,
         "programs": [_prepare_program_display(program) for program in client.fetch_programs()],
     }
-
     if detail_view == "programs" or detail_view == "courses":
         data["students"] = client.fetch_students()
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
-
+        #        for course in program.courses: 
+        #            users = course_api.get_users_content_filtered(course.course_id, client_id, [{'key': 'enrolled', 'value': 'True'}])
+        #            course.user_count = len(users)
     if upload_results:
         data["upload_results"] = _format_upload_results(upload_results)
 
@@ -370,16 +373,16 @@ def upload_student_list(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_student_list(request, client_id):
     client = Client.fetch(client_id)
-    filename = "Student List for {} on {}.csv".format(
+    filename = slugify(unicode("Student List for {} on {}".format(
         client.display_name,
         datetime.now().isoformat()
-    )
+    )))
 
     response = HttpResponse(
         get_student_list_as_file(client),
         content_type='text/csv'
     )
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(
         filename
     )
 
@@ -623,7 +626,7 @@ def workgroup_group_create(request, course_id):
     if request.method == 'POST':
 
         course = load_course(course_id)
-        if len(course.group_projects) < 0:
+        if len(course.group_projects) < 1:
             return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
         module = course.group_projects[0]
@@ -722,16 +725,17 @@ def download_group_list(request, course_id):
                 user.company = company.display_name
         groups.append(group)
 
-    filename = "Groups List for {} on {}.csv".format(
+    filename = slugify(unicode("Groups List for {} on {}".format(
         course.name,
         datetime.now().isoformat()
-    )
+    )))
+
 
     response = HttpResponse(
         get_group_list_as_file(groups),
         content_type='text/csv'
     )
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(
         filename
     )
 
