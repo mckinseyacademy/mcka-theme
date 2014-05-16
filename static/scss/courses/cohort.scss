@@ -72,11 +72,21 @@
 
       header {
         .label-5 {
+          position: relative;
+
           &:after {
             content: "\f05a";
             color: $almost-white;
             margin-left: 5px;
             font-family: FontAwesome;
+          }
+
+          a {
+            position: absolute;
+            bottom: 2px;
+            left: 110px;
+            text-transform: lowercase;
+            @include font-spec(12, bold);
           }
         }
 

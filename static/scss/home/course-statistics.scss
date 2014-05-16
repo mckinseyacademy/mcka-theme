@@ -9,18 +9,7 @@
     width: 25%;
     border-right: 1px solid $almost-white;
     &:last-child { border-right: none; }
-
-    .info {
-      color: $almost-white;
-      position: absolute;
-      bottom: 0;
-      right: 10px;
-    }
-
-    .visualization {
-      position: relative;
-      display: inline-block;
-    }
+    &:hover .zero { display: block; }
 
     &.course-proficiency {
       .visualization {
@@ -114,6 +103,41 @@
           @include font-spec(15, bold, 35);
         }
       }
+    }
+
+    .zero {
+      display: none;
+      color: $pure-white;
+      background: rgba(0,0,0,0.75);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 15;
+      padding: 10px;
+      @include square-size(100%);
+
+      div {
+        display: table;
+        height: 100%;
+
+        span {
+          display: table-cell;
+          vertical-align: middle;
+          @include font-spec(12, bold, 16);
+        }
+      }
+    }
+
+    .info {
+      color: $almost-white;
+      position: absolute;
+      bottom: 0;
+      right: 10px;
+    }
+
+    .visualization {
+      position: relative;
+      display: inline-block;
     }
   }
 }
