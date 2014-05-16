@@ -158,12 +158,11 @@ def _formatted_user_string(user):
     )
 
 def _formatted_user_string_group_list(user):
-    return "{},{},,{},{}".format(
+    return "{},{},{},{}".format(
         user.email,
         user.username,
         user.first_name,
         user.last_name,
-
     )
 
 def _formatted_group_string(group):
@@ -180,7 +179,7 @@ def _formatted_group_string(group):
 
 def get_student_list_as_file(client):
     user_list = client.get_users()
-    user_strings = [_formatted_user_string(user) for user in user_list]
+    user_strings = [_formatted_user_string(user_api.get_user(user.id)) for user in user_list]
 
     return '\n'.join(user_strings)
 
