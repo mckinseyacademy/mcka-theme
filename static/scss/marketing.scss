@@ -93,6 +93,14 @@
     &:last-child { margin-bottom: 0; }
   }
 
+  .coursebubbles {
+    text-align: center;
+    img {
+      margin-bottom: 10px;
+      @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+    }
+  }
+
   .person-title {
     margin-bottom: 5px;
   }
@@ -194,7 +202,6 @@
   }
 
   .course-sample {
-    padding: 20px;
     @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   }
 
