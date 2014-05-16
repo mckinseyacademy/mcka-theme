@@ -16,6 +16,43 @@ $(function(){
   Apros.initialize()
   /* Javascript to initialise on ready as defined by jquery */
 
+  // Load video overlay based on video url
+  $('a[data-video]').on('click', function(e) {
+    var video   = $(e.currentTarget).data('video'),
+        player  = $('#mckinsey_video .player-wrapper').empty();
+
+    switch (true) {
+      case /youtube\.com/.test(video):
+        var video_id  = video.match(/v=([^#\&\?]*)/)[1],
+            embed_url = '//www.youtube.com/embed/' + video_id + '?rel=0';
+
+        var iframe_opts = {
+          width:        '100%',
+          height:       '100%',
+          src:          embed_url,
+          frameborder:  '0'
+        };
+        $('.player-wrapper').append($('<iframe />', iframe_opts));
+        break;
+      case /ted\.com/.test(video):
+        var video_id  = video.match(/([^#\&\?\/]*$)/)[1],
+            embed_url = '//embed.ted.com/talks/' + video_id + '.html';
+
+        var iframe_opts = {
+          width:        '100%',
+          height:       '100%',
+          src:          embed_url,
+          frameborder:  '0'
+        };
+        $('.player-wrapper').append($('<iframe />', iframe_opts));
+
+        break;
+      default:
+        $('.player-wrapper').append($('<div />', {id:  'ooyala_mckinsey'}));
+        OO.Player.create('ooyala_mckinsey', video);
+    }
+  });
+
   // Load user profile information on demand
   $('.user-info').one('click', function(){
     if($('#profile-container .user-profile').length < 1){

@@ -12,7 +12,8 @@
   }
 }
 
-.bio-pop, .course-pop {
+.bio-pop,
+.course-pop {
   p {
     margin-bottom: 25px;
     &:last-child { margin-bottom: 0; }
@@ -217,10 +218,13 @@
   }
 }
 
-#terms-page, #privacy-page, #faq-page {
-  p { 
+#terms-page,
+#privacy-page,
+#faq-page {
+  p {
     margin-top: 20px;
   }
+
   table {
     tr.heading {
       font-weight: bold;
