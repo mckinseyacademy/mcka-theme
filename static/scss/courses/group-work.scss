@@ -57,17 +57,7 @@
       float: left;
     }
     .user-info{
-      @include font-spec(10, normal, 13);
       margin-left: 50px;
-      .name{
-        font-weight: bold;
-      }
-      .title{
-        font-style: italic;
-      }
-      .email a{
-        @include font-spec(11, normal, 13);
-      }
     }
   }
 }

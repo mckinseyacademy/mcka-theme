@@ -4,6 +4,8 @@ window.Apros = {
   views: {},
 
   initialize: function() {
+    var route = window.location.pathname.replace(/\/$/, '');
+    $('header[role=banner] a[href="' + route + '"]').addClass('selected');
     Backbone.history.start({pushState: true});
   }
 }

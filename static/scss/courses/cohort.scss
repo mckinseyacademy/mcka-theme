@@ -49,11 +49,7 @@
 
         a, a:visited {
           @include font-spec(12, bold, 14);
-        }
-
-        &.selected a,
-        &.selected a:visited {
-          color: $mckinsey-academy-black;
+          &.selected { color: $mckinsey-academy-black; }
         }
       }
     }
@@ -72,11 +68,21 @@
 
       header {
         .label-5 {
+          position: relative;
+
           &:after {
             content: "\f05a";
             color: $almost-white;
             margin-left: 5px;
             font-family: FontAwesome;
+          }
+
+          a {
+            position: absolute;
+            bottom: 2px;
+            left: 110px;
+            text-transform: lowercase;
+            @include font-spec(12, bold);
           }
         }
 
