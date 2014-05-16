@@ -190,4 +190,10 @@ def get_group_list_as_file(groups):
 
 
 def fetch_clients_with_program(program_id):
-    return [client for client in Client.list() if program_id in [program.id for program in client.fetch_programs()]]
+    clients = []
+    clientsTemp = group_api.get_groups_in_group(program_id, params=[{'key': 'type', 'value': 'organization'}])
+    for client in clientsTemp:
+        clients.append(Client.fetch(group_id=client.id))
+
+    return clients
+
