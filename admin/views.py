@@ -50,11 +50,11 @@ def home(request):
     )
 
 
-@permission_group_required('super_admin')
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content(request):
     return render(
         request,
-        'admin/course_meta_content.haml',
+        'admin/course_meta_content/list.haml',
         {'is_admin': True}
     )
 
