@@ -21,31 +21,22 @@ $(function(){
     var video   = $(e.currentTarget).data('video'),
         player  = $('#mckinsey_video .player-wrapper').empty();
 
+    var iframe_opts = {
+      width:        '100%',
+      height:       '100%',
+      frameborder:  '0'
+    };
+
     switch (true) {
       case /youtube\.com/.test(video):
-        var video_id  = video.match(/v=([^#\&\?]*)/)[1],
-            embed_url = '//www.youtube.com/embed/' + video_id + '?rel=0';
-
-        var iframe_opts = {
-          width:        '100%',
-          height:       '100%',
-          src:          embed_url,
-          frameborder:  '0'
-        };
+        var video_id  = video.match(/v=([^#\&\?]*)/)[1];
+        iframe_opts.src    = '//www.youtube.com/embed/' + video_id + '?rel=0';
         $('.player-wrapper').append($('<iframe />', iframe_opts));
         break;
       case /ted\.com/.test(video):
-        var video_id  = video.match(/([^#\&\?\/]*$)/)[1],
-            embed_url = '//embed.ted.com/talks/' + video_id + '.html';
-
-        var iframe_opts = {
-          width:        '100%',
-          height:       '100%',
-          src:          embed_url,
-          frameborder:  '0'
-        };
+        var video_id  = video.match(/([^#\&\?\/]*$)/)[1];
+        iframe_opts.src    = '//embed.ted.com/talks/' + video_id + '.html';
         $('.player-wrapper').append($('<iframe />', iframe_opts));
-
         break;
       default:
         $('.player-wrapper').append($('<div />', {id:  'ooyala_mckinsey'}));
