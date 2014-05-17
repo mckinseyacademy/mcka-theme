@@ -56,31 +56,9 @@ def homepage(request):
     Logged in user's homepage which will infer current program, course,
     etc. from user settings
     '''
-    course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
-        request.user.id, request.session.get("current_course_id"), None)
-
-    if course_id:
-        course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-            course_id, chapter_id, page_id, chapter_position)
-
-        program = program_for_course(request.user.id, course_id)
-
-        # Inject formatted data for view
-        _inject_formatted_data(program, course, page_id)
-    else:
-        course = None
-        current_chapter = None
-        current_sequential = None
-        current_page = None
-        program = None
 
     data = {
         "user": request.user,
-        "course": course,
-        "current_chapter": current_chapter,
-        "current_sequential": current_sequential,
-        "current_page": current_page,
-        "program": program,
         "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE),
         "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO),
         "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
