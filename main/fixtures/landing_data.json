@@ -15,7 +15,7 @@
     {
       "type": "entry-point",
       "title": "Leadership Channel:",
-      "icon": "",
+      "icon": "mk-lightbulb",
       "icon_color": "blue-gray",
       "subtitle": "Distinguished Alumni Lecture Series:",
       "content": "McKinsey Academy participants have access to leadership insights from distinguished McKinsey alumni as well as other global CEOs."
@@ -23,7 +23,7 @@
     {
       "type": "entry-point",
       "title": "ABOUT McKINSEY ACADEMY:",
-      "icon": "",
+      "icon": "mk-advisors",
       "icon_color": "green",
       "subtitle": "Academic Advisory Council ",
       "content": "The Advisory Council will shape the research agenda for McKinsey Academy, offer perspectives on successful and emerging pedagogical methods, and suggest ideas for future experimentation."
@@ -31,14 +31,14 @@
     {
       "type": "entry-point",
       "title": "Mckinsey academy:",
-      "icon": "",
+      "icon": "mk-faculty",
       "icon_color": "warm-gray",
       "subtitle": "We provide an immersive experience for our learners:",
       "content": "Curated and discoverable content Intuitive navigation through courses and lessons Tools for social interaction within cohorts Data visualizations of progress"
     },
     {
       "type": "entry-point",
-      "icon": "icon3",
+      "icon": "mk-bookmark",
       "icon_color": "blue-gray",
       "title": "OUR PROGRAM OFFERING:",
       "subtitle": "Introducing the McKinsey Management Program:",
@@ -46,7 +46,7 @@
     },
     {
       "type": "entry-point",
-      "icon": "icon2",
+      "icon": "mk-people",
       "icon_color": "green",
       "title": "ABOUT McKINSEY ACADEMY:",
       "subtitle": "McKinsey Academy is a premium digital platform for business education.",
@@ -54,7 +54,7 @@
     },
     {
       "type": "entry-point",
-      "icon": "icon1",
+      "icon": "mk-book",
       "icon_color": "turquoise",
       "title": "OUR PEDAGOGY:",
       "subtitle": "McKinsey Academy Pedagogy is based on four core principles:",

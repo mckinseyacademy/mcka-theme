@@ -56,14 +56,21 @@
 
       i {
         margin-left: 3px;
-        &.icon-icon1 { @include font-spec(34, normal, 45); }
+        @include font-spec(34, normal, 52);
 
-        &.icon-icon2 {
-          margin-left: 1px;
-          @include font-spec(30, normal, 52);
+        &.icon-mk-faculty {
+          margin-left: 0;
+          @include font-spec(34, normal, 45);
         }
 
-        &.icon-icon3 { @include font-spec(30, normal, 52); }
+        &.icon-mk-advisors {
+          margin-left: 1px;
+          line-height: rem-calc(48);
+        }
+
+        &.icon-mk-book { line-height: rem-calc(45); }
+        &.icon-mk-people { margin-left: 1px; }
+        &.icon-mk-lightbulb { margin-left: 0; }
       }
     }
 
