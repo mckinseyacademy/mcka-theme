@@ -1,0 +1,10 @@
+- extends "admin/admin_layout.haml"
+
+- block content
+  .row{style: "margin-top:80px;"}
+    %p This is the course meta content manager page. Please choose a course from the list below:
+    
+    - for course in courses
+      %p 
+        %a{href:"/admin/course-meta-content?course_id=#{course.id}"}
+          = course.name

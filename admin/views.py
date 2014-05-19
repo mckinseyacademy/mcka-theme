@@ -52,10 +52,15 @@ def home(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content(request):
+
+    data = {
+        "courses": course_api.get_course_list()
+    }
+
     return render(
         request,
-        'admin/course_meta_content/list.haml',
-        {'is_admin': True}
+        'admin/course_meta_content/course_list.haml',
+        data
     )
 
 
