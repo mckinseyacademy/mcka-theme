@@ -1,5 +1,5 @@
 #home-landing {
-  width: 300px * 4;
+  width: 300px * 6;
   margin: 0 auto;
   @include clearfix;
 
@@ -52,6 +52,7 @@
       &.blue-gray { background: $mckinsey-academy-blue-gray; }
       &.turquoise { background: $mckinsey-academy-turquoise; }
       &.green { background: $mckinsey-green; }
+      &.warm-gray { background: $mckinsey-academy-warm-gray; }
 
       i {
         margin-left: 3px;
@@ -162,7 +163,7 @@
     &.entry-point {
       padding: 20px 15px;
 
-      .content {
+      .subtitle {
         margin-bottom: 20px;
         @include font-spec(18, normal, 22);
       }
