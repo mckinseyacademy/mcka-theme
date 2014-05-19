@@ -4,6 +4,9 @@ import collections
 import datetime
 
 
+class JsonUntouched(object):pass
+
+
 # ignore too few public methods witin this file - these models almost always
 # don't need a public method because they inherit from the base implementation
 # pylint: disable=too-few-public-methods
@@ -15,7 +18,7 @@ class Objectifier(object):
     object_map = {}
 
     def _make_data_object(self, value, object_type):
-        if isinstance(value, dict) or isinstance(value, list):
+        if object_type != JsonUntouched and (isinstance(value, dict) or isinstance(value, list)):
             return object_type(dictionary=value)
         else:
             return value
@@ -139,7 +142,6 @@ class JsonParser(object):
     def from_json(json_data, object_type=JsonObject, data_filter=None):
         ''' takes json => dictionary / array and processes it accordingly '''
         parsed_json = json.loads(json_data)
-
         return JsonParser.from_dictionary(parsed_json, object_type, data_filter)
 
     @staticmethod
