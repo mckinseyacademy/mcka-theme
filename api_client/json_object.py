@@ -4,7 +4,7 @@ import collections
 import datetime
 
 
-class JsonUntouched(object):pass
+class DataOnly(object):pass
 
 
 # ignore too few public methods witin this file - these models almost always
@@ -18,7 +18,7 @@ class Objectifier(object):
     object_map = {}
 
     def _make_data_object(self, value, object_type):
-        if object_type != JsonUntouched and (isinstance(value, dict) or isinstance(value, list)):
+        if object_type != DataOnly and (isinstance(value, dict) or isinstance(value, list)):
             return object_type(dictionary=value)
         else:
             return value

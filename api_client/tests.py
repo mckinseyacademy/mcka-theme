@@ -1,7 +1,7 @@
 ''' Tests for api_client calls '''
 from datetime import datetime
 from django.test import TestCase
-from .json_object import JsonParser as JP, JsonUntouched, JsonObject, MissingRequiredFieldError, CategorisedJsonParser, CategorisedJsonObject
+from .json_object import JsonParser as JP, DataOnly, JsonObject, MissingRequiredFieldError, CategorisedJsonParser, CategorisedJsonObject
 from .user_models import UserResponse, AuthenticationResponse
 from .course_models import Course, Chapter
 from .group_models import GroupInfo
@@ -45,7 +45,7 @@ class JsonObjectTestNestedNestingClass(JsonObject):
 
 class JsonObjectTestUntouchedClass(JsonObject):
     object_map = {
-        'scores': JsonUntouched
+        'scores': DataOnly
     }
 
 # Create your tests here.
