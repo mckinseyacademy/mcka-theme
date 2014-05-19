@@ -91,6 +91,7 @@
       {
         selector: ".student-list .student",
         submit_name: "students",
+        data_field: 'company-name', 
         minimum_count_message: "Please select at least one student"
       }
     ];
@@ -129,13 +130,35 @@
 
     $('.update-group').on('click', function(){
       group = $(this).data('group-id');
+      privacy = $(this).data('privacy');
+      client_id = $(this).data('client-id');
       url = $(this).data('url');
       var students = new Array();
+      var allStudents = new Array();
       $('#student-list tr.student.selected').each(
         function(){
-          students.push($(this).attr('id'));
+          if($(this).data('company-name') == client_id){
+            students.push($(this).attr('id'));
+          }
+          allStudents.push($(this).attr('id'));
         });
-      courseDrag.updateGroup(group, students, url);
+      if(students.length == allStudents.length || privacy != 'private'){
+        courseDrag.updateGroup(group, students, url);
+      }
+      else{
+        alert('All students added to private group have to be members of same company.');
+      }
+    });
+
+    $('li.company-filter').on('click', function(){
+      var that = $(this);
+      if(that.data('company-filter') == 'all'){
+        $('.select-group-box').show();
+      }
+      else{
+        $('.select-group-box').hide();
+        $('.select-group-box[data-client-id="' + that.data('company-filter') + '"]').show();
+      }
     });
 
   });

@@ -27,3 +27,27 @@
 		margin-top: 10px;
 	}
 }
+
+.select-group-box.private {
+	background: #D3D1BA;
+}
+
+.companies-filter-wrapper{
+	.companies-filter{
+		text-decoration: none;
+		list-decoration: none;
+		cursor: pointer;
+		display: inline-block;
+		margin: 1em 0;
+		li.company-filter{
+			display: inline;
+		    float: left;
+		    padding-right: 7px;
+		    padding-left: 7px;
+		    border-right: 1px solid #333333;
+		}
+		li.company-filter:last-child {
+			border-right:none;
+		}
+	}
+}

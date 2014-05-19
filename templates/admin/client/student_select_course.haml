@@ -1,8 +1,20 @@
 %table.student-list
   %thead
     %th Name
+      %span{class: 'asc'}
+        ▲
+      %span{class: 'desc'}
+        ▼
     %th Email
+      %span{class: 'asc'}
+        ▲
+      %span{class: 'desc'}
+        ▼
     %th Enrolled in
+      %span{class: 'asc'}
+        ▲
+      %span{class: 'desc'}
+        ▼
   %tbody
     - for student in students
       %tr.student{id: "#{student.id}"}

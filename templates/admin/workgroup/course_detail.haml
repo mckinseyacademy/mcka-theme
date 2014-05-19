@@ -6,7 +6,6 @@
     %link{rel: "stylesheet", href: "{% static 'css/font-awesome.css' %}"}
     %link{rel: "stylesheet", href: "{% static 'css/leaflet.css' %}"}
     %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
-    %link{rel: "stylesheet", href: "{% static 'css/dataTables.foundation.css' %}"}
 - block content
   .admin-list
     .row
@@ -29,8 +28,13 @@
                 %span= _("Create Group of Selected Students")
               %a.button.radius.small{href: "/admin/workgroup/course/#{course.id}/download_group_list", target: "_blank"}
                 Download List of Groups
+              .companies-filter-wrapper.large-12
+                %ul.companies-filter
+                    %li.company-filter{'data-company-filter': 'all'} All Companies
+                  - for company in companies 
+                    %li.company-filter{'data-company-filter': '#{company.id}'}= company.display_name
               - for group in groups
-                .select-group-box{id: "#{group.id}"}
+                .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
                   .name= group.display_name
                     %span= _("Members:")
                     %span.student-count= group.students_count 
@@ -42,10 +46,10 @@
                         %div.student{'name': '#{student.id}'}
                           %span= student.username
                           %span= student.email
-                          %span= student.company
+                          %span= student.company.display_name
                           %a{href: '/admin/workgroup/group/#{group.id}/remove'}
                             %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
-                    .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}'}
+                    .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
                       Update
 - block js_snippets
   %script{src: "{% static 'js/select_and_assign.js' %}"}
