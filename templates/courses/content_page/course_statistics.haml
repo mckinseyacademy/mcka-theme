@@ -1,5 +1,5 @@
 %article#course-statistics
-  %section.course-proficiency
+  %section.course-proficiency.no-progress
     .zero
       %div
         %span Once you&#39;ve begun the course, your course grade will be displayed here.
@@ -21,9 +21,10 @@
       Progress:
       %a{href: '#'}
         %i.fa.fa-arrow-circle-right
-    .visualization
-      .total 0%
-    .label-4 cohort average = 0%
+    .visualization{data-percent: '71%'}
+      .total 71%
+      .bar
+    .label-4 cohort average = 68%
     %a.info{href: '#'}
       %i.fa.fa-info-circle
   %section.course-engagement
@@ -35,9 +36,9 @@
       %a{href: '#'}
         %i.fa.fa-arrow-circle-right
     .visualization
-      .band-1
+      .band-1.filled
       .band-2
-      .total 0
-    .label-4 cohort average = 0 points
+      .total 12
+    .label-4 cohort average = 28 points
     %a.info{href: '#'}
       %i.fa.fa-info-circle
