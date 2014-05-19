@@ -1,7 +1,7 @@
 ''' Tests for api_client calls '''
 from datetime import datetime
 from django.test import TestCase
-from .json_object import JsonParser as JP, JsonObject, MissingRequiredFieldError, CategorisedJsonParser, CategorisedJsonObject
+from .json_object import JsonParser as JP, DataOnly, JsonObject, MissingRequiredFieldError, CategorisedJsonParser, CategorisedJsonObject
 from .user_models import UserResponse, AuthenticationResponse
 from .course_models import Course, Chapter
 from .group_models import GroupInfo
@@ -40,6 +40,12 @@ class JsonObjectTestNestedNestingClass(JsonObject):
     required_fields = ['id', 'info']
     object_map = {
         'info': JsonObjectTestNestingClass
+    }
+
+
+class JsonObjectTestUntouchedClass(JsonObject):
+    object_map = {
+        'scores': DataOnly
     }
 
 # Create your tests here.
@@ -251,6 +257,24 @@ class JsonObjectTest(TestCase):
 
         self.assertTrue(len(output)==4)
         self.assertTrue(output[0].name == "super_admin")
+
+    def test_untouched_class(self):
+        json_string = '''
+            {"scores": [
+               [0.0, 1, false, "Interactive Questions"],
+               [0.0, 1, false, "Perchance to Dream"],
+               [0.0, 1, false, "Attributing Blame"]
+            ]}
+        '''
+        output = JP.from_json(json_string, JsonObjectTestUntouchedClass)
+
+        self.assertTrue(isinstance(output, JsonObjectTestUntouchedClass))
+        self.assertTrue(isinstance(output.scores, list))
+        self.assertTrue(isinstance(output.scores[0], list))
+        self.assertEqual(output.scores[0][1], 1)
+        self.assertEqual(output.scores[0][3], "Interactive Questions")
+        self.assertEqual(output.scores[2][2], False)
+
 
 class OneLevelCategorised(CategorisedJsonObject):
     def has_correct_category(self):
