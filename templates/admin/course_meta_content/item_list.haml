@@ -9,6 +9,7 @@
         %td ID
         %td SEQUENCE
         %td TITLE
+        %td TYPE
         %td
         %td
     
@@ -20,6 +21,8 @@
             = item.sequence
           %td
             = item.title
+          %td
+            = item.content_type
           %td
             %a{href: '/admin/course-meta-content/item/#{item.id}/edit'}
               Edit
