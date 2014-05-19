@@ -5,18 +5,19 @@ class CuratedContentItem(models.Model):
     class Meta:
         db_table = 'curated_content_item'
 
-    title = models.CharField(max_length=255, null=True)
-    body = models.CharField(max_length=1000, null=True)
-    source = models.CharField(max_length=255, null=True)
-    byline = models.CharField(max_length=255, null=True)
-    byline_title = models.CharField(max_length=255, null=True)
+    course_id = models.CharField(max_length=255, null=False)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    body = models.CharField(max_length=1000, blank=True, null=True)
+    source = models.CharField(max_length=255, blank=True, null=True)
+    byline = models.CharField(max_length=255, blank=True, null=True)
+    byline_title = models.CharField(max_length=255, blank=True, null=True)
     url = models.URLField(blank=True, null=True)
     thumbnail_url = models.URLField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
-    twitter_username = models.CharField(max_length=255, null=True)
+    twitter_username = models.CharField(max_length=255, blank=True, null=True)
     sequence = models.IntegerField(null=False)
-    created_at = models.DateTimeField(null=True)
-    display_date = models.DateTimeField(null=True)
+    created_at = models.DateTimeField(null=True, blank=True)
+    display_date = models.DateTimeField(null=True, blank=True)
 
     TEXT = 'txt'
     VIDEO = 'vid'

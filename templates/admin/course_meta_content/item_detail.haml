@@ -1,0 +1,15 @@
+- extends "admin/admin_layout.haml"
+
+- block content
+  .row{style: "margin-top:80px;"}
+    %p This is the course meta content detail page.
+
+    %form.admin-form{action: "#{form_action}", method: "POST"}
+      .error
+        - if error
+          = error
+      - csrf_token
+      %fieldset= form.as_p
+      .submit-area
+        %input.button.radius.small{type: "submit", value: "Save"}
+
