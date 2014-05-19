@@ -5,6 +5,7 @@ class CuratedContentItem(models.Model):
     class Meta:
         db_table = 'curated_content_item'
 
+    course_id = models.CharField(max_length=255, null=True)
     title = models.CharField(max_length=255, null=True)
     body = models.CharField(max_length=1000, null=True)
     source = models.CharField(max_length=255, null=True)

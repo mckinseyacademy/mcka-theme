@@ -1,5 +1,28 @@
-- extends "layout.haml"
+- extends "admin/admin_layout.haml"
 
 - block content
   .row{style: "margin-top:80px;"}
-    This is the course meta content list page.
+    %p This is the course meta content list page.
+    %p
+    %table
+      %tr
+        %td ID
+        %td SEQUENCE
+        %td TITLE
+        %td
+        %td
+    
+      - for item in items
+        %tr
+          %td 
+            = item.id
+          %td 
+            = item.sequence
+          %td
+            = item.title
+          %td
+            %a{href: '/admin/course-meta-content/item/#{item.id}/edit'}
+              Edit
+          %td
+            %a{href: '/admin/course-meta-content/item/#{item.id}/delete'}
+              Delete
