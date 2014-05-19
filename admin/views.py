@@ -15,6 +15,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from .models import Client
 from .models import Program
 from .models import WorkGroup
+from main.models import CuratedContentItem
 from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course
 from .forms import ClientForm
 from .forms import ProgramForm
@@ -45,13 +46,12 @@ def ajaxify_http_redirects(func):
 def home(request):
     return render(
         request,
-        'admin/home.haml',
-        {'is_admin': True}
+        'admin/home.haml'
     )
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content(request):
+def course_meta_content_course_list(request):
 
     data = {
         "courses": course_api.get_course_list()
@@ -60,6 +60,49 @@ def course_meta_content(request):
     return render(
         request,
         'admin/course_meta_content/course_list.haml',
+        data
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_meta_content_course_items(request):
+    course_id = request.GET.get('course_id', None) 
+    items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
+    data = {
+        "items": items
+    }
+
+    return render(
+        request,
+        'admin/course_meta_content/item_list.haml',
+        data
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_meta_content_course_item_edit(request, item_id):
+    item = CuratedContentItem.objects.filter(id=item_id)
+    data = {
+        "item": item
+    }
+
+    return render(
+        request,
+        'admin/course_meta_content/item_detail.haml',
+        data
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_meta_content_course_item_delete(request, item_id):
+    item = CuratedContentItem.objects.filter(id=item_id)
+    data = {
+        "item": item
+    }
+
+    return render(
+        request,
+        'admin/course_meta_content/item_deleted.haml',
         data
     )
 
@@ -125,6 +168,7 @@ def client_new(request):
         data
     )
 
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_edit(request, client_id):
@@ -176,6 +220,7 @@ def _format_upload_results(upload_results):
     )
 
     return results_object
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
@@ -266,6 +311,7 @@ def program_new(request):
         'admin/program/new.haml',
         data
     )
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -393,6 +439,7 @@ def download_student_list(request, client_id):
 
     return response
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_program_report(request, program_id):
     filename = "Empty Report.csv"
@@ -417,6 +464,7 @@ def _prepare_program_display(program):
             )
 
     return program
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_association(request, client_id):
@@ -463,6 +511,7 @@ def add_courses(request, program_id):
         content_type='application/json'
     )
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_program(request, client_id):
     program = Program.fetch(request.POST.get("program"))
@@ -490,6 +539,7 @@ def add_students_to_program(request, client_id):
         content_type='application/json'
     )
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_course(request, client_id):
     courses = request.POST.getlist("courses[]")
@@ -507,6 +557,7 @@ def add_students_to_course(request, client_id):
         json.dumps({"message": _("Successfully associated students to courses")}),
         content_type='application/json'
     )
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_list(request):
@@ -531,6 +582,7 @@ def workgroup_list(request):
         'admin/workgroup/list.haml',
         data
     )
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_programs_list(request):
@@ -562,6 +614,7 @@ def workgroup_programs_list(request):
         'admin/workgroup/courses_list.haml',
         data
     )
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_course_detail(request, course_id):
@@ -624,6 +677,7 @@ def workgroup_course_detail(request, course_id):
         data
     )
 
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_create(request, course_id):
@@ -652,6 +706,7 @@ def workgroup_group_create(request, course_id):
 
     return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
 
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_update(request, group_id, course_id):
@@ -672,6 +727,7 @@ def workgroup_group_update(request, group_id, course_id):
             if err.code in error_messages:
                 error = error_messages[err.code]
             return HttpResponse(json.dumps({'status': error}), content_type="application/json")
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_remove(request, group_id):
