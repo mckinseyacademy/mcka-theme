@@ -81,6 +81,25 @@ def course_meta_content_course_items(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_meta_content_course_item_new(request):
+    if request.method == "POST":
+        form = CuratedContentItemForm(request.POST)
+        item = form.save()
+        return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)
+    else:
+        form = CuratedContentItemForm()
+        data = { 
+            "form": form,
+            "form_action": "/admin/course-meta-content/item/new" 
+        }
+        return render(
+                request,
+                'admin/course_meta_content/item_detail.haml',
+                data
+            )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_item_edit(request, item_id):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
     if request.method == "POST":
@@ -91,7 +110,8 @@ def course_meta_content_course_item_edit(request, item_id):
         form = CuratedContentItemForm(instance=item)
         data = {
             "form": form,
-            "item": item
+            "item": item,
+            "form_action": "/admin/course-meta-content/item/%d/edit" % item.id
         }
 
         return render(

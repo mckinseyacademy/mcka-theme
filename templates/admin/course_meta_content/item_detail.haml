@@ -4,7 +4,7 @@
   .row{style: "margin-top:80px;"}
     %p This is the course meta content detail page.
 
-    %form.admin-form{action: "/admin/course-meta-content/item/#{item.id}/edit", method: "POST"}
+    %form.admin-form{action: "#{form_action}", method: "POST"}
       .error
         - if error
           = error
