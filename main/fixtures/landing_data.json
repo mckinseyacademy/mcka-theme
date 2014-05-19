@@ -1,0 +1,221 @@
+{
+  "taglines": [
+    {
+      "type": "tagline",
+      "content": "Empowering business professionals to advance their careers by bringing the practitioner’s perspective to business education"
+    }
+  ],
+  "videos": [
+    {
+      "type": "video",
+      "url": "9tOWNzbTp-8IG91k2Y9bSI0bpJMx5dUz"
+    }
+  ],
+  "entry_points": [
+    {
+      "type": "entry-point",
+      "title": "Leadership Channel:",
+      "icon": "",
+      "icon_color": "blue-gray",
+      "subtitle": "Distinguished Alumni Lecture Series:",
+      "content": "McKinsey Academy participants have access to leadership insights from distinguished McKinsey alumni as well as other global CEOs."
+    },
+    {
+      "type": "entry-point",
+      "title": "ABOUT McKINSEY ACADEMY:",
+      "icon": "",
+      "icon_color": "green",
+      "subtitle": "Academic Advisory Council ",
+      "content": "The Advisory Council will shape the research agenda for McKinsey Academy, offer perspectives on successful and emerging pedagogical methods, and suggest ideas for future experimentation."
+    },
+    {
+      "type": "entry-point",
+      "title": "Mckinsey academy:",
+      "icon": "",
+      "icon_color": "warm-gray",
+      "subtitle": "We provide an immersive experience for our learners:",
+      "content": "Curated and discoverable content Intuitive navigation through courses and lessons Tools for social interaction within cohorts Data visualizations of progress"
+    },
+    {
+      "type": "entry-point",
+      "icon": "icon3",
+      "icon_color": "blue-gray",
+      "title": "OUR PROGRAM OFFERING:",
+      "subtitle": "Introducing the McKinsey Management Program:",
+      "content": "Launching Summer 2014 to build business capabilities for rising professionals, functional experts, and entrepreneurs."
+    },
+    {
+      "type": "entry-point",
+      "icon": "icon2",
+      "icon_color": "green",
+      "title": "ABOUT McKINSEY ACADEMY:",
+      "subtitle": "McKinsey Academy is a premium digital platform for business education.",
+      "content": "We empower leaders and professionals to build the skills and capabilities to enhance individual effectiveness for improved corporate performance."
+    },
+    {
+      "type": "entry-point",
+      "icon": "icon1",
+      "icon_color": "turquoise",
+      "title": "OUR PEDAGOGY:",
+      "subtitle": "McKinsey Academy Pedagogy is based on four core principles:",
+      "content": "Learning by doing Focus on expert performance Deep feedback Social Learning"
+    }
+  ],
+  "features": [
+    {
+      "type": "distinctive-feature",
+      "background": "bg-pp",
+      "title": "Practitioner's perspective",
+      "content": "Courses leverage practical, real-world experiences, ensuring relevant capability building for each individual."
+    },
+    {
+      "type": "distinctive-feature",
+      "background": "bg-sl",
+      "title": "Social learning with multi-industry teams",
+      "content": "Collaborate with your peers across industries and geographies on group based projects and in community discussion forums."
+    },
+    {
+      "type": "distinctive-feature",
+      "background": "bg-df",
+      "title": "Deep feedback",
+      "content": "Immediate, response-contingent feedback enables richer learning."
+    },
+    {
+      "type": "distinctive-feature",
+      "background": "bg-ta",
+      "title": "McKinsey TA guidance",
+      "content": "McKinsey consultants serve as teaching assistants, providing for distinctive engagement and guidance of each cohort."
+    },
+    {
+      "type": "distinctive-feature",
+      "background": "bg-al",
+      "title": "ADAPTIVE LEARNING MECHANICS",
+      "content": "Rich learning experience incorporates ground-breaking techniques in adaptive learning and game mechanics."
+    },
+    {
+      "type": "distinctive-feature",
+      "background": "bg-cp",
+      "title": "Curated programs",
+      "content": "Courses are created, convened and curated to meaningfully advance business capabilities of McKinsey Academy's target audience."
+    }
+  ],
+  "quotes": [
+    {
+      "type": "quote",
+      "quote": "Become the kind of leader that people would follow voluntarily; even if you had no title or position.",
+      "name": "Brian Tracy",
+      "title": "Author"
+    },
+    {
+      "type": "quote",
+      "quote": "The key to successful leadership today is influence, not authority.",
+      "name": "Kenneth Blanchard",
+      "title": "Author"
+    },
+    {
+      "type": "quote",
+      "quote": "Leadership is the art of getting someone else to do something you want done because he wants to do it.",
+      "name": "General Dwight Eisenhower",
+      "title": "34th President of the United States"
+    },
+    {
+      "type": "quote",
+      "quote": "Leadership and learning are indispensable to each other.",
+      "name": "John F. Kennedy",
+      "title": "35th President of the United States"
+    },
+    {
+      "type": "quote",
+      "quote": "You don’t lead by pointing and telling people some place to go. You lead by going to that place and making a case.",
+      "name": "Ken Kesey",
+      "title": "Author"
+    },
+    {
+      "type": "quote",
+      "quote": "A great leader’s courage to fulfill his vision comes from passion, not position.",
+      "name": "John Maxwell",
+      "title": "Author"
+    },
+    {
+      "type": "quote",
+      "quote": "If your actions inspire others to dream more, learn more, do more and become more, you are a leader.",
+      "name": "John Quincy Adams",
+      "title": "6th President of the United States"
+    }
+  ],
+  "images": [
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_1"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_2"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_3"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_4"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_5"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_6"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_7"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_8"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_9"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_10"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_11"
+    },
+    {
+      "type": "stock-image",
+      "image": "McKA_home_tiles_stock_12"
+    }
+  ],
+  "order": [
+    "features",
+    "images",
+    "entry_points",
+    "quotes",
+    "images",
+    "entry_points",
+    "images",
+    "features",
+    "taglines",
+    "videos",
+    "quotes",
+    "quotes",
+    "entry_points",
+    "images",
+    "features",
+    "images",
+    "features",
+    "features",
+    "images",
+    "features",
+    "quotes",
+    "entry_points",
+    "images"
+  ]
+}

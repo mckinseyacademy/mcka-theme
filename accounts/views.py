@@ -1,4 +1,6 @@
 ''' views for auth, sessions, users '''
+import json
+import random
 from django.utils.translation import ugettext as _
 
 from django.http import HttpResponseRedirect
@@ -176,7 +178,14 @@ def home(request):
     if request.user and request.user.is_authenticated():
         return homepage(request)
 
-    return render(request, 'home/landing.haml', {"user": None})
+    cells = []
+    with open('main/fixtures/landing_data.json') as json_file:
+        landing_tiles = json.load(json_file)
+        for tile in landing_tiles["order"]:
+            tileset = landing_tiles[tile]
+            cells.append(tileset.pop(random.randrange(len(tileset))))
+
+    return render(request, 'home/landing.haml', {"user": None, "cells": cells})
 
 @login_required
 def user_profile(request):
