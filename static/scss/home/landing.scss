@@ -199,7 +199,9 @@
 
 #mckinsey_video {
   .player-wrapper {
-    width: 745px;
+    width: 100%;
     height: 425px;
+    max-width: 745px;
+    margin: 0 auto;
   }
 }
