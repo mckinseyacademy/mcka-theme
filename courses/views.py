@@ -206,3 +206,16 @@ def infer_course_navigation(request, course_id):
 def infer_default_navigation(request):
     ''' handler to call infer chapter nav with no course '''
     return infer_chapter_navigation(request, None, None)
+
+@login_required
+def contact_ta(request, course_id):
+    email_from = request.user.email
+    email_to = "ta@mckinseyacademy.com"
+    email_content = request.POST["ta_message"]
+
+    # TODO: Hook up to email sending stuff
+
+    return HttpResponse(
+        json.dumps({"message": _("Successfully sent email")}),
+        content_type='application/json'
+    )

@@ -6,7 +6,7 @@
   %span= client.display_name
 
 .close-reveal-modal
-  %i.fa.fa-remove
+  %i.fa.fa-times-circle
 .admin-form
   %form{action: "/admin/clients/#{client_id}/upload_student_list", method: "POST", enctype: "multipart/form-data"}
     - csrf_token

@@ -1,6 +1,7 @@
 from api_client import group_api
 from api_client import group_models, user_models
 from license import controller as license_controller
+from django.conf import settings
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -100,8 +101,8 @@ class WorkGroup(BaseGroupModel):
         workgroup.teaching_assistant = user_models.UserResponse(dictionary={
             "username": "ta",
             "full_name": "Your TA",
-            "title": "McKinsey Teaching Assistant",
-            "email": "mjames@edx.org",
+            "title": "Teaching Assistant",
+            "email": settings.TA_EMAIL_GROUP,
         })
 
         return workgroup
