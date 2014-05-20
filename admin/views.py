@@ -654,7 +654,7 @@ def workgroup_programs_list(request):
         data = {
             "courses": courses,
         }
-#    return HttpResponse(json.dumps(dir(courses[0])))
+        
     return render(
         request,
         'admin/workgroup/courses_list.haml',

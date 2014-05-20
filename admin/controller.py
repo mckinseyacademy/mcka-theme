@@ -249,6 +249,8 @@ def filterGroupsAndStudents(course, students):
         group.students_count = len(group.students)
         groups.append(group)
 
+    groups.sort(key=lambda group: group.id)
+
     for student in groupedStudents:
         if student in students:
             students.remove(student)
