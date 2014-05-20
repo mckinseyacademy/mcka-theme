@@ -452,8 +452,10 @@ def download_student_list(request, client_id):
         datetime.now().isoformat()
     )))
 
+    activation_link = request.build_absolute_uri('/accounts/activate')
+
     response = HttpResponse(
-        get_student_list_as_file(client),
+        get_student_list_as_file(client, activation_link),
         content_type='text/csv'
     )
     response['Content-Disposition'] = 'attachment; filename={}.csv'.format(

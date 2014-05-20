@@ -104,3 +104,10 @@ class UserActivation(db_models.Model):
         activation_record.save()
 
         return activation_record
+
+    @classmethod 
+    def get_user_activation(cls, user): 
+        activation_record = cls.objects.filter(user_id=user.id)[0]
+
+        return activation_record
+
