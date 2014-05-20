@@ -222,8 +222,7 @@ def fetch_clients_with_program(program_id):
 
     return clients
 
-def filterGroupsAndStudents(course, students): 
-
+def filterGroupsAndStudents(course, students):
     ''' THIS IS A VERY SLOW PART OF CODE. 
         Due to api limitations, filtering of user from student list has to be done on client. 
         It has to have 3 nested "for" loops, and one after (indexes issue in for loop). 
@@ -231,17 +230,18 @@ def filterGroupsAndStudents(course, students):
     '''
     groupsList = []
     for module in course.group_projects:
-        groupsList = groupsList + [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
-    
+        groupsList = groupsList + [WorkGroup.fetch(group.group_id)
+                                   for group in course_api.get_course_content_groups(course.id, module.id)]
+
     groups = []
     groupedStudents = []
-    for group in groupsList: 
+    for group in groupsList:
         users = group_api.get_users_in_group(group.id)
         group.students = users
         for user in users:
             for student in students:
                 if user.username == student.username:
-                    try: 
+                    try:
                         user.company = student.company
                     except:
                         pass
@@ -249,21 +249,45 @@ def filterGroupsAndStudents(course, students):
         group.students_count = len(group.students)
         groups.append(group)
 
-    for student in groupedStudents: 
+    for student in groupedStudents:
         if student in students:
             students.remove(student)
 
     return groups, students
 
-def getStudentsWithCompanies(course): 
+
+def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
     companies = {}
-    for student in students: 
-        studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
+    for student in students:
+        studentCompanies = user_api.get_user_groups(
+            student.id, group_type='organization')
         if len(studentCompanies) > 0:
             company = studentCompanies[0]
             if companies.get(company.id) is None:
                 companies[company.id] = Client.fetch(company.id)
-            student.company = companies[company.id]    
+            student.company = companies[company.id]
     return students, companies
+
+
+def parse_studentslist_from_post(postValues):
+
+    students = []
+    i = 0
+    try:
+        privateFlag = True
+        companyid = postValues['students[0][data_field]']
+        if companyid == '':
+            privateFlag == False
+        while(postValues['students[{}][id]'.format(i)]):
+            students.append({'id': postValues['students[{}][id]'.format(i)],
+                            'company_id': postValues['students[{}][data_field]'.format(i)]})
+            if(postValues['students[{}][data_field]'.format(i)] != companyid):
+                privateFlag = False
+            i = i + 1
+    except:
+        pass
+
+    return students, companyid, privateFlag
+
 

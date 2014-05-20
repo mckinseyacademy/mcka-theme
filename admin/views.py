@@ -17,7 +17,7 @@ from .models import Client
 from .models import Program
 from .models import WorkGroup
 from main.models import CuratedContentItem
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filterGroupsAndStudents
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filterGroupsAndStudents, parse_studentslist_from_post
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -28,6 +28,7 @@ from api_client import user_api
 from api_client import group_api
 from api_client.json_object import Objectifier
 from license import controller as license_controller
+
 
 
 
@@ -698,21 +699,8 @@ def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
 
-        postValues = request.POST
-        students = []
-        i = 0
-        try:
-            privateFlag = True
-            companyid = postValues['students[0][data_field]']
-            if companyid == '':
-                privateFlag == False
-            while(postValues['students[{}][id]'.format(i)]):
-                students.append({'id': postValues['students[{}][id]'.format(i)], 'company_id': postValues['students[{}][data_field]'.format(i)]})
-                if(postValues['students[{}][data_field]'.format(i)] != companyid):
-                    privateFlag = False
-                i = i + 1
-        except:
-            True
+        students, companyid, privateFlag = parse_studentslist_from_post(
+            request.POST)
 
         course = load_course(course_id)
         if len(course.group_projects) < 1:
@@ -725,24 +713,30 @@ def workgroup_group_create(request, course_id):
         for module in course.group_projects:
             if module.name.startswith(companyid + '_'):
                 privateModule = module
-            groupsList = groupsList + [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+            groupsList = groupsList + [WorkGroup.fetch(group.group_id)
+                                       for group in course_api.get_course_content_groups(course.id, module.id)]
 
         lastId = len(groupsList)
 
         if privateModule != '' and privateFlag:
-            workgroup = WorkGroup.create('Group {} - private - {}'.format(lastId + 1, companyid), {'privacy' : 'private', 'client_id': companyid})
+            workgroup = WorkGroup.create(
+                'Group {} - private - {}'.format(lastId + 1, companyid), {'privacy': 'private', 'client_id': companyid})
             group_id = int(workgroup.id)
-            course_api.add_group_to_course_content(group_id, course_id, privateModule.id)
-        #    group_api.add_group_to_group(group_id, companyid)
+            course_api.add_group_to_course_content(
+                group_id, course_id, privateModule.id)
+            workgroup.add_workgroup_to_client(companyid)
         else:
-            workgroup = WorkGroup.create('Group {}'.format(lastId + 1), {'privacy' : 'public'})
+            workgroup = WorkGroup.create(
+                'Group {}'.format(lastId + 1), {'privacy': 'public'})
             group_id = int(workgroup.id)
-            course_api.add_group_to_course_content(group_id, course_id, publicModule.id)
+            course_api.add_group_to_course_content(
+                group_id, course_id, publicModule.id)
 
         for student in students:
             group_api.add_user_to_group(student['id'], group_id)
 
     return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+
 
 
 @ajaxify_http_redirects
