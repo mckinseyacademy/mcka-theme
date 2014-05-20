@@ -17,7 +17,7 @@ from .models import Client
 from .models import Program
 from .models import WorkGroup
 from main.models import CuratedContentItem
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filterGroupsAndStudents
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -668,45 +668,13 @@ def workgroup_course_detail(request, course_id):
 
     course = load_course(course_id)
 
-    students = course_api.get_user_list(course_id)
-    companies = {}
-    for student in students:
-        studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
-        if len(studentCompanies) > 0:
-            company = studentCompanies[0]
-            if companies.get(company.id) is None:
-                companies[company.id] = Client.fetch(company.id)
-            student.company = companies[company.id]
+    students, companies = getStudentsWithCompanies(course)
 
     if len(course.group_projects) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
-    groupsList = []
-    for module in course.group_projects:
-        groupsList = groupsList + [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+    groups, students = filterGroupsAndStudents(course, students)
 
-
-    ''' THIS IS A VERY SLOW PART OF CODE.
-        Due to api limitations, filtering of user from student list has to be done on client.
-        It has to have 3 nested "for" loops, and one after (indexes issue in for loop).
-        This should be replaced once API changes.
-    '''
-    groups = []
-    groupedStudents = []
-    for group in groupsList:
-        users = group_api.get_users_in_group(group.id)
-        group.students = users
-        for user in users:
-            for student in students:
-                if user.username == student.username:
-                    user.company = student.company if hasattr(student, "company") else _("(No Company Assignment)")
-                    groupedStudents.append(student)
-        group.students_count = len(group.students)
-        groups.append(group)
-
-    for student in groupedStudents:
-        if student in students:
-            students.remove(student)
 
     data = {
         "principal_name": _("Group Work"),
@@ -717,13 +685,12 @@ def workgroup_course_detail(request, course_id):
         "groups": groups,
         "companies": companies.values(),
     }
-#    return HttpResponse(json.dumps(dir(course)))
+
     return render(
         request,
         'admin/workgroup/course_detail.haml',
         data
     )
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -812,36 +779,10 @@ def workgroup_group_remove(request, group_id):
 
         course_id = request.POST['course_id']
         course = load_course(course_id)
-        students = course_api.get_user_list(course_id)
-        companies = {}
-        for student in students:
-            studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
-            if len(studentCompanies) > 0:
-                company = studentCompanies[0]
-                if companies.get(company.id) is None:
-                    companies[company.id] = Client.fetch(company.id)
-                student.company = companies[company.id]
 
-        groupsList = []
-        for module in course.group_projects:
-            groupsList = groupsList + [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+        students, companies = getStudentsWithCompanies(course)
 
-        groupedStudents = []
-
-        for group in groupsList:
-            users = group_api.get_users_in_group(group.id)
-            group.students = users
-            for student in students:
-                for user in users:
-                    if user.username == student.username:
-                        try:
-                            user.company = student.company
-                        except:
-                            True
-                            groupedStudents.append(student)
-
-        for student in groupedStudents:
-            students.remove(student)
+        groups, students = filterGroupsAndStudents(course, students)
 
         data = {
             "students": students,
