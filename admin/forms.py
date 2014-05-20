@@ -64,18 +64,3 @@ class CuratedContentItemForm(forms.ModelForm):
             'thumbnail_url', 'image_url', 'twitter_username', 'sequence',
             'display_date', 'created_at'
         ]
-
-    #course_id = forms.CharField(max_length=255)
-    #title = forms.CharField(max_length=255)
-    #body = forms.CharField(max_length=1000)
-    #source = forms.CharField(max_length=255)
-    #byline = forms.CharField(max_length=255)
-    #byline_title = forms.CharField(max_length=255)
-    #url = forms.URLField()
-    #thumbnail_url = forms.URLField()
-    #image_url = forms.URLField()
-    #twitter_username = forms.CharField(max_length=255)
-    #sequence = forms.IntegerField()
-    #display_date = forms.DateField(
-    #    widget=SelectDateWidget(years=PROGRAM_YEAR_CHOICES)
-    #)
