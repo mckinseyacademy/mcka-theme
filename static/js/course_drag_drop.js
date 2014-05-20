@@ -97,8 +97,9 @@
     ];
 
     activator = {
-      selector: '#student-group-action', 
+      selector: '#student-group-action:not(.disabled)', 
       success: function(){
+        $('#student-group-action').removeClass('disabled');
         window.location = '/admin/workgroup/course/' + course_id;
       }
     };
@@ -128,25 +129,35 @@
         courseDrag.removeStudent($(this), $(this).parent('a').attr('href'));
     });
 
-    $('.update-group').on('click', function(){
-      group = $(this).data('group-id');
-      privacy = $(this).data('privacy');
-      client_id = $(this).data('client-id');
-      url = $(this).data('url');
-      var students = new Array();
-      var allStudents = new Array();
-      $('#student-list tr.student.selected').each(
-        function(){
-          if($(this).data('company-name') == client_id){
-            students.push($(this).attr('id'));
-          }
-          allStudents.push($(this).attr('id'));
-        });
-      if(students.length == allStudents.length || privacy != 'private'){
-        courseDrag.updateGroup(group, students, url);
+    $('#student-group-action').on('click', function(){
+      if(!$(this).hasClass('disabled')){
+        $(this).addClass('disabled');
       }
-      else{
-        alert('All students added to private group have to be members of same company.');
+    });
+
+    $('.update-group').on('click', function(){
+      var that = $(this);
+      if(!that.hasClass('disabled')){
+        group = that.data('group-id');
+        privacy = that.data('privacy');
+        client_id = that.data('client-id');
+        url = that.data('url');
+        var students = new Array();
+        var allStudents = new Array();
+        $('#student-list tr.student.selected').each(
+          function(){
+            if($(this).data('company-name') == client_id){
+              students.push($(this).attr('id'));
+            }
+            allStudents.push($(this).attr('id'));
+          });
+        if(students.length == allStudents.length || privacy != 'private'){
+          $('.update-group').addClass('disabled');
+          courseDrag.updateGroup(group, students, url);
+        }
+        else{
+          alert('All students added to private group have to be members of same company.');
+        }
       }
     });
 

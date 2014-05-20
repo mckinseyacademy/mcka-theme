@@ -763,7 +763,7 @@ def workgroup_group_create(request, course_id):
         lastId = len(groupsList)
 
         if privateModule != '' and privateFlag:
-            workgroup = WorkGroup.create('Group {} - private'.format(lastId + 1), {'privacy' : 'private', 'client_id': companyid})
+            workgroup = WorkGroup.create('Group {} - private - {}'.format(lastId + 1, companyid), {'privacy' : 'private', 'client_id': companyid})
             group_id = int(workgroup.id)
             course_api.add_group_to_course_content(group_id, course_id, privateModule.id)
         #    group_api.add_group_to_group(group_id, companyid)
