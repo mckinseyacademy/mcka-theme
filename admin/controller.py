@@ -47,7 +47,7 @@ def _process_line(user_line):
         if len(fields) > 2 and len(fields[2].strip()) > 1:
             user_info["password"] = fields[2]
         else:
-            user_info["password"] = "initial_P455w0RD!#"
+            user_info["password"] = settings.INITIAL_PASSWORD
 
         if len(fields) > 4:
             user_info["first_name"] = fields[3]
