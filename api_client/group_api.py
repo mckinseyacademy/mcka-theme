@@ -197,6 +197,7 @@ def get_groups_in_group(group_id, group_object=JsonObject, params=[]):
         paramStr = paramStr + param['key'] + '=' + param['value']
 
     ''' get list of groups associated with a specific group '''
+
     response = GET(
         '{}/{}/{}/groups?{}'.format(
             settings.API_SERVER_ADDRESS,
