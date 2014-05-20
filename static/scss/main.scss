@@ -273,12 +273,6 @@ form {
   }
 }
 
-.close-reveal-modal{
-  &::after{
-    content: "\00d7";
-  }
-}
-
 #beta_content {
   p { margin-bottom: rem-calc(30); }
 }
