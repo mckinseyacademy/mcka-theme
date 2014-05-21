@@ -18,6 +18,9 @@ from accounts.controller import get_current_course_for_user
 # Create your views here.
 
 def _inject_formatted_data(program, course, page_id, static_tab_info=None):
+    if course:
+        course.nav_url = '/courses/{}'.format(course.id)
+
     if program:
         for program_course in program.courses:
             program_course.nav_url = '/courses/{}'.format(program_course.id)
