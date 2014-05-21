@@ -39,7 +39,8 @@
             .label-4.program-name<
               = program.display_name
             %h4.course-name
-              = course.name
+              %a{href: "#{course.nav_url}"}
+                = course.name
             .program-menu
               %a{href:"#", "data-dropdown": "program-menu-content"}
                 %i.fa.fa-bars

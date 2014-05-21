@@ -318,7 +318,7 @@ class ActivationForm(NoSuffixLabelForm):
     level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES, required=False)
     gender = forms.ChoiceField(choices=GENDER_CHOICES, required=False)
     year_of_birth = forms.ChoiceField(choices=YEAR_CHOICES, required=False, initial=("", "---"))
-    accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
+    accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
     #accept_terms = forms.CheckboxInput()
 
     def __init__(self, *args, **kwargs):

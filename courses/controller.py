@@ -101,12 +101,6 @@ def locate_chapter_page(
         course_api_impl - optional api client module to use (useful in mocks)
         user_api_impl - optional api client module to use (useful in mocks)
     '''
-    if not course_id:
-        courses = user_api_impl.get_user_courses(user_id)
-        if len(courses) < 1:
-            return None, None, None, None
-        course_id = courses[0].id
-
     course = load_course(course_id, 3, course_api_impl)
     chapter = None
     page = None
@@ -140,10 +134,6 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
     '''
 
     courses = user_api_impl.get_user_courses(user_id)
-    if not course_id:
-        if len(courses) < 1:
-            return None
-        course_id = courses[0].id
 
     course_program = None
     for program in Program.programs_with_course(course_id):
