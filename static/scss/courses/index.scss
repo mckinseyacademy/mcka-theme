@@ -49,6 +49,13 @@
   }
 }
 
+#course_discussion_modal {
+  .screencap {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
+
 @import './overview';
 @import './lessons';
 @import './news';
