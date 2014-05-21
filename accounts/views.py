@@ -142,6 +142,10 @@ def activate(request, activation_code):
         if form.is_valid():  # All validation rules pass
             try:
                 user_api.update_user(user.id, user_data)
+
+                # Delete activation record
+                activation_record.delete()
+
                 # Redirect after POST
                 return HttpResponseRedirect(
                     '/accounts/login?username={}'.format(

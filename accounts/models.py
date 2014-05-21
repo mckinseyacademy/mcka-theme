@@ -107,7 +107,10 @@ class UserActivation(db_models.Model):
 
     @classmethod 
     def get_user_activation(cls, user): 
-        activation_record = cls.objects.filter(user_id=user.id)[0]
+        activation_records = cls.objects.filter(user_id=user.id)
 
-        return activation_record
+        if len(activation_records) > 0:
+            return activation_records[0]
+
+        return None
 
