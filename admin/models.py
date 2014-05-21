@@ -53,7 +53,7 @@ class Client(BaseGroupModel):
     def fetch_programs(self):
         # Would be nice to filter groups based upon their group type, but we
         # don't have that available in results yet
-        groups = self.get_groups()
+        groups = self.get_groups(params=[{'key': 'type', 'value': 'series'}])
         programs = []
         for group in groups:
             # we will filter later, so we protect ourselves against
