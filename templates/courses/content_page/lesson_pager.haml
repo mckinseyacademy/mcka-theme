@@ -1,8 +1,16 @@
 .lesson-pager
   %div
-    %a{href: "#{current_page.prev_url}"}
-      .page-to.previous
+    - if current_page.prev_url
+      %a{href: "#{current_page.prev_url}"}
+        .page-to.previous
+          %i.fa.fa-chevron-left
+    - else
+      .page-to.previous.disabled
         %i.fa.fa-chevron-left
-    %a{href: "#{current_page.next_url}"}
-      .page-to.next
+    - if current_page.next_url
+      %a{href: "#{current_page.next_url}"}
+        .page-to.next
+          %i.fa.fa-chevron-right
+    - else
+      .page-to.next.disabled
         %i.fa.fa-chevron-right

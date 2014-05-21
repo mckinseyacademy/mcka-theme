@@ -1,6 +1,6 @@
 var Router = Backbone.Router.extend({
   routes: {
-    '': 'home',
+    'courses/*course_id': 'home',
     'courses/*course_id/view/progress':     'course_progress',
     'courses/*course_id/view/cohort':       'course_cohort',
     'courses/*course_id/view/group_work':   'course_group_work',

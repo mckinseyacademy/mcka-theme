@@ -51,11 +51,12 @@ def _inject_formatted_data(program, course, page_id):
                     page.status_class = "incomplete"
 
 @login_required
-def homepage(request):
+def course_landing_page(request, course_id):
     '''
-    Logged in user's homepage which will infer current program, course,
+    Course landing page for user for specified course
     etc. from user settings
     '''
+    request.session["current_course_id"] = course_id
 
     data = {
         "user": request.user,
@@ -68,9 +69,12 @@ def homepage(request):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
-def navigate_to_page(request, course_id, current_view = 'overview'):
+def navigate_to_page(request, course_id, current_view = 'landing'):
     # TODO - Figure out why nginx munges the id's so that we can get rid of this step
     course_id = decode_id(course_id)
+
+    if current_view == "landing":
+        return course_landing_page(request, course_id)
 
     # Get course info
     depth = 4 if current_view == "group_work" else 3

@@ -1,6 +1,6 @@
 %ul.course-tabs
   %li
-    %a{class: "nav-1 {% ifequal current_view 'overview' %}selected{% endifequal %}", href: "/courses/#{course.id}"}= _("Overview")
+    %a{class: "nav-1 {% ifequal current_view 'overview' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/overview"}= _("Overview")
   %li
     %a{class: "nav-1 {% ifequal current_view 'lessons' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons"}= _("Lessons")
   %li
