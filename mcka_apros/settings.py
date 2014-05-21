@@ -170,6 +170,7 @@ EDX_API_KEY = 'test_api_key'
 
 # While we have TA email group, define it here
 TA_EMAIL_GROUP = 'ta@mckinseyacademy.com'
+INITIAL_PASSWORD = 'PassworD12!@'
 
 try:
     from local_settings import *
