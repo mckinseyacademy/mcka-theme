@@ -183,7 +183,7 @@ def home(request):
             tileset = landing_tiles[tile]
             cells.append(tileset.pop(random.randrange(len(tileset))))
 
-    return render(request, 'home/landing.haml', {"user": None, "cells": cells})
+    return render(request, 'home/landing.haml', {"user": request.user, "cells": cells})
 
 @login_required
 def user_profile(request):
