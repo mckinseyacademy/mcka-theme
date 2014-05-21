@@ -23,8 +23,8 @@ class UrlsTest(TestCase):
         resolver = resolve('/admin/')
         self.assertEqual(resolver.view_name, 'admin_home')
 
-        resolver = resolve('/admin/course_meta_content')
-        self.assertEqual(resolver.view_name, 'course_meta_content')
+        resolver = resolve('/admin/course-meta-content')
+        self.assertEqual(resolver.view_name, 'course_meta_content_course_list')
 
         resolver = resolve('/admin/not_authorized')
         self.assertEqual(resolver.view_name, 'not_authorized')

@@ -8,6 +8,7 @@ from .forms import LoginForm, ActivationForm
 from api_client import user_api
 from .models import RemoteUser, UserActivation
 from admin.models import Client
+from accounts.controller import get_current_course_for_user
 
 # from importlib import import_module
 # from django.conf import settings
@@ -20,8 +21,6 @@ import urllib2 as url_access
 from django.shortcuts import render
 
 import urlparse
-
-from courses.views import homepage
 
 from django.contrib.auth.decorators import login_required
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
@@ -53,7 +52,11 @@ def login(request):
                     request.META['HTTP_REFERER']
                 ) if 'HTTP_REFERER' in request.META else None
                 if not redirect_to:
-                    redirect_to = '/'
+                    course_id = get_current_course_for_user(request)
+                    if course_id:
+                        redirect_to = '/courses/{}'.format(course_id)
+                    else:
+                        redirect_to = '/'
 
                 return HttpResponseRedirect(redirect_to)  # Redirect after POST
             except url_access.HTTPError, err:
@@ -178,10 +181,6 @@ def activate(request, activation_code):
 def home(request):
     ''' show me the home page '''
 
-    # if we have an authenticated user, show them their course-based homepage
-    if request.user and request.user.is_authenticated():
-        return homepage(request)
-
     cells = []
     with open('main/fixtures/landing_data.json') as json_file:
         landing_tiles = json.load(json_file)
@@ -189,7 +188,7 @@ def home(request):
             tileset = landing_tiles[tile]
             cells.append(tileset.pop(random.randrange(len(tileset))))
 
-    return render(request, 'home/landing.haml', {"user": None, "cells": cells})
+    return render(request, 'home/landing.haml', {"user": request.user, "cells": cells})
 
 @login_required
 def user_profile(request):

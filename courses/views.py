@@ -13,10 +13,11 @@ from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api
 from admin.controller import load_course
+from accounts.controller import get_current_course_for_user
 
 # Create your views here.
 
-def _inject_formatted_data(program, course, page_id):
+def _inject_formatted_data(program, course, page_id, static_tab_info=None):
     if program:
         for program_course in program.courses:
             program_course.nav_url = '/courses/{}'.format(program_course.id)
@@ -39,6 +40,10 @@ def _inject_formatted_data(program, course, page_id):
     for idx, lesson in enumerate(course.chapters, start=1):
         lesson.index = idx
         lesson.tick_marks = [i * 20 <= 100 for i in range(1, 6)]
+        if static_tab_info:
+            lesson_description = static_tab_info.get("lesson{}".format(idx), None)
+            if lesson_description:
+                lesson.description = lesson_description.content
         found_current_page = False
         for sequential in lesson.sequentials:
             for page in sequential.pages:
@@ -51,11 +56,12 @@ def _inject_formatted_data(program, course, page_id):
                     page.status_class = "incomplete"
 
 @login_required
-def homepage(request):
+def course_landing_page(request, course_id):
     '''
-    Logged in user's homepage which will infer current program, course,
+    Course landing page for user for specified course
     etc. from user settings
     '''
+    request.session["current_course_id"] = course_id
 
     data = {
         "user": request.user,
@@ -68,24 +74,17 @@ def homepage(request):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
-def navigate_to_page(request, course_id, current_view = 'overview'):
+def navigate_to_page(request, course_id, current_view = 'landing'):
     # TODO - Figure out why nginx munges the id's so that we can get rid of this step
     course_id = decode_id(course_id)
 
+    if current_view == "landing":
+        return course_landing_page(request, course_id)
+
     # Get course info
-    depth = 4 if current_view == "group_work" else 3
-    course = load_course(course_id, depth)
-
-    # Take note that the user has gone here
-    program = program_for_course(request.user.id, course_id)
-
-    # Inject formatted data for view
-    _inject_formatted_data(program, course, None)
+    request.session["current_course_id"] = course_id
 
     data = {
-        "user": request.user,
-        "course": course,
-        "program": program,
         "current_view": current_view,
         "current_template": "courses/course_{0}.haml".format(current_view),
     }
@@ -100,7 +99,7 @@ def navigate_to_page(request, course_id, current_view = 'overview'):
         seq_id = request.GET.get("seqid", None)
         project_group, group_project, sequential, page = group_project_location(
             request.user.id,
-            course,
+            load_course(course_id, 4),
             seq_id
         )
         vertical_usage_id = page.vertical_usage_id() if page else None
@@ -178,6 +177,9 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     # TODO - Figure out why nginx munges the id's so that we can get rid of this step
     if course_id:
         course_id = decode_id(course_id)
+    else:
+        course_id = get_current_course_for_user(request)
+
     if chapter_id:
         chapter_id = decode_id(chapter_id)
 

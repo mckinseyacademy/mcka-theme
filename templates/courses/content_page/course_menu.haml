@@ -23,4 +23,5 @@
                       .tick{class: "{% if tick_mark %}on{% endif %}"}
                 .back.background-alt-blue
                   .label-2.description
-                    = lesson.description
+                    - autoescape off
+                      = lesson.description
