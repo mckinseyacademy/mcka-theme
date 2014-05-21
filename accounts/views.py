@@ -8,6 +8,7 @@ from .forms import LoginForm, ActivationForm
 from api_client import user_api
 from .models import RemoteUser, UserActivation
 from admin.models import Client
+from accounts.controller import get_current_course_for_user
 
 # from importlib import import_module
 # from django.conf import settings
@@ -51,7 +52,11 @@ def login(request):
                     request.META['HTTP_REFERER']
                 ) if 'HTTP_REFERER' in request.META else None
                 if not redirect_to:
-                    redirect_to = '/'
+                    course_id = get_current_course_for_user(request)
+                    if course_id:
+                        redirect_to = '/courses/{}'.format(course_id)
+                    else:
+                        redirect_to = '/'
 
                 return HttpResponseRedirect(redirect_to)  # Redirect after POST
             except url_access.HTTPError, err:

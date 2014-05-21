@@ -8,6 +8,18 @@ from api_client import user_api, group_api, course_api
 from accounts.models import UserActivation
 from .models import Client
 
+def get_current_course_for_user(request):
+    course_id = request.session.get("current_course_id", None)
+
+    if not course_id and request.user:
+        # TODO: Replace with logic for finding "current" course
+        # For now, we just return first course
+        courses = user_api.get_user_courses(request.user.id)
+        if len(courses) > 0:
+            course_id = courses[0].id
+
+    return course_id
+
 def load_course(course_id, depth=3, course_api_impl=course_api):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes

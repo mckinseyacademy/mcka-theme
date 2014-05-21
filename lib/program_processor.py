@@ -1,6 +1,7 @@
 from courses.controller import build_page_info_for_course, locate_chapter_page, program_for_course
 from courses.views import _inject_formatted_data
 from api_client import course_api
+from accounts.controller import get_current_course_for_user
 
 def user_program(request):
     course = None
@@ -11,7 +12,7 @@ def user_program(request):
 
     if request.user and request.user.id:
         course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
-            request.user.id, request.session.get("current_course_id"), None)
+            request.user.id, get_current_course_for_user(request), None)
 
         if course_id:
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
