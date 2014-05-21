@@ -4,7 +4,8 @@ var Router = Backbone.Router.extend({
     'courses/*course_id/view/progress':     'course_progress',
     'courses/*course_id/view/cohort':       'course_cohort',
     'courses/*course_id/view/group_work':   'course_group_work',
-    'courses/*course_id/view/resources':    'course_resources'
+    'courses/*course_id/view/resources':    'course_resources',
+    'courses/*course_id/view/discussion':   'course_discussion'
   },
 
   home: function() {
@@ -32,6 +33,9 @@ var Router = Backbone.Router.extend({
 
   course_resources: function(course_id) {
     $('#beta_content').foundation('reveal', 'open');
+  },
+
+  course_discussion: function(course_id) {
   }
 });
 
