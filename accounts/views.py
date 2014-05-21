@@ -180,24 +180,26 @@ def activate(request, activation_code):
 def home(request):
     ''' show me the home page '''
 
-
     programData = user_program(request)
     program = programData.get('program')
     course = programData.get('course')
 
     data = {'popup': {'title': '', 'description': ''}}
-    if request.session.get('program_popup') == None: 
+    if request.session.get('program_popup') == None:
         if program:
             if program.id is not 'NO_PROGRAM':
                 if program.start_date > datetime.datetime.today():
-                    days = str(int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                    days = str(
+                        int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
                     if days > 1:
                         days = days + 's'
                     popup = {'title': '', 'description': ''}
                     popup['title'] = "Welcome to McKinsey Academy"
-                    popup['description'] = "Your program will start in {}. Please explore the site to learn more about the expirience in the meantime.".format(days)
-                    if course :
-                        popup['description'] = "Your course begins in {}. Please explore the site to learn more about the expirience in the meantime.".format(days)
+                    popup['description'] = "Your program will start in {}. Please explore the site to learn more about the expirience in the meantime.".format(
+                        days)
+                    if course:
+                        popup['description'] = "Your course begins in {}. Please explore the site to learn more about the expirience in the meantime.".format(
+                            days)
                         data.update({'course': course})
                     data.update({'program': program, 'popup': popup})
                     request.session['program_popup'] = True
@@ -210,6 +212,7 @@ def home(request):
 
     data.update({"user": request.user, "cells": cells})
     return render(request, 'home/landing.haml', data)
+
 
 @login_required
 def user_profile(request):
