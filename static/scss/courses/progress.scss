@@ -71,6 +71,10 @@
     }
   }
 
+  p.style-6 a {
+    @include font-spec(12);
+  }
+
   table.lesson-table {
     border: 0;
     margin: 0;
