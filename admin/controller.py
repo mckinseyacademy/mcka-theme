@@ -185,13 +185,16 @@ def get_student_list_as_file(client, activation_link = ''):
     return '\n'.join(user_strings)
 
 def get_user_with_activation(user_id, activation_link):
-
     user = user_api.get_user(user_id)  
-    activation_record = UserActivation.get_user_activation(user) 
     try:
-        user.activation_link = "{}/{}".format(activation_link, activation_record.activation_key)
+        activation_record = UserActivation.get_user_activation(user)
+        if activation_record:
+            user.activation_link = "{}/{}".format(activation_link, activation_record.activation_key)
+        else:
+            user.activation_link = 'Activated'
     except:
-        user.activation_link = 'Activated'
+        user.activation_link = 'Could not fetch activation record'
+
     return user
 
 def get_group_list_as_file(groups):  
