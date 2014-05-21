@@ -286,8 +286,8 @@ COUNTRY_CHOICES = (
     ("ZW", _(u"Zimbabwe")),
 )
 
-READ_ONLY_IF_DATA_FIELDS = ["company", "full_name", "city", ]
-DISABLED_IF_DATA_FIELDS = ["country", ]
+READ_ONLY_IF_DATA_FIELDS = ["company", "full_name"]
+DISABLED_IF_DATA_FIELDS = []
 
 
 class NoSuffixLabelForm(forms.Form):
@@ -326,11 +326,11 @@ class ActivationForm(NoSuffixLabelForm):
         if isinstance(args[0], dict):
             user_data = args[0]
             for read_only in READ_ONLY_IF_DATA_FIELDS:
-                if read_only in user_data:
+                if read_only in user_data and len(user_data[read_only]) > 0:
                     self.fields[read_only].widget.attrs['readonly'] = 'readonly'
 
             for disabled in DISABLED_IF_DATA_FIELDS:
-                if disabled in user_data:
+                if disabled in user_data and len(user_data[disabled]) > 0:
                     self.fields[disabled].widget.attrs['disabled'] = 'disabled'
 
 
