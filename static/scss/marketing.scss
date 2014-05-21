@@ -57,28 +57,23 @@
 
       li {
         margin-bottom: rem-calc(10);
-        margin-left: rem-calc(10);
-        margin-right: rem-calc(10);
-
-        .team-list {
-          width: 180px;
-          margin-top: rem-calc(40);
-        }
 
         .card-flip {
-          width: 180px;
-          height: 125px;
+          width: 140px;
+          height: 140px;
           margin-bottom: rem-calc(10);
 
           .front, .back {
-            width: 180px;
-            height: 125px;
+            width: 140px;
+            height: 140px;
             @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
           }
 
           .back {
             padding: 10px;
-            .label-1 {
+            text-align: center;
+            .label-6 {
+              margin-top: rem-calc(25);
               margin-bottom: rem-calc(15);
             }
           }
