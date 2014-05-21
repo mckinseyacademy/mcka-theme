@@ -168,6 +168,9 @@ LOCAL_MOCK_API_FILES = [
 # Set this on OpenEdx server, and within production environment to whichever value is desired
 EDX_API_KEY = 'test_api_key'
 
+# Goog Analytics Tracking ID
+GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
+
 # While we have TA email group, define it here
 TA_EMAIL_GROUP = 'ta@mckinseyacademy.com'
 INITIAL_PASSWORD = 'PassworD12!@'
@@ -187,5 +190,6 @@ if RUN_LOCAL_MOCK_API:
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
-    'lib.program_processor.user_program',
+    'lib.context_processors.user_program_data',
+    'lib.context_processors.settings_data',
 )
