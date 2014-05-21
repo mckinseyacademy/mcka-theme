@@ -58,19 +58,19 @@
         margin-left: 3px;
         @include font-spec(34, normal, 52);
 
-        &.icon-mk-faculty {
+        &.mk-icon-faculty {
           margin-left: 0;
           @include font-spec(34, normal, 45);
         }
 
-        &.icon-mk-advisors {
+        &.mk-icon-advisors {
           margin-left: 1px;
           line-height: rem-calc(48);
         }
 
-        &.icon-mk-book { line-height: rem-calc(45); }
-        &.icon-mk-people { margin-left: 1px; }
-        &.icon-mk-lightbulb { margin-left: 0; }
+        &.mk-icon-book { line-height: rem-calc(45); }
+        &.mk-icon-people { margin-left: 1px; }
+        &.mk-icon-lightbulb { margin-left: 0; }
       }
     }
 

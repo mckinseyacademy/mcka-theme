@@ -166,6 +166,11 @@ header[role=banner] {
       @include font-spec(14px, bold);
       &:hover { color: $pure-white; }
     }
+
+    @media only screen and (max-width: 40em) {
+      display: none;
+    }
+
   }
   .application-name{
     display: inline-block;
