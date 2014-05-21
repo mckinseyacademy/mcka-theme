@@ -4,7 +4,7 @@
   %span= _("Associate a program with a client")
 
 .close-reveal-modal
-  %i.fa.fa-remove
+  %i.fa.fa-times-circle
 .admin-form
   .title= _("Program Details")
   %form{action: "/admin/clients/#{client.id}/program_association", method: "POST"}

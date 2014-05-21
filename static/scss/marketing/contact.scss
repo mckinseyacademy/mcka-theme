@@ -1,0 +1,31 @@
+#contact-page {
+
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    div:last-child { text-align: right; }
+
+    textarea {
+      resize: none;
+      height: 98px;
+    }
+  }
+
+  .background-white {
+    padding: 20px;
+    margin-bottom: rem-calc(15);
+    @include clearfix;
+    @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+
+    p { margin-bottom: rem-calc(15); }
+    .mk-email { float: right; }
+    .button { margin-bottom: 0; }
+  }
+
+  .trouble {
+    a {
+      @include font-spec(10, bold);
+    }
+  }
+}

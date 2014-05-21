@@ -123,16 +123,11 @@ def course_meta_content_course_item_edit(request, item_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_item_delete(request, item_id):
-    item = CuratedContentItem.objects.filter(id=item_id)
-    data = {
-        "item": item
-    }
+    item = CuratedContentItem.objects.filter(id=item_id)[0]
+    course_id = item.course_id
+    item.delete()
 
-    return render(
-        request,
-        'admin/course_meta_content/item_deleted.haml',
-        data
-    )
+    return redirect('/admin/course-meta-content/items?course_id=%s' % course_id) 
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -457,8 +452,10 @@ def download_student_list(request, client_id):
         datetime.now().isoformat()
     )))
 
+    activation_link = request.build_absolute_uri('/accounts/activate')
+
     response = HttpResponse(
-        get_student_list_as_file(client),
+        get_student_list_as_file(client, activation_link),
         content_type='text/csv'
     )
     response['Content-Disposition'] = 'attachment; filename={}.csv'.format(

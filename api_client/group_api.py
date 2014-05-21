@@ -192,11 +192,14 @@ def get_courses_in_group(group_id):
 
 def get_groups_in_group(group_id, group_object=JsonObject, params=[]):
 
-    paramStr = '' 
-    for param in params: 
-        paramStr = paramStr + param['key'] + '=' + param['value']
+    paramStrs = [param['key'] + '=' + param['value'] for param in params]
+    if len(paramStrs) > 0:
+        paramStr = '&'.join(paramStrs)
+    else:
+        paramStr = ''
 
     ''' get list of groups associated with a specific group '''
+
     response = GET(
         '{}/{}/{}/groups?{}'.format(
             settings.API_SERVER_ADDRESS,

@@ -260,14 +260,14 @@ class MockCourseAPI(object):
         return course_models.Course(dictionary=course_dictionary)
 
     @staticmethod
-    def get_course(course_id):
+    def get_course(course_id, depth = 3):
         return MockCourseAPI._get_course(course_id, 0)
 
 
 class OtherMockCourseAPI(MockCourseAPI):
 
     @staticmethod
-    def get_course(course_id):
+    def get_course(course_id, depth = 3):
         return OtherMockCourseAPI._get_course(course_id, course_id)
 
 

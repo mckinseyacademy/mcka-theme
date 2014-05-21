@@ -21,8 +21,6 @@ from django.shortcuts import render
 
 import urlparse
 
-from courses.views import homepage
-
 from django.contrib.auth.decorators import login_required
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
 
@@ -142,6 +140,10 @@ def activate(request, activation_code):
         if form.is_valid():  # All validation rules pass
             try:
                 user_api.update_user(user.id, user_data)
+
+                # Delete activation record
+                activation_record.delete()
+
                 # Redirect after POST
                 return HttpResponseRedirect(
                     '/accounts/login?username={}'.format(
@@ -174,10 +176,6 @@ def activate(request, activation_code):
 def home(request):
     ''' show me the home page '''
 
-    # if we have an authenticated user, show them their course-based homepage
-    if request.user and request.user.is_authenticated():
-        return homepage(request)
-
     cells = []
     with open('main/fixtures/landing_data.json') as json_file:
         landing_tiles = json.load(json_file)
@@ -185,7 +183,7 @@ def home(request):
             tileset = landing_tiles[tile]
             cells.append(tileset.pop(random.randrange(len(tileset))))
 
-    return render(request, 'home/landing.haml', {"user": None, "cells": cells})
+    return render(request, 'home/landing.haml', {"user": request.user, "cells": cells})
 
 @login_required
 def user_profile(request):

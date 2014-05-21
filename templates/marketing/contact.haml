@@ -2,37 +2,43 @@
 
 - block content
   %article#contact-page.row.collapse
-    .large-10.large-centered.columns
+    .large-11.large-centered.columns
       %section
         %h1 Contact McKinsey Academy
       %section
         .sub-1 RESERVE PLACES SUBHEAD
-        %p We have set aside a limited number of places (250) for our alumni and their staff in the first cohort of the McKinsey Management Program. This will give alumni the exclusive opportunity to reserve places for high performing employees on their teams.  Text here.
-      %section
-        %a.button.small.radius{href: '#'} Reserve Places
+        %p
+          We have set aside a limited number of places (250) for our alumni and their staff in the first cohort of the McKinsey Management Program. This will give alumni the exclusive opportunity to reserve places for high performing employees on their teams.  Text here.
+          %a{href: '/privacy'} privacy policy
       %hr
-      %section
-        .forms.background-white
-          .col-left
-            .sub-1 STAY INFORMED
-            %p To stay informed about McKinsey Academy, please enter your email address below. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.
-            %form{action: '/', method: 'post'}
-              %fieldset
-                %div
-                  %input{type: 'email', placeholder: 'Email'}
-                %div
-                  %input.button.tiny.radius{type: 'submit', value: 'Submit'}
-            %a.support{href: '#'} support link here
-          .col-right
-            .sub-1 REFER
-            %p Please enter up to three email addresses of colleagues or peers who you think might be interested in McKinsey Academy.
-            %form{action: '/', method: 'post'}
-              %fieldset
-                %div
-                  %input{type: 'email', placeholder: 'Email'}
-                %div
-                  %input{type: 'email', placeholder: 'Email'}
-                %div
-                  %input{type: 'email', placeholder: 'Email'}
-                %div
-                  %input.button.tiny.radius{type: 'submit', value: 'Submit'}
+      .large-6.columns
+        .background-white
+          .sub-1 CONTACT US
+          %p Lorem ipsum and note on emailing McKinsey, with maybe info on response time or other details
+          %a.mk-email.button.small.radius{href: 'mailto:'} Email McKinsey Academy
+        .background-white
+          .sub-1 STAY INFORMED
+          %p To stay informed about McKinsey Academy, please enter your email address below.
+          %form{action: '/', method: 'post'}
+            %fieldset
+              %div
+                %input{type: 'email', placeholder: 'Email'}
+              %div
+                %input.button.small.radius{type: 'submit', value: 'Submit'}
+      .large-6.columns.background-white
+        .sub-1 TECH SUPPORT
+        %p Please lorem ipsum about your problem and we will respond within xx hours:
+        %form{action: '/', method: 'post'}
+          %fieldset
+            %div
+              %select
+                %option{value: '', selected: None} Please select&hellip;
+            %div
+              %input{type: 'email', placeholder: 'Email'}
+            %div
+              %textarea{placeholder: 'Please provide details'}
+            %div
+              %input.button.small.radius{type: 'submit', value: 'Submit'}
+      %section.trouble.label-2
+        Having trouble with the email button above?
+        %a{href: '#'} Click here.

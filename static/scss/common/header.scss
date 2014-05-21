@@ -34,17 +34,29 @@ header[role=banner] {
         padding-right: rem-calc(20);
         &:last-child { padding-right: 0; }
         a.selected { color: $mckinsey-academy-blue-gray; }
+
+        @media only screen and (max-width: 40em) {
+          padding-right: rem-calc(5);
+          a { @include font-spec(7); }
+        }
       }
     }
   }
 
   .logo{
-    background: url(/static/image/McK_McKA_cobranding.png) no-repeat 10px center;
+    background: url(/static/image/McK_McKA_cobranding_beta.png) no-repeat 10px center;
     background-size: 100%;
     width: 328px;
     height: 100%;
     float: left;
     margin-right: rem-calc(15);
+
+    @media only screen and (max-width: 40em) {
+      width: 135px;
+      background-size: 265px;
+      background-position: -122px 17px;
+      margin-right: rem-calc(10);
+    }
   }
 
   .user-info{
@@ -166,6 +178,11 @@ header[role=banner] {
       @include font-spec(14px, bold);
       &:hover { color: $pure-white; }
     }
+
+    @media only screen and (max-width: 40em) {
+      display: none;
+    }
+
   }
   .application-name{
     display: inline-block;

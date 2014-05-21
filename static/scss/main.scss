@@ -95,6 +95,10 @@ blockquote {
 .label-2 {
   @include font-spec(10, bold, 12);
   &.selected { color: $mckinsey-grey; }
+  &.description p{
+    // repeated style to override defined behaviour of p - p gets automatically added to the content herein within studio
+    @include font-spec(10, bold, 12);
+  }
 }
 
 .label-3 {
@@ -271,6 +275,10 @@ form {
     list-style: none;
     margin-left: 0;
   }
+}
+
+#beta_content {
+  p { margin-bottom: rem-calc(30); }
 }
 
 /* Styles to hide debugging QA content when logged in as a staff user */

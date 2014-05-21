@@ -47,7 +47,7 @@ def _process_line(user_line):
         if len(fields) > 2 and len(fields[2].strip()) > 1:
             user_info["password"] = fields[2]
         else:
-            user_info["password"] = "initial_P455w0RD!#"
+            user_info["password"] = settings.INITIAL_PASSWORD
 
         if len(fields) > 4:
             user_info["first_name"] = fields[3]
@@ -148,13 +148,14 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head):
 
 
 def _formatted_user_string(user):
-    return "{},{},,{},{},{},{}".format(
+    return "{},{},,{},{},{},{},{}".format(
         user.email,
         user.username,
         user.first_name,
         user.last_name,
         user.city,
         user.country,
+        user.activation_link, 
     )
 
 def _formatted_user_string_group_list(user):
@@ -177,11 +178,24 @@ def _formatted_group_string(group):
 
     return group_string
 
-def get_student_list_as_file(client):
+def get_student_list_as_file(client, activation_link = ''):
     user_list = client.get_users()
-    user_strings = [_formatted_user_string(user_api.get_user(user.id)) for user in user_list]
+    user_strings = [_formatted_user_string(get_user_with_activation(user.id, activation_link)) for user in user_list]
 
     return '\n'.join(user_strings)
+
+def get_user_with_activation(user_id, activation_link):
+    user = user_api.get_user(user_id)  
+    try:
+        activation_record = UserActivation.get_user_activation(user)
+        if activation_record:
+            user.activation_link = "{}/{}".format(activation_link, activation_record.activation_key)
+        else:
+            user.activation_link = 'Activated'
+    except:
+        user.activation_link = 'Could not fetch activation record'
+
+    return user
 
 def get_group_list_as_file(groups):  
     group_string = [_formatted_group_string(group) for group in groups]
