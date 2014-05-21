@@ -4,9 +4,8 @@
     %section
       .sub-1= entry.date
       %p
-        {% autoescape off %}
-        = entry.content
-        {% endautoescape %}
+        - autoescape off
+          = entry.content
     %hr
   .load-more
     %a load more

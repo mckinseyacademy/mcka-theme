@@ -10,9 +10,8 @@
   %h1= course.name
   .overview
     .sub-1 Overview
-    {% autoescape off %}
-    %p= overview.about
-    {% endautoescape %}
+    - autoescape off
+      %p= overview.about
   %hr
   .row.collapse
     .large-7.columns.col-left
@@ -37,12 +36,10 @@
           %div.teacher{id: "teacher_#{teacher.idx}"}
             %h2= teacher.name
             %p.style-3
-              {% autoescape off %}
-              = teacher.bio
-              {% endautoescape %}
+              - autoescape off
+                = teacher.bio
     .large-5.columns.col-right
       .sub-1 WHAT YOU WILL LEARN
       %p After this course, you will be able to:
-      {% autoescape off %}
-      %p= overview.what_you_will_learn
-      {% endautoescape %}
+      - autoescape off
+        %p= overview.what_you_will_learn
