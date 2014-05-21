@@ -13,6 +13,7 @@ from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api
 from admin.controller import load_course
+from accounts.controller import get_current_course_for_user
 
 # Create your views here.
 
@@ -176,6 +177,9 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     # TODO - Figure out why nginx munges the id's so that we can get rid of this step
     if course_id:
         course_id = decode_id(course_id)
+    else:
+        course_id = get_current_course_for_user(request)
+
     if chapter_id:
         chapter_id = decode_id(chapter_id)
 

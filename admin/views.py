@@ -678,7 +678,7 @@ def workgroup_course_detail(request, course_id):
         for user in users:
             for student in students:
                 if user.username == student.username:
-                    user.company = student.company
+                    user.company = student.company if hasattr(student, "company") else _("(No Company Assignment)")
                     groupedStudents.append(student)
         group.students_count = len(group.students)
         groups.append(group)
