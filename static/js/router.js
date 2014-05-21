@@ -39,6 +39,9 @@ var Router = Backbone.Router.extend({
 
   course_resources: function(course_id) {
     $('#beta_content').foundation('reveal', 'open');
+  },
+
+  course_discussion: function(course_id) {
   }
 });
 
