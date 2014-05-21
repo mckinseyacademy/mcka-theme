@@ -111,7 +111,7 @@ def locate_chapter_page(
     chapter = None
     page = None
 
-    course_detail = get_course_position_information(user_id, course_id)
+    course_detail = get_course_position_information(user_id, course_id, user_api_impl)
     if course_detail.position and len(course.chapters) >= course_detail.position:
         chapter = course.chapters[course_detail.position - 1]
         chapter.bookmark = True

@@ -21,8 +21,6 @@ from django.shortcuts import render
 
 import urlparse
 
-from courses.views import homepage
-
 from django.contrib.auth.decorators import login_required
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
 
@@ -177,10 +175,6 @@ def activate(request, activation_code):
 
 def home(request):
     ''' show me the home page '''
-
-    # if we have an authenticated user, show them their course-based homepage
-    if request.user and request.user.is_authenticated():
-        return homepage(request)
 
     cells = []
     with open('main/fixtures/landing_data.json') as json_file:
