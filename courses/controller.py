@@ -236,7 +236,7 @@ def group_project_location(user_id, course, sequential_id=None):
         except:
             project_groups = []
             
-        intersection_ids = [project_group.group_id for project_group in project_groups if project_group.group_id in user_project_group_ids]
+        intersection_ids = [pg.group_id for pg in project_groups if pg.group_id in user_project_group_ids]
         if len(intersection_ids) > 0:
             group_project = project
             project_group = WorkGroup.fetch_with_members(intersection_ids[0])

@@ -1,8 +1,12 @@
 .group-member
   %img.avatar{src: "#{group_member.image_url}"}
-  .user-info
+  .person-info
     .person-name= group_member.formatted_name
     .person-title= group_member.title
     .email
-      %a{href: "mailto:#{group_member.email}"}
-        = _("Email")
+      - if data_reveal_id
+        %a{href: "#", data-reveal-id: "#{data_reveal_id}"}
+          = _("Email")
+      - else
+        %a{href: "mailto:#{group_member.email}"}
+          = _("Email")
