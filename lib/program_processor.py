@@ -11,8 +11,11 @@ def user_program(request):
     program = None
 
     if request.user and request.user.id:
-        course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
-            request.user.id, get_current_course_for_user(request), None)
+        course_id = get_current_course_for_user(request)
+
+        if course_id:
+            course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
+                request.user.id, course_id, None)
 
         if course_id:
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
