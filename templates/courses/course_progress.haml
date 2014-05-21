@@ -23,50 +23,58 @@
     %li.current-grade.label-3 Current grade
   %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date
   %hr
-  - for lesson in course.chapters
-    .lesson
-      .sub-1 LESSON ={lesson.index}: ={lesson.name}
-      .assessment
-        %span Assessment
-        (0/13)
-      .deadline Suggested deadline: April 16th
-      .module-status
-        - for sequential in lesson.sequentials
-          - for lesson_module in sequential.pages
-            %span{class: "#{lesson_module.status_class}"}
-    %hr
-  .group-work
-    .sub-1 GROUP WORK
-    .lesson
-      .assessment
-        %span Activity 1
-        (0/99)
-      .deadline Suggested deadline: April 30th
-      %ul.group-grades
-        %li Averaged peer grades:
-        %li 75
-        %li 80
-        %li 85
-        %li 75
-    .lesson
-      .assessment.inactive
-        %span Activity 2
-        (0/99)
-      .deadline Suggested deadline: April 30th
-      %ul.group-grades
-        %li Averaged peer grades:
-        %li -
-        %li -
-        %li -
-        %li -
-    .lesson
-      .assessment.inactive
-        %span Activity 3
-        (0/99)
-      .deadline Suggested deadline: April 30th
-      %ul.group-grades
-        %li Averaged peer grades:
-        %li -
-        %li -
-        %li -
-        %li -
+  %table.lesson-table
+    %thead
+      %tr
+        %th.label-4 Lesson:
+        %th.label-4 Suggested Deadline:
+        %th.label-4 Assessment Score:
+        %th.label-4 Progress:
+    %tbody
+      - for lesson in course.chapters
+        %tr
+          %td.lesson.sub-1 ={lesson.index}: ={lesson.name}
+          %td.deadline April 16th
+          %td.assessment 80%
+          %td.lesson-progress
+            - for sequential in lesson.sequentials
+              - for lesson_module in sequential.pages
+                %span{class: "#{lesson_module.status_class}"}
+  %hr
+  %table.lesson-table
+    %thead
+      %th.label-4 Group Work:
+      %th.label-4 Upload Deadline:
+      %th.label-4 Score:
+      %th.label-4 Individual Peer Grades:
+    %tbody
+      %tr
+        %td.lesson.sub-1 Activity 1
+        %td.deadline April 16th
+        %td.assessment 80%
+        %td
+          %ul.group-grades
+            %li 75
+            %li 80
+            %li 85
+            %li 75
+      %tr
+        %td.lesson.sub-1 Activity 2
+        %td.deadline April 16th
+        %td.assessment.none -
+        %td
+          %ul.group-grades
+            %li -
+            %li -
+            %li -
+            %li -
+      %tr
+        %td.lesson.sub-1 Activity 3
+        %td.deadline April 16th
+        %td.assessment.none -
+        %td
+          %ul.group-grades
+            %li -
+            %li -
+            %li -
+            %li -
