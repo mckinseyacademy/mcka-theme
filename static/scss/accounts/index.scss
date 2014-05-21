@@ -8,16 +8,21 @@
     padding-bottom: rem-calc(20);
   }
   h4{
-    text-transform: uppercase;    
+    text-transform: uppercase;
   }
   .description{
     @include font-spec(14, normal, 24);
     height: rem-calc(20);
   }
-  .sidebar{
+  .sidebar {
     @include font-spec(14, normal, 22);
-    a{
+
+    a {
       font-size: rem-calc(12);
+    }
+
+    span {
+      color: $mckinsey-orange;
     }
   }
   form label{

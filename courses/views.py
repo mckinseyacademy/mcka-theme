@@ -59,11 +59,11 @@ def homepage(request):
 
     data = {
         "user": request.user,
-        "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE),
-        "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO),
-        "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).last(),
-        "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).last(),
-        "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).last(),
+        "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE).order_by('sequence')[:3],
+        "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO).order_by('sequence')[:3],
+        "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
+        "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
+        "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
     }
     return render(request, 'courses/course_main.haml', data)
 

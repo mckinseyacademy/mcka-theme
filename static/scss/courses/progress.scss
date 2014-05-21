@@ -3,6 +3,14 @@
     margin-bottom: 40px;
   }
 
+  .course-progress {
+    width: 310px;
+
+    .visualization {
+      margin: 40px 0 25px;
+    }
+  }
+
   .grades {
 
     ul {
@@ -63,71 +71,62 @@
     }
   }
 
-  .lesson {
-    position: relative;
+  table.lesson-table {
+    border: 0;
+    margin: 0;
+    width: 100%;
+    thead { background: none; }
 
-    > * {
-      margin-bottom: 10px;
-      &:last-child { margin-bottom: 0; }
-    }
+    tbody {
+      tr {
+        background: none;
 
-    .assessment {
-      span {
-        color: $mckinsey-green;
-        @include font-spec(14, semibold);
-      }
-
-      &.inactive {
-        span { color: $mckinsey-academy-alt-blue; }
-      }
-    }
-
-    .deadline {
-      color: $mckinsey-orange;
-      text-transform: uppercase;
-      @include font-spec(14, semibold);
-    }
-
-    .module-status {
-      position: absolute;
-      top: 0;
-      right: 0;
-      font-family: FontAwesome;
-      @include font-spec(10);
-
-      span {
-        color: $mckinsey-grey;
-        margin-right: 5px;
-        &:before { content: '\f111'; }
-        &:last-child { margin-right: 0; }
-        &.complete { color: $mckinsey-green; }
-      }
-    }
-  }
-
-  .group-work {
-    .lesson {
-      margin-bottom: 25px;
-    }
-
-    ul.group-grades {
-      list-style-type: none;
-      margin-left: 0;
-      @include clearfix;
-
-      li {
-        float: left;
-        border-right: 1px solid $mckinsey-grey;
-        padding: 0 8px;
-        @include font-spec(14, bold);
-
-        &:first-child {
-          border-right: none;
-          padding-left: 0;
-          @include font-spec(14, normal);
+        &:last-child {
+          td { border-bottom: none; }
         }
 
-        &:last-child { border-right: none; }
+        td {
+          border-bottom: 1px solid #f9f9f9;
+
+          &.lesson { width: 210px; }
+
+          &.deadline {
+            width: 100px;
+            color: $mckinsey-orange;
+            text-transform: uppercase;
+            @include font-spec(14, semibold);
+          }
+
+          &.assessment { width: 80px; }
+
+          &.lesson-progress {
+            font-family: FontAwesome;
+            @include font-spec(10);
+
+            span {
+              color: $mckinsey-grey;
+              margin-right: 5px;
+              &:before { content: '\f111'; }
+              &:last-child { margin-right: 0; }
+              &.complete { color: $mckinsey-green; }
+            }
+          }
+
+          ul.group-grades {
+            list-style-type: none;
+            margin: 0;
+            @include clearfix;
+
+            li {
+              float: left;
+              border-right: 1px solid $mckinsey-grey;
+              padding: 0 8px;
+              @include font-spec(14, bold);
+              &:last-child { border-right: none; }
+            }
+          }
+
+        }
       }
     }
   }
