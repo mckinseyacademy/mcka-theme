@@ -1,11 +1,6 @@
 #new-principal, #edit-principal {
   padding: rem-calc(20);
 
-  .close-reveal-modal {
-    @include font-spec(25);
-    &:after { content: ''; }
-  }
-
   header {
     margin-bottom: rem-calc(25);
 

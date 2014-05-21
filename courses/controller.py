@@ -138,6 +138,7 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
     or None if program is not present
         user_api_impl - optional api client module to use (useful in mocks)
     '''
+
     courses = user_api_impl.get_user_courses(user_id)
     if not course_id:
         if len(courses) < 1:

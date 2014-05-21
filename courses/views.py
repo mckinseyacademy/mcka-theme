@@ -10,6 +10,7 @@ from main.models import CuratedContentItem
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course
 from .controller import update_bookmark, decode_id, encode_id, group_project_location
 from lib.authorization import is_user_in_permission_group
+from lib.program_processor import user_program
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api
 from admin.controller import load_course
@@ -50,13 +51,19 @@ def _inject_formatted_data(program, course, page_id):
                 elif found_current_page:
                     page.status_class = "incomplete"
 
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+    
 @login_required
 def homepage(request):
     '''
     Logged in user's homepage which will infer current program, course,
     etc. from user settings
     '''
-
+    programData = user_program(request)
+    dump(programData)
     data = {
         "user": request.user,
         "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE),

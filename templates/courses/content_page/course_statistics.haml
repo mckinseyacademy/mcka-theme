@@ -42,3 +42,12 @@
     .label-4 cohort average = 28 points
     %a.info{href: '#'}
       %i.fa.fa-info-circle
+
+%a{'href': "#", 'data-reveal-id': "generalModal"}
+  Click Me For A Modal
+.reveal-modal.small{'id': "generalModal", 'data-reveal': ''} 
+  %h2.title 
+    =program.popup_title
+  %p{'class': "lead description"}
+    =program.popup_description
+  %a{'class': "close-reveal-modal fa fa-times-circle"}
