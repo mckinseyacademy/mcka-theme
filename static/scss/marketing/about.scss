@@ -1,0 +1,68 @@
+#about-page {
+  .what-is {
+    @include font-spec(20, normal, 26);
+  }
+
+  ul {
+    &.info {
+      padding-left: rem-calc(35);
+      li { padding-left: rem-calc(30); }
+    }
+
+    &.people {
+      margin-left: 0;
+      list-style-type: none;
+
+      li {
+        margin-bottom: rem-calc(20);
+        @include clearfix;
+
+        img {
+          float: left;
+          margin-right: rem-calc(20);
+        }
+
+        > div {
+          float: left;
+          width: rem-calc(620);
+          max-width: 100%;
+        }
+      }
+    }
+
+    &.team {
+      margin-left: 0;
+      list-style-type: none;
+
+      li {
+        margin-bottom: rem-calc(10);
+        margin-left: rem-calc(10);
+        margin-right: rem-calc(10);
+
+        .team-list {
+          width: 180px;
+          margin-top: rem-calc(40);
+        }
+
+        .card-flip {
+          width: 180px;
+          height: 125px;
+          margin-bottom: rem-calc(10);
+
+          .front, .back {
+            width: 180px;
+            height: 125px;
+            @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+          }
+
+          .back {
+            padding: 10px;
+            .label-1 {
+              margin-bottom: rem-calc(15);
+            }
+          }
+        }
+      }
+    }
+  }
+}
