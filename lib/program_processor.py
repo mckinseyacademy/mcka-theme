@@ -1,8 +1,6 @@
 from courses.controller import build_page_info_for_course, locate_chapter_page, program_for_course
 
-#from courses.views import _inject_formatted_data
-import datetime
-import math
+from courses.views import _inject_formatted_data
 
 from api_client import course_api
 
@@ -25,16 +23,7 @@ def user_program(request):
             program = program_for_course(request.user.id, course_id)
 
             # Inject formatted data for view
-
-           # _inject_formatted_data(program, course, page_id, course_api.get_course_tabs(course_id)
-    if program.id is not 'NO_PROGRAM':
-        if program.start_date > datetime.datetime.today():
-            days = str(int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
-            if days > 1:
-                days = days + 's'
-            program.popup_title = "Welcome to McKinsey Academy"
-            program.popup_description = "Your program will start in {}. Please explore the site to learn more about the expirience in the meantime.".format(days)
-        
+            _inject_formatted_data(program, course, page_id, course_api.get_course_tabs(course_id))       
 
     data = {
         "course": course,

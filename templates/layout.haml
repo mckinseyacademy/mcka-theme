@@ -61,6 +61,14 @@
           %i.fa.fa-times-circle
         .player-wrapper
 
+    -# Block for general purpouse modal dialog
+    - block general_modal
+      %a.revel-general-modal{'href': "#", 'data-reveal-id': "generalModal"} 
+      .reveal-modal.small{'id': "generalModal", 'data-reveal': ''} 
+        %h2.title 
+        %p{'class': "lead description"}
+        %a{'class': "close-reveal-modal fa fa-times-circle"}
+
     -# Beta content overlay
     - block beta_content
       #beta_content.reveal-modal.small{'data-reveal': None}
