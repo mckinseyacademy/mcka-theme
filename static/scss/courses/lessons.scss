@@ -55,5 +55,36 @@
         background-color: #dddddd;
       }
     }
+    .go-to-next{
+      display:none;
+      width:130px;
+    }
+    .go-to-prev{
+      display:none;
+      width:160px;
+    }
+    a.pager-link.next.show{
+      .page-to.previous{
+        margin-left:10px;
+      }
+      .page-to.next{
+        left: 134px;
+        margin-left: -124px;
+        position: relative;
+      }
+      .go-to-next{
+        display: inline-block; 
+        left: 125px;
+        position: relative;
+      }
+    }
+    a.pager-link.prev.show{
+      .go-to-prev{
+        display: inline-block;
+        margin-right: -164px;
+        position: relative;
+        right: 160px;
+      }
+    }
   }
 }

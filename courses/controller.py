@@ -70,6 +70,8 @@ def build_page_info_for_course(
                     page.prev_url = prev_page.navigation_url
                     prev_page.next_url = page.navigation_url
                 prev_page = page
+            if current_page == sequential.pages[-1] and chapter != course.chapters[-1]:
+                current_page.next_lesson_link = True
 
     if not current_page:
         current_sequential = current_chapter.sequentials[0] if len(current_chapter.sequentials) > 0 else None
