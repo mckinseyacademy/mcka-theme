@@ -172,7 +172,7 @@ EDX_API_KEY = 'test_api_key'
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-TA_EMAIL_GROUP = 'ta@mckinseyacademy.com'
+TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
 INITIAL_PASSWORD = 'PassworD12!@'
 
 try:

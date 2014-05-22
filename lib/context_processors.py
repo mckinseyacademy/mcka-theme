@@ -43,6 +43,7 @@ def settings_data(request):
     ''' makes global settings available to all templates '''
     data = {
         "ga_tracking_id": settings.GA_TRACKING_ID,
+        "ta_email_group": settings.TA_EMAIL_GROUP,
     }
     return data
 
