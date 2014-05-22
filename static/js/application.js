@@ -36,7 +36,7 @@ $(function(){
         break;
       case /ted\.com/.test(video):
         var video_id    = video.match(/([^#\&\?\/]*$)/)[1];
-        iframe_opts.src = '//embed.ted.com/talks/' + video_id + '.html';
+        iframe_opts.src = 'http://embed.ted.com/talks/' + video_id + '.html';
         $('.player-wrapper').append($('<iframe />', iframe_opts));
         break;
       default:
