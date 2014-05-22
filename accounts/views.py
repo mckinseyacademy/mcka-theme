@@ -138,9 +138,6 @@ def activate(request, activation_code):
         # email should never be changed
         user_data["email"] = user.email
 
-        # activate the user
-        user_data["is_active"] = True
-
         form = ActivationForm(user_data)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
