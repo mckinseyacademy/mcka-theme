@@ -51,6 +51,8 @@
 
 #course_discussion_modal,
 #beta_visualizations {
+  z-index: 9999999;
+
   .screencap {
     margin-top: 20px;
     text-align: center;
