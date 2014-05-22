@@ -15,7 +15,7 @@
         .background-white
           .sub-1 CONTACT US
           %p Please email us with questions, comments and feedback. If your problem is technical, the form to the right will be more effective.
-          %a.mk-email.button.small.radius{href: 'mailto:'} Email McKinsey Academy
+          %a.mk-email.button.small.radius{href: 'mailto:support@mckinseyacademy.com'} Email McKinsey Academy
         .background-white.hidden
           .sub-1 STAY INFORMED
           %p To stay informed about McKinsey Academy, please enter your email address below.
@@ -25,7 +25,7 @@
                 %input{type: 'email', placeholder: 'Email'}
               %div
                 %input.button.small.radius{type: 'submit', value: 'Submit'}
-      .large-6.columns.background-white
+      .large-6.columns.background-white.hidden
         .sub-1 TECH SUPPORT
         %p If you suspect your problem is technical in nature, please complete the form below and we will respond within one business day (beta users):
         %form{action: '/', method: 'post'}
@@ -39,6 +39,6 @@
               %textarea{placeholder: 'Please provide details'}
             %div
               %input.button.small.radius{type: 'submit', value: 'Submit'}
-      %section.trouble.label-2
+      %section.trouble.label-2.hidden
         Having trouble with the email button above?
         %a{href: '#'} Click here.

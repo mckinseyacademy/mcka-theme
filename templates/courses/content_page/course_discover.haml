@@ -23,7 +23,7 @@
       .label-6 ON TWITTER
       .tweet
         %a{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}
-          %img{src:'http://dummyimage.com/50x50/aaa/000'}
+          %img{src: "#{tweet.thumbnail_url}"}
         .content
           %div
             %span.label-8= tweet.twitter_username
