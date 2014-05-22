@@ -32,6 +32,8 @@ def get_current_course_for_user(request):
 
 def user_activation_with_data(user_id, user_data, activation_record):
     try:
+        # Make sure they'll be inactive while updating fields, then we explicitly activate them
+        user_data["is_active"] = False
         updated_user = user_api.update_user_information(user_id, user_data)
     except url_access.HTTPError, err:
         error = _("An error occurred updating user information")
