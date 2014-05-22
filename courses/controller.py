@@ -201,7 +201,7 @@ def _fake_project_group():
         "username": "ta",
         "formatted_name": "Your TA",
         "title": "McKinsey Teaching Assistant",
-        "email": "ta@mckinseyacademy.com",
+        "email": "tas@mckinseyacademy.com",
     })
     project_group = ProjectGroup()
     project_group.members = members_list
