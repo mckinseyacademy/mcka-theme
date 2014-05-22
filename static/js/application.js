@@ -54,6 +54,7 @@ $(function(){
       ooyala.destroy();
       modal.removeData('ooyala');
     }
+    $('.player-wrapper', modal).empty();
   });
 
   // Load user profile information on demand
