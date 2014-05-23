@@ -7,8 +7,7 @@ window.Apros = {
     var route     = window.location.pathname.replace(/\/$/, ''),
         has_push  = window.history && window.history.pushState ? true : false;
     $('header[role=banner] a[href="' + route + '"]').addClass('selected');
-    console.log(has_push);
-    Backbone.history.start({pushState: has_push});
+    Backbone.history.start({pushState: has_push, hashChange: false});
   }
 }
 
