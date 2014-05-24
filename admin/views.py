@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 from urllib2 import HTTPError
 
 from lib.authorization import permission_group_required
@@ -83,50 +84,61 @@ def course_meta_content_course_items(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_item_new(request):
+    error = None
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
-        item = form.save()
-        #item.course_id = course_id
-        #item.save()
-        return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)
+        course_id = form.data['course_id']
+        if form.is_valid():
+            item = form.save()
+            return redirect('/admin/course-meta-content/items?course_id=%s' % course_id)
+        else:
+            error = "please fix the problems indicated below."
     else:
         course_id = request.GET.get('course_id', None)
-        data = {'course_id': course_id}
-        form = CuratedContentItemForm(initial=data)
-        data = { 
-            "course_id": course_id,
-            "form": form,
-            "form_action": "/admin/course-meta-content/item/new",
-            "cancel_link": "/admin/course-meta-content/items?course_id=%s" % course_id
-        }
-        return render(
-                request,
-                'admin/course_meta_content/item_detail.haml',
-                data
-            )
+        init = {'course_id': course_id}
+        form = CuratedContentItemForm(initial=init)
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content_course_item_edit(request, item_id):
-    item = CuratedContentItem.objects.filter(id=item_id)[0]
-    if request.method == "POST":
-        form = CuratedContentItemForm(request.POST, instance=item)
-        form.save()
-        return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)   
-    else:
-        form = CuratedContentItemForm(instance=item)
-        data = {
-            "form": form,
-            "item": item,
-            "form_action": "/admin/course-meta-content/item/%d/edit" % item.id,
-            "cancel_link": "/admin/course-meta-content/items?course_id=%s" % item.course_id
-        }
-
-        return render(
+    data = { 
+        "course_id": course_id,
+        "form": form,
+        "error": error,
+        "form_action": "/admin/course-meta-content/item/new",
+        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % course_id
+    }
+    return render(
             request,
             'admin/course_meta_content/item_detail.haml',
             data
         )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_meta_content_course_item_edit(request, item_id):
+    error = None
+    item = CuratedContentItem.objects.filter(id=item_id)[0]
+    if request.method == "POST":
+        form = CuratedContentItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)  
+        else:
+            error = "please fix the problems indicated below."
+    else:
+        form = CuratedContentItemForm(instance=item)
+        
+    data = {
+        "form": form,
+        "error": error,
+        "item": item,
+        "form_action": "/admin/course-meta-content/item/%d/edit" % item.id,
+        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % item.course_id
+    }
+
+    return render(
+        request,
+        'admin/course_meta_content/item_detail.haml',
+        data
+    )
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -162,7 +174,6 @@ def client_list(request):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_new(request):
-    error = None
     if request.method == 'POST':  # If the form has been submitted...
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -203,7 +214,6 @@ def client_new(request):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_edit(request, client_id):
-    error = None
     if request.method == 'POST':  # If the form has been submitted...
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
