@@ -70,6 +70,7 @@ def course_meta_content_course_items(request):
     course_id = request.GET.get('course_id', None) 
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
     data = {
+        "course_id": course_id,
         "items": items
     }
 
@@ -85,12 +86,18 @@ def course_meta_content_course_item_new(request):
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
         item = form.save()
+        #item.course_id = course_id
+        #item.save()
         return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)
     else:
-        form = CuratedContentItemForm()
+        course_id = request.GET.get('course_id', None)
+        data = {'course_id': course_id}
+        form = CuratedContentItemForm(initial=data)
         data = { 
+            "course_id": course_id,
             "form": form,
-            "form_action": "/admin/course-meta-content/item/new" 
+            "form_action": "/admin/course-meta-content/item/new",
+            "cancel_link": "/admin/course-meta-content/items?course_id=%s" % course_id
         }
         return render(
                 request,
@@ -111,7 +118,8 @@ def course_meta_content_course_item_edit(request, item_id):
         data = {
             "form": form,
             "item": item,
-            "form_action": "/admin/course-meta-content/item/%d/edit" % item.id
+            "form_action": "/admin/course-meta-content/item/%d/edit" % item.id,
+            "cancel_link": "/admin/course-meta-content/items?course_id=%s" % item.course_id
         }
 
         return render(
@@ -124,7 +132,7 @@ def course_meta_content_course_item_edit(request, item_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_item_delete(request, item_id):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
-    course_id = item.course_id
+    # course_id = item.course_id
     item.delete()
 
     return redirect('/admin/course-meta-content/items?course_id=%s' % course_id) 

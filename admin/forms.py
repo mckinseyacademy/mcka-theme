@@ -59,7 +59,7 @@ class CuratedContentItemForm(forms.ModelForm):
     class Meta:
         model = CuratedContentItem
         fields = [
-            'course_id', 'content_type', 'title',
+            'content_type', 'title',
             'body', 'source', 'byline', 'byline_title', 'url',
             'thumbnail_url', 'image_url', 'twitter_username', 'sequence',
             'display_date', 'created_at'
