@@ -7,9 +7,12 @@
     %form.admin-form{action: "#{form_action}", method: "POST"}
       .error
         - if error
+          ERRORS: 
           = error
       - csrf_token
       %fieldset= form.as_p
       .submit-area
         %input.button.radius.small{type: "submit", value: "Save"}
+        %a{href: "#{cancel_link}"} 
+          .button.radius.small Cancel
 

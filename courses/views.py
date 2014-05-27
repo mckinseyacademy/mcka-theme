@@ -68,11 +68,11 @@ def course_landing_page(request, course_id):
 
     data = {
         "user": request.user,
-        "articles": CuratedContentItem.objects.filter(content_type=CuratedContentItem.ARTICLE).order_by('sequence')[:3],
-        "videos": CuratedContentItem.objects.filter(content_type=CuratedContentItem.VIDEO).order_by('sequence')[:3],
-        "tweet": CuratedContentItem.objects.filter(content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
-        "quote": CuratedContentItem.objects.filter(content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
-        "infographic": CuratedContentItem.objects.filter(content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
+        "articles": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.ARTICLE).order_by('sequence')[:3],
+        "videos": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.VIDEO).order_by('sequence')[:3],
+        "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
+        "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
+        "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
     }
     return render(request, 'courses/course_main.haml', data)
 
@@ -215,7 +215,7 @@ def infer_default_navigation(request):
 @login_required
 def contact_ta(request, course_id):
     email_from = request.user.email
-    email_to = "ta@mckinseyacademy.com"
+    email_to = settings.TA_EMAIL_GROUP
     email_content = request.POST["ta_message"]
 
     # TODO: Hook up to email sending stuff

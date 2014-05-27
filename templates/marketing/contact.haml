@@ -6,17 +6,16 @@
       %section
         %h1 Contact McKinsey Academy
       %section
-        .sub-1 RESERVE PLACES SUBHEAD
         %p
-          We have set aside a limited number of places (250) for our alumni and their staff in the first cohort of the McKinsey Management Program. This will give alumni the exclusive opportunity to reserve places for high performing employees on their teams.  Text here.
-          %a{href: '/privacy'} privacy policy
+          Thank you for your interest in McKinsey Academy. Please click the email button to contact us. 
+          
       %hr
       .large-6.columns
         .background-white
           .sub-1 CONTACT US
-          %p Lorem ipsum and note on emailing McKinsey, with maybe info on response time or other details
-          %a.mk-email.button.small.radius{href: 'mailto:'} Email McKinsey Academy
-        .background-white
+          %p Please email us with questions, comments and feedback. 
+          %a.mk-email.button.small.radius{href: 'mailto:support@mckinseyacademy.com'} Email McKinsey Academy
+        .background-white.hidden
           .sub-1 STAY INFORMED
           %p To stay informed about McKinsey Academy, please enter your email address below.
           %form{action: '/', method: 'post'}
@@ -25,9 +24,9 @@
                 %input{type: 'email', placeholder: 'Email'}
               %div
                 %input.button.small.radius{type: 'submit', value: 'Submit'}
-      .large-6.columns.background-white
+      .large-6.columns.background-white.hidden
         .sub-1 TECH SUPPORT
-        %p Please lorem ipsum about your problem and we will respond within xx hours:
+        %p If you suspect your problem is technical in nature, please complete the form below and we will respond within one business day (beta users):
         %form{action: '/', method: 'post'}
           %fieldset
             %div
@@ -39,6 +38,6 @@
               %textarea{placeholder: 'Please provide details'}
             %div
               %input.button.small.radius{type: 'submit', value: 'Submit'}
-      %section.trouble.label-2
+      %section.trouble.label-2.hidden
         Having trouble with the email button above?
         %a{href: '#'} Click here.

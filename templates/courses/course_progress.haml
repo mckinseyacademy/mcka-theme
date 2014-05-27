@@ -21,7 +21,7 @@
     %li.completed.label-3 Completed
     %li.group-work.label-3 Group Work avg.
     %li.current-grade.label-3 Current grade
-  %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date
+  %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
   %hr
   %table.lesson-table
     %thead
@@ -78,3 +78,10 @@
             %li -
             %li -
             %li -
+
+#progress_modal.reveal-modal.small{'data-reveal': None}
+  .close-reveal-modal
+    %i.fa.fa-times-circle
+  %p
+    If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
+    %a{href: '/privacy'} privacy policy.

@@ -29,7 +29,11 @@
 
   .col-left {
     .video-preview {
-      .thumb { margin-bottom: 10px; }
+      .thumb {
+        margin-bottom: 10px;
+        width: 450px;
+        height: 225px;
+      }
 
       .video-overview {
 
