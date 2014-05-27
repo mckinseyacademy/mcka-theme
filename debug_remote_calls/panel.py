@@ -22,6 +22,9 @@ class DebugHandler(urllib2.HTTPHandler):
             data = json.dumps(json.loads(data),
                               indent=4, separators=(',', ': '))
 
+        # if we're in a different thread, api_calls doesn't exist
+        threadlocal.api_calls = getattr(threadlocal, 'api_calls', [])
+
         threadlocal.api_calls.append({
             'request': {
                 'method': request.get_method(),
