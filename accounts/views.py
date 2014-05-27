@@ -182,7 +182,7 @@ def activate(request, activation_code):
         "activate_label": _("Create my McKinsey Academy account"),
         }
     return render(request, 'accounts/activate.haml', data)
-   
+
 def home(request):
     ''' show me the home page '''
 
@@ -218,7 +218,6 @@ def home(request):
 
     data.update({"user": request.user, "cells": cells})
     return render(request, 'home/landing.haml', data)
-
 
 @login_required
 def user_profile(request):

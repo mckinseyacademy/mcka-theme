@@ -57,7 +57,7 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                     found_current_page = True
                 elif found_current_page:
                     page.status_class = "incomplete"
- 
+
 @login_required
 def course_landing_page(request, course_id):
     '''
