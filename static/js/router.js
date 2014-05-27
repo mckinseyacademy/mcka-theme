@@ -1,6 +1,6 @@
 var Router = Backbone.Router.extend({
   routes: {
-    '/':                                   'home',
+    '':                                   'home',
     'courses/*course_id/view/progress':   'course_progress',
     'courses/*course_id/view/overview':   'course_overview',
     'courses/*course_id/view/cohort':     'course_cohort',
@@ -10,6 +10,7 @@ var Router = Backbone.Router.extend({
   },
 
   home: function() {
+    console.log('here');
     var el = $('#home-landing');
     new Apros.views.HomeLanding({el: el}).render();
   },
