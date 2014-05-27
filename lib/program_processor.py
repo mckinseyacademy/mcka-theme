@@ -24,7 +24,7 @@ def user_program(request):
             program = program_for_course(request.user.id, course_id)
 
             # Inject formatted data for view
-            _inject_formatted_data(program, course, page_id, course_api.get_course_tabs(course_id))       
+            _inject_formatted_data(program, course, page_id, course_api.get_course_tabs(course_id))     
 
     data = {
         "course": course,
