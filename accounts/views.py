@@ -9,7 +9,7 @@ from api_client import user_api
 from .models import RemoteUser, UserActivation
 from admin.models import Client
 
-from lib.program_processor import user_program
+from lib.context_processors import user_program_data
 from accounts.controller import get_current_course_for_user
 from .controller import get_current_course_for_user, user_activation_with_data, ActivationError
 
