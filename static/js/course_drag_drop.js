@@ -1,5 +1,5 @@
     $.courseDrag = function(){
-      var course_id = $('#course_id').val(); 
+      var course_id = $('#course_id').val();
       var data_table = $('.student-list').dataTable({
           paging: false
         });
@@ -25,14 +25,14 @@
       var removeStudent = function(el, link){
           var parent = el.parents('.select-group-box');
           data = {
-            'student' : el.attr('name'), 
-            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'), 
+            'student' : el.attr('name'),
+            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'),
             'course_id': course_id
             };
           $.ajax(
           {
-            url: link, 
-            data: data, 
+            url: link,
+            data: data,
             method: 'POST'
           }).done(function(data){
             if(data != ''){
@@ -50,12 +50,12 @@
 
       var updateGroup = function(group_id, students, url){
         $.ajax({
-          url: url, 
+          url: url,
           data: {
-            students: students, 
-            group_id: group_id, 
-            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'), 
-          }, 
+            students: students,
+            group_id: group_id,
+            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'),
+          },
           method: 'POST'
         }).done(function(data){
           if(data.status == 'success'){
@@ -67,16 +67,16 @@
             alert(data.status);
           }
         });
-      }; 
+      };
 
       return {
-        updateGroup: updateGroup, 
-        removeStudent: removeStudent, 
-        accordion: accordion, 
-        accordianSlide: accordianSlide, 
-        selections: selections, 
-        activator: activator, 
-        course_id: course_id, 
+        updateGroup: updateGroup,
+        removeStudent: removeStudent,
+        accordion: accordion,
+        accordianSlide: accordianSlide,
+        selections: selections,
+        activator: activator,
+        course_id: course_id,
         data_table: data_table
       }
     }
@@ -85,19 +85,19 @@
 
   $(function(){
 
-    var course_id = $('#course_id').val(); 
-    
+    var course_id = $('#course_id').val();
+
     selections = [
       {
         selector: ".student-list .student",
         submit_name: "students",
-        data_field: 'company-name', 
+        data_field: 'company-name',
         minimum_count_message: "Please select at least one student"
       }
     ];
 
     activator = {
-      selector: '#student-group-action:not(.disabled)', 
+      selector: '#student-group-action:not(.disabled)',
       success: function(){
         $('#student-group-action').removeClass('disabled');
         window.location = '/admin/workgroup/course/' + course_id;
@@ -119,7 +119,7 @@
       courseDrag.accordianSlide(that, selected);
       window.location.hash = '';
     }
-  
+
     enable_selection(selections, activator);
 
     courseDrag.accordion($('.select-group-box'), '.group-info.students');
@@ -153,7 +153,7 @@
           });
         if(students.length == allStudents.length || privacy != 'private'){
           $('.update-group').addClass('disabled');
-          courseDrag.updateGroup(group, students, url);
+          courseDrag.updateGroup(group, allStudents, url);
         }
         else{
           alert('All students added to private group have to be members of same company.');
