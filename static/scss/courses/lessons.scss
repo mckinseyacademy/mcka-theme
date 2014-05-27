@@ -56,23 +56,9 @@
       }
     }
     .go-to-next{
-      display:none;
-      width:130px;
-    }
-    a.pager-link.next.show{
-      .page-to.previous{
-        margin-left:10px;
-      }
-      .page-to.next{
-        left: 134px;
-        margin-left: -124px;
-        position: relative;
-      }
-      .go-to-next{
-        display: inline-block;
-        left: 125px;
-        position: relative;
-      }
+      position:relative;
+      left: 130px;
+      bottom: 30px;
     }
   }
 }
