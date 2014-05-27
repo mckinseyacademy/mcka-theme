@@ -10,6 +10,9 @@ from .models import RemoteUser, UserActivation
 from admin.models import Client
 from .controller import get_current_course_for_user, user_activation_with_data, ActivationError
 
+
+from django.core import mail
+from django.test import TestCase
 # from importlib import import_module
 # from django.conf import settings
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
@@ -23,6 +26,11 @@ from django.shortcuts import render
 import urlparse
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import password_reset, password_reset_confirm, password_reset_done, password_reset_complete
+from django.core.urlresolvers import reverse
+from admin.views import ajaxify_http_redirects
+from django.core.mail import send_mail
+
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
 
 def _get_qs_value_from_url(value_name, url):
@@ -80,6 +88,11 @@ def login(request):
         )
         # set focus to password field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
+    elif 'reset' in request.GET:
+        form = LoginForm()  # An unbound form
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+        form.reset = True
     else:
         form = LoginForm()  # An unbound form
         # set focus to username field
@@ -165,6 +178,56 @@ def activate(request, activation_code):
         "activate_label": _("Create my McKinsey Academy account"),
         }
     return render(request, 'accounts/activate.haml', data)
+
+@ajaxify_http_redirects
+def reset_confirm(request, uidb64=None, token=None,
+                  template_name='registration/password_reset_confirm.html',
+                  post_reset_redirect=None,
+                  current_app=None, extra_context=None):
+    return password_reset_confirm(request=request, uidb64=uidb64, token=token,
+                                  template_name=template_name,
+                                  post_reset_redirect=post_reset_redirect,
+                                  current_app=current_app, extra_context=extra_context)
+
+
+@ajaxify_http_redirects
+def reset(request, is_admin_site=False,
+          template_name='registration/password_reset_form.haml',
+          email_template_name='registration/password_reset_email.haml',
+          subject_template_name='registration/password_reset_subject.txt',
+          post_reset_redirect='/accounts/login?reset=done',
+          from_email='admin@mckinseyacademy.org',
+          current_app=None,
+          extra_context=None):
+    send_mail('Subject here', 'Here is the message.', 'from@example.com', ['to@example.com'], fail_silently=False)
+    return password_reset(request=request, is_admin_site=is_admin_site,
+                          template_name=template_name,
+                          email_template_name=email_template_name,
+                          subject_template_name=subject_template_name,
+                          post_reset_redirect=post_reset_redirect,
+                          from_email=from_email,
+                          current_app=current_app,
+                          extra_context=extra_context)
+
+
+@ajaxify_http_redirects
+def reset_done(request,
+               template_name='registration/password_reset_done.haml',
+               current_app=None, extra_context=None):
+    return password_reset_done(request=request,
+               template_name=template_name,
+               current_app=current_app, extra_context=extra_context)
+
+
+@ajaxify_http_redirects
+def reset_complete(request,
+                   template_name='registration/password_reset_complete.haml',
+                   current_app=None, extra_context=None):
+    return password_reset_confirm(request=request,
+                   template_name=template_name,
+                   current_app=current_app, extra_context=extra_context)
+
+
 
 def home(request):
     ''' show me the home page '''

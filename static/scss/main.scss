@@ -283,6 +283,12 @@ form {
   p { margin-bottom: rem-calc(30); }
 }
 
+.modal-title {
+    border-bottom: 1px solid $mckinsey-academy-light-gray;
+    padding-bottom: 15px; 
+    margin-bottom: 15px;
+}
+
 /* Styles to hide debugging QA content when logged in as a staff user */
 .xqa-modal, .history-modal{
   display: none !important;
