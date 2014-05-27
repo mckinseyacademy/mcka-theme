@@ -510,7 +510,7 @@ def _prepare_program_display(program):
 
     return program
 
-
+@ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_association(request, client_id):
     client = Client.fetch(client_id)
