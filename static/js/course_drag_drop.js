@@ -138,12 +138,12 @@
     $('.update-group').on('click', function(){
       var that = $(this);
       if(!that.hasClass('disabled')){
-        group = that.data('group-id');
-        privacy = that.data('privacy');
-        client_id = that.data('client-id');
-        url = that.data('url');
-        var students = new Array();
-        var allStudents = new Array();
+        var group = that.data('group-id');
+        var privacy = that.data('privacy');
+        var client_id = that.data('client-id');
+        var url = that.data('url');
+        var students = [];
+        var allStudents = [];
         $('#student-list tr.student.selected').each(
           function(){
             if($(this).data('company-name') == client_id){
