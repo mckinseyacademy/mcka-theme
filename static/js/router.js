@@ -10,7 +10,6 @@ var Router = Backbone.Router.extend({
   },
 
   home: function() {
-    console.log('here');
     var el = $('#home-landing');
     new Apros.views.HomeLanding({el: el}).render();
   },
@@ -27,8 +26,6 @@ var Router = Backbone.Router.extend({
   },
 
   course_overview: function(course_id) {
-    console.log(OO);
-    console.log('asdfasdf');
     OO.Player.create('mk_overview_player', 'o3bHd4bTq6tVR5KxP8m1RXDl9vpVaNMA', {width: '100%', height: '100%'});
   },
 
