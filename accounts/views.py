@@ -175,7 +175,7 @@ def activate(request, activation_code):
 def home(request):
     ''' show me the home page '''
 
-    programData = user_program(request)
+    programData = user_program_data(request)
     program = programData.get('program')
     course = programData.get('course')
 

@@ -7,7 +7,7 @@ from api_client import course_api
 from accounts.controller import get_current_course_for_user
 
 
-def user_program(request):
+def user_program_data(request):
     ''' Makes user and program info available to all templates '''
     course = None
     current_chapter = None
