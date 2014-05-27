@@ -63,6 +63,14 @@
 			th:active {
 				outline: none;
 			}
+      /* Sort arrows default to transparent grey. When active, turn black */
+      th .asc, th .desc { 
+        color: rgba(127, 127, 127, 0.3); 
+        float: right; 
+      }
+      .sorting_desc .asc, .sorting_asc .desc { 
+        color: rgba(0,0,0,1); 
+      }
 		}
 	}
 

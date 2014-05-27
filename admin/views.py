@@ -654,7 +654,7 @@ def workgroup_programs_list(request):
         data = {
             "courses": courses,
         }
-        
+
     return render(
         request,
         'admin/workgroup/courses_list.haml',
@@ -682,7 +682,6 @@ def workgroup_course_detail(request, course_id):
         "principal_name_plural": _("Group Work"),
         "course": course,
         "students": students,
-        "groups": groups,
         "groups": groups,
         "companies": companies.values(),
     }
