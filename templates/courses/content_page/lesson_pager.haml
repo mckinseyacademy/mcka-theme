@@ -1,10 +1,5 @@
 .lesson-pager
   %div
-    - if current_page.prev_url
-      %a.pager-link.prev{href: "#{current_page.prev_url}"}
-        .page-to.previous
-          %i.fa.fa-chevron-left
-    - else
       .page-to.previous.disabled
         %i.fa.fa-chevron-left
     - if current_page.next_lesson_link and current_page.next_url
@@ -13,7 +8,7 @@
           %i.fa.fa-chevron-right
         .go-to-next
           Go to next lesson
-    - else 
+    - else
       - if current_page.next_url
         %a.pager-link.next{href: "#{current_page.next_url}"}
           .page-to.next
