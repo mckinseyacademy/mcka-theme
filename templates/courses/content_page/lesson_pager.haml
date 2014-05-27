@@ -1,16 +1,13 @@
 .lesson-pager
-  %div
-    - if current_page.prev_url
-      %a{href: "#{current_page.prev_url}"}
-        .page-to.previous
-          %i.fa.fa-chevron-left
-    - else
-      .page-to.previous.disabled
-        %i.fa.fa-chevron-left
-    - if current_page.next_url
-      %a{href: "#{current_page.next_url}"}
-        .page-to.next
-          %i.fa.fa-chevron-right
-    - else
-      .page-to.next.disabled
-        %i.fa.fa-chevron-right
+  - if current_page.prev_url
+    %a.page-to.previous{href: "#{current_page.prev_url}"}
+      %i.fa.fa-chevron-left
+  - else
+    %a.page-to.previous
+      %i.fa.fa-chevron-left
+  - if current_page.next_url
+    %a.page-to.next{href: "#{current_page.next_url}"}
+      %i.fa.fa-chevron-right
+  - else
+    %a.page-to.next
+      %i.fa.fa-chevron-right
