@@ -77,53 +77,85 @@ def course_landing_page(request, course_id):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
-def navigate_to_page(request, course_id, current_view = 'landing'):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
+def course_overview(request, course_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of
+    # this step
     course_id = decode_id(course_id)
+    data = {
+        'overview': course_api.get_course_overview(course_id),
+    }
+    return render(request, 'courses/course_overview.haml', data)
 
-    if current_view == "landing":
-        return course_landing_page(request, course_id)
 
-    # Get course info
-    request.session["current_course_id"] = course_id
+@login_required
+def course_syllabus(request, course_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of
+    # this step
+    course_id = decode_id(course_id)
+    data = {
+        'syllabus': course_api.get_course_syllabus(course_id),
+    }
+    return render(request, 'courses/course_syllabus.haml', data)
+
+
+@login_required
+def course_news(request, course_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of
+    # this step
+    course_id = decode_id(course_id)
+    data = course_api.get_course_news(course_id)
+    return render(request, 'courses/course_news.haml', data)
+
+
+@login_required
+def course_cohort(request, course_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of
+    # this step
+    course_id = decode_id(course_id)
+    return render(request, 'courses/course_cohort.haml')
+
+
+@login_required
+def course_group_work(request, course_id):
+    seq_id = request.GET.get("seqid", None)
+    project_group, group_project, sequential, page = group_project_location(
+        request.user.id,
+        load_course(course_id, 4),
+        seq_id
+    )
+    vertical_usage_id = page.vertical_usage_id() if page else None
+
+    remote_session_key = request.session.get("remote_session_key")
+    lms_base_domain = settings.LMS_BASE_DOMAIN
+    lms_sub_domain = settings.LMS_SUB_DOMAIN
 
     data = {
-        "current_view": current_view,
-        "current_template": "courses/course_{0}.haml".format(current_view),
+        "lesson_content_parent_id": "course-group-work",
+        "vertical_usage_id": vertical_usage_id,
+        "remote_session_key": remote_session_key,
+        "lms_base_domain": lms_base_domain,
+        "lms_sub_domain": lms_sub_domain,
+        "project_group": project_group,
+        "group_project": group_project,
+        "current_sequential": sequential,
+        "current_page": page,
     }
+    return render(request, 'courses/course_group_work.haml', data)
 
-    if current_view == "overview":
-        data["overview"] = course_api.get_course_overview(course_id)
-    elif current_view == "syllabus":
-        data["syllabus"] = course_api.get_course_syllabus(course_id)
-    elif current_view == "news":
-        data["news"] = course_api.get_course_news(course_id)
-    elif current_view == "group_work":
-        seq_id = request.GET.get("seqid", None)
-        project_group, group_project, sequential, page = group_project_location(
-            request.user.id,
-            load_course(course_id, 4),
-            seq_id
-        )
-        vertical_usage_id = page.vertical_usage_id() if page else None
 
-        remote_session_key = request.session.get("remote_session_key")
-        lms_base_domain = settings.LMS_BASE_DOMAIN
-        lms_sub_domain = settings.LMS_SUB_DOMAIN
+@login_required
+def course_progress(request, course_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
+    course_id = decode_id(course_id)
+    return render(request, 'courses/course_progress.haml')
 
-        data.update({
-            "lesson_content_parent_id": "course-group-work",
-            "vertical_usage_id": vertical_usage_id,
-            "remote_session_key": remote_session_key,
-            "lms_base_domain": lms_base_domain,
-            "lms_sub_domain": lms_sub_domain,
-            "project_group": project_group,
-            "group_project": group_project,
-            "current_sequential": sequential,
-            "current_page": page,
-        })
 
-    return render(request, 'courses/course_navigation.haml', data)
+@login_required
+def course_resources(request, course_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
+    course_id = decode_id(course_id)
+    return render(request, 'courses/course_resources.haml')
+
 
 @login_required
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
@@ -165,10 +197,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
-        "current_view": "lessons",
-        "current_template": "courses/course_lessons.haml",
     }
-    return render(request, 'courses/course_navigation.haml', data)
+    return render(request, 'courses/course_lessons.haml', data)
 
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):

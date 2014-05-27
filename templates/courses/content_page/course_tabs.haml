@@ -1,22 +1,22 @@
 %ul.course-tabs
   %li
-    %a{class: "nav-1 {% ifequal current_view 'overview' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/overview"}= _("Overview")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_overview' %}selected{% endifequal %}", href: "/courses/#{course.id}/overview"}= _("Overview")
   %li
-    %a{class: "nav-1 {% ifequal current_view 'lessons' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons"}= _("Lessons")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'navigate_to_lesson_module' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons"}= _("Lessons")
   %li
-    %a{class: "nav-1 {% ifequal current_view 'news' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/news"}= _("News")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/news"}= _("News")
   %li
     -# Temporary until discussion page is out
-    -# %a{class: "nav-1 {% ifequal current_view 'discussion' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/discussion"}= _("Discussion")
+    -# %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", href: "/courses/#{course.id}/discussion"}= _("Discussion")
     %a.nav-1{'data-reveal-id': "course_discussion_modal"}= _("Discussion")
   %li
-    %a{class: "nav-1 {% ifequal current_view 'progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/progress"}= _("Progress")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/progress"}= _("Progress")
   %li
-    %a{class: "nav-1 {% ifequal current_view 'cohort' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/cohort"}= _("Cohort")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_cohort' %}selected{% endifequal %}", href: "/courses/#{course.id}/cohort"}= _("Cohort")
   %li
-    %a{class: "nav-1 {% ifequal current_view 'syllabus' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/syllabus"}= _("Syllabus")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_syllabus' %}selected{% endifequal %}", href: "/courses/#{course.id}/syllabus"}= _("Syllabus")
   %li
-    %a{class: "nav-1 {% ifequal current_view 'resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/resources"}= _("Resources")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/resources"}= _("Resources")
   %li
-    %a{class: "nav-1 {% ifequal current_view 'group_work' %}selected{% endifequal %}", href: "/courses/#{course.id}/view/group_work"}= _("Group Work")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_group_work' %}selected{% endifequal %}", href: "/courses/#{course.id}/group_work"}= _("Group Work")
 %hr
