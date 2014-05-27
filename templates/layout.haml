@@ -64,9 +64,8 @@
 
     -# Block for general purpouse modal dialog
     - block general_modal
-      %a.revel-general-modal{'href': "#", 'data-reveal-id': "generalModal"} 
-      .reveal-modal.small{'id': "generalModal", 'data-reveal': ''} 
-        %h2.title 
+      #generalModal.reveal-modal.small{'data-reveal': 'None'}
+        %h2.title
         %p{'class': "lead description"}
         %a{'class': "close-reveal-modal fa fa-times-circle"}
 

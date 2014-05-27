@@ -34,9 +34,8 @@
             %i.fa.fa-play-circle
 
 - block general_modal
-    %a.revel-general-modal{'href': "#", 'data-reveal-id': "generalModal"}      
-    .reveal-modal.small{'id': "generalModal", 'data-reveal': ''} 
-      %h2.title 
+    .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
+      %h2.title
         =popup.title
       %p{'class': "lead description"}
         =popup.description
@@ -47,9 +46,7 @@
 - block js_snippets
   :javascript
     $(function(){
-      $(document).ready(function(){
         if($('#generalModal input.show-modal').length > 0){
-          $('a.revel-general-modal').trigger('click');
+          $('#generalModal').foundation('reveal', 'open');
         }
-      }) 
     })
