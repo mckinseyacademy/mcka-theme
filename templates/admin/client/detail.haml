@@ -1,8 +1,9 @@
 - extends 'admin/admin_layout.haml'
+- load staticfiles
 - block content
   .admin-detail.row
     .large-12.large.columns
-      - include 'admin/client/detail_header.haml'    
+      - include 'admin/client/detail_header.haml'
   .admin-detail.row
     .large-12.large.columns
       - block admin_detail
@@ -57,3 +58,7 @@
           - include 'admin/client/program_list.haml'
   #upload_student_list.reveal-modal{"data-reveal": "true"}
   #add_program.reveal-modal{"data-reveal": "true"}
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form($('#add_program'), 'form');
