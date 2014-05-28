@@ -38,28 +38,24 @@ def generate_email_text_for_user_activation(activation_record, activation_link_h
 def _process_line(user_line):
     try:
         fields = user_line.strip().split(',')
-        # format is email,username,password,firstname,lastname,city,country (last 5 are optional)
+        # format is Email, FirstName, LastName, Title, City, Country (last 3 are optional)
 
-        # Must have the first 2 fields
+        # Must have the first 3 fields - make temp username the same as email
         user_info = {
             "email": fields[0],
-            "username": fields[1],
+            "username": fields[0],
             "is_active": False,
+            "first_name": fields[1],
+            "last_name": fields[2],
         }
-        if len(fields) > 2 and len(fields[2].strip()) > 1:
-            user_info["password"] = fields[2]
-        else:
-            user_info["password"] = settings.INITIAL_PASSWORD
+        if len(fields) > 3:
+            user_info["title"] = fields[3]
 
         if len(fields) > 4:
-            user_info["first_name"] = fields[3]
-            user_info["last_name"] = fields[4]
+            user_info["city"] = fields[4]
 
         if len(fields) > 5:
-            user_info["city"] = fields[5]
-
-        if len(fields) > 6:
-            user_info["country"] = fields[6]
+            user_info["country"] = fields[5]
 
     except Exception, e:
         user_info = {
@@ -78,7 +74,8 @@ def _build_student_list_from_file(file_stream):
 
         temp_file.seek(0)
 
-        user_objects = [_process_line(user_line) for user_line in temp_file.read().splitlines()]
+        # ignore first line
+        user_objects = [_process_line(user_line) for user_line in temp_file.read().splitlines()[1:]]
 
     return user_objects
 
@@ -91,7 +88,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
             user = None
             user_error = None
             activation_record = None
-            
+
             try:
                 user = user_api.register_user(user_dict)
             except HTTPError, e:
@@ -126,7 +123,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
                     user_dict["email"],
                     user_dict["username"]
                 )
-                
+
         except Exception, e:
             user = None
             reason = e.message if e.message else _("Data processing error")
@@ -166,13 +163,14 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head):
 
 
 def _formatted_user_string(user):
-    return "{},{},,{},{},{},{},{}".format(
+    return "{},{},{},{},{},{},{},{}".format(
         user.email,
-        user.username,
         user.first_name,
         user.last_name,
+        user.title,
         user.city,
         user.country,
+        user.username,
         user.activation_link,
     )
 
