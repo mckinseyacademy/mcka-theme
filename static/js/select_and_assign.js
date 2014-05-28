@@ -44,6 +44,7 @@ function enable_selection(selections, activator){
     for (var i = 0; i < selections.length; ++i){
       var min_count = selections[i].minimum_count ? selections[i].minimum_count : 1;
       var data_selector = selections[i].data_selector ? selections[i].data_selector : "";
+      var data_field = selections[i].data_field ? selections[i].data_field : "";
       var these_selections = $(selections[i].selector + "." + select_class_name + data_selector);
       if(these_selections.length < min_count){
         alert(selections[i].minimum_count_message);
@@ -51,9 +52,16 @@ function enable_selection(selections, activator){
       }
 
       var selection_data = [];
-      these_selections.each(function(index, include_value){
-        selection_data.push(include_value.id);
-      });
+      if(data_field != ''){
+        these_selections.each(function(index, include_value){
+          selection_data.push({'id': include_value.id, data_field: $(include_value).data(data_field)});
+        });
+      }
+      else{
+        these_selections.each(function(index, include_value){
+          selection_data.push(include_value.id);
+        });
+      }
       data[selections[i].submit_name] = (selections[i].single_select && data_selector.length == 0) ? selection_data[0] : selection_data;
     };
 
