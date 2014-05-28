@@ -1,18 +1,22 @@
 var Router = Backbone.Router.extend({
   routes: {
+    '':                                   'home',
     'courses/*course_id/view/progress':   'course_progress',
     'courses/*course_id/view/overview':   'course_overview',
     'courses/*course_id/view/cohort':     'course_cohort',
     'courses/*course_id/view/group_work': 'course_group_work',
     'courses/*course_id/view/resources':  'course_resources',
-    'courses/*course_id':                 'home'
+    'courses/*course_id':                 'course_index'
   },
 
   home: function() {
-    var landing = $('#home-landing'),
-        courses = $('#home-courses');
-    if (landing.length) return new Apros.views.HomeLanding({el: landing}).render();
-    if (courses.length) new Apros.views.HomeCourses({el: courses}).render();
+    var el = $('#home-landing');
+    new Apros.views.HomeLanding({el: el}).render();
+  },
+
+  course_index: function() {
+    var el = $('#home-courses');
+    new Apros.views.HomeCourses({el: el}).render();
   },
 
   course_progress: function(course_id) {
@@ -22,8 +26,6 @@ var Router = Backbone.Router.extend({
   },
 
   course_overview: function(course_id) {
-    console.log(OO);
-    console.log('asdfasdf');
     OO.Player.create('mk_overview_player', 'o3bHd4bTq6tVR5KxP8m1RXDl9vpVaNMA', {width: '100%', height: '100%'});
   },
 

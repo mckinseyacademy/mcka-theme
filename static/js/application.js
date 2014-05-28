@@ -4,9 +4,10 @@ window.Apros = {
   views: {},
 
   initialize: function() {
-    var route = window.location.pathname.replace(/\/$/, '');
+    var route     = window.location.pathname.replace(/\/$/, ''),
+        has_push  = window.history && window.history.pushState ? true : false;
     $('header[role=banner] a[href="' + route + '"]').addClass('selected');
-    Backbone.history.start({pushState: true});
+    Backbone.history.start({pushState: has_push, hashChange: false});
   }
 }
 
@@ -36,7 +37,7 @@ $(function(){
         break;
       case /ted\.com/.test(video):
         var video_id    = video.match(/([^#\&\?\/]*$)/)[1];
-        iframe_opts.src = '//embed.ted.com/talks/' + video_id + '.html';
+        iframe_opts.src = 'http://embed.ted.com/talks/' + video_id + '.html';
         $('.player-wrapper').append($('<iframe />', iframe_opts));
         break;
       default:
@@ -54,6 +55,7 @@ $(function(){
       ooyala.destroy();
       modal.removeData('ooyala');
     }
+    $('.player-wrapper', modal).empty();
   });
 
   // Load user profile information on demand

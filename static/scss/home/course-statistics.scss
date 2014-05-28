@@ -10,7 +10,7 @@
 
     &.course-progress { width: 50%; }
 
-    &.no-progress:hover .zero {
+    &:hover .zero {
       display: block;
     }
 

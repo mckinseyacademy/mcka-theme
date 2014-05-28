@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 from urllib2 import HTTPError
 
 from lib.authorization import permission_group_required
@@ -67,9 +68,10 @@ def course_meta_content_course_list(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_items(request):
-    course_id = request.GET.get('course_id', None) 
+    course_id = request.GET.get('course_id', None)
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
     data = {
+        "course_id": course_id,
         "items": items
     }
 
@@ -82,39 +84,28 @@ def course_meta_content_course_items(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_item_new(request):
+    error = None
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
-        item = form.save()
-        return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)
+        course_id = form.data['course_id']
+        if form.is_valid():
+            item = form.save()
+            return redirect('/admin/course-meta-content/items?course_id=%s' % course_id)
+        else:
+            error = "please fix the problems indicated below."
     else:
-        form = CuratedContentItemForm()
-        data = { 
-            "form": form,
-            "form_action": "/admin/course-meta-content/item/new" 
-        }
-        return render(
-                request,
-                'admin/course_meta_content/item_detail.haml',
-                data
-            )
+        course_id = request.GET.get('course_id', None)
+        init = {'course_id': course_id}
+        form = CuratedContentItemForm(initial=init)
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content_course_item_edit(request, item_id):
-    item = CuratedContentItem.objects.filter(id=item_id)[0]
-    if request.method == "POST":
-        form = CuratedContentItemForm(request.POST, instance=item)
-        form.save()
-        return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)   
-    else:
-        form = CuratedContentItemForm(instance=item)
-        data = {
-            "form": form,
-            "item": item,
-            "form_action": "/admin/course-meta-content/item/%d/edit" % item.id
-        }
-
-        return render(
+    data = {
+        "course_id": course_id,
+        "form": form,
+        "error": error,
+        "form_action": "/admin/course-meta-content/item/new",
+        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % course_id
+    }
+    return render(
             request,
             'admin/course_meta_content/item_detail.haml',
             data
@@ -122,12 +113,41 @@ def course_meta_content_course_item_edit(request, item_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_meta_content_course_item_edit(request, item_id):
+    error = None
+    item = CuratedContentItem.objects.filter(id=item_id)[0]
+    if request.method == "POST":
+        form = CuratedContentItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)
+        else:
+            error = "please fix the problems indicated below."
+    else:
+        form = CuratedContentItemForm(instance=item)
+
+    data = {
+        "form": form,
+        "error": error,
+        "item": item,
+        "form_action": "/admin/course-meta-content/item/%d/edit" % item.id,
+        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % item.course_id
+    }
+
+    return render(
+        request,
+        'admin/course_meta_content/item_detail.haml',
+        data
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_item_delete(request, item_id):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
-    course_id = item.course_id
+    # course_id = item.course_id
     item.delete()
 
-    return redirect('/admin/course-meta-content/items?course_id=%s' % course_id) 
+    return redirect('/admin/course-meta-content/items?course_id=%s' % course_id)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -223,7 +243,7 @@ def client_edit(request, client_id):
 
     data = {
         "form": form,
-        "client_id": client_id, 
+        "client_id": client_id,
         "error": error,
         "submit_label": _("Save Client"),
     }
@@ -261,7 +281,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
-        #        for course in program.courses: 
+        #        for course in program.courses:
         #            users = course_api.get_users_content_filtered(course.course_id, client_id, [{'key': 'enrolled', 'value': 'True'}])
         #            course.user_count = len(users)
     if upload_results:
@@ -367,7 +387,7 @@ def program_edit(request, program_id):
 
     data = {
         "form": form,
-        "program_id": program_id, 
+        "program_id": program_id,
         "error": error,
         "submit_label": _("Save Client"),
     }
@@ -490,7 +510,7 @@ def _prepare_program_display(program):
 
     return program
 
-
+@ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_association(request, client_id):
     client = Client.fetch(client_id)
@@ -599,7 +619,7 @@ def workgroup_list(request):
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
         "principal_new_url": "/admin/workgroup/workgroup_new",
-        "programs": programs, 
+        "programs": programs,
     }
 
     return render(
@@ -615,7 +635,7 @@ def workgroup_programs_list(request):
 
     if request.method == 'POST':
         group_id = request.POST["group_id"]
-    if request.method == 'GET': 
+    if request.method == 'GET':
         group_id = request.GET["group_id"]
 
     if group_id == 'select':
@@ -623,7 +643,7 @@ def workgroup_programs_list(request):
             request,
             'admin/workgroup/courses_list.haml',
             {
-                "courses": {}, 
+                "courses": {},
             }
         )
     else:
@@ -631,7 +651,7 @@ def workgroup_programs_list(request):
         courses = program.fetch_courses()
 
         data = {
-            "courses": courses, 
+            "courses": courses,
         }
 #    return HttpResponse(json.dumps(dir(courses[0])))
     return render(
@@ -650,13 +670,13 @@ def workgroup_course_detail(request, course_id):
 
     students = course_api.get_user_list(course_id)
     companies = {}
-    for student in students: 
+    for student in students:
         studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
         if len(studentCompanies) > 0:
             company = studentCompanies[0]
             if companies.get(company.id) is None:
                 companies[company.id] = Client.fetch(company.id)
-            student.company = companies[company.id]      
+            student.company = companies[company.id]
 
     if len(course.group_projects) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
@@ -665,14 +685,14 @@ def workgroup_course_detail(request, course_id):
     groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
 
 
-    ''' THIS IS A VERY SLOW PART OF CODE. 
-        Due to api limitations, filtering of user from student list has to be done on client. 
-        It has to have 3 nested "for" loops, and one after (indexes issue in for loop). 
-        This should be replaced once API changes. 
+    ''' THIS IS A VERY SLOW PART OF CODE.
+        Due to api limitations, filtering of user from student list has to be done on client.
+        It has to have 3 nested "for" loops, and one after (indexes issue in for loop).
+        This should be replaced once API changes.
     '''
     groups = []
     groupedStudents = []
-    for group in groupsList: 
+    for group in groupsList:
         users = group_api.get_users_in_group(group.id)
         group.students = users
         for user in users:
@@ -683,16 +703,16 @@ def workgroup_course_detail(request, course_id):
         group.students_count = len(group.students)
         groups.append(group)
 
-    for student in groupedStudents: 
+    for student in groupedStudents:
         if student in students:
             students.remove(student)
 
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
-        "course": course, 
+        "course": course,
         "students": students,
-        "groups": groups,  
+        "groups": groups,
     }
 #    return HttpResponse(json.dumps(dir(course)))
     return render(
@@ -717,7 +737,7 @@ def workgroup_group_create(request, course_id):
 
         groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
 
-        lastId = len(groupsList) 
+        lastId = len(groupsList)
 
         workgroup = WorkGroup.create('Group {}'.format(lastId + 1), {})
 
@@ -725,7 +745,7 @@ def workgroup_group_create(request, course_id):
 
         course_api.add_group_to_course_content(group_id, course_id, module.id)
 
-        for student in students: 
+        for student in students:
             group_api.add_user_to_group(student, group_id)
 
     return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
@@ -734,12 +754,13 @@ def workgroup_group_create(request, course_id):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_update(request, group_id, course_id):
+    error = None
     if request.method == 'POST':
 
         students = request.POST.getlist("students[]")
 
-        try: 
-            for student in students: 
+        try:
+            for student in students:
                 group_api.add_user_to_group(student, group_id)
 
             return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
@@ -767,39 +788,39 @@ def workgroup_group_remove(request, group_id):
         module = course.group_projects[0]
         students = course_api.get_user_list(course_id)
         companies = {}
-        for student in students: 
+        for student in students:
             studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
             if len(studentCompanies) > 0:
                 company = studentCompanies[0]
                 if companies.get(company.id) is None:
                     companies[company.id] = Client.fetch(company.id)
-                student.company = companies[company.id]   
+                student.company = companies[company.id]
 
         groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
 
-        groupedStudents = []   
-        
-        for group in groupsList: 
+        groupedStudents = []
+
+        for group in groupsList:
             users = group_api.get_users_in_group(group.id)
             group.students = users
             for student in students:
                 for user in users:
                     if user.username == student.username:
                         user.company = student.company
-                        groupedStudents.append(student)    
-    #    group = WorkGroup.fetch(group_id) 
+                        groupedStudents.append(student)
+    #    group = WorkGroup.fetch(group_id)
     #    group.students_count = len(group.students)
 
-        for student in groupedStudents: 
+        for student in groupedStudents:
             students.remove(student)
 
         data = {
-            "students": students, 
+            "students": students,
         }
         return render(
             request,
             'admin/workgroup/student_table.haml',
-            data, 
+            data,
         )
 
     return HttpResponse('', content_type='application/json')
@@ -812,7 +833,7 @@ def download_group_list(request, course_id):
     groups = []
     groupedStudents = []
 
-    for group in groupsList: 
+    for group in groupsList:
         users = group_api.get_users_in_group(group.id)
         group.students = users
         for user in users:

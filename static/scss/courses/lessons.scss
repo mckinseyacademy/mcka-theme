@@ -27,7 +27,6 @@
     }
   }
 
-
   .lesson-name {
     padding-right: 8px;
   }
@@ -36,23 +35,26 @@
 
   .lesson-pager {
     text-align: center;
-    padding-top: rem-calc(40);
-    padding-bottom: rem-calc(60);
+    padding: rem-calc(40) 0 rem-calc(60);
 
-    .page-to{
+    .page-to {
+      color: $pure-white;
+      position: relative;
       margin: 0 10px;
+      border-radius: 50%;
+      display: inline-block;
+      background-color: #dddddd;
+      @include square-size(rem-calc(50));
       @include font-spec(30);
       @include square-size(50px);
       @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
-      border-radius: 50%;
-      display: inline-block;
-      background-color: $mckinsey-academy-alt-blue;
-      color: $pure-white;
-      padding: 10px 8px 8px;
-      &.previous{ padding-right: 12px; }
-      &.next{ padding-left: 10px; }
-      &.disabled{
-        background-color: #dddddd;
+      &[href] { background-color: $mckinsey-academy-alt-blue; }
+
+      i {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -15px 0 0 -9.5px;
       }
     }
     .go-to-next{

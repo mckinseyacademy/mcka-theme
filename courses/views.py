@@ -215,7 +215,7 @@ def infer_default_navigation(request):
 @login_required
 def contact_ta(request, course_id):
     email_from = request.user.email
-    email_to = "ta@mckinseyacademy.com"
+    email_to = settings.TA_EMAIL_GROUP
     email_content = request.POST["ta_message"]
 
     # TODO: Hook up to email sending stuff

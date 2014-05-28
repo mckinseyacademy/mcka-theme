@@ -8,7 +8,7 @@ from .forms import LoginForm, ActivationForm
 from api_client import user_api
 from .models import RemoteUser, UserActivation
 from admin.models import Client
-from accounts.controller import get_current_course_for_user
+from .controller import get_current_course_for_user, user_activation_with_data, ActivationError
 
 # from importlib import import_module
 # from django.conf import settings
@@ -138,16 +138,10 @@ def activate(request, activation_code):
         # email should never be changed
         user_data["email"] = user.email
 
-        # activate the user
-        user_data["is_active"] = True
-
         form = ActivationForm(user_data)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                user_api.update_user(user.id, user_data)
-
-                # Delete activation record
-                activation_record.delete()
+                user_activation_with_data(user.id, user_data, activation_record)
 
                 # Redirect after POST
                 return HttpResponseRedirect(
@@ -155,14 +149,8 @@ def activate(request, activation_code):
                         user_data["username"]
                     )
                 )
-            except url_access.HTTPError, err:
-                error = _("An error occurred during user activation")
-                error_messages = {
-                    409: _(("User with matching username "
-                            "or email already exists"))
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
+            except ActivationError, activation_error:
+                error = activation_error.value
     else:
         form = ActivationForm(user_data)
 
