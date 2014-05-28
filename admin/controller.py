@@ -86,38 +86,54 @@ def _build_student_list_from_file(file_stream):
 def _register_users_in_list(user_list, client_id, activation_link_head):
     errors = []
     for user_dict in user_list:
-        user = None
-        user_error = None
-        activation_record = None
+        failure = None
         try:
-            user = user_api.register_user(user_dict)
-        except HTTPError, e:
             user = None
-            # Error code 409 means that they already exist somehow;
-            # build list of errors
-            reason = _("Error processing user registration")
-            error_messages = {
-                409: _("Username or email already registered")
-            }
-            if e.code in error_messages:
-                reason = error_messages[e.code]
-
-            user_error = _("User not registered {} - {} ({})").format(
-                reason, user_dict["email"],
-                user_dict["username"]
-            )
-
-        if user:
+            user_error = None
+            activation_record = None
+            
             try:
-                activation_record = UserActivation.user_activation(user)
-                group_api.add_user_to_group(user.id, client_id)
+                user = user_api.register_user(user_dict)
             except HTTPError, e:
-                reason = _("Error associating user with client")
+                user = None
+                # Error code 409 means that they already exist somehow;
+                # build list of errors
+                reason = _("Error processing user registration")
+                error_messages = {
+                    409: _("Username or email already registered")
+                }
+                if e.code in error_messages:
+                    reason = error_messages[e.code]
 
-                user_error = _("User not associated with client {} - {} ({})").format(
+                failure = {
+                    "reason": reason,
+                    "activity": _("Unable to register user")
+                }
+
+            if user:
+                try:
+                    activation_record = UserActivation.user_activation(user)
+                    group_api.add_user_to_group(user.id, client_id)
+                except HTTPError, e:
+                    failure = {
+                        "reason": _("Error associating user with client"),
+                        "activity": _("User not associated with client")
+                    }
+
+            if failure:
+                user_error = _("Error processing data: {} - {} ({})").format(
                     reason,
                     user_dict["email"],
                     user_dict["username"]
+                )
+                
+        except Exception, e:
+            user = None
+            reason = e.message if e.message else _("Data processing error")
+            try:
+            except:
+                user_error = _("Error processing data: {}").format(
+                    reason,
                 )
 
         if user_error:
