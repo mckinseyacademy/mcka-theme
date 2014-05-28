@@ -44,7 +44,7 @@ function enable_selection(selections, activator){
     for (var i = 0; i < selections.length; ++i){
       var min_count = selections[i].minimum_count ? selections[i].minimum_count : 1;
       var data_selector = selections[i].data_selector ? selections[i].data_selector : "";
-      var data_field = selections[i].data_field ? selections[i].data_field : ""; 
+      var data_field = selections[i].data_field ? selections[i].data_field : "";
       var these_selections = $(selections[i].selector + "." + select_class_name + data_selector);
       if(these_selections.length < min_count){
         alert(selections[i].minimum_count_message);
