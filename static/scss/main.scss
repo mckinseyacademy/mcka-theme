@@ -246,7 +246,7 @@ button,
 
     .back {
       z-index: 5;
-      @include transform(rotateX(0deg));
+      @include transform(rotateY(0deg));
     }
   }
 
@@ -261,7 +261,7 @@ button,
 
   .front {
     z-index: 10;
-    @include transform(rotateX(0deg));
+    @include transform(rotateY(0deg));
   }
 
   .back {
