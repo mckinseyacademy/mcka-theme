@@ -12,7 +12,9 @@ from django.core.exceptions import ValidationError
 from urllib2 import HTTPError
 
 from lib.authorization import permission_group_required
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from api_client.group_api import PERMISSION_GROUPS
+from accounts.models import RemoteUser, UserActivation
 from .models import Client
 from .models import Program
 from .models import WorkGroup
@@ -556,34 +558,49 @@ def add_courses(request, program_id):
         content_type='application/json'
     )
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_program(request, client_id):
     program = Program.fetch(request.POST.get("program"))
+    program.courses = program.fetch_courses()
     students = request.POST.getlist("students[]")
-    allocated, assigned = license_controller.licenses_report(program.id, client_id)
+    allocated, assigned = license_controller.licenses_report(
+        program.id, client_id)
     remaining = allocated - assigned
     if len(students) > remaining:
         response = HttpResponse(
-            json.dumps({"message": _("Not enough places available for {} program - {} left").format(program.display_name, remaining)}),
+            json.dumps({"message": _("Not enough places available for {} program - {} left")
+                       .format(program.display_name, remaining)}),
             content_type='application/json',
         )
         response.status_code = 403
         return response
-
+    messages = []
     for student_id in students:
         try:
             program.add_user(client_id, student_id)
+
+            # NEED TO CHANGE THIS ONCE MCKIN-1273 is done
+            # Should do just one call to get filtered user list
+            student = user_api.get_user(student_id)
+
+            if student.is_active:
+                msg = email_add_active_student(request, program, student)
+            else:
+                activation_record = UserActivation.get_user_activation(student)
+                student.activation_code = activation_record.activation_key
+                msg = email_add_inactive_student(request, program, student)
+            messages.append(msg)
         except HTTPError, e:
             # Ignore 409 errors, because they indicate a user already added
             if e.code != 409:
                 raise
+    sendMultipleEmails(messages)
 
     return HttpResponse(
-        json.dumps({"message": _("Successfully associated students to {} program").format(program.display_name)}),
+        json.dumps({"message": _("Successfully associated students to {} program")
+                   .format(program.display_name)}),
         content_type='application/json'
     )
-
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_course(request, client_id):

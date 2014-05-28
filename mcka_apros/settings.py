@@ -175,6 +175,9 @@ GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
 INITIAL_PASSWORD = 'PassworD12!@'
 
+# Email address students get their enrollment email sent from
+ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
+
 try:
     from local_settings import *
 except ImportError:
