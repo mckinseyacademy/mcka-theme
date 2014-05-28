@@ -40,14 +40,14 @@
 		display: inline-block;
 		margin: 1em 0;
 		li.company-filter{
-			display: inline;
-		    float: left;
-		    padding-right: 7px;
-		    padding-left: 7px;
-		    border-right: 1px solid #333333;
-		}
-		li.company-filter:last-child {
-			border-right:none;
+		  display: inline;
+		  float: left;
+		  padding-right: 7px;
+		  padding-left: 7px;
+		  border-right: 1px solid #333333;
+      &:last-child {
+        border-right:none;
+      }
 		}
 	}
 }
