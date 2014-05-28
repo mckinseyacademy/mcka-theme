@@ -8,17 +8,6 @@ from api_client import user_api, group_api, course_api
 from accounts.models import UserActivation
 from .models import Client, WorkGroup
 
-def get_current_course_for_user(request):
-    course_id = request.session.get("current_course_id", None)
-
-    if not course_id and request.user:
-        # TODO: Replace with logic for finding "current" course
-        # For now, we just return first course
-        courses = user_api.get_user_courses(request.user.id)
-        if len(courses) > 0:
-            course_id = courses[0].id
-
-    return course_id
 
 def load_course(course_id, depth=3, course_api_impl=course_api):
     '''
@@ -167,7 +156,7 @@ def _formatted_user_string(user):
         user.last_name,
         user.city,
         user.country,
-        user.activation_link, 
+        user.activation_link,
     )
 
 def _formatted_user_string_group_list(user):
@@ -197,7 +186,7 @@ def get_student_list_as_file(client, activation_link = ''):
     return '\n'.join(user_strings)
 
 def get_user_with_activation(user_id, activation_link):
-    user = user_api.get_user(user_id)  
+    user = user_api.get_user(user_id)
     try:
         activation_record = UserActivation.get_user_activation(user)
         if activation_record:
@@ -209,7 +198,7 @@ def get_user_with_activation(user_id, activation_link):
 
     return user
 
-def get_group_list_as_file(groups):  
+def get_group_list_as_file(groups):
     group_string = [_formatted_group_string(group) for group in groups]
     return '\n'.join(group_string)
 
@@ -223,10 +212,10 @@ def fetch_clients_with_program(program_id):
     return clients
 
 def filterGroupsAndStudents(course, students):
-    ''' THIS IS A VERY SLOW PART OF CODE. 
-        Due to api limitations, filtering of user from student list has to be done on client. 
-        It has to have 3 nested "for" loops, and one after (indexes issue in for loop). 
-        This should be replaced once API changes. 
+    ''' THIS IS A VERY SLOW PART OF CODE.
+        Due to api limitations, filtering of user from student list has to be done on client.
+        It has to have 3 nested "for" loops, and one after (indexes issue in for loop).
+        This should be replaced once API changes.
     '''
     groupsList = []
     for module in course.group_projects:
