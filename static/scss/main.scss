@@ -283,6 +283,11 @@ form {
   p { margin-bottom: rem-calc(30); }
 }
 
+#mckinsey_help {
+  + .global-help { display: block; }
+  p { margin-bottom: rem-calc(20); }
+}
+
 /* Styles to hide debugging QA content when logged in as a staff user */
 .xqa-modal, .history-modal{
   display: none !important;
