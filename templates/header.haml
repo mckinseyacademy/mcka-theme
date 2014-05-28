@@ -19,13 +19,11 @@
       - block user_region
         - if request.user.is_authenticated
           %a.user-info{href: "#", data-dropdown: "profile-container"}
-            .user-name
-              = user.username
+            .user-name= user.username
             %i.fa.fa-sort-asc
             .user-image
               %img{src: "#{user.image_url}"}
             #profile-container{data-dropdown-content: "true"}
         - else
           .login-action
-            %a.tiny.radius.button{href: "/accounts/login"}
-              = _("Log In")
+            %a.tiny.radius.button{href: "/accounts/login"}= _("Log In")
