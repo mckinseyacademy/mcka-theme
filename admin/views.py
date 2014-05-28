@@ -19,7 +19,7 @@ from .models import Client
 from .models import Program
 from .models import WorkGroup
 from main.models import CuratedContentItem
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filterGroupsAndStudents, parse_studentslist_from_post
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -30,6 +30,7 @@ from api_client import user_api
 from api_client import group_api
 from api_client.json_object import Objectifier
 from license import controller as license_controller
+
 
 
 
@@ -670,7 +671,7 @@ def workgroup_programs_list(request):
         data = {
             "courses": courses,
         }
-#    return HttpResponse(json.dumps(dir(courses[0])))
+
     return render(
         request,
         'admin/workgroup/courses_list.haml',
@@ -685,44 +686,13 @@ def workgroup_course_detail(request, course_id):
 
     course = load_course(course_id)
 
-    students = course_api.get_user_list(course_id)
-    companies = {}
-    for student in students:
-        studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
-        if len(studentCompanies) > 0:
-            company = studentCompanies[0]
-            if companies.get(company.id) is None:
-                companies[company.id] = Client.fetch(company.id)
-            student.company = companies[company.id]
+    students, companies = getStudentsWithCompanies(course)
 
     if len(course.group_projects) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
-    module = course.group_projects[0]
-    groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+    groups, students = filterGroupsAndStudents(course, students)
 
-
-    ''' THIS IS A VERY SLOW PART OF CODE.
-        Due to api limitations, filtering of user from student list has to be done on client.
-        It has to have 3 nested "for" loops, and one after (indexes issue in for loop).
-        This should be replaced once API changes.
-    '''
-    groups = []
-    groupedStudents = []
-    for group in groupsList:
-        users = group_api.get_users_in_group(group.id)
-        group.students = users
-        for user in users:
-            for student in students:
-                if user.username == student.username:
-                    user.company = student.company if hasattr(student, "company") else _("(No Company Assignment)")
-                    groupedStudents.append(student)
-        group.students_count = len(group.students)
-        groups.append(group)
-
-    for student in groupedStudents:
-        if student in students:
-            students.remove(student)
 
     data = {
         "principal_name": _("Group Work"),
@@ -730,14 +700,14 @@ def workgroup_course_detail(request, course_id):
         "course": course,
         "students": students,
         "groups": groups,
+        "companies": companies.values(),
     }
-#    return HttpResponse(json.dumps(dir(course)))
+
     return render(
         request,
         'admin/workgroup/course_detail.haml',
         data
     )
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -745,27 +715,44 @@ def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
 
+        students, companyid, privateFlag = parse_studentslist_from_post(
+            request.POST)
+
         course = load_course(course_id)
         if len(course.group_projects) < 1:
             return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
-        module = course.group_projects[0]
-        students = request.POST.getlist("students[]")
+        groupsList = []
+        privateModule = ''
+        publicModule = course.group_projects[0]
 
-        groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+        for module in course.group_projects:
+            if module.name.startswith(companyid + '_'):
+                privateModule = module
+            groupsList = groupsList + [WorkGroup.fetch(group.group_id)
+                                       for group in course_api.get_course_content_groups(course.id, module.id)]
 
         lastId = len(groupsList)
 
-        workgroup = WorkGroup.create('Group {}'.format(lastId + 1), {})
-
-        group_id = int(workgroup.id)
-
-        course_api.add_group_to_course_content(group_id, course_id, module.id)
+        if privateModule != '' and privateFlag:
+            workgroup = WorkGroup.create(
+                'Group {} - private - {}'.format(lastId + 1, companyid), {'privacy': 'private', 'client_id': companyid})
+            group_id = int(workgroup.id)
+            course_api.add_group_to_course_content(
+                group_id, course_id, privateModule.id)
+            workgroup.add_workgroup_to_client(companyid)
+        else:
+            workgroup = WorkGroup.create(
+                'Group {}'.format(lastId + 1), {'privacy': 'public'})
+            group_id = int(workgroup.id)
+            course_api.add_group_to_course_content(
+                group_id, course_id, publicModule.id)
 
         for student in students:
-            group_api.add_user_to_group(student, group_id)
+            group_api.add_user_to_group(student['id'], group_id)
 
     return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+
 
 
 @ajaxify_http_redirects
@@ -802,34 +789,10 @@ def workgroup_group_remove(request, group_id):
 
         course_id = request.POST['course_id']
         course = load_course(course_id)
-        module = course.group_projects[0]
-        students = course_api.get_user_list(course_id)
-        companies = {}
-        for student in students:
-            studentCompanies = user_api.get_user_groups(student.id, group_type = 'organization')
-            if len(studentCompanies) > 0:
-                company = studentCompanies[0]
-                if companies.get(company.id) is None:
-                    companies[company.id] = Client.fetch(company.id)
-                student.company = companies[company.id]
 
-        groupsList = [WorkGroup.fetch(group.group_id) for group in course_api.get_course_content_groups(course.id, module.id)]
+        students, companies = getStudentsWithCompanies(course)
 
-        groupedStudents = []
-
-        for group in groupsList:
-            users = group_api.get_users_in_group(group.id)
-            group.students = users
-            for student in students:
-                for user in users:
-                    if user.username == student.username:
-                        user.company = student.company
-                        groupedStudents.append(student)
-    #    group = WorkGroup.fetch(group_id)
-    #    group.students_count = len(group.students)
-
-        for student in groupedStudents:
-            students.remove(student)
+        groups, students = filterGroupsAndStudents(course, students)
 
         data = {
             "students": students,

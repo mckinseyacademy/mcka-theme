@@ -84,8 +84,8 @@ class Client(BaseGroupModel):
 
         return group_info
 
-class WorkGroup(BaseGroupModel): 
-    # data_fields = []
+class WorkGroup(BaseGroupModel):
+    data_fields = ["privacy", 'client_id', ]
     group_type = "workgroup"
 
     def fetch_students(self):
@@ -106,3 +106,6 @@ class WorkGroup(BaseGroupModel):
         })
 
         return workgroup
+
+    def add_workgroup_to_client(self, client_id):
+        return group_api.add_group_to_group(self.id, client_id)
