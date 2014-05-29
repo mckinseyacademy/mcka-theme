@@ -1,5 +1,6 @@
 ''' rendering templates from requests related to courses '''
 import math
+import json
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -11,7 +12,7 @@ from .controller import build_page_info_for_course, locate_chapter_page, program
 from .controller import update_bookmark, decode_id, encode_id, group_project_location
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api
+from api_client import course_api, user_api
 from admin.controller import load_course
 from accounts.controller import get_current_course_for_user
 
@@ -148,7 +149,29 @@ def course_group_work(request, course_id):
 def course_progress(request, course_id):
     # TODO - Figure out why nginx munges the id's so that we can get rid of this step
     course_id = decode_id(course_id)
-    return render(request, 'courses/course_progress.haml')
+
+    gradebook = user_api.get_user_gradebook(request.user.id, course_id)
+
+    # grade bar chart
+    bar_chart = [{'key': 'Lesson Scores', 'values': []}]
+    for grade in gradebook.grade_summary.section_breakdown:
+        bar_chart[0]['values'].append({
+           'label': grade.label,
+           'value': grade.percent*100,
+           'color': '#b1c2cc'
+        })
+
+    total = gradebook.grade_summary.percent*100
+    bar_chart[0]['values'].append({
+        'label': 'TOTAL',
+        'value': total,
+        'color': '#e37121'
+    })
+
+    data = {
+        'bar_chart': json.dumps(bar_chart),
+    }
+    return render(request, 'courses/course_progress.haml', data)
 
 
 @login_required

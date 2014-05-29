@@ -3,7 +3,7 @@ from django.conf import settings
 from urllib2 import HTTPError
 
 from .json_object import JsonParser as JP
-from . import user_models
+from . import user_models, gradebook_models
 from .json_requests import GET, POST, DELETE
 
 AUTH_API = 'api/sessions'
@@ -135,7 +135,7 @@ def get_user_course_detail(user_id, course_id):
     return JP.from_json(response.read(), user_models.UserCourseStatus)
 
 
-def get_user_course_grades(user_id, course_id):
+def get_user_gradebook(user_id, course_id):
     ''' get grades for the user for this course'''
     response = GET(
         '{}/{}/{}/courses/{}/grades'.format(
