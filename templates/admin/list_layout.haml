@@ -29,6 +29,10 @@
                     = ' '
                   %a.principal{href: "#{principal.detail_url}"}
                     = principal.display_name
+                    (
+                    %span><
+                      = principal.name
+                    )
         #new-principal.reveal-modal.medium{"data-reveal": "true"}
         #edit-principal.reveal-modal.medium{"data-reveal": "true"}
 

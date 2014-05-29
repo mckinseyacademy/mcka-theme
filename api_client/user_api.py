@@ -1,6 +1,7 @@
 ''' API calls with respect to users and authentication '''
 from django.conf import settings
 from urllib2 import HTTPError
+import json
 
 from .json_object import JsonParser as JP
 from . import user_models, gradebook_models
@@ -226,3 +227,31 @@ def is_user_in_group(user_id, group_id):
             raise e
 
     return (response.code == 200)
+
+
+def set_user_preferences(user_id, preference_dictionary):
+    ''' sets users preferences information '''
+    response = POST(
+        '{}/{}/{}/preferences'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        ),
+        preference_dictionary
+    )
+
+    return True
+
+
+def get_user_preferences(user_id):
+    ''' sets users preferences information '''
+    response = GET(
+        '{}/{}/{}/preferences'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        ),
+    )
+
+    # Note that we return plain dictionary here - makes more sense 'cos we set a dictionary
+    return json.loads(response.read())

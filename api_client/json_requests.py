@@ -10,7 +10,6 @@ from accounts.middleware.thread_local import get_current_request
 JSON_HEADERS = {
     "Content-Type": "application/json",
     "X-Edx-Api-Key": settings.EDX_API_KEY,
-    "Cookie": "edx_splash_screen=mckinsey%2Bacademy"
 }
 
 TIMEOUT = 20
