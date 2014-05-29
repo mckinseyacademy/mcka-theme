@@ -1,11 +1,14 @@
 ''' API calls with respect to users and authentication '''
-from django.conf import settings
 from urllib2 import HTTPError
 import json
+
+from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from .json_object import JsonParser as JP
 from . import user_models, gradebook_models
 from .json_requests import GET, POST, DELETE
+from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
 AUTH_API = 'api/sessions'
 USER_API = 'api/users'
@@ -17,6 +20,7 @@ def _clean_user_keys(user_hash):
     return {user_key: user_hash[user_key] for user_key in VALID_USER_KEYS if user_key in user_hash}
 
 
+@api_error_protect
 def authenticate(username, password):
     ''' authenticate to the API server '''
     data = {
@@ -30,6 +34,7 @@ def authenticate(username, password):
     return JP.from_json(response.read(), user_models.AuthenticationResponse)
 
 
+@api_error_protect
 def get_user(user_id):
     ''' get specified user '''
     response = GET(
@@ -40,6 +45,7 @@ def get_user(user_id):
     return JP.from_json(response.read(), user_models.UserResponse)
 
 
+@api_error_protect
 def delete_session(session_key):
     ''' delete associated openedx session '''
     DELETE(
@@ -51,6 +57,7 @@ def delete_session(session_key):
     )
 
 
+@api_error_protect
 def register_user(user_hash):
     ''' register the given user within the openedx server '''
     response = POST(
@@ -60,6 +67,7 @@ def register_user(user_hash):
     return JP.from_json(response.read())
 
 
+@api_error_protect
 def _update_user(user_id, user_hash):
     ''' update the given user's information within the openedx server '''
     response = POST(
@@ -68,14 +76,17 @@ def _update_user(user_id, user_hash):
     )
     return JP.from_json(response.read())
 
+@api_error_protect
 def update_user_information(user_id, user_hash):
     ''' update the given user's information within the openedx server '''
     return _update_user(user_id, _clean_user_keys(user_hash))
 
+@api_error_protect
 def activate_user(user_id):
     ''' activate the given user on the openedx server '''
     return _update_user(user_id, {"is_active": True})
 
+@api_error_protect
 def get_user_courses(user_id):
     ''' get the user's summary for their courses '''
     response = GET(
@@ -92,6 +103,7 @@ def get_user_courses(user_id):
 
     return courses
 
+@api_error_protect
 def get_user_groups(user_id, group_type=None):
     ''' get the groups in which this user is a member '''
     url = '{}/{}/{}/groups'.format(
@@ -107,6 +119,7 @@ def get_user_groups(user_id, group_type=None):
 
     return JP.from_json(response.read()).groups
 
+@api_error_protect
 def enroll_user_in_course(user_id, course_id):
     ''' enrolls the user summary in the given course '''
     data = {"course_id": course_id}
@@ -122,6 +135,7 @@ def enroll_user_in_course(user_id, course_id):
     courses = JP.from_json(response.read(), user_models.UserCourse)
 
 
+@api_error_protect
 def get_user_course_detail(user_id, course_id):
     ''' get details for the user for this course'''
     response = GET(
@@ -136,6 +150,7 @@ def get_user_course_detail(user_id, course_id):
     return JP.from_json(response.read(), user_models.UserCourseStatus)
 
 
+@api_error_protect
 def get_user_gradebook(user_id, course_id):
     ''' get grades for the user for this course'''
     response = GET(
@@ -150,6 +165,7 @@ def get_user_gradebook(user_id, course_id):
     return JP.from_json(response.read(), gradebook_models.Gradebook)
 
 
+@api_error_protect
 def _set_course_position(user_id, course_id, parent_id, child_id):
     data = {
         "position": {
@@ -173,6 +189,7 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
     return True
 
 
+@api_error_protect
 def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
     '''
     Let the openedx server know the most recently visited page
@@ -209,6 +226,7 @@ def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
     return positions
 
 
+@api_error_protect
 def is_user_in_group(user_id, group_id):
     ''' checks group membership '''
     try:
@@ -228,7 +246,7 @@ def is_user_in_group(user_id, group_id):
 
     return (response.code == 200)
 
-
+@api_error_protect
 def set_user_preferences(user_id, preference_dictionary):
     ''' sets users preferences information '''
     response = POST(
@@ -243,6 +261,7 @@ def set_user_preferences(user_id, preference_dictionary):
     return True
 
 
+@api_error_protect
 def get_user_preferences(user_id):
     ''' sets users preferences information '''
     response = GET(
@@ -255,3 +274,20 @@ def get_user_preferences(user_id):
 
     # Note that we return plain dictionary here - makes more sense 'cos we set a dictionary
     return json.loads(response.read())
+
+
+USER_ERROR_CODE_MESSAGES = {
+    update_user_information: {
+        409: _(("User with matching username "
+                "or email already exists")),
+    },
+    authenticate: {
+        403: _("User account not activated"),
+        401: _("Username or password invalid"),
+        404: _("Username or password invalid"),
+    },
+    register_user: {
+        409: _("Username or email already registered"),
+    },
+}
+ERROR_CODE_MESSAGES.update(USER_ERROR_CODE_MESSAGES)

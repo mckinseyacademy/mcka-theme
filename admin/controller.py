@@ -1,11 +1,13 @@
 import tempfile
-from urllib2 import HTTPError
+
 from django.core.servers.basehttp import FileWrapper
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
+from api_client.api_error import ApiError
 from api_client import user_api, group_api, course_api
 from accounts.models import UserActivation
+
 from .models import Client, WorkGroup
 from license import controller as license_controller
 
@@ -57,7 +59,7 @@ def _process_line(user_line):
         if len(fields) > 5:
             user_info["country"] = fields[5]
 
-    except Exception, e:
+    except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
         }
@@ -84,26 +86,17 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
     errors = []
     for user_dict in user_list:
         failure = None
+        user_error = None
         try:
             user = None
-            user_error = None
             activation_record = None
 
             try:
                 user = user_api.register_user(user_dict)
-            except HTTPError, e:
+            except ApiError as e:
                 user = None
-                # Error code 409 means that they already exist somehow;
-                # build list of errors
-                reason = _("Error processing user registration")
-                error_messages = {
-                    409: _("Username or email already registered")
-                }
-                if e.code in error_messages:
-                    reason = error_messages[e.code]
-
                 failure = {
-                    "reason": reason,
+                    "reason": e.message,
                     "activity": _("Unable to register user")
                 }
 
@@ -111,9 +104,9 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
                 try:
                     activation_record = UserActivation.user_activation(user)
                     group_api.add_user_to_group(user.id, client_id)
-                except HTTPError, e:
+                except ApiError, e:
                     failure = {
-                        "reason": _("Error associating user with client"),
+                        "reason": e.message,
                         "activity": _("User not associated with client")
                     }
 
@@ -124,14 +117,12 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
                     user_dict["username"]
                 )
 
-        except Exception, e:
+        except Exception as e:
             user = None
             reason = e.message if e.message else _("Data processing error")
-            try:
-            except:
-                user_error = _("Error processing data: {}").format(
-                    reason,
-                )
+            user_error = _("Error processing data: {}").format(
+                reason,
+            )
 
         if user_error:
             print user_error
