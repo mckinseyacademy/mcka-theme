@@ -267,13 +267,6 @@ def _format_upload_results(upload_results):
 
     return results_object
 
-
-def dump(obj):
-  for attr in dir(obj):
-    print "obj.%s = %s" % (attr, getattr(obj, attr))
-
-
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
@@ -284,12 +277,6 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
     enrolledStudents = []
     for program in client.fetch_programs():
         programs.append(_prepare_program_display(program))
-        # licenses = license_controller.assigned_licenses(program.id, client_id)
-        # for license in licenses:
-        #     try:
-        #         enrolledStudents.append(license.grantee_id)
-        #     except:
-        #         pass
     data = {
         "client": client,
         "selected_client_tab": detail_view,
@@ -297,7 +284,6 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
     }
     if detail_view == "programs" or detail_view == "courses":
         data["students"] = client.fetch_students()
-        dump(data['students'][0])
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
@@ -310,7 +296,6 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "programs":
             for student in data["students"]:
                 user = user_api.get_user(student.id)
-                dump(user)
                 if user.is_active == True:
                     student.enrolled = True
 
@@ -326,10 +311,39 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_resend_user_invite(request, client_id, user_id):
-    ''' handles requests for login form and their submission '''
-    error = None
+    ''' handles requests for resending student invites '''
     if request.method == 'POST':  # If the form has been submitted...
-        pass
+        try:
+            student = user_api.get_user(user_id)
+            licenses = license_controller.fetch_granted_licenses(user_id, client_id)
+            client = Client.fetch(client_id)
+            programs_temp = client.fetch_programs()
+            programs = []
+            if programs_temp and licenses:
+                for program_temp in programs_temp:
+                    for license in licenses:
+                        if license.granted_id == program_temp.id:
+                            programs.append(program_temp)
+            else:
+                return HttpResponse(
+                    json.dumps({"status": _("This student hasn't been added to any programs yet.")}),
+                    content_type='application/json'
+                )
+            messages = []
+            activation_record = UserActivation.get_user_activation(student)
+            student.activation_code = activation_record.activation_key
+            for program in programs:
+                messages.append(email_add_inactive_student(request, program, student))
+            sendMultipleEmails(messages)
+        except HTTPError, e:
+            return HttpResponse(
+                json.dumps({"status": _("fail")}),
+                content_type='application/json'
+            )
+        return HttpResponse(
+            json.dumps({"status": _("success")}),
+            content_type='application/json'
+        )
 
 
 

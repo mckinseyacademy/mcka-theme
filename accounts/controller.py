@@ -30,6 +30,16 @@ def get_current_course_for_user(request):
 
     return course_id
 
+def get_current_course_by_user_id(user_id):
+    # TODO: Replace with logic for finding "current" course
+    # For now, we just return first course
+    courses = user_api.get_user_courses(user_id)
+    if len(courses) > 0:
+        course_id = courses[0].id
+        return course_id
+    return None
+
+
 def user_activation_with_data(user_id, user_data, activation_record):
     try:
         # Make sure they'll be inactive while updating fields, then we explicitly activate them
