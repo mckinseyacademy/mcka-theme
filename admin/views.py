@@ -266,25 +266,52 @@ def _format_upload_results(upload_results):
     return results_object
 
 
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
 
     view = 'admin/client/{}.haml'.format(detail_view)
 
+    programs = []
+    enrolledStudents = []
+    for program in client.fetch_programs():
+        programs.append(_prepare_program_display(program))
+        # licenses = license_controller.assigned_licenses(program.id, client_id)
+        # for license in licenses:
+        #     try:
+        #         enrolledStudents.append(license.grantee_id)
+        #     except:
+        #         pass
     data = {
         "client": client,
         "selected_client_tab": detail_view,
-        "programs": [_prepare_program_display(program) for program in client.fetch_programs()],
+        "programs": programs,
     }
     if detail_view == "programs" or detail_view == "courses":
         data["students"] = client.fetch_students()
+        dump(data['students'][0])
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
         #        for course in program.courses:
         #            users = course_api.get_users_content_filtered(course.course_id, client_id, [{'key': 'enrolled', 'value': 'True'}])
         #            course.user_count = len(users)
+
+        # REFACTOR ONCE MCKIN-1291 is done
+        # remove the per user calls.
+        if detail_view == "programs":
+            for student in data["students"]:
+                user = user_api.get_user(student.id)
+                dump(user)
+                if user.is_active == True:
+                    student.enrolled = True
+
     if upload_results:
         data["upload_results"] = _format_upload_results(upload_results)
 
@@ -293,6 +320,16 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         view,
         data,
     )
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_resend_user_invite(request, client_id, user_id):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        pass
+
+
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)

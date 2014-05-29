@@ -18,6 +18,7 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/program_association', views.program_association, name='program_association'),
     url(r'^clients/(?P<client_id>[0-9]+)/add_students_to_program', views.add_students_to_program, name='add_students_to_program'),
     url(r'^clients/(?P<client_id>[0-9]+)/add_students_to_course', views.add_students_to_course, name='add_students_to_course'),
+    url(r'^clients/(?P<client_id>[0-9]+)/user/(?P<user_id>[0-9]+)/resend', views.client_resend_user_invite, name='client_resend_user_invite'),
     url(r'^clients/(?P<client_id>[0-9]+)/(?P<detail_view>.*)', views.client_detail, name='client_detail'),
     url(r'^clients', views.client_list, name='client_list'),
     url(r'^programs/program_new', views.program_new, name='program_new'),
