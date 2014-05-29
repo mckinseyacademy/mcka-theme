@@ -135,6 +135,20 @@ def get_user_course_detail(user_id, course_id):
     return JP.from_json(response.read(), user_models.UserCourseStatus)
 
 
+def get_user_course_grades(user_id, course_id):
+    ''' get grades for the user for this course'''
+    response = GET(
+        '{}/{}/{}/courses/{}/grades'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            course_id
+        )
+    )
+
+    return JP.from_json(response.read(), user_models.CourseGrades)
+
+
 def _set_course_position(user_id, course_id, parent_id, child_id):
     data = {
         "position": {
