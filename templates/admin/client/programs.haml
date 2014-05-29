@@ -60,6 +60,7 @@
       $('#student-list').on('click', 'a.invite-user', function(e){
         e.preventDefault();
         var that = $(this);
+        that.parents('tr').toggleClass('selected');
         data = {
           'csrfmiddlewaretoken':  $.cookie('apros_csrftoken')
           }
@@ -68,11 +69,14 @@
           method: 'POST',
           data: data
         }). done(function(data){
-          if(data.status == 'complete'){
+          if(data.status == 'success'){
             alert('Invitation has been resent');
           }
-          else{
+          else if(data.status == 'fail'){
             alert('Invitation not sent');
+          }
+          else{
+            alert(data.status);
           }
         }).fail(function(){
             alert('Invitation not sent');
