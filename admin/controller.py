@@ -7,6 +7,7 @@ from django.conf import settings
 from api_client import user_api, group_api, course_api
 from accounts.models import UserActivation
 from .models import Client, WorkGroup
+from license import controller as license_controller
 
 
 def load_course(course_id, depth=3, course_api_impl=course_api):
@@ -204,10 +205,14 @@ def get_group_list_as_file(groups):
 
 
 def fetch_clients_with_program(program_id):
-    clients = []
-    clientsTemp = group_api.get_groups_in_group(program_id, params=[{'key': 'type', 'value': 'organization'}])
-    for client in clientsTemp:
-        clients.append(Client.fetch(group_id=client.id))
+    group_list = group_api.get_groups_in_group(program_id, params=[{'key': 'type', 'value': 'organization'}])
+    clients = [Client.fetch(group_id=group.id) for group in group_list]
+    for client in clients:
+        try:
+            client.places_allocated, client.places_assigned = license_controller.licenses_report(program_id, client.id)
+        except:
+            client.places_allocated = None
+            client.places_assigned = None
 
     return clients
 

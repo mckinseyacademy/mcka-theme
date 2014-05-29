@@ -2,13 +2,18 @@
 - block content
   .admin-detail.row
     .large-12.large.columns
-      - include 'admin/program/detail_header.haml'    
+      - include 'admin/program/detail_header.haml'
   .admin-detail.row
     .large-12.large.columns
       - block admin_detail
         %h1
           %span= _("Program: ")
-          %span= program.display_name
+          %span
+            = program.display_name
+            (
+            %span><
+              = program.name
+            )
         %hr
         %section
           %header Clients:

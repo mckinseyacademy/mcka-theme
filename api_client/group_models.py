@@ -35,6 +35,7 @@ class GroupInfo(JsonObject):
             return group_api.get_groups_in_group(self.id, params=params)
         else:
             return group_api.get_groups_in_group(self.id)
+
     @classmethod
     def _clean_group_data(cls, group_data):
         clean_data = {
