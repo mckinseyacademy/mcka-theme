@@ -48,7 +48,21 @@
       @include font-spec(30);
       @include square-size(50px);
       @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
-      &[href] { background-color: $mckinsey-academy-alt-blue; }
+      &[href] {
+        background-color: $mckinsey-academy-alt-blue;
+        .go-to-next{
+          @include font-spec(14,semibold,16);
+          color: $mckinsey-academy-alt-blue;
+          width: 200px;
+          position: absolute;
+          left: 55px;
+          bottom: 15px;
+          text-align: left;
+          &:hover{
+            color: $mckinsey-academy-blue-gray;
+          }
+        }
+      }
 
       i {
         position: absolute;
@@ -56,11 +70,6 @@
         left: 50%;
         margin: -15px 0 0 -9.5px;
       }
-    }
-    .go-to-next{
-      position:relative;
-      left: 130px;
-      bottom: 30px;
     }
   }
 }
