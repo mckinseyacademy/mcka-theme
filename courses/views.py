@@ -13,7 +13,7 @@ from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api
 from admin.controller import load_course
-from accounts.controller import get_current_course_for_user
+from accounts.controller import get_current_course_for_user, set_current_course_for_user
 
 # Create your views here.
 
@@ -64,7 +64,7 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
-    request.session["current_course_id"] = course_id
+    set_current_course_for_user(request, course_id)
 
     data = {
         "user": request.user,
@@ -85,7 +85,7 @@ def navigate_to_page(request, course_id, current_view = 'landing'):
         return course_landing_page(request, course_id)
 
     # Get course info
-    request.session["current_course_id"] = course_id
+    set_current_course_for_user(request, course_id)
 
     data = {
         "current_view": current_view,
@@ -140,7 +140,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     # Take note that the user has gone here
     program = program_for_course(request.user.id, course_id)
     program_id = program.id if program else None
-    request.session["current_course_id"] = course_id
+    set_current_course_for_user(request, course_id)
     update_bookmark(
         request.user.id, course_id, chapter_id, current_sequential.id, page_id)
 
