@@ -1,4 +1,5 @@
 import tempfile
+import re
 
 from django.core.servers.basehttp import FileWrapper
 from django.utils.translation import ugettext as _
@@ -42,13 +43,19 @@ def _process_line(user_line):
         fields = user_line.strip().split(',')
         # format is Email, FirstName, LastName, Title, City, Country (last 3 are optional)
 
-        # Must have the first 3 fields - make temp username the same as email
+        # temporarily set the user name to the first 30 characters of the allowed characters within the email
+        username = re.sub(r'\W', '', fields[0])
+        if len(username) > 30:
+            username = username[:29]
+
+        # Must have the first 3 fields
         user_info = {
             "email": fields[0],
-            "username": fields[0],
+            "username": username,
             "is_active": False,
             "first_name": fields[1],
             "last_name": fields[2],
+            "password": settings.INITIAL_PASSWORD,
         }
         if len(fields) > 3:
             user_info["title"] = fields[3]
@@ -111,10 +118,10 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
                     }
 
             if failure:
-                user_error = _("Error processing data: {} - {} ({})").format(
-                    reason,
+                user_error = _("{}: {} - {}").format(
+                    failure["activity"],
+                    failure["reason"],
                     user_dict["email"],
-                    user_dict["username"]
                 )
 
         except Exception as e:

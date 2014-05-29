@@ -8,7 +8,7 @@ ERROR_CODE_MESSAGES = {}
 
 class ApiError(Exception):
     code = 1000 # 1000 represents client-side error, or unknown code
-    value = _("Unknown error calling API")
+    message = _("Unknown error calling API")
     content_dictionary = {}
     http_error = None
 
@@ -20,19 +20,25 @@ class ApiError(Exception):
         self.http_error = thrown_error
         self.code = thrown_error.code
 
+        self.message = thrown_error.reason
+
         # does the code have a known reason to be incorrect
         if error_code_messages and self.code in error_code_messages:
-            self.value = error_code_messages[self.code]
+            self.message = error_code_messages[self.code]
 
         # Look in response content for specific message from api response
-        self.content_dictionary = json.loads(thrown_error.read())
+        try:
+            self.content_dictionary = json.loads(thrown_error.read())
+        except:
+            self.content_dictionary = {}
+
         if "message" in self.content_dictionary:
-            self.value = self.content_dictionary["message"]
+            self.message = self.content_dictionary["message"]
 
         super(ApiError, self).__init__()
 
     def __str__(self):
-        return "ApiError '{}'".format(self.value)
+        return "ApiError '{}' ({})".format(self.message, self.code)
 
 def api_error_protect(func):
     '''
