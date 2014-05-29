@@ -1,6 +1,6 @@
 ''' Objects for course gradebooks built from json responses from API '''
 
-from .json_object import DataOnly, JsonObject, CategorisedJsonObject
+from .json_object import DataOnly, JsonObject
 
 
 class CourseSectionSummary(JsonObject):
@@ -12,9 +12,7 @@ class CourseSectionSummary(JsonObject):
 
 class GradeSummary(JsonObject):
     object_map = {
-        "section_breakdown": CategorisedJsonObject,
         "totaled_scores": DataOnly,
-        "grade_breakdown": CategorisedJsonObject
     }
 
 

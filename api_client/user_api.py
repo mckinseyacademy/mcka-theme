@@ -146,7 +146,7 @@ def get_user_gradebook(user_id, course_id):
         )
     )
 
-    return JP.from_json(response.read(), user_models.CourseGrades)
+    return JP.from_json(response.read(), gradebook_models.Gradebook)
 
 
 def _set_course_position(user_id, course_id, parent_id, child_id):

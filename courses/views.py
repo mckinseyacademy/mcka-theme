@@ -119,6 +119,10 @@ def course_cohort(request, course_id):
 
 @login_required
 def course_group_work(request, course_id):
+    # TODO - Figure out why nginx munges the id's so that we can get rid of
+    # this step
+    course_id = decode_id(course_id)
+
     seq_id = request.GET.get("seqid", None)
     project_group, group_project, sequential, page = group_project_location(
         request.user.id,
