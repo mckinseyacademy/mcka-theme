@@ -40,6 +40,8 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                     _("complete")
                 )
 
+    found_current_page = False
+
     for idx, lesson in enumerate(course.chapters, start=1):
         lesson.index = idx
         lesson.tick_marks = [i * 20 <= 100 for i in range(1, 6)]
@@ -47,7 +49,6 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
             lesson_description = static_tab_info.get("lesson{}".format(idx), None)
             if lesson_description:
                 lesson.description = lesson_description.content
-        found_current_page = False
         for sequential in lesson.sequentials:
             for page in sequential.pages:
                 page.status_class = "complete"
