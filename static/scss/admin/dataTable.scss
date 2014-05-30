@@ -4,7 +4,7 @@
   div.dataTables_length label,
   div.dataTables_filter label,
   div.dataTables_info {
-    color: #999;
+    color: $mckinsey-academy-black;
     font-weight: normal;
   }
 
@@ -95,9 +95,6 @@
     border-top: none;
   }
 
-
-
-
   /*
    * TableTools styles
    */
@@ -136,8 +133,8 @@
   }
 
   ul.DTTT_dropdown.dropdown-menu li:hover a {
-    background-color: #0088cc;
-    color: white !important;
+    background-color: $mckinsey-academy-alt-blue;
+    color: $pure-white !important;
   }
 
   /* TableTools information display */
@@ -167,15 +164,13 @@
     @include font-spec(14, normal, 20);
   }
 
-
-
   /*
    * FixedColumns styles
    */
   div.DTFC_LeftHeadWrapper table,
   div.DTFC_LeftFootWrapper table,
   table.DTFC_Cloned tr.even {
-    background-color: white;
+    background-color: $pure-white;
   }
 
   div.DTFC_LeftHeadWrapper table {

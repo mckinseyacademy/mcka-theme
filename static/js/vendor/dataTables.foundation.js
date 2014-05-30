@@ -9,8 +9,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 	}
 } );
 
-
-
 // In 1.10 we use the pagination renderers to draw the Bootstrap paging,
 // rather than  custom plug-in
 if ( $.fn.dataTable.Api ) {
@@ -126,7 +124,6 @@ else {
 				0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
 		};
 	};
-
 
 	/* Bootstrap style pagination control */
 	$.extend( $.fn.dataTableExt.oPagination, {
@@ -252,7 +249,6 @@ else {
 		}
 	} );
 }
-
 
 /*
  * TableTools Foundation compatibility
