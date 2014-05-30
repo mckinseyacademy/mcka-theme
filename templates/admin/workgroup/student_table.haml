@@ -1,23 +1,24 @@
 %table.student-list
   %thead
-    %th Name
-      %span{class: 'asc'}
-        ▲
-      %span{class: 'desc'}
-        ▼
-    %th Email
-      %span{class: 'asc'}
-        ▲
-      %span{class: 'desc'}
-        ▼
-    %th Company
-      %span{class: 'asc'}
-        ▲
-      %span{class: 'desc'}
-        ▼
+    %th.label-1 Name
+      %span.label-1.asc
+        %i.fa.fa-sort-asc
+      %span.label-1.desc
+        %i.fa.fa-sort-desc
+    %th.label-1 Email
+      %span.label-1.asc
+        %i.fa.fa-sort-asc
+      %span.label-1.desc
+        %i.fa.fa-sort-desc
+    %th.label-1 Company
+      %span.asc
+        %i.fa.fa-sort-asc
+      %span.desc
+        %i.fa.fa-sort-desc
   %tbody
     - for student in students
-      %tr.student{id: "#{student.id}", 'data-company-name': '#{student.company.id}'}
-        %td= student.username
+      %tr.student{id: "#{student.id}", 'data-company-name': "#{student.company.id}"}
+        %td
+          %a= student.username
         %td= student.email
-        %td{style: "color: red;"}= student.company.display_name
+        %td= student.company.display_name

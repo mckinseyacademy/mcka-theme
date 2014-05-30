@@ -192,10 +192,10 @@
   }
 
   th .asc, th .desc {
-    color: rgba(127, 127, 127, 0.3);
-    float: right;
+    color: rgba(51, 132, 202, 0.3);
+    display: inline-block;
   }
   .sorting_desc .asc, .sorting_asc .desc {
-    color: rgba(0,0,0,1);
+    color: $mckinsey-academy-alt-blue;
   }
 }
