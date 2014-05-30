@@ -8,6 +8,10 @@
   - if current_page.next_url
     %a.page-to.next{href: "#{current_page.next_url}"}
       %i.fa.fa-chevron-right
+      - if current_page.next_lesson_link
+        .go-to-next
+          = _("Go to next lesson")
   - else
     %a.page-to.next
       %i.fa.fa-chevron-right
+

@@ -3,8 +3,10 @@ from django.conf import settings
 
 from .api_parser import ApiParser
 from .views import MockResponseView
+import re
 
 def transform_chunk(chunk):
+    chunk = re.sub(r'\{\?(?P<string>.*)\}', r'?\g<string>',chunk)
     if len(chunk) > 2 and chunk[0] == '{' and chunk[-1] == '}':
         chunk = r"(?P<{}>.*)".format(chunk[1:-1])
 

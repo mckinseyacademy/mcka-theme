@@ -6,19 +6,9 @@ from django.conf import settings
 
 from api_client import user_api, group_api, course_api
 from accounts.models import UserActivation
-from .models import Client
+from .models import Client, WorkGroup
+from license import controller as license_controller
 
-def get_current_course_for_user(request):
-    course_id = request.session.get("current_course_id", None)
-
-    if not course_id and request.user:
-        # TODO: Replace with logic for finding "current" course
-        # For now, we just return first course
-        courses = user_api.get_user_courses(request.user.id)
-        if len(courses) > 0:
-            course_id = courses[0].id
-
-    return course_id
 
 def load_course(course_id, depth=3, course_api_impl=course_api):
     '''
@@ -167,7 +157,7 @@ def _formatted_user_string(user):
         user.last_name,
         user.city,
         user.country,
-        user.activation_link, 
+        user.activation_link,
     )
 
 def _formatted_user_string_group_list(user):
@@ -197,7 +187,7 @@ def get_student_list_as_file(client, activation_link = ''):
     return '\n'.join(user_strings)
 
 def get_user_with_activation(user_id, activation_link):
-    user = user_api.get_user(user_id)  
+    user = user_api.get_user(user_id)
     try:
         activation_record = UserActivation.get_user_activation(user)
         if activation_record:
@@ -209,16 +199,91 @@ def get_user_with_activation(user_id, activation_link):
 
     return user
 
-def get_group_list_as_file(groups):  
+def get_group_list_as_file(groups):
     group_string = [_formatted_group_string(group) for group in groups]
     return '\n'.join(group_string)
 
 
 def fetch_clients_with_program(program_id):
-    clients = []
-    clientsTemp = group_api.get_groups_in_group(program_id, params=[{'key': 'type', 'value': 'organization'}])
-    for client in clientsTemp:
-        clients.append(Client.fetch(group_id=client.id))
+    group_list = group_api.get_groups_in_group(program_id, params=[{'key': 'type', 'value': 'organization'}])
+    clients = [Client.fetch(group_id=group.id) for group in group_list]
+    for client in clients:
+        try:
+            client.places_allocated, client.places_assigned = license_controller.licenses_report(program_id, client.id)
+        except:
+            client.places_allocated = None
+            client.places_assigned = None
 
     return clients
+
+def filterGroupsAndStudents(course, students):
+    ''' THIS IS A VERY SLOW PART OF CODE.
+        Due to api limitations, filtering of user from student list has to be done on client.
+        It has to have 3 nested "for" loops, and one after (indexes issue in for loop).
+        This should be replaced once API changes.
+    '''
+    groupsList = []
+    for module in course.group_projects:
+        groupsList = groupsList + [WorkGroup.fetch(group.group_id)
+                                   for group in course_api.get_course_content_groups(course.id, module.id)]
+
+    groups = []
+    groupedStudents = []
+    for group in groupsList:
+        users = group_api.get_users_in_group(group.id)
+        group.students = users
+        for user in users:
+            for student in students:
+                if user.username == student.username:
+                    try:
+                        user.company = student.company
+                    except:
+                        pass
+                    groupedStudents.append(student)
+        group.students_count = len(group.students)
+        groups.append(group)
+
+    groups.sort(key=lambda group: group.id)
+
+    for student in groupedStudents:
+        if student in students:
+            students.remove(student)
+
+    return groups, students
+
+
+def getStudentsWithCompanies(course):
+    students = course_api.get_user_list(course.id)
+    companies = {}
+    for student in students:
+        studentCompanies = user_api.get_user_groups(
+            student.id, group_type='organization')
+        if len(studentCompanies) > 0:
+            company = studentCompanies[0]
+            if companies.get(company.id) is None:
+                companies[company.id] = Client.fetch(company.id)
+            student.company = companies[company.id]
+    return students, companies
+
+
+def parse_studentslist_from_post(postValues):
+
+    students = []
+    i = 0
+    try:
+        privateFlag = True
+        companyid = postValues['students[0][data_field]']
+        if companyid == '':
+            privateFlag == False
+        while(postValues['students[{}][id]'.format(i)]):
+            students.append({'id': postValues['students[{}][id]'.format(i)],
+                            'company_id': postValues['students[{}][data_field]'.format(i)]})
+            if(postValues['students[{}][data_field]'.format(i)] != companyid):
+                privateFlag = False
+            i = i + 1
+    except:
+        pass
+
+    return students, companyid, privateFlag
+
 

@@ -246,7 +246,7 @@ button,
 
     .back {
       z-index: 5;
-      @include transform(rotateX(0deg));
+      @include transform(rotateY(0deg));
     }
   }
 
@@ -261,7 +261,7 @@ button,
 
   .front {
     z-index: 10;
-    @include transform(rotateX(0deg));
+    @include transform(rotateY(0deg));
   }
 
   .back {
@@ -281,6 +281,11 @@ form {
 
 #beta_content {
   p { margin-bottom: rem-calc(30); }
+}
+
+#mckinsey_help {
+  + .global-help { display: block; }
+  p { margin-bottom: rem-calc(20); }
 }
 
 /* Styles to hide debugging QA content when logged in as a staff user */

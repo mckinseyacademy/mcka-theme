@@ -17,9 +17,3 @@
     - else
       %a{href:"/admin/clients/#{client.id}/courses"}
         = _("Assign Students to Courses")
-  %li
-    - if selected_client_tab == 'groups'
-      %span.selected= _("Cohort Courses")
-    - else
-      %a{href:"/admin/clients/#{client.id}/groups"}
-        = _("Cohort Courses")

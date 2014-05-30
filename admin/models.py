@@ -52,26 +52,14 @@ class Client(BaseGroupModel):
         return self.get_users()
 
     def fetch_programs(self):
-        # Would be nice to filter groups based upon their group type, but we
-        # don't have that available in results yet
         groups = self.get_groups(params=[{'key': 'type', 'value': 'series'}])
-        programs = []
-        for group in groups:
-            # we will filter later, so we protect ourselves against
-            # non-programs herein
-            program = None
+        programs = [Program.fetch(group.id) for group in groups]
+        for program in programs:
             try:
-                program = Program.fetch(group.id)
+                program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id, self.id)
             except:
-                pass
-            if program:
-                try:
-                    program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id, self.id)
-                except:
-                    program.places_allocated = None
-                    program.places_assigned = None
-
-            programs.append(program)
+                program.places_allocated = None
+                program.places_assigned = None
 
         return programs
 
@@ -84,8 +72,8 @@ class Client(BaseGroupModel):
 
         return group_info
 
-class WorkGroup(BaseGroupModel): 
-    # data_fields = []
+class WorkGroup(BaseGroupModel):
+    data_fields = ["privacy", 'client_id', ]
     group_type = "workgroup"
 
     def fetch_students(self):
@@ -106,3 +94,6 @@ class WorkGroup(BaseGroupModel):
         })
 
         return workgroup
+
+    def add_workgroup_to_client(self, client_id):
+        return group_api.add_group_to_group(self.id, client_id)
