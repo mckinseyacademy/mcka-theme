@@ -108,7 +108,7 @@ The value of `EDX_API_KEY` will need to match the API_KEY as configured within t
 The edX virtual environment has LMS running on port 8000. You will wish to run Apros on a different port than LMS. _This document assumes that this port is 3000, but you can choose any free port you like_
 
 Start up Apros in development mode, which automatically updates assets from the source code therein. This is done with the following command (note that the default port is 3000 so it can be left off unless you want to override):
-    
+
     ./manage.py rundev 3000
 
 
@@ -120,7 +120,7 @@ Start up Apros in development mode, which automatically updates assets from the 
 ### Override specific settings in lms.env.json
 
 This file can only be found in the devstack environment
-    
+
 - Log in as edxapp user `vagrant ssh -c "sudo su edxapp"`
 - `cd ~`
 - Edit the file `lms.env.json` in your favourite command-line editor
@@ -138,9 +138,9 @@ You should find the FEATURES section already existing. _It appears that these ar
     "FEATURES": {
         "API": true,
         ...
-        "ENABLE_CORS_HEADERS": true, 
+        "ENABLE_CORS_HEADERS": true,
         ...
-    }, 
+    },
 
 #### (Optional for development) Configure the API_KEY
 This will need to match the API_KEY that the client is using.
@@ -190,6 +190,7 @@ Change `nginx.conf` to proxy calls to `lms.local.org` and `mckinseyacademy.local
     server {
         listen 80;
         server_name  mckinseyacademy.local.org;
+        merge_slashes off;
         location / {
             # proxy to django listening on 127.0.0.1:3000
             proxy_pass http://localhost:3000/;
@@ -204,6 +205,7 @@ Change `nginx.conf` to proxy calls to `lms.local.org` and `mckinseyacademy.local
     server {
         listen 80;
         server_name  lms.local.org;
+        merge_slashes off;
         location / {
             # proxy to django listening on 127.0.0.1:8000
             proxy_pass http://localhost:8000/;
@@ -233,7 +235,7 @@ You may wish to enable to local mock server if you so desire. To do this, add th
 
     API_MOCK_SERVER_ADDRESS = 'http://localhost:3000/mockapi'
     API_SERVER_ADDRESS = API_MOCK_SERVER_ADDRESS
-    
+
     LOCAL_MOCK_API_FILES = [
         os.path.join(BASE_DIR, 'apiary.apib'),
         os.path.join(BASE_DIR, 'mock_supplementals.apib'),

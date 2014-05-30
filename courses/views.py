@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course
-from .controller import update_bookmark, decode_id, encode_id, group_project_location
+from .controller import update_bookmark, group_project_location
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api
@@ -80,9 +80,6 @@ def course_landing_page(request, course_id):
 
 @login_required
 def course_overview(request, course_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of
-    # this step
-    course_id = decode_id(course_id)
     data = {
         'overview': course_api.get_course_overview(course_id),
     }
@@ -91,9 +88,6 @@ def course_overview(request, course_id):
 
 @login_required
 def course_syllabus(request, course_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of
-    # this step
-    course_id = decode_id(course_id)
     data = {
         'syllabus': course_api.get_course_syllabus(course_id),
     }
@@ -102,26 +96,18 @@ def course_syllabus(request, course_id):
 
 @login_required
 def course_news(request, course_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of
-    # this step
-    course_id = decode_id(course_id)
     data = course_api.get_course_news(course_id)
     return render(request, 'courses/course_news.haml', data)
 
 
 @login_required
 def course_cohort(request, course_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of
-    # this step
-    course_id = decode_id(course_id)
     return render(request, 'courses/course_cohort.haml')
 
 
 @login_required
 def course_group_work(request, course_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of
-    # this step
-    course_id = decode_id(course_id)
+
     set_current_course_for_user(request, course_id)
 
     seq_id = request.GET.get("seqid", None)
@@ -152,8 +138,6 @@ def course_group_work(request, course_id):
 
 @login_required
 def course_progress(request, course_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
-    course_id = decode_id(course_id)
 
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
 
@@ -181,17 +165,11 @@ def course_progress(request, course_id):
 
 @login_required
 def course_resources(request, course_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
-    course_id = decode_id(course_id)
     return render(request, 'courses/course_resources.haml')
 
 
 @login_required
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
-    course_id = decode_id(course_id)
-    chapter_id = decode_id(chapter_id)
-    page_id = decode_id(page_id)
 
     ''' go to given page within given chapter within given course '''
     # Get course info
@@ -236,32 +214,16 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     If no chapter or course given, system tries to go to location within last
     visited course
     '''
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
-    if course_id:
-        course_id = decode_id(course_id)
-    else:
+    if not course_id:
         course_id = get_current_course_for_user(request)
-
-    if chapter_id:
-        chapter_id = decode_id(chapter_id)
 
     course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
         request.user.id, course_id, chapter_id)
 
     if course_id and chapter_id and page_id:
-        return HttpResponseRedirect(
-            '/courses/{}/lessons/{}/module/{}'.format(
-                encode_id(course_id),
-                encode_id(chapter_id),
-                encode_id(page_id)
-            )
-        )
+        return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
-        return HttpResponseRedirect(
-            '/courses/{}/view/notready'.format(
-                encode_id(course_id),
-            )
-        )
+        return HttpResponseRedirect('/courses/{}/view/notready'.format(course_id))
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''

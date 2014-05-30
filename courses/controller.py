@@ -13,14 +13,6 @@ from admin.controller import load_course
 
 # logic functions - recieve api implementor for test
 
-def decode_id(encoded_id):
-    #return unquote_plus(encoded_id)
-    return encoded_id.replace('___', '/')
-
-def encode_id(plain_id):
-    #return quote_plus(plain_id)
-    return plain_id.replace('/', '___')
-
 def build_page_info_for_course(
     course_id,
     chapter_id,
@@ -48,10 +40,7 @@ def build_page_info_for_course(
         course.chapters[chapter_position - 1].bookmark = True
 
     for chapter in course.chapters:
-        chapter.navigation_url = '/courses/{}/lessons/{}'.format(
-            encode_id(course_id),
-            encode_id(chapter.id)
-        )
+        chapter.navigation_url = '/courses/{}/lessons/{}'.format(course_id, chapter.id)
         if chapter.id == chapter_id:
             current_chapter = chapter
 
@@ -59,8 +48,7 @@ def build_page_info_for_course(
             for page in sequential.pages:
                 page.prev_url = None
                 page.next_url = None
-                page.navigation_url = '{}/module/{}'.format(
-                    chapter.navigation_url, encode_id(page.id))
+                page.navigation_url = '{}/module/{}'.format(chapter.navigation_url, page.id)
 
                 if page.id == page_id:
                     current_page = page
