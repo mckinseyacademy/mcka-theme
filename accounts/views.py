@@ -5,13 +5,13 @@ from django.utils.translation import ugettext as _
 
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, ActivationForm
-from api_client import user_api
+from api_client import user_api, course_api
 from .models import RemoteUser, UserActivation
 from admin.models import Client
 
 from lib.context_processors import user_program_data
-from accounts.controller import get_current_course_for_user
-from .controller import get_current_course_for_user, user_activation_with_data, ActivationError
+from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
+from courses.controller import program_for_course
 
 # from importlib import import_module
 # from django.conf import settings
@@ -59,8 +59,20 @@ def login(request):
                 ) if 'HTTP_REFERER' in request.META else None
                 if not redirect_to:
                     course_id = get_current_course_for_user(request)
+                    program = program_for_course(request.user.id, course_id)
+                    future_start_date = False
+                    if program:
+                        for program_course in program.courses:
+                            if program_course.id == course_id:
+                                if hasattr(program_course, 'start_date'):
+                                    future_start_date = is_future_start(program_course.start_date)
+                                elif hasattr(program, 'start_date'):
+                                    future_start_date = is_future_start(program.start_date)
                     if course_id:
-                        redirect_to = '/courses/{}'.format(course_id)
+                        if future_start_date:
+                            redirect_to = '/'
+                        else:
+                            redirect_to = '/courses/{}'.format(course_id)
                     else:
                         redirect_to = '/'
 
