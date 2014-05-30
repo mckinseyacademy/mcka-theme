@@ -19,14 +19,15 @@
           %h4= _("Group Members")
           - for member in project_group.members
             - include "courses/group_work/group_member.haml" with group_member=member
-          %a.email-team{href: "#"}= _("Email team")
+          %a.email-team{href: "#", data-reveal-id: 'email-team'}
+            = _("Email Team")
         %hr
         .ask-ta
           %h4= _("Ask a TA")
           -# Temporarily use mailto: for ta link as well (add data_reveal_id back in for when dialog should be introduced
-          -# include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant data_reveal_id="contact-ta"
-          - include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant
-    #contact-ta.reveal-modal{"data-reveal": "true"}
+          - include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant data_reveal_id="contact-ta"
+          -# include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant
+    #contact-ta.reveal-modal.small{"data-reveal": "true"}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2= _("Ask a TA")
@@ -39,4 +40,18 @@
             = error
         - csrf_token
         %textarea{placeholder: "Enter your message for the TA here", name: "ta_message"}
+        %input.button.radius.small{type: "submit", value: "Submit"}
+    #email-team.reveal-modal.small{"data-reveal": "true"}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %h2= _("Message your Group")
+      %hr
+      %h4= _("Subhead")
+      %div= _("Post any questions or messages you have for your group here.")
+      %form{action: "/courses/#{course.id}/group_email/#{project_group.id}", method: "POST"}
+        .error
+          - if error
+            = error
+        - csrf_token
+        %textarea{placeholder: "Enter your message for the group here", name: "group_message"}
         %input.button.radius.small{type: "submit", value: "Submit"}
