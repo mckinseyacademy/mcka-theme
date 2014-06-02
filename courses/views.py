@@ -108,8 +108,6 @@ def course_cohort(request, course_id):
 @login_required
 def course_group_work(request, course_id):
 
-    set_current_course_for_user(request, course_id)
-
     seq_id = request.GET.get("seqid", None)
     project_group, group_project, sequential, page = group_project_location(
         request.user.id,
@@ -121,6 +119,9 @@ def course_group_work(request, course_id):
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
+
+    # Get course info
+    set_current_course_for_user(request, course_id)
 
     data = {
         "lesson_content_parent_id": "course-group-work",
