@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext as _
 import urllib2 as url_access
+import datetime
 
 from api_client import user_api
 from api_client.json_object import JsonParser as JP
@@ -77,3 +78,10 @@ def user_activation_with_data(user_id, user_data, activation_record):
         raise ActivationError(error)
 
     activation_record.delete()
+
+def is_future_start(date):
+    current_time = datetime.datetime.now()
+    if date <= current_time:
+        return False
+    else:
+        return True
