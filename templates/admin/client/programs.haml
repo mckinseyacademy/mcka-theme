@@ -15,7 +15,12 @@
       %div= _("Select a program below")
       - for program in programs
         .select-program-box{id: "#{program.id}"}
-          .name= program.display_name
+          .name
+            = program.display_name
+            (
+            %span><
+              = program.name
+            )
           .prog-info
             %span= _("Program Run:")
             %span= program.date_range
