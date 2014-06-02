@@ -37,7 +37,10 @@
           %tr
             %td.lesson.sub-1 ={lesson.index}: ={lesson.name}
             %td.deadline April 16th
-            %td.assessment 80%
+            - if lesson.assesment_score == None
+              %td.assessment.none -
+            - else
+              %td.assessment ={lesson.assesment_score}%
             %td.lesson-progress
               - for sequential in lesson.sequentials
                 - for lesson_module in sequential.pages
