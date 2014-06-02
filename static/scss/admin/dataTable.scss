@@ -38,7 +38,9 @@
     margin: 0;
   }
 
-  table{
+  table {
+    &.dataTable { width: 100%; }
+
     .dataTable {
       clear: both;
       margin: 0.5em 0 !important;
@@ -194,6 +196,7 @@
   th .asc, th .desc {
     color: rgba(51, 132, 202, 0.3);
     display: inline-block;
+    @include font-spec(15);
   }
   .sorting_desc .asc, .sorting_asc .desc {
     color: $mckinsey-academy-alt-blue;

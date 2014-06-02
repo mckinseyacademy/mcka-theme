@@ -23,10 +23,10 @@
               .sub-1 Course Participants:
               - include 'admin/workgroup/student_table.haml'
             .large-5.columns.group-selection
-              %h2= _("Group Students:")
-              %div= _("Select a program below to move students into.")
-              %a#student-group-action.button.radius.tiny{href: "/admin/workgroup/group/create/#{course.id}"}
-                %span= _("Create Group of Selected Students")
+              .sub-1= _("Group Students:")
+              .description= _("Create and manage existing groups of students within this course below by dragging names into groups or removing them.")
+              %a#student-group-action.button.radius.small{href: "/admin/workgroup/group/create/#{course.id}"}
+                = _("Create Group of Selected Students")
               %a.button.radius.small{href: "/admin/workgroup/course/#{course.id}/download_group_list", target: "_blank"}
                 Download List of Groups
               .companies-filter-wrapper.large-12
@@ -36,12 +36,12 @@
                     %li.company-filter{'data-company-filter': '#{company.id}'}= company.display_name
               - for group in groups
                 .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
-                  .name= group.display_name
-                    %span= _("Members:")
-                    %span.student-count= group.students_count
+                  .label-1= group.display_name
+                    %span.label-3= _("Members:")
+                    %span.label-3.student-count= group.students_count
                     %i.caret.fa.fa-caret-down
                   .group-info.students
-                    %span= _("Students:")
+                    %span.label-1= _("Members:")
                     .students-list
                       - for student in group.students
                         %div.student{'name': '#{student.id}'}
