@@ -1,11 +1,13 @@
 ''' Core logic to sanitise information for views '''
-from urllib2 import HTTPError
+#from urllib import quote_plus, unquote_plus
+
 from django.conf import settings
+
 from api_client import course_api, user_api, user_models
+from api_client.api_error import ApiError
 from license import controller as license_controller
 from admin.models import Program, WorkGroup
 from admin.controller import load_course
-#from urllib import quote_plus, unquote_plus
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -72,7 +74,7 @@ def build_page_info_for_course(
 def get_course_position_information(user_id, course_id, user_api_impl=user_api):
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-    except HTTPError, e:
+    except ApiError, e:
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
 
     return course_detail

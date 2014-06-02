@@ -167,30 +167,6 @@
     }
   }
 
-  .lesson-module-status{
-    display: inline-block;
-    font-family: FontAwesome;
-    @include font-spec(10);
-    color: $mckinsey-grey;
-    &::before{
-      content: "\f10c";
-    }
-    &.complete{
-      color: $mckinsey-green;
-    }
-    &.complete, &.current{
-      &::before{
-        content: "\f111"
-      }
-    }
-    &:hover{
-      color: $mckinsey-academy-alt-blue;
-      &.current{
-        color: $mckinsey-grey;
-      }
-    }
-  }
-
   .lesson-pager{
     text-align: center;
     width: 100%;
