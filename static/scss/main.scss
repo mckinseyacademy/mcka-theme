@@ -4,6 +4,10 @@ body{
   background-color: $background-tint;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &.with-program {
+    margin-top: $header-bar-height + $program-bar-height;
+  }
 }
 
 main[role=main] { margin-bottom: 100px; }
@@ -284,7 +288,7 @@ form {
 }
 
 #mckinsey_help {
-  + .global-help { display: block; }
+  ~ header[role=banner] .global-help { display: block; }
   p { margin-bottom: rem-calc(20); }
 }
 
