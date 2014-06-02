@@ -23,7 +23,10 @@
                     = ' - Select - '
                 - for program in programs
                   %option{'value': '#{program.id}'}
-                    = program.name
+                    = program.display_name
+                    (
+                    %span><= program.name
+                    )
               %select.select-course{'name': 'select-course'}
                   %option{'value': 'select'}
                     = ' - Select - '

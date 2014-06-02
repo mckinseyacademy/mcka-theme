@@ -9,10 +9,11 @@
     color: $mckinsey-grey;
     display: inline-block;
     font-family: FontAwesome;
-    @include font-spec(10);
+    @include font-spec(12);
 
     &:before { content: "\f10c"; }
     &.complete { color: $mckinsey-green; }
+    &.current { color: $mckinsey-orange; }
 
     &.complete,
     &.current {

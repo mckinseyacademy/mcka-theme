@@ -6,14 +6,13 @@ Apros.views.HomeLanding = Backbone.View.extend({
 
   scroll_window: function() {
     var $window     = $(window),
-        w_width     = $window.width(),
         tagline     = this.$('.tagline'),
         t_width     = tagline.width(),
         t_offset    = tagline.offset();
 
     $('html,body').animate({
         scrollTop: t_offset.top - ($window.height() - tagline.outerHeight(true)) / 2,
-        scrollLeft: t_offset.left - (this.$el.outerWidth(true) - tagline.outerWidth(true)) / 2
+        scrollLeft: t_offset.left - ($window.width() - tagline.outerWidth(true)) / 2
     }, 0);
   },
 

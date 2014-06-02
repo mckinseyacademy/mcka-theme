@@ -1,14 +1,32 @@
-#course-lessons
-  - include "courses/content_page/lesson_menu.haml"
-  .lesson-progress
-    - for sequential in current_chapter.sequentials
-      - for lesson_module in sequential.pages
-        %a.lesson-module-status{class: "#{lesson_module.status_class}", href: "#{lesson_module.navigation_url}", title: "#{sequential.name} - #{lesson_module.name}"}
-  .lesson-title
-    %span.label-4.lesson-index Lesson {{current_chapter.index}}:
-    %span.label-3.lesson-name= current_chapter.name
-    %span.label-3.page-desc= current_page.description
-  %h1= current_page.name
-  .lesson-content
-  .lesson-discussion
-  - include "courses/content_page/lesson_pager.haml"
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-lessons
+    - include "courses/content_page/lesson_menu.haml"
+    .lesson-progress
+      - for sequential in current_chapter.sequentials
+        - for lesson_module in sequential.pages
+          %a.lesson-module-status{class: "#{lesson_module.status_class}", href: "#{lesson_module.navigation_url}", title: "#{sequential.name} - #{lesson_module.name}"}
+    .lesson-title
+      %span.label-4.lesson-index Lesson {{current_chapter.index}}:
+      %span.label-3.lesson-name= current_chapter.name
+      %span.label-3.page-desc= current_page.description
+    %h1= current_page.name
+    .lesson-content
+    .lesson-discussion
+    - include "courses/content_page/lesson_pager.haml"
+- block js_snippets
+  :javascript
+    $(function(){
+      var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
+      var lesson_data = {
+        usageId: '{{ vertical_usage_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+      };
+      lesson_content.xblock(lesson_data);
+
+      $('#course-group-work .lesson-module-status').on('click', function(){
+        $('#' + $(this).data('activate')).click();
+      });
+    });

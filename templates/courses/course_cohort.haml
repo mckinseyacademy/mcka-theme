@@ -1,107 +1,109 @@
-#course-cohort
-  %h1 Cohort
-  #map-cohort
-  .student-data
-    %ul.students
-      %li.label-2 # of people online:
-      %li.label-4 467 cohort participants
-      %li.label-4 280 company participants
-      %li.label-4 3 group work team members
-    %a.hide-team{href: '#'} Hide team profiles
-  %hr
-  .leaderboard-header
-    %h1 Leaderboards
-    %ul.select-board
-      %li
-        %a.selected{href: '#'} global cohort
-      %li
-        %a{href: '#'} my company
-  .leaderboards
-    %section
-      %header
-        .label-5 Proficiency:
-        .label-4 cohort average = 0
-        .rank your proficiency position will be displayed here
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name nichellhall
-            .person-title Marketing Director
-            .person-rank #1 <span>100</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name erincavallaro
-            .person-title PR Director
-            .person-rank #2 <span>90</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name amesscarano
-            .person-title Partner
-            .person-rank #3 <span>80</span>
-    %section
-      %header
-        .label-5 Progress:
-        .label-4 cohort average = 40%
-        .rank your progress position: <span>#123</span> with <span>30%</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name nichellhall
-            .person-title Marketing Director
-            .person-rank #1 <span>42%</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name erincavallaro
-            .person-title PR Director
-            .person-rank #2 <span>38%</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name amesscarano
-            .person-title Partner
-            .person-rank #3 <span>36%</span>
-    %section
-      %header
-        .label-5 Engagement:
-          %a{href: '#'} view all
-        .label-4 cohort average = 77 points
-        .rank your engagement position: <span>#8</span> with <span>70 pts.</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name dustinpiper
-            .person-title Art Director
-            .person-rank #1 <span>85 pts.</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name oliviagulin
-            .person-title Designer
-            .person-rank #2 <span>75 pts.</span>
-        .user
-          %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-          .info
-            .person-name charlenewallis
-            .person-title HR Manager
-            .person-rank #3 <span>72 pts.</span>
-  %hr
-  .user-content
-    %section
-      %h1 Discussions
-      %blockquote Even if we cannot directly shape an outcome, a model’s prediction may be communicated in a way that alters behavior and indirectly shapes it.
-      .attribution
-        %img{src: 'http://dummyimage.com/50/000/fff&text=User'}
-        .person
-          .person-name gwensisco
-          .person-title Media Buyer
-          %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014 | 3:52PM
-    %section.recommendations
-      %h1 Recommendations
-      .link
-        %a{href: '#'} Scientists Without Borders
-      %p.style-4 A worldwide community of changemakers collaborating to accelerate solutions to urgent development challenges.
-      .person-name janejohnson <span class='person-title'>COO</span>
-      %a.button.radius.tiny Suggest a Link
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-cohort
+    %h1 Cohort
+    #map-cohort
+    .student-data
+      %ul.students
+        %li.label-2 # of people online:
+        %li.label-4 467 cohort participants
+        %li.label-4 280 company participants
+        %li.label-4 3 group work team members
+      %a.hide-team{href: '#'} Hide team profiles
+    %hr
+    .leaderboard-header
+      %h1 Leaderboards
+      %ul.select-board
+        %li
+          %a.selected{href: '#'} global cohort
+        %li
+          %a{href: '#'} my company
+    .leaderboards
+      %section
+        %header
+          .label-5 Proficiency:
+          .label-4 cohort average = 0
+          .rank your proficiency position will be displayed here
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name nichellhall
+              .person-title Marketing Director
+              .person-rank #1 <span>100</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name erincavallaro
+              .person-title PR Director
+              .person-rank #2 <span>90</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name amesscarano
+              .person-title Partner
+              .person-rank #3 <span>80</span>
+      %section
+        %header
+          .label-5 Progress:
+          .label-4 cohort average = 40%
+          .rank your progress position: <span>#123</span> with <span>30%</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name nichellhall
+              .person-title Marketing Director
+              .person-rank #1 <span>42%</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name erincavallaro
+              .person-title PR Director
+              .person-rank #2 <span>38%</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name amesscarano
+              .person-title Partner
+              .person-rank #3 <span>36%</span>
+      %section
+        %header
+          .label-5 Engagement:
+            %a{href: '#'} view all
+          .label-4 cohort average = 77 points
+          .rank your engagement position: <span>#8</span> with <span>70 pts.</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name dustinpiper
+              .person-title Art Director
+              .person-rank #1 <span>85 pts.</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name oliviagulin
+              .person-title Designer
+              .person-rank #2 <span>75 pts.</span>
+          .user
+            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
+            .info
+              .person-name charlenewallis
+              .person-title HR Manager
+              .person-rank #3 <span>72 pts.</span>
+    %hr
+    .user-content
+      %section
+        %h1 Discussions
+        %blockquote Even if we cannot directly shape an outcome, a model’s prediction may be communicated in a way that alters behavior and indirectly shapes it.
+        .attribution
+          %img{src: 'http://dummyimage.com/50/000/fff&text=User'}
+          .person
+            .person-name gwensisco
+            .person-title Media Buyer
+            %time.label-2{datetime: '2014-03-10T04:00:00.000Z'} MAR 10, 2014 | 3:52PM
+      %section.recommendations
+        %h1 Recommendations
+        .link
+          %a{href: '#'} Scientists Without Borders
+        %p.style-4 A worldwide community of changemakers collaborating to accelerate solutions to urgent development challenges.
+        .person-name janejohnson <span class='person-title'>COO</span>
+        %a.button.radius.tiny Suggest a Link

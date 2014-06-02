@@ -1,42 +1,60 @@
-#course-group-work
-  - if not group_project
-    .row
-      .error= _("No Group Project has been configured for this course")
-  - elif not project_group
-    .row
-      .error= _("You have not been assigned to a group for a Group Project")
-  - else
-    .row
-      - include "courses/group_work/activity_menu.haml"
-    .row
-      .large-8.medium-8.columns
-        .lesson-title
-          %span= _("Group Project:")
-          %span= group_project.name
-        .lesson-content
-      .large-4.medium-4.columns.sidebar
-        .group-members
-          %h4= _("Group Members")
-          - for member in project_group.members
-            - include "courses/group_work/group_member.haml" with group_member=member
-          %a.email-team{href: "#"}= _("Email team")
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-group-work
+    - if not group_project
+      .row
+        .error= _("No Group Project has been configured for this course")
+    - elif not project_group
+      .row
+        .error= _("You have not been assigned to a group for a Group Project")
+    - else
+      .row
+        - include "courses/group_work/activity_menu.haml"
+      .row
+        .large-8.medium-8.columns
+          .lesson-title
+            %span= _("Group Project:")
+            %span= group_project.name
+          .lesson-content
+        .large-4.medium-4.columns.sidebar
+          .group-members
+            %h4= _("Group Members")
+            - for member in project_group.members
+              - include "courses/group_work/group_member.haml" with group_member=member
+            %a.email-team{href: "#"}= _("Email team")
+          %hr
+          .ask-ta
+            %h4= _("Ask a TA")
+            -# Temporarily use mailto: for ta link as well (add data_reveal_id back in for when dialog should be introduced
+            -# include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant data_reveal_id="contact-ta"
+            - include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant
+      #contact-ta.reveal-modal{"data-reveal": "true"}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        %h2= _("Ask a TA")
         %hr
-        .ask-ta
-          %h4= _("Ask a TA")
-          -# Temporarily use mailto: for ta link as well (add data_reveal_id back in for when dialog should be introduced
-          -# include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant data_reveal_id="contact-ta"
-          - include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant
-    #contact-ta.reveal-modal{"data-reveal": "true"}
-      .close-reveal-modal
-        %i.fa.fa-times-circle
-      %h2= _("Ask a TA")
-      %hr
-      %h4= _("Subhead")
-      %div= _("Post your question here and your TA will receive your request")
-      %form{action: "/courses/#{course.id}/teaching_assistant", method: "POST"}
-        .error
-          - if error
-            = error
-        - csrf_token
-        %textarea{placeholder: "Enter your message for the TA here", name: "ta_message"}
-        %input.button.radius.small{type: "submit", value: "Submit"}
+        %h4= _("Subhead")
+        %div= _("Post your question here and your TA will receive your request")
+        %form{action: "/courses/#{course.id}/teaching_assistant", method: "POST"}
+          .error
+            - if error
+              = error
+          - csrf_token
+          %textarea{placeholder: "Enter your message for the TA here", name: "ta_message"}
+          %input.button.radius.small{type: "submit", value: "Submit"}
+- block js_snippets
+  :javascript
+    $(function(){
+      var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
+      var lesson_data = {
+        usageId: '{{ vertical_usage_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+      };
+      lesson_content.xblock(lesson_data);
+
+      $('#course-group-work .lesson-module-status').on('click', function(){
+        $('#' + $(this).data('activate')).click();
+      });
+    });
