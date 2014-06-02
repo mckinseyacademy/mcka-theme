@@ -56,10 +56,25 @@
         - csrf_token
         %textarea{placeholder: "Enter your message for the group here", name: "group_message"}
         %input.button.radius.small{type: "submit", value: "Submit"}
+    #email-member.reveal-modal.small{"data-reveal": "true"}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %h2= _("Message member")
+      %hr
+      %h4= _("Subhead")
+      %div= _("Post any questions or messages you have for your group member.")
+      %form#email-member-form{action: "/courses/#{course.id}/group_member_email", method: "POST"}
+        .error
+          - if error
+            = error
+        - csrf_token
+        %textarea{placeholder: "Enter your message here", name: "member_message"}
+        %input#member-email{'type': 'hidden', 'name': 'member-email'}
+        %input.button.radius.small{type: "submit", value: "Submit"}
 - block js_snippets
   :javascript
     window.onload = (function(){
-      $('#email-team-form').on('submit', function(e){
+      $('#email-team-form, #contact-ta-form, #email-member-form').on('submit', function(e){
         e.preventDefault();
         var that = $(this);
         data = that.serialize();
@@ -74,4 +89,7 @@
             $('#' + that.attr('id').split('-form')[0]).foundation('reveal', 'close');
           })
       });
+      $('.email-member').on('click', function(){
+        $('#member-email').val($(this).data('member-email'));
+      })
     })

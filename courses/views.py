@@ -220,7 +220,8 @@ def contact_ta(request, course_id):
     email_from = request.user.email
     email_to = settings.TA_EMAIL_GROUP
     email_content = request.POST["ta_message"]
-    email_subject = "Ask a TA" #just for testing
+    course = course_api.get_course(course_id)
+    email_subject = "Ask a TA - {}".format(course.name)
     try:
         send_mail(email_subject, email_content, email_from, [email_to], fail_silently=False)
     except:
@@ -240,9 +241,28 @@ def contact_group(request, course_id, group_id):
     students = group.members
     email_to = [student.email for student in students]
     email_content = request.POST["group_message"]
-    email_subject = "Group Project Message" #just for testing
+    email_subject = "Group Project Message - {}".format(course.name)
     try:
         send_mail(email_subject, email_content, email_from, email_to, fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
+    return HttpResponse(
+        json.dumps({"message": _("Message successfully sent.")}),
+        content_type='application/json'
+    )
+
+@login_required
+def contact_member(request, course_id):
+    email_from = request.user.email
+    email_to = request.POST["member-email"]
+    email_content = request.POST["member_message"]
+    course = course_api.get_course(course_id)
+    email_subject = "Group Project Message - {}".format(course.name) #just for testing
+    try:
+        send_mail(email_subject, email_content, email_from, [email_to], fail_silently=False)
     except:
         return HttpResponse(
         json.dumps({"message": _("Message not sent.")}),
