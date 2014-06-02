@@ -212,13 +212,6 @@ def _fake_project_group():
 
     return project_group
 
-
-
-def dump(obj):
-  for attr in dir(obj):
-    print "obj.%s = %s" % (attr, getattr(obj, attr))
-
-
 def group_project_location(user_id, course, sequential_id=None):
     '''
     Returns current sequential_id and page_id for the user for their group project

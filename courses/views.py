@@ -221,11 +221,15 @@ def contact_ta(request, course_id):
     email_to = settings.TA_EMAIL_GROUP
     email_content = request.POST["ta_message"]
     email_subject = "Ask a TA" #just for testing
-
-    send_mail(email_subject, email_content, email_from, [email_to], fail_silently=False)
-
+    try:
+        send_mail(email_subject, email_content, email_from, [email_to], fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
     return HttpResponse(
-        json.dumps({"message": _("Successfully sent email")}),
+        json.dumps({"message": _("Message successfully sent.")}),
         content_type='application/json'
     )
 
@@ -237,10 +241,14 @@ def contact_group(request, course_id, group_id):
     email_to = [student.email for student in students]
     email_content = request.POST["group_message"]
     email_subject = "Group Project Message" #just for testing
-
-    send_mail(email_subject, email_content, email_from, email_to, fail_silently=False)
-
+    try:
+        send_mail(email_subject, email_content, email_from, email_to, fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
     return HttpResponse(
-        json.dumps({"message": _("Successfully sent email")}),
+        json.dumps({"message": _("Message successfully sent.")}),
         content_type='application/json'
     )

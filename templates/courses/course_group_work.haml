@@ -34,7 +34,7 @@
       %hr
       %h4= _("Subhead")
       %div= _("Post your question here and your TA will receive your request")
-      %form{action: "/courses/#{course.id}/teaching_assistant", method: "POST"}
+      %form#contact-ta-form{action: "/courses/#{course.id}/teaching_assistant", method: "POST"}
         .error
           - if error
             = error
@@ -48,10 +48,29 @@
       %hr
       %h4= _("Subhead")
       %div= _("Post any questions or messages you have for your group here.")
-      %form{action: "/courses/#{course.id}/group_email/#{project_group.id}", method: "POST"}
+      %form#email-team-form{action: "/courses/#{course.id}/group_email/#{project_group.id}", method: "POST"}
         .error
           - if error
             = error
         - csrf_token
         %textarea{placeholder: "Enter your message for the group here", name: "group_message"}
         %input.button.radius.small{type: "submit", value: "Submit"}
+- block js_snippets
+  :javascript
+    window.onload = (function(){
+      $('#email-team-form').on('submit', function(e){
+        e.preventDefault();
+        var that = $(this);
+        data = that.serialize();
+        data["csrfmiddlewaretoken"] = $.cookie('apros_csrftoken');
+        $.ajax(
+          {
+            url: that.attr('action'),
+            method: 'POST',
+            data: data
+          }).done(function(data){
+            alert(data.message);
+            $('#' + that.attr('id').split('-form')[0]).foundation('reveal', 'close');
+          })
+      });
+    })
