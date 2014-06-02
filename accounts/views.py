@@ -1,34 +1,30 @@
 ''' views for auth, sessions, users '''
 import json
 import random
-from django.utils.translation import ugettext as _
-
-from django.http import HttpResponseRedirect
-from .forms import LoginForm, ActivationForm
-from api_client import user_api, course_api
-from .models import RemoteUser, UserActivation
-from admin.models import Client
-
-from lib.context_processors import user_program_data
-from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
-from courses.controller import program_for_course
-
-# from importlib import import_module
-# from django.conf import settings
-# SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
-
-from django.contrib import auth
-import logout as logout_handler
-import urllib2 as url_access
-
-from django.shortcuts import render
-
 import urlparse
-
+import urllib2 as url_access
 import datetime
 import math
 
+from django.http import HttpResponseRedirect
+from django.contrib import auth
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext as _
+
+from lib.context_processors import user_program_data
+from api_client import user_api, course_api
+from api_client.api_error import ApiError
+from admin.models import Client
+from courses.controller import program_for_course
+
+from .models import RemoteUser, UserActivation
+from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
+from .forms import LoginForm, ActivationForm
+
+import logout as logout_handler
+
+
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
 
 def _get_qs_value_from_url(value_name, url):
@@ -77,17 +73,8 @@ def login(request):
                         redirect_to = '/'
 
                 return HttpResponseRedirect(redirect_to)  # Redirect after POST
-            except url_access.HTTPError, err:
-                error = _("An error occurred during login")
-                error_messages = {
-                    403: _("User account not activated"),
-                    401: _("Username or password invalid"),
-                    404: _("Username or password invalid"),
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
-
-                print err, error
+            except ApiError as err:
+                error = err.message
 
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
@@ -167,7 +154,7 @@ def activate(request, activation_code):
                         user_data["username"]
                     )
                 )
-            except ActivationError, activation_error:
+            except ActivationError as activation_error:
                 error = activation_error.value
     else:
         form = ActivationForm(user_data)

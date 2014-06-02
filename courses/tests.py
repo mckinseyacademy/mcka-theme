@@ -369,13 +369,6 @@ class CoursesAPITest(TestCase):
         self.assertEqual(chapter_position, 2)
         self.assertEqual(chapter_id, "11")
 
-        # specified user-only should get bookmarked page
-        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", None, None, MockUserAPI, MockCourseAPI)
-
-        self.assertEqual(course_id, "2")
-        self.assertEqual(chapter_id, "11")
-        self.assertEqual(page_id, "110")
-
         # specified up to chapter id not bookmarked should get first page in specified chapter
         course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "0", "12", NotBookmarkedMockUserAPI, MockCourseAPI)
 
@@ -396,13 +389,6 @@ class CoursesAPITest(TestCase):
         course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "9", None, NotBookmarkedMockUserAPI, OtherMockCourseAPI)
 
         self.assertEqual(course_id, "9")
-        self.assertEqual(chapter_id, "11")
-        self.assertEqual(page_id, "110")
-
-        # specified user-only should get first page of first chapter too
-        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", None, None, NotBookmarkedMockUserAPI, MockCourseAPI)
-
-        self.assertEqual(course_id, "0")
         self.assertEqual(chapter_id, "11")
         self.assertEqual(page_id, "110")
 
