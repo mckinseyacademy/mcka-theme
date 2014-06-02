@@ -48,7 +48,7 @@ class ProgramAssociationForm(forms.Form):
     def __init__(self, program_list, *args, **kwargs):
         super(ProgramAssociationForm, self).__init__(*args, **kwargs)
         self.fields['select_program'] = forms.ChoiceField(
-            choices=((program.id, program.display_name)
+            choices=((program.id, "{} ({})".format(program.display_name, program.name))
                      for program in program_list)
         )
         self.fields['places'] = forms.IntegerField()

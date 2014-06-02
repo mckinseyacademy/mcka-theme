@@ -4,6 +4,10 @@
       %td.course-toggle
       %td.title
         = program.display_name
+        (
+        %span><
+          = program.name
+        )
       %td.dates
         %span= program.date_range
       %td.places= program.places_allocated

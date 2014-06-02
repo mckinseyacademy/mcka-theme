@@ -4,6 +4,8 @@ import urllib2 as url_access
 from api_client import user_api
 from api_client.json_object import JsonParser as JP
 
+CURRENT_COURSE_ID = "current_course_id"
+
 class ActivationError(Exception):
 
     '''
@@ -19,16 +21,29 @@ class ActivationError(Exception):
 
 
 def get_current_course_for_user(request):
-    course_id = request.session.get("current_course_id", None)
+    course_id = request.session.get(CURRENT_COURSE_ID, None)
 
     if not course_id and request.user:
-        # TODO: Replace with logic for finding "current" course
-        # For now, we just return first course
+        course_id = user_api.get_user_preferences(request.user.id).get(CURRENT_COURSE_ID, None)
+
+    if not course_id and request.user:
         courses = user_api.get_user_courses(request.user.id)
         if len(courses) > 0:
             course_id = courses[0].id
 
     return course_id
+
+
+def set_current_course_for_user(request, course_id):
+    prev_course_id = request.session.get(CURRENT_COURSE_ID, None)
+    if prev_course_id != course_id:
+        request.session[CURRENT_COURSE_ID] = course_id
+        user_api.set_user_preferences(
+            request.user.id,
+            {
+                CURRENT_COURSE_ID: course_id,
+            }
+        )
 
 def user_activation_with_data(user_id, user_data, activation_record):
     try:
