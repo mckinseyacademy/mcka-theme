@@ -64,20 +64,17 @@ class UrlsTest(TestCase):
         self.assertEqual(resolver.view_name, 'infer_course_navigation')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
 
-        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/view/overview')
-        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/overview')
+        self.assertEqual(resolver.view_name, 'course_overview')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
-        self.assertEqual(resolver.kwargs['current_view'], 'overview')
 
-        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/view/news')
-        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/news')
+        self.assertEqual(resolver.view_name, 'course_news')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
-        self.assertEqual(resolver.kwargs['current_view'], 'news')
 
-        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/view/resources')
-        self.assertEqual(resolver.view_name, 'navigate_to_page')
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/resources')
+        self.assertEqual(resolver.view_name, 'course_resources')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
-        self.assertEqual(resolver.kwargs['current_view'], 'resources')
 
 
 class MockCourseAPI(object):
@@ -310,7 +307,7 @@ class MockUserAPI(object):
         course_detail = {
             "course_id": course_id,
             "position": 2,
-            "user_id": user_id, 
+            "user_id": user_id,
             "uri": "/api/users/{}/courses/{}".format(user_id, course_id)
         }
         return user_models.UserCourseStatus(dictionary=course_detail)

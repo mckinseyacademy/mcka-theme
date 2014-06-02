@@ -4,7 +4,7 @@ from urllib2 import HTTPError
 import json
 
 from .json_object import JsonParser as JP
-from . import user_models
+from . import user_models, gradebook_models
 from .json_requests import GET, POST, DELETE
 
 AUTH_API = 'api/sessions'
@@ -134,6 +134,20 @@ def get_user_course_detail(user_id, course_id):
     )
 
     return JP.from_json(response.read(), user_models.UserCourseStatus)
+
+
+def get_user_gradebook(user_id, course_id):
+    ''' get grades for the user for this course'''
+    response = GET(
+        '{}/{}/{}/courses/{}/grades'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            course_id
+        )
+    )
+
+    return JP.from_json(response.read(), gradebook_models.Gradebook)
 
 
 def _set_course_position(user_id, course_id, parent_id, child_id):
