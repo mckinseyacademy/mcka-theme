@@ -19,8 +19,9 @@
           %h4= _("Group Members")
           - for member in project_group.members
             - include "courses/group_work/group_member.haml" with group_member=member
-          %a.email-team{href: "#", data-reveal-id: 'email-team'}
-            = _("Email Team")
+          - if project_group.id
+            %a.email-team{href: "#", data-reveal-id: 'email-team'}
+              = _("Email Team")
         %hr
         .ask-ta
           %h4= _("Ask a TA")
