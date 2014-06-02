@@ -1,5 +1,6 @@
 from django.conf import settings
 from courses.controller import build_page_info_for_course, locate_chapter_page, program_for_course
+
 from courses.views import _inject_formatted_data
 from api_client import course_api, user_api
 from accounts.controller import get_current_course_for_user
