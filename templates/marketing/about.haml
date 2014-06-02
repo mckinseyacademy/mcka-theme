@@ -1,219 +1,220 @@
 - extends "layout.haml"
 
 - block content
-  %article#about-page.row.collapse
+  %article#about-page
     %img.tileset{src: "/static/image/marketing/McKA_TopTiles_about.jpg", srcset: "/static/image/marketing/McKA_TopTiles_about@2x.jpg 2x"}
-    .large-10.large-centered.columns
-      %section
-        %h1 About McKinsey Academy
-        %p Our goal at McKinsey Academy is to reinvent the way that companies build leadership and management capabilities among rising professionals and high performers.
-      %hr
-      %section
-        .sub-1 What is McKinsey Academy?
-        %p.what-is McKinsey Academy is the premium digital platform for professional education, and empowers business professionals to advance their careers by bringing the practitioner’s perspective to business education.
-      %section
-        %p McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness
-      %section
-        %p.style-2 How we work
-        %p We believe that distinctive leadership development platforms will: leverage the newest digital technologies; be built around the way that people really work and live (i.e., full and fragmented days with high levels of intensity, with full-time programs no longer realistic for most leaders); be scalable to develop more leaders and high-potential talent more quickly and with greater impact; and be constantly evolving, drawing in the best practical-minded faculty, new pedagogical approaches, evolving technologies, and insights from performance data.
-        %p With this in mind we plan to ensure the distinctiveness of our platform in six ways:
-      %section
-        %ul.info
-          %li Bringing the practitioner’s perspective to leadership and management capability-building
-          %li Creating a social learning experience, where learners benefit from engagement with peers and through group-based project work
-          %li Offering in-course guidance from McKinsey teaching assistants
-          %li Using adaptive learning techniques and game mechanics to advance each individual’s learning
-          %li Providing immediate, response-contingent feedback to enable richer learning
-          %li Curating programs and supporting content to be relevant to our partners.
-      %section
-        %p Education is moving fundamentally, rapidly, and inexorably to digital delivery, but business management and executive education programs have failed to adapt. In fact, many companies are reducing investment in training even as it becomes more critical. McKinsey Academy was created to help address the professional development needs of companies:
-      %section
-        %ul.info
-          %li How to get value from employees starting on “day one”
-          %li How to accelerate capability building for rising professionals and high performers
-          %li How to provide continuous professional development to attract and retain the best employees
-      %hr
-      %section
-        .sub-1 Our Board
+    .row.collapse
+      .large-10.large-centered.columns
+        %section
+          %h1 About McKinsey Academy
+          %p Our goal at McKinsey Academy is to reinvent the way that companies build leadership and management capabilities among rising professionals and high performers.
+        %hr
+        %section
+          .sub-1 What is McKinsey Academy?
+          %p.what-is McKinsey Academy is the premium digital platform for professional education, and empowers business professionals to advance their careers by bringing the practitioner’s perspective to business education.
+        %section
+          %p McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness
+        %section
+          %p.style-2 How we work
+          %p We believe that distinctive leadership development platforms will: leverage the newest digital technologies; be built around the way that people really work and live (i.e., full and fragmented days with high levels of intensity, with full-time programs no longer realistic for most leaders); be scalable to develop more leaders and high-potential talent more quickly and with greater impact; and be constantly evolving, drawing in the best practical-minded faculty, new pedagogical approaches, evolving technologies, and insights from performance data.
+          %p With this in mind we plan to ensure the distinctiveness of our platform in six ways:
+        %section
+          %ul.info
+            %li Bringing the practitioner’s perspective to leadership and management capability-building
+            %li Creating a social learning experience, where learners benefit from engagement with peers and through group-based project work
+            %li Offering in-course guidance from McKinsey teaching assistants
+            %li Using adaptive learning techniques and game mechanics to advance each individual’s learning
+            %li Providing immediate, response-contingent feedback to enable richer learning
+            %li Curating programs and supporting content to be relevant to our partners.
+        %section
+          %p Education is moving fundamentally, rapidly, and inexorably to digital delivery, but business management and executive education programs have failed to adapt. In fact, many companies are reducing investment in training even as it becomes more critical. McKinsey Academy was created to help address the professional development needs of companies:
+        %section
+          %ul.info
+            %li How to get value from employees starting on “day one”
+            %li How to accelerate capability building for rising professionals and high performers
+            %li How to provide continuous professional development to attract and retain the best employees
+        %hr
+        %section
+          .sub-1 Our Board
 
-      %section
-        %ul.people
-          %li
-            %img{src: '/static/image/about/person_andredua.png'}
-            %div
-              %p.style-2 Andre Dua, Chairman
-              %p Andre Dua is a Director in McKinsey & Company’s New York office. He is the co-leader of McKinsey’s US State and Local Government practice.  <a href="#" data-reveal-id="andre">learn more</a>
-            #andre.bio-pop.reveal-modal.small{"data-reveal": "true"}
-              %h1 Andre Dua
-              %hr
-              %p Andre Dua is a Director in McKinsey and Company’s New York office. He is the co-leader of McKinsey’s US State and Local Government practice and is currently leading performance transformations for a number of governments. He is the coauthor of numerous articles, including “5 ways to make college more affordable for all Americans” in the Atlantic. He is currently leading a new proprietary McKinsey effort to look at student outcomes, instructional models, affordability, facility utilization, research productivity, and administrative efficiency across multiple higher-educational institutions. For many years, he was also a partner in McKinsey’s High Tech practice.
-              %p Prior to joining McKinsey, Dua was a research fellow at the Yale Law School. While there, he coauthored Sustaining the Asia Pacific Miracle: Environmental Protection and Economic Integration, for which he received a grant from the MacArthur Foundation.
-              %p Dua has an LLM from Yale Law School, an LLB (with honors) from the University of Sydney, and a BEc in industry economics, international economics, and econometrics from the University of Sydney. In 2003, he was named one of 100 Global Leaders for Tomorrow by the World Economic Forum. He was previously vice chair of the board of the United Way of New York City and currently serves on the board of the Brooklyn Academy of Music.
-              .close-reveal-modal
-                %i.fa.fa-times-circle
+        %section
+          %ul.people
+            %li
+              %img{src: '/static/image/about/person_andredua.png'}
+              %div
+                %p.style-2 Andre Dua, Chairman
+                %p Andre Dua is a Director in McKinsey & Company’s New York office. He is the co-leader of McKinsey’s US State and Local Government practice.  <a href="#" data-reveal-id="andre">learn more</a>
+              #andre.bio-pop.reveal-modal.small{"data-reveal": "true"}
+                %h1 Andre Dua
+                %hr
+                %p Andre Dua is a Director in McKinsey and Company’s New York office. He is the co-leader of McKinsey’s US State and Local Government practice and is currently leading performance transformations for a number of governments. He is the coauthor of numerous articles, including “5 ways to make college more affordable for all Americans” in the Atlantic. He is currently leading a new proprietary McKinsey effort to look at student outcomes, instructional models, affordability, facility utilization, research productivity, and administrative efficiency across multiple higher-educational institutions. For many years, he was also a partner in McKinsey’s High Tech practice.
+                %p Prior to joining McKinsey, Dua was a research fellow at the Yale Law School. While there, he coauthored Sustaining the Asia Pacific Miracle: Environmental Protection and Economic Integration, for which he received a grant from the MacArthur Foundation.
+                %p Dua has an LLM from Yale Law School, an LLB (with honors) from the University of Sydney, and a BEc in industry economics, international economics, and econometrics from the University of Sydney. In 2003, he was named one of 100 Global Leaders for Tomorrow by the World Economic Forum. He was previously vice chair of the board of the United Way of New York City and currently serves on the board of the Brooklyn Academy of Music.
+                .close-reveal-modal
+                  %i.fa.fa-times-circle
 
-          %li
-            %img{src: '/static/image/about/person_scottbeardsley.png'}
-            %div
-              %p.style-2 Scott Beardsley
-              %p Scott Beardsley is a Director in McKinsey &amp; Company's Brussels office. <a href="#" data-reveal-id="scott">learn more</a>
-            #scott.bio-pop.reveal-modal.small{"data-reveal": "true"}
-              %h1 Scott Beardsley
-              %hr
-              %p Scott Beardsley is a Director in McKinsey & Company's Brussels Office. Since joining the Firm in 1989, he has been particularly active in helping clients around the world on a range of strategy, regulation, stakeholder management, business in society, and performance-transformation topics in the telecommunications, technology, and media sectors; he is a global leader of McKinsey’s telecommunications practice. Beardsley has been the leader of McKinsey’s Strategy practice in Europe, Middle East, and Africa the past 7 years. He has co-chaired the personnel committees that elect and evaluate McKinsey partners as well as the committee that elects Directors (senior partners). Recently, he has started leading all the leadership development, training, and learning programs for McKinsey’s consultants globally.
-              %p The past few years, he has been leading a variety of internal research initiatives on such topics as managing the external environment through regulatory strategy and business in society, stakeholder and reputation management, strategic management, telecom transformation and performance improvement, next-generation telecoms regulation, and broadband. A frequent author and public speaker, he has spoken in venues such as the Financial Times Global Media Conference, the World Economic Forum, Organization for Economic Co-operation and Development, and the European Business Leaders’ Summit. He has authored seven editorials in the Wall Street Journal and the Financial Times, and over twenty articles in the McKinsey Quarterly and related publications on a variety of telecommunications, broadband, media, and strategy topics. He has also appeared on the subject of broadband, telecoms competition, and deregulation in Forbes, Bloomberg Television, the New York Times, L’Express, the Wall Street Journal, and L’Echo. He has recently coauthored parts of seven books related to regulatory strategy, information and communications technology, and network readiness, and he delivered presentations for the World Economic Forum at Davos on digital readiness and telecom-sector reform, as well as the future of telecom regulation.
-              %p Prior to joining McKinsey, Beardsley was employed as editor and marketing manager at the MIT Sloan Management Review. Additionally, he worked in the strategic sales and product marketing functions for Advanced Micro Devices and Analog Devices.
-              %p Beardsley is chairman of the board of directors of the American Chamber of Commerce in Belgium. He is also on the board of directors of St. John’s International School in Waterloo, Belgium. Beardsley was a Henry B. Dupont III Scholar (highest honors) for outstanding academic performance at the MIT Sloan School of Management, where he graduated with an MBA in corporate strategy and marketing. He holds a bachelor of science in electrical engineering magna cum laude from Tufts University, where he achieved highest honors, being selected as a Kodak Scholar, a member of the national engineering honor society Tau Beta Pi, and president of Eta Kappa Nu, the national electrical-engineering honor society.
-              .close-reveal-modal
-                %i.fa.fa-times-circle
+            %li
+              %img{src: '/static/image/about/person_scottbeardsley.png'}
+              %div
+                %p.style-2 Scott Beardsley
+                %p Scott Beardsley is a Director in McKinsey &amp; Company's Brussels office. <a href="#" data-reveal-id="scott">learn more</a>
+              #scott.bio-pop.reveal-modal.small{"data-reveal": "true"}
+                %h1 Scott Beardsley
+                %hr
+                %p Scott Beardsley is a Director in McKinsey & Company's Brussels Office. Since joining the Firm in 1989, he has been particularly active in helping clients around the world on a range of strategy, regulation, stakeholder management, business in society, and performance-transformation topics in the telecommunications, technology, and media sectors; he is a global leader of McKinsey’s telecommunications practice. Beardsley has been the leader of McKinsey’s Strategy practice in Europe, Middle East, and Africa the past 7 years. He has co-chaired the personnel committees that elect and evaluate McKinsey partners as well as the committee that elects Directors (senior partners). Recently, he has started leading all the leadership development, training, and learning programs for McKinsey’s consultants globally.
+                %p The past few years, he has been leading a variety of internal research initiatives on such topics as managing the external environment through regulatory strategy and business in society, stakeholder and reputation management, strategic management, telecom transformation and performance improvement, next-generation telecoms regulation, and broadband. A frequent author and public speaker, he has spoken in venues such as the Financial Times Global Media Conference, the World Economic Forum, Organization for Economic Co-operation and Development, and the European Business Leaders’ Summit. He has authored seven editorials in the Wall Street Journal and the Financial Times, and over twenty articles in the McKinsey Quarterly and related publications on a variety of telecommunications, broadband, media, and strategy topics. He has also appeared on the subject of broadband, telecoms competition, and deregulation in Forbes, Bloomberg Television, the New York Times, L’Express, the Wall Street Journal, and L’Echo. He has recently coauthored parts of seven books related to regulatory strategy, information and communications technology, and network readiness, and he delivered presentations for the World Economic Forum at Davos on digital readiness and telecom-sector reform, as well as the future of telecom regulation.
+                %p Prior to joining McKinsey, Beardsley was employed as editor and marketing manager at the MIT Sloan Management Review. Additionally, he worked in the strategic sales and product marketing functions for Advanced Micro Devices and Analog Devices.
+                %p Beardsley is chairman of the board of directors of the American Chamber of Commerce in Belgium. He is also on the board of directors of St. John’s International School in Waterloo, Belgium. Beardsley was a Henry B. Dupont III Scholar (highest honors) for outstanding academic performance at the MIT Sloan School of Management, where he graduated with an MBA in corporate strategy and marketing. He holds a bachelor of science in electrical engineering magna cum laude from Tufts University, where he achieved highest honors, being selected as a Kodak Scholar, a member of the national engineering honor society Tau Beta Pi, and president of Eta Kappa Nu, the national electrical-engineering honor society.
+                .close-reveal-modal
+                  %i.fa.fa-times-circle
 
-          %li
-            %img{src: '/static/image/about/person_johnhood.png'}
-            %div
-              %p.style-2 John Hood
-              %p John Hood was vice chancellor of the University of Oxford from October 2004 until September 2009. <a href="#" data-reveal-id="john">learn more</a>
-            #john.bio-pop.reveal-modal.small{"data-reveal": "true"}
-              %h1 John Hood
-              %hr
-              %p John Hood was vice chancellor of the University of Oxford from October 2004 until September 2009. He was the first vice chancellor to be elected from outside Oxford's academic body in 900 years and the first to have addressed the scholars' congregation via a webcast. In March 2007, New Zealand Prime Minister Helen Clark awarded him the World Class New Zealand Supreme Award to honor his contribution to profiling New Zealand and New Zealanders internationally.
-              .close-reveal-modal
-                %i.fa.fa-times-circle
+            %li
+              %img{src: '/static/image/about/person_johnhood.png'}
+              %div
+                %p.style-2 John Hood
+                %p John Hood was vice chancellor of the University of Oxford from October 2004 until September 2009. <a href="#" data-reveal-id="john">learn more</a>
+              #john.bio-pop.reveal-modal.small{"data-reveal": "true"}
+                %h1 John Hood
+                %hr
+                %p John Hood was vice chancellor of the University of Oxford from October 2004 until September 2009. He was the first vice chancellor to be elected from outside Oxford's academic body in 900 years and the first to have addressed the scholars' congregation via a webcast. In March 2007, New Zealand Prime Minister Helen Clark awarded him the World Class New Zealand Supreme Award to honor his contribution to profiling New Zealand and New Zealanders internationally.
+                .close-reveal-modal
+                  %i.fa.fa-times-circle
 
-          %li
-            %img{src: '/static/image/about/person_robertsternfels.png'}
-            %div
-              %p.style-2 Robert Sternfels
-              %p Bob Sternfels is a Director based in San Francisco.  He currently leads a firmwide effort to transform how McKinsey delivers value to its clients. <a href="#" data-reveal-id="robert">learn more</a>
-            #robert.bio-pop.reveal-modal.small{"data-reveal": "true"}
-              %h1 Robert Sternfels
-              %hr
-              %p Bob Sternfels is a Director based in San Francisco. He currently leads a firmwide effort to transform how McKinsey delivers value to its clients, which includes widening our professional profiles, growing in new functional areas, and building out tools and assets to better enable client service.
-              %p Sternfels is a member of the Shareholder’s Council (our board of directors), the Advisory Group (our operating committee), the senior-partner review committee, and oversees the evaluation of all nontraditional senior profiles. Previously, Sternfels led the Operations practice for the Americas and the Private Equity practice globally, where he focused on portfolio company transformations. He has been with McKinsey for 20 years.
-              %p During his career with McKinsey, Sternfels has helped to open our South African office (spending 6 years in Johannesburg), and has played a lead role in growing our Operations practice in North America (having led our Manufacturing practice, Service Operations practice, and West Coast Operations group).
-              %p In terms of client service, Sternfels has worked with clients all over the world (North America, Europe, Africa, and Asia) covering the private equity, basic materials, medical devices, high tech, financial institutions, and consumer-goods sectors. His experience ranges from strategy to operations to organization. Given his deep operations background, Sternfels has particular expertise in the area of radical performance transformations and sustainable continuous improvement. Currently, Sternfels spends his time helping clients design “next generation” operating models with the goal of turning operations into a source of competitive advantage.
-              %p Sternfels graduated with honors from Stanford University and has a BA in economics and history. He was a Rhodes Scholar at Oxford University and has an MA in politics, philosophy, and economics.
-              %p Sternfels is also a member of the boards of Quest Scholars, USA Water Polo, and the American Association of Rhodes Scholars. He is an enthusiastic private pilot and enjoys swimming and cycling. He resides in Mill Valley, CA, with his wife, Ashley; daughter, Samantha; and sons Thomas and Andrew.
-              .close-reveal-modal
-                %i.fa.fa-times-circle
+            %li
+              %img{src: '/static/image/about/person_robertsternfels.png'}
+              %div
+                %p.style-2 Robert Sternfels
+                %p Bob Sternfels is a Director based in San Francisco.  He currently leads a firmwide effort to transform how McKinsey delivers value to its clients. <a href="#" data-reveal-id="robert">learn more</a>
+              #robert.bio-pop.reveal-modal.small{"data-reveal": "true"}
+                %h1 Robert Sternfels
+                %hr
+                %p Bob Sternfels is a Director based in San Francisco. He currently leads a firmwide effort to transform how McKinsey delivers value to its clients, which includes widening our professional profiles, growing in new functional areas, and building out tools and assets to better enable client service.
+                %p Sternfels is a member of the Shareholder’s Council (our board of directors), the Advisory Group (our operating committee), the senior-partner review committee, and oversees the evaluation of all nontraditional senior profiles. Previously, Sternfels led the Operations practice for the Americas and the Private Equity practice globally, where he focused on portfolio company transformations. He has been with McKinsey for 20 years.
+                %p During his career with McKinsey, Sternfels has helped to open our South African office (spending 6 years in Johannesburg), and has played a lead role in growing our Operations practice in North America (having led our Manufacturing practice, Service Operations practice, and West Coast Operations group).
+                %p In terms of client service, Sternfels has worked with clients all over the world (North America, Europe, Africa, and Asia) covering the private equity, basic materials, medical devices, high tech, financial institutions, and consumer-goods sectors. His experience ranges from strategy to operations to organization. Given his deep operations background, Sternfels has particular expertise in the area of radical performance transformations and sustainable continuous improvement. Currently, Sternfels spends his time helping clients design “next generation” operating models with the goal of turning operations into a source of competitive advantage.
+                %p Sternfels graduated with honors from Stanford University and has a BA in economics and history. He was a Rhodes Scholar at Oxford University and has an MA in politics, philosophy, and economics.
+                %p Sternfels is also a member of the boards of Quest Scholars, USA Water Polo, and the American Association of Rhodes Scholars. He is an enthusiastic private pilot and enjoys swimming and cycling. He resides in Mill Valley, CA, with his wife, Ashley; daughter, Samantha; and sons Thomas and Andrew.
+                .close-reveal-modal
+                  %i.fa.fa-times-circle
 
-          %li
-            %img{src: '/static/image/about/person_vivekwadhwa.png'}
-            %div
-              %p.style-2 Vivek Wadhwa
-              %p Vivek Wadhwa is a Partner who joined McKinsey in 1999 and currently coleads the McKinsey Solutions Office (MSO). <a href="#" data-reveal-id="vivek">learn more</a>
-            #vivek.bio-pop.reveal-modal.small{"data-reveal": "true"}
-              %h1 Vivek Wadhwa
-              %hr
-              %p Vivek Wadhwa is a Partner who joined McKinsey in 1999 and currently co-leads the McKinsey Solutions Office (MSO). McKinsey Solutions is a new suite of services complementary to traditional consulting that combine McKinsey expertise with data, proprietary analytics, and software tools to help clients get greater clarity in decision making and gain significant long-term performance improvement.
-              %p Prior to MSO, Vivek was a partner in McKinsey’s Banking practice and worked with a number of retail, corporate, and investment banks in the areas of strategy, operations and risk management. As a leader in McKinsey’s Risk practice, he also co-led the global credit-risk service line and served clients on topics such as enterprise risk management, risk analytics, regulations, and capital management. He has presented at several conferences including Canadian Bankers Association, RiskMinds, GARP, and ERM Symposium.
-              %p Before joining McKinsey, Vivek worked at IBM, CS First Boston, and venture-backed technology start-ups including Seer Technologies and Versata, where his responsibilities included international business development.
-              %p Vivek received a bachelor of science in electrical engineering from IIT and MBA from the Wharton School.
-              .close-reveal-modal
-                %i.fa.fa-times-circle
+            %li
+              %img{src: '/static/image/about/person_vivekwadhwa.png'}
+              %div
+                %p.style-2 Vivek Wadhwa
+                %p Vivek Wadhwa is a Partner who joined McKinsey in 1999 and currently coleads the McKinsey Solutions Office (MSO). <a href="#" data-reveal-id="vivek">learn more</a>
+              #vivek.bio-pop.reveal-modal.small{"data-reveal": "true"}
+                %h1 Vivek Wadhwa
+                %hr
+                %p Vivek Wadhwa is a Partner who joined McKinsey in 1999 and currently co-leads the McKinsey Solutions Office (MSO). McKinsey Solutions is a new suite of services complementary to traditional consulting that combine McKinsey expertise with data, proprietary analytics, and software tools to help clients get greater clarity in decision making and gain significant long-term performance improvement.
+                %p Prior to MSO, Vivek was a partner in McKinsey’s Banking practice and worked with a number of retail, corporate, and investment banks in the areas of strategy, operations and risk management. As a leader in McKinsey’s Risk practice, he also co-led the global credit-risk service line and served clients on topics such as enterprise risk management, risk analytics, regulations, and capital management. He has presented at several conferences including Canadian Bankers Association, RiskMinds, GARP, and ERM Symposium.
+                %p Before joining McKinsey, Vivek worked at IBM, CS First Boston, and venture-backed technology start-ups including Seer Technologies and Versata, where his responsibilities included international business development.
+                %p Vivek received a bachelor of science in electrical engineering from IIT and MBA from the Wharton School.
+                .close-reveal-modal
+                  %i.fa.fa-times-circle
 
-      %hr
-      %section
-        .sub-1 ACADEMIC ADVISORY COUNCIL
-        %p The Advisory Council will shape the research agenda for McKinsey Academy, offer perspectives on successful and emerging pedagogical methods, and suggest ideas for future experimentation.
-      %section
-        %ul.people
-          %li
-            %img{src: '/static/image/about/person_johnhood.png'}
-            %div
-              %p.style-2 John Hood, Chair
-              %p.style-5 Former vice chancellor, Oxford University
-              %p John Hood was vice chancellor of the University of Oxford from October 2004 until September 2009. Hood was the first vice chancellor to be elected from outside Oxford's academic body in 900 years and the first to have addressed the scholars' congregation via a webcast. In March 2007, New Zealand Prime Minister Helen Clark awarded him the World Class New Zealand supreme award to honor his contribution to profiling New Zealand and New Zealanders internationally.
-          %li
-            %img{src: '/static/image/about/person_robertlue.png'}
-            %div
-              %p.style-2 Robert Lue
-              %p.style-5 Faculty director, HarvardX
-              %p Richard Lue is the inaugural Richard L. Menschel Faculty Director of the Derek Bok Center for Teaching and Learning at Harvard University. Lue was formerly professor of the practice of molecular and cellular biology and the director of life sciences education at Harvard University. Since 2008, he has been the faculty director of the Harvard-Allston Education Portal.
-          %li
-            %img{src: '/static/image/about/person_johnmitchell.png'}
-            %div
-              %p.style-2 John Mitchell
-              %p.style-5 Vice provost for online learning, Stanford University
-              %p John Mitchell is professor of computer science and electrical engineering, and an affiliated faculty member at the Center for International Security and Cooperation. Mitchell has published in the area of programming language theory and computer security. In August of 2012, he Mitchell was appointed by Stanford President John L. Hennessy as the vice provost for online learning, a newly created position responsible for overseeing Stanford’s massive open online course program.
-          %li
-            %img{src: '/static/image/about/person_loribreslow.png'}
-            %div
-              %p.style-2 Lori Breslow
-              %p.style-5 Director, MIT teaching and learning laboratory
-              %p Lori Breslow is a senior lecturer in managerial communication at the MIT Sloan School of Management and the director of MIT Teaching and Learning Laboratory. Breslow’s research interests are in interdisciplinary education and peer learning. She assesses many of the new efforts in educational innovation going on at MIT and contributes to research in higher education, particularly in science and engineering.
-      %hr
-      %section
-        .sub-1 OUR TEAM
-        / %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      %section
-        %ul.team.flexible
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_jennifergormley.png'}
-              .back.background-alt-blue
-                .label-6 Jennifer Gormley
-                %h4 Director of Product Design
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_karenhenke.png'}
-              .back.background-alt-blue
-                .label-6 Karen Henke
-                %h4 Instructional Designer
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_michaelkeany.png'}
-              .back.background-alt-blue
-                .label-6 Michael Keany
-                %h4 General Manager
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_katiekormanik.png'}
-              .back.background-alt-blue
-                .label-6 Katie Kormanik
-                %h4 Instructional Designer
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_jenkruper.png'}
-              .back.background-alt-blue
-                .label-6 Jen Kruper
-                %h4 Director of Instructional Design
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_allisonkunz.png'}
-              .back.background-alt-blue
-                .label-6 Allison Kunz
-                %h4 Course Operations Manager
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_marcmetakis.png'}
-              .back.background-alt-blue
-                .label-6 Marc Metakis
-                %h4 Director of Course Content
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_andyparsons.png'}
-              .back.background-alt-blue
-                .label-6 Andy Parsons
-                %h4 Chief Technology Officer
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_charlotterelyea.png'}
-              .back.background-alt-blue
-                .label-6 Charlotte Relyea
-                %h4 Principal, McKinsey and Company
-          %li
-            .card-flip
-              .front
-                %img{src: '/static/image/about/team/team_sashazolley.png'}
-              .back.background-alt-blue
-                .label-6 Sasha Zolley
-                %h4 Program Manager
+        %hr
+        %section
+          .sub-1 ACADEMIC ADVISORY COUNCIL
+          %p The Advisory Council will shape the research agenda for McKinsey Academy, offer perspectives on successful and emerging pedagogical methods, and suggest ideas for future experimentation.
+        %section
+          %ul.people
+            %li
+              %img{src: '/static/image/about/person_johnhood.png'}
+              %div
+                %p.style-2 John Hood, Chair
+                %p.style-5 Former vice chancellor, Oxford University
+                %p John Hood was vice chancellor of the University of Oxford from October 2004 until September 2009. Hood was the first vice chancellor to be elected from outside Oxford's academic body in 900 years and the first to have addressed the scholars' congregation via a webcast. In March 2007, New Zealand Prime Minister Helen Clark awarded him the World Class New Zealand supreme award to honor his contribution to profiling New Zealand and New Zealanders internationally.
+            %li
+              %img{src: '/static/image/about/person_robertlue.png'}
+              %div
+                %p.style-2 Robert Lue
+                %p.style-5 Faculty director, HarvardX
+                %p Richard Lue is the inaugural Richard L. Menschel Faculty Director of the Derek Bok Center for Teaching and Learning at Harvard University. Lue was formerly professor of the practice of molecular and cellular biology and the director of life sciences education at Harvard University. Since 2008, he has been the faculty director of the Harvard-Allston Education Portal.
+            %li
+              %img{src: '/static/image/about/person_johnmitchell.png'}
+              %div
+                %p.style-2 John Mitchell
+                %p.style-5 Vice provost for online learning, Stanford University
+                %p John Mitchell is professor of computer science and electrical engineering, and an affiliated faculty member at the Center for International Security and Cooperation. Mitchell has published in the area of programming language theory and computer security. In August of 2012, he Mitchell was appointed by Stanford President John L. Hennessy as the vice provost for online learning, a newly created position responsible for overseeing Stanford’s massive open online course program.
+            %li
+              %img{src: '/static/image/about/person_loribreslow.png'}
+              %div
+                %p.style-2 Lori Breslow
+                %p.style-5 Director, MIT teaching and learning laboratory
+                %p Lori Breslow is a senior lecturer in managerial communication at the MIT Sloan School of Management and the director of MIT Teaching and Learning Laboratory. Breslow’s research interests are in interdisciplinary education and peer learning. She assesses many of the new efforts in educational innovation going on at MIT and contributes to research in higher education, particularly in science and engineering.
+        %hr
+        %section
+          .sub-1 OUR TEAM
+          / %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        %section
+          %ul.team.flexible
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_jennifergormley.png'}
+                .back.background-alt-blue
+                  .label-6 Jennifer Gormley
+                  %h4 Director of Product Design
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_karenhenke.png'}
+                .back.background-alt-blue
+                  .label-6 Karen Henke
+                  %h4 Instructional Designer
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_michaelkeany.png'}
+                .back.background-alt-blue
+                  .label-6 Michael Keany
+                  %h4 General Manager
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_katiekormanik.png'}
+                .back.background-alt-blue
+                  .label-6 Katie Kormanik
+                  %h4 Instructional Designer
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_jenkruper.png'}
+                .back.background-alt-blue
+                  .label-6 Jen Kruper
+                  %h4 Director of Instructional Design
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_allisonkunz.png'}
+                .back.background-alt-blue
+                  .label-6 Allison Kunz
+                  %h4 Course Operations Manager
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_marcmetakis.png'}
+                .back.background-alt-blue
+                  .label-6 Marc Metakis
+                  %h4 Director of Course Content
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_andyparsons.png'}
+                .back.background-alt-blue
+                  .label-6 Andy Parsons
+                  %h4 Chief Technology Officer
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_charlotterelyea.png'}
+                .back.background-alt-blue
+                  .label-6 Charlotte Relyea
+                  %h4 Principal, McKinsey and Company
+            %li
+              .card-flip
+                .front
+                  %img{src: '/static/image/about/team/team_sashazolley.png'}
+                .back.background-alt-blue
+                  .label-6 Sasha Zolley
+                  %h4 Program Manager
