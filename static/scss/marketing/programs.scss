@@ -49,14 +49,24 @@
     li {
       float: left;
       width: 50%;
-      margin-bottom: rem-calc(25);
+      height: 85px;
 
       img {
         float: left;
         margin-right: rem-calc(10);
+        @include square-size(50px);
       }
 
-      > div { float: left; }
+      > div {
+        float: left;
+        width: 280px;
+      }
+
+      @media #{$small-only} {
+        width: 100%;
+        height: auto;
+        margin-bottom: rem-calc(25);
+      }
     }
   }
 }

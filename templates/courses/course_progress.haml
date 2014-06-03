@@ -36,7 +36,10 @@
         - for lesson in course.chapters
           %tr
             %td.lesson.sub-1 ={lesson.index}: ={lesson.name}
-            %td.deadline April 16th
+            - if lesson.due == None
+              %td.deadline.none -
+            - else
+              %td.deadline ={lesson.due}
             - if lesson.assesment_score == None
               %td.assessment.none -
             - else

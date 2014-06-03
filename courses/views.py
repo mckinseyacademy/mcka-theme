@@ -2,8 +2,9 @@
 import math
 import json
 from django.conf import settings
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from main.models import CuratedContentItem
@@ -14,6 +15,7 @@ from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api
 from admin.controller import load_course
+from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user
 
 # Create your views here.
@@ -127,6 +129,7 @@ def course_group_work(request, course_id):
         "lesson_content_parent_id": "course-group-work",
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
+        "course_id": course_id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "project_group": project_group,
@@ -201,12 +204,18 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "current_page": current_page,
         "program": program,
         "lesson_content_parent_id": "course-lessons",
+        "course_id": course_id,
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
     }
     return render(request, 'courses/course_lessons.haml', data)
+
+
+def course_notready(request, course_id):
+    return render(request, 'courses/course_notready.haml')
+
 
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):
@@ -224,7 +233,7 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     if course_id and chapter_id and page_id:
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
-        return HttpResponseRedirect('/courses/{}/view/notready'.format(course_id))
+        return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
@@ -239,10 +248,55 @@ def contact_ta(request, course_id):
     email_from = request.user.email
     email_to = settings.TA_EMAIL_GROUP
     email_content = request.POST["ta_message"]
-
-    # TODO: Hook up to email sending stuff
-
+    course = course_api.get_course(course_id)
+    email_subject = "Ask a TA - {}".format(course.name)
+    try:
+        send_mail(email_subject, email_content, email_from, [email_to], fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
     return HttpResponse(
-        json.dumps({"message": _("Successfully sent email")}),
+        json.dumps({"message": _("Message successfully sent.")}),
+        content_type='application/json'
+    )
+
+@login_required
+def contact_group(request, course_id, group_id):
+    email_from = request.user.email
+    group = WorkGroup.fetch_with_members(group_id)
+    students = group.members
+    email_to = [student.email for student in students]
+    email_content = request.POST["group_message"]
+    email_subject = "Group Project Message - {}".format(course.name)
+    try:
+        send_mail(email_subject, email_content, email_from, email_to, fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
+    return HttpResponse(
+        json.dumps({"message": _("Message successfully sent.")}),
+        content_type='application/json'
+    )
+
+@login_required
+def contact_member(request, course_id):
+    email_from = request.user.email
+    email_to = request.POST["member-email"]
+    email_content = request.POST["member_message"]
+    course = course_api.get_course(course_id)
+    email_subject = "Group Project Message - {}".format(course.name) #just for testing
+    try:
+        send_mail(email_subject, email_content, email_from, [email_to], fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
+    return HttpResponse(
+        json.dumps({"message": _("Message successfully sent.")}),
         content_type='application/json'
     )
