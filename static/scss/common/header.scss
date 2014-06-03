@@ -9,7 +9,7 @@ header[role=banner] {
   @include clearfix;
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
-  .row {
+  .row.main-nav {
     @include linear-gradient(to right, $header-right-color, $header-left-color 60px, $header-right-color);
 
     .columns {
@@ -44,7 +44,7 @@ header[role=banner] {
   }
 
   .logo{
-    background: url(/static/image/McK_McKA_cobranding_beta.png) no-repeat 10px center;
+    background: url(/static/image/McK_McKA_cobranding_beta.png) no-repeat 0 center;
     background-size: 100%;
     width: 328px;
     height: 100%;
@@ -192,5 +192,8 @@ header[role=banner] {
     // !important to override foundation dropdown positioning
     right: 0 !important;
     left: auto !important;
+    z-index: 10;
   }
+
+ @import './program-bar';
 }
