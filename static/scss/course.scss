@@ -1,18 +1,30 @@
-.program-bar{
+.program-bar {
   height: $program-bar-height;
-  padding-top: 12px;
+  padding-top: 10px;
+  position: relative;
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
-  .program-name{
+  .program-name {
     &:after{ content: ':'; }
   }
-  .course-name{
-    a{
+
+  .course-name {
+    a {
       color: $pure-white;
       &:hover{
         color: $mckinsey-academy-blue-gray;
       }
     }
+  }
+
+  .global-help,
+  .global-help:visited {
+    color: $mckinsey-academy-blue-gray;
+    display: none;
+    position: absolute;
+    bottom: -30px;
+    right: 10px;
+    @include font-spec(20);
   }
 }
 
@@ -150,30 +162,6 @@
         border-left: none;
       }
       .selected{
-        color: $mckinsey-grey;
-      }
-    }
-  }
-
-  .lesson-module-status{
-    display: inline-block;
-    font-family: FontAwesome;
-    @include font-spec(10);
-    color: $mckinsey-grey;
-    &::before{
-      content: "\f10c";
-    }
-    &.complete{
-      color: $mckinsey-green;
-    }
-    &.complete, &.current{
-      &::before{
-        content: "\f111"
-      }
-    }
-    &:hover{
-      color: $mckinsey-academy-alt-blue;
-      &.current{
         color: $mckinsey-grey;
       }
     }

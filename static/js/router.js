@@ -1,12 +1,12 @@
 var Router = Backbone.Router.extend({
   routes: {
-    '/':                                   'home',
-    'courses/*course_id/view/progress':   'course_progress',
-    'courses/*course_id/view/overview':   'course_overview',
-    'courses/*course_id/view/cohort':     'course_cohort',
-    'courses/*course_id/view/group_work': 'course_group_work',
-    'courses/*course_id/view/resources':  'course_resources',
-    'courses/*course_id':                 'course_index'
+    '':                              'home',
+    'courses/*course_id/progress':   'course_progress',
+    'courses/*course_id/overview':   'course_overview',
+    'courses/*course_id/cohort':     'course_cohort',
+    'courses/*course_id/group_work': 'course_group_work',
+    'courses/*course_id/resources':  'course_resources',
+    'courses/*course_id':            'course_index'
   },
 
   home: function() {
@@ -26,9 +26,6 @@ var Router = Backbone.Router.extend({
   },
 
   course_overview: function(course_id) {
-    console.log(OO);
-    console.log('asdfasdf');
-    OO.Player.create('mk_overview_player', 'o3bHd4bTq6tVR5KxP8m1RXDl9vpVaNMA', {width: '100%', height: '100%'});
   },
 
   course_cohort: function(course_id) {

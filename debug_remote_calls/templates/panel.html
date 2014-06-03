@@ -1,0 +1,45 @@
+
+<h4>{{ call_count }} remote calls</h4>
+
+<ul class="">
+{% for api_call in api_calls %}
+
+    <li class="{% cycle 'djDebugOdd' 'djDebugEven' %}">
+        <a class="debug-roundtrip-more">
+            <span style="color:#93a1a1">{{ api_call.request.method }}</span>
+            <span style="color:#268bd2">{{ api_call.request.url }}</span>
+            <span style="color:#6c71c4">{{ api_call.response.code }}</span>
+            <span style="color:#93a1a1">{{ api_call.response.size }}</span>
+        </a>
+        <div style="display:none">
+            <div>
+                <h4>Request</h4>
+                <pre> {{ api_call.request.headers }} </pre>
+                {% if api_call.request.data %}
+                    <pre> {{ api_call.request.data }} </pre>
+                {% endif %}
+            </div>
+            <div>
+                <h4>Response</h4>
+                <pre>{{ api_call.response.headers }}</pre>
+                <pre>{{ api_call.response.data }}</pre>
+            </div>
+        </div>
+    </li>
+
+{% endfor %}
+</ul>
+
+<script>
+
+    (function ($) {
+
+        $('.debug-roundtrip-more').on('click', function(e) {
+            e.preventDefault();
+            $(this).next().toggle();
+            return false;
+        });
+
+    })(djdt.jQuery);
+
+</script>

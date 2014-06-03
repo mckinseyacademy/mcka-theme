@@ -1,10 +1,12 @@
-#course-resources
-  - include "courses/content_page/lesson_menu.haml"
-  %h1 Resources
-  - for lesson in course.chapters
-    %section
-      .resource
-        .sub-1 Lesson {{lesson.index}}: {{lesson.name}}
-        %a Lesson {{lesson.index}}: Key Takeaway
-        .person-title Takeaway | McKinsey
-    %hr
+- extends "courses/course_navigation.haml"
+- block current_content
+    #course-resources
+      - include "courses/content_page/lesson_menu.haml"
+      %h1 Resources
+      - for lesson in course.chapters
+        %section
+          .resource
+            .sub-1 Lesson {{lesson.index}}: {{lesson.name}}
+            %a Lesson {{lesson.index}}: Key Takeaway
+            .person-title Takeaway | McKinsey
+        %hr

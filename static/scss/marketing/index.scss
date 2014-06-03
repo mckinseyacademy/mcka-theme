@@ -5,10 +5,13 @@
 #programs-page,
 #contact-page,
 #experience-page {
-  margin-top: rem-calc(85);
   section {
     padding: 0 rem-calc(20);
     margin: rem-calc(15) 0;
+  }
+
+  @media #{$small-only} {
+    img.tileset { display: none; }
   }
 }
 

@@ -3,8 +3,8 @@
     %tr.client
       %td.course-toggle
       %td.title
-        = client.name
-      %td.places{style: "color: red;"}
-        000
-      %td.enrolled{style: "color: red;"}
-        000
+        = client.display_name
+      %td.places
+        = client.places_allocated
+      %td.enrolled
+        = client.places_assigned

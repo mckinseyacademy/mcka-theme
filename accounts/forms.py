@@ -6,6 +6,7 @@ import datetime
 from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
+from django.contrib.auth.tokens import default_token_generator
 
 
 # djano forms are "old-style" forms => causing lint errors
@@ -293,7 +294,7 @@ DISABLED_IF_DATA_FIELDS = []
 class NoSuffixLabelForm(forms.Form):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
-        super(NoSuffixLabelForm, self).__init__(*args, **kwargs)    
+        super(NoSuffixLabelForm, self).__init__(*args, **kwargs)
 
 class LoginForm(NoSuffixLabelForm):
     ''' login form for system '''

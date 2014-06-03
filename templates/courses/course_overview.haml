@@ -1,44 +1,47 @@
-#course-overview
-  %ul.meta-info
-    %li.label-4 Details:
-    %li.label-3 10 lessons
-    %li.label-3 32 videos
-    %li.label-3 9 assessments
-    %li.label-3 72 exercises
-    %li.label-3 1 group project
-    %li.label-3 15 readings
-  %h1= course.name
-  .overview
-    .sub-1 Overview
-    - autoescape off
-      %p= overview.about
-  %hr
-  .row.collapse
-    .large-7.columns.col-left
-      .video-preview
-        #mk_overview_player.thumb
-        .video-overview.hidden
-          %i.fa.fa-play-circle
-          %span Course Overview
-          %time.label-2 2:08
-      %hr
-      .faculty
-        .sub-1 Faculty
-        - for teacher in overview.faculty
-          - if teacher.idx == 0
-            %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs', checked: None}
-          - else
-            %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs'}
-          %label{for: "faculty_#{teacher.idx}"}
-            %img{src: "#{teacher.image_src}"}
-        - for teacher in overview.faculty
-          %div.teacher{id: "teacher_#{teacher.idx}"}
-            %h2= teacher.name
-            %p.style-3
-              - autoescape off
-                = teacher.bio
-    .large-5.columns.col-right
-      .sub-1 WHAT YOU WILL LEARN
-      %p After this course, you will be able to:
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-overview
+    %ul.meta-info
+      %li.label-4 Details:
+      %li.label-3 10 lessons
+      %li.label-3 32 videos
+      %li.label-3 9 assessments
+      %li.label-3 72 exercises
+      %li.label-3 1 group project
+      %li.label-3 15 readings
+    %h1= course.name
+    .overview
+      .sub-1 Overview
       - autoescape off
-        %p= overview.what_you_will_learn
+        %p= overview.about
+    %hr
+    .row.collapse
+      .large-7.columns.col-left
+        .video-preview
+          #mk_overview_player.thumb
+            %img{src: 'https://s3-us-west-2.amazonaws.com/mckinseyacademy/assets/OverviewTempImage.png'}
+          .video-overview.hidden
+            %i.fa.fa-play-circle
+            %span Course Overview
+            %time.label-2 2:08
+        %hr
+        .faculty
+          .sub-1 Faculty
+          - for teacher in overview.faculty
+            - if teacher.idx == 0
+              %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs', checked: None}
+            - else
+              %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs'}
+            %label{for: "faculty_#{teacher.idx}"}
+              %img{src: "#{teacher.image_src}"}
+          - for teacher in overview.faculty
+            %div.teacher{id: "teacher_#{teacher.idx}"}
+              %h2= teacher.name
+              %p.style-3
+                - autoescape off
+                  = teacher.bio
+      .large-5.columns.col-right
+        .sub-1 WHAT YOU WILL LEARN
+        %p After this course, you will be able to:
+        - autoescape off
+          %p= overview.what_you_will_learn

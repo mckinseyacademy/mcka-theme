@@ -5,12 +5,12 @@
 
 .close-reveal-modal
   %i.fa.fa-times-circle
-.admin-form
+
+%form.admin-form{action: "/admin/clients/#{client.id}/program_association", method: "POST"}
   .title= _("Program Details")
-  %form{action: "/admin/clients/#{client.id}/program_association", method: "POST"}
-    - csrf_token
-    = form
-    .error
-      - if error
-        = error
-    %input.button.radius.small{type: "submit", value: "Add Program"}
+  - csrf_token
+  = form
+  .error
+    - if error
+      = error
+  %input.button.radius.small{type: "submit", value: "Add Program"}

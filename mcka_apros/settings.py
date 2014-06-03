@@ -38,6 +38,7 @@ DEFAULT_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'debug_toolbar',
     'django_assets',
     'south',
 )
@@ -46,6 +47,7 @@ LOCAL_APPS = (
     'api_client',
     'accounts',
     'assets',
+    'debug_remote_calls',
     'main',
     'courses',
     'admin',
@@ -80,6 +82,8 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 TEMPLATE_LOADERS = (
     'hamlpy.template.loaders.HamlPyFilesystemLoader',
     'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 # Database
@@ -172,8 +176,12 @@ EDX_API_KEY = 'test_api_key'
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
+# TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
+TA_EMAIL_GROUP = 'dcikatic@edx.org'
 INITIAL_PASSWORD = 'PassworD12!@'
+
+# Email address students get their enrollment email sent from
+ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 
 try:
     from local_settings import *
@@ -193,3 +201,28 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'lib.context_processors.user_program_data',
     'lib.context_processors.settings_data',
 )
+
+
+DEFAULT_DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+)
+
+LOCAL_DEBUG_TOOLBAR_PANELS = (
+    'debug_remote_calls.panel.DebugRemoteCalls',
+)
+
+DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
+
+# EMAIL BACKEND
+EDXAPP_EMAIL_BACKEND = "django_ses.SESBackend"

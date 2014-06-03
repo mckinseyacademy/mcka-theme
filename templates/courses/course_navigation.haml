@@ -1,10 +1,18 @@
 - extends "courses/course_main.haml"
 
+- block help_context
+  #mckinsey_help.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %p Have a question on how to use McKinsey Academy? You've come to the right place.
+    %p For this beta release we don't have customized page-specific help operational, but many of your questions may be addresses in the <a href='/faq' target='_blank'>FAQ</a>.
+    %p Can't find the answer to your question there? Please contact us directly at <a href='mailto:support@mckinseyacademy.com'>support@mckinseyacademy.com</a> and we'll sort it out for you.
+
 - block content
   %article.row
     .large-10.large-centered.columns.course-page
       - include "courses/content_page/course_tabs.haml"
-      - include current_template
+      - block current_content
 
   #course_discussion_modal.reveal-modal.medium{'data-reveal': None}
     .close-reveal-modal
@@ -13,21 +21,3 @@
     %p As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks.
     .screencap
       %img{src: '/static/image/McKA_discussionsNEWpopup.png'}
-
-- block js_snippets
-  - if current_view == "lessons" or current_view == "group_work"
-    :javascript
-      $(function(){
-        var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
-        var lesson_data = {
-          usageId: '{{ vertical_usage_id }}',
-          sessionId: '{{ remote_session_key }}',
-          baseDomain: '{{ lms_base_domain }}',
-          lmsSubDomain: '{{ lms_sub_domain }}',
-        };
-        lesson_content.xblock(lesson_data);
-
-        $('#course-group-work .lesson-module-status').on('click', function(){
-          $('#' + $(this).data('activate')).click();
-        });
-      });

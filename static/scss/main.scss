@@ -246,7 +246,7 @@ button,
 
     .back {
       z-index: 5;
-      @include transform(rotateX(0deg));
+      @include transform(rotateY(0deg));
     }
   }
 
@@ -261,7 +261,7 @@ button,
 
   .front {
     z-index: 10;
-    @include transform(rotateX(0deg));
+    @include transform(rotateY(0deg));
   }
 
   .back {
@@ -283,13 +283,37 @@ form {
   p { margin-bottom: rem-calc(30); }
 }
 
+#mckinsey_help {
+  + .global-help { display: block; }
+  p { margin-bottom: rem-calc(20); }
+}
+
 .modal-title {
-    border-bottom: 1px solid $mckinsey-academy-light-gray;
-    padding-bottom: 15px; 
-    margin-bottom: 15px;
+  border-bottom: 1px solid $mckinsey-academy-light-gray;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 /* Styles to hide debugging QA content when logged in as a staff user */
 .xqa-modal, .history-modal{
   display: none !important;
 }
+
+/* Styles for general purpouse modal dialog */
+#generalModal.reveal-modal{
+  padding-right: 6em;
+  h2{
+    @include font-spec(22, normal, 24);
+    color: $mckinsey-academy-turquoise;
+    padding-bottom:rem-calc(10);
+    margin-bottom:rem-calc(10);
+    border-bottom: 1px solid $mckinsey-academy-light-gray;
+  }
+  .close-reveal-modal{
+    font-size: 1.4rem;
+  }
+  p{
+    @include font-spec(20, normal, 26);
+  }
+}
+
