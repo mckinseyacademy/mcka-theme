@@ -65,8 +65,9 @@ def build_page_info_for_course(
         current_sequential = current_chapter.sequentials[0] if len(current_chapter.sequentials) > 0 else None
         current_page = current_sequential.pages[0] if current_sequential and len(current_sequential.pages) > 0 else None
 
-    if current_sequential == current_chapter.sequentials[-1] and current_page == current_sequential.pages[-1] and current_chapter != course.chapters[-1]:
-        current_page.next_lesson_link = True
+    if len(current_sequential.pages) > 0:
+        if current_sequential == current_chapter.sequentials[-1] and current_page == current_sequential.pages[-1] and current_chapter != course.chapters[-1]:
+            current_page.next_lesson_link = True
 
     return course, current_chapter, current_sequential, current_page
 
@@ -202,7 +203,6 @@ def _fake_project_group():
     project_group.teaching_assistant = ta
 
     return project_group
-
 
 def group_project_location(user_id, course, sequential_id=None):
     '''

@@ -54,6 +54,7 @@
       img {
         float: left;
         margin-right: rem-calc(10);
+        @include square-size(50px);
       }
 
       > div { float: left; }
