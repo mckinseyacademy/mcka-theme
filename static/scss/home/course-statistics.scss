@@ -43,6 +43,9 @@
       right: 10px;
     }
 
-    .visualization { display: inline-block; }
+    .visualization {
+      display: inline-block;
+      max-width: 100%;
+    }
   }
 }
