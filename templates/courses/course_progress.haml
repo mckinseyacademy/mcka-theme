@@ -1,87 +1,95 @@
-#course-progress
-  %h1 Course Progress for '={user.username}'
-  .sub-1 PROGRESS
-  %p.style-6 You are 00% of the way through the course based on completion of modules within lessons:
-  %section.course-progress
-    .visualization{data-percent: '71%'}
-      .total 71%
-      .bar
-    .label-4 cohort average = 58%
-  %hr
-  .sub-1 GRADES
-  %p.style-6 You need a combined course grade of at least 80% to earn a certificate of completion. Your final grade is calculated as follows:
-  .grades
-    %ul
-      %li End-of-lesson assessments: 00? percent of your grade
-      %li Group work: 00? percent of your grade
-      %li Final assessment: 00? percent of your grade
-    #chart-grades
-      %svg
-  %ul.legend
-    %li.completed.label-3 Completed
-    %li.group-work.label-3 Group Work avg.
-    %li.current-grade.label-3 Current grade
-  %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
-  %hr
-  %table.lesson-table
-    %thead
-      %tr
-        %th.label-4 Lesson:
-        %th.label-4 Suggested Deadline:
-        %th.label-4 Assessment Score:
-        %th.label-4 Progress:
-    %tbody
-      - for lesson in course.chapters
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-progress
+    %h1 Course Progress for '={user.username}'
+    .sub-1 PROGRESS
+    %p.style-6 You are 00% of the way through the course based on completion of modules within lessons:
+    %section.course-progress
+      .visualization{data-percent: '71%'}
+        .total 71%
+        .bar
+      .label-4 cohort average = 58%
+    %hr
+    .sub-1 GRADES
+    %p.style-6 You need a combined course grade of at least 80% to earn a certificate of completion. Your final grade is calculated as follows:
+    .grades
+      %ul
+        %li End-of-lesson assessments: 00? percent of your grade
+        %li Group work: 00? percent of your grade
+        %li Final assessment: 00? percent of your grade
+      #chart-grades
+        %svg
+    %ul.legend
+      %li.completed.label-3 Completed
+      %li.group-work.label-3 Group Work avg.
+      %li.current-grade.label-3 Current grade
+    %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+    %hr
+    %table.lesson-table
+      %thead
         %tr
-          %td.lesson.sub-1 ={lesson.index}: ={lesson.name}
+          %th.label-4 Lesson:
+          %th.label-4 Suggested Deadline:
+          %th.label-4 Assessment Score:
+          %th.label-4 Progress:
+      %tbody
+        - for lesson in course.chapters
+          %tr
+            %td.lesson.sub-1 ={lesson.index}: ={lesson.name}
+            %td.deadline April 16th
+            - if lesson.assesment_score == None
+              %td.assessment.none -
+            - else
+              %td.assessment ={lesson.assesment_score}%
+            %td.lesson-progress
+              - for sequential in lesson.sequentials
+                - for lesson_module in sequential.pages
+                  %span{class: "#{lesson_module.status_class}"}
+    %hr
+    %table.lesson-table
+      %thead
+        %th.label-4 Group Work:
+        %th.label-4 Upload Deadline:
+        %th.label-4 Score:
+        %th.label-4 Individual Peer Grades:
+      %tbody
+        %tr
+          %td.lesson.sub-1 Activity 1
           %td.deadline April 16th
           %td.assessment 80%
-          %td.lesson-progress
-            - for sequential in lesson.sequentials
-              - for lesson_module in sequential.pages
-                %span{class: "#{lesson_module.status_class}"}
-  %hr
-  %table.lesson-table
-    %thead
-      %th.label-4 Group Work:
-      %th.label-4 Upload Deadline:
-      %th.label-4 Score:
-      %th.label-4 Individual Peer Grades:
-    %tbody
-      %tr
-        %td.lesson.sub-1 Activity 1
-        %td.deadline April 16th
-        %td.assessment 80%
-        %td
-          %ul.group-grades
-            %li 75
-            %li 80
-            %li 85
-            %li 75
-      %tr
-        %td.lesson.sub-1 Activity 2
-        %td.deadline April 16th
-        %td.assessment.none -
-        %td
-          %ul.group-grades
-            %li -
-            %li -
-            %li -
-            %li -
-      %tr
-        %td.lesson.sub-1 Activity 3
-        %td.deadline April 16th
-        %td.assessment.none -
-        %td
-          %ul.group-grades
-            %li -
-            %li -
-            %li -
-            %li -
+          %td
+            %ul.group-grades
+              %li 75
+              %li 80
+              %li 85
+              %li 75
+        %tr
+          %td.lesson.sub-1 Activity 2
+          %td.deadline April 16th
+          %td.assessment.none -
+          %td
+            %ul.group-grades
+              %li -
+              %li -
+              %li -
+              %li -
+        %tr
+          %td.lesson.sub-1 Activity 3
+          %td.deadline April 16th
+          %td.assessment.none -
+          %td
+            %ul.group-grades
+              %li -
+              %li -
+              %li -
+              %li -
 
-#progress_modal.reveal-modal.small{'data-reveal': None}
-  .close-reveal-modal
-    %i.fa.fa-times-circle
-  %p
-    If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
-    %a{href: '/privacy'} privacy policy.
+  #progress_modal.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %p
+      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
+      %a{href: '/privacy'} privacy policy.
+
+  %script
+    var historicalBarChart = {{bar_chart|safe}};

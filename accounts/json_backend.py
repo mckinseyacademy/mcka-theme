@@ -4,10 +4,9 @@ Need to implement authenticate, get_user and has_perm
 (as specified in documentation)
 '''
 from django.contrib.auth import get_user_model
-from urllib2 import HTTPError
-#from models import AprosUser
 
 from api_client import user_api
+from api_client.api_error import ApiError
 
 
 # pylint: disable=no-member,no-self-use
@@ -39,9 +38,9 @@ class JsonBackend(object):
                 user = get_user_model()()
                 user.update_response_fields(user_response)
                 user.save()
-            except HTTPError:
+            except ApiError:
                 user = None
-        
+
         return user
 
 # pylint: disable=unused-argument

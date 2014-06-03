@@ -1,11 +1,13 @@
-#course-news
-  %h1 News
-  - for entry in news
-    %section
-      .sub-1= entry.date
-      %p
-        - autoescape off
-          = entry.content
-    %hr
-  .load-more
-    %a load more
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-news
+    %h1 News
+    - for entry in news
+      %section
+        .sub-1= entry.date
+        %p
+          - autoescape off
+            = entry.content
+      %hr
+    .load-more
+      %a load more

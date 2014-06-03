@@ -1,9 +1,10 @@
-
 from django.http import HttpResponseRedirect
 from django.contrib import auth
+
+from api_client.api_error import ApiError
 from api_client import user_api
+
 from .models import RemoteUser
-import urllib2 as url_access
 
 def logout(request):
     ''' handles requests to logout '''
@@ -11,13 +12,19 @@ def logout(request):
     # our local stuff to go
     try:
         user_api.delete_session(request.session.get("remote_session_key"))
-    except url_access.HTTPError:
+    except ApiError:
         pass
 
     # clean user from the local cache
-    RemoteUser.remove_from_cache(request.user.id)
+    try:
+        RemoteUser.remove_from_cache(request.user.id)
+    except:
+        pass
 
     # destroy this session
-    auth.logout(request)
+    try:
+        auth.logout(request)
+    except:
+        pass
 
     return HttpResponseRedirect('/')  # Redirect after POST
