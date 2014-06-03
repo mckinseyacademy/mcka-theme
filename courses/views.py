@@ -212,6 +212,11 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     }
     return render(request, 'courses/course_lessons.haml', data)
 
+
+def course_notready(request, course_id):
+    return render(request, 'courses/course_notready.haml')
+
+
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):
     '''
@@ -228,7 +233,7 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     if course_id and chapter_id and page_id:
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
-        return HttpResponseRedirect('/courses/{}/view/notready'.format(course_id))
+        return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
