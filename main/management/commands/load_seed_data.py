@@ -59,18 +59,19 @@ class Command(BaseCommand):
         for user_tuple in user_list:
             user_data = {
                 "username": user_tuple[0],
-                "first_name": "Uber",
-                "last_name": "Admin",
+                "first_name": user_tuple[0],
+                "last_name": "Tester",
                 "email": "%s@mckinseyacademy.com" % user_tuple[0],
                 "password": "PassworD12!@"
             }
             try:
                 self.stdout.write("Registering user: %s in the role: %s" % (user_tuple[0], user_tuple[1]))
                 u = user_api.register_user(user_data)
-                group_api.add_user_to_group(u.id, permission_groups_map()[user_tuple[1]])
-                if len(user_tuple) == 3:
-                    self.stdout.write("Adding user %s to client: %s" % (user_tuple[0], client_name))
-                    group_api.add_user_to_group(u.id, client_group_id)
+                if u:
+                    group_api.add_user_to_group(u.id, permission_groups_map()[user_tuple[1]])
+                    if len(user_tuple) == 3:
+                        self.stdout.write("Adding user %s to client: %s" % (user_tuple[0], client_name))
+                        group_api.add_user_to_group(u.id, client_group_id)
             except ApiError as e:
                 if e.code == 409:
                     self.stdout.write("User: %s already exists" % user_tuple[0])
