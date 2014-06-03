@@ -61,6 +61,12 @@
         float: left;
         width: 280px;
       }
+
+      @media #{$small-only} {
+        width: 100%;
+        height: auto;
+        margin-bottom: rem-calc(25);
+      }
     }
   }
 }
