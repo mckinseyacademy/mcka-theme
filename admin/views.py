@@ -1,7 +1,7 @@
-import urllib2 as url_access
 import json
-
 from datetime import datetime
+import urllib2 as url_access
+
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -9,25 +9,30 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
-from urllib2 import HTTPError
 
 from lib.authorization import permission_group_required
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from api_client.group_api import PERMISSION_GROUPS
+
+from accounts.models import RemoteUser, UserActivation
+
+from main.models import CuratedContentItem
+from api_client import course_api
+from api_client import user_api
+from api_client import group_api
+from api_client.json_object import Objectifier
+from api_client.api_error import ApiError
+from license import controller as license_controller
+
 from .models import Client
 from .models import Program
 from .models import WorkGroup
-from main.models import CuratedContentItem
 from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filterGroupsAndStudents, parse_studentslist_from_post
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
-from api_client import course_api
-from api_client import user_api
-from api_client import group_api
-from api_client.json_object import Objectifier
-from license import controller as license_controller
 
 
 
@@ -185,14 +190,8 @@ def client_new(request):
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
 
-            except url_access.HTTPError, err:
-                error = _("An error occurred during client creation")
-                error_messages = {
-                    403: _("You are not permitted to add new clients"),
-                    401: _("Invalid data"),
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
+            except ApiError as err:
+                error = err.message
     else:
         ''' adds a new client '''
         form = ClientForm()  # An unbound form
@@ -225,14 +224,8 @@ def client_edit(request, client_id):
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/')
 
-            except url_access.HTTPError, err:
-                error = _("An error occurred during client update")
-                error_messages = {
-                    403: _("You are not permitted to edit clients"),
-                    401: _("Invalid data"),
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
+            except ApiError as err:
+                error = err.message
     else:
         ''' edit a client '''
         client = Client.fetch(client_id)
@@ -328,14 +321,8 @@ def program_new(request):
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/programs/{}'.format(program.id))
 
-            except url_access.HTTPError, err:
-                error = _("An error occurred during program creation")
-                error_messages = {
-                    403: _("You are not permitted to add new programs"),
-                    401: _("Invalid data"),
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
+            except ApiError as err:
+                error = err.message
 
     else:
         ''' adds a new client '''
@@ -369,14 +356,8 @@ def program_edit(request, program_id):
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/programs/')
 
-            except url_access.HTTPError, err:
-                error = _("An error occurred during program update")
-                error_messages = {
-                    403: _("You are not permitted to add edit programs"),
-                    401: _("Invalid data"),
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
+            except ApiError as err:
+                error = err.message
     else:
         ''' edit a program '''
         program = Program.fetch(program_id)
@@ -433,21 +414,12 @@ def upload_student_list(request, client_id):
         # A form bound to the POST data and FILE data
         form = UploadStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
-            try:
-                upload_results = process_uploaded_student_list(
-                    request.FILES['student_list'],
-                    client_id,
-                    request.build_absolute_uri('/accounts/activate')
-                )
-                return client_detail(request, client_id, detail_view="detail", upload_results=upload_results)
-
-            except url_access.HTTPError, err:
-                error = _("An error occurred during student upload")
-                error_messages = {
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
-
+            upload_results = process_uploaded_student_list(
+                request.FILES['student_list'],
+                client_id,
+                request.build_absolute_uri('/accounts/activate')
+            )
+            return client_detail(request, client_id, detail_view="detail", upload_results=upload_results)
     else:
         ''' adds a new client '''
         form = UploadStudentListForm()  # An unbound form
@@ -547,7 +519,7 @@ def add_courses(request, program_id):
     for course_id in courses:
         try:
             program.add_course(course_id)
-        except HTTPError, e:
+        except ApiError as e:
             # Ignore 409 errors, because they indicate a course already added
             if e.code != 409:
                 raise
@@ -557,34 +529,48 @@ def add_courses(request, program_id):
         content_type='application/json'
     )
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_program(request, client_id):
     program = Program.fetch(request.POST.get("program"))
+    program.courses = program.fetch_courses()
     students = request.POST.getlist("students[]")
-    allocated, assigned = license_controller.licenses_report(program.id, client_id)
+    allocated, assigned = license_controller.licenses_report(
+        program.id, client_id)
     remaining = allocated - assigned
     if len(students) > remaining:
         response = HttpResponse(
-            json.dumps({"message": _("Not enough places available for {} program - {} left").format(program.display_name, remaining)}),
+            json.dumps({"message": _("Not enough places available for {} program - {} left")
+                       .format(program.display_name, remaining)}),
             content_type='application/json',
         )
         response.status_code = 403
         return response
-
+    messages = []
     for student_id in students:
         try:
             program.add_user(client_id, student_id)
-        except HTTPError, e:
+            # NEED TO CHANGE THIS ONCE MCKIN-1273 is done
+            # Should do just one call to get filtered user list
+            student = user_api.get_user(student_id)
+
+            if student.is_active:
+                msg = email_add_active_student(request, program, student)
+            else:
+                activation_record = UserActivation.get_user_activation(student)
+                student.activation_code = activation_record.activation_key
+                msg = email_add_inactive_student(request, program, student)
+            messages.append(msg)
+        except ApiError as e:
             # Ignore 409 errors, because they indicate a user already added
             if e.code != 409:
                 raise
+    sendMultipleEmails(messages)
 
     return HttpResponse(
-        json.dumps({"message": _("Successfully associated students to {} program").format(program.display_name)}),
+        json.dumps({"message": _("Successfully associated students to {} program")
+                   .format(program.display_name)}),
         content_type='application/json'
     )
-
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_course(request, client_id):
@@ -594,7 +580,7 @@ def add_students_to_course(request, client_id):
         for course_id in courses:
             try:
                 user_api.enroll_user_in_course(student_id, course_id)
-            except HTTPError, e:
+            except ApiError as e:
                 # Ignore 409 errors, because they indicate a user already added
                 if e.code != 409:
                     raise
@@ -741,7 +727,6 @@ def workgroup_group_create(request, course_id):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_update(request, group_id, course_id):
-    error = None
     if request.method == 'POST':
 
         students = request.POST.getlist("students[]")
@@ -752,12 +737,8 @@ def workgroup_group_update(request, group_id, course_id):
 
             return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
 
-        except url_access.HTTPError, err:
-            error = _("An error occurred during student upload")
-            error_messages = {
-            }
-            if err.code in error_messages:
-                error = error_messages[err.code]
+        except ApiError as err:
+            error = err.message
             return HttpResponse(json.dumps({'status': error}), content_type="application/json")
 
 

@@ -1,25 +1,19 @@
 ''' Core logic to sanitise information for views '''
-from urllib2 import HTTPError
+#from urllib import quote_plus, unquote_plus
+
 from django.conf import settings
+
 from api_client import course_api, user_api, user_models
+from api_client.api_error import ApiError
 from license import controller as license_controller
 from admin.models import Program, WorkGroup
 from admin.controller import load_course
-#from urllib import quote_plus, unquote_plus
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
 
 
 # logic functions - recieve api implementor for test
-
-def decode_id(encoded_id):
-    #return unquote_plus(encoded_id)
-    return encoded_id.replace('___', '/')
-
-def encode_id(plain_id):
-    #return quote_plus(plain_id)
-    return plain_id.replace('/', '___')
 
 def build_page_info_for_course(
     course_id,
@@ -48,10 +42,7 @@ def build_page_info_for_course(
         course.chapters[chapter_position - 1].bookmark = True
 
     for chapter in course.chapters:
-        chapter.navigation_url = '/courses/{}/lessons/{}'.format(
-            encode_id(course_id),
-            encode_id(chapter.id)
-        )
+        chapter.navigation_url = '/courses/{}/lessons/{}'.format(course_id, chapter.id)
         if chapter.id == chapter_id:
             current_chapter = chapter
 
@@ -59,8 +50,7 @@ def build_page_info_for_course(
             for page in sequential.pages:
                 page.prev_url = None
                 page.next_url = None
-                page.navigation_url = '{}/module/{}'.format(
-                    chapter.navigation_url, encode_id(page.id))
+                page.navigation_url = '{}/module/{}'.format(chapter.navigation_url, page.id)
 
                 if page.id == page_id:
                     current_page = page
@@ -84,7 +74,7 @@ def build_page_info_for_course(
 def get_course_position_information(user_id, course_id, user_api_impl=user_api):
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-    except HTTPError, e:
+    except ApiError, e:
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
 
     return course_detail
@@ -135,6 +125,7 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
     or None if program is not present
         user_api_impl - optional api client module to use (useful in mocks)
     '''
+
     courses = user_api_impl.get_user_courses(user_id)
 
     course_program = None
@@ -211,7 +202,6 @@ def _fake_project_group():
     project_group.teaching_assistant = ta
 
     return project_group
-
 
 def group_project_location(user_id, course, sequential_id=None):
     '''

@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
-from urllib2 import HTTPError
-from lib.authorization import permission_groups_map
+
 from api_client import course_api, group_api, user_api
+from api_client.api_error import ApiError
+from lib.authorization import permission_groups_map
 
 
 class Command(BaseCommand):
@@ -16,7 +17,7 @@ class Command(BaseCommand):
         self.stdout.write("Done")
 
         self.stdout.write(edx_seed_msg)
-        
+
         ''' Create roles '''
         group_type = 'permission'
         existing_groups = group_api.get_groups_of_type(group_type)
@@ -70,10 +71,10 @@ class Command(BaseCommand):
                 if len(user_tuple) == 3:
                     self.stdout.write("Adding user %s to client: %s" % (user_tuple[0], client_name))
                     group_api.add_user_to_group(u.id, client_group_id)
-            except HTTPError as e:
+            except ApiError as e:
                 if e.code == 409:
                     self.stdout.write("User: %s already exists" % user_tuple[0])
-                else: 
+                else:
                     raise
 
         self.stdout.write("Done")

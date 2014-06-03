@@ -292,3 +292,22 @@ form {
 .xqa-modal, .history-modal{
   display: none !important;
 }
+
+/* Styles for general purpouse modal dialog */
+#generalModal.reveal-modal{
+  padding-right: 6em;
+  h2{
+    @include font-spec(22, normal, 24);
+    color: $mckinsey-academy-turquoise;
+    padding-bottom:rem-calc(10);
+    margin-bottom:rem-calc(10);
+    border-bottom: 1px solid $mckinsey-academy-light-gray;
+  }
+  .close-reveal-modal{
+    font-size: 1.4rem;
+  }
+  p{
+    @include font-spec(20, normal, 26);
+  }
+}
+

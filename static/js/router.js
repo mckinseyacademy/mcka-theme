@@ -1,12 +1,12 @@
 var Router = Backbone.Router.extend({
   routes: {
-    '':                                   'home',
-    'courses/*course_id/view/progress':   'course_progress',
-    'courses/*course_id/view/overview':   'course_overview',
-    'courses/*course_id/view/cohort':     'course_cohort',
-    'courses/*course_id/view/group_work': 'course_group_work',
-    'courses/*course_id/view/resources':  'course_resources',
-    'courses/*course_id':                 'course_index'
+    '':                              'home',
+    'courses/*course_id/progress':   'course_progress',
+    'courses/*course_id/overview':   'course_overview',
+    'courses/*course_id/cohort':     'course_cohort',
+    'courses/*course_id/group_work': 'course_group_work',
+    'courses/*course_id/resources':  'course_resources',
+    'courses/*course_id':            'course_index'
   },
 
   home: function() {

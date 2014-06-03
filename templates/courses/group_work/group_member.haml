@@ -4,9 +4,5 @@
     .person-name= group_member.formatted_name
     .person-title= group_member.title
     .email
-      - if data_reveal_id
-        %a{href: "#", data-reveal-id: "#{data_reveal_id}"}
-          = _("Email")
-      - else
-        %a{href: "mailto:#{group_member.email}"}
-          = _("Email")
+      %a.email-member{href: "#", 'data-reveal-id': 'email-member', 'data-member-email': '#{group_member.email}'}
+        = _("Email")

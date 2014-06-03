@@ -1,12 +1,16 @@
 ''' API calls with respect to groups '''
+from django.utils.translation import ugettext as _
+from django.conf import settings
+
+from lib.util import DottableDict
+from .api_error import api_error_protect, ERROR_CODE_MESSAGES
+
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
+from .json_requests import GET, POST, DELETE
 from . import user_models
 from . import course_models
-from .json_requests import GET, POST, DELETE
-from lib.util import DottableDict
 
-from django.conf import settings
 
 GROUP_API = 'api/groups'
 
@@ -19,6 +23,7 @@ PERMISSION_GROUPS = DottableDict(
     CLIENT_TA='mcka_role_client_ta'
 )
 
+@api_error_protect
 def get_groups_of_type(group_type, group_object=JsonObject):
     ''' gets all groups of provided type'''
     response = GET(
@@ -32,6 +37,7 @@ def get_groups_of_type(group_type, group_object=JsonObject):
     return JP.from_json(response.read(), group_object)
 
 
+@api_error_protect
 def create_group(group_name, group_type, group_data=None, group_object=JsonObject):
     ''' create a new group '''
     data = {
@@ -53,6 +59,7 @@ def create_group(group_name, group_type, group_data=None, group_object=JsonObjec
     return JP.from_json(response.read(), group_object)
 
 
+@api_error_protect
 def fetch_group(group_id, group_object=JsonObject):
     ''' fetch group by id '''
     response = GET(
@@ -66,6 +73,7 @@ def fetch_group(group_id, group_object=JsonObject):
     return JP.from_json(response.read(), group_object)
 
 
+@api_error_protect
 def delete_group(group_id):
     ''' delete group by id '''
     response = DELETE(
@@ -78,6 +86,7 @@ def delete_group(group_id):
 
     return (response.code == 204)
 
+@api_error_protect
 def update_group(group_id, group_type, group_data=None, group_object=JsonObject):
     ''' update existing group '''
     # group_name is fixed, does not get updated, so no need to include it
@@ -98,7 +107,8 @@ def update_group(group_id, group_type, group_data=None, group_object=JsonObject)
     )
 
     return JP.from_json(response.read(), group_object)
-    
+
+@api_error_protect
 def add_user_to_group(user_id, group_id, group_object=JsonObject):
     ''' adds user to group '''
     data = {"user_id": user_id}
@@ -114,6 +124,7 @@ def add_user_to_group(user_id, group_id, group_object=JsonObject):
     return JP.from_json(response.read(), group_object)
 
 
+@api_error_protect
 def add_course_to_group(course_id, group_id, group_object=JsonObject):
     ''' adds course to group '''
     data = {"course_id": course_id}
@@ -129,6 +140,7 @@ def add_course_to_group(course_id, group_id, group_object=JsonObject):
     return JP.from_json(response.read(), group_object)
 
 
+@api_error_protect
 def add_group_to_group(child_group_id, group_id, group_object=JsonObject, relationship_type='g'):
     ''' adds user to group '''
     data = {
@@ -147,6 +159,7 @@ def add_group_to_group(child_group_id, group_id, group_object=JsonObject, relati
     return JP.from_json(response.read(), group_object)
 
 
+@api_error_protect
 def get_users_in_group(group_id):
     ''' get list of users associated with a specific group '''
     response = GET(
@@ -161,6 +174,7 @@ def get_users_in_group(group_id):
 
     return user_list.users
 
+@api_error_protect
 def remove_user_from_group(group_id, user_id):
     ''' remove user association with a specific group '''
 
@@ -169,12 +183,13 @@ def remove_user_from_group(group_id, user_id):
             settings.API_SERVER_ADDRESS,
             GROUP_API,
             group_id,
-            user_id, 
+            user_id,
         )
     )
 
     return (response.code == 204)
 
+@api_error_protect
 def get_courses_in_group(group_id):
     ''' get list of courses associated with a specific group '''
     response = GET(
@@ -190,6 +205,7 @@ def get_courses_in_group(group_id):
     return courses_list
 
 
+@api_error_protect
 def get_groups_in_group(group_id, group_object=JsonObject, params=[]):
 
     paramStrs = [param['key'] + '=' + param['value'] for param in params]
@@ -211,3 +227,14 @@ def get_groups_in_group(group_id, group_object=JsonObject, params=[]):
 
     return JP.from_json(response.read(), group_object)
 
+GROUP_ERROR_CODE_MESSAGES = {
+    create_group: {
+        403: _("Permission Denied"),
+        401: _("Invalid data"),
+    },
+    update_group: {
+        403: _("Permission Denied"),
+        401: _("Invalid data"),
+    },
+}
+ERROR_CODE_MESSAGES.update(GROUP_ERROR_CODE_MESSAGES)
