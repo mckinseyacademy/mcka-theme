@@ -20,8 +20,6 @@ def user_program_data(request):
         if course_id:
             course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
                 request.user.id, course_id, None)
-
-        if course_id:
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
                 course_id, chapter_id, page_id, chapter_position)
 
