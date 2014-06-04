@@ -169,32 +169,37 @@ def _fake_project_group():
     members_list = [
         user_models.UserResponse(dictionary={
             "username": "jg",
-            "formatted_name": "Jennifer Gormley",
+            "first_name": "Jennifer",
+            "last_name": "Gormley",
             "title": "Director of Product Design",
             "email": "Jennifer_Gormley@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "ap",
-            "formatted_name": "Andy Parsons",
+            "first_name": "Andy",
+            "last_name": "Parsons",
             "title": "CTO",
             "email": "Andy_Parsons@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "vg",
-            "formatted_name": "Vishal Ghandi",
+            "first_name": "Vishal",
+            "last_name": "Ghandi",
             "title": "Product Manager",
             "email": "vishalhgandhi@gmail.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "jr",
-            "formatted_name": "Jonathan Rainey",
+            "first_name": "Jonathan",
+            "last_name": "Rainey",
             "title": "Front End Specialist",
             "email": "tivoli@nurfed.com",
             }),
     ]
     ta = user_models.UserResponse(dictionary={
         "username": "ta",
-        "formatted_name": "Your TA",
+        "first_name": "Your",
+        "last_name": "TA",
         "title": "McKinsey Teaching Assistant",
         "email": "tas@mckinseyacademy.com",
     })
