@@ -63,4 +63,11 @@
   .activity_section{
     min-height: 400px;
   }
+  button{
+    @extend .small;
+    @extend .radius;
+    &.submit{
+      float: right;
+    }
+  }  
 }
