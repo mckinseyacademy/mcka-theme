@@ -58,6 +58,14 @@ def home(request):
     )
 
 
+@permission_group_required(PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_home(request):
+    return render(
+        request,
+        'admin/client_admin_home.haml'
+    )
+
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_list(request):
 

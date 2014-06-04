@@ -15,7 +15,10 @@
               %a{href: '/contact'}= _("Contact")
             - if user.is_mcka_admin
               %li
-                %a{href: '/admin'}= _("Admin")
+                %a{href: '/admin'}= _("McKA Admin")
+            - if user.is_client_admin
+              %li
+                %a{href: '/admin/client-admin'}= _("Client Admin")
       - block user_region
         - if request.user.is_authenticated
           %a.user-info{href: "#", data-dropdown: "profile-container"}
