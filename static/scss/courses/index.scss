@@ -41,6 +41,7 @@
       }
 
       &:first-child { padding: 0; }
+      &.selected { color: $mckinsey-orange; }
 
       a {
         @include font-spec(10, bold, 12);
