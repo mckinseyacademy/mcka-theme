@@ -71,7 +71,6 @@ def build_page_info_for_course(
 
     return course, current_chapter, current_sequential, current_page
 
-
 def get_course_position_information(user_id, course_id, user_api_impl=user_api):
     course_detail = False
     try:
@@ -80,7 +79,6 @@ def get_course_position_information(user_id, course_id, user_api_impl=user_api):
         pass
     if course_detail == False:
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
-
     return course_detail
 
 

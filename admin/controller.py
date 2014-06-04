@@ -11,6 +11,7 @@ from accounts.models import UserActivation
 
 from .models import Client, WorkGroup
 from license import controller as license_controller
+from accounts.controller import get_current_course_for_user, set_current_course_for_user
 
 
 def load_course(course_id, depth=3, course_api_impl=course_api):
@@ -18,7 +19,6 @@ def load_course(course_id, depth=3, course_api_impl=course_api):
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
     course = course_api_impl.get_course(course_id, depth)
-
     # Separate Group Projects
     course.group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
     course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
