@@ -247,8 +247,8 @@ def group_project_location(user_id, course, sequential_id=None):
             sequential = seq
 
         # Is it a group_project xblock
-        seq.is_group_project = "group-project" in sequential.pages[0].child_category_list()
+        seq.is_group_project = len(sequential.pages) > 0 and "group-project" in sequential.pages[0].child_category_list()
 
-    page = sequential.pages[0]
+    page = sequential.pages[0] if len(sequential.pages) > 0 else None
 
     return project_group, group_project, sequential, page
