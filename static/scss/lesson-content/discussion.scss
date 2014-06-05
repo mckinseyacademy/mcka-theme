@@ -1,0 +1,100 @@
+/* TODO: Move this to a proper theme once XBlocks support them */
+
+.lesson-content .discussion-module {
+  background: #fff !important;
+
+  /* Buttons *****************************************************************/
+
+  .new-post-btn,
+  .new-post-article .new-post-form .submit,
+  .new-post-article .new-post-form .new-post-cancel,
+  .discussion-submit-post,
+  .add-response .add-response-btn,
+  .comments .comment-form .discussion-submit-comment {
+    &, &:hover {
+      @extend .button;
+      @extend .small;
+      @extend .radius;
+
+      border-color: transparent;
+      background-image: none;
+      text-shadow: none;
+      line-height: 1;
+      height: 35px;
+      width: auto;
+    }
+
+    .new-post-icon {
+      display: none;
+    }
+  }
+
+  .discussion .new-post-article .new-post-form .new-post-cancel {
+    &, &:hover, &:visited {
+      background-color: #eee;
+      margin-left: 15px;
+      color: #333;
+    }
+  }
+
+  .new-post-btn {
+    &, &:hover {
+      position: absolute;
+      right: 20px;
+    }
+  }
+
+  .post-extended-content .add-response .add-response-btn {
+    &, &:hover {
+      padding-bottom: 25px;
+    }
+  }
+
+  .vote-btn {
+    &, &:hover {
+      border-radius: 0px;
+      box-shadow: none;
+      background-image: none;
+    }
+  }
+
+  .comments .comment-form .discussion-submit-comment {
+    &, &:hover {
+      margin-top: 15px;
+    }
+  }
+
+  /* Layout ******************************************************************/
+
+  section.discussion .discussion-thread .discussion-article {
+    &, .responses > li {
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .thread-wrapper {
+      max-height: none;
+    }
+  }
+
+  .new-post-article .new-post-form, .discussion-user-threads .new-post-article .new-post-form {
+    width: 719px;
+  }
+
+  .responses {
+    padding: 0px 40px 0px 20px;
+
+    .discussion-response {
+      background-color: #fafafa;
+    }
+  }
+
+  .discussion-article h1 {
+    font-size: 14px;
+  }
+
+  .response-count {
+    float: right;
+  }
+
+}

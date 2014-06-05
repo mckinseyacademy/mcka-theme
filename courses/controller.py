@@ -73,9 +73,12 @@ def build_page_info_for_course(
 
 
 def get_course_position_information(user_id, course_id, user_api_impl=user_api):
+    course_detail = False
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-    except ApiError, e:
+    except:
+        pass
+    if course_detail == False:
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
 
     return course_detail
@@ -169,32 +172,37 @@ def _fake_project_group():
     members_list = [
         user_models.UserResponse(dictionary={
             "username": "jg",
-            "formatted_name": "Jennifer Gormley",
+            "first_name": "Jennifer",
+            "last_name": "Gormley",
             "title": "Director of Product Design",
             "email": "Jennifer_Gormley@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "ap",
-            "formatted_name": "Andy Parsons",
+            "first_name": "Andy",
+            "last_name": "Parsons",
             "title": "CTO",
             "email": "Andy_Parsons@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "vg",
-            "formatted_name": "Vishal Ghandi",
+            "first_name": "Vishal",
+            "last_name": "Ghandi",
             "title": "Product Manager",
             "email": "vishalhgandhi@gmail.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "jr",
-            "formatted_name": "Jonathan Rainey",
+            "first_name": "Jonathan",
+            "last_name": "Rainey",
             "title": "Front End Specialist",
             "email": "tivoli@nurfed.com",
             }),
     ]
     ta = user_models.UserResponse(dictionary={
         "username": "ta",
-        "formatted_name": "Your TA",
+        "first_name": "Your",
+        "last_name": "TA",
         "title": "McKinsey Teaching Assistant",
         "email": "tas@mckinseyacademy.com",
     })
@@ -247,8 +255,8 @@ def group_project_location(user_id, course, sequential_id=None):
             sequential = seq
 
         # Is it a group_project xblock
-        seq.is_group_project = "group-project" in sequential.pages[0].child_category_list()
+        seq.is_group_project = len(sequential.pages) > 0 and "group-project" in sequential.pages[0].child_category_list()
 
-    page = sequential.pages[0]
+    page = sequential.pages[0] if len(sequential.pages) > 0 else None
 
     return project_group, group_project, sequential, page

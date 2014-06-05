@@ -98,7 +98,7 @@ def course_syllabus(request, course_id):
 
 @login_required
 def course_news(request, course_id):
-    data = course_api.get_course_news(course_id)
+    data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
 

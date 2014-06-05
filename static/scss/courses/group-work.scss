@@ -34,7 +34,7 @@
     text-transform: uppercase;
     margin-top: 15px;
   }
-  .urgent{
+  .highlight{
     color: $mckinsey-orange;
   }
   nav{
@@ -60,4 +60,14 @@
       margin-left: 50px;
     }
   }
+  .activity_section{
+    min-height: 400px;
+  }
+  button{
+    @extend .small;
+    @extend .radius;
+    &.submit{
+      float: right;
+    }
+  }  
 }

@@ -35,25 +35,26 @@ def user_program_data(request):
             assesment_scores = []
 
             gradebook = user_api.get_user_gradebook(request.user.id, course.id)
-            for lesson in gradebook.courseware_summary:
-                points = 0
-                max_points = 0
+            if gradebook.courseware_summary:
+                for lesson in gradebook.courseware_summary:
+                    points = 0
+                    max_points = 0
 
-                for section in lesson.sections:
-                    points += section.section_total[0]
-                    max_points += section.section_total[1]
+                    for section in lesson.sections:
+                        points += section.section_total[0]
+                        max_points += section.section_total[1]
 
-                if max_points > 0:
-                    percent = int(round(100*points/float(max_points)))
-                else:
-                    percent = None
+                    if max_points > 0:
+                        percent = int(round(100*points/float(max_points)))
+                    else:
+                        percent = None
 
-                assesment_scores.append(percent)
+                    assesment_scores.append(percent)
 
-            length = len(assesment_scores)
+                length = len(assesment_scores)
 
-            for i, lesson in enumerate(course.chapters):
-                lesson.assesment_score = assesment_scores[i] if i < length else None
+                for i, lesson in enumerate(course.chapters):
+                    lesson.assesment_score = assesment_scores[i] if i < length else None
 
 
     data = {
