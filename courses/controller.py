@@ -75,7 +75,7 @@ def get_course_position_information(user_id, course_id, user_api_impl=user_api):
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
     except:
         pass
-    if course_detail == None:
+    if course_detail == False:
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
 
     return course_detail
