@@ -70,9 +70,12 @@ def build_page_info_for_course(
 
 
 def get_course_position_information(user_id, course_id, user_api_impl=user_api):
+    course_detail = False
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-    except HTTPError, e:
+    except:
+        pass
+    if course progress is empty
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
 
     return course_detail
