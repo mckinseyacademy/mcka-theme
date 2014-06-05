@@ -19,6 +19,7 @@ class UserResponse(JsonObject):
         # TODO: is the size param going to be used here?
         return "/static/image/empty_avatar.png"
 
+    @property
     def formatted_name(self):
         ''' returns formatted name from first name and last name unless first name is defined'''
         if hasattr(self, "full_name"):

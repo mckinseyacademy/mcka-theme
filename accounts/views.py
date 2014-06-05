@@ -115,7 +115,7 @@ def activate(request, activation_code):
         user_data = {}
         for field_name in VALID_USER_FIELDS:
             if field_name == "full_name":
-                user_data[field_name] = user.formatted_name()
+                user_data[field_name] = user.formatted_name
             elif hasattr(user, field_name):
                 user_data[field_name] = getattr(user, field_name)
 
@@ -213,7 +213,6 @@ def user_profile(request):
     user = user_api.get_user(request.user.id)
     user_data = {
         "user_image_url": user.image_url(160),
-        "user_formatted_name": user.formatted_name(),
-        "user_email": user.email,
+        "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
