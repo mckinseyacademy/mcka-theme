@@ -1,11 +1,16 @@
 .select-group-box {
-  border: 1px solid $mckinsey-academy-black;
+  padding: 8px;
+  border: 1px dashed $mckinsey-academy-alt-blue;
   margin: 3px 0;
 
-  .name {
-    padding: 10px 10px;
-    i.caret {
-      float: right;
+  .group-data {
+    position: relative;
+
+    i {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: $mckinsey-academy-alt-blue;
     }
   }
 
@@ -18,10 +23,6 @@
     a:hover {
       color: $mckinsey-academy-alt-blue;
     }
-  }
-
-  .group-info.students.expanded {
-    border-top: 1px solid $mckinsey-academy-black;
   }
 
   .students-list {

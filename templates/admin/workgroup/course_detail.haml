@@ -36,7 +36,8 @@
                     %li.company-filter{'data-company-filter': '#{company.id}'}= company.display_name
               - for group in groups
                 .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
-                  .label-1= group.display_name
+                  .group-data
+                    %span.label-1= group.display_name
                     %span.label-3= _("Members:")
                     %span.label-3.student-count= group.students_count
                     %i.caret.fa.fa-caret-down
