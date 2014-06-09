@@ -71,7 +71,7 @@
       padding: 5px 0;
       color: $pure-black;
       &.unavailable{
-        color: $mckinsey-grey;
+        color: $mckinsey-dark-grey;
       }
       &.current{
         color: $mckinsey-orange;
@@ -85,7 +85,7 @@
     .status{
       @include font-spec(10, semibold);
       font-style: italic;
-      color: $mckinsey-grey;
+      color: $mckinsey-dark-grey;
       &.complete{
         color: $mckinsey-green;
       }
