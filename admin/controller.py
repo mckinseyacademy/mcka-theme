@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api
+from api_client import user_api, group_api, course_api, workgroup_api
 from accounts.models import UserActivation
 
 from .models import Client, WorkGroup
@@ -228,6 +228,12 @@ def fetch_clients_with_program(program_id):
 
     return clients
 
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
 def filterGroupsAndStudents(course, students):
     ''' THIS IS A VERY SLOW PART OF CODE.
         Due to api limitations, filtering of user from student list has to be done on client.
@@ -235,13 +241,19 @@ def filterGroupsAndStudents(course, students):
         This should be replaced once API changes.
     '''
     groupsList = []
-    for module in course.group_projects:
-        groupsList = groupsList + [WorkGroup.fetch(group.group_id)
-                                   for group in course_api.get_course_content_groups(course.id, module.id)]
+#    for module in course.group_projects:
+#        groupsList = groupsList + [WorkGroup.fetch(group.workgroup_id)
+#                                   for group in course_api.get_course_content_workgroups(course.id, module.id)]
 
     groups = []
+    groupsList = workgroup_api.get_workgroups()
+    for workgroup in groupsList:
+        groups.append(workgroup_api.get_groups_by_type(workgroup.id, 'organization'))
+
+
     groupedStudents = []
     for group in groupsList:
+        dump(group)
         users = group_api.get_users_in_group(group.id)
         group.students = users
         for user in users:
@@ -255,7 +267,7 @@ def filterGroupsAndStudents(course, students):
         group.students_count = len(group.students)
         groups.append(group)
 
-    groups.sort(key=lambda group: group.id)
+#    groups.sort(key=lambda group: group.id)
 
     for student in groupedStudents:
         if student in students:

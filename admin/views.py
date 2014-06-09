@@ -19,7 +19,7 @@ from accounts.models import RemoteUser, UserActivation
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
-from api_client import group_api
+from api_client import group_api, project_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
 from license import controller as license_controller
@@ -270,6 +270,7 @@ def _format_upload_results(upload_results):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
+    dump(client)
 
     view = 'admin/client/{}.haml'.format(detail_view)
 
@@ -660,7 +661,6 @@ def workgroup_programs_list(request):
 def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
-
     course = load_course(course_id)
 
     students, companies = getStudentsWithCompanies(course)
@@ -670,7 +670,6 @@ def workgroup_course_detail(request, course_id):
 
     groups, students = filterGroupsAndStudents(course, students)
 
-
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
@@ -678,6 +677,7 @@ def workgroup_course_detail(request, course_id):
         "students": students,
         "groups": groups,
         "companies": companies.values(),
+        "group_projects": course.group_projects,
     }
 
     return render(
@@ -728,7 +728,31 @@ def workgroup_group_create(request, course_id):
         for student in students:
             group_api.add_user_to_group(student['id'], group_id)
 
-    return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+        return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+
+    return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_project_create(request, course_id):
+
+    if request.method == 'POST':
+        print request.POST['new-project-private']
+        data = {
+                'private': request.POST['new-project-private'],
+                'organization': request.POST['new-project-company'],
+        }
+        data = {}
+        project = project_api.create_project(course_id, request.POST['new-project-name'], data)
+
+        return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+
+    return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
 
 
 
