@@ -118,10 +118,10 @@ def locate_chapter_page(
     chapter_id = chapter.id if chapter else None
     page_id = page.id if page else None
 
-    if course_detail:
-        return course_id, chapter_id, page_id, course_detail.position
-    else:
+    if course_detail is None:
         return course_id, chapter_id, page_id, None
+    else:
+        return course_id, chapter_id, page_id, course_detail.position
 
 def program_for_course(user_id, course_id, user_api_impl=user_api):
     '''
