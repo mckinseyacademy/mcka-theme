@@ -31,7 +31,7 @@
                 Download List of Groups
               .companies-filter-wrapper.large-12
                 %ul.companies-filter
-                    %li.company-filter{'data-company-filter': 'all'} All Companies
+                  %li.company-filter{'data-company-filter': 'all'} All Companies
                   - for company in companies
                     %li.company-filter{'data-company-filter': '#{company.id}'}= company.display_name
               - for group in groups
@@ -44,11 +44,11 @@
                     %span.label-1= _("Members:")
                     .students-list
                       - for student in group.students
-                        %div.student{'name': '#{student.id}'}
-                          %span= student.username
-                          %span= student.email
-                          %span= student.company.display_name
-                          %a{href: '/admin/workgroup/group/#{group.id}/remove'}
+                        .student{'name': '#{student.id}'}
+                          .label-2= student.username
+                          %a.label-2{href: "mailto:#{student.email}"}= student.email
+                          .label-2= student.company.display_name
+                          %a.remove{href: '/admin/workgroup/group/#{group.id}/remove'}
                             %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
                     .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
                       Update

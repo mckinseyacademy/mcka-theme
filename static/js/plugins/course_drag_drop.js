@@ -81,8 +81,6 @@
       }
     }
 
-
-
   $(function(){
 
     var course_id = $('#course_id').val();

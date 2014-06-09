@@ -1,13 +1,14 @@
 .select-group-box {
-  border: 1px solid #333333;
-  background: #B1C2CC;
+  border: 1px solid $mckinsey-academy-black;
   margin: 3px 0;
+
   .name {
     padding: 10px 10px;
     i.caret {
       float: right;
     }
   }
+
   .group-info.students {
     display: none;
     padding: 10px 15px 5px 15px;
@@ -15,38 +16,48 @@
       float:right;
     }
     a:hover {
-      color: #3384CA;
+      color: $mckinsey-academy-alt-blue;
     }
   }
-  .group-info.students.expanded
-  {
-    border-top: 1px solid #333333;
+
+  .group-info.students.expanded {
+    border-top: 1px solid $mckinsey-academy-black;
   }
+
   .students-list {
     margin-top: 5px;
     margin-top: 10px;
+
+    .student {
+      position: relative;
+      .remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        i { color: $mckinsey-orange; }
+      }
+    }
   }
 }
 
 .select-group-box.private {
-  background: #D3D1BA;
+  background: $mckinsey-academy-warm-gray;
 }
 
-.companies-filter-wrapper{
-  .companies-filter{
-    text-decoration: none;
-    list-decoration: none;
+.companies-filter-wrapper {
+  .companies-filter {
+    list-style-type: none;
     cursor: pointer;
     display: inline-block;
     margin: 1em 0;
-    li.company-filter{
-      display: inline;
+    @include clearfix;
+
+    li.company-filter {
       float: left;
-      padding-right: 7px;
-      padding-left: 7px;
-      border-right: 1px solid #333333;
+      padding: 0 7px;
+      border-right: 1px solid $mckinsey-academy-black;
       &:last-child {
-        border-right:none;
+        border-right: none;
       }
     }
   }
