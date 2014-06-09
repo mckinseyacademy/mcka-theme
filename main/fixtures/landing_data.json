@@ -104,43 +104,50 @@
       "type": "quote",
       "quote": "Become the kind of leader that people would follow voluntarily; even if you had no title or position.",
       "name": "Brian Tracy",
-      "title": "Author"
+      "title": "Author",
+      "image": "briantracy"
     },
     {
       "type": "quote",
       "quote": "The key to successful leadership today is influence, not authority.",
       "name": "Kenneth Blanchard",
-      "title": "Author"
+      "title": "Author",
+      "image": "kenblanchard"
     },
     {
       "type": "quote",
       "quote": "Leadership is the art of getting someone else to do something you want done because he wants to do it.",
       "name": "General Dwight Eisenhower",
-      "title": "34th President of the United States"
+      "title": "34th President of the United States",
+      "image": "dwighteisenhower"
     },
     {
       "type": "quote",
       "quote": "Leadership and learning are indispensable to each other.",
       "name": "John F. Kennedy",
-      "title": "35th President of the United States"
+      "title": "35th President of the United States",
+      "image": "jfk"
     },
     {
       "type": "quote",
       "quote": "You don’t lead by pointing and telling people some place to go. You lead by going to that place and making a case.",
       "name": "Ken Kesey",
-      "title": "Author"
+      "title": "Author",
+      "image": "kenkesey"
     },
     {
       "type": "quote",
       "quote": "A great leader’s courage to fulfill his vision comes from passion, not position.",
       "name": "John Maxwell",
-      "title": "Author"
+      "title": "Author",
+      "image": "johnmaxwell"
     },
     {
       "type": "quote",
       "quote": "If your actions inspire others to dream more, learn more, do more and become more, you are a leader.",
       "name": "John Quincy Adams",
-      "title": "6th President of the United States"
+      "title": "6th President of the United States",
+      "image": "johnquincyadams"
     }
   ],
   "images": [

@@ -23,6 +23,8 @@
       - elif cell.type == 'quote'
         .cell.quote
           %blockquote= cell.quote
+          .headshot
+            %img{src: "/static/image/home-grid/quoteheadshots/#{cell.image}.jpg", srcset: "/static/image/home-grid/quoteheadshots/#{cell.image}@2x.jpg 2x"}
           .label-2= cell.name
           .title= cell.title
       - elif cell.type == 'stock-image'
