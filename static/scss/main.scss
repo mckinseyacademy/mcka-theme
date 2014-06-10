@@ -36,7 +36,7 @@ h5 {
   @include font-spec(14, semibold, 18);
 }
 
-.sub-2 { color: $almost-white; }
+.sub-2 { color: $mckinsey-dark-grey; }
 
 p {
   margin: 0;
@@ -49,7 +49,7 @@ p {
     @include font-spec(12, normal, 14);
   }
   &.style-6 {
-    color: $mckinsey-grey;
+    color: $mckinsey-dark-grey;
     font-style: italic;
     @include font-spec(12, semibold, 14);
   }
@@ -98,7 +98,7 @@ blockquote {
 
 .label-2 {
   @include font-spec(10, bold, 12);
-  &.selected { color: $mckinsey-grey; }
+  &.selected { color: $mckinsey-dark-grey; }
   &.description p{
     // repeated style to override defined behaviour of p - p gets automatically added to the content herein within studio
     @include font-spec(10, bold, 12);
@@ -106,12 +106,12 @@ blockquote {
 }
 
 .label-3 {
-  color: $mckinsey-grey;
+  color: $mckinsey-dark-grey;
   @include font-spec(10, semibold, 12);
 }
 
 .label-4 {
-  color: $mckinsey-grey;
+  color: $mckinsey-dark-grey;
   @include font-spec(10, bold, 12);
 }
 
@@ -141,7 +141,7 @@ blockquote {
 .nav-1,
 .nav-2 {
   @include font-spec(12, bold, 14);
-  &.selected { color: $mckinsey-grey; }
+  &.selected { color: $mckinsey-dark-grey; }
 }
 
 .nav-1 {
