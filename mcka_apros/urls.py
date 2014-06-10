@@ -1,5 +1,8 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls import handler404
+from django.conf.urls import handler500
 from django.conf import settings
+from main import views
 
 urlpatterns = patterns(
     '',
@@ -21,3 +24,6 @@ urlpatterns += patterns(
     '',
     url(r'^(?P<page_name>.*)/$', include('marketing.urls'), name='marketing'),
 )
+
+handler404 = views.error_404
+handler500 = views.error_500

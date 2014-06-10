@@ -10,7 +10,7 @@ def faq(request):
     return render(request, 'faq.haml')
 
 def error_404(request):
-    return render(request, '404.haml')
+    return render(request, '404.haml', status=404)
 
 def error_500(request):
-    return render(request, '500.haml')
+    return render(request, '500.haml', status=500)
