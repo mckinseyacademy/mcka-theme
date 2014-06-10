@@ -60,10 +60,19 @@ def login(request):
                     if program:
                         for program_course in program.courses:
                             if program_course.id == course_id:
-                                if hasattr(program_course, 'start_date'):
-                                    future_start_date = is_future_start(program_course.start_date)
-                                elif hasattr(program, 'start_date'):
-                                    future_start_date = is_future_start(program.start_date)
+                            '''
+                            THERE IS A PLACE FOR IMPROVEMENT HERE
+                            IF user course object had start/due date, we
+                            would do one less API call
+                            '''
+                                full_course_object = course_api.get_course(
+                                    course_id)
+                                if hasattr(full_course_object, 'start'):
+                                    future_start_date = is_future_start(
+                                        datetime.datetime.strptime(full_course_object.start, '%Y-%m-%dT%I:%M:%SZ'))
+                                elif hasattr(program, 'start_date') and future_start_date is False:
+                                    future_start_date = is_future_start(
+                                        program.start_date)
                     if course_id:
                         if future_start_date:
                             redirect_to = '/'
@@ -75,6 +84,7 @@ def login(request):
                 return HttpResponseRedirect(redirect_to)  # Redirect after POST
             except ApiError as err:
                 error = err.message
+
 
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
