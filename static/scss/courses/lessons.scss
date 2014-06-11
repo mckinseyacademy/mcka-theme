@@ -6,7 +6,7 @@
   }
 
   .lesson-module-status {
-    color: $mckinsey-grey;
+    color: $mckinsey-dark-grey;
     display: inline-block;
     font-family: FontAwesome;
     @include font-spec(12);
@@ -23,7 +23,7 @@
     &:hover {
       color: $mckinsey-academy-alt-blue;
       &.current {
-        color: $mckinsey-grey;
+        color: $mckinsey-dark-grey;
       }
     }
   }

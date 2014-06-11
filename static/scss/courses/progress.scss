@@ -18,7 +18,7 @@
       list-style-position: inside;
 
       li {
-        color: $mckinsey-grey;
+        color: $mckinsey-dark-grey;
         font-style: italic;
         @include font-spec(12, semibold, 14);
       }
@@ -108,7 +108,7 @@
             @include font-spec(10);
 
             span {
-              color: $mckinsey-grey;
+              color: $mckinsey-dark-grey;
               margin-right: 5px;
               &:before { content: '\f111'; }
               &:last-child { margin-right: 0; }
@@ -123,7 +123,7 @@
 
             li {
               float: left;
-              border-right: 1px solid $mckinsey-grey;
+              border-right: 1px solid $mckinsey-dark-grey;
               padding: 0 8px;
               @include font-spec(14, bold);
               &:last-child { border-right: none; }

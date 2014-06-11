@@ -98,7 +98,7 @@ def course_syllabus(request, course_id):
 
 @login_required
 def course_news(request, course_id):
-    data = course_api.get_course_news(course_id)
+    data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
 
@@ -129,6 +129,7 @@ def course_group_work(request, course_id):
         "lesson_content_parent_id": "course-group-work",
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
+        "course_id": course_id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "project_group": project_group,
@@ -203,12 +204,18 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "current_page": current_page,
         "program": program,
         "lesson_content_parent_id": "course-lessons",
+        "course_id": course_id,
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
     }
     return render(request, 'courses/course_lessons.haml', data)
+
+
+def course_notready(request, course_id):
+    return render(request, 'courses/course_notready.haml')
+
 
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):
@@ -226,7 +233,7 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     if course_id and chapter_id and page_id:
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
-        return HttpResponseRedirect('/courses/{}/view/notready'.format(course_id))
+        return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''

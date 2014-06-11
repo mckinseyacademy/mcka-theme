@@ -105,7 +105,7 @@ def get_course_news(course_id):
         COURSEWARE_API,
         course_id)
     )
-    return CJP.from_json(response.read()).postings
+    return JP.from_json(response.read()).postings
 
 @api_error_protect
 def get_course(course_id, depth = 3):
