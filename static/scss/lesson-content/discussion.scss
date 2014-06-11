@@ -52,10 +52,8 @@
 
   .vote-btn {
     &, &:hover {
+      @include drop-shadow($opacity: 0);
       border-radius: 0px;
-      box-shadow: none;
-      -moz-box-shadow: none;
-      -webkit-box-shadow: none;
       background-image: none;
     }
   }
@@ -70,10 +68,8 @@
 
   section.discussion .discussion-thread .discussion-article {
     &, .responses > li {
+      @include drop-shadow($opacity: 0);
       border-radius: 0;
-      box-shadow: none;
-      -moz-box-shadow: none;
-      -webkit-box-shadow: none;
     }
 
     .thread-wrapper {
