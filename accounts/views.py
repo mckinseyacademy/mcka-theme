@@ -69,7 +69,7 @@ def login(request):
                                     course_id)
                                 if hasattr(full_course_object, 'start'):
                                     future_start_date = is_future_start(
-                                        datetime.datetime.strptime(full_course_object.start, '%Y-%m-%dT%I:%M:%SZ'))
+                                        datetime.datetime.strptime(full_course_object.start, '%Y-%m-%dT%H:%M:%SZ'))
                                 elif hasattr(program, 'start_date') and future_start_date is False:
                                     future_start_date = is_future_start(
                                         program.start_date)
