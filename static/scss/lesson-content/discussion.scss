@@ -31,9 +31,9 @@
 
   .discussion .new-post-article .new-post-form .new-post-cancel {
     &, &:hover, &:visited {
-      background-color: #eee;
+      background-color: $mckinsey-academy-light-gray;
       margin-left: 15px;
-      color: #333;
+      color: $mckinsey-academy-black;
     }
   }
 
@@ -52,8 +52,8 @@
 
   .vote-btn {
     &, &:hover {
+      @include drop-shadow($opacity: 0);
       border-radius: 0px;
-      box-shadow: none;
       background-image: none;
     }
   }
@@ -68,8 +68,8 @@
 
   section.discussion .discussion-thread .discussion-article {
     &, .responses > li {
+      @include drop-shadow($opacity: 0);
       border-radius: 0;
-      box-shadow: none;
     }
 
     .thread-wrapper {
@@ -97,4 +97,31 @@
     float: right;
   }
 
+  /* Post editor *************************************************************/
+
+  span[id*='wmd-code-button-'],
+  span[id*='wmd-image-button-'] {
+    display: none;
+  }
+
+  span[id*='wmd-olist-button-new-post-'],
+  span[id*='wmd-ulist-button-new-post-'],
+  span[id*='wmd-heading-button-new-post-'],
+  span[id*='wmd-hr-button-new-post-'],
+  span[id*='wmd-undo-button-new-post-'],
+  span[id*='wmd-redo-button-new-post-'] {
+    margin-left: -50px;
+  }
+
+  span[id*='wmd-spacer2-new-post-'],
+  span[id*='wmd-spacer3-new-post-'] {
+    margin-left: -39px;
+  }
+}
+
+/* Discussion tooltip gets added by JS to the <body> :/ */
+body > .tooltip {
+  width: 100px;
+  margin-top: -110px;
+  text-align: center;
 }
