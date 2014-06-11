@@ -60,11 +60,11 @@ def login(request):
                     if program:
                         for program_course in program.courses:
                             if program_course.id == course_id:
-                            '''
-                            THERE IS A PLACE FOR IMPROVEMENT HERE
-                            IF user course object had start/due date, we
-                            would do one less API call
-                            '''
+                                '''
+                                THERE IS A PLACE FOR IMPROVEMENT HERE
+                                IF user course object had start/due date, we
+                                would do one less API call
+                                '''
                                 full_course_object = course_api.get_course(
                                     course_id)
                                 if hasattr(full_course_object, 'start'):
