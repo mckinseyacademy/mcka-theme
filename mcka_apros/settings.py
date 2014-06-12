@@ -183,6 +183,10 @@ INITIAL_PASSWORD = 'PassworD12!@'
 # Email address students get their enrollment email sent from
 ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 
+# EMAIL BACKEND
+EMAIL_BACKEND = "django_ses.SESBackend"
+APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
+
 try:
     from local_settings import *
 except ImportError:
@@ -223,8 +227,3 @@ LOCAL_DEBUG_TOOLBAR_PANELS = (
 )
 
 DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
-
-# EMAIL BACKEND
-EMAIL_BACKEND = "django_ses.SESBackend"
-APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
-
