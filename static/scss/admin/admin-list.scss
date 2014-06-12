@@ -19,11 +19,18 @@
         line-height: rem-calc(35);
         border-bottom: 1px solid $almost-white;
         &:last-child { border-bottom: none; }
-      
+
         .edit-principal {
           padding-right: 5px;
         }
       }
     }
+  }
+
+  .group-selection {
+    .description,
+    .button { margin-bottom: 20px; }
+
+    .button { width: 100%; }
   }
 }
