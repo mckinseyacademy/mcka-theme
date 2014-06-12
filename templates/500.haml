@@ -1,0 +1,12 @@
+- extends "layout.haml"
+
+- block content
+  #error_500
+    .row
+      .large-10.large-centered.columns
+        %h1 500: Error
+        %hr
+        .sub-1 Sorry!
+        %p Something has gone wrong. Our team has been alerted to the issue and is looking into it.
+        %p Please go back to <a href='https://beta.mckinseyacademy.com'>beta.mckinseyacademy.com</a>, or contact us at <a href:'mailto:support@mckinseyacademy.com'>support@mckinseyacademy.com</a>.
+        %img{src: "/static/image/errors/McKA_errors_1500illus.png", srcset: "/static/image/errors/McKA_errors_1500illus@2x.png 2x"}
