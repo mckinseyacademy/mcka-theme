@@ -374,31 +374,25 @@ class FpasswordForm(forms.Form):
         user.
         """
         from django.core.mail import send_mail
-    #    UserModel = get_user_model()
+
         email = self.cleaned_data["email"]
-#        active_users = UserModel._default_manager.filter(
-#            email__iexact=email, is_active=True)
-#        active_users = []
-        user = user_api.get_user(61)
-        dump(user)
 
-        # if not domain_override:
-        #     current_site = get_current_site(request)
-        #     site_name = current_site.name
-        #     domain = current_site.domain
-        # else:
-        #     site_name = domain = domain_override
-
+        users = user_api.get_users([{'key': 'email', 'value': email}])
+        if users.count < 1:
+            return HttpResponseRedirect('/accounts/login?reset=failed')
+        else:
+            user = users.results[0]
         token_generator = mckinsey_token_generator
         token = token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.id))
+
+        url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': token})
 
         c = {
             'email': user.email,
             'domain': request.META.get('HTTP_HOST'),
-#            'site_name': site_name,
-            'uid': urlsafe_base64_encode(force_bytes(user.id)),
+            'url': url,
             'user': user,
-            'token': token_generator.make_token(user),
             'protocol': 'https' if use_https else 'http',
         }
         subject = loader.render_to_string(subject_template_name, c)
@@ -406,3 +400,38 @@ class FpasswordForm(forms.Form):
         subject = ''.join(subject.splitlines())
         email = loader.render_to_string(email_template_name, c)
         send_mail(subject, email, from_email, [user.email])
+
+class SetNewPasswordForm(forms.Form):
+    """
+    A form that lets a user change set his/her password without entering the
+    old password
+    """
+    error_messages = {
+        'password_mismatch': _("The two password fields didn't match."),
+    }
+    new_password1 = forms.CharField(label=_("New password"),
+                                    widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label=_("New password confirmation"),
+                                    widget=forms.PasswordInput)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(SetNewPasswordForm, self).__init__(*args, **kwargs)
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError(
+                    self.error_messages['password_mismatch'],
+                    code='password_mismatch',
+                )
+        return password2
+
+    def save(self, commit=True):
+        try:
+            response = user_api.update_user_information(self.user.id, {'password': self.cleaned_data['new_password1']})
+        except ApiError as err:
+            error = err.message
+        return self.user

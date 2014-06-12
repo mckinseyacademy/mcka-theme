@@ -25,7 +25,7 @@ from django.test import TestCase
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
 from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FpasswordForm
+from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm
 from lib.token_generator import mckinsey_token_generator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
@@ -34,7 +34,6 @@ from django.template.response import TemplateResponse
 import logout as logout_handler
 
 from django.contrib.auth.views import password_reset, password_reset_confirm, password_reset_done, password_reset_complete
-from django.contrib.auth.forms import SetPasswordForm
 from django.core.urlresolvers import reverse
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
@@ -103,7 +102,7 @@ def login(request):
         form = LoginForm()  # An unbound form
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
-        form.reset = True
+        form.reset = request.GET['reset']
     else:
         form = LoginForm()  # An unbound form
         # set focus to username field
@@ -194,7 +193,7 @@ def activate(request, activation_code):
 def reset_confirm(request, uidb64=None, token=None,
                   template_name='registration/password_reset_confirm.html',
                   post_reset_redirect='/accounts/login?reset=complete',
-                  set_password_form=SetPasswordForm,
+                  set_password_form=SetNewPasswordForm,
                   token_generator=mckinsey_token_generator,
                   current_app=None, extra_context=None):
     """

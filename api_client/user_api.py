@@ -33,7 +33,6 @@ def authenticate(username, password):
     )
     return JP.from_json(response.read(), user_models.AuthenticationResponse)
 
-
 @api_error_protect
 def get_user(user_id):
     ''' get specified user '''
@@ -44,6 +43,22 @@ def get_user(user_id):
     )
     return JP.from_json(response.read(), user_models.UserResponse)
 
+@api_error_protect
+def get_users(params=[]):
+    ''' get all user '''
+
+    paramStrs = [param['key'] + '=' + param['value'] for param in params]
+    if len(paramStrs) > 0:
+        paramStr = '&'.join(paramStrs)
+    else:
+        paramStr = ''
+
+    response = GET(
+        '{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS, USER_API, paramStr
+        )
+    )
+    return JP.from_json(response.read(), user_models.UsersFiltered)
 
 @api_error_protect
 def delete_session(session_key):

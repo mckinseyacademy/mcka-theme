@@ -33,13 +33,16 @@
   #reset-password.reveal-modal.small{"data-reveal": "true"}
 
   - block general_modal
-    %a.revel-general-modal{'href': "#", 'data-reveal-id': "generalModal"}
+    %a.reveal-general-modal{'href': "#", 'data-reveal-id': "generalModal"}
     .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
       - if form.reset == 'done'
         - include 'registration/password_reset_done.haml'
         %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
       - if form.reset == 'complete'
         - include 'registration/password_reset_complete.haml'
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+      - if form.reset == 'failed'
+        - include 'registration/password_reset_failed.haml'
         %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
 
 
@@ -51,9 +54,7 @@
       $('.error').text('');
     });
     $(function(){
-      $(document).ready(function(){
-        if($('#generalModal input.show-modal').length > 0){
-          $('a.revel-general-modal').trigger('click');
-        }
-      })
+      if($('#generalModal input.show-modal').length > 0){
+        $('#generalModal').foundation('reveal', 'open');
+      }
     })

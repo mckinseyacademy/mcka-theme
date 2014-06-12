@@ -176,12 +176,14 @@ def add_group_to_course_content(group_id, course_id, content_id):
     return JP.from_json(response.read())
 
 @api_error_protect
-def get_users_content_filtered(course_id, content_id, params):
+def get_users_content_filtered(course_id, content_id, params=[]):
     ''' filter and get course content'''
 
-    paramStr = ''
-    for param in params:
-        paramStr = paramStr + param['key'] + '=' + param['value']
+    paramStrs = [param['key'] + '=' + param['value'] for param in params]
+    if len(paramStrs) > 0:
+        paramStr = '&'.join(paramStrs)
+    else:
+        paramStr = ''
 
     response = GET(
         '{}/{}/{}/content/{}/users?{}'.format(
