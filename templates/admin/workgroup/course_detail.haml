@@ -53,3 +53,6 @@
                             %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
                     .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
                       Update
+
+-block js_snippets
+  %script{src: "{% static 'js/course_drag_drop.js' %}"}
