@@ -3,6 +3,10 @@
 .lesson-content .discussion-module {
   background: #fff !important;
 
+  *:focus {
+    outline: 0;
+  }
+
   /* Buttons *****************************************************************/
 
   .new-post-btn,
