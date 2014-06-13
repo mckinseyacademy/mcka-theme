@@ -38,11 +38,6 @@ def get_projects(group_object=JsonObject):
 @api_error_protect
 def get_project(project_id, group_object=JsonObject):
     ''' fetch project by id '''
-    print '{}/{}/{}'.format(
-            settings.API_SERVER_ADDRESS,
-            PROJECT_API,
-            project_id,
-        )
     response = GET(
         '{}/{}/{}'.format(
             settings.API_SERVER_ADDRESS,

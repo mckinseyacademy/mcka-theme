@@ -38,11 +38,6 @@ def get_workgroups(group_object=JsonObject):
 @api_error_protect
 def get_workgroup(workgroup_id, group_object=JsonObject):
     ''' fetch workgroup by id '''
-    print '{}/{}/{}'.format(
-            settings.API_SERVER_ADDRESS,
-            WORKGROUP_API,
-            workgroup_id,
-        )
     response = GET(
         '{}/{}/{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -74,7 +69,7 @@ def create_workgroup(workgroup_name, workgroup_data=None, group_object=JsonObjec
     }
 
     if workgroup_data:
-        data["data"] = workgroup_data
+        data = workgroup_data
 
     response = POST(
         '{}/{}'.format(

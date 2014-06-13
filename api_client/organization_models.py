@@ -8,7 +8,7 @@ import organization_api
 class OrganizationInfo(JsonObject):
 
     ''' object representing a organization from api json response '''
-    #required_fields = ["name", "id"]
+    required_fields = ["course_id", "content_id"]
     data_fields = []
 
     def __init__(self, json_data=None, dictionary=None):
