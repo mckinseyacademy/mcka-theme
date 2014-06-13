@@ -18,12 +18,25 @@ from api_client.api_error import ApiError
 from admin.models import Client
 from courses.controller import program_for_course
 
+from django.core import mail
+from django.test import TestCase
+# from importlib import import_module
+# from django.conf import settings
+# SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
 from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm
+from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm
+from lib.token_generator import ResetPasswordTokenGenerator
+from django.shortcuts import resolve_url
+from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.template.response import TemplateResponse
 
 import logout as logout_handler
 
+from django.contrib.auth.views import password_reset, password_reset_confirm, password_reset_done, password_reset_complete
+from django.core.urlresolvers import reverse
+from admin.views import ajaxify_http_redirects
+from django.core.mail import send_mail
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
 
@@ -95,6 +108,11 @@ def login(request):
         )
         # set focus to password field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
+    elif 'reset' in request.GET:
+        form = LoginForm()  # An unbound form
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+        form.reset = request.GET['reset']
     else:
         form = LoginForm()  # An unbound form
         # set focus to username field
@@ -180,6 +198,93 @@ def activate(request, activation_code):
         "activate_label": _("Create my McKinsey Academy account"),
         }
     return render(request, 'accounts/activate.haml', data)
+
+@ajaxify_http_redirects
+def reset_confirm(request, uidb64=None, token=None,
+                  template_name='registration/password_reset_confirm.html',
+                  post_reset_redirect='/accounts/login?reset=complete',
+                  set_password_form=SetNewPasswordForm,
+                  token_generator=ResetPasswordTokenGenerator(),
+                  current_app=None, extra_context=None):
+    """
+    View that checks the hash in a password reset link and presents a
+    form for entering a new password.
+    """
+    assert uidb64 is not None and token is not None # checked by URLconf
+    if post_reset_redirect is None:
+        post_reset_redirect = reverse('password_reset_complete')
+    else:
+        post_reset_redirect = resolve_url(post_reset_redirect)
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = user_api.get_user(uid)
+    except (TypeError, ValueError, OverflowError):
+        user = None
+
+    if user is not None and token_generator.check_token(user, token):
+        validlink = True
+        title = _('Enter new password')
+        if request.method == 'POST':
+            form = set_password_form(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(post_reset_redirect)
+        else:
+            form = set_password_form(user)
+    else:
+        validlink = False
+        form = None
+        title = _('Password reset unsuccessful')
+    context = {
+        'form': form,
+        'title': title,
+        'validlink': validlink,
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
+
+
+@ajaxify_http_redirects
+def reset(request, is_admin_site=False,
+          template_name='registration/password_reset_form.haml',
+          password_reset_form=FpasswordForm,
+          email_template_name='registration/password_reset_email.haml',
+          subject_template_name='registration/password_reset_subject.txt',
+          post_reset_redirect='/accounts/login?reset=done',
+          from_email='admin@mckinseyacademy.org',
+          current_app=None,
+          extra_context=None):
+    return password_reset(request=request, is_admin_site=is_admin_site,
+                          template_name=template_name,
+                          email_template_name=email_template_name,
+                          subject_template_name=subject_template_name,
+                          password_reset_form=password_reset_form,
+                          post_reset_redirect=post_reset_redirect,
+                          from_email=from_email,
+                          current_app=current_app,
+                          extra_context=extra_context)
+
+
+@ajaxify_http_redirects
+def reset_done(request,
+               template_name='registration/password_reset_done.haml',
+               current_app=None, extra_context=None):
+    return password_reset_done(request=request,
+               template_name=template_name,
+               current_app=current_app, extra_context=extra_context)
+
+
+@ajaxify_http_redirects
+def reset_complete(request,
+                   template_name='registration/password_reset_complete.haml',
+                   current_app=None, extra_context=None):
+    return password_reset_complete(request=request,
+                   template_name=template_name,
+                   current_app=current_app, extra_context=extra_context)
+
+
 
 def home(request):
     ''' show me the home page '''

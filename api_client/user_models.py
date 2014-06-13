@@ -51,3 +51,8 @@ class UserList(JsonObject):
     object_map = {
         "users": UserResponse
     }
+
+class UsersFiltered(JsonObject):
+    object_map = {
+        "results": UserResponse
+    }

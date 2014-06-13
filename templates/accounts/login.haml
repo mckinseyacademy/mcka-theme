@@ -2,7 +2,7 @@
 
 - block header
   - include 'accounts/login_header.haml'
-
+- load staticfiles
 - block content
   .row
     .login-form.large-10.medium-10.large-centered.medium-centered.columns
@@ -19,14 +19,42 @@
                 = error
             - csrf_token
             = form
+            %a{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
+              Forgot Password?
+            %br
+            %br
+            %br
             %input.button.radius.small{type: "submit", value: "#{login_label}"}
         .large-3.medium-3.columns
           %h4 Need Help?
           .sidebar
             %a{href: "/faq"} View our FAQ for answers to commonly asked questions.
 
+  #reset-password.reveal-modal.small{"data-reveal": "true"}
+
+  - block general_modal
+    %a.reveal-general-modal{'href': "#", 'data-reveal-id': "generalModal"}
+    .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
+      - if form.reset == 'done'
+        - include 'registration/password_reset_done.haml'
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+      - if form.reset == 'complete'
+        - include 'registration/password_reset_complete.haml'
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+      - if form.reset == 'failed'
+        - include 'registration/password_reset_failed.haml'
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+
+
 - block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   :javascript
+    ajaxify_overlay_form($('#reset-password'), 'form');
     $('form input[type="text"]').on('keypress', function(){
       $('.error').text('');
     });
+    $(function(){
+      if($('#generalModal input.show-modal').length > 0){
+        $('#generalModal').foundation('reveal', 'open');
+      }
+    })

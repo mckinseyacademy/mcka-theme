@@ -6,6 +6,13 @@ import datetime
 from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
+from lib.token_generator import ResetPasswordTokenGenerator
+
+from api_client import user_api
+from django.template import loader
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.core.urlresolvers import reverse
 
 
 # djano forms are "old-style" forms => causing lint errors
@@ -293,13 +300,12 @@ DISABLED_IF_DATA_FIELDS = []
 class NoSuffixLabelForm(forms.Form):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
-        super(NoSuffixLabelForm, self).__init__(*args, **kwargs)    
+        super(NoSuffixLabelForm, self).__init__(*args, **kwargs)
 
 class LoginForm(NoSuffixLabelForm):
     ''' login form for system '''
     username = forms.CharField(max_length=255, label=mark_safe('Username <span class="required-field"></span>'))
     password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe('Password <span class="required-field"></span>'))
-
 
 class ActivationForm(NoSuffixLabelForm):
     ''' activation form for system '''
@@ -347,3 +353,79 @@ class ActivationForm(NoSuffixLabelForm):
     #                 _("Password fields do not match"),
     #                 code='password_match_fail'
     #             )
+
+class FpasswordForm(forms.Form):
+    email = forms.EmailField(label=_("Email"), max_length=254)
+
+    def save(self, domain_override=None,
+             subject_template_name='registration/password_reset_subject.txt',
+             email_template_name='registration/password_reset_email.html',
+             use_https=False, token_generator=ResetPasswordTokenGenerator(),
+             from_email=None, request=None):
+        """
+        Generates a one-use only link for resetting password and sends to the
+        user.
+        """
+        from django.core.mail import EmailMessage
+
+        email = self.cleaned_data["email"]
+
+        users = user_api.get_users([{'key': 'email', 'value': email}])
+        if users.count < 1:
+            return HttpResponseRedirect('/accounts/login?reset=failed')
+        else:
+            user = users.results[0]
+        token_generator = ResetPasswordTokenGenerator()
+        token = token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.id))
+
+        url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': token})
+
+        c = {
+            'email': user.email,
+            'domain': request.META.get('HTTP_HOST'),
+            'url': url,
+            'user': user,
+            'protocol': 'https' if use_https else 'http',
+        }
+        subject = loader.render_to_string(subject_template_name, c)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        email = loader.render_to_string(email_template_name, c)
+        email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
+        email.send(fail_silently=False)
+
+class SetNewPasswordForm(forms.Form):
+    """
+    A form that lets a user change set his/her password without entering the
+    old password
+    """
+    error_messages = {
+        'password_mismatch': _("The two password fields didn't match."),
+    }
+    new_password1 = forms.CharField(label=_("New password"),
+                                    widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label=_("New password confirmation"),
+                                    widget=forms.PasswordInput)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(SetNewPasswordForm, self).__init__(*args, **kwargs)
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError(
+                    self.error_messages['password_mismatch'],
+                    code='password_mismatch',
+                )
+        return password2
+
+    def save(self, commit=True):
+        try:
+            response = user_api.update_user_information(self.user.id, {'password': self.cleaned_data['new_password1']})
+        except ApiError as err:
+            error = err.message
+        return self.user

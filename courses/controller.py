@@ -103,7 +103,7 @@ def locate_chapter_page(
     page = None
 
     course_detail = get_course_position_information(user_id, course_id, user_api_impl)
-    if course_detail.position and len(course.chapters) >= course_detail.position:
+    if hasattr(course_detail, 'position') and len(course.chapters) >= course_detail.position:
         chapter = course.chapters[course_detail.position - 1]
         chapter.bookmark = True
     elif len(course.chapters) > 0:
@@ -120,8 +120,10 @@ def locate_chapter_page(
     chapter_id = chapter.id if chapter else None
     page_id = page.id if page else None
 
-    return course_id, chapter_id, page_id, course_detail.position
-
+    if course_detail:
+        return course_id, chapter_id, page_id, course_detail.position
+    else:
+        return course_id, chapter_id, page_id, None
 
 def program_for_course(user_id, course_id, user_api_impl=user_api):
     '''
