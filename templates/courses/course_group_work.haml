@@ -75,7 +75,7 @@
           %input.button.radius.small{type: "submit", value: "Submit"}
 - block js_snippets
   :javascript
-    window.onload = (function(){
+    $(function(){
       $('#email-team-form, #contact-ta-form, #email-member-form').on('submit', function(e){
         e.preventDefault();
         var that = $(this);
@@ -94,6 +94,44 @@
       $('.email-member').on('click', function(){
         $('#member-email').val($(this).data('member-email'));
       });
+
+      var group_activity_step_map = {};
+      $(document).on('steps_available', function(target, step_map){
+        group_activity_step_map = step_map;
+        var activity_dots = $('.activity_dots');
+        var ordered_list = group_activity_step_map.ordered_list;
+        for(var i=0; i<ordered_list.length; ++i){
+          var step = group_activity_step_map[ordered_list[i]];
+          var dot = $('<a>')
+            .addClass('lesson-module-status')
+            .attr('href', '#')
+            .attr('title', step.name)
+            .attr('data-activate', ordered_list[i]);
+          activity_dots.append(dot);
+        }
+      });
+
+      $(document).on('select_stage', function(target, activate_id){
+        var ordered_list = group_activity_step_map.ordered_list;
+        var add_class = "complete";
+        $('.activity_dots .lesson-module-status').removeClass('complete current');
+        for(var i=0; i<ordered_list.length; ++i){
+          if(ordered_list[i] == activate_id){
+            $('.activity_dots .lesson-module-status[data-activate='+activate_id+']')
+              .addClass('current');
+            add_class = null;
+          }
+          else if(add_class){
+            $('.activity_dots .lesson-module-status[data-activate='+ordered_list[i]+']')
+              .addClass(add_class);
+          }
+        }
+      });
+
+      $('#course-group-work').on('click', '.lesson-module-status', function(){
+        $(document).trigger('select_stage', $(this).data('activate'));
+      });
+
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
       var lesson_data = {
         courseId: '{{ course_id }}',
@@ -104,7 +142,4 @@
       };
       lesson_content.xblock(lesson_data);
 
-      $('#course-group-work .lesson-module-status').on('click', function(){
-        $('#' + $(this).data('activate')).click();
-      });
-    })
+    });
