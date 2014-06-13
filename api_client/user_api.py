@@ -292,16 +292,16 @@ def get_user_preferences(user_id):
 
 
 USER_ERROR_CODE_MESSAGES = {
-    update_user_information: {
+    "update_user_information": {
         409: _(("User with matching username "
                 "or email already exists")),
     },
-    authenticate: {
+    "authenticate": {
         403: _("User account not activated"),
         401: _("Username or password invalid"),
         404: _("Username or password invalid"),
     },
-    register_user: {
+    "register_user": {
         409: _("Username or email already registered"),
     },
 }

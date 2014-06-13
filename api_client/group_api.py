@@ -228,11 +228,11 @@ def get_groups_in_group(group_id, group_object=JsonObject, params=[]):
     return JP.from_json(response.read(), group_object)
 
 GROUP_ERROR_CODE_MESSAGES = {
-    create_group: {
+    "create_group": {
         403: _("Permission Denied"),
         401: _("Invalid data"),
     },
-    update_group: {
+    "update_group": {
         403: _("Permission Denied"),
         401: _("Invalid data"),
     },

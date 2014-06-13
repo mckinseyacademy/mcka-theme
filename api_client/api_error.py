@@ -48,7 +48,7 @@ def api_error_protect(func):
         try:
             return func(*args, **kwargs)
         except HTTPError as he:
-            api_error = ApiError(he, ERROR_CODE_MESSAGES.get(func, None))
+            api_error = ApiError(he, ERROR_CODE_MESSAGES.get(func.__name__, None))
             print "Error calling {}: {}".format(func, api_error)
             raise api_error
     return call_api_method
