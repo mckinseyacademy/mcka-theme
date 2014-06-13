@@ -35,28 +35,12 @@
         ga('create', '{{ ga_tracking_id }}', 'mckinseyacademy.com');
         ga('send', 'pageview');
 
-  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}"}
+  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program{% endif %}"}
+    - block help_context
 
     -# Header
     - block header
       - include 'header.haml'
-
-    - block program_bar
-      - if program
-        .row
-          .large-12.columns.background-alt-blue.program-bar
-            .label-4.program-name<
-              = program.display_name
-            %h4.course-name
-              %a{href: "#{course.nav_url}"}= course.name
-            .program-menu
-              %a{href:"#", "data-dropdown": "program-menu-content"}
-                %i.fa.fa-bars
-              #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
-                - include "courses/content_page/program_menu.haml"
-            - block help_context
-            %a.global-help{'data-reveal-id': 'mckinsey_help'}
-              %i.fa.fa-question-circle
 
     -# Main content goes here
     %main{role: "main"}
@@ -72,6 +56,13 @@
         .close-reveal-modal
           %i.fa.fa-times-circle
         .player-wrapper
+
+    -# Block for general purpouse modal dialog
+    - block general_modal
+      #generalModal.reveal-modal.small{'data-reveal': None}
+        %h2.title
+        %p{'class': "lead description"}
+        %a{'class': "close-reveal-modal fa fa-times-circle"}
 
     -# Beta content overlay
     - block beta_content

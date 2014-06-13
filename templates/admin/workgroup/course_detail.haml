@@ -12,47 +12,47 @@
       .large-10.large-centered.columns
         %header
           %h1.principal-title {{principal_name_plural}}: {{course.name}}
-          .sub-1.add= _("Create Groups")
+          .sub-1.add= _("Create & Edit Groups")
           .add-message
             - block principal_message
-              %p= _("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore")
+              %p= _("Group existing learners associated with this course into new groups, or to edit existing groups in this course.")
         %hr
           %section
             %input#course_id{'type': 'hidden', 'value': '#{course.id}'}
             #student-list.large-7.columns
+              .sub-1 Course Participants:
               - include 'admin/workgroup/student_table.haml'
             .large-5.columns.group-selection
-              %h2= _("Group Students:")
-              %div= _("Select a program below to move students into.")
-              %a#student-group-action.button.radius.tiny{href: "/admin/workgroup/group/create/#{course.id}"}
-                %span= _("Create Group of Selected Students")
+              .sub-1= _("Group Students:")
+              .description= _("Create and manage existing groups of students within this course below by dragging names into groups or removing them.")
+              %a#student-group-action.button.radius.small{href: "/admin/workgroup/group/create/#{course.id}"}
+                = _("Create Group of Selected Students")
               %a.button.radius.small{href: "/admin/workgroup/course/#{course.id}/download_group_list", target: "_blank"}
                 Download List of Groups
               .companies-filter-wrapper.large-12
                 %ul.companies-filter
-                    %li.company-filter{'data-company-filter': 'all'} All Companies
-                  - for company in companies 
+                  %li.company-filter{'data-company-filter': 'all'} All Companies
+                  - for company in companies
                     %li.company-filter{'data-company-filter': '#{company.id}'}= company.display_name
               - for group in groups
                 .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
-                  .name= group.display_name
-                    %span= _("Members:")
-                    %span.student-count= group.students_count 
-                    %i.caret.fa.fa-caret-down 
+                  .group-data
+                    %span.label-1= group.display_name
+                    %span.label-3= _("Members:")
+                    %span.label-3.student-count= group.students_count
+                    %i.caret.fa.fa-caret-down
                   .group-info.students
-                    %span= _("Students:")
+                    %span.label-1= _("Members:")
                     .students-list
-                      - for student in group.students 
-                        %div.student{'name': '#{student.id}'}
-                          %span= student.username
-                          %span= student.email
-                          %span= student.company.display_name
-                          %a{href: '/admin/workgroup/group/#{group.id}/remove'}
+                      - for student in group.students
+                        .student{'name': '#{student.id}'}
+                          .label-2= student.username
+                          %a.label-2{href: "mailto:#{student.email}"}= student.email
+                          .label-2= student.company.display_name
+                          %a.remove{href: '/admin/workgroup/group/#{group.id}/remove'}
                             %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
                     .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
                       Update
-- block js_snippets
-  %script{src: "{% static 'js/select_and_assign.js' %}"}
+
+-block js_snippets
   %script{src: "{% static 'js/course_drag_drop.js' %}"}
-  %script{src: "{% static 'js/jquery.dataTables.min.js' %}"}
-  %script{src: "{% static 'js/dataTables.foundation.js' %}"}

@@ -176,11 +176,16 @@ EDX_API_KEY = 'test_api_key'
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
+# TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
+TA_EMAIL_GROUP = 'dcikatic@edx.org'
 INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from
 ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
+
+# EMAIL BACKEND
+EMAIL_BACKEND = "django_ses.SESBackend"
+APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
 try:
     from local_settings import *

@@ -4,6 +4,7 @@ from admin import views
 urlpatterns = patterns(
     'admin',
     url(r'^$', views.home, name='admin_home'),
+    url(r'^client-admin$', views.client_admin_home, name='client_admin_home'),
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),
     url(r'^course-meta-content/items', views.course_meta_content_course_items, name='course_meta_content_course_items'),
     url(r'^course-meta-content/item/new', views.course_meta_content_course_item_new, name='course_meta_content_course_item_new'),

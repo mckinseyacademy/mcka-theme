@@ -6,6 +6,7 @@ $mckinsey-blue: #002960;
 $mckinsey-academy-alt-blue: #3384CA;
 $mckinsey-academy-black: #333333;
 $mckinsey-grey: #CCCCCC;
+$mckinsey-dark-grey: #868685;
 $mckinsey-academy-turquoise: #66A5B5;
 $mckinsey-orange: #E37222;
 $mckinsey-green: #629B2B;
@@ -59,11 +60,11 @@ $bottom-page: #FAFAFA;
 
 // Courseware Area
 $nav-title: $mckinsey-academy-alt-blue;
-$nav-title-selected: $mckinsey-grey;
+$nav-title-selected: $mckinsey-dark-grey;
 $stage-title: $mckinsey-academy-black;
-$stage-title-selected: $mckinsey-grey;
+$stage-title-selected: $mckinsey-dark-grey;
 $lesson-title: $mckinsey-academy-black;
-$lesson-subtitle: $mckinsey-grey;
+$lesson-subtitle: $mckinsey-dark-grey;
 $module-title: $mckinsey-academy-turquoise;
 $module-subtitle: $mckinsey-academy-black;
 $module-text: $mckinsey-academy-black;
@@ -71,5 +72,5 @@ $module-text: $mckinsey-academy-black;
 // Footer
 $footer-background: $background-tint;
 $footer-text: $mckinsey-academy-alt-blue;
-$footer-text-selected: $mckinsey-grey;
-$footer-separator: $mckinsey-grey;
+$footer-text-selected: $mckinsey-dark-grey;
+$footer-separator: $mckinsey-dark-grey;

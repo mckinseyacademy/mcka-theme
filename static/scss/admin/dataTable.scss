@@ -4,7 +4,7 @@
   div.dataTables_length label,
   div.dataTables_filter label,
   div.dataTables_info {
-    color: #999;
+    color: $mckinsey-academy-black;
     font-weight: normal;
   }
 
@@ -38,7 +38,9 @@
     margin: 0;
   }
 
-  table{
+  table {
+    &.dataTable { width: 100%; }
+
     .dataTable {
       clear: both;
       margin: 0.5em 0 !important;
@@ -95,9 +97,6 @@
     border-top: none;
   }
 
-
-
-
   /*
    * TableTools styles
    */
@@ -136,8 +135,8 @@
   }
 
   ul.DTTT_dropdown.dropdown-menu li:hover a {
-    background-color: #0088cc;
-    color: white !important;
+    background-color: $mckinsey-academy-alt-blue;
+    color: $pure-white !important;
   }
 
   /* TableTools information display */
@@ -167,15 +166,13 @@
     @include font-spec(14, normal, 20);
   }
 
-
-
   /*
    * FixedColumns styles
    */
   div.DTFC_LeftHeadWrapper table,
   div.DTFC_LeftFootWrapper table,
   table.DTFC_Cloned tr.even {
-    background-color: white;
+    background-color: $pure-white;
   }
 
   div.DTFC_LeftHeadWrapper table {
@@ -197,10 +194,11 @@
   }
 
   th .asc, th .desc {
-    color: rgba(127, 127, 127, 0.3);
-    float: right;
+    color: rgba(51, 132, 202, 0.3);
+    display: inline-block;
+    @include font-spec(15);
   }
   .sorting_desc .asc, .sorting_asc .desc {
-    color: rgba(0,0,0,1);
+    color: $mckinsey-academy-alt-blue;
   }
 }

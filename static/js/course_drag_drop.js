@@ -5,17 +5,16 @@
         });
 
       var accordianSlide = function(that, selected){
-          if(selected.hasClass('expanded')){
+          if (selected.hasClass('expanded')) {
               selected.removeClass('expanded').slideUp();
-          }
-          else{
+          } else {
               selected.addClass('expanded').slideDown();
           }
           that.find('i.caret').toggleClass('fa-caret-down').toggleClass('fa-caret-up');
         };
 
       var accordion = function(el, selector){
-        el.find('.name').on('click', function(){
+        el.find('.group-data').on('click', function(){
           var that = $(this);
           var selected = that.parent().find(selector);
           accordianSlide(that, selected);
@@ -80,8 +79,6 @@
         data_table: data_table
       }
     }
-
-
 
   $(function(){
 

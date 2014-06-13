@@ -4,6 +4,10 @@ body{
   background-color: $background-tint;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &.with-program {
+    margin-top: $header-bar-height + $program-bar-height;
+  }
 }
 
 main[role=main] { margin-bottom: 100px; }
@@ -32,7 +36,7 @@ h5 {
   @include font-spec(14, semibold, 18);
 }
 
-.sub-2 { color: $almost-white; }
+.sub-2 { color: $mckinsey-dark-grey; }
 
 p {
   margin: 0;
@@ -45,7 +49,7 @@ p {
     @include font-spec(12, normal, 14);
   }
   &.style-6 {
-    color: $mckinsey-grey;
+    color: $mckinsey-dark-grey;
     font-style: italic;
     @include font-spec(12, semibold, 14);
   }
@@ -94,7 +98,7 @@ blockquote {
 
 .label-2 {
   @include font-spec(10, bold, 12);
-  &.selected { color: $mckinsey-grey; }
+  &.selected { color: $mckinsey-dark-grey; }
   &.description p{
     // repeated style to override defined behaviour of p - p gets automatically added to the content herein within studio
     @include font-spec(10, bold, 12);
@@ -102,12 +106,12 @@ blockquote {
 }
 
 .label-3 {
-  color: $mckinsey-grey;
+  color: $mckinsey-dark-grey;
   @include font-spec(10, semibold, 12);
 }
 
 .label-4 {
-  color: $mckinsey-grey;
+  color: $mckinsey-dark-grey;
   @include font-spec(10, bold, 12);
 }
 
@@ -137,7 +141,7 @@ blockquote {
 .nav-1,
 .nav-2 {
   @include font-spec(12, bold, 14);
-  &.selected { color: $mckinsey-grey; }
+  &.selected { color: $mckinsey-dark-grey; }
 }
 
 .nav-1 {
@@ -284,11 +288,36 @@ form {
 }
 
 #mckinsey_help {
-  + .global-help { display: block; }
+  ~ header[role=banner] .global-help { display: block; }
   p { margin-bottom: rem-calc(20); }
+}
+
+.modal-title {
+  border-bottom: 1px solid $mckinsey-academy-light-gray;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 /* Styles to hide debugging QA content when logged in as a staff user */
 .xqa-modal, .history-modal{
   display: none !important;
 }
+
+/* Styles for general purpouse modal dialog */
+#generalModal.reveal-modal{
+  padding-right: 6em;
+  h2{
+    @include font-spec(22, normal, 24);
+    color: $mckinsey-academy-turquoise;
+    padding-bottom:rem-calc(10);
+    margin-bottom:rem-calc(10);
+    border-bottom: 1px solid $mckinsey-academy-light-gray;
+  }
+  .close-reveal-modal{
+    font-size: 1.4rem;
+  }
+  p{
+    @include font-spec(20, normal, 26);
+  }
+}
+

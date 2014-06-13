@@ -23,6 +23,8 @@
       - elif cell.type == 'quote'
         .cell.quote
           %blockquote= cell.quote
+          .headshot
+            %img{src: "/static/image/home-grid/quoteheadshots/#{cell.image}.jpg", srcset: "/static/image/home-grid/quoteheadshots/#{cell.image}@2x.jpg 2x"}
           .label-2= cell.name
           .title= cell.title
       - elif cell.type == 'stock-image'
@@ -32,3 +34,21 @@
         .cell.video
           %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{cell.url}"}
             %i.fa.fa-play-circle
+
+- block general_modal
+    .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
+      %h2.title
+        =popup.title
+      %p{'class': "lead description"}
+        =popup.description
+      %a{'class': "close-reveal-modal fa fa-times-circle"}
+      - if popup.title != ''
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+
+- block js_snippets
+  :javascript
+    $(function(){
+        if($('#generalModal input.show-modal').length > 0){
+          $('#generalModal').foundation('reveal', 'open');
+        }
+    })

@@ -6,7 +6,6 @@
       .large-10.large-centered.columns
         %header
           %h1.principal-title {{principal_name_plural}}: Overview
-          .sub-1.add= _("Subhead")
           .add-message
             - block principal_message
               Use this block to update the message describing the principal at hand
@@ -32,7 +31,7 @@
                   %option{'value': 'select'}
                     = ' - Select - '
             .submit-area
-              %input.button.radius.small{type: "submit", value: "Ok"}
+              %input.button.radius.small{type: "submit", value: "OK"}
           - block principal_list_filter
           - block principal_list
 
@@ -41,13 +40,13 @@
   :javascript
     $(document).ready(function(){
       $('select.select-program').on('change', function(){
-        var that = $(this); 
+        var that = $(this);
         var url = that.data('programid-call');
         var group_id = that.find('option:selected').val();
         var csrftoken = $.cookie('apros_csrftoken');
         $.ajax({
           method: 'POST',
-          url: url, 
+          url: url,
           data: {group_id: group_id, csrfmiddlewaretoken: csrftoken}
         }).done(function(data){
           $('select.select-course').html(data);

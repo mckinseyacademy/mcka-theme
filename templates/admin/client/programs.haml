@@ -31,9 +31,6 @@
             %span= _("Enrolled Students:")
             %span= program.places_assigned
 - block js_snippets
-  %script{src: "{% static 'js/select_and_assign.js' %}"}
-  %script{src: "{% static 'js/jquery.dataTables.min.js' %}"}
-  %script{src: "{% static 'js/dataTables.foundation.js' %}"}
   :javascript
     $(function(){
       selections = [

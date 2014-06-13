@@ -20,6 +20,7 @@
         img {
           float: left;
           margin-right: rem-calc(20);
+          @include square-size(90px);
         }
 
         > div {
@@ -36,6 +37,7 @@
 
       li {
         margin-bottom: rem-calc(10);
+        &.placeholder { width: 140px; }
 
         .card-flip {
           width: 140px;
@@ -46,6 +48,7 @@
             width: 140px;
             height: 140px;
             @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+            img { @include square-size(140px); }
           }
 
           .back {

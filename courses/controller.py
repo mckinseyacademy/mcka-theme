@@ -1,25 +1,19 @@
 ''' Core logic to sanitise information for views '''
-from urllib2 import HTTPError
+#from urllib import quote_plus, unquote_plus
+
 from django.conf import settings
+
 from api_client import course_api, user_api, user_models
+from api_client.api_error import ApiError
 from license import controller as license_controller
 from admin.models import Program, WorkGroup
 from admin.controller import load_course
-#from urllib import quote_plus, unquote_plus
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
 
 
 # logic functions - recieve api implementor for test
-
-def decode_id(encoded_id):
-    #return unquote_plus(encoded_id)
-    return encoded_id.replace('___', '/')
-
-def encode_id(plain_id):
-    #return quote_plus(plain_id)
-    return plain_id.replace('/', '___')
 
 def build_page_info_for_course(
     course_id,
@@ -48,10 +42,7 @@ def build_page_info_for_course(
         course.chapters[chapter_position - 1].bookmark = True
 
     for chapter in course.chapters:
-        chapter.navigation_url = '/courses/{}/lessons/{}'.format(
-            encode_id(course_id),
-            encode_id(chapter.id)
-        )
+        chapter.navigation_url = '/courses/{}/lessons/{}'.format(course_id, chapter.id)
         if chapter.id == chapter_id:
             current_chapter = chapter
 
@@ -59,8 +50,7 @@ def build_page_info_for_course(
             for page in sequential.pages:
                 page.prev_url = None
                 page.next_url = None
-                page.navigation_url = '{}/module/{}'.format(
-                    chapter.navigation_url, encode_id(page.id))
+                page.navigation_url = '{}/module/{}'.format(chapter.navigation_url, page.id)
 
                 if page.id == page_id:
                     current_page = page
@@ -75,16 +65,20 @@ def build_page_info_for_course(
         current_sequential = current_chapter.sequentials[0] if len(current_chapter.sequentials) > 0 else None
         current_page = current_sequential.pages[0] if current_sequential and len(current_sequential.pages) > 0 else None
 
-    if current_sequential == current_chapter.sequentials[-1] and current_page == current_sequential.pages[-1] and current_chapter != course.chapters[-1]:
-        current_page.next_lesson_link = True
+    if len(current_sequential.pages) > 0:
+        if current_sequential == current_chapter.sequentials[-1] and current_page == current_sequential.pages[-1] and current_chapter != course.chapters[-1]:
+            current_page.next_lesson_link = True
 
     return course, current_chapter, current_sequential, current_page
 
 
 def get_course_position_information(user_id, course_id, user_api_impl=user_api):
+    course_detail = False
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-    except HTTPError, e:
+    except:
+        pass
+    if course_detail == False:
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
 
     return course_detail
@@ -109,7 +103,7 @@ def locate_chapter_page(
     page = None
 
     course_detail = get_course_position_information(user_id, course_id, user_api_impl)
-    if course_detail.position and len(course.chapters) >= course_detail.position:
+    if hasattr(course_detail, 'position') and len(course.chapters) >= course_detail.position:
         chapter = course.chapters[course_detail.position - 1]
         chapter.bookmark = True
     elif len(course.chapters) > 0:
@@ -126,8 +120,10 @@ def locate_chapter_page(
     chapter_id = chapter.id if chapter else None
     page_id = page.id if page else None
 
-    return course_id, chapter_id, page_id, course_detail.position
-
+    if course_detail:
+        return course_id, chapter_id, page_id, course_detail.position
+    else:
+        return course_id, chapter_id, page_id, None
 
 def program_for_course(user_id, course_id, user_api_impl=user_api):
     '''
@@ -135,6 +131,7 @@ def program_for_course(user_id, course_id, user_api_impl=user_api):
     or None if program is not present
         user_api_impl - optional api client module to use (useful in mocks)
     '''
+
     courses = user_api_impl.get_user_courses(user_id)
 
     course_program = None
@@ -177,32 +174,37 @@ def _fake_project_group():
     members_list = [
         user_models.UserResponse(dictionary={
             "username": "jg",
-            "formatted_name": "Jennifer Gormley",
+            "first_name": "Jennifer",
+            "last_name": "Gormley",
             "title": "Director of Product Design",
             "email": "Jennifer_Gormley@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "ap",
-            "formatted_name": "Andy Parsons",
+            "first_name": "Andy",
+            "last_name": "Parsons",
             "title": "CTO",
             "email": "Andy_Parsons@mckinsey.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "vg",
-            "formatted_name": "Vishal Ghandi",
+            "first_name": "Vishal",
+            "last_name": "Ghandi",
             "title": "Product Manager",
             "email": "vishalhgandhi@gmail.com",
             }),
         user_models.UserResponse(dictionary={
             "username": "jr",
-            "formatted_name": "Jonathan Rainey",
+            "first_name": "Jonathan",
+            "last_name": "Rainey",
             "title": "Front End Specialist",
             "email": "tivoli@nurfed.com",
             }),
     ]
     ta = user_models.UserResponse(dictionary={
         "username": "ta",
-        "formatted_name": "Your TA",
+        "first_name": "Your",
+        "last_name": "TA",
         "title": "McKinsey Teaching Assistant",
         "email": "tas@mckinseyacademy.com",
     })
@@ -211,7 +213,6 @@ def _fake_project_group():
     project_group.teaching_assistant = ta
 
     return project_group
-
 
 def group_project_location(user_id, course, sequential_id=None):
     '''
@@ -256,8 +257,8 @@ def group_project_location(user_id, course, sequential_id=None):
             sequential = seq
 
         # Is it a group_project xblock
-        seq.is_group_project = "group-project" in sequential.pages[0].child_category_list()
+        seq.is_group_project = len(sequential.pages) > 0 and "group-project" in sequential.pages[0].child_category_list()
 
-    page = sequential.pages[0]
+    page = sequential.pages[0] if len(sequential.pages) > 0 else None
 
     return project_group, group_project, sequential, page

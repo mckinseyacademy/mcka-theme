@@ -1,113 +1,3 @@
-.program-bar {
-  height: $program-bar-height;
-  padding-top: 10px;
-  position: relative;
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-
-  .program-name {
-    &:after{ content: ':'; }
-  }
-
-  .course-name {
-    a {
-      color: $pure-white;
-      &:hover{
-        color: $mckinsey-academy-blue-gray;
-      }
-    }
-  }
-
-  .global-help,
-  .global-help:visited {
-    color: $mckinsey-academy-blue-gray;
-    display: none;
-    position: absolute;
-    bottom: -30px;
-    right: 10px;
-    @include font-spec(20);
-  }
-}
-
-.program-menu{
-  position: absolute;
-  right: 0;
-  top: 0;
-  .fa{
-    font-size: rem-calc($program-menu-size);
-    margin: $program-bar-topbottom-margin 10px;
-    cursor: pointer;
-    color: $pure-white;
-    &:hover{
-      color: $mckinsey-academy-blue-gray;
-    }
-  }
-}
-
-.program-menu-content{
-  color: $mckinsey-blue;
-  display: none;
-  &.open{
-    display: block;
-  }
-
-  // The next few items are marked as !important to prevent the foundation dropdown code from re-positioning the dropdown - it's goping where we want it to go
-  position: absolute !important;
-  right:0 !important;
-  top: $program-bar-height !important;
-  left: auto !important;
-  z-index: 10000;
-  width: 275px;
-  background-color: $pure-white;
-  @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
-  .program-title{
-    margin: 12px 20px 0;
-    @include font-spec(10, bold);
-    text-transform: uppercase;
-    &::after{
-      content: ':';
-    }
-  }
-  a.course-name, .course-name{
-    @include font-spec(12, bold);
-    padding: 5px 0;
-    color: $pure-black;
-    &.unavailable{
-      color: $mckinsey-grey;
-    }
-    &.current{
-      color: $mckinsey-orange;
-    }
-  }
-  a.course-name{
-    &:hover{
-      color: $mckinsey-academy-blue-gray;
-    }
-  }
-  .status{
-    @include font-spec(10, semibold);
-    font-style: italic;
-    color: $mckinsey-grey;
-    &.complete{
-      color: $mckinsey-green;
-    }
-    &.unavailable{
-      color: $almost-white;
-    }
-  }
-  ul{
-    margin: 0 12px;
-    list-style: none;
-    li{
-      padding: 0 8px 8px;
-      border-top: 1px solid $almost-white;
-      &:first-child{
-        border-top: none;
-        margin-top: 0;
-      }
-    }
-  }
-}
-
 .content-page{
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
   background-color: $pure-white;
@@ -134,59 +24,8 @@
         margin-right: 10px;
         color: $mckinsey-academy-alt-blue;
         &.selected{
-          color: $mckinsey-grey;
+          color: $mckinsey-dark-grey;
         }
-      }
-    }
-  }
-
-  .lesson-menu{
-    @include font-spec(12, bold, 14);
-    border-top: 1px solid $mckinsey-academy-warm-gray;
-    border-bottom: 1px solid $mckinsey-academy-warm-gray;
-    margin: 10px 0;
-    padding: 5px 0;
-    color: $mckinsey-academy-black;
-    .lesson{
-      color: $mckinsey-academy-warm-gray;
-      width: 40px;
-      text-align: center;
-      border-left: 1px solid $mckinsey-academy-warm-gray;
-      a{
-        color: $mckinsey-academy-alt-blue;
-        &:hover{
-          color: $mckinsey-academy-blue-gray;
-        }
-      }
-      &:first-child{
-        border-left: none;
-      }
-      .selected{
-        color: $mckinsey-grey;
-      }
-    }
-  }
-
-  .lesson-module-status{
-    display: inline-block;
-    font-family: FontAwesome;
-    @include font-spec(10);
-    color: $mckinsey-grey;
-    &::before{
-      content: "\f10c";
-    }
-    &.complete{
-      color: $mckinsey-green;
-    }
-    &.complete, &.current{
-      &::before{
-        content: "\f111"
-      }
-    }
-    &:hover{
-      color: $mckinsey-academy-alt-blue;
-      &.current{
-        color: $mckinsey-grey;
       }
     }
   }
@@ -217,13 +56,13 @@
 
   .lesson-title{
     @include font-spec(10, semibold, 12);
-    color: $mckinsey-grey;
+    color: $mckinsey-dark-grey;
     padding-top: 45px;
     .lesson-index{
       font-weight: bold;
     }
     .page-name{
-      border-left: 1px solid $mckinsey-grey;
+      border-left: 1px solid $mckinsey-dark-grey;
       padding-left: 5px;
       margin-left: 3px;
     }

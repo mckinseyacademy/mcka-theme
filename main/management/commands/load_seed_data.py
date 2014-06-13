@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
-from urllib2 import HTTPError
-from lib.authorization import permission_groups_map
+
 from api_client import course_api, group_api, user_api
+from api_client.api_error import ApiError
+from lib.authorization import permission_groups_map
 
 
 class Command(BaseCommand):
@@ -16,7 +17,7 @@ class Command(BaseCommand):
         self.stdout.write("Done")
 
         self.stdout.write(edx_seed_msg)
-        
+
         ''' Create roles '''
         group_type = 'permission'
         existing_groups = group_api.get_groups_of_type(group_type)
@@ -26,36 +27,55 @@ class Command(BaseCommand):
         for group_name in group_names:
             if group_name not in existing_group_names:
                 self.stdout.write("Creating group: %s" % group_name)
-                # TODO: the group_data param should not be required but there is a 
-                # db constraint as of 4/29/2014. Remove the param when this is fixed in 
-                # edx-platform
-                group_api.create_group(group_name, group_type, group_data='placeholder')
+                group_api.create_group(group_name, group_type)
             else:
                 self.stdout.write("Skipping %s, already exists" % group_name)
 
-        ''' Register admin, sub-admin and TA users '''
+        ''' Create a fake client '''
+        group_type = 'company'
+        client_name = 'Green Lantern Corps'
+        client_group_id = None
+        existing_clients = group_api.get_groups_of_type(group_type)
+        for existing_client in existing_clients:
+            if client_name == existing_client.name:
+                self.stdout.write("Client: %s already exists, skipping." % client_name)
+                client_group_id = existing_client.id
+                break
+        if not client_group_id:
+            self.stdout.write("Creating client: %s" % client_name)
+            client_group = group_api.create_group(client_name, group_type)
+            client_group_id = client_group.id
+
+        ''' Register McK admin, McK sub-admin, Client admin, client sub-admin, and TA users '''
         user_suffix = '_user'
         user_list = (
-            ('admin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_ADMIN),
-            ('subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_SUBADMIN),
-            ('ta%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_TA)
+            ('mcka_admin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_ADMIN),
+            ('mcka_subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_SUBADMIN),
+            ('mcka_ta%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_TA),
+            ('client_admin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_ADMIN, client_group_id),
+            ('client_subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_SUBADMIN, client_group_id),
+            ('client_ta%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_TA, client_group_id),
         )
         for user_tuple in user_list:
             user_data = {
                 "username": user_tuple[0],
-                "first_name": "Uber",
-                "last_name": "Admin",
+                "first_name": user_tuple[0],
+                "last_name": "Tester",
                 "email": "%s@mckinseyacademy.com" % user_tuple[0],
                 "password": "PassworD12!@"
             }
             try:
                 self.stdout.write("Registering user: %s in the role: %s" % (user_tuple[0], user_tuple[1]))
                 u = user_api.register_user(user_data)
-                group_api.add_user_to_group(u.id, permission_groups_map()[user_tuple[1]])
-            except HTTPError as e:
+                if u:
+                    group_api.add_user_to_group(u.id, permission_groups_map()[user_tuple[1]])
+                    if len(user_tuple) == 3:
+                        self.stdout.write("Adding user %s to client: %s" % (user_tuple[0], client_name))
+                        group_api.add_user_to_group(u.id, client_group_id)
+            except ApiError as e:
                 if e.code == 409:
                     self.stdout.write("User: %s already exists" % user_tuple[0])
-                else: 
+                else:
                     raise
 
         self.stdout.write("Done")

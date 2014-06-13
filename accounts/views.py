@@ -1,28 +1,43 @@
 ''' views for auth, sessions, users '''
 import json
 import random
-from django.utils.translation import ugettext as _
+import urlparse
+import urllib2 as url_access
+import datetime
+import math
 
 from django.http import HttpResponseRedirect
-from .forms import LoginForm, ActivationForm
-from api_client import user_api
-from .models import RemoteUser, UserActivation
-from admin.models import Client
-from .controller import get_current_course_for_user, user_activation_with_data, ActivationError
+from django.contrib import auth
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext as _
 
+from lib.context_processors import user_program_data
+from api_client import user_api, course_api
+from api_client.api_error import ApiError
+from admin.models import Client
+from courses.controller import program_for_course
+
+from django.core import mail
+from django.test import TestCase
 # from importlib import import_module
 # from django.conf import settings
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+from .models import RemoteUser, UserActivation
+from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
+from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm
+from lib.token_generator import ResetPasswordTokenGenerator
+from django.shortcuts import resolve_url
+from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.template.response import TemplateResponse
 
-from django.contrib import auth
 import logout as logout_handler
-import urllib2 as url_access
 
-from django.shortcuts import render
+from django.contrib.auth.views import password_reset, password_reset_confirm, password_reset_done, password_reset_complete
+from django.core.urlresolvers import reverse
+from admin.views import ajaxify_http_redirects
+from django.core.mail import send_mail
 
-import urlparse
-
-from django.contrib.auth.decorators import login_required
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
 
 def _get_qs_value_from_url(value_name, url):
@@ -53,23 +68,36 @@ def login(request):
                 ) if 'HTTP_REFERER' in request.META else None
                 if not redirect_to:
                     course_id = get_current_course_for_user(request)
+                    program = program_for_course(request.user.id, course_id)
+                    future_start_date = False
+                    if program:
+                        for program_course in program.courses:
+                            if program_course.id == course_id:
+                                '''
+                                THERE IS A PLACE FOR IMPROVEMENT HERE
+                                IF user course object had start/due date, we
+                                would do one less API call
+                                '''
+                                full_course_object = course_api.get_course(
+                                    course_id)
+                                if hasattr(full_course_object, 'start'):
+                                    future_start_date = is_future_start(
+                                        datetime.datetime.strptime(full_course_object.start, '%Y-%m-%dT%H:%M:%SZ'))
+                                elif hasattr(program, 'start_date') and future_start_date is False:
+                                    future_start_date = is_future_start(
+                                        program.start_date)
                     if course_id:
-                        redirect_to = '/courses/{}'.format(course_id)
+                        if future_start_date:
+                            redirect_to = '/'
+                        else:
+                            redirect_to = '/courses/{}'.format(course_id)
                     else:
                         redirect_to = '/'
 
                 return HttpResponseRedirect(redirect_to)  # Redirect after POST
-            except url_access.HTTPError, err:
-                error = _("An error occurred during login")
-                error_messages = {
-                    403: _("User account not activated"),
-                    401: _("Username or password invalid"),
-                    404: _("Username or password invalid"),
-                }
-                if err.code in error_messages:
-                    error = error_messages[err.code]
+            except ApiError as err:
+                error = err.message
 
-                print err, error
 
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
@@ -80,6 +108,11 @@ def login(request):
         )
         # set focus to password field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
+    elif 'reset' in request.GET:
+        form = LoginForm()  # An unbound form
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+        form.reset = request.GET['reset']
     else:
         form = LoginForm()  # An unbound form
         # set focus to username field
@@ -110,7 +143,7 @@ def activate(request, activation_code):
         user_data = {}
         for field_name in VALID_USER_FIELDS:
             if field_name == "full_name":
-                user_data[field_name] = user.formatted_name()
+                user_data[field_name] = user.formatted_name
             elif hasattr(user, field_name):
                 user_data[field_name] = getattr(user, field_name)
 
@@ -149,7 +182,7 @@ def activate(request, activation_code):
                         user_data["username"]
                     )
                 )
-            except ActivationError, activation_error:
+            except ActivationError as activation_error:
                 error = activation_error.value
     else:
         form = ActivationForm(user_data)
@@ -166,9 +199,119 @@ def activate(request, activation_code):
         }
     return render(request, 'accounts/activate.haml', data)
 
+@ajaxify_http_redirects
+def reset_confirm(request, uidb64=None, token=None,
+                  template_name='registration/password_reset_confirm.html',
+                  post_reset_redirect='/accounts/login?reset=complete',
+                  set_password_form=SetNewPasswordForm,
+                  token_generator=ResetPasswordTokenGenerator(),
+                  current_app=None, extra_context=None):
+    """
+    View that checks the hash in a password reset link and presents a
+    form for entering a new password.
+    """
+    assert uidb64 is not None and token is not None # checked by URLconf
+    if post_reset_redirect is None:
+        post_reset_redirect = reverse('password_reset_complete')
+    else:
+        post_reset_redirect = resolve_url(post_reset_redirect)
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = user_api.get_user(uid)
+    except (TypeError, ValueError, OverflowError):
+        user = None
+
+    if user is not None and token_generator.check_token(user, token):
+        validlink = True
+        title = _('Enter new password')
+        if request.method == 'POST':
+            form = set_password_form(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(post_reset_redirect)
+        else:
+            form = set_password_form(user)
+    else:
+        validlink = False
+        form = None
+        title = _('Password reset unsuccessful')
+    context = {
+        'form': form,
+        'title': title,
+        'validlink': validlink,
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
+
+
+@ajaxify_http_redirects
+def reset(request, is_admin_site=False,
+          template_name='registration/password_reset_form.haml',
+          password_reset_form=FpasswordForm,
+          email_template_name='registration/password_reset_email.haml',
+          subject_template_name='registration/password_reset_subject.txt',
+          post_reset_redirect='/accounts/login?reset=done',
+          from_email='admin@mckinseyacademy.org',
+          current_app=None,
+          extra_context=None):
+    return password_reset(request=request, is_admin_site=is_admin_site,
+                          template_name=template_name,
+                          email_template_name=email_template_name,
+                          subject_template_name=subject_template_name,
+                          password_reset_form=password_reset_form,
+                          post_reset_redirect=post_reset_redirect,
+                          from_email=from_email,
+                          current_app=current_app,
+                          extra_context=extra_context)
+
+
+@ajaxify_http_redirects
+def reset_done(request,
+               template_name='registration/password_reset_done.haml',
+               current_app=None, extra_context=None):
+    return password_reset_done(request=request,
+               template_name=template_name,
+               current_app=current_app, extra_context=extra_context)
+
+
+@ajaxify_http_redirects
+def reset_complete(request,
+                   template_name='registration/password_reset_complete.haml',
+                   current_app=None, extra_context=None):
+    return password_reset_complete(request=request,
+                   template_name=template_name,
+                   current_app=current_app, extra_context=extra_context)
+
+
+
 def home(request):
     ''' show me the home page '''
 
+    programData = user_program_data(request)
+    program = programData.get('program')
+    course = programData.get('course')
+
+    data = {'popup': {'title': '', 'description': ''}}
+    if request.session.get('program_popup') == None:
+        if program:
+            if program.id is not 'NO_PROGRAM':
+                if program.start_date > datetime.datetime.today():
+                    days = str(
+                        int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                    if days > 1:
+                        days = days + 's'
+                    popup = {'title': '', 'description': ''}
+                    popup['title'] = "Welcome to McKinsey Academy"
+                    popup['description'] = "Your program will start in {}. Please explore the site to learn more about the expirience in the meantime.".format(
+                        days)
+                    if course:
+                        popup['description'] = "Your course begins in {}. Please explore the site to learn more about the expirience in the meantime.".format(
+                            days)
+                        data.update({'course': course})
+                    data.update({'program': program, 'popup': popup})
+                    request.session['program_popup'] = True
     cells = []
     with open('main/fixtures/landing_data.json') as json_file:
         landing_tiles = json.load(json_file)
@@ -176,7 +319,8 @@ def home(request):
             tileset = landing_tiles[tile]
             cells.append(tileset.pop(random.randrange(len(tileset))))
 
-    return render(request, 'home/landing.haml', {"user": request.user, "cells": cells})
+    data.update({"user": request.user, "cells": cells})
+    return render(request, 'home/landing.haml', data)
 
 @login_required
 def user_profile(request):
@@ -184,7 +328,6 @@ def user_profile(request):
     user = user_api.get_user(request.user.id)
     user_data = {
         "user_image_url": user.image_url(160),
-        "user_formatted_name": user.formatted_name(),
-        "user_email": user.email,
+        "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)

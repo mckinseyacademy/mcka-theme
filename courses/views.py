@@ -1,18 +1,21 @@
 ''' rendering templates from requests related to courses '''
 import math
+import json
 from django.conf import settings
+from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course
-from .controller import update_bookmark, decode_id, encode_id, group_project_location
+from .controller import update_bookmark, group_project_location
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api
+from api_client import course_api, user_api
 from admin.controller import load_course
+from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user
 
 # Create your views here.
@@ -40,6 +43,8 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                     _("complete")
                 )
 
+    found_current_page = False
+
     for idx, lesson in enumerate(course.chapters, start=1):
         lesson.index = idx
         lesson.tick_marks = [i * 20 <= 100 for i in range(1, 6)]
@@ -47,7 +52,6 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
             lesson_description = static_tab_info.get("lesson{}".format(idx), None)
             if lesson_description:
                 lesson.description = lesson_description.content
-        found_current_page = False
         for sequential in lesson.sequentials:
             for page in sequential.pages:
                 page.status_class = "complete"
@@ -77,60 +81,99 @@ def course_landing_page(request, course_id):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
-def navigate_to_page(request, course_id, current_view = 'landing'):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
-    course_id = decode_id(course_id)
+def course_overview(request, course_id):
+    data = {
+        'overview': course_api.get_course_overview(course_id),
+    }
+    return render(request, 'courses/course_overview.haml', data)
 
-    if current_view == "landing":
-        return course_landing_page(request, course_id)
+
+@login_required
+def course_syllabus(request, course_id):
+    data = {
+        'syllabus': course_api.get_course_syllabus(course_id),
+    }
+    return render(request, 'courses/course_syllabus.haml', data)
+
+
+@login_required
+def course_news(request, course_id):
+    data = {"news": course_api.get_course_news(course_id)}
+    return render(request, 'courses/course_news.haml', data)
+
+
+@login_required
+def course_cohort(request, course_id):
+    return render(request, 'courses/course_cohort.haml')
+
+
+@login_required
+def course_group_work(request, course_id):
+
+    seq_id = request.GET.get("seqid", None)
+    project_group, group_project, sequential, page = group_project_location(
+        request.user.id,
+        load_course(course_id, 4),
+        seq_id
+    )
+    vertical_usage_id = page.vertical_usage_id() if page else None
+
+    remote_session_key = request.session.get("remote_session_key")
+    lms_base_domain = settings.LMS_BASE_DOMAIN
+    lms_sub_domain = settings.LMS_SUB_DOMAIN
 
     # Get course info
     set_current_course_for_user(request, course_id)
 
     data = {
-        "current_view": current_view,
-        "current_template": "courses/course_{0}.haml".format(current_view),
+        "lesson_content_parent_id": "course-group-work",
+        "vertical_usage_id": vertical_usage_id,
+        "remote_session_key": remote_session_key,
+        "course_id": course_id,
+        "lms_base_domain": lms_base_domain,
+        "lms_sub_domain": lms_sub_domain,
+        "project_group": project_group,
+        "group_project": group_project,
+        "current_sequential": sequential,
+        "current_page": page,
     }
+    return render(request, 'courses/course_group_work.haml', data)
 
-    if current_view == "overview":
-        data["overview"] = course_api.get_course_overview(course_id)
-    elif current_view == "syllabus":
-        data["syllabus"] = course_api.get_course_syllabus(course_id)
-    elif current_view == "news":
-        data["news"] = course_api.get_course_news(course_id)
-    elif current_view == "group_work":
-        seq_id = request.GET.get("seqid", None)
-        project_group, group_project, sequential, page = group_project_location(
-            request.user.id,
-            load_course(course_id, 4),
-            seq_id
-        )
-        vertical_usage_id = page.vertical_usage_id() if page else None
 
-        remote_session_key = request.session.get("remote_session_key")
-        lms_base_domain = settings.LMS_BASE_DOMAIN
-        lms_sub_domain = settings.LMS_SUB_DOMAIN
+@login_required
+def course_progress(request, course_id):
 
-        data.update({
-            "lesson_content_parent_id": "course-group-work",
-            "vertical_usage_id": vertical_usage_id,
-            "remote_session_key": remote_session_key,
-            "lms_base_domain": lms_base_domain,
-            "lms_sub_domain": lms_sub_domain,
-            "project_group": project_group,
-            "group_project": group_project,
-            "current_sequential": sequential,
-            "current_page": page,
+    gradebook = user_api.get_user_gradebook(request.user.id, course_id)
+
+    # grade bar chart
+    bar_chart = [{'key': 'Lesson Scores', 'values': []}]
+    for grade in gradebook.grade_summary.section_breakdown:
+        bar_chart[0]['values'].append({
+           'label': grade.label,
+           'value': grade.percent*100,
+           'color': '#b1c2cc'
         })
 
-    return render(request, 'courses/course_navigation.haml', data)
+    total = gradebook.grade_summary.percent*100
+    bar_chart[0]['values'].append({
+        'label': 'TOTAL',
+        'value': total,
+        'color': '#e37121'
+    })
+
+    data = {
+        'bar_chart': json.dumps(bar_chart),
+    }
+    return render(request, 'courses/course_progress.haml', data)
+
+
+@login_required
+def course_resources(request, course_id):
+    return render(request, 'courses/course_resources.haml')
+
 
 @login_required
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
-    course_id = decode_id(course_id)
-    chapter_id = decode_id(chapter_id)
-    page_id = decode_id(page_id)
 
     ''' go to given page within given chapter within given course '''
     # Get course info
@@ -161,14 +204,18 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "current_page": current_page,
         "program": program,
         "lesson_content_parent_id": "course-lessons",
+        "course_id": course_id,
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
-        "current_view": "lessons",
-        "current_template": "courses/course_lessons.haml",
     }
-    return render(request, 'courses/course_navigation.haml', data)
+    return render(request, 'courses/course_lessons.haml', data)
+
+
+def course_notready(request, course_id):
+    return render(request, 'courses/course_notready.haml')
+
 
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):
@@ -177,32 +224,16 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     If no chapter or course given, system tries to go to location within last
     visited course
     '''
-    # TODO - Figure out why nginx munges the id's so that we can get rid of this step
-    if course_id:
-        course_id = decode_id(course_id)
-    else:
+    if not course_id:
         course_id = get_current_course_for_user(request)
-
-    if chapter_id:
-        chapter_id = decode_id(chapter_id)
 
     course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
         request.user.id, course_id, chapter_id)
 
     if course_id and chapter_id and page_id:
-        return HttpResponseRedirect(
-            '/courses/{}/lessons/{}/module/{}'.format(
-                encode_id(course_id),
-                encode_id(chapter_id),
-                encode_id(page_id)
-            )
-        )
+        return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
-        return HttpResponseRedirect(
-            '/courses/{}/view/notready'.format(
-                encode_id(course_id),
-            )
-        )
+        return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
@@ -214,13 +245,64 @@ def infer_default_navigation(request):
 
 @login_required
 def contact_ta(request, course_id):
-    email_from = request.user.email
+    email_header_from = request.user.email
+    email_from = settings.APROS_EMAIL_SENDER
     email_to = settings.TA_EMAIL_GROUP
     email_content = request.POST["ta_message"]
-
-    # TODO: Hook up to email sending stuff
-
+    course = course_api.get_course(course_id)
+    email_subject = "Ask a TA - {}".format(course.name)
+    try:
+        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email.send(fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
     return HttpResponse(
-        json.dumps({"message": _("Successfully sent email")}),
+        json.dumps({"message": _("Message successfully sent.")}),
+        content_type='application/json'
+    )
+
+@login_required
+def contact_group(request, course_id, group_id):
+    email_from = settings.APROS_EMAIL_SENDER
+    email_header_from = request.user.email
+    group = WorkGroup.fetch_with_members(group_id)
+    students = group.members
+    email_to = [student.email for student in students]
+    email_content = request.POST["group_message"]
+    email_subject = "Group Project Message - {}".format(course.name)
+    try:
+        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email.send(fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
+    return HttpResponse(
+        json.dumps({"message": _("Message successfully sent.")}),
+        content_type='application/json'
+    )
+
+@login_required
+def contact_member(request, course_id):
+    email_from = settings.APROS_EMAIL_SENDER
+    email_header_from = request.user.email
+    email_to = request.POST["member-email"]
+    email_content = request.POST["member_message"]
+    course = course_api.get_course(course_id)
+    email_subject = "Group Project Message - {}".format(course.name) #just for testing
+    try:
+        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email.send(fail_silently=False)
+    except:
+        return HttpResponse(
+        json.dumps({"message": _("Message not sent.")}),
+        content_type='application/json'
+    )
+    return HttpResponse(
+        json.dumps({"message": _("Message successfully sent.")}),
         content_type='application/json'
     )

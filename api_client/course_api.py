@@ -1,13 +1,15 @@
 ''' API calls with respect to courses '''
+from django.conf import settings
+
+from api_error import api_error_protect
+
 from .json_object import CategorisedJsonParser
 from .json_object import CategorisedJsonObject
 from .json_object import JsonParser as JP
-from . import course_models
 from .json_requests import GET
 from .json_requests import POST
-from urllib2 import HTTPError
 
-from django.conf import settings
+from . import course_models
 
 COURSEWARE_API = 'api/courses'
 
@@ -27,6 +29,7 @@ OBJECT_CATEGORY_MAP = {
 
 CJP = CategorisedJsonParser(OBJECT_CATEGORY_MAP)
 
+@api_error_protect
 def get_course_list():
     '''
     Retrieves list of courses from openedx server
@@ -37,6 +40,7 @@ def get_course_list():
     )
     return CJP.from_json(response.read())
 
+@api_error_protect
 def get_course_overview(course_id):
     '''
     Retrieves course overview information from the API for specified course
@@ -64,6 +68,7 @@ def get_course_overview(course_id):
 
     return overview
 
+@api_error_protect
 def get_course_tabs(course_id):
     '''
     Returns map of tab content key'd on "name" attribute
@@ -73,11 +78,12 @@ def get_course_tabs(course_id):
         COURSEWARE_API,
         course_id)
     )
-    
+
     tab_array = JP.from_json(response.read(), course_models.CourseTabs).tabs
 
     return {tab.name.lower(): tab for tab in tab_array}
 
+@api_error_protect
 def get_course_syllabus(course_id):
     '''
     Retrieves course syllabus information from the API for specified course
@@ -89,6 +95,7 @@ def get_course_syllabus(course_id):
         return None
 
 
+@api_error_protect
 def get_course_news(course_id):
     '''
     Retrieves course updates from the API for specified course
@@ -98,8 +105,9 @@ def get_course_news(course_id):
         COURSEWARE_API,
         course_id)
     )
-    return CJP.from_json(response.read()).postings
+    return JP.from_json(response.read()).postings
 
+@api_error_protect
 def get_course(course_id, depth = 3):
     '''
     Retrieves course structure information from the API for specified course
@@ -125,56 +133,62 @@ def get_course(course_id, depth = 3):
     return course
 
 
+@api_error_protect
 def get_user_list_json(course_id, program_id = None, client_id = None):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
     response = GET('{}/{}/{}/users?project={}&client={}'.format(
         settings.API_SERVER_ADDRESS,
-        COURSEWARE_API, 
-        course_id, 
-        program_id, 
+        COURSEWARE_API,
+        course_id,
+        program_id,
         client_id)
     )
 
     return response.read()
 
+@api_error_protect
 def get_user_list(course_id, program_id = None, client_id = None):
 
     return JP.from_json(get_user_list_json(course_id, program_id, client_id), course_models.CourseEnrollmentList).enrollments
 
+@api_error_protect
 def add_group_to_course_content(group_id, course_id, content_id):
     ''' associate group to specific course '''
 
     data = {
-        'course_id': course_id, 
-        'group_id': group_id, 
-        'content_id': content_id, 
+        'course_id': course_id,
+        'group_id': group_id,
+        'content_id': content_id,
     }
 
     response = POST(
         '{}/{}/{}/content/{}/groups'.format(
             settings.API_SERVER_ADDRESS,
-            COURSEWARE_API, 
+            COURSEWARE_API,
             course_id,
             content_id,
-        ), 
+        ),
         data
     )
 
     return JP.from_json(response.read())
 
-def get_users_content_filtered(course_id, content_id, params):
+@api_error_protect
+def get_users_content_filtered(course_id, content_id, params=[]):
     ''' filter and get course content'''
 
-    paramStr = '' 
-    for param in params: 
-        paramStr = paramStr + param['key'] + '=' + param['value']
+    paramStrs = [param['key'] + '=' + param['value'] for param in params]
+    if len(paramStrs) > 0:
+        paramStr = '&'.join(paramStrs)
+    else:
+        paramStr = ''
 
     response = GET(
         '{}/{}/{}/content/{}/users?{}'.format(
             settings.API_SERVER_ADDRESS,
-            COURSEWARE_API, 
+            COURSEWARE_API,
             course_id,
             content_id,
             paramStr,
@@ -183,13 +197,14 @@ def get_users_content_filtered(course_id, content_id, params):
 
     return JP.from_json(response.read())
 
+@api_error_protect
 def get_course_content_groups(course_id, content_id):
     ''' fetch associates groups to specific content within specific course '''
 
     response = GET(
         '{}/{}/{}/content/{}/groups'.format(
             settings.API_SERVER_ADDRESS,
-            COURSEWARE_API, 
+            COURSEWARE_API,
             course_id,
             content_id,
         )

@@ -1,43 +1,45 @@
 - extends "layout.haml"
 
 - block content
-  %article#contact-page.row.collapse
-    .large-11.large-centered.columns
-      %section
-        %h1 Contact McKinsey Academy
-      %section
-        %p
-          Thank you for your interest in McKinsey Academy. Please click the email button to contact us. 
-          
-      %hr
-      .large-6.columns
-        .background-white
-          .sub-1 CONTACT US
-          %p Please email us with questions, comments and feedback. 
-          %a.mk-email.button.small.radius{href: 'mailto:support@mckinseyacademy.com'} Email McKinsey Academy
-        .background-white.hidden
-          .sub-1 STAY INFORMED
-          %p To stay informed about McKinsey Academy, please enter your email address below.
+  %article#contact-page
+    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_contact.jpg", srcset: "/static/image/marketing/McKA_TopTiles_contact@2x.jpg 2x"}
+    .row.collapse
+      .large-11.large-centered.columns
+        %section
+          %h1 Contact McKinsey Academy
+        %section
+          %p
+            Thank you for your interest in McKinsey Academy. Please click the email button to contact us.
+
+        %hr
+        .large-6.columns
+          .background-white
+            .sub-1 CONTACT US
+            %p Please email us with questions, comments and feedback.
+            %a.mk-email.button.small.radius{href: 'mailto:support@mckinseyacademy.com'} Email McKinsey Academy
+          .background-white.hidden
+            .sub-1 STAY INFORMED
+            %p To stay informed about McKinsey Academy, please enter your email address below.
+            %form{action: '/', method: 'post'}
+              %fieldset
+                %div
+                  %input{type: 'email', placeholder: 'Email'}
+                %div
+                  %input.button.small.radius{type: 'submit', value: 'Submit'}
+        .large-6.columns.background-white.hidden
+          .sub-1 TECH SUPPORT
+          %p If you suspect your problem is technical in nature, please complete the form below and we will respond within one business day (beta users):
           %form{action: '/', method: 'post'}
             %fieldset
               %div
+                %select
+                  %option{value: '', selected: None} Please select&hellip;
+              %div
                 %input{type: 'email', placeholder: 'Email'}
               %div
+                %textarea{placeholder: 'Please provide details'}
+              %div
                 %input.button.small.radius{type: 'submit', value: 'Submit'}
-      .large-6.columns.background-white.hidden
-        .sub-1 TECH SUPPORT
-        %p If you suspect your problem is technical in nature, please complete the form below and we will respond within one business day (beta users):
-        %form{action: '/', method: 'post'}
-          %fieldset
-            %div
-              %select
-                %option{value: '', selected: None} Please select&hellip;
-            %div
-              %input{type: 'email', placeholder: 'Email'}
-            %div
-              %textarea{placeholder: 'Please provide details'}
-            %div
-              %input.button.small.radius{type: 'submit', value: 'Submit'}
-      %section.trouble.label-2.hidden
-        Having trouble with the email button above?
-        %a{href: '#'} Click here.
+        %section.trouble.label-2.hidden
+          Having trouble with the email button above?
+          %a{href: '#'} Click here.

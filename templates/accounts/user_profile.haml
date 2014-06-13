@@ -12,7 +12,7 @@
           %a.editfield
             = _("edit")
         .fieldcontent
-          = user_formatted_name
+          = user.formatted_name
     .title
       %i.fa.fa-info
       .field-group
@@ -24,11 +24,11 @@
           = user.title
     .email
       %i.fa.fa-envelope
-      .field-group      
+      .field-group
         .fieldtitle
           = _("Email")
         .fieldcontent
-          = user_email
+          = user.email
     .logout
       %a.button.small.radius{href: "/accounts/logout"}
         = _("Log Out")

@@ -99,6 +99,12 @@
         }
       }
 
+      .headshot {
+        text-align: center;
+        margin-bottom: 10px;
+        img { @include square-size(50px); }
+      }
+
       .title {
         font-style: italic;
         margin-top: 2px;
