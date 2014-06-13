@@ -6,7 +6,7 @@ import datetime
 from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
-from lib.token_generator import mckinsey_token_generator
+from lib.token_generator import ResetPasswordTokenGenerator
 
 from api_client import user_api
 from django.template import loader
@@ -307,13 +307,6 @@ class LoginForm(NoSuffixLabelForm):
     username = forms.CharField(max_length=255, label=mark_safe('Username <span class="required-field"></span>'))
     password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe('Password <span class="required-field"></span>'))
 
-class ResetForm(NoSuffixLabelForm):
-    ''' login form for system '''
-    username = forms.CharField(max_length=255, label=mark_safe('Username <span class="required-field"></span>'))
-    password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe('Password <span class="required-field"></span>'))
-
-
-
 class ActivationForm(NoSuffixLabelForm):
     ''' activation form for system '''
     #first_name = forms.CharField(max_length=255)
@@ -367,13 +360,13 @@ class FpasswordForm(forms.Form):
     def save(self, domain_override=None,
              subject_template_name='registration/password_reset_subject.txt',
              email_template_name='registration/password_reset_email.html',
-             use_https=False, token_generator=mckinsey_token_generator,
+             use_https=False, token_generator=ResetPasswordTokenGenerator(),
              from_email=None, request=None):
         """
         Generates a one-use only link for resetting password and sends to the
         user.
         """
-        from django.core.mail import send_mail
+        from django.core.mail import EmailMessage
 
         email = self.cleaned_data["email"]
 
@@ -382,7 +375,7 @@ class FpasswordForm(forms.Form):
             return HttpResponseRedirect('/accounts/login?reset=failed')
         else:
             user = users.results[0]
-        token_generator = mckinsey_token_generator
+        token_generator = ResetPasswordTokenGenerator()
         token = token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.id))
 
@@ -399,7 +392,8 @@ class FpasswordForm(forms.Form):
         # Email subject *must not* contain newlines
         subject = ''.join(subject.splitlines())
         email = loader.render_to_string(email_template_name, c)
-        send_mail(subject, email, from_email, [user.email])
+        email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
+        email.send(fail_silently=False)
 
 class SetNewPasswordForm(forms.Form):
     """

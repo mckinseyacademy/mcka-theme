@@ -26,7 +26,7 @@ from django.test import TestCase
 from .models import RemoteUser, UserActivation
 from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
 from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm
-from lib.token_generator import mckinsey_token_generator
+from lib.token_generator import ResetPasswordTokenGenerator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.template.response import TemplateResponse
@@ -204,7 +204,7 @@ def reset_confirm(request, uidb64=None, token=None,
                   template_name='registration/password_reset_confirm.html',
                   post_reset_redirect='/accounts/login?reset=complete',
                   set_password_form=SetNewPasswordForm,
-                  token_generator=mckinsey_token_generator,
+                  token_generator=ResetPasswordTokenGenerator(),
                   current_app=None, extra_context=None):
     """
     View that checks the hash in a password reset link and presents a

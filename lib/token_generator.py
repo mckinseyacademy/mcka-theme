@@ -72,4 +72,3 @@ Check that a password reset token is correct for a given user.
         # Used for mocking in tests
         return date.today()
 
-mckinsey_token_generator = ResetPasswordTokenGenerator()
