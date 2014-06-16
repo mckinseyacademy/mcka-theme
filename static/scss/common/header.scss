@@ -1,4 +1,4 @@
-header[role=banner] {
+header[role=banner].background-blue {
   // TODO: replace with extend depth5
   position: fixed;
   background-color: $header-background;
@@ -21,29 +21,50 @@ header[role=banner] {
     float: left;
     height: 100%;
 
-    ul{
+    ul {
       margin: 0;
       display: table;
       height: 100%;
       list-style-type: none;
 
-      li{
+      li {
         display: table-cell;
         vertical-align: middle;
         text-transform: uppercase;
         padding-right: rem-calc(20);
         &:last-child { padding-right: 0; }
         a.selected { color: $mckinsey-academy-blue-gray; }
+      }
+    }
 
-        @media #{$screen} and (max-width: #{upper-bound($small-range)}) {
-          padding-right: rem-calc(5);
-          a { @include font-spec(7); }
+    @media #{$screen} and (max-width: #{upper-bound($small-range)}) {
+      height: auto;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      display: none;
+      background: $mckinsey-blue;
+
+      ul {
+        height: auto;
+        display: block;
+
+        li {
+          padding: 0;
+          display: block;
+
+          a {
+            display: block;
+            padding: 0 rem-calc(15);
+            @include font-spec(14, semibold, 35);
+          }
         }
       }
     }
+
   }
 
-  .logo{
+  .logo {
     background: url(/static/image/McK_McKA_cobranding_beta.png) no-repeat 0 center;
     background-size: 100%;
     width: 328px;
@@ -59,7 +80,28 @@ header[role=banner] {
     }
   }
 
-  .user-info{
+  .mobile-menu {
+    display: none;
+
+    @media #{$small-only} {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      padding: rem-calc(5) rem-calc(10);
+      margin-top: -14px;
+    }
+  }
+
+  #mobile-menu-toggle {
+    display: none;
+
+    @media #{$screen} and (max-width: #{upper-bound($small-range)}) {
+      &:checked + nav { display: block; }
+    }
+  }
+
+  .user-info {
     cursor: pointer;
     float: right;
     color: $user-text;
@@ -83,31 +125,31 @@ header[role=banner] {
         top: $drop_down_offset;
       }
     }
-    div{
+    div {
       display: inline;
     }
-    .user-image img{
+    .user-image img {
       @include square-size($header-bar-height);
     }
     $user-profile-width: 220px;
     .user-profile{
       width: $user-profile-width;
       @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
-      div{
-        display:block;
-      }
+
       color: $mckinsey-academy-black;
       height: auto;
       display: block;
       border-left: 1px solid $border-line;
       border-right: 1px solid $border-line;
       background-color: $pure-white;
-      div{
+
+      div {
         display: block;
       }
       .user-detail{
         width: 100%;
-        >div{
+
+        > div {
           padding: 10px 10px;
           text-align: left;
           border-bottom: 1px solid $border-line;
@@ -119,7 +161,8 @@ header[role=banner] {
             height: 30px;
             padding-top: 8px;
           }
-          &.logout{
+
+          &.logout {
             height: auto;
             vertical-align: middle;
             text-align: center;
@@ -133,14 +176,16 @@ header[role=banner] {
             }
           }
         }
+
         $detail_icon_size: 18px;
-        .fa{
+
+        .fa {
           width: $detail_icon_size;
           font-size: rem-calc($detail_icon_size);
           color: $mckinsey-academy-blue-gray;
           text-align: center;
         }
-        .field-group{
+        .field-group {
           @include font-spec(10, semibold);
           margin-left: $detail_icon_size + 5;
           margin-top: -1*$detail_icon_size;
@@ -152,8 +197,6 @@ header[role=banner] {
               padding-left: 4px;
               border-left: 1px solid $border-line;
             }
-          }
-          .fieldcontent{
           }
         }
       }
@@ -169,10 +212,10 @@ header[role=banner] {
       }
     }
   }
-  .login-action{
+  .login-action {
     float: right;
 
-    .button{
+    .button {
       padding: 8px 15px;
       margin: 10px;
       @include font-spec(14px, bold);
@@ -184,11 +227,11 @@ header[role=banner] {
     }
 
   }
-  .application-name{
+  .application-name {
     display: inline-block;
     padding: 10px 10px;
   }
-  #profile-container.open{
+  #profile-container.open {
     // !important to override foundation dropdown positioning
     right: 0 !important;
     left: auto !important;
