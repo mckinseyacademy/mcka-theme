@@ -32,29 +32,29 @@ def user_program_data(request):
 
 
             # Inject lesson assessment scores
-            assesment_scores = []
+            assesments = {}
 
             gradebook = user_api.get_user_gradebook(request.user.id, course.id)
             if gradebook.courseware_summary:
                 for lesson in gradebook.courseware_summary:
-                    points = 0
-                    max_points = 0
-
+                    percent = None
                     for section in lesson.sections:
-                        points += section.section_total[0]
-                        max_points += section.section_total[1]
+                        if section.format == 'Assessment':
+                            points = section.section_total[0]
+                            max_points = section.section_total[1]
+                            if max_points > 0:
+                                percent = int(round(100*points/max_points))
+                            else:
+                                percent = 0
+                            assesments[section.url_name] = percent
 
-                    if max_points > 0:
-                        percent = int(round(100*points/float(max_points)))
-                    else:
-                        percent = None
-
-                    assesment_scores.append(percent)
-
-                length = len(assesment_scores)
-
-                for i, lesson in enumerate(course.chapters):
-                    lesson.assesment_score = assesment_scores[i] if i < length else None
+            for lesson in course.chapters:
+                lesson.assesment_score = None
+                for sequential in lesson.sequentials:
+                    url_name = sequential.id.split('/')[-1]
+                    if url_name in assesments:
+                        lesson.assesment_score = assesments[url_name]
+                        break
 
 
     data = {
