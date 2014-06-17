@@ -143,7 +143,20 @@ def course_group_work(request, course_id):
 @login_required
 def course_progress(request, course_id):
 
+    course = load_course(course_id, 3)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
+    completions = course_api.get_course_completions(course_id, request.user.id)
+    completed_modules = [result.content_id for result in completions.results]
+
+    module_count = 0
+    for chapter in course.chapters:
+        for sequential in chapter.sequentials:
+            module_count += len(sequential.children)
+
+    if module_count > 0:
+        percent_complete = int(round(100*completions.count/module_count))
+    else:
+        percent_complete = 0
 
     # grade bar chart
     bar_chart = [{'key': 'Lesson Scores', 'values': []}]
@@ -163,6 +176,8 @@ def course_progress(request, course_id):
 
     data = {
         'bar_chart': json.dumps(bar_chart),
+        'completed_modules': completed_modules,
+        'percent_complete': percent_complete,
     }
     return render(request, 'courses/course_progress.haml', data)
 
