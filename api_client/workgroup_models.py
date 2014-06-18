@@ -41,24 +41,11 @@ class WorkGroupInfo(JsonObject):
         clean_data = {
             key: value for key, value in workgroup_data.iteritems() if key in cls.data_fields
         }
-
-        for date_field in cls.date_fields:
-            date_components = ["{}_{}".format(date_field, component_value)
-                               for component_value in ['year', 'month', 'day']]
-            component_values = [int(workgroup_data[component])
-                                for component in date_components if component in workgroup_data]
-            if len(component_values) == 3:
-                clean_data[date_field]= datetime(
-                    component_values[0],
-                    component_values[1],
-                    component_values[2]
-                ).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
-
         return clean_data
 
     @classmethod
     def create(cls, name, workgroup_data):
-        return workgroup_api.create_workgroup(name, workgroup_data=cls._clean_workgroup_data(workgroup_data), group_object=cls)
+        return workgroup_api.create_workgroup(name, workgroup_data=workgroup_data, group_object=cls)
 
     @classmethod
     def list(cls):

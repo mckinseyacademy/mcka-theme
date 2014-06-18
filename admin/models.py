@@ -103,8 +103,6 @@ class Client(BaseOrganizationModel):
         return organization_info
 
 class WorkGroup(BaseWorkGroupModel):
-    data_fields = ["privacy", 'client_id', ]
-    group_type = "workgroup"
 
     def fetch_students(self):
         return self.get_users()

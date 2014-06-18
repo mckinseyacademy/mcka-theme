@@ -27,7 +27,7 @@ PERMISSION_GROUPS = DottableDict(
 def get_workgroups(group_object=JsonObject):
     ''' gets all workgroups'''
     response = GET(
-        '{}/{}'.format(
+        '{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
         )
@@ -64,15 +64,14 @@ def delete_workgroup(workgroup_id):
 @api_error_protect
 def create_workgroup(workgroup_name, workgroup_data=None, group_object=JsonObject):
     ''' create a new workgroup '''
-    data = {
-        "name": workgroup_name,
-    }
 
     if workgroup_data:
         data = workgroup_data
 
+    data["name"] = workgroup_name
+
     response = POST(
-        '{}/{}'.format(
+        '{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
         ),
@@ -104,9 +103,9 @@ def update_workgroup(workgroup_id, workgroup_data=None, group_object=JsonObject)
 @api_error_protect
 def add_user_to_workgroup(user_id, workgroup_id, group_object=JsonObject):
     ''' adds user to workgroup '''
-    data = {"user_id": user_id}
+    data = {"id": user_id}
     response = POST(
-        '{}/{}/{}/users'.format(
+        '{}/{}/{}/users/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
             workgroup_id,
@@ -129,8 +128,10 @@ def get_users_in_workgroup(workgroup_id):
     )
 
     user_list = JP.from_json(response.read(), user_models.UserList)
-
-    return user_list.users
+    if hasattr(user_list, 'users'):
+        return user_list.users
+    else:
+        return []
 
 @api_error_protect
 def remove_user_from_workgroup(workgroup_id, user_id):

@@ -228,12 +228,6 @@ def fetch_clients_with_program(program_id):
 
     return clients
 
-
-def dump(obj):
-  for attr in dir(obj):
-    print "obj.%s = %s" % (attr, getattr(obj, attr))
-
-
 def filterGroupsAndStudents(course, students):
     ''' THIS IS A VERY SLOW PART OF CODE.
         Due to api limitations, filtering of user from student list has to be done on client.
@@ -246,17 +240,13 @@ def filterGroupsAndStudents(course, students):
 #                                   for group in course_api.get_course_content_workgroups(course.id, module.id)]
 
     groups = []
-    groupsList = workgroup_api.get_workgroups()
-    for workgroup in groupsList:
-        groups.append(workgroup_api.get_groups_by_type(workgroup.id, 'organization'))
-
+    groups = workgroup_api.get_workgroups()
+#    for workgroup in groupsList:
+#        groups.append(workgroup_api.get_groups_by_type(workgroup.id, 'organization'))
 
     groupedStudents = []
-    for group in groupsList:
-        dump(group)
-        users = group_api.get_users_in_group(group.id)
-        group.students = users
-        for user in users:
+    for group in groups:
+        for user in group.users:
             for student in students:
                 if user.username == student.username:
                     try:
@@ -264,8 +254,8 @@ def filterGroupsAndStudents(course, students):
                     except:
                         pass
                     groupedStudents.append(student)
-        group.students_count = len(group.students)
-        groups.append(group)
+        group.students_count = len(group.users)
+    #    groups.append(group)
 
 #    groups.sort(key=lambda group: group.id)
 

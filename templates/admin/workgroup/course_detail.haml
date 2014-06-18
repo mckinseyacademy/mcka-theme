@@ -50,7 +50,7 @@
                   .group-info.students
                     %span.label-1= _("Members:")
                     .students-list
-                      - for student in group.students
+                      - for student in group.users
                         .student{'name': '#{student.id}'}
                           .label-2= student.username
                           %a.label-2{href: "mailto:#{student.email}"}= student.email
@@ -84,3 +84,9 @@
 - block js_snippets
   -# Check that this is not needed - was in merged place... %script{src: "{% static 'js/select_and_assign.js' %}"}
   %script{src: "{% static 'js/course_drag_drop.js' %}"}
+  :javascript
+    $(function(){
+      $('.select-group-box .name').click(function(){
+        $(this).parent().find('.group-info').slideToggle();
+      })
+    })

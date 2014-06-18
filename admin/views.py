@@ -19,7 +19,7 @@ from accounts.models import RemoteUser, UserActivation
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
-from api_client import group_api, project_api
+from api_client import group_api, project_api, workgroup_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
 from license import controller as license_controller
@@ -270,7 +270,6 @@ def _format_upload_results(upload_results):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
-    dump(client)
 
     view = 'admin/client/{}.haml'.format(detail_view)
 
@@ -711,22 +710,24 @@ def workgroup_group_create(request, course_id):
 
         lastId = len(groupsList)
 
-        if privateModule != '' and privateFlag:
-            workgroup = WorkGroup.create(
-                'Group {} - private - {}'.format(lastId + 1, companyid), {'privacy': 'private', 'client_id': companyid})
-            group_id = int(workgroup.id)
-            course_api.add_group_to_course_content(
-                group_id, course_id, privateModule.id)
-            workgroup.add_workgroup_to_client(companyid)
-        else:
-            workgroup = WorkGroup.create(
-                'Group {}'.format(lastId + 1), {'privacy': 'public'})
-            group_id = int(workgroup.id)
-            course_api.add_group_to_course_content(
-                group_id, course_id, publicModule.id)
+        # if privateModule != '' and privateFlag:
+        #     workgroup = WorkGroup.create(
+        #         'Group {} - private - {}'.format(lastId + 1, companyid), {'privacy': 'private', 'client_id': companyid})
+        #     group_id = int(workgroup.id)
+        #     course_api.add_group_to_course_content(
+        #         group_id, course_id, privateModule.id)
+        #     workgroup.add_workgroup_to_client(companyid)
+        # else:
+        workgroup = WorkGroup.create(
+            name='Group {}'.format(lastId + 1), workgroup_data={'project': '1'})
+
+        group_id = int(workgroup.id)
+        course_api.add_group_to_course_content(
+            group_id, course_id, publicModule.id)
 
         for student in students:
-            group_api.add_user_to_group(student['id'], group_id)
+            print student['id']
+            workgroup_api.add_user_to_workgroup(student['id'], workgroup.id)
 
         return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
 
