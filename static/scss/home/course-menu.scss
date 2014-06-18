@@ -62,18 +62,17 @@
         .index { margin-bottom: 20px; }
 
         .lesson-progress {
+          color: $mckinsey-grey;
           position: absolute;
-          bottom: 20px;
-          left: 20px;
-          display: none;
+          bottom: 7px;
+          left: 7px;
+          @include font-spec(6);
+          i.on { color: $mckinsey-green; }
 
-          .tick {
-            width: 5px;
-            height: 5px;
-            margin-right: 1px;
-            float: left;
-            background: #e0e0e0;
-            &.on { background: $mckinsey-green; }
+          span {
+            color: $mckinsey-green;
+            font-style: italic;
+            @include font-spec(10, semibold);
           }
         }
       }
