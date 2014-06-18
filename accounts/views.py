@@ -6,6 +6,7 @@ import urllib2 as url_access
 import datetime
 import math
 
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.shortcuts import render
@@ -21,7 +22,6 @@ from courses.controller import program_for_course
 from django.core import mail
 from django.test import TestCase
 # from importlib import import_module
-# from django.conf import settings
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
 from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
@@ -253,7 +253,7 @@ def reset(request, is_admin_site=False,
           email_template_name='registration/password_reset_email.haml',
           subject_template_name='registration/password_reset_subject.txt',
           post_reset_redirect='/accounts/login?reset=done',
-          from_email='admin@mckinseyacademy.org',
+          from_email=settings.APROS_EMAIL_SENDER,
           current_app=None,
           extra_context=None):
     return password_reset(request=request, is_admin_site=is_admin_site,
