@@ -1,4 +1,4 @@
-from api_client import group_api, workgroup_api, organization_api
+from api_client import group_api, workgroup_api, organization_api, user_api
 from api_client import group_models, user_models, workgroup_models, organization_models
 from license import controller as license_controller
 from django.conf import settings
@@ -20,19 +20,6 @@ class BaseGroupModel(group_models.GroupInfo):
     def __unicode__(self):
         return self.name
 
-class BaseOrganizationModel(organization_models.OrganizationInfo):
-
-    def __init__(self, json_data=None, dictionary=None):
-        super(BaseOrganizationModel, self).__init__(
-            json_data=json_data,
-            dictionary=dictionary
-        )
-
-        if not hasattr(self, "display_name") and hasattr(self, "name"):
-            self.display_name = self.name
-
-    def __unicode__(self):
-        return self.name
 
 class BaseWorkGroupModel(workgroup_models.WorkGroupInfo):
 
@@ -75,15 +62,10 @@ class Program(BaseGroupModel):
         return programs
 
 
-class Client(BaseOrganizationModel):
-    data_fields = ["display_name", "contact_name", "contact_phone", "contact_email", ]
-
-    def fetch_students(self):
-        return self.get_users()
+class Client(organization_models.OrganizationInfo):
 
     def fetch_programs(self):
-        organizatons = self.list()
-        programs = [Program.fetch(organizaton.id) for organizaton in organizatons]
+        programs = [Program.fetch(program_id) for program_id in self.groups]
         for program in programs:
             try:
                 program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id, self.id)
@@ -95,12 +77,17 @@ class Client(BaseOrganizationModel):
 
     def add_program(self, program_id, places):
         # Add program group to this client
-        organization_info = organization_api.add_group_to_organization(program_id, self.id)
+        self.add_group(int(program_id))
 
         # set up licenses
         license_controller.create_licenses(program_id, self.id, places)
 
-        return organization_info
+        return self
+
+    def fetch_students(self):
+        # TODO - improve performance using paged results from GET /api/users/?ids=1,2,3,4,5
+        return [user_api.get_user(user_id) for user_id in self.users]
+
 
 class WorkGroup(BaseWorkGroupModel):
 

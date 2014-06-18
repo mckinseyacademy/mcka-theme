@@ -90,6 +90,7 @@ def _build_student_list_from_file(file_stream):
 
 
 def _register_users_in_list(user_list, client_id, activation_link_head):
+    client = Client.fetch(client_id)
     errors = []
     for user_dict in user_list:
         failure = None
@@ -110,7 +111,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
             if user:
                 try:
                     activation_record = UserActivation.user_activation(user)
-                    organization_api.add_user_to_organization(user.id, client_id)
+                    client.add_user(user.id)
                 except ApiError, e:
                     failure = {
                         "reason": e.message,
@@ -193,7 +194,7 @@ def _formatted_group_string(group):
     return group_string
 
 def get_student_list_as_file(client, activation_link = ''):
-    user_list = client.get_users()
+    user_list = client.fetch_students()
     user_strings = [_formatted_user_string(get_user_with_activation(user.id, activation_link)) for user in user_list]
 
     return '\n'.join(user_strings)

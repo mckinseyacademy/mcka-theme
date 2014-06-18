@@ -56,3 +56,12 @@ def PUT(url_path, data):
         url=url_path, headers=json_headers(), data=json.dumps(data))
     request.get_method = lambda: 'PUT'
     return opener.open(request, None, TIMEOUT)
+
+
+def PATCH(url_path, data):
+    ''' PATCH request wrapper to json web server '''
+    opener = url_access.build_opener(url_access.HTTPHandler)
+    request = url_access.Request(
+        url=url_path, headers=json_headers(), data=json.dumps(data))
+    request.get_method = lambda: 'PATCH'
+    return opener.open(request, None, TIMEOUT)

@@ -228,7 +228,7 @@ def client_edit(request, client_id):
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                client = Client.fetch(client_id).update(client_id, request.POST)
+                client = Client.update_and_fetch(client_id, request.POST)
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/')
 
@@ -237,7 +237,7 @@ def client_edit(request, client_id):
     else:
         ''' edit a client '''
         client = Client.fetch(client_id)
-        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'email': client.email, 'phone': client.phone}
+        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone}
         form = ClientForm(data_dict)
 
     # set focus to company name field
