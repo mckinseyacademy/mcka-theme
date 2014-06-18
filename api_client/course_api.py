@@ -212,3 +212,19 @@ def get_course_content_groups(course_id, content_id):
 
     return JP.from_json(response.read(), course_models.CourseContentGroup)
 
+
+@api_error_protect
+def get_course_completions(course_id, user_id):
+    ''' fetch associates groups to specific content within specific course '''
+
+    response = GET(
+        '{}/{}/{}/completions?user_id={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            user_id,
+        )
+    )
+
+    return JP.from_json(response.read())
+
