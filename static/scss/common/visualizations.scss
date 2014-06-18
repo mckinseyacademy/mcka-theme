@@ -73,7 +73,9 @@
       position: absolute;
       top: -21px;
       left: 71%;
-      margin-left: -15px;
+      min-width: 2em;
+      text-align: right;
+      @include transform(translate(-50%, 0));
       @include font-spec(15, bold);
     }
 

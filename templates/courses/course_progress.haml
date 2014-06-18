@@ -6,12 +6,8 @@
     %p.style-6 You are ={percent_complete}% of the way through the course based on completion of modules within lessons:
     %section.course-progress
       .visualization{data-percent: '={percent_complete}%'}
-        - if percent_complete < 6
-          .total{style: 'left:18px;'}
-            ={percent_complete}%
-        - else
-          .total{style: 'left:={percent_complete}%;'}
-            ={percent_complete}%
+        .total{style: 'left:={percent_complete}%;'}
+          ={percent_complete}%
         .bar-wrapper
           .bar{style: 'width:={percent_complete}%;'}
       .label-4 cohort average = 58%
