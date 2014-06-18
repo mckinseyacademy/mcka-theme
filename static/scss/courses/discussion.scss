@@ -1,11 +1,16 @@
-#course-lessons .discussion-course {
+#course-lessons .discussion-course,
+#course-discussion .discussion-content {
   background: #fff !important;
 
-  /* Buttons *****************************************************************/
+  .wrap-instructor-info {
+    display: none;
+  }
 
   .loading-animation {
     position: relative;
   }
+
+  /* Buttons *****************************************************************/
 
   .new-post-btn,
   .new-post-article .new-post-form .submit,

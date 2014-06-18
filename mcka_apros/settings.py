@@ -149,6 +149,8 @@ LMS_SUB_DOMAIN = 'lms'
 NO_PROGRAM_NAME = "McKinsey Management Program"
 GROUP_PROJECT_IDENTIFIER = "GROUP_PROJECT_"
 
+DISCUSSION_IDENTIFIER = "DISCUSSION_"
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',

@@ -17,11 +17,26 @@ def load_course(course_id, depth=3, course_api_impl=course_api):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
+
+    def is_normal_chapter(chapter):
+        '''
+        Check if a chapter is normal or special. GROUP_PROJECT_WORK and DISCUSSION are special chapters.
+        '''
+        return (not chapter.name.startswith(settings.DISCUSSION_IDENTIFIER) and \
+                not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER))
+
     course = course_api_impl.get_course(course_id, depth)
 
     # Separate Group Projects
     course.group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
-    course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+
+    # Only the first discussion chapter is taken into account
+    course.discussion = None
+    for chapter in course.chapters:
+        if chapter.name.startswith(settings.DISCUSSION_IDENTIFIER):
+            course.discussion = chapter
+
+    course.chapters = [chapter for chapter in course.chapters if is_normal_chapter(chapter)]
 
     for group_project in course.group_projects:
         group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]

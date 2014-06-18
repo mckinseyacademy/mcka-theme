@@ -141,6 +141,35 @@ def course_group_work(request, course_id):
 
 
 @login_required
+def course_discussion(request, course_id):
+
+    course = load_course(course_id)
+    has_course_discussion = False
+    vertical_usage_id = None
+
+    # Locate the first chapter page
+    if course.discussion and \
+       course.discussion.sequentials and \
+       course.discussion.sequentials[0].pages:
+        has_course_discussion = True
+        vertical_usage_id = course.discussion.sequentials[0].pages[0].vertical_usage_id()
+
+    remote_session_key = request.session.get("remote_session_key")
+    lms_base_domain = settings.LMS_BASE_DOMAIN
+    lms_sub_domain = settings.LMS_SUB_DOMAIN
+
+    data = {
+        "vertical_usage_id": vertical_usage_id,
+        "remote_session_key": remote_session_key,
+        "has_course_discussion": has_course_discussion,
+        "course_id": course_id,
+        "lms_base_domain": lms_base_domain,
+        "lms_sub_domain": lms_sub_domain
+    }
+    return render(request, 'courses/course_discussion.haml', data)
+
+
+@login_required
 def course_progress(request, course_id):
 
     course = load_course(course_id, 3)
