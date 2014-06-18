@@ -76,7 +76,7 @@ class Program(BaseGroupModel):
 
 
 class Client(BaseOrganizationModel):
-    data_fields = ["display_name", "contact_name", "phone", "email", ]
+    data_fields = ["display_name", "contact_name", "contact_phone", "contact_email", ]
 
     def fetch_students(self):
         return self.get_users()

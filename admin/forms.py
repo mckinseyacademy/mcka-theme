@@ -19,8 +19,8 @@ class ClientForm(forms.Form):
     ''' add a new client to the system '''
     display_name = forms.CharField(max_length=255)
     contact_name = forms.CharField(max_length=255)
-    phone = forms.CharField(max_length=20)
-    email = forms.EmailField()
+    contact_phone = forms.CharField(max_length=20)
+    contact_email = forms.EmailField()
 
 
 class ProgramForm(forms.Form):

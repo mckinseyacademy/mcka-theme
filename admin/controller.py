@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, workgroup_api
+from api_client import user_api, group_api, course_api, workgroup_api, organization_api
 from accounts.models import UserActivation
 
 from .models import Client, WorkGroup
@@ -110,7 +110,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
             if user:
                 try:
                     activation_record = UserActivation.user_activation(user)
-                    group_api.add_user_to_group(user.id, client_id)
+                    organization_api.add_user_to_organization(user.id, client_id)
                 except ApiError, e:
                     failure = {
                         "reason": e.message,
