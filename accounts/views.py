@@ -256,15 +256,44 @@ def reset(request, is_admin_site=False,
           from_email=settings.APROS_EMAIL_SENDER,
           current_app=None,
           extra_context=None):
-    return password_reset(request=request, is_admin_site=is_admin_site,
-                          template_name=template_name,
-                          email_template_name=email_template_name,
-                          subject_template_name=subject_template_name,
-                          password_reset_form=password_reset_form,
-                          post_reset_redirect=post_reset_redirect,
-                          from_email=from_email,
-                          current_app=current_app,
-                          extra_context=extra_context)
+
+    if post_reset_redirect is None:
+        post_reset_redirect = reverse('password_reset_done')
+    else:
+        post_reset_redirect = resolve_url(post_reset_redirect)
+    if request.method == "POST":
+        form = password_reset_form(request.POST)
+        if form.is_valid():
+            token_generator = ResetPasswordTokenGenerator()
+            opts = {
+                'use_https': request.is_secure(),
+                'token_generator': token_generator,
+                'from_email': from_email,
+                'email_template_name': email_template_name,
+                'subject_template_name': subject_template_name,
+                'request': request,
+            }
+            if is_admin_site:
+                opts = dict(opts, domain_override=request.get_host())
+            '''
+            Doing user check here and in save function, because it should be part of save function
+            (if called elsewhere) but here I need it to check post_reset_redirect link
+            '''
+            email = form.cleaned_data["email"]
+            users = user_api.get_users([{'key': 'email', 'value': email}])
+            if users.count < 1:
+                post_reset_redirect = '/accounts/login?reset=failed'
+            form.save(**opts)
+            return HttpResponseRedirect(post_reset_redirect)
+    else:
+        form = password_reset_form()
+    context = {
+        'form': form,
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
 
 
 @ajaxify_http_redirects
