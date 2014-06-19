@@ -5,7 +5,7 @@ from .json_object import JsonObject
 import organization_api
 
 
-class OrganizationInfo(JsonObject):
+class Organization(JsonObject):
     #required_fields = ["display_name", "contact_name", "contact_phone", "contact_email", ]
 
     ''' object representing a organization from api json response '''
@@ -29,6 +29,10 @@ class OrganizationInfo(JsonObject):
     def update_and_fetch(cls, organization_id, update_hash):
         return organization_api.update_organization(organization_id, update_hash, organization_object=cls)
 
+    @classmethod
+    def fetch_from_url(cls, url):
+        return organization_api.fetch_organization_from_url(url, organization_object=cls)
+
     def add_user(self, user_id):
         if user_id not in self.users:
             self.users.append(user_id)
@@ -49,3 +53,8 @@ class OrganizationInfo(JsonObject):
             self.groups.remove(user_id)
             organization_api.update_organization(self.id, {"groups": self.groups})
 
+
+class OrganizationList(JsonObject):
+    object_map = {
+        "results": Organization
+    }

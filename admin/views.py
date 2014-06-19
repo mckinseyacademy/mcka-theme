@@ -22,6 +22,7 @@ from api_client import user_api
 from api_client import group_api, project_api, workgroup_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
+from api_client.project_models import Project
 from license import controller as license_controller
 
 from .models import Client
@@ -33,8 +34,6 @@ from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
-
-
 
 
 def ajaxify_http_redirects(func):
@@ -655,6 +654,32 @@ def workgroup_programs_list(request):
         data
     )
 
+class GroupProjectInfo(object):
+    def __init__(self, id, name, organization=None):
+        self.id = id
+        self.name = name
+        self.organization = organization
+
+def load_group_projects_info_for_course(course, companies):
+    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
+    group_projects = []
+    for project in project_api.get_projects_for_course(course.id):
+        if project.organization is None:
+            group_projects.append(
+                GroupProjectInfo(
+                    project.id,
+                    group_project_lookup[project.content_id],
+                )
+            )
+        else:
+            group_projects.append(
+                GroupProjectInfo(
+                    project.id,
+                    group_project_lookup[project.content_id],
+                    companies[project.organization].display_name
+                )
+            )
+    return group_projects
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_course_detail(request, course_id):
@@ -664,10 +689,12 @@ def workgroup_course_detail(request, course_id):
 
     students, companies = getStudentsWithCompanies(course)
 
-    if len(course.group_projects) < 1:
+    if len(course.group_project_chapters) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     groups, students = filterGroupsAndStudents(course, students)
+
+    group_projects = load_group_projects_info_for_course(course, companies)
 
     data = {
         "principal_name": _("Group Work"),
@@ -676,7 +703,7 @@ def workgroup_course_detail(request, course_id):
         "students": students,
         "groups": groups,
         "companies": companies.values(),
-        "group_projects": course.group_projects,
+        "group_projects": group_projects,
     }
 
     return render(
@@ -690,44 +717,35 @@ def workgroup_course_detail(request, course_id):
 def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
-
         students, companyid, privateFlag = parse_studentslist_from_post(
             request.POST)
 
         course = load_course(course_id)
-        if len(course.group_projects) < 1:
+        if len(course.group_project_chapters) < 1:
             return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
-        groupsList = []
-        privateModule = ''
-        publicModule = course.group_projects[0]
+        projects_by_organization = {}
+        for project in project_api.get_projects_for_course(course.id):
+            org_id = None
+            if project.organization:
+                org_id = Client.fetch_from_url(project.organization).id
+            projects_by_organization[org_id] = project
 
-        for module in course.group_projects:
-            if module.name.startswith(companyid + '_'):
-                privateModule = module
-            groupsList = groupsList + [WorkGroup.fetch(group.group_id)
-                                       for group in course_api.get_course_content_groups(course.id, module.id)]
+        project = projects_by_organization[None]
+        if companyid in projects_by_organization:
+            project = projects_by_organization[companyid]
 
-        lastId = len(groupsList)
+        groups_list = workgroup_api.get_workgroups_for_project(project.id)
+        lastId = len(groups_list)
 
-        # if privateModule != '' and privateFlag:
-        #     workgroup = WorkGroup.create(
-        #         'Group {} - private - {}'.format(lastId + 1, companyid), {'privacy': 'private', 'client_id': companyid})
-        #     group_id = int(workgroup.id)
-        #     course_api.add_group_to_course_content(
-        #         group_id, course_id, privateModule.id)
-        #     workgroup.add_workgroup_to_client(companyid)
-        # else:
         workgroup = WorkGroup.create(
-            name='Group {}'.format(lastId + 1), workgroup_data={'project': '1'})
+            'Group {}'.format(lastId + 1),
+            {
+                "project": project.id,
+            }
+        )
 
-        group_id = int(workgroup.id)
-        course_api.add_group_to_course_content(
-            group_id, course_id, publicModule.id)
-
-        for student in students:
-            print student['id']
-            workgroup_api.add_user_to_workgroup(student['id'], workgroup.id)
+        workgroup.add_user_list([student['id'] for student in students])
 
         return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
 
@@ -741,20 +759,27 @@ def dump(obj):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_project_create(request, course_id):
+    message = _("Error creating project")
+    status_code = 400
 
-    if request.method == 'POST':
-        print request.POST['new-project-private']
-        data = {
-                'private': request.POST['new-project-private'],
-                'organization': request.POST['new-project-company'],
-        }
-        data = {}
-        project = project_api.create_project(course_id, request.POST['new-project-name'], data)
+    if request.method == "POST":
+        project_section = request.POST["project_section"]
+        organization = None
+        private_project = request.POST.get("new-project-private", None)
+        if private_project == "on":
+            organization = request.POST["new-project-company"]
 
-        return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+        try:
+            project = Project.create(course_id, project_section, organization)
+            message = _("Project successfully created")
+            status_code = 200
 
-    return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
-
+        except ApiError as e:
+            message = e.message
+            status_code = e.code
+    response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
+    response.status_code = status_code
+    return response
 
 
 @ajaxify_http_redirects
@@ -763,11 +788,9 @@ def workgroup_group_update(request, group_id, course_id):
     if request.method == 'POST':
 
         students = request.POST.getlist("students[]")
-
         try:
-            for student in students:
-                group_api.add_user_to_group(student, group_id)
-
+            workgroup = WorkGroup.fetch(group_id)
+            workgroup.add_user_list(students)
             return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
 
         except ApiError as err:

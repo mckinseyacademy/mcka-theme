@@ -20,10 +20,10 @@ def load_course(course_id, depth=3, course_api_impl=course_api):
     '''
     course = course_api_impl.get_course(course_id, depth)
     # Separate Group Projects
-    course.group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+    course.group_project_chapters = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
     course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
-    for group_project in course.group_projects:
+    for group_project in course.group_project_chapters:
         group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
 
     return course
@@ -271,12 +271,11 @@ def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
     companies = {}
     for student in students:
-        studentCompanies = user_api.get_user_groups(
-            student.id, group_type='organization')
+        studentCompanies = user_api.get_user_organizations(student.id)
         if len(studentCompanies) > 0:
             company = studentCompanies[0]
-            if companies.get(company.id) is None:
-                companies[company.id] = Client.fetch(company.id)
+            if not company.id in companies:
+                companies[company.id] = company
             student.company = companies[company.id]
     return students, companies
 

@@ -56,6 +56,12 @@ def fetch_organization(organization_id, organization_object=JsonObject):
     return JP.from_json(response.read(), organization_object)
 
 @api_error_protect
+def fetch_organization_from_url(url, organization_object=JsonObject):
+    ''' fetch organization by id '''
+    response = GET(url)
+    return JP.from_json(response.read(), organization_object)
+
+@api_error_protect
 def get_organizations(organization_object=JsonObject):
     ''' fetch all organizations '''
     response = GET(

@@ -1,5 +1,5 @@
 from api_client import group_api, workgroup_api, organization_api, user_api
-from api_client import group_models, user_models, workgroup_models, organization_models
+from api_client import group_models, user_models, workgroup_models, organization_models, project_models
 from license import controller as license_controller
 from django.conf import settings
 
@@ -19,25 +19,6 @@ class BaseGroupModel(group_models.GroupInfo):
 
     def __unicode__(self):
         return self.name
-
-
-class BaseWorkGroupModel(workgroup_models.WorkGroupInfo):
-
-    def __init__(self, json_data=None, dictionary=None):
-        super(BaseWorkGroupModel, self).__init__(
-            json_data=json_data,
-            dictionary=dictionary
-        )
-
-        if not hasattr(self, "id") and hasattr(self, "workgroup_id"):
-            self.id = self.workgroup_id
-
-        if not hasattr(self, "display_name") and hasattr(self, "name"):
-            self.display_name = self.name
-
-    def __unicode__(self):
-        return self.name
-
 
 class Program(BaseGroupModel):
     data_fields = ["display_name", "start_date", "end_date", ]
@@ -62,7 +43,7 @@ class Program(BaseGroupModel):
         return programs
 
 
-class Client(organization_models.OrganizationInfo):
+class Client(organization_models.Organization):
 
     def fetch_programs(self):
         programs = [Program.fetch(program_id) for program_id in self.groups]
@@ -88,14 +69,17 @@ class Client(organization_models.OrganizationInfo):
         # TODO - improve performance using paged results from GET /api/users/?ids=1,2,3,4,5
         return [user_api.get_user(user_id) for user_id in self.users]
 
+class ClientList(organization_models.OrganizationList):
+    object_map = {
+        "results": Client
+    }
 
-class WorkGroup(BaseWorkGroupModel):
+
+class WorkGroup(workgroup_models.Workgroup):
 
     def fetch_students(self):
-        return self.get_users()
-
-    def add_to_course(self, course_id):
-        return workgroup_api.add_group_to_course_content(self.id, course_id)
+        # TODO - improve performance using paged results from GET /api/users/?ids=1,2,3,4,5
+        return [user_api.get_user(user_id) for user_id in self.users]
 
     @classmethod
     def fetch_with_members(cls, workgroup_id):
@@ -110,5 +94,7 @@ class WorkGroup(BaseWorkGroupModel):
 
         return workgroup
 
-    def add_workgroup_to_client(self, client_id):
-        return workgroup_api.add_workgroup_to_group(self.id, client_id)
+class WorkGroupList(workgroup_models.WorkgroupList):
+    object_map = {
+        "results": WorkGroup
+    }

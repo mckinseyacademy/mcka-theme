@@ -24,29 +24,40 @@ PERMISSION_GROUPS = DottableDict(
 )
 
 @api_error_protect
-def get_projects(group_object=JsonObject):
+def get_projects(project_object=JsonObject):
     ''' gets all projects'''
     response = GET(
-        '{}/{}'.format(
+        '{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             PROJECT_API,
         )
     )
 
-    return JP.from_json(response.read(), group_object)
+    return JP.from_json(response.read(), project_object)
 
 @api_error_protect
-def get_project(project_id, group_object=JsonObject):
+def get_projects_for_course(course_id, project_object=JsonObject):
+    ''' gets all projects within course'''
+    return [project for project in get_projects(project_object) if project.course_id == course_id]
+
+@api_error_protect
+def get_project(project_id, project_object=JsonObject):
     ''' fetch project by id '''
     response = GET(
-        '{}/{}/{}'.format(
+        '{}/{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             PROJECT_API,
             project_id,
         )
     )
 
-    return JP.from_json(response.read(), group_object)
+    return JP.from_json(response.read(), project_object)
+
+@api_error_protect
+def fetch_project_from_url(url, project_object=JsonObject):
+    ''' fetch organization by id '''
+    response = GET(url)
+    return JP.from_json(response.read(), project_object)
 
 @api_error_protect
 def delete_project(project_id):
@@ -62,41 +73,38 @@ def delete_project(project_id):
     return (response.code == 204)
 
 @api_error_protect
-def create_project(project_name, project_data=None, group_object=JsonObject):
+def create_project(course_id, content_id, organization_id=None, project_object=JsonObject):
     ''' create a new project '''
     data = {
-        "name": project_name,
+        "course_id": course_id,
+        "content_id": content_id,
     }
 
-#    if project_data:
-#       data["data"] = project_data
+    if not organization_id is None:
+        data["organization_id"] = organization_id
 
     response = POST(
-        '{}/{}'.format(
+        '{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             PROJECT_API,
         ),
         data
     )
 
-    return JP.from_json(response.read(), group_object)
+    return JP.from_json(response.read(), project_object)
 
 
 @api_error_protect
-def update_project(project_id, project_data=None, group_object=JsonObject):
+def update_project(project_id, project_data, project_object=JsonObject):
     ''' update existing project '''
-    data = {}
 
-    if project_data:
-        data["data"] = project_data
-
-    response = POST(
+    response = PUT(
         '{}/{}/{}'.format(
             settings.API_SERVER_ADDRESS,
             PROJECT_API,
             project_id,
         ),
-        data
+        project_data
     )
 
-    return JP.from_json(response.read(), group_object)
+    return JP.from_json(response.read(), project_object)

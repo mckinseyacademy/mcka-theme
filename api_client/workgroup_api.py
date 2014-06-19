@@ -36,6 +36,12 @@ def get_workgroups(group_object=JsonObject):
     return JP.from_json(response.read(), group_object)
 
 @api_error_protect
+def get_workgroups_for_project(project_id):
+    ''' gets all workgourps for a specific project_id'''
+    return [wg for wg in get_workgroups() if wg.project == project_id]
+
+
+@api_error_protect
 def get_workgroup(workgroup_id, group_object=JsonObject):
     ''' fetch workgroup by id '''
     response = GET(
@@ -62,12 +68,10 @@ def delete_workgroup(workgroup_id):
     return (response.code == 204)
 
 @api_error_protect
-def create_workgroup(workgroup_name, workgroup_data=None, group_object=JsonObject):
+def create_workgroup(workgroup_name, workgroup_data, group_object=JsonObject):
     ''' create a new workgroup '''
 
-    if workgroup_data:
-        data = workgroup_data
-
+    data = workgroup_data
     data["name"] = workgroup_name
 
     response = POST(
@@ -82,115 +86,39 @@ def create_workgroup(workgroup_name, workgroup_data=None, group_object=JsonObjec
 
 
 @api_error_protect
-def update_workgroup(workgroup_id, workgroup_data=None, group_object=JsonObject):
+def update_workgroup(workgroup_id, workgroup_data, group_object=JsonObject):
     ''' update existing workgroup '''
-    data = {}
-
-    if workgroup_data:
-        data["data"] = workgroup_data
-
-    response = POST(
+    response = PATCH(
         '{}/{}/{}'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
             workgroup_id,
         ),
-        data
+        workgroup_data
     )
 
     return JP.from_json(response.read(), group_object)
 
 @api_error_protect
-def add_user_to_workgroup(user_id, workgroup_id, group_object=JsonObject):
-    ''' adds user to workgroup '''
-    data = {"id": user_id}
+def add_user_to_workgroup(workgroup_id, user_id):
     response = POST(
         '{}/{}/{}/users/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
             workgroup_id,
         ),
-        data
+        {"id": user_id}
     )
 
-    return JP.from_json(response.read(), group_object)
+    return (response.code == 201)
 
-
-@api_error_protect
-def get_users_in_workgroup(workgroup_id):
-    ''' get list of users associated with a specific workgroup '''
+def get_workgroup_users(workgroup_id, group_object=JsonObject):
     response = GET(
-        '{}/{}/{}/users'.format(
+        '{}/{}/{}/users/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
             workgroup_id,
-        )
-    )
-
-    user_list = JP.from_json(response.read(), user_models.UserList)
-    if hasattr(user_list, 'users'):
-        return user_list.users
-    else:
-        return []
-
-@api_error_protect
-def remove_user_from_workgroup(workgroup_id, user_id):
-    ''' remove user association with a specific workgroup '''
-
-    response = DELETE(
-        '{}/{}/{}/users/{}'.format(
-            settings.API_SERVER_ADDRESS,
-            WORKGROUP_API,
-            workgroup_id,
-            user_id,
-        )
-    )
-
-    return (response.code == 204)
-
-@api_error_protect
-def add_workgroup_to_group(workgroup_id, group_id, group_object=JsonObject, relationship_type='g'):
-    ''' adds workgroup to group '''
-    data = {
-        "workgroup_id": workgroup_id,
-        "relationship_type": relationship_type
-    }
-    response = POST(
-        '{}/{}/{}/groups'.format(
-            settings.API_SERVER_ADDRESS,
-            GROUP_API,
-            group_id,
         ),
-        data
-    )
-
-    return JP.from_json(response.read(), group_object)
-
-@api_error_protect
-def get_groups(workgroup_id, group_object=JsonObject):
-    ''' get groups attached to workgroup '''
-
-    response = GET(
-        '{}/{}/{}/groups'.format(
-            settings.API_SERVER_ADDRESS,
-            WORKGROUP_API,
-            workgroup_id,
-        )
-    )
-
-    return JP.from_json(response.read(), group_object)
-
-@api_error_protect
-def get_groups_by_type(workgroup_id, group_type, group_object=JsonObject):
-    ''' get groups attached to workgroup '''
-
-    response = GET(
-        '{}/{}/{}/groups?type={}'.format(
-            settings.API_SERVER_ADDRESS,
-            WORKGROUP_API,
-            workgroup_id,
-            group_type,
-        )
     )
 
     return JP.from_json(response.read(), group_object)
