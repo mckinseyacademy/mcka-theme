@@ -85,6 +85,8 @@ def course_landing_page(request, course_id):
 
 @login_required
 def course_overview(request, course_id):
+    overview = course_api.get_course_overview(course_id)
+    print(overview)
     data = {
         'overview': course_api.get_course_overview(course_id),
     }
@@ -165,7 +167,6 @@ def course_discussion(request, course_id):
         "lms_sub_domain": lms_sub_domain
     }
     return render(request, 'courses/course_discussion.haml', data)
-
 
 @login_required
 def course_progress(request, course_id):
