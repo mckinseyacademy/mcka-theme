@@ -2,12 +2,36 @@
 #course-discussion .discussion-content {
   background: #fff !important;
 
+  .discussion-column {
+    box-shadow: none;
+  }
+
   .wrap-instructor-info {
     display: none;
   }
 
   .loading-animation {
     position: relative;
+  }
+
+  .blank-slate {
+    padding: 10px 10px 10px;
+  }
+
+  .discussion-article .label {
+    background-color: transparent;
+    color: #000;
+    text-align: left;
+  }
+
+  .discussion-article {
+
+    background-image: none;
+
+    .label-settings {
+      padding-top: 0px;
+    }
+
   }
 
   /* Buttons *****************************************************************/
@@ -217,4 +241,61 @@
 
   }
 
+  /* HOME */
+  .home-header {
+
+    border-bottom: none;
+
+    .label {
+      color: $mckinsey-academy-turquoise;
+      @include font-spec(18, normal, 24);
+      padding: 0px 0px 10px 0px;
+    }
+
+    .home-title {
+      color: $mckinsey-dark-grey;
+      padding: 0px 0px 10px 0px;
+      @include font-spec(18, normal, 24)
+    }
+  }
+
+  .notification-checkbox {
+    border: none;
+    padding: 0px;
+    margin-top: 5px;
+
+    .email-setting {
+      margin: 0px;
+    }
+  }
+
+  .home-helpgrid {
+    box-shadow: none;
+  }
+
+  .helpgrid-row {
+    td {
+      border: 1px solid #B2B2B2;
+    }
+
+    .row-title {
+      background-color: transparent;
+      padding: 10px;
+    }
+
+    .row-item {
+      padding: 10px;
+
+      .row-description {
+        display: block;
+      }
+
+      .icon {
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        padding: 0px;
+      }
+    }
+  }
 }
