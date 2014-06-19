@@ -44,18 +44,16 @@
   .comments .comment-form .discussion-submit-comment,
   .discussion-article .post-update,
   .discussion-article .post-cancel {
-    &, &:hover {
-      @extend .button;
-      @extend .small;
-      @extend .radius;
+    @extend .button;
+    @extend .small;
+    @extend .radius;
 
-      border-color: transparent;
-      background-image: none;
-      text-shadow: none;
-      line-height: 1;
-      height: 35px;
-      width: auto;
-    }
+    border-color: transparent;
+    background-image: none;
+    text-shadow: none;
+    line-height: 1;
+    height: 35px;
+    width: auto;
 
     .new-post-icon {
       display: none;
