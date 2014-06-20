@@ -29,6 +29,7 @@ def load_course(course_id, depth=3, course_api_impl=course_api):
     course = course_api_impl.get_course(course_id, depth)
 
     # Separate Group Projects
+
     course.group_project_chapters = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
     course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
