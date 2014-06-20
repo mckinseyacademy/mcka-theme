@@ -429,9 +429,8 @@ class SetNewPasswordForm(forms.Form):
         try:
             response = user_api.update_user_information(self.user.id, {'password': self.cleaned_data['new_password1']})
         except ApiError as err:
-            error = err.message
-            raise forms.ValidationError(
-                message=self.error_messages['password_validation'],
-                code='password_validation',
-            )
+            if err.code == 400:
+                error = err.message
+                self.user.error = error
+                return self.user
         return self.user
