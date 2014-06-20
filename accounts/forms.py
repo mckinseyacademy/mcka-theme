@@ -403,6 +403,7 @@ class SetNewPasswordForm(forms.Form):
     """
     error_messages = {
         'password_mismatch': _("The two password fields didn't match."),
+        'password_validation': _("Password doesn't match creation criteria."),
     }
     new_password1 = forms.CharField(label=_("New password"),
                                     widget=forms.PasswordInput)
@@ -429,4 +430,8 @@ class SetNewPasswordForm(forms.Form):
             response = user_api.update_user_information(self.user.id, {'password': self.cleaned_data['new_password1']})
         except ApiError as err:
             error = err.message
+            raise forms.ValidationError(
+                message=self.error_messages['password_validation'],
+                code='password_validation',
+            )
         return self.user
