@@ -45,7 +45,7 @@ class Organization(JsonObject):
 
     def add_group(self, group_id):
         if group_id not in self.groups:
-            self.groups.add(group_id)
+            self.groups.append(group_id)
             organization_api.update_organization(self.id, {"groups": self.groups})
 
     def remove_group(self, group_id):

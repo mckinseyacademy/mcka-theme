@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 import urllib2 as url_access
 
+from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -34,6 +35,7 @@ from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
+from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 
 
 def ajaxify_http_redirects(func):
@@ -192,8 +194,9 @@ def client_new(request):
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                name = request.POST["display_name"].lower().replace(' ', '_')
-                client = Client.create(name, request.POST)
+                client_data = {k:v for k, v in request.POST.iteritems()}
+                name = client_data["display_name"].lower().replace(' ', '_')
+                client = Client.create(name, client_data)
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
 
@@ -550,8 +553,9 @@ def program_association(request, client_id):
     if request.method == 'POST':
         form = ProgramAssociationForm(program_list, request.POST)
         if form.is_valid():
-            number_places = int(request.POST.get('places'))
-            client.add_program(request.POST.get('select_program'), number_places)
+            data = {k:v for k, v in request.POST.iteritems()}
+            number_places = int(data.get('places'))
+            client.add_program(data.get('select_program'), number_places)
             return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
     else:
         form = ProgramAssociationForm(program_list)
@@ -909,6 +913,37 @@ def download_group_list(request, course_id):
     )
 
     return response
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def generate_assignments(request, course_id):
+    error = _("Problem generating project review assignments")
+    status_code = 400
+    try:
+        for project in project_api.get_projects_for_course(course_id):
+            # Fetch workgroups
+            workgroups = [WorkGroup.fetch(wg) for wg in project.workgroups]
+            # Get list of all users
+            user_ids = []
+            for wkgrp in workgroups:
+                user_ids.extend([u.id for u in wkgrp.users])
+
+            rap = ReviewAssignmentProcessor(user_ids, workgroups, settings.GROUP_REVIEWS_TARGET)
+            rap.distribute()
+            rap.store_assignments(project.id)
+
+        return HttpResponse(json.dumps({"message": _("Project review assignments allocated")}), content_type='application/json')
+
+    except ApiError as err:
+        error = err.message
+        status_code = err.code
+
+    except ReviewAssignmentUnattainableError as e:
+        error = _("Not enough groups to meet review criteria")
+
+    response = HttpResponse(json.dumps({"message": error}), content_type="application/json")
+    response.status_code = status_code
+    return response
+
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')

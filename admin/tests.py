@@ -21,22 +21,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # and some others that we don't care about for tests
 # pylint: disable=no-member,line-too-long,too-few-public-methods,missing-docstring,too-many-public-methods,pointless-statement,unused-argument,protected-access,maybe-no-member,invalid-name
 
-def test_user(id):
-    return DottableDict({"id": id})
-
 def test_workgroup(id, users):
     return DottableDict({"id": id, "users": users})
 
 def test_set(num_users, workgroup_size):
-    users = [test_user(i) for i in range(num_users)]
-    workgroups = [test_workgroup(j, [u.id for u in users if int(math.floor(u.id/workgroup_size)) == j]) for j in range(int(math.ceil(num_users/workgroup_size)))]
+    users = [i for i in range(num_users)]
+    workgroups = [test_workgroup(j, [u for u in users if int(math.floor(u/workgroup_size)) == j]) for j in range(int(math.ceil(num_users/workgroup_size)))]
     return users, workgroups
 
 class ReviewAssignmentsTest(TestCase):
 
     def test_one_user_in_each_of_2_groups(self):
         ''' one user in each workgroup - should do each others '''
-        users = [test_user(1), test_user(2)]
+        users = [1, 2]
         workgroups = [test_workgroup(11, [1]), test_workgroup(12, [2])]
 
         rap = ReviewAssignmentProcessor(users, workgroups, 1)
@@ -54,7 +51,7 @@ class ReviewAssignmentsTest(TestCase):
 
 
     def test_one_user_in_each_of_3_groups(self):
-        users = [test_user(1), test_user(2), test_user(3)]
+        users = [1, 2, 3]
         workgroups = [test_workgroup(11, [1]), test_workgroup(12, [2]), test_workgroup(13, [3])]
 
         rap = ReviewAssignmentProcessor(users, workgroups, 2)
@@ -88,7 +85,7 @@ class ReviewAssignmentsTest(TestCase):
 
 
     def test_two_users_in_each_of_2_groups(self):
-        users = [test_user(1), test_user(2), test_user(11), test_user(12)]
+        users = [1, 2, 11, 12]
         workgroups = [test_workgroup(101, [1,11]), test_workgroup(102, [2,12])]
 
         rap = ReviewAssignmentProcessor(users, workgroups, 2)
@@ -116,8 +113,8 @@ class ReviewAssignmentsTest(TestCase):
             self.assertTrue(len(rap.workgroup_reviewers[wg.id]) == 10)
 
         # Make sure that it is fairly even
-        max_assignments = max([len(rap.reviewer_workgroups[u.id]) for u in users])
-        min_assignments = min([len(rap.reviewer_workgroups[u.id]) for u in users])
+        max_assignments = max([len(rap.reviewer_workgroups[u]) for u in users])
+        min_assignments = min([len(rap.reviewer_workgroups[u]) for u in users])
 
         self.assertTrue(max_assignments - min_assignments < 2)
 

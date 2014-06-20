@@ -39,6 +39,8 @@
                 = _("Create Group of Selected Students")
               %a.button.radius.small{href: "/admin/workgroup/course/#{course.id}/download_group_list", target: "_blank"}
                 Download List of Groups
+              %a#generate_assignments.button.radius.small{href: "/admin/workgroup/course/#{course.id}/generate_assignments"}
+                = _("Generate Project Review Assignments")
               .companies-filter-wrapper.large-12
                 %ul.companies-filter
                   %li.company-filter{'data-company-filter': 'all'} All Companies
