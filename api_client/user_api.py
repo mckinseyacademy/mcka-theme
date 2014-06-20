@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from .json_object import JsonParser as JP
-from . import user_models, gradebook_models
+from . import user_models, gradebook_models, organization_models, workgroup_models
 from .json_requests import GET, POST, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
@@ -33,15 +33,31 @@ def authenticate(username, password):
     )
     return JP.from_json(response.read(), user_models.AuthenticationResponse)
 
+
 @api_error_protect
 def get_user(user_id):
     ''' get specified user '''
+    # NB - trailing slash causes only a small amount of fields to get output
+    # get extended fields as well if not including trailing slash
     response = GET(
         '{}/{}/{}'.format(
             settings.API_SERVER_ADDRESS, USER_API, user_id
         )
     )
     return JP.from_json(response.read(), user_models.UserResponse)
+
+
+@api_error_protect
+def get_user_dict(user_id):
+    ''' get specified user as a dict'''
+    # NB - trailing slash causes only a small amount of fields to get output
+    # get extended fields as well if not including trailing slash
+    response = GET(
+        '{}/{}/{}/'.format(
+            settings.API_SERVER_ADDRESS, USER_API, user_id
+        )
+    )
+    return json.loads(response.read())
 
 @api_error_protect
 def get_users(params=[]):
@@ -290,6 +306,31 @@ def get_user_preferences(user_id):
     # Note that we return plain dictionary here - makes more sense 'cos we set a dictionary
     return json.loads(response.read())
 
+@api_error_protect
+def get_user_organizations(user_id, organization_object=organization_models.OrganizationList):
+    ''' return organizations with which the user is associated '''
+    response = GET(
+        '{}/{}/{}/organizations/'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        )
+    )
+
+    return JP.from_json(response.read(), organization_object).results
+
+@api_error_protect
+def get_user_workgroups(user_id, workgroup_object=workgroup_models.WorkgroupList):
+    ''' return organizations with which the user is associated '''
+    response = GET(
+        '{}/{}/{}/workgroups/'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        )
+    )
+
+    return JP.from_json(response.read(), workgroup_object).results
 
 USER_ERROR_CODE_MESSAGES = {
     "update_user_information": {

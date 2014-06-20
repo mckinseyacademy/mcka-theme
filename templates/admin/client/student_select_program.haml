@@ -25,6 +25,11 @@
         ▲
       %span{class: 'desc'}
         ▼
+    %th Invite
+      %span{class: 'asc'}
+        ▲
+      %span{class: 'desc'}
+        ▼
   %tbody
     - for student in students
       %tr.student{id: "#{student.id}"}
@@ -32,4 +37,11 @@
         %td= student.email
         %td{style: "color: red;"} 1/1/2014
         %td{style: "color: red;"} admin
-        %td{style: "color: red;"} enrolled
+        - if student.enrolled
+          %td enrolled
+          %td
+        - else
+          %td unenrolled
+          %td
+            %a.invite-user{'href': '/admin/clients/#{client.id}/user/#{student.id}/resend'}
+              Resend

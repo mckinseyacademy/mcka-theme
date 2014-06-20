@@ -6,11 +6,12 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api
+from api_client import user_api, group_api, course_api, workgroup_api, organization_api
 from accounts.models import UserActivation
 
 from .models import Client, WorkGroup
 from license import controller as license_controller
+from accounts.controller import get_current_course_for_user, set_current_course_for_user
 
 
 def load_course(course_id, depth=3, course_api_impl=course_api):
@@ -28,7 +29,9 @@ def load_course(course_id, depth=3, course_api_impl=course_api):
     course = course_api_impl.get_course(course_id, depth)
 
     # Separate Group Projects
-    course.group_projects = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+
+    course.group_project_chapters = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+    course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
     # Only the first discussion chapter is taken into account
     course.discussion = None
@@ -36,9 +39,7 @@ def load_course(course_id, depth=3, course_api_impl=course_api):
         if chapter.name.startswith(settings.DISCUSSION_IDENTIFIER):
             course.discussion = chapter
 
-    course.chapters = [chapter for chapter in course.chapters if is_normal_chapter(chapter)]
-
-    for group_project in course.group_projects:
+    for group_project in course.group_project_chapters:
         group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
 
     return course
@@ -105,6 +106,7 @@ def _build_student_list_from_file(file_stream):
 
 
 def _register_users_in_list(user_list, client_id, activation_link_head):
+    client = Client.fetch(client_id)
     errors = []
     for user_dict in user_list:
         failure = None
@@ -125,7 +127,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
             if user:
                 try:
                     activation_record = UserActivation.user_activation(user)
-                    group_api.add_user_to_group(user.id, client_id)
+                    client.add_user(user.id)
                 except ApiError, e:
                     failure = {
                         "reason": e.message,
@@ -208,7 +210,7 @@ def _formatted_group_string(group):
     return group_string
 
 def get_student_list_as_file(client, activation_link = ''):
-    user_list = client.get_users()
+    user_list = client.fetch_students()
     user_strings = [_formatted_user_string(get_user_with_activation(user.id, activation_link)) for user in user_list]
 
     return '\n'.join(user_strings)
@@ -250,16 +252,18 @@ def filterGroupsAndStudents(course, students):
         This should be replaced once API changes.
     '''
     groupsList = []
-    for module in course.group_projects:
-        groupsList = groupsList + [WorkGroup.fetch(group.group_id)
-                                   for group in course_api.get_course_content_groups(course.id, module.id)]
+#    for module in course.group_projects:
+#        groupsList = groupsList + [WorkGroup.fetch(group.workgroup_id)
+#                                   for group in course_api.get_course_content_workgroups(course.id, module.id)]
 
     groups = []
+    groups = workgroup_api.get_workgroups()
+#    for workgroup in groupsList:
+#        groups.append(workgroup_api.get_groups_by_type(workgroup.id, 'organization'))
+
     groupedStudents = []
-    for group in groupsList:
-        users = group_api.get_users_in_group(group.id)
-        group.students = users
-        for user in users:
+    for group in groups:
+        for user in group.users:
             for student in students:
                 if user.username == student.username:
                     try:
@@ -267,10 +271,10 @@ def filterGroupsAndStudents(course, students):
                     except:
                         pass
                     groupedStudents.append(student)
-        group.students_count = len(group.students)
-        groups.append(group)
+        group.students_count = len(group.users)
+    #    groups.append(group)
 
-    groups.sort(key=lambda group: group.id)
+#    groups.sort(key=lambda group: group.id)
 
     for student in groupedStudents:
         if student in students:
@@ -283,12 +287,11 @@ def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
     companies = {}
     for student in students:
-        studentCompanies = user_api.get_user_groups(
-            student.id, group_type='organization')
+        studentCompanies = user_api.get_user_organizations(student.id)
         if len(studentCompanies) > 0:
             company = studentCompanies[0]
-            if companies.get(company.id) is None:
-                companies[company.id] = Client.fetch(company.id)
+            if not company.id in companies:
+                companies[company.id] = company
             student.company = companies[company.id]
     return students, companies
 

@@ -202,7 +202,12 @@ def get_users_content_filtered(course_id, content_id, params=[]):
 @api_error_protect
 def get_course_content_groups(course_id, content_id):
     ''' fetch associates groups to specific content within specific course '''
-
+    print '{}/{}/{}/content/{}/groups'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            content_id,
+        )
     response = GET(
         '{}/{}/{}/content/{}/groups'.format(
             settings.API_SERVER_ADDRESS,

@@ -88,6 +88,13 @@ def fetch_granted_license(granted_id, grantee_id):
     else:
         return licenses[0]
 
+def fetch_granted_licenses(grantee_id, grantor_id):
+    licenses = LicenseGrant.objects.filter(grantee_id=grantee_id, grantor_id=grantor_id)
+    if len(licenses) < 1:
+        return None
+    else:
+        return licenses
+
 
 class LicenseBroker(object):
 

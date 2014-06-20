@@ -19,6 +19,7 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/program_association', views.program_association, name='program_association'),
     url(r'^clients/(?P<client_id>[0-9]+)/add_students_to_program', views.add_students_to_program, name='add_students_to_program'),
     url(r'^clients/(?P<client_id>[0-9]+)/add_students_to_course', views.add_students_to_course, name='add_students_to_course'),
+    url(r'^clients/(?P<client_id>[0-9]+)/user/(?P<user_id>[0-9]+)/resend', views.client_resend_user_invite, name='client_resend_user_invite'),
     url(r'^clients/(?P<client_id>[0-9]+)/(?P<detail_view>.*)', views.client_detail, name='client_detail'),
     url(r'^clients', views.client_list, name='client_list'),
     url(r'^programs/program_new', views.program_new, name='program_new'),
@@ -34,5 +35,6 @@ urlpatterns = patterns(
     url(r'^workgroup/group/update/(?P<group_id>[0-9]+)/(?P<course_id>.*)', views.workgroup_group_update, name='workgroup_group_update'),
     url(r'^workgroup/group/create/(?P<course_id>.*)', views.workgroup_group_create, name='workgroup_group_create'),
     url(r'^workgroup/group/(?P<group_id>[0-9]+)/remove', views.workgroup_group_remove, name='workgroup_group_remove'),
+    url(r'^workgroup/project/create/(?P<course_id>.*)', views.workgroup_project_create, name='workgroup_project_create'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
 )
