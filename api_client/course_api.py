@@ -66,6 +66,10 @@ def get_course_overview(course_id):
     if len(what_you_will_learn) > 0:
         overview.what_you_will_learn = what_you_will_learn[0].body
 
+    video = [item for item in overview.sections if getattr(item, "class") == "overview_video"]
+    if len(video) > 0:
+        overview.video = getattr(video[0].attributes, 'data-video-id')
+
     return overview
 
 @api_error_protect
@@ -93,7 +97,6 @@ def get_course_syllabus(course_id):
         return tabs["syllabus"].content
     else:
         return None
-
 
 @api_error_protect
 def get_course_news(course_id):
@@ -131,7 +134,6 @@ def get_course(course_id, depth = 3):
             sequential.pages = [content_child for content_child in sequential.children if content_child.category == "vertical"]
 
     return course
-
 
 @api_error_protect
 def get_user_list_json(course_id, program_id = None, client_id = None):
@@ -211,4 +213,19 @@ def get_course_content_groups(course_id, content_id):
     )
 
     return JP.from_json(response.read(), course_models.CourseContentGroup)
+
+@api_error_protect
+def get_course_completions(course_id, user_id):
+    ''' fetch associates groups to specific content within specific course '''
+
+    response = GET(
+        '{}/{}/{}/completions?user_id={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            user_id,
+        )
+    )
+
+    return JP.from_json(response.read())
 

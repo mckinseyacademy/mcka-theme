@@ -41,6 +41,16 @@
   }
 }
 
+.student-list .student {
+  a {
+    display: block;
+    width: 118px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
 .select-group-box.private {
   background: $mckinsey-academy-warm-gray;
 }

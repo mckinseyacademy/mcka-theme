@@ -69,6 +69,8 @@ def course_landing_page(request, course_id):
     etc. from user settings
     '''
     set_current_course_for_user(request, course_id)
+    completions = course_api.get_course_completions(course_id, request.user.id)
+    completed_modules = [result.content_id for result in completions.results]
 
     data = {
         "user": request.user,
@@ -77,16 +79,18 @@ def course_landing_page(request, course_id):
         "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
+        "completed_modules": completed_modules,
     }
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
 def course_overview(request, course_id):
+    overview = course_api.get_course_overview(course_id)
+    print(overview)
     data = {
         'overview': course_api.get_course_overview(course_id),
     }
     return render(request, 'courses/course_overview.haml', data)
-
 
 @login_required
 def course_syllabus(request, course_id):
@@ -95,17 +99,14 @@ def course_syllabus(request, course_id):
     }
     return render(request, 'courses/course_syllabus.haml', data)
 
-
 @login_required
 def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
-
 @login_required
 def course_cohort(request, course_id):
     return render(request, 'courses/course_cohort.haml')
-
 
 @login_required
 def course_group_work(request, course_id):
@@ -139,11 +140,51 @@ def course_group_work(request, course_id):
     }
     return render(request, 'courses/course_group_work.haml', data)
 
+@login_required
+def course_discussion(request, course_id):
+
+    course = load_course(course_id)
+    has_course_discussion = False
+    vertical_usage_id = None
+
+    # Locate the first chapter page
+    if course.discussion and \
+       course.discussion.sequentials and \
+       course.discussion.sequentials[0].pages:
+        has_course_discussion = True
+        vertical_usage_id = course.discussion.sequentials[0].pages[0].vertical_usage_id()
+
+    remote_session_key = request.session.get("remote_session_key")
+    lms_base_domain = settings.LMS_BASE_DOMAIN
+    lms_sub_domain = settings.LMS_SUB_DOMAIN
+
+    data = {
+        "vertical_usage_id": vertical_usage_id,
+        "remote_session_key": remote_session_key,
+        "has_course_discussion": has_course_discussion,
+        "course_id": course_id,
+        "lms_base_domain": lms_base_domain,
+        "lms_sub_domain": lms_sub_domain
+    }
+    return render(request, 'courses/course_discussion.haml', data)
 
 @login_required
 def course_progress(request, course_id):
 
+    course = load_course(course_id, 3)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
+    completions = course_api.get_course_completions(course_id, request.user.id)
+    completed_modules = [result.content_id for result in completions.results]
+
+    module_count = 0
+    for chapter in course.chapters:
+        for sequential in chapter.sequentials:
+            module_count += len(sequential.children)
+
+    if module_count > 0:
+        percent_complete = int(round(100*completions.count/module_count))
+    else:
+        percent_complete = 0
 
     # grade bar chart
     bar_chart = [{'key': 'Lesson Scores', 'values': []}]
@@ -163,14 +204,14 @@ def course_progress(request, course_id):
 
     data = {
         'bar_chart': json.dumps(bar_chart),
+        'completed_modules': completed_modules,
+        'percent_complete': percent_complete,
     }
     return render(request, 'courses/course_progress.haml', data)
-
 
 @login_required
 def course_resources(request, course_id):
     return render(request, 'courses/course_resources.haml')
-
 
 @login_required
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
@@ -212,10 +253,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     }
     return render(request, 'courses/course_lessons.haml', data)
 
-
 def course_notready(request, course_id):
     return render(request, 'courses/course_notready.haml')
-
 
 @login_required
 def infer_chapter_navigation(request, course_id, chapter_id):

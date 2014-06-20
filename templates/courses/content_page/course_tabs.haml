@@ -6,9 +6,7 @@
   %li
     %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/news"}= _("News")
   %li
-    -# Temporary until discussion page is out
-    -# %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", href: "/courses/#{course.id}/discussion"}= _("Discussion")
-    %a.nav-1{'data-reveal-id': "course_discussion_modal"}= _("Discussion")
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", href: "/courses/#{course.id}/discussion"}= _("Discussion")  
   %li
     %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/progress"}= _("Progress")
   %li

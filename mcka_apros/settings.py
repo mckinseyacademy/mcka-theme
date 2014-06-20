@@ -149,6 +149,8 @@ LMS_SUB_DOMAIN = 'lms'
 NO_PROGRAM_NAME = "McKinsey Management Program"
 GROUP_PROJECT_IDENTIFIER = "GROUP_PROJECT_"
 
+DISCUSSION_IDENTIFIER = "DISCUSSION_"
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -176,8 +178,7 @@ EDX_API_KEY = 'test_api_key'
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-# TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
-TA_EMAIL_GROUP = 'dcikatic@edx.org'
+TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
 INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from

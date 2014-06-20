@@ -3,11 +3,13 @@
   #course-progress
     %h1 Course Progress for '={user.username}'
     .sub-1 PROGRESS
-    %p.style-6 You are 00% of the way through the course based on completion of modules within lessons:
+    %p.style-6 You are ={percent_complete}% of the way through the course based on completion of modules within lessons:
     %section.course-progress
-      .visualization{data-percent: '71%'}
-        .total 71%
-        .bar
+      .visualization{data-percent: '={percent_complete}%'}
+        .total{style: 'left:={percent_complete}%;'}
+          ={percent_complete}%
+        .bar-wrapper
+          .bar{style: 'width:={percent_complete}%;'}
       .label-4 cohort average = 58%
     %hr
     .sub-1 GRADES
@@ -47,7 +49,10 @@
             %td.lesson-progress
               - for sequential in lesson.sequentials
                 - for lesson_module in sequential.pages
-                  %span{class: "#{lesson_module.status_class}"}
+                  - if lesson_module.id in completed_modules
+                    %span{class: "complete"}
+                  - else
+                    %span{class: "incomplete"}
     %hr
     %table.lesson-table
       %thead
