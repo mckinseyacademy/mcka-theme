@@ -13,6 +13,7 @@ from django.template import loader
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.core.urlresolvers import reverse
+from api_client.api_error import ApiError
 
 
 # djano forms are "old-style" forms => causing lint errors
@@ -402,6 +403,7 @@ class SetNewPasswordForm(forms.Form):
     """
     error_messages = {
         'password_mismatch': _("The two password fields didn't match."),
+        'password_validation': _("Password doesn't match creation criteria."),
     }
     new_password1 = forms.CharField(label=_("New password"),
                                     widget=forms.PasswordInput)
@@ -427,5 +429,8 @@ class SetNewPasswordForm(forms.Form):
         try:
             response = user_api.update_user_information(self.user.id, {'password': self.cleaned_data['new_password1']})
         except ApiError as err:
-            error = err.message
+            if err.code == 400:
+                error = err.message
+                self.user.error = error
+                return self.user
         return self.user
