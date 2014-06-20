@@ -63,3 +63,8 @@
   }
 }
 
+#generalModal.reveal-modal{
+  p.medium-font{
+    @include font-spec(14, normal, 22);
+  }
+}

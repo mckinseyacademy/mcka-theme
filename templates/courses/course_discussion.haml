@@ -1,0 +1,23 @@
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-discussion
+    - if not has_course_discussion
+      .row
+        .error= _("No Discussion has been configured for this course")
+    - else
+      .row
+        .large-12.medium-12.columns
+          .discussion-content
+- block js_snippets
+  :javascript
+    window.onload = (function(){
+      var discussion_content = $('#course-discussion .discussion-content');
+      var discussion_data = {
+        courseId: '{{ course_id }}',
+        usageId: '{{ vertical_usage_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+      };
+      discussion_content.xblock(discussion_data);
+    })

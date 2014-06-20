@@ -7,6 +7,14 @@
     outline: 0;
   }
 
+  .discussion-column {
+    box-shadow: none;
+  }
+
+  .discussion-article {
+    background-image: none;
+  }
+
   /* Buttons *****************************************************************/
 
   .new-post-btn,
@@ -14,7 +22,8 @@
   .new-post-article .new-post-form .new-post-cancel,
   .discussion-submit-post,
   .add-response .add-response-btn,
-  .comments .comment-form .discussion-submit-comment {
+  .comments .comment-form .discussion-submit-comment,
+  .discussion-article .post-update {
     &, &:hover {
       @extend .button;
       @extend .small;
@@ -30,6 +39,26 @@
 
     .new-post-icon {
       display: none;
+    }
+  }
+
+  .discussion-article {
+
+    .post-update {
+      margin-top: 15px;
+
+      &, &:hover {
+        margin-top: 15px;
+      }
+    }
+
+    .post-cancel {
+      &, &:hover, &:visited {
+        background-color: $mckinsey-academy-light-gray;
+        margin-left: 15px;
+        margin-top: 15px;
+        color: $mckinsey-academy-black !important;
+      }
     }
   }
 

@@ -372,28 +372,28 @@ class FpasswordForm(forms.Form):
 
         users = user_api.get_users([{'key': 'email', 'value': email}])
         if users.count < 1:
-            return HttpResponseRedirect('/accounts/login?reset=failed')
+            post_reset_redirect = '/accounts/login?reset=failed'
         else:
             user = users.results[0]
-        token_generator = ResetPasswordTokenGenerator()
-        token = token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.id))
+            token_generator = ResetPasswordTokenGenerator()
+            token = token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.id))
 
-        url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': token})
+            url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': token})
 
-        c = {
-            'email': user.email,
-            'domain': request.META.get('HTTP_HOST'),
-            'url': url,
-            'user': user,
-            'protocol': 'https' if use_https else 'http',
-        }
-        subject = loader.render_to_string(subject_template_name, c)
-        # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
-        email = loader.render_to_string(email_template_name, c)
-        email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
-        email.send(fail_silently=False)
+            c = {
+                'email': user.email,
+                'domain': request.META.get('HTTP_HOST'),
+                'url': url,
+                'user': user,
+                'protocol': 'https' if use_https else 'http',
+            }
+            subject = loader.render_to_string(subject_template_name, c)
+            # Email subject *must not* contain newlines
+            subject = ''.join(subject.splitlines())
+            email = loader.render_to_string(email_template_name, c)
+            email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
+            email.send(fail_silently=False)
 
 class SetNewPasswordForm(forms.Form):
     """
