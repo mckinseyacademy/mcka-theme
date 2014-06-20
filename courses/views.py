@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
+from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, program_for_course
@@ -202,10 +203,18 @@ def course_progress(request, course_id):
         'color': '#e37121'
     })
 
+    graders = gradebook.grading_policy.GRADER
+    for grader in graders:
+        grader.weight = floatformat(grader.weight*100)
+
+    pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
+
     data = {
         'bar_chart': json.dumps(bar_chart),
         'completed_modules': completed_modules,
         'percent_complete': percent_complete,
+        'pass_grade': pass_grade,
+        'graders': graders,
     }
     return render(request, 'courses/course_progress.haml', data)
 
