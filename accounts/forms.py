@@ -13,6 +13,7 @@ from django.template import loader
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.core.urlresolvers import reverse
+from api_client.api_error import ApiError
 
 
 # djano forms are "old-style" forms => causing lint errors
