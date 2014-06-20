@@ -27,7 +27,7 @@ PERMISSION_GROUPS = DottableDict(
 def get_groups_of_type(group_type, group_object=JsonObject):
     ''' gets all groups of provided type'''
     response = GET(
-        '{}/{}?type={}'.format(
+        '{}/{}/?type={}'.format(
             settings.API_SERVER_ADDRESS,
             GROUP_API,
             group_type,

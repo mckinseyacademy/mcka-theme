@@ -3,8 +3,9 @@
 
 from django.conf import settings
 
-from api_client import course_api, user_api, user_models
+from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.api_error import ApiError
+from api_client.project_models import Project
 from license import controller as license_controller
 from admin.models import Program, WorkGroup
 from admin.controller import load_course
@@ -71,7 +72,6 @@ def build_page_info_for_course(
 
     return course, current_chapter, current_sequential, current_page
 
-
 def get_course_position_information(user_id, course_id, user_api_impl=user_api):
     course_detail = False
     try:
@@ -80,7 +80,6 @@ def get_course_position_information(user_id, course_id, user_api_impl=user_api):
         pass
     if course_detail == False:
         course_detail = user_models.UserCourseStatus(dictionary={"position": None})
-
     return course_detail
 
 
@@ -120,10 +119,10 @@ def locate_chapter_page(
     chapter_id = chapter.id if chapter else None
     page_id = page.id if page else None
 
-    if course_detail:
-        return course_id, chapter_id, page_id, course_detail.position
-    else:
+    if course_detail is None:
         return course_id, chapter_id, page_id, None
+    else:
+        return course_id, chapter_id, page_id, course_detail.position
 
 def program_for_course(user_id, course_id, user_api_impl=user_api):
     '''
@@ -219,33 +218,24 @@ def group_project_location(user_id, course, sequential_id=None):
     Returns current sequential_id and page_id for the user for their group project
     '''
     # Find the user_group(s) with which this user is associated
-    user_project_group_ids = [user_group.id for user_group in user_api.get_user_groups(user_id, "workgroup")]
+    user_workgroups = user_api.get_user_workgroups(user_id)
+    user_projects = [Project.fetch_from_url(wg.project) for wg in user_workgroups]
 
-    # Find the group_project to which one of these project groups is assigned:
-    group_project = None
-    project_group = None
-    for project in course.group_projects:
-        try:
-            project_groups = course_api.get_course_content_groups(course.id, project.id)
-        except:
-            project_groups = []
+    # So, we can find the project for the user
+    user_course_projects = [cp for cp in user_projects if cp.course_id == course.id]
+    if len(user_course_projects) < 1:
+        return None, None, None, None
 
-        intersection_ids = [pg.group_id for pg in project_groups if pg.group_id in user_project_group_ids]
-        if len(intersection_ids) > 0:
-            group_project = project
-            project_group = WorkGroup.fetch_with_members(intersection_ids[0])
-            break;
+    the_user_project = user_course_projects[0]
 
-    if not group_project:
-        if len(course.group_projects) > 0:
-            group_project = course.group_projects[0]
-        else:
-            return None, None, None, None
+    group_project = [ch for ch in course.group_project_chapters if ch.id == the_user_project.content_id][0]
 
-    # TODO - remove fake project group when desired
-    if not project_group:
-        # return None, group_project, None, None
-        project_group = _fake_project_group()
+    user_course_workgroups = [wg for wg in user_workgroups if wg.id in the_user_project.workgroups]
+    if len(user_course_workgroups) < 1:
+        return None, group_project, None, None
+
+    project_group = user_course_workgroups[0]
+    project_group.members = [user_api.get_user(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
 
     # Get the right location within this group project - can't do this yet
     #course_detail = get_course_position_information(user_id, course.id)

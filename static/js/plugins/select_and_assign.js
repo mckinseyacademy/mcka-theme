@@ -1,22 +1,41 @@
+var _default_success = function(response){
+  alert(response.message);
+  window.location.reload();
+};
+
+var _default_error = function(jqXHR, textStatus, errorThrown){
+  var message = textStatus + " - " + errorThrown;
+  if(jqXHR.responseJSON){
+    message = jqXHR.responseJSON.message;
+  }
+  else if(jqXHR.responseText){
+    message = jqXHR.responseText;
+  }
+  alert(message);
+};
+
+function submit_form_message_response(overlay, formSelector, success_fn, error_fn){
+  overlay.on('submit', formSelector, function(e){
+    e.preventDefault();
+    var form = $(this);
+
+    var on_success = success_fn ? success_fn : _default_success;
+    var on_error = error_fn ? error_fn : _default_error;
+
+    $.ajax({
+      type: form.attr('method'),
+      url: form.attr('action'),
+      data: form.serialize(),
+      dataType: 'json',
+      success: on_success,
+      error: on_error
+    });
+  });
+}
+
 function enable_selection(selections, activator){
   var _multi_selection = function(){
     $(this).toggleClass('selected');
-  };
-
-  var _default_success = function(response){
-    alert(response.message);
-    window.location.reload();
-  };
-
-  var _default_error = function(jqXHR, textStatus, errorThrown){
-    var message = textStatus + " - " + errorThrown;
-    if(jqXHR.responseJSON){
-      message = jqXHR.responseJSON.message;
-    }
-    else if(jqXHR.responseText){
-      message = jqXHR.responseText;
-    }
-    alert(message);
   };
 
   if(!$.isArray(selections)){
