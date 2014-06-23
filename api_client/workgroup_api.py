@@ -122,3 +122,27 @@ def get_workgroup_users(workgroup_id, group_object=JsonObject):
     )
 
     return JP.from_json(response.read(), group_object)
+
+@api_error_protect
+def add_group_to_workgroup(workgroup_id, group_id):
+    response = POST(
+        '{}/{}/{}/groups/'.format(
+            settings.API_SERVER_ADDRESS,
+            WORKGROUP_API,
+            workgroup_id,
+        ),
+        {"id": group_id}
+    )
+
+    return (response.code == 201)
+
+def get_workgroup_groups(workgroup_id, group_object=JsonObject):
+    response = GET(
+        '{}/{}/{}/groups/'.format(
+            settings.API_SERVER_ADDRESS,
+            WORKGROUP_API,
+            workgroup_id,
+        ),
+    )
+
+    return JP.from_json(response.read(), group_object)

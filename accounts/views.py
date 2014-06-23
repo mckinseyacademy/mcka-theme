@@ -151,9 +151,9 @@ def activate(request, activation_code):
         user_data["password"] = user_data["confirm_password"] = "fake_password"
 
         # See if we have a company for this user
-        companies = user_api.get_user_groups(user.id, Client.group_type)
+        companies = user_api.get_user_organizations(user.id)
         if len(companies) > 0:
-            company = Client.fetch(companies[0].id)
+            company = companies[0]
             user_data["company"] = company.display_name
 
     except:
