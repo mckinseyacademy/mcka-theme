@@ -19,9 +19,10 @@ from accounts.models import RemoteUser, UserActivation
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
-from api_client import group_api
+from api_client import group_api, project_api, workgroup_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
+from api_client.project_models import Project
 from license import controller as license_controller
 
 from .models import Client
@@ -33,8 +34,6 @@ from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
-
-
 
 
 def ajaxify_http_redirects(func):
@@ -228,7 +227,7 @@ def client_edit(request, client_id):
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                client = Client.fetch(client_id).update(client_id, request.POST)
+                client = Client.update_and_fetch(client_id, request.POST)
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/')
 
@@ -237,7 +236,7 @@ def client_edit(request, client_id):
     else:
         ''' edit a client '''
         client = Client.fetch(client_id)
-        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'email': client.email, 'phone': client.phone}
+        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone}
         form = ClientForm(data_dict)
 
     # set focus to company name field
@@ -266,17 +265,20 @@ def _format_upload_results(upload_results):
 
     return results_object
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
 
     view = 'admin/client/{}.haml'.format(detail_view)
 
+    programs = []
+    enrolledStudents = []
+    for program in client.fetch_programs():
+        programs.append(_prepare_program_display(program))
     data = {
         "client": client,
         "selected_client_tab": detail_view,
-        "programs": [_prepare_program_display(program) for program in client.fetch_programs()],
+        "programs": programs,
     }
     if detail_view == "programs" or detail_view == "courses":
         data["students"] = client.fetch_students()
@@ -286,6 +288,15 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         #        for course in program.courses:
         #            users = course_api.get_users_content_filtered(course.course_id, client_id, [{'key': 'enrolled', 'value': 'True'}])
         #            course.user_count = len(users)
+
+        # REFACTOR ONCE MCKIN-1291 is done
+        # remove the per user calls.
+        if detail_view == "programs":
+            for student in data["students"]:
+                user = user_api.get_user(student.id)
+                if user.is_active == True:
+                    student.enrolled = True
+
     if upload_results:
         data["upload_results"] = _format_upload_results(upload_results)
 
@@ -294,6 +305,45 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         view,
         data,
     )
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_resend_user_invite(request, client_id, user_id):
+    ''' handles requests for resending student invites '''
+    if request.method == 'POST':  # If the form has been submitted...
+        try:
+            student = user_api.get_user(user_id)
+            licenses = license_controller.fetch_granted_licenses(user_id, client_id)
+            client = Client.fetch(client_id)
+            programs_temp = client.fetch_programs()
+            programs = []
+            if programs_temp and licenses:
+                for program_temp in programs_temp:
+                    for license in licenses:
+                        if license.granted_id == program_temp.id:
+                            programs.append(program_temp)
+            else:
+                return HttpResponse(
+                    json.dumps({"status": _("This student hasn't been added to any programs yet.")}),
+                    content_type='application/json'
+                )
+            messages = []
+            activation_record = UserActivation.get_user_activation(student)
+            student.activation_code = activation_record.activation_key
+            for program in programs:
+                messages.append(email_add_inactive_student(request, program, student))
+            sendMultipleEmails(messages)
+        except HTTPError, e:
+            return HttpResponse(
+                json.dumps({"status": _("fail")}),
+                content_type='application/json'
+            )
+        return HttpResponse(
+            json.dumps({"status": _("success")}),
+            content_type='application/json'
+        )
+
+
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -655,21 +705,47 @@ def workgroup_programs_list(request):
         data
     )
 
+class GroupProjectInfo(object):
+    def __init__(self, id, name, organization=None):
+        self.id = id
+        self.name = name
+        self.organization = organization
+
+def load_group_projects_info_for_course(course, companies):
+    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
+    group_projects = []
+    for project in project_api.get_projects_for_course(course.id):
+        if project.organization is None:
+            group_projects.append(
+                GroupProjectInfo(
+                    project.id,
+                    group_project_lookup[project.content_id],
+                )
+            )
+        else:
+            group_projects.append(
+                GroupProjectInfo(
+                    project.id,
+                    group_project_lookup[project.content_id],
+                    companies[project.organization].display_name
+                )
+            )
+    return group_projects
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
-
     course = load_course(course_id)
 
     students, companies = getStudentsWithCompanies(course)
 
-    if len(course.group_projects) < 1:
+    if len(course.group_project_chapters) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     groups, students = filterGroupsAndStudents(course, students)
 
+    group_projects = load_group_projects_info_for_course(course, companies)
 
     data = {
         "principal_name": _("Group Work"),
@@ -678,6 +754,7 @@ def workgroup_course_detail(request, course_id):
         "students": students,
         "groups": groups,
         "companies": companies.values(),
+        "group_projects": group_projects,
     }
 
     return render(
@@ -691,45 +768,69 @@ def workgroup_course_detail(request, course_id):
 def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
-
         students, companyid, privateFlag = parse_studentslist_from_post(
             request.POST)
 
         course = load_course(course_id)
-        if len(course.group_projects) < 1:
+        if len(course.group_project_chapters) < 1:
             return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
-        groupsList = []
-        privateModule = ''
-        publicModule = course.group_projects[0]
+        projects_by_organization = {}
+        for project in project_api.get_projects_for_course(course.id):
+            org_id = None
+            if project.organization:
+                org_id = Client.fetch_from_url(project.organization).id
+            projects_by_organization[org_id] = project
 
-        for module in course.group_projects:
-            if module.name.startswith(companyid + '_'):
-                privateModule = module
-            groupsList = groupsList + [WorkGroup.fetch(group.group_id)
-                                       for group in course_api.get_course_content_groups(course.id, module.id)]
+        project = projects_by_organization[None]
+        if companyid in projects_by_organization:
+            project = projects_by_organization[companyid]
 
-        lastId = len(groupsList)
+        groups_list = workgroup_api.get_workgroups_for_project(project.id)
+        lastId = len(groups_list)
 
-        if privateModule != '' and privateFlag:
-            workgroup = WorkGroup.create(
-                'Group {} - private - {}'.format(lastId + 1, companyid), {'privacy': 'private', 'client_id': companyid})
-            group_id = int(workgroup.id)
-            course_api.add_group_to_course_content(
-                group_id, course_id, privateModule.id)
-            workgroup.add_workgroup_to_client(companyid)
-        else:
-            workgroup = WorkGroup.create(
-                'Group {}'.format(lastId + 1), {'privacy': 'public'})
-            group_id = int(workgroup.id)
-            course_api.add_group_to_course_content(
-                group_id, course_id, publicModule.id)
+        workgroup = WorkGroup.create(
+            'Group {}'.format(lastId + 1),
+            {
+                "project": project.id,
+            }
+        )
 
-        for student in students:
-            group_api.add_user_to_group(student['id'], group_id)
+        workgroup.add_user_list([student['id'] for student in students])
 
-    return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+        return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
 
+    return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_project_create(request, course_id):
+    message = _("Error creating project")
+    status_code = 400
+
+    if request.method == "POST":
+        project_section = request.POST["project_section"]
+        organization = None
+        private_project = request.POST.get("new-project-private", None)
+        if private_project == "on":
+            organization = request.POST["new-project-company"]
+
+        try:
+            project = Project.create(course_id, project_section, organization)
+            message = _("Project successfully created")
+            status_code = 200
+
+        except ApiError as e:
+            message = e.message
+            status_code = e.code
+    response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
+    response.status_code = status_code
+    return response
 
 
 @ajaxify_http_redirects
@@ -738,11 +839,9 @@ def workgroup_group_update(request, group_id, course_id):
     if request.method == 'POST':
 
         students = request.POST.getlist("students[]")
-
         try:
-            for student in students:
-                group_api.add_user_to_group(student, group_id)
-
+            workgroup = WorkGroup.fetch(group_id)
+            workgroup.add_user_list(students)
             return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
 
         except ApiError as err:

@@ -227,8 +227,13 @@ def reset_confirm(request, uidb64=None, token=None,
         if request.method == 'POST':
             form = set_password_form(user, request.POST)
             if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(post_reset_redirect)
+                user = form.save()
+                if hasattr(user, 'error'):
+                    from django.forms.util import ErrorList
+                    errors = form._errors.setdefault("new_password1", ErrorList())
+                    errors.append(user.error)
+                else:
+                    return HttpResponseRedirect(post_reset_redirect)
         else:
             form = set_password_form(user)
     else:

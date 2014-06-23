@@ -35,6 +35,9 @@ class ApiError(Exception):
         if "message" in self.content_dictionary:
             self.message = self.content_dictionary["message"]
 
+        if "__all__" in self.content_dictionary:
+            self.message = self.content_dictionary["__all__"][0]
+
         super(ApiError, self).__init__()
 
     def __str__(self):
