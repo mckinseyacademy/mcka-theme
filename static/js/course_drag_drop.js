@@ -143,11 +143,9 @@
         method: 'POST',
         dataType: 'json',
         success: function(data){
-          alert('success');
           alert(data.message);
         },
         error: function(jqXHR, textStatus, errorThrown){
-          alert("error");
           var message = textStatus + " - " + errorThrown;
           if(jqXHR.responseJSON){
             message = jqXHR.responseJSON.message;
