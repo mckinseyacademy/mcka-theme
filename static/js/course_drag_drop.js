@@ -132,6 +132,34 @@
       }
     });
 
+    $('#generate_assignments').on('click', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url: $(this).attr('href'),
+        data: {
+          'csrfmiddlewaretoken': $.cookie('apros_csrftoken')
+        },
+        method: 'POST',
+        dataType: 'json',
+        success: function(data){
+          alert(data.message);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          var message = textStatus + " - " + errorThrown;
+          if(jqXHR.responseJSON){
+            message = jqXHR.responseJSON.message;
+          }
+          else if(jqXHR.responseText){
+            message = jqXHR.responseText;
+          }
+          alert(message);
+        }
+      });
+
+      return false;
+    });
+
     $('.update-group').on('click', function(){
       var that = $(this);
       if(!that.hasClass('disabled')){

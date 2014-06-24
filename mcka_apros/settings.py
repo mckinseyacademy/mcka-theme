@@ -188,6 +188,9 @@ ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 EMAIL_BACKEND = "django_ses.SESBackend"
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
+# Target number of reviews for a group project
+GROUP_REVIEWS_TARGET = 3
+
 try:
     from local_settings import *
 except ImportError:

@@ -43,6 +43,18 @@ class Program(BaseGroupModel):
         return programs
 
 
+class ReviewAssignmentGroup(BaseGroupModel):
+    data_fields = ["assignment_date"]
+    date_fields = ["assignment_date"]
+    group_type = "reviewassignment"
+
+    def add_workgroup(self, workgroup_id):
+        return workgroup_api.add_group_to_workgroup(workgroup_id, self.id)
+
+    def add_user(self, user_id):
+        return group_api.add_user_to_group(user_id, self.id)
+
+
 class Client(organization_models.Organization):
 
     def fetch_programs(self):
