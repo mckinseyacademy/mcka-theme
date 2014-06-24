@@ -321,3 +321,9 @@ form {
   }
 }
 
+// Icons for correctness and failure
+.choice-result,
+.answer-checkmark {
+  font-family: FontAwesome;
+  text-align: center !important;
+}
