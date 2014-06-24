@@ -33,10 +33,9 @@
       #contact-ta.reveal-modal.small{"data-reveal": "true"}
         .close-reveal-modal
           %i.fa.fa-times-circle
-        %h2= _("Ask a TA")
+        %h2= _("Message your TA")
         %hr
-        %h4= _("Subhead")
-        %div= _("Post your question here and your TA will receive your request")
+        %div= _("Send any questions or messages to your TA , and they'll get back to you promptly.")
         %form#contact-ta-form{action: "/courses/#{course.id}/teaching_assistant", method: "POST"}
           .error
             - if error
