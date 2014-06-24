@@ -211,7 +211,10 @@ def course_progress(request, course_id):
 
 @login_required
 def course_resources(request, course_id):
-    return render(request, 'courses/course_resources.haml')
+    data = {
+        "resources": course_api.get_course_tabs(course_id).get("resources", None)
+    }
+    return render(request, 'courses/course_resources.haml', data)
 
 @login_required
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
