@@ -6,8 +6,7 @@ from django.conf import settings
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.api_error import ApiError
 from api_client.project_models import Project
-from license import controller as license_controller
-from admin.models import Program, WorkGroup
+from admin.models import WorkGroup
 from admin.controller import load_course
 
 # warnings associated with members generated from json response
@@ -123,32 +122,6 @@ def locate_chapter_page(
         return course_id, chapter_id, page_id, None
     else:
         return course_id, chapter_id, page_id, course_detail.position
-
-def program_for_course(user_id, course_id, user_api_impl=user_api):
-    '''
-    Returns first program that contains given course for this user,
-    or None if program is not present
-        user_api_impl - optional api client module to use (useful in mocks)
-    '''
-
-    courses = user_api_impl.get_user_courses(user_id)
-
-    course_program = None
-    for program in Program.programs_with_course(course_id):
-        if license_controller.fetch_granted_license(program.id, user_id) is not None:
-            course_program = program
-            break
-
-    if course_program:
-        program_course_ids = [course.course_id for course in course_program.fetch_courses()]
-        course_program.courses = [course for course in courses if course.id in program_course_ids]
-        course_program.outside_courses = [course for course in courses if course.id not in program_course_ids]
-    else:
-        course_program = Program(dictionary={"id": "NO_PROGRAM", "name": settings.NO_PROGRAM_NAME})
-        course_program.courses = courses
-        course_program.outside_courses = None
-
-    return course_program
 
 
 # pylint: disable=too-many-arguments

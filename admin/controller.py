@@ -10,9 +10,6 @@ from api_client import user_api, group_api, course_api, workgroup_api, organizat
 from accounts.models import UserActivation
 
 from .models import Client, WorkGroup
-from license import controller as license_controller
-from accounts.controller import get_current_course_for_user, set_current_course_for_user
-
 
 def load_course(course_id, depth=3, course_api_impl=course_api):
     '''
@@ -314,5 +311,3 @@ def parse_studentslist_from_post(postValues):
         pass
 
     return students, companyid, privateFlag
-
-
