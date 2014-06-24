@@ -227,6 +227,18 @@ def get_groups_in_group(group_id, group_object=JsonObject, params=[]):
 
     return JP.from_json(response.read(), group_object)
 
+@api_error_protect
+def get_organizations_in_group(group_id, group_object=JsonObject):
+    response = GET(
+        '{}/{}/{}/organizations/'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id
+        )
+    )
+
+    return JP.from_json(response.read(), group_object)
+
 GROUP_ERROR_CODE_MESSAGES = {
     "create_group": {
         403: _("Permission Denied"),

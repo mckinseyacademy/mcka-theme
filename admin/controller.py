@@ -234,8 +234,7 @@ def get_group_list_as_file(groups):
 
 
 def fetch_clients_with_program(program_id):
-    group_list = group_api.get_groups_in_group(program_id, params=[{'key': 'type', 'value': 'organization'}])
-    clients = [Client.fetch(group_id=group.id) for group in group_list]
+    clients = group_api.get_organizations_in_group(program_id, group_object=Client)
     for client in clients:
         try:
             client.places_allocated, client.places_assigned = license_controller.licenses_report(program_id, client.id)
