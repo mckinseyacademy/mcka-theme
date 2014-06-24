@@ -41,12 +41,13 @@ def POST(url_path, data):
     return url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
 
 
-def DELETE(url_path):
+def DELETE(url_path, data=None):
     ''' DELETE request wrapper to json web server '''
     opener = url_access.build_opener(url_access.HTTPHandler)
     request = url_access.Request(url=url_path, headers=json_headers())
     request.get_method = lambda: 'DELETE'
-    return opener.open(request, None, TIMEOUT)
+    json_data = json.dumps(data) if not data is None else None
+    return opener.open(request, json_data, TIMEOUT)
 
 
 def PUT(url_path, data):

@@ -855,12 +855,12 @@ def workgroup_group_update(request, group_id, course_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_remove(request, group_id):
-
     if request.method == 'POST':
 
-        removeStudent = request.POST['student']
+        remove_student = request.POST['student']
 
-        group_api.remove_user_from_group(group_id, removeStudent)
+        workgroup = WorkGroup.fetch(group_id)
+        workgroup.remove_user(remove_student)
 
         course_id = request.POST['course_id']
         course = load_course(course_id)
