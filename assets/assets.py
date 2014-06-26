@@ -24,16 +24,47 @@ JS = Bundle(
 register('js_all', JS)
 
 # CSS compilation and squashing
-SCSS = Bundle(
+# Core CSS
+SCSS_CORE = Bundle(
+    'scss/core.scss',
+    filters='sass',
+    output='core.css',
+    depends=('scss/**/*.scss')
+)
+register('scss_core', SCSS_CORE)
+
+CSS_CORE = Bundle(
+    SCSS_CORE,
+    output='packed_core.css'
+)
+register('css_core', CSS_CORE)
+
+# Applicaiton CSS
+SCSS_APP = Bundle(
     'scss/app.scss',
     filters='sass',
     output='app.css',
     depends=('scss/**/*.scss')
 )
-register('scss_all', SCSS)
+register('scss_app', SCSS_APP)
 
-CSS = Bundle(
-    SCSS,
-    output='packed.css'
+CSS_APP = Bundle(
+    SCSS_APP,
+    output='packed_app.css'
 )
-register('css_all', CSS)
+register('css_app', CSS_APP)
+
+# Admin CSS
+SCSS_ADMIN = Bundle(
+    'scss/admin.scss',
+    filters='sass',
+    output='admin.css',
+    depends=('scss/**/*.scss')
+)
+register('scss_admin', SCSS_ADMIN)
+
+CSS_ADMIN = Bundle(
+    SCSS_ADMIN,
+    output='packed_admin.css'
+)
+register('css_admin', CSS_ADMIN)

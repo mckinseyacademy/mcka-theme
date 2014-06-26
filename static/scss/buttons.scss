@@ -1,6 +1,4 @@
 .button{
-  font-weight: bold;
-  font-family: "Open Sans", sans-serif;
   &.small{
     $top-bottom-padding: rem-calc(10);
     padding-top: $top-bottom-padding;
@@ -8,8 +6,6 @@
   }
 }
 a.button{
-  color: white;
-  &:visited{
-    color: white;
-  }
+  color: $pure-white;
+  &:visited{ color: $pure-white; }
 }
