@@ -20,7 +20,7 @@
           .group-members
             %h4= _("Group Members")
             - for member in project_group.members
-              - include "courses/group_work/group_member.haml" with group_member=member
+              - include "courses/group_work/group_member.haml" with group_member=member data_reveal_id="email-member"
             - if project_group.id
               %a.email-team{href: "#", data-reveal-id: 'email-team'}
                 = _("Email Team")
@@ -61,7 +61,6 @@
           %i.fa.fa-times-circle
         %h2= _("Message member")
         %hr
-        %h4= _("Subhead")
         %div= _("Post any questions or messages you have for your group member.")
         %form#email-member-form{action: "/courses/#{course.id}/group_member_email", method: "POST"}
           .error
