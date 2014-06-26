@@ -331,9 +331,15 @@ def home(request):
     if request.session.get('program_popup') == None:
         if program:
             if program.id is not 'NO_PROGRAM':
-                if program.start_date > datetime.datetime.today():
+                days = ''
+                course_start = datetime.datetime.strptime(course.start, '%Y-%m-%dT%H:%M:%SZ')
+                if course_start > datetime.datetime.today():
+                    days = str(
+                        int(math.floor(((course_start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                elif program.start_date > datetime.datetime.today():
                     days = str(
                         int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                if days is not '':
                     if days > 1:
                         days = days + 's'
                     popup = {'title': '', 'description': ''}
