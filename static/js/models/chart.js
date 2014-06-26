@@ -28,6 +28,27 @@ Apros.models.Chart = Backbone.Model.extend({
       });
   },
 
+  style_y_axis: function(selector) {
+    var pass_grade = this.chart_data()[0].pass_grade;
+    var svg = d3.select(selector);
+    svg.selectAll('.nv-y .tick').each(function(d, i) {
+      if (d == pass_grade) {
+        d3.select(this).attr('class', 'tick major threshold');
+      }
+      if (i % 2 == 0) {
+        d3.select(this).attr('class', 'tick minor');
+      }
+    });
+
+    svg.select('.nv-y .nv-axis')
+      .insert('rect', 'g')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('class', 'threshold-rect')
+      .attr('width', svg.select('.nv-y line').attr('x2'))
+      .attr('height', this.chart.yAxis.scale()(pass_grade));
+  },
+
   historical_bar_chart: function(selector) {
     this.selector = selector;
     var _this = this;
@@ -40,12 +61,16 @@ Apros.models.Chart = Backbone.Model.extend({
           .tooltips(false)
           .showValues(false)
           .transitionDuration(250)
-          .forceY([0,100])
+          .forceY([10,100])
           .margin({bottom: 100});
 
-      chart.yAxis.tickFormat(d3.format(',.0d'))
+      chart.yAxis.tickValues(_.range(10,110,10));
+      chart.yAxis.tickFormat(function(val){
+        return val%20 == 0 ? val : '';
+      });
       _this.load_chart_data(selector);
       _this.word_wrap_labels(selector);
+      _this.style_y_axis(selector);
 
       d3.select(selector + ' .nv-x.nv-axis > g')
         .selectAll('g')

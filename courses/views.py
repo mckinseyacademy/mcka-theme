@@ -176,6 +176,11 @@ def course_progress(request, course_id):
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
+    graders = gradebook.grading_policy.GRADER
+    for grader in graders:
+        grader.weight = floatformat(grader.weight*100)
+
+    pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
     module_count = 0
     for chapter in course.chapters:
@@ -187,8 +192,7 @@ def course_progress(request, course_id):
     else:
         percent_complete = 0
 
-    # grade bar chart
-    bar_chart = [{'key': 'Lesson Scores', 'values': []}]
+    bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
         bar_chart[0]['values'].append({
            'label': grade.label,
@@ -202,12 +206,6 @@ def course_progress(request, course_id):
         'value': total,
         'color': '#e37121'
     })
-
-    graders = gradebook.grading_policy.GRADER
-    for grader in graders:
-        grader.weight = floatformat(grader.weight*100)
-
-    pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
     data = {
         'bar_chart': json.dumps(bar_chart),
