@@ -37,7 +37,7 @@ def user_program_data(request):
                 for lesson in gradebook.courseware_summary:
                     percent = None
                     for section in lesson.sections:
-                        if section.format == 'Assessment':
+                        if section.graded == True:
                             points = section.section_total[0]
                             max_points = section.section_total[1]
                             if max_points > 0:
