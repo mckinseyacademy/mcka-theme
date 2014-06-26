@@ -309,6 +309,7 @@ def contact_group(request, course_id, group_id):
     email_header_from = request.user.email
     group = WorkGroup.fetch_with_members(group_id)
     students = group.members
+    course = course_api.get_course(course_id)
     email_to = [student.email for student in students]
     email_content = request.POST["group_message"]
     email_subject = "Group Project Message - {}".format(course.name)
