@@ -327,3 +327,12 @@ form {
   font-family: FontAwesome;
   text-align: center !important;
 }
+
+/* XBlock general display rules */
+div.xblock-student_view {
+  visibility: hidden;
+
+  &.xblock-initialized {
+    visibility: visible;
+  }
+}
