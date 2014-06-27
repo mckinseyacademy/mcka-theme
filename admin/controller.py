@@ -5,24 +5,20 @@ from django.core.servers.basehttp import FileWrapper
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
+#from accounts.controller import get_current_course_for_user, set_current_course_for_user
+from accounts.middleware.thread_local import set_course_context, get_course_context
 from api_client.api_error import ApiError
 from api_client import user_api, group_api, course_api, workgroup_api, organization_api
 from accounts.models import UserActivation
+from license import controller as license_controller
 
 from .models import Client, WorkGroup
 
-def load_course(course_id, depth=3, course_api_impl=course_api):
+
+def _load_course(course_id, depth, course_api_impl):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
-
-    def is_normal_chapter(chapter):
-        '''
-        Check if a chapter is normal or special. GROUP_PROJECT_WORK and DISCUSSION are special chapters.
-        '''
-        return (not chapter.name.startswith(settings.DISCUSSION_IDENTIFIER) and \
-                not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER))
-
     course = course_api_impl.get_course(course_id, depth)
 
     # Separate Group Projects
@@ -39,7 +35,19 @@ def load_course(course_id, depth=3, course_api_impl=course_api):
     for group_project in course.group_project_chapters:
         group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
 
+    set_course_context(course, depth)
+
     return course
+
+def load_course(course_id, depth=3, course_api_impl=course_api):
+    '''
+    Gets the course from the API, and performs any post-processing for Apros specific purposes
+    '''
+    course_context = get_course_context()
+    if course_context and course_context["course_id"] == course_id and course_context["depth"] <= depth:
+        return course_context["course_content"]
+
+    return _load_course(course_id, depth, course_api_impl)
 
 
 def generate_email_text_for_user_activation(activation_record, activation_link_head):
