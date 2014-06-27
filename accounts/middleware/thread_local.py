@@ -31,3 +31,9 @@ def set_course_context(course, depth):
 
 def get_course_context():
     return getattr(_threadlocal,  'current_course', None)
+
+def set_static_tab_context(static_tab_dictionary):
+    setattr(_threadlocal, 'static_tabs', static_tab_dictionary)
+
+def get_static_tab_context():
+    return getattr(_threadlocal, 'static_tabs', None)

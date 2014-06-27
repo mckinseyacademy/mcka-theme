@@ -88,17 +88,6 @@ def get_course_tabs(course_id):
     return {tab.name.lower(): tab for tab in tab_array}
 
 @api_error_protect
-def get_course_syllabus(course_id):
-    '''
-    Retrieves course syllabus information from the API for specified course
-    '''
-    tabs = get_course_tabs(course_id)
-    if "syllabus" in tabs:
-        return tabs["syllabus"].content
-    else:
-        return None
-
-@api_error_protect
 def get_course_news(course_id):
     '''
     Retrieves course updates from the API for specified course
