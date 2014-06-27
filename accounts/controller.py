@@ -16,6 +16,7 @@ CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
 CURRENT_PROGRAM = "current_program"
 
+NO_PROGRAM_ID = "NO_PROGRAM"
 
 class ActivationError(Exception):
     '''
@@ -31,7 +32,7 @@ class ActivationError(Exception):
 
 def _get_user_programs(user_id):
     ''' Helper function to retrieve the user's programs '''
-    return user_api.get_user_groups(user_id, 'series')
+    return user_api.get_user_groups(user_id, 'series', group_object=Program)
 
 
 def get_current_course_by_user_id(user_id):
@@ -55,6 +56,14 @@ def get_current_course_for_user(request):
 
     return course_id
 
+def _load_intersecting_program_courses(program, courses):
+    if program.id == NO_PROGRAM_ID:
+        program.courses = courses
+        program.outside_courses = None
+    else:
+        program_course_ids = [course.course_id for course in program.fetch_courses()]
+        program.courses = [course for course in courses if course.id in program_course_ids]
+        program.outside_courses = [course for course in courses if course.id not in program_course_ids]
 
 def set_current_course_for_user(request, course_id):
     prev_course_id = request.session.get(CURRENT_COURSE_ID, None)
@@ -69,20 +78,17 @@ def set_current_course_for_user(request, course_id):
 
         # Additionally set the current program for this user
         current_program = None
-        courses = user_api_impl.get_user_courses(request.user.id)
+        courses = user_api.get_user_courses(request.user.id)
         for program in Program.programs_with_course(course_id):
             if license_controller.fetch_granted_license(program.id, request.user.id) is not None:
                 current_program = program
                 break
-        if current_program:
-            program_course_ids = [course.course_id for course in current_program.fetch_courses()]
-            if courses:
-                current_program.courses = [course for course in courses if course.id in program_course_ids]
-                current_program.outside_courses = [course for course in courses if course.id not in program_course_ids]
-        else:
-            current_program = Program(dictionary={"id": "NO_PROGRAM", "name": settings.NO_PROGRAM_NAME})
-            current_program.courses = courses
-            current_program.outside_courses = None
+
+        if current_program is None:
+            # Fake program
+            current_program = Program(dictionary={"id": NO_PROGRAM_ID, "name": settings.NO_PROGRAM_NAME})
+
+        _load_intersecting_program_courses(current_program, courses)
         set_current_program_for_user(request, current_program)
 
 
@@ -94,15 +100,19 @@ def get_current_program_for_user(request):
     # Attempt to load from user preferences
     if not program and request.user:
         program_id = user_api.get_user_preferences(request.user.id).get(CURRENT_PROGRAM_ID, None)
-        if program_id:
+        if program_id == NO_PROGRAM_ID:
+            program = Program(dictionary={"id": NO_PROGRAM_ID, "name": settings.NO_PROGRAM_NAME})
+        elif program_id:
             program = Program.fetch(program_id)
-            set_current_program_for_user(request, program)
 
-    # Attempt to load first program
-    if not program and request.user:
-        programs = _get_user_programs(request.user.id)
-        if len(programs) > 0:
-            program = programs[0]
+        # if not attempt to load first program
+        if not program:
+            programs = _get_user_programs(request.user.id)
+            if len(programs) > 0:
+                program = programs[0]
+
+        if program:
+            _load_intersecting_program_courses(program, user_api.get_user_courses(request.user.id))
             set_current_program_for_user(request, program)
 
     # Return the program to the caller
@@ -117,7 +127,7 @@ def set_current_program_for_user(request, program):
         user_api.set_user_preferences(
             request.user.id,
             {
-                CURRENT_PROGRAM_ID: program.id,
+                CURRENT_PROGRAM_ID: str(program.id),
             }
         )
 
