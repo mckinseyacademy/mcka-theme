@@ -42,9 +42,11 @@ class Workgroup(JsonObject):
         self.users = Workgroup.get_workgroup_users(self.id)
 
     def remove_user(self, user_id):
-        if user_id in self.users:
-            self.users.remove(user_id)
-            workgroup_api.update_workgroup(self.id, {"users": self.users})
+        if workgroup_api.remove_user_from_workgroup(self.id, user_id):
+            # reload users list
+            self.users = Workgroup.get_workgroup_users(self.id)
+            return True
+        return False
 
 
 class WorkgroupList(JsonObject):

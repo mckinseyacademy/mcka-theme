@@ -112,6 +112,20 @@ def add_user_to_workgroup(workgroup_id, user_id):
 
     return (response.code == 201)
 
+@api_error_protect
+def remove_user_from_workgroup(workgroup_id, user_id):
+    response = DELETE(
+        '{}/{}/{}/users/'.format(
+            settings.API_SERVER_ADDRESS,
+            WORKGROUP_API,
+            workgroup_id,
+        ),
+        {"id": user_id}
+    )
+
+    return (response.code == 204)
+
+@api_error_protect
 def get_workgroup_users(workgroup_id, group_object=JsonObject):
     response = GET(
         '{}/{}/{}/users/'.format(
