@@ -78,20 +78,21 @@ class Client(organization_models.Organization):
         return self
 
     def fetch_students(self):
-        # TODO - improve performance using paged results from GET /api/users/?ids=1,2,3,4,5
-        return [user_api.get_user(user_id) for user_id in self.users]
+        users_ids = [str(user.id) for user in self.users]
+        users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+        return users.results
 
 class ClientList(organization_models.OrganizationList):
     object_map = {
         "results": Client
     }
 
-
 class WorkGroup(workgroup_models.Workgroup):
 
     def fetch_students(self):
-        # TODO - improve performance using paged results from GET /api/users/?ids=1,2,3,4,5
-        return [user_api.get_user(user_id) for user_id in self.users]
+        users_ids = [str(user.id) for user in self.users]
+        users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+        return users.results
 
     @classmethod
     def fetch_with_members(cls, workgroup_id):

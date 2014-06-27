@@ -88,7 +88,7 @@
             var modal = $('#generalModal');
             modal.find('.title').html('Notification');
             modal.find('.description').html(data.message);
-            modal.foundation('reveal', 'open');
+            setTimeout(function(){modal.foundation('reveal', 'open');}, 350);
           })
       });
       $('#email-team-form textarea, #contact-ta-form textarea, #email-member-form textarea').on('keyup',
