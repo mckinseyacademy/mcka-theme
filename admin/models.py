@@ -91,7 +91,7 @@ class WorkGroup(workgroup_models.Workgroup):
 
     def fetch_students(self):
         # TODO - improve performance using paged results from GET /api/users/?ids=1,2,3,4,5
-        return [user_api.get_user(user_id) for user_id in self.users]
+        return [user_api.get_user(user.id) for user in self.users]
 
     @classmethod
     def fetch_with_members(cls, workgroup_id):

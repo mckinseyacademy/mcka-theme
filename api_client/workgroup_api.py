@@ -45,7 +45,7 @@ def get_workgroups_for_project(project_id):
 def get_workgroup(workgroup_id, group_object=JsonObject):
     ''' fetch workgroup by id '''
     response = GET(
-        '{}/{}/{}'.format(
+        '{}/{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
             workgroup_id,
@@ -58,7 +58,7 @@ def get_workgroup(workgroup_id, group_object=JsonObject):
 def delete_workgroup(workgroup_id):
     ''' delete workgroup by id '''
     response = DELETE(
-        '{}/{}/{}'.format(
+        '{}/{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
             workgroup_id,
@@ -89,7 +89,7 @@ def create_workgroup(workgroup_name, workgroup_data, group_object=JsonObject):
 def update_workgroup(workgroup_id, workgroup_data, group_object=JsonObject):
     ''' update existing workgroup '''
     response = PATCH(
-        '{}/{}/{}'.format(
+        '{}/{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             WORKGROUP_API,
             workgroup_id,
