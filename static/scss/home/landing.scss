@@ -36,7 +36,7 @@
         left: 5px;
         background: $pure-white;
         z-index: -1;
-        @include radius(50%);
+        border-radius: 50%;
         @include square-size(35px);
       }
     }
@@ -46,7 +46,7 @@
       background: #000;
       text-align: center;
       margin: 0 auto 20px;
-      @include radius(50%);
+      border-radius: 50%;
       @include square-size(53px);
       @include box-shadow(0px 3px 4px 0px rgba(153, 153, 153, 0.3));
       &.blue-gray { background: $mckinsey-academy-blue-gray; }
