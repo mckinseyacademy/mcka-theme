@@ -10,23 +10,20 @@ from accounts.middleware.thread_local import get_static_tab_context
 def user_program_data(request):
     ''' Makes user and program info available to all templates '''
     course = None
-    current_chapter = None
-    current_sequential = None
-    current_page = None
     program = None
 
     if request.user and request.user.id:
         course_id = get_current_course_for_user(request)
 
         if course_id:
-            course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
+            course_id, chapter_id, page_id = locate_chapter_page(
                 request.user.id, course_id, None)
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-                course_id, None, None, None)
+                course_id, chapter_id, page_id)
 
             program = get_current_program_for_user(request)
 
-            # Inject formatted data for view
+            # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
             _inject_formatted_data(program, course, None, get_static_tab_context())
 
             # Inject lesson assessment scores
