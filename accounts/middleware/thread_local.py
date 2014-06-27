@@ -12,14 +12,3 @@ class ThreadLocal(object):
 
 def get_current_request():
     return getattr(_threadlocal, 'request', None)
-
-def set_course_context(course, depth):
-    setattr(_threadlocal, 'current_course', {
-            "course_id": course.id,
-            "course_content": course,
-            "depth": depth
-        }
-    )
-
-def get_course_context():
-    return getattr(_threadlocal,  'current_course', None)
