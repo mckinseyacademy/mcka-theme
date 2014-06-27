@@ -1,9 +1,9 @@
 from django.conf import settings
-from courses.controller import build_page_info_for_course, locate_chapter_page, program_for_course
+from courses.controller import build_page_info_for_course, locate_chapter_page
 
 from courses.views import _inject_formatted_data
 from api_client import course_api, user_api
-from accounts.controller import get_current_course_for_user
+from accounts.controller import get_current_course_for_user, get_current_program_for_user
 
 
 def user_program_data(request):
@@ -23,7 +23,7 @@ def user_program_data(request):
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
                 course_id, chapter_id, page_id, chapter_position)
 
-            program = program_for_course(request.user.id, course_id)
+            program = get_current_program_for_user(request)
 
             # Inject formatted data for view
             _inject_formatted_data(program, course, page_id, course_api.get_course_tabs(course_id))
