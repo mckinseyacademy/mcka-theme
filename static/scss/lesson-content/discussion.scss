@@ -15,6 +15,18 @@
     background-image: none;
   }
 
+  .new-post-article .new-post-form {
+    background: $mckinsey-academy-bright-gray;
+
+    .options label {
+        color: $mckinsey-academy-black;
+    }
+  }
+
+  .new-post-body .wmd-button > span {
+    background-image: url("/static/image/wmd-buttons-transparent.png");
+  }
+
   /* Buttons *****************************************************************/
 
   .new-post-btn,
