@@ -61,15 +61,25 @@
     background-image: url("/static/image/wmd-buttons-transparent.png");
   }
 
-  .discussion .new-post-article .new-post-form .new-post-cancel {
+  .discussion .new-post-article .new-post-form a.new-post-cancel {
     position: absolute;
-    top: 0;
-    right: 0;
-    margin: 15px;
+    top: 30px;
+    right: 30px;
+    margin: 0;
+    padding: 0;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    border: none;
+    background-image: url("/static/image/close_button.png");
+    background-size: 100%;
+    opacity: 0.5;
+    color: transparent;
+    overflow: hidden;
+    text-indent: 3em;
 
-    &::before {
-        content:"X";
-        color: magenta;
+    &:hover {
+      opacity: 0.7;
     }
   }
 
@@ -78,7 +88,6 @@
 
   .new-post-btn,
   .new-post-article .new-post-form .submit,
-  .new-post-article .new-post-form .new-post-cancel,
   .discussion-submit-post,
   .add-response .add-response-btn,
   .comments .comment-form .discussion-submit-comment,
@@ -118,14 +127,6 @@
         margin-top: 15px;
         color: $mckinsey-academy-black !important;
       }
-    }
-  }
-
-  .discussion .new-post-article .new-post-form .new-post-cancel {
-    &, &:hover, &:visited {
-      background-color: $mckinsey-academy-light-gray;
-      margin-left: 15px;
-      color: $mckinsey-academy-black;
     }
   }
 
