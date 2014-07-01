@@ -34,7 +34,8 @@
   .discussion-submit-post,
   .add-response .add-response-btn,
   .comments .comment-form .discussion-submit-comment,
-  .discussion-article .post-update {
+  .discussion-article .post-update,
+  .discussion-article .post-cancel {
     &, &:hover {
       @extend .button;
       @extend .small;
@@ -61,14 +62,22 @@
       &, &:hover {
         margin-top: 15px;
       }
+
     }
 
     .post-cancel {
-      &, &:hover, &:visited {
-        background-color: $mckinsey-academy-light-gray;
+      &, &:visited, &:hover, &:focus {
         margin-left: 15px;
         margin-top: 15px;
-        color: $mckinsey-academy-black !important;
+        color: $mckinsey-academy-black;
+      }
+
+      &, &:visited {
+        background-color: $mckinsey-academy-light-gray;
+      }
+
+      &:hover, &:focus {
+        background-color: $mckinsey-grey;
       }
     }
   }
