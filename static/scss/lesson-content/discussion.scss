@@ -153,6 +153,19 @@
       border-radius: 0px;
       background-image: none;
     }
+
+    &.is-cast {
+      background-color: white;
+      background-image: none;
+      color: $mckinsey-academy-black;
+      text-shadow: none;
+      box-shadow: none;
+      border-color: #b2b2b2;
+
+      .plus-icon {
+        background-position: 0 0;
+      }
+    }
   }
 
   .comments .comment-form .discussion-submit-comment {
