@@ -19,74 +19,6 @@
     }
   }
 
-  .new-post-article .new-post-form {
-    background: $mckinsey-academy-bright-gray;
-    min-width: 720px;
-    position: relative;
-    padding-left: 30%;
-    padding-top: 5em;
-
-    .form-row {
-      width: 100%;
-    }
-
-
-    &::before {
-        content:"Create new post about:";
-        color: $mckinsey-academy-black;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 1em;
-        position: absolute;
-        top: 30px;
-        left: 30px;
-    }
-
-    .options {
-      label {
-        color: $mckinsey-academy-black;
-        margin-right: 0;
-      }
-
-      position: absolute;
-      top: 7em;
-      left: 30px;
-      width: 25%;
-
-      &::after {
-          content:"Posting anonymously will not add engagement points.";
-          color: $mckinsey-orange;
-          float: left;
-      }
-    }
-  }
-
-  .new-post-body .wmd-button > span {
-    background-image: url("/static/image/wmd-buttons-transparent.png");
-  }
-
-  .discussion .new-post-article .new-post-form a.new-post-cancel {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    margin: 0;
-    padding: 0;
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 50%;
-    border: none;
-    background-image: url("/static/image/close_button.png");
-    background-size: 100%;
-    opacity: 0.5;
-    color: transparent;
-    overflow: hidden;
-    text-indent: 3em;
-
-    &:hover {
-      opacity: 0.7;
-    }
-  }
-
   .flagged * {
     color: $mckinsey-red;
   }
@@ -187,6 +119,7 @@
     }
   }
 
+
   /* Layout ******************************************************************/
 
   section.discussion .discussion-thread .discussion-article {
@@ -224,6 +157,77 @@
   .discussion-submit-post {
     float: right;
   }
+
+  /* New Post form layout and some colors */
+
+  .new-post-article .new-post-form {
+    background: $mckinsey-academy-bright-gray;
+    min-width: 720px;
+    position: relative;
+    padding-left: 30%;
+    padding-top: 5em;
+
+    .form-row {
+      width: 100%;
+    }
+
+
+    &::before {
+        content:"Create new post about:";
+        color: $mckinsey-academy-black;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 1em;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+    }
+
+    .options {
+      label {
+        color: $mckinsey-academy-black;
+        margin-right: 0;
+      }
+
+      position: absolute;
+      top: 7em;
+      left: 30px;
+      width: 25%;
+
+      &::after {
+          content:"Posting anonymously will not add engagement points.";
+          color: $mckinsey-orange;
+          float: left;
+      }
+    }
+  }
+
+  .discussion .new-post-article .new-post-form a.new-post-cancel {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    margin: 0;
+    padding: 0;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    border: none;
+    background-image: url("/static/image/close_button.png");
+    background-size: 100%;
+    opacity: 0.5;
+    color: transparent;
+    overflow: hidden;
+    text-indent: 3em;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .new-post-body .wmd-button > span {
+    background-image: url("/static/image/wmd-buttons-transparent.png");
+  }
+
 
   /* Post editor *************************************************************/
 
