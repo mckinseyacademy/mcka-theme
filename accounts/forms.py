@@ -434,3 +434,13 @@ class SetNewPasswordForm(forms.Form):
                 self.user.error = error
                 return self.user
         return self.user
+
+
+class EditFullNameForm(forms.Form):
+    ''' edit user full name '''
+    fullname = forms.CharField(max_length=255, label='')
+
+
+class EditTitleForm(forms.Form):
+    ''' edit user title '''
+    title = forms.CharField(max_length=255, label='')
