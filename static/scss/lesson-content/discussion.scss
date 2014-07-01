@@ -26,9 +26,11 @@
   .flagged * {
     color: $mckinsey-red;
   }
+}
 
-  /* Buttons *****************************************************************/
+/* Buttons *****************************************************************/
 
+.lesson-content .discussion-module {
   .new-post-btn,
   .new-post-article .new-post-form .submit,
   .discussion-submit-post,
@@ -69,15 +71,16 @@
       &, &:visited, &:hover, &:focus {
         margin-left: 15px;
         margin-top: 15px;
-        color: $mckinsey-academy-black;
       }
 
       &, &:visited {
         background-color: $mckinsey-academy-light-gray;
+        color: $mckinsey-academy-black;
       }
 
       &:hover, &:focus {
         background-color: $mckinsey-grey;
+        color: $mckinsey-academy-black;
       }
     }
   }
@@ -131,9 +134,48 @@
     }
   }
 
+  .new-post-body .wmd-button > span {
+    background-image: url("/static/image/wmd-buttons-transparent.png");
+  }
+}
 
-  /* Layout ******************************************************************/
+.discussion .new-post-article .new-post-form a.new-post-cancel,
+.modal .inner-wrapper .close-modal.dismiss {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
+    background-image: url("/static/image/close_button.png");
+    background-size: 100%;
+    opacity: 0.5;
+    color: transparent;
+    overflow: hidden;
+    text-indent: 3em;
 
+    &:hover {
+      background-image: url("/static/image/close_button.png");
+      opacity: 0.7;
+    }
+}
+
+.modal .inner-wrapper .close-modal.dismiss {
+    margin: 0.5em;
+}
+
+.modal .discussion-alert-wrapper button {
+  border-radius: 5px;
+  color: white;
+  text-shadow: none;
+
+  &:hover, &:focus {
+    color: white;
+  }
+}
+
+/* Layout ******************************************************************/
+
+.lesson-content .discussion-module {
   section.discussion .discussion-thread .discussion-article {
     &, .responses > li {
       @include drop-shadow($opacity: 0);
@@ -224,29 +266,12 @@
     right: 30px;
     margin: 0;
     padding: 0;
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 50%;
-    border: none;
-    background-image: url("/static/image/close_button.png");
-    background-size: 100%;
-    opacity: 0.5;
-    color: transparent;
-    overflow: hidden;
-    text-indent: 3em;
-
-    &:hover {
-      opacity: 0.7;
-    }
   }
+}
 
-  .new-post-body .wmd-button > span {
-    background-image: url("/static/image/wmd-buttons-transparent.png");
-  }
+/* Post editor *************************************************************/
 
-
-  /* Post editor *************************************************************/
-
+.lesson-content .discussion-module {
   span[id*='wmd-code-button-'],
   span[id*='wmd-image-button-'] {
     display: none;
