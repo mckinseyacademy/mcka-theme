@@ -806,10 +806,6 @@ def workgroup_group_create(request, course_id):
 
     return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
 
-def dump(obj):
-  for attr in dir(obj):
-    print "obj.%s = %s" % (attr, getattr(obj, attr))
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
