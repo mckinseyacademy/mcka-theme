@@ -365,3 +365,64 @@ def user_profile(request):
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
+
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
+@login_required
+def user_profile_image_edit(request):
+    if request.method == 'POST':
+        dump(request.POST)
+        heightPosition = request.POST.get('height-position')
+        widthPosition = request.POST.get('width-position')
+        x1Position = request.POST.get('x1-position')
+        x2Position = request.POST.get('x2-position')
+        y1Position = request.POST.get('y1-position')
+        y2Position = request.POST.get('y2-position')
+        profileImageUrl = request.POST.get('profile-image-url')
+
+        from PIL import Image
+
+        test_image = profileImageUrl
+        original = Image.open(test_image)
+        original.show()
+
+        width, height = original.size   # Get dimensions
+        left = width/4
+        top = height/4
+        right = 3 * width/4
+        bottom = 3 * height/4
+        cropped_example = original.crop((left, top, right, bottom))
+
+        cropped_example.show()
+    #    crop_and_rescale()
+    #    return HttpResponseRedirect('/')
+
+
+def crop_and_rescale(data, width, height, force=True):
+    """Rescale the given image, optionally cropping it to make sure the result image has the specified width and height."""
+    import Image as pil
+    from cStringIO import StringIO
+
+    max_width = width
+    max_height = height
+
+    input_file = StringIO(data)
+    img = pil.open(input_file)
+    if not force:
+        img.thumbnail((max_width, max_height), pil.ANTIALIAS)
+    else:
+        from PIL import ImageOps
+        img = ImageOps.fit(img, (max_width, max_height,), method=pil.ANTIALIAS)
+
+    tmp = StringIO()
+    img.save(tmp, 'JPEG')
+    tmp.seek(0)
+    output_data = tmp.getvalue()
+    input_file.close()
+    tmp.close()
+
+    return output_data

@@ -1,6 +1,8 @@
 .user-profile
   .user-image
     %img{src: "#{user_image_url}"}
+    %a#edit-user-image{"data-reveal-id": "edit-user-image-modal", 'href': '#'}
+      change photo
   .user-detail
     .username
       = user.username

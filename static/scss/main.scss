@@ -327,3 +327,10 @@ form {
   font-family: FontAwesome;
   text-align: center !important;
 }
+
+#edit-user-image-modal{
+  img{
+    max-width: none;
+    max-height: none;
+  }
+}

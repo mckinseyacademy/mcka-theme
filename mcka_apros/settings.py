@@ -53,6 +53,8 @@ LOCAL_APPS = (
     'admin',
     'marketing',
     'license',
+    'easy_thumbnails',
+    'image_cropping',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -127,6 +129,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cache')
+MEDIA_ROOT = ''
 ASSETS_ROOT = 'static/gen'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
@@ -231,3 +234,12 @@ LOCAL_DEBUG_TOOLBAR_PANELS = (
 )
 
 DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
+
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
+SOUTH_MIGRATION_MODULES = {
+    'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}

@@ -13,6 +13,7 @@
       %link{rel: "stylesheet", href: "{% static 'css/font-awesome.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/leaflet.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
+      %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
 
     - load assets
     {% assets "css_core" %}
@@ -74,6 +75,24 @@
         %p{'class': "lead description"}
         %a{'class': "close-reveal-modal fa fa-times-circle"}
 
+    #edit-user-image-modal.reveal-modal.small{'data-reveal': None}
+      %form#cropping-form{'action': '/accounts/user_profile/image/edit', 'method': 'POST'}
+        - csrf_token
+        %h2.title
+          Edit Profile Image
+        .img-container
+            %img.user-uploaded-image{'src': "http://lolcat.com/images/lolcats/1338.jpg"}
+        .img-preview
+        %input#profile-image-url{'type': 'hidden', 'name': 'profile-image-url'}
+        %input#width-position{'type': 'hidden', 'name': 'width-position'}
+        %input#height-position{'type': 'hidden', 'name': 'height-position'}
+        %input#x1-position{'type': 'hidden', 'name': 'x1-position'}
+        %input#x2-position{'type': 'hidden', 'name': 'x2-position'}
+        %input#y1-position{'type': 'hidden', 'name': 'y1-position'}
+        %input#y2-position{'type': 'hidden', 'name': 'y2-position'}
+        %input.button.small.radius{'type': 'submit', 'value': 'Cut & Save'}
+
+
     -# Beta content overlay
     - block beta_content
       #beta_content.reveal-modal.small{'data-reveal': None}
@@ -89,6 +108,7 @@
     -# jQuery-cookie
     - block jquery_cookie
       %script{src: "{% static 'js/vendor/jquery.cookie.js' %}"}
+      %script{src: "{% static 'js/cropper.min.js' %}"}
 
     -# jQuery-xblock
     - block jquery_xblock
@@ -114,3 +134,30 @@
     -# Init Foundation
     - block foundation_js_init
       %script $(document).foundation();
+
+:javascript
+  $(document).on('opened.fndtn.reveal', '#edit-user-image-modal', function () {
+      var $image = $(".img-container .user-uploaded-image"),
+      $dataX1 = $("#x1-position"),
+      $dataY1 = $("#y1-position"),
+      $dataX2 = $("#x2-position"),
+      $dataY2 = $("#y2-position"),
+      $dataHeight = $("#height-position"),
+      $dataWidth = $("#width-position"),
+      $profileImageUrl = $("#profile-image-url");
+
+      $image.cropper({
+          aspectRatio: 1,
+        /*  preview: '.img-preview', */
+          done: function(data) {
+                  $dataX1.val(data.x1);
+                  $dataY1.val(data.y1);
+                  $dataX2.val(data.x2);
+                  $dataY2.val(data.y2);
+                  $dataHeight.val(data.height);
+                  $dataWidth.val(data.width);
+                  $profileImageUrl.val($('img.user-uploaded-image').attr('src'));
+              }
+      });
+  });
+
