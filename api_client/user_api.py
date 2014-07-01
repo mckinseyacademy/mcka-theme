@@ -9,6 +9,7 @@ from .json_object import JsonParser as JP
 from . import user_models, gradebook_models, organization_models, workgroup_models
 from .json_requests import GET, POST, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
+from .group_models import GroupInfo
 
 AUTH_API = 'api/sessions'
 USER_API = 'api/users'
@@ -135,7 +136,7 @@ def get_user_courses(user_id):
     return courses
 
 @api_error_protect
-def get_user_groups(user_id, group_type=None):
+def get_user_groups(user_id, group_type=None, group_object=GroupInfo):
     ''' get the groups in which this user is a member '''
     url = '{}/{}/{}/groups'.format(
         settings.API_SERVER_ADDRESS,
@@ -148,7 +149,9 @@ def get_user_groups(user_id, group_type=None):
 
     response = GET(url)
 
-    return JP.from_json(response.read()).groups
+    groups_json = json.loads(response.read())
+
+    return JP.from_dictionary(groups_json["groups"], group_object)
 
 @api_error_protect
 def enroll_user_in_course(user_id, course_id):
