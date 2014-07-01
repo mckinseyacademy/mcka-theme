@@ -170,11 +170,6 @@
     padding-left: 30%;
     padding-top: 5em;
 
-    .form-row {
-      width: 100%;
-    }
-
-
     &::before {
         content:"Create new post about:";
         color: $mckinsey-academy-black;
@@ -184,6 +179,14 @@
         position: absolute;
         top: 30px;
         left: 30px;
+    }
+
+    .form-row {
+      width: 100%;
+    }
+
+    .submit {
+      float: right;
     }
 
     .options {
@@ -203,6 +206,7 @@
           float: left;
       }
     }
+
   }
 
   .discussion .new-post-article .new-post-form a.new-post-cancel {
