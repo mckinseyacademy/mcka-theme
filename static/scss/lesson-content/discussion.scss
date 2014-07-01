@@ -202,6 +202,7 @@
 
   .responses {
     padding: 0px 40px 0px 20px;
+    clear: both;
 
     .discussion-response {
       background-color: #fafafa;
@@ -212,7 +213,15 @@
     font-size: 14px;
   }
 
+  .add-response {
+    float: right;
+  }
+
   .response-count {
+    float: left;
+  }
+
+  .discussion-submit-post {
     float: right;
   }
 
