@@ -1,5 +1,9 @@
 /* TODO: Move this to a proper theme once XBlocks support them */
 
+#discussion-alert-message {
+  color: $mckinsey-academy-black;
+}
+
 .lesson-content .discussion-module {
   background: #fff !important;
 
@@ -22,7 +26,6 @@
   .flagged * {
     color: $mckinsey-red;
   }
-
 
   /* Buttons *****************************************************************/
 
@@ -250,6 +253,7 @@
     margin-left: -39px;
   }
 }
+
 
 /* Discussion tooltip gets added by JS to the <body> :/ */
 body > .tooltip {
