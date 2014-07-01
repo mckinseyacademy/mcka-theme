@@ -323,7 +323,7 @@ def contact_group(request, course_id, group_id):
     email_content = request.POST["group_message"]
     email_subject = "Group Project Message - {}".format(course.name)
     try:
-        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email = EmailMessage(email_subject, email_content, email_from, email_to, headers = {'Reply-To': email_header_from})
         email.send(fail_silently=False)
     except:
         return HttpResponse(
