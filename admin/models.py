@@ -78,7 +78,7 @@ class Client(organization_models.Organization):
         return self
 
     def fetch_students(self):
-        users_ids = [str(user.id) for user in self.users]
+        users_ids = [str(user_id) for user_id in self.users]
         users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
         return users.results
 
