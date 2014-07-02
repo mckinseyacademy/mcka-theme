@@ -1,5 +1,9 @@
 /* TODO: Move this to a proper theme once XBlocks support them */
 
+#discussion-alert-message {
+  color: $mckinsey-academy-black;
+}
+
 .lesson-content .discussion-module {
   background: #fff !important;
 
@@ -13,17 +17,27 @@
 
   .discussion-article {
     background-image: none;
+
+    .dogear {
+      background-image: url('/static/image/follow-dog-ear.png');
+    }
   }
 
-  /* Buttons *****************************************************************/
+  .flagged * {
+    color: $mckinsey-red;
+  }
+}
 
+/* Buttons *****************************************************************/
+
+.lesson-content .discussion-module {
   .new-post-btn,
   .new-post-article .new-post-form .submit,
-  .new-post-article .new-post-form .new-post-cancel,
   .discussion-submit-post,
   .add-response .add-response-btn,
   .comments .comment-form .discussion-submit-comment,
-  .discussion-article .post-update {
+  .discussion-article .post-update,
+  .discussion-article .post-cancel {
     &, &:hover {
       @extend .button;
       @extend .small;
@@ -50,23 +64,24 @@
       &, &:hover {
         margin-top: 15px;
       }
+
     }
 
     .post-cancel {
-      &, &:hover, &:visited {
-        background-color: $mckinsey-academy-light-gray;
+      &, &:visited, &:hover, &:focus {
         margin-left: 15px;
         margin-top: 15px;
-        color: $mckinsey-academy-black !important;
       }
-    }
-  }
 
-  .discussion .new-post-article .new-post-form .new-post-cancel {
-    &, &:hover, &:visited {
-      background-color: $mckinsey-academy-light-gray;
-      margin-left: 15px;
-      color: $mckinsey-academy-black;
+      &, &:visited {
+        background-color: $mckinsey-academy-light-gray;
+        color: $mckinsey-academy-black;
+      }
+
+      &:hover, &:focus {
+        background-color: $mckinsey-grey;
+        color: $mckinsey-academy-black;
+      }
     }
   }
 
@@ -78,8 +93,17 @@
   }
 
   .post-extended-content .add-response .add-response-btn {
-    &, &:hover {
+    &, &:hover, &:focus {
       padding-bottom: 25px;
+    }
+
+    &:focus {
+      background-color: $mckinsey-blue;
+      background-image: none;
+    }
+
+    .icon-reply {
+      display: none;
     }
   }
 
@@ -89,6 +113,19 @@
       border-radius: 0px;
       background-image: none;
     }
+
+    &.is-cast {
+      background-color: $mckinsey-academy-bright-gray;
+      background-image: none;
+      color: $mckinsey-academy-black;
+      text-shadow: none;
+      box-shadow: none;
+      border-color: #b2b2b2;
+
+      .plus-icon {
+        background-position: 0 0;
+      }
+    }
   }
 
   .comments .comment-form .discussion-submit-comment {
@@ -97,8 +134,48 @@
     }
   }
 
-  /* Layout ******************************************************************/
+  .new-post-body .wmd-button > span {
+    background-image: url("/static/image/wmd-buttons-transparent.png");
+  }
+}
 
+.discussion .new-post-article .new-post-form a.new-post-cancel,
+.modal .inner-wrapper .close-modal.dismiss {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
+    background-image: url("/static/image/close_button.png");
+    background-size: 100%;
+    opacity: 0.5;
+    color: transparent;
+    overflow: hidden;
+    text-indent: 3em;
+
+    &:hover {
+      background-image: url("/static/image/close_button.png");
+      opacity: 0.7;
+    }
+}
+
+.modal .inner-wrapper .close-modal.dismiss {
+    margin: 0.5em;
+}
+
+.modal .discussion-alert-wrapper button {
+  border-radius: 5px;
+  color: white;
+  text-shadow: none;
+
+  &:hover, &:focus {
+    color: white;
+  }
+}
+
+/* Layout ******************************************************************/
+
+.lesson-content .discussion-module {
   section.discussion .discussion-thread .discussion-article {
     &, .responses > li {
       @include drop-shadow($opacity: 0);
@@ -110,12 +187,9 @@
     }
   }
 
-  .new-post-article .new-post-form, .discussion-user-threads .new-post-article .new-post-form {
-    width: 719px;
-  }
-
   .responses {
     padding: 0px 40px 0px 20px;
+    clear: both;
 
     .discussion-response {
       background-color: #fafafa;
@@ -126,12 +200,78 @@
     font-size: 14px;
   }
 
-  .response-count {
+  .add-response {
     float: right;
   }
 
-  /* Post editor *************************************************************/
+  .response-count {
+    float: left;
+  }
 
+  .discussion-submit-post {
+    float: right;
+  }
+
+  /* New Post form layout and some colors */
+
+  .new-post-article .new-post-form {
+    background: $mckinsey-academy-bright-gray;
+    min-width: 720px;
+    position: relative;
+    padding-left: 30%;
+    padding-top: 5em;
+
+    &::before {
+        content:"Create new post about:";
+        color: $mckinsey-academy-black;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 1em;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+    }
+
+    .form-row {
+      width: 100%;
+    }
+
+    .submit {
+      float: right;
+    }
+
+    .options {
+      label {
+        color: $mckinsey-academy-black;
+        margin-right: 0;
+      }
+
+      position: absolute;
+      top: 7em;
+      left: 30px;
+      width: 25%;
+
+      &::after {
+          content:"Posting anonymously will not add engagement points.";
+          color: $mckinsey-orange;
+          float: left;
+      }
+    }
+
+  }
+
+  .discussion .new-post-article .new-post-form a.new-post-cancel {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Post editor *************************************************************/
+
+.lesson-content .discussion-module {
   span[id*='wmd-code-button-'],
   span[id*='wmd-image-button-'] {
     display: none;
@@ -151,6 +291,7 @@
     margin-left: -39px;
   }
 }
+
 
 /* Discussion tooltip gets added by JS to the <body> :/ */
 body > .tooltip {
