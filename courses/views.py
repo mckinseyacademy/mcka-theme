@@ -68,9 +68,20 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
+    course = load_course(course_id, 3)
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
+
+    module_count = 0
+    for chapter in course.chapters:
+        for sequential in chapter.sequentials:
+            module_count += len(sequential.children)
+
+    if module_count > 0:
+        percent_complete = int(round(100*completions.count/module_count))
+    else:
+        percent_complete = 0
 
     data = {
         "user": request.user,
@@ -80,6 +91,8 @@ def course_landing_page(request, course_id):
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "completed_modules": completed_modules,
+        "percent_complete": percent_complete,
+        "cohort_percent_average": 58,
     }
     return render(request, 'courses/course_main.haml', data)
 
