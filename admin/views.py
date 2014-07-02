@@ -297,6 +297,10 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "programs":
             for student in data["students"]:
                 user = user_api.get_user(student.id)
+                student.created = datetime.strptime(
+                                            student.created,
+                                            '%Y-%m-%dT%H:%M:%SZ'
+                                        ).isoformat()
                 if user.is_active == True:
                     student.enrolled = True
 
@@ -806,10 +810,6 @@ def workgroup_group_create(request, course_id):
 
     return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
 
-def dump(obj):
-  for attr in dir(obj):
-    print "obj.%s = %s" % (attr, getattr(obj, attr))
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -855,12 +855,12 @@ def workgroup_group_update(request, group_id, course_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_group_remove(request, group_id):
-
     if request.method == 'POST':
 
-        removeStudent = request.POST['student']
+        remove_student = request.POST['student']
 
-        group_api.remove_user_from_group(group_id, removeStudent)
+        workgroup = WorkGroup.fetch(group_id)
+        workgroup.remove_user(remove_student)
 
         course_id = request.POST['course_id']
         course = load_course(course_id)
