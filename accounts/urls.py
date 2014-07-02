@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = patterns('accounts',
     url(r'^user_profile.html$', views.user_profile, name='user_profile'),
+    url(r'^edit_fullname/$', views.edit_fullname, name='edit_fullname'),
+    url(r'^edit_title/$', views.edit_title, name='edit_title'),
     url(r'^login/', views.login, name='login'),
     url(r'^logout/', views.logout, name='logout'),
     url(r'^activate/(?P<activation_code>.*)$', views.activate, name='activate'),

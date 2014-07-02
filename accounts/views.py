@@ -24,7 +24,7 @@ from django.test import TestCase
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
 from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm
+from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, EditFullNameForm, EditTitleForm
 from lib.token_generator import ResetPasswordTokenGenerator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
@@ -370,3 +370,51 @@ def user_profile(request):
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
+
+@login_required
+def edit_fullname(request):
+    ''' edit full name form '''
+    error = None
+    if request.method == 'POST':
+        form = EditFullNameForm(request.POST)
+        if form.is_valid():
+            try:
+                user_api.update_user_information(request.user.id, {
+                    'first_name': form.data['first_name'],
+                    'last_name': form.data['last_name']
+                })
+            except ApiError as err:
+                error = err.message
+    else:
+        form = EditFullNameForm()
+
+    user_data = {
+        'error': error,
+        'title':  _('Enter your full name'),
+        'form': form,
+        'submit_label': _('Save')
+    }
+    return render(request, 'accounts/edit_field.haml', user_data)
+
+@login_required
+def edit_title(request):
+    ''' edit title form '''
+    error = None
+    if request.method == 'POST':
+        form = EditTitleForm(request.POST)
+        if form.is_valid():
+            try:
+                user_api.update_user_information(request.user.id, {
+                    'title': form.data['title']
+                })
+            except ApiError as err:
+                error = err.message
+    else:
+        form = EditTitleForm()
+    user_data = {
+        'error': error,
+        'title': _('Enter your title'),
+        'form': form,
+        'submit_label': _('Save')
+    }
+    return render(request, 'accounts/edit_field.haml', user_data)
