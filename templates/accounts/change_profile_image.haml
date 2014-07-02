@@ -1,0 +1,33 @@
+- block change_profile_image
+  .change_profile_form
+    - block upload_profile_image
+      %form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
+        - csrf_token
+        = form
+        .error
+          - if error
+            = error
+        %input.button.radius.small{type: "submit", value: "Upload Image"}
+        .allowed-format
+        Use JPG images
+
+    %form#cropping-form{'action': '/accounts/user_profile/image/edit', 'method': 'POST'}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      - csrf_token
+      %h2.title
+        Edit Profile Image
+        .error
+        - if error
+          = error
+      .img-container
+          %img.user-uploaded-image{'src': "#{profile_image}"}
+      .img-preview
+      %input#profile-image-url{'type': 'hidden', 'name': 'profile-image-url'}
+      %input#width-position{'type': 'hidden', 'name': 'width-position'}
+      %input#height-position{'type': 'hidden', 'name': 'height-position'}
+      %input#x1-position{'type': 'hidden', 'name': 'x1-position'}
+      %input#x2-position{'type': 'hidden', 'name': 'x2-position'}
+      %input#y1-position{'type': 'hidden', 'name': 'y1-position'}
+      %input#y2-position{'type': 'hidden', 'name': 'y2-position'}
+      %input.button.small.radius{'type': 'submit', 'value': 'Cut & Save'}

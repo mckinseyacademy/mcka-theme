@@ -434,3 +434,9 @@ class SetNewPasswordForm(forms.Form):
                 self.user.error = error
                 return self.user
         return self.user
+
+
+class UploadProfileImageForm(forms.Form):
+
+    ''' form to upload file for profile image '''
+    profile_image = forms.FileField(help_text="profile_image.jpg")

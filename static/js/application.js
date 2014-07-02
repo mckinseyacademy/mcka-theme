@@ -66,7 +66,7 @@ $(function(){
         $('body, .user-info').css('cursor', 'inherit');
 
         // Need this, for some reason, the anchor links are not hooked up properly... perhaps investigate more later
-        $('.user-profile a').on('click', function(){
+        $('.user-profile .logout a').on('click', function(){
           var href = $(this).attr('href');
           if(href.length > 1){
             window.location.href = href;

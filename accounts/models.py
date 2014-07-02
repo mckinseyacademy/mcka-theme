@@ -16,7 +16,6 @@ class RemoteUser(AbstractUser):
     # TODO: replace with memcached on server
     temp_user_cache = {}
     _image_url = None
-    image = db_models.ImageField(upload_to="images/profile_images/")
 
     session_key = db_models.CharField('session_key', max_length=255, unique=True)
 
@@ -114,4 +113,3 @@ class UserActivation(db_models.Model):
             return activation_records[0]
 
         return None
-

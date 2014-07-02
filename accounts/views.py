@@ -25,7 +25,7 @@ from django.test import TestCase
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
 from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm
+from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm
 from lib.token_generator import ResetPasswordTokenGenerator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
@@ -385,6 +385,13 @@ def user_profile_image_edit(request):
         profileImageUrl = request.POST.get('profile-image-url')
 
         from PIL import Image
+        from django.core.files.storage import default_storage
+        path = default_storage.save('/path/to/file', ContentFile('new content'))
+
+        default_storage.open(path).read()
+
+        default_storage.delete(path)
+        default_storage.exists(path)
 
         test_image = profileImageUrl
         original = Image.open(test_image)
@@ -426,3 +433,98 @@ def crop_and_rescale(data, width, height, force=True):
     tmp.close()
 
     return output_data
+
+def change_profile_image(request, user_id):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'GET':  # If the form has been submitted..self.
+    #    dump(RemoteUser)
+        profile_image = request.user.image_url()
+    #    profile_image
+        form = UploadProfileImageForm(request)  # An unbound form
+
+#    dump(form)
+    data = {
+        "form": form,
+        "user_id": user_id,
+        "error": error,
+        "profile_image": profile_image,
+    }
+
+    return render(
+        request,
+        'accounts/change_profile_image.haml',
+        data
+    )
+
+def upload_profile_image(request, user_id):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = UploadProfileImageForm(request.POST, request.FILES)
+        print 'ccc'
+        if form.is_valid():  # All validation rules pass
+            print 'aaaa'
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            temp_image = request.FILES['profile_image']
+            print temp_image.content_type
+            if temp_image.content_type == "image/jpeg":
+                path = default_storage.save('images/profile_image-{}.jpg'.format(user_id), ContentFile(temp_image.read()))
+                print 'bbb'
+                if default_storage.exists(path):
+                    request.user._image_url = path
+                    request.user.save()
+                    return home(request)
+    else:
+        ''' adds a new image '''
+        form = UploadProfileImageForm(request)  # An unbound form
+#    dump(form)
+    data = {
+        "form": form,
+        "user_id": user_id,
+        "error": error,
+    }
+
+    return render(
+        request,
+        'accounts/upload_profile_image.haml',
+        data
+    )
+
+def process_uploaded_profile_image(file_stream, client_id):
+    # 1) Build user list
+    user_list = _build_student_list_from_file(file_stream)
+    attempted_count = len(user_list)
+
+    errors = [user_info["error"] for user_info in user_list if "error" in user_info]
+    user_list = [user_info for user_info in user_list if "error" not in user_info]
+
+    # 2) Register the users, and associate them with client
+    errors.extend(_register_users_in_list(user_list, client_id, activation_link_head))
+    failed_count = len(errors)
+
+    # 3) Return any error information
+    return {
+        "attempted": attempted_count,
+        "failed": failed_count,
+        "errors": errors
+    }
+
+def _build_student_list_from_file(file_stream):
+    # Don't need to read into a tmep file if small enough
+    user_objects = []
+    with tempfile.TemporaryFile() as temp_file:
+        for chunk in file_stream.chunks():
+            temp_file.write(chunk)
+
+        temp_file.seek(0)
+
+        # ignore first line
+        user_objects = [_process_line(user_line) for user_line in temp_file.read().splitlines()[1:]]
+
+    return user_objects
+
+def load_profile_image(image_url):
+

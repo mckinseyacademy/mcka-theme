@@ -12,4 +12,7 @@ urlpatterns = patterns('accounts',
     url(r'^password/reset/complete/$', views.reset_complete, name='reset_complete'),
 	url(r'^password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', views.reset_confirm, name='reset_confirm'),
     url(r'^password/reset/$', views.reset, name='reset'),
+    url(r'^user/(?P<user_id>[0-9]+)/change_profile_image', views.change_profile_image, name='change_profile_image'),
+    url(r'^user/(?P<user_id>[0-9]+)/upload_profile_image', views.upload_profile_image, name='upload_profile_image'),
+    url(r'^images/(?P<image_url>.*)$', views.load_profile_image, name='load_profile_image'),
 )

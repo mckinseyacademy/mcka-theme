@@ -1,0 +1,10 @@
+- block upload_profile_image
+  %form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
+    - csrf_token
+    = form
+    .error
+      - if error
+        = error
+    %input.button.radius.small{type: "submit", value: "Upload Image"}
+    .allowed-format
+    Use JPG images
