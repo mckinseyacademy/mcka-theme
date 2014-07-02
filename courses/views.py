@@ -68,9 +68,18 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
+    course = load_course(course_id, 3)
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
+
+    social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
+    social_total = 0
+    social_total += social_metrics.num_threads * 10
+    social_total += social_metrics.num_comments * 2
+    social_total += social_metrics.num_replies * 1
+    social_total += social_metrics.num_upvotes * 5
+    social_total += social_metrics.num_thread_followers * 5
 
     data = {
         "user": request.user,
@@ -80,6 +89,8 @@ def course_landing_page(request, course_id):
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "completed_modules": completed_modules,
+        "social_total": social_total,
+        "cohort_social_average": 28,
     }
     return render(request, 'courses/course_main.haml', data)
 

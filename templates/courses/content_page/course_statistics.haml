@@ -28,18 +28,15 @@
     .label-4 cohort average = 58%
     %a.info{href: '#'}
       %i.fa.fa-info-circle
-  %section.course-engagement
-    .zero
-      %div
-        %span Once this feature is implemented, your social engagement will be displayed here. <a data-reveal-id='beta_visualizations'>Learn more</a>.
+  %section.course-engagement{class: "{% if social_total == 0 %}no-progress{% endif %}" }
     .sub-2
       Engagement:
       %a{href: '#'}
         %i.fa.fa-arrow-circle-right
-    .visualization
-      .band-1.filled
-      .band-2
-      .total 12
-    .label-4 cohort average = 28 points
+    .visualization{class: "{% if social_total >= 90 %}filled{% endif %}"}
+      .band-1{class: "{% if social_total >= 30 %}filled{% endif %}"}
+      .band-2{class: "{% if social_total >= 60 %}filled{% endif %}"}
+      .total= social_total
+    .label-4 cohort average = ={cohort_social_average} points
     %a.info{href: '#'}
       %i.fa.fa-info-circle
