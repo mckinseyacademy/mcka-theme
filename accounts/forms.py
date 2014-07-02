@@ -438,7 +438,8 @@ class SetNewPasswordForm(forms.Form):
 
 class EditFullNameForm(forms.Form):
     ''' edit user full name '''
-    fullname = forms.CharField(max_length=255, label='')
+    first_name = forms.CharField(max_length=30, label='First Name')
+    last_name = forms.CharField(max_length=30, label='Last Name')
 
 
 class EditTitleForm(forms.Form):

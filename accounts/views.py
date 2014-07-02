@@ -375,7 +375,8 @@ def edit_fullname(request):
         if form.is_valid():
             try:
                 user_api.update_user_information(request.user.id, {
-                    'full_name': form.data['fullname']
+                    'first_name': form.data['first_name'],
+                    'last_name': form.data['last_name']
                 })
             except ApiError as err:
                 error = err.message
