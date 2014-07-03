@@ -391,17 +391,3 @@ class CoursesAPITest(TestCase):
         self.assertEqual(course_id, "9")
         self.assertEqual(chapter_id, "11")
         self.assertEqual(page_id, "110")
-
-    def test_program_for_course(self):
-        # course within a program
-        test_program = controller.program_for_course("0", "2", MockUserAPI)
-        # TODO: Generated DEFAULT program for now
-        self.assertEqual(test_program.id, "NO_PROGRAM")
-        self.assertEqual(test_program.name, "McKinsey Management Program")
-
-        #self.assertEqual(len(test_program.courses), 4)
-
-        # course not within a program
-        # TODO: Generated DEFAULT program always for now
-        # test_program = controller.program_for_course("0", "5", MockUserAPI)
-        # self.assertTrue(test_program is None)

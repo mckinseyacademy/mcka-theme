@@ -33,6 +33,28 @@
         @include transform(translate(-15px, 5px) rotate(-90deg));
       }
 
+      .nv-x line,
+      .nv-y .domain {
+        display: none;
+      }
+
+      .nv-zeroLine line {
+        stroke: #000;
+      }
+
+      .nv-y {
+        .tick.major line {
+          stroke-width: 2px;
+        }
+        .tick.threshold text {
+          fill: $mckinsey-academy-turquoise;
+
+        }
+        .threshold-rect {
+          fill: rgb(242,241,234);
+        }
+      }
+
       .course-total {
         position: absolute;
         bottom: 65px;

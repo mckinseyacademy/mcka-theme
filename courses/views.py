@@ -7,16 +7,17 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
+from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
-from .controller import build_page_info_for_course, locate_chapter_page, program_for_course
+from .controller import build_page_info_for_course, locate_chapter_page
 from .controller import update_bookmark, group_project_location
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api
 from admin.controller import load_course
 from admin.models import WorkGroup
-from accounts.controller import get_current_course_for_user, set_current_course_for_user
+from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
 
 # Create your views here.
 
@@ -175,6 +176,11 @@ def course_progress(request, course_id):
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
+    graders = gradebook.grading_policy.GRADER
+    for grader in graders:
+        grader.weight = floatformat(grader.weight*100)
+
+    pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
     module_count = 0
     for chapter in course.chapters:
@@ -186,8 +192,7 @@ def course_progress(request, course_id):
     else:
         percent_complete = 0
 
-    # grade bar chart
-    bar_chart = [{'key': 'Lesson Scores', 'values': []}]
+    bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
         bar_chart[0]['values'].append({
            'label': grade.label,
@@ -206,12 +211,17 @@ def course_progress(request, course_id):
         'bar_chart': json.dumps(bar_chart),
         'completed_modules': completed_modules,
         'percent_complete': percent_complete,
+        'pass_grade': pass_grade,
+        'graders': graders,
     }
     return render(request, 'courses/course_progress.haml', data)
 
 @login_required
 def course_resources(request, course_id):
-    return render(request, 'courses/course_resources.haml')
+    data = {
+        "resources": course_api.get_course_tabs(course_id).get("resources", None)
+    }
+    return render(request, 'courses/course_resources.haml', data)
 
 @login_required
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
@@ -222,11 +232,17 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         course_id, chapter_id, page_id)
 
     # Take note that the user has gone here
-    program = program_for_course(request.user.id, course_id)
-    program_id = program.id if program else None
     set_current_course_for_user(request, course_id)
     update_bookmark(
-        request.user.id, course_id, chapter_id, current_sequential.id, page_id)
+        request.user.id,
+        course_id,
+        chapter_id,
+        current_sequential.id,
+        page_id
+    )
+
+    # Load the current program for this user
+    program = get_current_program_for_user(request)
 
     # Inject formatted data for view
     _inject_formatted_data(program, course, page_id)
@@ -309,11 +325,12 @@ def contact_group(request, course_id, group_id):
     email_header_from = request.user.email
     group = WorkGroup.fetch_with_members(group_id)
     students = group.members
+    course = course_api.get_course(course_id)
     email_to = [student.email for student in students]
     email_content = request.POST["group_message"]
     email_subject = "Group Project Message - {}".format(course.name)
     try:
-        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email = EmailMessage(email_subject, email_content, email_from, email_to, headers = {'Reply-To': email_header_from})
         email.send(fail_silently=False)
     except:
         return HttpResponse(

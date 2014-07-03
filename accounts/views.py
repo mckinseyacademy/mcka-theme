@@ -18,15 +18,14 @@ from lib.context_processors import user_program_data
 from api_client import user_api, course_api
 from api_client.api_error import ApiError
 from admin.models import Client
-from courses.controller import program_for_course
 
 from django.core import mail
 from django.test import TestCase
 # from importlib import import_module
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
-from .controller import get_current_course_for_user, user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm
+from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start
+from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
 from lib.token_generator import ResetPasswordTokenGenerator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
@@ -69,7 +68,7 @@ def login(request):
                 ) if 'HTTP_REFERER' in request.META else None
                 if not redirect_to:
                     course_id = get_current_course_for_user(request)
-                    program = program_for_course(request.user.id, course_id)
+                    program = get_current_program_for_user(request)
                     future_start_date = False
                     if program:
                         for program_course in program.courses:
@@ -332,9 +331,15 @@ def home(request):
     if request.session.get('program_popup') == None:
         if program:
             if program.id is not 'NO_PROGRAM':
-                if program.start_date > datetime.datetime.today():
+                days = ''
+                course_start = datetime.datetime.strptime(course.start, '%Y-%m-%dT%H:%M:%SZ')
+                if course_start > datetime.datetime.today():
+                    days = str(
+                        int(math.floor(((course_start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                elif hasattr(program, 'start_date') and program.start_date > datetime.datetime.today():
                     days = str(
                         int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                if days is not '':
                     if days > 1:
                         days = days + 's'
                     popup = {'title': '', 'description': ''}
@@ -366,12 +371,6 @@ def user_profile(request):
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
-
-
-def dump(obj):
-  for attr in dir(obj):
-    print "obj.%s = %s" % (attr, getattr(obj, attr))
-
 
 @login_required
 def user_profile_image_edit(request):
@@ -560,3 +559,51 @@ def save_profile_image(request, cropped_example, image_url):
     request.user._image_url = '/accounts/' + cropped_image_path
     request.user.save()
     user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + cropped_image_path})
+
+@login_required
+def edit_fullname(request):
+    ''' edit full name form '''
+    error = None
+    if request.method == 'POST':
+        form = EditFullNameForm(request.POST)
+        if form.is_valid():
+            try:
+                user_api.update_user_information(request.user.id, {
+                    'first_name': form.data['first_name'],
+                    'last_name': form.data['last_name']
+                })
+            except ApiError as err:
+                error = err.message
+    else:
+        form = EditFullNameForm()
+
+    user_data = {
+        'error': error,
+        'title':  _('Enter your full name'),
+        'form': form,
+        'submit_label': _('Save')
+    }
+    return render(request, 'accounts/edit_field.haml', user_data)
+
+@login_required
+def edit_title(request):
+    ''' edit title form '''
+    error = None
+    if request.method == 'POST':
+        form = EditTitleForm(request.POST)
+        if form.is_valid():
+            try:
+                user_api.update_user_information(request.user.id, {
+                    'title': form.data['title']
+                })
+            except ApiError as err:
+                error = err.message
+    else:
+        form = EditTitleForm()
+    user_data = {
+        'error': error,
+        'title': _('Enter your title'),
+        'form': form,
+        'submit_label': _('Save')
+    }
+    return render(request, 'accounts/edit_field.haml', user_data)

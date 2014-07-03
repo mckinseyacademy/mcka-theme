@@ -8,7 +8,26 @@ class ThreadLocal(object):
 
     def process_request(self, request):
         _threadlocal.request = request
+        _threadlocal.current_course = None
+
+    def process_response(self, request, response):
+        _threadlocal.request = None
+        _threadlocal.current_course = None
+        return response
 
 
 def get_current_request():
     return getattr(_threadlocal, 'request', None)
+
+
+def set_course_context(course, depth):
+    setattr(_threadlocal, 'current_course', {
+            "course_id": course.id,
+            "course_content": course,
+            "depth": depth
+        }
+    )
+
+
+def get_course_context():
+    return getattr(_threadlocal,  'current_course', None)

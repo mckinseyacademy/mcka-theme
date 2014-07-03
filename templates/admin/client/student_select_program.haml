@@ -35,7 +35,7 @@
       %tr.student{id: "#{student.id}"}
         %td= student.username
         %td= student.email
-        %td{style: "color: red;"} 1/1/2014
+        %td= student.created
         %td{style: "color: red;"} admin
         - if student.enrolled
           %td enrolled

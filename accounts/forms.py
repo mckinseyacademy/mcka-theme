@@ -437,6 +437,15 @@ class SetNewPasswordForm(forms.Form):
 
 
 class UploadProfileImageForm(forms.Form):
-
     ''' form to upload file for profile image '''
     profile_image = forms.FileField(label='Select new profile image', help_text="Use JPG images. Example: profile_image.jpg", required=False)
+
+class EditFullNameForm(forms.Form):
+    ''' edit user full name '''
+    first_name = forms.CharField(max_length=30, label='First Name')
+    last_name = forms.CharField(max_length=30, label='Last Name')
+
+class EditTitleForm(forms.Form):
+    ''' edit user title '''
+    title = forms.CharField(max_length=255, label='')
+

@@ -334,3 +334,12 @@ form {
     max-height: none;
   }
 }
+
+/* XBlock general display rules */
+div.xblock-student_view {
+  visibility: hidden;
+
+  &.xblock-initialized {
+    visibility: visible;
+  }
+}
