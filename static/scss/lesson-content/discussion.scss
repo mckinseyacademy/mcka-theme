@@ -173,7 +173,7 @@
   }
 }
 
-/* Layout ******************************************************************/
+/* Layout (mostly) ***********************************************************/
 
 .lesson-content .discussion-module {
   section.discussion .discussion-thread .discussion-article {
@@ -267,6 +267,10 @@
     margin: 0;
     padding: 0;
   }
+}
+
+#course-lessons .discussion-course .sort-bar {
+  overflow: auto;
 }
 
 /* Post editor *************************************************************/
