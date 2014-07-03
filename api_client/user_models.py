@@ -17,7 +17,22 @@ class UserResponse(JsonObject):
     def image_url(self, size=40):
         ''' return default avatar unless the user has one '''
         # TODO: is the size param going to be used here?
-        return "/static/image/empty_avatar.png"
+        if hasattr(self, 'avatar_url') and self.avatar_url is not None:
+            return self.avatar_url
+        else:
+            return "/static/image/empty_avatar.png"
+
+    def image_url_small(self):
+        if hasattr(self, 'avatar_url') and self.avatar_url is not None:
+            return self.avatar_url[:-4] + '-40.jpg'
+        else:
+            return "/static/image/empty_avatar.png"
+
+    def image_url_med(self):
+        if hasattr(self, 'avatar_url') and self.avatar_url is not None:
+            return self.avatar_url[:-4] + '-120.jpg'
+        else:
+            return "/static/image/empty_avatar.png"
 
     @property
     def formatted_name(self):

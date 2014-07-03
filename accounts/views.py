@@ -8,6 +8,7 @@ import math
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -361,7 +362,7 @@ def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
     user_data = {
-        "user_image_url": user.image_url(160),
+        "user_image_url": user.image_url_med(),
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
@@ -375,7 +376,6 @@ def dump(obj):
 @login_required
 def user_profile_image_edit(request):
     if request.method == 'POST':
-        dump(request.POST)
         heightPosition = request.POST.get('height-position')
         widthPosition = request.POST.get('width-position')
         x1Position = request.POST.get('x1-position')
@@ -386,30 +386,28 @@ def user_profile_image_edit(request):
 
         from PIL import Image
         from django.core.files.storage import default_storage
-        path = default_storage.save('/path/to/file', ContentFile('new content'))
+        from django.core.files.base import ContentFile
 
-        default_storage.open(path).read()
-
-        default_storage.delete(path)
-        default_storage.exists(path)
+        image_url = profileImageUrl[10:]
+        if default_storage.exists(image_url):
+            image = default_storage.open(image_url).read()
 
         test_image = profileImageUrl
-        original = Image.open(test_image)
-        original.show()
+        original = Image.open(image_url)
 
         width, height = original.size   # Get dimensions
-        left = width/4
-        top = height/4
-        right = 3 * width/4
-        bottom = 3 * height/4
+        left = int(x1Position)
+        top = int(y1Position)
+        right = int(x2Position)
+        bottom = int(y2Position)
         cropped_example = original.crop((left, top, right, bottom))
 
-        cropped_example.show()
-    #    crop_and_rescale()
-    #    return HttpResponseRedirect('/')
+        save_profile_image(request, cropped_example, image_url)
+
+        return HttpResponseRedirect('/')
 
 
-def crop_and_rescale(data, width, height, force=True):
+def crop_and_rescale(img, width, height, force=True):
     """Rescale the given image, optionally cropping it to make sure the result image has the specified width and height."""
     import Image as pil
     from cStringIO import StringIO
@@ -417,8 +415,6 @@ def crop_and_rescale(data, width, height, force=True):
     max_width = width
     max_height = height
 
-    input_file = StringIO(data)
-    img = pil.open(input_file)
     if not force:
         img.thumbnail((max_width, max_height), pil.ANTIALIAS)
     else:
@@ -427,9 +423,7 @@ def crop_and_rescale(data, width, height, force=True):
 
     tmp = StringIO()
     img.save(tmp, 'JPEG')
-    tmp.seek(0)
-    output_data = tmp.getvalue()
-    input_file.close()
+    output_data = img
     tmp.close()
 
     return output_data
@@ -443,7 +437,6 @@ def change_profile_image(request, user_id):
     #    profile_image
         form = UploadProfileImageForm(request)  # An unbound form
 
-#    dump(form)
     data = {
         "form": form,
         "user_id": user_id,
@@ -463,24 +456,20 @@ def upload_profile_image(request, user_id):
     if request.method == 'POST':  # If the form has been submitted...
         # A form bound to the POST data and FILE data
         form = UploadProfileImageForm(request.POST, request.FILES)
-        print 'ccc'
         if form.is_valid():  # All validation rules pass
-            print 'aaaa'
+
             from django.core.files.storage import default_storage
             from django.core.files.base import ContentFile
+            from PIL import Image
+
             temp_image = request.FILES['profile_image']
-            print temp_image.content_type
             if temp_image.content_type == "image/jpeg":
-                path = default_storage.save('images/profile_image-{}.jpg'.format(user_id), ContentFile(temp_image.read()))
-                print 'bbb'
-                if default_storage.exists(path):
-                    request.user._image_url = path
-                    request.user.save()
-                    return home(request)
+                save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
+                return home(request)
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form
-#    dump(form)
+
     data = {
         "form": form,
         "user_id": user_id,
@@ -526,5 +515,48 @@ def _build_student_list_from_file(file_stream):
 
     return user_objects
 
-def load_profile_image(image_url):
+def load_profile_image(request, image_url):
+    from django.core.files.storage import default_storage
+    image_url = 'images/' + image_url
+    if default_storage.exists(image_url):
+        image = default_storage.open(image_url).read()
+        from mimetypes import MimeTypes
+        import urllib
+        mime = MimeTypes()
+        url = urllib.pathname2url(image_url)
+        mime_type = mime.guess_type(url)
+        return HttpResponse(
+                image, content_type=mime_type[0]
+            )
 
+def save_profile_image(request, cropped_example, image_url):
+
+    import StringIO
+    from PIL import Image
+    from django.core.files.storage import default_storage
+    from django.core.files.base import ContentFile
+
+    cropped_image_120 = crop_and_rescale(cropped_example, 120, 120)
+    cropped_image_40 = crop_and_rescale(cropped_example, 40, 40)
+
+    thumb_io_120 = StringIO.StringIO()
+    thumb_io_40 = StringIO.StringIO()
+    thumb_io = StringIO.StringIO()
+
+    cropped_image_120.save(thumb_io_120, format='JPEG')
+    cropped_image_40.save(thumb_io_40, format='JPEG')
+    cropped_example.save(thumb_io, format='JPEG')
+
+    if default_storage.exists(image_url):
+        default_storage.delete(image_url)
+    if default_storage.exists(image_url[:-4] + '-40.jpg'):
+        default_storage.delete(image_url[:-4] + '-40.jpg')
+    if default_storage.exists(image_url[:-4] + '-120.jpg'):
+        default_storage.delete(image_url[:-4] + '-120.jpg')
+
+    cropped_image_120_path = default_storage.save('images/profile_image-{}-120.jpg'.format(request.user.id), thumb_io_120)
+    cropped_image_40_path = default_storage.save('images/profile_image-{}-40.jpg'.format(request.user.id), thumb_io_40)
+    cropped_image_path = default_storage.save('images/profile_image-{}.jpg'.format(request.user.id), thumb_io)
+    request.user._image_url = '/accounts/' + cropped_image_path
+    request.user.save()
+    user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + cropped_image_path})

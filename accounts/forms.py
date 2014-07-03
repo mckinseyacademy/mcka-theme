@@ -439,4 +439,4 @@ class SetNewPasswordForm(forms.Form):
 class UploadProfileImageForm(forms.Form):
 
     ''' form to upload file for profile image '''
-    profile_image = forms.FileField(help_text="profile_image.jpg")
+    profile_image = forms.FileField(label='Select new profile image', help_text="Use JPG images. Example: profile_image.jpg", required=False)

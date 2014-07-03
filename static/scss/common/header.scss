@@ -207,6 +207,13 @@ header[role=banner].background-blue {
           margin: 10px 30px;
           @include square-size(160px);
         }
+        #edit-user-image{
+          background: $mckinsey-academy-alt-blue;
+          color: $pure-white;
+          padding: 5px;
+          top: -20px;
+          position: relative;
+        }
         padding-bottom: 20px;
         border-bottom: 1px solid $border-line;
       }
