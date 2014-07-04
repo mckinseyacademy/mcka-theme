@@ -123,29 +123,3 @@
     - block foundation_js_init
       %script $(document).foundation();
 
-:javascript
-  $(document).on('opened.fndtn.reveal', '#edit-user-image-modal', function () {
-      var $image = $(".img-container .user-uploaded-image"),
-      $dataX1 = $("#x1-position"),
-      $dataY1 = $("#y1-position"),
-      $dataX2 = $("#x2-position"),
-      $dataY2 = $("#y2-position"),
-      $dataHeight = $("#height-position"),
-      $dataWidth = $("#width-position"),
-      $profileImageUrl = $("#profile-image-url");
-
-      $image.cropper({
-          aspectRatio: 1,
-        /*  preview: '.img-preview', */
-          done: function(data) {
-                  $dataX1.val(data.x1);
-                  $dataY1.val(data.y1);
-                  $dataX2.val(data.x2);
-                  $dataY2.val(data.y2);
-                  $dataHeight.val(data.height);
-                  $dataWidth.val(data.width);
-                  $profileImageUrl.val($('img.user-uploaded-image').attr('src'));
-              }
-      });
-  });
-

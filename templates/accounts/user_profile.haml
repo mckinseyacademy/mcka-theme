@@ -12,7 +12,7 @@
       .field-group
         .fieldtitle
           = _("Full Name")
-          %a.editfield{data-reveal-id: "edit_fullname_modal", data-reveal-ajax: "true", href: "/accounts/edit_fullname/"}
+          %a.editfield{"data-reveal-id": "edit_fullname_modal", "data-reveal-ajax": "true", "href": "/accounts/edit_fullname/"}
             = _("edit")
         .fieldcontent
           = user.formatted_name
@@ -21,7 +21,7 @@
       .field-group
         .fieldtitle
           = _("Title")
-          %a.editfield{data-reveal-id: "edit_title_modal", data-reveal-ajax: "true", href: "/accounts/edit_title/"}
+          %a.editfield{"data-reveal-id": "edit_title_modal", "data-reveal-ajax": "true", "href": "/accounts/edit_title/"}
             = _("edit")
         .fieldcontent
           = user.title
@@ -35,3 +35,4 @@
     .logout
       %a.button.small.radius{href: "/accounts/logout"}
         = _("Log Out")
+

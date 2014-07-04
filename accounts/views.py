@@ -24,11 +24,12 @@ from django.test import TestCase
 # from importlib import import_module
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
-from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start
+from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start, save_profile_image
 from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
 from lib.token_generator import ResetPasswordTokenGenerator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.utils.dateformat import format
 from django.template.response import TemplateResponse
 
 import logout as logout_handler
@@ -401,54 +402,36 @@ def user_profile_image_edit(request):
         bottom = int(y2Position)
         cropped_example = original.crop((left, top, right, bottom))
 
-        save_profile_image(request, cropped_example, image_url)
+        request.user = save_profile_image(request, cropped_example, image_url)
+        request.user.image_url = '/accounts/' + image_url
+        RemoteUser.remove_from_cache(request.user.id)
+        return change_profile_image(request, request.user.id, 'edit_profile_image')
 
-        return HttpResponseRedirect('/')
-
-
-def crop_and_rescale(img, width, height, force=True):
-    """Rescale the given image, optionally cropping it to make sure the result image has the specified width and height."""
-    import Image as pil
-    from cStringIO import StringIO
-
-    max_width = width
-    max_height = height
-
-    if not force:
-        img.thumbnail((max_width, max_height), pil.ANTIALIAS)
-    else:
-        from PIL import ImageOps
-        img = ImageOps.fit(img, (max_width, max_height,), method=pil.ANTIALIAS)
-
-    tmp = StringIO()
-    img.save(tmp, 'JPEG')
-    output_data = img
-    tmp.close()
-
-    return output_data
-
-def change_profile_image(request, user_id):
+@login_required
+def change_profile_image(request, user_id, template='change_profile_image'):
     ''' handles requests for login form and their submission '''
     error = None
-    if request.method == 'GET':  # If the form has been submitted..self.
-    #    dump(RemoteUser)
-        profile_image = request.user.image_url()
-    #    profile_image
-        form = UploadProfileImageForm(request)  # An unbound form
+
+    user = user_api.get_user(user_id)
+
+    profile_image = user.image_url
+    form = UploadProfileImageForm(request)  # An unbound form
 
     data = {
         "form": form,
         "user_id": user_id,
         "error": error,
         "profile_image": profile_image,
+        "timestamp": format(datetime.datetime.now(), u'U')
     }
 
     return render(
         request,
-        'accounts/change_profile_image.haml',
+        'accounts/{}.haml'.format(template),
         data
     )
 
+@login_required
 def upload_profile_image(request, user_id):
     ''' handles requests for login form and their submission '''
     error = None
@@ -463,8 +446,10 @@ def upload_profile_image(request, user_id):
 
             temp_image = request.FILES['profile_image']
             if temp_image.content_type == "image/jpeg":
-                save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
-                return home(request)
+                request.user = save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
+                request.user.image_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
+                RemoteUser.remove_from_cache(request.user.id)
+                return HttpResponseRedirect(request.META['HTTP_REFERER'])
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form
@@ -481,39 +466,6 @@ def upload_profile_image(request, user_id):
         data
     )
 
-def process_uploaded_profile_image(file_stream, client_id):
-    # 1) Build user list
-    user_list = _build_student_list_from_file(file_stream)
-    attempted_count = len(user_list)
-
-    errors = [user_info["error"] for user_info in user_list if "error" in user_info]
-    user_list = [user_info for user_info in user_list if "error" not in user_info]
-
-    # 2) Register the users, and associate them with client
-    errors.extend(_register_users_in_list(user_list, client_id, activation_link_head))
-    failed_count = len(errors)
-
-    # 3) Return any error information
-    return {
-        "attempted": attempted_count,
-        "failed": failed_count,
-        "errors": errors
-    }
-
-def _build_student_list_from_file(file_stream):
-    # Don't need to read into a tmep file if small enough
-    user_objects = []
-    with tempfile.TemporaryFile() as temp_file:
-        for chunk in file_stream.chunks():
-            temp_file.write(chunk)
-
-        temp_file.seek(0)
-
-        # ignore first line
-        user_objects = [_process_line(user_line) for user_line in temp_file.read().splitlines()[1:]]
-
-    return user_objects
-
 def load_profile_image(request, image_url):
     from django.core.files.storage import default_storage
     image_url = 'images/' + image_url
@@ -527,38 +479,6 @@ def load_profile_image(request, image_url):
         return HttpResponse(
                 image, content_type=mime_type[0]
             )
-
-def save_profile_image(request, cropped_example, image_url):
-
-    import StringIO
-    from PIL import Image
-    from django.core.files.storage import default_storage
-    from django.core.files.base import ContentFile
-
-    cropped_image_120 = crop_and_rescale(cropped_example, 120, 120)
-    cropped_image_40 = crop_and_rescale(cropped_example, 40, 40)
-
-    thumb_io_120 = StringIO.StringIO()
-    thumb_io_40 = StringIO.StringIO()
-    thumb_io = StringIO.StringIO()
-
-    cropped_image_120.save(thumb_io_120, format='JPEG')
-    cropped_image_40.save(thumb_io_40, format='JPEG')
-    cropped_example.save(thumb_io, format='JPEG')
-
-    if default_storage.exists(image_url):
-        default_storage.delete(image_url)
-    if default_storage.exists(image_url[:-4] + '-40.jpg'):
-        default_storage.delete(image_url[:-4] + '-40.jpg')
-    if default_storage.exists(image_url[:-4] + '-120.jpg'):
-        default_storage.delete(image_url[:-4] + '-120.jpg')
-
-    cropped_image_120_path = default_storage.save('images/profile_image-{}-120.jpg'.format(request.user.id), thumb_io_120)
-    cropped_image_40_path = default_storage.save('images/profile_image-{}-40.jpg'.format(request.user.id), thumb_io_40)
-    cropped_image_path = default_storage.save('images/profile_image-{}.jpg'.format(request.user.id), thumb_io)
-    request.user._image_url = '/accounts/' + cropped_image_path
-    request.user.save()
-    user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + cropped_image_path})
 
 @login_required
 def edit_fullname(request):

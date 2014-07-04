@@ -1,36 +1,4 @@
-- block change_profile_image
-  .change_profile_form
-    %form#cropping-form{'action': '/accounts/user_profile/image/edit', 'method': 'POST'}
-      .close-reveal-modal
-        %i.fa.fa-times-circle
-      - csrf_token
-      %h2.title
-        Edit Profile Image
-      %p
-        Drag and adjust cropping tool to edit you profile image. When complete click Crop & Save.
-      .error
-      - if error
-        = error
-      .img-container
-          %img.user-uploaded-image{'src': "#{profile_image}"}
-      .img-preview
-      %input#profile-image-url{'type': 'hidden', 'name': 'profile-image-url'}
-      %input#width-position{'type': 'hidden', 'name': 'width-position'}
-      %input#height-position{'type': 'hidden', 'name': 'height-position'}
-      %input#x1-position{'type': 'hidden', 'name': 'x1-position'}
-      %input#x2-position{'type': 'hidden', 'name': 'x2-position'}
-      %input#y1-position{'type': 'hidden', 'name': 'y1-position'}
-      %input#y2-position{'type': 'hidden', 'name': 'y2-position'}
-      %br
-      %input.button.small.radius{'type': 'submit', 'value': 'Crop & Save'}
-
+- block edit_profile_image
+- include "accounts/edit_profile_image.haml"
   - block upload_profile_image
-    %h2.title
-      New Profile Image
-    %form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
-      - csrf_token
-      = form
-      .error
-        - if error
-          = error
-      %input.button.radius.small{type: "submit", value: "Upload Image"}
+  - include "accounts/upload_profile_image.haml"
