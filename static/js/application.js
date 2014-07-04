@@ -73,38 +73,32 @@ $(function(){
           }
         });
 
-        var modals = $(
-          '<div data-reveal id="edit_fullname_modal" class="reveal-modal small"></div>' +
-          '<div data-reveal id="edit_title_modal" class="reveal-modal small"></div>');
-        $(document.body).append(modals);
-        $(document).foundation({bindings: 'events'});
-
-        modals.on('submit', 'form', function(e) {
-          e.preventDefault();
-          var form = $(this);
-          var modal = form.parent();
-          form.find(':submit').prop('disabled', true);
-          $.ajax({
-            method: 'POST',
-            url: form.attr('action'),
-            data: form.serialize()
-          })
-          .done(function(data, status, xhr) {
-            if ($(data).find('.error, .errorlist').length > 0) {
-              modal.html(data);
-              form.find(':submit').prop('disabled', false);
-            }
-            else {
-              modal.foundation('reveal', 'close');
-
-              // force user info refresh
-              $('#profile-container').empty();
-            }
-          });
-        });
-
       });
     }
+  });
+
+  $('#edit_field_modal').on('submit', 'form', function(e) {
+    e.preventDefault();
+    var form = $(this);
+    var modal = form.parent();
+    form.find(':submit').prop('disabled', true);
+    $.ajax({
+      method: 'POST',
+      url: form.attr('action'),
+      data: form.serialize()
+    })
+    .done(function(data, status, xhr) {
+      if ($(data).find('.error, .errorlist').length > 0) {
+        modal.html(data);
+        form.find(':submit').prop('disabled', false);
+      }
+      else {
+        modal.foundation('reveal', 'close');
+
+        // force user info refresh
+        $('#profile-container').empty();
+      }
+    });
   });
 
   $('#profile-container').on('closed opened', function(){
