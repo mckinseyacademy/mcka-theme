@@ -4,6 +4,11 @@
   color: $mckinsey-academy-black;
 }
 
+.discussion.container .discussion-body .discussion-column {
+  border-color: $mckinsey-academy-light-gray;
+}
+
+.discussion.container .discussion-body,
 .lesson-content .discussion-module {
   background: #fff !important;
 
@@ -19,7 +24,7 @@
     background-image: none;
 
     .dogear {
-      background-image: url('/static/image/follow-dog-ear.png');
+      background-image: url('/static/image/lesson-content/discussion/follow-dog-ear.png');
     }
   }
 
@@ -30,6 +35,8 @@
 
 /* Buttons *****************************************************************/
 
+#course-lessons .discussion-course,
+.discussion.container .discussion-body,
 .lesson-content .discussion-module {
   .new-post-btn,
   .new-post-article .new-post-form .submit,
@@ -49,6 +56,8 @@
       line-height: 1;
       height: 35px;
       width: auto;
+      margin-left: 1em;
+      float: right;
     }
 
     .new-post-icon {
@@ -87,12 +96,11 @@
 
   .new-post-btn {
     &, &:hover {
-      position: absolute;
-      right: 20px;
+      float: right;
     }
   }
 
-  .post-extended-content .add-response .add-response-btn {
+  .add-response .add-response-btn {
     &, &:hover, &:focus {
       padding-bottom: 25px;
     }
@@ -134,19 +142,20 @@
     }
   }
 
-  .new-post-body .wmd-button > span {
-    background-image: url("/static/image/wmd-buttons-transparent.png");
+  .new-post-body .wmd-button span {
+    background-image: url("/static/image/lesson-content/discussion/wmd-buttons-transparent.png");
   }
 }
 
-.discussion .new-post-article .new-post-form a.new-post-cancel,
+#course-lessons .discussion-course .new-post-article .new-post-form a.new-post-cancel,
+.lesson-content .discussion-module .discussion .new-post-article .new-post-form a.new-post-cancel,
 .modal .inner-wrapper .close-modal.dismiss {
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
     border: none;
     background-color: transparent;
-    background-image: url("/static/image/close_button.png");
+    background-image: url("/static/image/lesson-content/discussion/close_button.png");
     background-size: 100%;
     opacity: 0.5;
     color: transparent;
@@ -154,7 +163,7 @@
     text-indent: 3em;
 
     &:hover {
-      background-image: url("/static/image/close_button.png");
+      background-image: url("/static/image/lesson-content/discussion/close_button.png");
       opacity: 0.7;
     }
 }
@@ -173,8 +182,10 @@
   }
 }
 
-/* Layout ******************************************************************/
+/* Layout (mostly) ***********************************************************/
 
+#course-lessons .discussion-course,
+.discussion.container .discussion-body,
 .lesson-content .discussion-module {
   section.discussion .discussion-thread .discussion-article {
     &, .responses > li {
@@ -218,18 +229,14 @@
     background: $mckinsey-academy-bright-gray;
     min-width: 720px;
     position: relative;
-    padding-left: 30%;
     padding-top: 5em;
 
-    &::before {
-        content:"Create new post about:";
+    .topic-dropdown-label {
         color: $mckinsey-academy-black;
+        font-size: 1em;
         font-weight: bold;
         text-transform: uppercase;
         margin-bottom: 1em;
-        position: absolute;
-        top: 30px;
-        left: 30px;
     }
 
     .form-row {
@@ -241,26 +248,22 @@
     }
 
     .options {
+      float: left;
       label {
         color: $mckinsey-academy-black;
         margin-right: 0;
       }
 
-      position: absolute;
-      top: 7em;
-      left: 30px;
-      width: 25%;
-
       &::after {
           content:"Posting anonymously will not add engagement points.";
           color: $mckinsey-orange;
-          float: left;
+          display: block;
       }
     }
 
   }
 
-  .discussion .new-post-article .new-post-form a.new-post-cancel {
+  .new-post-article .new-post-form a.new-post-cancel {
     position: absolute;
     top: 30px;
     right: 30px;
@@ -269,8 +272,19 @@
   }
 }
 
+#course-lessons .discussion-course {
+  .sort-bar {
+    overflow: auto;
+  }
+  .left-column,
+  .right-column {
+    padding-top: 0;
+  }
+}
+
 /* Post editor *************************************************************/
 
+.discussion.container .discussion-body,
 .lesson-content .discussion-module {
   span[id*='wmd-code-button-'],
   span[id*='wmd-image-button-'] {
