@@ -276,6 +276,15 @@
   .sort-bar {
     overflow: auto;
   }
+
+  .discussion-article {
+    min-height: 500px;
+  }
+
+  .sidebar {
+    position: relative;
+  }
+
   .left-column,
   .right-column {
     padding-top: 0;
