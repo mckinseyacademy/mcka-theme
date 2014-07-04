@@ -59,9 +59,9 @@
       #email-member.reveal-modal.small{"data-reveal": "true"}
         .close-reveal-modal
           %i.fa.fa-times-circle
-        %h2= _("Message member")
+        %h2= _("Message your group member")
         %hr
-        %div= _("Post any questions or messages you have for your group member.")
+        %div= _("Send any questions or messages to your group member.")
         %form#email-member-form{action: "/courses/#{course.id}/group_member_email", method: "POST"}
           .error
             - if error
