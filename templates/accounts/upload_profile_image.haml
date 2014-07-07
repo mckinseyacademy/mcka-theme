@@ -1,5 +1,5 @@
 - block upload_profile_image
-  %form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
+  %form#upload-profile-image-form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
     - csrf_token
     = form
     .error
