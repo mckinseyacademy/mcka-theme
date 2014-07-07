@@ -60,36 +60,26 @@
         %th.label-4 Score:
         %th.label-4 Individual Peer Grades:
       %tbody
-        %tr
-          %td.lesson.sub-1 Activity 1
-          %td.deadline April 16th
-          %td.assessment 80%
-          %td
-            %ul.group-grades
-              %li 75
-              %li 80
-              %li 85
-              %li 75
-        %tr
-          %td.lesson.sub-1 Activity 2
-          %td.deadline April 16th
-          %td.assessment.none -
-          %td
-            %ul.group-grades
-              %li -
-              %li -
-              %li -
-              %li -
-        %tr
-          %td.lesson.sub-1 Activity 3
-          %td.deadline April 16th
-          %td.assessment.none -
-          %td
-            %ul.group-grades
-              %li -
-              %li -
-              %li -
-              %li -
+        - for project in group_projects
+          %tr
+            %td.lesson.sub-1 ={project.name}
+            %td.deadline
+              - if project.due == None
+                \-
+              - else
+                = project.due
+            %td.assessment
+              - if project.score == None
+                \-
+              - else
+                ={project.score}%
+            %td
+              %ul.group-grades
+                - for grade in project.grades
+                  - if grade == None
+                    %li -
+                  - else
+                    %li ={grade}
 
   #progress_modal.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal

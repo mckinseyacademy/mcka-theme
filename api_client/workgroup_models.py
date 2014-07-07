@@ -28,6 +28,10 @@ class Workgroup(JsonObject):
     def get_workgroup_users(cls, workgroup_id):
         return workgroup_api.get_workgroup_users(workgroup_id, group_object=cls)
 
+    @classmethod
+    def get_workgroup_review_items(cls, workgroup_id):
+        return workgroup_api.get_workgroup_review_items(workgroup_id)
+
     def add_user(self, user_id):
         if workgroup_api.add_user_to_workgroup(self.id, user_id):
             # reload users list

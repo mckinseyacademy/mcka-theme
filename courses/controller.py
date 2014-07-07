@@ -247,3 +247,32 @@ def progress_percent(completion_count, module_count):
         return int(round(100*completion_count/module_count))
     else:
         return 0
+
+def groupwork_reviews_for_project(user_id, project_url):
+    '''
+    Returns group work reviews for a project
+    '''
+
+    # work groups associate with this user
+    user_workgroups = user_api.get_user_workgroups(user_id)
+
+    # find the work group in project associated with this user (assuming only one)
+    for workgroup in user_workgroups:
+        if workgroup.project == project_url:
+            workgroup_id = workgroup.id
+            break
+
+    if workgroup_id == None:
+        return []
+
+    # calculate averages grouped by user
+    average_grades = []
+    users = WorkGroup.get_workgroup_users(workgroup_id)
+    review_items = WorkGroup.get_workgroup_review_items(workgroup_id)
+
+    for user in users:
+        grades = [int(review.answer) for review in review_items if user.id == int(review.reviewer)]
+        avg = sum(grades)/len(grades) if len(grades)>0 else None
+        average_grades.append(avg)
+
+    return average_grades
