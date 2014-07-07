@@ -445,11 +445,15 @@ def upload_profile_image(request, user_id):
             from PIL import Image
 
             temp_image = request.FILES['profile_image']
-            if temp_image.content_type == "image/jpeg":
+            allowed_types = ["image/jpeg", "image/png"]
+            if temp_image.content_type in allowed_types:
                 request.user = save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
                 request.user.image_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
                 RemoteUser.remove_from_cache(request.user.id)
-                return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        else:
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form
