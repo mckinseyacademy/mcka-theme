@@ -31,6 +31,7 @@ from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
+from django.templatetags.static import static
 
 import logout as logout_handler
 
@@ -39,7 +40,7 @@ from django.core.urlresolvers import reverse
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
 
-VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -62,7 +63,6 @@ def login(request):
                 )
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
-
                 redirect_to = _get_qs_value_from_url(
                     'next',
                     request.META['HTTP_REFERER']
@@ -388,23 +388,28 @@ def user_profile_image_edit(request):
         from django.core.files.storage import default_storage
         from django.core.files.base import ContentFile
 
-        image_url = profileImageUrl[10:]
+        if profileImageUrl[:10] == '/accounts/':
+            image_url = profileImageUrl[10:]
+        elif profileImageUrl[:8] == '/static/':
+            prefix = 'https://' if request.is_secure() else 'http://'
+            image_url = prefix + request.get_host() + profileImageUrl
+        else:
+            image_url - profileImageUrl
+
         if default_storage.exists(image_url):
-            image = default_storage.open(image_url).read()
 
-        test_image = profileImageUrl
-        original = Image.open(image_url)
+            original = Image.open(image_url)
 
-        width, height = original.size   # Get dimensions
-        left = int(x1Position)
-        top = int(y1Position)
-        right = int(x2Position)
-        bottom = int(y2Position)
-        cropped_example = original.crop((left, top, right, bottom))
+            width, height = original.size   # Get dimensions
+            left = int(x1Position)
+            top = int(y1Position)
+            right = int(x2Position)
+            bottom = int(y2Position)
+            cropped_example = original.crop((left, top, right, bottom))
 
-        request.user = save_profile_image(request, cropped_example, image_url)
-        request.user.image_url = '/accounts/' + image_url
-        RemoteUser.remove_from_cache(request.user.id)
+            request.user = save_profile_image(request, cropped_example, image_url)
+            request.user.image_url = '/accounts/' + image_url
+            RemoteUser.remove_from_cache(request.user.id)
         return change_profile_image(request, request.user.id, 'edit_profile_image')
 
 @login_required

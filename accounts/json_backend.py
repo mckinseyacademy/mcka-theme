@@ -22,6 +22,7 @@ class JsonBackend(object):
         '''
         auth_info = user_api.authenticate(username, password)
         user = get_user_model()()
+        auth_info.user = user_api.get_user(auth_info.user.id)
         user.update_response_fields(auth_info.user, auth_info.token)
         user.save()
 
