@@ -22,13 +22,12 @@ def user_program_data(request):
             course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
                 request.user.id, course_id, None)
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-                course_id, chapter_id, page_id, chapter_position)
+                course_id, None, None, None)
 
             program = get_current_program_for_user(request)
 
             # Inject formatted data for view
-            _inject_formatted_data(program, course, page_id, get_static_tab_context())
-
+            _inject_formatted_data(program, course, None, get_static_tab_context())
 
             # Inject lesson assessment scores
             assesments = {}
@@ -58,9 +57,6 @@ def user_program_data(request):
 
     data = {
         "course": course,
-        "current_chapter": current_chapter,
-        "current_sequential": current_sequential,
-        "current_page": current_page,
         "program": program,
     }
     return data

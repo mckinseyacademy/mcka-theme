@@ -37,15 +37,16 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
             lesson_description = static_tab_info.get("lesson{}".format(idx), None)
             if lesson_description:
                 lesson.description = lesson_description.content
-        for sequential in lesson.sequentials:
-            for page in sequential.pages:
-                page.status_class = "complete"
-                is_current = page_id == page.id
-                if is_current:
-                    page.status_class = "current"
-                    found_current_page = True
-                elif found_current_page:
-                    page.status_class = "incomplete"
+        if page_id:
+            for sequential in lesson.sequentials:
+                for page in sequential.pages:
+                    page.status_class = "complete"
+                    is_current = page_id == page.id
+                    if is_current:
+                        page.status_class = "current"
+                        found_current_page = True
+                    elif found_current_page:
+                        page.status_class = "incomplete"
 
 @login_required
 def course_landing_page(request, course_id):

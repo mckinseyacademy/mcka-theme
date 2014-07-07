@@ -9,10 +9,12 @@ class ThreadLocal(object):
     def process_request(self, request):
         _threadlocal.request = request
         _threadlocal.current_course = None
+        _threadlocal.static_tabs = None
 
     def process_response(self, request, response):
         _threadlocal.request = None
         _threadlocal.current_course = None
+        _threadlocal.static_tabs = None
         return response
 
 
