@@ -1,6 +1,9 @@
+-load staticfiles
 .user-profile
   .user-image
     %img{src: "#{user_image_url}"}
+    %a#edit-user-image{"data-reveal-id": "edit-user-image-modal", "data-reveal-ajax": "true", 'href': "/accounts/user/#{user.id}/change_profile_image"}
+      change photo
   .user-detail
     .username
       = user.username
@@ -32,3 +35,9 @@
     .logout
       %a.button.small.radius{href: "/accounts/logout"}
         = _("Log Out")
+
+-# Jquery Cropper
+- block cropper_jquery
+  %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
+  %script{src: "{% static 'js/user_profile_edit.js' %}"}
+

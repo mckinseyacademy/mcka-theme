@@ -16,14 +16,19 @@ class JsonBackend(object):
     Authenticate against the remote server using an API call...
     """
 
+    def _load_user(self, user_response, auth_token=None):
+        user = get_user_model()()
+        user.update_response_fields(user_response, auth_token)
+        user.save()
+        return user
+
     def authenticate(self, username=None, password=None):
         '''
         Implements django authenticate that delegates to API
         '''
         auth_info = user_api.authenticate(username, password)
-        user = get_user_model()()
-        user.update_response_fields(auth_info.user, auth_info.token)
-        user.save()
+        auth_info.user = user_api.get_user(auth_info.user.id)
+        user = self._load_user(auth_info.user, auth_info.token)
 
         return user
 
@@ -35,9 +40,7 @@ class JsonBackend(object):
         if user is None:
             try:
                 user_response = user_api.get_user(user_id)
-                user = get_user_model()()
-                user.update_response_fields(user_response)
-                user.save()
+                user = self._load_user(user_response)
             except ApiError:
                 user = None
 

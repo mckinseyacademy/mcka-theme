@@ -328,6 +328,16 @@ form {
   text-align: center !important;
 }
 
+#edit-user-image-modal{
+  img{
+    max-width: rem-calc(400);
+    max-height: rem-calc(300);
+  }
+  .user-uploaded-image{
+    max-width:100%;
+  }
+}
+
 /* XBlock general display rules */
 div.xblock-student_view {
   visibility: hidden;

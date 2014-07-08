@@ -72,7 +72,6 @@ $(function(){
             window.location.href = href;
           }
         });
-
       });
     }
   });
@@ -104,5 +103,4 @@ $(function(){
   $('#profile-container').on('closed opened', function(){
     $('.user-info >.fa').toggleClass('fa-sort-asc fa-sort-desc');
   });
-
 });
