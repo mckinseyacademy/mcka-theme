@@ -330,8 +330,8 @@ form {
 
 #edit-user-image-modal{
   img{
-    max-width: none;
-    max-height: none;
+    max-width: rem-calc(400);
+    max-height: rem-calc(300);
   }
   .user-uploaded-image{
     max-width:100%;
