@@ -39,6 +39,8 @@ def _load_course(course_id, depth=3, course_api_impl=course_api):
     for group_project in course.group_project_chapters:
         group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
 
+    set_course_context(course, depth)
+
     return course
 
 
