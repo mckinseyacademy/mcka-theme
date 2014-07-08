@@ -368,7 +368,7 @@ def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
     user_data = {
-        "user_image_url": user.image_url_med(),
+        "user_image_url": user.image_url(size=120),
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
@@ -408,7 +408,7 @@ def user_profile_image_edit(request):
             cropped_example = original.crop((left, top, right, bottom))
 
             request.user = save_profile_image(request, cropped_example, image_url)
-            request.user.image_url = '/accounts/' + image_url
+            request.user.avatar_url = '/accounts/' + image_url
             RemoteUser.remove_from_cache(request.user.id)
         return change_profile_image(request, request.user.id, 'edit_profile_image')
 
@@ -419,7 +419,7 @@ def change_profile_image(request, user_id, template='change_profile_image'):
 
     user = user_api.get_user(user_id)
 
-    profile_image = user.image_url
+    profile_image = user.avatar_url
     form = UploadProfileImageForm(request)  # An unbound form
 
     data = {
@@ -453,12 +453,12 @@ def upload_profile_image(request, user_id):
             allowed_types = ["image/jpeg", "image/png"]
             if temp_image.content_type in allowed_types:
                 request.user = save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
-                request.user.image_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
+                request.user.avatar_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
                 RemoteUser.remove_from_cache(request.user.id)
 
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return change_profile_image(request, request.user.id, 'change_profile_image')
         else:
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+            return change_profile_image(request, request.user.id, 'change_profile_image')
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form

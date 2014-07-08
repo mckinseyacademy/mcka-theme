@@ -184,7 +184,7 @@ def save_profile_image(request, cropped_example, image_url):
     cropped_image_120_path = default_storage.save('images/profile_image-{}-120.jpg'.format(request.user.id), thumb_io_120)
     cropped_image_40_path = default_storage.save('images/profile_image-{}-40.jpg'.format(request.user.id), thumb_io_40)
     cropped_image_path = default_storage.save('images/profile_image-{}.jpg'.format(request.user.id), thumb_io)
-    request.user._image_url = '/accounts/' + cropped_image_path
+    request.user.avatar_url = '/accounts/' + cropped_image_path
     request.user.save()
     user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + cropped_image_path})
 
