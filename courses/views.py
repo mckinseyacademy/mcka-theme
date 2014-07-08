@@ -10,7 +10,7 @@ from django.utils.translation import ugettext as _
 from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
-from .controller import build_page_info_for_course, locate_chapter_page
+from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
 from .controller import update_bookmark, group_project_location
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
@@ -22,27 +22,11 @@ from accounts.controller import get_current_course_for_user, set_current_course_
 # Create your views here.
 
 def _inject_formatted_data(program, course, page_id, static_tab_info=None):
-    if course:
-        course.nav_url = '/courses/{}'.format(course.id)
-
     if program:
         for program_course in program.courses:
-            program_course.nav_url = '/courses/{}'.format(program_course.id)
             program_course.course_class = ""
             if program_course.id == course.id:
                 program_course.course_class = "current"
-            if hasattr(program_course, 'start_date'):
-                program_course.formatted_start_date = "{} {}".format(
-                    _("Available"),
-                    program_course.start_date.strftime('%B %d, %Y')
-                )
-                program_course.has_future_start_date = program_course.is_future_start()
-            else:
-                program_course.formatted_start_date = None
-                program_course.percent_complete_message = "{}% {}".format(
-                    program_course.percent_complete,
-                    _("complete")
-                )
 
     found_current_page = False
 
@@ -53,15 +37,16 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
             lesson_description = static_tab_info.get("lesson{}".format(idx), None)
             if lesson_description:
                 lesson.description = lesson_description.content
-        for sequential in lesson.sequentials:
-            for page in sequential.pages:
-                page.status_class = "complete"
-                is_current = page_id == page.id
-                if is_current:
-                    page.status_class = "current"
-                    found_current_page = True
-                elif found_current_page:
-                    page.status_class = "incomplete"
+        if page_id:
+            for sequential in lesson.sequentials:
+                for page in sequential.pages:
+                    page.status_class = "complete"
+                    is_current = page_id == page.id
+                    if is_current:
+                        page.status_class = "current"
+                        found_current_page = True
+                    elif found_current_page:
+                        page.status_class = "incomplete"
 
 @login_required
 def course_landing_page(request, course_id):
@@ -69,6 +54,7 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
+    load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
@@ -87,16 +73,16 @@ def course_landing_page(request, course_id):
 @login_required
 def course_overview(request, course_id):
     overview = course_api.get_course_overview(course_id)
-    print(overview)
     data = {
-        'overview': course_api.get_course_overview(course_id),
+        'overview': overview,
     }
     return render(request, 'courses/course_overview.haml', data)
 
 @login_required
 def course_syllabus(request, course_id):
+    static_tabs = load_static_tabs(course_id)
     data = {
-        'syllabus': course_api.get_course_syllabus(course_id),
+        "syllabus": static_tabs.get("syllabus", None)
     }
     return render(request, 'courses/course_syllabus.haml', data)
 
@@ -218,8 +204,9 @@ def course_progress(request, course_id):
 
 @login_required
 def course_resources(request, course_id):
+    static_tabs = load_static_tabs(course_id)
     data = {
-        "resources": course_api.get_course_tabs(course_id).get("resources", None)
+        "resources": static_tabs.get("resources", None)
     }
     return render(request, 'courses/course_resources.haml', data)
 
