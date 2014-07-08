@@ -271,8 +271,15 @@ def groupwork_reviews_for_project(user_id, project_url):
     review_items = WorkGroup.get_workgroup_review_items(workgroup_id)
 
     for user in users:
-        grades = [int(review.answer) for review in review_items if user.id == int(review.reviewer)]
+        grades = [int(review.answer) for review in review_items if user.id == int(review.reviewer) and is_number(review.answer)]
         avg = sum(grades)/len(grades) if len(grades)>0 else None
         average_grades.append(avg)
 
     return average_grades
+
+def is_number(s):
+    try:
+        float(s)
+    except ValueError:
+        return False
+    return True
