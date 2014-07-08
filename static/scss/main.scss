@@ -332,7 +332,8 @@ form {
 div.xblock-student_view {
   visibility: hidden;
 
-  &.xblock-initialized {
+  &.xblock-initialized,
+  &.xmodule_display {
     visibility: visible;
   }
 }
