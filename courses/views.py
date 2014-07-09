@@ -54,11 +54,8 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
-<<<<<<< HEAD
     course = load_course(course_id, 3)
-=======
     load_static_tabs(course_id)
->>>>>>> master
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
