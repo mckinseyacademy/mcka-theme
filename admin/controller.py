@@ -292,12 +292,16 @@ def filterGroupsAndStudents(course, students):
 
     return groups, students
 
-
 def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
+
+    users_ids = [str(user.id) for user in students]
+    users = user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+    students = users.results
+
     companies = {}
     for student in students:
-        studentCompanies = user_api.get_user_organizations(student.id)
+        studentCompanies = student.organizations
         if len(studentCompanies) > 0:
             company = studentCompanies[0]
             if not company.id in companies:
