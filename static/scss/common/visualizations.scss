@@ -21,8 +21,8 @@
       z-index: 10;
       top: 50%;
       width: 100%;
-      margin-top: -11px;
-      @include font-spec(22, bold);
+      margin-top: -17.5px;
+      @include font-spec(35, bold);
     }
 
     .inner-circle {
@@ -35,6 +35,10 @@
       z-index: 5;
       @include square-size(70px);
       @include linear-gradient(#b8d432, #389b46);
+
+      &.failed {
+        @include linear-gradient(#fbac40, #ef4326);
+      }
     }
 
     .progress-radial {

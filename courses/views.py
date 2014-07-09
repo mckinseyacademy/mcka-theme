@@ -68,6 +68,9 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
+
+    course = load_course(course_id, 3)
+    gradebook = user_api.get_user_gradebook(request.user.id, course_id)
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
@@ -80,6 +83,8 @@ def course_landing_page(request, course_id):
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "completed_modules": completed_modules,
+        "proficiency": int(round(gradebook.grade_summary.percent*100)),
+        "cohort_proficiency_average": 45,
     }
     return render(request, 'courses/course_main.haml', data)
 
