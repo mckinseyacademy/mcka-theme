@@ -15,17 +15,15 @@
     %a.info{href: '#'}
       %i.fa.fa-info-circle
   %section.course-progress
-    .zero
-      %div
-        %span Once this feature is implemented, your progress through course materials will be displayed here. <a data-reveal-id='beta_visualizations'>Learn more</a>.
     .sub-2
       Progress:
       %a{href: '#'}
         %i.fa.fa-arrow-circle-right
-    .visualization{data-percent: '71%'}
-      .total 71%
-      .bar
-    .label-4 cohort average = 58%
+    .visualization{data-cohort-percent: "#{percent_complete}%"}
+      .total{style: "left:#{percent_complete}%;"}
+        ={percent_complete}%
+      .bar{class: "{% if cohort_percent_average > percent_complete %}trailing{% endif %}", style: "width:#{percent_complete}%;"}
+    .label-4 cohort average = ={cohort_percent_average}%
     %a.info{href: '#'}
       %i.fa.fa-info-circle
   %section.course-engagement
