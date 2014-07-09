@@ -3,6 +3,8 @@
 
 from django.conf import settings
 
+from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
+
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.api_error import ApiError
 from api_client.project_models import Project
@@ -225,3 +227,11 @@ def group_project_location(user_id, course, sequential_id=None):
     page = sequential.pages[0] if len(sequential.pages) > 0 else None
 
     return project_group, group_project, sequential, page
+
+def load_static_tabs(course_id):
+    static_tabs = get_static_tab_context()
+    if static_tabs is None:
+        static_tabs = course_api.get_course_tabs(course_id)
+        set_static_tab_context(static_tabs)
+
+    return static_tabs

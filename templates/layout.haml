@@ -13,6 +13,7 @@
       %link{rel: "stylesheet", href: "{% static 'css/font-awesome.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/leaflet.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
+      %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
 
     - load assets
     {% assets "css_core" %}
@@ -74,6 +75,9 @@
         %p{'class': "lead description"}
         %a{'class': "close-reveal-modal fa fa-times-circle"}
 
+    - block change_profile_image
+      #edit-user-image-modal.reveal-modal.small{'data-reveal': 'true'}
+
     -# Beta content overlay
     - block beta_content
       #beta_content.reveal-modal.small{'data-reveal': None}
@@ -81,6 +85,8 @@
           %i.fa.fa-times-circle
         %p This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!
         %p As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks.
+
+    #edit_field_modal.reveal-modal.small{data-reveal: None}
 
     -# Override if you need another version of jQuery
     - block foundation_jquery
@@ -114,3 +120,4 @@
     -# Init Foundation
     - block foundation_js_init
       %script $(document).foundation();
+

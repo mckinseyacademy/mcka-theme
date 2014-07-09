@@ -1,4 +1,6 @@
 ''' Objects for courses built from json responses from API '''
+import datetime
+
 from .json_object import CategorisedJsonObject, JsonObject
 
 # Create your models here.
@@ -40,6 +42,34 @@ class Course(CategorisedJsonObject):
     ''' object representing a course '''
     required_fields = ["id", "name", ]
 
+    @property
+    def nav_url(self):
+        return '/courses/{}'.format(self.id)
+
+    @property
+    def formatted_start_date(self):
+        if hasattr(self, 'start_date'):
+            return "{} {}".format(
+                _("Available"),
+                self.start_date.strftime('%B %d, %Y')
+            )
+        return None
+
+    @property
+    def percent_complete_message(self):
+        if hasattr(self, 'percent_complete'):
+            return "{}% {}".format(
+                self.percent_complete,
+                _("complete")
+            )
+        return ""
+
+    @property
+    def has_future_start_date(self):
+        if hasattr(self, 'start_date'):
+            current_time = datetime.datetime.now()
+            return not (date <= current_time)
+        return False
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
@@ -58,7 +88,7 @@ class CourseEnrollmentList(JsonObject):
     object_map = {
         "enrollments": CourseEnrollment
     }
-    
+
 class CourseTab(JsonObject):
     required_fields = ["name"]
 
