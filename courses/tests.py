@@ -272,31 +272,31 @@ class MockUserAPI(object):
 
     @staticmethod
     def _get_user_courses(user_id, current_course_id):
-        user_courses = [
+        users_courses = [
             {
                 "id": current_course_id,
                 "name": "Cycling to Work",
-                "percent_complete": 40,
+                "is_active": True
             },
             {
                 "id": "1",
                 "name": "Walking",
-                "percent_complete": 100
+                "is_active": True
             },
             {
                 "id": "3",
                 "name": "Trains and Buses",
-                "percent_complete": 10,
+                "is_active": True
             },
             {
                 "id": "4",
                 "name": "Drive Yourself",
-                "percent_complete": 0,
+                "is_active": True,
                 "start_date": "2014-06-01T00:14:00.00Z"
             }
         ]
 
-        return [user_models.UserCourse(dictionary=user_course) for user_course in user_courses]
+        return [course_models.Course(dictionary=course) for course in users_courses]
 
     @staticmethod
     def get_user_courses(user_id):
@@ -379,7 +379,7 @@ class CoursesAPITest(TestCase):
         course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", None, MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
-        self.assertEqual(chapter_id, "11")
+        self.assertEqual(chapter_id, "10")
 
         # specified up to chapter id not bookmarked should get first page in specified chapter
         course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", "12", NotBookmarkedMockUserAPI, MockCourseAPI)
