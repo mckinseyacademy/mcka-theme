@@ -71,9 +71,9 @@ def _get_user_programs(user_id):
 
 
 def get_current_course_by_user_id(user_id):
-    # TODO: Replace with logic for finding "current" course
-    # For now, we just return first course
+    # Return first active course in the user's list
     courses = user_api.get_user_courses(user_id)
+    courses = [c for c in courses if c.is_active]
     if len(courses) > 0:
         course_id = courses[0].id
         return course_id

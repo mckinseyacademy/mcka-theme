@@ -294,8 +294,11 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     if not course_id:
         course_id = get_current_course_for_user(request)
 
-    course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
-        request.user.id, course_id, chapter_id)
+    course_id, chapter_id, page_id = locate_chapter_page(
+        request.user.id,
+        course_id,
+        chapter_id
+    )
 
     if course_id and chapter_id and page_id:
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))

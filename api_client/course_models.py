@@ -1,6 +1,8 @@
 ''' Objects for courses built from json responses from API '''
 import datetime
 
+from django.utils.translation import ugettext as _
+
 from .json_object import CategorisedJsonObject, JsonObject
 
 # Create your models here.

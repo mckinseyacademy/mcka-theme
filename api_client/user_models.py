@@ -50,11 +50,6 @@ class UserCourseStatus(JsonObject):
     ''' object representing a user's course status from api json response '''
     required_fields = ["position"]
 
-
-class UserCourse(JsonObject):
-    required_fields = []
-
-
 class UserList(JsonObject):
     object_map = {
         "users": UserResponse

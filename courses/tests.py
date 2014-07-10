@@ -272,31 +272,31 @@ class MockUserAPI(object):
 
     @staticmethod
     def _get_user_courses(user_id, current_course_id):
-        user_courses = [
+        users_courses = [
             {
                 "id": current_course_id,
                 "name": "Cycling to Work",
-                "percent_complete": 40,
+                "is_active": True
             },
             {
                 "id": "1",
                 "name": "Walking",
-                "percent_complete": 100
+                "is_active": True
             },
             {
                 "id": "3",
                 "name": "Trains and Buses",
-                "percent_complete": 10,
+                "is_active": True
             },
             {
                 "id": "4",
                 "name": "Drive Yourself",
-                "percent_complete": 0,
+                "is_active": True,
                 "start_date": "2014-06-01T00:14:00.00Z"
             }
         ]
 
-        return [user_models.UserCourse(dictionary=user_course) for user_course in user_courses]
+        return [course_models.Course(dictionary=course) for course in users_courses]
 
     @staticmethod
     def get_user_courses(user_id):
@@ -311,6 +311,19 @@ class MockUserAPI(object):
             "uri": "/api/users/{}/courses/{}".format(user_id, course_id)
         }
         return user_models.UserCourseStatus(dictionary=course_detail)
+
+    @staticmethod
+    def get_user_preferences(user_id):
+        return {
+            "current_course_id": "2",
+            "last_chapter_id": "11",
+            "last_sequential_id": "9111",
+            "last_vertical_id": "111",
+        }
+
+    @staticmethod
+    def set_user_preferences(user_id, prefs):
+        pass
 
 
 class NotBookmarkedMockUserAPI(MockUserAPI):
@@ -328,7 +341,7 @@ class CoursesAPITest(TestCase):
         pass
 
     def test_build_page_info_for_course(self):
-        test_course, test_current_chapter, test_current_sequential, test_current_page = controller.build_page_info_for_course("0", "11", "112", None, MockCourseAPI)
+        test_course, test_current_chapter, test_current_sequential, test_current_page = controller.build_page_info_for_course("0", "11", "112", MockCourseAPI)
 
         self.assertEqual(len(test_course.chapters), 3)
         self.assertEqual(test_current_chapter.id, "11")
@@ -356,38 +369,37 @@ class CoursesAPITest(TestCase):
 
     def test_locate_chapter_page(self):
         # specified up to chapter id, should get bookmarked page
-        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "2", "10", MockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", "10", MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "10")
         self.assertEqual(page_id, "100")
 
         # specified course-only should get bookmarked page
-        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "2", None, MockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", None, MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
-        self.assertEqual(chapter_position, 2)
-        self.assertEqual(chapter_id, "11")
+        self.assertEqual(chapter_id, "10")
 
         # specified up to chapter id not bookmarked should get first page in specified chapter
-        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "0", "12", NotBookmarkedMockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", "12", NotBookmarkedMockUserAPI, MockCourseAPI)
 
-        self.assertEqual(course_id, "0")
+        self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "12")
         self.assertEqual(page_id, "120")
 
         # specified course-only without bookmark should get first page of first chapter
-        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "0", None, NotBookmarkedMockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "0", None, NotBookmarkedMockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "0")
-        self.assertEqual(chapter_id, "11")
-        self.assertEqual(page_id, "110")
+        self.assertEqual(chapter_id, "10")
+        self.assertEqual(page_id, "100")
 
         # specified course-only without bookmark should get first page of first
         # chapter of specified course, even if "current" course is something
         # different
-        course_id, chapter_id, page_id, chapter_position = controller.locate_chapter_page("0", "9", None, NotBookmarkedMockUserAPI, OtherMockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "9", None, NotBookmarkedMockUserAPI, OtherMockCourseAPI)
 
         self.assertEqual(course_id, "9")
-        self.assertEqual(chapter_id, "11")
-        self.assertEqual(page_id, "110")
+        self.assertEqual(chapter_id, "10")
+        self.assertEqual(page_id, "100")
