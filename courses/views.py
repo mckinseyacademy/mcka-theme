@@ -59,15 +59,14 @@ def course_landing_page(request, course_id):
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
-
     social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
+
     social_total = 0
-    social_total += social_metrics.num_threads * 10
-    social_total += social_metrics.num_comments * 2
-    social_total += social_metrics.num_replies * 1
-    social_total += social_metrics.num_upvotes * 5
-    social_total += social_metrics.num_thread_followers * 5
+    for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
+        social_total += getattr(social_metrics, key) * val
+
     module_count = 0
+
     for chapter in course.chapters:
         for sequential in chapter.sequentials:
             module_count += len(sequential.children)
