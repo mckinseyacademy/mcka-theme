@@ -4,13 +4,11 @@
   color: $mckinsey-academy-black;
 }
 
-.discussion.container .discussion-body .discussion-column {
-  border-color: $mckinsey-academy-light-gray;
-}
-
 .discussion.container .discussion-body,
 .lesson-content .discussion-module {
   background: #fff !important;
+  border: 1px solid $mckinsey-grey;
+  border-radius: 5px;
 
   *:focus {
     outline: 0;
@@ -18,6 +16,9 @@
 
   .discussion-column {
     box-shadow: none;
+    border: none;
+    border-left: 1px solid $mckinsey-grey;
+    border-radius: 0;
   }
 
   .discussion-article {
