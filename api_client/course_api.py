@@ -224,16 +224,19 @@ def get_course_completions(course_id, user_id):
     return JP.from_json(response.read())
 
 @api_error_protect
-def get_course_proficiency(course_id):
+def get_course_proficiency(course_id, user_id=None, count=3):
     ''' retrieves users who are leading in terms of points_scored'''
 
-    response = GET(
-        '{}/{}/{}/metrics/proficiency/leaders'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-        )
+    url = '{}/{}/{}/metrics/proficiency/leaders?count={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        count
     )
 
+    if user_id:
+        url += '&user_id={}'.format(user_id)
+
+    response = GET(url)
     return JP.from_json(response.read())
 
