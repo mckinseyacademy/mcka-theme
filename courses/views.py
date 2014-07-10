@@ -106,7 +106,14 @@ def course_news(request, course_id):
 
 @login_required
 def course_cohort(request, course_id):
-    return render(request, 'courses/course_cohort.haml')
+    proficiency = course_api.get_course_proficiency(course_id)
+    for index, leader in enumerate(proficiency.leaders, 1):
+        leader.rank = index
+        leader.points_scored = floatformat(leader.points_scored, 2)
+    data = {
+        'proficiency': proficiency
+    }
+    return render(request, 'courses/course_cohort.haml', data)
 
 @login_required
 def course_group_work(request, course_id):

@@ -22,26 +22,15 @@
       %section
         %header
           .label-5 Proficiency:
-          .label-4 cohort average = 0
+          .label-4 cohort average = ={proficiency.course_avg}
           .rank your proficiency position will be displayed here
           .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name nichellhall
-              .person-title Marketing Director
-              .person-rank #1 <span>100</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name erincavallaro
-              .person-title PR Director
-              .person-rank #2 <span>90</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name amesscarano
-              .person-title Partner
-              .person-rank #3 <span>80</span>
+            - for leader in proficiency.leaders
+              %img.avatar{src: '={leader.avatar_url}'}
+              .info
+                .person-name ={leader.username}
+                .person-title ={leader.title}
+                .person-rank #={leader.rank} <span>={leader.points_scored}</span>
       %section
         %header
           .label-5 Progress:
