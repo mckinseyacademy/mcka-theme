@@ -56,7 +56,7 @@
       line-height: 1;
       height: 35px;
       width: auto;
-      margin-left: 1em;
+      margin-left: 20px;
       float: right;
     }
 
@@ -66,22 +66,14 @@
   }
 
   .discussion-article {
-
-    .post-update {
-      margin-top: 15px;
-
-      &, &:hover {
+    .post-update, .post-cancel {
+      &, &:visited, &:hover, &:focus {
+        margin-left: 20px;
         margin-top: 15px;
       }
-
     }
 
     .post-cancel {
-      &, &:visited, &:hover, &:focus {
-        margin-left: 15px;
-        margin-top: 15px;
-      }
-
       &, &:visited {
         background-color: $mckinsey-academy-light-gray;
         color: $mckinsey-academy-black;
