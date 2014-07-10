@@ -184,6 +184,9 @@ INITIAL_PASSWORD = 'PassworD12!@'
 # Email address students get their enrollment email sent from
 ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 
+# Disabling automatic program enrollment for no (MCKIN-1750)
+ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
+
 # EMAIL BACKEND
 EMAIL_BACKEND = "django_ses.SESBackend"
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"

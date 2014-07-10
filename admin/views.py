@@ -626,7 +626,9 @@ def add_students_to_program(request, client_id):
             # Ignore 409 errors, because they indicate a user already added
             if e.code != 409:
                 raise
-    sendMultipleEmails(messages)
+
+    if settings.ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT:
+        sendMultipleEmails(messages)
 
     return HttpResponse(
         json.dumps({"message": _("Successfully associated students to {} program")
