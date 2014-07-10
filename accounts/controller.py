@@ -30,15 +30,50 @@ class ActivationError(Exception):
         return "ActivationError '{}'".format(self.value)
 
 
+class CourseAccessDeniedError(Exception):
+    '''
+    Exception to be thrown when course access is denied
+    '''
+    def __init__(self, value):
+        self.value = value
+        super(CourseAccessDeniedError, self).__init__()
+
+    def __str__(self):
+        return "Access denied to course '{}'".format(self.value)
+
+
+def check_user_course_access(func):
+    '''
+    Decorator which will raise an CourseAccessDeniedError if the user does not have access to the requested course
+    '''
+    def user_course_access_checker(request, course_id, *args, **kwargs):
+        program = get_current_program_for_user(request)
+        if program is None:
+            set_current_course_for_user(request, course_id)
+            program = get_current_program_for_user(request)
+            if program is None:
+                raise CourseAccessDeniedError(course_id)
+        available_courses = program.courses
+        if program.outside_courses and len(program.outside_courses) > 0:
+            available_courses += program.outside_courses
+        course_access = [c for c in available_courses if c.id == course_id]
+        if len(course_access) < 1:
+            raise CourseAccessDeniedError(course_id)
+
+        return func(request, course_id, *args, **kwargs)
+
+    return user_course_access_checker
+
+
 def _get_user_programs(user_id):
     ''' Helper function to retrieve the user's programs '''
     return user_api.get_user_groups(user_id, 'series', group_object=Program)
 
 
 def get_current_course_by_user_id(user_id):
-    # TODO: Replace with logic for finding "current" course
-    # For now, we just return first course
+    # Return first active course in the user's list
     courses = user_api.get_user_courses(user_id)
+    courses = [c for c in courses if c.is_active]
     if len(courses) > 0:
         course_id = courses[0].id
         return course_id

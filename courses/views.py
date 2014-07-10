@@ -18,6 +18,7 @@ from api_client import course_api, user_api
 from admin.controller import load_course
 from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
+from accounts.controller import check_user_course_access
 
 # Create your views here.
 
@@ -49,6 +50,7 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                         page.status_class = "incomplete"
 
 @login_required
+@check_user_course_access
 def course_landing_page(request, course_id):
     '''
     Course landing page for user for specified course
@@ -84,6 +86,7 @@ def course_landing_page(request, course_id):
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
+@check_user_course_access
 def course_overview(request, course_id):
     overview = course_api.get_course_overview(course_id)
     data = {
@@ -92,6 +95,7 @@ def course_overview(request, course_id):
     return render(request, 'courses/course_overview.haml', data)
 
 @login_required
+@check_user_course_access
 def course_syllabus(request, course_id):
     static_tabs = load_static_tabs(course_id)
     data = {
@@ -100,11 +104,13 @@ def course_syllabus(request, course_id):
     return render(request, 'courses/course_syllabus.haml', data)
 
 @login_required
+@check_user_course_access
 def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
 @login_required
+@check_user_course_access
 def course_cohort(request, course_id):
     proficiency = course_api.get_course_proficiency(course_id)
     for index, leader in enumerate(proficiency.leaders, 1):
@@ -116,6 +122,7 @@ def course_cohort(request, course_id):
     return render(request, 'courses/course_cohort.haml', data)
 
 @login_required
+@check_user_course_access
 def course_group_work(request, course_id):
 
     seq_id = request.GET.get("seqid", None)
@@ -148,6 +155,7 @@ def course_group_work(request, course_id):
     return render(request, 'courses/course_group_work.haml', data)
 
 @login_required
+@check_user_course_access
 def course_discussion(request, course_id):
 
     course = load_course(course_id)
@@ -176,6 +184,7 @@ def course_discussion(request, course_id):
     return render(request, 'courses/course_discussion.haml', data)
 
 @login_required
+@check_user_course_access
 def course_progress(request, course_id):
 
     course = load_course(course_id, 3)
@@ -223,6 +232,7 @@ def course_progress(request, course_id):
     return render(request, 'courses/course_progress.haml', data)
 
 @login_required
+@check_user_course_access
 def course_resources(request, course_id):
     static_tabs = load_static_tabs(course_id)
     data = {
@@ -231,6 +241,7 @@ def course_resources(request, course_id):
     return render(request, 'courses/course_resources.haml', data)
 
 @login_required
+@check_user_course_access
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
 
     ''' go to given page within given chapter within given course '''
@@ -280,6 +291,7 @@ def course_notready(request, course_id):
     return render(request, 'courses/course_notready.haml')
 
 @login_required
+@check_user_course_access
 def infer_chapter_navigation(request, course_id, chapter_id):
     '''
     Go to the bookmarked page for given chapter within given course
@@ -289,8 +301,11 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     if not course_id:
         course_id = get_current_course_for_user(request)
 
-    course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
-        request.user.id, course_id, chapter_id)
+    course_id, chapter_id, page_id = locate_chapter_page(
+        request.user.id,
+        course_id,
+        chapter_id
+    )
 
     if course_id and chapter_id and page_id:
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
@@ -306,6 +321,7 @@ def infer_default_navigation(request):
     return infer_chapter_navigation(request, None, None)
 
 @login_required
+@check_user_course_access
 def contact_ta(request, course_id):
     email_header_from = request.user.email
     email_from = settings.APROS_EMAIL_SENDER
@@ -327,6 +343,7 @@ def contact_ta(request, course_id):
     )
 
 @login_required
+@check_user_course_access
 def contact_group(request, course_id, group_id):
     email_from = settings.APROS_EMAIL_SENDER
     email_header_from = request.user.email
@@ -350,6 +367,7 @@ def contact_group(request, course_id, group_id):
     )
 
 @login_required
+@check_user_course_access
 def contact_member(request, course_id):
     email_from = settings.APROS_EMAIL_SENDER
     email_header_from = request.user.email

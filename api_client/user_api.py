@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from .json_object import JsonParser as JP
-from . import user_models, gradebook_models, organization_models, workgroup_models
+from . import user_models, gradebook_models, organization_models, workgroup_models, course_models
 from .json_requests import GET, POST, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
@@ -128,7 +128,7 @@ def get_user_courses(user_id):
             user_id
         )
     )
-    courses = JP.from_json(response.read(), user_models.UserCourse)
+    courses = JP.from_json(response.read(), course_models.Course)
     # TODO: Faking status for now, need to remove somehow
     for course in courses:
         course.percent_complete = 25
@@ -166,7 +166,7 @@ def enroll_user_in_course(user_id, course_id):
         data
     )
 
-    courses = JP.from_json(response.read(), user_models.UserCourse)
+    courses = JP.from_json(response.read(), course_models.Course)
 
 
 @api_error_protect
