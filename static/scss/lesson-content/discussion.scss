@@ -217,9 +217,13 @@
 
   /* New Post form layout and some colors */
 
+  .new-post-article .inner-wrapper {
+    min-width: 0px;
+  }
+
   .new-post-article .new-post-form {
     background: $mckinsey-academy-bright-gray;
-    min-width: 720px;
+    min-width: 560px;
     position: relative;
     padding-top: 5em;
 
@@ -252,7 +256,6 @@
           display: block;
       }
     }
-
   }
 
   .new-post-article .new-post-form a.new-post-cancel {
@@ -261,6 +264,10 @@
     right: 30px;
     margin: 0;
     padding: 0;
+  }
+
+  .wmd-panel {
+    min-width: 340px;
   }
 }
 
