@@ -67,6 +67,15 @@ def course_landing_page(request, course_id):
     social_total += social_metrics.num_replies * 1
     social_total += social_metrics.num_upvotes * 5
     social_total += social_metrics.num_thread_followers * 5
+    module_count = 0
+    for chapter in course.chapters:
+        for sequential in chapter.sequentials:
+            module_count += len(sequential.children)
+
+    if module_count > 0:
+        percent_complete = int(round(100*completions.count/module_count))
+    else:
+        percent_complete = 0
 
     data = {
         "user": request.user,
@@ -78,6 +87,8 @@ def course_landing_page(request, course_id):
         "completed_modules": completed_modules,
         "social_total": social_total,
         "cohort_social_average": 28,
+        "percent_complete": percent_complete,
+        "cohort_percent_average": 58,
     }
     return render(request, 'courses/course_main.haml', data)
 
