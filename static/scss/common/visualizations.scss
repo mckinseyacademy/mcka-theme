@@ -107,6 +107,7 @@
     border-radius: 50%;
     margin: 20px 0 15px;
     @include square-size(100px);
+    &.filled { background: #3e9e45; }
 
     &.no-progress .total {
       color: $mckinsey-academy-black;
@@ -131,9 +132,10 @@
 
     .band-2 {
       background: #bbcad2;
-      margin: -37.5px 0 0 -37.5px;
+      margin: -39px 0 0 -39px;
       z-index: 5;
-      @include square-size(75px);
+      @include square-size(78px);
+      &.filled { background: #7cb93b; }
     }
 
     .total {

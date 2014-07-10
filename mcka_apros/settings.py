@@ -211,7 +211,6 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'lib.context_processors.settings_data',
 )
 
-
 DEFAULT_DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
@@ -232,3 +231,12 @@ LOCAL_DEBUG_TOOLBAR_PANELS = (
 )
 
 DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
+
+# Points for social activities
+SOCIAL_METRIC_POINTS = {
+    'num_threads': 10,
+    'num_comments': 2,
+    'num_replies': 1,
+    'num_upvotes': 5,
+    'num_thread_followers': 5,
+}
