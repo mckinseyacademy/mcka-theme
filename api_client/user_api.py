@@ -329,7 +329,7 @@ def get_course_social_metrics(user_id, course_id):
     ''' fetch social metrics for course '''
 
     response = GET(
-        '{}/{}/{}/courses/{}/metrics/social'.format(
+        '{}/{}/{}/courses/{}/metrics/social/'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
             user_id,
