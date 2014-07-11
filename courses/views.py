@@ -112,7 +112,7 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-    proficiency = course_api.get_course_proficiency(course_id, request.user.id)
+    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     proficiency.points = floatformat(proficiency.points)
     for index, leader in enumerate(proficiency.leaders, 1):
         leader.rank = index
