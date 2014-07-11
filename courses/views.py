@@ -11,7 +11,7 @@ from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, group_project_location
+from .controller import update_bookmark, group_project_location, progress_percent
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api
@@ -112,13 +112,27 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
+
+    course = load_course(course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     proficiency.points = floatformat(proficiency.points)
     for index, leader in enumerate(proficiency.leaders, 1):
         leader.rank = index
         leader.points_scored = floatformat(leader.points_scored)
+
+    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
+    module_count = course.module_count()
+
+    completions.completion_percent = progress_percent(completions.completions, module_count)
+    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+
+    for index, leader in enumerate(completions.leaders, 1):
+        leader.rank = index
+        leader.completion_percent = progress_percent(leader.completions, module_count)
+
     data = {
-        'proficiency': proficiency
+        'proficiency': proficiency,
+        'completions': completions
     }
     return render(request, 'courses/course_cohort.haml', data)
 
@@ -198,16 +212,6 @@ def course_progress(request, course_id):
 
     pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
-    module_count = 0
-    for chapter in course.chapters:
-        for sequential in chapter.sequentials:
-            module_count += len(sequential.children)
-
-    if module_count > 0:
-        percent_complete = int(round(100*completions.count/module_count))
-    else:
-        percent_complete = 0
-
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
         bar_chart[0]['values'].append({
@@ -222,6 +226,9 @@ def course_progress(request, course_id):
         'value': total,
         'color': '#e37121'
     })
+
+    module_count = course.module_count()
+    percent_complete = progress_percent(completions.count, module_count)
 
     data = {
         'bar_chart': json.dumps(bar_chart),
