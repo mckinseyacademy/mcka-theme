@@ -54,7 +54,7 @@ class Course(CategorisedJsonObject):
         if hasattr(self, 'start'):
             return "{} {}".format(
                 _("Available"),
-                self.start.strftime('%B %d, %Y')
+                datetime.datetime.strptime(self.start, '%Y-%m-%dT%H:%M:%SZ').strftime('%B %d, %Y')
             )
         return None
 
@@ -71,9 +71,9 @@ class Course(CategorisedJsonObject):
     def started(self):
         if hasattr(self, 'start'):
             date = self.start
-            current_time = datetime.datetime.now()
-            return (date <= current_time)
-        return True
+            if int(self.days_till_start) < 1:
+                return True
+        return False
 
     @property
     def days_till_start(self):
