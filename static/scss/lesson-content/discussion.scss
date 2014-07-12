@@ -73,8 +73,7 @@ body > .tooltip {
   .discussion-submit-post,
   .add-response .add-response-btn,
   .comments .comment-form .discussion-submit-comment,
-  .discussion-article .post-update,
-  .discussion-article .post-cancel {
+  .discussion-article .post-update {
     &, &:hover {
       @extend .button;
       @extend .small;
@@ -96,22 +95,10 @@ body > .tooltip {
   }
 
   .discussion-article {
-    .post-update, .post-cancel {
+    .post-update {
       &, &:visited, &:hover, &:focus {
         margin-left: 20px;
         margin-top: 15px;
-      }
-    }
-
-    .post-cancel {
-      &, &:visited {
-        background-color: $mckinsey-academy-light-gray;
-        color: $mckinsey-academy-black;
-      }
-
-      &:hover, &:focus {
-        background-color: $mckinsey-grey;
-        color: $mckinsey-academy-black;
       }
     }
   }
@@ -276,14 +263,6 @@ body > .tooltip {
         }
       }
     }
-
-    .new-post-form a.new-post-cancel {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      margin: 0;
-      padding: 0;
-    }
   }
 }
 
@@ -293,23 +272,19 @@ body > .tooltip {
   color: $mckinsey-academy-black;
 }
 
-.modal .inner-wrapper .close-modal.dismiss {
-    margin: 0.5em;
-}
-
 .modal .discussion-alert-wrapper button {
-  border-radius: 5px;
-  color: white;
-  text-shadow: none;
-
-  &:hover, &:focus {
+  &, &:hover, &:focus {
+    border-radius: 5px;
     color: white;
+    text-shadow: none;
   }
 }
 
 /* Special Close button for modals and New Post */
+#course-discussion .discussion-content a.post-cancel,
 #course-discussion .discussion-content a.new-post-cancel,
-#course-lessons .discussion-module .discussion .new-post-article .new-post-form a.new-post-cancel,
+#course-lessons .discussion-module .discussion a.post-cancel,
+#course-lessons .discussion-module .discussion a.new-post-cancel,
 .modal .inner-wrapper .close-modal.dismiss {
     width: 1.5em;
     height: 1.5em;
@@ -322,6 +297,11 @@ body > .tooltip {
     color: transparent;
     overflow: hidden;
     text-indent: 3em;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    margin: 0;
+    padding: 0;
 
     &:hover {
       background-image: url("/static/image/lesson-content/discussion/close_button.png");
