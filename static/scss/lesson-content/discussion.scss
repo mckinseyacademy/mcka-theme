@@ -1,25 +1,25 @@
-/* TODO: Move this to a proper theme once XBlocks support them */
-
-#discussion-alert-message {
-  color: $mckinsey-academy-black;
-}
-
-.discussion.container .discussion-body,
-.lesson-content .discussion-module {
-  background: #fff !important;
+#course-lessons .discussion-module {
   border: 1px solid $mckinsey-grey;
   border-radius: 5px;
 
   *:focus {
     outline: 0;
   }
+}
 
-  .discussion-column {
-    box-shadow: none;
-    border: none;
-    border-left: 1px solid $mckinsey-grey;
-    border-radius: 0;
-  }
+/* Discussion tooltip gets added by JS to the <body> :/ */
+body > .tooltip {
+  width: 100px;
+  margin-top: -110px;
+  text-align: center;
+}
+
+/* Rules shared with course discussion. */
+/* Course discussion specific rules can be found in ../course/discusssion.scss */
+
+#course-lessons .discussion-module,
+#course-discussion .discussion-content {
+  background: #fff !important;
 
   .discussion-article {
     background-image: none;
@@ -27,18 +27,47 @@
     .dogear {
       background-image: url('/static/image/lesson-content/discussion/follow-dog-ear.png');
     }
+
+    .flagged * {
+      color: $mckinsey-red;
+    }
   }
 
-  .flagged * {
-    color: $mckinsey-red;
+  section.discussion .discussion-article {
+    &, .responses > li {
+      @include drop-shadow($opacity: 0);
+      border-radius: 0;
+    }
+
+    .thread-wrapper {
+      max-height: none;
+      width: 100%;
+    }
   }
-}
 
-/* Buttons *****************************************************************/
+  .responses {
+    padding: 0px 40px 0px 20px;
+    clear: both;
 
-#course-lessons .discussion-course,
-.discussion.container .discussion-body,
-.lesson-content .discussion-module {
+    .discussion-response {
+      background-color: #fafafa;
+    }
+  }
+
+  .discussion-article h1 {
+    font-size: 14px;
+  }
+
+  .add-response {
+    float: right;
+  }
+
+  .response-count {
+    float: left;
+  }
+
+  /* Standard Buttons */
+
   .new-post-btn,
   .new-post-article .new-post-form .submit,
   .discussion-submit-post,
@@ -87,20 +116,9 @@
     }
   }
 
-  .new-post-btn {
-    &, &:hover {
-      float: right;
-    }
-  }
-
   .add-response .add-response-btn {
     &, &:hover, &:focus {
       padding-bottom: 25px;
-    }
-
-    &:focus {
-      background-color: $mckinsey-blue;
-      background-image: none;
     }
 
     .icon-reply {
@@ -135,13 +153,163 @@
     }
   }
 
-  .new-post-body .wmd-button span {
+  /* Text Edit Form */
+
+  .wmd-panel .wmd-button span {
     background-image: url("/static/image/lesson-content/discussion/wmd-buttons-transparent.png");
+  }
+
+  .wmd-panel {
+    min-width: 340px;
+  }
+
+  span[id*='wmd-code-button-'],
+  span[id*='wmd-image-button-'] {
+    display: none;
+  }
+
+  span[id*='wmd-olist-button-new-post-'],
+  span[id*='wmd-ulist-button-new-post-'],
+  span[id*='wmd-heading-button-new-post-'],
+  span[id*='wmd-hr-button-new-post-'],
+  span[id*='wmd-undo-button-new-post-'],
+  span[id*='wmd-redo-button-new-post-'] {
+    margin-left: -50px;
+  }
+
+  span[id*='wmd-spacer2-new-post-'],
+  span[id*='wmd-spacer3-new-post-'] {
+    margin-left: -39px;
+  }
+
+  /* Home */
+
+  .home-header {
+
+    border-bottom: none;
+
+    .label {
+      color: $mckinsey-academy-turquoise;
+      @include font-spec(18, normal, 24);
+      padding: 0px 0px 10px 0px;
+    }
+
+    .home-title {
+      color: $mckinsey-dark-grey;
+      padding: 0px 0px 10px 0px;
+      @include font-spec(18, normal, 24)
+    }
+  }
+
+  .notification-checkbox {
+    border: none;
+    padding: 0px;
+    margin-top: 5px;
+
+    .email-setting {
+      margin: 0px;
+    }
+  }
+
+  .home-helpgrid {
+    box-shadow: none;
+  }
+
+  .helpgrid-row {
+    td {
+      border: 1px solid #B2B2B2;
+    }
+
+    .row-title {
+      background-color: transparent;
+      padding: 10px;
+    }
+
+    .row-item {
+      padding: 10px;
+
+      .row-description {
+        display: block;
+      }
+
+      .icon {
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        padding: 0px;
+      }
+    }
+  }
+
+  /* New Post Article */
+
+  .new-post-article {
+    .inner-wrapper {
+      min-width: 0px;
+    }
+
+    .new-post-form {
+      background: $mckinsey-academy-bright-gray;
+      min-width: 560px;
+      position: relative;
+      padding-top: 5em;
+
+      .form-row {
+        width: 100%;
+      }
+
+      .submit {
+        float: right;
+      }
+
+      .options {
+        float: left;
+        label {
+          color: $mckinsey-academy-black;
+          margin-right: 0;
+        }
+
+        &::after {
+            content:"Posting anonymously will not add engagement points.";
+            color: $mckinsey-orange;
+            display: block;
+        }
+      }
+    }
+
+    .new-post-form a.new-post-cancel {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      margin: 0;
+      padding: 0;
+    }
   }
 }
 
-#course-lessons .discussion-course .new-post-article .new-post-form a.new-post-cancel,
-.lesson-content .discussion-module .discussion .new-post-article .new-post-form a.new-post-cancel,
+/* Alert messages */
+
+#discussion-alert-message {
+  color: $mckinsey-academy-black;
+}
+
+.modal .inner-wrapper .close-modal.dismiss {
+    margin: 0.5em;
+}
+
+.modal .discussion-alert-wrapper button {
+  border-radius: 5px;
+  color: white;
+  text-shadow: none;
+
+  &:hover, &:focus {
+    color: white;
+  }
+}
+
+/* Special Close button for modals and New Post */
+#course-discussion .discussion-content a.new-post-cancel,
+#course-lessons .discussion-module .discussion .new-post-article .new-post-form a.new-post-cancel,
 .modal .inner-wrapper .close-modal.dismiss {
     width: 1.5em;
     height: 1.5em;
@@ -161,165 +329,3 @@
     }
 }
 
-.modal .inner-wrapper .close-modal.dismiss {
-    margin: 0.5em;
-}
-
-.modal .discussion-alert-wrapper button {
-  border-radius: 5px;
-  color: white;
-  text-shadow: none;
-
-  &:hover, &:focus {
-    color: white;
-  }
-}
-
-/* Layout (mostly) ***********************************************************/
-
-#course-lessons .discussion-course,
-.discussion.container .discussion-body,
-.lesson-content .discussion-module {
-  section.discussion .discussion-thread .discussion-article {
-    &, .responses > li {
-      @include drop-shadow($opacity: 0);
-      border-radius: 0;
-    }
-
-    .thread-wrapper {
-      max-height: none;
-      width: 100%;
-    }
-  }
-
-  .responses {
-    padding: 0px 40px 0px 20px;
-    clear: both;
-
-    .discussion-response {
-      background-color: #fafafa;
-    }
-  }
-
-  .discussion-article h1 {
-    font-size: 14px;
-  }
-
-  .add-response {
-    float: right;
-  }
-
-  .response-count {
-    float: left;
-  }
-
-  .discussion-submit-post {
-    float: right;
-  }
-
-  /* New Post form layout and some colors */
-
-  .new-post-article .inner-wrapper {
-    min-width: 0px;
-  }
-
-  .new-post-article .new-post-form {
-    background: $mckinsey-academy-bright-gray;
-    min-width: 560px;
-    position: relative;
-    padding-top: 5em;
-
-    .topic-dropdown-label {
-        color: $mckinsey-academy-black;
-        font-size: 1em;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 1em;
-    }
-
-    .form-row {
-      width: 100%;
-    }
-
-    .submit {
-      float: right;
-    }
-
-    .options {
-      float: left;
-      label {
-        color: $mckinsey-academy-black;
-        margin-right: 0;
-      }
-
-      &::after {
-          content:"Posting anonymously will not add engagement points.";
-          color: $mckinsey-orange;
-          display: block;
-      }
-    }
-  }
-
-  .new-post-article .new-post-form a.new-post-cancel {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .wmd-panel {
-    min-width: 340px;
-  }
-}
-
-#course-lessons .discussion-course {
-  .sort-bar {
-    overflow: auto;
-  }
-
-  .discussion-article {
-    min-height: 500px;
-  }
-
-  .sidebar {
-    position: relative;
-  }
-
-  .left-column,
-  .right-column {
-    padding-top: 0;
-  }
-}
-
-/* Post editor *************************************************************/
-
-.discussion.container .discussion-body,
-.lesson-content .discussion-module {
-  span[id*='wmd-code-button-'],
-  span[id*='wmd-image-button-'] {
-    display: none;
-  }
-
-  span[id*='wmd-olist-button-new-post-'],
-  span[id*='wmd-ulist-button-new-post-'],
-  span[id*='wmd-heading-button-new-post-'],
-  span[id*='wmd-hr-button-new-post-'],
-  span[id*='wmd-undo-button-new-post-'],
-  span[id*='wmd-redo-button-new-post-'] {
-    margin-left: -50px;
-  }
-
-  span[id*='wmd-spacer2-new-post-'],
-  span[id*='wmd-spacer3-new-post-'] {
-    margin-left: -39px;
-  }
-}
-
-
-/* Discussion tooltip gets added by JS to the <body> :/ */
-body > .tooltip {
-  width: 100px;
-  margin-top: -110px;
-  text-align: center;
-}
