@@ -240,3 +240,10 @@ def load_static_tabs(course_id):
         set_static_tab_context(static_tabs)
 
     return static_tabs
+
+
+def progress_percent(completion_count, module_count):
+    if module_count > 0:
+        return int(round(100*completion_count/module_count))
+    else:
+        return 0
