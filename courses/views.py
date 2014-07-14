@@ -14,7 +14,7 @@ from .controller import build_page_info_for_course, locate_chapter_page, load_st
 from .controller import update_bookmark, group_project_location, progress_percent
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api, user_api
+from api_client import course_api, user_api, workgroup_api
 from admin.controller import load_course
 from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
@@ -121,25 +121,50 @@ def course_news(request, course_id):
 @check_user_course_access
 def course_cohort(request, course_id):
     course = load_course(course_id)
-    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
-    proficiency.points = floatformat(proficiency.points)
-    for index, leader in enumerate(proficiency.leaders, 1):
-        leader.rank = index
-        leader.points_scored = floatformat(leader.points_scored)
+    # proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+    # proficiency.points = floatformat(proficiency.points)
+    # for index, leader in enumerate(proficiency.leaders, 1):
+    #     leader.rank = index
+    #     leader.points_scored = floatformat(leader.points_scored)
 
-    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
-    module_count = course.module_count()
+    # completions = course_api.get_course_metrics_completions(course_id, request.user.id)
+    # module_count = course.module_count()
 
-    completions.completion_percent = progress_percent(completions.completions, module_count)
-    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+    # completions.completion_percent = progress_percent(completions.completions, module_count)
+    # completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
 
-    for index, leader in enumerate(completions.leaders, 1):
-        leader.rank = index
-        leader.completion_percent = progress_percent(leader.completions, module_count)
+    # for index, leader in enumerate(completions.leaders, 1):
+    #     leader.rank = index
+    #     leader.completion_percent = progress_percent(leader.completions, module_count)
+
+    metrics = course_api.get_course_metrics(course_id)
+    workgroups = user_api.get_user_workgroups(request.user.id, params=[{'key': 'course_id', 'value': course_id}])
+    organizations = user_api.get_user_organizations(request.user.id)
+    if len(organizations) > 0:
+        organizationUsers = course_api.get_user_list(course_id, program_id = None, client_id = organizations[0].id)
+        metrics.company_enrolled = len(organizationUsers)
+    if len(workgroups) > 0:
+        workgroup = workgroup_api.get_workgroup(workgroups[0].id)
+        metrics.group_enrolled = len(workgroup.users)
+        users = [str(user.id) for user in workgroup.users]
+        users = user_api.get_users(params=[{'key': 'ids', 'value': ','.join(users)}])
+        metrics.groups_users = []
+        for user in users.results:
+            metrics.groups_users.append({"id": user.id,
+                                            "username": user.username,
+                                            "first_name": user.first_name,
+                                            "last_name": user.last_name,
+                                            "country": 'US',
+                                            "city": 'Boston',
+                                            "avatar_url": user.image_url(),
+                                            "full_name": "Dino Cikatic",
+                                        })
+        metrics.groups_users = json.dumps(metrics.groups_users)
 
     data = {
-        'proficiency': proficiency,
-        'completions': completions
+        # 'proficiency': proficiency,
+        # 'completions': completions
+        'metrics': metrics,
     }
     return render(request, 'courses/course_cohort.haml', data)
 
