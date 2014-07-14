@@ -6,9 +6,12 @@
     .student-data
       %ul.students
         %li.label-2 # of people online:
-        %li.label-4 467 cohort participants
-        %li.label-4 280 company participants
-        %li.label-4 3 group work team members
+        %li.label-4
+          ="#{metrics.users_enrolled} cohort participants"
+        %li.label-4
+          ="#{metrics.company_enrolled} company participants"
+        %li.label-4
+          ="#{metrics.group_enrolled} group work team members"
       %a.hide-team{href: '#'} Hide team profiles
     %hr
     .leaderboard-header

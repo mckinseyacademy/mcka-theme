@@ -120,7 +120,12 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-    return render(request, 'courses/course_cohort.haml')
+
+    metrics = {}
+    data = {
+        "metrics": metrics,
+    }
+    return render(request, 'courses/course_cohort.haml', data)
 
 @login_required
 @check_user_course_access
