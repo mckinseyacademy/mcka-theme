@@ -13,12 +13,11 @@
       .label-4 cohort average = 58%
     %hr
     .sub-1 GRADES
-    %p.style-6 You need a combined course grade of at least 80% to earn a certificate of completion. Your final grade is calculated as follows:
+    %p.style-6 You need a combined course grade of at least ={pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows:
     .grades
       %ul
-        %li End-of-lesson assessments: 00? percent of your grade
-        %li Group work: 00? percent of your grade
-        %li Final assessment: 00? percent of your grade
+        - for grader in graders
+          %li ={grader.type}: ={grader.weight} percent of your grade
       #chart-grades
         %svg
     %ul.legend

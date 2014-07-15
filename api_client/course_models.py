@@ -1,4 +1,9 @@
 ''' Objects for courses built from json responses from API '''
+import datetime
+import math
+
+from django.utils.translation import ugettext as _
+
 from .json_object import CategorisedJsonObject, JsonObject
 
 # Create your models here.
@@ -40,6 +45,54 @@ class Course(CategorisedJsonObject):
     ''' object representing a course '''
     required_fields = ["id", "name", ]
 
+    @property
+    def nav_url(self):
+        return '/courses/{}'.format(self.id)
+
+    @property
+    def formatted_start_date(self):
+        if hasattr(self, 'start'):
+            return "{} {}".format(
+                _("Available"),
+                datetime.datetime.strptime(self.start, '%Y-%m-%dT%H:%M:%SZ').strftime('%B %d, %Y')
+            )
+        return None
+
+    @property
+    def percent_complete_message(self):
+        if hasattr(self, 'percent_complete'):
+            return "{}% {}".format(
+                self.percent_complete,
+                _("complete")
+            )
+        return ""
+
+    @property
+    def started(self):
+        if hasattr(self, 'start'):
+            date = self.start
+            if int(self.days_till_start) < 1:
+                return True
+        return False
+
+    @property
+    def days_till_start(self):
+        if hasattr(self, 'start'):
+            course_start = datetime.datetime.strptime(self.start, '%Y-%m-%dT%H:%M:%SZ')
+            days = str(
+                int(math.floor(((course_start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
+            return days
+        return 0
+
+
+
+    def module_count(self):
+        module_count = 0
+        for chapter in self.chapters:
+            for sequential in chapter.sequentials:
+                module_count += len(sequential.children)
+
+        return module_count
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
@@ -58,7 +111,7 @@ class CourseEnrollmentList(JsonObject):
     object_map = {
         "enrollments": CourseEnrollment
     }
-    
+
 class CourseTab(JsonObject):
     required_fields = ["name"]
 

@@ -88,17 +88,6 @@ def get_course_tabs(course_id):
     return {tab.name.lower(): tab for tab in tab_array}
 
 @api_error_protect
-def get_course_syllabus(course_id):
-    '''
-    Retrieves course syllabus information from the API for specified course
-    '''
-    tabs = get_course_tabs(course_id)
-    if "syllabus" in tabs:
-        return tabs["syllabus"].content
-    else:
-        return None
-
-@api_error_protect
 def get_course_news(course_id):
     '''
     Retrieves course updates from the API for specified course
@@ -221,7 +210,7 @@ def get_course_content_groups(course_id, content_id):
 
 @api_error_protect
 def get_course_completions(course_id, user_id):
-    ''' fetch associates groups to specific content within specific course '''
+    ''' fetch course module completion list '''
 
     response = GET(
         '{}/{}/{}/completions?user_id={}'.format(
@@ -234,3 +223,36 @@ def get_course_completions(course_id, user_id):
 
     return JP.from_json(response.read())
 
+@api_error_protect
+def get_course_metrics_proficiency(course_id, user_id=None, count=3):
+    ''' retrieves users who are leading in terms of points_scored'''
+
+    url = '{}/{}/{}/metrics/proficiency/leaders?count={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        count
+    )
+
+    if user_id:
+        url += '&user_id={}'.format(user_id)
+
+    response = GET(url)
+    return JP.from_json(response.read())
+
+@api_error_protect
+def get_course_metrics_completions(course_id, user_id=None, count=3):
+    ''' retrieves users who are leading in terms of  course module completions '''
+
+    url = '{}/{}/{}/metrics/completions/leaders?count={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        count
+    )
+
+    if user_id:
+        url += '&user_id={}'.format(user_id)
+
+    response = GET(url)
+    return JP.from_json(response.read())

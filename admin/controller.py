@@ -25,19 +25,22 @@ def _load_course(course_id, depth=3, course_api_impl=course_api):
 
     course = course_api_impl.get_course(course_id, depth)
 
-    # Separate Group Projects
+    # Separate special chapters
 
     course.group_project_chapters = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
-    course.chapters = [chapter for chapter in course.chapters if not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
     # Only the first discussion chapter is taken into account
     course.discussion = None
-    for chapter in course.chapters:
-        if chapter.name.startswith(settings.DISCUSSION_IDENTIFIER):
-            course.discussion = chapter
+    discussions = [chapter for chapter in course.chapters if chapter.name.startswith(settings.DISCUSSION_IDENTIFIER)]
+    if len(discussions) > 0:
+        course.discussion = discussions[0]
+
+    course.chapters = [chapter for chapter in course.chapters if is_normal_chapter(chapter)]
 
     for group_project in course.group_project_chapters:
         group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
+
+    set_course_context(course, depth)
 
     return course
 
@@ -289,12 +292,16 @@ def filterGroupsAndStudents(course, students):
 
     return groups, students
 
-
 def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
+
+    users_ids = [str(user.id) for user in students]
+    users = user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+    students = users.results
+
     companies = {}
     for student in students:
-        studentCompanies = user_api.get_user_organizations(student.id)
+        studentCompanies = student.organizations
         if len(studentCompanies) > 0:
             company = studentCompanies[0]
             if not company.id in companies:

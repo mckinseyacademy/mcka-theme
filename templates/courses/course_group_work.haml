@@ -1,12 +1,9 @@
 - extends "courses/course_navigation.haml"
 - block current_content
   #course-group-work
-    - if not group_project
+    - if not group_project or not project_group
       .row
-        .error= _("No Group Project has been configured for this course")
-    - elif not project_group
-      .row
-        .error= _("You have not been assigned to a group for a Group Project")
+        .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
     - else
       .row
         - include "courses/group_work/activity_menu.haml"
@@ -23,7 +20,7 @@
               - include "courses/group_work/group_member.haml" with group_member=member data_reveal_id="email-member"
             - if project_group.id
               %a.email-team{href: "#", data-reveal-id: 'email-team'}
-                = _("Email Team")
+                = _("Email your group")
           %hr
           .ask-ta
             %h4= _("Ask a TA")
@@ -59,9 +56,9 @@
       #email-member.reveal-modal.small{"data-reveal": "true"}
         .close-reveal-modal
           %i.fa.fa-times-circle
-        %h2= _("Message member")
+        %h2= _("Message your group member")
         %hr
-        %div= _("Post any questions or messages you have for your group member.")
+        %div= _("Send any questions or messages to your group member.")
         %form#email-member-form{action: "/courses/#{course.id}/group_member_email", method: "POST"}
           .error
             - if error

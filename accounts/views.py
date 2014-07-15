@@ -8,6 +8,7 @@ import math
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -23,12 +24,14 @@ from django.test import TestCase
 # from importlib import import_module
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation
-from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, EditFullNameForm, EditTitleForm
+from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start, save_profile_image
+from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
 from lib.token_generator import ResetPasswordTokenGenerator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.utils.dateformat import format
 from django.template.response import TemplateResponse
+from django.templatetags.static import static
 
 import logout as logout_handler
 
@@ -37,7 +40,7 @@ from django.core.urlresolvers import reverse
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
 
-VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title"]
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -60,7 +63,6 @@ def login(request):
                 )
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
-
                 redirect_to = _get_qs_value_from_url(
                     'next',
                     request.META['HTTP_REFERER']
@@ -366,10 +368,126 @@ def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
     user_data = {
-        "user_image_url": user.image_url(160),
+        "user_image_url": user.image_url(size=120),
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
+
+@login_required
+def user_profile_image_edit(request):
+    if request.method == 'POST':
+        heightPosition = request.POST.get('height-position')
+        widthPosition = request.POST.get('width-position')
+        x1Position = request.POST.get('x1-position')
+        x2Position = request.POST.get('x2-position')
+        y1Position = request.POST.get('y1-position')
+        y2Position = request.POST.get('y2-position')
+        profileImageUrl = request.POST.get('profile-image-url')
+
+        from PIL import Image
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+
+        if profileImageUrl[:10] == '/accounts/':
+            image_url = profileImageUrl[10:]
+        elif profileImageUrl[:8] == '/static/':
+            prefix = 'https://' if request.is_secure() else 'http://'
+            image_url = prefix + request.get_host() + profileImageUrl
+        else:
+            image_url - profileImageUrl
+
+        if default_storage.exists(image_url):
+
+            original = Image.open(image_url)
+
+            width, height = original.size   # Get dimensions
+            left = int(x1Position)
+            top = int(y1Position)
+            right = int(x2Position)
+            bottom = int(y2Position)
+            cropped_example = original.crop((left, top, right, bottom))
+
+            request.user = save_profile_image(request, cropped_example, image_url)
+            request.user.avatar_url = '/accounts/' + image_url
+            RemoteUser.remove_from_cache(request.user.id)
+        return change_profile_image(request, request.user.id, 'edit_profile_image')
+
+@login_required
+def change_profile_image(request, user_id, template='change_profile_image'):
+    ''' handles requests for login form and their submission '''
+    error = None
+
+    user = user_api.get_user(user_id)
+
+    profile_image = user.avatar_url
+    form = UploadProfileImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "user_id": user_id,
+        "error": error,
+        "profile_image": profile_image,
+        "timestamp": format(datetime.datetime.now(), u'U')
+    }
+
+    return render(
+        request,
+        'accounts/{}.haml'.format(template),
+        data
+    )
+
+@login_required
+def upload_profile_image(request, user_id):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = UploadProfileImageForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            from PIL import Image
+
+            temp_image = request.FILES['profile_image']
+            allowed_types = ["image/jpeg", "image/png"]
+            if temp_image.content_type in allowed_types:
+                request.user = save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
+                request.user.avatar_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
+                RemoteUser.remove_from_cache(request.user.id)
+
+            return change_profile_image(request, request.user.id, 'change_profile_image')
+        else:
+            return change_profile_image(request, request.user.id, 'change_profile_image')
+    else:
+        ''' adds a new image '''
+        form = UploadProfileImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "user_id": user_id,
+        "error": error,
+    }
+
+    return render(
+        request,
+        'accounts/upload_profile_image.haml',
+        data
+    )
+
+def load_profile_image(request, image_url):
+    from django.core.files.storage import default_storage
+    image_url = 'images/' + image_url
+    if default_storage.exists(image_url):
+        image = default_storage.open(image_url).read()
+        from mimetypes import MimeTypes
+        import urllib
+        mime = MimeTypes()
+        url = urllib.pathname2url(image_url)
+        mime_type = mime.guess_type(url)
+        return HttpResponse(
+                image, content_type=mime_type[0]
+            )
 
 @login_required
 def edit_fullname(request):
