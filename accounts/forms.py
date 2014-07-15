@@ -333,7 +333,7 @@ class ActivationForm(NoSuffixLabelForm):
         if isinstance(args[0], dict):
             user_data = args[0]
             for read_only in READ_ONLY_IF_DATA_FIELDS:
-                if read_only in user_data and len(user_data[read_only]) > 0:
+                if read_only in user_data and user_data[read_only] is not None and len(user_data[read_only]) > 0:
                     self.fields[read_only].widget.attrs['readonly'] = 'readonly'
 
             for disabled in DISABLED_IF_DATA_FIELDS:

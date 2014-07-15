@@ -333,6 +333,19 @@ def get_user_workgroups(user_id, workgroup_object=workgroup_models.WorkgroupList
     return JP.from_json(response.read(), workgroup_object).results
 
 @api_error_protect
+def get_users_city_metrics():
+    ''' return users by sity metrics'''
+
+    response = GET(
+        '{}/{}/metrics/cities'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+        )
+    )
+
+    return JP.from_json(response.read(), user_models.CityList).results
+
+@api_error_protect
 def get_course_social_metrics(user_id, course_id):
     ''' fetch social metrics for course '''
 

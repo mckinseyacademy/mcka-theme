@@ -79,8 +79,11 @@ class Client(organization_models.Organization):
 
     def fetch_students(self):
         users_ids = [str(user_id) for user_id in self.users]
-        users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
-        return users.results
+        if users_ids == []:
+            return []
+        else:
+            users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+            return users.results
 
 class ClientList(organization_models.OrganizationList):
     object_map = {
@@ -91,8 +94,11 @@ class WorkGroup(workgroup_models.Workgroup):
 
     def fetch_students(self):
         users_ids = [str(user.id) for user in self.users]
-        users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
-        return users.results
+        if users_ids == []:
+            return []
+        else:
+            users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+            return users.results
 
     @classmethod
     def fetch_with_members(cls, workgroup_id):
