@@ -118,8 +118,6 @@ body > .tooltip {
     &:first-letter {
       text-transform: uppercase;
     }
-
-
   }
 
   .vote-btn {
@@ -176,6 +174,24 @@ body > .tooltip {
   span[id*='wmd-spacer2-new-post-'],
   span[id*='wmd-spacer3-new-post-'] {
     margin-left: -39px;
+  }
+
+  /* Course discussion banners */
+
+  .staff-banner, .community-ta-banner {
+    color: transparent;
+    visibility: hidden;
+    padding: 0;
+
+    &:before {
+      content: "McKinsey TA";
+      text-transform: uppercase;
+      text-indent: 1ex;
+      color: white;
+      background-color: $mckinsey-academy-alt-blue;
+      visibility: visible;
+      display: block;
+    }
   }
 
   /* Home */
