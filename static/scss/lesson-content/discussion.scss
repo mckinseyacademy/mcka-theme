@@ -5,6 +5,12 @@
   *:focus {
     outline: 0;
   }
+
+  a.new-post-btn {
+    &, &:visited, &:hover, &:focus {
+      margin-bottom: 0;
+    }
+  }
 }
 
 /* Discussion tooltip gets added by JS to the <body> :/ */
