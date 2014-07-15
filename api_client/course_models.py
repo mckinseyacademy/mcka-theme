@@ -1,5 +1,6 @@
 ''' Objects for courses built from json responses from API '''
 import datetime
+import math
 
 from django.utils.translation import ugettext as _
 
@@ -50,10 +51,10 @@ class Course(CategorisedJsonObject):
 
     @property
     def formatted_start_date(self):
-        if hasattr(self, 'start_date'):
+        if hasattr(self, 'start'):
             return "{} {}".format(
                 _("Available"),
-                self.start_date.strftime('%B %d, %Y')
+                datetime.datetime.strptime(self.start, '%Y-%m-%dT%H:%M:%SZ').strftime('%B %d, %Y')
             )
         return None
 
@@ -67,11 +68,23 @@ class Course(CategorisedJsonObject):
         return ""
 
     @property
-    def has_future_start_date(self):
-        if hasattr(self, 'start_date'):
-            current_time = datetime.datetime.now()
-            return not (date <= current_time)
+    def started(self):
+        if hasattr(self, 'start'):
+            date = self.start
+            if int(self.days_till_start) < 1:
+                return True
         return False
+
+    @property
+    def days_till_start(self):
+        if hasattr(self, 'start'):
+            course_start = datetime.datetime.strptime(self.start, '%Y-%m-%dT%H:%M:%SZ')
+            days = str(
+                int(math.floor(((course_start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
+            return days
+        return 0
+
+
 
     def module_count(self):
         module_count = 0
