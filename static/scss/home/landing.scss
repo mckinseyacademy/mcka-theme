@@ -47,8 +47,8 @@
       text-align: center;
       margin: 0 auto 20px;
       border-radius: 50%;
+      box-shadow: 0px 3px 4px 0px rgba(153, 153, 153, 0.3);
       @include square-size(53px);
-      @include box-shadow(0px 3px 4px 0px rgba(153, 153, 153, 0.3));
       &.blue-gray { background: $mckinsey-academy-blue-gray; }
       &.turquoise { background: $mckinsey-academy-turquoise; }
       &.green { background: $mckinsey-green; }
