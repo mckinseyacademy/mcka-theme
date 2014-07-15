@@ -16,7 +16,6 @@ class RemoteUser(AbstractUser):
     # TODO: replace with memcached on server
     temp_user_cache = {}
     avatar_url = None
-    avatar_url_absolute = None
 
     session_key = db_models.CharField('session_key', max_length=255, unique=True)
 
@@ -28,7 +27,6 @@ class RemoteUser(AbstractUser):
         self.username = user_response.username
         self.id = user_response.id
         self.avatar_url = user_response.image_url()
-        self.avatar_url_absolute = user_response.image_url(path='absolute')
 
     def image_url(self):
         ''' get image utl for user '''

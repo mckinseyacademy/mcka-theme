@@ -1,8 +1,6 @@
 ''' Objects for users / authentication built from json responses from API '''
 import hashlib
 
-from django.conf import settings
-
 from .json_object import JsonObject
 
 
@@ -16,31 +14,18 @@ class UserResponse(JsonObject):
     ''' object representing a user from api json response '''
     required_fields = ["email", "username"]
 
-    def image_url(self, size=40, path='relative'):
+    def image_url(self, size=40):
         ''' return default avatar unless the user has one '''
         # TODO: is the size param going to be used here?
         if hasattr(self, 'avatar_url') and self.avatar_url is not None:
             if size <= 40:
-                image_url = self.avatar_url[:-4] + '-40.jpg'
+                return self.avatar_url[:-4] + '-40.jpg'
             elif size <= 120:
-                image_url = self.avatar_url[:-4] + '-120.jpg'
+                return self.avatar_url[:-4] + '-120.jpg'
             else:
-                image_url = self.avatar_url
-
-            if path == 'absolute' and settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage':
-                from django.core.files.storage import default_storage
-                image_url = default_storage.url(
-                    self._strip_proxy_image_url(image_url))
+                return self.avatar_url
         else:
-            image_url = "/static/image/empty_avatar.png"
-        return image_url
-
-    def _strip_proxy_image_url(self, profileImageUrl):
-        if profileImageUrl[:10] == '/accounts/':
-            image_url = profileImageUrl[10:]
-        else:
-            image_url = profileImageUrl
-        return image_url
+            return "/static/image/empty_avatar.png"
 
     @property
     def formatted_name(self):
@@ -49,6 +34,7 @@ class UserResponse(JsonObject):
             return self.full_name
 
         return "{} {}".format(self.first_name, self.last_name)
+
 
 class AuthenticationResponse(JsonObject):
 

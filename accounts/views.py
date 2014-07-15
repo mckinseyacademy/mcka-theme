@@ -368,7 +368,7 @@ def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
     user_data = {
-        "user_image_url": user.image_url(size=120, path='absolute'),
+        "user_image_url": user.image_url(size=120),
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
@@ -382,8 +382,7 @@ def user_profile_image_edit(request):
         x2Position = request.POST.get('x2-position')
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
-        user = user_api.get_user(request.user.id)
-        profileImageUrl = user.image_url(size=200)
+        profileImageUrl = request.POST.get('profile-image-url')
 
         from PIL import Image
         from django.core.files.storage import default_storage
@@ -395,11 +394,11 @@ def user_profile_image_edit(request):
             prefix = 'https://' if request.is_secure() else 'http://'
             image_url = prefix + request.get_host() + profileImageUrl
         else:
-            image_url = profileImageUrl
+            image_url - profileImageUrl
 
         if default_storage.exists(image_url):
 
-            original = Image.open(default_storage.open(image_url))
+            original = Image.open(image_url)
 
             width, height = original.size   # Get dimensions
             left = int(x1Position)
@@ -420,11 +419,7 @@ def change_profile_image(request, user_id, template='change_profile_image'):
 
     user = user_api.get_user(user_id)
 
-    profile_image = user.image_url(size=200, path='absolute')
-    if '?' in profile_image:
-        profile_image = profile_image + '&' + format(datetime.datetime.now(), u'U')
-    else:
-        profile_image = profile_image + '?' + format(datetime.datetime.now(), u'U')
+    profile_image = user.avatar_url
     form = UploadProfileImageForm(request)  # An unbound form
 
     data = {
@@ -432,6 +427,7 @@ def change_profile_image(request, user_id, template='change_profile_image'):
         "user_id": user_id,
         "error": error,
         "profile_image": profile_image,
+        "timestamp": format(datetime.datetime.now(), u'U')
     }
 
     return render(
