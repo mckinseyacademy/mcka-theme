@@ -73,10 +73,14 @@ class MissingRequiredFieldError(Exception):
 
 def _build_date_field(json_date_string_value):
     ''' converts json date string to date object '''
+    if json_date_string_value is None:
+        return None
+
     try:
+        format_string = "%Y-%m-%dT%H:%M:%S.%fZ" if "." in json_date_string_value else "%Y-%m-%dT%H:%M:%SZ"
         return datetime.datetime.strptime(
             json_date_string_value,
-            '%Y-%m-%dT%H:%M:%S.%fZ'
+            format_string
         )
     except ValueError:
         return None

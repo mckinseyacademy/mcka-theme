@@ -82,11 +82,9 @@ def login(request):
                                 full_course_object = course_api.get_course(
                                     course_id)
                                 if hasattr(full_course_object, 'start'):
-                                    future_start_date = is_future_start(
-                                        datetime.datetime.strptime(full_course_object.start, '%Y-%m-%dT%H:%M:%SZ'))
+                                    future_start_date = is_future_start(full_course_object.start)
                                 elif hasattr(program, 'start_date') and future_start_date is False:
-                                    future_start_date = is_future_start(
-                                        program.start_date)
+                                    future_start_date = is_future_start(program.start_date)
                     if course_id:
                         if future_start_date:
                             redirect_to = '/'

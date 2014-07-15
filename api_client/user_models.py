@@ -13,6 +13,7 @@ class UserResponse(JsonObject):
 
     ''' object representing a user from api json response '''
     required_fields = ["email", "username"]
+    date_fields = ["created"]
 
     def image_url(self, size=40):
         ''' return default avatar unless the user has one '''

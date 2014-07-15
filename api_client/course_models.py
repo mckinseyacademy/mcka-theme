@@ -44,6 +44,7 @@ class Course(CategorisedJsonObject):
 
     ''' object representing a course '''
     required_fields = ["id", "name", ]
+    date_fields = ["start", "end",]
 
     @property
     def nav_url(self):
@@ -51,10 +52,10 @@ class Course(CategorisedJsonObject):
 
     @property
     def formatted_start_date(self):
-        if hasattr(self, 'start'):
+        if hasattr(self, 'start') and not self.start is None:
             return "{} {}".format(
                 _("Available"),
-                datetime.datetime.strptime(self.start, '%Y-%m-%dT%H:%M:%SZ').strftime('%B %d, %Y')
+                self.start.strftime('%B %d, %Y')
             )
         return None
 
@@ -69,18 +70,13 @@ class Course(CategorisedJsonObject):
 
     @property
     def started(self):
-        if hasattr(self, 'start'):
-            date = self.start
-            if int(self.days_till_start) < 1:
-                return True
-        return False
+        return int(self.days_till_start) < 1
 
     @property
     def days_till_start(self):
-        if hasattr(self, 'start'):
-            course_start = datetime.datetime.strptime(self.start, '%Y-%m-%dT%H:%M:%SZ')
+        if hasattr(self, 'start') and not self.start is None:
             days = str(
-                int(math.floor(((course_start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
+                int(math.floor(((self.start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
             return days
         return 0
 
