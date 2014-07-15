@@ -22,49 +22,27 @@
       %section
         %header
           .label-5 Proficiency:
-          .label-4 cohort average = 0
-          .rank your proficiency position will be displayed here
+          .label-4 cohort average = ={proficiency.course_avg}
+          .rank your proficiency position: <br><span>#={proficiency.position}</span> with <span>={proficiency.points}</span>
           .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name nichellhall
-              .person-title Marketing Director
-              .person-rank #1 <span>100</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name erincavallaro
-              .person-title PR Director
-              .person-rank #2 <span>90</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name amesscarano
-              .person-title Partner
-              .person-rank #3 <span>80</span>
+            - for leader in proficiency.leaders
+              %img.avatar{src: '={leader.avatar_url}'}
+              .info
+                .person-name ={leader.username}
+                .person-title ={leader.title}
+                .person-rank #={leader.rank} <span>={leader.points_scored}</span>
       %section
         %header
           .label-5 Progress:
-          .label-4 cohort average = 40%
-          .rank your progress position: <span>#123</span> with <span>30%</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name nichellhall
-              .person-title Marketing Director
-              .person-rank #1 <span>42%</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name erincavallaro
-              .person-title PR Director
-              .person-rank #2 <span>38%</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name amesscarano
-              .person-title Partner
-              .person-rank #3 <span>36%</span>
+          .label-4 cohort average = ={completions.course_avg_percent}%
+          .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.completion_percent}%</span>
+          - for leader in completions.leaders
+            .user
+              %img.avatar{src: '={leader.avatar_url}'}
+              .info
+                .person-name ={leader.username}
+                .person-title ={leader.title}
+                .person-rank #={leader.rank} <span>={leader.completion_percent}%</span>
       %section
         %header
           .label-5 Engagement:

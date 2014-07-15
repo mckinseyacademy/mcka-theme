@@ -73,6 +73,14 @@ class Course(CategorisedJsonObject):
             return not (date <= current_time)
         return False
 
+    def module_count(self):
+        module_count = 0
+        for chapter in self.chapters:
+            for sequential in chapter.sequentials:
+                module_count += len(sequential.children)
+
+        return module_count
+
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
 
