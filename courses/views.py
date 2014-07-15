@@ -14,7 +14,7 @@ from .controller import build_page_info_for_course, locate_chapter_page, load_st
 from .controller import update_bookmark, group_project_location, progress_percent
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api, user_api, workgroup_api
+from api_client import course_api, user_api, user_models, workgroup_api
 from admin.controller import load_course
 from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
@@ -126,6 +126,9 @@ def course_cohort(request, course_id):
     for index, leader in enumerate(proficiency.leaders, 1):
         leader.rank = index
         leader.points_scored = floatformat(leader.points_scored)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
 
     completions = course_api.get_course_metrics_completions(course_id, request.user.id)
     module_count = course.module_count()
@@ -136,6 +139,9 @@ def course_cohort(request, course_id):
     for index, leader in enumerate(completions.leaders, 1):
         leader.rank = index
         leader.completion_percent = progress_percent(leader.completions, module_count)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, params=[{'key': 'course_id', 'value': course_id}])
