@@ -53,3 +53,6 @@ class WorkgroupList(JsonObject):
     object_map = {
         "results": Workgroup
     }
+
+class Submission(JsonObject):
+    date_fields = ["created", "modified"]
