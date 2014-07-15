@@ -235,6 +235,10 @@ LOCAL_DEBUG_TOOLBAR_PANELS = (
 
 DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
 
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL': ''  # rely on a version of jQuery that already exists
+}
+
 # Points for social activities
 SOCIAL_METRIC_POINTS = {
     'num_threads': 10,
