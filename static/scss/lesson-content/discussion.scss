@@ -58,10 +58,6 @@ body > .tooltip {
     font-size: 14px;
   }
 
-  .add-response {
-    float: right;
-  }
-
   .response-count {
     float: left;
   }
@@ -111,6 +107,13 @@ body > .tooltip {
     .icon-reply {
       display: none;
     }
+
+    text-transform: lowercase;
+    &:first-letter {
+      text-transform: uppercase;
+    }
+
+
   }
 
   .vote-btn {
