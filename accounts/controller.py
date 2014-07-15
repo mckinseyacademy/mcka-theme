@@ -227,7 +227,7 @@ def save_profile_image(request, cropped_example, image_url):
 
 def _rescale_image(img, width, height, force=True):
     """Rescale the given image, optionally cropping it to make sure the result image has the specified width and height."""
-    import Image as pil
+    from PIL import Image as pil
     from cStringIO import StringIO
 
     max_width = width
