@@ -13,9 +13,15 @@ Apros.views.CourseCohort = Backbone.View.extend({
   render_map: function() {
     var _this = this;
     var users = CohortMapUsers;
-    var city_list = [];
+    var city_list, city_weights = [];
     $.each(users, function(key, value){
-      city_list.push(value.city);
+      if(!$.inArray(value.city)){
+        city_list.push(value.city);
+        city_weights[value.city] = 1;
+      }
+      else{
+        city_weights[value.city] += 0.5;
+      }
     });
     city_list = city_list.join(';');
     this.map = L.map('map-cohort', {zoomControl: true, attributionControl: false}).setView([51.505, -0.09], 1);
@@ -24,8 +30,10 @@ Apros.views.CourseCohort = Backbone.View.extend({
     }).addTo(this.map);
     $.getJSON('https://api.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/geocode/' + city_list + '.json').done(function(data){
       for(var i=0, l=data.length; i<l; i++ ) {
+        var city_name = data[i].query.join(' ');
+        var weight = city_weights[city_name];
         var loc = data[i].results[0][0];
-        var radius = Math.floor(Math.random() * 10) + 5
+        var radius = (55) * weight
         L.circleMarker([loc.lat, loc.lon]).setRadius(radius).addTo(_this.map);
       }
     })
