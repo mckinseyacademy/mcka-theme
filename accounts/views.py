@@ -380,7 +380,7 @@ def user_profile_image_edit(request):
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
         user = user_api.get_user(request.user.id)
-        profileImageUrl = user.image_url(size=200)
+        profileImageUrl = user.image_url(size=200, path='relative')
 
         from PIL import Image
         from django.core.files.storage import default_storage

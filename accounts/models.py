@@ -28,7 +28,7 @@ class RemoteUser(AbstractUser):
         self.username = user_response.username
         self.id = user_response.id
         self.avatar_url = user_response.image_url()
-        self.avatar_url_absolute = user_response.image_url(path='absolute')
+        self.avatar_url_relative = user_response.image_url(path='relative')
 
     def image_url(self):
         ''' get image utl for user '''

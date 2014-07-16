@@ -17,7 +17,7 @@ class UserResponse(JsonObject):
     required_fields = ["email", "username"]
     date_fields = ["created"]
 
-    def image_url(self, size=40, path='relative'):
+    def image_url(self, size=40, path='absolute'):
         ''' return default avatar unless the user has one '''
         # TODO: is the size param going to be used here?
         if hasattr(self, 'avatar_url') and self.avatar_url is not None:
@@ -28,7 +28,7 @@ class UserResponse(JsonObject):
             else:
                 image_url = self.avatar_url
 
-            if path == 'absolute' and settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage':
+            if path == 'absolute' and settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
                 from django.core.files.storage import default_storage
                 image_url = default_storage.url(
                     self._strip_proxy_image_url(image_url))
