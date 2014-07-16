@@ -1,6 +1,12 @@
 #course-cohort {
   #map-cohort {
     height: rem-calc(355);
+    svg {
+      @include user-select();
+      display: block;
+      width:auto;
+      height:auto;
+    }
   }
 
   .student-data {
@@ -30,6 +36,7 @@
     a.hide-team {
       float: right;
       @include font-spec(12, bold, 14);
+
     }
   }
 

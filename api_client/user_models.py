@@ -15,6 +15,11 @@ class UserResponse(JsonObject):
     required_fields = ["email", "username"]
     date_fields = ["created"]
 
+    def get(self, attr):
+        if hasattr(self, attr):
+            return getattr(self, attr)
+        return ''
+
     def image_url(self, size=40):
         ''' return default avatar unless the user has one '''
         # TODO: is the size param going to be used here?
@@ -59,4 +64,12 @@ class UserList(JsonObject):
 class UsersFiltered(JsonObject):
     object_map = {
         "results": UserResponse
+    }
+
+class CityResponse(JsonObject):
+    required_fields = ["city", "count"]
+
+class CityList(JsonObject):
+    object_map = {
+        "results": CityResponse
     }
