@@ -17,7 +17,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
       iconSize: [40, 40]
     });
     var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-    .bindPopup('<h4>' + user.full_name + '</h4><p>Title: ' + user.title + '</p>');
+    .bindPopup('<h4>' + user.username + '</h4><p>Title: ' + user.title + '</p>');
     this.hoverizePopup(marker);
     layers.push(marker);
     return layers;
