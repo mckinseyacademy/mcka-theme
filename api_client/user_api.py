@@ -285,6 +285,20 @@ def set_user_preferences(user_id, preference_dictionary):
     return True
 
 @api_error_protect
+def delete_user_preference(user_id, preference_key):
+    ''' sets users preferences information '''
+    DELETE(
+        '{}/{}/{}/preferences/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            preference_key
+        )
+    )
+
+    return True
+
+@api_error_protect
 def get_user_preferences(user_id):
     ''' sets users preferences information '''
     response = GET(
