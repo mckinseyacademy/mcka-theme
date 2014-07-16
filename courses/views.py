@@ -117,42 +117,57 @@ def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
     course = load_course(course_id)
-    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
-    proficiency.points = floatformat(proficiency.points)
-    for index, leader in enumerate(proficiency.leaders, 1):
-        leader.rank = index
-        leader.points_scored = floatformat(leader.points_scored)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
+    '''
+    Putting in try/except block to make page work.
+    Proficiency not defined for new user should be fixed as separate issue.
+    '''
+    try:
+        proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+        proficiency.points = floatformat(proficiency.points)
+        for index, leader in enumerate(proficiency.leaders, 1):
+            leader.rank = index
+            leader.points_scored = floatformat(leader.points_scored)
+            user = user_models.UserResponse()
+            user.avatar_url = leader.avatar_url
+            leader.avatar_url = user.image_url(40) # 40x40 image
 
-    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
-    module_count = course.module_count()
+        completions = course_api.get_course_metrics_completions(course_id, request.user.id)
+        module_count = course.module_count()
 
-    completions.completion_percent = progress_percent(completions.completions, module_count)
-    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+        completions.completion_percent = progress_percent(completions.completions, module_count)
+        completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
 
-    for index, leader in enumerate(completions.leaders, 1):
-        leader.rank = index
-        leader.completion_percent = progress_percent(leader.completions, module_count)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
+        for index, leader in enumerate(completions.leaders, 1):
+            leader.rank = index
+            leader.completion_percent = progress_percent(leader.completions, module_count)
+            user = user_models.UserResponse()
+            user.avatar_url = leader.avatar_url
+            leader.avatar_url = user.image_url(40) # 40x40 image
+    except:
+        pass
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, params=[{'key': 'course_id', 'value': course_id}])
     organizations = user_api.get_user_organizations(request.user.id)
     if len(organizations) > 0:
-        organizationUsers = course_api.get_user_list(course_id, program_id = None, client_id = organizations[0].id)
+        organization = organizations[0]
+        organizationUsers = course_api.get_user_list(course_id, program_id = None, client_id = organization.id)
+        print len(organizationUsers)
         metrics.company_enrolled = len(organizationUsers)
+    metrics.groups_users = []
     if len(workgroups) > 0:
         workgroup = workgroup_api.get_workgroup(workgroups[0].id)
         metrics.group_enrolled = len(workgroup.users)
-        metrics.groups_users = []
         if workgroup.users > 0:
             for student in workgroup.users:
                 user = user_api.get_user(student.id)
@@ -167,9 +182,8 @@ def course_cohort(request, course_id):
                                                     "full_name": user.get('full_name'),
                                                     "title": user.get('title'),
                                                 })
-            metrics.groups_users = json.dumps(metrics.groups_users)
-        else:
-            metrics.x = '{}'
+    metrics.groups_users = json.dumps(metrics.groups_users)
+
     metrics.cities = []
     cities = user_api.get_users_city_metrics()
     for city in cities:
