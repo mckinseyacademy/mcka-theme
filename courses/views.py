@@ -131,6 +131,8 @@ def course_cohort(request, course_id):
     Putting in try/except block to make page work.
     Proficiency not defined for new user should be fixed as separate issue.
     '''
+    proficiency = []
+    completions = []
     try:
         proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
         proficiency.points = floatformat(proficiency.points)
@@ -191,8 +193,8 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
     data = {
-        # 'proficiency': proficiency,
-        # 'completions': completions
+        'proficiency': proficiency,
+        'completions': completions,
         'metrics': metrics,
     }
     return render(request, 'courses/course_cohort.haml', data)
