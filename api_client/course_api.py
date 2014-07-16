@@ -6,6 +6,7 @@ from api_error import api_error_protect
 from .json_object import CategorisedJsonParser
 from .json_object import CategorisedJsonObject
 from .json_object import JsonParser as JP
+from .json_object import JsonObject
 from .json_requests import GET
 from .json_requests import POST
 
@@ -253,18 +254,19 @@ def get_course_content_groups(course_id, content_id):
     return JP.from_json(response.read(), course_models.CourseContentGroup)
 
 @api_error_protect
-def get_course_completions(course_id, user_id):
+def get_course_completions(course_id, user_id=None):
     ''' fetch course module completion list '''
-
-    response = GET(
-        '{}/{}/{}/completions?user_id={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            user_id,
-        )
+    url = '{}/{}/{}/completions/'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        user_id,
     )
 
+    if user_id:
+        url += '?user_id={}'.format(user_id)
+
+    response = GET(url)
     return JP.from_json(response.read())
 
 @api_error_protect
@@ -314,3 +316,17 @@ def get_course_metrics_completions(course_id, user_id=None, count=3):
 
     response = GET(url)
     return JP.from_json(response.read())
+
+@api_error_protect
+def get_course_projects(course_id, page_size=0, project_object=JsonObject):
+    ''' Fetches all the project objects for the course '''
+    url = '{}/{}/{}/projects/?page_size={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        page_size,
+    )
+
+    response = GET(url)
+
+    return JP.from_json(response.read(), project_object)

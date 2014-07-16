@@ -149,55 +149,6 @@ def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user
         page_id
     )
 
-
-class ProjectGroup(object):
-    members = []
-    teaching_assistant = None
-
-def _fake_project_group():
-    members_list = [
-        user_models.UserResponse(dictionary={
-            "username": "jg",
-            "first_name": "Jennifer",
-            "last_name": "Gormley",
-            "title": "Director of Product Design",
-            "email": "Jennifer_Gormley@mckinsey.com",
-            }),
-        user_models.UserResponse(dictionary={
-            "username": "ap",
-            "first_name": "Andy",
-            "last_name": "Parsons",
-            "title": "CTO",
-            "email": "Andy_Parsons@mckinsey.com",
-            }),
-        user_models.UserResponse(dictionary={
-            "username": "vg",
-            "first_name": "Vishal",
-            "last_name": "Ghandi",
-            "title": "Product Manager",
-            "email": "vishalhgandhi@gmail.com",
-            }),
-        user_models.UserResponse(dictionary={
-            "username": "jr",
-            "first_name": "Jonathan",
-            "last_name": "Rainey",
-            "title": "Front End Specialist",
-            "email": "tivoli@nurfed.com",
-            }),
-    ]
-    ta = user_models.UserResponse(dictionary={
-        "username": "ta",
-        "first_name": "Your",
-        "last_name": "TA",
-        "title": "McKinsey Teaching Assistant",
-        "email": "tas@mckinseyacademy.com",
-    })
-    project_group = ProjectGroup()
-    project_group.members = members_list
-    project_group.teaching_assistant = ta
-
-    return project_group
-
 def group_project_location(user_id, course, sequential_id=None):
     '''
     Returns current sequential_id and page_id for the user for their group project
