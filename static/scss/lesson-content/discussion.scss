@@ -267,6 +267,10 @@ body > .tooltip {
       margin-top: 0;
       padding-top: 5em;
 
+      .form-group-label, .new-post-group {
+        color: #000000;
+      }
+
       .form-row {
         width: 100%;
       }

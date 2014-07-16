@@ -11,7 +11,7 @@ from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews
+from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews, get_course_ta
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api, project_api, user_models, workgroup_api
@@ -250,13 +250,16 @@ def course_discussion(request, course_id):
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
 
+    mcka_ta = get_course_ta()
+
     data = {
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
         "course_id": course_id,
         "lms_base_domain": lms_base_domain,
-        "lms_sub_domain": lms_sub_domain
+        "lms_sub_domain": lms_sub_domain,
+        "mcka_ta": mcka_ta
     }
     return render(request, 'courses/course_discussion.haml', data)
 

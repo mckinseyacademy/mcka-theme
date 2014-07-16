@@ -5,6 +5,29 @@
   .sidebar {
     position: relative;
 
+    .ask-ta {
+
+      padding: 10px;
+      background-color: #ffffff;
+
+      .group-member {
+        padding-bottom: 10px;
+        height: 50px;
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
+          float: left;
+        }
+
+        .person-info {
+          margin-left: 50px;
+        }
+      }
+
+    }
+
     .browse-search {
       div {
         background-color: $mckinsey-academy-alt-blue;
@@ -141,4 +164,5 @@
         margin-bottom: 1em;
     }
   }
+
 }

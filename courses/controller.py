@@ -9,6 +9,8 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.api_error import ApiError
 from api_client.project_models import Project
+from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
+from api_client.group_models import GroupInfo
 from admin.models import WorkGroup
 from admin.controller import load_course
 
@@ -252,7 +254,6 @@ def progress_percent(completion_count, module_count):
     else:
         return 0
 
-
 def group_project_reviews(user_id, course_id, project_chapter):
     '''
     Returns group work reviews & average score for a project
@@ -307,3 +308,14 @@ def is_number(s):
     except ValueError:
         return False
     return True
+
+def get_course_ta():
+    mcka_ta = None
+    groups = get_groups_of_type('permission', group_object=GroupInfo)
+    for group in groups:
+        if group.name == PERMISSION_GROUPS.MCKA_TA:
+            users = group.get_users()
+            if users:
+                mcka_ta = users[0]
+            break
+    return mcka_ta
