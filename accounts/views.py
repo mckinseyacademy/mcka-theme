@@ -82,11 +82,9 @@ def login(request):
                                 full_course_object = course_api.get_course(
                                     course_id)
                                 if hasattr(full_course_object, 'start'):
-                                    future_start_date = is_future_start(
-                                        datetime.datetime.strptime(full_course_object.start, '%Y-%m-%dT%H:%M:%SZ'))
+                                    future_start_date = is_future_start(full_course_object.start)
                                 elif hasattr(program, 'start_date') and future_start_date is False:
-                                    future_start_date = is_future_start(
-                                        program.start_date)
+                                    future_start_date = is_future_start(program.start_date)
                     if course_id:
                         if future_start_date:
                             redirect_to = '/'
@@ -333,10 +331,9 @@ def home(request):
         if program:
             if program.id is not 'NO_PROGRAM':
                 days = ''
-                course_start = datetime.datetime.strptime(course.start, '%Y-%m-%dT%H:%M:%SZ')
-                if course_start > datetime.datetime.today():
+                if  not course.start is None and course.start > datetime.datetime.today():
                     days = str(
-                        int(math.floor(((course_start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                        int(math.floor(((course.start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
                 elif hasattr(program, 'start_date') and program.start_date > datetime.datetime.today():
                     days = str(
                         int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
