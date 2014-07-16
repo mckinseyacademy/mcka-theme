@@ -16,6 +16,9 @@
           .add-message
             - block principal_message
               %p= _("Group existing learners associated with this course into new groups, or to edit existing groups in this course.")
+          %div
+            %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
+              Workgroup Completion Report
         %hr
           %section
             %input#course_id{'type': 'hidden', 'value': '#{course.id}'}
