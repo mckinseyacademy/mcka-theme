@@ -1,13 +1,34 @@
 Apros.views.CourseCohort = Backbone.View.extend({
 
+  profiles: true,
+  layers: [],
+  fetchedData: false,
+  userProfilesVisible: true,
+
   events: {
-    'click .select-board a': 'update_scope'
+    'click .select-board a': 'update_scope',
+    'click .student-data a': 'toggle_profiles'
+  },
+
+  initialize: function(){
+    this.map = L.map('map-cohort', {zoomControl: true, attributionControl: false}).setView([51.505, -0.09], 1);
+    L.tileLayer('https://{s}.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/{z}/{x}/{y}.png',{
+      maxZoom: 18
+    }).addTo(this.map);
   },
 
   update_scope: function(e) {
     e.preventDefault();
     var el = $(e.currentTarget).addClass('selected');
     this.$('.select-board a').not(el).removeClass('selected');
+  },
+
+  toggle_profiles: function(e) {
+    e.preventDefault();
+    this.map.removeLayer(this.layers);
+    this.userProfilesVisible = !this.userProfilesVisible;
+    $('.student-data a').toggle();
+    this.render_map(this.userProfilesVisible);
   },
 
   createIcon: function(user, loc, layers, x, y){
@@ -27,7 +48,6 @@ Apros.views.CourseCohort = Backbone.View.extend({
       var city_name = data.query.join(' ');
       var radius = (50 * city.count) / (25 + city.count);
       var loc = data.results[0][0];
-
       var marker = L.circleMarker([loc.lat, loc.lon]).setRadius(radius)
         .bindPopup('<h4>' + city.name + '</h4><p>Participants: ' + city.count + '</p>');
       this.hoverizePopup(marker);
@@ -60,21 +80,9 @@ Apros.views.CourseCohort = Backbone.View.extend({
     });
   },
 
-  render_map: function() {
-    var _this = this;
-    var users = CohortMapUsers;
-    var citiesMap = CohortMapCities;
-    var city_list = [];
-    var layers = [];
-    var cities = {};
-
-    _this.setCities(citiesMap, users, city_list, cities);
-
-    this.map = L.map('map-cohort', {zoomControl: true, attributionControl: false}).setView([51.505, -0.09], 1);
-    L.tileLayer('https://{s}.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/{z}/{x}/{y}.png',{
-      maxZoom: 18
-    }).addTo(this.map);
-    $.getJSON('https://api.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/geocode/' + city_list.join(';') + '.json').done(function(data){
+  drawLayers: function(data, city_list, cities, users, iconsFlag){
+      var layers = [];
+      var _this = this;
       if(city_list.length == 1){
         var loc = data.results[0][0];
         layers = _this.createIcon(user, loc, layers, x, y);
@@ -87,20 +95,42 @@ Apros.views.CourseCohort = Backbone.View.extend({
           var angle = 0;
           var step = (2*Math.PI) / numElements;
           layers = _this.createCircle(data[key], city, layers);
-          $.each(city.users, function(key2, user){
-            var x = 20 * Math.cos(angle);
-            var y = 20 * Math.sin(angle);
-            var loc = data[key].results[0][0];
-            layers = _this.createIcon(user, loc, layers, x, y);
-            angle += step;
-          });
+          if(iconsFlag){
+            $.each(city.users, function(key2, user){
+              var x = 20 * Math.cos(angle);
+              var y = 20 * Math.sin(angle);
+              var loc = data[key].results[0][0];
+              layers = _this.createIcon(user, loc, layers, x, y);
+              angle += step;
+            });
+          }
         });
       }
-      L.layerGroup(layers).addTo(_this.map);
-    })
+      this.layers = L.layerGroup(layers).addTo(_this.map);
+    },
+
+  render_map: function(iconsFlag) {
+    var _this = this;
+    var users = CohortMapUsers;
+    var citiesMap = CohortMapCities;
+    var city_list = [];
+    var cities = {};
+
+    _this.setCities(citiesMap, users, city_list, cities);
+    if(this.fetchedData == false){
+      $.getJSON('https://api.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/geocode/' + city_list.join(';') + '.json').done(
+        function(data){
+          _this.fetchedData = data;
+          _this.drawLayers(data, city_list, cities, users, iconsFlag);
+        }
+      );
+    }
+    else{
+      this.drawLayers(this.fetchedData, city_list, cities, users, iconsFlag);
+    }
   },
 
   render: function() {
-    this.render_map();
+    this.render_map(true);
   }
 });
