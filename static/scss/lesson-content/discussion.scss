@@ -4,13 +4,11 @@
   color: $mckinsey-academy-black;
 }
 
-.discussion.container .discussion-body .discussion-column {
-  border-color: $mckinsey-academy-light-gray;
-}
-
 .discussion.container .discussion-body,
 .lesson-content .discussion-module {
   background: #fff !important;
+  border: 1px solid $mckinsey-grey;
+  border-radius: 5px;
 
   *:focus {
     outline: 0;
@@ -18,6 +16,9 @@
 
   .discussion-column {
     box-shadow: none;
+    border: none;
+    border-left: 1px solid $mckinsey-grey;
+    border-radius: 0;
   }
 
   .discussion-article {
@@ -56,7 +57,7 @@
       line-height: 1;
       height: 35px;
       width: auto;
-      margin-left: 1em;
+      margin-left: 20px;
       float: right;
     }
 
@@ -66,22 +67,14 @@
   }
 
   .discussion-article {
-
-    .post-update {
-      margin-top: 15px;
-
-      &, &:hover {
+    .post-update, .post-cancel {
+      &, &:visited, &:hover, &:focus {
+        margin-left: 20px;
         margin-top: 15px;
       }
-
     }
 
     .post-cancel {
-      &, &:visited, &:hover, &:focus {
-        margin-left: 15px;
-        margin-top: 15px;
-      }
-
       &, &:visited {
         background-color: $mckinsey-academy-light-gray;
         color: $mckinsey-academy-black;
@@ -195,6 +188,7 @@
 
     .thread-wrapper {
       max-height: none;
+      width: 100%;
     }
   }
 
@@ -225,9 +219,13 @@
 
   /* New Post form layout and some colors */
 
+  .new-post-article .inner-wrapper {
+    min-width: 0px;
+  }
+
   .new-post-article .new-post-form {
     background: $mckinsey-academy-bright-gray;
-    min-width: 720px;
+    min-width: 560px;
     position: relative;
     padding-top: 5em;
 
@@ -260,7 +258,6 @@
           display: block;
       }
     }
-
   }
 
   .new-post-article .new-post-form a.new-post-cancel {
@@ -269,6 +266,10 @@
     right: 30px;
     margin: 0;
     padding: 0;
+  }
+
+  .wmd-panel {
+    min-width: 340px;
   }
 }
 

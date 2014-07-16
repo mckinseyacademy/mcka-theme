@@ -11,13 +11,14 @@ from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, group_project_location
+from .controller import update_bookmark, group_project_location, progress_percent
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api, user_api
+from api_client import course_api, user_api, user_models
 from admin.controller import load_course
 from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
+from accounts.controller import check_user_course_access
 
 # Create your views here.
 
@@ -49,15 +50,33 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                         page.status_class = "incomplete"
 
 @login_required
+@check_user_course_access
 def course_landing_page(request, course_id):
     '''
     Course landing page for user for specified course
     etc. from user settings
     '''
+    course = load_course(course_id, 3)
     load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
+    social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
+
+    social_total = 0
+    for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
+        social_total += getattr(social_metrics, key) * val
+
+    module_count = 0
+
+    for chapter in course.chapters:
+        for sequential in chapter.sequentials:
+            module_count += len(sequential.children)
+
+    if module_count > 0:
+        percent_complete = int(round(100*completions.count/module_count))
+    else:
+        percent_complete = 0
 
     data = {
         "user": request.user,
@@ -67,10 +86,15 @@ def course_landing_page(request, course_id):
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "completed_modules": completed_modules,
+        "social_total": social_total,
+        "cohort_social_average": 28,
+        "percent_complete": percent_complete,
+        "cohort_percent_average": 58,
     }
     return render(request, 'courses/course_main.haml', data)
 
 @login_required
+@check_user_course_access
 def course_overview(request, course_id):
     overview = course_api.get_course_overview(course_id)
     data = {
@@ -79,6 +103,7 @@ def course_overview(request, course_id):
     return render(request, 'courses/course_overview.haml', data)
 
 @login_required
+@check_user_course_access
 def course_syllabus(request, course_id):
     static_tabs = load_static_tabs(course_id)
     data = {
@@ -87,15 +112,46 @@ def course_syllabus(request, course_id):
     return render(request, 'courses/course_syllabus.haml', data)
 
 @login_required
+@check_user_course_access
 def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
 @login_required
+@check_user_course_access
 def course_cohort(request, course_id):
-    return render(request, 'courses/course_cohort.haml')
+
+    course = load_course(course_id)
+    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+    proficiency.points = floatformat(proficiency.points)
+    for index, leader in enumerate(proficiency.leaders, 1):
+        leader.rank = index
+        leader.points_scored = floatformat(leader.points_scored)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
+
+    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
+    module_count = course.module_count()
+
+    completions.completion_percent = progress_percent(completions.completions, module_count)
+    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+
+    for index, leader in enumerate(completions.leaders, 1):
+        leader.rank = index
+        leader.completion_percent = progress_percent(leader.completions, module_count)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
+
+    data = {
+        'proficiency': proficiency,
+        'completions': completions
+    }
+    return render(request, 'courses/course_cohort.haml', data)
 
 @login_required
+@check_user_course_access
 def course_group_work(request, course_id):
 
     seq_id = request.GET.get("seqid", None)
@@ -128,6 +184,7 @@ def course_group_work(request, course_id):
     return render(request, 'courses/course_group_work.haml', data)
 
 @login_required
+@check_user_course_access
 def course_discussion(request, course_id):
 
     course = load_course(course_id)
@@ -156,6 +213,7 @@ def course_discussion(request, course_id):
     return render(request, 'courses/course_discussion.haml', data)
 
 @login_required
+@check_user_course_access
 def course_progress(request, course_id):
 
     course = load_course(course_id, 3)
@@ -167,16 +225,6 @@ def course_progress(request, course_id):
         grader.weight = floatformat(grader.weight*100)
 
     pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
-
-    module_count = 0
-    for chapter in course.chapters:
-        for sequential in chapter.sequentials:
-            module_count += len(sequential.children)
-
-    if module_count > 0:
-        percent_complete = int(round(100*completions.count/module_count))
-    else:
-        percent_complete = 0
 
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
@@ -193,6 +241,9 @@ def course_progress(request, course_id):
         'color': '#e37121'
     })
 
+    module_count = course.module_count()
+    percent_complete = progress_percent(completions.count, module_count)
+
     data = {
         'bar_chart': json.dumps(bar_chart),
         'completed_modules': completed_modules,
@@ -203,6 +254,7 @@ def course_progress(request, course_id):
     return render(request, 'courses/course_progress.haml', data)
 
 @login_required
+@check_user_course_access
 def course_resources(request, course_id):
     static_tabs = load_static_tabs(course_id)
     data = {
@@ -211,6 +263,7 @@ def course_resources(request, course_id):
     return render(request, 'courses/course_resources.haml', data)
 
 @login_required
+@check_user_course_access
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
 
     ''' go to given page within given chapter within given course '''
@@ -260,6 +313,7 @@ def course_notready(request, course_id):
     return render(request, 'courses/course_notready.haml')
 
 @login_required
+@check_user_course_access
 def infer_chapter_navigation(request, course_id, chapter_id):
     '''
     Go to the bookmarked page for given chapter within given course
@@ -269,8 +323,11 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     if not course_id:
         course_id = get_current_course_for_user(request)
 
-    course_id, chapter_id, page_id, chapter_position = locate_chapter_page(
-        request.user.id, course_id, chapter_id)
+    course_id, chapter_id, page_id = locate_chapter_page(
+        request.user.id,
+        course_id,
+        chapter_id
+    )
 
     if course_id and chapter_id and page_id:
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
@@ -286,6 +343,7 @@ def infer_default_navigation(request):
     return infer_chapter_navigation(request, None, None)
 
 @login_required
+@check_user_course_access
 def contact_ta(request, course_id):
     email_header_from = request.user.email
     email_from = settings.APROS_EMAIL_SENDER
@@ -307,6 +365,7 @@ def contact_ta(request, course_id):
     )
 
 @login_required
+@check_user_course_access
 def contact_group(request, course_id, group_id):
     email_from = settings.APROS_EMAIL_SENDER
     email_header_from = request.user.email
@@ -330,6 +389,7 @@ def contact_group(request, course_id, group_id):
     )
 
 @login_required
+@check_user_course_access
 def contact_member(request, course_id):
     email_from = settings.APROS_EMAIL_SENDER
     email_header_from = request.user.email

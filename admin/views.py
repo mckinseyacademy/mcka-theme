@@ -297,10 +297,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "programs":
             for student in data["students"]:
                 user = user_api.get_user(student.id)
-                student.created = datetime.strptime(
-                                            student.created,
-                                            '%Y-%m-%dT%H:%M:%SZ'
-                                        ).isoformat()
+                student.created = student.created.isoformat()
                 if user.is_active == True:
                     student.enrolled = True
 
@@ -630,7 +627,9 @@ def add_students_to_program(request, client_id):
             # Ignore 409 errors, because they indicate a user already added
             if e.code != 409:
                 raise
-    sendMultipleEmails(messages)
+
+    if settings.ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT:
+        sendMultipleEmails(messages)
 
     return HttpResponse(
         json.dumps({"message": _("Successfully associated students to {} program")

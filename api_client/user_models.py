@@ -15,6 +15,7 @@ class UserResponse(JsonObject):
 
     ''' object representing a user from api json response '''
     required_fields = ["email", "username"]
+    date_fields = ["created"]
 
     def image_url(self, size=40, path='relative'):
         ''' return default avatar unless the user has one '''
@@ -63,11 +64,6 @@ class UserCourseStatus(JsonObject):
 
     ''' object representing a user's course status from api json response '''
     required_fields = ["position"]
-
-
-class UserCourse(JsonObject):
-    required_fields = []
-
 
 class UserList(JsonObject):
     object_map = {

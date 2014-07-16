@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from .json_object import JsonParser as JP
-from . import user_models, gradebook_models, organization_models, workgroup_models
+from . import user_models, gradebook_models, organization_models, workgroup_models, course_models
 from .json_requests import GET, POST, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
@@ -19,7 +19,6 @@ VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "cou
 
 def _clean_user_keys(user_hash):
     return {user_key: user_hash[user_key] for user_key in VALID_USER_KEYS if user_key in user_hash}
-
 
 @api_error_protect
 def authenticate(username, password):
@@ -34,7 +33,6 @@ def authenticate(username, password):
     )
     return JP.from_json(response.read(), user_models.AuthenticationResponse)
 
-
 @api_error_protect
 def get_user(user_id):
     ''' get specified user '''
@@ -46,7 +44,6 @@ def get_user(user_id):
         )
     )
     return JP.from_json(response.read(), user_models.UserResponse)
-
 
 @api_error_protect
 def get_user_dict(user_id):
@@ -88,7 +85,6 @@ def delete_session(session_key):
         )
     )
 
-
 @api_error_protect
 def register_user(user_hash):
     ''' register the given user within the openedx server '''
@@ -97,7 +93,6 @@ def register_user(user_hash):
         _clean_user_keys(user_hash)
     )
     return JP.from_json(response.read())
-
 
 @api_error_protect
 def _update_user(user_id, user_hash):
@@ -128,7 +123,7 @@ def get_user_courses(user_id):
             user_id
         )
     )
-    courses = JP.from_json(response.read(), user_models.UserCourse)
+    courses = JP.from_json(response.read(), course_models.Course)
     # TODO: Faking status for now, need to remove somehow
     for course in courses:
         course.percent_complete = 25
@@ -166,8 +161,7 @@ def enroll_user_in_course(user_id, course_id):
         data
     )
 
-    courses = JP.from_json(response.read(), user_models.UserCourse)
-
+    courses = JP.from_json(response.read(), course_models.Course)
 
 @api_error_protect
 def get_user_course_detail(user_id, course_id):
@@ -183,7 +177,6 @@ def get_user_course_detail(user_id, course_id):
 
     return JP.from_json(response.read(), user_models.UserCourseStatus)
 
-
 @api_error_protect
 def get_user_gradebook(user_id, course_id):
     ''' get grades for the user for this course'''
@@ -197,7 +190,6 @@ def get_user_gradebook(user_id, course_id):
     )
 
     return JP.from_json(response.read(), gradebook_models.Gradebook)
-
 
 @api_error_protect
 def _set_course_position(user_id, course_id, parent_id, child_id):
@@ -221,7 +213,6 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
     # return JP.from_json(response.read())
 
     return True
-
 
 @api_error_protect
 def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
@@ -259,7 +250,6 @@ def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
 
     return positions
 
-
 @api_error_protect
 def is_user_in_group(user_id, group_id):
     ''' checks group membership '''
@@ -293,7 +283,6 @@ def set_user_preferences(user_id, preference_dictionary):
     )
 
     return True
-
 
 @api_error_protect
 def get_user_preferences(user_id):
@@ -334,6 +323,21 @@ def get_user_workgroups(user_id, workgroup_object=workgroup_models.WorkgroupList
     )
 
     return JP.from_json(response.read(), workgroup_object).results
+
+@api_error_protect
+def get_course_social_metrics(user_id, course_id):
+    ''' fetch social metrics for course '''
+
+    response = GET(
+        '{}/{}/{}/courses/{}/metrics/social/'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            course_id,
+        )
+    )
+
+    return JP.from_json(response.read())
 
 USER_ERROR_CODE_MESSAGES = {
     "update_user_information": {

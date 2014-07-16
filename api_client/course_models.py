@@ -1,5 +1,8 @@
 ''' Objects for courses built from json responses from API '''
 import datetime
+import math
+
+from django.utils.translation import ugettext as _
 
 from .json_object import CategorisedJsonObject, JsonObject
 
@@ -41,6 +44,7 @@ class Course(CategorisedJsonObject):
 
     ''' object representing a course '''
     required_fields = ["id", "name", ]
+    date_fields = ["start", "end",]
 
     @property
     def nav_url(self):
@@ -48,10 +52,10 @@ class Course(CategorisedJsonObject):
 
     @property
     def formatted_start_date(self):
-        if hasattr(self, 'start_date'):
+        if hasattr(self, 'start') and not self.start is None:
             return "{} {}".format(
                 _("Available"),
-                self.start_date.strftime('%B %d, %Y')
+                self.start.strftime('%B %d, %Y')
             )
         return None
 
@@ -65,11 +69,26 @@ class Course(CategorisedJsonObject):
         return ""
 
     @property
-    def has_future_start_date(self):
-        if hasattr(self, 'start_date'):
-            current_time = datetime.datetime.now()
-            return not (date <= current_time)
-        return False
+    def started(self):
+        return int(self.days_till_start) < 1
+
+    @property
+    def days_till_start(self):
+        if hasattr(self, 'start') and not self.start is None:
+            days = str(
+                int(math.floor(((self.start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
+            return days
+        return 0
+
+
+
+    def module_count(self):
+        module_count = 0
+        for chapter in self.chapters:
+            for sequential in chapter.sequentials:
+                module_count += len(sequential.children)
+
+        return module_count
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]

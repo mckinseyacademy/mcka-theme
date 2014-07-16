@@ -1,12 +1,9 @@
 - extends "courses/course_navigation.haml"
 - block current_content
   #course-group-work
-    - if not group_project
+    - if not group_project or not project_group
       .row
-        .error= _("No Group Project has been configured for this course")
-    - elif not project_group
-      .row
-        .error= _("You have not been assigned to a group for a Group Project")
+        .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
     - else
       .row
         - include "courses/group_work/activity_menu.haml"
@@ -23,7 +20,7 @@
               - include "courses/group_work/group_member.haml" with group_member=member data_reveal_id="email-member"
             - if project_group.id
               %a.email-team{href: "#", data-reveal-id: 'email-team'}
-                = _("Email Team")
+                = _("Email your group")
           %hr
           .ask-ta
             %h4= _("Ask a TA")

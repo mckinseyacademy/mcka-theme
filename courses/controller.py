@@ -21,14 +21,13 @@ def build_page_info_for_course(
     course_id,
     chapter_id,
     page_id,
-    chapter_position=None,
     course_api_impl=course_api
 ):
     '''
     Returns course structure and user's status within course
         course_api_impl - optional api client module to use (useful in mocks)
     '''
-    course = load_course(course_id, 3, course_api_impl)
+    course = load_course(course_id, 4, course_api_impl)
 
     # something sensible if we fail...
     if len(course.chapters) < 1:
@@ -40,13 +39,11 @@ def build_page_info_for_course(
 
     prev_page = None
 
-    if chapter_position and len(course.chapters) >= chapter_position:
-        course.chapters[chapter_position - 1].bookmark = True
-
     for chapter in course.chapters:
         chapter.navigation_url = '/courses/{}/lessons/{}'.format(course_id, chapter.id)
         if chapter.id == chapter_id:
             current_chapter = chapter
+            chapter.bookmark = True
 
         for sequential in chapter.sequentials:
             for page in sequential.pages:
@@ -73,15 +70,17 @@ def build_page_info_for_course(
 
     return course, current_chapter, current_sequential, current_page
 
-def get_course_position_information(user_id, course_id, user_api_impl=user_api):
+def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
     course_detail = False
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
     except:
-        pass
-    if course_detail == False:
-        course_detail = user_models.UserCourseStatus(dictionary={"position": None})
-    return course_detail
+        course_detail = False
+
+    if course_detail == False or not hasattr(course_detail, 'position_tree'):
+        return None
+
+    return course_detail.position_tree
 
 
 def locate_chapter_page(
@@ -98,32 +97,37 @@ def locate_chapter_page(
         course_api_impl - optional api client module to use (useful in mocks)
         user_api_impl - optional api client module to use (useful in mocks)
     '''
-    course = load_course(course_id, 3, course_api_impl)
+    course = load_course(course_id, 4, course_api_impl)
     chapter = None
     page = None
 
-    course_detail = get_course_position_information(user_id, course_id, user_api_impl)
-    if hasattr(course_detail, 'position') and course_detail.position is not None and len(course.chapters) >= course_detail.position:
-        chapter = course.chapters[course_detail.position - 1]
-        chapter.bookmark = True
-    elif len(course.chapters) > 0:
+    position_tree = get_course_position_tree(user_id, course_id, user_api_impl)
+    if chapter_id is None:
+        chapter_id = position_tree.chapter.id if position_tree else None
+    chapter_candidates = [c for c in course.chapters if c.id == chapter_id]
+    if len(chapter_candidates) > 0:
+        chapter = chapter_candidates[0]
+
+    if chapter is None and len(course.chapters) > 0:
         chapter = course.chapters[0]
 
-    if chapter_id:
-        for course_chapter in course.chapters:
-            if course_chapter.id == chapter_id:
-                chapter = course_chapter
-                break
-    if chapter and chapter.sequentials and len(chapter.sequentials) > 0 and chapter.sequentials[0].pages and len(chapter.sequentials[0].pages) > 0:
-        page = chapter.sequentials[0].pages[0]
+    if chapter and chapter.sequentials:
+        last_sequential_id = position_tree.sequential.id if position_tree else None
+        sequential_candidates = [s for s in chapter.sequentials if s.id == last_sequential_id]
+        if len(sequential_candidates) > 0 and sequential_candidates[0].pages:
+            last_page_id = position_tree.vertical.id if position_tree else None
+            page_candidates = [p for p in sequential_candidates[0].pages if p.id == last_page_id]
+            if len(page_candidates) > 0:
+                page = page_candidates[0]
+            elif len(sequential_candidates[0].pages) > 0:
+                page = sequential_candidates[0].pages[0]
+        elif len(chapter.sequentials) > 0 and chapter.sequentials[0].pages and len(chapter.sequentials[0].pages) > 0:
+            page = chapter.sequentials[0].pages[0]
 
     chapter_id = chapter.id if chapter else None
     page_id = page.id if page else None
 
-    if course_detail is None:
-        return course_id, chapter_id, page_id, None
-    else:
-        return course_id, chapter_id, page_id, course_detail.position
+    return course_id, chapter_id, page_id
 
 
 # pylint: disable=too-many-arguments
@@ -139,6 +143,7 @@ def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user
         sequential_id,
         page_id
     )
+
 
 class ProjectGroup(object):
     members = []
@@ -213,7 +218,7 @@ def group_project_location(user_id, course, sequential_id=None):
     project_group.members = [user_api.get_user(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
 
     # Get the right location within this group project - can't do this yet
-    #course_detail = get_course_position_information(user_id, course.id)
+    #course_detail = get_course_position_tree(user_id, course.id)
 
     sequential = group_project.sequentials[0]
     for seq in group_project.sequentials:
@@ -235,3 +240,10 @@ def load_static_tabs(course_id):
         set_static_tab_context(static_tabs)
 
     return static_tabs
+
+
+def progress_percent(completion_count, module_count):
+    if module_count > 0:
+        return int(round(100*completion_count/module_count))
+    else:
+        return 0

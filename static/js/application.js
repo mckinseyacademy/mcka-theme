@@ -103,4 +103,20 @@ $(function(){
   $('#profile-container').on('closed opened', function(){
     $('.user-info >.fa').toggleClass('fa-sort-asc fa-sort-desc');
   });
+
+  $('.course-name.unavailable, .status.unavailable').on('click', function(){
+    var generalModal = $('#generalModal');
+    var days = $(this).data('numDays');
+    if(typeof days == "undefined"){
+      courseStr = "Your course hasn't begun yet. ";
+    }
+    else{
+      days = (days > 1) ? days + " days" : days + " day";
+      courseStr = "Your course begins in " + days + ". "
+    }
+      generalModal.find('.title').html("Welcome to McKinsey Academy");
+      generalModal.find('.description').html(courseStr +
+      "Please explore the site to learn more about the expirience in the meantime.");
+      $('#generalModal').foundation('reveal', 'open');
+  });
 });

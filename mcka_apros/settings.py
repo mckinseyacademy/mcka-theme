@@ -185,6 +185,9 @@ INITIAL_PASSWORD = 'PassworD12!@'
 # Email address students get their enrollment email sent from
 ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 
+# Disabling automatic program enrollment for no (MCKIN-1750)
+ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
+
 # EMAIL BACKEND
 EMAIL_BACKEND = "django_ses.SESBackend"
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
@@ -211,7 +214,6 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'lib.context_processors.settings_data',
 )
 
-
 DEFAULT_DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
@@ -232,3 +234,16 @@ LOCAL_DEBUG_TOOLBAR_PANELS = (
 )
 
 DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
+
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL': ''  # rely on a version of jQuery that already exists
+}
+
+# Points for social activities
+SOCIAL_METRIC_POINTS = {
+    'num_threads': 10,
+    'num_comments': 2,
+    'num_replies': 1,
+    'num_upvotes': 5,
+    'num_thread_followers': 5,
+}
