@@ -331,10 +331,9 @@ def home(request):
         if program:
             if program.id is not 'NO_PROGRAM':
                 days = ''
-                course_start = datetime.datetime.strptime(course.start, '%Y-%m-%dT%H:%M:%SZ')
-                if course_start > datetime.datetime.today():
+                if  not course.start is None and course.start > datetime.datetime.today():
                     days = str(
-                        int(math.floor(((course_start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                        int(math.floor(((course.start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
                 elif hasattr(program, 'start_date') and program.start_date > datetime.datetime.today():
                     days = str(
                         int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
