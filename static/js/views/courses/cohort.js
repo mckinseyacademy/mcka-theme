@@ -2,8 +2,18 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   profiles: true,
   layers: [],
+  iconsFlag: true,
   fetchedData: false,
   userProfilesVisible: true,
+  users: [],
+  citiesMap: [],
+  city_list: [],
+  cities: {},
+  zoomLevel: 1,
+
+  defaults: {
+    model: new Apros.models.LocationData
+  },
 
   events: {
     'click .select-board a': 'update_scope',
@@ -11,10 +21,32 @@ Apros.views.CourseCohort = Backbone.View.extend({
   },
 
   initialize: function(){
+    var _this = this;
+    this.users = CohortMapUsers;
+    this.citiesMap = CohortMapCities;
+
+    this.setCities(this.citiesMap, this.users, this.city_list, this.cities);
+    this.model.setUrl(this.city_list.join(';'));
     this.map = L.map('map-cohort', {zoomControl: true, attributionControl: false}).setView([51.505, -0.09], 1);
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/{z}/{x}/{y}.png',{
-      maxZoom: 18
-    }).addTo(this.map);
+        maxZoom: 18
+      }).addTo(this.map);
+    this.map.on('zoomend', function(){
+      if(_this.map.getZoom() >= 1){
+        _this.zoomLevel = _this.map.getZoom();
+      }
+      else{
+        _this.zoomLevel = 1;
+      }
+      _this.map.removeLayer(_this.layers);
+      _this.drawLayers(_this.model, _this.city_list, _this.cities, _this.users, _this.iconsFlag);
+    });
+    this.model.fetch({
+      'success': function(model, response){
+        model.save(model.parse(response));
+        _this.render();
+      }
+    });
   },
 
   update_scope: function(e) {
@@ -25,10 +57,10 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   toggle_profiles: function(e) {
     e.preventDefault();
-    this.map.removeLayer(this.layers);
-    this.userProfilesVisible = !this.userProfilesVisible;
+    this.map.removeLayer(_this.layers);
+    this.iconsFlag = !this.iconsFlag;
     $('.student-data a').toggle();
-    this.render_map(this.userProfilesVisible);
+    this.render_map();
   },
 
   createIcon: function(user, loc, layers, x, y){
@@ -83,54 +115,33 @@ Apros.views.CourseCohort = Backbone.View.extend({
   drawLayers: function(data, city_list, cities, users, iconsFlag){
       var layers = [];
       var _this = this;
-      if(city_list.length == 1){
-        var loc = data.results[0][0];
-        layers = _this.createIcon(user, loc, layers, x, y);
-        layers = _this.createCircle(data, cities[0], layers);
-      }
-      else if (city_list.length > 1){
-        $.each(city_list, function(key, citykey){
-          var city = cities[citykey]
-          var numElements = city.users.length;
-          var angle = 0;
-          var step = (2*Math.PI) / numElements;
-          layers = _this.createCircle(data[key], city, layers);
-          if(iconsFlag){
-            $.each(city.users, function(key2, user){
-              var x = 20 * Math.cos(angle);
-              var y = 20 * Math.sin(angle);
-              var loc = data[key].results[0][0];
-              layers = _this.createIcon(user, loc, layers, x, y);
-              angle += step;
-            });
-          }
-        });
-      }
+      $.each(city_list, function(key, citykey){
+        var city = cities[citykey]
+        var numElements = city.users.length;
+        var angle = 0;
+        var step = (2*Math.PI) / numElements;
+        layers = _this.createCircle(data.get(citykey), city, layers);
+        if(iconsFlag){
+          $.each(city.users, function(key2, user){
+            var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
+            var x = 20 / zoomFactor * Math.cos(angle);
+            var y = 20 / zoomFactor * Math.sin(angle);
+            var loc = data.get(citykey).results[0][0];
+            layers = _this.createIcon(user, loc, layers, x, y);
+            angle += step;
+          });
+        }
+      });
       this.layers = L.layerGroup(layers).addTo(_this.map);
     },
 
-  render_map: function(iconsFlag) {
+  render_map: function() {
     var _this = this;
-    var users = CohortMapUsers;
-    var citiesMap = CohortMapCities;
-    var city_list = [];
-    var cities = {};
-
-    _this.setCities(citiesMap, users, city_list, cities);
-    if(this.fetchedData == false){
-      $.getJSON('https://api.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/geocode/' + city_list.join(';') + '.json').done(
-        function(data){
-          _this.fetchedData = data;
-          _this.drawLayers(data, city_list, cities, users, iconsFlag);
-        }
-      );
-    }
-    else{
-      this.drawLayers(this.fetchedData, city_list, cities, users, iconsFlag);
-    }
+    this.drawLayers(this.model, this.city_list, this.cities, this.users, this.iconsFlag);
   },
 
   render: function() {
+    this.iconsFlag = true;
     this.render_map(true);
   }
 });
