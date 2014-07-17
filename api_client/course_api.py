@@ -125,6 +125,20 @@ def get_course(course_id, depth = 3):
     return course
 
 @api_error_protect
+def get_course_content(course_id, content_id):
+    ''' returns course content'''
+    response = GET(
+        '{}/{}/{}/content/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            content_id,
+        )
+    )
+
+    return JP.from_json(response.read())
+
+@api_error_protect
 def get_user_list_json(course_id, program_id = None, client_id = None):
     '''
     Retrieves course user list structure information from the API for specified course

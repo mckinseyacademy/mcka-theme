@@ -1,6 +1,7 @@
 ''' Core logic to sanitise information for views '''
 #from urllib import quote_plus, unquote_plus
 
+import datetime
 from django.conf import settings
 
 from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
@@ -10,6 +11,8 @@ from api_client.api_error import ApiError
 from api_client.project_models import Project
 from admin.models import WorkGroup
 from admin.controller import load_course
+
+GROUP_PROJECT_CATEGORY = 'group-project'
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -233,6 +236,7 @@ def group_project_location(user_id, course, sequential_id=None):
 
     return project_group, group_project, sequential, page
 
+
 def load_static_tabs(course_id):
     static_tabs = get_static_tab_context()
     if static_tabs is None:
@@ -247,3 +251,59 @@ def progress_percent(completion_count, module_count):
         return int(round(100*completion_count/module_count))
     else:
         return 0
+
+
+def group_project_reviews(user_id, course_id, project_chapter):
+    '''
+    Returns group work reviews & average score for a project
+    '''
+
+    # user's group for this course
+    user_workgroups = user_api.get_user_workgroups(user_id, course_id)
+
+    if not user_workgroups:
+        return [], 0
+
+    workgroup = user_workgroups[0] if user_workgroups else None
+    review_items = WorkGroup.get_workgroup_review_items(workgroup.id)
+
+    # distinct reviewers
+    reviewer_ids = sorted(set([int(item.reviewer) for item in review_items]))
+    group_activities = []
+    group_work_sum = 0
+
+    # find group activities in this project
+    for seq in project_chapter.sequentials:
+        for page in seq.pages:
+            if hasattr(page, 'children'):
+                for child in page.children:
+                    if child.category == GROUP_PROJECT_CATEGORY:
+                        group_activities.append(seq)
+                        break
+
+    for activity in group_activities:
+        activity.grades = []
+        activity_reviews = [item for item in review_items if activity.id == item.content_id]
+
+        # average by reviewer
+        for reviewer_id in reviewer_ids:
+            grades = [int(review.answer) for review in activity_reviews if reviewer_id == int(review.reviewer) and is_number(review.answer)]
+            avg = sum(grades)/float(len(grades)) if len(grades)>0 else None
+            activity.grades.append(avg)
+            print activity.id, reviewer_id, avg
+
+        # average score for this activity
+        activity.score = sum(filter(None, activity.grades))/float(len(activity.grades)) if len(activity.grades)>0 else None
+        if activity.score:
+            group_work_sum += activity.score
+
+    group_work_avg = group_work_sum /float(len(group_activities)) if len(group_activities)>0 else 0
+
+    return group_activities, group_work_avg
+
+def is_number(s):
+    try:
+        float(s)
+    except ValueError:
+        return False
+    return True

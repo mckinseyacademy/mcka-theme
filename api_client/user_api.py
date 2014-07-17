@@ -326,24 +326,17 @@ def get_user_organizations(user_id, organization_object=organization_models.Orga
     return JP.from_json(response.read(), organization_object).results
 
 @api_error_protect
-def get_user_workgroups(user_id, workgroup_object=workgroup_models.WorkgroupList, params=[]):
+def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_models.WorkgroupList):
     ''' return organizations with which the user is associated '''
-
-    paramStrs = [param['key'] + '=' + param['value'] for param in params]
-    if len(paramStrs) > 0:
-        paramStr = '&'.join(paramStrs)
-    else:
-        paramStr = ''
-
-    response = GET(
-        '{}/{}/{}/workgroups/?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            USER_API,
-            user_id,
-            paramStr
-        )
+    url = '{}/{}/{}/workgroups/'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
     )
+    if course_id:
+        url += '?course_id={}'.format(course_id)
 
+    response = GET(url)
     return JP.from_json(response.read(), workgroup_object).results
 
 @api_error_protect

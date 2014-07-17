@@ -11,10 +11,10 @@ from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, group_project_location, progress_percent
+from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api, user_api, user_models, workgroup_api
+from api_client import course_api, user_api, project_api, user_models, workgroup_api
 from admin.controller import load_course
 from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
@@ -264,7 +264,7 @@ def course_discussion(request, course_id):
 @check_user_course_access
 def course_progress(request, course_id):
 
-    course = load_course(course_id, 3)
+    course = load_course(course_id, 4)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
@@ -274,6 +274,21 @@ def course_progress(request, course_id):
 
     pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
+    if course.group_project_chapters:
+        project_chapter = course.group_project_chapters[0]
+        group_activities, group_work_avg = group_project_reviews(request.user.id, course_id, project_chapter)
+    else:
+        group_activities = []
+        group_work_avg = 0
+
+    # format scores & grades
+    for activity in group_activities:
+        if activity.score is not None:
+            activity.score = floatformat(round(activity.score))
+        for i, grade in enumerate(activity.grades):
+            if grade is not None:
+                activity.grades[i] = floatformat(round(grade))
+
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
         bar_chart[0]['values'].append({
@@ -281,6 +296,12 @@ def course_progress(request, course_id):
            'value': grade.percent*100,
            'color': '#b1c2cc'
         })
+
+    bar_chart[0]['values'].append({
+        'label': 'GROUP WORK\n AVG.',
+        'value': group_work_avg,
+        'color': '#66a5b5'
+    })
 
     total = gradebook.grade_summary.percent*100
     bar_chart[0]['values'].append({
@@ -298,6 +319,7 @@ def course_progress(request, course_id):
         'percent_complete': percent_complete,
         'pass_grade': pass_grade,
         'graders': graders,
+        'group_activities': group_activities,
     }
     return render(request, 'courses/course_progress.haml', data)
 
