@@ -282,8 +282,6 @@ def group_project_reviews(user_id, course_id, project_chapter):
                         break
 
     for activity in group_activities:
-        if activity.due:
-            activity.due = datetime.datetime.strptime(activity.due, "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d")
         activity.grades = []
         activity_reviews = [item for item in review_items if activity.id == item.content_id]
 
