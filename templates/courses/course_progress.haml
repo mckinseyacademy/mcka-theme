@@ -60,22 +60,22 @@
         %th.label-4 Score:
         %th.label-4 Individual Peer Grades:
       %tbody
-        - for project in group_projects
+        - for activity in group_activities
           %tr
-            %td.lesson.sub-1 ={project.name}
+            %td.lesson.sub-1 ={activity.name}
             %td.deadline
-              - if project.due == None
+              - if activity.due == None
                 \-
               - else
-                = project.due
+                = activity.due
             %td.assessment
-              - if project.score == None
+              - if activity.score == None
                 \-
               - else
-                ={project.score}%
+                ={activity.score}%
             %td
               %ul.group-grades
-                - for grade in project.grades
+                - for grade in activity.grades
                   - if grade == None
                     %li -
                   - else

@@ -1,6 +1,7 @@
 ''' Core logic to sanitise information for views '''
 #from urllib import quote_plus, unquote_plus
 
+import datetime
 from django.conf import settings
 
 from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
@@ -10,6 +11,8 @@ from api_client.api_error import ApiError
 from api_client.project_models import Project
 from admin.models import WorkGroup
 from admin.controller import load_course
+
+GROUP_PROJECT_CATEGORY = 'group-project'
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -233,6 +236,7 @@ def group_project_location(user_id, course, sequential_id=None):
 
     return project_group, group_project, sequential, page
 
+
 def load_static_tabs(course_id):
     static_tabs = get_static_tab_context()
     if static_tabs is None:
@@ -248,34 +252,56 @@ def progress_percent(completion_count, module_count):
     else:
         return 0
 
-def groupwork_reviews_for_project(user_id, project_url):
+
+def group_project_reviews(user_id, course_id, project_chapter):
     '''
-    Returns group work reviews for a project
+    Returns group work reviews & average score for a project
     '''
 
-    # work groups associate with this user
-    user_workgroups = user_api.get_user_workgroups(user_id)
+    # user's group for this course
+    user_workgroups = user_api.get_user_workgroups(user_id, course_id)
 
-    # find the work group in project associated with this user (assuming only one)
-    for workgroup in user_workgroups:
-        if workgroup.project == project_url:
-            workgroup_id = workgroup.id
-            break
+    if not user_workgroups:
+        return [], 0
 
-    if workgroup_id == None:
-        return []
+    workgroup = user_workgroups[0] if user_workgroups else None
+    review_items = WorkGroup.get_workgroup_review_items(workgroup.id)
 
-    # calculate averages grouped by user
-    average_grades = []
-    users = WorkGroup.get_workgroup_users(workgroup_id)
-    review_items = WorkGroup.get_workgroup_review_items(workgroup_id)
+    # distinct reviewers
+    reviewer_ids = sorted(set([int(item.reviewer) for item in review_items]))
+    group_activities = []
+    group_work_sum = 0
 
-    for user in users:
-        grades = [int(review.answer) for review in review_items if user.id == int(review.reviewer) and is_number(review.answer)]
-        avg = sum(grades)/len(grades) if len(grades)>0 else None
-        average_grades.append(avg)
+    # find group activities in this project
+    for seq in project_chapter.sequentials:
+        for page in seq.pages:
+            if hasattr(page, 'children'):
+                for child in page.children:
+                    if child.category == GROUP_PROJECT_CATEGORY:
+                        group_activities.append(seq)
+                        break
 
-    return average_grades
+    for activity in group_activities:
+        if activity.due:
+            activity.due = datetime.datetime.strptime(activity.due, "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d")
+        activity.grades = []
+        activity_reviews = [item for item in review_items if activity.id == item.content_id]
+
+        # average by reviewer
+        for reviewer_id in reviewer_ids:
+            grades = [int(review.answer) for review in activity_reviews if reviewer_id == int(review.reviewer) and is_number(review.answer)]
+            avg = sum(grades)/float(len(grades)) if len(grades)>0 else None
+            activity.grades.append(avg)
+            print activity.id, reviewer_id, avg
+
+        # average score for this activity
+        activity.score = sum(filter(None, activity.grades))/float(len(activity.grades)) if len(activity.grades)>0 else None
+        if activity.score:
+            group_work_sum += activity.score
+
+    group_work_avg = group_work_sum /float(len(group_activities)) if len(group_activities)>0 else 0
+
+    return group_activities, group_work_avg
 
 def is_number(s):
     try:

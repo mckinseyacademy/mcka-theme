@@ -1,7 +1,6 @@
 ''' rendering templates from requests related to courses '''
 import math
 import json
-import datetime
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
@@ -12,7 +11,7 @@ from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, group_project_location, progress_percent, groupwork_reviews_for_project
+from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api, project_api, user_models, workgroup_api
@@ -265,7 +264,7 @@ def course_discussion(request, course_id):
 @check_user_course_access
 def course_progress(request, course_id):
 
-    course = load_course(course_id, 3)
+    course = load_course(course_id, 4)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
@@ -275,32 +274,20 @@ def course_progress(request, course_id):
 
     pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
-    module_count = 0
-    for chapter in course.chapters:
-        for sequential in chapter.sequentials:
-            module_count += len(sequential.children)
-
-    if module_count > 0:
-        percent_complete = int(round(100*completions.count/module_count))
+    if course.group_project_chapters:
+        project_chapter = course.group_project_chapters[0]
+        group_activities, group_work_avg = group_project_reviews(request.user.id, course_id, project_chapter)
     else:
-        percent_complete = 0
+        group_activities = []
+        group_work_avg = 0
 
-
-    group_projects = project_api.get_projects_for_course(course_id)
-    group_work_sum = 0
-
-    for project in group_projects:
-        content = course_api.get_course_content(course_id, project.content_id)
-        project.name = content.name
-        if content.due is not None:
-            project.due = datetime.datetime.strptime(content.due, "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d")
-        else:
-            project.due = None
-        project.grades = groupwork_reviews_for_project(request.user.id, project.url)
-        project.score = sum(project.grades)/len(project.grades) if len(project.grades)>0 else None
-        group_work_sum += project.score
-
-    group_work_avg = group_work_sum / len(group_projects) if len(group_projects)>0 else 0
+    # format scores & grades
+    for activity in group_activities:
+        if activity.score is not None:
+            activity.score = floatformat(round(activity.score))
+        for i, grade in enumerate(activity.grades):
+            if grade is not None:
+                activity.grades[i] = floatformat(round(grade))
 
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
@@ -332,7 +319,7 @@ def course_progress(request, course_id):
         'percent_complete': percent_complete,
         'pass_grade': pass_grade,
         'graders': graders,
-        'group_projects': group_projects,
+        'group_activities': group_activities,
     }
     return render(request, 'courses/course_progress.haml', data)
 
