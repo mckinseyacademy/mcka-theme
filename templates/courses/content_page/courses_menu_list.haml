@@ -10,7 +10,7 @@
         - else
           .status.complete Completed
       - else
-        .course-name.unavailable{'data-numDays': '#{program_course.days_till_start}'}
+        .course-name.unavailable{'data-numdays': '#{program_course.days_till_start}'}
           = program_course.name
-        .status.unavailable{'data-numDays': '#{program_course.days_till_start}'}
+        .status.unavailable{'data-numdays': '#{program_course.days_till_start}'}
           = program_course.formatted_start_date
