@@ -47,18 +47,27 @@ def check_user_course_access(func):
     Decorator which will raise an CourseAccessDeniedError if the user does not have access to the requested course
     '''
     def user_course_access_checker(request, course_id, *args, **kwargs):
-        program = get_current_program_for_user(request)
-        if program is None:
-            set_current_course_for_user(request, course_id)
+        try:
             program = get_current_program_for_user(request)
             if program is None:
+                set_current_course_for_user(request, course_id)
+                program = get_current_program_for_user(request)
+                if program is None:
+                    raise CourseAccessDeniedError(course_id)
+            available_courses = program.courses
+            if program.outside_courses and len(program.outside_courses) > 0:
+                available_courses += program.outside_courses
+            course_access = [c for c in available_courses if c.id == course_id]
+            if len(course_access) < 1:
                 raise CourseAccessDeniedError(course_id)
-        available_courses = program.courses
-        if program.outside_courses and len(program.outside_courses) > 0:
-            available_courses += program.outside_courses
-        course_access = [c for c in available_courses if c.id == course_id]
-        if len(course_access) < 1:
-            raise CourseAccessDeniedError(course_id)
+        except CourseAccessDeniedError:
+            # they've tried to go elsewhere, so let's not even worry about holding
+            # onto the last course visited, trash it so a visit to homepage after
+            # getting this error will do the right thing and rebuild a correct list
+            # in case this was a course for which they previously had access, but now don't
+            clear_current_course_for_user(request)
+            # re-raise this error
+            raise
 
         return func(request, course_id, *args, **kwargs)
 
@@ -79,6 +88,9 @@ def get_current_course_by_user_id(user_id):
         return course_id
     return None
 
+def clear_current_course_for_user(request):
+    request.session[CURRENT_COURSE_ID] = None
+    user_api.delete_user_preference(request.user.id, CURRENT_COURSE_ID)
 
 def get_current_course_for_user(request):
     course_id = request.session.get(CURRENT_COURSE_ID, None)
