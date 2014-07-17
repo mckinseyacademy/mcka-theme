@@ -18,7 +18,7 @@ $(function(){
                 $dataY2.val(data.y2);
                 $dataHeight.val(data.height);
                 $dataWidth.val(data.width);
-                $profileImageUrl.val($('img.user-uploaded-image').attr('src').split('?')[0]);
+                $profileImageUrl.val($('img.user-uploaded-image').attr('src'));
             }
     });
   }
