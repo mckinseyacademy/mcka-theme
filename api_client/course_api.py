@@ -145,6 +145,36 @@ def get_user_list(course_id, program_id = None, client_id = None):
     return JP.from_json(get_user_list_json(course_id, program_id, client_id), course_models.CourseEnrollmentList).enrollments
 
 @api_error_protect
+def get_user_list_json(course_id, program_id = None, client_id = None):
+    '''
+    Retrieves course user list structure information from the API for specified course
+    '''
+    response = GET('{}/{}/{}/users?project={}&client={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        program_id,
+        client_id)
+    )
+
+    return response.read()
+
+@api_error_protect
+def get_users_list_in_organizations(course_id, organizations):
+    '''
+    Retrieves course user list structure information from the API for specified course
+    '''
+    response = GET('{}/{}/{}/users?organizations={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        organizations,)
+    )
+
+    return JP.from_json(response.read(), course_models.CourseEnrollmentList).enrollments
+
+
+@api_error_protect
 def add_group_to_course_content(group_id, course_id, content_id):
     ''' associate group to specific course '''
 
