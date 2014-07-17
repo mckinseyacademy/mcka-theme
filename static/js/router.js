@@ -34,8 +34,8 @@ var Router = Backbone.Router.extend({
 
   course_cohort: function(course_id) {
     $('#beta_content').foundation('reveal', 'open');
-    var model = new Apros.models.Course({id: course_id});
-    new Apros.views.CourseCohort({model: model, el: $('#course-cohort')}).render()
+    var model = new Apros.models.LocationData({id: course_id});
+    new Apros.views.CourseCohort({model: model, el: $('#course-cohort')})
   },
 
   course_group_work: function(course_id) {
