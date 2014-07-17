@@ -163,8 +163,7 @@ def course_cohort(request, course_id):
     organizations = user_api.get_user_organizations(request.user.id)
     if len(organizations) > 0:
         organization = organizations[0]
-        organizationUsers = course_api.get_user_list(course_id, program_id = None, client_id = organization.id)
-        print len(organizationUsers)
+        organizationUsers = course_api.get_users_list_in_organizations(course_id, organizations = organization.id)
         metrics.company_enrolled = len(organizationUsers)
     metrics.groups_users = []
     if len(workgroups) > 0:
