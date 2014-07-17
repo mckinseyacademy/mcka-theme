@@ -106,7 +106,7 @@ $(function(){
 
   $('.course-name.unavailable, .status.unavailable').on('click', function(){
     var generalModal = $('#generalModal');
-    var days = $(this).data('numDays');
+    var days = $(this).data('numdays');
     if(typeof days == "undefined"){
       courseStr = "Your course hasn't begun yet. ";
     }

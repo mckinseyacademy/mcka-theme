@@ -14,7 +14,7 @@ from .controller import build_page_info_for_course, locate_chapter_page, load_st
 from .controller import update_bookmark, group_project_location, progress_percent
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api, user_api, user_models
+from api_client import course_api, user_api, user_models, workgroup_api
 from admin.controller import load_course
 from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
@@ -117,36 +117,85 @@ def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-
     course = load_course(course_id)
-    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
-    proficiency.points = floatformat(proficiency.points)
-    for index, leader in enumerate(proficiency.leaders, 1):
-        leader.rank = index
-        leader.points_scored = floatformat(leader.points_scored)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
+    '''
+    Putting in try/except block to make page work.
+    Proficiency not defined for new user should be fixed as separate issue.
+    '''
+    proficiency = []
+    completions = []
+    try:
+        proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+        proficiency.points = floatformat(proficiency.points)
+        for index, leader in enumerate(proficiency.leaders, 1):
+            leader.rank = index
+            leader.points_scored = floatformat(leader.points_scored)
+            user = user_models.UserResponse()
+            user.avatar_url = leader.avatar_url
+            leader.avatar_url = user.image_url(40) # 40x40 image
 
-    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
-    module_count = course.module_count()
+        completions = course_api.get_course_metrics_completions(course_id, request.user.id)
+        module_count = course.module_count()
 
-    completions.completion_percent = progress_percent(completions.completions, module_count)
-    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+        completions.completion_percent = progress_percent(completions.completions, module_count)
+        completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
 
-    for index, leader in enumerate(completions.leaders, 1):
-        leader.rank = index
-        leader.completion_percent = progress_percent(leader.completions, module_count)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
+        for index, leader in enumerate(completions.leaders, 1):
+            leader.rank = index
+            leader.completion_percent = progress_percent(leader.completions, module_count)
+            user = user_models.UserResponse()
+            user.avatar_url = leader.avatar_url
+            leader.avatar_url = user.image_url(40) # 40x40 image
+    except:
+        pass
 
+    metrics = course_api.get_course_metrics(course_id)
+    workgroups = user_api.get_user_workgroups(request.user.id, params=[{'key': 'course_id', 'value': course_id}])
+    organizations = user_api.get_user_organizations(request.user.id)
+    if len(organizations) > 0:
+        organization = organizations[0]
+        organizationUsers = course_api.get_user_list(course_id, program_id = None, client_id = organization.id)
+        print len(organizationUsers)
+        metrics.company_enrolled = len(organizationUsers)
+    metrics.groups_users = []
+    if len(workgroups) > 0:
+        workgroup = workgroup_api.get_workgroup(workgroups[0].id)
+        metrics.group_enrolled = len(workgroup.users)
+        if workgroup.users > 0:
+            for student in workgroup.users:
+                user = user_api.get_user(student.id)
+                if user.get('city') != '':
+                    metrics.groups_users.append({"id": user.get('id'),
+                                                    "username": user.get('username'),
+                                                    "first_name": user.get('first_name'),
+                                                    "last_name": user.get('last_name'),
+                                                    "country": user.get('country'),
+                                                    "city": user.get('city'),
+                                                    "avatar_url": user.image_url(size=40),
+                                                    "full_name": user.get('full_name'),
+                                                    "title": user.get('title'),
+                                                })
+    metrics.groups_users = json.dumps(metrics.groups_users)
+
+    metrics.cities = []
+    cities = user_api.get_users_city_metrics()
+    for city in cities:
+        if city.city != '':
+            metrics.cities.append({'city': city.city, 'count': city.count})
+    metrics.cities = json.dumps(metrics.cities)
     data = {
         'proficiency': proficiency,
-        'completions': completions
+        'completions': completions,
+        'metrics': metrics,
     }
     return render(request, 'courses/course_cohort.haml', data)
 

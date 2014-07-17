@@ -3,8 +3,9 @@ from courses.controller import build_page_info_for_course, locate_chapter_page
 
 from courses.views import _inject_formatted_data
 from api_client import course_api, user_api
-from accounts.controller import get_current_course_for_user, get_current_program_for_user
+from accounts.controller import get_current_course_for_user, get_current_program_for_user, clear_current_course_for_user
 from accounts.middleware.thread_local import get_static_tab_context
+from admin.controller import load_course
 
 
 def user_program_data(request):
@@ -13,7 +14,15 @@ def user_program_data(request):
     program = None
 
     if request.user and request.user.id:
-        course_id = get_current_course_for_user(request)
+        # test loading the course to see if we can; if not, we destroy cached
+        # information about current course and let the new course_id load again
+        # in subsequent calls
+        try:
+            course_id = get_current_course_for_user(request)
+            course = load_course(course_id)
+        except:
+            clear_current_course_for_user(request)
+            course_id = get_current_course_for_user(request)
 
         if course_id:
             course_id, chapter_id, page_id = locate_chapter_page(
