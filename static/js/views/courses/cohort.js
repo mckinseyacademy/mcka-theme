@@ -122,10 +122,12 @@ Apros.views.CourseCohort = Backbone.View.extend({
         var numElements = city.users.length;
         var angle = 0;
         var step = (2*Math.PI) / numElements;
-        layers = _this.createCircle(data.get(citykey), city, layers);
+        var cityData = data.get(citykey);
+        if(typeof cityData.results[0] != 'undefined'){
+          layers = _this.createCircle(cityData, city, layers);
+        }
         if(iconsFlag){
           $.each(city.users, function(key2, user){
-            var cityData = data.get(citykey);
             if(typeof cityData.results[0] != 'undefined'){
               var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
               var x = 20 / zoomFactor * Math.cos(angle);
