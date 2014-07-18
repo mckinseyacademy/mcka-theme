@@ -186,7 +186,7 @@ def course_cohort(request, course_id):
     metrics.groups_users = json.dumps(metrics.groups_users)
 
     metrics.cities = []
-    cities = user_api.get_users_city_metrics()
+    cities = course_api.get_course_metrics_by_city(course_id)
     for city in cities:
         if city.city != '':
             metrics.cities.append({'city': city.city, 'count': city.count})
