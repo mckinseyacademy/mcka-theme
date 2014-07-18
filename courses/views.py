@@ -159,7 +159,7 @@ def course_cohort(request, course_id):
         pass
 
     metrics = course_api.get_course_metrics(course_id)
-    workgroups = user_api.get_user_workgroups(request.user.id, params=[{'key': 'course_id', 'value': course_id}])
+    workgroups = user_api.get_user_workgroups(request.user.id, course_id)
     organizations = user_api.get_user_organizations(request.user.id)
     if len(organizations) > 0:
         organization = organizations[0]
