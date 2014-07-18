@@ -123,20 +123,22 @@ Apros.views.CourseCohort = Backbone.View.extend({
         var angle = 0;
         var step = (2*Math.PI) / numElements;
         var cityData = data.get(citykey);
-        if(typeof cityData.results[0] != 'undefined'){
-          layers = _this.createCircle(cityData, city, layers);
-        }
-        if(iconsFlag){
-          $.each(city.users, function(key2, user){
-            if(typeof cityData.results[0] != 'undefined'){
-              var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
-              var x = 20 / zoomFactor * Math.cos(angle);
-              var y = 20 / zoomFactor * Math.sin(angle);
-              var loc = cityData.results[0][0];
-              layers = _this.createIcon(user, loc, layers, x, y);
-              angle += step;
-            }
-          });
+        if(typeof cityData !+ 'undefined'){
+          if(typeof cityData.results[0] != 'undefined'){
+            layers = _this.createCircle(cityData, city, layers);
+          }
+          if(iconsFlag){
+            $.each(city.users, function(key2, user){
+              if(typeof cityData.results[0] != 'undefined'){
+                var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
+                var x = 20 / zoomFactor * Math.cos(angle);
+                var y = 20 / zoomFactor * Math.sin(angle);
+                var loc = cityData.results[0][0];
+                layers = _this.createIcon(user, loc, layers, x, y);
+                angle += step;
+              }
+            });
+          }
         }
       });
       this.layers = L.layerGroup(layers).addTo(_this.map);
