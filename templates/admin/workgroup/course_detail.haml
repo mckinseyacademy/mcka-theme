@@ -50,8 +50,9 @@
                 .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
                   .group-data
                     %span.label-1= group.display_name
-                    %span.label-3= _("Members:")
-                    %span.label-3.student-count= group.students_count
+                    %a{href: "/admin/workgroup/course/#{course.id}/detail/#{group.id}"}
+                      %span.detail-link= _("Members:")
+                        %span.student-count= group.students_count
                     %i.caret.fa.fa-caret-down
                   .group-info.students
                     %span.label-1= _("Members:")
