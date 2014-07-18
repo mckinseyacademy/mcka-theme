@@ -10,7 +10,6 @@ from .json_object import JsonObject
 from .json_requests import GET, POST, DELETE
 from . import user_models
 from . import course_models
-from .workgroup_models import Submission
 
 
 WORKGROUP_API = 'api/workgroups'
@@ -162,32 +161,6 @@ def get_workgroup_groups(workgroup_id, group_object=JsonObject):
     )
 
     return JP.from_json(response.read(), group_object)
-
-@api_error_protect
-def get_workgroup_submissions(workgroup_id):
-    response = GET(
-        '{}/{}/{}/submissions/'.format(
-            settings.API_SERVER_ADDRESS,
-            WORKGROUP_API,
-            workgroup_id,
-        )
-    )
-
-    return JP.from_json(response.read(), Submission)
-
-def get_latest_workgroup_submissions_by_id(workgroup_id):
-    submission_list = get_workgroup_submissions(workgroup_id)
-
-    submissions_by_id = {}
-    for submission in submission_list:
-        submission_id = submission.document_id
-        if submission_id in submissions_by_id:
-            if submission.modified > submissions_by_id[submission_id].modified:
-                submissions_by_id[submission_id] = submission
-        else:
-            submissions_by_id[submission_id] = submission
-
-    return submissions_by_id
 
 @api_error_protect
 def get_workgroup_review_items(workgroup_id):

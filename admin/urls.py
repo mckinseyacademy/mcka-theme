@@ -31,7 +31,6 @@ urlpatterns = patterns(
     url(r'^programs', views.program_list, name='program_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_list', views.download_group_list, name='download_group_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments'),
-    url(r'^workgroup/course/(?P<course_id>.*)/detail/(?P<workgroup_id>.*)', views.workgroup_detail, name='workgroup_detail'),
     url(r'^workgroup/course/(?P<course_id>.*)', views.workgroup_course_detail, name='workgroup_course_detail'),
     url(r'^workgroup/programs/list', views.workgroup_programs_list, name='workgroup_programs_list'),
     url(r'^workgroup/group/update/(?P<group_id>[0-9]+)/(?P<course_id>.*)', views.workgroup_group_update, name='workgroup_group_update'),
