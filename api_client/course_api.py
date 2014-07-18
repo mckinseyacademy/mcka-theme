@@ -280,6 +280,27 @@ def get_course_metrics(course_id):
     response = GET(url)
     return JP.from_json(response.read())
 
+@api_error_protect
+def get_course_metrics_by_city(course_id, cities=None):
+    ''' retrieves course metrics '''
+    if cities == None:
+        url = '{}/{}/{}/metrics/cities'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id
+        )
+    else:
+        url = '{}/{}/{}/metrics/cities?city={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            cities
+        )
+
+    response = GET(url)
+    return JP.from_json(response.read()).results
+
+
 
 @api_error_protect
 def get_course_metrics_proficiency(course_id, user_id=None, count=3):
