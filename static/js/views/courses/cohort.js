@@ -123,7 +123,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
         var angle = 0;
         var step = (2*Math.PI) / numElements;
         var cityData = data.get(citykey);
-        if(typeof cityData !+ 'undefined'){
+        if(typeof cityData != 'undefined'){
           if(typeof cityData.results[0] != 'undefined'){
             layers = _this.createCircle(cityData, city, layers);
           }
