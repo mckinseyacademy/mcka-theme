@@ -125,6 +125,16 @@
               }
             }
           }
+
+          &.dummy {
+            color: $mckinsey-grey;
+            .person-title,
+            .person-name,
+            .person-rank,
+            .person-rank span {
+              color: $mckinsey-grey;
+            }
+          }
         }
       }
     }
