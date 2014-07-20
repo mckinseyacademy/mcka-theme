@@ -94,26 +94,38 @@
         %header
           .label-5 Engagement:
             %a{href: '#'} view all
-          .label-4 cohort average = 77 points
-          .rank your engagement position: <span>#8</span> with <span>70 pts.</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name dustinpiper
-              .person-title Art Director
-              .person-rank #1 <span>85 pts.</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name oliviagulin
-              .person-title Designer
-              .person-rank #2 <span>75 pts.</span>
-          .user
-            %img.avatar{src: 'http://dummyimage.com/50/000/fff&text=User'}
-            .info
-              .person-name charlenewallis
-              .person-title HR Manager
-              .person-rank #3 <span>72 pts.</span>
+          .label-4 cohort average = ={social.course_avg} points
+          - if social.position
+            .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
+          - else
+            .rank your engagement position <br> will be displayed here
+          - if social.leaders
+            - for leader in social.leaders
+              .user
+                %img.avatar{src: '={leader.avatar_url}'}
+                .info
+                  .person-name ={leader.username}
+                  .person-title ={leader.title}
+                  .person-rank #={leader.rank} <span>={leader.points} pts.</span>
+          - else
+            .user.dummy
+              %img.avatar{src: '/static/image/empty_avatar.png'}
+              .info
+                .person-name username
+                .person-title title
+                .person-rank #1 <span>100 pts.</span>
+            .user.dummy
+              %img.avatar{src: '/static/image/empty_avatar.png'}
+              .info
+                .person-name username
+                .person-title title
+                .person-rank #2 <span>100 pts.</span>
+            .user.dummy
+              %img.avatar{src: '/static/image/empty_avatar.png'}
+              .info
+                .person-name username
+                .person-title title
+                .person-rank #3 <span>100 pts.</span>
     %hr
     .user-content
       %section

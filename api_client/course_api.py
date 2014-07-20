@@ -335,3 +335,18 @@ def get_course_metrics_completions(course_id, user_id=None, count=3):
 
     response = GET(url)
     return JP.from_json(response.read())
+
+
+@api_error_protect
+def get_course_social_metrics(course_id):
+    ''' fetch social metrics for course '''
+
+    response = GET(
+        '{}/{}/{}/metrics/social/'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+        )
+    )
+
+    return JP.from_json(response.read())

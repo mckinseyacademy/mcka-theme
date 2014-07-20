@@ -12,7 +12,7 @@ from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
 from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews, get_course_ta
-from .controller import build_progress_leader_list, build_proficiency_leader_list
+from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api, project_api, user_models, workgroup_api
@@ -134,6 +134,7 @@ def course_cohort(request, course_id):
     '''
     proficiency = []
     completions = []
+    social = {}
 
     try:
         proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
@@ -145,6 +146,9 @@ def course_cohort(request, course_id):
         completions.leaders = build_progress_leader_list(completions.leaders, module_count)
         completions.completion_percent = progress_percent(completions.completions, module_count)
         completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+
+        social = social_metrics(course_id, request.user.id)
+
     except:
         pass
 
@@ -185,6 +189,7 @@ def course_cohort(request, course_id):
     data = {
         'proficiency': proficiency,
         'completions': completions,
+        'social': social,
         'metrics': metrics,
     }
     return render(request, 'courses/course_cohort.haml', data)
