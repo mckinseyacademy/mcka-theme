@@ -3,14 +3,15 @@
   #course-progress
     %h1 Course Progress for '={user.username}'
     .sub-1 PROGRESS
-    %p.style-6 You are ={percent_complete}% of the way through the course based on completion of modules within lessons:
+    %p.style-6 You are ={completion_percent}% of the way through the course based on completion of modules within lessons:
     %section.course-progress
-      .visualization{data-percent: '={percent_complete}%'}
-        .total{style: 'left:={percent_complete}%;'}
-          ={percent_complete}%
+      .visualization{data-cohort-percent: "#{completion_percent}%"}
+        .total{style: "left:#{completion_percent}%;"}
+          ={completion_percent}%
         .bar-wrapper
-          .bar{style: 'width:={percent_complete}%;'}
-      .label-4 cohort average = 58%
+          .bar{class: "{% if course_avg_percent > completion_percent %}trailing{% endif %}", style: "width:#{completion_percent}%;"}
+        .cohort-avg-marker{style: "left:={course_avg_percent}%"}
+      .label-4 cohort average = ={course_avg_percent}%
     %hr
     .sub-1 GRADES
     %p.style-6 You need a combined course grade of at least ={pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows:

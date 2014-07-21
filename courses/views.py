@@ -269,8 +269,15 @@ def course_progress(request, course_id):
 
     course = load_course(course_id, 4)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
+
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
+
+    completion_metrics = course_api.get_course_metrics_completions(course_id, request.user.id)
+    module_count = course.module_count()
+    completion_percent = progress_percent(completion_metrics.completions, module_count)
+    course_avg_percent = progress_percent(completion_metrics.course_avg, module_count)
+
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
         grader.weight = floatformat(grader.weight*100)
@@ -313,13 +320,12 @@ def course_progress(request, course_id):
         'color': '#e37121'
     })
 
-    module_count = course.module_count()
-    percent_complete = progress_percent(completions.count, module_count)
 
     data = {
         'bar_chart': json.dumps(bar_chart),
         'completed_modules': completed_modules,
-        'percent_complete': percent_complete,
+        'completion_percent': completion_percent,
+        'course_avg_percent': course_avg_percent,
         'pass_grade': pass_grade,
         'graders': graders,
         'group_activities': group_activities,
