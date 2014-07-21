@@ -346,7 +346,7 @@ def social_total(social_metrics):
     social_total = 0
 
     for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
-        social_total += getattr(social_metrics, key) * val
+        social_total += getattr(social_metrics, key, 0) * val
 
     return social_total
 
