@@ -46,7 +46,22 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      @include background(linear-gradient(18deg, $mckinsey-academy-black 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray));
+
+      $step: 5;
+      $loops: round(100 / $step);
+      $increment: 360 / $loops;
+      $half: round($loops / 2);
+      @for $i from 0 through $loops {
+        &.progress-#{$i*$step} {
+          @if $i < $half {
+            $nextdeg: 90deg + ( $increment * $i );
+            @include background(linear-gradient(90deg, $mckinsey-academy-blue-gray 50%, transparent 50%, transparent), linear-gradient($nextdeg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray))
+          } @else {
+            $nextdeg: -90deg + ( $increment * ( $i - $half ) );
+            @include background(linear-gradient($nextdeg, $mckinsey-academy-black 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray));
+          }
+        }
+      }
     }
   }
 }

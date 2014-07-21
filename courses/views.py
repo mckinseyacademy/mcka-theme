@@ -59,12 +59,12 @@ def course_landing_page(request, course_id):
     '''
 
     course = load_course(course_id, 3)
-    gradebook = user_api.get_user_gradebook(request.user.id, course_id)
     load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
     social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
+    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
 
     social_total = 0
     for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
@@ -89,8 +89,9 @@ def course_landing_page(request, course_id):
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "completed_modules": completed_modules,
-        "proficiency": int(round(gradebook.grade_summary.percent*100)),
-        "cohort_proficiency_average": 45,
+        "proficiency": int(round(proficiency.points)),
+        "proficiency_graph": int(5 * round(proficiency.points/5)),
+        "cohort_proficiency_average": int(round(proficiency.course_avg)),
         "social_total": social_total,
         "cohort_social_average": 28,
         "percent_complete": percent_complete,
@@ -122,11 +123,9 @@ def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
-
 def dump(obj):
   for attr in dir(obj):
     print "obj.%s = %s" % (attr, getattr(obj, attr))
-
 
 @login_required
 @check_user_course_access
@@ -155,7 +154,6 @@ def course_cohort(request, course_id):
 
     except:
         pass
-
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
@@ -319,7 +317,6 @@ def course_progress(request, course_id):
         'value': total,
         'color': '#e37121'
     })
-
 
     data = {
         'bar_chart': json.dumps(bar_chart),
