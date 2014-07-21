@@ -2,6 +2,8 @@
 #from urllib import quote_plus, unquote_plus
 
 import datetime
+from django.template.defaultfilters import floatformat
+
 from django.conf import settings
 
 from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
@@ -319,3 +321,68 @@ def get_course_ta():
                 mcka_ta = users[0]
             break
     return mcka_ta
+
+def build_proficiency_leader_list(leaders):
+    for rank, leader in enumerate(leaders, 1):
+        leader.rank = rank
+        leader.points_scored = floatformat(leader.points_scored)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
+
+    return leaders
+
+def build_progress_leader_list(leaders, module_count):
+    for rank, leader in enumerate(leaders, 1):
+        leader.rank = rank
+        leader.completion_percent = progress_percent(leader.completions, module_count)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
+
+    return leaders
+
+def social_total(social_metrics):
+    social_total = 0
+
+    for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
+        social_total += getattr(social_metrics, key, 0) * val
+
+    return social_total
+
+
+def social_metrics(course_id, user_id):
+    ''' returns social engagement points and leaders '''
+    course_metrics = course_api.get_course_social_metrics(course_id)
+    users = []
+    point_sum = 0
+
+    # calculate total social score for each user in course
+    for user_id, user_metrics in course_metrics.__dict__.iteritems():
+
+        # we need username, title and avatar for each user
+        user = user_api.get_user(user_id)
+
+        user.points = social_total(user_metrics)
+        user.avatar_url = user.image_url(40)
+        point_sum += user.points
+        users.append(user)
+
+
+    course_avg = point_sum / len(users) if len(users) > 0 else 0
+
+    # sort by social score
+    leaders = sorted(users, key=lambda u: u.points, reverse=True)
+
+    # assign rank
+    for rank, leader in enumerate(leaders, 1):
+        leader.rank = rank
+
+    user = next((l for l in leaders if int(l.id) == int(user_id)), None)
+
+    return {
+        'points': user.points if user else None,
+        'position': user.rank if user else None,
+        'course_avg': floatformat(course_avg),
+        'leaders': leaders[:3]
+    }
