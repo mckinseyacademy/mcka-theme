@@ -1,6 +1,9 @@
 ''' Core logic to sanitise information for views '''
 #from urllib import quote_plus, unquote_plus
 
+import datetime
+from django.template.defaultfilters import floatformat
+
 from django.conf import settings
 
 from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
@@ -8,8 +11,12 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.api_error import ApiError
 from api_client.project_models import Project
+from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
+from api_client.group_models import GroupInfo
 from admin.models import WorkGroup
 from admin.controller import load_course
+
+GROUP_PROJECT_CATEGORY = 'group-project'
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -233,6 +240,7 @@ def group_project_location(user_id, course, sequential_id=None):
 
     return project_group, group_project, sequential, page
 
+
 def load_static_tabs(course_id):
     static_tabs = get_static_tab_context()
     if static_tabs is None:
@@ -247,3 +255,134 @@ def progress_percent(completion_count, module_count):
         return int(round(100*completion_count/module_count))
     else:
         return 0
+
+def group_project_reviews(user_id, course_id, project_chapter):
+    '''
+    Returns group work reviews & average score for a project
+    '''
+
+    # user's group for this course
+    user_workgroups = user_api.get_user_workgroups(user_id, course_id)
+
+    if not user_workgroups:
+        return [], 0
+
+    workgroup = user_workgroups[0] if user_workgroups else None
+    review_items = WorkGroup.get_workgroup_review_items(workgroup.id)
+
+    # distinct reviewers
+    reviewer_ids = sorted(set([int(item.reviewer) for item in review_items]))
+    group_activities = []
+    group_work_sum = 0
+
+    # find group activities in this project
+    for seq in project_chapter.sequentials:
+        for page in seq.pages:
+            if hasattr(page, 'children'):
+                for child in page.children:
+                    if child.category == GROUP_PROJECT_CATEGORY:
+                        group_activities.append(seq)
+                        break
+
+    for activity in group_activities:
+        activity.grades = []
+        activity_reviews = [item for item in review_items if activity.id == item.content_id]
+
+        # average by reviewer
+        for reviewer_id in reviewer_ids:
+            grades = [int(review.answer) for review in activity_reviews if reviewer_id == int(review.reviewer) and is_number(review.answer)]
+            avg = sum(grades)/float(len(grades)) if len(grades)>0 else None
+            activity.grades.append(avg)
+            print activity.id, reviewer_id, avg
+
+        # average score for this activity
+        activity.score = sum(filter(None, activity.grades))/float(len(activity.grades)) if len(activity.grades)>0 else None
+        if activity.score:
+            group_work_sum += activity.score
+
+    group_work_avg = group_work_sum /float(len(group_activities)) if len(group_activities)>0 else 0
+
+    return group_activities, group_work_avg
+
+def is_number(s):
+    try:
+        float(s)
+    except ValueError:
+        return False
+    return True
+
+def get_course_ta():
+    mcka_ta = None
+    groups = get_groups_of_type('permission', group_object=GroupInfo)
+    for group in groups:
+        if group.name == PERMISSION_GROUPS.MCKA_TA:
+            users = group.get_users()
+            if users:
+                mcka_ta = users[0]
+            break
+    return mcka_ta
+
+def build_proficiency_leader_list(leaders):
+    for rank, leader in enumerate(leaders, 1):
+        leader.rank = rank
+        leader.points_scored = floatformat(leader.points_scored)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
+
+    return leaders
+
+def build_progress_leader_list(leaders, module_count):
+    for rank, leader in enumerate(leaders, 1):
+        leader.rank = rank
+        leader.completion_percent = progress_percent(leader.completions, module_count)
+        user = user_models.UserResponse()
+        user.avatar_url = leader.avatar_url
+        leader.avatar_url = user.image_url(40) # 40x40 image
+
+    return leaders
+
+def social_total(social_metrics):
+    social_total = 0
+
+    for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
+        social_total += getattr(social_metrics, key, 0) * val
+
+    return social_total
+
+
+def social_metrics(course_id, user_id):
+    ''' returns social engagement points and leaders '''
+    course_metrics = course_api.get_course_social_metrics(course_id)
+    users = []
+    point_sum = 0
+
+    # calculate total social score for each user in course
+    for user_id, user_metrics in course_metrics.__dict__.iteritems():
+
+        # we need username, title and avatar for each user
+        user = user_api.get_user(user_id)
+
+        user.points = social_total(user_metrics)
+        user.avatar_url = user.image_url(40)
+        point_sum += user.points
+        users.append(user)
+
+
+    course_avg = point_sum / len(users) if len(users) > 0 else 0
+
+    # sort by social score
+    leaders = sorted(users, key=lambda u: u.points, reverse=True)
+
+    # assign rank
+    for rank, leader in enumerate(leaders, 1):
+        leader.rank = rank
+
+    user = next((l for l in leaders if int(l.id) == int(user_id)), None)
+
+    return {
+        'points': user.points if user else None,
+        'position': user.rank if user else None,
+        'course_avg': floatformat(course_avg),
+        'leaders': leaders[:3]
+    }

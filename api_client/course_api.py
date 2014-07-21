@@ -125,6 +125,20 @@ def get_course(course_id, depth = 3):
     return course
 
 @api_error_protect
+def get_course_content(course_id, content_id):
+    ''' returns course content'''
+    response = GET(
+        '{}/{}/{}/content/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            content_id,
+        )
+    )
+
+    return JP.from_json(response.read())
+
+@api_error_protect
 def get_user_list_json(course_id, program_id = None, client_id = None):
     '''
     Retrieves course user list structure information from the API for specified course
@@ -143,6 +157,36 @@ def get_user_list_json(course_id, program_id = None, client_id = None):
 def get_user_list(course_id, program_id = None, client_id = None):
 
     return JP.from_json(get_user_list_json(course_id, program_id, client_id), course_models.CourseEnrollmentList).enrollments
+
+@api_error_protect
+def get_user_list_json(course_id, program_id = None, client_id = None):
+    '''
+    Retrieves course user list structure information from the API for specified course
+    '''
+    response = GET('{}/{}/{}/users?project={}&client={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        program_id,
+        client_id)
+    )
+
+    return response.read()
+
+@api_error_protect
+def get_users_list_in_organizations(course_id, organizations):
+    '''
+    Retrieves course user list structure information from the API for specified course
+    '''
+    response = GET('{}/{}/{}/users?organizations={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        organizations,)
+    )
+
+    return JP.from_json(response.read(), course_models.CourseEnrollmentList).enrollments
+
 
 @api_error_protect
 def add_group_to_course_content(group_id, course_id, content_id):
@@ -224,6 +268,41 @@ def get_course_completions(course_id, user_id):
     return JP.from_json(response.read())
 
 @api_error_protect
+def get_course_metrics(course_id):
+    ''' retrieves course metrics '''
+
+    url = '{}/{}/{}/metrics'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id
+    )
+
+    response = GET(url)
+    return JP.from_json(response.read())
+
+@api_error_protect
+def get_course_metrics_by_city(course_id, cities=None):
+    ''' retrieves course metrics '''
+    if cities == None:
+        url = '{}/{}/{}/metrics/cities'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id
+        )
+    else:
+        url = '{}/{}/{}/metrics/cities?city={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            cities
+        )
+
+    response = GET(url)
+    return JP.from_json(response.read()).results
+
+
+
+@api_error_protect
 def get_course_metrics_proficiency(course_id, user_id=None, count=3):
     ''' retrieves users who are leading in terms of points_scored'''
 
@@ -255,4 +334,19 @@ def get_course_metrics_completions(course_id, user_id=None, count=3):
         url += '&user_id={}'.format(user_id)
 
     response = GET(url)
+    return JP.from_json(response.read())
+
+
+@api_error_protect
+def get_course_social_metrics(course_id):
+    ''' fetch social metrics for course '''
+
+    response = GET(
+        '{}/{}/{}/metrics/social/'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+        )
+    )
+
     return JP.from_json(response.read())

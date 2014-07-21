@@ -1,4 +1,5 @@
 - extends "courses/course_navigation.haml"
+- load staticfiles
 - block current_content
   #course-discussion
     - if not has_course_discussion
@@ -8,7 +9,9 @@
       .row
         .large-12.medium-12.columns
           .discussion-content
+      - include "courses/contact_ta.haml"
 - block js_snippets
+  %script{src: "{% static 'js/course_contact_modal.js' %}"}
   :javascript
     window.onload = (function(){
       var discussion_content = $('#course-discussion .discussion-content');
@@ -19,5 +22,19 @@
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
       };
-      discussion_content.xblock(discussion_data);
+      $.when.apply($, discussion_content.xblock(discussion_data)).
+        done(function() {
+          $('.discussion-body .sidebar').prepend($("#discussion-ta-template" ).html());
+      });
     })
+  - if mcka_ta
+    %script{:id => "discussion-ta-template", :type => "text/template"}
+      .ask-ta
+        .group-member
+          %img.avatar{:src => "#{mcka_ta.image_url}" }
+            .person-info
+              .person-name= mcka_ta.formatted_name
+              .person-title= 'Teaching Assistant'
+              .email
+                %a.email-member{:data-member-email => '', :href => '#', :data-reveal-id => 'contact-ta'}
+                  Email

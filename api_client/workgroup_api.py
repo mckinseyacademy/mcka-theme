@@ -150,6 +150,7 @@ def add_group_to_workgroup(workgroup_id, group_id):
 
     return (response.code == 201)
 
+@api_error_protect
 def get_workgroup_groups(workgroup_id, group_object=JsonObject):
     response = GET(
         '{}/{}/{}/groups/'.format(
@@ -160,3 +161,14 @@ def get_workgroup_groups(workgroup_id, group_object=JsonObject):
     )
 
     return JP.from_json(response.read(), group_object)
+
+@api_error_protect
+def get_workgroup_review_items(workgroup_id):
+    response = GET(
+        '{}/{}/{}/workgroup_reviews/'.format(
+            settings.API_SERVER_ADDRESS,
+            WORKGROUP_API,
+            workgroup_id
+        )
+    )
+    return JP.from_json(response.read())

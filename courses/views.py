@@ -11,10 +11,11 @@ from django.template.defaultfilters import floatformat
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, group_project_location, progress_percent
+from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews, get_course_ta
+from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api, user_api, user_models
+from api_client import course_api, user_api, project_api, user_models, workgroup_api
 from admin.controller import load_course
 from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
@@ -121,36 +122,79 @@ def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
+
+def dump(obj):
+  for attr in dir(obj):
+    print "obj.%s = %s" % (attr, getattr(obj, attr))
+
+
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-
     course = load_course(course_id)
-    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
-    proficiency.points = floatformat(proficiency.points)
-    for index, leader in enumerate(proficiency.leaders, 1):
-        leader.rank = index
-        leader.points_scored = floatformat(leader.points_scored)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
+    '''
+    Putting in try/except block to make page work.
+    Proficiency not defined for new user should be fixed as separate issue.
+    '''
+    proficiency = []
+    completions = []
+    social = {}
 
-    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
-    module_count = course.module_count()
+    try:
+        proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+        proficiency.leaders = build_proficiency_leader_list(proficiency.leaders)
+        proficiency.points = floatformat(proficiency.points)
 
-    completions.completion_percent = progress_percent(completions.completions, module_count)
-    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+        completions = course_api.get_course_metrics_completions(course_id, request.user.id)
+        module_count = course.module_count()
+        completions.leaders = build_progress_leader_list(completions.leaders, module_count)
+        completions.completion_percent = progress_percent(completions.completions, module_count)
+        completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
 
-    for index, leader in enumerate(completions.leaders, 1):
-        leader.rank = index
-        leader.completion_percent = progress_percent(leader.completions, module_count)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
+        social = social_metrics(course_id, request.user.id)
 
+    except:
+        pass
+
+
+    metrics = course_api.get_course_metrics(course_id)
+    workgroups = user_api.get_user_workgroups(request.user.id, course_id)
+    organizations = user_api.get_user_organizations(request.user.id)
+    if len(organizations) > 0:
+        organization = organizations[0]
+        organizationUsers = course_api.get_users_list_in_organizations(course_id, organizations = organization.id)
+        metrics.company_enrolled = len(organizationUsers)
+    metrics.groups_users = []
+    if len(workgroups) > 0:
+        workgroup = workgroup_api.get_workgroup(workgroups[0].id)
+        metrics.group_enrolled = len(workgroup.users)
+        if workgroup.users > 0:
+            for student in workgroup.users:
+                user = user_api.get_user(student.id)
+                if user.get('city') != '':
+                    metrics.groups_users.append({"id": user.get('id'),
+                                                    "username": user.get('username'),
+                                                    "first_name": user.get('first_name'),
+                                                    "last_name": user.get('last_name'),
+                                                    "country": user.get('country'),
+                                                    "city": user.get('city'),
+                                                    "avatar_url": user.image_url(size=40),
+                                                    "full_name": user.get('full_name'),
+                                                    "title": user.get('title'),
+                                                })
+    metrics.groups_users = json.dumps(metrics.groups_users)
+
+    metrics.cities = []
+    cities = course_api.get_course_metrics_by_city(course_id)
+    for city in cities:
+        if city.city != '':
+            metrics.cities.append({'city': city.city, 'count': city.count})
+    metrics.cities = json.dumps(metrics.cities)
     data = {
         'proficiency': proficiency,
-        'completions': completions
+        'completions': completions,
+        'social': social,
+        'metrics': metrics,
     }
     return render(request, 'courses/course_cohort.haml', data)
 
@@ -206,13 +250,16 @@ def course_discussion(request, course_id):
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
 
+    mcka_ta = get_course_ta()
+
     data = {
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
         "course_id": course_id,
         "lms_base_domain": lms_base_domain,
-        "lms_sub_domain": lms_sub_domain
+        "lms_sub_domain": lms_sub_domain,
+        "mcka_ta": mcka_ta
     }
     return render(request, 'courses/course_discussion.haml', data)
 
@@ -220,15 +267,37 @@ def course_discussion(request, course_id):
 @check_user_course_access
 def course_progress(request, course_id):
 
-    course = load_course(course_id, 3)
+    course = load_course(course_id, 4)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
+
     completions = course_api.get_course_completions(course_id, request.user.id)
     completed_modules = [result.content_id for result in completions.results]
+
+    completion_metrics = course_api.get_course_metrics_completions(course_id, request.user.id)
+    module_count = course.module_count()
+    completion_percent = progress_percent(completion_metrics.completions, module_count)
+    course_avg_percent = progress_percent(completion_metrics.course_avg, module_count)
+
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
         grader.weight = floatformat(grader.weight*100)
 
     pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
+
+    if course.group_project_chapters:
+        project_chapter = course.group_project_chapters[0]
+        group_activities, group_work_avg = group_project_reviews(request.user.id, course_id, project_chapter)
+    else:
+        group_activities = []
+        group_work_avg = 0
+
+    # format scores & grades
+    for activity in group_activities:
+        if activity.score is not None:
+            activity.score = floatformat(round(activity.score))
+        for i, grade in enumerate(activity.grades):
+            if grade is not None:
+                activity.grades[i] = floatformat(round(grade))
 
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
@@ -238,6 +307,12 @@ def course_progress(request, course_id):
            'color': '#b1c2cc'
         })
 
+    bar_chart[0]['values'].append({
+        'label': 'GROUP WORK\n AVG.',
+        'value': group_work_avg,
+        'color': '#66a5b5'
+    })
+
     total = gradebook.grade_summary.percent*100
     bar_chart[0]['values'].append({
         'label': 'TOTAL',
@@ -245,15 +320,15 @@ def course_progress(request, course_id):
         'color': '#e37121'
     })
 
-    module_count = course.module_count()
-    percent_complete = progress_percent(completions.count, module_count)
 
     data = {
         'bar_chart': json.dumps(bar_chart),
         'completed_modules': completed_modules,
-        'percent_complete': percent_complete,
+        'completion_percent': completion_percent,
+        'course_avg_percent': course_avg_percent,
         'pass_grade': pass_grade,
         'graders': graders,
+        'group_activities': group_activities,
     }
     return render(request, 'courses/course_progress.haml', data)
 

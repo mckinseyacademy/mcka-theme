@@ -285,6 +285,20 @@ def set_user_preferences(user_id, preference_dictionary):
     return True
 
 @api_error_protect
+def delete_user_preference(user_id, preference_key):
+    ''' sets users preferences information '''
+    DELETE(
+        '{}/{}/{}/preferences/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            preference_key
+        )
+    )
+
+    return True
+
+@api_error_protect
 def get_user_preferences(user_id):
     ''' sets users preferences information '''
     response = GET(
@@ -312,17 +326,31 @@ def get_user_organizations(user_id, organization_object=organization_models.Orga
     return JP.from_json(response.read(), organization_object).results
 
 @api_error_protect
-def get_user_workgroups(user_id, workgroup_object=workgroup_models.WorkgroupList):
+def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_models.WorkgroupList):
     ''' return organizations with which the user is associated '''
+    url = '{}/{}/{}/workgroups/'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
+    )
+    if course_id:
+        url += '?course_id={}'.format(course_id)
+
+    response = GET(url)
+    return JP.from_json(response.read(), workgroup_object).results
+
+@api_error_protect
+def get_users_city_metrics():
+    ''' return users by sity metrics'''
+
     response = GET(
-        '{}/{}/{}/workgroups/'.format(
+        '{}/{}/metrics/cities'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
-            user_id,
         )
     )
 
-    return JP.from_json(response.read(), workgroup_object).results
+    return JP.from_json(response.read(), user_models.CityList).results
 
 @api_error_protect
 def get_course_social_metrics(user_id, course_id):
