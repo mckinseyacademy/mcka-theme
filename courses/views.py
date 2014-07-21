@@ -61,23 +61,16 @@ def course_landing_page(request, course_id):
     load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
     completions = course_api.get_course_completions(course_id, request.user.id)
+    completion_metrics = course_api.get_course_metrics_completions(course_id, request.user.id)
+    module_count = course.module_count()
+    completion_percent = progress_percent(completion_metrics.completions, module_count)
+    course_avg_percent = progress_percent(completion_metrics.course_avg, module_count)
     completed_modules = [result.content_id for result in completions.results]
     social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
 
     social_total = 0
     for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
         social_total += getattr(social_metrics, key) * val
-
-    module_count = 0
-
-    for chapter in course.chapters:
-        for sequential in chapter.sequentials:
-            module_count += len(sequential.children)
-
-    if module_count > 0:
-        percent_complete = int(round(100*completions.count/module_count))
-    else:
-        percent_complete = 0
 
     data = {
         "user": request.user,
@@ -89,8 +82,8 @@ def course_landing_page(request, course_id):
         "completed_modules": completed_modules,
         "social_total": social_total,
         "cohort_social_average": 28,
-        "percent_complete": percent_complete,
-        "cohort_percent_average": 58,
+        "completion_percent": completion_percent,
+        "course_avg_percent": course_avg_percent,
     }
     return render(request, 'courses/course_main.haml', data)
 
@@ -118,11 +111,9 @@ def course_news(request, course_id):
     data = {"news": course_api.get_course_news(course_id)}
     return render(request, 'courses/course_news.haml', data)
 
-
 def dump(obj):
   for attr in dir(obj):
     print "obj.%s = %s" % (attr, getattr(obj, attr))
-
 
 @login_required
 @check_user_course_access
@@ -151,7 +142,6 @@ def course_cohort(request, course_id):
 
     except:
         pass
-
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
@@ -315,7 +305,6 @@ def course_progress(request, course_id):
         'value': total,
         'color': '#e37121'
     })
-
 
     data = {
         'bar_chart': json.dumps(bar_chart),

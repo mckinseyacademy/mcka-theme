@@ -19,11 +19,12 @@
       Progress:
       %a{href: '#'}
         %i.fa.fa-arrow-circle-right
-    .visualization{data-cohort-percent: "#{percent_complete}%"}
-      .total{style: "left:#{percent_complete}%;"}
-        ={percent_complete}%
-      .bar{class: "{% if cohort_percent_average > percent_complete %}trailing{% endif %}", style: "width:#{percent_complete}%;"}
-    .label-4 cohort average = ={cohort_percent_average}%
+    .visualization
+      .total{style: "left:#{completion_percent}%;"}
+        ={completion_percent}%
+      .bar{class: "{% if course_avg_percent > completion_percent %}trailing{% endif %}", style: "width:#{completion_percent}%;"}
+      .triangle{style: "left:#{course_avg_percent}%"}
+    .label-4 cohort average = ={course_avg_percent}%
     %a.info{href: '#'}
       %i.fa.fa-info-circle
   %section.course-engagement{class: "{% if social_total == 0 %}no-progress{% endif %}" }
