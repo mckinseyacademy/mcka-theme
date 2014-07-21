@@ -372,7 +372,7 @@ def social_metrics(course_id, user_id):
     course_avg = point_sum / len(users) if len(users) > 0 else 0
 
     # sort by social score
-    leaders = sorted(users, key=lambda u: u.points, reverse=True)[:3]
+    leaders = sorted(users, key=lambda u: u.points, reverse=True)
 
     # assign rank
     for rank, leader in enumerate(leaders, 1):
