@@ -24,23 +24,6 @@ PERMISSION_GROUPS = DottableDict(
 )
 
 @api_error_protect
-def get_projects(project_object=JsonObject):
-    ''' gets all projects'''
-    response = GET(
-        '{}/{}/'.format(
-            settings.API_SERVER_ADDRESS,
-            PROJECT_API,
-        )
-    )
-
-    return JP.from_json(response.read(), project_object)
-
-@api_error_protect
-def get_projects_for_course(course_id, project_object=JsonObject):
-    ''' gets all projects within course'''
-    return [project for project in get_projects(project_object) if project.course_id == course_id]
-
-@api_error_protect
 def get_project(project_id, project_object=JsonObject):
     ''' fetch project by id '''
     response = GET(

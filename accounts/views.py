@@ -411,9 +411,8 @@ def user_profile_image_edit(request):
         return change_profile_image(request, request.user.id, 'edit_profile_image')
 
 @login_required
-def change_profile_image(request, user_id, template='change_profile_image'):
+def change_profile_image(request, user_id, template='change_profile_image', error=None):
     ''' handles requests for login form and their submission '''
-    error = None
 
     user = user_api.get_user(user_id)
 
@@ -451,15 +450,18 @@ def upload_profile_image(request, user_id):
             from PIL import Image
 
             temp_image = request.FILES['profile_image']
-            allowed_types = ["image/jpeg", "image/png"]
+            allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
             if temp_image.content_type in allowed_types:
                 request.user = save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
                 request.user.avatar_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
                 RemoteUser.remove_from_cache(request.user.id)
+            else:
+                error = "Incorrect file type."
 
-            return change_profile_image(request, request.user.id, 'change_profile_image')
+            return change_profile_image(request, request.user.id, 'change_profile_image', error)
         else:
-            return change_profile_image(request, request.user.id, 'change_profile_image')
+            error = "There is a problem with image file you selected."
+            return change_profile_image(request, request.user.id, 'change_profile_image', error)
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form

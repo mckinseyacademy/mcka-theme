@@ -20,10 +20,11 @@ from accounts.models import RemoteUser, UserActivation
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
-from api_client import group_api, project_api, workgroup_api
+from api_client import group_api, workgroup_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
 from api_client.project_models import Project
+from api_client.workgroup_models import Submission
 from license import controller as license_controller
 
 from .models import Client
@@ -36,6 +37,7 @@ from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
+from .workgroup_reports import generate_workgroup_csv_report
 
 
 def ajaxify_http_redirects(func):
@@ -502,10 +504,13 @@ def upload_student_list(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_student_list(request, client_id):
     client = Client.fetch(client_id)
-    filename = slugify(unicode("Student List for {} on {}".format(
-        client.display_name,
-        datetime.now().isoformat()
-    )))
+    filename = slugify(
+        unicode(
+            "Student List for {} on {}".format(
+                client.display_name,datetime.now().isoformat()
+            )
+        )
+    )
 
     activation_link = request.build_absolute_uri('/accounts/activate')
 
@@ -533,6 +538,28 @@ def download_program_report(request, program_id):
 
     return response
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def download_group_projects_report(request, course_id):
+    filename = slugify(
+        unicode(
+            "Group Report for {} on {}".format(
+                course_id,
+                datetime.now().isoformat()
+            )
+        )
+    )
+
+    response = HttpResponse(
+        generate_workgroup_csv_report(course_id),
+        content_type='text/csv'
+    )
+
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
 
 def _prepare_program_display(program):
     if hasattr(program, "start_date") and hasattr(program, "end_date"):
@@ -721,7 +748,7 @@ class GroupProjectInfo(object):
 def load_group_projects_info_for_course(course, companies):
     group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
     group_projects = []
-    for project in project_api.get_projects_for_course(course.id):
+    for project in Project.fetch_projects_for_course(course.id):
         if project.organization is None:
             group_projects.append(
                 GroupProjectInfo(
@@ -738,6 +765,39 @@ def load_group_projects_info_for_course(course, companies):
                 )
             )
     return group_projects
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_detail(request, course_id, workgroup_id):
+    '''
+    Get detailed information about the specific workgroup for this course
+    '''
+    workgroup = WorkGroup.fetch(workgroup_id)
+    users = user_api.get_users([{'key': 'ids', 'value': ','.join([str(u.id) for u in workgroup.users])}]).results
+    project = Project.fetch(workgroup.project)
+
+    course = load_course(course_id, 4)
+    projects = [gp for gp in course.group_project_chapters if gp.id == project.content_id and len(gp.sequentials) > 0]
+    activities = []
+    if len(projects) > 0:
+        project.name = projects[0].name
+        activities = [a for a in projects[0].sequentials if "group-project" in a.pages[0].child_category_list()]
+
+    submission_map = workgroup_api.get_latest_workgroup_submissions_by_id(workgroup.id, Submission)
+    submissions = [v for k,v in submission_map.iteritems()]
+
+    data = {
+        "workgroup": workgroup,
+        "users": users,
+        "project": project,
+        "activities": activities,
+        "submissions": submissions
+    }
+
+    return render(
+        request,
+        'admin/workgroup/workgroup_detail.haml',
+        data
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_course_detail(request, course_id):
@@ -783,7 +843,7 @@ def workgroup_group_create(request, course_id):
             return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
         projects_by_organization = {}
-        for project in project_api.get_projects_for_course(course.id):
+        for project in Project.fetch_projects_for_course(course.id):
             org_id = None
             if project.organization:
                 org_id = Client.fetch_from_url(project.organization).id
@@ -918,7 +978,7 @@ def generate_assignments(request, course_id):
     error = _("Problem generating project review assignments")
     status_code = 400
     try:
-        for project in project_api.get_projects_for_course(course_id):
+        for project in Project.fetch_projects_for_course(course_id):
             # Fetch workgroups
             workgroups = [WorkGroup.fetch(wg) for wg in project.workgroups]
             # Get list of all users

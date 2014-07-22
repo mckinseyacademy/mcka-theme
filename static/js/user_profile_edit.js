@@ -28,7 +28,13 @@ $(function(){
   });
 
   $(document).on('opened.fndtn.reveal', '#edit-user-image-modal', function () {
-    reInitCropper();
+    $(this).find('img').error(function() {
+      $(this).hide();
+    });
+    $(".img-container .user-uploaded-image").load(function(){
+      $('#crop-profile-image').attr('disabled', false);
+      reInitCropper();
+    }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
   });
 
   $(document).on('closed.fndtn.reveal', '#edit-user-image-modal', function () {
@@ -45,15 +51,19 @@ $(function(){
       data: form.serialize()
     }).done(function(data){
         modal.html(data);
-        reInitCropper();
+        $(".img-container .user-uploaded-image").load(function(){
+          $('#crop-profile-image').attr('disabled', false);
+          reInitCropper();
+        }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
       });
     });
 
-    $('#edit-user-image-modal').on('submit', '#upload-profile-image-form', function(e){
+    $('#edit-user-image-modal').on('click', '#user-image-submit', function(e){
     e.preventDefault();
-    var form = $(this);
+    var form = $(this).parent('form');
     var formData = new FormData(form[0]);
     var modal = form.parent();
+    modal.find('.error').html('');
     $.ajax({
       method: 'POST',
       url: form.attr('action'),
@@ -62,7 +72,11 @@ $(function(){
       contentType: false
     }).done(function(data){
         modal.html(data);
-        reInitCropper();
+        $(".img-container .user-uploaded-image").load(function(){
+          reInitCropper();
+        }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
+      }).fail(function(data){
+        modal.find('.error').append('<p class="warning">Please select file first.</p>');
       });
     });
 })

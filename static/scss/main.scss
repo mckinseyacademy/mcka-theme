@@ -288,7 +288,6 @@ form {
 }
 
 #mckinsey_help {
-  ~ header[role=banner] .global-help { display: block; }
   p { margin-bottom: rem-calc(20); }
 }
 
@@ -335,6 +334,10 @@ form {
   }
   .user-uploaded-image{
     max-width:100%;
+  }
+  .helptext{
+    color: $almost-white;
+    font-style: italic;
   }
 }
 

@@ -17,28 +17,78 @@
     }
   }
 
-  .global-help,
-  .global-help:visited {
-    color: $mckinsey-academy-blue-gray;
-    display: none;
-    position: absolute;
-    bottom: -30px;
-    right: 14px;
-    @include font-spec(20);
+  .course_nav {
+    @include clearfix;
+
+    .course-tabs {
+      float: right;
+      margin: 0;
+      list-style-type: none;
+
+      li {
+        float: left;
+        margin-right: 10px;
+        position: relative;
+        line-height: $program-bar-height;
+
+        a, a:visited {
+          text-decoration: none;
+
+          i {
+            @include font-spec(22px);
+          }
+        }
+
+        .course-tab-dropdown {
+          display: none;
+          padding: 0 10px;
+          position: absolute;
+          background: $pure-white;
+          box-shadow: rgba(51,51,51,0.2) -3px 3px 4px 0px;
+
+          &.open {
+            display: block;
+            top: 100% !important;
+          }
+
+          > * {
+            white-space: nowrap;
+            border-bottom: 1px solid $almost-white;
+            @include font-spec(14, semibold, 30);
+            &:last-child { border-bottom: none; }
+          }
+
+          a, a:visited {
+            display: block;
+            color: $mckinsey-academy-alt-blue;
+          }
+
+          a:hover { color: $mckinsey-academy-blue-gray; }
+
+          &#lessons-content {
+            color: $mckinsey-academy-black;
+          }
+
+          &#announcements-content {
+            &.open {
+              right: 0 !important;
+              left: auto !important;
+            }
+          }
+        }
+      }
+    }
   }
 
   .program-menu {
-    position: absolute;
-    right: 5px;
-    top: 0;
-    .fa{
+    float: left;
+
+    .fa {
       font-size: rem-calc($program-menu-size);
       margin: $program-bar-topbottom-margin 10px;
       cursor: pointer;
       color: $pure-white;
-      &:hover{
-        color: $mckinsey-academy-blue-gray;
-      }
+      &:hover { color: $mckinsey-academy-blue-gray; }
     }
   }
 
@@ -51,7 +101,7 @@
 
     // The next few items are marked as !important to prevent the foundation dropdown code from re-positioning the dropdown - it's goping where we want it to go
     position: absolute !important;
-    right:0 !important;
+    left: 0 !important;
     top: $program-bar-height !important;
     left: auto !important;
     z-index: 10000;

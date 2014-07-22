@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 from .json_object import JsonObject
-import project_api
+from . import project_api, course_api
 
 
 class Project(JsonObject):
@@ -20,13 +20,16 @@ class Project(JsonObject):
 
     @classmethod
     def fetch(cls, project_id):
-        return project_api.get_project(project_id, cls)
+        return project_api.get_project(project_id, project_object=cls)
 
     @classmethod
     def fetch_from_url(cls, url):
-        return project_api.fetch_project_from_url(url, cls)
+        return project_api.fetch_project_from_url(url, project_object=cls)
 
     @classmethod
     def create(cls, course_id, content_id, organization_id=None):
-        return project_api.create_project(course_id, content_id, organization_id, cls)
+        return project_api.create_project(course_id, content_id, organization_id, project_object=cls)
 
+    @classmethod
+    def fetch_projects_for_course(cls, course_id):
+        return course_api.get_course_projects(course_id, project_object=cls)
