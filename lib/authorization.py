@@ -24,7 +24,8 @@ def permission_groups_map():
 def is_user_in_permission_group(user, *group_names):
     for group_name in group_names:
         if group_name in permission_groups_map().keys():
-            return user_api.is_user_in_group(user.id, permission_groups_map()[group_name])
+            if user_api.is_user_in_group(user.id, permission_groups_map()[group_name]):
+                return True
 
     return False
 

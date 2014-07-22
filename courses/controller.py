@@ -152,9 +152,9 @@ def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user
         page_id
     )
 
-def group_project_location(user_id, course, sequential_id=None):
+def get_group_project_for_user_course(user_id, course):
     '''
-    Returns current sequential_id and page_id for the user for their group project
+    Returns correct group and project information for the user for this course
     '''
     # Find the user_group(s) with which this user is associated
     user_workgroups = user_api.get_user_workgroups(user_id)
@@ -163,7 +163,7 @@ def group_project_location(user_id, course, sequential_id=None):
     # So, we can find the project for the user
     user_course_projects = [cp for cp in user_projects if cp.course_id == course.id]
     if len(user_course_projects) < 1:
-        return None, None, None, None
+        return None, None
 
     the_user_project = user_course_projects[0]
 
@@ -171,14 +171,27 @@ def group_project_location(user_id, course, sequential_id=None):
 
     user_course_workgroups = [wg for wg in user_workgroups if wg.id in the_user_project.workgroups]
     if len(user_course_workgroups) < 1:
-        return None, group_project, None, None
+        return None, group_project
 
     project_group = user_course_workgroups[0]
     project_group.members = [user_api.get_user(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
 
-    # Get the right location within this group project - can't do this yet
-    #course_detail = get_course_position_tree(user_id, course.id)
+    return project_group, group_project
 
+def get_group_project_for_workgroup_course(workgroup_id, course):
+    '''
+    Returns group and project information for the supplied workgroup
+    '''
+    workgroup = WorkGroup.fetch_with_members(workgroup_id)
+    project = Project.fetch(workgroup.project)
+    group_project = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
+
+    return workgroup, group_project
+
+def group_project_location(group_project, sequential_id=None):
+    '''
+    Returns current sequential_id and page_id for the user for their group project
+    '''
     sequential = group_project.sequentials[0]
     for seq in group_project.sequentials:
         # is it the chosen one
@@ -190,7 +203,7 @@ def group_project_location(user_id, course, sequential_id=None):
 
     page = sequential.pages[0] if len(sequential.pages) > 0 else None
 
-    return project_group, group_project, sequential, page
+    return sequential, page
 
 
 def load_static_tabs(course_id):
