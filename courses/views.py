@@ -66,11 +66,14 @@ def course_landing_page(request, course_id):
     completion_percent = progress_percent(completion_metrics.completions, module_count)
     course_avg_percent = progress_percent(completion_metrics.course_avg, module_count)
     completed_modules = [result.content_id for result in completions.results]
-    social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
 
     social_total = 0
-    for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
-        social_total += getattr(social_metrics, key) * val
+    try:
+        social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
+        for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
+            social_total += getattr(social_metrics, key) * val
+    except:
+        social_total = 0
 
     data = {
         "user": request.user,
