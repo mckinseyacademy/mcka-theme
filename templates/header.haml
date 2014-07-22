@@ -48,5 +48,4 @@
             %h4.course-name
               %a{href: "#{course.nav_url}"}= course.name
           .medium-6.columns.course_nav
-            - if is_course_page
-              - include "courses/content_page/course_tabs.haml"
+            - include "courses/content_page/course_tabs.haml"
