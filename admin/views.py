@@ -24,6 +24,7 @@ from api_client import group_api, workgroup_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
 from api_client.project_models import Project
+from api_client.workgroup_models import Submission
 from license import controller as license_controller
 
 from .models import Client
@@ -764,6 +765,39 @@ def load_group_projects_info_for_course(course, companies):
                 )
             )
     return group_projects
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_detail(request, course_id, workgroup_id):
+    '''
+    Get detailed information about the specific workgroup for this course
+    '''
+    workgroup = WorkGroup.fetch(workgroup_id)
+    users = user_api.get_users([{'key': 'ids', 'value': ','.join([str(u.id) for u in workgroup.users])}]).results
+    project = Project.fetch(workgroup.project)
+
+    course = load_course(course_id, 4)
+    projects = [gp for gp in course.group_project_chapters if gp.id == project.content_id and len(gp.sequentials) > 0]
+    activities = []
+    if len(projects) > 0:
+        project.name = projects[0].name
+        activities = [a for a in projects[0].sequentials if "group-project" in a.pages[0].child_category_list()]
+
+    submission_map = workgroup_api.get_latest_workgroup_submissions_by_id(workgroup.id, Submission)
+    submissions = [v for k,v in submission_map.iteritems()]
+
+    data = {
+        "workgroup": workgroup,
+        "users": users,
+        "project": project,
+        "activities": activities,
+        "submissions": submissions
+    }
+
+    return render(
+        request,
+        'admin/workgroup/workgroup_detail.haml',
+        data
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def workgroup_course_detail(request, course_id):
