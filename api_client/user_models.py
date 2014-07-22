@@ -38,8 +38,13 @@ class UserResponse(JsonObject):
                 image_url = default_storage.url(
                     self._strip_proxy_image_url(image_url))
         else:
-            image_url = "/static/image/empty_avatar.png"
+            image_url = self.default_image_url()
         return image_url
+
+    @classmethod
+    def default_image_url(cls):
+        return "/static/image/empty_avatar.png"
+
 
     def _strip_proxy_image_url(self, profileImageUrl):
         if profileImageUrl[:10] == '/accounts/':
