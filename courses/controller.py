@@ -326,9 +326,6 @@ def build_proficiency_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
         leader.points_scored = floatformat(leader.points_scored)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
 
     return leaders
 
@@ -336,9 +333,6 @@ def build_progress_leader_list(leaders, module_count):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
         leader.completion_percent = progress_percent(leader.completions, module_count)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
 
     return leaders
 
