@@ -34,6 +34,28 @@
         background-image: none;
         }
 
+  /* Buttons *****************************************************************/
+
+  .new-post-btn,
+  .new-post-article .new-post-form .submit,
+  .new-post-article .new-post-form .new-post-cancel,
+  .discussion-submit-post,
+  .add-response .add-response-btn,
+  .comments .comment-form .discussion-submit-comment,
+  .discussion-article .post-update,
+  .discussion-article .post-cancel {
+    border-color: transparent;
+    background-image: none;
+    text-shadow: none;
+    line-height: 1;
+    height: 35px;
+    width: auto;
+    @include button($button-sml, $primary-color, true);
+
+    .new-post-icon {
+      display: none;
+    }
+  }
       .home {
         box-shadow: -1px 0px 0px #FFF inset;
       }

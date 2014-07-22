@@ -77,10 +77,6 @@ body > .tooltip {
   .comments .comment-form .discussion-submit-comment,
   .discussion-article .post-update {
     &, &:hover {
-      @extend .button;
-      @extend .small;
-      @extend .radius;
-
       border-color: transparent;
       background-image: none;
       text-shadow: none;
@@ -89,6 +85,7 @@ body > .tooltip {
       width: auto;
       margin-left: 20px;
       float: right;
+      @include button($button-sml, $primary-color, true);
     }
 
     .new-post-icon {
@@ -308,6 +305,13 @@ body > .tooltip {
     color: white;
     text-shadow: none;
   }
+}
+
+/* Discussion tooltip gets added by JS to the <body> :/ */
+body > .tooltip {
+  width: 100px;
+  margin-top: -110px;
+  text-align: center;
 }
 
 /* Special Close button for modals and New Post */

@@ -5,9 +5,7 @@
 
   input {
     &[type="button"] {
-      @extend .button;
-      @extend .small;
-      @extend .radius;
+      @include button($button-sml, $primary-color, true);
     }
   }
 

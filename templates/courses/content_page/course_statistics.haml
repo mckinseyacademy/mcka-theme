@@ -1,17 +1,14 @@
 %article#course-statistics
   %section.course-proficiency.no-progress
-    .zero
-      %div
-        %span Once this feature is implemented, your proficiency will be displayed here. <a data-reveal-id='beta_visualizations'>Learn more</a>.
     .sub-2
       Proficiency:
       %a{href: '#'}
         %i.fa.fa-arrow-circle-right
     .visualization
-      .total 80
+      .total= proficiency
       .inner-circle
-      .progress-radial
-    .label-4 cohort average = 45
+      .progress-radial{'class': "progress-#{proficiency_graph}"}
+    .label-4 cohort average = ={cohort_proficiency_average}
     %a.info{href: '#'}
       %i.fa.fa-info-circle
   %section.course-progress
