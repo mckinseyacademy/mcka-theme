@@ -9,7 +9,7 @@ LOG_LEVELS = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
 def get_logger_config(log_dir,
                       logging_env="no_env",
                       tracking_filename="tracking.log",
-                      edx_filename="tracking.log",
+                      edx_filename="edx.log",
                       dev_env=False,
                       syslog_addr=None,
                       debug=False,
@@ -87,11 +87,16 @@ def get_logger_config(log_dir,
                 'level': 'DEBUG',
                 'propagate': False,
             },
+            '': {
+                'handlers': handlers,
+                'level': 'DEBUG',
+                'propagate': False
+            },
             'django.request': {
                 'handlers': handlers,
                 'level': 'ERROR',
                 'propagate': False
-            }
+           },
         }
     }
 
@@ -123,14 +128,14 @@ def get_logger_config(log_dir,
             'local': {
                 'level': local_loglevel,
                 'class': 'logging.handlers.SysLogHandler',
-                'address': '/dev/log',
+                #'address': '',
                 'formatter': 'syslog_format',
                 'facility': SysLogHandler.LOG_LOCAL0,
             },
             'tracking': {
                 'level': 'DEBUG',
                 'class': 'logging.handlers.SysLogHandler',
-                'address': '/dev/log',
+                #'address': '',
                 'facility': SysLogHandler.LOG_LOCAL1,
                 'formatter': 'raw',
             },

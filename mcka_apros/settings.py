@@ -23,7 +23,7 @@ SECRET_KEY = '1x@epyq-))w6z8a@_9f+c8%g#n8o75jeh8c8d4_&y+f@2_(des'
 DEBUG = True
 
 LOGGING = get_logger_config(BASE_DIR,
-                            logging_env="dev",
+                            logging_env="env",
                             tracking_filename="tracking.log",
                             dev_env=True,
                             debug=True)
