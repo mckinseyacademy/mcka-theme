@@ -123,6 +123,7 @@ def course_cohort(request, course_id):
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     proficiency.leaders = build_proficiency_leader_list(proficiency.leaders)
     proficiency.points = floatformat(proficiency.points)
+    proficiency.course_avg = floatformat(proficiency.course_avg)
 
     completions = course_api.get_course_metrics_completions(course_id, request.user.id)
     module_count = course.module_count()
