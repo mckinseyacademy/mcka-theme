@@ -1,18 +1,11 @@
 - block edit_profile_image
   .change_profile_form
     %form#cropping-form{'action': '/accounts/user_profile/image/edit', 'method': 'POST'}
-      .close-reveal-modal
-        %i.fa.fa-times-circle
       - csrf_token
-      %h2.title
-        Edit Profile Image
       %p
         Drag and adjust cropping tool to edit you profile image. When complete click Crop & Save.
-      .error
-      - if error
-        = error
       .img-container
-          %img.user-uploaded-image{'src': "#{profile_image}"}
+          %img.user-uploaded-image{'src': "#{profile_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
       .img-preview
       %input#profile-image-url{'type': 'hidden', 'name': 'profile-image-url'}
       %input#width-position{'type': 'hidden', 'name': 'width-position'}
@@ -22,4 +15,4 @@
       %input#y1-position{'type': 'hidden', 'name': 'y1-position'}
       %input#y2-position{'type': 'hidden', 'name': 'y2-position'}
       %br
-      %input.button.small.radius{'type': 'submit', 'value': 'Crop & Save'}
+      %input#crop-profile-image.button.small.radius{'type': 'submit', 'value': 'Crop & Save', 'disabled': 'disabled'}
