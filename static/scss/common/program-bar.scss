@@ -32,11 +32,16 @@
         line-height: $program-bar-height;
 
         a, a:visited {
+          color: $pure-white;
           text-decoration: none;
 
           i {
             @include font-spec(22px);
           }
+        }
+
+        a:hover {
+          color: $mckinsey-academy-blue-gray;
         }
 
         .course-tab-dropdown {
