@@ -217,9 +217,9 @@ def save_profile_image(request, cropped_example, image_url):
     thumb_io_40 = StringIO.StringIO()
     thumb_io = StringIO.StringIO()
 
-    cropped_image_120.save(thumb_io_120, format='JPEG')
-    cropped_image_40.save(thumb_io_40, format='JPEG')
-    cropped_example.save(thumb_io, format='JPEG')
+    cropped_image_120.convert('RGB').save(thumb_io_120, format='JPEG')
+    cropped_image_40.convert('RGB').save(thumb_io_40, format='JPEG')
+    cropped_example.convert('RGB').save(thumb_io, format='JPEG')
 
     if default_storage.exists(image_url):
         default_storage.delete(image_url)
@@ -244,15 +244,13 @@ def _rescale_image(img, width, height, force=True):
 
     max_width = width
     max_height = height
-
     if not force:
         img.thumbnail((max_width, max_height), pil.ANTIALIAS)
     else:
         from PIL import ImageOps
         img = ImageOps.fit(img, (max_width, max_height,), method=pil.ANTIALIAS)
-
     tmp = StringIO()
-    img.save(tmp, 'JPEG')
+    img.convert('RGB').save(tmp, 'JPEG')
     output_data = img
     tmp.close()
 
