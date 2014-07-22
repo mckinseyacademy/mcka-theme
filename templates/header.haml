@@ -37,15 +37,16 @@
     - if program
       .program-bar.background-alt-blue
         .row.collapse
-          .large-12.columns
+          .medium-6.columns
+            .program-menu
+              %a{href:"#", "data-dropdown": "program-menu-content"}
+                %i.fa.fa-th-large
+              #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
+                - include "courses/content_page/program_menu.haml"
             .label-4.program-name<
               = program.display_name
             %h4.course-name
               %a{href: "#{course.nav_url}"}= course.name
-            .program-menu
-              %a{href:"#", "data-dropdown": "program-menu-content"}
-                %i.fa.fa-bars
-              #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
-                - include "courses/content_page/program_menu.haml"
-            %a.global-help{'data-reveal-id': 'mckinsey_help'}
-              %i.fa.fa-question-circle
+          .medium-6.columns.course_nav
+            - if is_course_page
+              - include "courses/content_page/course_tabs.haml"

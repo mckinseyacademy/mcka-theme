@@ -1,9 +1,6 @@
-%ul.lesson-menu
-  %li.label-2 Lesson:
-  - for lesson in course.chapters
-    %li{class: "{% if lesson.id == current_chapter.id %}selected{% endif %}"}
-      - if lesson.is_released and lesson.id != current_chapter.id
-        %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
-          = lesson.index
-      - else
-        = lesson.index
+- for lesson in course.chapters
+  - if lesson.is_released and lesson.id != current_chapter.id
+    %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
+      Lesson ={lesson.index}: ={lesson.name}
+  - else
+    .not-released Lesson ={lesson.index}: ={lesson.name}

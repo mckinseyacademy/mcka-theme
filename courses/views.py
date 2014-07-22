@@ -95,7 +95,8 @@ def course_landing_page(request, course_id):
 def course_overview(request, course_id):
     overview = course_api.get_course_overview(course_id)
     data = {
-        'overview': overview,
+        "is_course_page": True,
+        "overview": overview,
     }
     return render(request, 'courses/course_overview.haml', data)
 
@@ -104,6 +105,7 @@ def course_overview(request, course_id):
 def course_syllabus(request, course_id):
     static_tabs = load_static_tabs(course_id)
     data = {
+        "is_course_page": True,
         "syllabus": static_tabs.get("syllabus", None)
     }
     return render(request, 'courses/course_syllabus.haml', data)
@@ -111,7 +113,10 @@ def course_syllabus(request, course_id):
 @login_required
 @check_user_course_access
 def course_news(request, course_id):
-    data = {"news": course_api.get_course_news(course_id)}
+    data = {
+        "is_course_page": True,
+        "news": course_api.get_course_news(course_id)
+    }
     return render(request, 'courses/course_news.haml', data)
 
 def dump(obj):
@@ -171,6 +176,7 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
     data = {
+        "is_course_page": True,
         'proficiency': proficiency,
         'completions': completions,
         'social': social,
@@ -198,6 +204,7 @@ def course_group_work(request, course_id):
     set_current_course_for_user(request, course_id)
 
     data = {
+        "is_course_page": True,
         "lesson_content_parent_id": "course-group-work",
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
@@ -233,6 +240,7 @@ def course_discussion(request, course_id):
     mcka_ta = get_course_ta()
 
     data = {
+        "is_course_page": True,
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
@@ -301,6 +309,7 @@ def course_progress(request, course_id):
     })
 
     data = {
+        "is_course_page": True,
         'bar_chart': json.dumps(bar_chart),
         'completed_modules': completed_modules,
         'completion_percent': completion_percent,
@@ -316,6 +325,7 @@ def course_progress(request, course_id):
 def course_resources(request, course_id):
     static_tabs = load_static_tabs(course_id)
     data = {
+        "is_course_page": True,
         "resources": static_tabs.get("resources", None)
     }
     return render(request, 'courses/course_resources.haml', data)
@@ -352,6 +362,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     vertical_usage_id = current_page.vertical_usage_id()
 
     data = {
+        "is_course_page": True,
         "user": request.user,
         "course": course,
         "current_chapter": current_chapter,
