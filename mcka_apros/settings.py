@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from logsettings import get_logger_config
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
@@ -20,6 +21,12 @@ SECRET_KEY = '1x@epyq-))w6z8a@_9f+c8%g#n8o75jeh8c8d4_&y+f@2_(des'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+LOGGING = get_logger_config(BASE_DIR,
+                            logging_env="dev",
+                            tracking_filename="tracking.log",
+                            dev_env=True,
+                            debug=True)
 
 TEMPLATE_DEBUG = True
 
