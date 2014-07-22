@@ -71,8 +71,12 @@ def course_landing_page(request, course_id):
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
 
     social_total = 0
-    for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
-        social_total += getattr(social_metrics, key) * val
+    try:
+        social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
+        for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
+            social_total += getattr(social_metrics, key) * val
+    except:
+        social_total = 0
 
     data = {
         "user": request.user,
@@ -124,29 +128,19 @@ def dump(obj):
 @check_user_course_access
 def course_cohort(request, course_id):
     course = load_course(course_id)
-    '''
-    Putting in try/except block to make page work.
-    Proficiency not defined for new user should be fixed as separate issue.
-    '''
-    proficiency = []
-    completions = []
-    social = {}
 
-    try:
-        proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
-        proficiency.leaders = build_proficiency_leader_list(proficiency.leaders)
-        proficiency.points = floatformat(proficiency.points)
+    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+    proficiency.leaders = build_proficiency_leader_list(proficiency.leaders)
+    proficiency.points = floatformat(proficiency.points)
+    proficiency.course_avg = floatformat(proficiency.course_avg)
 
-        completions = course_api.get_course_metrics_completions(course_id, request.user.id)
-        module_count = course.module_count()
-        completions.leaders = build_progress_leader_list(completions.leaders, module_count)
-        completions.completion_percent = progress_percent(completions.completions, module_count)
-        completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
+    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
+    module_count = course.module_count()
+    completions.leaders = build_progress_leader_list(completions.leaders, module_count)
+    completions.completion_percent = progress_percent(completions.completions, module_count)
+    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
 
-        social = social_metrics(course_id, request.user.id)
-
-    except:
-        pass
+    social = social_metrics(course_id, request.user.id)
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)

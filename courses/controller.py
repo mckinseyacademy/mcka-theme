@@ -271,7 +271,7 @@ def group_project_reviews(user_id, course_id, project_chapter):
     review_items = WorkGroup.get_workgroup_review_items(workgroup.id)
 
     # distinct reviewers
-    reviewer_ids = sorted(set([int(item.reviewer) for item in review_items]))
+    reviewer_ids = [item.reviewer for item in review_items]
     group_activities = []
     group_work_sum = 0
 
@@ -290,7 +290,7 @@ def group_project_reviews(user_id, course_id, project_chapter):
 
         # average by reviewer
         for reviewer_id in reviewer_ids:
-            grades = [int(review.answer) for review in activity_reviews if reviewer_id == int(review.reviewer) and is_number(review.answer)]
+            grades = [int(review.answer) for review in activity_reviews if reviewer_id == review.reviewer and is_number(review.answer)]
             avg = sum(grades)/float(len(grades)) if len(grades)>0 else None
             activity.grades.append(avg)
             print activity.id, reviewer_id, avg
@@ -326,9 +326,6 @@ def build_proficiency_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
         leader.points_scored = floatformat(leader.points_scored)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
 
     return leaders
 
@@ -336,9 +333,6 @@ def build_progress_leader_list(leaders, module_count):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
         leader.completion_percent = progress_percent(leader.completions, module_count)
-        user = user_models.UserResponse()
-        user.avatar_url = leader.avatar_url
-        leader.avatar_url = user.image_url(40) # 40x40 image
 
     return leaders
 
