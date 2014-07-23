@@ -1,6 +1,7 @@
 ''' rendering templates from requests related to courses '''
 import math
 import json
+import random
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
@@ -12,7 +13,7 @@ from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
 from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews, get_course_ta
-from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics
+from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, get_ta_users
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api, project_api, user_models, workgroup_api
@@ -177,11 +178,30 @@ def course_cohort(request, course_id):
         if city.city != '':
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
+
+    ta_users = get_ta_users(course_id)
+    ta_user_json = []
+    if len(ta_users) > 0:
+        ta_user = random.choice(ta_users)
+        ta_user = user_api.get_user(ta_user.id)
+        if ta_user.get('city') != '':
+            ta_user_json = {"id": ta_user.get('id'),
+                                            "username": ta_user.get('username'),
+                                            "first_name": ta_user.get('first_name'),
+                                            "last_name": ta_user.get('last_name'),
+                                            "country": ta_user.get('country'),
+                                            "city": ta_user.get('city'),
+                                            "avatar_url": ta_user.image_url(size=40),
+                                            "full_name": ta_user.get('full_name'),
+                                            "title": ta_user.get('title'),
+                                        }
     data = {
         'proficiency': proficiency,
         'completions': completions,
         'social': social,
         'metrics': metrics,
+        'ta_user': json.dumps(ta_user_json),
+        'ta_email': settings.TA_EMAIL_GROUP,
     }
     return render(request, 'courses/course_cohort.haml', data)
 

@@ -11,7 +11,7 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.api_error import ApiError
 from api_client.project_models import Project
-from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
+from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS, get_groups_of_type
 from api_client.group_models import GroupInfo
 from admin.models import WorkGroup
 from admin.controller import load_course
@@ -335,3 +335,14 @@ def social_metrics(course_id, user_id):
         'course_avg': floatformat(course_avg),
         'leaders': leaders[:3]
     }
+
+def get_ta_users(course_id):
+    rolles = get_groups_of_type('permission')
+    ta_group = []
+    for group in rolles:
+        if group.name == "mcka_role_client_ta":
+            ta_group.append(str(group.id))
+        if group.name == "mcka_role_mcka_ta":
+            ta_group.append(str(group.id))
+    ta_users = course_api.get_users_filtered_by_group(course_id, (',').join(ta_group))
+    return ta_users

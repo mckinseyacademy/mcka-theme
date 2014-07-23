@@ -6,6 +6,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
   fetchedData: false,
   userProfilesVisible: true,
   users: [],
+  ta_user: [],
   citiesMap: [],
   city_list: [],
   cities: {},
@@ -23,9 +24,10 @@ Apros.views.CourseCohort = Backbone.View.extend({
   initialize: function(){
     var _this = this;
     this.users = CohortMapUsers;
+    this.ta_user = TAUser;
     this.citiesMap = CohortMapCities;
 
-    this.setCities(this.citiesMap, this.users, this.city_list, this.cities);
+    this.setCities(this.citiesMap, this.users, this.ta_user, this.city_list, this.cities);
     this.model.setUrl(this.city_list.join(';'));
     this.map = L.map('map-cohort', {zoomControl: true, attributionControl: false}).setView([51.505, -0.09], 1);
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/{z}/{x}/{y}.png',{
@@ -67,7 +69,8 @@ Apros.views.CourseCohort = Backbone.View.extend({
     var myIcon = L.icon({
       iconUrl: user.avatar_url,
       iconRetinaUrl: user.avatar_url,
-      iconSize: [40, 40]
+      iconSize: [40, 40],
+      className: 'ta-user'
     });
     var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
     .bindPopup('<h4>' + user.username + '</h4><p>Title: ' + user.title + '</p>');
@@ -98,20 +101,29 @@ Apros.views.CourseCohort = Backbone.View.extend({
     });
   },
 
-  setCities: function(citiesMap, users, city_list, cities){
+  setCities: function(citiesMap, users, ta_user, city_list, cities){
     $.each(citiesMap, function(key, value){
       var city = value.city.toLowerCase();
         city_list.push(city);
-        cities[city] = ({'count': value.count, 'name': value.city, 'users': []});
+        cities[city] = ({'count': value.count, 'name': value.city, 'users': [], 'ta_user': []});
     });
     $.each(users, function(key, value){
       var city = value.city.toLowerCase();
       if($.inArray(city, city_list) < 0){
         city_list.push(city);
-        cities[city].name = value.city;
+        cities[city] = ({'name': value.city, 'users': [], 'ta_user': []});
       }
       cities[city].users.push(value);
     });
+    if(typeof ta_user.city != 'undefined'){
+      var city = ta_user.city.toLowerCase();
+      if($.inArray(city, city_list) < 0){
+        city_list.push(city);
+        cities[city] = ({'name': ta_user.city, 'ta_user': []});
+      }
+      cities[city].ta_user = ta_user;
+    }
+    this.cities = cities;
   },
 
   drawLayers: function(data, city_list, cities, users, iconsFlag){
@@ -119,7 +131,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
       var _this = this;
       $.each(city_list, function(key, citykey){
         var city = cities[citykey]
-        var numElements = city.users.length;
+        var numElements = city.users.length + 1;
         var angle = 0;
         var step = (2*Math.PI) / numElements;
         var cityData = data.get(citykey);
@@ -128,16 +140,26 @@ Apros.views.CourseCohort = Backbone.View.extend({
             layers = _this.createCircle(cityData, city, layers);
           }
           if(iconsFlag){
-            $.each(city.users, function(key2, user){
-              if(typeof cityData.results[0] != 'undefined'){
-                var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
-                var x = 20 / zoomFactor * Math.cos(angle);
-                var y = 20 / zoomFactor * Math.sin(angle);
-                var loc = cityData.results[0][0];
-                layers = _this.createIcon(user, loc, layers, x, y);
-                angle += step;
-              }
-            });
+            if(city.users.length > 0){
+              $.each(city.users, function(key2, user){
+                if(typeof cityData.results[0] != 'undefined'){
+                  var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
+                  var x = 20 / zoomFactor * Math.cos(angle);
+                  var y = 20 / zoomFactor * Math.sin(angle);
+                  var loc = cityData.results[0][0];
+                  layers = _this.createIcon(user, loc, layers, x, y);
+                  angle += step;
+                }
+              });
+            }
+            if(typeof city.ta_user.username != 'undefined'){
+              var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
+              var x = 20 / zoomFactor * Math.cos(angle);
+              var y = 20 / zoomFactor * Math.sin(angle);
+              var loc = cityData.results[0][0];
+              layers = _this.createIcon(city.ta_user, loc, layers, x, y);
+              angle += step;
+            }
           }
         }
       });
