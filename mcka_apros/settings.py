@@ -25,8 +25,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-APPEND_SLASH = False
-
 # Application definition
 AUTH_USER_MODEL = 'accounts.RemoteUser'
 
@@ -68,7 +66,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.session_timeout.SessionTimeout',
     'accounts.middleware.thread_local.ThreadLocal',
-    'mcka_apros.middlewares.RemoveSlashMiddleware',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'

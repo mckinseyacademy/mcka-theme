@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^(?P<course_id>.*)/teaching_assistant$', views.contact_ta, name='contact_ta'),
     url(r'^(?P<course_id>.*)/group_member_email$', views.contact_member, name='contact_member'),
     url(r'^(?P<course_id>.*)/group_email/(?P<group_id>.*)$', views.contact_group, name='contact_group'),
+    url(r'^(?P<course_id>.*)/$', views.course_landing_page, name='course_landing_page'),
     url(r'^(?P<course_id>.*)$', views.course_landing_page, name='course_landing_page'),
     url(r'^$', views.infer_default_navigation, name='infer_default_navigation'),
 )
