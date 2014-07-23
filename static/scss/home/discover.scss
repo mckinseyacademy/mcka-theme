@@ -18,6 +18,12 @@
         border-right: none;
       }
 
+      &.infographic {
+        .infographic-holder img {
+          width: 100%;
+        }
+      }
+
       &.videos {
         .fa { margin-top: 10px; }
       }
