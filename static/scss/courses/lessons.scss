@@ -50,6 +50,7 @@
     .page-to {
       color: $pure-white;
       position: relative;
+      cursor: default;
       margin: 0 10px;
       border-radius: 50%;
       display: inline-block;
@@ -60,6 +61,7 @@
       @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
       &[href] {
         background-color: $mckinsey-academy-alt-blue;
+        cursor: pointer;
         .go-to-next{
           @include font-spec(14,semibold,16);
           color: $mckinsey-academy-alt-blue;
