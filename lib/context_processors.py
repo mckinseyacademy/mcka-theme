@@ -55,7 +55,7 @@ def user_program_data(request):
             for lesson in course.chapters:
                 lesson.assesment_score = None
                 for sequential in lesson.sequentials:
-                    url_name = sequential.id.split('/')[-1]
+                    url_name = sequential.id.split('+')[-1]
                     if url_name in assesments:
                         lesson.assesment_score = assesments[url_name]
                         break
