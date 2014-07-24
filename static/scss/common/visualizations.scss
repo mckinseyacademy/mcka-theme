@@ -108,8 +108,9 @@
       height: 100%;
       top: 0;
       left: 0;
+      max-width: 100%;
       background: #fff;
-      border-radius: 50px 0 0 50px;
+      border-radius: 50px;
       @include linear-gradient(to right, #389b46, #b8d432);
 
       &.trailing {

@@ -21,9 +21,6 @@
                   .lesson-progress
                     - if lesson.id in completed_modules
                       %span Completed
-                    - else
-                      - for tick_mark in lesson.tick_marks
-                        %i.fa.fa-circle{class: "{% if tick_mark %}on{% endif %}"}
                 .back.background-alt-blue
                   .label-2.description
                     - autoescape off

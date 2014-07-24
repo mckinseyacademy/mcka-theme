@@ -6,6 +6,11 @@
   .course-progress {
     width: 310px;
 
+    .progress-link,
+    a.info {
+      display: none;
+    }
+
     .visualization {
       margin: 40px 0 25px;
       .cohort-avg-marker {
