@@ -53,9 +53,9 @@ def _inject_completion_status(course, request):
     module_count = course.module_count()
     completions = course_api.get_course_completions(course.id, request.user.id)
     completion_metrics = course_api.get_course_metrics_completions(course.id, request.user.id)
-    course.user_completion_percent = progress_percent(completion_metrics.completions, module_count)
-    course.avg_completion_percent = progress_percent(completion_metrics.course_avg, module_count)
-    course.is_user_trailing_completions = course.avg_completion_percent > course.user_completion_percent
+    course.user_progress = progress_percent(completion_metrics.completions, module_count)
+    course.avg_progress = progress_percent(completion_metrics.course_avg, module_count)
+    course.is_user_trailing_progress = course.avg_progress > course.user_progress
     course.completed_modules = [result.content_id for result in completions.results]
 
 @login_required

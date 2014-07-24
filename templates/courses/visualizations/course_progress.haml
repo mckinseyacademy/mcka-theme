@@ -1,0 +1,13 @@
+%section.course-progress
+  .sub-2.progress-link
+    Progress:
+    %a{href: '#'}
+      %i.fa.fa-arrow-circle-right
+  .visualization
+    .total{style: "left:#{course.user_progress}%;"}
+      ={course.user_progress}%
+    .bar{class: "{% if course.is_user_trailing_progress %}trailing{% endif %}", style: "width:#{course.user_progress}%;"}
+    .triangle{style: "left:#{course.avg_progress}%"}
+  .label-4 cohort average = ={course.avg_progress}%
+  %a.info{href: '#'}
+    %i.fa.fa-info-circle
