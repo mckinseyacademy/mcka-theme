@@ -11,6 +11,9 @@ from .json_requests import GET, POST, DELETE
 from . import user_models
 from . import course_models
 
+# Temporary id converter to fix up problems post opaque keys
+from lib.util import LegacyIdConvert
+
 
 PROJECT_API = 'api/projects'
 
@@ -34,13 +37,23 @@ def get_project(project_id, project_object=JsonObject):
         )
     )
 
-    return JP.from_json(response.read(), project_object)
+    project = JP.from_json(response.read(), project_object)
+    course_id = project.course_id
+    project.course_id = LegacyIdConvert.new_from_legacy(project.course_id, course_id)
+    project.content_id = LegacyIdConvert.new_from_legacy(project.content_id, course_id)
+
+    return project
 
 @api_error_protect
 def fetch_project_from_url(url, project_object=JsonObject):
     ''' fetch organization by id '''
     response = GET(url)
-    return JP.from_json(response.read(), project_object)
+    project = JP.from_json(response.read(), project_object)
+    course_id = project.course_id
+    project.course_id = LegacyIdConvert.new_from_legacy(project.course_id, course_id)
+    project.content_id = LegacyIdConvert.new_from_legacy(project.content_id, course_id)
+
+    return project
 
 @api_error_protect
 def delete_project(project_id):
