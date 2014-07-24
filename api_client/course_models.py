@@ -6,6 +6,10 @@ from django.utils.translation import ugettext as _
 
 from .json_object import CategorisedJsonObject, JsonObject
 
+# Temporary id converter to fix up problems post opaque keys
+from lib.util import LegacyIdConvert
+
+
 # Create your models here.
 
 # ignore too few public methods witin this file - these models almost always
@@ -19,7 +23,9 @@ class Page(CategorisedJsonObject):
     required_fields = ["id", "name", ]
 
     def vertical_usage_id(self):
-        return self.id.replace('/', ';_')
+        # Convert to old model
+        page_id = LegacyIdConvert.legacy_from_new(self.id)
+        return page_id.replace('/', ';_')
 
     def child_category_list(self):
         if not hasattr(self, "children"):
