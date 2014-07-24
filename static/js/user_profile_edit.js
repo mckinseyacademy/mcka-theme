@@ -31,10 +31,12 @@ $(function(){
     $(this).find('img').error(function() {
       $(this).hide();
     });
+    var d = new Date();
+    var now = d.getTime();
     $(".img-container .user-uploaded-image").load(function(){
       $('#crop-profile-image').attr('disabled', false);
       reInitCropper();
-    }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
+    }).attr('src', $(".img-container .user-uploaded-image").attr('src') + '&' + now);
   });
 
   $(document).on('closed.fndtn.reveal', '#edit-user-image-modal', function () {
