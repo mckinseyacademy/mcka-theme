@@ -59,7 +59,7 @@ Apros.models.Chart = Backbone.Model.extend({
           .y(function(d) { return d.value })
           .staggerLabels(false)
           .tooltips(false)
-          .showValues(false)
+          .showValues(true)
           .transitionDuration(250)
           .forceY([10,100])
           .margin({bottom: 100});
@@ -72,11 +72,41 @@ Apros.models.Chart = Backbone.Model.extend({
       _this.word_wrap_labels(selector);
       _this.style_y_axis(selector);
 
+
       d3.select(selector + ' .nv-x.nv-axis > g')
         .selectAll('g')
         .selectAll('text')
         .style('text-anchor', 'end')
         .attr("class", "x-axis-label")
+
+
+      var temp = d3.selectAll(selector + ' .nv-bar rect')
+
+      //temp.style('fill', 'none');
+      var tempSize = temp[0][4].length
+        //.selectAll('g')
+
+        console.log(temp[0].nextSibling);
+
+        temp.style('stroke', function(d,i){
+          return i == tempSize - 1? 'red' : 'blue';
+        })
+        
+        temp.style('stroke-dasharray', function(d,i){
+          return i == tempSize - 1? '5,5' : '2,2';
+        })
+
+        temp.style('stroke-width', function(d,i){
+          return i == tempSize - 1? '4' : '1';
+        })
+
+        
+        //temp.showValues(true);
+
+        //console.log(chart.xAxis);
+        console.log(temp);
+
+
 
       nv.utils.windowResize(chart.update);
       return chart;

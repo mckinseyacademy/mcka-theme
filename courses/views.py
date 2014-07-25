@@ -67,7 +67,7 @@ def course_landing_page(request, course_id):
     completion_percent = progress_percent(completion_metrics.completions, module_count)
     course_avg_percent = progress_percent(completion_metrics.course_avg, module_count)
     completed_modules = [result.content_id for result in completions.results]
-    social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
+    #social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
 
     social_total = 0
@@ -305,6 +305,12 @@ def course_progress(request, course_id):
         'label': 'TOTAL',
         'value': total,
         'color': '#e37121'
+    })
+
+    pro_forma = round(gradebook.pro_forma_grade)
+    bar_chart[0]['values'].append({
+        'value': pro_forma,
+        
     })
 
     data = {
