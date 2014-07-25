@@ -58,6 +58,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
   },
 
   toggle_profiles: function(e) {
+    var _this = this;
     e.preventDefault();
     this.map.removeLayer(_this.layers);
     this.iconsFlag = !this.iconsFlag;
