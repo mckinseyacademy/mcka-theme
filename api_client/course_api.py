@@ -286,13 +286,13 @@ def get_course_metrics(course_id):
 def get_course_metrics_by_city(course_id, cities=None):
     ''' retrieves course metrics '''
     if cities == None:
-        url = '{}/{}/{}/metrics/cities'.format(
+        url = '{}/{}/{}/metrics/cities/'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id
         )
     else:
-        url = '{}/{}/{}/metrics/cities?city={}'.format(
+        url = '{}/{}/{}/metrics/cities/?city={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
