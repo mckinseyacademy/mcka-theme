@@ -41,7 +41,7 @@ class WorkgroupCompletionData(object):
     def load_for_course(self, course_id):
         self.projects = Project.fetch_projects_for_course(course_id)
         completion_data = course_api.get_course_completions(course_id)
-        self.completions = {WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage) : c for c in completion_data.results}
+        self.completions = {WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage) : c for c in completion_data}
         self.course = load_course(course_id, 4)
 
         for project in self.projects:
@@ -54,7 +54,7 @@ class WorkgroupCompletionData(object):
             for pw in self.project_workgroups[project.id]:
                 for u in pw.users:
                     self.user_completions[u.id] = {}
-                    user_comp = [c for c in completion_data.results if c.user_id == u.id]
+                    user_comp = [c for c in completion_data if c.user_id == u.id]
                     for a in self.project_activities[project.id]:
                         self.user_completions[u.id][a.id] = {}
                         for s in COMPLETION_STAGES:
@@ -105,11 +105,14 @@ def generate_workgroup_csv_report(course_id):
             output_line(group_summary_row)
 
             # group user detail
-            for u in g.members:
-                user_row = ['', u.username]
+            for member in g.members:
+                user_row = ['', member.username]
                 for a in activities:
                     for s in COMPLETION_STAGES:
-                        v = report_completion_boolean(wcd.user_completions[u.id][a.id][s]) if s in individual_stages else '--'
+                        if member.id in wcd.user_completions:
+                            v = report_completion_boolean(wcd.user_completions[member.id][a.id][s]) if s in individual_stages else '--'
+                        else:
+                            v = report_completion_boolean(False)
                         user_row.append(v)
                 output_line(user_row)
 

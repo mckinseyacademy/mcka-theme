@@ -82,8 +82,7 @@ class Client(organization_models.Organization):
         if users_ids == []:
             return []
         else:
-            users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
-            return users.results
+            return user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
 
 class ClientList(organization_models.OrganizationList):
     object_map = {
@@ -97,8 +96,7 @@ class WorkGroup(workgroup_models.Workgroup):
         if users_ids == []:
             return []
         else:
-            users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
-            return users.results
+            return user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
 
     @classmethod
     def fetch_with_members(cls, workgroup_id):
