@@ -337,9 +337,9 @@ def social_metrics(course_id, user_id):
     }
 
 def get_ta_users(course_id):
-    rolles = get_groups_of_type('permission')
+    roles = get_groups_of_type('permission')
     ta_group = []
-    for group in rolles:
+    for group in roles:
         if group.name == "mcka_role_client_ta":
             ta_group.append(str(group.id))
         if group.name == "mcka_role_mcka_ta":
