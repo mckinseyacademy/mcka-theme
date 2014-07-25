@@ -23,6 +23,15 @@ $(function(){
     });
   }
 
+  function reloadImages(){
+    var d = new Date();
+    var now = d.getTime();
+    $(".img-container .user-uploaded-image").load(function(){
+      $('#crop-profile-image').attr('disabled', false);
+      reInitCropper();
+    }).attr('src', $(".img-container .user-uploaded-image").attr('src') + '&' + now);
+  }
+
   $('#edit-user-image-modal').on("change", '#id_profile_image', function(){
     $('input[type=submit]').attr('disabled', false);
   });
@@ -31,12 +40,7 @@ $(function(){
     $(this).find('img').error(function() {
       $(this).hide();
     });
-    var d = new Date();
-    var now = d.getTime();
-    $(".img-container .user-uploaded-image").load(function(){
-      $('#crop-profile-image').attr('disabled', false);
-      reInitCropper();
-    }).attr('src', $(".img-container .user-uploaded-image").attr('src') + '&' + now);
+    reloadImages();
   });
 
   $(document).on('closed.fndtn.reveal', '#edit-user-image-modal', function () {
@@ -53,10 +57,7 @@ $(function(){
       data: form.serialize()
     }).done(function(data){
         modal.html(data);
-        $(".img-container .user-uploaded-image").load(function(){
-          $('#crop-profile-image').attr('disabled', false);
-          reInitCropper();
-        }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
+        reloadImages();
       });
     });
 
@@ -69,21 +70,16 @@ $(function(){
       var options = {
                   url     : form.attr('action'),
                   type    : 'POST',
-                  dataType: 'json',
-                  resetForm: true,
-                  target: modal,
-                  error:function( data ) {
-                      if(data.status == '200' && data.statusText == 'OK'){
-                        modal.html(data.responseText);
-                        $(".img-container .user-uploaded-image").load(function(){
-                          reInitCropper();
-                        }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
-                      }else{
+                  contentType: false,
+                  success:function( data ) {
+                        modal.html(data);
+                        reloadImages();
+                      },
+                  error: function( data ){
                         modal.find('.error').append('<p class="warning">Please select file first.</p>');
                       }
-                  },
-              };
+                  }
 
-      form.ajaxSubmit(options);
+    form.ajaxSubmit(options);
     });
 })
