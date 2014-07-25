@@ -1,5 +1,6 @@
 import urllib2 as url_access
 import datetime
+import functools
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -46,6 +47,7 @@ def check_user_course_access(func):
     '''
     Decorator which will raise an CourseAccessDeniedError if the user does not have access to the requested course
     '''
+    @functools.wraps(func)
     def user_course_access_checker(request, course_id, *args, **kwargs):
         try:
             program = get_current_program_for_user(request)

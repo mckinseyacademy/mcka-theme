@@ -1,4 +1,5 @@
 import json
+import functools
 from urllib2 import HTTPError
 
 from django.utils.translation import ugettext as _
@@ -47,6 +48,7 @@ def api_error_protect(func):
     '''
     Decorator which will raise an ApiError for api calls
     '''
+    @functools.wraps(func)
     def call_api_method(*args, **kwargs):
         try:
             return func(*args, **kwargs)
