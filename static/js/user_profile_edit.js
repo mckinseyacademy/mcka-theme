@@ -61,24 +61,29 @@ $(function(){
     });
 
     $('#edit-user-image-modal').on('click', '#user-image-submit', function(e){
-    e.preventDefault();
-    var form = $(this).parent('form');
-    var formData = new FormData(form[0]);
-    var modal = form.parent();
-    modal.find('.error').html('');
-    $.ajax({
-      method: 'POST',
-      url: form.attr('action'),
-      data: formData,
-      processData: false,
-      contentType: false
-    }).done(function(data){
-        modal.html(data);
-        $(".img-container .user-uploaded-image").load(function(){
-          reInitCropper();
-        }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
-      }).fail(function(data){
-        modal.find('.error').append('<p class="warning">Please select file first.</p>');
-      });
+      e.preventDefault();
+      var form = $(this).parent('form');
+      var modal = form.parent();
+      modal.find('.error').html('');
+
+      var options = {
+                  url     : form.attr('action'),
+                  type    : 'POST',
+                  dataType: 'json',
+                  resetForm: true,
+                  target: modal,
+                  error:function( data ) {
+                      if(data.status == '200' && data.statusText == 'OK'){
+                        modal.html(data.responseText);
+                        $(".img-container .user-uploaded-image").load(function(){
+                          reInitCropper();
+                        }).attr('src', $(".img-container .user-uploaded-image").attr('src'));
+                      }else{
+                        modal.find('.error').append('<p class="warning">Please select file first.</p>');
+                      }
+                  },
+              };
+
+      form.ajaxSubmit(options);
     });
 })

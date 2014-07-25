@@ -7,6 +7,7 @@ os.environ['SASS_USE_SCSS'] = 'false'
 JS = Bundle(
     'js/polyfills/*.js',
     'js/plugins/*.js',
+    'js/vendor/jquery.form.js',
     'js/vendor/leaflet.js',
     'js/vendor/json2.js',
     'js/vendor/underscore.js',
