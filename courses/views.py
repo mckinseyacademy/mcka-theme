@@ -22,6 +22,9 @@ from admin.models import WorkGroup
 from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
 from accounts.controller import check_user_course_access
 
+# Temporary id converter to fix up problems post opaque keys
+from lib.util import LegacyIdConvert
+
 # Create your views here.
 
 def _inject_formatted_data(program, course, page_id, static_tab_info=None):
@@ -229,6 +232,7 @@ def course_group_work(request, course_id):
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "course_id": course_id,
+        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "project_group": project_group,
@@ -264,6 +268,7 @@ def course_discussion(request, course_id):
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
         "course_id": course_id,
+        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "mcka_ta": mcka_ta
@@ -387,6 +392,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "program": program,
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
+        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
