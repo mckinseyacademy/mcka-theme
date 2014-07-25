@@ -66,15 +66,25 @@ Apros.views.CourseCohort = Backbone.View.extend({
     this.render_map();
   },
 
-  createIcon: function(user, loc, layers, x, y){
+  createIcon: function(user, loc, layers, x, y, className){
     var myIcon = L.icon({
       iconUrl: user.avatar_url,
       iconRetinaUrl: user.avatar_url,
       iconSize: [40, 40],
-      className: 'ta-user'
+      className: className
     });
-    var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-    .bindPopup('<h4>' + user.username + '</h4><p>Title: ' + user.title + '</p>');
+    if(user.title == null){
+      user.title = 'N/A';
+    }
+    if(className == 'ta_user'){
+      myIcon.iconSize = [44, 44];
+      var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
+      .bindPopup('<i>Teaching Assistant</i><h4>' + user.username + '</h4><p>Title: ' +
+        user.title + '<br><a href="#" data-reveal-id="contact-ta">Email Group TA</a></p>');
+    }else{
+      var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
+      .bindPopup('<h4>' + user.username + '</h4><p>Title: ' + user.title + '</p>');
+    }
     this.hoverizePopup(marker);
     layers.push(marker);
     return layers;
@@ -148,7 +158,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
                   var x = 20 / zoomFactor * Math.cos(angle);
                   var y = 20 / zoomFactor * Math.sin(angle);
                   var loc = cityData.results[0][0];
-                  layers = _this.createIcon(user, loc, layers, x, y);
+                  layers = _this.createIcon(user, loc, layers, x, y, 'user');
                   angle += step;
                 }
               });
@@ -158,7 +168,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
               var x = 20 / zoomFactor * Math.cos(angle);
               var y = 20 / zoomFactor * Math.sin(angle);
               var loc = cityData.results[0][0];
-              layers = _this.createIcon(city.ta_user, loc, layers, x, y);
+              layers = _this.createIcon(city.ta_user, loc, layers, x, y, 'ta_user');
               angle += step;
             }
           }
