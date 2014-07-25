@@ -40,4 +40,5 @@ urlpatterns = patterns(
     url(r'^workgroup/group/(?P<group_id>[0-9]+)/remove', views.workgroup_group_remove, name='workgroup_group_remove'),
     url(r'^workgroup/project/create/(?P<course_id>.*)', views.workgroup_project_create, name='workgroup_project_create'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
+    url(r'^permissions', views.permissions, name='permissions'),
 )

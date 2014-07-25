@@ -258,3 +258,5 @@ SOCIAL_METRIC_POINTS = {
     'num_upvotes': 5,
     'num_thread_followers': 5,
 }
+
+ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'

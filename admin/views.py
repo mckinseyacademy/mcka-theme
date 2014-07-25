@@ -24,6 +24,7 @@ from api_client import group_api, workgroup_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
 from api_client.project_models import Project
+from api_client.organization_models import Organization
 from api_client.workgroup_models import Submission
 from license import controller as license_controller
 
@@ -1005,3 +1006,29 @@ def generate_assignments(request, course_id):
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def permissions(request):
+
+    organizations = Organization.list()
+    admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
+
+    # fetch users in administrative company
+    if admin_company and admin_company.users:
+        ids = ','.join(str(id) for id in admin_company.users)
+        filtered_users = user_api.get_users([{ 'key': 'ids', 'value': ids }])
+    else:
+        filtered_users = []
+
+    # fetch roles for each user
+    users = filtered_users.results
+    for user in users:
+        groups = user_api.get_user_groups(user.id, 'permission')
+        user.roles = ', '.join([group.name for group in groups])
+
+    data = {
+        'users': users
+    }
+    return render(request, 'admin/permissions/list.haml', data)
+
