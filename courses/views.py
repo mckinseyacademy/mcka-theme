@@ -227,6 +227,12 @@ def course_group_work(request, course_id):
     # Get course info
     set_current_course_for_user(request, course_id)
 
+    ta_user = []
+    ta_users = get_ta_users(course_id)
+    if len(ta_users) > 0:
+        ta_user = random.choice(ta_users)
+        ta_user = user_api.get_user(ta_user.id)
+
     data = {
         "lesson_content_parent_id": "course-group-work",
         "vertical_usage_id": vertical_usage_id,
@@ -239,6 +245,7 @@ def course_group_work(request, course_id):
         "group_project": group_project,
         "current_sequential": sequential,
         "current_page": page,
+        "ta_user": ta_user,
     }
     return render(request, 'courses/course_group_work.haml', data)
 
