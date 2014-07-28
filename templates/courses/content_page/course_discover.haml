@@ -9,7 +9,7 @@
             .article-title= article.title
             .attribution
               .when
-                %time.label-2{datetime: '2014-07-07T04:00:00.000Z'} JUL 7, 2014
+                %time.label-2= article.display_date
                 %span.label-2= article.byline
               .person-title= article.author
             %a{href: "#{article.url}", target: '_blank'}
@@ -28,7 +28,7 @@
           %div
             %span.label-8= tweet.twitter_username
             %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
-            %time.label-3{datetime: '2014-07-07T04:00:00.000Z'} JUL 7
+            %time.label-3= tweet.display_date
           %a.tweet-body{href: "#{tweet.url}", target: "_blank"}= tweet.body
     %section.videos
       .label-6 VIDEOS
@@ -38,7 +38,7 @@
             .article-title= video.title
             .attribution
               .when
-                %time.label-2{datetime: '2014-07-07T04:00:00.000Z'} JUL 7, 2014
+                %time.label-2= video.display_date
                 %span.label-2= video.byline
               .label-9= video.body
             %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
