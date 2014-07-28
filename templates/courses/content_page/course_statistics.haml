@@ -9,8 +9,12 @@
       .inner-circle
       .progress-radial{'class': "progress-#{proficiency_graph}"}
     .label-4 cohort average = ={cohort_proficiency_average}
-    %a.info{href: '#'}
+    %a.info{'data-reveal-id': 'mckinsey_proficiency_help'}
       %i.fa.fa-info-circle
+    #mckinsey_proficiency_help.reveal-modal.small{'data-reveal': None}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %p Beef shoulder pancetta tenderloin, ribeye filet mignon shankle brisket pork chop pig spare ribs fatback jerky ham. T-bone pig andouille filet mignon shankle turkey. Bresaola beef ribs kevin filet mignon pork strip steak.
   - include "courses/visualizations/course_progress.haml"
   %section.course-engagement{class: "{% if social_total == 0 %}no-progress{% endif %}" }
     .sub-2
@@ -22,5 +26,9 @@
       .band-2{class: "{% if social_total >= 60 %}filled{% endif %}"}
       .total= social_total
     .label-4 cohort average = ={cohort_social_average} points
-    %a.info{href: '#'}
+    %a.info{'data-reveal-id': 'mckinsey_social_help'}
       %i.fa.fa-info-circle
+    #mckinsey_social_help.reveal-modal.small{'data-reveal': None}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %p Bacon ipsum dolor sit amet ground round frankfurter hamburger pastrami ham hock leberkas, andouille chuck. Short ribs flank kielbasa cow salami, shank strip steak drumstick ham hock.
