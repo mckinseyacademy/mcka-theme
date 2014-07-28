@@ -300,7 +300,7 @@ def get_course_metrics_by_city(course_id, cities=None):
         )
 
     response = GET(url)
-    return JP.from_json(response.read()).results
+    return JP.from_json(response.read())
 
 
 
