@@ -3,15 +3,8 @@
   #course-progress
     %h1 Course Progress for '={user.username}'
     .sub-1 PROGRESS
-    %p.style-6 You are ={completion_percent}% of the way through the course based on completion of modules within lessons:
-    %section.course-progress
-      .visualization{data-cohort-percent: "#{completion_percent}%"}
-        .total{style: "left:#{completion_percent}%;"}
-          ={completion_percent}%
-        .bar-wrapper
-          .bar{class: "{% if course_avg_percent > completion_percent %}trailing{% endif %}", style: "width:#{completion_percent}%;"}
-        .cohort-avg-marker{style: "left:={course_avg_percent}%"}
-      .label-4 cohort average = ={course_avg_percent}%
+    %p.style-6 You are ={course.user_completion_percent}% of the way through the course based on completion of modules within lessons:
+    - include "courses/visualizations/course_progress.haml"
     %hr
     .sub-1 GRADES
     %p.style-6 You need a combined course grade of at least ={pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows:
@@ -47,12 +40,8 @@
             - else
               %td.assessment ={lesson.assesment_score}%
             %td.lesson-progress
-              - for sequential in lesson.sequentials
-                - for lesson_module in sequential.pages
-                  - if lesson_module.id in completed_modules
-                    %span{class: "complete"}
-                  - else
-                    %span{class: "incomplete"}
+              .lesson-progress-bar
+                .bar{style: "width:#{lesson.progress}%;"}
     %hr
     %table.lesson-table
       %thead

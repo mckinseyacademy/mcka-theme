@@ -15,23 +15,7 @@
       .close-reveal-modal
         %i.fa.fa-times-circle
       %p Beef shoulder pancetta tenderloin, ribeye filet mignon shankle brisket pork chop pig spare ribs fatback jerky ham. T-bone pig andouille filet mignon shankle turkey. Bresaola beef ribs kevin filet mignon pork strip steak.
-  %section.course-progress
-    .sub-2
-      Progress:
-      %a{href: "/courses/#{course.id}/cohort"}
-        %i.fa.fa-arrow-circle-right
-    .visualization
-      .total{style: "left:#{completion_percent}%;"}
-        ={completion_percent}%
-      .bar{class: "{% if course_avg_percent > completion_percent %}trailing{% endif %}", style: "width:#{completion_percent}%;"}
-      .triangle{style: "left:#{course_avg_percent}%"}
-    .label-4 cohort average = ={course_avg_percent}%
-    %a.info{'data-reveal-id': 'mckinsey_progress_help'}
-      %i.fa.fa-info-circle
-    #mckinsey_progress_help.reveal-modal.small{'data-reveal': None}
-      .close-reveal-modal
-        %i.fa.fa-times-circle
-      %p Prosciutto pig ground round, jowl ball tip swine beef pork belly beef ribs meatloaf rump. T-bone salami drumstick porchetta.
+  - include "courses/visualizations/course_progress.haml"
   %section.course-engagement{class: "{% if social_total == 0 %}no-progress{% endif %}" }
     .sub-2
       Engagement:

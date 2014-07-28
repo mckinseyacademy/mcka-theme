@@ -30,7 +30,9 @@
     }
   }
 
-  .lesson-pager { width: 750px; }
+  .page-to.next {
+    right: -400px;
+  }
 
   .lesson-content {
     h1 { padding-bottom: 10px; }

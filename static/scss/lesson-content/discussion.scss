@@ -1,6 +1,8 @@
-#course-lessons .discussion-module {
+#course-lessons .discussion-module,
+#course-group-work .discussion-module {
   border: 1px solid $mckinsey-grey;
   border-radius: 5px;
+  width: 760px;
 
   *:focus {
     outline: 0;
@@ -24,6 +26,7 @@ body > .tooltip {
 /* Course discussion specific rules can be found in ../course/discusssion.scss */
 
 #course-lessons .discussion-module,
+#course-group-work .discussion-module,
 #course-discussion .discussion-content {
   background: #fff !important;
 
