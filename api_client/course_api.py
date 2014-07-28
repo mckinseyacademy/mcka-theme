@@ -256,7 +256,7 @@ def get_course_content_groups(course_id, content_id):
 @api_error_protect
 def get_course_completions(course_id, user_id=None):
     ''' fetch course module completion list '''
-    url = '{}/{}/{}/completions/'.format(
+    url = '{}/{}/{}/completions/?page_size=0'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
@@ -286,13 +286,13 @@ def get_course_metrics(course_id):
 def get_course_metrics_by_city(course_id, cities=None):
     ''' retrieves course metrics '''
     if cities == None:
-        url = '{}/{}/{}/metrics/cities'.format(
+        url = '{}/{}/{}/metrics/cities?page_size=0'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id
         )
     else:
-        url = '{}/{}/{}/metrics/cities?city={}'.format(
+        url = '{}/{}/{}/metrics/cities?page_size=0&city={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,

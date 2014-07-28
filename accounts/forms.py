@@ -375,7 +375,7 @@ class FpasswordForm(forms.Form):
         if users.count < 1:
             post_reset_redirect = '/accounts/login?reset=failed'
         else:
-            user = users.results[0]
+            user = users[0]
             token_generator = ResetPasswordTokenGenerator()
             token = token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.id))

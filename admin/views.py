@@ -299,7 +299,8 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "programs":
             for student in data["students"]:
                 user = user_api.get_user(student.id)
-                student.created = student.created.isoformat()
+                if hasattr(student, 'created') and hasattr(student.created, 'isoformat'):
+                    student.created = student.created.isoformat()
                 if user.is_active == True:
                     student.enrolled = True
 
@@ -772,7 +773,7 @@ def workgroup_detail(request, course_id, workgroup_id):
     Get detailed information about the specific workgroup for this course
     '''
     workgroup = WorkGroup.fetch(workgroup_id)
-    users = user_api.get_users([{'key': 'ids', 'value': ','.join([str(u.id) for u in workgroup.users])}]).results
+    users = user_api.get_users([{'key': 'ids', 'value': ','.join([str(u.id) for u in workgroup.users])}])
     project = Project.fetch(workgroup.project)
 
     course = load_course(course_id, 4)
