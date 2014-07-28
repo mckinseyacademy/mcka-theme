@@ -2,6 +2,7 @@
 #from urllib import quote_plus, unquote_plus
 
 import datetime
+import random
 from django.template.defaultfilters import floatformat
 
 from django.conf import settings
@@ -348,3 +349,10 @@ def get_ta_users(course_id):
     ta_users_base = course_api.get_users_filtered_by_group(course_id, (',').join(ta_group))
     ta_users = [user_api.get_user(user.id) for user in ta_users_base]
     return ta_users
+
+def choose_random_ta(course_id):
+    ta_users = [u for u in get_ta_users(course_id) if hasattr(u, 'city')]
+    ta_user = {}
+    if len(ta_users) > 0:
+        ta_user = random.choice(ta_users)
+    return ta_user

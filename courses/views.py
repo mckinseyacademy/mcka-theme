@@ -1,7 +1,7 @@
 ''' rendering templates from requests related to courses '''
 import math
 import json
-import random
+
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
 from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews, get_course_ta
-from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, get_ta_users
+from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, choose_random_ta
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api, project_api, user_models, workgroup_api
@@ -126,10 +126,6 @@ def course_news(request, course_id):
     }
     return render(request, 'courses/course_news.haml', data)
 
-def dump(obj):
-  for attr in dir(obj):
-    print "obj.%s = %s" % (attr, getattr(obj, attr))
-
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
@@ -173,16 +169,14 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
-    ta_users = [u for u in get_ta_users(course_id) if hasattr(u, 'city')]
-    ta_user_json = {}
-    if len(ta_users) > 0:
-        ta_user_json = random.choice(ta_users).to_json()
+    ta_user = choose_random_ta(course_id).to_json()
+
     data = {
         'proficiency': proficiency,
         'completions': completions,
         'social': social,
         'metrics': metrics,
-        'ta_user': ta_user_json,
+        'ta_user': ta_user,
         'ta_email': settings.TA_EMAIL_GROUP,
     }
     return render(request, 'courses/course_cohort.haml', data)
@@ -206,11 +200,7 @@ def course_group_work(request, course_id):
     # Get course info
     set_current_course_for_user(request, course_id)
 
-    ta_user = []
-    ta_users = get_ta_users(course_id)
-    if len(ta_users) > 0:
-        ta_user = random.choice(ta_users)
-        ta_user = user_api.get_user(ta_user.id)
+    ta_user = choose_random_ta(course_id)
 
     data = {
         "lesson_content_parent_id": "course-group-work",
