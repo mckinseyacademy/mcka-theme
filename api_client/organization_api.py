@@ -46,7 +46,7 @@ def create_organization(organization_name, organization_data=None, organization_
 def fetch_organization(organization_id, organization_object=JsonObject):
     ''' fetch organization by id '''
     response = GET(
-        '{}/{}/{}'.format(
+        '{}/{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             ORGANIZATION_API,
             organization_id,

@@ -20,4 +20,5 @@
       %tr.student{id: "#{student.id}"}
         %td= student.username
         %td= student.email
-        %td{style: "color: red;"} 000 courses
+        %td= student.course_count
+          courses
