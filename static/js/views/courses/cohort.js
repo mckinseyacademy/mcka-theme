@@ -151,24 +151,17 @@ Apros.views.CourseCohort = Backbone.View.extend({
             layers = _this.createCircle(cityData, city, layers);
           }
           if(iconsFlag){
+            var loc = cityData.results[0][0];
             if(city.users.length > 0){
               $.each(city.users, function(key2, user){
                 if(typeof cityData.results[0] != 'undefined'){
-                  var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
-                  var x = 20 / zoomFactor * Math.cos(angle);
-                  var y = 20 / zoomFactor * Math.sin(angle);
-                  var loc = cityData.results[0][0];
-                  layers = _this.createIcon(user, loc, layers, x, y, 'user');
+                  layers = _this.drawUserIcon(user, layers, loc, angle, step, 'user');
                   angle += step;
                 }
               });
             }
             if(typeof city.ta_user.username != 'undefined'){
-              var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
-              var x = 20 / zoomFactor * Math.cos(angle);
-              var y = 20 / zoomFactor * Math.sin(angle);
-              var loc = cityData.results[0][0];
-              layers = _this.createIcon(city.ta_user, loc, layers, x, y, 'ta_user');
+              layers = _this.drawUserIcon(city.ta_user, layers, loc, angle, step, 'ta_user');
               angle += step;
             }
           }
@@ -176,6 +169,15 @@ Apros.views.CourseCohort = Backbone.View.extend({
       });
       this.layers = L.layerGroup(layers).addTo(_this.map);
     },
+
+  drawUserIcon: function(user, layers, loc, angle, step, className){
+    var _this = this;
+    var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
+    var x = 20 / zoomFactor * Math.cos(angle);
+    var y = 20 / zoomFactor * Math.sin(angle);
+    layers = _this.createIcon(user, loc, layers, x, y, className);
+    return layers;
+  },
 
   render_map: function() {
     var _this = this;
