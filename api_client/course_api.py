@@ -234,6 +234,21 @@ def get_users_content_filtered(course_id, content_id, params=[]):
     return JP.from_json(response.read())
 
 @api_error_protect
+def get_users_filtered_by_group(course_id, group_ids):
+    ''' filter and get course users'''
+
+    response = GET(
+        '{}/{}/{}/users?groups={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            group_ids,
+        )
+    )
+
+    return JP.from_json(response.read()).enrollments
+
+@api_error_protect
 def get_course_content_groups(course_id, content_id):
     ''' fetch associates groups to specific content within specific course '''
     print '{}/{}/{}/content/{}/groups'.format(

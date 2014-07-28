@@ -1,4 +1,5 @@
 - extends "courses/course_navigation.haml"
+- load staticfiles
 - block current_content
   #course-cohort
     %h1 Cohort
@@ -145,6 +146,11 @@
         .person-name janejohnson <span class='person-title'>COO</span>
         %a.button.radius.tiny Suggest a Link
 
+  - include "courses/contact_ta.haml"
+
+- block js_snippets
+  %script{src: "{% static 'js/course_contact_modal.js' %}"}
   %script
     var CohortMapUsers = {{metrics.groups_users|safe}};
     var CohortMapCities = {{metrics.cities|safe}};
+    var TAUser = {{ta_user|safe}};

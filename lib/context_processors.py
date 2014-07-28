@@ -37,7 +37,6 @@ def user_program_data(request):
 
             # Inject lesson assessment scores
             assesments = {}
-
             gradebook = user_api.get_user_gradebook(request.user.id, course.id)
             if gradebook.courseware_summary:
                 for lesson in gradebook.courseware_summary:
