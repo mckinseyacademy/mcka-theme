@@ -198,7 +198,7 @@ def _render_group_work(request, course, project_group, group_project):
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
 
-    ta_user = choose_random_ta(course_id)
+    ta_user = choose_random_ta(course.id)
 
     data = {
         "lesson_content_parent_id": "course-group-work",
