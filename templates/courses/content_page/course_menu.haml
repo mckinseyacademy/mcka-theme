@@ -18,9 +18,8 @@
                       %i.fa.fa-bookmark
                   .label-5.index LESSON {{lesson.index}}:
                   %h2.name= lesson.name
-                  .lesson-progress
-                    - if lesson.id in completed_modules
-                      %span Completed
+                  .lesson-progress-bar
+                    .bar{style: "width:#{lesson.progress}%;"}
                 .back.background-alt-blue
                   .label-2.description
                     - autoescape off

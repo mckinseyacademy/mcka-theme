@@ -140,19 +140,7 @@
           }
 
           &.assessment { width: 80px; }
-
-          &.lesson-progress {
-            font-family: FontAwesome;
-            @include font-spec(10);
-
-            span {
-              color: $mckinsey-dark-grey;
-              margin-right: 5px;
-              &:before { content: '\f111'; }
-              &:last-child { margin-right: 0; }
-              &.complete { color: $mckinsey-green; }
-            }
-          }
+          &.lesson-progress { width: 150px; }
 
           ul.group-grades {
             list-style-type: none;

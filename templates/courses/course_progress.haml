@@ -40,12 +40,8 @@
             - else
               %td.assessment ={lesson.assesment_score}%
             %td.lesson-progress
-              - for sequential in lesson.sequentials
-                - for lesson_module in sequential.pages
-                  - if lesson_module.id in course.completed_modules
-                    %span{class: "complete"}
-                  - else
-                    %span{class: "incomplete"}
+              .lesson-progress-bar
+                .bar{style: "width:#{lesson.progress}%;"}
     %hr
     %table.lesson-table
       %thead
