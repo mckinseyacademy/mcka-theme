@@ -3,24 +3,26 @@ import math
 import json
 
 from django.conf import settings
-from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.utils.translation import ugettext as _
 from django.template.defaultfilters import floatformat
+from django.utils.translation import ugettext as _
+
+from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
+from accounts.controller import check_user_course_access
+from admin.controller import load_course
+from admin.models import WorkGroup
+from api_client import course_api, user_api, project_api, user_models, workgroup_api
+from api_client.group_api import PERMISSION_GROUPS
+from lib.authorization import is_user_in_permission_group, permission_group_required
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews, get_course_ta
+from .controller import update_bookmark, progress_percent, group_project_reviews, get_course_ta
 from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, choose_random_ta
-from lib.authorization import is_user_in_permission_group
-from api_client.group_api import PERMISSION_GROUPS
-from api_client import course_api, user_api, project_api, user_models, workgroup_api
-from admin.controller import load_course
-from admin.models import WorkGroup
-from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
-from accounts.controller import check_user_course_access
+from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 
 # Temporary id converter to fix up problems post opaque keys
 from lib.util import LegacyIdConvert
@@ -181,24 +183,20 @@ def course_cohort(request, course_id):
     }
     return render(request, 'courses/course_cohort.haml', data)
 
-@login_required
-@check_user_course_access
-def course_group_work(request, course_id):
+def _render_group_work(request, course, project_group, group_project):
 
-    seq_id = request.GET.get("seqid", None)
-    project_group, group_project, sequential, page = group_project_location(
-        request.user.id,
-        load_course(course_id, 4),
-        seq_id
-    )
-    vertical_usage_id = page.vertical_usage_id() if page else None
+    if not group_project is None:
+        sequential, page = group_project_location(
+            group_project,
+            request.GET.get("seqid", None)
+        )
+        vertical_usage_id = page.vertical_usage_id() if page else None
+    else:
+        sequential = page = vertical_usage_id = None
 
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
-
-    # Get course info
-    set_current_course_for_user(request, course_id)
 
     ta_user = choose_random_ta(course_id)
 
@@ -206,8 +204,8 @@ def course_group_work(request, course_id):
         "lesson_content_parent_id": "course-group-work",
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
-        "course_id": course_id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
+        "course_id": course.id,
+        "legacy_course_id": LegacyIdConvert.legacy_from_new(course.id),
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "project_group": project_group,
@@ -217,6 +215,32 @@ def course_group_work(request, course_id):
         "ta_user": ta_user,
     }
     return render(request, 'courses/course_group_work.haml', data)
+
+
+@login_required
+@check_user_course_access
+def user_course_group_work(request, course_id):
+
+    # remove this in case we are a TA who is taking a course themselves
+    user_api.delete_user_preference(request.user.id, "TA_REVIEW_WORKGROUP")
+
+    course = load_course(course_id, 4)
+    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+    set_current_course_for_user(request, course_id)
+
+    return _render_group_work(request, course, project_group, group_project)
+
+@login_required
+@permission_group_required(PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_course_group_work(request, course_id, workgroup_id):
+
+    # set this workgroup as the preference for reviewing
+    user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
+
+    course = load_course(course_id, 4)
+    project_group, group_project = get_group_project_for_workgroup_course(workgroup_id, course)
+
+    return _render_group_work(request, course, project_group, group_project)
 
 @login_required
 @check_user_course_access
@@ -312,7 +336,7 @@ def course_progress(request, course_id):
     bar_chart[0]['values'].append({
         'value': pro_forma,
         'color': 'none'
-        
+
     })
 
     data = {

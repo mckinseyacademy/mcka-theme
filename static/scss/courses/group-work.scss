@@ -76,4 +76,21 @@
     @include button($button-sml, $primary-color, true);
     &.submit { float: right; }
   }
+
+  .grading_override{
+    width: 100%;
+    background-color: $mckinsey-red;
+    color: $almost-white;
+    text-align: center;
+    padding: 10px;
+    text-transform: uppercase;
+    .default_message{
+      display: none;
+    }
+    .custom_message{
+      &:after{
+        content: 'TA Grading View';
+      }
+    }
+  }
 }
