@@ -14,15 +14,6 @@ from . import course_models
 
 WORKGROUP_API = 'api/workgroups'
 
-PERMISSION_GROUPS = DottableDict(
-    MCKA_ADMIN='mcka_role_mcka_admin',
-    MCKA_SUBADMIN='mcka_role_mcka_subadmin',
-    CLIENT_ADMIN='mcka_role_client_admin',
-    CLIENT_SUBADMIN='mcka_role_client_subadmin',
-    MCKA_TA='mcka_role_mcka_ta',
-    CLIENT_TA='mcka_role_client_ta'
-)
-
 @api_error_protect
 def get_workgroups(group_object=JsonObject):
     ''' gets all workgroups'''
