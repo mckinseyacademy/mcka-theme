@@ -1,7 +1,8 @@
-#course-lessons, #course-group-work {
+#course-lessons,
+#course-group-work {
   .global-help,
   .global-help:visited {
-    color: $mckinsey-academy-blue-gray;
+    color: $mckinsey-academy-bright-gray;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -43,43 +44,43 @@
 
   .page-desc { padding-left: 8px; }
 
-  .lesson-pager {
-    text-align: center;
-    padding: rem-calc(40) 0 rem-calc(60);
+  .page-to {
+    color: $pure-white;
+    position: absolute;
+    cursor: default;
+    border-radius: 50%;
+    display: block;
+    background-color: #dddddd;
+    top: 50%;
+    margin-top: -25px;
+    @include square-size(rem-calc(50));
+    @include font-spec(30);
+    @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
 
-    .page-to {
-      color: $pure-white;
-      position: relative;
-      margin: 0 10px;
-      border-radius: 50%;
-      display: inline-block;
-      background-color: #dddddd;
-      @include square-size(rem-calc(50));
-      @include font-spec(30);
-      @include square-size(50px);
-      @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
-      &[href] {
-        background-color: $mckinsey-academy-alt-blue;
-        .go-to-next{
-          @include font-spec(14,semibold,16);
-          color: $mckinsey-academy-alt-blue;
-          width: 200px;
-          position: absolute;
-          left: 55px;
-          bottom: 15px;
-          text-align: left;
-          &:hover{
-            color: $mckinsey-academy-blue-gray;
-          }
-        }
-      }
+    &.previous { left: -80px; }
+    &.next { right: -80px; }
 
-      i {
+    &[href] {
+      cursor: pointer;
+      background-color: $mckinsey-academy-alt-blue;
+      &:hover { background-color: $mckinsey-academy-blue-gray; }
+
+      .go-to-next{
+        @include font-spec(14,semibold,16);
+        color: $mckinsey-academy-alt-blue;
+        width: 200px;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -15px 0 0 -9.5px;
+        left: 55px;
+        bottom: 15px;
+        text-align: left;
       }
+    }
+
+    i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -15px 0 0 -9.5px;
     }
   }
 }
