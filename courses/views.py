@@ -308,6 +308,13 @@ def course_progress(request, course_id):
         'color': '#e37121'
     })
 
+    pro_forma = round(gradebook.pro_forma_grade)
+    bar_chart[0]['values'].append({
+        'value': pro_forma,
+        'color': 'none'
+        
+    })
+
     data = {
         'bar_chart': json.dumps(bar_chart),
         'completed_modules': completed_modules,
