@@ -1,12 +1,11 @@
 from django.conf import settings
-from courses.controller import build_page_info_for_course, locate_chapter_page
+from courses.controller import build_page_info_for_course, locate_chapter_page, load_course_progress
 
 from courses.views import _inject_formatted_data
 from api_client import course_api, user_api
 from accounts.controller import get_current_course_for_user, get_current_program_for_user, clear_current_course_for_user
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
-
 
 def user_program_data(request):
     ''' Makes user and program info available to all templates '''
@@ -35,6 +34,9 @@ def user_program_data(request):
             # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
             _inject_formatted_data(program, course, None, get_static_tab_context())
 
+            # Inject course progress for nav header
+            load_course_progress(course, request.user.id)
+
             # Inject lesson assessment scores
             assesments = {}
 
@@ -60,13 +62,11 @@ def user_program_data(request):
                         lesson.assesment_score = assesments[url_name]
                         break
 
-
     data = {
         "course": course,
         "program": program,
     }
     return data
-
 
 def settings_data(request):
     ''' makes global settings available to all templates '''

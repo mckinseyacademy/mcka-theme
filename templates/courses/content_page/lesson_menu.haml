@@ -1,6 +1,11 @@
 - for lesson in course.chapters
   - if lesson.is_released and lesson.id != current_chapter.id
-    %a.lesson-index{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
+    %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
       Lesson ={lesson.index}: ={lesson.name}
+      .lesson-progress-bar
+        .bar{style: "width:#{lesson.progress}%;"}
   - else
-    .not-released Lesson ={lesson.index}: ={lesson.name}
+    %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}", disabled: None}
+      Lesson ={lesson.index}: ={lesson.name}
+      .lesson-progress-bar
+        .bar{style: "width:#{lesson.progress}%;"}

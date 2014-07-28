@@ -12,7 +12,7 @@ from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
 from .controller import update_bookmark, group_project_location, progress_percent, group_project_reviews, get_course_ta
-from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics
+from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, average_progress
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import course_api, user_api, project_api, user_models, workgroup_api
@@ -34,7 +34,6 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
 
     for idx, lesson in enumerate(course.chapters, start=1):
         lesson.index = idx
-        lesson.tick_marks = [i * 20 <= 100 for i in range(1, 6)]
         if static_tab_info:
             lesson_description = static_tab_info.get("lesson{}".format(idx), None)
             if lesson_description:
@@ -61,12 +60,7 @@ def course_landing_page(request, course_id):
     course = load_course(course_id, 3)
     load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
-    completions = course_api.get_course_completions(course_id, request.user.id)
-    completion_metrics = course_api.get_course_metrics_completions(course_id, request.user.id)
-    module_count = course.module_count()
-    completion_percent = progress_percent(completion_metrics.completions, module_count)
-    course_avg_percent = progress_percent(completion_metrics.course_avg, module_count)
-    completed_modules = [result.content_id for result in completions.results]
+
     social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
 
@@ -85,14 +79,12 @@ def course_landing_page(request, course_id):
         "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
-        "completed_modules": completed_modules,
         "proficiency": int(round(proficiency.points)),
         "proficiency_graph": int(5 * round(proficiency.points/5)),
         "cohort_proficiency_average": int(round(proficiency.course_avg)),
         "social_total": social_total,
         "cohort_social_average": 28,
-        "completion_percent": completion_percent,
-        "course_avg_percent": course_avg_percent,
+        "average_progress": average_progress(course, request.user.id),
     }
     return render(request, 'courses/course_main.haml', data)
 
@@ -254,16 +246,8 @@ def course_discussion(request, course_id):
 @check_user_course_access
 def course_progress(request, course_id):
 
-    course = load_course(course_id, 4)
+    course = load_course(course_id, 3)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
-
-    completions = course_api.get_course_completions(course_id, request.user.id)
-    completed_modules = [result.content_id for result in completions.results]
-
-    completion_metrics = course_api.get_course_metrics_completions(course_id, request.user.id)
-    module_count = course.module_count()
-    completion_percent = progress_percent(completion_metrics.completions, module_count)
-    course_avg_percent = progress_percent(completion_metrics.course_avg, module_count)
 
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
@@ -309,12 +293,10 @@ def course_progress(request, course_id):
 
     data = {
         'bar_chart': json.dumps(bar_chart),
-        'completed_modules': completed_modules,
-        'completion_percent': completion_percent,
-        'course_avg_percent': course_avg_percent,
         'pass_grade': pass_grade,
         'graders': graders,
         'group_activities': group_activities,
+        "average_progress": average_progress(course, request.user.id),
     }
     return render(request, 'courses/course_progress.haml', data)
 

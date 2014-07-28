@@ -21,7 +21,6 @@ GROUP_PROJECT_CATEGORY = 'group-project'
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
 
-
 # logic functions - recieve api implementor for test
 
 def build_page_info_for_course(
@@ -89,7 +88,6 @@ def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
 
     return course_detail.position_tree
 
-
 def locate_chapter_page(
     user_id,
     course_id,
@@ -135,7 +133,6 @@ def locate_chapter_page(
     page_id = page.id if page else None
 
     return course_id, chapter_id, page_id
-
 
 # pylint: disable=too-many-arguments
 def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user_api_impl=user_api):
@@ -191,7 +188,6 @@ def group_project_location(user_id, course, sequential_id=None):
 
     return project_group, group_project, sequential, page
 
-
 def load_static_tabs(course_id):
     static_tabs = get_static_tab_context()
     if static_tabs is None:
@@ -200,6 +196,23 @@ def load_static_tabs(course_id):
 
     return static_tabs
 
+def load_course_progress(course, user_id):
+    completions = course_api.get_course_completions(course.id, user_id)
+    completed_ids = [result.content_id for result in completions.results]
+    vertical_ids = course.vertical_ids()
+    for lesson in course.chapters:
+        lesson.progress = 0
+        lesson_vertical_ids = course.lesson_vertical_ids(lesson.id)
+        if len(lesson_vertical_ids) > 0:
+            matches = set(lesson_vertical_ids).intersection(completed_ids)
+            lesson.progress = 100 * len(matches) / len(lesson_vertical_ids)
+    actual_completions = set(vertical_ids).intersection(completed_ids)
+    course.user_progress = 100 * len(actual_completions) / len(vertical_ids)
+
+def average_progress(course, user_id):
+    module_count = course.module_count()
+    metrics = course_api.get_course_metrics_completions(course.id, user_id)
+    return progress_percent(metrics.course_avg, module_count)
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
@@ -299,7 +312,6 @@ def social_total(social_metrics):
 
     return social_total
 
-
 def social_metrics(course_id, user_id):
     ''' returns social engagement points and leaders '''
     course_metrics = course_api.get_course_social_metrics(course_id)
@@ -316,7 +328,6 @@ def social_metrics(course_id, user_id):
         user.avatar_url = user.image_url(40)
         point_sum += user.points
         users.append(user)
-
 
     course_avg = point_sum / len(users) if len(users) > 0 else 0
 

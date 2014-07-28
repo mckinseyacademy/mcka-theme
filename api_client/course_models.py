@@ -12,7 +12,6 @@ from .json_object import CategorisedJsonObject, JsonObject
 # don't need a public method because they inherit from the base implementation
 # pylint: disable=too-few-public-methods
 
-
 class Page(CategorisedJsonObject):
 
     ''' object representing a page / module within a subsection '''
@@ -27,18 +26,15 @@ class Page(CategorisedJsonObject):
 
         return [child.category for child in self.children]
 
-
 class Sequential(CategorisedJsonObject):
 
     ''' object representing a subsection within a chapter / lesson '''
     required_fields = ["id", "name", ]
 
-
 class Chapter(CategorisedJsonObject):
 
     ''' object representing a chapter / lesson within a course '''
     required_fields = ["id", "name", ]
-
 
 class Course(CategorisedJsonObject):
 
@@ -80,8 +76,6 @@ class Course(CategorisedJsonObject):
             return days
         return 0
 
-
-
     def module_count(self):
         module_count = 0
         for chapter in self.chapters:
@@ -90,9 +84,25 @@ class Course(CategorisedJsonObject):
 
         return module_count
 
+    def vertical_ids(self):
+        verticals = []
+        for lesson in self.chapters:
+            for sequential in lesson.sequentials:
+                verticals.extend([child.id for child in sequential.children])
+        return verticals
+
+    def lesson_vertical_ids(self, lesson_id):
+        verticals = []
+        try:
+            lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
+            for sequential in lesson.sequentials:
+                verticals.extend([child.id for child in sequential.children])
+            return verticals
+        except:
+            return verticals
+
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
-
 
 class CourseList(JsonObject):
     object_map = {

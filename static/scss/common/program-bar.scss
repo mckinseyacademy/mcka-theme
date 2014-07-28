@@ -34,9 +34,12 @@
         a, a:visited {
           color: $pure-white;
           text-decoration: none;
+          padding-bottom: 10px;
+          i { @include font-spec(22px); }
 
-          i {
-            @include font-spec(22px);
+          &[disabled] {
+            color: $mckinsey-academy-black !important;
+            pointer-events: none;
           }
         }
 
