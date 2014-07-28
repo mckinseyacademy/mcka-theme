@@ -1,5 +1,6 @@
 ''' Objects for users / authentication built from json responses from API '''
 import hashlib
+import json
 
 from django.conf import settings
 
@@ -60,6 +61,21 @@ class UserResponse(JsonObject):
             return self.full_name
 
         return "{} {}".format(self.first_name, self.last_name)
+
+    def to_json(self):
+        ''' return UserResponse object as json '''
+        return json.dumps(self.to_dict())
+
+    def to_dict(self):
+        ''' return UserResponse object as dict '''
+        unserializable_fields = ['uri', 'resources', 'created']
+        user = {}
+        for field, value in self.__dict__.iteritems():
+            if field not in unserializable_fields:
+                if field == 'avatar_url':
+                    setattr(self, 'avatar_url', self.image_url(size=40))
+                user[field] = self.get(field)
+        return user
 
 class AuthenticationResponse(JsonObject):
 

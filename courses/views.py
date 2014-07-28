@@ -163,16 +163,7 @@ def course_cohort(request, course_id):
             for student in workgroup.users:
                 user = user_api.get_user(student.id)
                 if user.get('city') != '':
-                    metrics.groups_users.append({"id": user.get('id'),
-                                                    "username": user.get('username'),
-                                                    "first_name": user.get('first_name'),
-                                                    "last_name": user.get('last_name'),
-                                                    "country": user.get('country'),
-                                                    "city": user.get('city'),
-                                                    "avatar_url": user.image_url(size=40),
-                                                    "full_name": user.get('full_name'),
-                                                    "title": user.get('title'),
-                                                })
+                    metrics.groups_users.append(user.to_dict())
     metrics.groups_users = json.dumps(metrics.groups_users)
 
     metrics.cities = []
@@ -182,28 +173,16 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
-    ta_users = get_ta_users(course_id)
-    ta_user_json = []
+    ta_users = [u for u in get_ta_users(course_id) if hasattr(u, 'city')]
+    ta_user_json = {}
     if len(ta_users) > 0:
-        ta_user = random.choice(ta_users)
-        ta_user = user_api.get_user(ta_user.id)
-        if ta_user.get('city') != '':
-            ta_user_json = {"id": ta_user.get('id'),
-                                            "username": ta_user.get('username'),
-                                            "first_name": ta_user.get('first_name'),
-                                            "last_name": ta_user.get('last_name'),
-                                            "country": ta_user.get('country'),
-                                            "city": ta_user.get('city'),
-                                            "avatar_url": ta_user.image_url(size=40),
-                                            "full_name": ta_user.get('full_name'),
-                                            "title": ta_user.get('title'),
-                                        }
+        ta_user_json = random.choice(ta_users).to_json()
     data = {
         'proficiency': proficiency,
         'completions': completions,
         'social': social,
         'metrics': metrics,
-        'ta_user': json.dumps(ta_user_json),
+        'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
     }
     return render(request, 'courses/course_cohort.haml', data)
