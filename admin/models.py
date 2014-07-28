@@ -85,6 +85,9 @@ class Client(organization_models.Organization):
             users= user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
             return users.results
 
+    def fetch_students_by_enrolled(self):
+        return organization_api.get_users_by_enrolled(self.id)
+
 class ClientList(organization_models.OrganizationList):
     object_map = {
         "results": Client
