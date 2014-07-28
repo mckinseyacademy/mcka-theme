@@ -1018,11 +1018,11 @@ def permissions(request):
     if admin_company and admin_company.users:
         ids = ','.join(str(id) for id in admin_company.users)
         filtered_users = user_api.get_users([{ 'key': 'ids', 'value': ids }])
+        users = filtered_users.results
     else:
-        filtered_users = []
+        users = []
 
     # fetch roles for each user
-    users = filtered_users.results
     for user in users:
         groups = user_api.get_user_groups(user.id, 'permission')
         user.roles = ', '.join([group.name for group in groups])
