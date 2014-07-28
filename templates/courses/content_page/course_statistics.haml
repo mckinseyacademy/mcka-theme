@@ -2,7 +2,7 @@
   %section.course-proficiency.no-progress
     .sub-2
       Proficiency:
-      %a{href: '#'}
+      %a{href: "/courses/#{course.id}/cohort"}
         %i.fa.fa-arrow-circle-right
     .visualization
       .total= proficiency
@@ -19,7 +19,7 @@
   %section.course-engagement{class: "{% if social_total == 0 %}no-progress{% endif %}" }
     .sub-2
       Engagement:
-      %a{href: '#'}
+      %a{href: "/courses/#{course.id}/cohort"}
         %i.fa.fa-arrow-circle-right
     .visualization{class: "{% if social_total >= 90 %}filled{% endif %}"}
       .band-1{class: "{% if social_total >= 30 %}filled{% endif %}"}
