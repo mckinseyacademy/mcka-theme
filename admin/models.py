@@ -110,8 +110,3 @@ class WorkGroup(workgroup_models.Workgroup):
         })
 
         return workgroup
-
-class WorkGroupList(workgroup_models.WorkgroupList):
-    object_map = {
-        "results": WorkGroup
-    }
