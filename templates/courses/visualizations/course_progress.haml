@@ -9,5 +9,9 @@
     .bar{class: "{% if course.user_progress < average_progress %}trailing{% endif %}", style: "width:#{course.user_progress}%;"}
     .triangle{style: "left:#{average_progress}%"}
   .label-4 cohort average = ={average_progress}%
-  %a.info{href: '#'}
+  %a.info{'data-reveal-id': 'mckinsey_progress_help'}
     %i.fa.fa-info-circle
+  #mckinsey_progress_help.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %p Prosciutto pig ground round, jowl ball tip swine beef pork belly beef ribs meatloaf rump. T-bone salami drumstick porchetta.
