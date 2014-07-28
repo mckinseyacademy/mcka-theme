@@ -26,6 +26,9 @@ Apros.models.Chart = Backbone.Model.extend({
           }
         }
       });
+
+    d3.selectAll(selector + ' .positive text')
+      .style('visibility', 'hidden');
   },
 
   style_y_axis: function(selector) {
@@ -49,6 +52,27 @@ Apros.models.Chart = Backbone.Model.extend({
       .attr('height', this.chart.yAxis.scale()(pass_grade));
   },
 
+  style_pro_forma: function(selector) {
+    var svg = d3.select(selector);
+    var temp = d3.selectAll(selector + ' .nv-bar');
+    var tempSize = temp[0].length;
+
+    //set pro_forma class for last bar
+    temp.attr('class', function(d,i){
+      return i == tempSize - 1 ? 'pro_forma' : 'nv-bar';
+    }) 
+
+    svg.select('.pro_forma rect')
+      .style('fill', 'none')
+      .style('stroke', '#e37121')
+      .style('stroke-dasharray', '2,2')
+      .style('stroke-opacity', '1');
+
+    svg.select('.pro_forma text')
+      .style('visibility', 'visible');
+
+  }, 
+
   historical_bar_chart: function(selector) {
     this.selector = selector;
     var _this = this;
@@ -71,6 +95,7 @@ Apros.models.Chart = Backbone.Model.extend({
       _this.load_chart_data(selector);
       _this.word_wrap_labels(selector);
       _this.style_y_axis(selector);
+      _this.style_pro_forma(selector);
 
 
       d3.select(selector + ' .nv-x.nv-axis > g')
@@ -78,34 +103,6 @@ Apros.models.Chart = Backbone.Model.extend({
         .selectAll('text')
         .style('text-anchor', 'end')
         .attr("class", "x-axis-label")
-
-
-      var temp = d3.selectAll(selector + ' .nv-bar rect')
-
-      //temp.style('fill', 'none');
-      var tempSize = temp[0][4].length
-        //.selectAll('g')
-
-        console.log(temp[0].nextSibling);
-
-        temp.style('stroke', function(d,i){
-          return i == tempSize - 1? 'red' : 'blue';
-        })
-        
-        temp.style('stroke-dasharray', function(d,i){
-          return i == tempSize - 1? '5,5' : '2,2';
-        })
-
-        temp.style('stroke-width', function(d,i){
-          return i == tempSize - 1? '4' : '1';
-        })
-
-        
-        //temp.showValues(true);
-
-        //console.log(chart.xAxis);
-        console.log(temp);
-
 
 
       nv.utils.windowResize(chart.update);
