@@ -286,7 +286,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         "programs": programs,
     }
     if detail_view == "programs" or detail_view == "courses":
-        data["students"] = client.fetch_students()
+        data["students"] = client.fetch_students_by_enrolled()
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
@@ -299,9 +299,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "programs":
             for student in data["students"]:
                 user = user_api.get_user(student.id)
-                student.created = student.created.isoformat()
-                if user.is_active == True:
-                    student.enrolled = True
+                student.created = user.created.isoformat()
 
     if upload_results:
         data["upload_results"] = _format_upload_results(upload_results)

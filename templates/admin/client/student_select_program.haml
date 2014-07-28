@@ -37,7 +37,7 @@
         %td= student.email
         %td= student.created
         %td{style: "color: red;"} admin
-        - if student.enrolled
+        - if student.course_count > 0
           %td enrolled
           %td
         - else
