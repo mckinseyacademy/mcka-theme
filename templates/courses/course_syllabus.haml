@@ -2,6 +2,8 @@
 - block current_content
   #course-syllabus
     %h1 Syllabus
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
     %section
       - autoescape off
         = syllabus.content

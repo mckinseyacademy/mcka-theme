@@ -47,6 +47,25 @@
   }
 }
 
+#course-lessons,
+#course-group-work,
+#course-cohort,
+#course-discussion,
+#course-news,
+#course-overview,
+#course-progress,
+#course-resources,
+#course-syllabus{
+  .global-help,
+  .global-help:visited {
+    color: $mckinsey-academy-bright-gray;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    @include font-spec(20);
+  }
+}
+
 @import './overview';
 @import './lessons';
 @import './news';
