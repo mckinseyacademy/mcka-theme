@@ -198,7 +198,7 @@ def load_static_tabs(course_id):
 
 def load_course_progress(course, user_id):
     completions = course_api.get_course_completions(course.id, user_id)
-    completed_ids = [result.content_id for result in completions.results]
+    completed_ids = [result.content_id for result in completions]
     component_ids = course.components_ids()
     for lesson in course.chapters:
         lesson.progress = 0

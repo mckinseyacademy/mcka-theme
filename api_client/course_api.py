@@ -264,7 +264,7 @@ def get_course_completions(course_id, user_id=None):
     )
 
     if user_id:
-        url += '?user_id={}'.format(user_id)
+        url += '&user_id={}'.format(user_id)
 
     response = GET(url)
     return JP.from_json(response.read())
