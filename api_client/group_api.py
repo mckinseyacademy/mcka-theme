@@ -178,7 +178,7 @@ def get_users_in_group(group_id):
     return user_list.users
 
 @api_error_protect
-def remove_user_from_group(group_id, user_id):
+def remove_user_from_group(user_id, group_id):
     ''' remove user association with a specific group '''
 
     response = DELETE(
