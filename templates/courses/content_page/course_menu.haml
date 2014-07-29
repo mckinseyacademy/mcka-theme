@@ -18,8 +18,11 @@
                       %i.fa.fa-bookmark
                   .label-5.index LESSON {{lesson.index}}:
                   %h2.name= lesson.name
-                  .lesson-progress-bar
-                    .bar{style: "width:#{lesson.progress}%;"}
+                  - if lesson.progress > 0
+                    - if lesson.progress == 100
+                      .lesson-progress.complete Completed
+                    - else
+                      .lesson-progress ={lesson.progress}%
                 .back.background-alt-blue
                   .label-2.description
                     - autoescape off

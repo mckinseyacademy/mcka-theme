@@ -212,16 +212,16 @@ def load_static_tabs(course_id):
 
 def load_course_progress(course, user_id):
     completions = course_api.get_course_completions(course.id, user_id)
-    completed_ids = [result.content_id for result in completions.results]
-    vertical_ids = course.vertical_ids()
+    completed_ids = [result.content_id for result in completions]
+    component_ids = course.components_ids()
     for lesson in course.chapters:
         lesson.progress = 0
-        lesson_vertical_ids = course.lesson_vertical_ids(lesson.id)
-        if len(lesson_vertical_ids) > 0:
-            matches = set(lesson_vertical_ids).intersection(completed_ids)
-            lesson.progress = 100 * len(matches) / len(lesson_vertical_ids)
-    actual_completions = set(vertical_ids).intersection(completed_ids)
-    course.user_progress = 100 * len(actual_completions) / len(vertical_ids)
+        lesson_component_ids = course.lesson_component_ids(lesson.id)
+        if len(lesson_component_ids) > 0:
+            matches = set(lesson_component_ids).intersection(completed_ids)
+            lesson.progress = 100 * len(matches) / len(lesson_component_ids)
+    actual_completions = set(component_ids).intersection(completed_ids)
+    course.user_progress = 100 * len(actual_completions) / len(component_ids)
 
 def average_progress(course, user_id):
     module_count = course.module_count()

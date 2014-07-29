@@ -97,6 +97,14 @@ class Course(CategorisedJsonObject):
                 verticals.extend([child.id for child in sequential.children])
         return verticals
 
+    def components_ids(self):
+        components = []
+        for lesson in self.chapters:
+            for sequential in lesson.sequentials:
+                for page in sequential.pages:
+                    components.extend([child.id for child in page.children])
+        return components
+
     def lesson_vertical_ids(self, lesson_id):
         verticals = []
         try:
@@ -106,6 +114,17 @@ class Course(CategorisedJsonObject):
             return verticals
         except:
             return verticals
+
+    def lesson_component_ids(self, lesson_id):
+        components = []
+        try:
+            lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
+            for sequential in lesson.sequentials:
+                for page in sequential in sequential.pages:
+                    components.extend([child.id for child in page.children])
+            return components
+        except:
+            return components
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
