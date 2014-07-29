@@ -61,11 +61,14 @@
 
         .index { margin-bottom: 20px; }
 
-        .lesson-progress-bar {
+        .lesson-progress {
+          color: $mckinsey-dark-grey;
           position: absolute;
           bottom: 7px;
           left: 7px;
-          width: 126px;
+          font-style: italic;
+          @include font-spec(12, 600);
+          &.complete { color: $mckinsey-green; }
         }
       }
     }
