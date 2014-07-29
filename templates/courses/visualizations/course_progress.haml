@@ -1,7 +1,7 @@
 %section.course-progress
   .sub-2.progress-link
     Progress:
-    %a{href: '#'}
+    %a{href: "/courses/#{course.id}/cohort"}
       %i.fa.fa-arrow-circle-right
   .visualization
     .total{style: "left:#{course.user_progress}%;"}
@@ -14,4 +14,4 @@
   #mckinsey_progress_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    %p Prosciutto pig ground round, jowl ball tip swine beef pork belly beef ribs meatloaf rump. T-bone salami drumstick porchetta.
+    %p This visualization displays your progress through course content. The average progress of your cohort is displayed as well. Note that your progress is based on consumption of all individual modules and readings within the course.

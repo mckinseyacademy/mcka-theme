@@ -326,7 +326,7 @@ def get_user_organizations(user_id, organization_object=organization_models.Orga
     return JP.from_json(response.read(), organization_object)
 
 @api_error_protect
-def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_models.WorkgroupList):
+def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_models.Workgroup):
     ''' return organizations with which the user is associated '''
     url = '{}/{}/{}/workgroups/?page_size=0'.format(
         settings.API_SERVER_ADDRESS,
