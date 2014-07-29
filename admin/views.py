@@ -55,7 +55,7 @@ def ajaxify_http_redirects(func):
     return wrapper
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def home(request):
     return render(
         request,
@@ -542,7 +542,7 @@ def download_program_report(request, program_id):
     return response
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def download_group_projects_report(request, course_id):
     filename = slugify(
         unicode(
@@ -684,7 +684,7 @@ def add_students_to_course(request, client_id):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def workgroup_list(request):
     ''' handles requests for login form and their submission '''
 
@@ -709,7 +709,7 @@ def workgroup_list(request):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def workgroup_programs_list(request):
     ''' handles requests for login form and their submission '''
 
@@ -767,7 +767,7 @@ def load_group_projects_info_for_course(course, companies):
             )
     return group_projects
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def workgroup_detail(request, course_id, workgroup_id):
     '''
     Get detailed information about the specific workgroup for this course
@@ -800,7 +800,7 @@ def workgroup_detail(request, course_id, workgroup_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 

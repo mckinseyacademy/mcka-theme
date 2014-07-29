@@ -20,12 +20,14 @@
             %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
               Workgroup Completion Report
         %hr
-          %section
-            %input#course_id{'type': 'hidden', 'value': '#{course.id}'}
+        %section
+          %input#course_id{'type': 'hidden', 'value': '#{course.id}'}
+          - if user.is_mcka_admin
             #student-list.large-7.columns
               .sub-1 Course Participants:
               - include 'admin/workgroup/student_table.haml'
-            .large-5.columns.group-selection
+          .large-5.columns.group-selection
+            - if user.is_mcka_admin
               .sub-1= _("Group Students:")
               .description= _("Create and manage existing groups of students within this course below by dragging names into groups or removing them.")
               %select.group-project-select
@@ -49,26 +51,27 @@
                   %li.company-filter{'data-company-filter': 'all'} All Companies
                   - for company in companies
                     %li.company-filter{'data-company-filter': '#{company.id}'}= company.display_name
-              - for group in groups
-                .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
-                  .group-data
-                    %span.label-1= group.display_name
-                    %a{href: "/admin/workgroup/course/#{course.id}/detail/#{group.id}"}
-                      %span.detail-link= _("Members:")
-                        %span.student-count= group.students_count
-                    %i.caret.fa.fa-caret-down
-                  .group-info.students
-                    %span.label-1= _("Members:")
-                    .students-list
-                      - for student in group.users
-                        .student{'name': '#{student.id}'}
-                          .label-2= student.username
-                          %a.label-2{href: "mailto:#{student.email}"}= student.email
-                          .label-2= student.company.display_name
+            - for group in groups
+              .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
+                .group-data
+                  %span.label-1= group.display_name
+                  %a{href: "/admin/workgroup/course/#{course.id}/detail/#{group.id}"}
+                    %span.detail-link= _("Members:")
+                      %span.student-count= group.students_count
+                  %i.caret.fa.fa-caret-down
+                .group-info.students
+                  %span.label-1= _("Members:")
+                  .students-list
+                    - for student in group.users
+                      .student{'name': '#{student.id}'}
+                        .label-2= student.username
+                        %a.label-2{href: "mailto:#{student.email}"}= student.email
+                        .label-2= student.company.display_name
+                        - if user.is_mcka_admin
                           %a.remove{href: '/admin/workgroup/group/#{group.id}/remove'}
                             %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
-                    .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
-                      Update
+                  .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
+                    Update
   #create-project-modal.reveal-modal{"data-reveal": "true"}
     %form#new-project-form{action: "/admin/workgroup/project/create/#{course.id}", method: "POST"}
       .close-reveal-modal
