@@ -334,7 +334,7 @@ def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_mode
         user_id,
     )
     if course_id:
-        url += '?course_id={}'.format(course_id)
+        url += '&course_id={}'.format(course_id)
 
     response = GET(url)
     return JP.from_json(response.read(), workgroup_object)
