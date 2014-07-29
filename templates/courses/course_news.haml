@@ -2,6 +2,8 @@
 - block current_content
   #course-news
     %h1 News
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
     - for entry in news
       %section
         .sub-1= entry.date

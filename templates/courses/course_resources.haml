@@ -2,5 +2,7 @@
 - block current_content
   #course-resources
     %h1 Resources
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
     - autoescape off
       = resources.content

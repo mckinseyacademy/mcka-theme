@@ -2,6 +2,8 @@
 - load staticfiles
 - block current_content
   #course-discussion
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
     - if not has_course_discussion
       .row
         .error= _("No Discussion has been configured for this course")

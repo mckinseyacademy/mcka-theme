@@ -2,6 +2,8 @@
 - block current_content
   #course-progress
     %h1 Course Progress for '={user.username}'
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
     .sub-1 PROGRESS
     %p.style-6 You are ={course.user_completion_percent}% of the way through the course based on completion of modules within lessons:
     - include "courses/visualizations/course_progress.haml"

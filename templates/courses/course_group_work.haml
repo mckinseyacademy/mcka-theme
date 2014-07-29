@@ -2,6 +2,8 @@
 - load staticfiles
 - block current_content
   #course-group-work
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
     - if not group_project or not project_group
       .row
         .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
