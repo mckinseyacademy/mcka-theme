@@ -18,7 +18,8 @@ def user_program_data(request):
         # in subsequent calls
         try:
             course_id = get_current_course_for_user(request)
-            course = load_course(course_id)
+            if not course_id is None:
+                course = load_course(course_id)
         except:
             clear_current_course_for_user(request)
             course_id = get_current_course_for_user(request)
