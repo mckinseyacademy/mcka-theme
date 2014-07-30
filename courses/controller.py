@@ -363,9 +363,6 @@ def social_metrics(course_id, user_id):
 
 def get_ta_users(course_id):
     role = "staff"
-    ta_group = []
-    ta_users = []
-    useri = course_api.get_users_filtered_by_role(course_id)
     ta_users_base = [user for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
     ta_users = [user_api.get_user(user.id) for user in ta_users_base]
     return ta_users
