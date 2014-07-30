@@ -132,13 +132,15 @@ This file can only be found in the devstack environment
 
 _This should include the fully qualified domain name for the Apros system that we'll set up_
 
-#### Enable API and CORS Headers
+#### Enable API, CORS and PROGRESS Headers
 You should find the FEATURES section already existing. _It appears that these are generally kept in alphabetical order._
 
     "FEATURES": {
         "API": true,
         ...
         "ENABLE_CORS_HEADERS": true,
+        ...
+        "MARK_PROGRESS_ON_GRADING_EVENT": true,
         ...
     },
 
