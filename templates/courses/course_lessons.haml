@@ -13,11 +13,6 @@
     - include "courses/content_page/lesson_pager.haml"
 - block js_snippets
   :javascript
-    var lesson_status = {
-      course_id: '{{ course_id }}',
-      chapter_id: '{{ chapter_id }}',
-      page_id: '{{ current_page.id }}'
-    };
     $(function(){
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
       var lesson_data = {

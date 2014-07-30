@@ -375,15 +375,8 @@ def get_ta_users(course_id):
     return ta_users
 
 def choose_random_ta(course_id):
-    ta_users = [u for u in get_ta_users(course_id) if getattr(u, 'city', False)]
+    ta_users = [u for u in get_ta_users(course_id) if hasattr(u, 'city')]
     ta_user = {}
     if len(ta_users) > 0:
         ta_user = random.choice(ta_users)
     return ta_user
-
-def lessons_to_dict(obj, allowedFields):
-    ''' return UserResponse object as dict '''
-    dictObj = {}
-    for field in allowedFields:
-        dictObj[field] = getattr(obj, field, '')
-    return dictObj
