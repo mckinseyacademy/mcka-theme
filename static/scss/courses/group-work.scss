@@ -95,4 +95,31 @@
       }
     }
   }
+
+  .avatar{
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('/static/image/empty_avatar.png');
+  }
+
+  .group-project-xblock-wrapper{
+    .select_group{
+      .avatar{
+        background-image: none;
+        border: 2px solid $mckinsey-grey;
+        display: inline-block;
+        font-size:25px;
+        padding-top:5px;
+        vertical-align: middle;
+        color: $pure-white;
+        background-color: $mckinsey-academy-alt-blue;
+      }
+      &.selected{
+        .avatar{
+          border-color: $mckinsey-orange;
+        }
+      }
+    }
+  }
 }
