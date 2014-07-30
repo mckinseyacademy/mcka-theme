@@ -13,21 +13,6 @@ window.Apros = {
 
 _(Apros).extend(Backbone.Events);
 
-var lessonsMenuTemplate =
-  "<% _.each(data.lessons, function(lesson, key){ %>" +
-  "<% if(lesson.is_released && lesson.id != data.current_chapter){ %>" +
-    "<a href='<%= lesson.navigation_url %>' title='<%= lesson.name %>'>" +
-    "Lesson: <%= lesson.index %>: <%= lesson.name %>" +
-    "<div class='lesson-progress-bar'><div class='bar' style='width:<%= lesson.progress %>%'>" +
-    "</div></div></a>" +
-  "<% }else{ %>" +
-    "<a href='<%= lesson.navigation_url %>' title='<%= lesson.name %>' disabled='disabled'>" +
-    "Lesson: <%= lesson.index %>: <%= lesson.name %>" +
-    "<div class='lesson-progress-bar'><div class='bar' style='width:<%= lesson.progress %>%'>" +
-    "</div></div></a>" +
-  "<% } %>" +
-"<% }) %>";
-
 $(function(){
   Apros.initialize()
   /* Javascript to initialise on ready as defined by jquery */
@@ -72,38 +57,6 @@ $(function(){
     }
     $('.player-wrapper', modal).empty();
   });
-
-  $('#lessons-content-menu').on('click', function(){
-      var el = $(this);
-      var menu = $('#lessons-content');
-      if(menu.html() == ''){
-        var url = el.data('lessonslist');
-        var data ={
-              'csrfmiddlewaretoken':  $.cookie('apros_csrftoken')
-              };
-        if(typeof(lesson_status) != "undefined")
-        {
-          $.extend(data, lesson_status);
-        }
-        $('body, .course_nav').css('cursor', 'wait');
-        $.ajax({
-          url: url,
-          method: "POST",
-          data: data
-        }).done(function(data){
-          $('body, .course_nav').css('cursor', 'inherit');
-          if(data.message == 'success'){
-            $('#lessons-content').html(_.template(lessonsMenuTemplate, {'data': data}));
-          }
-          else{
-            alert(data.message);
-          }
-        }).fail(function(){
-          $('body, .course_nav').css('cursor', 'inherit');
-          alert('Lessons menu could not be loaded.');
-        });
-      }
-    });
 
   // Load user profile information on demand
   $('.user-info').on('click', function(){
