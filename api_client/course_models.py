@@ -84,13 +84,6 @@ class Course(CategorisedJsonObject):
 
         return module_count
 
-    def vertical_ids(self):
-        verticals = []
-        for lesson in self.chapters:
-            for sequential in lesson.sequentials:
-                verticals.extend([child.id for child in sequential.children])
-        return verticals
-
     def components_ids(self):
         components = []
         for lesson in self.chapters:
@@ -99,23 +92,14 @@ class Course(CategorisedJsonObject):
                     components.extend([child.id for child in page.children])
         return components
 
-    def lesson_vertical_ids(self, lesson_id):
-        verticals = []
-        try:
-            lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
-            for sequential in lesson.sequentials:
-                verticals.extend([child.id for child in sequential.children])
-            return verticals
-        except:
-            return verticals
-
     def lesson_component_ids(self, lesson_id):
         components = []
         try:
             lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
             for sequential in lesson.sequentials:
-                for page in sequential in sequential.pages:
+                for page in sequential.pages:
                     components.extend([child.id for child in page.children])
+            print components
             return components
         except:
             return components
