@@ -300,7 +300,7 @@ def get_course_metrics(course_id):
 @api_error_protect
 def get_course_metrics_by_city(course_id, cities=None):
     ''' retrieves course metrics '''
-    if cities == None:
+    if cities is None:
         url = '{}/{}/{}/metrics/cities/?page_size=0'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,

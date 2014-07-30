@@ -33,12 +33,10 @@
         - for lesson in course.chapters
           %tr
             %td.lesson.sub-1 ={lesson.index}: ={lesson.name}
-            - if lesson.due == None
-              %td.deadline.none -
-            - else
-              %td.deadline ={lesson.due}
-            - if lesson.assesment_score == None
-              %td.assessment.none -
+            %td.deadline
+              = lesson.due_upon
+            - ifequal lesson.assesment_score None
+              %td.assessment -
             - else
               %td.assessment ={lesson.assesment_score}%
             %td.lesson-progress
@@ -56,19 +54,16 @@
           %tr
             %td.lesson.sub-1 ={activity.name}
             %td.deadline
-              - if activity.due == None
-                \-
-              - else
-                = activity.due
+              = activity.due_upon
             %td.assessment
-              - if activity.score == None
+              - ifequal activity.score None
                 \-
               - else
                 ={activity.score}%
             %td
               %ul.group-grades
                 - for grade in activity.grades
-                  - if grade == None
+                  - ifequal grade None
                     %li -
                   - else
                     %li ={grade}

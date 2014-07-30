@@ -327,7 +327,7 @@ def home(request):
     course = programData.get('course')
 
     data = {'popup': {'title': '', 'description': ''}}
-    if request.session.get('program_popup') == None:
+    if request.session.get('program_popup') is None:
         if program:
             if program.id is not 'NO_PROGRAM':
                 days = ''
