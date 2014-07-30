@@ -2,10 +2,10 @@
   - for sequential in group_project.sequentials
     %li
       - if sequential.id != current_sequential.id
-        %a{href: "./group_work?seqid=#{sequential.id}"}
+        %a{href: "#{group_work_url}?seqid=#{sequential.id}"}
           = sequential.name
       - else
-        %a.selected{href: "./group_work?seqid=#{sequential.id}"}
+        %a.selected{href: "#{group_work_url}?seqid=#{sequential.id}"}
           = sequential.name
         - if sequential.is_group_project
           %span.activity_dots
