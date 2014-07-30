@@ -163,14 +163,17 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
-    ta_user = choose_random_ta(course_id).to_json()
+    ta_user_json = json.dumps({})
+    ta_user = choose_random_ta(course_id)
+    if hasattr(ta_user, 'to_json'):
+        ta_user_json = ta_user.to_json()
 
     data = {
         'proficiency': proficiency,
         'completions': completions,
         'social': social,
         'metrics': metrics,
-        'ta_user': ta_user,
+        'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
     }
     return render(request, 'courses/course_cohort.haml', data)

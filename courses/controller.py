@@ -362,20 +362,16 @@ def social_metrics(course_id, user_id):
     }
 
 def get_ta_users(course_id):
-    roles = get_groups_of_type('permission')
+    role = "staff"
     ta_group = []
     ta_users = []
-    for group in roles:
-        if group.name == "mcka_role_client_ta":
-            ta_group.append(str(group.id))
-        if group.name == "mcka_role_mcka_ta":
-            ta_group.append(str(group.id))
-    ta_users_base = course_api.get_users_filtered_by_group(course_id, (',').join(ta_group))
+    useri = course_api.get_users_filtered_by_role(course_id)
+    ta_users_base = [user for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
     ta_users = [user_api.get_user(user.id) for user in ta_users_base]
     return ta_users
 
 def choose_random_ta(course_id):
-    ta_users = [u for u in get_ta_users(course_id) if hasattr(u, 'city')]
+    ta_users = [u for u in get_ta_users(course_id) if getattr(u, 'city', False)]
     ta_user = {}
     if len(ta_users) > 0:
         ta_user = random.choice(ta_users)
