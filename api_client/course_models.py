@@ -84,13 +84,6 @@ class Course(CategorisedJsonObject):
 
         return module_count
 
-    def vertical_ids(self):
-        verticals = []
-        for lesson in self.chapters:
-            for sequential in lesson.sequentials:
-                verticals.extend([child.id for child in sequential.children])
-        return verticals
-
     def components_ids(self):
         components = []
         for lesson in self.chapters:
