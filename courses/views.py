@@ -18,8 +18,9 @@ from api_client import course_api, user_api, project_api, user_models, workgroup
 from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import is_user_in_permission_group, permission_group_required
 from main.models import CuratedContentItem
+from accounts.middleware.thread_local import get_course_context
 
-from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
+from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, lessons_to_dict, load_course_progress
 from .controller import update_bookmark, progress_percent, group_project_reviews, get_course_ta
 from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
@@ -375,6 +376,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     data = {
         "user": request.user,
         "course": course,
+        "chapter_id": chapter_id,
         "current_chapter": current_chapter,
         "current_sequential": current_sequential,
         "current_page": current_page,
@@ -388,6 +390,42 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "lms_sub_domain": lms_sub_domain,
     }
     return render(request, 'courses/course_lessons.haml', data)
+
+@login_required
+@check_user_course_access
+def get_lessons_list(request, course_id):
+
+    ''' return json with list of lessons in a course '''
+
+    if not course_id:
+        course_id = get_current_course_for_user(request)
+
+    chapter_id = request.POST.get('chapter_id', None)
+    page_id = request.POST.get('page_id', None)
+
+    try:
+        course, current_chapter, current_sequential, current_page = build_page_info_for_course(
+                course_id, chapter_id, page_id)
+        load_course_progress(course, request.user.id)
+        current_chapter_id = current_chapter.id
+        if chapter_id is None and page_id is None:
+            current_chapter_id = None
+
+        lessons = []
+        for lesson in course.chapters:
+            lesson = lessons_to_dict(lesson, ['is_released', 'id', 'navigation_url', 'name', 'index', 'progress', ])
+            lessons.append(lesson)
+
+    except:
+        return HttpResponse(
+            json.dumps({"message": _('Course chapters could not be loaded')}),
+            content_type='application/json'
+        )
+
+    return HttpResponse(
+        json.dumps({"message": "success", "lessons": lessons, "current_chapter": current_chapter_id}),
+        content_type='application/json'
+    )
 
 def course_notready(request, course_id):
     return render(request, 'courses/course_notready.haml')
