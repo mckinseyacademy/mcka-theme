@@ -2,6 +2,7 @@
 import datetime
 import math
 
+from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from .json_object import CategorisedJsonObject, JsonObject
@@ -16,7 +17,35 @@ from lib.util import LegacyIdConvert
 # don't need a public method because they inherit from the base implementation
 # pylint: disable=too-few-public-methods
 
-class Page(CategorisedJsonObject):
+class _HasDueDate(CategorisedJsonObject):
+    date_fields = ["due"]
+
+    @property
+    def due_upon(self):
+        due_date = self.due_date
+        if due_date is None:
+            return "-"
+        return due_date.strftime(settings.DATE_DISPLAY_FORMAT)
+
+    @property
+    def due_date(self):
+        if not self.due is None:
+            return self.due
+
+        if not hasattr(self, "children"):
+            return None
+
+        last_child_due_date = None
+        for ch in self.children:
+            child_due = ch.due_date if hasattr(ch, "due_date") else ch.due
+            if not child_due is None:
+                if last_child_due_date is None or child_due > last_child_due_date:
+                    last_child_due_date = child_due
+
+        return last_child_due_date
+
+
+class Page(_HasDueDate):
 
     ''' object representing a page / module within a subsection '''
     required_fields = ["id", "name", ]
@@ -32,12 +61,12 @@ class Page(CategorisedJsonObject):
 
         return [child.category for child in self.children]
 
-class Sequential(CategorisedJsonObject):
+class Sequential(_HasDueDate):
 
     ''' object representing a subsection within a chapter / lesson '''
     required_fields = ["id", "name", ]
 
-class Chapter(CategorisedJsonObject):
+class Chapter(_HasDueDate):
 
     ''' object representing a chapter / lesson within a course '''
     required_fields = ["id", "name", ]
@@ -57,7 +86,7 @@ class Course(CategorisedJsonObject):
         if hasattr(self, 'start') and not self.start is None:
             return "{} {}".format(
                 _("Available"),
-                self.start.strftime('%B %d, %Y')
+                self.start.strftime(settings.DATE_DISPLAY_FORMAT)
             )
         return None
 

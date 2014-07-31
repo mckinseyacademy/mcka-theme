@@ -564,11 +564,9 @@ def download_group_projects_report(request, course_id):
 
 def _prepare_program_display(program):
     if hasattr(program, "start_date") and hasattr(program, "end_date"):
-        date_format = _('%m/%d/%Y')
-
         program.date_range = "{} - {}".format(
-            program.start_date.strftime(date_format),
-            program.end_date.strftime(date_format),
+            program.start_date.strftime(settings.SHORT_DATE_FORMAT),
+            program.end_date.strftime(settings.SHORT_DATE_FORMAT),
             )
 
     return program
