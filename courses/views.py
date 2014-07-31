@@ -66,7 +66,6 @@ def course_landing_page(request, course_id):
     load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
 
-    social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
 
     social_total = 0
