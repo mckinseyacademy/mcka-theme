@@ -1,5 +1,4 @@
 ''' rendering templates from requests related to courses '''
-import math
 import json
 
 from django.conf import settings
@@ -14,13 +13,13 @@ from accounts.controller import get_current_course_for_user, set_current_course_
 from accounts.controller import check_user_course_access
 from admin.controller import load_course
 from admin.models import WorkGroup
-from api_client import course_api, user_api, project_api, user_models, workgroup_api
+from api_client import course_api, user_api, workgroup_api
 from api_client.group_api import PERMISSION_GROUPS
-from lib.authorization import is_user_in_permission_group, permission_group_required
+from lib.authorization import permission_group_required
 from main.models import CuratedContentItem
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
-from .controller import update_bookmark, progress_percent, group_project_reviews, get_course_ta
+from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 
@@ -253,7 +252,7 @@ def course_discussion(request, course_id):
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
 
-    mcka_ta = get_course_ta()
+    mcka_ta = choose_random_ta(course_id)
 
     data = {
         "vertical_usage_id": vertical_usage_id,

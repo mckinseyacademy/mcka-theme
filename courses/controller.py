@@ -1,7 +1,6 @@
 ''' Core logic to sanitise information for views '''
 #from urllib import quote_plus, unquote_plus
 
-import datetime
 import random
 from django.template.defaultfilters import floatformat
 
@@ -10,7 +9,6 @@ from django.conf import settings
 from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
 
 from api_client import course_api, user_api, user_models, workgroup_api
-from api_client.api_error import ApiError
 from api_client.project_models import Project
 from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS, get_groups_of_type
 from api_client.group_models import GroupInfo
@@ -288,17 +286,6 @@ def is_number(s):
     except ValueError:
         return False
     return True
-
-def get_course_ta():
-    mcka_ta = None
-    groups = get_groups_of_type('permission', group_object=GroupInfo)
-    for group in groups:
-        if group.name == PERMISSION_GROUPS.MCKA_TA:
-            users = group.get_users()
-            if users:
-                mcka_ta = users[0]
-            break
-    return mcka_ta
 
 def build_proficiency_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
