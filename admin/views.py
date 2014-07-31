@@ -1075,7 +1075,7 @@ def edit_permissions(request, user_id):
     is_ta = PERMISSION_GROUPS.MCKA_TA in permissions
     is_observer = PERMISSION_GROUPS.MCKA_OBSERVER in permissions
 
-    courses = user_api.get_user_courses(user_id)
+    courses = course_api.get_course_list()
     user_roles = user_api.get_user_roles(user_id)
 
     if request.method == 'POST':
