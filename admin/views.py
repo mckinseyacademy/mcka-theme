@@ -1102,24 +1102,26 @@ def edit_permissions(request, user_id):
 
                 if per_course_roles:
                     user_api.update_user_roles(user_id, per_course_roles)
-
                 else:
                     # empty list - delete all roles
                     for role in user_roles:
                         user_api.delete_user_role(user_id, role.course_id, role.role)
 
-                if user_api.USER_ROLES.OBSERVER in role_names and not is_observer:
-                    group_api.add_user_to_group(user_id, mcka_observer_id)
+                if user_api.USER_ROLES.OBSERVER in role_names:
+                    if not is_observer:
+                        group_api.add_user_to_group(user_id, mcka_observer_id)
                 elif is_ta:
                     group_api.remove_user_from_group(user_id, mcka_observer_id)
 
-                if user_api.USER_ROLES.STAFF in role_names and not is_ta:
-                    group_api.add_user_to_group(user_id, mcka_ta_id)
+                if user_api.USER_ROLES.STAFF in role_names:
+                    if not is_ta:
+                        group_api.add_user_to_group(user_id, mcka_ta_id)
                 elif is_ta:
                     group_api.remove_user_from_group(user_id, mcka_ta_id)
 
-                if form.cleaned_data.get('admin') and not is_admin:
-                    group_api.add_user_to_group(user_id, mcka_admin_id)
+                if form.cleaned_data.get('admin'):
+                    if not is_admin:
+                        group_api.add_user_to_group(user_id, mcka_admin_id)
                 elif is_admin:
                     group_api.remove_user_from_group(user_id, mcka_admin_id)
 
