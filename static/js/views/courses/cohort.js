@@ -92,10 +92,15 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   createCircle: function(data, city, layers){
       var city_name = data.query.join(' ');
-      var radius = (50 * city.count) / (25 + city.count);
+      var radius = 3 + (47 * city.count) / (25 + city.count);
       if(typeof data.results[0] != 'undefined'){
         var loc = data.results[0][0];
-        var marker = L.circleMarker([loc.lat, loc.lon]).setRadius(radius)
+        var marker = L.circleMarker([loc.lat, loc.lon], {
+            color: '#3384CA',
+            fillColor: '#3384CA',
+            stroke: false,
+            fillOpacity: 0.5
+        }).setRadius(radius)
           .bindPopup('<h4>' + city.name + '</h4><p>Participants: ' + city.count + '</p>');
         this.hoverizePopup(marker);
         layers.push(marker);
