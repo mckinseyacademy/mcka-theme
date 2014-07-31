@@ -33,15 +33,17 @@ class Command(BaseCommand):
                 self.stdout.write("Skipping %s, already exists" % group_name)
 
 
-        ''' Register McK admin, McK sub-admin, Client admin, client sub-admin, and TA users '''
+        ''' Register McK and TA users '''
         user_suffix = '_user'
         user_list = (
             ('mcka_admin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_ADMIN),
             ('mcka_subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_SUBADMIN),
             ('mcka_ta%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_TA),
+            ('mcka_observer%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_OBSERVER),
             ('client_admin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_ADMIN),
             ('client_subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_SUBADMIN),
             ('client_ta%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_TA),
+            ('client_observer%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_OBSERVER),
         )
         for user_tuple in user_list:
             user_data = {
@@ -82,10 +84,10 @@ class Command(BaseCommand):
 
         for user_tuple in user_list:
             if (user_tuple[0].startswith('mcka')):
-                user_api_response = user_api.get_users([{ 'key': 'username', 'value': user_tuple[0] }])
-                if user_api_response.results:
+                users = user_api.get_users([{ 'key': 'username', 'value': user_tuple[0] }])
+                if users:
                     self.stdout.write("Adding %s to %s" % (user_tuple[0], settings.ADMINISTRATIVE_COMPANY))
-                    admin_company.add_user(user_api_response.results[0].id)
+                    admin_company.add_user(users[0].id)
 
 
         self.stdout.write("Done")

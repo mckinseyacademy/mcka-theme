@@ -6,6 +6,7 @@ from django.forms.extras.widgets import SelectDateWidget
 
 from .models import Client, Program
 from main.models import CuratedContentItem
+from api_client.user_api import USER_ROLES
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -64,3 +65,28 @@ class CuratedContentItemForm(forms.ModelForm):
             'thumbnail_url', 'image_url', 'twitter_username', 'sequence',
             'display_date', 'created_at'
         ]
+
+
+class PermissionForm(forms.Form):
+    ''' edit roles for a single user '''
+    admin = forms.BooleanField(required=False, label=_("ADMIN"))
+    _per_course_roles = []
+
+    def available_roles(self):
+        return ((USER_ROLES.STAFF, _("TA")), (USER_ROLES.OBSERVER, _("OBSERVER")))
+
+    def per_course_roles(self):
+        return [self[name] for name in self._per_course_roles]
+
+    def __init__(self, courses, *args, **kwargs):
+        super(PermissionForm, self).__init__(*args, **kwargs)
+
+        for course in courses:
+            self.fields[course.id] = forms.MultipleChoiceField(
+                required=False,
+                label=course.name,
+                widget=forms.CheckboxSelectMultiple,
+                choices=self.available_roles()
+            )
+
+        self._per_course_roles = [course.id for course in courses]

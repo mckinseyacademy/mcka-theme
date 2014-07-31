@@ -1,0 +1,51 @@
+%header
+  %h1
+    = _("Roles for ")
+    ={user.username}
+  %p.description
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
+    nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+.close-reveal-modal
+  %i.fa.fa-times-circle
+
+%form.admin-form{action: "/admin/permissions/={user.id}/edit", method: "POST"}
+  - csrf_token
+
+  %table
+    %tbody
+      %tr
+        %td
+          = form.admin.label_tag
+        %td
+          = form.admin
+
+  - if form.per_course_roles
+
+    %hr
+
+    .sub-1= _("Course specific roles")
+    %p.description= _("Below are the courses this user is enrolled in.")
+
+    %table
+      %thead
+        %tr
+          %th
+          - for role in form.available_roles
+            %th.text-center
+              = role.1
+      %tbody
+        - for field in form.per_course_roles
+          %tr
+            %td
+              = field.label
+            - for choice in field
+              %td.text-center
+                = choice.tag
+
+  .error
+    - if error
+      = error
+
+  .submit-area
+    %input.button.radius.small{type: "submit", value: "#{submit_label}"}

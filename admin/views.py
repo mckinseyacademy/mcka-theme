@@ -37,6 +37,7 @@ from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
+from .forms import PermissionForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report
 
@@ -1010,25 +1011,137 @@ def not_authorized(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def permissions(request):
-
+    '''
+    Show users within "Administrative" company, and also users that have no company association
+    '''
     organizations = Organization.list()
     admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
 
+    # fetch users users that have no company association
+    users = user_api.get_users([{ 'key': 'has_organizations', 'value': 'false' }])
+
     # fetch users in administrative company
+    admin_users = []
     if admin_company and admin_company.users:
         ids = ','.join(str(id) for id in admin_company.users)
-        filtered_users = user_api.get_users([{ 'key': 'ids', 'value': ids }])
-        users = filtered_users.results
-    else:
-        users = []
+        admin_users = user_api.get_users([{ 'key': 'ids', 'value': ids }])
 
-    # fetch roles for each user
+    users.extend(admin_users)
+
+    # fetch roles (permissions) for each user
     for user in users:
-        groups = user_api.get_user_groups(user.id, 'permission')
-        user.roles = ', '.join([group.name for group in groups])
+        groups = user_api.get_user_groups(user.id, group_api.PERMISSION_TYPE)
+        group_names = [g.name for g in groups]
+        roles = []
+
+        if PERMISSION_GROUPS.MCKA_ADMIN in group_names:
+            roles.append(_('ADMIN'))
+
+        if PERMISSION_GROUPS.MCKA_TA in group_names:
+            roles.append(_('TA'))
+
+        if PERMISSION_GROUPS.MCKA_OBSERVER in group_names:
+            roles.append(_('OBSERVER'))
+
+        user.roles = ", ".join(roles)
 
     data = {
         'users': users
     }
     return render(request, 'admin/permissions/list.haml', data)
 
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def edit_permissions(request, user_id):
+    '''
+    define or edit existing roles for a single user
+    '''
+    user = user_api.get_user(user_id)
+
+    # make sure user is in administrative company or has no company association
+    organizations = user_api.get_user_organizations(user_id)
+    in_companies = len(organizations) > 0
+    in_admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), False)
+    if in_companies and not in_admin_company:
+        return HttpResponse("Error") # this should never happen
+
+    error = None
+
+    permission_groups = user_api.get_user_groups(user.id, group_api.PERMISSION_TYPE)
+    permissions = [pg.name for pg in permission_groups]
+
+    is_admin = PERMISSION_GROUPS.MCKA_ADMIN in permissions
+    is_ta = PERMISSION_GROUPS.MCKA_TA in permissions
+    is_observer = PERMISSION_GROUPS.MCKA_OBSERVER in permissions
+
+    courses = user_api.get_user_courses(user_id)
+    user_roles = user_api.get_user_roles(user_id)
+
+    if request.method == 'POST':
+        form = PermissionForm(courses, request.POST)
+        if form.is_valid():
+            groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
+
+            mcka_admin_id = next(g.id for g in groups if g.name == PERMISSION_GROUPS.MCKA_ADMIN)
+            mcka_ta_id = next(g.id for g in groups if g.name == PERMISSION_GROUPS.MCKA_TA)
+            mcka_observer_id = next(g.id for g in groups if g.name == PERMISSION_GROUPS.MCKA_OBSERVER)
+
+            per_course_roles = []
+            for course in courses:
+                course_roles = form.cleaned_data.get(course.id, [])
+                for role in course_roles:
+                    per_course_roles.append({
+                        'course_id': course.id,
+                        'role': role
+                    })
+
+            role_names = [r['role'] for r in per_course_roles]
+
+            try:
+
+                if per_course_roles:
+                    user_api.update_user_roles(user_id, per_course_roles)
+
+                else:
+                    # empty list - delete all roles
+                    for role in user_roles:
+                        user_api.delete_user_role(user_id, role.course_id, role.role)
+
+                if user_api.USER_ROLES.OBSERVER in role_names and not is_observer:
+                    group_api.add_user_to_group(user_id, mcka_observer_id)
+                elif is_ta:
+                    group_api.remove_user_from_group(user_id, mcka_observer_id)
+
+                if user_api.USER_ROLES.STAFF in role_names and not is_ta:
+                    group_api.add_user_to_group(user_id, mcka_ta_id)
+                elif is_ta:
+                    group_api.remove_user_from_group(user_id, mcka_ta_id)
+
+                if form.cleaned_data.get('admin') and not is_admin:
+                    group_api.add_user_to_group(user_id, mcka_admin_id)
+                elif is_admin:
+                    group_api.remove_user_from_group(user_id, mcka_admin_id)
+
+            except ApiError as err:
+                error = err.message
+            else:
+                return HttpResponseRedirect('/admin/permissions')
+    else:
+        initial_data = {}
+        initial_data['admin'] = is_admin
+        for course in courses:
+            initial_data[course.id] = []
+            for role in user_roles:
+                if course.id == role.course_id:
+                    initial_data[course.id].append(role.role)
+
+        form = PermissionForm(courses, initial=initial_data, label_suffix='')
+
+    data = {
+        'form': form,
+        'error': error,
+        'user': user,
+        'submit_label': _("Save")
+    }
+    return render(request, 'admin/permissions/edit.haml', data)
