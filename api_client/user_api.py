@@ -59,7 +59,7 @@ def get_user_dict(user_id):
 
 @api_error_protect
 def get_users(params=[]):
-    ''' get all user '''
+    ''' get all users '''
 
     paramStrs = [param['key'] + '=' + param['value'] for param in params]
     if len(paramStrs) > 0:
