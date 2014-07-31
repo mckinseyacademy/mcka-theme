@@ -1,0 +1,50 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-list
+    .row
+      .large-10.large-centered.columns
+        %header
+          %h1= _("Manage Roles and Permissions")
+          .sub-1 SUBHEAD
+          .add-message
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+            Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+        %hr
+        %section
+          %table.data-table
+            %thead
+              %th.label-1 User
+                %span.label-1.asc
+                  %i.fa.fa-caret-up
+                %span.label-1.desc
+                  %i.fa.fa-caret-down
+              %th.label-1 Roles(s)
+                %span.label-1.asc
+                  %i.fa.fa-caret-up
+                %span.label-1.desc
+                  %i.fa.fa-caret-down
+              %th
+              %th
+            %tbody
+              - for user in users
+                %tr{data-id: "#{user.id}"}
+                  %td
+                    %a{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "true", href: "/admin/permissions/={user.id}/edit"}
+                      = user.username
+                  %td= user.roles
+                  %td
+                    %a{href: "mailto:#{user.email}"}= user.email
+                  %td
+                    - if user.id
+                    %a.fa.fa-pencil{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "true", href: "/admin/permissions/={user.id}/edit"}
+
+  #edit-permissions.reveal-modal.small{"data-reveal": "true"}
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    $('.data-table').dataTable({
+      paging: false,
+      "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
+    });
+    ajaxify_overlay_form('#edit-permissions', 'form');

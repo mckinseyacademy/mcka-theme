@@ -206,6 +206,17 @@ GROUP_REVIEWS_TARGET = 3
 DATE_DISPLAY_FORMAT = "%B %d, %Y"
 SHORT_DATE_FORMAT = "%m/%d/%Y"
 
+# Points for social activities
+SOCIAL_METRIC_POINTS = {
+    'num_threads': 10,
+    'num_comments': 2,
+    'num_replies': 1,
+    'num_upvotes': 5,
+    'num_thread_followers': 5,
+}
+
+ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
+
 try:
     from local_settings import *
 except ImportError:
@@ -248,13 +259,4 @@ DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
 
 DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': ''  # rely on a version of jQuery that already exists
-}
-
-# Points for social activities
-SOCIAL_METRIC_POINTS = {
-    'num_threads': 10,
-    'num_comments': 2,
-    'num_replies': 1,
-    'num_upvotes': 5,
-    'num_thread_followers': 5,
 }

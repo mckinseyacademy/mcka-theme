@@ -1,9 +1,10 @@
 from django.core.management.base import BaseCommand
+from django.conf import settings
 
 from api_client import course_api, group_api, user_api
 from api_client.api_error import ApiError
+from api_client.organization_models import Organization
 from lib.authorization import permission_groups_map
-
 
 class Command(BaseCommand):
     help = 'Loads seed data into the apros db and into edX via the edX API'
@@ -31,30 +32,18 @@ class Command(BaseCommand):
             else:
                 self.stdout.write("Skipping %s, already exists" % group_name)
 
-        ''' Create a fake client '''
-        group_type = 'company'
-        client_name = 'Green Lantern Corps'
-        client_group_id = None
-        existing_clients = group_api.get_groups_of_type(group_type)
-        for existing_client in existing_clients:
-            if client_name == existing_client.name:
-                self.stdout.write("Client: %s already exists, skipping." % client_name)
-                client_group_id = existing_client.id
-                break
-        if not client_group_id:
-            self.stdout.write("Creating client: %s" % client_name)
-            client_group = group_api.create_group(client_name, group_type)
-            client_group_id = client_group.id
 
-        ''' Register McK admin, McK sub-admin, Client admin, client sub-admin, and TA users '''
+        ''' Register McK and TA users '''
         user_suffix = '_user'
         user_list = (
             ('mcka_admin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_ADMIN),
             ('mcka_subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_SUBADMIN),
             ('mcka_ta%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_TA),
-            ('client_admin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_ADMIN, client_group_id),
-            ('client_subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_SUBADMIN, client_group_id),
-            ('client_ta%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_TA, client_group_id),
+            ('mcka_observer%s' % user_suffix, group_api.PERMISSION_GROUPS.MCKA_OBSERVER),
+            ('client_admin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_ADMIN),
+            ('client_subadmin%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_SUBADMIN),
+            ('client_ta%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_TA),
+            ('client_observer%s' % user_suffix, group_api.PERMISSION_GROUPS.CLIENT_OBSERVER),
         )
         for user_tuple in user_list:
             user_data = {
@@ -69,13 +58,36 @@ class Command(BaseCommand):
                 u = user_api.register_user(user_data)
                 if u:
                     group_api.add_user_to_group(u.id, permission_groups_map()[user_tuple[1]])
-                    if len(user_tuple) == 3:
-                        self.stdout.write("Adding user %s to client: %s" % (user_tuple[0], client_name))
-                        group_api.add_user_to_group(u.id, client_group_id)
             except ApiError as e:
                 if e.code == 409:
                     self.stdout.write("User: %s already exists" % user_tuple[0])
                 else:
                     raise
+
+        ''' Administrative company '''
+        admin_company = None
+        for org in Organization.list():
+            if org.name == settings.ADMINISTRATIVE_COMPANY:
+                self.stdout.write("Administrative company %s already exists" % settings.ADMINISTRATIVE_COMPANY)
+                admin_company = Organization.fetch(org.id)
+                break
+
+        if admin_company is None:
+            self.stdout.write("Creating administrative company %s" % settings.ADMINISTRATIVE_COMPANY)
+            company_data = {
+                "display_name": "McKinsey and Company",
+                "contact_name": "McKinsey and Company",
+                "contact_email": "company@mckinseyacademy.com",
+                "contact_phone": "",
+            }
+            admin_company = Organization.create(settings.ADMINISTRATIVE_COMPANY, company_data)
+
+        for user_tuple in user_list:
+            if (user_tuple[0].startswith('mcka')):
+                users = user_api.get_users([{ 'key': 'username', 'value': user_tuple[0] }])
+                if users:
+                    self.stdout.write("Adding %s to %s" % (user_tuple[0], settings.ADMINISTRATIVE_COMPANY))
+                    admin_company.add_user(users[0].id)
+
 
         self.stdout.write("Done")

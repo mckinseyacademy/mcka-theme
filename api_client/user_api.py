@@ -1,19 +1,26 @@
 ''' API calls with respect to users and authentication '''
 from urllib2 import HTTPError
 import json
+from lib.util import DottableDict
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from .json_object import JsonParser as JP
 from . import user_models, gradebook_models, organization_models, workgroup_models, course_models
-from .json_requests import GET, POST, DELETE
+from .json_requests import GET, POST, PUT, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
 
 AUTH_API = 'api/sessions'
 USER_API = 'api/users'
 GROUP_API = 'api/groups'
+
+USER_ROLES = DottableDict(
+    STAFF='staff',
+    INSTRUCTOR='instructor',
+    OBSERVER='observer'
+)
 
 VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "gender", "title", "is_active", "avatar_url"]
 
@@ -59,7 +66,7 @@ def get_user_dict(user_id):
 
 @api_error_protect
 def get_users(params=[]):
-    ''' get all user '''
+    ''' get all users '''
 
     paramStrs = [param['key'] + '=' + param['value'] for param in params]
     if len(paramStrs) > 0:
@@ -129,6 +136,63 @@ def get_user_courses(user_id):
         course.percent_complete = 25
 
     return courses
+
+@api_error_protect
+def get_user_roles(user_id):
+    ''' get a list of user roles '''
+    response = GET(
+        '{}/{}/{}/roles?page_size=0'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        )
+    )
+    return JP.from_json(response.read())
+
+@api_error_protect
+def add_user_role(user_id, course_id, role):
+    ''' add role for course, roles are 'instructor' and 'staff' '''
+    data = {
+        'course_id': course_id,
+        'role': role
+    }
+    response = POST(
+        '{}/{}/{}/roles'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        ),
+        data
+    )
+    return JP.from_json(response.read())
+
+@api_error_protect
+def update_user_roles(user_id, role_list):
+    ''' update roles, where role_list is a list of dictionaries containing course_id & role '''
+    response = PUT(
+        '{}/{}/{}/roles'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        ),
+        role_list
+    )
+    return JP.from_json(response.read())
+
+@api_error_protect
+def delete_user_role(user_id, course_id, role):
+    response = DELETE(
+        '{}/{}/{}/roles/{}/courses/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            role,
+            course_id
+        )
+    )
+
+    return (response.code == 204)
+
 
 @api_error_protect
 def get_user_groups(user_id, group_type=None, group_object=GroupInfo):

@@ -17,13 +17,17 @@ from lib.util import LegacyIdConvert
 
 GROUP_API = 'api/groups'
 
+PERMISSION_TYPE = 'permission'
+
 PERMISSION_GROUPS = DottableDict(
     MCKA_ADMIN='mcka_role_mcka_admin',
     MCKA_SUBADMIN='mcka_role_mcka_subadmin',
     MCKA_TA='mcka_role_mcka_ta',
+    MCKA_OBSERVER='mcka_role_mcka_observer',
     CLIENT_ADMIN='mcka_role_client_admin',
     CLIENT_SUBADMIN='mcka_role_client_subadmin',
-    CLIENT_TA='mcka_role_client_ta'
+    CLIENT_TA='mcka_role_client_ta',
+    CLIENT_OBSERVER='mcka_role_client_observer'
 )
 
 @api_error_protect
