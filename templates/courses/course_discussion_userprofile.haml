@@ -1,0 +1,8 @@
+- extends "courses/course_navigation.haml"
+- load staticfiles
+- block current_content
+  #course-discussion
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
+    .row
+      .error= _("User profiles are not yet available")

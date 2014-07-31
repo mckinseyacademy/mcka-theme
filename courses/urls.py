@@ -1,4 +1,4 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import patterns, url
 
 from . import views
 
@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^(?P<course_id>.*)/syllabus$', views.course_syllabus, name='course_syllabus'),
     url(r'^(?P<course_id>.*)/resources$', views.course_resources, name='course_resources'),
     url(r'^(?P<course_id>.*)/discussion$', views.course_discussion, name='course_discussion'),
+    url(r'^(?P<course_id>.*)/discussion/forum/users/(?P<user_id>\d+)/?$', views.course_discussion_userprofile, name='course_discussion_userprofile'),
     url(r'^(?P<course_id>.*)/group_work/(?P<workgroup_id>.*)$', views.workgroup_course_group_work, name='workgroup_course_group_work'),
     url(r'^(?P<course_id>.*)/group_work$', views.user_course_group_work, name='user_course_group_work'),
     url(r'^(?P<course_id>.*)/notready$', views.course_notready, name='course_notready'),
