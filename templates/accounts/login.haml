@@ -49,7 +49,7 @@
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   :javascript
-    ajaxify_overlay_form($('#reset-password'), 'form');
+    ajaxify_overlay_form('#reset-password', 'form');
     $('form input[type="text"]').on('keypress', function(){
       $('.error').text('');
     });

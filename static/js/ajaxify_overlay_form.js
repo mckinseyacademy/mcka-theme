@@ -1,7 +1,7 @@
 
 // submits forms via ajax and re-renders the html
-function ajaxify_overlay_form(overlay, formSelector) {
-  overlay.on('submit', formSelector, function(e) {
+function ajaxify_overlay_form(overlaySelector, formSelector) {
+  $(overlaySelector).on('submit', formSelector, function(e) {
     e.preventDefault();
     var form = $(this);
 
