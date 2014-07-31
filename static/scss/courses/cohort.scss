@@ -1,6 +1,7 @@
 #course-cohort {
   #map-cohort {
     height: rem-calc(355);
+    background: $pure-white;
     svg {
       @include user-select();
       display: block;
