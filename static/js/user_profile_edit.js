@@ -1,5 +1,6 @@
 $(function(){
-    function reInitCropper(){
+
+  function reInitCropper(){
     var $image = $(".img-container .user-uploaded-image"),
     $dataX1 = $("#x1-position"),
     $dataY1 = $("#y1-position"),
@@ -27,8 +28,10 @@ $(function(){
     var d = new Date();
     var now = d.getTime();
     $(".img-container .user-uploaded-image").load(function(){
-      $('#crop-profile-image').attr('disabled', false);
-      reInitCropper();
+      if($(this).attr('src').indexOf('/empty_avatar.png') == -1){
+        $('#crop-profile-image').attr('disabled', false);
+        reInitCropper();
+      }
     }).attr('src', $(".img-container .user-uploaded-image").attr('src') + '&' + now);
   }
 
@@ -56,8 +59,9 @@ $(function(){
       url: form.attr('action'),
       data: form.serialize()
     }).done(function(data){
-        modal.html(data);
-        reloadImages();
+        if(data){
+          $('#edit-user-image-modal').foundation('reveal', 'close');
+        }
       });
     });
 
