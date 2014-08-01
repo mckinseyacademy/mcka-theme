@@ -67,7 +67,7 @@ class WorkgroupCompletionData(object):
                     self.user_review_assignments[u.id] = [self.project_workgroups[project.id][ra.id] for ra in review_assignments]
 
 
-def generate_workgroup_csv_report(course_id, url_prefix = "http://mckinseyacademy.local.org"):
+def generate_workgroup_csv_report(course_id, url_prefix):
     output_lines = []
     individual_stages = ['evaluation', 'grade']
 
