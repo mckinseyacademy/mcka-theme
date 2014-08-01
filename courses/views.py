@@ -286,16 +286,15 @@ def course_progress(request, course_id):
     workgroup_avg_sections = [section for section in gradebook.courseware_summary if section.display_name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
     # average workgroup grade
+    workgroup_averages = []
     if len(workgroup_avg_sections) > 0:
         for section in workgroup_avg_sections[0].sections:
-            workgroup_grade, workgroup_total = 0, 0
-            workgroup_grade += section.section_total[0]
-            workgroup_total += section.section_total[1]
+            if section.section_total[1]:
+                workgroup_averages.append((float(section.section_total[0]) / section.section_total[1]) * 100)
+            else:
+                workgroup_averages.append(0)
 
-        if workgroup_total:
-            workgroup_avg = round((float(workgroup_grade) / workgroup_total) * 100)
-        else:
-            workgroup_avg = 0
+        workgroup_avg = round(float(sum(workgroup_averages)) / float(len(workgroup_averages)))
     else:
         workgroup_avg = 0
 
