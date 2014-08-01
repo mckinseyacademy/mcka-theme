@@ -182,7 +182,8 @@ def get_group_project_for_workgroup_course(workgroup_id, course):
     '''
     Returns group and project information for the supplied workgroup
     '''
-    workgroup = WorkGroup.fetch_with_members(workgroup_id)
+    workgroup = WorkGroup.fetch(workgroup_id)
+    workgroup.members = [user_api.get_user(u.id) for u in workgroup.users]
     project = Project.fetch(workgroup.project)
     group_project = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
 

@@ -180,10 +180,14 @@ def course_cohort(request, course_id):
 
 def _render_group_work(request, course, project_group, group_project):
 
+    seqid = request.GET.get("seqid", None)
+    if seqid and " " in seqid:
+        seqid = seqid.replace(" ", "+")
+
     if not group_project is None:
         sequential, page = group_project_location(
             group_project,
-            request.GET.get("seqid", None)
+            seqid
         )
         vertical_usage_id = page.vertical_usage_id() if page else None
     else:
@@ -208,6 +212,7 @@ def _render_group_work(request, course, project_group, group_project):
         "current_sequential": sequential,
         "current_page": page,
         "ta_user": ta_user,
+        "group_work_url": request.path_info,
     }
     return render(request, 'courses/course_group_work.haml', data)
 
@@ -226,7 +231,7 @@ def user_course_group_work(request, course_id):
     return _render_group_work(request, course, project_group, group_project)
 
 @login_required
-@permission_group_required(PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_TA)
 def workgroup_course_group_work(request, course_id, workgroup_id):
 
     # set this workgroup as the preference for reviewing

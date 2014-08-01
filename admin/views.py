@@ -551,10 +551,15 @@ def download_group_projects_report(request, course_id):
                 datetime.now().isoformat()
             )
         )
+    ) + ".csv"
+
+    url_prefix = "{}://{}".format(
+        "https" if request.is_secure() else "http",
+        request.META['HTTP_HOST']
     )
 
     response = HttpResponse(
-        generate_workgroup_csv_report(course_id),
+        generate_workgroup_csv_report(course_id, url_prefix),
         content_type='text/csv'
     )
 
