@@ -16,7 +16,7 @@
               %a{href: '/experience'}= _("Experience")
             %li
               %a{href: '/contact'}= _("Contact")
-            - if user.is_mcka_admin
+            - if user.is_mcka_admin or user.is_mcka_ta
               %li
                 %a{href: '/admin'}= _("McKA Admin")
             - if user.is_client_admin
