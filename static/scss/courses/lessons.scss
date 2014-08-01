@@ -38,7 +38,7 @@
 
   .page-to {
     color: $pure-white;
-    position: absolute;
+    position: fixed;
     cursor: default;
     border-radius: 50%;
     display: block;
@@ -49,15 +49,26 @@
     @include font-spec(30);
     @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
 
-    &.previous { left: -80px; }
-    &.next { right: -80px; }
+    &.previous {
+      left: 50%;
+      margin-left: -480px;
+    }
+
+    &.next {
+      right: 50%;
+      margin-right: -480px;
+    }
 
     &[href] {
       cursor: pointer;
       background-color: $mckinsey-academy-alt-blue;
-      &:hover { background-color: $mckinsey-academy-blue-gray; }
 
-      .go-to-next{
+      &:hover {
+        background-color: $mckinsey-academy-blue-gray;
+        .tooltip { display: block; }
+      }
+
+      .go-to-next {
         @include font-spec(14,semibold,16);
         color: $mckinsey-academy-alt-blue;
         width: 200px;
@@ -73,6 +84,56 @@
       top: 50%;
       left: 50%;
       margin: -15px 0 0 -9.5px;
+    }
+
+    .tooltip {
+      color: $mckinsey-dark-grey;
+      position: absolute;
+      background: $pure-white;
+      border-radius: 5px;
+      border: 1px solid $border-line;
+      white-space: nowrap;
+      padding: 5px;
+      top: 50%;
+      margin-top: -20px;
+      display: none;
+      @include font-spec(12);
+
+      .vertical-index {
+        color: $mckinsey-academy-alt-blue;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        border-style: solid;
+        border-width: 6px;
+        top: 50%;
+        margin-top: -6px;
+        @include square-size(0);
+      }
+    }
+
+    &.previous .tooltip {
+      left: 100%;
+      margin-left: 10px;
+
+      &:before {
+        left: -12px;
+        border-color: transparent $pure-white transparent transparent;
+      }
+    }
+
+    &.next .tooltip {
+      right: 100%;
+      margin-right: 10px;
+
+      &:before {
+        right: -12px;
+        border-color: transparent transparent transparent $pure-white;
+      }
     }
   }
 }

@@ -51,18 +51,23 @@ def build_page_info_for_course(
             chapter.bookmark = True
 
         for sequential in chapter.sequentials:
-            for page in sequential.pages:
+            for idx, page in enumerate(sequential.pages):
                 page.prev_url = None
                 page.next_url = None
                 page.navigation_url = '{}/module/{}'.format(chapter.navigation_url, page.id)
 
                 if page.id == page_id:
                     current_page = page
+                    page.lesson_count = len(sequential.pages)
                     current_sequential = sequential
 
                 if prev_page is not None:
                     page.prev_url = prev_page.navigation_url
+                    page.prev_lesson_name = prev_page.name
+                    page.prev_lesson_index = idx
                     prev_page.next_url = page.navigation_url
+                    prev_page.next_lesson_name = page.name
+                    prev_page.next_lesson_index = idx + 1
                 prev_page = page
 
     if not current_page:
