@@ -546,12 +546,12 @@ def download_program_report(request, program_id):
 def download_group_projects_report(request, course_id):
     filename = slugify(
         unicode(
-            "Group Report for {} on {}.csv".format(
+            "Group Report for {} on {}".format(
                 course_id,
                 datetime.now().isoformat()
             )
         )
-    )
+    ) + ".csv"
 
     url_prefix = "{}://{}".format(
         "https" if request.is_secure() else "http",
