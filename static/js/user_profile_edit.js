@@ -56,8 +56,9 @@ $(function(){
       url: form.attr('action'),
       data: form.serialize()
     }).done(function(data){
-        modal.html(data);
-        reloadImages();
+        if(data){
+          $('#edit-user-image-modal').foundation('reveal', 'close');
+        }
       });
     });
 
