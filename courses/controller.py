@@ -157,24 +157,15 @@ def get_group_project_for_user_course(user_id, course):
     Returns correct group and project information for the user for this course
     '''
     # Find the user_group(s) with which this user is associated
-    user_workgroups = user_api.get_user_workgroups(user_id)
-    user_projects = [Project.fetch_from_url(wg.project) for wg in user_workgroups]
-
-    # So, we can find the project for the user
-    user_course_projects = [cp for cp in user_projects if cp.course_id == course.id]
-    if len(user_course_projects) < 1:
+    user_workgroups = user_api.get_user_workgroups(user_id, course.id)
+    if len(user_workgroups) < 1:
         return None, None
 
-    the_user_project = user_course_projects[0]
-
-    group_project = [ch for ch in course.group_project_chapters if ch.id == the_user_project.content_id][0]
-
-    user_course_workgroups = [wg for wg in user_workgroups if wg.id in the_user_project.workgroups]
-    if len(user_course_workgroups) < 1:
-        return None, group_project
-
-    project_group = user_course_workgroups[0]
+    project_group = user_workgroups[0]
     project_group.members = [user_api.get_user(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
+
+    the_user_project = Project.fetch_from_url(project_group.project)
+    group_project = [ch for ch in course.group_project_chapters if ch.id == the_user_project.content_id][0]
 
     return project_group, group_project
 
@@ -238,52 +229,40 @@ def progress_percent(completion_count, module_count):
     else:
         return 0
 
-def group_project_reviews(user_id, course_id, project_chapter):
+def group_project_reviews(user_id, course_id, project_workgroup, project_chapter):
     '''
     Returns group work reviews & average score for a project
     '''
+    def mean(array_values):
+        return sum(array_values)/float(len(array_values)) if len(array_values) > 0 else None
 
-    # user's group for this course
-    user_workgroups = user_api.get_user_workgroups(user_id, course_id)
-
-    if not user_workgroups:
-        return [], 0
-
-    workgroup = user_workgroups[0] if user_workgroups else None
-    review_items = WorkGroup.get_workgroup_review_items(workgroup.id)
+    review_items = WorkGroup.get_workgroup_review_items(project_workgroup.id)
 
     # distinct reviewers
-    reviewer_ids = [item.reviewer for item in review_items]
+    reviewer_ids = set([item.reviewer for item in review_items])
     group_activities = []
-    group_work_sum = 0
 
     # find group activities in this project
     for seq in project_chapter.sequentials:
-        for page in seq.pages:
-            if hasattr(page, 'children'):
-                for child in page.children:
-                    if child.category == GROUP_PROJECT_CATEGORY:
-                        group_activities.append(seq)
-                        break
+        group_project_pages = [page for page in seq.pages if GROUP_PROJECT_CATEGORY in page.child_category_list()]
+        if len(group_project_pages) > 0:
+            group_project_xblock = [gp for gp in group_project_pages[0].children if gp.category == GROUP_PROJECT_CATEGORY][0]
+            seq.group_project_content_id = group_project_xblock.id
+            group_activities.append(seq)
 
     for activity in group_activities:
         activity.grades = []
-        activity_reviews = [item for item in review_items if activity.id == item.content_id]
+        activity_reviews = [item for item in review_items if activity.group_project_content_id == item.content_id]
 
         # average by reviewer
         for reviewer_id in reviewer_ids:
             grades = [int(review.answer) for review in activity_reviews if reviewer_id == review.reviewer and is_number(review.answer)]
-            avg = sum(grades)/float(len(grades)) if len(grades)>0 else None
-            activity.grades.append(avg)
-            print activity.id, reviewer_id, avg
+            activity.grades.append(mean(grades))
 
         # average score for this activity
-        activity.score = sum(filter(None, activity.grades))/float(len(activity.grades)) if len(activity.grades)>0 else None
-        if activity.score:
-            group_work_sum += activity.score
+        activity.score = mean(filter(None, activity.grades))
 
-    group_work_avg = group_work_sum /float(len(group_activities)) if len(group_activities)>0 else 0
-
+    group_work_avg = mean([a.score for a in group_activities if not a.score is None])
     return group_activities, group_work_avg
 
 def is_number(s):
@@ -296,7 +275,7 @@ def is_number(s):
 def build_proficiency_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
-        leader.points_scored = floatformat(leader.points_scored)
+        leader.points_scored = floatformat(leader.points_scored, 0)
         if leader.avatar_url is None:
             leader.avatar_url = user_models.UserResponse.default_image_url()
 
@@ -350,7 +329,7 @@ def social_metrics(course_id, user_id):
     return {
         'points': user.points if user else None,
         'position': user.rank if user else None,
-        'course_avg': floatformat(course_avg),
+        'course_avg': floatformat(course_avg, 0),
         'leaders': leaders[:3]
     }
 

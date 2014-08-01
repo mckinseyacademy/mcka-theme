@@ -125,8 +125,8 @@ def course_cohort(request, course_id):
 
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     proficiency.leaders = build_proficiency_leader_list(proficiency.leaders)
-    proficiency.points = floatformat(proficiency.points)
-    proficiency.course_avg = floatformat(proficiency.course_avg)
+    proficiency.points = floatformat(proficiency.points, 0)
+    proficiency.course_avg = floatformat(proficiency.course_avg, 0)
 
     completions = course_api.get_course_metrics_completions(course_id, request.user.id)
     module_count = course.module_count()
@@ -287,44 +287,31 @@ def course_discussion_userprofile(request, course_id, user_id):
 @check_user_course_access
 def course_progress(request, course_id):
 
-    course = load_course(course_id, 3)
+    course = load_course(course_id, 4)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
 
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
-        grader.weight = floatformat(grader.weight*100)
+        grader.weight = floatformat(grader.weight*100, 0)
 
-    pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
+    pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100, 0)
 
     workgroup_avg_sections = [section for section in gradebook.courseware_summary if section.display_name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
-    # average workgroup grade
-    workgroup_averages = []
-    if len(workgroup_avg_sections) > 0:
-        for section in workgroup_avg_sections[0].sections:
-            if section.section_total[1]:
-                workgroup_averages.append((float(section.section_total[0]) / section.section_total[1]) * 100)
-            else:
-                workgroup_averages.append(0)
+    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+    if project_group and group_project:
+        group_activities, group_work_avg = group_project_reviews(request.user.id, course_id, project_group, group_project)
 
-        workgroup_avg = round(float(sum(workgroup_averages)) / float(len(workgroup_averages)))
+        # format scores & grades
+        for activity in group_activities:
+            if activity.score is not None:
+                activity.score = floatformat(activity.score, 0)
+            for i, grade in enumerate(activity.grades):
+                if grade is not None:
+                    activity.grades[i] = floatformat(grade, 0)
     else:
-        workgroup_avg = 0
-
-    if course.group_project_chapters:
-        project_chapter = course.group_project_chapters[0]
-        group_activities, group_work_avg = group_project_reviews(request.user.id, course_id, project_chapter)
-    else:
-        group_activities = []
-        group_work_avg = 0
-
-    # format scores & grades
-    for activity in group_activities:
-        if activity.score is not None:
-            activity.score = floatformat(round(activity.score))
-        for i, grade in enumerate(activity.grades):
-            if grade is not None:
-                activity.grades[i] = floatformat(round(grade))
+        group_activities = None
+        group_work_avg = None
 
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
     for grade in gradebook.grade_summary.section_breakdown:
@@ -334,11 +321,12 @@ def course_progress(request, course_id):
            'color': '#b1c2cc'
         })
 
-    bar_chart[0]['values'].append({
-        'label': 'GROUP WORK\n AVG.',
-        'value': workgroup_avg,
-        'color': '#66a5b5'
-    })
+    if group_work_avg:
+        bar_chart[0]['values'].append({
+            'label': 'GROUP WORK\n AVG.',
+            'value': group_work_avg,
+            'color': '#66a5b5'
+        })
 
     total = gradebook.grade_summary.percent*100
     bar_chart[0]['values'].append({
@@ -347,7 +335,7 @@ def course_progress(request, course_id):
         'color': '#e37121'
     })
 
-    pro_forma = round(gradebook.pro_forma_grade)
+    pro_forma = floatformat(gradebook.pro_forma_grade, 0)
     bar_chart[0]['values'].append({
         'value': pro_forma,
         'color': 'none'
