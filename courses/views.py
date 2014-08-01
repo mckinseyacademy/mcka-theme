@@ -271,6 +271,14 @@ def course_discussion(request, course_id):
     return render(request, 'courses/course_discussion.haml', data)
 
 @login_required
+def course_discussion_userprofile(request, course_id, user_id):
+
+    data = {
+        "course_id": course_id,
+    }
+    return render(request, 'courses/course_discussion_userprofile.haml', data)
+
+@login_required
 @check_user_course_access
 def course_progress(request, course_id):
 

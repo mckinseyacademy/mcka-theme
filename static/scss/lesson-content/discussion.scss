@@ -40,6 +40,17 @@ body > .tooltip {
     .flagged * {
       color: $mckinsey-red;
     }
+
+    .posted-details .username,
+    .discussion-response .posted-by {
+      pointer-events: none;
+      color: $mckinsey-dark-grey;
+
+      &:hover {
+        text-decoration: none;
+        cursor: default;
+      }
+    }
   }
 
   section.discussion .discussion-article {
