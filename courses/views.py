@@ -283,6 +283,22 @@ def course_progress(request, course_id):
 
     pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
+    workgroup_avg_sections = [section for section in gradebook.courseware_summary if section.display_name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+
+    # average workgroup grade
+    if len(workgroup_avg_sections) > 0:
+        for section in workgroup_avg_sections[0].sections:
+            workgroup_grade, workgroup_total = 0, 0
+            workgroup_grade += section.section_total[0]
+            workgroup_total += section.section_total[1]
+
+        if workgroup_total:
+            workgroup_avg = round((float(workgroup_grade) / workgroup_total) * 100)
+        else:
+            workgroup_avg = 0
+    else:
+        workgroup_avg = 0
+
     if course.group_project_chapters:
         project_chapter = course.group_project_chapters[0]
         group_activities, group_work_avg = group_project_reviews(request.user.id, course_id, project_chapter)
@@ -308,7 +324,7 @@ def course_progress(request, course_id):
 
     bar_chart[0]['values'].append({
         'label': 'GROUP WORK\n AVG.',
-        'value': group_work_avg,
+        'value': workgroup_avg,
         'color': '#66a5b5'
     })
 
