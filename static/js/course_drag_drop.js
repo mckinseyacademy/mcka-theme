@@ -1,7 +1,9 @@
     $.courseDrag = function(){
       var course_id = $('#course_id').val();
       var data_table = $('.student-list').dataTable({
-          paging: false
+          paging: false,
+          autoWidth: false,
+          scrollX: true
         });
 
       var accordianSlide = function(that, selected){
@@ -38,7 +40,9 @@
               data_table.fnDestroy();
               $('#student-list table').html(data);
               data_table= $('.student-list').dataTable({
-                paging: false
+                paging: false,
+                autoWidth: false,
+                scrollX: true
               });
               $('.student[name="' + el.attr('name') + '"]').fadeOut().remove();
               parent.find('span.student-count').html(parent.find('span.student-count').html() - 1);
