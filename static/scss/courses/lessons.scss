@@ -101,6 +101,8 @@
       display: none;
       @include font-spec(12);
 
+      &.lesson-page { margin-top: -13px; }
+
       .vertical-index {
         color: $mckinsey-academy-alt-blue;
         font-weight: 600;
