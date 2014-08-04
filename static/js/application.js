@@ -116,7 +116,7 @@ $(function(){
     }
       generalModal.find('.title').html("Welcome to McKinsey Academy");
       generalModal.find('.description').html(courseStr +
-      "Please explore the site to learn more about the expirience in the meantime.");
+      "Please explore the site to learn more about the experience in the meantime.");
       $('#generalModal').foundation('reveal', 'open');
   });
 });
