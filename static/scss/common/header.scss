@@ -14,6 +14,7 @@ header[role=banner].background-blue {
 
     .columns {
       height: $header-bar-height;
+      z-index: 5;
     }
   }
 
