@@ -1,21 +1,26 @@
 - if current_page.prev_url
   %a.page-to.previous{href: "#{current_page.prev_url}"}
     %i.fa.fa-chevron-left
-    .tooltip
-      .vertical-index Module ={current_page.prev_lesson_index} of ={current_page.lesson_count}:
-      %p.style-4= current_page.prev_lesson_name
+    .tooltip{class: "{% if current_page.prev_lesson_index == 0 %}lesson-page{% endif %}"}
+      - if current_page.prev_lesson_index == 0
+        .vertical-index= _("Return to previous lesson")
+      - else
+        .vertical-index{'data-reveal-id': 'module_list'}
+          Module ={current_page.prev_lesson_index} of ={current_page.lesson_count}:
+        %p.style-4= current_page.prev_lesson_name
 - else
   %a.page-to.previous
     %i.fa.fa-chevron-left
 - if current_page.next_url
   %a.page-to.next{href: "#{current_page.next_url}"}
     %i.fa.fa-chevron-right
-    .tooltip
-      .vertical-index Module ={current_page.next_lesson_index} of ={current_page.lesson_count}:
-      %p.style-4= current_page.next_lesson_name
-    - if current_page.next_lesson_link
-      .go-to-next
-        = _("Go to next lesson")
+    .tooltip{class: "{% if current_page.next_lesson_link %}lesson-page{% endif %}"}
+      - if current_page.next_lesson_link
+        .vertical-index= _("Go to next lesson")
+      - else
+        .vertical-index{'data-reveal-id': 'module_list'}
+          Module ={current_page.next_lesson_index} of ={current_page.lesson_count}:
+        %p.style-4= current_page.next_lesson_name
 - else
   %a.page-to.next
     %i.fa.fa-chevron-right

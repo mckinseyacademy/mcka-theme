@@ -45,7 +45,8 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                 lesson.description = lesson_description.content
         if page_id:
             for sequential in lesson.sequentials:
-                for page in sequential.pages:
+                for page_idx, page in enumerate(sequential.pages, start=1):
+                    page.index = page_idx
                     page.status_class = "complete"
                     is_current = page_id == page.id
                     if is_current:
@@ -215,7 +216,6 @@ def _render_group_work(request, course, project_group, group_project):
         "group_work_url": request.path_info,
     }
     return render(request, 'courses/course_group_work.haml', data)
-
 
 @login_required
 @check_user_course_access
