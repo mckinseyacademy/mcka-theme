@@ -438,7 +438,7 @@ def program_edit(request, program_id):
         "form": form,
         "program_id": program_id,
         "error": error,
-        "submit_label": _("Save Client"),
+        "submit_label": _("Save Program"),
     }
 
     return render(
