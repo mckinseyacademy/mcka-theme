@@ -46,7 +46,10 @@ function enable_selection(selections, activator){
     var select_func = _multi_selection;
     var select_class_name = selections[i].class_name ? selections[i].class_name : "selected";
     var select_action = selections[i].select_action ? selections[i].select_action : "click";
-    if(selections[i].single_select){
+    if(selections[i].use_value){
+      select_func = function(){};
+    }
+    else if(selections[i].single_select){
       var use_selector = selections[i].selector;
       select_func = function(){
         $(use_selector).removeClass(select_class_name);
@@ -62,26 +65,23 @@ function enable_selection(selections, activator){
     var data = {};
     for (var i = 0; i < selections.length; ++i){
       var min_count = selections[i].minimum_count ? selections[i].minimum_count : 1;
-      var data_selector = selections[i].data_selector ? selections[i].data_selector : "";
-      var data_field = selections[i].data_field ? selections[i].data_field : "";
-      var these_selections = $(selections[i].selector + "." + select_class_name + data_selector);
-      if(these_selections.length < min_count){
-        alert(selections[i].minimum_count_message);
-        return false;
-      }
-
-      var selection_data = [];
-      if(data_field != ''){
-        these_selections.each(function(index, include_value){
-          selection_data.push({'id': include_value.id, data_field: $(include_value).data(data_field)});
-        });
+      if(selections[i].use_value){
+        data[selections[i].submit_name] = $(selections[i].selector).val();
       }
       else{
+        var data_selector = selections[i].data_selector ? selections[i].data_selector : "";
+        var these_selections = $(selections[i].selector + "." + select_class_name + data_selector);
+        if(these_selections.length < min_count){
+          alert(selections[i].minimum_count_message);
+          return false;
+        }
+
+        var selection_data = [];
         these_selections.each(function(index, include_value){
           selection_data.push(include_value.id);
         });
+        data[selections[i].submit_name] = (selections[i].single_select && data_selector.length == 0) ? selection_data[0] : selection_data;
       }
-      data[selections[i].submit_name] = (selections[i].single_select && data_selector.length == 0) ? selection_data[0] : selection_data;
     };
 
     var on_success = activator.success ? activator.success : _default_success;

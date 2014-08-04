@@ -68,6 +68,12 @@
         });
       };
 
+      var list_groups_for_selected_project = function(){
+        var project_id = $('.group-project-select').val();
+        $('.select-group-box').hide();
+        $('.select-group-box[data-project-id="' + project_id + '"]').show();
+      };
+
       return {
         updateGroup: updateGroup,
         removeStudent: removeStudent,
@@ -76,7 +82,8 @@
         selections: selections,
         activator: activator,
         course_id: course_id,
-        data_table: data_table
+        data_table: data_table,
+        list_groups_for_selected_project: list_groups_for_selected_project
       }
     }
 
@@ -88,8 +95,12 @@
       {
         selector: ".student-list .student",
         submit_name: "students",
-        data_field: 'company-name',
         minimum_count_message: "Please select at least one student"
+      },
+      {
+        selector: ".group-project-select",
+        submit_name: "project_id",
+        use_value: true
       }
     ];
 
@@ -97,7 +108,7 @@
       selector: '#student-group-action:not(.disabled)',
       success: function(){
         $('#student-group-action').removeClass('disabled');
-        window.location = '/admin/workgroup/course/' + course_id;
+        window.location = '/admin/workgroup/course/' + course_id + '?project_id=' + $('.group-project-select').val();
       }
     };
   });
@@ -130,6 +141,10 @@
       if(!$(this).hasClass('disabled')){
         $(this).addClass('disabled');
       }
+    });
+
+    $('.group-project-select').on('change', function(){
+      courseDrag.list_groups_for_selected_project();
     });
 
     $('#generate_assignments').on('click', function(e){
@@ -186,15 +201,6 @@
       }
     });
 
-    $('li.company-filter').on('click', function(){
-      var that = $(this);
-      if(that.data('company-filter') == 'all'){
-        $('.select-group-box').show();
-      }
-      else{
-        $('.select-group-box').hide();
-        $('.select-group-box[data-client-id="' + that.data('company-filter') + '"]').show();
-      }
-    });
+    courseDrag.list_groups_for_selected_project();
 
   });

@@ -7,7 +7,7 @@ from django.conf import settings
 
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, workgroup_api, organization_api
+from api_client import user_api, group_api, course_api, workgroup_api, organization_api, project_api
 from accounts.models import UserActivation
 
 from .models import Client, WorkGroup
@@ -255,42 +255,31 @@ def fetch_clients_with_program(program_id):
 
     return clients
 
-def filterGroupsAndStudents(course, students):
-    ''' THIS IS A VERY SLOW PART OF CODE.
-        Due to api limitations, filtering of user from student list has to be done on client.
-        It has to have 3 nested "for" loops, and one after (indexes issue in for loop).
-        This should be replaced once API changes.
-    '''
-    groupsList = []
-#    for module in course.group_projects:
-#        groupsList = groupsList + [WorkGroup.fetch(group.workgroup_id)
-#                                   for group in course_api.get_course_content_workgroups(course.id, module.id)]
+def filter_groups_and_students(group_projects, students):
 
-    groups = []
-    groups = workgroup_api.get_workgroups()
-#    for workgroup in groupsList:
-#        groups.append(workgroup_api.get_groups_by_type(workgroup.id, 'organization'))
-
+    group_project_groups = {}
     groupedStudents = []
-    for group in groups:
-        for user in group.users:
-            for student in students:
-                if user.username == student.username:
-                    try:
-                        user.company = student.company
-                    except:
-                        pass
-                    groupedStudents.append(student)
-        group.students_count = len(group.users)
-    #    groups.append(group)
 
-#    groups.sort(key=lambda group: group.id)
+    for group_project in group_projects:
+        groups = project_api.get_project_workgroups(group_project.id, WorkGroup)
+
+        for group in groups:
+            group_users = {u.id : u for u in group.users}
+            students_in_group = [s for s in students if s.id in group_users.keys()]
+            groupedStudents.extend(students_in_group)
+
+            for group_student in students_in_group:
+                group_users[group_student.id].company = getattr(group_student, "company", None)
+
+            group.students_count = len(group.users)
+
+        group_project_groups[group_project.id] = groups
 
     for student in groupedStudents:
         if student in students:
             students.remove(student)
 
-    return groups, students
+    return group_project_groups, students
 
 def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
@@ -313,18 +302,14 @@ def parse_studentslist_from_post(postValues):
 
     students = []
     i = 0
+    project_id = None
     try:
-        privateFlag = True
-        companyid = postValues['students[0][data_field]']
-        if companyid == '':
-            privateFlag == False
-        while(postValues['students[{}][id]'.format(i)]):
-            students.append({'id': postValues['students[{}][id]'.format(i)],
+        project_id = postValues['project_id']
+        while(postValues['students[{}]'.format(i)]):
+            students.append({'id': postValues['students[{}]'.format(i)],
                             'company_id': postValues['students[{}][data_field]'.format(i)]})
-            if(postValues['students[{}][data_field]'.format(i)] != companyid):
-                privateFlag = False
             i = i + 1
     except:
         pass
 
-    return students, companyid, privateFlag
+    return students, project_id
