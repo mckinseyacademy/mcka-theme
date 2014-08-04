@@ -39,6 +39,29 @@ $(function(){
     $('input[type=submit]').attr('disabled', false);
   });
 
+
+  function FileTypeValidate(fileUpload, errorBlock) {
+
+      var extension = fileUpload.substring(fileUpload.lastIndexOf('.'));
+      var ValidFileType = ".jpg , .png , .gif";
+
+      //check whether user has selected file or not
+      if (fileUpload.length > 0) {
+
+          //check file is of valid type or not
+          if (ValidFileType.toLowerCase().indexOf(extension) < 0) {
+              errorBlock.html("Please select valid file type.");
+          }
+          else{
+            return true;
+          }
+      }
+      else {
+          errorBlock.html("Please select file for upload.");
+      }
+      return false;
+  }
+
   $(document).on('opened.fndtn.reveal', '#edit-user-image-modal', function () {
     $(this).find('img').error(function() {
       $(this).hide();
@@ -68,22 +91,24 @@ $(function(){
     $('#edit-user-image-modal').on('click', '#user-image-submit', function(e){
       e.preventDefault();
       var form = $(this).parent('form');
+      var imageFile = $('#id_profile_image').val();
       var modal = form.parent();
       modal.find('.error').html('');
+      if(FileTypeValidate(imageFile, modal.find('.error'))){
+        var options = {
+                    url     : form.attr('action'),
+                    type    : 'POST',
+                    contentType: false,
+                    success:function( data ) {
+                          modal.html(data);
+                          reloadImages();
+                        },
+                    error: function( data ){
+                          modal.find('.error').append('<p class="warning">Please select file first.</p>');
+                        }
+                    }
 
-      var options = {
-                  url     : form.attr('action'),
-                  type    : 'POST',
-                  contentType: false,
-                  success:function( data ) {
-                        modal.html(data);
-                        reloadImages();
-                      },
-                  error: function( data ){
-                        modal.find('.error').append('<p class="warning">Please select file first.</p>');
-                      }
-                  }
-
-    form.ajaxSubmit(options);
+      form.ajaxSubmit(options);
+    }
     });
 })
