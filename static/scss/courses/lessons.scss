@@ -141,3 +141,32 @@
     }
   }
 }
+
+#module_list {
+  ul {
+    margin: 0;
+    list-style-type: none;
+
+    li {
+      padding: 10px 0;
+      border-bottom: 1px solid $border-line;
+
+      .module {
+        @include font-spec(12, 600);
+
+        &.current,
+        &.current:visited {
+          color: $mckinsey-orange;
+        }
+      }
+
+      .fa { @include font-spec(16); }
+      .fa-check-circle { color: $mckinsey-green; }
+      .fa-circle { color: $mckinsey-academy-light-gray; }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
