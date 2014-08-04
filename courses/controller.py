@@ -353,7 +353,7 @@ def load_lesson_estimated_time(course):
     if estimated_time:
         estimates = [s.strip() for s in estimated_time.content.splitlines()]
         for idx, lesson in enumerate(course.chapters):
-            if idx + 1 < len(estimates):
+            if idx < len(estimates):
                 lesson.estimated_time = estimates[idx]
 
     return course
