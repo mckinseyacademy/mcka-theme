@@ -353,9 +353,7 @@ def load_lesson_estimated_time(course):
     if estimated_time:
         estimates = [s.strip() for s in estimated_time.content.splitlines()]
         for idx, lesson in enumerate(course.chapters):
-            try:
+            if estimates[idx]:
                 lesson.estimated_time = estimates[idx]
-            except IndexError:
-                lesson.estimated_time = None
 
     return course
