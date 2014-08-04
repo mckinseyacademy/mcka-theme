@@ -345,3 +345,17 @@ def choose_random_ta(course_id):
     if len(ta_users) > 0:
         ta_user = random.choice(ta_users)
     return ta_user
+
+def load_lesson_estimated_time(course):
+    static_tabs = load_static_tabs(course.id)
+    estimated_time = static_tabs.get("estimated time", None)
+
+    if estimated_time:
+        estimates = [s.strip() for s in estimated_time.content.splitlines()]
+        for idx, lesson in enumerate(course.chapters):
+            try:
+                lesson.estimated_time = estimates[idx]
+            except IndexError:
+                lesson.estimated_time = None
+
+    return course
