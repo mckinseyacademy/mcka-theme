@@ -858,8 +858,7 @@ def workgroup_group_create(request, course_id):
                 )
                 return HttpResponse(json.dumps({'message': ''}), content_type="application/json")
 
-        groups_list = workgroup_api.get_workgroups_for_project(project_id)
-        lastId = len(groups_list)
+        lastId = len(project.workgroups)
 
         workgroup = WorkGroup.create(
             'Group {}'.format(lastId + 1),
