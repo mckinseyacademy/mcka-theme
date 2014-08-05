@@ -43,7 +43,7 @@ class WorkgroupCompletionData(object):
         self.projects = Project.fetch_projects_for_course(course_id)
         completion_data = course_api.get_course_completions(course_id)
         self.completions = {WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage) : c for c in completion_data}
-        self.course = load_course(course_id, 4)
+        self.course = load_course(course_id)
 
         for project in self.projects:
             self.project_workgroups[project.id] = {w_id:WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups}

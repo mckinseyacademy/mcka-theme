@@ -63,7 +63,7 @@ def course_landing_page(request, course_id):
     etc. from user settings
     '''
 
-    course = load_course(course_id, 3)
+    course = load_course(course_id)
     load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
 
@@ -224,7 +224,7 @@ def user_course_group_work(request, course_id):
     # remove this in case we are a TA who is taking a course themselves
     user_api.delete_user_preference(request.user.id, "TA_REVIEW_WORKGROUP")
 
-    course = load_course(course_id, 4)
+    course = load_course(course_id)
     project_group, group_project = get_group_project_for_user_course(request.user.id, course)
     set_current_course_for_user(request, course_id)
 
@@ -237,7 +237,7 @@ def workgroup_course_group_work(request, course_id, workgroup_id):
     # set this workgroup as the preference for reviewing
     user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
 
-    course = load_course(course_id, 4)
+    course = load_course(course_id)
     project_group, group_project = get_group_project_for_workgroup_course(workgroup_id, course)
 
     return _render_group_work(request, course, project_group, group_project)
@@ -287,7 +287,7 @@ def course_discussion_userprofile(request, course_id, user_id):
 @check_user_course_access
 def course_progress(request, course_id):
 
-    course = load_course(course_id, 4)
+    course = load_course(course_id)
     gradebook = user_api.get_user_gradebook(request.user.id, course_id)
 
     graders = gradebook.grading_policy.GRADER

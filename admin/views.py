@@ -781,7 +781,7 @@ def workgroup_detail(request, course_id, workgroup_id):
     users = user_api.get_users([{'key': 'ids', 'value': ','.join([str(u.id) for u in workgroup.users])}])
     project = Project.fetch(workgroup.project)
 
-    course = load_course(course_id, 4)
+    course = load_course(course_id)
     projects = [gp for gp in course.group_project_chapters if gp.id == project.content_id and len(gp.sequentials) > 0]
     activities = []
     if len(projects) > 0:

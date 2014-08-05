@@ -12,7 +12,7 @@ from accounts.models import UserActivation
 
 from .models import Client, WorkGroup
 
-def _load_course(course_id, depth=3, course_api_impl=course_api):
+def _load_course(course_id, depth=4, course_api_impl=course_api):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
@@ -45,7 +45,7 @@ def _load_course(course_id, depth=3, course_api_impl=course_api):
     return course
 
 
-def load_course(course_id, depth=3, course_api_impl=course_api):
+def load_course(course_id, depth=4, course_api_impl=course_api):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
