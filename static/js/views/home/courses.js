@@ -8,10 +8,6 @@ Apros.views.HomeCourses = Backbone.View.extend({
     this.per_section    = Math.floor(this.rotator.width() / this.cards.width());
     this.btn_left       = $('.nav-left', this.rotator);
     this.btn_right      = $('.nav-right', this.rotator);
-
-    var el      = $(event.currentTarget);
-    var last_in_view = el.index() + this.per_section >= this.cards.last().index();
-    this.btn_right.toggleClass('disabled', last_in_view);
   },
 
   events: {
