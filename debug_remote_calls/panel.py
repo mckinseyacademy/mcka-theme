@@ -4,15 +4,23 @@ from urllib import addinfourl
 from StringIO import StringIO
 import json
 import threading
+import time
 
 
 threadlocal = threading.local()
 threadlocal.api_calls = []
 
 
+def _now_in_ms():
+   return int(round(time.time() * 1000))
+
 class DebugHandler(urllib2.HTTPHandler):
 
-    def http_response(self, request, response):
+   def http_request(self, request):
+    request.start_time = _now_in_ms()
+    return request
+
+   def http_response(self, request, response):
         # read the response data
         data = response.read()
         size = len(data)
@@ -31,6 +39,7 @@ class DebugHandler(urllib2.HTTPHandler):
                 'url': request.get_full_url(),
                 'headers': request.headers,
                 'data': request.get_data(),
+        'duration': _now_in_ms() - request.start_time,
             },
             'response': {
                 'code': response.code,
