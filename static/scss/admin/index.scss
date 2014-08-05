@@ -42,10 +42,10 @@
   .student-list .student{
     cursor: pointer;
     &:hover{
-      background-color: $mckinsey-academy-blue-gray;
+      background-color: $admin-table-row-hover-color;
     }
     &.selected{
-      background-color: $mckinsey-academy-alt-blue;
+      background-color: $admin-table-row-select-color;
     }
     a.invite-user:hover{
       color:$mckinsey-academy-alt-blue;

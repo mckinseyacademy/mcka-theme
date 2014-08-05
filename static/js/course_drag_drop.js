@@ -19,6 +19,9 @@
           var selected = that.parent().find(selector);
           accordianSlide(that, selected);
         });
+        el.find('.group-detail').on('click', function(ev){
+          ev.stopPropagation();
+        });
       };
 
       var removeStudent = function(el, link){
