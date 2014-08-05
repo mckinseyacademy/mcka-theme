@@ -61,6 +61,13 @@
 
         .index { margin-bottom: 20px; }
 
+        .estimated-time {
+          position: absolute;
+          bottom: 25px;
+          left: 7px;
+          @include font-spec(12, 600);
+        }
+
         .lesson-progress {
           color: $mckinsey-dark-grey;
           position: absolute;

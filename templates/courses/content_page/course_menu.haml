@@ -18,6 +18,8 @@
                       %i.fa.fa-bookmark
                   .label-5.index LESSON {{lesson.index}}:
                   %h2.name= lesson.name
+                  - if lesson.estimated_time
+                    %p.estimated-time.style-6= lesson.estimated_time
                   - if lesson.progress > 0
                     - if lesson.progress == 100
                       .lesson-progress.complete Completed

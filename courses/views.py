@@ -18,7 +18,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
 from main.models import CuratedContentItem
 
-from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs
+from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
@@ -64,10 +64,10 @@ def course_landing_page(request, course_id):
     '''
 
     course = load_course(course_id)
-    load_static_tabs(course_id)
+    static_tabs = load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
-
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+    load_lesson_estimated_time(course)
 
     social_total = 0
     try:
@@ -79,6 +79,7 @@ def course_landing_page(request, course_id):
 
     data = {
         "user": request.user,
+        "course": course,
         "articles": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.ARTICLE).order_by('sequence')[:3],
         "videos": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.VIDEO).order_by('sequence')[:3],
         "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
