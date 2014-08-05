@@ -73,6 +73,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.session_timeout.SessionTimeout',
     'accounts.middleware.thread_local.ThreadLocal',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',      # explicitly add this, otherwise this doesn't seem to appear on AWS environments
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
