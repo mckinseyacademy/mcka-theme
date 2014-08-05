@@ -259,5 +259,5 @@ DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
 
 DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': '',  # rely on a version of jQuery that already exists
-    'SHOW_TOOLBAR_CALLBACK': util.debug_toolbar.show_toolbar   # override when the Django Debug Toolbar appears
+    'SHOW_TOOLBAR_CALLBACK': 'util.debug_toolbar.show_toolbar'   # override when the Django Debug Toolbar appears
 }
