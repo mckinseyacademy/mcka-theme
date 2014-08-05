@@ -66,18 +66,20 @@ def get_user_dict(user_id):
     return json.loads(response.read())
 
 @api_error_protect
-def get_users(params=[]):
+def get_users(*args, **kwargs):
     ''' get all users '''
+    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    qs_params["page_size"] = 0
 
-    paramStrs = [param['key'] + '=' + param['value'] for param in params]
-    if len(paramStrs) > 0:
-        paramStr = '&'.join(paramStrs)
-    else:
-        paramStr = ''
+    # Workaround for problem when only one user in ids list - prepend 0
+    if None != qs_params.get('ids', None):
+        qs_params['ids'] = "0," + qs_params['ids']
 
     response = GET(
-        '{}/{}?page_size=0&{}'.format(
-            settings.API_SERVER_ADDRESS, USER_API, paramStr
+        '{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            urlencode(qs_params)
         )
     )
     return JP.from_json(response.read(), user_models.UsersFiltered)
@@ -205,7 +207,7 @@ def get_user_groups(user_id, group_type=None, group_object=GroupInfo):
     )
 
     if group_type:
-        url += "?type={}".format(group_type)
+        url += "?{}".format(urlencode({"type":group_type}))
 
     response = GET(url)
 

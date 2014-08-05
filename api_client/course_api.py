@@ -1,5 +1,6 @@
 ''' API calls with respect to courses '''
 from django.conf import settings
+from urllib import urlencode
 
 from api_error import api_error_protect
 
@@ -144,12 +145,18 @@ def get_user_list_json(course_id, program_id = None, client_id = None):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}/users?project={}&client={}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id,
-        program_id,
-        client_id)
+    qs_params = {}
+    if program_id:
+        qs_params['project'] = program_id
+    if client_id:
+        qs_params['client'] = client_id
+
+    response = GET('{}/{}/{}/users?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            urlencode(qs_params),
+        )
     )
 
     return response.read()
@@ -160,30 +167,17 @@ def get_user_list(course_id, program_id = None, client_id = None):
     return JP.from_json(get_user_list_json(course_id, program_id, client_id), course_models.CourseEnrollmentList).enrollments
 
 @api_error_protect
-def get_user_list_json(course_id, program_id = None, client_id = None):
-    '''
-    Retrieves course user list structure information from the API for specified course
-    '''
-    response = GET('{}/{}/{}/users?project={}&client={}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id,
-        program_id,
-        client_id)
-    )
-
-    return response.read()
-
-@api_error_protect
 def get_users_list_in_organizations(course_id, organizations):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}/users?organizations={}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id,
-        organizations,)
+    qs_params = {"organizations": organizations}
+    response = GET('{}/{}/{}/users?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            urlencode(qs_params),
+        )
     )
 
     return JP.from_json(response.read(), course_models.CourseEnrollmentList).enrollments
@@ -212,22 +206,17 @@ def add_group_to_course_content(group_id, course_id, content_id):
     return JP.from_json(response.read())
 
 @api_error_protect
-def get_users_content_filtered(course_id, content_id, params=[]):
+def get_users_content_filtered(course_id, content_id, *args, **kwargs):
     ''' filter and get course content'''
 
-    paramStrs = [param['key'] + '=' + param['value'] for param in params]
-    if len(paramStrs) > 0:
-        paramStr = '&'.join(paramStrs)
-    else:
-        paramStr = ''
-
+    qs_params = {karg : kwargs[karg] for karg in kwargs}
     response = GET(
         '{}/{}/{}/content/{}/users?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
             content_id,
-            paramStr,
+            urlencode(qs_params),
         )
     )
 
@@ -237,12 +226,13 @@ def get_users_content_filtered(course_id, content_id, params=[]):
 def get_users_filtered_by_group(course_id, group_ids):
     ''' filter and get course users'''
 
+    qs_params = {"groups": group_ids}
     response = GET(
-        '{}/{}/{}/users?groups={}'.format(
+        '{}/{}/{}/users?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
-            group_ids,
+            urlencode(qs_params),
         )
     )
 
@@ -285,17 +275,18 @@ def get_course_content_groups(course_id, content_id):
 @api_error_protect
 def get_course_completions(course_id, user_id=None):
     ''' fetch course module completion list '''
-    url = '{}/{}/{}/completions/?page_size=0'.format(
+    qs_params = {"page_size": 0}
+    if user_id:
+        qs_params["user_id"] = user_id
+
+    url = '{}/{}/{}/completions/?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
-        user_id,
+        urlencode(qs_params),
     )
-
-    if user_id:
-        url += '&user_id={}'.format(user_id)
-
     response = GET(url)
+
     return JP.from_json(response.read())
 
 @api_error_protect
@@ -314,57 +305,55 @@ def get_course_metrics(course_id):
 @api_error_protect
 def get_course_metrics_by_city(course_id, cities=None):
     ''' retrieves course metrics '''
-    if cities is None:
-        url = '{}/{}/{}/metrics/cities/?page_size=0'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id
-        )
-    else:
-        url = '{}/{}/{}/metrics/cities/?page_size=0&city={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            cities
-        )
+    qs_params = {"page_size": 0}
+    if cities:
+        qs_params["city"] = cities
 
+    url = '{}/{}/{}/metrics/cities/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params),
+    )
     response = GET(url)
-    return JP.from_json(response.read())
 
+    return JP.from_json(response.read())
 
 
 @api_error_protect
 def get_course_metrics_proficiency(course_id, user_id=None, count=3):
     ''' retrieves users who are leading in terms of points_scored'''
 
-    url = '{}/{}/{}/metrics/proficiency/leaders?count={}'.format(
+    qs_params = {"count": count}
+    if user_id:
+        qs_params["user_id"] = user_id
+
+    url = '{}/{}/{}/metrics/proficiency/leaders?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
-        count
+        urlencode(qs_params),
     )
-
-    if user_id:
-        url += '&user_id={}'.format(user_id)
-
     response = GET(url)
+
     return JP.from_json(response.read())
 
 @api_error_protect
 def get_course_metrics_completions(course_id, user_id=None, count=3):
     ''' retrieves users who are leading in terms of  course module completions '''
 
-    url = '{}/{}/{}/metrics/completions/leaders?count={}'.format(
+    qs_params = {"count": count}
+    if user_id:
+        qs_params["user_id"] = user_id
+
+    url = '{}/{}/{}/metrics/completions/leaders?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
-        count
+        urlencode(qs_params),
     )
-
-    if user_id:
-        url += '&user_id={}'.format(user_id)
-
     response = GET(url)
+
     return JP.from_json(response.read())
 
 @api_error_protect
@@ -384,13 +373,14 @@ def get_course_social_metrics(course_id):
 @api_error_protect
 def get_course_projects(course_id, page_size=0, project_object=JsonObject):
     ''' Fetches all the project objects for the course '''
-    url = '{}/{}/{}/projects/?page_size={}'.format(
+
+    qs_params = {"page_size": page_size}
+    url = '{}/{}/{}/projects/?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
-        page_size,
+        urlencode(qs_params),
     )
-
     response = GET(url)
 
     return JP.from_json(response.read(), project_object)

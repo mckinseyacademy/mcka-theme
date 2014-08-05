@@ -293,9 +293,6 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
-        #        for course in program.courses:
-        #            users = course_api.get_users_content_filtered(course.course_id, client_id, [{'key': 'enrolled', 'value': 'True'}])
-        #            course.user_count = len(users)
 
         # REFACTOR ONCE MCKIN-1291 is done
         # remove the per user calls.
@@ -780,7 +777,7 @@ def workgroup_detail(request, course_id, workgroup_id):
     Get detailed information about the specific workgroup for this course
     '''
     workgroup = WorkGroup.fetch(workgroup_id)
-    users = user_api.get_users([{'key': 'ids', 'value': ','.join([str(u.id) for u in workgroup.users])}])
+    users = user_api.get_users(ids=','.join([str(u.id) for u in workgroup.users]))
     project = Project.fetch(workgroup.project)
 
     course = load_course(course_id)
@@ -1026,13 +1023,13 @@ def permissions(request):
     admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
 
     # fetch users users that have no company association
-    users = user_api.get_users([{ 'key': 'has_organizations', 'value': 'false' }])
+    users = user_api.get_users(has_organizations=False)
 
     # fetch users in administrative company
     admin_users = []
     if admin_company and admin_company.users:
         ids = ','.join(str(id) for id in admin_company.users)
-        admin_users = user_api.get_users([{ 'key': 'ids', 'value': ids }])
+        admin_users = user_api.get_users(ids=ids)
 
     users.extend(admin_users)
 

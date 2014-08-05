@@ -285,7 +285,7 @@ def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
 
     users_ids = [str(user.id) for user in students]
-    students = user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+    students = user_api.get_users(ids=','.join(users_ids))
 
     companies = {}
     for student in students:
