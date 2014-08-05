@@ -6,7 +6,8 @@
       %ul
         - for article in articles
           %li
-            .article-title= article.title
+            %a.article-title{href: "#{article.url}", target: '_blank'}
+              = article.title
             .attribution
               .when
                 %time.label-2= article.display_date
@@ -35,7 +36,8 @@
       %ul
         - for video in videos
           %li
-            .article-title= video.title
+            %a.article-title{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
+              = video.title
             .attribution
               .when
                 %time.label-2= video.display_date
