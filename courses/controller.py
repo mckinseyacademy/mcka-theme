@@ -305,11 +305,8 @@ def social_metrics(course_id, user_id):
     point_sum = 0
 
     # calculate total social score for each user in course
-    for user_id, user_metrics in course_metrics.__dict__.iteritems():
-
-        # we need username, title and avatar for each user
-        user = user_api.get_user(user_id)
-
+    for u_id, user_metrics in course_metrics.__dict__.iteritems():
+        user = user_api.get_user(u_id)
         user.points = social_total(user_metrics)
         user.avatar_url = user.image_url(40)
         point_sum += user.points
