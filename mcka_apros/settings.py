@@ -262,3 +262,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': '',  # rely on a version of jQuery that already exists
     'SHOW_TOOLBAR_CALLBACK': 'util.debug_toolbar.show_toolbar'   # override when the Django Debug Toolbar appears
 }
+
+# set AWS querystring authentication to false
+AWS_QUERYSTRING_AUTH = False
