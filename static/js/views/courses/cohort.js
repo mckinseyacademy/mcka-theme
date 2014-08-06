@@ -11,6 +11,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
   city_list: [],
   cities: {},
   zoomLevel: 1,
+  popupTimeout: false,
 
   defaults: {
     model: new Apros.models.LocationData
@@ -43,6 +44,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
       _this.map.removeLayer(_this.layers);
       _this.drawLayers(_this.model, _this.city_list, _this.cities, _this.users, _this.iconsFlag);
     });
+    this.delayPopupClose();
     this.model.fetch({
       'success': function(model, response){
         model.save(model.parse(response));
@@ -80,10 +82,12 @@ Apros.views.CourseCohort = Backbone.View.extend({
       myIcon.iconSize = [44, 44];
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
       .bindPopup('<i>Teaching Assistant</i><h4>' + user.username + '</h4><p>Title: ' +
-        user.title + '<br><a href="#" data-reveal-id="contact-ta">Email Group TA</a></p>');
+        user.title + '<br><a href="#" data-reveal-id="contact-ta">Email Group TA</a></p>',
+        {'closeOnClick': false});
     }else{
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<h4>' + user.username + '</h4><p>Title: ' + user.title + '</p>');
+      .bindPopup('<h4>' + user.username + '</h4><p>Title: ' + user.title + '</p>',
+        {'closeOnClick': false});
     }
     this.hoverizePopup(marker);
     layers.push(marker);
@@ -101,7 +105,8 @@ Apros.views.CourseCohort = Backbone.View.extend({
             stroke: false,
             fillOpacity: 0.5
         }).setRadius(radius)
-          .bindPopup('<h4>' + city.name + '</h4><p>Participants: ' + city.count + '</p>');
+          .bindPopup('<h4>' + city.name + '</h4><p>Participants: ' + city.count + '</p>',
+            {'closeOnClick': false});
         this.hoverizePopup(marker);
         layers.push(marker);
       }
@@ -109,11 +114,25 @@ Apros.views.CourseCohort = Backbone.View.extend({
   },
 
   hoverizePopup: function(marker){
+    var _this = this;
     marker.on('mouseover', function (e) {
       this.openPopup();
     });
     marker.on('mouseout', function (e) {
-      this.closePopup();
+      var that = this;
+      _this.popupTimeout = setTimeout(function(){that.closePopup();}, 700);
+    });
+  },
+
+  delayPopupClose: function(){
+    var _this = this;
+    var popup = $('.leaflet-popup-pane');
+    popup.on('mouseover', function(){
+      clearTimeout(_this.popupTimeout);
+    });
+    popup.on('mouseout', function (e) {
+      var that = this;
+      _this.popupTimeout = setTimeout(function(){_this.map.closePopup();}, 700);
     });
   },
 
