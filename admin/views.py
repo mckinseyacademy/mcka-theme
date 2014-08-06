@@ -302,8 +302,8 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "programs":
             for student in data["students"]:
                 user = user_api.get_user(student.id)
-                if hasattr(student, 'created') and hasattr(student.created, 'isoformat'):
-                    student.created = student.created.isoformat()
+                if hasattr(user, 'created'):
+                    student.created = user.created.strftime(settings.SHORT_DATE_FORMAT)
                 if user.is_active == True:
                     student.enrolled = True
 
