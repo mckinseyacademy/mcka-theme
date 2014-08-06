@@ -9,8 +9,6 @@ Apros.views.HomeCourses = Backbone.View.extend({
     this.btn_left       = $('.nav-left', this.rotator);
     this.btn_right      = $('.nav-right', this.rotator);
 
-    var last_in_view = this.per_section - 1 >= this.cards.last().index();
-    this.btn_right.toggleClass('disabled', last_in_view);
   },
 
   events: {
@@ -48,5 +46,8 @@ Apros.views.HomeCourses = Backbone.View.extend({
 
   render: function() {
     this.center_on_bookmark();
+
+    var last_in_view = this.per_section - 1 >= this.cards.last().index();
+    this.btn_right.toggleClass('disabled', last_in_view);
   }
 });
