@@ -25,8 +25,11 @@ def user_program_data(request):
             course_id = get_current_course_for_user(request)
 
         if course_id:
-            course_id, chapter_id, page_id = locate_chapter_page(
-                request.user.id, course_id, None)
+            chapter_id = request.resolver_match.kwargs.get('chapter_id', None)
+            page_id = request.resolver_match.kwargs.get('page_id', None)
+            if page_id is None or chapter_id is None:
+                course_id, chapter_id, page_id = locate_chapter_page(
+                    request.user.id, course_id, None)
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
                 course_id, chapter_id, page_id)
 
