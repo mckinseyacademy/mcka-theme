@@ -16,9 +16,9 @@ from admin.models import WorkGroup
 from api_client import course_api, user_api, workgroup_api
 from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
-from lib.util import inject_gradebook_info
 from main.models import CuratedContentItem
 
+from .controller import inject_gradebook_info
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, average_progress, choose_random_ta
