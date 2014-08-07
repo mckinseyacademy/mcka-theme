@@ -50,6 +50,11 @@ def _get_qs_value_from_url(value_name, url):
         return query_strings[value_name][0]
     return None
 
+def _sanitize_redirect_url(redirect_url):
+    ''' prevent attacker controllable redirection to third-party applications '''
+    return urlparse.urlparse(redirect_url).path
+
+
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -63,10 +68,14 @@ def login(request):
                 )
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
-                redirect_to = _get_qs_value_from_url(
+
+                qs_value = _get_qs_value_from_url(
                     'next',
                     request.META['HTTP_REFERER']
                 ) if 'HTTP_REFERER' in request.META else None
+
+                redirect_to = _sanitize_redirect_url(qs_value) if qs_value else None
+
                 if not redirect_to:
                     course_id = get_current_course_for_user(request)
                     program = get_current_program_for_user(request)
