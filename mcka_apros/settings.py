@@ -218,7 +218,7 @@ SOCIAL_METRIC_POINTS = {
 
 ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
 
-API_SERVER_PREFIX = 'api'
+API_SERVER_PREFIX = '/'.join(['api', 'server'])
 
 # Api locations
 COURSEWARE_API = '/'.join([API_SERVER_PREFIX, 'courses'])
