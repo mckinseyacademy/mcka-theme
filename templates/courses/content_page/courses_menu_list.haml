@@ -1,16 +1,16 @@
 %ul.courses
   - for program_course in courses
-    %li
-      - if program_course.started
+    %li{'data-numdays': "#{program_course.days_till_start}", 'data-upcoming': "#{program_course.days_till_end}"}
+      - if program_course.ended
         %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
           = program_course.name
-        - if program_course.percent_complete < 100
-          .status
-            = program_course.percent_complete_message
-        - else
-          .status.complete Completed
-      - else
-        .course-name.unavailable{'data-numdays': '#{program_course.days_till_start}'}
+        .status= _("Archived")
+      - elif program_course.started
+        %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
           = program_course.name
-        .status.unavailable{'data-numdays': '#{program_course.days_till_start}'}
-          = program_course.formatted_start_date
+        .status= _("In Progress")
+      - else
+        .course-name.unavailable
+          = program_course.name
+        .status.unavailable
+          = _("Coming Soon")

@@ -10,7 +10,6 @@ from .json_object import CategorisedJsonObject, JsonObject
 # Temporary id converter to fix up problems post opaque keys
 from lib.util import LegacyIdConvert
 
-
 # Create your models here.
 
 # ignore too few public methods witin this file - these models almost always
@@ -43,7 +42,6 @@ class _HasDueDate(CategorisedJsonObject):
                     last_child_due_date = child_due
 
         return last_child_due_date
-
 
 class Page(_HasDueDate):
 
@@ -104,10 +102,22 @@ class Course(CategorisedJsonObject):
         return int(self.days_till_start) < 1
 
     @property
+    def ended(self):
+        return int(self.days_till_end) < 1
+
+    @property
     def days_till_start(self):
         if hasattr(self, 'start') and not self.start is None:
             days = str(
                 int(math.floor(((self.start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
+            return days
+        return 0
+
+    @property
+    def days_till_end(self):
+        if hasattr(self, 'end') and not self.end is None:
+            days = str(
+                int(math.floor(((self.end - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
             return days
         return 0
 
