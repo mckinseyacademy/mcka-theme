@@ -1045,13 +1045,13 @@ def permissions(request):
         roles = []
 
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_ADMIN, []):
-            roles.append('ADMIN')
+            roles.append(_('ADMIN'))
 
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_TA, []):
-            roles.append('TA')
+            roles.append(_('TA'))
 
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
-            roles.append('OBSERVER')
+            roles.append(_('OBSERVER'))
 
         user.roles = ", ".join(roles)
 
