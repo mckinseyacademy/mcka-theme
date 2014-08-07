@@ -71,10 +71,9 @@
         });
       };
 
-      var list_groups_for_selected_project = function(){
-        var project_id = $('.group-project-select').val();
-        $('.select-group-box').hide();
-        $('.select-group-box[data-project-id="' + project_id + '"]').show();
+      var list_groups_for_selected_project = function(project_id){
+        var groupBoxes = $('.select-group-box').hide();
+        groupBoxes.filter('[data-project-id="' + project_id + '"]').show();
       };
 
       return {
@@ -147,7 +146,7 @@
     });
 
     $('.group-project-select').on('change', function(){
-      courseDrag.list_groups_for_selected_project();
+      courseDrag.list_groups_for_selected_project($(this).val());
     });
 
     $('#generate_assignments').on('click', function(e){
@@ -204,6 +203,6 @@
       }
     });
 
-    courseDrag.list_groups_for_selected_project();
+    courseDrag.list_groups_for_selected_project($('.group-project-select').val());
 
   });
