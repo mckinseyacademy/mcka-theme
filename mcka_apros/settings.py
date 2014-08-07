@@ -203,9 +203,6 @@ ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
 EMAIL_BACKEND = "django_ses.SESBackend"
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
-# Target number of reviews for a group project
-GROUP_REVIEWS_TARGET = 3
-
 # Date formatting rules
 DATE_DISPLAY_FORMAT = "%B %d, %Y"
 SHORT_DATE_FORMAT = "%m/%d/%Y"

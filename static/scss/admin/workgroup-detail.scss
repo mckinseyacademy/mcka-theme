@@ -86,3 +86,23 @@
     }
   }
 }
+
+.project_activities_detail{
+  display: none;
+}
+
+.activity{
+  .name{
+    @include font-spec(14, semibold);
+    padding-bottom: 15px;
+    .assignment_message{
+      font-style: italic;
+      &::before{
+        content: '(';
+      }
+      &::after{
+        content: ')';
+      }
+    }
+  }
+}

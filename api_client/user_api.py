@@ -71,10 +71,6 @@ def get_users(*args, **kwargs):
     qs_params = {karg : kwargs[karg] for karg in kwargs}
     qs_params["page_size"] = 0
 
-    # Workaround for problem when only one user in ids list - prepend 0
-    if None != qs_params.get('ids', None):
-        qs_params['ids'] = "0," + qs_params['ids']
-
     response = GET(
         '{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,

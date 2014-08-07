@@ -36,7 +36,7 @@ class ReviewAssignmentsTest(TestCase):
         users = [1, 2]
         workgroups = [test_workgroup(11, [1]), test_workgroup(12, [2])]
 
-        rap = ReviewAssignmentProcessor(users, workgroups, 1)
+        rap = ReviewAssignmentProcessor(users, workgroups, 1, 0)
         rap.distribute()
 
         self.assertEqual(len(rap.workgroup_reviewers[11]), 1)
@@ -46,7 +46,25 @@ class ReviewAssignmentsTest(TestCase):
         self.assertEqual(rap.workgroup_reviewers[12][0], 1)
 
         with self.assertRaises(ReviewAssignmentUnattainableError):
-            rap = ReviewAssignmentProcessor(users, workgroups, 2)
+            rap = ReviewAssignmentProcessor(users, workgroups, 2, 0)
+            rap.distribute()
+
+    def test_one_user_in_each_of_2_groups_with_min_users(self):
+        ''' one user in each workgroup - should do each others '''
+        users = [1, 2]
+        workgroups = [test_workgroup(11, [1]), test_workgroup(12, [2])]
+
+        rap = ReviewAssignmentProcessor(users, workgroups, 1, 1)
+        rap.distribute()
+
+        self.assertEqual(len(rap.workgroup_reviewers[11]), 1)
+        self.assertEqual(rap.workgroup_reviewers[11][0], 2)
+
+        self.assertEqual(len(rap.workgroup_reviewers[12]), 1)
+        self.assertEqual(rap.workgroup_reviewers[12][0], 1)
+
+        with self.assertRaises(ReviewAssignmentUnattainableError):
+            rap = ReviewAssignmentProcessor(users, workgroups, 1, 2)
             rap.distribute()
 
 
@@ -54,7 +72,7 @@ class ReviewAssignmentsTest(TestCase):
         users = [1, 2, 3]
         workgroups = [test_workgroup(11, [1]), test_workgroup(12, [2]), test_workgroup(13, [3])]
 
-        rap = ReviewAssignmentProcessor(users, workgroups, 2)
+        rap = ReviewAssignmentProcessor(users, workgroups, 2, 0)
         rap.distribute()
 
         self.assertEqual(len(rap.workgroup_reviewers[11]), 2)
@@ -68,7 +86,7 @@ class ReviewAssignmentsTest(TestCase):
         rap.workgroup_reviewers[13].sort()
         self.assertEqual(rap.workgroup_reviewers[13], [1,2])
 
-        rap = ReviewAssignmentProcessor(users, workgroups, 1)
+        rap = ReviewAssignmentProcessor(users, workgroups, 1, 0)
         rap.distribute()
 
         self.assertEqual(len(rap.workgroup_reviewers[11]), 1)
@@ -80,15 +98,36 @@ class ReviewAssignmentsTest(TestCase):
         self.assertTrue(rap.workgroup_reviewers[13] == [1] or rap.workgroup_reviewers[13] == [2])
 
         with self.assertRaises(ReviewAssignmentUnattainableError):
-            rap = ReviewAssignmentProcessor(users, workgroups, 3)
+            rap = ReviewAssignmentProcessor(users, workgroups, 3, 0)
             rap.distribute()
 
+    def test_one_user_in_each_of_3_groups_with_min_users(self):
+        users = [1, 2, 3]
+        workgroups = [test_workgroup(11, [1]), test_workgroup(12, [2]), test_workgroup(13, [3])]
+
+        rap = ReviewAssignmentProcessor(users, workgroups, 1, 2)
+        rap.distribute()
+
+        self.assertEqual(len(rap.workgroup_reviewers[11]), 2)
+        self.assertEqual(len(rap.workgroup_reviewers[12]), 2)
+        self.assertEqual(len(rap.workgroup_reviewers[13]), 2)
+
+        rap.workgroup_reviewers[11].sort()
+        self.assertEqual(rap.workgroup_reviewers[11], [2,3])
+        rap.workgroup_reviewers[12].sort()
+        self.assertEqual(rap.workgroup_reviewers[12], [1,3])
+        rap.workgroup_reviewers[13].sort()
+        self.assertEqual(rap.workgroup_reviewers[13], [1,2])
+
+        with self.assertRaises(ReviewAssignmentUnattainableError):
+            rap = ReviewAssignmentProcessor(users, workgroups, 1, 3)
+            rap.distribute()
 
     def test_two_users_in_each_of_2_groups(self):
         users = [1, 2, 11, 12]
         workgroups = [test_workgroup(101, [1,11]), test_workgroup(102, [2,12])]
 
-        rap = ReviewAssignmentProcessor(users, workgroups, 2)
+        rap = ReviewAssignmentProcessor(users, workgroups, 2, 0)
         rap.distribute()
 
         self.assertEqual(len(rap.workgroup_reviewers[101]), 2)
@@ -99,16 +138,34 @@ class ReviewAssignmentsTest(TestCase):
         self.assertEqual(rap.workgroup_reviewers[102], [1,11])
 
         with self.assertRaises(ReviewAssignmentUnattainableError):
-            rap = ReviewAssignmentProcessor(users, workgroups, 3)
+            rap = ReviewAssignmentProcessor(users, workgroups, 3, 0)
+            rap.distribute()
+
+    def test_two_users_in_each_of_2_groups_with_min_users(self):
+        users = [1, 2, 11, 12]
+        workgroups = [test_workgroup(101, [1,11]), test_workgroup(102, [2,12])]
+
+        rap = ReviewAssignmentProcessor(users, workgroups, 0, 1)
+        rap.distribute()
+
+        self.assertEqual(len(rap.workgroup_reviewers[101]), 2)
+        self.assertEqual(len(rap.workgroup_reviewers[102]), 2)
+        rap.workgroup_reviewers[101].sort()
+        self.assertEqual(rap.workgroup_reviewers[101], [2,12])
+        rap.workgroup_reviewers[102].sort()
+        self.assertEqual(rap.workgroup_reviewers[102], [1,11])
+
+        with self.assertRaises(ReviewAssignmentUnattainableError):
+            rap = ReviewAssignmentProcessor(users, workgroups, 0, 2)
             rap.distribute()
 
     def test_lotsa_peeps(self):
         users, workgroups = test_set(200, 4)
 
-        rap = ReviewAssignmentProcessor(users, workgroups, 10)
+        rap = ReviewAssignmentProcessor(users, workgroups, 10, 0)
         rap.distribute()
 
-        # Make sure all groups have 2 reviewers
+        # Make sure all groups have 10 reviewers
         for wg in workgroups:
             self.assertTrue(len(rap.workgroup_reviewers[wg.id]) == 10)
 
@@ -117,6 +174,38 @@ class ReviewAssignmentsTest(TestCase):
         min_assignments = min([len(rap.reviewer_workgroups[u]) for u in users])
 
         self.assertTrue(max_assignments - min_assignments < 2)
+
+    def test_lotsa_peeps_with_min_users(self):
+        users, workgroups = test_set(200, 4)
+
+        for i in range(5):
+            rap = ReviewAssignmentProcessor(users, workgroups, 1, i)
+            rap.distribute()
+
+            # Make sure that all users have at least i reviews to perform
+            min_assignments = min([len(rap.reviewer_workgroups[u]) for u in users])
+            self.assertTrue(min_assignments >= i)
+
+            # Make sure that it is fairly even
+            max_assignments = max([len(rap.reviewer_workgroups[u]) for u in users])
+            self.assertTrue(max_assignments - min_assignments < 2)
+
+    def test_lotsa_peeps_with_min_users_unattainable(self):
+        users, workgroups = test_set(200, 4)
+
+        # largest attainable
+        rap = ReviewAssignmentProcessor(users, workgroups, 0, 49)
+        rap.distribute()
+
+        # Make sure that all users have at least i reviews to perform
+        min_assignments = min([len(rap.reviewer_workgroups[u]) for u in users])
+        max_assignments = max([len(rap.reviewer_workgroups[u]) for u in users])
+        self.assertTrue(min_assignments == 49)
+        self.assertTrue(max_assignments == 49)
+
+        with self.assertRaises(ReviewAssignmentUnattainableError):
+            rap = ReviewAssignmentProcessor(users, workgroups, 0, 50)
+            rap.distribute()
 
 class UrlsTest(TestCase):
 

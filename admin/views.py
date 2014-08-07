@@ -33,7 +33,13 @@ from lib.util import LegacyIdConvert
 from .models import Client
 from .models import Program
 from .models import WorkGroup
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
+from .models import WorkGroupActivityXBlock
+from .models import ReviewAssignmentGroup
+from .controller import process_uploaded_student_list, get_student_list_as_file, get_group_list_as_file
+from .controller import fetch_clients_with_program
+from .controller import load_course
+from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
+from .controller import get_group_project_activities, get_group_activity_xblock
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -789,7 +795,7 @@ def workgroup_detail(request, course_id, workgroup_id):
     activities = []
     if len(projects) > 0:
         project.name = projects[0].name
-        activities = [a for a in projects[0].sequentials if "group-project" in a.pages[0].child_category_list()]
+        activities = get_group_project_activities(projects[0])
 
     submission_map = workgroup_api.get_latest_workgroup_submissions_by_id(workgroup.id, Submission)
     submissions = [v for k,v in submission_map.iteritems()]
@@ -834,6 +840,7 @@ def workgroup_course_detail(request, course_id):
         "students": students,
         "companies": companies.values(),
         "group_projects": group_projects,
+        "selected_client_tab": "edit_groups",
     }
 
     return render(
@@ -982,22 +989,30 @@ def download_group_list(request, course_id):
 
     return response
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def generate_assignments(request, course_id):
-    error = _("Problem generating project review assignments")
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def generate_assignments(request, project_id, activity_id):
+    error = _("Problem generating activity review assignments")
     status_code = 400
     try:
-        for project in Project.fetch_projects_for_course(course_id):
-            # Fetch workgroups
-            workgroups = [WorkGroup.fetch(wg) for wg in project.workgroups]
-            # Get list of all users
-            user_ids = []
-            for wkgrp in workgroups:
-                user_ids.extend([u.id for u in wkgrp.users])
+        project = Project.fetch(project_id)
 
-            rap = ReviewAssignmentProcessor(user_ids, workgroups, settings.GROUP_REVIEWS_TARGET)
-            rap.distribute()
-            rap.store_assignments(project.id)
+        # Fetch workgroups
+        workgroups = [WorkGroup.fetch(wg) for wg in project.workgroups]
+        # Get list of all users
+        user_ids = []
+        for wkgrp in workgroups:
+            user_ids.extend([u.id for u in wkgrp.users])
+
+        group_xblock = WorkGroupActivityXBlock.fetch_from_activity(project.course_id, activity_id)
+
+        rap = ReviewAssignmentProcessor(
+            user_ids,
+            workgroups,
+            group_xblock.group_reviews_required_count,
+            group_xblock.user_review_count
+        )
+        rap.distribute()
+        rap.store_assignments(project.course_id, group_xblock.id)
 
         return HttpResponse(json.dumps({"message": _("Project review assignments allocated")}), content_type='application/json')
 
@@ -1109,3 +1124,45 @@ def edit_permissions(request, user_id):
         'submit_label': _("Save")
     }
     return render(request, 'admin/permissions/edit.haml', data)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_course_assignments(request, course_id):
+    selected_project_id = request.GET.get("project_id", None)
+    course = load_course(course_id)
+
+    students, companies = getStudentsWithCompanies(course)
+
+    if len(course.group_project_chapters) < 1:
+        return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
+
+    group_projects = Project.fetch_projects_for_course(course.id)
+
+    for project in group_projects:
+        project.selected = (selected_project_id == str(project.id))
+        group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
+        project.name = group_project_chapter.name
+        project.activities = get_group_project_activities(group_project_chapter)
+
+        if project.organization:
+            project.organization = Organization.fetch(project.organization).display_name
+
+        project_assignment_groups = []
+        for workgroup in project.workgroups:
+            project_assignment_groups.extend(ReviewAssignmentGroup.list_for_workgroup(workgroup))
+
+        for activity in project.activities:
+            activity.xblock = WorkGroupActivityXBlock.fetch_from_uri(get_group_activity_xblock(activity).uri)
+            activity_assignments = [pag for pag in project_assignment_groups if hasattr(pag, "xblock_id") and pag.xblock_id == activity.xblock.id]
+            activity.has_assignments = (len(activity_assignments) > 0)
+
+    data = {
+        "course": course,
+        "group_projects": group_projects,
+        "selected_client_tab": "assignments",
+    }
+
+    return render(
+        request,
+        'admin/workgroup/project_assignment.haml',
+        data
+    )

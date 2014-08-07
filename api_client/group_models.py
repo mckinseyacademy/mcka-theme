@@ -33,6 +33,9 @@ class GroupInfo(JsonObject):
     def get_groups(self, *args, **kwargs):
         return group_api.get_groups_in_group(self.id, *args, **kwargs)
 
+    def add_course(self, course_id):
+        return group_api.add_course_to_group(course_id, self.id)
+
     @classmethod
     def _clean_group_data(cls, group_data):
         clean_data = {

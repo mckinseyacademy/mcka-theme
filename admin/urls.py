@@ -31,8 +31,8 @@ urlpatterns = patterns(
     url(r'^programs', views.program_list, name='program_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_list', views.download_group_list, name='download_group_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_projects_report', views.download_group_projects_report, name='download_group_projects_report'),
-    url(r'^workgroup/course/(?P<course_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments'),
     url(r'^workgroup/course/(?P<course_id>.*)/detail/(?P<workgroup_id>.*)', views.workgroup_detail, name='workgroup_detail'),
+    url(r'^workgroup/course/(?P<course_id>.*)/assignments', views.workgroup_course_assignments, name='workgroup_course_assignments'),
     url(r'^workgroup/course/(?P<course_id>.*)', views.workgroup_course_detail, name='workgroup_course_detail'),
     url(r'^workgroup/programs/list', views.workgroup_programs_list, name='workgroup_programs_list'),
     url(r'^workgroup/group/update/(?P<group_id>[0-9]+)/(?P<course_id>.*)', views.workgroup_group_update, name='workgroup_group_update'),
@@ -42,4 +42,5 @@ urlpatterns = patterns(
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),
+    url(r'^project/(?P<project_id>.*)/activity/(?P<activity_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments')
 )

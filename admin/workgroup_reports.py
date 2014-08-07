@@ -4,6 +4,7 @@ from api_client.project_models import Project
 from api_client import course_api, user_api, group_api
 
 from .controller import load_course
+from .controller import get_group_project_activities
 from .models import WorkGroup
 
 COMPLETION_STAGES = ['upload', 'evaluation', 'grade']
@@ -49,7 +50,7 @@ class WorkgroupCompletionData(object):
             self.project_workgroups[project.id] = {w_id:WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups}
             group_project = [ch for ch in self.course.group_project_chapters if ch.id == project.content_id][0]
             project.name = group_project.name
-            self.project_activities[project.id] = [s for s in group_project.sequentials if len(s.pages) > 0 and "group-project" in s.pages[0].child_category_list()]
+            self.project_activities[project.id] = get_group_project_activities(group_project)
 
             # by user completion data
             for k, pw in self.project_workgroups[project.id].iteritems():

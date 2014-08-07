@@ -1,0 +1,81 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+  -# CSS
+  - block css
+    %link{rel: "stylesheet", href: "{% static 'css/normalize.css' %}"}
+    %link{rel: "stylesheet", href: "{% static 'css/font-awesome.css' %}"}
+    %link{rel: "stylesheet", href: "{% static 'css/leaflet.css' %}"}
+    %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
+- block content
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/workgroup/detail_header.haml'
+  .admin-list.tight
+    .admin-detail.row
+      .large-12.large-centered.columns
+        %header
+          %h1.principal-title Group Work: {{course.name}}
+          .sub-1.add= _("Review Assignments for Project Activities")
+          .add-message
+            - block principal_message
+              %p= _("Generate random peer-reviews for project activities")
+          %div
+            %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
+              Workgroup Completion Report
+        %hr
+        %section
+          .sub-1= _("Project:")
+          %p= _("Select project within which you are working")
+          - include 'admin/workgroup/project_dropdown.haml'
+        %hr
+        %section
+          - for group_project in group_projects
+            .project_activities_detail{"data-project-id": "#{group_project.id}"}
+              - for activity in group_project.activities
+                .activity
+                  .name
+                    = _("Activity: ")
+                    = activity.name
+                    - if activity.has_assignments
+                      %span.assignment_message><
+                        = _("has assignments")
+                  - if activity.xblock.ta_graded
+                    .detail.ta-graded
+                      = _("This activity is to be graded by a Teaching Assistant")
+                  - else
+                    .detail
+                      %table
+                        %tr
+                          %td
+                            Reviews required per group activity
+                          %td
+                            = activity.xblock.group_reviews_required_count
+                        %tr
+                          %td
+                            Minimum number of reviews for each user
+                          %td
+                            = activity.xblock.user_review_count
+                      %a#generate_assignments.button.radius.small{href: "/admin/project/#{group_project.id}/activity/#{activity.id}/generate_assignments"}
+                        = _("Generate Activity Review Assignments")
+- block js_snippets
+  :javascript
+    var show_activities_for_project = function(project_id){
+      var project_activities = $('.project_activities_detail').hide();
+      project_activities.filter('[data-project-id="' + project_id + '"]').show();
+    }
+    $('.group-project-select').on('change', function(){
+      show_activities_for_project($(this).val());
+    });
+    $('#generate_assignments').on('click', function(e){
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr('href'),
+        type: "GET",
+        dataType: 'json',
+        success: _default_success,
+        error: _default_error
+      });
+    });
+    $(function(){
+      show_activities_for_project($('.group-project-select').val());
+    });

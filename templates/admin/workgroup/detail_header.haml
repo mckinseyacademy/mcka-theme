@@ -1,0 +1,13 @@
+%ul
+  %li
+    - if selected_client_tab == 'edit_groups'
+      %span.selected= _("Create & Edit Groups")
+    - else
+      %a{href:"/admin/workgroup/course/#{course.id}"}
+        = _("Create & Edit Groups")
+  %li
+    - if selected_client_tab == 'assignments'
+      %span.selected= _("Assignment Info")
+    - else
+      %a{href:"/admin/workgroup/course/#{course.id}/assignments"}
+        = _("Assignment Info")
