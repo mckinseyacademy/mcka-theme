@@ -1051,13 +1051,13 @@ def permissions(request):
         roles = []
 
         if user.id in admin_group_user_ids:
-            roles.append(_('ADMIN'))
+            roles.append('ADMIN')
 
         if user.id in ta_group_user_ids:
-            roles.append(_('TA'))
+            roles.append('TA')
 
         if user.id in observer_group_user_ids:
-            roles.append(_('OBSERVER'))
+            roles.append('OBSERVER')
 
         user.roles = ", ".join(roles)
 
