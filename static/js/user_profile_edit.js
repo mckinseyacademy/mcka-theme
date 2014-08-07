@@ -36,7 +36,7 @@ $(function(){
   }
 
   $('#edit-user-image-modal').on("change", '#id_profile_image', function(){
-    $('input[type=submit]').attr('disabled', false);
+    $('input[type=submit]').attr('disabled', false).removeClass('disabled');
   });
 
 
@@ -76,7 +76,7 @@ $(function(){
   $('#edit-user-image-modal').on('submit', '#cropping-form', function(e){
     e.preventDefault();
     var form = $(this);
-    var modal = form.parent();
+    var modal = $('#edit-user-image-modal');
     $.ajax({
       method: 'POST',
       url: form.attr('action'),
@@ -88,11 +88,11 @@ $(function(){
       });
     });
 
-    $('#edit-user-image-modal').on('click', '#user-image-submit', function(e){
+    $('#edit-user-image-modal').on('submit', '#upload-profile-image-form', function(e){
       e.preventDefault();
-      var form = $(this).parent('form');
+      var form = $(this);
       var imageFile = $('#id_profile_image').val();
-      var modal = form.parent();
+      var modal = $('#edit-user-image-modal');
       modal.find('.error').html('');
       if(FileTypeValidate(imageFile, modal.find('.error'))){
         var options = {
@@ -108,7 +108,7 @@ $(function(){
                         }
                     }
 
-      form.ajaxSubmit(options);
-    }
+        form.ajaxSubmit(options);
+      }
     });
 })

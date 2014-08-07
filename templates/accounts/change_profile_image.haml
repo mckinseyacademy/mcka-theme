@@ -1,5 +1,11 @@
-- block upload_profile_image
-- include "accounts/upload_profile_image.haml"
-- block edit_profile_image
-- include "accounts/edit_profile_image.haml"
+.set_profile_image_wrapper
+  %h1.title
+    Profile photo
+  .close-reveal-modal
+    %i.fa.fa-times-circle
+  %br
+  - block upload_profile_image
+  - include "accounts/upload_profile_image.haml"
+  - block edit_profile_image
+  - include "accounts/edit_profile_image.haml"
 

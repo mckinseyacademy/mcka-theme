@@ -1,15 +1,24 @@
 - block upload_profile_image
-%h1.title
-  Profile photo
-.close-reveal-modal
-  %i.fa.fa-times-circle
-%form#upload-profile-image-form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
-  - csrf_token
-  = form
-  .error.warning
-    - if error
-      = error
-  %a#user-image-submit{'href': '#'}
-    Upload Image
-  %br
-  %hr
+.upload-profile-image
+  %form#upload-profile-image-form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
+    %label.label-10
+      %span.label-5
+        STEP 1:
+      SELECT NEW PROFILE IMAGE
+    %hr
+    - csrf_token
+    = form
+    %br
+    %br
+    %br
+    %br
+    %label.label-10
+      %span.label-5
+        STEP 2:
+      UPLOAD SELECTED IMAGE
+    %hr
+    %input#user-image-submit.button.small.radius.disabled{'type': 'submit', 'value': 'Upload', 'disabled': 'disabled'}
+    %br
+    .error.warning
+      - if error
+        = error
