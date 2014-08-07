@@ -7,9 +7,6 @@ from api_client.api_error import ApiError
 class PermissionSaveError(Exception):
     pass
 
-class UnknownRole(Exception):
-    pass
-
 class Permissions(object):
     ''' Handles loading and saving user permissions and roles '''
 
@@ -66,10 +63,7 @@ class Permissions(object):
             raise PermissionSaveError(str(err))
 
     def get_group_id(self, permission_name):
-        try:
-            return next(g.id for g in self.permission_groups if g.name == permission_name)
-        except StopIteration as err:
-            raise UnknownRole("Unknown role: {}.".format(permission_name))
+        return next((g.id for g in self.permission_groups if g.name == permission_name), None)
 
     def add_permission(self, permission_name):
         if not permission_name in self.user_permissions:

@@ -46,12 +46,14 @@ Apros.views.CourseCohort = Backbone.View.extend({
       _this.drawLayers(_this.model, _this.city_list, _this.cities, _this.users, _this.iconsFlag);
     });
     this.delayPopupClose();
-    this.model.fetch({
-      'success': function(model, response){
-        model.save(model.parse(response));
-        _this.render();
-      }
-    });
+    if(this.city_list.length > 0){
+      this.model.fetch({
+        'success': function(model, response){
+          model.save(model.parse(response));
+          _this.render();
+        }
+      });
+    }
   },
 
   update_scope: function(e) {

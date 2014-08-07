@@ -1,4 +1,8 @@
 %section.course-progress
+  - if course.user_progress == 0
+    .zero
+      %div
+        %span= _("Your course progress will be displayed here.")
   .sub-2.progress-link
     Progress:
     %a{href: "/courses/#{course.id}/cohort"}

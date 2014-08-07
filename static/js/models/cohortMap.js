@@ -23,6 +23,7 @@ Apros.models.LocationData = Backbone.Model.extend({
   },
 
   setUrl: function(query){
+    query = (query == '')?'%2F':query;
     this.url = 'https://api.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/geocode/' + query + '.json';
   }
 

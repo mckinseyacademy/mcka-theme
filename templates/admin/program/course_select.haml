@@ -1,7 +1,9 @@
 %table.course-list
   %thead
     %th Name
+    %th Instance
   %tbody
     - for course in courses
       %tr.course{id: "#{course.id}", class: "#{course.class_name}"}
         %td= course.name
+        %td= course.legacy_id
