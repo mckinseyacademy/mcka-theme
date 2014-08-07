@@ -218,6 +218,17 @@ SOCIAL_METRIC_POINTS = {
 
 ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
 
+API_SERVER_PREFIX = 'api'
+
+# Api locations
+COURSEWARE_API = '/'.join([API_SERVER_PREFIX, 'courses'])
+GROUP_API = '/'.join([API_SERVER_PREFIX, 'groups'])
+ORGANIZATION_API = '/'.join([API_SERVER_PREFIX, 'organizations'])
+PROJECT_API = '/'.join([API_SERVER_PREFIX, 'projects'])
+AUTH_API = '/'.join([API_SERVER_PREFIX, 'sessions'])
+USER_API = '/'.join([API_SERVER_PREFIX, 'users'])
+WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
+
 try:
     from local_settings import *
 except ImportError:

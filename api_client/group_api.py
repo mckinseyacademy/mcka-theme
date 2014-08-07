@@ -15,7 +15,7 @@ from . import course_models
 from lib.util import LegacyIdConvert
 
 
-GROUP_API = 'api/groups'
+GROUP_API = getattr(settings, 'GROUP_API', 'api/server/groups')
 
 PERMISSION_TYPE = 'permission'
 
