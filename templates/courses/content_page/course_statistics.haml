@@ -1,5 +1,9 @@
 %article#course-statistics
-  %section.course-proficiency.no-progress
+  %section.course-proficiency
+    - if proficiency == 0
+      .zero
+        %div
+          %span= _("Your course proficiency will be displayed here.")
     .sub-2
       Proficiency:
       %a{href: "/courses/#{course.id}/cohort"}
@@ -16,7 +20,11 @@
         %i.fa.fa-times-circle
       %p This visualization displays your proficiency against a total possible score of 100. The average proficiency of your cohort is displayed as well. Note that your proficiency is based on graded assessments and group work performance.
   - include "courses/visualizations/course_progress.haml"
-  %section.course-engagement{class: "{% if social_total == 0 %}no-progress{% endif %}" }
+  %section.course-engagement
+    - if social_total == 0
+      .zero
+        %div
+          %span= _("Your social engagement will be displayed here.")
     .sub-2
       Engagement:
       %a{href: "/courses/#{course.id}/cohort"}
