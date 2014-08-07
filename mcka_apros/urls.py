@@ -17,6 +17,12 @@ urlpatterns = patterns(
     url(r'^admin/', include('admin.urls'), name='admin'),
 )
 
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )
+
 if settings.RUN_LOCAL_MOCK_API:
     urlpatterns += patterns('', url(r'^mockapi/', include('mockapi.urls'), name='mockapi'),)
 
