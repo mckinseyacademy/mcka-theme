@@ -107,7 +107,7 @@ class Course(CategorisedJsonObject):
 
     @property
     def days_till_start(self):
-        if hasattr(self, 'start') and not self.start is None:
+        if getattr(self, 'start', None):
             days = str(
                 int(math.floor(((self.start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
             return days
@@ -115,7 +115,7 @@ class Course(CategorisedJsonObject):
 
     @property
     def days_till_end(self):
-        if hasattr(self, 'end') and not self.end is None:
+        if getattr(self, 'end', None):
             days = str(
                 int(math.floor(((self.end - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
             return days
