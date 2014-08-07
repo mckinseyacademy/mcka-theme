@@ -1,4 +1,32 @@
 ''' A set of generic utilities '''
+from api_client import user_api
+
+def inject_gradebook_info(user_id, course):
+    # Inject lesson assessment scores
+    assesments = {}
+    gradebook = user_api.get_user_gradebook(user_id, course.id)
+    if gradebook.courseware_summary:
+        for lesson in gradebook.courseware_summary:
+            percent = None
+            for section in lesson.sections:
+                if section.graded == True:
+                    points = section.section_total[0]
+                    max_points = section.section_total[1]
+                    if max_points > 0:
+                        percent = int(round(100*points/max_points))
+                    else:
+                        percent = 0
+                    assesments[section.url_name] = percent
+
+    for lesson in course.chapters:
+        lesson.assesment_score = None
+        for sequential in lesson.sequentials:
+            url_name = sequential.id.split('+')[-1]
+            if url_name in assesments:
+                lesson.assesment_score = assesments[url_name]
+                break
+
+    return gradebook
 
 class DottableDict(dict):
     ''' The usual hack for accessing dict keys via dot notation,
