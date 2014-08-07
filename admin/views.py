@@ -1035,19 +1035,22 @@ def permissions(request):
 
     users.extend(admin_users)
 
-    # fetch roles (permissions) for each user
+    # get the groups and for each group get the list of users, then intersect them appropriately
+
+    groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
+    group_members = {group.name : [gu.id for gu in group_api.get_users_in_group(group.id)] for group in groups}
+
     for user in users:
-        groups = user_api.get_user_groups(user.id, group_api.PERMISSION_TYPE)
         group_names = [g.name for g in groups]
         roles = []
 
-        if PERMISSION_GROUPS.MCKA_ADMIN in group_names:
+        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_ADMIN, []):
             roles.append(_('ADMIN'))
 
-        if PERMISSION_GROUPS.MCKA_TA in group_names:
+        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_TA, []):
             roles.append(_('TA'))
 
-        if PERMISSION_GROUPS.MCKA_OBSERVER in group_names:
+        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
             roles.append(_('OBSERVER'))
 
         user.roles = ", ".join(roles)
