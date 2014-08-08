@@ -218,11 +218,11 @@ def reset_confirm(request, uidb64=None, token=None,
     except (TypeError, ValueError, OverflowError):
         user = None
 
-    reset_record = False
+    reset_record = None
     if user is not None:
         reset_record = UserPasswordReset.check_user_validation_record(user, token, datetime.datetime.now())
 
-    if reset_record is not False:
+    if reset_record is not None:
         validlink = True
         title = _('Enter new password')
         if request.method == 'POST':
@@ -286,7 +286,7 @@ def reset(request, is_admin_site=False,
             '''
             email = form.cleaned_data["email"]
             users = user_api.get_users(email=email)
-            if users.count < 1:
+            if len(users) < 1:
                 post_reset_redirect = '/accounts/login?reset=failed'
             form.save(**opts)
             return HttpResponseRedirect(post_reset_redirect)

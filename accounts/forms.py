@@ -368,7 +368,7 @@ class FpasswordForm(forms.Form):
         email = self.cleaned_data["email"]
 
         users = user_api.get_users(email=email)
-        if users.count < 1:
+        if len(users) < 1:
             post_reset_redirect = '/accounts/login?reset=failed'
         else:
             user = users[0]

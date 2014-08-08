@@ -154,4 +154,4 @@ class UserPasswordReset(db_models.Model):
         if reset_record is not None:
             if reset_record.validation_key == token and (reset_record.time_requested + timedelta(days=1)) >= timezone.now():
                 return reset_record
-        return False
+        return None
