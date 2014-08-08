@@ -103,7 +103,7 @@ class Course(CategorisedJsonObject):
 
     @property
     def ended(self):
-        return int(self.days_till_end) < 1
+        return int(self.days_till_end) < 0
 
     @property
     def days_till_start(self):
