@@ -1,6 +1,6 @@
 %ul.courses
   - for program_course in courses
-    %li{'data-numdays': "#{program_course.days_till_start}", 'data-upcoming': "#{program_course.days_till_end}"}
+    %li
       - if program_course.ended
         %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
           = program_course.name

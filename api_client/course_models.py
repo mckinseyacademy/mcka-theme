@@ -108,17 +108,15 @@ class Course(CategorisedJsonObject):
     @property
     def days_till_start(self):
         if not getattr(self, 'start', None) is None:
-            days = str(
-                int(math.floor(((self.start - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
-            return days
+            delta = self.start - datetime.datetime.today()
+            return delta.days
         return 0
 
     @property
     def days_till_end(self):
         if not getattr(self, 'end', None) is None:
-            days = str(
-                int(math.floor(((self.end - datetime.datetime.today()).total_seconds()) / 3600 / 24)))
-            return days
+            delta = self.end - datetime.datetime.today()
+            return delta.days
         return 0
 
     def module_count(self):
