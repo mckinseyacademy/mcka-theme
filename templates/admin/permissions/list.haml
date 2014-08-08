@@ -30,14 +30,14 @@
               - for user in users
                 %tr{data-id: "#{user.id}"}
                   %td
-                    %a{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "true", href: "/admin/permissions/={user.id}/edit"}
+                    %a{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "/admin/permissions/={user.id}/edit", href: ""}
                       = user.username
                   %td= user.roles
                   %td
                     %a{href: "mailto:#{user.email}"}= user.email
                   %td
                     - if user.id
-                    %a.fa.fa-pencil{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "true", href: "/admin/permissions/={user.id}/edit"}
+                    %a.fa.fa-pencil{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "/admin/permissions/={user.id}/edit", href: ""}
 
   #edit-permissions.reveal-modal.small{"data-reveal": "true"}
 - block js_snippets
