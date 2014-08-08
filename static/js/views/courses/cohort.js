@@ -25,16 +25,22 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   initialize: function(){
     var _this = this;
+    var tile_url = 'https://{s}.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/{z}/{x}/{y}.png';
+    var map_opts = {
+      zoomControl: true,
+      minZoom: 1,
+      zoom: 1,
+      center: [51.505, -0.09],
+      attributionControl: false
+    }
+
     this.users = CohortMapUsers;
     this.ta_user = TAUser;
     this.citiesMap = CohortMapCities;
-
     this.setCities(this.citiesMap, this.users, this.ta_user, this.city_list, this.cities);
     this.model.setUrl(this.city_list.join(';'));
-    this.map = L.map('map-cohort', {zoomControl: true, attributionControl: false}).setView([51.505, -0.09], 1);
-    L.tileLayer('https://{s}.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/{z}/{x}/{y}.png',{
-        maxZoom: 18
-      }).addTo(this.map);
+    this.map = L.map('map-cohort', map_opts);
+    L.tileLayer(tile_url).addTo(this.map);
     this.map.on('zoomend', function(){
       if(_this.map.getZoom() >= 1){
         _this.zoomLevel = _this.map.getZoom();
