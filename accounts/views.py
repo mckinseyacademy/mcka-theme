@@ -23,10 +23,9 @@ from django.core import mail
 from django.test import TestCase
 # from importlib import import_module
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
-from .models import RemoteUser, UserActivation
+from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start, save_profile_image
 from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
-from lib.token_generator import ResetPasswordTokenGenerator
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.utils.dateformat import format
@@ -203,7 +202,6 @@ def reset_confirm(request, uidb64=None, token=None,
                   template_name='registration/password_reset_confirm.html',
                   post_reset_redirect='/accounts/login?reset=complete',
                   set_password_form=SetNewPasswordForm,
-                  token_generator=ResetPasswordTokenGenerator(),
                   current_app=None, extra_context=None):
     """
     View that checks the hash in a password reset link and presents a
@@ -220,7 +218,11 @@ def reset_confirm(request, uidb64=None, token=None,
     except (TypeError, ValueError, OverflowError):
         user = None
 
-    if user is not None and token_generator.check_token(user, token):
+    reset_record = None
+    if user is not None:
+        reset_record = UserPasswordReset.check_user_validation_record(user, token, datetime.datetime.now())
+
+    if reset_record is not None:
         validlink = True
         title = _('Enter new password')
         if request.method == 'POST':
@@ -232,6 +234,7 @@ def reset_confirm(request, uidb64=None, token=None,
                     errors = form._errors.setdefault("new_password1", ErrorList())
                     errors.append(user.error)
                 else:
+                    reset_record.delete()
                     return HttpResponseRedirect(post_reset_redirect)
         else:
             form = set_password_form(user)
@@ -268,10 +271,8 @@ def reset(request, is_admin_site=False,
     if request.method == "POST":
         form = password_reset_form(request.POST)
         if form.is_valid():
-            token_generator = ResetPasswordTokenGenerator()
             opts = {
                 'use_https': request.is_secure(),
-                'token_generator': token_generator,
                 'from_email': from_email,
                 'email_template_name': email_template_name,
                 'subject_template_name': subject_template_name,
@@ -285,7 +286,7 @@ def reset(request, is_admin_site=False,
             '''
             email = form.cleaned_data["email"]
             users = user_api.get_users(email=email)
-            if users.count < 1:
+            if len(users) < 1:
                 post_reset_redirect = '/accounts/login?reset=failed'
             form.save(**opts)
             return HttpResponseRedirect(post_reset_redirect)

@@ -5,8 +5,10 @@ inherits from model) and therefore tables get contructed
 '''
 import hashlib
 import random
+from datetime import datetime, timedelta
 from django.db import models as db_models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 
@@ -114,4 +116,42 @@ class UserActivation(db_models.Model):
         if len(activation_records) > 0:
             return activation_records[0]
 
+        return None
+
+
+class UserPasswordReset(db_models.Model):
+    user_id = db_models.IntegerField(unique=True)
+    validation_key = db_models.CharField(max_length=40, unique=True, db_index=True)
+    time_requested = db_models.DateTimeField(default=datetime.now)
+
+    @staticmethod
+    def generate_validation_key(email):
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+        return hashlib.sha1(salt+email).hexdigest()
+
+    @classmethod
+    def create_record(cls, user):
+        validation_record = cls.get_user_validation_record(user)
+        if validation_record is not None:
+            validation_record.delete()
+        reset_record = cls.objects.create(user_id=user.id, validation_key=cls.generate_validation_key(user.email))
+        reset_record.save()
+
+        return reset_record
+
+    @classmethod
+    def get_user_validation_record(cls, user):
+        reset_record = cls.objects.filter(user_id=user.id)
+
+        if len(reset_record) > 0:
+            return reset_record[0]
+
+        return None
+
+    @classmethod
+    def check_user_validation_record(cls, user, token, current_time):
+        reset_record = cls.get_user_validation_record(user)
+        if reset_record is not None:
+            if reset_record.validation_key == token and (reset_record.time_requested + timedelta(days=1)) >= timezone.now():
+                return reset_record
         return None

@@ -6,7 +6,6 @@ import datetime
 from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
-from lib.token_generator import ResetPasswordTokenGenerator
 
 from api_client import user_api
 from django.template import loader
@@ -14,6 +13,8 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.core.urlresolvers import reverse
 from api_client.api_error import ApiError
+
+from .models import UserPasswordReset
 
 
 # djano forms are "old-style" forms => causing lint errors
@@ -357,8 +358,7 @@ class FpasswordForm(forms.Form):
     def save(self, domain_override=None,
              subject_template_name='registration/password_reset_subject.txt',
              email_template_name='registration/password_reset_email.html',
-             use_https=False, token_generator=ResetPasswordTokenGenerator(),
-             from_email=None, request=None):
+             use_https=False, from_email=None, request=None):
         """
         Generates a one-use only link for resetting password and sends to the
         user.
@@ -368,15 +368,16 @@ class FpasswordForm(forms.Form):
         email = self.cleaned_data["email"]
 
         users = user_api.get_users(email=email)
-        if users.count < 1:
+        if len(users) < 1:
             post_reset_redirect = '/accounts/login?reset=failed'
         else:
             user = users[0]
-            token_generator = ResetPasswordTokenGenerator()
-            token = token_generator.make_token(user)
+
             uid = urlsafe_base64_encode(force_bytes(user.id))
 
-            url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': token})
+            reset_record = UserPasswordReset.create_record(user)
+
+            url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': reset_record.validation_key})
 
             c = {
                 'email': user.email,
