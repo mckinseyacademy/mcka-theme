@@ -11,7 +11,7 @@ from .json_requests import GET, POST, DELETE, PATCH
 from . import user_models
 from . import course_models
 
-ORGANIZATION_API = 'api/organizations'
+ORGANIZATION_API = getattr(settings, 'ORGANIZATION_API', 'api/server/organizations')
 
 @api_error_protect
 def create_organization(organization_name, organization_data=None, organization_object=JsonObject):

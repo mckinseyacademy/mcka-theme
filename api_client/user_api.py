@@ -13,9 +13,9 @@ from .json_requests import GET, POST, PUT, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
 
-AUTH_API = 'api/sessions'
-USER_API = 'api/users'
-GROUP_API = 'api/groups'
+AUTH_API = getattr(settings, 'AUTH_API', 'api/server/sessions')
+USER_API = getattr(settings, 'USER_API', 'api/server/users')
+GROUP_API = getattr(settings, 'GROUP_API', 'api/server/groups')
 
 USER_ROLES = DottableDict(
     STAFF='staff',

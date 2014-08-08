@@ -18,6 +18,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
 from main.models import CuratedContentItem
 
+from .controller import inject_gradebook_info
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, average_progress, choose_random_ta
@@ -289,7 +290,9 @@ def course_discussion_userprofile(request, course_id, user_id):
 def course_progress(request, course_id):
 
     course = load_course(course_id)
-    gradebook = user_api.get_user_gradebook(request.user.id, course_id)
+
+    # add in all the grading information
+    gradebook = inject_gradebook_info(request.user.id, course)
 
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
