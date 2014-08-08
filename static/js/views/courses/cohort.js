@@ -39,7 +39,6 @@ Apros.views.CourseCohort = Backbone.View.extend({
     this.model.setUrl(this.city_list.join(';'));
     this.map = L.map('map-cohort', map_opts);
     L.tileLayer(tile_url).addTo(this.map);
-    return;
     this.map.on('zoomend', function(){
       if(_this.map.getZoom() >= 1){
         _this.zoomLevel = _this.map.getZoom();
