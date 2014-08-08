@@ -1,6 +1,7 @@
 ''' API calls with respect to groups '''
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from urllib import urlencode
 
 from lib.util import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
@@ -34,10 +35,10 @@ PERMISSION_GROUPS = DottableDict(
 def get_groups_of_type(group_type, group_object=JsonObject):
     ''' gets all groups of provided type'''
     response = GET(
-        '{}/{}/?type={}'.format(
+        '{}/{}/?{}'.format(
             settings.API_SERVER_ADDRESS,
             GROUP_API,
-            group_type,
+            urlencode({"type":group_type}),
         )
     )
 
@@ -215,22 +216,16 @@ def get_courses_in_group(group_id):
 
 
 @api_error_protect
-def get_groups_in_group(group_id, group_object=JsonObject, params=[]):
-
-    paramStrs = [param['key'] + '=' + param['value'] for param in params]
-    if len(paramStrs) > 0:
-        paramStr = '&'.join(paramStrs)
-    else:
-        paramStr = ''
-
+def get_groups_in_group(group_id, group_object=JsonObject, *args, **kwargs):
     ''' get list of groups associated with a specific group '''
 
+    qs_params = {karg : kwargs[karg] for karg in kwargs}
     response = GET(
         '{}/{}/{}/groups?{}'.format(
             settings.API_SERVER_ADDRESS,
             GROUP_API,
             group_id,
-            paramStr
+            urlencode(qs_params),
         )
     )
 

@@ -32,7 +32,7 @@ from lib.util import LegacyIdConvert
 from .models import Client
 from .models import Program
 from .models import WorkGroup
-from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filterGroupsAndStudents, parse_studentslist_from_post
+from .controller import process_uploaded_student_list, get_student_list_as_file, fetch_clients_with_program, get_group_list_as_file, load_course, getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -293,9 +293,6 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
-        #        for course in program.courses:
-        #            users = course_api.get_users_content_filtered(course.course_id, client_id, [{'key': 'enrolled', 'value': 'True'}])
-        #            course.user_count = len(users)
 
         # REFACTOR ONCE MCKIN-1291 is done
         # remove the per user calls.
@@ -780,7 +777,7 @@ def workgroup_detail(request, course_id, workgroup_id):
     Get detailed information about the specific workgroup for this course
     '''
     workgroup = WorkGroup.fetch(workgroup_id)
-    users = user_api.get_users([{'key': 'ids', 'value': ','.join([str(u.id) for u in workgroup.users])}])
+    users = user_api.get_users(ids=','.join([str(u.id) for u in workgroup.users]))
     project = Project.fetch(workgroup.project)
 
     course = load_course(course_id)
@@ -811,6 +808,7 @@ def workgroup_detail(request, course_id, workgroup_id):
 def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
+    selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id)
 
     students, companies = getStudentsWithCompanies(course)
@@ -818,16 +816,18 @@ def workgroup_course_detail(request, course_id):
     if len(course.group_project_chapters) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
-    groups, students = filterGroupsAndStudents(course, students)
-
     group_projects = load_group_projects_info_for_course(course, companies)
+    group_project_groups, students = filter_groups_and_students(group_projects, students)
+
+    for project in group_projects:
+        project.groups = group_project_groups[project.id]
+        project.selected = (selected_project_id == str(project.id))
 
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
         "course": course,
         "students": students,
-        "groups": groups,
         "companies": companies.values(),
         "group_projects": group_projects,
     }
@@ -843,35 +843,31 @@ def workgroup_course_detail(request, course_id):
 def workgroup_group_create(request, course_id):
 
     if request.method == 'POST':
-        students, companyid, privateFlag = parse_studentslist_from_post(
-            request.POST)
+        students = request.POST.getlist('students[]')
+        project_id = request.POST['project_id']
 
-        course = load_course(course_id)
-        if len(course.group_project_chapters) < 1:
-            return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
+        # load project, and make sure if private that all students are in the correct organisation
+        project = Project.fetch(project_id)
+        if project.organization is not None:
+            organization = Organization.fetch(project.organization)
+            bad_users = [u for u in students if u not in organization.users]
 
-        projects_by_organization = {}
-        for project in Project.fetch_projects_for_course(course.id):
-            org_id = None
-            if project.organization:
-                org_id = Client.fetch_from_url(project.organization).id
-            projects_by_organization[org_id] = project
+            if len(bad_users) > 0:
+                message = "Bad users {} for private project".format(
+                    ",".join([u.username for u in bad_users])
+                )
+                return HttpResponse(json.dumps({'message': ''}), content_type="application/json")
 
-        project = projects_by_organization[None]
-        if companyid in projects_by_organization:
-            project = projects_by_organization[companyid]
-
-        groups_list = workgroup_api.get_workgroups_for_project(project.id)
-        lastId = len(groups_list)
+        lastId = len(project.workgroups)
 
         workgroup = WorkGroup.create(
             'Group {}'.format(lastId + 1),
             {
-                "project": project.id,
+                "project": project_id,
             }
         )
 
-        workgroup.add_user_list([student['id'] for student in students])
+        workgroup.add_user_list(students)
 
         return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
 
@@ -934,7 +930,8 @@ def workgroup_group_remove(request, group_id):
 
         students, companies = getStudentsWithCompanies(course)
 
-        groups, students = filterGroupsAndStudents(course, students)
+        group_projects = load_group_projects_info_for_course(course, companies)
+        group_project_groups, students = filter_groups_and_students(group_projects, students)
 
         data = {
             "students": students,
@@ -1025,13 +1022,13 @@ def permissions(request):
     admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
 
     # fetch users users that have no company association
-    users = user_api.get_users([{ 'key': 'has_organizations', 'value': 'false' }])
+    users = user_api.get_users(has_organizations=False)
 
     # fetch users in administrative company
     admin_users = []
     if admin_company and admin_company.users:
         ids = ','.join(str(id) for id in admin_company.users)
-        admin_users = user_api.get_users([{ 'key': 'ids', 'value': ids }])
+        admin_users = user_api.get_users(ids=ids)
 
     users.extend(admin_users)
 

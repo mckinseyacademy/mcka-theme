@@ -82,7 +82,7 @@ class Client(organization_models.Organization):
         if users_ids == []:
             return []
         else:
-            return user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+            return user_api.get_users(ids=','.join(users_ids))
 
     def fetch_students_by_enrolled(self):
         return organization_api.get_users_by_enrolled(self.id)
@@ -99,7 +99,7 @@ class WorkGroup(workgroup_models.Workgroup):
         if users_ids == []:
             return []
         else:
-            return user_api.get_users([{'key': 'ids', 'value': ','.join(users_ids)}])
+            return user_api.get_users(ids=','.join(users_ids))
 
     @classmethod
     def fetch_with_members(cls, workgroup_id):

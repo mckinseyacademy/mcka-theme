@@ -84,7 +84,7 @@ class Command(BaseCommand):
 
         for user_tuple in user_list:
             if (user_tuple[0].startswith('mcka')):
-                users = user_api.get_users([{ 'key': 'username', 'value': user_tuple[0] }])
+                users = user_api.get_users(username=user_tuple[0])
                 if users:
                     self.stdout.write("Adding %s to %s" % (user_tuple[0], settings.ADMINISTRATIVE_COMPANY))
                     admin_company.add_user(users[0].id)

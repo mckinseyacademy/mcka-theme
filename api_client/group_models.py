@@ -30,11 +30,8 @@ class GroupInfo(JsonObject):
     def get_users(self):
         return group_api.get_users_in_group(self.id)
 
-    def get_groups(self, params=None):
-        if params:
-            return group_api.get_groups_in_group(self.id, params=params)
-        else:
-            return group_api.get_groups_in_group(self.id)
+    def get_groups(self, *args, **kwargs):
+        return group_api.get_groups_in_group(self.id, *args, **kwargs)
 
     @classmethod
     def _clean_group_data(cls, group_data):

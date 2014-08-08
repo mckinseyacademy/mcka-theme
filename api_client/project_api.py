@@ -10,6 +10,7 @@ from .json_object import JsonObject
 from .json_requests import GET, POST, DELETE
 from . import user_models
 from . import course_models
+from . import workgroup_models
 
 # Temporary id converter to fix up problems post opaque keys
 from lib.util import LegacyIdConvert
@@ -95,3 +96,15 @@ def update_project(project_id, project_data, project_object=JsonObject):
     )
 
     return JP.from_json(response.read(), project_object)
+
+@api_error_protect
+def get_project_workgroups(project_id, workgroup_object=workgroup_models.Workgroup):
+    response = GET(
+        '{}/{}/{}/workgroups/'.format(
+            settings.API_SERVER_ADDRESS,
+            PROJECT_API,
+            project_id,
+        )
+    )
+
+    return JP.from_json(response.read(), workgroup_object)

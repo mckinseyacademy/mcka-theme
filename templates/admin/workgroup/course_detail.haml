@@ -9,7 +9,7 @@
 - block content
   .admin-list
     .row
-      .large-10.large-centered.columns
+      .large-11.large-centered.columns
         %header
           %h1.principal-title {{principal_name_plural}}: {{course.name}}
           .sub-1.add= _("Create & Edit Groups")
@@ -21,6 +21,36 @@
               Workgroup Completion Report
         %hr
         %section
+          .large-12.medium-12.columns
+            .sub-1= _("Project:")
+            %p= _("Select project within which you are working")
+          .large-7.medium-7.columns
+            %select.group-project-select
+              - for group_project in group_projects
+                - if group_project.selected
+                  %option{"value": "#{group_project.id}", "selected": "selected"}
+                    = group_project.name
+                    - if group_project.organization
+                      (
+                      = group_project.organization
+                      )
+                - else
+                  %option{"value": "#{group_project.id}"}
+                    = group_project.name
+                    - if group_project.organization
+                      (
+                      = group_project.organization
+                      )
+          .large-5.medium-5.columns.group-selection
+            - if user.is_mcka_admin
+              %a#create-group-project.button.radius.tiny{href: "#", "data-reveal-id": "create-project-modal"}
+                %span= _("Create New Group Project")
+          - if user.is_mcka_admin
+            .large-12.medium-12.columns.group-selection
+              %a#generate_assignments.button.radius.small{href: "/admin/workgroup/course/#{course.id}/generate_assignments"}
+                = _("Generate Project Review Assignments")
+        %hr
+        %section
           %input#course_id{'type': 'hidden', 'value': '#{course.id}'}
           - if user.is_mcka_admin
             #student-list.large-7.columns
@@ -29,49 +59,33 @@
           .large-5.columns.group-selection
             - if user.is_mcka_admin
               .sub-1= _("Group Students:")
-              .description= _("Create and manage existing groups of students within this course below by dragging names into groups or removing them.")
-              %select.group-project-select
-                - for group_project in group_projects
-                  %option{"value": "#{group_project.id}"}
-                    = group_project.name
-                    - if group_project.organization
-                      (
-                      = group_project.organization
-                      )
-              %a#create-group-project.button.radius.tiny{href: "#", "data-reveal-id": "create-project-modal"}
-                %span= _("Create New Group Project")
+              .description= _("Create and manage groups of students within this course by selecting names to create a new group or add them to an existing group.")
               %a#student-group-action.button.radius.small{href: "/admin/workgroup/group/create/#{course.id}"}
                 = _("Create Group of Selected Students")
               %a.button.radius.small{href: "/admin/workgroup/course/#{course.id}/download_group_list", target: "_blank"}
                 Download List of Groups
-              %a#generate_assignments.button.radius.small{href: "/admin/workgroup/course/#{course.id}/generate_assignments"}
-                = _("Generate Project Review Assignments")
-              .companies-filter-wrapper.large-12
-                %ul.companies-filter
-                  %li.company-filter{'data-company-filter': 'all'} All Companies
-                  - for company in companies
-                    %li.company-filter{'data-company-filter': '#{company.id}'}= company.display_name
-            - for group in groups
-              .select-group-box{id: "#{group.id}", class: "#{group.privacy}", 'data-client-id': '#{group.client_id}'}
-                .group-data
-                  %span.label-1= group.display_name
-                  %a{href: "/admin/workgroup/course/#{course.id}/detail/#{group.id}"}
+            - for group_project in group_projects
+              - for group in group_project.groups
+                .select-group-box{id: "#{group.id}", class: "#{group.privacy}", "data-project-id": "#{group_project.id}"}
+                  .group-data
+                    %a.group-detail{href: "/admin/workgroup/course/#{course.id}/detail/#{group.id}"}
+                      %span.label-1= group.name
                     %span.detail-link= _("Members:")
                       %span.student-count= group.students_count
-                  %i.caret.fa.fa-caret-down
-                .group-info.students
-                  %span.label-1= _("Members:")
-                  .students-list
-                    - for student in group.users
-                      .student{'name': '#{student.id}'}
-                        .label-2= student.username
-                        %a.label-2{href: "mailto:#{student.email}"}= student.email
-                        .label-2= student.company.display_name
-                        - if user.is_mcka_admin
-                          %a.remove{href: '/admin/workgroup/group/#{group.id}/remove'}
-                            %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
-                  .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
-                    Update
+                    %i.caret.fa.fa-caret-down
+                  .group-info.students
+                    %span.label-1= _("Members:")
+                    .students-list
+                      - for student in group.users
+                        .student{'name': '#{student.id}'}
+                          .label-2= student.username
+                          %a.label-2{href: "mailto:#{student.email}"}= student.email
+                          .label-2= student.company.display_name
+                          - if user.is_mcka_admin
+                            %a.remove{href: '/admin/workgroup/group/#{group.id}/remove'}
+                              %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
+                    .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
+                      Update
   #create-project-modal.reveal-modal{"data-reveal": "true"}
     %form#new-project-form{action: "/admin/workgroup/project/create/#{course.id}", method: "POST"}
       .close-reveal-modal

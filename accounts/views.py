@@ -284,7 +284,7 @@ def reset(request, is_admin_site=False,
             (if called elsewhere) but here I need it to check post_reset_redirect link
             '''
             email = form.cleaned_data["email"]
-            users = user_api.get_users([{'key': 'email', 'value': email}])
+            users = user_api.get_users(email=email)
             if users.count < 1:
                 post_reset_redirect = '/accounts/login?reset=failed'
             form.save(**opts)
