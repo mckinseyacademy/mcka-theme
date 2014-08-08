@@ -12,7 +12,7 @@ from .json_requests import POST
 
 from . import course_models
 
-COURSEWARE_API = 'api/courses'
+COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
 
 OBJECT_CATEGORY_MAP = {
     # Core objects for our desire

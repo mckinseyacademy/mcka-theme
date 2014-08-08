@@ -221,7 +221,7 @@ button,
   h5 { color: $pure-white; }
 }
 
-.hidden { display: none; }
+.hidden { display: none !important; }
 
 .flexible {
   font-size: 0.1px;

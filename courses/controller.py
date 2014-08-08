@@ -216,7 +216,7 @@ def load_course_progress(course, user_id):
             matches = set(lesson_component_ids).intersection(completed_ids)
             lesson.progress = 100 * len(matches) / len(lesson_component_ids)
     actual_completions = set(component_ids).intersection(completed_ids)
-    course.user_progress = 100 * len(actual_completions) / len(component_ids)
+    course.user_progress = floatformat(100 * len(actual_completions)/len(component_ids), 0)
 
 def average_progress(course, user_id):
     module_count = course.module_count()
@@ -354,3 +354,31 @@ def load_lesson_estimated_time(course):
                 lesson.estimated_time = estimates[idx]
 
     return course
+
+
+def inject_gradebook_info(user_id, course):
+    # Inject lesson assessment scores
+    assesments = {}
+    gradebook = user_api.get_user_gradebook(user_id, course.id)
+    if gradebook.courseware_summary:
+        for lesson in gradebook.courseware_summary:
+            percent = None
+            for section in lesson.sections:
+                if section.graded == True:
+                    points = section.section_total[0]
+                    max_points = section.section_total[1]
+                    if max_points > 0:
+                        percent = int(round(100*points/max_points))
+                    else:
+                        percent = 0
+                    assesments[section.url_name] = percent
+
+    for lesson in course.chapters:
+        lesson.assesment_score = None
+        for sequential in lesson.sequentials:
+            url_name = sequential.id.split('+')[-1]
+            if url_name in assesments:
+                lesson.assesment_score = assesments[url_name]
+                break
+
+    return gradebook

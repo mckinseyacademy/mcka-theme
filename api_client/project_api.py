@@ -15,7 +15,7 @@ from . import course_models
 from lib.util import LegacyIdConvert
 
 
-PROJECT_API = 'api/projects'
+PROJECT_API = getattr(settings, 'PROJECT_API', 'api/server/projects')
 
 @api_error_protect
 def get_project(project_id, project_object=JsonObject):

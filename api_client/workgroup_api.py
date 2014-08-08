@@ -12,7 +12,7 @@ from . import user_models
 from . import course_models
 
 
-WORKGROUP_API = 'api/workgroups'
+WORKGROUP_API = getattr(settings, 'WORKGROUP_API', 'api/server/workgroups')
 
 @api_error_protect
 def get_workgroups(group_object=JsonObject):

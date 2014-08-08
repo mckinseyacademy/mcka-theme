@@ -20,15 +20,11 @@ from api_client.api_error import ApiError
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
 
 EDUCATION_LEVEL_CHOICES = (
-    ("", "---"),
-    ("p", _("Doctorate")),
-    ("m", _("Master's or professional degree")),
+    ("", "--"),
     ("b", _("Bachelor's degree")),
-    ("a", _("Associate's degree")),
-    ("hs", _("Secondary/high school")),
-    ("jhs", _("Junior secondary/junior high/middle school")),
-    ("el", _("Elementary/primary school")),
-    ("none", _("None")),
+    ("mba", _("Master's of Business Administration (MBA)")),
+    ("m", _("Master's degree (non MBA)")),
+    ("p", _("Doctorate (PhD)")),
     ("other", _("Other")),
 )
 GENDER_CHOICES = (
