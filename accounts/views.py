@@ -36,7 +36,7 @@ from django.templatetags.static import static
 import logout as logout_handler
 
 from django.contrib.auth.views import password_reset, password_reset_confirm, password_reset_done, password_reset_complete
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
 
@@ -50,10 +50,15 @@ def _get_qs_value_from_url(value_name, url):
         return query_strings[value_name][0]
     return None
 
-def _sanitize_redirect_url(redirect_url):
+def _validate_path(redirect_to):
     ''' prevent attacker controllable redirection to third-party applications '''
-    return urlparse.urlparse(redirect_url).path
-
+    # resolver expects a trailing slash
+    if redirect_to[-1] != '/':
+        redirect_to += '/'
+    try:
+        resolve(redirect_to)
+    except Resolver404:
+        raise
 
 def login(request):
     ''' handles requests for login form and their submission '''
@@ -69,12 +74,12 @@ def login(request):
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
 
-                qs_value = _get_qs_value_from_url(
+                redirect_to = _get_qs_value_from_url(
                     'next',
                     request.META['HTTP_REFERER']
                 ) if 'HTTP_REFERER' in request.META else None
 
-                redirect_to = _sanitize_redirect_url(qs_value) if qs_value else None
+                _validate_path(redirect_to)
 
                 if not redirect_to:
                     course_id = get_current_course_for_user(request)
