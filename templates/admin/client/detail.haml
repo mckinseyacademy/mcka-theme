@@ -29,7 +29,7 @@
           %header Students:
           %div Add additional students to client or download all students
           .manage-student-list
-            %a.button.radius.small{"data-reveal-id": "upload_student_list", "data-reveal-ajax": "true", href: "/admin/clients/#{client.id}/upload_student_list"}
+            %a.button.radius.small{"data-reveal-id": "upload_student_list", "data-reveal-ajax": "/admin/clients/#{client.id}/upload_student_list", href: ""}
               Upload Student List
             %a.button.radius.small{href: "/admin/clients/#{client.id}/download_student_list", target: "_blank"}
               Download Student List
@@ -50,7 +50,7 @@
           %header Add a Program:
           %div Add a program to a client
           .manage-programs
-            %a.button.radius.small{"data-reveal-id": "add_program", "data-reveal-ajax": "true", href: "/admin/clients/#{client.id}/program_association"}
+            %a.button.radius.small{"data-reveal-id": "add_program", "data-reveal-ajax": "/admin/clients/#{client.id}/program_association", href: ""}
               Add Program
         %hr
         %section

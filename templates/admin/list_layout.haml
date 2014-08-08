@@ -11,7 +11,7 @@
           .add-message
             - block principal_message
               Use this block to update the message describing the principal at hand
-          %a.button.radius.small{"data-reveal-id": "new-principal", "data-reveal-ajax": "true", href: "#{principal_new_url}"}
+          %a.button.radius.small{"data-reveal-id": "new-principal", "data-reveal-ajax": "#{principal_new_url}", href: ""}
             = _("Add ")
             %span= principal_name
         %hr
@@ -25,7 +25,7 @@
             %ul
               - for principal in principals
                 %li
-                  %a.edit-principal{ class: 'fa fa-pencil', "data-reveal-id": "edit-principal", "data-reveal-ajax": "true", href: "#{principal.detail_url}/edit"}
+                  %a.edit-principal{ class: 'fa fa-pencil', "data-reveal-id": "edit-principal", "data-reveal-ajax": "#{principal.detail_url}/edit", href: ""}
                     = ' '
                   %a.principal{href: "#{principal.detail_url}"}
                     = principal.display_name
