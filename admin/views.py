@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 import urllib2 as url_access
+from urllib import quote as urlquote
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -74,9 +75,12 @@ def client_admin_home(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_list(request):
+    courses = course_api.get_course_list()
+    for course in courses:
+        course.id = urlquote(course.id)
 
     data = {
-        "courses": course_api.get_course_list()
+        "courses": courses
     }
 
     return render(
@@ -91,7 +95,7 @@ def course_meta_content_course_items(request):
     course_id = request.GET.get('course_id', None)
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
     data = {
-        "course_id": course_id,
+        "course_id": urlquote(course_id),
         "items": items
     }
 
@@ -110,20 +114,20 @@ def course_meta_content_course_item_new(request):
         course_id = form.data['course_id']
         if form.is_valid():
             item = form.save()
-            return redirect('/admin/course-meta-content/items?course_id=%s' % course_id)
+            return redirect('/admin/course-meta-content/items?course_id=%s' % urlquote(course_id))
         else:
             error = "please fix the problems indicated below."
     else:
         course_id = request.GET.get('course_id', None)
-        init = {'course_id': course_id}
+        init = {'course_id': course_id }
         form = CuratedContentItemForm(initial=init)
 
     data = {
-        "course_id": course_id,
+        "course_id": urlquote(course_id),
         "form": form,
         "error": error,
         "form_action": "/admin/course-meta-content/item/new",
-        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % course_id
+        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % urlquote(course_id)
     }
     return render(
             request,
@@ -140,7 +144,7 @@ def course_meta_content_course_item_edit(request, item_id):
         form = CuratedContentItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('/admin/course-meta-content/items?course_id=%s' % item.course_id)
+            return redirect('/admin/course-meta-content/items?course_id=%s' % urlquote(item.course_id))
         else:
             error = "please fix the problems indicated below."
     else:
@@ -151,7 +155,7 @@ def course_meta_content_course_item_edit(request, item_id):
         "error": error,
         "item": item,
         "form_action": "/admin/course-meta-content/item/%d/edit" % item.id,
-        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % item.course_id
+        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % urlquote(item.course_id)
     }
 
     return render(
@@ -164,7 +168,7 @@ def course_meta_content_course_item_edit(request, item_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_item_delete(request, item_id):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
-    # course_id = item.course_id
+    course_id = urlquote(item.course_id)
     item.delete()
 
     return redirect('/admin/course-meta-content/items?course_id=%s' % course_id)
