@@ -21,7 +21,7 @@ from .models import UserPasswordReset
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
 
 EDUCATION_LEVEL_CHOICES = (
-    ("", "--"),
+    ("", "---"),
     ("b", _("Bachelor's degree")),
     ("mba", _("Master's of Business Administration (MBA)")),
     ("m", _("Master's degree (non MBA)")),
