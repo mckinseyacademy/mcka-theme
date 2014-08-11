@@ -31,6 +31,7 @@
             %span= _("Enrolled Students:")
             %span= program.places_assigned
 - block js_snippets
+  %script{src: "{% static 'js/admin.js' %}"}
   :javascript
     $(function(){
       selections = [
@@ -55,7 +56,10 @@
       $('.student-list').dataTable({
           paging: false,
           autoWidth: false,
-          scrollX: true,
+          "createdRow": function( row, data, index){
+            var charNumber = [18, 15, 10, 15, 15, null];
+            setTableColumns(row, charNumber);
+          },
           "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
       });
 

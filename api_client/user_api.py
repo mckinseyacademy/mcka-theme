@@ -259,12 +259,28 @@ def get_user_gradebook(user_id, course_id):
     return JP.from_json(response.read(), gradebook_models.Gradebook)
 
 @api_error_protect
-def _set_course_position(user_id, course_id, parent_id, child_id):
-    data = {
-        "position": {
-            "parent_content_id": parent_id,
-            "child_content_id": child_id,
-        }
+def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
+    '''
+    Let the openedx server know the most recently visited page
+    Can also provide a None value for chapter_id, then it just sets the page
+    within the sequential_id
+    '''
+
+    data = {"positions":
+        [
+            {
+                "parent_content_id": course_id,
+                "child_content_id": chapter_id,
+            },
+            {
+                "parent_content_id": chapter_id,
+                "child_content_id": sequential_id,
+            },
+            {
+                "parent_content_id": sequential_id,
+                "child_content_id": page_id,
+            },
+        ]
     }
 
     response = POST(
@@ -277,45 +293,7 @@ def _set_course_position(user_id, course_id, parent_id, child_id):
         data
     )
 
-    # return JP.from_json(response.read())
-
-    return True
-
-@api_error_protect
-def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
-    '''
-    Let the openedx server know the most recently visited page
-    Can also provide a None value for chapter_id, then it just sets the page
-    within the sequential_id
-    '''
-
-    positions = []
-
-    if chapter_id:
-        positions.append(_set_course_position(
-                user_id,
-                course_id,
-                course_id,
-                chapter_id
-            )
-        )
-        positions.append(_set_course_position(
-                user_id,
-                course_id,
-                chapter_id,
-                sequential_id
-            )
-        )
-
-    positions.append(_set_course_position(
-            user_id,
-            course_id,
-            sequential_id,
-            page_id
-        )
-    )
-
-    return positions
+    return JP.from_json(response.read())
 
 @api_error_protect
 def is_user_in_group(user_id, group_id):

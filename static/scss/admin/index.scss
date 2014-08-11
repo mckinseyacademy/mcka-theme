@@ -52,6 +52,13 @@
     }
   }
 
+  #student-list.columns {
+    padding-left: 0;
+    .dataTable .student td:last-child{
+      max-width:rem-calc(75);
+    }
+  }
+
   .program-selection .select-program-box{
     cursor: pointer;
     margin: 10px 0;
