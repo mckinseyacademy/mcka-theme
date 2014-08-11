@@ -64,7 +64,7 @@ def course_landing_page(request, course_id):
     etc. from user settings
     '''
 
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
     static_tabs = load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
@@ -124,7 +124,7 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
 
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     proficiency.leaders = build_proficiency_leader_list(proficiency.leaders)
@@ -226,7 +226,7 @@ def user_course_group_work(request, course_id):
     # remove this in case we are a TA who is taking a course themselves
     user_api.delete_user_preference(request.user.id, "TA_REVIEW_WORKGROUP")
 
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
     project_group, group_project = get_group_project_for_user_course(request.user.id, course)
     set_current_course_for_user(request, course_id)
 
@@ -239,7 +239,7 @@ def workgroup_course_group_work(request, course_id, workgroup_id):
     # set this workgroup as the preference for reviewing
     user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
 
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
     project_group, group_project = get_group_project_for_workgroup_course(workgroup_id, course)
 
     return _render_group_work(request, course, project_group, group_project)
@@ -248,7 +248,7 @@ def workgroup_course_group_work(request, course_id, workgroup_id):
 @check_user_course_access
 def course_discussion(request, course_id):
 
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
     has_course_discussion = False
     vertical_usage_id = None
 
@@ -289,7 +289,7 @@ def course_discussion_userprofile(request, course_id, user_id):
 @check_user_course_access
 def course_progress(request, course_id):
 
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
 
     # add in all the grading information
     gradebook = inject_gradebook_info(request.user.id, course)
@@ -371,7 +371,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     ''' go to given page within given chapter within given course '''
     # Get course info
     course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-        course_id, chapter_id, page_id)
+        request, course_id, chapter_id, page_id)
 
     # Take note that the user has gone here
     set_current_course_for_user(request, course_id)

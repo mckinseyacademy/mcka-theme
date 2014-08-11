@@ -23,7 +23,7 @@ def user_program_data(request):
         try:
             course_id = get_current_course_for_user(request)
             if not course_id is None:
-                course = load_course(course_id)
+                course = load_course(course_id, request=request)
         except:
             clear_current_course_for_user(request)
             course_id = get_current_course_for_user(request)
@@ -35,7 +35,7 @@ def user_program_data(request):
                 course_id, chapter_id, page_id = locate_chapter_page(
                     request.user.id, course_id, None)
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-                course_id, chapter_id, page_id)
+                request, course_id, chapter_id, page_id)
 
             program = get_current_program_for_user(request)
 

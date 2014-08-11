@@ -23,6 +23,7 @@ GROUP_PROJECT_CATEGORY = 'group-project'
 # logic functions - recieve api implementor for test
 
 def build_page_info_for_course(
+    request,
     course_id,
     chapter_id,
     page_id,
@@ -32,7 +33,8 @@ def build_page_info_for_course(
     Returns course structure and user's status within course
         course_api_impl - optional api client module to use (useful in mocks)
     '''
-    course = load_course(course_id, 4, course_api_impl)
+
+    course = load_course(course_id, 4, course_api_impl, request=request)
 
     # something sensible if we fail...
     if len(course.chapters) < 1:

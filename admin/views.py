@@ -784,7 +784,7 @@ def workgroup_detail(request, course_id, workgroup_id):
     users = user_api.get_users(ids=','.join([str(u.id) for u in workgroup.users]))
     project = Project.fetch(workgroup.project)
 
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
     projects = [gp for gp in course.group_project_chapters if gp.id == project.content_id and len(gp.sequentials) > 0]
     activities = []
     if len(projects) > 0:
@@ -813,7 +813,7 @@ def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
     selected_project_id = request.GET.get("project_id", None)
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
 
     students, companies = getStudentsWithCompanies(course)
 
@@ -930,7 +930,7 @@ def workgroup_group_remove(request, group_id):
         workgroup.remove_user(remove_student)
 
         course_id = request.POST['course_id']
-        course = load_course(course_id)
+        course = load_course(course_id, request=request)
 
         students, companies = getStudentsWithCompanies(course)
 
@@ -951,7 +951,7 @@ def workgroup_group_remove(request, group_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_group_list(request, course_id):
 
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
     groupsList = WorkGroup.list()
     groups = []
     groupedStudents = []
