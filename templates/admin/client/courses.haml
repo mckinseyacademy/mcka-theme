@@ -36,6 +36,7 @@
                   %span= _("Company Participants:")
                   %span= course.user_count
 - block js_snippets
+  %script{src: "{% static 'js/admin.js' %}"}
   :javascript
     $(function(){
       selections = [
@@ -61,7 +62,10 @@
       $('.student-list').dataTable({
           paging: false,
           autoWidth: false,
-          scrollX: true,
+          "createdRow": function( row, data, index){
+            var charNumber = [20, 30, null];
+            setTableColumns(row, charNumber);
+          },
           "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
       });
     });
