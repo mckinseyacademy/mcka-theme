@@ -52,6 +52,9 @@ def _get_qs_value_from_url(value_name, url):
 
 def _validate_path(redirect_to):
     ''' prevent attacker controllable redirection to third-party applications '''
+    if not redirect_to:
+        return
+
     # resolver expects a trailing slash
     if redirect_to[-1] != '/':
         redirect_to += '/'
