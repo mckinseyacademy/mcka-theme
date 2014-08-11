@@ -369,27 +369,27 @@ class CoursesAPITest(TestCase):
 
     def test_locate_chapter_page(self):
         # specified up to chapter id, should get bookmarked page
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", "10", MockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page(None, "0", "2", "10", MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "10")
         self.assertEqual(page_id, "100")
 
         # specified course-only should get bookmarked page
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", None, MockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page(None, "0", "2", None, MockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "10")
 
         # specified up to chapter id not bookmarked should get first page in specified chapter
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "2", "12", NotBookmarkedMockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page(None, "0", "2", "12", NotBookmarkedMockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "2")
         self.assertEqual(chapter_id, "12")
         self.assertEqual(page_id, "120")
 
         # specified course-only without bookmark should get first page of first chapter
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "0", None, NotBookmarkedMockUserAPI, MockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page(None, "0", "0", None, NotBookmarkedMockUserAPI, MockCourseAPI)
 
         self.assertEqual(course_id, "0")
         self.assertEqual(chapter_id, "10")
@@ -398,7 +398,7 @@ class CoursesAPITest(TestCase):
         # specified course-only without bookmark should get first page of first
         # chapter of specified course, even if "current" course is something
         # different
-        course_id, chapter_id, page_id = controller.locate_chapter_page("0", "9", None, NotBookmarkedMockUserAPI, OtherMockCourseAPI)
+        course_id, chapter_id, page_id = controller.locate_chapter_page(None, "0", "9", None, NotBookmarkedMockUserAPI, OtherMockCourseAPI)
 
         self.assertEqual(course_id, "9")
         self.assertEqual(chapter_id, "10")
