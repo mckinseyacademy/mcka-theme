@@ -3,8 +3,8 @@
 - block content
   .row{style: "margin-top:80px;"}
     %p This is the course meta content manager page. Please choose a course from the list below:
-    
+
     - for course in courses
-      %p 
+      %p
         %a{href:"/admin/course-meta-content/items?course_id=#{course.id}"}
           = course.name
