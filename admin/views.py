@@ -1008,6 +1008,7 @@ def generate_assignments(request, project_id, activity_id):
         rap = ReviewAssignmentProcessor(
             user_ids,
             workgroups,
+            group_xblock.id,
             group_xblock.group_reviews_required_count,
             group_xblock.user_review_count
         )

@@ -10,7 +10,7 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.project_models import Project
-from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS, get_groups_of_type
+from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities

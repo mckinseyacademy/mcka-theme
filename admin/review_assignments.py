@@ -9,16 +9,31 @@ class ReviewAssignmentUnattainableError(Exception):
 
 class ReviewAssignmentProcessor(object):
 
-    def __init__(self, user_ids, workgroups, review_target, user_target):
+    def __init__(self, user_ids, workgroups, xblock_id, review_target, user_target):
 
         self.user_ids = user_ids
         self.workgroups = workgroups
         self.review_target = review_target
         self.user_target = user_target
+        self.xblock_id = xblock_id
+
+    def _init_review_groups(self, delete_existing, *args, **kwargs):
 
         # Maintain double-lookup maps for assignments
         self.workgroup_reviewers = {wg.id: [] for wg in self.workgroups}
         self.reviewer_workgroups = {us: [] for us in self.user_ids}
+
+        assignment_group_class = kwargs.get('assignment_group_class', ReviewAssignmentGroup)
+
+        for wg in self.workgroups:
+            assignment_groups = assignment_group_class.list_for_workgroup(wg.id)
+            for rag in assignment_groups:
+                if delete_existing:
+                    assignment_group_class.delete(rag.id)
+                else:
+                    for user in rag.get_users():
+                        self.reviewer_workgroups[user.id].append(wg.id)
+                        self.workgroup_reviewers[wg.id].append(user.id)
 
     def assert_possible(self):
         for wg in self.workgroups:
@@ -45,18 +60,16 @@ class ReviewAssignmentProcessor(object):
                 break
 
 
-    def distribute(self):
+    def distribute(self, delete_existing=False, *args, **kwargs):
         self.assert_possible()
-
-        workgroups_in_need = self.workgroups
-        users_available = self.user_ids
 
         review_threshold = 1
         user_threshold = 1
 
-        # Maintain double-lookup maps for assignments
-        self.workgroup_reviewers = {wg.id: [] for wg in self.workgroups}
-        self.reviewer_workgroups = {us: [] for us in self.user_ids}
+        self._init_review_groups(delete_existing, *args, **kwargs)
+
+        workgroups_in_need = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < min(review_threshold, self.review_target)]
+        users_available = [us for us in self.user_ids if len(self.reviewer_workgroups[us]) < user_threshold]
 
         # cycle until we've met the minimum reviews per workgroup
         while review_threshold <= self.review_target or len(workgroups_in_need) > 0:
@@ -91,15 +104,14 @@ class ReviewAssignmentProcessor(object):
             users_in_need = [us for us in self.user_ids if len(self.reviewer_workgroups[us]) < self.user_target]
 
 
-
-    def store_assignments(self, course_id, xblock_id):
+    def store_assignments(self, course_id):
         for wg in self.workgroups:
             now = datetime.datetime.today()
             rag = ReviewAssignmentGroup.create(
                 "Assignment group for {}".format(wg.id),
                 {
                     "assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-                    "xblock_id": xblock_id,
+                    "xblock_id": self.xblock_id,
                 }
             )
             rag.add_course(course_id)
