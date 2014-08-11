@@ -341,7 +341,7 @@ class CoursesAPITest(TestCase):
         pass
 
     def test_build_page_info_for_course(self):
-        test_course, test_current_chapter, test_current_sequential, test_current_page = controller.build_page_info_for_course("0", "11", "112", MockCourseAPI)
+        test_course, test_current_chapter, test_current_sequential, test_current_page = controller.build_page_info_for_course(None, "0", "11", "112", MockCourseAPI)
 
         self.assertEqual(len(test_course.chapters), 3)
         self.assertEqual(test_current_chapter.id, "11")

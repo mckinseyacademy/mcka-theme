@@ -183,6 +183,9 @@ LOCAL_MOCK_API_FILES = [
 # Set this on OpenEdx server, and within production environment to whichever value is desired
 EDX_API_KEY = 'test_api_key'
 
+# Whether or not to cache courseware content locally, defult=False but can be overridden in local_settings.py
+USE_SESSION_COURSEWARE_CACHING = False
+
 # Goog Analytics Tracking ID
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 

@@ -9,6 +9,9 @@ from accounts.middleware.thread_local import set_course_context, get_course_cont
 from api_client.api_error import ApiError
 from api_client import user_api, group_api, course_api, workgroup_api, organization_api, project_api
 from accounts.models import UserActivation
+from datetime import datetime
+from pytz import UTC
+
 
 from .models import Client, WorkGroup
 
@@ -45,7 +48,7 @@ def _load_course(course_id, depth=4, course_api_impl=course_api):
     return course
 
 
-def load_course(course_id, depth=4, course_api_impl=course_api):
+def load_course(course_id, depth=4, course_api_impl=course_api, request=None):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
@@ -53,7 +56,45 @@ def load_course(course_id, depth=4, course_api_impl=course_api):
     if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth", 0) >= depth:
         return course_context["course_content"]
 
-    return _load_course(course_id, depth, course_api_impl)
+    # See if we will cache courseware on the user's session
+    if not getattr(settings, 'USE_SESSION_COURSEWARE_CACHING', False) or not request or not request.session:
+        # simple path: load and return
+        return _load_course(course_id, depth, course_api_impl)
+
+    course = None
+    if 'course_cache' in request.session:
+        # see if our cached course is the same as the one wanting to be fetched
+        if course_id in request.session['course_cache']:
+            cache_entry = request.session['course_cache'][course_id]
+            cached_time = cache_entry['time_fetched']
+            fetch_depth = cache_entry['fetch_depth']
+
+            # is the course entry too old?!?
+            age = datetime.now(UTC) - cached_time
+
+            # don't let the cache entry age indefinately
+            if age.seconds < getattr(settings, 'SESSION_COURSEWARE_CACHING_EXPIRY_IN_SEC', 300) and depth <= fetch_depth:
+                course = cache_entry['course_data']
+
+    if not course:
+        # actually go to the API to fetch
+        course = _load_course(course_id, depth, course_api_impl)
+
+        # if we have fetched the course, let's put it in the session cache
+        if course:
+            # note, since we're change the schema of the session data, we have to be able to
+            # bootstrap existing sessions
+            if 'course_cache' not in request.session:
+                request.session['course_cache'] = {}
+
+            request.session['course_cache'][course_id] = {
+                'course_data': course,
+                'transaction_counter': 0,
+                'time_fetched': datetime.now(UTC),
+                'fetch_depth': depth
+            }
+
+    return course
 
 
 def generate_email_text_for_user_activation(activation_record, activation_link_head):
