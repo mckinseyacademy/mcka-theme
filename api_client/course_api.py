@@ -36,9 +36,12 @@ def get_course_list():
     '''
     Retrieves list of courses from openedx server
     '''
-    response = GET('{}/{}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API)
+    qs_params = {"page_size": 0}
+    response = GET('{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            urlencode(qs_params)
+        )
     )
     return CJP.from_json(response.read())
 
