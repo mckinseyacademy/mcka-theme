@@ -9,15 +9,10 @@
     - csrf_token
     = form
     %br
+    #progress
+      .bar{'style': "width: 0%;"}
     %br
     %br
-    %br
-    %label.label-10
-      %span.label-5
-        STEP 2:
-      UPLOAD SELECTED IMAGE
-    %hr
-    %input#user-image-submit.button.small.radius.disabled{'type': 'submit', 'value': 'Upload', 'disabled': 'disabled'}
     %br
     .error.warning
       - if error

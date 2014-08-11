@@ -458,10 +458,10 @@ def upload_profile_image(request, user_id):
             else:
                 error = "Incorrect file type."
 
-            return change_profile_image(request, request.user.id, 'change_profile_image', error)
+            return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
         else:
             error = "There is a problem with image file you selected."
-            return change_profile_image(request, request.user.id, 'change_profile_image', error)
+            return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form
@@ -477,6 +477,11 @@ def upload_profile_image(request, user_id):
         'accounts/upload_profile_image.haml',
         data
     )
+    files = [serialize(self.object)]
+    data = {'files': files}
+    response = JSONResponse(data, mimetype=response_mimetype(self.request))
+    response['Content-Disposition'] = 'inline; filename=files.json'
+    return response
 
 def load_profile_image(request, image_url):
     from django.core.files.storage import default_storage
