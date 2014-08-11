@@ -5,6 +5,7 @@ import urlparse
 import urllib2 as url_access
 import datetime
 import math
+import logging
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
@@ -58,6 +59,8 @@ def _validate_path(redirect_to):
     try:
         resolve(redirect_to)
     except Resolver404:
+        logger = logging.getLogger(__name__)
+        logger.error('Invalid Redirect: {}'.format(redirect_to))
         raise
 
 def login(request):
