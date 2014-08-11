@@ -47,16 +47,36 @@
                       %table
                         %tr
                           %td
-                            Reviews required per group activity
+                            = _("Reviews required per group activity")
                           %td
                             = activity.xblock.group_reviews_required_count
                         %tr
                           %td
-                            Minimum number of reviews for each user
+                            = _("Minimum number of reviews for each user")
                           %td
                             = activity.xblock.user_review_count
-                      %a#generate_assignments.button.radius.small{href: "/admin/project/#{group_project.id}/activity/#{activity.id}/generate_assignments"}
+                      %a.show_generate_options.button.radius.small{href: "#", "data-reveal-id": "generate-reviews-modal", "data-activity-id": "#{activity.js_safe_id}"}
                         = _("Generate Activity Review Assignments")
+                      .generation-submission{"data-activity-id": "#{activity.js_safe_id}"}
+                        .close-reveal-modal
+                          %i.fa.fa-times-circle
+                        %form.generate_assignment_form{action: "/admin/project/#{group_project.id}/activity/#{activity.id}/generate_assignments", method: "POST"}
+                          - csrf_token
+                          %h2
+                            Generate Activity Review Assignments for
+                            = activity.name
+                          .error
+                            = _("When you click on 'Confirm' below you will be assigning reviewers to existing group data. Please be sure that you are ready to do this at this time.")
+                          - if activity.has_assignments
+                            %input.delete-choice{type: "checkbox", name: "delete_choice", checked: "checked", id: "delete_choice_#{activity.js_safe_id}"}
+                            %label.delete-label{"for": "delete_choice_#{activity.js_safe_id}"}
+                              = _("Delete existing review assignments")
+                          %div
+                            %input.button.radius.tiny{type: "submit", value: "Confirm"}
+                        .informational-message
+
+  #generate-reviews-modal.reveal-modal{"data-reveal": "true"}
+
 - block js_snippets
   :javascript
     var show_activities_for_project = function(project_id){
@@ -66,14 +86,35 @@
     $('.group-project-select').on('change', function(){
       show_activities_for_project($(this).val());
     });
-    $('#generate_assignments').on('click', function(e){
+    $('.show_generate_options').on('click', function(){
+      var activity_id = $(this).data('activity-id');
+      var form_copy = $('.activity .detail .generation-submission[data-activity-id=' + activity_id + ']').clone(true);
+      var delete_field = form_copy.find('.delete-choice');
+      var new_id = delete_field.attr('id').replace('delete_choice_', '');
+      delete_field.attr('id', new_id);
+      form_copy.find('.delete-label').attr('for', new_id);
+      $('#generate-reviews-modal').empty().append(form_copy);
+      $('#generate-reviews-modal .informational-message').empty();
+    });
+    $('#generate-reviews-modal').on('submit', 'form', function(e) {
       e.preventDefault();
+      var form = $(this);
+      form.find(':submit').prop('disabled', true);
       $.ajax({
-        url: $(this).attr('href'),
-        type: "GET",
-        dataType: 'json',
-        success: _default_success,
-        error: _default_error
+        method: 'POST',
+        url: form.attr('action'),
+        data: form.serialize()
+      })
+      .done(function(data, status, xhr) {
+        var contentType = xhr.getResponseHeader('content-type') || '';
+        if (contentType.indexOf('json') > -1 && data.redirect)
+          window.location.href = data.redirect;
+        else{
+          var submission_region = form.parent();
+          submission_region.find('form').remove();
+          submission_region.find('.informational-message').empty().html(data.message);
+        }
+        form.find(':submit').prop('disabled', false);
       });
     });
     $(function(){

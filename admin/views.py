@@ -1012,8 +1012,8 @@ def generate_assignments(request, project_id, activity_id):
             group_xblock.group_reviews_required_count,
             group_xblock.user_review_count
         )
-        rap.distribute()
-        rap.store_assignments(project.course_id, group_xblock.id)
+        rap.distribute(request.POST.get("delete_choice", "off") == "on")
+        rap.store_assignments(project.course_id)
 
         return HttpResponse(json.dumps({"message": _("Project review assignments allocated")}), content_type='application/json')
 
@@ -1155,6 +1155,7 @@ def workgroup_course_assignments(request, course_id):
             activity.xblock = WorkGroupActivityXBlock.fetch_from_uri(get_group_activity_xblock(activity).uri)
             activity_assignments = [pag for pag in project_assignment_groups if hasattr(pag, "xblock_id") and pag.xblock_id == activity.xblock.id]
             activity.has_assignments = (len(activity_assignments) > 0)
+            activity.js_safe_id = activity.id.split('+')[-1]
 
     data = {
         "course": course,
