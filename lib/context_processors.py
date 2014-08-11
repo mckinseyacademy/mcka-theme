@@ -33,7 +33,7 @@ def user_program_data(request):
             page_id = request.resolver_match.kwargs.get('page_id', None)
             if page_id is None or chapter_id is None:
                 course_id, chapter_id, page_id = locate_chapter_page(
-                    request.user.id, course_id, None)
+                    request, request.user.id, course_id, None)
             course, current_chapter, current_sequential, current_page = build_page_info_for_course(
                 request, course_id, chapter_id, page_id)
 

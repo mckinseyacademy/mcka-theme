@@ -427,6 +427,7 @@ def infer_chapter_navigation(request, course_id, chapter_id):
         course_id = get_current_course_for_user(request)
 
     course_id, chapter_id, page_id = locate_chapter_page(
+        request,
         request.user.id,
         course_id,
         chapter_id

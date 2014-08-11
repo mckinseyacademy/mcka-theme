@@ -95,6 +95,7 @@ def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
     return course_detail.position_tree
 
 def locate_chapter_page(
+    request,
     user_id,
     course_id,
     chapter_id,
@@ -108,7 +109,7 @@ def locate_chapter_page(
         course_api_impl - optional api client module to use (useful in mocks)
         user_api_impl - optional api client module to use (useful in mocks)
     '''
-    course = load_course(course_id, 4, course_api_impl)
+    course = load_course(course_id, 4, course_api_impl, request=request)
     chapter = None
     page = None
 
