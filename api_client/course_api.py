@@ -387,3 +387,32 @@ def get_course_projects(course_id, page_size=0, project_object=JsonObject):
     response = GET(url)
 
     return JP.from_json(response.read(), project_object)
+
+@api_error_protect
+def get_module_details(module_uri, include_fields = [], module_object = None):
+    ''' Fetches the details of the object at the specific uri with the named custom fields'''
+
+    qs_params = {"include_fields": ",".join(include_fields)} if len(include_fields) > 0 else None
+
+    if qs_params:
+        module_uri += "?{}".format(urlencode(qs_params))
+
+    response = GET(module_uri)
+
+    if module_object:
+        return JP.from_json(response.read(), module_object)
+
+    return CJP.from_json(response.read())
+
+@api_error_protect
+def get_course_content_detail(course_id, content_id, include_fields = [], module_object = None):
+    ''' Fetches the details of the object at the specific uri with the named custom fields'''
+
+    url = '{}/{}/{}/content/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        content_id,
+    )
+
+    return get_module_details(url, include_fields, module_object)

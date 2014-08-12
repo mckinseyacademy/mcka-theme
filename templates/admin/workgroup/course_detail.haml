@@ -7,48 +7,30 @@
     %link{rel: "stylesheet", href: "{% static 'css/leaflet.css' %}"}
     %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
 - block content
-  .admin-list
-    .row
-      .large-11.large-centered.columns
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/workgroup/detail_header.haml'
+  .admin-list.tight
+    .admin-detail.row
+      .large-12.large-centered.columns
         %header
           %h1.principal-title {{principal_name_plural}}: {{course.name}}
           .sub-1.add= _("Create & Edit Groups")
           .add-message
             - block principal_message
               %p= _("Group existing learners associated with this course into new groups, or to edit existing groups in this course.")
-          %div
-            %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
-              Workgroup Completion Report
         %hr
         %section
           .large-12.medium-12.columns
             .sub-1= _("Project:")
             %p= _("Select project within which you are working")
           .large-7.medium-7.columns
-            %select.group-project-select
-              - for group_project in group_projects
-                - if group_project.selected
-                  %option{"value": "#{group_project.id}", "selected": "selected"}
-                    = group_project.name
-                    - if group_project.organization
-                      (
-                      = group_project.organization
-                      )
-                - else
-                  %option{"value": "#{group_project.id}"}
-                    = group_project.name
-                    - if group_project.organization
-                      (
-                      = group_project.organization
-                      )
+          .large-7.medium-7.columns
+            - include 'admin/workgroup/project_dropdown.haml'
           .large-5.medium-5.columns.group-selection
             - if user.is_mcka_admin
               %a#create-group-project.button.radius.tiny{href: "#", "data-reveal-id": "create-project-modal"}
                 %span= _("Create New Group Project")
-          - if user.is_mcka_admin
-            .large-12.medium-12.columns.group-selection
-              %a#generate_assignments.button.radius.small{href: "/admin/workgroup/course/#{course.id}/generate_assignments"}
-                = _("Generate Project Review Assignments")
         %hr
         %section
           %input#course_id{'type': 'hidden', 'value': '#{course.id}'}

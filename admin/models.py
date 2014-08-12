@@ -1,5 +1,6 @@
-from api_client import group_api, workgroup_api, organization_api, user_api
+from api_client import group_api, workgroup_api, organization_api, user_api, course_api
 from api_client import group_models, user_models, workgroup_models, organization_models, project_models
+from api_client.json_object import JsonObject
 from license import controller as license_controller
 from django.conf import settings
 
@@ -44,7 +45,7 @@ class Program(BaseGroupModel):
 
 
 class ReviewAssignmentGroup(BaseGroupModel):
-    data_fields = ["assignment_date"]
+    data_fields = ["assignment_date", "xblock_id"]
     date_fields = ["assignment_date"]
     group_type = "reviewassignment"
 
@@ -53,6 +54,10 @@ class ReviewAssignmentGroup(BaseGroupModel):
 
     def add_user(self, user_id):
         return group_api.add_user_to_group(user_id, self.id)
+
+    @classmethod
+    def list_for_workgroup(cls, workgroup_id):
+        return [cls.fetch(rag.id) for rag in workgroup_api.get_workgroup_groups(workgroup_id)]
 
 
 class Client(organization_models.Organization):
@@ -113,3 +118,22 @@ class WorkGroup(workgroup_models.Workgroup):
         })
 
         return workgroup
+
+class WorkGroupActivityXBlock(JsonObject):
+
+    required_fields = ['group_reviews_required_count', 'user_review_count']
+
+    @classmethod
+    def fetch_from_uri(cls, uri):
+        return course_api.get_module_details(uri, cls.required_fields, cls)
+
+    @classmethod
+    def fetch_from_activity(cls, course_id, activity_id):
+        activity = course_api.get_course_content_detail(course_id, activity_id)
+        vertical = course_api.get_module_details(activity.children[0].uri)
+        return course_api.get_module_details(vertical.children[0].uri, cls.required_fields, cls)
+
+    @property
+    def ta_graded(self):
+        return self.group_reviews_required_count < 1
+

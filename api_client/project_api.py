@@ -69,7 +69,7 @@ def create_project(course_id, content_id, organization_id=None, project_object=J
     }
 
     if not organization_id is None:
-        data["organization_id"] = organization_id
+        data["organization"] = organization_id
 
     response = POST(
         '{}/{}/'.format(

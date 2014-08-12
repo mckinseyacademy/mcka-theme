@@ -9,20 +9,41 @@ class ReviewAssignmentUnattainableError(Exception):
 
 class ReviewAssignmentProcessor(object):
 
-    def __init__(self, user_ids, workgroups, target = 3):
+    def __init__(self, user_ids, workgroups, xblock_id, review_target, user_target):
 
         self.user_ids = user_ids
         self.workgroups = workgroups
-        self.target = target
+        self.review_target = review_target
+        self.user_target = user_target
+        self.xblock_id = xblock_id
+
+    def _init_review_groups(self, delete_existing, *args, **kwargs):
 
         # Maintain double-lookup maps for assignments
         self.workgroup_reviewers = {wg.id: [] for wg in self.workgroups}
         self.reviewer_workgroups = {us: [] for us in self.user_ids}
 
+        assignment_group_class = kwargs.get('assignment_group_class', ReviewAssignmentGroup)
+
+        for wg in self.workgroups:
+            assignment_groups = assignment_group_class.list_for_workgroup(wg.id)
+            for rag in assignment_groups:
+                if delete_existing:
+                    assignment_group_class.delete(rag.id)
+                else:
+                    for user in rag.get_users():
+                        self.reviewer_workgroups[user.id].append(wg.id)
+                        self.workgroup_reviewers[wg.id].append(user.id)
+
     def assert_possible(self):
         for wg in self.workgroups:
             possible_reviewers = [u for u in self.user_ids if not u in wg.users]
-            if len(possible_reviewers) < self.target:
+            if len(possible_reviewers) < self.review_target:
+                raise ReviewAssignmentUnattainableError()
+
+        for user_id in self.user_ids:
+            possible_workgroups = [wg for wg in self.workgroups if not user_id in wg.users]
+            if len(possible_workgroups) < self.user_target:
                 raise ReviewAssignmentUnattainableError()
 
 
@@ -39,44 +60,61 @@ class ReviewAssignmentProcessor(object):
                 break
 
 
-    def distribute(self):
+    def distribute(self, delete_existing=False, *args, **kwargs):
         self.assert_possible()
-
-        workgroups_in_need = self.workgroups
-        users_available = self.user_ids
 
         review_threshold = 1
         user_threshold = 1
 
-        # Maintain double-lookup maps for assignments
-        self.workgroup_reviewers = {wg.id: [] for wg in self.workgroups}
-        self.reviewer_workgroups = {us: [] for us in self.user_ids}
+        self._init_review_groups(delete_existing, *args, **kwargs)
 
-        # cycle until we've met the threshold, but keep going if we still have workgroups in need
-        while review_threshold <= self.target or len(workgroups_in_need) > 0:
+        workgroups_in_need = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < min(review_threshold, self.review_target)]
+        users_available = [us for us in self.user_ids if len(self.reviewer_workgroups[us]) < user_threshold]
+
+        # cycle until we've met the minimum reviews per workgroup
+        while review_threshold <= self.review_target or len(workgroups_in_need) > 0:
 
             self.distribute_pass(workgroups_in_need, users_available)
-            workgroups_in_need = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < min(review_threshold, self.target)]
+            workgroups_in_need = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < min(review_threshold, self.review_target)]
             users_available = [us for us in self.user_ids if len(self.reviewer_workgroups[us]) < user_threshold]
 
             # only 1 avilable might have only its users available
-            if len(workgroups_in_need) < 1 and review_threshold <= self.target:
+            if len(workgroups_in_need) < 1 and review_threshold <= self.review_target:
                 review_threshold += 1
 
             if len(users_available) < 1 or (len(workgroups_in_need) == 1 and len([u for u in users_available if not u in workgroups_in_need[0].users]) == 0):
                 user_threshold += 1
 
-            workgroups_in_need = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < min(review_threshold, self.target)]
+            workgroups_in_need = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < min(review_threshold, self.review_target)]
             users_available = [us for us in self.user_ids if len(self.reviewer_workgroups[us]) < user_threshold]
 
+        # Now also cycle until we've met the minimum reviews per user
+        users_in_need = [us for us in self.user_ids if len(self.reviewer_workgroups[us]) < self.user_target]
+        user_review_threshold = 1
+        workgroups_available = []
+        while len(users_in_need) > 0:
+            # pass out the workgroups that have fewer reviewers first
+            while len(workgroups_available) < 1:
+                user_review_threshold += 1
+                workgroups_available = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < user_review_threshold]
 
-    def store_assignments(self, project_id):
+            self.distribute_pass(workgroups_available, users_in_need)
+
+            workgroups_available = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < user_review_threshold]
+            users_in_need = [us for us in self.user_ids if len(self.reviewer_workgroups[us]) < self.user_target]
+
+
+    def store_assignments(self, course_id):
         for wg in self.workgroups:
             now = datetime.datetime.today()
             rag = ReviewAssignmentGroup.create(
                 "Assignment group for {}".format(wg.id),
-                {"assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}
+                {
+                    "assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                    "xblock_id": self.xblock_id,
+                }
             )
+            rag.add_course(course_id)
             rag.add_workgroup(wg.id)
             for user_id in self.workgroup_reviewers[wg.id]:
                 rag.add_user(user_id)

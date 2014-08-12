@@ -10,12 +10,10 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.project_models import Project
-from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS, get_groups_of_type
+from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
 from admin.models import WorkGroup
-from admin.controller import load_course
-
-GROUP_PROJECT_CATEGORY = 'group-project'
+from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -194,7 +192,7 @@ def group_project_location(group_project, sequential_id=None):
             sequential = seq
 
         # Is it a group_project xblock
-        seq.is_group_project = len(sequential.pages) > 0 and "group-project" in sequential.pages[0].child_category_list()
+        seq.is_group_activity = is_group_activity(sequential)
 
     page = sequential.pages[0] if len(sequential.pages) > 0 else None
 
@@ -243,21 +241,16 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
 
     # distinct reviewers
     reviewer_ids = set([item.reviewer for item in review_items])
-    group_activities = []
 
     # find group activities in this project
-    for seq in project_chapter.sequentials:
-        group_project_pages = [page for page in seq.pages if GROUP_PROJECT_CATEGORY in page.child_category_list()]
-        if len(group_project_pages) > 0:
-            group_project_xblock = [gp for gp in group_project_pages[0].children if gp.category == GROUP_PROJECT_CATEGORY][0]
-            seq.group_project_content_id = group_project_xblock.id
-            group_activities.append(seq)
 
+    group_activities = get_group_project_activities(project_chapter)
     for activity in group_activities:
-        activity.grades = []
-        activity_reviews = [item for item in review_items if activity.group_project_content_id == item.content_id]
+        group_project_xblock = get_group_activity_xblock(activity)
+        activity_reviews = [item for item in review_items if group_project_xblock.id == item.content_id]
 
         # average by reviewer
+        activity.grades = []
         for reviewer_id in reviewer_ids:
             grades = [int(review.answer) for review in activity_reviews if reviewer_id == review.reviewer and is_number(review.answer)]
             activity.grades.append(mean(grades))
