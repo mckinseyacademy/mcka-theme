@@ -29,4 +29,8 @@ $(function(){
       $('.email-member').on('click', function(){
         $('#member-email').val($(this).data('member-email'));
       });
+
+      $('#contact-ta, #email-member, #email-team').on('opened.fndtn.reveal', function () {
+        $(this).find('textarea').val('');
+      });
 });
