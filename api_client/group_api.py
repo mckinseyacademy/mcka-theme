@@ -32,12 +32,12 @@ PERMISSION_GROUPS = DottableDict(
 )
 
 @api_error_protect
-def get_groups_of_type(group_type, group_object=JsonObject):
+def get_groups_of_type(group_type, group_object=JsonObject, *args, **kwargs):
     ''' gets all groups of provided type'''
-    qs_params = {
-        "page_size":0,
-        "type": group_type,
-    }
+    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    qs_params["page_size"] = 0
+    qs_params["type"] = group_type
+
     response = GET(
         '{}/{}/?{}'.format(
             settings.API_SERVER_ADDRESS,
