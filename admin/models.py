@@ -99,6 +99,10 @@ class ClientList(organization_models.OrganizationList):
 
 class WorkGroup(workgroup_models.Workgroup):
 
+    @property
+    def user_ids(self):
+        return [user.id for user in self.users]
+
     def fetch_students(self):
         users_ids = [str(user.id) for user in self.users]
         if users_ids == []:
