@@ -13,7 +13,7 @@ from accounts.controller import get_current_course_for_user, set_current_course_
 from accounts.controller import check_user_course_access
 from admin.controller import load_course
 from admin.models import WorkGroup
-from api_client import course_api, user_api, workgroup_api
+from api_client import course_api, user_api, workgroup_api, project_api
 from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
 from main.models import CuratedContentItem
@@ -494,22 +494,34 @@ def contact_group(request, course_id, group_id):
 
 @login_required
 @check_user_course_access
-def contact_member(request, course_id):
+def contact_member(request, course_id, group_id):
     email_from = settings.APROS_EMAIL_SENDER
     email_header_from = request.user.email
     email_to = request.POST["member-email"]
     email_content = request.POST["member_message"]
     course = course_api.get_course(course_id)
     email_subject = "Group Project Message - {}".format(course.name) #just for testing
-    try:
-        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
-        email.send(fail_silently=False)
-    except:
+
+    group = WorkGroup.fetch_with_members(group_id)
+    students = group.members
+    group_emails = [student.email for student in students]
+
+    if email_to in group_emails:
+        try:
+            email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+            email.send(fail_silently=False)
+        except:
+            return HttpResponse(
+            json.dumps({"message": _("Message not sent.")}),
+            content_type='application/json'
+        )
         return HttpResponse(
-        json.dumps({"message": _("Message not sent.")}),
-        content_type='application/json'
-    )
-    return HttpResponse(
-        json.dumps({"message": _("Message successfully sent.")}),
-        content_type='application/json'
-    )
+            json.dumps({"message": _("Message successfully sent.")}),
+            content_type='application/json'
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"message": _("Message not sent. Email is not a valid")}), #replace with another message
+            content_type='application/json'
+        )
+

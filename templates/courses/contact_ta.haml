@@ -30,7 +30,7 @@
   %h2= _("Message your group member")
   %hr
   %div= _("Send any questions or messages to your group member.")
-  %form#email-member-form{action: "/courses/#{course.id}/group_member_email", method: "POST"}
+  %form#email-member-form{action: "/courses/#{course.id}/group_member_email/#{project_group.id}", method: "POST"}
     .error
       - if error
         = error
