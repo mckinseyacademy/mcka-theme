@@ -52,7 +52,7 @@ class ProgramAssociationForm(forms.Form):
             choices=((program.id, "{} ({})".format(program.display_name, program.name))
                      for program in program_list)
         )
-        self.fields['places'] = forms.IntegerField()
+        self.fields['places'] = forms.IntegerField(min_value=1)
 
 
 class CuratedContentItemForm(forms.ModelForm):
