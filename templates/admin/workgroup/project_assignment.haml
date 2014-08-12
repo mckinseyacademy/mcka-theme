@@ -90,9 +90,11 @@
       var activity_id = $(this).data('activity-id');
       var form_copy = $('.activity .detail .generation-submission[data-activity-id=' + activity_id + ']').clone(true);
       var delete_field = form_copy.find('.delete-choice');
-      var new_id = delete_field.attr('id').replace('delete_choice_', '');
-      delete_field.attr('id', new_id);
-      form_copy.find('.delete-label').attr('for', new_id);
+      if(delete_field.length > 0){
+        var new_id = delete_field.attr('id').replace('delete_choice_', '');
+        delete_field.attr('id', new_id);
+        form_copy.find('.delete-label').attr('for', new_id);
+      }
       $('#generate-reviews-modal').empty().append(form_copy);
       $('#generate-reviews-modal .informational-message').empty();
     });
@@ -107,14 +109,10 @@
       })
       .done(function(data, status, xhr) {
         var contentType = xhr.getResponseHeader('content-type') || '';
-        if (contentType.indexOf('json') > -1 && data.redirect)
-          window.location.href = data.redirect;
-        else{
-          var submission_region = form.parent();
-          submission_region.find('form').remove();
-          submission_region.find('.informational-message').empty().html(data.message);
+        if (contentType.indexOf('json') > -1 && data.message){
+          alert(data.message);
         }
-        form.find(':submit').prop('disabled', false);
+        window.location.reload();
       });
     });
     $(function(){
