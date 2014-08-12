@@ -144,6 +144,12 @@ def course_cohort(request, course_id):
     organizations = user_api.get_user_organizations(request.user.id)
     metrics.company_enrolled = 0
     metrics.group_enrolled = 0
+
+    ta_user_json = json.dumps({})
+    ta_user = choose_random_ta(course_id)
+    if hasattr(ta_user, 'to_json'):
+        ta_user_json = ta_user.to_json()
+
     if len(organizations) > 0:
         organization = organizations[0]
         organizationUsers = course_api.get_users_list_in_organizations(course_id, organizations = organization.id)
@@ -155,7 +161,7 @@ def course_cohort(request, course_id):
         if workgroup.users > 0:
             for student in workgroup.users:
                 user = user_api.get_user(student.id)
-                if user.get('city') != '':
+                if user.get('city') != '' and ta_user.id != user.id:
                     metrics.groups_users.append(user.to_dict())
     metrics.groups_users = json.dumps(metrics.groups_users)
 
@@ -165,11 +171,6 @@ def course_cohort(request, course_id):
         if city.city != '':
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
-
-    ta_user_json = json.dumps({})
-    ta_user = choose_random_ta(course_id)
-    if hasattr(ta_user, 'to_json'):
-        ta_user_json = ta_user.to_json()
 
     data = {
         'proficiency': proficiency,
