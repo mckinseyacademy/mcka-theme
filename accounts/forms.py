@@ -11,6 +11,9 @@ from api_client import user_api
 from django.template import loader
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.utils.html import format_html
+from django.forms.util import flatatt
+from django.utils.encoding import force_text
 from django.core.urlresolvers import reverse
 from api_client.api_error import ApiError
 
@@ -295,6 +298,20 @@ READ_ONLY_IF_DATA_FIELDS = ["company", "full_name"]
 DISABLED_IF_DATA_FIELDS = []
 
 
+class UserNameInput(forms.TextInput):
+    input_type = 'text'
+
+    def __init__(self, attrs=None):
+        if attrs is not None:
+            self.input_type = attrs.pop('type', self.input_type)
+        super(UserNameInput, self).__init__(attrs)
+
+    def render(self, name, value, attrs=None):
+        value = ''
+        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        final_attrs['value'] = force_text(self._format_value(value))
+        return format_html('<input{0} />', flatatt(final_attrs))
+
 class NoSuffixLabelForm(forms.Form):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
@@ -313,7 +330,7 @@ class ActivationForm(NoSuffixLabelForm):
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('E-mail'))
     password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe('Password <span class="required-field"></span>'))
     #confirm_password = forms.CharField(widget=forms.PasswordInput())
-    username = forms.CharField(max_length=255, label=mark_safe('Public username <span class="required-field"></span>'))
+    username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="required-field"></span>'))
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
     title = forms.CharField(max_length=255, required=False)
