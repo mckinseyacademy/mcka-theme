@@ -479,10 +479,10 @@ def upload_profile_image(request, user_id):
             else:
                 error = "Incorrect file type."
 
-            return change_profile_image(request, request.user.id, 'change_profile_image', error)
+            return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
         else:
             error = "There is a problem with image file you selected."
-            return change_profile_image(request, request.user.id, 'change_profile_image', error)
+            return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form

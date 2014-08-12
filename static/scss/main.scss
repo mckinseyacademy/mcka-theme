@@ -138,6 +138,10 @@ blockquote {
   @include font-spec(10, semibold, 12);
 }
 
+.label-10 {
+  @include font-spec(12, semibold, 14);
+}
+
 .nav-1,
 .nav-2 {
   @include font-spec(12, bold, 14);
@@ -334,10 +338,48 @@ form {
   text-align: center !important;
 }
 
+.set_profile_image_wrapper{
+  width:100%;
+}
+
+.change_profile_form, .upload-profile-image{
+  width:50%;
+  float:left;
+  min-height: 350px;
+}
+
+.upload-profile-image{
+  width:46%;
+  margin-right: 2%;
+  padding-right: 2%;
+  border: none;
+  background: none;
+  border-right: 1px solid $almost-white;
+
+  #progress{
+    height: 18px;
+    max-width: 100%;
+    border-radius: 50px;
+    background: $mckinsey-academy-blue-gray;
+
+    .bar {
+      height: 18px;
+      max-width: 100%;
+      background: #fff;
+      border-radius: 50px;
+      @include linear-gradient(to right, #389b46, #b8d432);
+
+      &.trailing {
+        @include linear-gradient(to right, #ef4326, #fbac40);
+      }
+    }
+  }
+}
+
 #edit-user-image-modal{
   img{
-    max-width: rem-calc(400);
-    max-height: rem-calc(300);
+    max-width: rem-calc(250);
+    max-height: rem-calc(250);
   }
   .user-uploaded-image{
     max-width:100%;
@@ -346,6 +388,7 @@ form {
     color: $almost-white;
     font-style: italic;
   }
+  padding:1em;
 }
 
 /* XBlock general display rules */

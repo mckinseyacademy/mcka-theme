@@ -435,7 +435,7 @@ class SetNewPasswordForm(forms.Form):
 
 class UploadProfileImageForm(forms.Form):
     ''' form to upload file for profile image '''
-    profile_image = forms.FileField(label='Select new profile image', help_text="Formats accepted: JPG, PNG and GIF", required=False)
+    profile_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
 
 class EditFullNameForm(forms.Form):
     ''' edit user full name '''

@@ -22,6 +22,39 @@ $(function(){
                 $profileImageUrl.val($('img.user-uploaded-image').attr('src'));
             }
     });
+
+    $('#edit-user-image-modal').fileupload({
+        dataType: 'html',
+        autoUpload: true,
+        replaceFileInput: false,
+        change: function(e, data){
+          modal = $('#edit-user-image-modal');
+          modal.find('.error').html('');
+        },
+        send: function(e, data){
+          if(data.fileInput.length > 0){
+            return FileTypeValidate(data.fileInput[0].value, modal.find('.error'));
+          }
+          return false;
+        },
+        done: function (e, data) {
+          if(data.textStatus == 'success'){
+            $('#edit-user-image-modal').fileupload('destroy');
+            modal.html(data.result);
+            reloadImages();
+          }
+        },
+        fail: function(e, data) {
+          modal.find('.error').append('<p class="warning">Please select file first.</p>');
+        },
+        progress: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('#progress .bar').css(
+            'width',
+            progress + '%'
+        );
+      }
+    });
   }
 
   function reloadImages(){
@@ -34,10 +67,6 @@ $(function(){
       }
     }).attr('src', $(".img-container .user-uploaded-image").attr('src') + '&' + now);
   }
-
-  $('#edit-user-image-modal').on("change", '#id_profile_image', function(){
-    $('input[type=submit]').attr('disabled', false);
-  });
 
 
   function FileTypeValidate(fileUpload, errorBlock) {
@@ -76,7 +105,7 @@ $(function(){
   $('#edit-user-image-modal').on('submit', '#cropping-form', function(e){
     e.preventDefault();
     var form = $(this);
-    var modal = form.parent();
+    var modal = $('#edit-user-image-modal');
     $.ajax({
       method: 'POST',
       url: form.attr('action'),
@@ -86,29 +115,5 @@ $(function(){
           $('#edit-user-image-modal').foundation('reveal', 'close');
         }
       });
-    });
-
-    $('#edit-user-image-modal').on('click', '#user-image-submit', function(e){
-      e.preventDefault();
-      var form = $(this).parent('form');
-      var imageFile = $('#id_profile_image').val();
-      var modal = form.parent();
-      modal.find('.error').html('');
-      if(FileTypeValidate(imageFile, modal.find('.error'))){
-        var options = {
-                    url     : form.attr('action'),
-                    type    : 'POST',
-                    contentType: false,
-                    success:function( data ) {
-                          modal.html(data);
-                          reloadImages();
-                        },
-                    error: function( data ){
-                          modal.find('.error').append('<p class="warning">Please select file first.</p>');
-                        }
-                    }
-
-      form.ajaxSubmit(options);
-    }
     });
 })
