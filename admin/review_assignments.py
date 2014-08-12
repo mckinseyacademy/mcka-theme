@@ -37,12 +37,12 @@ class ReviewAssignmentProcessor(object):
 
     def assert_possible(self):
         for wg in self.workgroups:
-            possible_reviewers = [u for u in self.user_ids if not u in wg.users]
+            possible_reviewers = [u for u in self.user_ids if not u in wg.user_ids]
             if len(possible_reviewers) < self.review_target:
                 raise ReviewAssignmentUnattainableError()
 
         for user_id in self.user_ids:
-            possible_workgroups = [wg for wg in self.workgroups if not user_id in wg.users]
+            possible_workgroups = [wg for wg in self.workgroups if not user_id in wg.user_ids]
             if len(possible_workgroups) < self.user_target:
                 raise ReviewAssignmentUnattainableError()
 
@@ -52,7 +52,7 @@ class ReviewAssignmentProcessor(object):
         users_dispensed = []
 
         for workgroup in workgroups_in_need:
-            possible_ids = [i for i in user_ids if not i in self.workgroup_reviewers[workgroup.id] and not i in workgroup.users and not i in users_dispensed]
+            possible_ids = [i for i in user_ids if not i in self.workgroup_reviewers[workgroup.id] and not i in workgroup.user_ids and not i in users_dispensed]
             if len(possible_ids) > 0:
                 self.workgroup_reviewers[workgroup.id].append(possible_ids[0])
                 self.reviewer_workgroups[possible_ids[0]].append(workgroup.id)
@@ -82,7 +82,7 @@ class ReviewAssignmentProcessor(object):
             if len(workgroups_in_need) < 1 and review_threshold <= self.review_target:
                 review_threshold += 1
 
-            if len(users_available) < 1 or (len(workgroups_in_need) == 1 and len([u for u in users_available if not u in workgroups_in_need[0].users]) == 0):
+            if len(users_available) < 1 or (len(workgroups_in_need) == 1 and len([u for u in users_available if not u in workgroups_in_need[0].user_ids]) == 0):
                 user_threshold += 1
 
             workgroups_in_need = [wg for wg in self.workgroups if len(self.workgroup_reviewers[wg.id]) < min(review_threshold, self.review_target)]

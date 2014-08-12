@@ -1001,7 +1001,7 @@ def generate_assignments(request, project_id, activity_id):
         # Get list of all users
         user_ids = []
         for wkgrp in workgroups:
-            user_ids.extend([u.id for u in wkgrp.users])
+            user_ids.extend(wkgrp.user_ids)
 
         group_xblock = WorkGroupActivityXBlock.fetch_from_activity(project.course_id, activity_id)
 
