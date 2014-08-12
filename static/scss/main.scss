@@ -158,11 +158,14 @@ blockquote {
 }
 
 .person-name,
-.person-title {
+.person-title,
+.city-name,
+.city-participants {
   @include font-spec(12, semibold, 14);
 }
 
-.person-title {
+.person-title,
+.city-participants  {
   color: #666666;
   font-style: italic;
 }
