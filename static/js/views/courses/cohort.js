@@ -90,12 +90,12 @@ Apros.views.CourseCohort = Backbone.View.extend({
     if(className == 'ta_user'){
       myIcon.iconSize = [44, 44];
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<i>Teaching Assistant</i><h4>' + user.username + '</h4><p>Title: ' +
-        user.title + '<br><a href="#" data-reveal-id="contact-ta">Email Group TA</a></p>',
+      .bindPopup('<i>Teaching Assistant</i><div class="person-name">' + user.username + '</div><div class="person-title">' +
+        user.title + '</div><br><a href="#" data-reveal-id="contact-ta">Email Group TA</a>',
         {'closeOnClick': false});
     }else{
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<h4>' + user.username + '</h4><p>Title: ' + user.title + '</p>',
+      .bindPopup('<div class="person-name">' + user.username + '</div><div class="person-title">' + user.title + '</div>',
         {'closeOnClick': false});
     }
     this.hoverizePopup(marker);
@@ -114,7 +114,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
             stroke: false,
             fillOpacity: 0.5
         }).setRadius(radius)
-          .bindPopup('<h4>' + city.name + '</h4><p>Participants: ' + city.count + '</p>',
+          .bindPopup('<div class="city-name">' + city.name + '<div><div class="city-participants">Participants: ' + city.count + '</div>',
             {'closeOnClick': false});
         this.hoverizePopup(marker);
         layers.push(marker);
