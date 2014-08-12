@@ -13,7 +13,7 @@ from accounts.controller import get_current_course_for_user, set_current_course_
 from accounts.controller import check_user_course_access
 from admin.controller import load_course
 from admin.models import WorkGroup
-from api_client import course_api, user_api, workgroup_api, project_api
+from api_client import course_api, user_api, workgroup_api
 from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
 from main.models import CuratedContentItem
