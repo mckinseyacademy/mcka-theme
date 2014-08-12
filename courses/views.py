@@ -387,9 +387,6 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     # Load the current program for this user
     program = get_current_program_for_user(request)
 
-    # Inject formatted data for view
-    _inject_formatted_data(program, course, page_id)
-
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN

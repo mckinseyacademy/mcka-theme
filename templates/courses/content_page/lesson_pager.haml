@@ -5,9 +5,10 @@
       - if current_page.prev_lesson_index == 0
         .vertical-index= _("Return to previous lesson")
       - else
-        .vertical-index{'data-reveal-id': 'module_list'}
-          Module ={current_page.prev_lesson_index} of ={current_page.lesson_count}:
-        %p.style-4= current_page.prev_lesson_name
+        %p.style-4
+          Lesson ={current_chapter.index}:
+          Module ={current_page.next_lesson_index} of ={current_chapter.module_count}
+        .vertical-index= current_page.prev_lesson_name
 - else
   %a.page-to.previous
     %i.fa.fa-chevron-left
@@ -18,9 +19,10 @@
       - if current_page.next_lesson_link
         .vertical-index= _("Go to next lesson")
       - else
-        .vertical-index{'data-reveal-id': 'module_list'}
-          Module ={current_page.next_lesson_index} of ={current_page.lesson_count}:
-        %p.style-4= current_page.next_lesson_name
+        %p.style-4
+          Lesson ={current_chapter.index}:
+          Module ={current_page.next_lesson_index} of ={current_chapter.module_count}
+        .vertical-index= current_page.next_lesson_name
 - else
   %a.page-to.next
     %i.fa.fa-chevron-right

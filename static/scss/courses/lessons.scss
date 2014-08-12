@@ -1,6 +1,10 @@
 #course-lessons,
 #course-group-work {
 
+  [data-reveal-id] {
+    cursor: pointer;
+  }
+
   .lesson-menu { margin-bottom: 10px; }
 
   .lesson-progress {
@@ -146,6 +150,8 @@
   ul {
     margin: 0;
     list-style-type: none;
+    overflow: auto;
+    max-height: rem-calc(325);
 
     li {
       padding: 10px 0;

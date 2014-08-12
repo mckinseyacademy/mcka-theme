@@ -41,11 +41,22 @@ def build_page_info_for_course(
     current_chapter = course.chapters[0]
     current_sequential = None
     current_page = None
-
     prev_page = None
 
     for chapter in course.chapters:
         chapter.navigation_url = '/courses/{}/lessons/{}'.format(course_id, chapter.id)
+        chapter.module_count = 0
+        chapter.modules = []
+
+        for sequential in chapter.sequentials:
+            chapter.module_count += len(sequential.pages)
+            chapter.modules.extend(sequential.pages)
+
+        for idx, page in enumerate(chapter.modules, start=1):
+            page.index = idx
+            if page_id == page.id:
+                page.is_current = True
+
         if chapter.id == chapter_id:
             current_chapter = chapter
             chapter.bookmark = True
@@ -353,7 +364,6 @@ def load_lesson_estimated_time(course):
                 lesson.estimated_time = estimates[idx]
 
     return course
-
 
 def inject_gradebook_info(user_id, course):
     # Inject lesson assessment scores

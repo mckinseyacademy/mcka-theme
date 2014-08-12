@@ -7,20 +7,19 @@
       %span.label-4.lesson-index Lesson {{current_chapter.index}}:
       %span.label-3.lesson-name= current_chapter.name
       %span.label-3.page-desc= current_page.description
-    %h1= current_page.name
+    %h1
+      %i.fa.fa-list-ul{'data-reveal-id': 'module_list'}
+      = current_page.name
     .lesson-content
     .lesson-discussion
     - include "courses/content_page/lesson_pager.haml"
   #module_list.reveal-modal.tiny{'data-reveal': True}
     %p.style-2 You have completed ={current_chapter.progress}% of Lesson ={current_chapter.index}:
     %ul
-      - for page in current_sequential.pages
+      - for page in current_chapter.modules
         %li
-          - if page.status_class == 'complete'
-            %i.fa.fa-check-circle
-          - else
-            %i.fa.fa-circle
-          %a.module{href: "#{page.navigation_url}", class: "#{page.status_class}"}
+          %i.fa{class: "fa{% if page.is_complete %}-check{% endif %}-circle"}
+          %a.module{href: "#{page.navigation_url}", class: "{% if page.is_current %}current{% endif %}"}
             Module ={page.index}:
           %span.label-3= page.name
     .close-reveal-modal
