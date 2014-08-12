@@ -521,7 +521,7 @@ def contact_member(request, course_id, group_id):
         )
     else:
         return HttpResponse(
-            json.dumps({"message": _("Message not sent. Email is not a valid")}), #replace with another message
+            json.dumps({"message": _("Message not sent. Email is not valid")}), #replace with another message
             content_type='application/json'
         )
 
