@@ -62,17 +62,26 @@ $(function(){
   $('.user-info').on('click', function(){
     if($('#profile-container .user-profile').length < 1){
       $('body, .user-info').css('cursor', 'wait');
-      $('#profile-container').load('/accounts/user_profile.html', function(){
-        $('body, .user-info').css('cursor', 'inherit');
+      $.ajax({
+            url: '/accounts/user_profile.html',
+            method: 'GET',
+            contentType: 'text/html'
+          }).done(function(data, status, xhr) {
+            if (xhr.status == 278) {
+              window.location.href = xhr.getResponseHeader("Location").replace(/\?.*$/, "?next="+window.location.pathname);
+            }
+            if(xhr.status == 200){
+              $('body, .user-info').css('cursor', 'inherit');
+              $('#profile-container').html(data);
 
-        // Need this, for some reason, the anchor links are not hooked up properly... perhaps investigate more later
-        $('.user-profile .logout a').on('click', function(){
-          var href = $(this).attr('href');
-          if(href.length > 1){
-            window.location.href = href;
-          }
-        });
-      });
+              $('.user-profile .logout a').on('click', function(){
+                var href = $(this).attr('href');
+                if(href.length > 1){
+                  window.location.href = href;
+                }
+              });
+            }
+          });
     }
   });
 
