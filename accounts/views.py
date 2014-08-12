@@ -477,11 +477,6 @@ def upload_profile_image(request, user_id):
         'accounts/upload_profile_image.haml',
         data
     )
-    files = [serialize(self.object)]
-    data = {'files': files}
-    response = JSONResponse(data, mimetype=response_mimetype(self.request))
-    response['Content-Disposition'] = 'inline; filename=files.json'
-    return response
 
 def load_profile_image(request, image_url):
     from django.core.files.storage import default_storage
