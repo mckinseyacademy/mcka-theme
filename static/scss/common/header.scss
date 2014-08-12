@@ -199,6 +199,11 @@ header[role=banner].background-blue {
               border-left: 1px solid $border-line;
             }
           }
+          .fieldcontent{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
         }
       }
       .user-image {
