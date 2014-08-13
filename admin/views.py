@@ -1126,7 +1126,7 @@ def edit_permissions(request, user_id):
     }
     return render(request, 'admin/permissions/edit.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def workgroup_course_assignments(request, course_id):
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id)

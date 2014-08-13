@@ -153,7 +153,7 @@ def get_current_program_for_user(request):
         if not program:
             programs = Program.user_programs_with_course(
                 request.user.id,
-                get_current_course_for_user(request.user.id)
+                get_current_course_for_user(request)
             )
             if len(programs) > 0:
                 program = programs[0]
