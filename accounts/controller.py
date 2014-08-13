@@ -1,6 +1,7 @@
 import urllib2 as url_access
 import datetime
 import functools
+import copy
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -56,10 +57,9 @@ def check_user_course_access(func):
                 program = get_current_program_for_user(request)
                 if program is None:
                     raise CourseAccessDeniedError(course_id)
-            available_courses = program.courses
-            if program.outside_courses and len(program.outside_courses) > 0:
-                available_courses += program.outside_courses
-            course_access = [c for c in available_courses if c.id == course_id]
+            course_access = [c for c in program.courses if c.id == course_id]
+            if len(course_access) < 1 and program.outside_courses and len(program.outside_courses) > 0:
+                course_access = [c for c in program.outside_courses if c.id == course_id]
             if len(course_access) < 1:
                 raise CourseAccessDeniedError(course_id)
         except CourseAccessDeniedError:
@@ -74,11 +74,6 @@ def check_user_course_access(func):
         return func(request, course_id, *args, **kwargs)
 
     return user_course_access_checker
-
-
-def _get_user_programs(user_id):
-    ''' Helper function to retrieve the user's programs '''
-    return user_api.get_user_groups(user_id, 'series', group_object=Program)
 
 
 def get_current_course_by_user_id(user_id):
@@ -128,7 +123,7 @@ def set_current_course_for_user(request, course_id):
         # Additionally set the current program for this user
         current_program = None
         courses = user_api.get_user_courses(request.user.id)
-        for program in Program.programs_with_course(course_id):
+        for program in Program.user_programs_with_course(request.user.id, course_id):
             if license_controller.fetch_granted_license(program.id, request.user.id) is not None:
                 current_program = program
                 break
@@ -156,7 +151,10 @@ def get_current_program_for_user(request):
 
         # if not attempt to load first program
         if not program:
-            programs = _get_user_programs(request.user.id)
+            programs = Program.user_programs_with_course(
+                request.user.id,
+                get_current_course_for_user(request.user.id)
+            )
             if len(programs) > 0:
                 program = programs[0]
 

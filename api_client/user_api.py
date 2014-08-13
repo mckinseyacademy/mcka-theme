@@ -194,16 +194,20 @@ def delete_user_role(user_id, course_id, role):
 
 
 @api_error_protect
-def get_user_groups(user_id, group_type=None, group_object=GroupInfo):
+def get_user_groups(user_id, group_type=None, group_object=GroupInfo, *args, **kwargs):
     ''' get the groups in which this user is a member '''
+    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    if group_type:
+        qs_params["type"] = group_type
+
     url = '{}/{}/{}/groups'.format(
         settings.API_SERVER_ADDRESS,
         USER_API,
         user_id,
     )
 
-    if group_type:
-        url += "?{}".format(urlencode({"type":group_type}))
+    if len(qs_params.keys()) > 0:
+        url += "?{}".format(urlencode(qs_params))
 
     response = GET(url)
 

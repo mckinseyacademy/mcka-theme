@@ -33,16 +33,12 @@ class Program(BaseGroupModel):
         return group_api.get_courses_in_group(self.id)
 
     def add_user(self, client_id, user_id):
+        group_api.add_user_to_group(user_id, self.id)
         return license_controller.assign_license(self.id, client_id, user_id)
 
     @classmethod
-    def programs_with_course(cls, course_id):
-        programs = [program for program in cls.list() if course_id in [course.course_id for course in program.fetch_courses()]]
-        if not programs:
-            programs = []
-
-        return programs
-
+    def user_programs_with_course(cls, user_id, course_id):
+        return user_api.get_user_groups(user_id, group_type=cls.group_type, group_object=cls, course=course_id)
 
 class ReviewAssignmentGroup(BaseGroupModel):
     data_fields = ["assignment_date", "xblock_id"]
