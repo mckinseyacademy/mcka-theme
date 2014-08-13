@@ -51,6 +51,7 @@
     background-color: #dddddd;
     top: 50%;
     margin-top: -25px;
+    z-index: 10;
     @include square-size(rem-calc(50));
     @include font-spec(30);
     @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
