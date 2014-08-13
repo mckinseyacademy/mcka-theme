@@ -89,6 +89,7 @@ def course_landing_page(request, course_id):
         "proficiency": int(round(proficiency.points)),
         "proficiency_graph": int(5 * round(proficiency.points/5)),
         "cohort_proficiency_average": int(round(proficiency.course_avg)),
+        "cohort_proficiency_graph": int(5 * round(proficiency.course_avg/5)),
         "social_total": social_total,
         "cohort_social_average": 28,
         "average_progress": average_progress(course, request.user.id),

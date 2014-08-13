@@ -8,10 +8,11 @@
       Proficiency:
       %a{href: "/courses/#{course.id}/cohort"}
         %i.fa.fa-arrow-circle-right
-    .visualization
+    .visualization{'class': "progress-#{proficiency_graph} cohort-progress-#{cohort_proficiency_graph}"}
       .total= proficiency
       .inner-circle
-      .progress-radial{'class': "progress-#{proficiency_graph}"}
+      .progress-radial
+      .triangle
     .label-4 cohort average = ={cohort_proficiency_average}
     %a.info{'data-reveal-id': 'mckinsey_proficiency_help'}
       %i.fa.fa-info-circle
