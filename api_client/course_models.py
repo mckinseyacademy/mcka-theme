@@ -135,17 +135,29 @@ class Course(CategorisedJsonObject):
                     components.extend([child.id for child in page.children])
         return components
 
-    def lesson_component_ids(self, lesson_id):
+    def lesson_component_ids(self, lesson_id, completions=None):
         components = []
         try:
             lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
             for sequential in lesson.sequentials:
-                for page in sequential.pages:
-                    components.extend([child.id for child in page.children])
-            print components
+                for module in sequential.pages:
+                    children = [child.id for child in module.children]
+                    components.extend(children)
+                    if completions:
+                        completed = set(completions).intersection(children)
+                        module.is_complete = len(completed) == len(children)
             return components
         except:
             return components
+
+    def get_current_sequential(self, lesson_id, module_id):
+        try:
+            lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
+            for sequential in lesson.sequentials:
+                if len([module for module in sequential.pages if module.id == module_id]) > 0:
+                    return sequential
+        except:
+            return None
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]

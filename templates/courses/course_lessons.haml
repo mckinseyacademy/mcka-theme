@@ -9,12 +9,12 @@
       %span.label-3.page-desc= course.current_lesson.description
     %h1
       %i.fa.fa-list-ul{'data-reveal-id': 'module_list'}
-      = current_page.name
+      = course.current_module.name
     .lesson-content
     .lesson-discussion
     - include "courses/content_page/lesson_pager.haml"
   #module_list.reveal-modal.tiny{'data-reveal': True}
-    %p.style-2 You have completed ={current_chapter.progress}% of Lesson ={current_chapter.index}:
+    %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
     %ul
       - for module in course.current_lesson.modules
         %li
@@ -31,7 +31,7 @@
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
       var lesson_data = {
         courseId: '{{ legacy_course_id }}',
-        usageId: '{{ vertical_usage_id }}',
+        usageId: '{{ course.current_module.vertical_id }}',
         sessionId: '{{ remote_session_key }}',
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',

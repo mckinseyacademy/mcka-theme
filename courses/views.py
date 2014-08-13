@@ -36,29 +36,11 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
             if program_course.id == course.id:
                 program_course.course_class = "current"
 
-    #found_current_page = False
-
     if static_tab_info:
         for idx, lesson in enumerate(course.chapters, start=1):
-            #lesson.index = idx
-            #lesson.navigation_url = '/courses/{}/lessons/{}'.format(course.id, chapter.id)
-            #lesson.module_count = 0
-            #lesson.modules = []
-
-            #if static_tab_info:
             lesson_description = static_tab_info.get("lesson{}".format(idx), None)
             if lesson_description:
                 lesson.description = lesson_description.content
-
-        #if page_id:
-            #for sequential in lesson.sequentials:
-                #lesson.module_count += len(sequential.pages)
-                #lesson.modules.extend(sequential.pages)
-
-            #for idx, page in enumerate(lesson.modules, start=1):
-                #page.index = idx
-                #if page_id == page.id:
-                    #page.is_current = True
 
 @login_required
 @check_user_course_access
@@ -374,19 +356,18 @@ def course_resources(request, course_id):
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
 
     ''' go to given page within given chapter within given course '''
-    # Get course info
-    #course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-        #request, course_id, chapter_id, page_id)
+    course = load_course(course_id, request=request)
+    current_sequential = course.get_current_sequential(chapter_id, page_id)
 
     # Take note that the user has gone here
     set_current_course_for_user(request, course_id)
-    #update_bookmark(
-        #request.user.id,
-        #course_id,
-        #chapter_id,
-        #current_sequential.id,
-        #page_id
-    #)
+    update_bookmark(
+        request.user.id,
+        course_id,
+        chapter_id,
+        current_sequential.id,
+        page_id
+    )
 
     # Load the current program for this user
     program = get_current_program_for_user(request)
@@ -395,20 +376,12 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
 
-    #vertical_usage_id = current_page.vertical_usage_id()
-
     data = {
         "user": request.user,
-        #"course": course,
-        #"current_lesson": current_lesson,
-        #"current_chapter": current_chapter,
-        #"current_sequential": current_sequential,
-        #"current_page": current_page,
         "program": program,
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
         "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
-        #"vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,

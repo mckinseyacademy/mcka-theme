@@ -38,13 +38,11 @@ def build_page_info_for_course(
     if len(course.chapters) < 1:
         return course, None, None, None
 
+    # Set default current lesson just in case
     course.current_lesson = course.chapters[0]
 
-    #current_chapter = course.chapters[0]
-    #current_sequential = None
-    #current_page = None
-    previous_lesson_url = None
-    next_lesson_url = None
+    previous_url = None
+    next_url = None
 
     # Inject lesson information for course
     for idx, lesson in enumerate(course.chapters, start=1):
@@ -52,9 +50,8 @@ def build_page_info_for_course(
         lesson.navigation_url = '/courses/{}/lessons/{}'.format(course_id, lesson.id)
         lesson.module_count = 0
         lesson.modules = []
-        lesson.previous_lesson_url = previous_lesson_url
-        previous_lesson_url = lesson.navigation_url
 
+        # Set current lesson and lesson bookmark
         if lesson.id == lesson_id:
             course.current_lesson = lesson
             lesson.bookmark = True
@@ -68,36 +65,37 @@ def build_page_info_for_course(
         for idx, module in enumerate(lesson.modules, start=1):
             module.index = idx
             module.navigation_url = '{}/module/{}'.format(lesson.navigation_url, module.id)
+
+            if hasattr(course, 'current_module') and next_url is None:
+                next_url = module.navigation_url
+                course.current_lesson.next_url = next_url
+
             if module_id == module.id:
+                # Set the vertical id for js usage
+                # method not available running tests
+                if hasattr(module, 'vertical_usage_id'):
+                    module.vertical_id = module.vertical_usage_id()
+
+                # Set current lesson previous url
+                course.current_lesson.previous_url = previous_url
+
+                # Set the previous module index and name for display
+                if idx > 1:
+                    previous_module = lesson.modules[idx - 2]
+                    module.previous_module_index = previous_module.index
+                    module.previous_module_name = previous_module.name
+
+                # Set next module name for display
+                if idx != len(lesson.modules):
+                    next_module = lesson.modules[idx]
+                    module.next_module_name = next_module.name
+                    module.next_module_index = idx + 1
+
+                course.current_module = module
                 module.is_current = True
 
-        #for sequential in chapter.sequentials:
-            #for idx, page in enumerate(sequential.pages):
-                #page.prev_url = None
-                #page.next_url = None
-                #page.navigation_url = '{}/module/{}'.format(chapter.navigation_url, page.id)
-
-                #if page.id == page_id:
-                    #current_page = page
-                    #page.lesson_count = len(sequential.pages)
-                    #current_sequential = sequential
-
-                #if prev_page is not None:
-                    #page.prev_url = prev_page.navigation_url
-                    #page.prev_lesson_name = prev_page.name
-                    #page.prev_lesson_index = idx
-                    #prev_page.next_url = page.navigation_url
-                    #prev_page.next_lesson_name = page.name
-                    #prev_page.next_lesson_index = idx + 1
-                #prev_page = page
-
-    #if not current_page:
-        #current_sequential = current_chapter.sequentials[0] if len(current_chapter.sequentials) > 0 else None
-        #current_page = current_sequential.pages[0] if current_sequential and len(current_sequential.pages) > 0 else None
-
-    #if len(current_sequential.pages) > 0:
-        #if current_sequential == current_chapter.sequentials[-1] and current_page == current_sequential.pages[-1] and current_chapter != course.chapters[-1]:
-            #current_page.next_lesson_link = True
+            # Set previous url for use in the next module
+            previous_url = module.navigation_url
 
     return course
 
@@ -233,7 +231,7 @@ def load_course_progress(course, user_id):
     component_ids = course.components_ids()
     for lesson in course.chapters:
         lesson.progress = 0
-        lesson_component_ids = course.lesson_component_ids(lesson.id)
+        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids)
         if len(lesson_component_ids) > 0:
             matches = set(lesson_component_ids).intersection(completed_ids)
             lesson.progress = 100 * len(matches) / len(lesson_component_ids)
