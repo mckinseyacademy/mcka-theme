@@ -22,8 +22,10 @@ $(function(){
                 $profileImageUrl.val($('img.user-uploaded-image').attr('src'));
             }
     });
+  }
 
-    $('#edit-user-image-modal').fileupload({
+  function FileUploadInit(){
+      $('#edit-user-image-modal').fileupload({
         dataType: 'html',
         autoUpload: true,
         replaceFileInput: false,
@@ -66,6 +68,7 @@ $(function(){
         reInitCropper();
       }
     }).attr('src', $(".img-container .user-uploaded-image").attr('src') + '&' + now);
+    FileUploadInit();
   }
 
 
