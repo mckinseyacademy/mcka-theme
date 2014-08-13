@@ -4,9 +4,9 @@
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     .lesson-title
-      %span.label-4.lesson-index Lesson {{current_chapter.index}}:
-      %span.label-3.lesson-name= current_chapter.name
-      %span.label-3.page-desc= current_page.description
+      %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
+      %span.label-3.lesson-name= course.current_lesson.name
+      %span.label-3.page-desc= course.current_lesson.description
     %h1
       %i.fa.fa-list-ul{'data-reveal-id': 'module_list'}
       = current_page.name
@@ -16,12 +16,12 @@
   #module_list.reveal-modal.tiny{'data-reveal': True}
     %p.style-2 You have completed ={current_chapter.progress}% of Lesson ={current_chapter.index}:
     %ul
-      - for page in current_chapter.modules
+      - for module in course.current_lesson.modules
         %li
-          %i.fa{class: "fa{% if page.is_complete %}-check{% endif %}-circle"}
-          %a.module{href: "#{page.navigation_url}", class: "{% if page.is_current %}current{% endif %}"}
-            Module ={page.index}:
-          %span.label-3= page.name
+          %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+          %a.module{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
+            Module ={module.index}:
+          %span.label-3= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
 
