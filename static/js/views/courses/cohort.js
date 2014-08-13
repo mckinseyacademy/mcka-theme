@@ -180,22 +180,24 @@ Apros.views.CourseCohort = Backbone.View.extend({
         var step = (2*Math.PI) / numElements;
         var cityData = data.get(citykey);
         if(typeof cityData != 'undefined'){
-          if(typeof cityData.results[0] != 'undefined'){
-            layers = _this.createCircle(cityData, city, layers);
-          }
-          if(iconsFlag){
-            var loc = cityData.results[0][0];
-            if(city.users.length > 0){
-              $.each(city.users, function(key2, user){
-                if(typeof cityData.results[0] != 'undefined'){
-                  layers = _this.drawUserIcon(user, layers, loc, angle, step, 'user');
-                  angle += step;
-                }
-              });
+          if(typeof cityData.results != 'undefined'){
+            if(typeof cityData.results[0] != 'undefined'){
+              layers = _this.createCircle(cityData, city, layers);
             }
-            if(typeof city.ta_user.username != 'undefined'){
-              layers = _this.drawUserIcon(city.ta_user, layers, loc, angle, step, 'ta_user');
-              angle += step;
+            if(iconsFlag){
+              var loc = cityData.results[0][0];
+              if(city.users.length > 0){
+                $.each(city.users, function(key2, user){
+                  if(typeof cityData.results[0] != 'undefined'){
+                    layers = _this.drawUserIcon(user, layers, loc, angle, step, 'user');
+                    angle += step;
+                  }
+                });
+              }
+              if(typeof city.ta_user.username != 'undefined'){
+                layers = _this.drawUserIcon(city.ta_user, layers, loc, angle, step, 'ta_user');
+                angle += step;
+              }
             }
           }
         }
