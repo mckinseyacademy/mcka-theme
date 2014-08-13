@@ -337,6 +337,42 @@ class ReviewAssignmentsTest(TestCase):
         self.assertEqual(len(rap.workgroup_reviewers[14]), 1)
         self.assertFalse(rap.workgroup_reviewers[14][0] == 4)
 
+    def test_assignment_thrice(self):
+        ''' one user in each workgroup - should do each others '''
+        test_user_1 = test_user(1)
+        test_user_2 = test_user(2)
+        users = [test_user_1, test_user_2]
+        workgroups = [test_workgroup(11, [test_user_1]), test_workgroup(12, [test_user_2])]
+
+        rap = ReviewAssignmentProcessor([u.id for u in users], workgroups, 'test-xblock', 1, 0)
+        rap.distribute()
+
+        self.assertEqual(len(rap.workgroup_reviewers[11]), 1)
+        self.assertEqual(rap.workgroup_reviewers[11][0], 2)
+
+        self.assertEqual(len(rap.workgroup_reviewers[12]), 1)
+        self.assertEqual(rap.workgroup_reviewers[12][0], 1)
+
+        MockReviewAssignmentGroupCollection.load(rap)
+        rap = ReviewAssignmentProcessor([u.id for u in users], workgroups, 'test-xblock', 1, 0)
+        rap.distribute(False, assignment_group_class=MockReviewAssignmentGroup)
+
+        self.assertEqual(len(rap.workgroup_reviewers[11]), 1)
+        self.assertEqual(rap.workgroup_reviewers[11][0], 2)
+
+        self.assertEqual(len(rap.workgroup_reviewers[12]), 1)
+        self.assertEqual(rap.workgroup_reviewers[12][0], 1)
+
+        MockReviewAssignmentGroupCollection.load(rap)
+        rap = ReviewAssignmentProcessor([u.id for u in users], workgroups, 'test-xblock', 1, 0)
+        rap.distribute(False, assignment_group_class=MockReviewAssignmentGroup)
+
+        self.assertEqual(len(rap.workgroup_reviewers[11]), 1)
+        self.assertEqual(rap.workgroup_reviewers[11][0], 2)
+
+        self.assertEqual(len(rap.workgroup_reviewers[12]), 1)
+        self.assertEqual(rap.workgroup_reviewers[12][0], 1)
+
 class UrlsTest(TestCase):
 
     def test_url_patterns(self):

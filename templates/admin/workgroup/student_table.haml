@@ -17,7 +17,7 @@
         %i.fa.fa-caret-down
   %tbody
     - for student in students
-      %tr.student{id: "#{student.id}", 'data-company-name': "#{student.company.id}"}
+      %tr.student{id: "#{student.id}", "data-organization": "#{student.company.id}"}
         %td
           %a= student.username
         %td

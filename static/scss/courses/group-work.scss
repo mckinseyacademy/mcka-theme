@@ -87,7 +87,15 @@
     }
     .custom_message{
       &:after{
-        content: 'TA Grading View';
+        content: 'TA Grading Override View';
+      }
+    }
+    &.ta_graded{
+      background-color: $mckinsey-orange;
+      .custom_message{
+        &:after{
+          content: 'TA Grading View';
+        }
       }
     }
   }

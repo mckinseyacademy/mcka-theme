@@ -75,9 +75,17 @@
         });
       };
 
-      var list_groups_for_selected_project = function(project_id){
+      var list_groups_for_selected_project = function(project_id, organization_id){
         var groupBoxes = $('.select-group-box').hide();
         groupBoxes.filter('[data-project-id="' + project_id + '"]').show();
+        var available_users = $('#student-list .student');
+        if(organization_id > 0){
+          available_users.hide().filter('[data-organization="' + organization_id+ '"]').show();
+        }
+        else{
+          available_users.show();
+        }
+
       };
 
       return {
@@ -150,35 +158,11 @@
     });
 
     $('.group-project-select').on('change', function(){
-      courseDrag.list_groups_for_selected_project($(this).val());
-    });
-
-    $('#generate_assignments').on('click', function(e){
-      e.preventDefault();
-
-      $.ajax({
-        url: $(this).attr('href'),
-        data: {
-          'csrfmiddlewaretoken': $.cookie('apros_csrftoken')
-        },
-        method: 'POST',
-        dataType: 'json',
-        success: function(data){
-          alert(data.message);
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-          var message = textStatus + " - " + errorThrown;
-          if(jqXHR.responseJSON){
-            message = jqXHR.responseJSON.message;
-          }
-          else if(jqXHR.responseText){
-            message = jqXHR.responseText;
-          }
-          alert(message);
-        }
-      });
-
-      return false;
+      var $this = $(this);
+      var project_id = $this.val();
+      var organization_id = $this.find('option[value="' + project_id + '"]').data('organization');
+      courseDrag.list_groups_for_selected_project(project_id, organization_id);
+      courseDrag.list_groups_for_selected_project(val[0], val[1]);
     });
 
     $('.update-group').on('click', function(){
@@ -192,7 +176,7 @@
         var allStudents = [];
         $('#student-list tr.student.selected').each(
           function(){
-            if($(this).data('company-name') == client_id){
+            if($(this).data('organization') == client_id){
               students.push($(this).attr('id'));
             }
             allStudents.push($(this).attr('id'));
@@ -207,6 +191,9 @@
       }
     });
 
-    courseDrag.list_groups_for_selected_project($('.group-project-select').val());
+    var selected_project = $('.group-project-select');
+    var project_id = selected_project.val();
+    var organization_id = selected_project.find('option[value="' + project_id + '"]').data('organization');
+    courseDrag.list_groups_for_selected_project(project_id, organization_id);
 
   });
