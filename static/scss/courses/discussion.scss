@@ -1,32 +1,50 @@
 /* See ../lesson-content/discussion.scss for rules shared with lession discussion */
 
 #course-discussion .discussion-content {
-  /* Sidebar */
-  .sidebar {
+  .discussion-course-new {
+    margin-top: 10px;
+  }
+
+  .discussion-body {
+    margin-top: -50px;
+  }
+  .new-post-article {
+    padding-bottom: 50px;
+  }
+
+/* Ask a TA */
+  .ask-ta {
+
+    height: 70px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #aaa;
+    border-bottom: none;
     position: relative;
+    top: 2px;
+    width: 235.6px;
 
-    .ask-ta {
+    .group-member {
+      padding-bottom: 10px;
+      height: 50px;
 
-      padding: 10px;
-      background-color: #ffffff;
-
-      .group-member {
-        padding-bottom: 10px;
-        height: 50px;
-
-        .avatar {
-          width: 40px;
-          height: 40px;
-          margin-right: 10px;
-          float: left;
-        }
-
-        .person-info {
-          margin-left: 50px;
-        }
+      .avatar {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+        float: left;
       }
 
+      .person-info {
+        margin-left: 50px;
+      }
     }
+
+  }
+
+ /* Sidebar */
+  .sidebar {
+    position: relative;
 
     .browse-search {
       div {
