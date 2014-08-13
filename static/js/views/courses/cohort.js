@@ -147,17 +147,21 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   setCities: function(citiesMap, users, ta_user, city_list, cities){
     $.each(citiesMap, function(key, value){
-      var city = value.city.toLowerCase();
+      if(value.city){
+        var city = value.city.toLowerCase();
         city_list.push(city);
         cities[city] = ({'count': value.count, 'name': value.city, 'users': [], 'ta_user': []});
+      }
     });
     $.each(users, function(key, value){
-      var city = value.city.toLowerCase();
-      if($.inArray(city, city_list) < 0){
-        city_list.push(city);
-        cities[city] = ({'name': value.city, 'users': [], 'ta_user': []});
+      if(value.city){
+        var city = value.city.toLowerCase();
+        if($.inArray(city, city_list) < 0){
+          city_list.push(city);
+          cities[city] = ({'name': value.city, 'users': [], 'ta_user': []});
+        }
+        cities[city].users.push(value);
       }
-      cities[city].users.push(value);
     });
     if(typeof ta_user.city != 'undefined'){
       var city = ta_user.city.toLowerCase();
@@ -174,8 +178,11 @@ Apros.views.CourseCohort = Backbone.View.extend({
       var layers = [];
       var _this = this;
       $.each(city_list, function(key, citykey){
-        var city = cities[citykey]
-        var numElements = city.users.length + 1;
+        var city = cities[citykey];
+        var numElements = 0;
+        if(city && city.users){
+          numElements = city.users.length + 1;
+        }
         var angle = 0;
         var step = (2*Math.PI) / numElements;
         var cityData = data.get(citykey);
