@@ -230,6 +230,9 @@ AUTH_API = '/'.join([API_SERVER_PREFIX, 'sessions'])
 USER_API = '/'.join([API_SERVER_PREFIX, 'users'])
 WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
 
+# set AWS querystring authentication to false
+AWS_QUERYSTRING_AUTH = False
+
 try:
     from local_settings import *
 except ImportError:
@@ -274,6 +277,3 @@ DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': '',  # rely on a version of jQuery that already exists
     'SHOW_TOOLBAR_CALLBACK': 'util.debug_toolbar.show_toolbar'   # override when the Django Debug Toolbar appears
 }
-
-# set AWS querystring authentication to false
-AWS_QUERYSTRING_AUTH = False
