@@ -59,7 +59,7 @@ class Permissions(object):
             else:
                 self.remove_permission(PERMISSION_GROUPS.MCKA_ADMIN)
 
-        except (UnknownRole, ApiError) as err:
+        except ApiError as err:
             raise PermissionSaveError(str(err))
 
     def get_group_id(self, permission_name):
