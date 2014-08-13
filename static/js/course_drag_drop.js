@@ -48,7 +48,7 @@
                 scrollX: true
               });
               $('.student[name="' + el.attr('name') + '"]').fadeOut().remove();
-              parent.find('span.student-count').html(parent.find('span.student-count').html() - 1);
+              parent.find('span.student-count').html(parent.find('div.student').length);
               enable_selection(selections, activator);
             }
           }).fail();
