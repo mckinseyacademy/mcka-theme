@@ -49,6 +49,9 @@ def build_page_info_for_course(
         if chapter.id == chapter_id:
             current_chapter = chapter
             chapter.bookmark = True
+        else:
+            chapter.bookmark = False
+
 
         for sequential in chapter.sequentials:
             for idx, page in enumerate(sequential.pages):
