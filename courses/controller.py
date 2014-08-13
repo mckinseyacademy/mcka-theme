@@ -36,7 +36,7 @@ def build_page_info_for_course(
 
     # something sensible if we fail...
     if len(course.chapters) < 1:
-        return course, None, None, None
+        return course
 
     # Set default current lesson just in case
     course.current_lesson = course.chapters[0]
