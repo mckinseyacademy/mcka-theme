@@ -91,19 +91,23 @@ def login(request):
                     program = get_current_program_for_user(request)
                     future_start_date = False
                     if program:
-                        for program_course in program.courses:
-                            if program_course.id == course_id:
-                                '''
-                                THERE IS A PLACE FOR IMPROVEMENT HERE
-                                IF user course object had start/due date, we
-                                would do one less API call
-                                '''
-                                full_course_object = course_api.get_course(
-                                    course_id)
-                                if hasattr(full_course_object, 'start'):
-                                    future_start_date = is_future_start(full_course_object.start)
-                                elif hasattr(program, 'start_date') and future_start_date is False:
-                                    future_start_date = is_future_start(program.start_date)
+                        if course_id is not None:
+                            for program_course in program.courses:
+                                if program_course.id == course_id:
+                                    '''
+                                    THERE IS A PLACE FOR IMPROVEMENT HERE
+                                    IF user course object had start/due date, we
+                                    would do one less API call
+                                    '''
+                                    full_course_object = course_api.get_course(
+                                        course_id)
+                                    if hasattr(full_course_object, 'start'):
+                                        future_start_date = is_future_start(full_course_object.start)
+                                    elif hasattr(program, 'start_date') and future_start_date is False:
+                                        future_start_date = is_future_start(program.start_date)
+                        elif hasattr(program, 'start_date') and future_start_date is False:
+                            future_start_date = is_future_start(program.start_date)
+
                     if course_id:
                         if future_start_date:
                             redirect_to = '/'
