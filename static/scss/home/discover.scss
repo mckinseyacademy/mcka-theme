@@ -71,11 +71,10 @@
             &:before { content: '@'; }
           }
 
-          a.tweet-body,
-          a.tweet-body:visited {
-            color: $mckinsey-academy-black;
-            @include font-spec(10, bold, 12);
-
+          .tweet-body {
+            a, a:visited {
+              @include font-spec(10, bold, 12);
+            }
           }
         }
       }

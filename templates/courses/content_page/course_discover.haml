@@ -30,7 +30,7 @@
             %span.label-8= tweet.twitter_username
             %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
             %time.label-3= tweet.display_date
-          %a.tweet-body{href: "#{tweet.url}", target: "_blank"}= tweet.body
+          .tweet-body.label-2= tweet.body|safe
     %section.videos
       .label-6 VIDEOS
       %ul
