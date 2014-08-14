@@ -134,8 +134,6 @@ def course_cohort(request, course_id):
     completions = course_api.get_course_metrics_completions(course_id, request.user.id)
     module_count = course.module_count()
     completions.leaders = build_progress_leader_list(completions.leaders, module_count)
-    completions.completion_percent = progress_percent(completions.completions, module_count)
-    completions.course_avg_percent = progress_percent(completions.course_avg, module_count)
 
     social = social_metrics(course_id, request.user.id)
 
