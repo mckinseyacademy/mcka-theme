@@ -21,6 +21,8 @@ class GroupInfo(JsonObject):
             for data_attr in self.data_fields:
                 if data_attr in dictionary["data"]:
                     dictionary[data_attr] = dictionary["data"][data_attr]
+                else:
+                    dictionary[data_attr] = None
 
         super(GroupInfo, self).__init__(
             json_data=None,
