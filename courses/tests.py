@@ -8,7 +8,6 @@ from . import controller
 # and some others that we don't care about for tests
 # pylint: disable=no-member,line-too-long,too-few-public-methods,missing-docstring,too-many-public-methods,pointless-statement,unused-argument,protected-access,maybe-no-member,invalid-name
 
-
 class UrlsTest(TestCase):
 
     def test_infer_course_navigation_url(self):
@@ -75,7 +74,6 @@ class UrlsTest(TestCase):
         resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/resources')
         self.assertEqual(resolver.view_name, 'course_resources')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
-
 
 class MockCourseAPI(object):
 
@@ -260,13 +258,11 @@ class MockCourseAPI(object):
     def get_course(course_id, depth = 3):
         return MockCourseAPI._get_course(course_id, 0)
 
-
 class OtherMockCourseAPI(MockCourseAPI):
 
     @staticmethod
     def get_course(course_id, depth = 3):
         return OtherMockCourseAPI._get_course(course_id, course_id)
-
 
 class MockUserAPI(object):
 
@@ -325,7 +321,6 @@ class MockUserAPI(object):
     def set_user_preferences(user_id, prefs):
         pass
 
-
 class NotBookmarkedMockUserAPI(MockUserAPI):
 
     @staticmethod
@@ -334,38 +329,33 @@ class NotBookmarkedMockUserAPI(MockUserAPI):
 
 # Create your tests here.
 
-
 class CoursesAPITest(TestCase):
 
     def setUp(self):
         pass
 
     def test_build_page_info_for_course(self):
-        test_course, test_current_chapter, test_current_sequential, test_current_page = controller.build_page_info_for_course(None, "0", "11", "112", MockCourseAPI)
+        test_course = controller.build_page_info_for_course(None, "0", "11", "112", MockCourseAPI)
 
         self.assertEqual(len(test_course.chapters), 3)
-        self.assertEqual(test_current_chapter.id, "11")
-        self.assertEqual(test_current_chapter.name, "Test Chapter 2")
-        self.assertEqual(test_current_page.id, "112")
-        self.assertEqual(test_current_page.name, "Test Page 3")
+        self.assertEqual(test_course.current_lesson.id, "11")
+        self.assertEqual(test_course.current_lesson.name, "Test Chapter 2")
+        self.assertEqual(test_course.current_module.id, "112")
+        self.assertEqual(test_course.current_module.name, "Test Page 3")
 
-        prev_url = None
         for x in range(0, 3):
             self.assertEqual(test_course.chapters[x].navigation_url, "/courses/0/lessons/{}".format(10 + x))
             # print test_course.chapters[x].navigation_url
             for y in range(0, 4):
                 self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].navigation_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y))
-                self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].prev_url, prev_url)
-                if x == 2 and y == 3:
-                    self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].next_url, None)
-                elif y == 3:
-                    self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x + 1, 100 + ((x + 1) * 10)))
+                if x == 1:
+                    self.assertEqual(test_course.chapters[x].previous_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 111))
+                    self.assertEqual(test_course.chapters[x].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 113))
                 else:
-                    self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y + 1))
-                prev_url = test_course.chapters[x].sequentials[y].pages[0].navigation_url
+                    self.assertEqual(hasattr(test_course.chapters[x], 'previous_url'), False)
+                    self.assertEqual(hasattr(test_course.chapters[x], 'next_url'), False)
 
                 #print "x = {}; y = {}; nav_url = {}; prev_url = {}; next_url = {}".format(x, y, test_course.chapters[x].pages[y].navigation_url, test_course.chapters[x].pages[y].prev_url, test_course.chapters[x].pages[y].next_url)
-
 
     def test_locate_chapter_page(self):
         # specified up to chapter id, should get bookmarked page

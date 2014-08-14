@@ -29,14 +29,13 @@ def user_program_data(request):
             course_id = get_current_course_for_user(request)
 
         if course_id:
-            chapter_id = request.resolver_match.kwargs.get('chapter_id', None)
-            page_id = request.resolver_match.kwargs.get('page_id', None)
-            if page_id is None or chapter_id is None:
-                course_id, chapter_id, page_id = locate_chapter_page(
+            lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
+            module_id = request.resolver_match.kwargs.get('page_id', None)
+            if module_id is None or lesson_id is None:
+                course_id, lesson_id, page_id = locate_chapter_page(
                     request, request.user.id, course_id, None)
-            course, current_chapter, current_sequential, current_page = build_page_info_for_course(
-                request, course_id, chapter_id, page_id)
 
+            course = build_page_info_for_course(request, course_id, lesson_id, module_id)
             program = get_current_program_for_user(request)
 
             # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
@@ -44,7 +43,6 @@ def user_program_data(request):
 
             # Inject course progress for nav header
             load_course_progress(course, request.user.id)
-
 
     data = {
         "course": course,

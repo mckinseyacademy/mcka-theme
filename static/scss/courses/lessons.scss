@@ -1,6 +1,10 @@
 #course-lessons,
 #course-group-work {
 
+  [data-reveal-id] {
+    cursor: pointer;
+  }
+
   .lesson-menu { margin-bottom: 10px; }
 
   .lesson-progress {
@@ -47,6 +51,7 @@
     background-color: #dddddd;
     top: 50%;
     margin-top: -25px;
+    z-index: 10;
     @include square-size(rem-calc(50));
     @include font-spec(30);
     @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
@@ -146,6 +151,8 @@
   ul {
     margin: 0;
     list-style-type: none;
+    overflow: auto;
+    max-height: rem-calc(325);
 
     li {
       padding: 10px 0;
