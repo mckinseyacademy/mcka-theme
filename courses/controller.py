@@ -283,7 +283,6 @@ def build_proficiency_leader_list(leaders):
 def build_progress_leader_list(leaders, module_count):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
-        leader.completion_percent = progress_percent(leader.completions, module_count)
         if leader.avatar_url is None:
             leader.avatar_url = user_models.UserResponse.default_image_url()
 
