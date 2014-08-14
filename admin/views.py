@@ -755,10 +755,11 @@ def workgroup_programs_list(request):
     )
 
 class GroupProjectInfo(object):
-    def __init__(self, id, name, organization=None):
+    def __init__(self, id, name, organization=None, organization_id=0):
         self.id = id
         self.name = name
         self.organization = organization
+        self.organization_id = organization_id
 
 def load_group_projects_info_for_course(course, companies):
     group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
@@ -776,7 +777,8 @@ def load_group_projects_info_for_course(course, companies):
                 GroupProjectInfo(
                     project.id,
                     group_project_lookup[project.content_id],
-                    companies[project.organization].display_name
+                    companies[project.organization].display_name,
+                    companies[project.organization].id,
                 )
             )
     return group_projects
@@ -861,11 +863,11 @@ def workgroup_group_create(request, course_id):
         project = Project.fetch(project_id)
         if project.organization is not None:
             organization = Organization.fetch(project.organization)
-            bad_users = [u for u in students if u not in organization.users]
+            bad_users = [u for u in students if int(u) not in organization.users]
 
             if len(bad_users) > 0:
                 message = "Bad users {} for private project".format(
-                    ",".join([u.username for u in bad_users])
+                    ",".join([u for u in bad_users])
                 )
                 return HttpResponse(json.dumps({'message': ''}), content_type="application/json")
 
