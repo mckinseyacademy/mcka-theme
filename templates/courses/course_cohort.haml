@@ -61,9 +61,9 @@
       %section
         %header
           .label-5 Progress:
-          .label-4 cohort average = ={completions.course_avg_percent}%
+          .label-4 cohort average = ={completions.course_avg}%
           - if completions.position
-            .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.completion_percent}%</span>
+            .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.completions}%</span>
           - else
             .rank your progress position <br> will be displayed here
           - if completions.leaders
@@ -73,7 +73,7 @@
                 .info
                   .person-name ={leader.username}
                   .person-title ={leader.title}
-                  .person-rank #={leader.rank} <span>={leader.completion_percent}%</span>
+                  .person-rank #={leader.rank} <span>={leader.completions}%</span>
           - else
             .user.dummy
               %img.avatar{src: '/static/image/empty_avatar.png'}
