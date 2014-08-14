@@ -55,6 +55,8 @@ def build_page_info_for_course(
         if lesson.id == lesson_id:
             course.current_lesson = lesson
             lesson.bookmark = True
+        else:
+            lesson.bookmark = False
 
         # Inject full module list for lesson
         for sequential in lesson.sequentials:
