@@ -426,8 +426,14 @@ def program_edit(request, program_id):
     if request.method == 'POST':  # If the form has been submitted...
         form = ProgramForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
+            name = form.cleaned_data.get('name')
+            data = {
+                'display_name': form.cleaned_data.get('display_name'),
+                'start_date': form.cleaned_data.get('start_date'),
+                'end_date': form.cleaned_data.get('end_date'),
+            }
             try:
-                program = Program.fetch(program_id).update(program_id, request.POST)
+                program = Program.fetch(program_id).update(program_id, name, data)
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/programs/')
 
@@ -436,7 +442,12 @@ def program_edit(request, program_id):
     else:
         ''' edit a program '''
         program = Program.fetch(program_id)
-        data_dict = {'name': program.name, 'display_name': program.display_name, 'start_date': program.start_date, 'end_date': program.end_date}
+        data_dict = {
+            'name': program.name,
+            'display_name': program.display_name,
+            'start_date': program.start_date,
+            'end_date': program.end_date
+        }
         form = ProgramForm(data_dict)
 
     # set focus to company name field

@@ -99,11 +99,11 @@ def delete_group(group_id):
     return (response.code == 204)
 
 @api_error_protect
-def update_group(group_id, group_type, group_data=None, group_object=JsonObject):
+def update_group(group_id, group_name, group_type, group_data=None, group_object=JsonObject):
     ''' update existing group '''
-    # group_name is fixed, does not get updated, so no need to include it
     data = {
         "type": group_type,
+        "name": group_name
     }
 
     if group_data:
