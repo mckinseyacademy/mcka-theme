@@ -340,7 +340,7 @@ def social_metrics(course_id, user_id):
     user = next((l for l in leaders if int(l.id) == int(user_id)), None)
 
     return {
-        'points': user.points if user else None,
+        'points': user.points if user else 0,
         'position': user.rank if user else None,
         'course_avg': floatformat(course_avg, 0),
         'leaders': leaders[:3]

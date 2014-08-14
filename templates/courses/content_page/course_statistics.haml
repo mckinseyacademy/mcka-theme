@@ -22,7 +22,7 @@
       %p This visualization displays your proficiency against a total possible score of 100. The average proficiency of your cohort is displayed as well. Note that your proficiency is based on graded assessments and group work performance.
   - include "courses/visualizations/course_progress.haml"
   %section.course-engagement
-    - if social_total == 0
+    - if social.points == 0
       .zero
         %div
           %span= _("Your social engagement will be displayed here.")
@@ -30,11 +30,11 @@
       Engagement:
       %a{href: "/courses/#{course.id}/cohort"}
         %i.fa.fa-arrow-circle-right
-    .visualization{class: "{% if social_total >= 90 %}filled{% endif %}"}
-      .band-1{class: "{% if social_total >= 30 %}filled{% endif %}"}
-      .band-2{class: "{% if social_total >= 60 %}filled{% endif %}"}
-      .total= social_total
-    .label-4 cohort average = ={cohort_social_average} points
+    .visualization{class: "{% if social.points >= 90 %}filled{% endif %}"}
+      .band-1{class: "{% if social.points >= 30 %}filled{% endif %}"}
+      .band-2{class: "{% if social.points >= 60 %}filled{% endif %}"}
+      .total= social.points
+    .label-4 cohort average = ={social.course_avg} points
     %a.info{'data-reveal-id': 'mckinsey_social_help'}
       %i.fa.fa-info-circle
     #mckinsey_social_help.reveal-modal.small{'data-reveal': None}
