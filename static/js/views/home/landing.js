@@ -12,8 +12,8 @@ Apros.views.HomeLanding = Backbone.View.extend({
 
     var render_warning_popup = function(){
       if($('#generalModal input.show-modal').length > 0){
-        $('html,body').css('width', '1800px');
-        setTimeout($('#generalModal').foundation('reveal', 'open'), 1000);
+        $('html,body').css('width', $('#home-landing').width() + 'px');
+        setTimeout(function(){$('#generalModal').foundation('reveal', 'open');}, 500);
       }
     }
 

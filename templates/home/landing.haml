@@ -35,13 +35,13 @@
           %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{cell.url}"}
             %i.fa.fa-play-circle
 
-    - block general_modal
-      .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
-        %h2.title
-          =popup.title
-        %p{'class': "lead description"}
-          =popup.description
-        %a{'class': "close-reveal-modal fa fa-times-circle"}
-        - if popup.title != ''
-          %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+- block general_modal
+  .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
+    %h2.title
+      =popup.title
+    %p{'class': "lead description"}
+      =popup.description
+    %a{'class': "close-reveal-modal fa fa-times-circle"}
+    - if popup.title != ''
+      %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
 
