@@ -110,9 +110,7 @@ class JsonObject(Objectifier):
 
         for date_field in self.date_fields:
             if date_field in dictionary:
-                date_value = _build_date_field(dictionary[date_field])
-                if date_value:
-                    dictionary[date_field] = date_value
+                dictionary[date_field] = _build_date_field(dictionary[date_field])
 
         if dictionary is not None:
             self._validate_fields(dictionary)

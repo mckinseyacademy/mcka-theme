@@ -1,6 +1,6 @@
 ''' Objects for users / authentication built from json responses from API '''
 import json
-from datetime import datetime
+from datetime import datetime, date
 from .json_object import JsonObject
 import group_api
 
@@ -21,6 +21,8 @@ class GroupInfo(JsonObject):
             for data_attr in self.data_fields:
                 if data_attr in dictionary["data"]:
                     dictionary[data_attr] = dictionary["data"][data_attr]
+                else:
+                    dictionary[data_attr] = None
 
         super(GroupInfo, self).__init__(
             json_data=None,
@@ -45,17 +47,22 @@ class GroupInfo(JsonObject):
             key: value for key, value in group_data.iteritems() if key in cls.data_fields
         }
 
+        date_format = "%Y-%m-%dT%H:%M:%S.%fZ"
+
         for date_field in cls.date_fields:
-            date_components = ["{}_{}".format(date_field, component_value)
-                               for component_value in ['year', 'month', 'day']]
-            component_values = [int(group_data[component])
-                                for component in date_components if component in group_data]
-            if len(component_values) == 3:
-                clean_data[date_field]= datetime(
-                    component_values[0],
-                    component_values[1],
-                    component_values[2]
-                ).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            if clean_data[date_field] and type(clean_data[date_field]) in (date, datetime):
+                clean_data[date_field] = clean_data[date_field].strftime(date_format)
+            else:
+                date_components = ["{}_{}".format(date_field, component_value)
+                                   for component_value in ['year', 'month', 'day']]
+                component_values = [int(group_data[component])
+                                    for component in date_components if component in group_data]
+                if len(component_values) == 3:
+                    clean_data[date_field]= datetime(
+                        component_values[0],
+                        component_values[1],
+                        component_values[2]
+                    ).strftime(date_format)
 
         return clean_data
 
@@ -76,5 +83,5 @@ class GroupInfo(JsonObject):
         return group_api.delete_group(group_id)
 
     @classmethod
-    def update(cls, group_id, group_data):
-        return group_api.update_group(group_id, cls.group_type, cls._clean_group_data(group_data), group_object=cls)
+    def update(cls, group_id, name, group_data):
+        return group_api.update_group(group_id, name, cls.group_type, cls._clean_group_data(group_data), group_object=cls)
