@@ -55,14 +55,7 @@ def course_landing_page(request, course_id):
     set_current_course_for_user(request, course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     load_lesson_estimated_time(course)
-
-    social_total = 0
-    try:
-        social_metrics = user_api.get_course_social_metrics(request.user.id, course_id)
-        for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
-            social_total += getattr(social_metrics, key) * val
-    except:
-        social_total = 0
+    social = social_metrics(course_id, request.user.id)
 
     data = {
         "user": request.user,
@@ -76,8 +69,7 @@ def course_landing_page(request, course_id):
         "proficiency_graph": int(5 * round(proficiency.points/5)),
         "cohort_proficiency_average": int(round(proficiency.course_avg)),
         "cohort_proficiency_graph": int(5 * round(proficiency.course_avg/5)),
-        "social_total": social_total,
-        "cohort_social_average": 28,
+        "social": social,
         "average_progress": average_progress(course, request.user.id),
     }
     return render(request, 'courses/course_main.haml', data)
