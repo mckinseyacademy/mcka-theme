@@ -31,6 +31,7 @@ urlpatterns = patterns(
     url(r'^programs', views.program_list, name='program_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_list', views.download_group_list, name='download_group_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_projects_report', views.download_group_projects_report, name='download_group_projects_report'),
+    url(r'^workgroup/course/(?P<course_id>.*)/group_projects_report', views.group_projects_report, name='group_projects_report'),
     url(r'^workgroup/course/(?P<course_id>.*)/detail/(?P<workgroup_id>.*)', views.workgroup_detail, name='workgroup_detail'),
     url(r'^workgroup/course/(?P<course_id>.*)/assignments', views.workgroup_course_assignments, name='workgroup_course_assignments'),
     url(r'^workgroup/course/(?P<course_id>.*)', views.workgroup_course_detail, name='workgroup_course_detail'),
