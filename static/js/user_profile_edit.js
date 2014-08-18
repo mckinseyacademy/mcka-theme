@@ -46,9 +46,6 @@ $(function(){
             reloadImages();
           }
         },
-        fail: function(e, data) {
-          modal.find('.error').append('<p class="warning">Please select file first.</p>');
-        },
         progress: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
         $('#progress .bar').css(
