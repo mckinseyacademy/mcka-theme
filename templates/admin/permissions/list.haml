@@ -25,6 +25,11 @@
                 %span.label-1.desc
                   %i.fa.fa-caret-down
               %th
+              %th.label-1 Company
+                %span.label-1.asc
+                  %i.fa.fa-caret-up
+                %span.label-1.desc
+                  %i.fa.fa-caret-down
               %th
             %tbody
               - for user in users
@@ -35,8 +40,8 @@
                   %td= user.roles
                   %td
                     %a{href: "mailto:#{user.email}"}= user.email
+                  %td= user.company_list
                   %td
-                    - if user.id
                     %a.fa.fa-pencil{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "/admin/permissions/={user.id}/edit", href: ""}
 
   #edit-permissions.reveal-modal.small{"data-reveal": "true"}

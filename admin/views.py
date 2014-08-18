@@ -1084,6 +1084,7 @@ def permissions(request):
             roles.append(_('OBSERVER'))
 
         user.roles = ", ".join(roles)
+        user.company_list = ", ".join([org.display_name for org in user.organizations])
 
     data = {
         'users': users
