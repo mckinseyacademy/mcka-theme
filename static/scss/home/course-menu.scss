@@ -59,6 +59,11 @@
           @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
         }
 
+        .front .name {
+          @include hyphens(auto);
+          word-break: break-word; // Non standard for webkit
+        }
+
         .index { margin-bottom: 20px; }
 
         .estimated-time {
