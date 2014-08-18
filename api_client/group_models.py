@@ -50,7 +50,7 @@ class GroupInfo(JsonObject):
         date_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
         for date_field in cls.date_fields:
-            if clean_data[date_field] and type(clean_data[date_field]) in (date, datetime):
+            if date_field in clean_data and type(clean_data[date_field]) in (date, datetime):
                 clean_data[date_field] = clean_data[date_field].strftime(date_format)
             else:
                 date_components = ["{}_{}".format(date_field, component_value)
