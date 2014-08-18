@@ -21,7 +21,7 @@ from main.models import CuratedContentItem
 from .controller import inject_gradebook_info
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
-from .controller import build_progress_leader_list, build_proficiency_leader_list, social_metrics, average_progress, choose_random_ta
+from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 
 # Temporary id converter to fix up problems post opaque keys
@@ -105,16 +105,9 @@ def course_news(request, course_id):
 def course_cohort(request, course_id):
     course = load_course(course_id, request=request)
 
-    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
-    proficiency.leaders = build_proficiency_leader_list(proficiency.leaders)
-    proficiency.points = floatformat(proficiency.points, 0)
-    proficiency.course_avg = floatformat(proficiency.course_avg, 0)
-
-    completions = course_api.get_course_metrics_completions(course_id, request.user.id)
-    module_count = course.module_count()
-    completions.leaders = build_progress_leader_list(completions.leaders, module_count)
-
-    social = social_metrics(course_id, request.user.id)
+    proficiency = get_proficiency_leaders(course_id, request.user.id)
+    completions = get_progress_leaders(course_id, request.user.id)
+    social = get_social_metrics(course_id, request.user.id)
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
