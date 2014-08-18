@@ -26,7 +26,10 @@
       };
       $.when.apply($, discussion_content.xblock(discussion_data)).
         done(function() {
-          $('.discussion-body').prepend($("#discussion-ta-template" ).html());
+          $('.discussion-body').prepend($("#discussion-ta-template").html());
+          if ($('#discussion-ta-template').length > 0) {
+            $('.discussion-body').css('margin-top', '-50px');
+          }
       });
     })
   - if mcka_ta
