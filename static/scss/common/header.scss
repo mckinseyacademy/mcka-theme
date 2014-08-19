@@ -237,7 +237,9 @@ header[role=banner].background-blue {
       &:hover { color: $pure-white; }
     }
 
-    @media #{$small-only} {
+    @media only screen
+    and (min-device-width : 320px)
+    and (max-device-width : 640px) {
       display: none;
     }
 
