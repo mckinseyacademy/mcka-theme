@@ -177,3 +177,16 @@
     }
   }
 }
+
+.upload_form{
+  @include font-spec(14, normal, 18);
+  .upload_item{
+    .upload_title{
+      @include font-spec(14, semibold, 28);
+      text-transform: uppercase;
+    }
+  }
+  .action_buttons .button{
+    margin-left: 12px;
+  }
+}
