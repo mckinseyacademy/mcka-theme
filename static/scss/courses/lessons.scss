@@ -148,14 +148,16 @@
 }
 
 #module_list {
+  top: 30px;
+
   ul {
     margin: 0;
     list-style-type: none;
     overflow: auto;
-    max-height: rem-calc(325);
+    max-height: rem-calc(425);
 
     li {
-      padding: 10px 0;
+      padding: 6px 0;
       border-bottom: 1px solid $border-line;
 
       .module {
