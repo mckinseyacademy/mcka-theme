@@ -12,7 +12,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
   cities: {},
   zoomLevel: 1,
   popupTimeout: false,
-  popupTime: 700,
+  popupTime: 99700,
 
   defaults: {
     model: new Apros.models.LocationData
@@ -90,12 +90,13 @@ Apros.views.CourseCohort = Backbone.View.extend({
     if(className == 'ta_user'){
       myIcon.iconSize = [44, 44];
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<i>Teaching Assistant</i><div class="person-name">' + user.username + '</div><div class="person-title">' +
-        user.title + '</div><br><a href="#" data-reveal-id="contact-ta">Email Group TA</a>',
+      .bindPopup('<div class="person-name">' + user.username + '</div><div class="person-fullname">' + user.full_name + 
+        '</div><div class="person-title">Teaching Assistent</div><br><a href="#" data-reveal-id="contact-ta">Email Group TA</a>',
         {'closeOnClick': false});
     }else{
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<div class="person-name">' + user.username + '</div><div class="person-title">' + user.title + '</div>',
+      .bindPopup('<div class="person-name">' + user.username + '</div><div class="person-fullname">' + user.full_name + 
+        '</div><div class="person-title">' + user.title + '</div>',
         {'closeOnClick': false});
     }
     this.hoverizePopup(marker);
@@ -127,10 +128,10 @@ Apros.views.CourseCohort = Backbone.View.extend({
     marker.on('mouseover', function (e) {
       this.openPopup();
     });
-    marker.on('mouseout', function (e) {
-      var that = this;
-      _this.popupTimeout = setTimeout(function(){that.closePopup();}, _this.popupTime);
-    });
+    // marker.on('mouseout', function (e) {
+    //   var that = this;
+    //   _this.popupTimeout = setTimeout(function(){that.closePopup();}, _this.popupTime);
+    // });
   },
 
   delayPopupClose: function(){

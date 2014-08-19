@@ -163,9 +163,14 @@ blockquote {
 
 .person-name,
 .person-title,
+.person-fullname,
 .city-name,
 .city-participants {
   @include font-spec(12, semibold, 14);
+}
+
+.person-fullname  {
+  color: #666666;
 }
 
 .person-title,
