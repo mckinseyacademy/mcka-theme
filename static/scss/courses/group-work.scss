@@ -73,6 +73,10 @@
   button{
     @include button($button-sml, $primary-color, true);
     &.submit { float: right; }
+
+    &:hover {
+      background-color: $mckinsey-academy-blue-gray;
+    }
   }
 
   .grading_override{

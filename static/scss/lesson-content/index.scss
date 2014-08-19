@@ -6,6 +6,10 @@
   input {
     &[type="button"] {
       @include button($button-sml, $primary-color, true);
+
+      &:hover {
+        background-color: $mckinsey-academy-blue-gray;
+      }
     }
   }
 
