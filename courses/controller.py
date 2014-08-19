@@ -289,22 +289,26 @@ def is_number(s):
         return False
     return True
 
-def build_proficiency_leader_list(leaders):
+
+def get_proficiency_leaders(course_id, user_id):
+    proficiency = course_api.get_course_metrics_proficiency(course_id, user_id)
+    proficiency.points = floatformat(proficiency.points, 0)
+    proficiency.course_avg = floatformat(proficiency.course_avg, 0)
+    tailor_leader_list(proficiency.leaders)
+    return proficiency
+
+def get_progress_leaders(course_id, user_id):
+    completions = course_api.get_course_metrics_completions(course_id, user_id)
+    tailor_leader_list(completions.leaders)
+    return completions
+
+def tailor_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
-        leader.points_scored = floatformat(leader.points_scored, 0)
+        if hasattr(leader, 'points_scored'):
+            leader.points_scored = floatformat(leader.points_scored, 0)
         if leader.avatar_url is None:
             leader.avatar_url = user_models.UserResponse.default_image_url()
-
-    return leaders
-
-def build_progress_leader_list(leaders, module_count):
-    for rank, leader in enumerate(leaders, 1):
-        leader.rank = rank
-        if leader.avatar_url is None:
-            leader.avatar_url = user_models.UserResponse.default_image_url()
-
-    return leaders
 
 def social_total(social_metrics):
     social_total = 0
@@ -314,7 +318,7 @@ def social_total(social_metrics):
 
     return social_total
 
-def social_metrics(course_id, user_id):
+def get_social_metrics(course_id, user_id):
     ''' returns social engagement points and leaders '''
     course_metrics = course_api.get_course_social_metrics(course_id)
     users = []
