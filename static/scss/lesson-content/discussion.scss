@@ -13,6 +13,15 @@
       margin-bottom: 0;
     }
   }
+
+  // Remove option to post anonymously from the group work discussions
+  .discussion-anonymous,
+  label[for="new-post-anonymous"] {
+    display: none;
+  }
+  .discussion .new-post-article .new-post-form .options::after {
+    content: "";
+  }
 }
 
 /* Discussion tooltip gets added by JS to the <body> :/ */
