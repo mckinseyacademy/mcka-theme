@@ -12,7 +12,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
   cities: {},
   zoomLevel: 1,
   popupTimeout: false,
-  popupTime: 99700,
+  popupTime: 700,
 
   defaults: {
     model: new Apros.models.LocationData
@@ -128,10 +128,10 @@ Apros.views.CourseCohort = Backbone.View.extend({
     marker.on('mouseover', function (e) {
       this.openPopup();
     });
-    // marker.on('mouseout', function (e) {
-    //   var that = this;
-    //   _this.popupTimeout = setTimeout(function(){that.closePopup();}, _this.popupTime);
-    // });
+    marker.on('mouseout', function (e) {
+      var that = this;
+      _this.popupTimeout = setTimeout(function(){that.closePopup();}, _this.popupTime);
+    });
   },
 
   delayPopupClose: function(){
