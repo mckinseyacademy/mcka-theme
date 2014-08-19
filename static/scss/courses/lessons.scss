@@ -72,7 +72,7 @@
 
       &:hover {
         background-color: $mckinsey-academy-blue-gray;
-        .tooltip { display: block; }
+        .mcka-tooltip { display: block; }
       }
 
       .go-to-next {
@@ -93,7 +93,7 @@
       margin: -15px 0 0 -9.5px;
     }
 
-    .tooltip {
+    .mcka-tooltip {
       color: $mckinsey-dark-grey;
       position: absolute;
       background: $pure-white;
@@ -125,7 +125,7 @@
       }
     }
 
-    &.previous .tooltip {
+    &.previous .mcka-tooltip {
       left: 100%;
       margin-left: 10px;
 
@@ -135,7 +135,7 @@
       }
     }
 
-    &.next .tooltip {
+    &.next .mcka-tooltip {
       right: 100%;
       margin-right: 10px;
 

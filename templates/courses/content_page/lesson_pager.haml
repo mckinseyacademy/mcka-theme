@@ -1,7 +1,7 @@
 - if course.current_lesson.previous_url
   %a.page-to.previous{href: "#{course.current_lesson.previous_url}"}
     %i.fa.fa-chevron-left
-    .tooltip{class: "{% if course.current_module.index == 1 %}lesson-page{% endif %}"}
+    .mcka-tooltip{class: "{% if course.current_module.index == 1 %}lesson-page{% endif %}"}
       - if course.current_module.index == 1
         .vertical-index= _("Return to previous lesson")
       - else
@@ -15,7 +15,7 @@
 - if course.current_lesson.next_url
   %a.page-to.next{href: "#{course.current_lesson.next_url}"}
     %i.fa.fa-chevron-right
-    .tooltip{class: "{% if course.current_module.index == course.current_lesson.module_count %}lesson-page{% endif %}"}
+    .mcka-tooltip{class: "{% if course.current_module.index == course.current_lesson.module_count %}lesson-page{% endif %}"}
       - if course.current_module.index == course.current_lesson.module_count
         .vertical-index= _("Go to next lesson")
       - else
