@@ -34,8 +34,14 @@
         a, a:visited {
           color: $pure-white;
           text-decoration: none;
-          padding-bottom: 10px;
+          padding: 10px 0;
           i { @include font-spec(22px); }
+
+          .lesson-progress-bar {
+            margin-top: 6px;
+            height: 6px;
+            .bar { height: 6px; }
+          }
 
           &[disabled] {
             color: $mckinsey-academy-black !important;
@@ -60,9 +66,9 @@
           }
 
           > * {
-            white-space: nowrap;
+            width: 235px;
             border-bottom: 1px solid $almost-white;
-            @include font-spec(14, semibold, 30);
+            @include font-spec(12, semibold, 14);
             &:last-child { border-bottom: none; }
           }
 
