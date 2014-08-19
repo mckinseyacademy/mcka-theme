@@ -120,7 +120,6 @@ def login(request):
             except ApiError as err:
                 error = err.message
 
-
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
         # provide something here, otherwise the error (password field is
@@ -276,7 +275,6 @@ def reset_confirm(request, uidb64=None, token=None,
     return TemplateResponse(request, template_name, context,
                             current_app=current_app)
 
-
 @ajaxify_http_redirects
 def reset(request, is_admin_site=False,
           template_name='registration/password_reset_form.haml',
@@ -324,7 +322,6 @@ def reset(request, is_admin_site=False,
     return TemplateResponse(request, template_name, context,
                             current_app=current_app)
 
-
 @ajaxify_http_redirects
 def reset_done(request,
                template_name='registration/password_reset_done.haml',
@@ -333,7 +330,6 @@ def reset_done(request,
                template_name=template_name,
                current_app=current_app, extra_context=extra_context)
 
-
 @ajaxify_http_redirects
 def reset_complete(request,
                    template_name='registration/password_reset_complete.haml',
@@ -341,8 +337,6 @@ def reset_complete(request,
     return password_reset_complete(request=request,
                    template_name=template_name,
                    current_app=current_app, extra_context=extra_context)
-
-
 
 def home(request):
     ''' show me the home page '''
@@ -367,10 +361,10 @@ def home(request):
                         days = days + 's'
                     popup = {'title': '', 'description': ''}
                     popup['title'] = "Welcome to McKinsey Academy"
-                    popup['description'] = "Your program will start in {}. Please explore the site to learn more about the expirience in the meantime.".format(
+                    popup['description'] = "Your program will start in {}. Please explore the site to learn more about the experience in the meantime.".format(
                         days)
                     if course:
-                        popup['description'] = "Your course begins in {}. Please explore the site to learn more about the expirience in the meantime.".format(
+                        popup['description'] = "Your course begins in {}. Before the course begins, you can explore this site to learn more about what to expect.".format(
                             days)
                         data.update({'course': course})
                     data.update({'program': program, 'popup': popup})
