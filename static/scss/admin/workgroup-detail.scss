@@ -109,3 +109,12 @@
     display: none;
   }
 }
+
+.workgroup-report{
+  a.incomplete{
+    color: $mckinsey-red;
+    &::after{
+      content: '*';
+    }
+  }
+}

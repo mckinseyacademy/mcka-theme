@@ -1,3 +1,4 @@
+import copy
 import json
 from datetime import datetime
 import urllib2 as url_access
@@ -47,7 +48,7 @@ from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
 from .forms import PermissionForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
-from .workgroup_reports import generate_workgroup_csv_report
+from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 
 def ajaxify_http_redirects(func):
@@ -588,6 +589,16 @@ def download_group_projects_report(request, course_id):
     )
 
     return response
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def group_projects_report(request, course_id):
+    wcd = WorkgroupCompletionData(course_id)
+    return render(
+        request,
+        'admin/workgroup/workgroup_report.haml',
+        wcd.build_report_data()
+    )
+
 
 def _prepare_program_display(program):
     if hasattr(program, "start_date") and hasattr(program, "end_date"):
@@ -1156,7 +1167,8 @@ def workgroup_course_assignments(request, course_id):
         project.selected = (selected_project_id == str(project.id))
         group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
         project.name = group_project_chapter.name
-        project.activities = get_group_project_activities(group_project_chapter)
+        # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
+        project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
 
         if project.organization:
             project.organization = Organization.fetch(project.organization).display_name

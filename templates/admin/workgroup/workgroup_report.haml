@@ -1,0 +1,59 @@
+- extends 'admin/admin_layout.haml'
+- block content
+  .workgroup-report
+    .row
+      .large-12.large-centered.columns
+        %header
+          %h1
+            = _("Workgroups Report for")
+            = course.name
+        - for project in projects
+          %hr
+          %section
+            .sub-1
+              = _("Project:")
+              %span= project.name
+            %table
+              %thead
+                %tr
+                  %th{colspan: 2}
+                  - for activity in project.activities
+                    %th{colspan: 4}= activity.name
+                %tr
+                  %th= _("Group")
+                  %th
+                  - for activity in project.activities
+                    %th= _("Upload")
+                    %th= _("Evaluation")
+                    %th= _("Grade")
+                    %th
+              %tbody
+                - for workgroup in project.workgroups
+                  %tr
+                    %td= workgroup.name
+                    %td
+                    - for activity_status in workgroup.activity_statuses
+                      %td= activity_status.upload
+                      %td= activity_status.evaluation
+                      - if activity_status.ta_graded
+                        %td
+                          %a{href: "#{activity_status.review_link}", class:"#{activity_status.modifier_class}"}
+                            TA Graded
+                      - else
+                        %td= activity_status.grade
+                      %td
+                  - for user in workgroup.users
+                    %tr
+                      %td
+                      %td= user.username
+                      - for user_activity_status in user.activity_statuses
+                        %td= user_activity_status.upload
+                        %td= user_activity_status.evaluation
+                        - if activity_status.ta_graded
+                          %td --
+                        - else
+                          %td= user_activity_status.grade
+                        %td
+                          - for review_group in user_activity_status.review_groups
+                            %a{href: "#{review_group.review_link}", class:"#{review_group.modifier_class}"}
+                              = review_group.name
