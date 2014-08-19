@@ -1,7 +1,8 @@
 .group-member
   %img.avatar{src: "#{group_member.image_url}"}
   .person-info
-    .person-name= group_member.formatted_name
+    .person-username= group_member.username
+    .person-fullname= group_member.formatted_name
     .person-title= group_member.title
     .email
       %a.email-member{href: "#", 'data-reveal-id': '#{data_reveal_id}', 'data-member-email': '#{group_member.email}'}
