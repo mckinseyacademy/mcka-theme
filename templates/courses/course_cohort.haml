@@ -17,11 +17,12 @@
     %hr
     .leaderboard-header
       %h1 Leaderboards
-      %ul.select-board
-        %li
-          %a.selected{href: '#'} global cohort
-        %li
-          %a{href: '#'} my company
+      -#%ul.select-board
+        -# commented part will be used in next version
+        -# %li
+        -#   %a.selected{href: '#'} global cohort
+        -# %li
+        -#   %a{href: '#'} my company  
     .leaderboards
       %section
         %header
@@ -96,7 +97,7 @@
       %section
         %header
           .label-5 Engagement:
-            %a{href: '#'} view all
+            -# %a{href: '#'} view all           //  will be used in next version
           .label-4 cohort average = ={social.course_avg} points
           - if social.position
             .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
