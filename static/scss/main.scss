@@ -188,7 +188,8 @@ button,
     background-color: $mckinsey-academy-blue-gray;
   }
 
-  &.disabled {
+  &.disabled,
+  &[disabled] {
     background-color: $almost-white;
   }
 }
