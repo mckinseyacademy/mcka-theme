@@ -55,7 +55,7 @@ def course_landing_page(request, course_id):
     set_current_course_for_user(request, course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     load_lesson_estimated_time(course)
-    social = social_metrics(course_id, request.user.id)
+    social = get_social_metrics(course_id, request.user.id)
 
     data = {
         "user": request.user,
