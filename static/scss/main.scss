@@ -161,7 +161,7 @@ blockquote {
   color: $mckinsey-academy-light-gray;
 }
 
-.person-name,
+.person-username,
 .person-title,
 .person-fullname,
 .city-name,
@@ -210,7 +210,7 @@ button,
     color: $mckinsey-academy-blue-gray;
   }
 
-  .person-name {
+  .person-username {
     color: $mckinsey-academy-alt-blue;
     @include font-spec(10, semibold, 12);
   }
