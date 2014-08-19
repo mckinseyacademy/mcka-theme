@@ -58,6 +58,12 @@
   }
 }
 
+#faq-page {
+  ul, ol {
+    list-style-position: inside;
+  }
+}
+
 @import './about';
 @import './programs';
 @import './contact';
