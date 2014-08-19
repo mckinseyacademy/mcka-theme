@@ -133,7 +133,8 @@
           &.dummy {
             color: $mckinsey-grey;
             .person-title,
-            .person-name,
+            .person-username,
+            .person-fullname,
             .person-rank,
             .person-rank span {
               color: $mckinsey-grey;
@@ -164,7 +165,7 @@
       }
 
       &.recommendations {
-        .person-name { margin: 15px 0; }
+        .person-username { margin: 15px 0; }
       }
 
       .attribution {
