@@ -3,7 +3,8 @@
   .person-info
     .person-username= group_member.username
     .person-fullname= group_member.formatted_name
-    .person-title= group_member.title
+    - if group_member.title
+      .person-title= group_member.title
     .email
       %a.email-member{href: "#", 'data-reveal-id': '#{data_reveal_id}', 'data-member-email': '#{group_member.email}'}
         = _("Email")
