@@ -2,6 +2,10 @@ Apros.views.HomeLanding = Backbone.View.extend({
 
   initialize: function() {
     _(this).bindAll('scroll_window');
+    if($('#generalModal input.show-modal').length > 0){
+      $('html,body').css('width', '100%');
+      $('html,body').css({'margin': '0 auto 100px', 'width': '1800px'});
+    }
   },
 
   scroll_window: function() {
@@ -12,7 +16,6 @@ Apros.views.HomeLanding = Backbone.View.extend({
 
     var render_warning_popup = function(){
       if($('#generalModal input.show-modal').length > 0){
-        $('html,body').css('width', $('#home-landing').width() + 'px');
         setTimeout(function(){$('#generalModal').foundation('reveal', 'open');}, 500);
       }
     }
