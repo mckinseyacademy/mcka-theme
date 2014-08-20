@@ -79,7 +79,7 @@ $(function(){
 
           //check file is of valid type or not
           if (ValidFileType.toLowerCase().indexOf(extension) < 0) {
-              errorBlock.html("Please select valid file type.");
+              errorBlock.html("Error uploading file. Please try again and be sure to use an accepted file format.");
           }
           else{
             return true;

@@ -475,11 +475,11 @@ def upload_profile_image(request, user_id):
                 request.user.avatar_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
                 RemoteUser.remove_from_cache(request.user.id)
             else:
-                error = "Incorrect file type."
+                error = "Error uploading file. Please try again and be sure to use an accepted file format."
 
             return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
         else:
-            error = "There is a problem with image file you selected."
+            error = "Error uploading file. Please try again and be sure to use an accepted file format."
             return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
     else:
         ''' adds a new image '''
