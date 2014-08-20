@@ -14,14 +14,18 @@
     .error
       - if error
         = error
+    .upload_stats
+      %span Total:
+      %span#attempted 0
+      %span Succeded:
+      %span#succeded 0
+      %span Failed:
+      %span#failed 0
     %input.button.radius.small{type: "submit", value: "Add Student(s)", disabled: "disabled"}
   .allowed-format
     Use CSV formatted file (Comma Separated Value)
 
   -# %script{src: "{% static 'js/submit_form.js' %}"}
-  :javascript
-    $(function(){
-      $('#id_student_list').on("change", function(){
-        $('input[type=submit]').removeAttr('disabled');
-      });
-    });
+  %script{src: "{% static 'js/vendor/jquery.form.js' %}"}
+  %script{src: "{% static 'js/admin_upload_students.js' %}"}
+

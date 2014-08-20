@@ -4,6 +4,11 @@ from api_client.json_object import JsonObject
 from license import controller as license_controller
 from django.conf import settings
 
+import hashlib
+import random
+from datetime import datetime, timedelta
+from django.db import models as db_models
+
 class BaseGroupModel(group_models.GroupInfo):
 
     def __init__(self, json_data=None, dictionary=None):
@@ -137,3 +142,41 @@ class WorkGroupActivityXBlock(JsonObject):
     def ta_graded(self):
         return self.group_reviews_required_count < 1
 
+class UserRegistrationError(db_models.Model):
+    task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
+    error = db_models.TextField(default='')
+
+    @classmethod
+    def create(cls, error='', task_key=''):
+        reg_record = cls.objects.create(error=error, task_key= task_key)
+        reg_record.save()
+
+        return reg_record
+
+class UserRegistrationBatch(db_models.Model):
+    task_key = db_models.CharField(max_length=40, unique=True, db_index=True)
+    attempted = db_models.IntegerField(default=0)
+    failed = db_models.IntegerField(default=0)
+    succeded = db_models.IntegerField(default=0)
+    time_requested = db_models.DateTimeField(default=datetime.now)
+
+    @staticmethod
+    def generate_task_key(time):
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+        return hashlib.sha1(salt+time).hexdigest()
+
+    @classmethod
+    def create(cls):
+        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0, task_key= cls.generate_task_key(str(datetime.now())))
+        reg_record.save()
+
+        return reg_record
+    @classmethod
+    def clean_old(cls, ErrorModels=UserRegistrationError):
+        old_records = cls.objects.filter(time_requested__lte=(datetime.now() - timedelta(days=1)))
+        for old_record in old_records:
+            old_errors = ErrorModels.objects.filter(task_key=old_record.task_key)
+            for old_error in old_errors:
+                old_error.delete()
+            old_record.delete()
+        return True
