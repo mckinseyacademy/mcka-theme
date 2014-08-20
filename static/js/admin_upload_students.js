@@ -29,12 +29,18 @@ $(function(){
                 url     : form.attr('action'),
                 type    : 'POST',
                 contentType: false,
+                processData: false,
+                dataType: 'text',
+                cache: false,
                 success:function( data ) {
+                      data = $.parseJSON(data);
                       var poolingInterval = setInterval(function(){
                         $.ajax({
                           url: form.attr('action') + '/check/' + data.task_key,
                           method: 'GET',
                           dataType: 'json',
+                          processData: false,
+                          cache: false,
                           'csrfmiddlewaretoken': form.find('[name="csrfmiddlewaretoken"]').val()
                         }).done(function(data){
                           if(data.done == 'done'){
@@ -58,6 +64,7 @@ $(function(){
                       }, 2000);
                     },
                 error: function( data ){
+                      data = $.parseJSON(data);
                       modal.find('.error').append('<p class="warning">Please select file first.</p>');
                     }
                 }

@@ -510,7 +510,7 @@ def upload_student_list(request, client_id):
             )
             return HttpResponse(
                 json.dumps({"task_key": _(reg_status.task_key)}),
-                content_type='application/json'
+                content_type='text/plain'
             )
     else:
         ''' adds a new client '''
