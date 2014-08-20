@@ -91,7 +91,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
       myIcon.iconSize = [44, 44];
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
       .bindPopup('<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name + 
-        '</div><div class="person-title">Teaching Assistent</div><br><a href="#" data-reveal-id="contact-ta">Email Group TA</a>',
+        '</div><div class="person-title">' + user.title + '</div><br><a href="#" data-reveal-id="contact-ta">Email Group TA</a>',
         {'closeOnClick': false});
     }else{
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
