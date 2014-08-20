@@ -1,5 +1,6 @@
 !!! 5
 %html.no-js{lang:"en"}
+  - load assets
   - load staticfiles
   %head
     %meta{charset: "utf-8"}
@@ -18,7 +19,6 @@
       %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
 
-    - load assets
     {% assets "css_core" %}
       %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
     {% endassets %}
@@ -27,11 +27,10 @@
       %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
     {% endassets %}
 
-    {% if '/admin' in request.path %}
+    - if '/admin' in request.path
       {% assets "css_admin" %}
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
-    {% endif %}
 
     -# Override if you need another version of modernizr; or comment out for now - we dont' need it yet
     - block foundation_modernizer
