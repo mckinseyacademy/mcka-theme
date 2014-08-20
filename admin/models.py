@@ -7,6 +7,7 @@ from django.conf import settings
 import hashlib
 import random
 from datetime import datetime, timedelta
+from django.utils import timezone
 from django.db import models as db_models
 
 class BaseGroupModel(group_models.GroupInfo):
@@ -158,7 +159,7 @@ class UserRegistrationBatch(db_models.Model):
     attempted = db_models.IntegerField(default=0)
     failed = db_models.IntegerField(default=0)
     succeded = db_models.IntegerField(default=0)
-    time_requested = db_models.DateTimeField(default=datetime.now)
+    time_requested = db_models.DateTimeField(default=timezone.now)
 
     @staticmethod
     def generate_task_key(time):
@@ -167,13 +168,13 @@ class UserRegistrationBatch(db_models.Model):
 
     @classmethod
     def create(cls):
-        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0, task_key= cls.generate_task_key(str(datetime.now())))
+        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0, task_key= cls.generate_task_key(str(timezone.now())))
         reg_record.save()
 
         return reg_record
     @classmethod
     def clean_old(cls, ErrorModels=UserRegistrationError):
-        old_records = cls.objects.filter(time_requested__lte=(datetime.now() - timedelta(days=1)))
+        old_records = cls.objects.filter(time_requested__lte=(timezone.now() - timedelta(days=1)))
         for old_record in old_records:
             old_errors = ErrorModels.objects.filter(task_key=old_record.task_key)
             for old_error in old_errors:

@@ -12,10 +12,44 @@ from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
 
-
 from .models import Client, WorkGroup, UserRegistrationError
 
+import threading
+import Queue
+import atexit
+
+
 GROUP_PROJECT_CATEGORY = 'group-project'
+
+
+def _worker():
+    while True:
+        func, args, kwargs = _queue.get()
+        try:
+            func(*args, **kwargs)
+        except:
+            pass # bork or ignore here; ignore for now
+        finally:
+            _queue.task_done() # so we can join at exit
+
+def postpone(func):
+    def decorator(*args, **kwargs):
+        _queue.put((func, args, kwargs))
+    return decorator
+
+def _cleanup():
+    _queue.join() # so we don't exit too soon
+
+_queue = Queue.Queue()
+atexit.register(_cleanup)
+
+
+def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_status):
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
+    process_uploaded_student_list(
+        student_list, client_id, absolute_uri, reg_status)
 
 def _load_course(course_id, depth=4, course_api_impl=course_api):
     '''
@@ -212,7 +246,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             reg_status.save()
 
 
-
+@postpone
 def process_uploaded_student_list(file_stream, client_id, activation_link_head, reg_status=None):
     # 1) Build user list
     user_list = _build_student_list_from_file(file_stream)

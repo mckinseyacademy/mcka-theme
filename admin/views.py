@@ -37,11 +37,12 @@ from .models import WorkGroup
 from .models import WorkGroupActivityXBlock
 from .models import ReviewAssignmentGroup
 from .models import UserRegistrationBatch, UserRegistrationError
-from .controller import process_uploaded_student_list, get_student_list_as_file, get_group_list_as_file
+from .controller import get_student_list_as_file, get_group_list_as_file
 from .controller import fetch_clients_with_program
 from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
+from .controller import upload_student_list_threaded
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -51,35 +52,6 @@ from .forms import PermissionForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report
 from .permissions import Permissions, PermissionSaveError
-
-import threading
-import Queue
-import atexit
-
-def _worker():
-    while True:
-        func, args, kwargs = _queue.get()
-        try:
-            func(*args, **kwargs)
-        except:
-            pass # bork or ignore here; ignore for now
-        finally:
-            _queue.task_done() # so we can join at exit
-
-def postpone(func):
-    def decorator(*args, **kwargs):
-        _queue.put((func, args, kwargs))
-    return decorator
-
-def _cleanup():
-    _queue.join() # so we don't exit too soon
-
-_queue = Queue.Queue()
-_thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-_thread.daemon = True # so we can exit
-_thread.start()
-
-atexit.register(_cleanup)
 
 
 def ajaxify_http_redirects(func):
@@ -530,7 +502,7 @@ def upload_student_list(request, client_id):
         form = UploadStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
             reg_status = UserRegistrationBatch.create();
-            _upload_student_list_threaded(
+            upload_student_list_threaded(
                 request.FILES['student_list'],
                 client_id,
                 request.build_absolute_uri('/accounts/activate'),
@@ -590,11 +562,6 @@ def upload_student_list_check(request, client_id, task_key):
                         'succeded': '0'}),
             content_type='application/json'
         )
-
-@postpone
-def _upload_student_list_threaded(student_list, client_id, absolute_uri, reg_status):
-    process_uploaded_student_list(
-        student_list, client_id, absolute_uri, reg_status)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_student_list(request, client_id):
