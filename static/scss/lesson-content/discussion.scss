@@ -13,7 +13,9 @@
       margin-bottom: 0;
     }
   }
+}
 
+#course-group-work .discussion-module {
   // Remove option to post anonymously from the group work discussions
   .discussion-anonymous,
   label[for="new-post-anonymous"] {
