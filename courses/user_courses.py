@@ -1,0 +1,222 @@
+import functools
+from django.conf import settings
+from django.template.defaultfilters import floatformat
+
+from accounts.middleware.thread_local import get_static_tab_context
+from admin.models import Program
+from api_client import user_api, course_api
+from license import controller as license_controller
+
+from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
+
+CURRENT_COURSE_ID = "current_course_id"
+CURRENT_PROGRAM_ID = "current_program_id"
+CURRENT_PROGRAM = "current_program"
+
+NO_PROGRAM_ID = "NO_PROGRAM"
+
+def _load_intersecting_program_courses(program, courses):
+    if program.id == NO_PROGRAM_ID:
+        program.courses = courses
+        program.outside_courses = None
+    else:
+        program_course_ids = [course.course_id for course in program.fetch_courses()]
+        program.courses = [course for course in courses if course.id in program_course_ids]
+        program.outside_courses = [course for course in courses if course.id not in program_course_ids]
+
+def get_current_course_by_user_id(user_id):
+    # Return first active course in the user's list
+    courses = user_api.get_user_courses(user_id)
+    courses = [c for c in courses if c.is_active]
+    if len(courses) > 0:
+        course_id = courses[0].id
+        return course_id
+    return None
+
+def get_current_course_for_user(request):
+    course_id = request.session.get(CURRENT_COURSE_ID, None)
+
+    if not course_id and request.user:
+        course_id = user_api.get_user_preferences(request.user.id).get(CURRENT_COURSE_ID, None)
+
+    if not course_id and request.user:
+        course_id = get_current_course_by_user_id(request.user.id)
+
+    return course_id
+
+def set_current_program_for_user(request, program):
+    prev_program = request.session.get(CURRENT_PROGRAM, None)
+    if prev_program is None or (prev_program.id != program.id):
+        request.session[CURRENT_PROGRAM] = program
+        request.session[CURRENT_PROGRAM_ID] = program.id
+        user_api.set_user_preferences(
+            request.user.id,
+            {
+                CURRENT_PROGRAM_ID: str(program.id),
+            }
+        )
+
+def set_current_course_for_user(request, course_id):
+    prev_course_id = request.session.get(CURRENT_COURSE_ID, None)
+    if prev_course_id != course_id:
+        request.session[CURRENT_COURSE_ID] = course_id
+        user_api.set_user_preferences(
+            request.user.id,
+            {
+                CURRENT_COURSE_ID: course_id,
+            }
+        )
+
+        # Additionally set the current program for this user
+        current_program = None
+        courses = user_api.get_user_courses(request.user.id)
+        for program in Program.user_programs_with_course(request.user.id, course_id):
+            if license_controller.fetch_granted_license(program.id, request.user.id) is not None:
+                current_program = program
+                break
+
+        if current_program is None:
+            # Fake program
+            current_program = Program(dictionary={"id": NO_PROGRAM_ID, "name": settings.NO_PROGRAM_NAME})
+
+        _load_intersecting_program_courses(current_program, courses)
+        set_current_program_for_user(request, current_program)
+
+def clear_current_course_for_user(request):
+    request.session[CURRENT_COURSE_ID] = None
+    user_api.delete_user_preference(request.user.id, CURRENT_COURSE_ID)
+
+def get_current_program_for_user(request):
+
+    # Attempt to load from current session
+    program = request.session.get(CURRENT_PROGRAM, None)
+
+    # Attempt to load from user preferences
+    if not program and request.user:
+        program_id = user_api.get_user_preferences(request.user.id).get(CURRENT_PROGRAM_ID, None)
+        if program_id == NO_PROGRAM_ID:
+            program = Program(dictionary={"id": NO_PROGRAM_ID, "name": settings.NO_PROGRAM_NAME})
+        elif program_id:
+            program = Program.fetch(program_id)
+
+        # if not attempt to load first program
+        if not program:
+            programs = Program.user_programs_with_course(
+                request.user.id,
+                get_current_course_for_user(request)
+            )
+            if len(programs) > 0:
+                program = programs[0]
+
+        if program:
+            _load_intersecting_program_courses(program, user_api.get_user_courses(request.user.id))
+            set_current_program_for_user(request, program)
+
+    # Return the program to the caller
+    return program
+
+def check_user_course_access(func):
+    '''
+    Decorator which will raise an CourseAccessDeniedError if the user does not have access to the requested course
+    '''
+    @functools.wraps(func)
+    def user_course_access_checker(request, course_id, *args, **kwargs):
+        try:
+            program = get_current_program_for_user(request)
+            if program is None:
+                set_current_course_for_user(request, course_id)
+                program = get_current_program_for_user(request)
+                if program is None:
+                    raise CourseAccessDeniedError(course_id)
+            course_access = [c for c in program.courses if c.id == course_id]
+            if len(course_access) < 1 and program.outside_courses and len(program.outside_courses) > 0:
+                course_access = [c for c in program.outside_courses if c.id == course_id]
+            if len(course_access) < 1:
+                raise CourseAccessDeniedError(course_id)
+        except CourseAccessDeniedError:
+            # they've tried to go elsewhere, so let's not even worry about holding
+            # onto the last course visited, trash it so a visit to homepage after
+            # getting this error will do the right thing and rebuild a correct list
+            # in case this was a course for which they previously had access, but now don't
+            clear_current_course_for_user(request)
+            # re-raise this error
+            raise
+
+        return func(request, course_id, *args, **kwargs)
+
+    return user_course_access_checker
+
+def _inject_formatted_data(program, course, page_id, static_tab_info=None):
+    if program:
+        for program_course in program.courses:
+            program_course.course_class = ""
+            if program_course.id == course.id:
+                program_course.course_class = "current"
+
+    if static_tab_info:
+        for idx, lesson in enumerate(course.chapters, start=1):
+            lesson_description = static_tab_info.get("lesson{}".format(idx), None)
+            if lesson_description:
+                lesson.description = lesson_description.content
+
+def load_course_progress(course, user_id):
+    completions = course_api.get_course_completions(course.id, user_id)
+    completed_ids = [result.content_id for result in completions]
+    component_ids = course.components_ids()
+    for lesson in course.chapters:
+        lesson.progress = 0
+        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids)
+        if len(lesson_component_ids) > 0:
+            matches = set(lesson_component_ids).intersection(completed_ids)
+            lesson.progress = 100 * len(matches) / len(lesson_component_ids)
+    actual_completions = set(component_ids).intersection(completed_ids)
+    course.user_progress = floatformat(100 * len(actual_completions)/len(component_ids), 0)
+
+def standard_data(request):
+    ''' Makes user and program info available to all templates '''
+    course = None
+    program = None
+
+    # have we already fetched this before and attached it to the current request?
+    if hasattr(request, 'user_program_data'):
+        return request.user_program_data
+
+    if request.user and request.user.id:
+        # test loading the course to see if we can; if not, we destroy cached
+        # information about current course and let the new course_id load again
+        # in subsequent calls
+        try:
+            course_id = get_current_course_for_user(request)
+            if not course_id is None:
+                course = load_course(course_id, request=request)
+        except:
+            clear_current_course_for_user(request)
+            course_id = get_current_course_for_user(request)
+
+        if course_id:
+            lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
+            module_id = request.resolver_match.kwargs.get('page_id', None)
+            if module_id is None or lesson_id is None:
+                course_id, lesson_id, page_id = locate_chapter_page(
+                    request, request.user.id, course_id, None)
+
+            course = build_page_info_for_course(request, course_id, lesson_id, module_id)
+            program = get_current_program_for_user(request)
+
+            # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
+            _inject_formatted_data(program, course, None, get_static_tab_context())
+
+            # Inject course progress for nav header
+            load_course_progress(course, request.user.id)
+
+    data = {
+        "course": course,
+        "program": program,
+    }
+
+    # point to this data from the request object, just in case we re-enter this method somewhere
+    # else down the execution pipeline, e.g. context_processing
+    request.user_program_data = data
+
+    return data
+
