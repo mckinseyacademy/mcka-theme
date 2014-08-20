@@ -17,6 +17,11 @@ def user_program_data(request):
     if hasattr(request, 'user_program_data'):
         return request.user_program_data
 
+    if request.META.has_key('HTTP_USER_AGENT'):
+        ua = request.META['HTTP_USER_AGENT'].lower()
+        if re.search('msie [1-8]\.', ua):
+            request.is_IE8 = True
+
     if request.user and request.user.id:
         # test loading the course to see if we can; if not, we destroy cached
         # information about current course and let the new course_id load again

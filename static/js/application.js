@@ -128,4 +128,11 @@ $(function(){
       "Before the course begins, you can explore this site to learn more about what to expect.");
       $('#generalModal').foundation('reveal', 'open');
   });
+
+  if ($('#unsupported_modal').length) {
+    $('[href="/accounts/login"]').on('click', function(e) {
+      e.preventDefault()
+      $('#unsupported_modal').foundation('reveal', 'open');
+    });
+  }
 });

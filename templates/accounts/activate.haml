@@ -9,6 +9,8 @@
       .row
         .large-7.medium-7.columns
           %h1 Welcome to McKinsey Academy
+          - if request.is_IE8
+            .outdated_browser We're sorry, McKinsey Academy is not compatible with your browser. You can continue the registration process, but will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
           %h4 Create your McKinsey Academy account
           .description Complete the fields below.
           .description
