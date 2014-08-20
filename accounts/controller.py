@@ -21,18 +21,6 @@ class ActivationError(Exception):
         return "ActivationError '{}'".format(self.value)
 
 
-class CourseAccessDeniedError(Exception):
-    '''
-    Exception to be thrown when course access is denied
-    '''
-    def __init__(self, value):
-        self.value = value
-        super(CourseAccessDeniedError, self).__init__()
-
-    def __str__(self):
-        return "Access denied to course '{}'".format(self.value)
-
-
 def user_activation_with_data(user_id, user_data, activation_record):
     try:
         # Make sure they'll be inactive while updating fields, then we explicitly activate them

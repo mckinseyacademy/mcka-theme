@@ -115,6 +115,18 @@ def get_current_program_for_user(request):
     # Return the program to the caller
     return program
 
+class CourseAccessDeniedError(Exception):
+    '''
+    Exception to be thrown when course access is denied
+    '''
+    def __init__(self, value):
+        self.value = value
+        super(CourseAccessDeniedError, self).__init__()
+
+    def __str__(self):
+        return "Access denied to course '{}'".format(self.value)
+
+
 def check_user_course_access(func):
     '''
     Decorator which will raise an CourseAccessDeniedError if the user does not have access to the requested course
