@@ -1,12 +1,31 @@
-from django_assets import Bundle, register
 import os
+
+from django.conf import settings
+
+from django_assets import Bundle, register
 
 os.environ['SASS_USE_SCSS'] = 'false'
 
-# Javascript squashing
-JS = Bundle(
-    'js/polyfills/*.js',
-    'js/plugins/*.js',
+def _build_file_list(folder, ext):
+    current_dir = os.getcwd()
+    os.chdir(os.path.join(settings.ASSETS_SOURCE_ROOT, folder))
+    matching_files = []
+    for root, dirs, files in os.walk('.',topdown=True):
+        folder_root = root.split('/')
+        folder_root[0] = folder
+        folder_name = '/'.join(folder_root)
+
+        matching_files.extend(["/".join([folder_name,name]) for name in files if os.path.splitext(name)[-1]==ext])
+
+
+    os.chdir(current_dir)
+
+    return matching_files
+
+js_files = []
+js_files.extend(_build_file_list("js/polyfills", ".js"))
+js_files.extend(_build_file_list("js/plugins", ".js"))
+js_files.extend([
     'js/vendor/jquery.form.js',
     'js/vendor/leaflet.js',
     'js/vendor/json2.js',
@@ -17,8 +36,13 @@ JS = Bundle(
     'js/vendor/dataTables.foundation.js',
     'js/application.js',
     'js/router.js',
-    'js/models/**/*.js',
-    'js/views/**/*.js',
+])
+js_files.extend(_build_file_list("js/models", ".js"))
+js_files.extend(_build_file_list("js/views", ".js"))
+
+# Javascript squashing
+JS = Bundle(
+    *js_files,
     filters='jsmin',
     output='packed.js'
 )
