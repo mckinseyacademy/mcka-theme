@@ -22,6 +22,8 @@ SECRET_KEY = '1x@epyq-))w6z8a@_9f+c8%g#n8o75jeh8c8d4_&y+f@2_(des'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ASSETS_SOURCE_ROOT = 'static'
+
 LOGGING = get_logger_config(BASE_DIR,
                             logging_env="dev",
                             tracking_filename="tracking.log",
@@ -138,7 +140,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cache')
 MEDIA_ROOT = ''
-ASSETS_SOURCE_ROOT = 'static'
 ASSETS_ROOT = 'static/gen'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
