@@ -85,7 +85,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
       className: className
     });
     if(user.title == null){
-      user.title = 'N/A';
+      user.title = '';
     }
     if(className == 'ta_user'){
       myIcon.iconSize = [44, 44];
