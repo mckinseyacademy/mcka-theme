@@ -1,3 +1,4 @@
+import re
 from django.conf import settings
 from courses.controller import build_page_info_for_course, locate_chapter_page, load_course_progress
 
@@ -57,9 +58,20 @@ def user_program_data(request):
 
 def settings_data(request):
     ''' makes global settings available to all templates '''
+    ie_favicon_prefix = ""
+    if request.META.has_key('HTTP_USER_AGENT'):
+        ua = request.META['HTTP_USER_AGENT'].lower()
+        if re.search('msie ', ua):
+            ie_favicon_prefix = "{}://{}".format(
+                "https" if request.is_secure() else "http",
+                request.META['HTTP_HOST'],
+            )
+
+
     data = {
         "ga_tracking_id": settings.GA_TRACKING_ID,
         "ta_email_group": settings.TA_EMAIL_GROUP,
+        "ie_favicon_prefix": ie_favicon_prefix,
     }
     return data
 
