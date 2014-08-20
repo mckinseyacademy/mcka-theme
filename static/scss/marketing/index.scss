@@ -61,6 +61,23 @@
 #faq-page {
   ul, ol {
     list-style-position: inside;
+
+    li {
+      em {
+        display: block;
+        text-indent: 17px;
+      }
+
+      span {
+        font-weight: 700;
+      }
+    }
+  }
+
+  p.style-2 {
+    + p {
+      margin-top: 0;
+    }
   }
 }
 
