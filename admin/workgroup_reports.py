@@ -123,7 +123,7 @@ class WorkgroupCompletionData(object):
                         group_xblock = self._get_activity_xblock(a.id)
                         user_activity_status = DottableDict(
                             {
-                                s:self._report_completion_boolean(self.is_complete(group_xblock, user_ids, s)) for s in individual_stages
+                                s:self._report_completion_boolean(self.is_complete(group_xblock, u.id, s)) for s in individual_stages
                             }
                         )
                         user_activity_status.upload = "--"
