@@ -131,7 +131,7 @@ $(function(){
 
   if ($('#unsupported_modal').length) {
     $('[href="/accounts/login"]').on('click', function(e) {
-      e.preventDefault()
+      e.preventDefault();
       $('#unsupported_modal').foundation('reveal', 'open');
     });
   }
