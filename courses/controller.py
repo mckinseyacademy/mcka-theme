@@ -229,9 +229,8 @@ def load_static_tabs(course_id):
     return static_tabs
 
 def average_progress(course, user_id):
-    module_count = course.module_count()
     metrics = course_api.get_course_metrics_completions(course.id, user_id)
-    return progress_percent(metrics.course_avg, module_count)
+    return metrics.course_avg
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
