@@ -11,12 +11,12 @@
       .row
         - include "courses/group_work/activity_menu.haml"
       .row
-        .large-8.medium-8.columns
+        .large-8.medium-8.columns.splitpiece.left
           .lesson-title
             %span= _("Group Project:")
             %span= group_project.name
           .lesson-content
-        .large-4.medium-4.columns.sidebar
+        .large-4.medium-4.columns.splitpiece.right
           .group-members
             %h4= _("Group Members")
             - for member in project_group.members

@@ -45,12 +45,20 @@
 
   nav { display: none; }
 
-  .sidebar {
-    margin-top: 20px;
-    border-left: 1px solid $mckinsey-grey;
-    .email-team {
-      float: right;
-      margin: 10px 0 10px 5px;
+  .splitpiece{
+    margin-top: 15px;
+    &.right{
+      .email-team {
+        float: right;
+        margin: 10px 0 10px 5px;
+      }
+    }
+    &.left{
+      border-right: 1px solid $mckinsey-grey;
+      .lesson-title{
+        padding-top: 0;
+      }
+      min-height: 400px;
     }
   }
 
