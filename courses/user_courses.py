@@ -4,6 +4,7 @@ from django.template.defaultfilters import floatformat
 from django.core.exceptions import PermissionDenied
 
 from accounts.middleware.thread_local import get_static_tab_context
+from admin.controller import load_course
 from admin.models import Program
 from api_client import user_api, course_api
 from license import controller as license_controller
