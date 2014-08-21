@@ -1,6 +1,7 @@
 import functools
 from django.conf import settings
 from django.template.defaultfilters import floatformat
+from django.core.exceptions import PermissionDenied
 
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.models import Program
@@ -115,7 +116,7 @@ def get_current_program_for_user(request):
     # Return the program to the caller
     return program
 
-class CourseAccessDeniedError(Exception):
+class CourseAccessDeniedError(PermissionDenied):
     '''
     Exception to be thrown when course access is denied
     '''
