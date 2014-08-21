@@ -120,6 +120,9 @@
   }
 
   .group-project-xblock-wrapper{
+    hr{
+      margin: 10px 0;
+    }
     .select_group{
       .avatar{
         background-image: none;
@@ -136,6 +139,60 @@
           border-color: $mckinsey-orange;
         }
       }
+    }
+    .feedback_sections .answer{
+      padding-bottom: 15px;
+    }
+    form{
+      label.qmark::after{
+        @include font-spec(14, semibold);
+        font-family: FontAwesome;
+        color: $mckinsey-orange;
+        content: "\f059";
+        padding-left: 4px;
+      }
+      textarea{
+        @include placeholder{
+          font-style: italic;
+        }
+      }
+      hr:last-of-type{
+        display: none;
+      }
+      .question.grade_question{
+        border-bottom: solid 1px $almost-white;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        select{
+          color: $mckinsey-academy-alt-blue;
+          border-color: $mckinsey-academy-alt-blue;
+        }
+        label, select, input{
+          margin-bottom: -10px;
+        }
+        &:last-of-type{
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+
+.upload_form{
+  @include font-spec(14, normal, 18);
+  .upload_item{
+    .upload_title{
+      @include font-spec(14, semibold, 28);
+      text-transform: uppercase;
+    }
+  }
+  .action_buttons .button{
+    margin-left: 12px;
+  }
+  .xblock-reveal.reveal-modal.open{
+    @media #{$large-up}{
+      margin-left: -20%;
+      width: 40%;
     }
   }
 }
