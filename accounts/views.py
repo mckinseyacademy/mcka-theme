@@ -15,17 +15,17 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 
-from lib.context_processors import user_program_data
 from api_client import user_api, course_api
 from api_client.api_error import ApiError
 from admin.models import Client
+from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
 from django.core import mail
 from django.test import TestCase
 # from importlib import import_module
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation, UserPasswordReset
-from .controller import get_current_course_for_user, get_current_program_for_user, user_activation_with_data, ActivationError, is_future_start, save_profile_image
+from .controller import user_activation_with_data, ActivationError, is_future_start, save_profile_image
 from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
@@ -341,7 +341,7 @@ def reset_complete(request,
 def home(request):
     ''' show me the home page '''
 
-    programData = user_program_data(request)
+    programData = standard_data(request)
     program = programData.get('program')
     course = programData.get('course')
 

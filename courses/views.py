@@ -9,8 +9,6 @@ from django.shortcuts import render
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext as _
 
-from accounts.controller import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
-from accounts.controller import check_user_course_access
 from admin.controller import load_course
 from admin.models import WorkGroup
 from api_client import course_api, user_api, workgroup_api
@@ -23,24 +21,13 @@ from .controller import build_page_info_for_course, locate_chapter_page, load_st
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
+from .user_courses import check_user_course_access, standard_data
+from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
 
 # Temporary id converter to fix up problems post opaque keys
 from lib.util import LegacyIdConvert
 
 # Create your views here.
-
-def _inject_formatted_data(program, course, page_id, static_tab_info=None):
-    if program:
-        for program_course in program.courses:
-            program_course.course_class = ""
-            if program_course.id == course.id:
-                program_course.course_class = "current"
-
-    if static_tab_info:
-        for idx, lesson in enumerate(course.chapters, start=1):
-            lesson_description = static_tab_info.get("lesson{}".format(idx), None)
-            if lesson_description:
-                lesson.description = lesson_description.content
 
 @login_required
 @check_user_course_access
@@ -49,10 +36,9 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
-
-    course = load_course(course_id, request=request)
-    static_tabs = load_static_tabs(course_id)
     set_current_course_for_user(request, course_id)
+    course = standard_data(request).get("course", None)
+    static_tabs = load_static_tabs(course_id)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
