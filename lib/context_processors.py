@@ -24,6 +24,7 @@ def settings_data(request):
         "ga_tracking_id": settings.GA_TRACKING_ID,
         "ta_email_group": settings.TA_EMAIL_GROUP,
         "ie_favicon_prefix": ie_favicon_prefix,
+        "session_id": request.session.session_key,
     }
     return data
 
