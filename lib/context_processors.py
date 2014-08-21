@@ -66,7 +66,8 @@ def settings_data(request):
                 "https" if request.is_secure() else "http",
                 request.META['HTTP_HOST'],
             )
-
+            if re.search('msie [1-8]\.', ua):
+                request.is_IE8 = True
 
     data = {
         "ga_tracking_id": settings.GA_TRACKING_ID,

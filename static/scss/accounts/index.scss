@@ -61,6 +61,11 @@
   input[submit]{
     padding-top: 20px;
   }
+
+  .outdated_browser {
+    color: $mckinsey-orange;
+    margin-bottom: 30px;
+  }
 }
 
 #generalModal.reveal-modal{
