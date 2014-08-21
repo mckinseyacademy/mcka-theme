@@ -366,6 +366,21 @@ form {
   background: none;
   border-right: 1px solid $almost-white;
 
+  input[type="file"]{
+    display: none;
+  }
+  .browse-wrapper{
+
+    label{
+      display:inline;
+    }
+  }
+
+  .helptext{
+    position: relative;
+    top: -10px;
+  }
+
   #progress{
     height: 18px;
     max-width: 100%;
