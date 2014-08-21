@@ -36,7 +36,7 @@
   }
   .required-field{
     color: $mckinsey-red;
-    font-weight: normal;
+    @include font-spec(14, semibold);
     &::after{
       content: '*';
     }
