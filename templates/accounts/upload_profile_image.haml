@@ -7,6 +7,9 @@
       SELECT NEW PROFILE IMAGE
     %hr
     - csrf_token
+    .browse-wrapper
+      %button#browse-image.button.tiny.radius{'type': 'button'} Browse
+      %label{'for': 'browse-image'} No file selected.
     = form
     %br
     %br

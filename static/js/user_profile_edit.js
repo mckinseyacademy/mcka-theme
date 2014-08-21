@@ -1,5 +1,7 @@
 $(function(){
 
+  var ImageFileName = "No file Selected";
+
   function reInitCropper(){
     var $image = $(".img-container .user-uploaded-image"),
     $dataX1 = $("#x1-position"),
@@ -43,6 +45,7 @@ $(function(){
           if(data.textStatus == 'success'){
             $('#edit-user-image-modal').fileupload('destroy');
             modal.html(data.result);
+            $('label[for="browse-image"]').text(ImageFileName);
             reloadImages();
           }
         },
@@ -100,6 +103,18 @@ $(function(){
 
   $(document).on('closed.fndtn.reveal', '#edit-user-image-modal', function () {
     window.location.reload(true);
+  });
+
+  $('#edit-user-image-modal').on('click', '#browse-image', function(){
+    $('#id_profile_image').trigger('click');
+  });
+
+  $('#edit-user-image-modal').on('change', '#id_profile_image', function(e){
+    ImageFileName = $(this).val();
+    if(ImageFileName.length > 27){
+      ImageFileName = (ImageFileName.substring(0, 27) + "...");
+    }
+    $('label[for="browse-image"]').text(ImageFileName);
   });
 
   $('#edit-user-image-modal').on('submit', '#cropping-form', function(e){
