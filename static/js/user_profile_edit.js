@@ -26,39 +26,6 @@ $(function(){
     });
   }
 
-  function FileUploadInit(){
-      $('#edit-user-image-modal').fileupload({
-        dataType: 'html',
-        autoUpload: true,
-        replaceFileInput: false,
-        change: function(e, data){
-          modal = $('#edit-user-image-modal');
-          modal.find('.error').html('');
-        },
-        send: function(e, data){
-          if(data.fileInput.length > 0){
-            var validate = FileTypeValidate(data.fileInput[0].value, modal.find('.error'));
-            if(validate){
-              $('img.spinner.upload-profile').show();
-            }
-            return validate;
-          }
-          return false;
-        },
-        done: function (e, data) {
-          if(data.textStatus == 'success'){
-            $('#edit-user-image-modal').fileupload('destroy');
-            modal.html(data.result);
-            $('label[for="browse-image"]').text(ImageFileName);
-            reloadImages();
-          }
-        },
-        always: function(e, data){
-          $('img.spinner.upload-profile').hide();
-        }
-    });
-  }
-
   function reloadImages(){
     var d = new Date();
     var now = d.getTime();
@@ -68,7 +35,6 @@ $(function(){
         reInitCropper();
       }
     }).attr('src', $(".img-container .user-uploaded-image").attr('src') + '&' + now);
-    FileUploadInit();
   }
 
 
@@ -94,6 +60,33 @@ $(function(){
       return false;
   }
 
+  function DoFileUpload(e, that){
+      var form = that.parents('form').first();
+      var modal = $('#edit-user-image-modal');
+      modal.find('.error').html('');
+      var validate = FileTypeValidate(that.val(), modal.find('.error'));
+      if(validate){
+        $('img.spinner.upload-profile').show();
+        var options = {
+                    url     : form.attr('action'),
+                    type    : 'POST',
+                    contentType: false,
+                    success:function( data ) {
+                        $('img.spinner.upload-profile').hide();
+                          modal.html(data);
+                          $('label[for="id_profile_image"]').text(ImageFileName);
+                          reloadImages();
+                        },
+                    error: function( data ){
+                          $('img.spinner.upload-profile').hide();
+                          modal.find('.error').append('<p class="warning">Please select file first.</p>');
+                        }
+                    }
+
+      form.ajaxSubmit(options);
+    }
+  }
+
   $(document).on('opened.fndtn.reveal', '#edit-user-image-modal', function () {
     $(this).find('img').error(function() {
       $(this).hide();
@@ -105,8 +98,16 @@ $(function(){
     window.location.reload(true);
   });
 
+  $(document).on('mouseenter', '#id_profile_image', function(){
+    $('#browse-image').addClass('hover');
+  });
+
+  $(document).on('mouseleave', '#id_profile_image', function(){
+    $('#browse-image').removeClass('hover');
+  });
+
   $('#edit-user-image-modal').on('click', '#browse-image', function(){
-    $('#id_profile_image').trigger('click');
+    $('label[for="id_profile_image"]').trigger('click');
   });
 
   $('#edit-user-image-modal').on('change', '#id_profile_image', function(e){
@@ -114,7 +115,8 @@ $(function(){
     if(ImageFileName.length > 27){
       ImageFileName = (ImageFileName.split('\\').pop().substring(0, 27) + "...");
     }
-    $('label[for="browse-image"]').text(ImageFileName);
+    $('label[for="id_profile_image"]').text(ImageFileName);
+    DoFileUpload(e, $(this));
   });
 
   $('#edit-user-image-modal').on('submit', '#cropping-form', function(e){
@@ -132,3 +134,4 @@ $(function(){
       });
     });
 })
+
