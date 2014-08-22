@@ -112,7 +112,7 @@ $(function(){
   $('#edit-user-image-modal').on('change', '#id_profile_image', function(e){
     ImageFileName = $(this).val();
     if(ImageFileName.length > 27){
-      ImageFileName = (ImageFileName.substring(0, 27) + "...");
+      ImageFileName = (ImageFileName.split('\\').pop().substring(0, 27) + "...");
     }
     $('label[for="browse-image"]').text(ImageFileName);
   });
