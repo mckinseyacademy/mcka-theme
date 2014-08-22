@@ -62,6 +62,11 @@ $(function(){
                           }
                         })
                       }, 2000);
+                      $(document).on('closed.fndtn.reveal', '#upload_student_list', function () {
+                        if(poolingInterval){
+                          clearInterval(poolingInterval);
+                        }
+                      });
                     },
                 error: function( data ){
                       data = $.parseJSON(data);
