@@ -375,6 +375,12 @@ form {
       display:inline;
     }
   }
+  img.spinner.upload-profile{
+    position:relative;
+    top:-10px;
+    left:5px;
+    display:none;
+  }
 
   .helptext{
     position: relative;
