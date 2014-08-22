@@ -184,7 +184,7 @@ button,
   background-color: $mckinsey-academy-alt-blue;
   box-shadow: 0px 3px 3.84px 0.16px rgba(153, 153, 153, 0.3);
 
-  &:hover {
+  &:hover, &.hover {
     background-color: $mckinsey-academy-blue-gray;
   }
 
@@ -192,7 +192,7 @@ button,
   &[disabled] {
     background-color: $almost-white;
 
-    &:hover {
+    &:hover, &.hover {
       background-color: $almost-white;
     }
   }
@@ -367,10 +367,16 @@ form {
   border-right: 1px solid $almost-white;
 
   input[type="file"]{
-    display: none;
+    display: block;
+    opacity: 0;
+    padding: 7px 0;
+    position: absolute;
+    top: 0px;
+    z-index:1000;
+    width:80px;
   }
   .browse-wrapper{
-
+    position:relative;
     label{
       display:inline;
     }
@@ -380,11 +386,12 @@ form {
     top:-10px;
     left:5px;
     display:none;
+    float:left;
   }
 
   .helptext{
     position: relative;
-    top: -10px;
+    float:left;
   }
 
   #progress{
