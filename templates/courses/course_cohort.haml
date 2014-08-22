@@ -35,7 +35,7 @@
           - if proficiency.leaders
             - for leader in proficiency.leaders
               .user
-                %img.avatar{src: '={leader.avatar_url}'}
+                %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
                 .info
                   .person-name ={leader.username}
                   .person-title ={leader.title}
@@ -70,7 +70,7 @@
           - if completions.leaders
             - for leader in completions.leaders
               .user
-                %img.avatar{src: '={leader.avatar_url}'}
+                %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
                 .info
                   .person-name ={leader.username}
                   .person-title ={leader.title}
@@ -106,7 +106,7 @@
           - if social.leaders
             - for leader in social.leaders
               .user
-                %img.avatar{src: '={leader.avatar_url}'}
+                %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
                 .info
                   .person-name ={leader.username}
                   .person-title ={leader.title}
