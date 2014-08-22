@@ -1,3 +1,4 @@
+-load staticfiles
 - block upload_profile_image
 .upload-profile-image
   %form#upload-profile-image-form{action: "/accounts/user/#{user.id}/upload_profile_image/", method: "POST", enctype: "multipart/form-data"}
@@ -11,10 +12,7 @@
       %button#browse-image.button.tiny.radius{'type': 'button'} Browse
       %label{'for': 'browse-image'} No file selected.
     = form
-    %br
-    %br
-    #progress
-      .bar{'style': "width: 0%;"}
+    %img.spinner.upload-profile{'src': "{% static 'image/loading-spin.svg' %}", 'alt': "Loading icon"}
     %br
     %br
     .error.warning

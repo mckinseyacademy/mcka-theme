@@ -37,7 +37,11 @@ $(function(){
         },
         send: function(e, data){
           if(data.fileInput.length > 0){
-            return FileTypeValidate(data.fileInput[0].value, modal.find('.error'));
+            var validate = FileTypeValidate(data.fileInput[0].value, modal.find('.error'));
+            if(validate){
+              $('img.spinner.upload-profile').show();
+            }
+            return validate;
           }
           return false;
         },
@@ -49,13 +53,9 @@ $(function(){
             reloadImages();
           }
         },
-        progress: function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#progress .bar').css(
-            'width',
-            progress + '%'
-        );
-      }
+        always: function(e, data){
+          $('img.spinner.upload-profile').hide();
+        }
     });
   }
 
