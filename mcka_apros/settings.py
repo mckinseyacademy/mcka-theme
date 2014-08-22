@@ -67,6 +67,13 @@ LOCAL_APPS = (
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+SOUTH_MIGRATION_MODULES = {
+    'accounts': 'accounts.migrations',
+    'admin': 'admin.migrations',
+    'main': 'main.migrations',
+    'license': 'license.migrations',
+}
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

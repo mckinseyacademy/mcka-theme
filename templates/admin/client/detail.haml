@@ -33,18 +33,7 @@
               Upload Student List
             %a.button.radius.small{href: "/admin/clients/#{client.id}/download_student_list", target: "_blank"}
               Download Student List
-          - if upload_results
             .upload_results
-              .message= upload_results.message
-              - if upload_results.failed > 0
-                .errors
-                  %a{href: "#", "data-reveal-id": "upload_error_list"}
-                    = _("Show Errors")
-                  %ul#upload_error_list.reveal-modal{"data-reveal": "true"}
-                    .close-reveal-modal
-                      %i.fa.fa-times-circle
-                    - for error in upload_results.errors
-                      %li= error
         %hr
         %section
           %header Add a Program:

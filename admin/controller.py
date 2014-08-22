@@ -12,10 +12,44 @@ from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
 
+from .models import Client, WorkGroup, UserRegistrationError
 
-from .models import Client, WorkGroup
+import threading
+import Queue
+import atexit
+
 
 GROUP_PROJECT_CATEGORY = 'group-project'
+
+
+def _worker():
+    while True:
+        func, args, kwargs = _queue.get()
+        try:
+            func(*args, **kwargs)
+        except:
+            pass # bork or ignore here; ignore for now
+        finally:
+            _queue.task_done() # so we can join at exit
+
+def postpone(func):
+    def decorator(*args, **kwargs):
+        _queue.put((func, args, kwargs))
+    return decorator
+
+def _cleanup():
+    _queue.join() # so we don't exit too soon
+
+_queue = Queue.Queue()
+atexit.register(_cleanup)
+
+
+def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_status):
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
+    process_uploaded_student_list(
+        student_list, client_id, absolute_uri, reg_status)
 
 def _load_course(course_id, depth=4, course_api_impl=course_api):
     '''
@@ -159,9 +193,8 @@ def _build_student_list_from_file(file_stream):
     return user_objects
 
 
-def _register_users_in_list(user_list, client_id, activation_link_head):
+def _register_users_in_list(user_list, client_id, activation_link_head, reg_status):
     client = Client.fetch(client_id)
-    errors = []
     for user_dict in user_list:
         failure = None
         user_error = None
@@ -204,31 +237,29 @@ def _register_users_in_list(user_list, client_id, activation_link_head):
 
         if user_error:
             print user_error
-            errors.append(user_error)
+            error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
+            reg_status.failed = reg_status.failed + 1
+            reg_status.save()
         else:
             print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
+            reg_status.succeded = reg_status.succeded + 1
+            reg_status.save()
 
-    return errors
 
-
-def process_uploaded_student_list(file_stream, client_id, activation_link_head):
+@postpone
+def process_uploaded_student_list(file_stream, client_id, activation_link_head, reg_status=None):
     # 1) Build user list
     user_list = _build_student_list_from_file(file_stream)
-    attempted_count = len(user_list)
-
-    errors = [user_info["error"] for user_info in user_list if "error" in user_info]
+    if reg_status is not None:
+        reg_status.attempted = len(user_list)
+        reg_status.save()
+    for user_info in user_list:
+        if "error" in user_info:
+            UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
     user_list = [user_info for user_info in user_list if "error" not in user_info]
 
     # 2) Register the users, and associate them with client
-    errors.extend(_register_users_in_list(user_list, client_id, activation_link_head))
-    failed_count = len(errors)
-
-    # 3) Return any error information
-    return {
-        "attempted": attempted_count,
-        "failed": failed_count,
-        "errors": errors
-    }
+    _register_users_in_list(user_list, client_id, activation_link_head, reg_status)
 
 
 def _formatted_user_string(user):

@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
+from django.core import serializers
 
 from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
@@ -36,11 +37,13 @@ from .models import Program
 from .models import WorkGroup
 from .models import WorkGroupActivityXBlock
 from .models import ReviewAssignmentGroup
-from .controller import process_uploaded_student_list, get_student_list_as_file, get_group_list_as_file
+from .models import UserRegistrationBatch, UserRegistrationError
+from .controller import get_student_list_as_file, get_group_list_as_file
 from .controller import fetch_clients_with_program
 from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
+from .controller import upload_student_list_threaded
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -50,6 +53,7 @@ from .forms import PermissionForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
+
 
 def ajaxify_http_redirects(func):
     def wrapper(*args, **kwargs):
@@ -276,13 +280,12 @@ def client_edit(request, client_id):
 
 
 def _format_upload_results(upload_results):
-    results_object = Objectifier(upload_results)
-    results_object.message = _("Successfully processed {} of {} records").format(
-        results_object.attempted - results_object.failed,
-        results_object.attempted,
+    upload_results.message = _("Successfully processed {} of {} records").format(
+        upload_results.attempted - upload_results.failed,
+        upload_results.attempted,
     )
 
-    return results_object
+    return upload_results
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
@@ -314,9 +317,6 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
                     student.created = user.created.strftime(settings.SHORT_DATE_FORMAT)
                 if user.is_active == True:
                     student.enrolled = True
-
-    if upload_results:
-        data["upload_results"] = _format_upload_results(upload_results)
 
     return render(
         request,
@@ -502,12 +502,17 @@ def upload_student_list(request, client_id):
         # A form bound to the POST data and FILE data
         form = UploadStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
-            upload_results = process_uploaded_student_list(
+            reg_status = UserRegistrationBatch.create();
+            upload_student_list_threaded(
                 request.FILES['student_list'],
                 client_id,
-                request.build_absolute_uri('/accounts/activate')
+                request.build_absolute_uri('/accounts/activate'),
+                reg_status
             )
-            return client_detail(request, client_id, detail_view="detail", upload_results=upload_results)
+            return HttpResponse(
+                json.dumps({"task_key": _(reg_status.task_key)}),
+                content_type='text/plain'
+            )
     else:
         ''' adds a new client '''
         form = UploadStudentListForm()  # An unbound form
@@ -524,6 +529,40 @@ def upload_student_list(request, client_id):
         data
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def upload_student_list_check(request, client_id, task_key):
+    ''' checks on status of student list upload '''
+
+    reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
+    UserRegistrationBatch.clean_old();
+    if len(reg_status) > 0:
+        reg_status = reg_status[0]
+        if reg_status.attempted == (reg_status.failed + reg_status.succeded):
+            errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
+            errors_as_json = serializers.serialize('json', errors)
+            status = _format_upload_results(reg_status)
+            for error in errors:
+                error.delete()
+            reg_status.delete()
+            return HttpResponse(
+                '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                content_type='application/json'
+            )
+        else:
+            return HttpResponse(
+                        json.dumps({'done': 'progress',
+                                    'attempted': reg_status.attempted,
+                                    'failed': reg_status.failed,
+                                    'succeded': reg_status.succeded}),
+                        content_type='application/json'
+                    )
+    return HttpResponse(
+            json.dumps({'done': 'failed',
+                        'attempted': '0',
+                        'failed': '0',
+                        'succeded': '0'}),
+            content_type='application/json'
+        )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_student_list(request, client_id):
