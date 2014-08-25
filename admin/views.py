@@ -1022,28 +1022,17 @@ def workgroup_group_remove(request, group_id):
 def download_group_list(request, course_id):
 
     course = load_course(course_id, request=request)
-    groupsList = WorkGroup.list()
-    groups = []
-    groupedStudents = []
-
-    for group in groupsList:
-        users = group_api.get_users_in_group(group.id)
-        group.students = users
-        for user in users:
-            companies = user_api.get_user_groups(user.id, group_type = 'organization')
-            if len(companies) > 0:
-                company = Client.fetch(companies[0].id)
-                user.company = company.display_name
-        groups.append(group)
+    students, companies = getStudentsWithCompanies(course)
+    group_projects = load_group_projects_info_for_course(course, companies)
+    group_project_groups, students = filter_groups_and_students(group_projects, students)
 
     filename = slugify(unicode("Groups List for {} on {}".format(
         course.name,
         datetime.now().isoformat()
     )))
 
-
     response = HttpResponse(
-        get_group_list_as_file(groups),
+        get_group_list_as_file(group_projects, group_project_groups),
         content_type='text/csv'
     )
     response['Content-Disposition'] = 'attachment; filename={}.csv'.format(

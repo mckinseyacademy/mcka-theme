@@ -313,9 +313,20 @@ def get_user_with_activation(user_id, activation_link):
 
     return user
 
-def get_group_list_as_file(groups):
-    group_string = [_formatted_group_string(group) for group in groups]
-    return '\n'.join(group_string)
+def get_group_list_as_file(group_projects, group_project_groups):
+    group_list_lines = []
+    for group_project in group_projects:
+        group_list_lines.append("{}: {}\n".format(
+                _("PROJECT"),
+                group_project.name.upper(),
+            )
+        )
+        for group in group_project_groups[group_project.id]:
+            group.students = [user_api.get_user(u.id) for u in group.users]
+            group_list_lines.append(_formatted_group_string(group))
+        group_list_lines.append("\n")
+
+    return '\n'.join(group_list_lines)
 
 
 def fetch_clients_with_program(program_id):
