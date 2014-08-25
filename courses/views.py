@@ -37,8 +37,8 @@ def course_landing_page(request, course_id):
     etc. from user settings
     '''
     set_current_course_for_user(request, course_id)
-    course = standard_data(request).get("course", None)
     static_tabs = load_static_tabs(course_id)
+    course = standard_data(request).get("course", None)
     proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
