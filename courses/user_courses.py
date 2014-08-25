@@ -15,10 +15,8 @@ CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
 CURRENT_PROGRAM = "current_program"
 
-NO_PROGRAM_ID = "NO_PROGRAM"
-
 def _load_intersecting_program_courses(program, courses):
-    if program.id == NO_PROGRAM_ID:
+    if program.id == Program.NO_PROGRAM_ID:
         program.courses = courses
         program.outside_courses = None
     else:
@@ -79,7 +77,7 @@ def set_current_course_for_user(request, course_id):
 
         if current_program is None:
             # Fake program
-            current_program = Program(dictionary={"id": NO_PROGRAM_ID, "name": settings.NO_PROGRAM_NAME})
+            current_program = Program.no_program()
 
         _load_intersecting_program_courses(current_program, courses)
         set_current_program_for_user(request, current_program)
@@ -96,19 +94,24 @@ def get_current_program_for_user(request):
     # Attempt to load from user preferences
     if not program and request.user:
         program_id = user_api.get_user_preferences(request.user.id).get(CURRENT_PROGRAM_ID, None)
-        if program_id == NO_PROGRAM_ID:
-            program = Program(dictionary={"id": NO_PROGRAM_ID, "name": settings.NO_PROGRAM_NAME})
+        if program_id == Program.NO_PROGRAM_ID:
+            program = Program.no_program()
         elif program_id:
             program = Program.fetch(program_id)
 
         # if not attempt to load first program
         if not program:
-            programs = Program.user_programs_with_course(
-                request.user.id,
-                get_current_course_for_user(request)
-            )
+            current_course_id = get_current_course_for_user(request)
+            programs = []
+            if current_course_id:
+                programs = Program.user_programs_with_course(
+                    request.user.id,
+                    current_course_id,
+                )
+            else:
+                programs = Program.user_program_list(request.user.id)
             if len(programs) > 0:
-                program = programs[0]
+                program = Program.fetch(programs[0].id)
 
         if program:
             _load_intersecting_program_courses(program, user_api.get_user_courses(request.user.id))
@@ -207,6 +210,7 @@ def standard_data(request):
             clear_current_course_for_user(request)
             course_id = get_current_course_for_user(request)
 
+        program = get_current_program_for_user(request)
         if course_id:
             lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             module_id = request.resolver_match.kwargs.get('page_id', None)
@@ -215,7 +219,6 @@ def standard_data(request):
                     request, request.user.id, course_id, None)
 
             course = build_page_info_for_course(request, course_id, lesson_id, module_id)
-            program = get_current_program_for_user(request)
 
             # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
             _inject_formatted_data(program, course, None, get_static_tab_context())
