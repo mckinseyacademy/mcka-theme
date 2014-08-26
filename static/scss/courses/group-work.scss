@@ -54,11 +54,10 @@
       }
     }
     &.left{
-      border-right: 1px solid $mckinsey-grey;
+      padding-right:0;
       .lesson-title{
         padding-top: 0;
       }
-      min-height: 400px;
     }
   }
 
@@ -76,6 +75,8 @@
 
   .activity_section {
     min-height: 400px;
+    border-right:1px solid #cccccc;
+    padding-right: 20px;
   }
 
   button{
