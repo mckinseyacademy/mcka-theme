@@ -17,7 +17,7 @@ from django.utils.translation import ugettext as _
 
 from api_client import user_api, course_api
 from api_client.api_error import ApiError
-from admin.models import Client
+from admin.models import Client, Program
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
 from django.core import mail
@@ -348,9 +348,9 @@ def home(request):
     data = {'popup': {'title': '', 'description': ''}}
     if request.session.get('program_popup') is None:
         if program:
-            if program.id is not 'NO_PROGRAM':
+            if program.id is not Program.NO_PROGRAM_ID:
                 days = ''
-                if  not course.start is None and course.start > datetime.datetime.today():
+                if course and course.start is not None and course.start > datetime.datetime.today():
                     days = str(
                         int(math.floor(((course.start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
                 elif hasattr(program, 'start_date') and program.start_date > datetime.datetime.today():
