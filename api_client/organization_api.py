@@ -8,8 +8,6 @@ from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
 from .json_requests import GET, POST, DELETE, PATCH
-from . import user_models
-from . import course_models
 
 ORGANIZATION_API = getattr(settings, 'ORGANIZATION_API', 'api/server/organizations')
 

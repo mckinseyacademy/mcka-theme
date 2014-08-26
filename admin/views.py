@@ -308,12 +308,13 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
 
-        # REFACTOR ONCE MCKIN-1291 is done
-        # remove the per user calls.
         if detail_view == "programs":
+            user_ids = [str(student.id) for student in data["students"]]
+            additional_fields = ["created", "is_active"]
+            user_dict = {str(u.id) : u for u in user_api.get_users(ids=user_ids,fields=additional_fields)} if len(user_ids) > 0 else {}
             for student in data["students"]:
-                user = user_api.get_user(student.id)
-                if hasattr(user, 'created'):
+                user = user_dict[str(student.id)]
+                if user.created:
                     student.created = user.created.strftime(settings.SHORT_DATE_FORMAT)
                 if user.is_active == True:
                     student.enrolled = True
@@ -712,12 +713,13 @@ def add_students_to_program(request, client_id):
         response.status_code = 403
         return response
     messages = []
+
+    additional_fields = ["is_active"]
+    user_dict = {str(u.id) : u for u in user_api.get_users(ids=students,fields=additional_fields)} if len(students) > 0 else {}
     for student_id in students:
         try:
             program.add_user(client_id, student_id)
-            # NEED TO CHANGE THIS ONCE MCKIN-1273 is done
-            # Should do just one call to get filtered user list
-            student = user_api.get_user(student_id)
+            student = user_dict[student_id]
 
             if student.is_active:
                 msg = email_add_active_student(request, program, student)
@@ -850,7 +852,9 @@ def workgroup_detail(request, course_id, workgroup_id):
     Get detailed information about the specific workgroup for this course
     '''
     workgroup = WorkGroup.fetch(workgroup_id)
-    users = user_api.get_users(ids=','.join([str(u.id) for u in workgroup.users]))
+    additional_fields = ["avatar_url"]
+    user_ids = [str(u.id) for u in workgroup.users]
+    users = user_api.get_users(ids=user_ids,fields=additional_fields)
     project = Project.fetch(workgroup.project)
 
     course = load_course(course_id, request=request)
@@ -1094,13 +1098,14 @@ def permissions(request):
     admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
 
     # fetch users users that have no company association
-    users = user_api.get_users(has_organizations=False)
+    additional_fields = ["organizations"]
+    users = user_api.get_users(has_organizations=False,fields=additional_fields)
 
     # fetch users in administrative company
     admin_users = []
     if admin_company and admin_company.users:
-        ids = ','.join(str(id) for id in admin_company.users)
-        admin_users = user_api.get_users(ids=ids)
+        ids = [str(id) for id in admin_company.users]
+        admin_users = user_api.get_users(ids=ids,fields=additional_fields)
 
     users.extend(admin_users)
 
