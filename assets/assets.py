@@ -22,6 +22,31 @@ def _build_file_list(folder, ext):
 
     return matching_files
 
+js_ie8_files = []
+js_ie8_files.extend(_build_file_list("js/polyfills", ".js"))
+js_ie8_files.extend(_build_file_list("js/plugins", ".js"))
+js_ie8_files.extend([
+    'js/vendor/jquery.form.js',
+    'js/vendor/leaflet.js',
+    'js/vendor/json2.js',
+    'js/vendor/underscore.js',
+    'js/vendor/backbone.js',
+    #'js/vendor/d3.v3.js',
+    #'js/vendor/nv.d3.js',
+    'js/vendor/dataTables.foundation.js',
+    'js/application.js',
+    'js/router.js',
+])
+js_ie8_files.extend(_build_file_list("js/models", ".js"))
+js_ie8_files.extend(_build_file_list("js/views", ".js"))
+# Javascript squashing
+JS_IE8 = Bundle(
+    *js_ie8_files,
+    filters='jsmin',
+    output='packed_ie8.js'
+)
+register('js_ie8', JS_IE8)
+
 js_files = []
 js_files.extend(_build_file_list("js/polyfills", ".js"))
 js_files.extend(_build_file_list("js/plugins", ".js"))
@@ -93,3 +118,18 @@ CSS_ADMIN = Bundle(
     output='packed_admin.css'
 )
 register('css_admin', CSS_ADMIN)
+
+# IE8 Overries
+SCSS_IE8 = Bundle(
+    'scss/ie8.scss',
+    filters='sass',
+    output='ie8.css',
+    depends=('scss/**/*.scss')
+)
+register('scss_ie8', SCSS_IE8)
+
+CSS_IE8 = Bundle(
+    SCSS_IE8,
+    output='packed_ie8.css'
+)
+register('css_ie8', CSS_IE8)

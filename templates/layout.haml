@@ -51,6 +51,11 @@
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
 
+    - if request.is_IE8
+      {% assets "css_ie8" %}
+        %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
+      {% endassets %}
+
     -# Override if you need another version of modernizr; or comment out for now - we dont' need it yet
     - block foundation_modernizer
       -# %script{src: "{% static 'js/vendor/modernizr.js' %}"}
@@ -110,10 +115,12 @@
     #edit_field_modal.reveal-modal.small{data-reveal: None}
 
     - if request.is_IE8
-      #unsupported_modal.reveal-modal.small{'data-reveal': None}
-        .close-reveal-modal
-          %i.fa.fa-times-circle
-        %p We're sorry, McKinsey Academy is not compatible with your browser. Please update your browser to access course content. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
+      #unsupported_modal
+        .modal-bg
+        .reveal-modal.small.open
+          .close-box
+            %i.fa.fa-times-circle
+          %p We're sorry, McKinsey Academy is not compatible with your browser. Please update your browser to access course content. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
 
     -# Override if you need another version of jQuery
     - block foundation_jquery
@@ -137,9 +144,14 @@
 
     -# Custom JS
     - block body_js
-      {% assets "js_all" %}
-        %script{src: "{{ ASSET_URL }}"}
-      {% endassets %}
+      - if request.is_IE8
+        {% assets "js_ie8" %}
+          %script{src: "{{ ASSET_URL }}"}
+        {% endassets %}
+      - else
+        {% assets "js_all" %}
+          %script{src: "{{ ASSET_URL }}"}
+        {% endassets %}
 
     -# JS - custom snippets
     - block js_snippets

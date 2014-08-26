@@ -1,0 +1,57 @@
+header[role=banner].background-blue {
+  .logo{
+    background-image: none;
+    height: 60%;
+    left: 25px;
+    top: 8px;
+    position: relative;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding_beta.png', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding_beta.png', sizingMethod='scale')";
+  }
+  nav {
+    ul {
+      margin-left: 40px;
+      li {
+        padding-right: 20px;
+      }
+    }
+  }
+}
+
+#unsupported_modal{
+  display: none;
+  .modal-bg{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    filter:alpha(opacity=45);
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
+    z-index: 99;
+    top: 0;
+    left: 0;
+  }
+  .reveal-modal.open{
+    display:block !important;
+    visibility:visible !important;
+    width:500px !important;
+    margin-left: -250px;
+    position: fixed;
+    top:45%;
+    left:50%;
+    padding-bottom: 0;
+    p{
+      margin: 16px;
+    }
+  }
+  .close-box{
+    font-size: 18px;
+    line-height: 1;
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    color: #aaaaaa;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}

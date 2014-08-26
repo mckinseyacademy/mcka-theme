@@ -132,7 +132,9 @@ $(function(){
   if ($('#unsupported_modal').length) {
     $('[href="/accounts/login"]').on('click', function(e) {
       e.preventDefault();
-      $('#unsupported_modal').foundation('reveal', 'open');
+      $('#unsupported_modal').show().one('click', function(e){
+        $(this).hide();
+      });
     });
   }
 });
