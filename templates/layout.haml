@@ -27,6 +27,9 @@
     %meta{name: "msapplication-TileImage", content: "/static/favicons/mstile-144x144.png"}
     %meta{name: "msapplication-config", content: "/static/favicons/browserconfig.xml"}
 
+    - if request.is_IE8
+      %script{src: "//html5shiv.googlecode.com/svn/trunk/html5.js"}
+
     -# CSS
     - block css
       %link{rel: "stylesheet", href: "{% static 'css/normalize.css' %}"}

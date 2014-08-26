@@ -1,4 +1,4 @@
-%header.background-blue{role: 'banner'}
+%header.background-blue{role: 'banner', class: "{% if request.is_IE8 %}ie8{% endif %}"}
   .row.collapse.main-nav
     .large-12.columns
       %a.logo{href: "/"}
