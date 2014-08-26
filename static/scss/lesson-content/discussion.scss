@@ -151,6 +151,7 @@ body > .tooltip {
       @include drop-shadow($opacity: 0);
       border-radius: 0px;
       background-image: none;
+      z-index: 98; // to appear below modal dialog overlay
     }
 
     &.is-cast {
