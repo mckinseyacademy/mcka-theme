@@ -10,7 +10,8 @@
               = article.title
             .attribution
               .when
-                %time.label-2= article.display_date
+                - if article.display_date
+                  %time.label-2= article.display_date
                 %span.label-2= article.byline
               .person-title= article.author
             %a{href: "#{article.url}", target: '_blank'}
@@ -29,7 +30,8 @@
           %div
             %span.label-8= tweet.twitter_username
             %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
-            %time.label-3= tweet.display_date
+            - if tweet.display_date
+              %time.label-3= tweet.display_date
           .tweet-body.label-2= tweet.body|safe
     %section.videos
       .label-6 VIDEOS
@@ -40,7 +42,8 @@
               = video.title
             .attribution
               .when
-                %time.label-2= video.display_date
+                - if video.display_date
+                  %time.label-2= video.display_date
                 %span.label-2= video.byline
               .label-9= video.body
             %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
