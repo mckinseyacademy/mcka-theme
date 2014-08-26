@@ -293,6 +293,10 @@ body > .tooltip {
       margin-top: 0;
       padding-top: 5em;
 
+      .topic_dropdown_button {
+        z-index: 98;
+      }
+
       .form-group-label, .new-post-group {
         color: #000000;
       }
