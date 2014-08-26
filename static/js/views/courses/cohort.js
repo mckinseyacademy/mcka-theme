@@ -90,12 +90,12 @@ Apros.views.CourseCohort = Backbone.View.extend({
     if(className == 'ta_user'){
       myIcon.iconSize = [44, 44];
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name + 
+      .bindPopup('<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name +
         '</div><div class="person-title">' + user.title + '</div><br><a href="#" data-reveal-id="contact-ta">Email Group TA</a>',
         {'closeOnClick': false});
     }else{
       var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name + 
+      .bindPopup('<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name +
         '</div><div class="person-title">' + user.title + '</div>',
         {'closeOnClick': false});
     }
@@ -193,17 +193,19 @@ Apros.views.CourseCohort = Backbone.View.extend({
               layers = _this.createCircle(cityData, city, layers);
               if(iconsFlag){
                 var loc = cityData.results[0][0];
-                if(city.users.length > 0){
-                  $.each(city.users, function(key2, user){
-                    if(typeof cityData.results[0] != 'undefined'){
-                      layers = _this.drawUserIcon(user, layers, loc, angle, step, 'user');
-                      angle += step;
-                    }
-                  });
-                }
-                if(typeof city.ta_user.username != 'undefined'){
-                  layers = _this.drawUserIcon(city.ta_user, layers, loc, angle, step, 'ta_user');
-                  angle += step;
+                if(typeof city != 'undefined'){
+                  if(typeof city.users != 'undefined' && city.users.length > 0){
+                    $.each(city.users, function(key2, user){
+                      if(typeof cityData.results[0] != 'undefined'){
+                        layers = _this.drawUserIcon(user, layers, loc, angle, step, 'user');
+                        angle += step;
+                      }
+                    });
+                  }
+                  if(typeof city.ta_user.username != 'undefined'){
+                    layers = _this.drawUserIcon(city.ta_user, layers, loc, angle, step, 'ta_user');
+                    angle += step;
+                  }
                 }
               }
             }
