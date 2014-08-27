@@ -397,7 +397,10 @@ def infer_default_navigation(request):
 def contact_ta(request, course_id):
     user = user_api.get_user(request.user.id)
     email_header_from = user.email
-    email_from =.user.first_name + " " +.user.last_name + "<" + settings.APROS_EMAIL_SENDER + ">"
+    email_from = "{}<{}>".format(
+        user.formatted_name,
+        settings.APROS_EMAIL_SENDER
+    )
     email_to = settings.TA_EMAIL_GROUP
     email_content = request.POST["ta_message"]
     course = course_api.get_course(course_id)
@@ -420,7 +423,10 @@ def contact_ta(request, course_id):
 def contact_group(request, course_id, group_id):
     user = user_api.get_user(request.user.id)
     email_header_from = user.email
-    email_from = user.first_name + " " + user.last_name + "<" + settings.APROS_EMAIL_SENDER + ">"
+    email_from = "{}<{}>".format(
+        user.formatted_name,
+        settings.APROS_EMAIL_SENDER
+    )
     group = WorkGroup.fetch_with_members(group_id)
     students = group.members
     course = course_api.get_course(course_id)
@@ -445,7 +451,10 @@ def contact_group(request, course_id, group_id):
 def contact_member(request, course_id, group_id):
     user = user_api.get_user(request.user.id)
     email_header_from = user.email
-    email_from = user.first_name + " " + user.last_name + "<" + settings.APROS_EMAIL_SENDER + ">"
+    email_from = "{}<{}>".format(
+        user.formatted_name,
+        settings.APROS_EMAIL_SENDER
+    )
     email_to = request.POST["member-email"]
     email_content = request.POST["member_message"]
     course = course_api.get_course(course_id)
