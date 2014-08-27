@@ -308,18 +308,19 @@ def social_total(social_metrics):
 def get_social_metrics(course_id, user_id):
     ''' returns social engagement points and leaders '''
     course_metrics = course_api.get_course_social_metrics(course_id)
+    total_enrollments = course_metrics.total_enrollments
     users = []
     point_sum = 0
 
     # calculate total social score for each user in course
-    for u_id, user_metrics in course_metrics.__dict__.iteritems():
+    for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
         user = user_api.get_user(u_id)
         user.points = social_total(user_metrics)
         user.avatar_url = user.image_url(40)
         point_sum += user.points
         users.append(user)
 
-    course_avg = point_sum / len(users) if len(users) > 0 else 0
+    course_avg = point_sum / total_enrollments if total_enrollments > 0 else 0
 
     # sort by social score
     leaders = sorted(users, key=lambda u: u.points, reverse=True)
