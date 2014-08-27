@@ -1,28 +1,22 @@
-- if course.current_lesson.previous_url
-  %a.page-to.previous{href: "#{course.current_lesson.previous_url}"}
+- if course.current_lesson.previous_module
+  %a.page-to.previous{href: "#{course.current_lesson.previous_module.navigation_url}"}
     %i.fa.fa-chevron-left
-    .mcka-tooltip{class: "{% if course.current_module.index == 1 %}lesson-page{% endif %}"}
-      - if course.current_module.index == 1
-        .vertical-index= _("Return to previous lesson")
-      - else
-        %p.style-4
-          Lesson ={course.current_lesson.index}:
-          Module ={course.current_module.previous_module_index} of ={course.current_lesson.module_count}
-        .vertical-index= course.current_module.previous_module_name
+    .mcka-tooltip
+      %p.style-4
+        Lesson ={course.current_lesson.previous_module.lesson_index}:
+        Module ={course.current_lesson.previous_module.index} of ={course.current_lesson.previous_module.lesson_count}
+      .vertical-index= course.current_lesson.previous_module.name
 - else
   %a.page-to.previous
     %i.fa.fa-chevron-left
-- if course.current_lesson.next_url
-  %a.page-to.next{href: "#{course.current_lesson.next_url}"}
+- if course.current_lesson.next_module
+  %a.page-to.next{href: "#{course.current_lesson.next_module.navigation_url}"}
     %i.fa.fa-chevron-right
-    .mcka-tooltip{class: "{% if course.current_module.index == course.current_lesson.module_count %}lesson-page{% endif %}"}
-      - if course.current_module.index == course.current_lesson.module_count
-        .vertical-index= _("Go to next lesson")
-      - else
-        %p.style-4
-          Lesson ={course.current_lesson.index}:
-          Module ={course.current_module.next_module_index} of ={course.current_lesson.module_count}
-        .vertical-index= course.current_module.next_module_name
+    .mcka-tooltip
+      %p.style-4
+        Lesson ={course.current_lesson.next_module.lesson_index}:
+        Module ={course.current_lesson.next_module.index} of ={course.current_lesson.next_module.lesson_count}
+      .vertical-index= course.current_lesson.next_module.name
 - else
   %a.page-to.next
     %i.fa.fa-chevron-right

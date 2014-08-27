@@ -42,8 +42,8 @@ def build_page_info_for_course(
     # Set default current lesson just in case
     course.current_lesson = course.chapters[0]
 
-    previous_url = None
-    next_url = None
+    previous_module = None
+    next_module = None
 
     # Inject lesson information for course
     for idx, lesson in enumerate(course.chapters, start=1):
@@ -67,11 +67,13 @@ def build_page_info_for_course(
         # Inject module data for navigation
         for idx, module in enumerate(lesson.modules, start=1):
             module.index = idx
+            module.lesson_index = lesson.index
+            module.lesson_count = lesson.module_count
             module.navigation_url = '{}/module/{}'.format(lesson.navigation_url, module.id)
 
-            if hasattr(course, 'current_module') and next_url is None:
-                next_url = module.navigation_url
-                course.current_lesson.next_url = next_url
+            if hasattr(course, 'current_module') and next_module is None:
+                next_module = module
+                course.current_lesson.next_module = module
 
             if module_id == module.id:
                 # Set the vertical id for js usage
@@ -79,26 +81,13 @@ def build_page_info_for_course(
                 if hasattr(module, 'vertical_usage_id'):
                     module.vertical_id = module.vertical_usage_id()
 
-                # Set current lesson previous url
-                course.current_lesson.previous_url = previous_url
-
-                # Set the previous module index and name for display
-                if idx > 1:
-                    previous_module = lesson.modules[idx - 2]
-                    module.previous_module_index = previous_module.index
-                    module.previous_module_name = previous_module.name
-
-                # Set next module name for display
-                if idx != len(lesson.modules):
-                    next_module = lesson.modules[idx]
-                    module.next_module_name = next_module.name
-                    module.next_module_index = idx + 1
-
+                # Set current lesson previous module
+                course.current_lesson.previous_module = previous_module
                 course.current_module = module
                 module.is_current = True
 
             # Set previous url for use in the next module
-            previous_url = module.navigation_url
+            previous_module = module
 
     return course
 
@@ -275,7 +264,6 @@ def is_number(s):
     except ValueError:
         return False
     return True
-
 
 def get_proficiency_leaders(course_id, user_id):
     proficiency = course_api.get_course_metrics_proficiency(course_id, user_id)

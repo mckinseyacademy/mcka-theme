@@ -349,11 +349,11 @@ class CoursesAPITest(TestCase):
             for y in range(0, 4):
                 self.assertEqual(test_course.chapters[x].sequentials[y].pages[0].navigation_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 100 + (x * 10) + y))
                 if x == 1:
-                    self.assertEqual(test_course.chapters[x].previous_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 111))
-                    self.assertEqual(test_course.chapters[x].next_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 113))
+                    self.assertEqual(test_course.chapters[x].previous_module.navigation_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 111))
+                    self.assertEqual(test_course.chapters[x].next_module.navigation_url, "/courses/0/lessons/{}/module/{}".format(10 + x, 113))
                 else:
-                    self.assertEqual(hasattr(test_course.chapters[x], 'previous_url'), False)
-                    self.assertEqual(hasattr(test_course.chapters[x], 'next_url'), False)
+                    self.assertEqual(hasattr(test_course.chapters[x], 'previous_module'), False)
+                    self.assertEqual(hasattr(test_course.chapters[x], 'next_module'), False)
 
                 #print "x = {}; y = {}; nav_url = {}; prev_url = {}; next_url = {}".format(x, y, test_course.chapters[x].pages[y].navigation_url, test_course.chapters[x].pages[y].prev_url, test_course.chapters[x].pages[y].next_url)
 

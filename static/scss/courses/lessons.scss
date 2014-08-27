@@ -48,10 +48,10 @@
     cursor: default;
     border-radius: 50%;
     display: block;
-    background-color: #dddddd;
+    background-color: $almost-white;
     top: 50%;
     margin-top: -25px;
-    z-index: 10;
+    z-index: 1;
     @include square-size(rem-calc(50));
     @include font-spec(30);
     @include drop-shadow($mckinsey-academy-black, 0.2, 3px, 3px, 4px, 0px);
@@ -81,6 +81,7 @@
       background-color: $mckinsey-academy-alt-blue;
 
       &:hover {
+        z-index: 150;
         background-color: $mckinsey-academy-blue-gray;
         .mcka-tooltip { display: block; }
       }
