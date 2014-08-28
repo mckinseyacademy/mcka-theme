@@ -66,10 +66,21 @@ def get_user_dict(user_id):
     return json.loads(response.read())
 
 @api_error_protect
-def get_users(*args, **kwargs):
-    ''' get all users '''
-    qs_params = {karg : kwargs[karg] for karg in kwargs}
-    qs_params["page_size"] = 0
+def get_users(fields=[], *args, **kwargs):
+    default_fields = ['id', 'email', 'username']
+
+    ''' get all users that meet filter criteria'''
+    fields.extend(default_fields)
+    qs_params = {
+        "page_size": 0,
+        "fields": ",".join(fields),
+    }
+
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
 
     response = GET(
         '{}/{}?{}'.format(
@@ -78,7 +89,7 @@ def get_users(*args, **kwargs):
             urlencode(qs_params)
         )
     )
-    return JP.from_json(response.read(), user_models.UsersFiltered)
+    return JP.from_json(response.read(), user_models.UserResponse)
 
 @api_error_protect
 def delete_session(session_key):

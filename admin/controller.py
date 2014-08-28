@@ -296,12 +296,11 @@ def _formatted_group_string(group):
 
 def get_student_list_as_file(client, activation_link = ''):
     user_list = client.fetch_students()
-    user_strings = [_formatted_user_string(get_user_with_activation(user.id, activation_link)) for user in user_list]
+    user_strings = [_formatted_user_string(get_user_with_activation(user, activation_link)) for user in user_list]
 
     return '\n'.join(user_strings)
 
-def get_user_with_activation(user_id, activation_link):
-    user = user_api.get_user(user_id)
+def get_user_with_activation(user, activation_link):
     try:
         activation_record = UserActivation.get_user_activation(user)
         if activation_record:
@@ -314,6 +313,14 @@ def get_user_with_activation(user_id, activation_link):
     return user
 
 def get_group_list_as_file(group_projects, group_project_groups):
+
+    user_ids = []
+    for group_project in group_projects:
+        for group in group_project_groups[group_project.id]:
+            user_ids.extend([str(u.id) for u in group.users])
+    additional_fields = ['first_name','last_name']
+    user_dict = {str(u.id) : u for u in user_api.get_users(ids=user_ids, fields=additional_fields)} if len(user_ids) > 0 else {}
+
     group_list_lines = []
     for group_project in group_projects:
         group_list_lines.append("{}: {}\n".format(
@@ -322,7 +329,7 @@ def get_group_list_as_file(group_projects, group_project_groups):
             )
         )
         for group in group_project_groups[group_project.id]:
-            group.students = [user_api.get_user(u.id) for u in group.users]
+            group.students = [user_dict[str(u.id)] for u in group.users]
             group_list_lines.append(_formatted_group_string(group))
         group_list_lines.append("\n")
 
@@ -370,7 +377,8 @@ def getStudentsWithCompanies(course):
     students = course_api.get_user_list(course.id)
 
     users_ids = [str(user.id) for user in students]
-    students = user_api.get_users(ids=','.join(users_ids))
+    additional_fields = ["organizations"]
+    students = user_api.get_users(ids=users_ids, fields=additional_fields)
 
     companies = {}
     for student in students:

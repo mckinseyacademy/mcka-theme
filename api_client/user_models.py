@@ -96,11 +96,6 @@ class UserList(JsonObject):
         "users": UserResponse
     }
 
-class UsersFiltered(JsonObject):
-    object_map = {
-        "results": UserResponse
-    }
-
 class CityResponse(JsonObject):
     required_fields = ["city", "count"]
 

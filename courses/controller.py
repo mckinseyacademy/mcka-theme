@@ -174,7 +174,9 @@ def get_group_project_for_user_course(user_id, course):
         return None, None
 
     project_group = user_workgroups[0]
-    project_group.members = [user_api.get_user(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
+    user_ids = [str(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
+    additional_fields = ["title", "first_name", "last_name", "avatar_url"]
+    project_group.members = user_api.get_users(ids=user_ids,fields=additional_fields)
 
     the_user_project = Project.fetch_from_url(project_group.project)
     group_project = [ch for ch in course.group_project_chapters if ch.id == the_user_project.content_id][0]
@@ -186,7 +188,9 @@ def get_group_project_for_workgroup_course(workgroup_id, course):
     Returns group and project information for the supplied workgroup
     '''
     workgroup = WorkGroup.fetch(workgroup_id)
-    workgroup.members = [user_api.get_user(u.id) for u in workgroup.users]
+    user_ids = [str(user.id) for user in workgroup.users]
+    additional_fields = ["title", "first_name", "last_name", "avatar_url"]
+    workgroup.members = user_api.get_users(ids=user_ids,fields=additional_fields)
     project = Project.fetch(workgroup.project)
     group_project = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
 
@@ -301,8 +305,12 @@ def get_social_metrics(course_id, user_id):
     point_sum = 0
 
     # calculate total social score for each user in course
+    user_ids = [u_id for u_id, user_metrics in course_metrics.users.__dict__.iteritems()]
+    additional_fields = ["avatar_url","title"]
+    user_dict = {str(user.id): user for user in user_api.get_users(ids=user_ids,fields=additional_fields)} if len(user_ids) > 0 else {}
+
     for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
-        user = user_api.get_user(u_id)
+        user = user_dict[u_id]
         user.points = social_total(user_metrics)
         user.avatar_url = user.image_url(40)
         point_sum += user.points
@@ -328,12 +336,13 @@ def get_social_metrics(course_id, user_id):
 
 def get_ta_users(course_id):
     role = "staff"
-    ta_users_base = [user for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
-    ta_users = [user_api.get_user(user.id) for user in ta_users_base]
+    ta_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
+    additional_fields = ["title", "avatar_url", "city", "full_name"]
+    ta_users = user_api.get_users(ids=ta_users_base,fields=additional_fields) if len(ta_users_base) > 0 else []
     return ta_users
 
 def choose_random_ta(course_id):
-    ta_users = [u for u in get_ta_users(course_id) if getattr(u, 'city', False)]
+    ta_users = [u for u in get_ta_users(course_id) if u.city]
     ta_user = {}
     if len(ta_users) > 0:
         ta_user = random.choice(ta_users)

@@ -115,9 +115,12 @@ def course_cohort(request, course_id):
         workgroup = workgroup_api.get_workgroup(workgroups[0].id)
         metrics.group_enrolled = len(workgroup.users)
         if workgroup.users > 0:
+            user_ids = [str(student.id) for student in workgroup.users]
+            additional_fields = ["city", "title", "avatar_url", "full_name", "first_name", "last_name"]
+            user_dict = {u.id : u for u in user_api.get_users(ids=user_ids,fields=additional_fields)}
             for student in workgroup.users:
-                user = user_api.get_user(student.id)
-                if user.get('city') != '' and ta_user.id != user.id:
+                user = user_dict[student.id]
+                if user.city and user.city != '' and ta_user.id != user.id:
                     metrics.groups_users.append(user.to_dict())
     metrics.groups_users = json.dumps(metrics.groups_users)
 
