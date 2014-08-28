@@ -51,7 +51,7 @@ Apros.views.HomeCourses = Backbone.View.extend({
     this.btn_right.toggleClass('disabled', last_in_view);
     var myNav = navigator.userAgent.toLowerCase();
     var browserVersion = (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
-    if (browserVersion && browserVersion < 10){
+    if ($.checkGradients()){
       this.proficiencyIEfix();
     }
   },

@@ -12,6 +12,22 @@ window.Apros = {
 }
 
 _(Apros).extend(Backbone.Events);
+$.checkGradients = function(){
+  var mElem = document.createElement('modern'),
+    mStyle = mElem.style;
+
+    mStyle.backgroundImage = "linear-gradient(left top, #9f9, white)";
+    mStyle.backgroundImage = "-o-linear-gradient(left top, #9f9, white)";
+    mStyle.backgroundImage = "-moz-linear-gradient(left top, #9f9, white)";
+    mStyle.backgroundImage = "-webkit-linear-gradient(left top, #9f9, white)";
+    mStyle.backgroundImage = "-ms-linear-gradient(left top, #9f9, white)";
+    mStyle.backgroundImage = "-webkit-gradient(linear, left top, right bottom, from(#9f9), to(white))";
+
+  if (mStyle.backgroundImage.indexOf("gradient") == -1) {
+    return false;
+  }
+  return true;
+}
 
 $(function(){
   Apros.initialize()
