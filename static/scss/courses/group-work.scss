@@ -80,12 +80,8 @@
   }
 
   button{
-    @include button($button-sml, $primary-color, true);
-    &.submit { float: right; }
-
-    &:hover {
-      background-color: $mckinsey-academy-blue-gray;
-    }
+    @include font-spec(13, bold);
+    @include radius;
   }
 
   .grading_override{
