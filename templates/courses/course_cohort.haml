@@ -38,7 +38,8 @@
                 %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
                 .info
                   .person-name ={leader.username}
-                  .person-title ={leader.title}
+                  - if leader.title
+                    .person-title ={leader.title}
                   .person-rank #={leader.rank} <span>={leader.points_scored}</span>
           - else
             .user.dummy
@@ -73,7 +74,8 @@
                 %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
                 .info
                   .person-name ={leader.username}
-                  .person-title ={leader.title}
+                  - if leader.title
+                    .person-title ={leader.title}
                   .person-rank #={leader.rank} <span>={leader.completions}%</span>
           - else
             .user.dummy
@@ -109,7 +111,8 @@
                 %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
                 .info
                   .person-name ={leader.username}
-                  .person-title ={leader.title}
+                  - if leader.title
+                    .person-title ={leader.title}
                   .person-rank #={leader.rank} <span>={leader.points} pts.</span>
           - else
             .user.dummy
