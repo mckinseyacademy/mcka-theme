@@ -30,7 +30,8 @@ $(function(){
         $('#member-email').val($(this).data('member-email'));
       });
 
-      $('#contact-ta, #email-member, #email-team').on('opened.fndtn.reveal', function () {
+      $('#contact-ta, #email-member, #email-team').on('open.fndtn.reveal', function () {
+        $(this).find('input.button').prop('disabled', 'disabled');
         $(this).find('textarea').val('');
       });
 });
