@@ -436,3 +436,11 @@ div.xblock-student_view {
     visibility: visible;
   }
 }
+
+.reveal-modal-bg,
+.modal-bg{
+  z-index: 100001 !important;
+}
+.reveal-modal.open{
+  z-index: 100002;
+}
