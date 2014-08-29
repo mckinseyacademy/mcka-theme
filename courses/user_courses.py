@@ -179,8 +179,7 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
 def load_course_progress(course, user_id):
     completions = course_api.get_course_completions(course.id, user_id)
     completed_ids = [result.content_id for result in completions]
-    detached_categories = ['discussion-course', 'group-project', 'discussion-forum']
-    component_ids = course.components_ids(detached_categories)
+    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
     for lesson in course.chapters:
         lesson.progress = 0
         lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids)
