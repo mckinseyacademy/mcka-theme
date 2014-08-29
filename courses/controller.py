@@ -343,7 +343,7 @@ def get_ta_users(course_id):
 
 def choose_random_ta(course_id):
     ta_users = [u for u in get_ta_users(course_id) if u.city]
-    ta_user = {}
+    ta_user = None
     if len(ta_users) > 0:
         ta_user = random.choice(ta_users)
     return ta_user

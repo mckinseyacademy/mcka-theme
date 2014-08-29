@@ -103,8 +103,9 @@ def course_cohort(request, course_id):
 
     ta_user_json = json.dumps({})
     ta_user = choose_random_ta(course_id)
-    if hasattr(ta_user, 'to_json'):
+    if ta_user and hasattr(ta_user, 'to_json'):
         ta_user_json = ta_user.to_json()
+    ta_user_id = ta_user.id if ta_user else None
 
     if len(organizations) > 0:
         organization = organizations[0]
@@ -120,7 +121,7 @@ def course_cohort(request, course_id):
             user_dict = {u.id : u for u in user_api.get_users(ids=user_ids,fields=additional_fields)}
             for student in workgroup.users:
                 user = user_dict[student.id]
-                if user.city and user.city != '' and ta_user.id != user.id:
+                if user.city and user.city != '' and ta_user_id != user.id:
                     metrics.groups_users.append(user.to_dict())
     metrics.groups_users = json.dumps(metrics.groups_users)
 
