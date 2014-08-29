@@ -243,6 +243,13 @@ WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
 # set AWS querystring authentication to false
 AWS_QUERYSTRING_AUTH = False
 
+# Components whose contents do not count towards progress calculation
+PROGRESS_IGNORE_COMPONENTS = [
+    'discussion-course',
+    'group-project',
+    'discussion-forum',
+]
+
 try:
     from local_settings import *
 except ImportError:
