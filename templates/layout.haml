@@ -27,8 +27,11 @@
     %meta{name: "msapplication-TileImage", content: "/static/favicons/mstile-144x144.png"}
     %meta{name: "msapplication-config", content: "/static/favicons/browserconfig.xml"}
 
-    - if request.is_IE8
-      %script{src: "//html5shiv.googlecode.com/svn/trunk/html5.js"}
+    /[if lt IE 9]
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}
+      %script{src: "//s3.amazonaws.com/nwapi/nwmatcher/nwmatcher-1.2.5-min.js"}
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"}
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"}
 
     -# CSS
     - block css
@@ -51,7 +54,7 @@
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
 
-    - if request.is_IE8
+    /[if lt IE 9]
       {% assets "css_ie8" %}
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
