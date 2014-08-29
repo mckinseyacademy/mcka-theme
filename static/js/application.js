@@ -137,4 +137,20 @@ $(function(){
       });
     });
   }
+
+  if (/iPhone|iPad/i.test(navigator.userAgent)) {
+    $('main img').each(function(){
+      var el  = $(this),
+          cnv = document.createElement("canvas"),
+          ctx = cnv.getContext("2d"),
+          image = new Image();
+      image.src = el.attr('src');
+      image.onload = function() {
+        cnv.width = image.width;
+        cnv.height = image.height;
+        ctx.drawImage(image,0,0);
+        el.attr('src', cnv.toDataURL("image/jpeg"));
+      }
+    });
+  }
 });
