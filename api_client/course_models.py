@@ -127,12 +127,12 @@ class Course(CategorisedJsonObject):
 
         return module_count
 
-    def components_ids(self):
+    def components_ids(self, detached_categories):
         components = []
         for lesson in self.chapters:
             for sequential in lesson.sequentials:
                 for page in sequential.pages:
-                    components.extend([child.id for child in page.children])
+                    components.extend([child.id for child in page.children if child.category not in detached_categories])
         return components
 
     def lesson_component_ids(self, lesson_id, completions=None):
