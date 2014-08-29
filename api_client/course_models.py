@@ -129,6 +129,7 @@ class Course(CategorisedJsonObject):
 
     def components_ids(self, detached_categories):
         components = []
+        detached_categories = ['discussion-course', 'group-project', 'discussion-forum']
         for lesson in self.chapters:
             for sequential in lesson.sequentials:
                 for page in sequential.pages:
