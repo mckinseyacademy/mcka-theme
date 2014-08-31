@@ -101,9 +101,10 @@
       line-height: 1;
       height: 35px;
       width: auto;
-      margin-left: 20px;
       float: right;
       @include button($button-sml, $primary-color, true);
+      margin-left: 20px;
+      padding: 10px 28px;
 
       &:hover {
         background-color: $mckinsey-academy-blue-gray;
