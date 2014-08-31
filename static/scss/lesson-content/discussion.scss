@@ -109,6 +109,13 @@
         background-color: $mckinsey-academy-blue-gray;
       }
     }
+  }
+
+  a.new-post-btn {
+    text-transform: lowercase;
+    &:first-letter {
+      text-transform: capitalize;
+    }
 
     .new-post-icon {
       display: none;
