@@ -39,7 +39,7 @@
 
   }
 
- /* Sidebar */
+  /* Sidebar */
   .sidebar {
     position: relative;
 
@@ -47,34 +47,8 @@
       div {
         background-color: $mckinsey-academy-alt-blue;
         background-image: none;
-        }
+      }
 
-  /* Buttons *****************************************************************/
-
-  .new-post-btn,
-  .new-post-article .new-post-form .submit,
-  .new-post-article .new-post-form .new-post-cancel,
-  .discussion-submit-post,
-  .add-response .add-response-btn,
-  .comments .comment-form .discussion-submit-comment,
-  .discussion-article .post-update,
-  .discussion-article .post-cancel {
-    border-color: transparent;
-    background-image: none;
-    text-shadow: none;
-    line-height: 1;
-    height: 35px;
-    width: auto;
-    @include button($button-sml, $primary-color, true);
-
-    &:hover {
-      background-color: $mckinsey-academy-blue-gray;
-    }
-
-    .new-post-icon {
-      display: none;
-    }
-  }
       .home {
         box-shadow: -1px 0px 0px #FFF inset;
       }
@@ -139,6 +113,34 @@
     }
   }
 
+  /* Buttons *****************************************************************/
+
+  .new-post-btn,
+  .new-post-article .new-post-form .submit,
+  .discussion-submit-post,
+  .add-response .add-response-btn,
+  .comments .comment-form .discussion-submit-comment,
+  .discussion-article .post-update,
+  .discussion-article .post-cancel {
+    border-color: transparent;
+    background-image: none;
+    text-shadow: none;
+    line-height: 1;
+    height: 35px;
+    width: auto;
+    @include button($button-sml, $primary-color, true);
+
+    &:hover {
+      background-color: $mckinsey-academy-blue-gray;
+    }
+  }
+
+  a.new-post-btn {
+    &, &:hover, &:visited, &:active {
+      margin-right: 2em;
+    }
+  }
+
   /* Discussion column */
 
   .discussion-column {
@@ -167,7 +169,8 @@
       visibility: hidden;
     }
     &.label-settings:before {
-      content: 'How to use Discussions?';
+      content: 'How to use discussions:';
+      font-size: 14px;
       visibility: visible;
       position: absolute;
       display: block;
