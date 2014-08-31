@@ -230,9 +230,18 @@
 
     .label {
       color: $mckinsey-academy-turquoise;
-      @include font-spec(18, normal, 24);
+      @include font-spec(22px, normal, 24);
       padding: 0px 0px 10px 0px;
+      visibility: hidden;
+
+      &:before {
+        content: 'Discussion';
+        visibility: visible;
+        position: absolute;
+        display: block;
+      }
     }
+
 
     .home-title {
       color: $mckinsey-dark-grey;
@@ -263,6 +272,8 @@
     .row-title {
       background-color: transparent;
       padding: 10px;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     .row-item {
@@ -270,6 +281,10 @@
 
       .row-description {
         display: block;
+        text-transform: lowercase;
+        &:first-letter {
+          text-transform: capitalize;
+        }
       }
 
       .icon {

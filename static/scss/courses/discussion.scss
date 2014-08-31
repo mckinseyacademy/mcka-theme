@@ -169,7 +169,8 @@
       visibility: hidden;
     }
     &.label-settings:before {
-      content: 'How to use Discussions?';
+      content: 'How to use discussions:';
+      font-size: 14px;
       visibility: visible;
       position: absolute;
       display: block;
