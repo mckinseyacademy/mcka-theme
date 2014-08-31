@@ -357,6 +357,11 @@
   }
 }
 
+.wmd-prompt-dialog {
+  background-color: $mckinsey-academy-blue-gray;
+  border-radius: 5px;
+}
+
 /* Discussion tooltip gets added by JS to the <body> :/ */
 body > .tooltip {
   width: 100px;
