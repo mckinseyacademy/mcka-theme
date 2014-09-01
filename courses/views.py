@@ -293,7 +293,7 @@ def course_progress(request, course_id):
             'color': '#66a5b5'
         })
 
-    total = gradebook.grade_summary.percent*100
+    total = floatformat(gradebook.grade_summary.percent*100, 0)
     bar_chart[0]['values'].append({
         'label': 'TOTAL',
         'value': total,
