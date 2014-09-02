@@ -49,7 +49,5 @@ Apros.views.HomeCourses = Backbone.View.extend({
 
     var last_in_view = this.per_section - 1 >= this.cards.last().index();
     this.btn_right.toggleClass('disabled', last_in_view);
-    var myNav = navigator.userAgent.toLowerCase();
-    var browserVersion = (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
   }
 });
