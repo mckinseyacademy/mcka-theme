@@ -182,7 +182,8 @@ def load_course_progress(course, user_id):
     component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
     for lesson in course.chapters:
         lesson.progress = 0
-        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids)
+        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                           settings.PROGRESS_IGNORE_COMPONENTS)
         if len(lesson_component_ids) > 0:
             matches = set(lesson_component_ids).intersection(completed_ids)
             lesson.progress = 100 * len(matches) / len(lesson_component_ids)

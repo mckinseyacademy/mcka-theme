@@ -135,13 +135,13 @@ class Course(CategorisedJsonObject):
                     components.extend([child.id for child in page.children if child.category not in filter_out_categories])
         return components
 
-    def lesson_component_ids(self, lesson_id, completions=None):
+    def lesson_component_ids(self, lesson_id, completions=None, filter_out_categories=[]):
         components = []
         try:
             lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
             for sequential in lesson.sequentials:
                 for module in sequential.pages:
-                    children = [child.id for child in module.children]
+                    children = [child.id for child in module.children if child.category not in filter_out_categories]
                     components.extend(children)
                     if completions:
                         completed = set(completions).intersection(children)
