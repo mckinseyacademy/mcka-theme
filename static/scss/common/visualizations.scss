@@ -47,9 +47,13 @@
       z-index: 5;
       @include square-size(70px);
       @include linear-gradient(#b8d432, #389b46);
+      -pie-background: linear-gradient(#b8d432, #389b46);
+      behavior: url(/static/js/vendor/css3pie/PIE.htc);
 
       &.failed {
         @include linear-gradient(#fbac40, #ef4326);
+        -pie-background: linear-gradient(#fbac40, #ef4326);
+        behavior: url(/static/js/vendor/css3pie/PIE.htc);
       }
     }
 
@@ -84,12 +88,16 @@
         @if $i < $half {
           $nextdeg: 90deg + ( $increment * $i );
           .progress-radial {
-            @include background(linear-gradient(90deg, $mckinsey-academy-blue-gray 50%, transparent 50%, transparent), linear-gradient($nextdeg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray))
+            @include background(linear-gradient(90deg, $mckinsey-academy-blue-gray 50%, transparent 50%, transparent), linear-gradient($nextdeg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray));
+            -pie-background: linear-gradient(90deg, $mckinsey-academy-blue-gray 50%, transparent 50%, transparent) repeat scroll 0 0%, linear-gradient($nextdeg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray);
+            behavior: url(/static/js/vendor/css3pie/PIE.htc);
           }
         } @else {
           $nextdeg: -90deg + ( $increment * ( $i - $half ) );
           .progress-radial {
             @include background(linear-gradient($nextdeg, $mckinsey-academy-black 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray));
+            -pie-background: linear-gradient($nextdeg, $mckinsey-academy-black 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, $mckinsey-academy-black 50%, $mckinsey-academy-blue-gray 50%, $mckinsey-academy-blue-gray);
+            behavior: url(/static/js/vendor/css3pie/PIE.htc);
           }
         }
       }
@@ -128,10 +136,15 @@
       max-width: 100%;
       background: #fff;
       border-radius: 50px;
+      background: #389b46;
       @include linear-gradient(to right, #389b46, #b8d432);
-
+      -pie-background: linear-gradient(to right, #389b46, #b8d432);
+      behavior: url(/static/js/vendor/css3pie/PIE.htc);
       &.trailing {
+        background: #ef4326;
         @include linear-gradient(to right, #ef4326, #fbac40);
+        -pie-background: linear-gradient(to right, #ef4326, #fbac40);
+        behavior: url(/static/js/vendor/css3pie/PIE.htc);
       }
     }
   }
