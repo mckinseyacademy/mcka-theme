@@ -13,7 +13,10 @@ Apros.views.HomeCourses = Backbone.View.extend({
 
   events: {
     'click .nav-left:not(.disabled)':   'rotate',
-    'click .nav-right:not(.disabled)':  'rotate'
+    'click .nav-right:not(.disabled)':  'rotate',
+    'click .rotator a':                 'touchcheck',
+    'touchstart .rotator':              'touchstart',
+    'touchend .rotator':                'touchend'
   },
 
   rotate: function(event) {
@@ -42,6 +45,28 @@ Apros.views.HomeCourses = Backbone.View.extend({
     this.slides.css('margin-left', -el.position().left);
     this.btn_left.toggleClass('disabled', el.index() === 0);
     this.btn_right.toggleClass('disabled', last_in_view);
+  },
+
+  touchcheck: function(e) {
+    if (this.current_touch) e.preventDefault();
+  },
+
+  touchstart: function(e) {
+    this.current_touch = e.originalEvent.touches[0];
+  },
+
+  touchend: function(e) {
+    _this = this;
+    touch = e.originalEvent.changedTouches[0];
+    diff  = this.current_touch.screenX - touch.screenX;
+    console.log(diff);
+    if (diff > 0) {
+      this.$('.nav-right:not(.disabled)').click();
+    } else {
+      this.$('.nav-left:not(.disabled)').click();
+    }
+
+    setTimeout(function(){ delete _this.current_touch; }, 250);
   },
 
   render: function() {
