@@ -28,7 +28,7 @@
             .user-name= user.username
             %i.fa.fa-sort-asc
             .user-image
-              %img{src: "#{user.avatar_url}"}
+              %img{src: "#{user.avatar_url}", alt: "#{user.username}"}
             #profile-container{data-dropdown-content: "true"}
         - else
           .login-action
