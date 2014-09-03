@@ -11,6 +11,12 @@
     .leaflet-marker-icon.ta_user{
       border: 2px solid $mckinsey-red;
     }
+    .leaflet-map-pane,
+    .leaflet-objects-pane,
+    .leaflet-overlay-pane{
+      width:100%;
+      height:100%;
+    }
   }
 
   .student-data {
