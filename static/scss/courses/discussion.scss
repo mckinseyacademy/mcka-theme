@@ -70,6 +70,11 @@
         box-shadow: none;
       }
 
+      .browse-topic-drop-menu li {
+        /* This fixes layout issues with the filter dropdown in IE9+ */
+        font-size: 0;
+      }
+
     }
 
     .sort-bar {
