@@ -26,9 +26,9 @@
       };
       $.when.apply($, discussion_content.xblock(discussion_data)).
         done(function() {
-          $('.discussion-body').prepend($("#discussion-ta-template").html());
           if ($('#discussion-ta-template').length > 0) {
-            $('.ask-ta').css('top: -50px');
+            $('.discussion-body').prepend($("#discussion-ta-template").html());
+            $('.discussion-body').css('margin-top', '40px');
           }
       });
     })
