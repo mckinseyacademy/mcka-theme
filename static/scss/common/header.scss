@@ -81,6 +81,19 @@ header[role=banner].background-blue {
     }
   }
 
+  .admin-logo {
+    background: url(/static/image/McKA_admin_logo.png) no-repeat 0 center;
+    background-size: 100%;
+    width: 225px;
+    height: 100%;
+    float: left;
+    margin-right: rem-calc(25);
+
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      background-image: url(/static/image/McKA_admin_logo@2x.png);
+    }
+  }
+
   .mobile-menu {
     display: none;
 
