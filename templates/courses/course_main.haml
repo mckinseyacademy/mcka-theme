@@ -1,6 +1,11 @@
 - extends "layout.haml"
 - load staticfiles
 
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Courses | McKinsey Academy")
+
 - block content
   #home-courses
     .row

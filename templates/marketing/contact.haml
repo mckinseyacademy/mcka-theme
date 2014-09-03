@@ -1,5 +1,8 @@
 - extends "layout.haml"
 
+- block page_title
+  %title= _("Contact | McKinsey Academy")
+
 - block content
   %article#contact-page
     %img.tileset{src: "/static/image/marketing/McKA_TopTiles_contact.jpg", srcset: "/static/image/marketing/McKA_TopTiles_contact@2x.jpg 2x"}

@@ -1,5 +1,8 @@
 - extends "layout.haml"
 
+- block page_title
+  %title= _("Experience | McKinsey Academy")
+
 - block content
   %article#experience-page
     %img.tileset{src: "/static/image/marketing/McKA_TopTiles_experience.jpg", srcset: "/static/image/marketing/McKA_TopTiles_experience@2x.jpg 2x"}

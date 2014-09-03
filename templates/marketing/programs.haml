@@ -1,5 +1,8 @@
 - extends "layout.haml"
 
+- block page_title
+  %title= _("Programs | McKinsey Academy")
+
 - block content
   #corp_finance.course-pop.reveal-modal.small{"data-reveal": "true"}
     %h1 Corporate Finance and Valuation

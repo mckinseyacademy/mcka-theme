@@ -1,4 +1,10 @@
 - extends "courses/course_navigation.haml"
+
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Overview | Courses | McKinsey Academy")
+
 - block current_content
   #course-overview
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
