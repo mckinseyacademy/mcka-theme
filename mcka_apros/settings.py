@@ -250,6 +250,11 @@ PROGRESS_IGNORE_COMPONENTS = [
     'discussion-forum',
 ]
 
+# roles which should neither updated nor deleted while updating other roles
+IGNORE_ROLES = [
+    'instructor',
+]
+
 try:
     from local_settings import *
 except ImportError:
