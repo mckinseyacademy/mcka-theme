@@ -4,16 +4,19 @@
   background-color: $pure-white;
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
-  h1{
+  h1 {
     padding-bottom: rem-calc(20);
   }
-  h4{
+
+  h4 {
     text-transform: uppercase;
   }
+
   .description{
     @include font-spec(14, normal, 24);
     height: rem-calc(20);
   }
+
   .sidebar {
     @include font-spec(14, normal, 22);
 
@@ -25,22 +28,25 @@
       color: $mckinsey-orange;
     }
   }
-  form label{
+
+  form label {
     @include font-spec(14, semibold);
     padding-bottom: rem-calc(10);
   }
-  .columns + .columns{
+  .columns + .columns {
     display: block;
     border-left: 1px solid $mckinsey-grey;
     min-height: 500px;
   }
-  .required-field{
+
+  .required-field {
     color: $mckinsey-orange;
     @include font-spec(14, semibold);
     &::after{
       content: '*';
     }
   }
+
   input[readonly], select[disabled]{
     border: none;
     box-shadow: none;
@@ -49,22 +55,30 @@
     margin-top: -10px;
     background-color: transparent;
   }
-  #id_accept_terms{
+
+  #id_accept_terms {
     position: relative;
     margin: 0;
-    top: -37px;
+    top: -26px;
   }
-  label[for=id_accept_terms]{
-    position: relative;
-    left: 20px;
+
+  label[for=id_accept_terms] {
+    text-indent: 20px;
   }
-  input[submit]{
+
+  input[submit] {
     padding-top: 20px;
   }
 
   .outdated_browser {
     color: $mckinsey-orange;
     margin-bottom: 30px;
+  }
+
+  .terms-of-service {
+    height: 300px;
+    margin-bottom: 20px;
+    overflow-y: scroll;
   }
 }
 

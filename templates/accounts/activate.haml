@@ -23,6 +23,8 @@
                 = error
             - csrf_token
             = form
+            .terms-of-service
+              - include "terms_of_service.haml"
             %input.button.radius.small{type: "submit", value: "#{activate_label}"}
         .large-3.medium-3.columns
           %h4 Already Registered?
