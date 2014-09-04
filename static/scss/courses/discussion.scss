@@ -170,12 +170,12 @@
     text-align: left;
 
     &.label-settings {
-      visibility: hidden;
+      color: transparent;
     }
     &.label-settings:before {
       content: 'How to use discussions:';
       font-size: 14px;
-      visibility: visible;
+      color: black;
       position: absolute;
       display: block;
     }
