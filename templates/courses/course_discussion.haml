@@ -46,7 +46,8 @@
             .person-info
               .person-username= mcka_ta.username
               .person-fullname= mcka_ta.formatted_name
-              .person-title= 'Teaching Assistant'
+              - if mcka_ta.title
+                .person-title= mcka_ta.title
               .email
                 %a.email-member{:data-member-email => '', :href => '#', :data-reveal-id => 'contact-ta'}
                   Email
