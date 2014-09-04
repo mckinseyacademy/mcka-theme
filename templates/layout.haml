@@ -8,6 +8,15 @@
     - block meta
     - block page_title
       %title= _("McKinsey Academy")
+      %meta{property: "og:title", content: "McKinsey Academy"}
+
+    - block page_description
+      %meta{name: "description", content: "McKinsey Academy helps organizations thrive by accelerating their talent advantage"}
+      %meta{property: "og:description", content: "McKinsey Academy helps organizations thrive by accelerating their talent advantage"}
+
+    - block open_graph
+      %meta{property: "og:site_name", content: "McKinsey Academy"}
+      %meta{property: "og:image", content: "/static/image/McKA_OG.png"}
 
     -# favicon
     %link{rel: "shortcut icon", href: "/static/favicons/favicon.ico?s=#{session_id}"}

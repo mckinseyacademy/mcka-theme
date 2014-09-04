@@ -2,6 +2,11 @@
 
 - block page_title
   %title= _("About | McKinsey Academy")
+  %meta{property: "og:title", content: "McKinsey Academy About"}
+
+- block page_description
+  %meta{name: "description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
+  %meta{property: "og:description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
 
 - block content
   %article#about-page

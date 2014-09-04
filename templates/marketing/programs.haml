@@ -2,6 +2,11 @@
 
 - block page_title
   %title= _("Programs | McKinsey Academy")
+  %meta{property: "og:title", content: "McKinsey Academy Programs"}
+
+- block page_description
+  %meta{name: "description", content: "McKinsey Academy’s digital courses are created and curated into programs that build business capabilities for our participants."}
+  %meta{property: "og:description", content: "McKinsey Academy’s digital courses are created and curated into programs that build business capabilities for our participants."}
 
 - block content
   #corp_finance.course-pop.reveal-modal.small{"data-reveal": "true"}
