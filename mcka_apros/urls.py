@@ -3,6 +3,7 @@ from django.conf.urls import handler404
 from django.conf.urls import handler500
 from django.conf import settings
 from main import views
+from sitemap import *
 
 urlpatterns = patterns(
     '',
@@ -26,6 +27,15 @@ if settings.DEBUG:
 
 if settings.RUN_LOCAL_MOCK_API:
     urlpatterns += patterns('', url(r'^mockapi/', include('mockapi.urls'), name='mockapi'),)
+
+sitemaps = {
+    'pages': Sitemap(['home', 'terms', 'privacy', 'faq']),
+    'marketing': MarketingSitemap,
+}
+
+urlpatterns += patterns('',
+    (r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+)
 
 urlpatterns += patterns(
     '',
