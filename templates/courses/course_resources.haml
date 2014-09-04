@@ -1,4 +1,10 @@
 - extends "courses/course_navigation.haml"
+
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Resources | Courses | McKinsey Academy")
+
 - block current_content
   #course-resources
     %h1 Resources

@@ -6,7 +6,8 @@
     %meta{charset: "utf-8"}
     %meta{name: "viewport", content: "width=device-width, user-scalable=no"}
     - block meta
-    %title= _("McKinsey Academy")
+    - block page_title
+      %title= _("McKinsey Academy")
 
     -# favicon
     %link{rel: "shortcut icon", href: "/static/favicons/favicon.ico?s=#{session_id}"}

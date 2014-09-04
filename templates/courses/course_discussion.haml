@@ -1,5 +1,11 @@
 - extends "courses/course_navigation.haml"
 - load staticfiles
+
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Discussion | Courses | McKinsey Academy")
+
 - block current_content
   #course-discussion
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
