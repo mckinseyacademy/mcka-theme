@@ -1,9 +1,11 @@
 - extends "header.haml"
+
+- block header_home
+  %a.admin-logo{href: '/admin'}
+
 - block header_menu
   %nav{role: 'navigation'}
     %ul
-      %li
-        %a{href: '/admin'}= _("Admin")
       - if user.is_mcka_admin
         %li
           %a{href: '/admin/clients'}= _("Clients")

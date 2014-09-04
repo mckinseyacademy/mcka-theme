@@ -1,7 +1,8 @@
 %header.background-blue{role: 'banner'}
   .row.collapse.main-nav
     .large-12.columns
-      %a.logo{href: "/"}
+      - block header_home
+        %a.logo{href: "/"}
       %label.button.radius.small.mobile-menu{for: 'mobile-menu-toggle'}
         %i.fa.fa-bars
       %input#mobile-menu-toggle{type: 'checkbox'}
