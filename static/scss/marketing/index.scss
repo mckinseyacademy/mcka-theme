@@ -48,8 +48,12 @@
   }
 
   table {
-    tr.heading {
-      font-weight: bold;
+    thead {
+      font-weight: 700;
+    }
+
+    td.no-wrap {
+      white-space: nowrap;
     }
   }
 
