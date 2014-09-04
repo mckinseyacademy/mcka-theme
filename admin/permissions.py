@@ -2,6 +2,7 @@ from api_client import user_api, group_api, course_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
 from api_client.api_error import ApiError
+from django.conf import settings
 
 
 class PermissionSaveError(Exception):
@@ -39,7 +40,8 @@ class Permissions(object):
     def save(self, is_admin, per_course_roles):
         try:
             if per_course_roles:
-                user_api.update_user_roles(self.user_id, per_course_roles)
+                user_api.update_user_roles(self.user_id, {'roles': per_course_roles,
+                                                          'ignore_roles': settings.IGNORE_ROLES})
             else:
                 # empty list - delete all roles
                 for role in self.user_roles:
@@ -48,7 +50,7 @@ class Permissions(object):
             role_names = [r['role'] for r in per_course_roles]
 
             for key in USER_ROLES:
-                permission = self.permission_for_role.get(USER_ROLES[key], None);
+                permission = self.permission_for_role.get(USER_ROLES[key], None)
                 if USER_ROLES[key] in role_names:
                     self.add_permission(permission)
                 else:
