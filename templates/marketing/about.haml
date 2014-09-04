@@ -1,5 +1,8 @@
 - extends "layout.haml"
 
+- block page_title
+  %title= _("About | McKinsey Academy")
+
 - block content
   %article#about-page
     %img.tileset{src: "/static/image/marketing/McKA_TopTiles_about.jpg", srcset: "/static/image/marketing/McKA_TopTiles_about@2x.jpg 2x", alt: "McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness"}

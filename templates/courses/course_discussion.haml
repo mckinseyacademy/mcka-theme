@@ -1,5 +1,11 @@
 - extends "courses/course_navigation.haml"
 - load staticfiles
+
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Discussion | Courses | McKinsey Academy")
+
 - block current_content
   #course-discussion
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
@@ -40,7 +46,8 @@
             .person-info
               .person-username= mcka_ta.username
               .person-fullname= mcka_ta.formatted_name
-              .person-title= 'Teaching Assistant'
+              - if mcka_ta.title
+                .person-title= mcka_ta.title
               .email
                 %a.email-member{:data-member-email => '', :href => '#', :data-reveal-id => 'contact-ta'}
                   Email

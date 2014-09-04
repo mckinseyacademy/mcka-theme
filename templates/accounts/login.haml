@@ -1,5 +1,8 @@
 - extends "layout.haml"
 
+- block page_title
+  %title= _("Login | McKinsey Academy")
+
 - block header
   - include 'accounts/login_header.haml'
 - load staticfiles
@@ -49,7 +52,6 @@
       - if form.reset == 'failed'
         - include 'registration/password_reset_failed.haml'
         %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
-
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}

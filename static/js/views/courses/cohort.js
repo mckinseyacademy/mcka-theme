@@ -227,6 +227,8 @@ Apros.views.CourseCohort = Backbone.View.extend({
   render_map: function() {
     var _this = this;
     this.drawLayers(this.model, this.city_list, this.cities, this.users, this.iconsFlag);
+    var svg = $('#map-cohort .leaflet-overlay-pane').find('svg');
+    svg.css({'width': (svg.attr('width') + 'px'),  'height': (svg.attr('height') + 'px')});
   },
 
   render: function() {
