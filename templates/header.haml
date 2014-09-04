@@ -1,7 +1,8 @@
 %header.background-blue{role: 'banner'}
   .row.collapse.main-nav
     .large-12.columns
-      %a.logo{href: "/"}
+      - block header_home
+        %a.logo{href: "/"}
       %label.button.radius.small.mobile-menu{for: 'mobile-menu-toggle'}
         %i.fa.fa-bars
       %input#mobile-menu-toggle{type: 'checkbox'}
@@ -28,7 +29,7 @@
             .user-name= user.username
             %i.fa.fa-sort-asc
             .user-image
-              %img{src: "#{user.avatar_url}"}
+              %img{src: "#{user.avatar_url}", alt: "#{user.username}"}
             #profile-container{data-dropdown-content: "true"}
         - else
           .login-action

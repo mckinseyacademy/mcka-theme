@@ -12,6 +12,7 @@ from django.utils.translation import ugettext as _
 from admin.controller import load_course
 from admin.models import WorkGroup
 from api_client import course_api, user_api, workgroup_api
+from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
 from main.models import CuratedContentItem
@@ -81,9 +82,16 @@ def course_syllabus(request, course_id):
 @login_required
 @check_user_course_access
 def course_news(request, course_id):
-    data = {
-        "news": course_api.get_course_news(course_id)
-    }
+    try:
+        data = {
+            "news": course_api.get_course_news(course_id)
+        }
+    except ApiError as e:
+        # Handle 404 error as it indicates that no news is present
+        if e.code != 404:
+            raise
+        data = {}
+
     return render(request, 'courses/course_news.haml', data)
 
 @login_required

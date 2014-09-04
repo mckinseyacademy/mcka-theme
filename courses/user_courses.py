@@ -188,7 +188,11 @@ def load_course_progress(course, user_id):
             matches = set(lesson_component_ids).intersection(completed_ids)
             lesson.progress = 100 * len(matches) / len(lesson_component_ids)
     actual_completions = set(component_ids).intersection(completed_ids)
-    course.user_progress = floatformat(100 * len(actual_completions)/len(component_ids), 0)
+    try:
+        course.user_progress = floatformat(100 * len(actual_completions)/len(component_ids), 0)
+    except ZeroDivisionError:
+        course.user_progress = 0
+
 
 def standard_data(request):
     ''' Makes user and program info available to all templates '''

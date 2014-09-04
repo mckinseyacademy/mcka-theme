@@ -4,10 +4,14 @@
     %h1 News
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
-    - for entry in news
-      %section
-        .sub-1= entry.date
-        %p
-          - autoescape off
-            = entry.content
-      %hr
+    - if news
+      - for entry in news
+        %section
+          .sub-1= entry.date
+          %p
+            - autoescape off
+              = entry.content
+        %hr
+    - else
+      .no-news
+        = _("No announcements have been posted yet.")

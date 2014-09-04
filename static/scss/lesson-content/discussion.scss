@@ -208,7 +208,6 @@
 
   .staff-banner, .community-ta-banner {
     color: transparent;
-    visibility: hidden;
     padding: 0;
 
     &:before {
@@ -217,7 +216,7 @@
       text-indent: 1ex;
       color: white;
       background-color: $mckinsey-academy-alt-blue;
-      visibility: visible;
+      color: white;
       display: block;
     }
   }
@@ -229,14 +228,13 @@
     border-bottom: none;
 
     .label {
-      color: $mckinsey-academy-turquoise;
       @include font-spec(22px, normal, 24);
       padding: 0px 0px 10px 0px;
-      visibility: hidden;
+      color: transparent;
 
       &:before {
         content: 'Discussion';
-        visibility: visible;
+        color: $mckinsey-academy-turquoise;
         position: absolute;
         display: block;
       }
