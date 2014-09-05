@@ -16,34 +16,53 @@ from lib.util import LegacyIdConvert
 # don't need a public method because they inherit from the base implementation
 # pylint: disable=too-few-public-methods
 
-class _HasDueDate(CategorisedJsonObject):
-    date_fields = ["due"]
+class _HasCourseDates(CategorisedJsonObject):
+    date_fields = ["due", "start"]
 
-    @property
-    def due_upon(self):
-        due_date = self.due_date
-        if due_date is None:
-            return "-"
-        return due_date.strftime(settings.DATE_DISPLAY_FORMAT)
-
-    @property
-    def due_date(self):
-        if not self.due is None:
-            return self.due
+    def _fetch_date(self, date_name):
+        own_date = getattr(self, date_name, None)
+        if not own_date is None:
+            return own_date
 
         if not hasattr(self, "children"):
             return None
 
-        last_child_due_date = None
+        last_child_date = None
         for ch in self.children:
-            child_due = ch.due_date if hasattr(ch, "due_date") else ch.due
-            if not child_due is None:
-                if last_child_due_date is None or child_due > last_child_due_date:
-                    last_child_due_date = child_due
+            child_date = ch._fetch_date(date_name)
+            if not child_date is None:
+                if last_child_date is None or child_date > last_child_date:
+                    last_child_date = child_date
 
-        return last_child_due_date
+        return last_child_date
 
-class Page(_HasDueDate):
+    def _fetch_date_string(self, date_name):
+        fetched_date = self._fetch_date(date_name)
+        if fetched_date is None:
+            return "-"
+        return fetched_date.strftime(settings.DATE_DISPLAY_FORMAT)
+
+    @property
+    def due_upon(self):
+        return self._fetch_date_string("due")
+
+    @property
+    def due_date(self):
+        return self._fetch_date("due")
+
+    @property
+    def start_upon(self):
+        return self._fetch_date_string("start")
+
+    @property
+    def start_date(self):
+        return self._fetch_date("start")
+
+    @property
+    def is_started(self):
+        return self.start_date <= datetime.datetime.today()
+
+class Page(_HasCourseDates):
 
     ''' object representing a page / module within a subsection '''
     required_fields = ["id", "name", ]
@@ -59,12 +78,12 @@ class Page(_HasDueDate):
 
         return [child.category for child in self.children]
 
-class Sequential(_HasDueDate):
+class Sequential(_HasCourseDates):
 
     ''' object representing a subsection within a chapter / lesson '''
     required_fields = ["id", "name", ]
 
-class Chapter(_HasDueDate):
+class Chapter(_HasCourseDates):
 
     ''' object representing a chapter / lesson within a course '''
     required_fields = ["id", "name", ]

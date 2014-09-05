@@ -10,8 +10,9 @@
     %h1
       %i.fa.fa-list-ul{'data-reveal-id': 'module_list'}
       = course.current_module.name
-    .lesson-content
-    .lesson-discussion
+    - block lesson_content
+      .lesson-content
+      .lesson-discussion
     - include "courses/content_page/lesson_pager.haml"
   #module_list.reveal-modal.tiny{'data-reveal': True}
     %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:

@@ -1,0 +1,7 @@
+- extends "courses/course_lessons.haml"
+- block lesson_content
+  .row.lesson-not-started
+    .large-6.medium-6.columns.large-centered.medium-centered
+      .error
+        = not_started_message
+- block js_snippets

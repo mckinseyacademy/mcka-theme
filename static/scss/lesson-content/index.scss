@@ -10,6 +10,10 @@
       &:hover {
         background-color: $mckinsey-academy-blue-gray;
       }
+
+      &:disabled {
+        cursor: default;
+      }
     }
   }
 
