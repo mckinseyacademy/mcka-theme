@@ -5,7 +5,7 @@ from . import views
 urlpatterns = patterns('',
     url(r'^(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)$', views.navigate_to_lesson_module, name='navigate_to_lesson_module'),
     url(r'^(?P<course_id>.*)/overview$', views.course_overview, name='course_overview'),
-    url(r'^(?P<course_id>.*)/news$', views.course_news, name='course_news'),
+    url(r'^(?P<course_id>.*)/announcements$', views.course_news, name='course_news'),
     url(r'^(?P<course_id>.*)/progress$', views.course_progress, name='course_progress'),
     url(r'^(?P<course_id>.*)/cohort$', views.course_cohort, name='course_cohort'),
     url(r'^(?P<course_id>.*)/syllabus$', views.course_syllabus, name='course_syllabus'),
