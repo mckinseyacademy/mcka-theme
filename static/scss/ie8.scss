@@ -55,3 +55,7 @@ header[role=banner].background-blue {
     cursor: pointer;
   }
 }
+
+.reveal-modal-bg {
+  filter: alpha(opacity=45);
+}
