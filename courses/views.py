@@ -341,6 +341,21 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     course = load_course(course_id, request=request)
     current_sequential = course.get_current_sequential(chapter_id, page_id)
 
+    # Load the current program for this user
+    program = get_current_program_for_user(request)
+
+    data = {
+        "user": request.user,
+        "program": program,
+        "lesson_content_parent_id": "course-lessons",
+        "course_id": course_id,
+        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
+    }
+
+    if not current_sequential.is_started:
+        data["not_started_message"] = _("This lesson does not start until {}").format(current_sequential.start_upon)
+        return render(request, 'courses/course_future_lesson.haml', data)
+
     # Take note that the user has gone here
     set_current_course_for_user(request, course_id)
     update_bookmark(
@@ -351,23 +366,15 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         page_id
     )
 
-    # Load the current program for this user
-    program = get_current_program_for_user(request)
-
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
 
-    data = {
-        "user": request.user,
-        "program": program,
-        "lesson_content_parent_id": "course-lessons",
-        "course_id": course_id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
+    data.update({
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
-    }
+    })
     return render(request, 'courses/course_lessons.haml', data)
 
 def course_notready(request, course_id):
