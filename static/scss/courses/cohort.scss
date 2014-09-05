@@ -1,4 +1,8 @@
 #course-cohort {
+  // Override font that leaflet puts in its css file
+  .leaflet-container{
+    font-family: $body-font-family;
+  }
   #map-cohort {
     height: rem-calc(355);
     background: $pure-white;
