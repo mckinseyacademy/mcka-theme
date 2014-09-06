@@ -17,6 +17,12 @@
     height: rem-calc(20);
   }
 
+  .tip{
+    @include font-spec(14, normal, 24);
+    height: rem-calc(20);
+    font-style: italic;
+  }
+
   .sidebar {
     @include font-spec(14, normal, 22);
 
