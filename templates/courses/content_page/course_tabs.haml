@@ -17,9 +17,9 @@
     %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/progress", title: "Progress"}
       %i.fa.fa-bar-chart-o
   %li
-    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/news", "data-dropdown": "announcements-content", title: "Course Materials"}
+    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/announcements", "data-dropdown": "announcements-content", title: "Course Materials"}
       %i.fa.fa-file-text-o
     #announcements-content.course-tab-dropdown{"data-dropdown-content": True}
-      %a{class: "{% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/news"}= _("Announcements")
+      %a{class: "{% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/announcements"}= _("Announcements")
       %a{class: "{% ifequal request.resolver_match.url_name 'course_overview' %}selected{% endifequal %}", href: "/courses/#{course.id}/overview"}= _("Course Overview")
       %a{class: "{% ifequal request.resolver_match.url_name 'course_resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/resources"}= _("Resources")
