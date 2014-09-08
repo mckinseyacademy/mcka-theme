@@ -329,7 +329,7 @@ class ActivationForm(NoSuffixLabelForm):
 
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('E-mail'))
     password = forms.CharField(widget=forms.PasswordInput(), 
-        label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span>'))
+        label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
     #confirm_password = forms.CharField(widget=forms.PasswordInput())
     username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="required-field"></span>'))
     company = forms.CharField(max_length=255, required=False)
