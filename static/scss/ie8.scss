@@ -18,33 +18,35 @@ header[role=banner].background-blue {
   }
 }
 
-#unsupported_modal{
+#unsupported_modal {
   display: none;
-  .modal-bg{
+  .modal-bg {
     position: fixed;
     height: 100%;
     width: 100%;
     background-color: black;
-    filter:alpha(opacity=45);
+    filter: alpha(opacity=45);
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
     z-index: 100001;
     top: 0;
     left: 0;
   }
-  .reveal-modal.open{
-    display:block !important;
-    visibility:visible !important;
+
+  .reveal-modal.open {
+    display: block !important;
+    visibility: visible !important;
     width:500px !important;
     margin-left: -250px;
     position: fixed;
     top:45%;
     left:50%;
     padding-bottom: 0;
-    p{
+    p {
       margin: 16px;
     }
   }
-  .close-box{
+
+  .close-box {
     font-size: 18px;
     line-height: 1;
     position: absolute;
@@ -58,4 +60,13 @@ header[role=banner].background-blue {
 
 .reveal-modal-bg {
   filter: alpha(opacity=45);
+}
+
+.reveal-modal {
+  left: 50%;
+
+  &.small {
+    width: 40%;
+    margin-left: -20%;
+  }
 }

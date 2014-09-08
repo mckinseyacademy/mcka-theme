@@ -42,7 +42,7 @@ $(function(){
         break;
       default:
         $('.player-wrapper').append($('<div />', {id: 'ooyala_mckinsey'}));
-        var ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '100%', height: '100%'});
+        var ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '740px', height: '425px'});
         modal.data('ooyala', ooyala);
 
     }
