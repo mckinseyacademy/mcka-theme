@@ -153,4 +153,9 @@ $(function(){
       }
     });
   }
+
+  var help_video = $('#mk-help-video');
+  if (help_video.length) {
+    OO.Player.create('mk-help-video', help_video.data('video-id'), {width: '320px', height: '180px'});
+  }
 });
