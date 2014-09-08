@@ -5,21 +5,8 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  .reveal-modal-bg,
-  .modal-bg{
-    z-index: 100001 !important;
-    margin-top: $header-bar-height;
-  }
-  .reveal-modal.open{
-    z-index: 100002;
-  }
-
   &.with-program {
     margin-top: $header-bar-height + $program-bar-height;
-    .reveal-modal-bg,
-    .modal-bg{
-      margin-top: $header-bar-height + $program-bar-height;
-    }
   }
 }
 
@@ -448,4 +435,12 @@ div.xblock-student_view {
   &.xmodule_display {
     visibility: visible;
   }
+}
+
+.reveal-modal-bg,
+.modal-bg{
+  z-index: 100001 !important;
+}
+.reveal-modal.open{
+  z-index: 100002;
 }
