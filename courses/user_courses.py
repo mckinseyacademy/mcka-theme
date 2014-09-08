@@ -1,6 +1,5 @@
 import functools
 from django.conf import settings
-from django.template.defaultfilters import floatformat
 from django.core.exceptions import PermissionDenied
 
 from accounts.middleware.thread_local import get_static_tab_context
@@ -186,10 +185,10 @@ def load_course_progress(course, user_id):
                                                            settings.PROGRESS_IGNORE_COMPONENTS)
         if len(lesson_component_ids) > 0:
             matches = set(lesson_component_ids).intersection(completed_ids)
-            lesson.progress = 100 * len(matches) / len(lesson_component_ids)
+            lesson.progress = int(round(100 * len(matches) / len(lesson_component_ids)))
     actual_completions = set(component_ids).intersection(completed_ids)
     try:
-        course.user_progress = floatformat(100 * len(actual_completions)/len(component_ids), 0)
+        course.user_progress = int(round(100 * len(actual_completions)/len(component_ids)))
     except ZeroDivisionError:
         course.user_progress = 0
 
