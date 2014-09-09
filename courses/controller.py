@@ -3,7 +3,6 @@
 
 import copy
 import random
-from django.template.defaultfilters import floatformat
 
 from django.conf import settings
 
@@ -221,13 +220,16 @@ def load_static_tabs(course_id):
 
     return static_tabs
 
+def round_to_int(value):
+    return int(round(value))
+
 def average_progress(course, user_id):
     metrics = course_api.get_course_metrics_completions(course.id, user_id)
     return metrics.course_avg
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
-        return int(round(100*completion_count/module_count))
+        return round_to_int(100*completion_count/module_count)
     else:
         return 0
 
@@ -271,8 +273,8 @@ def is_number(s):
 
 def get_proficiency_leaders(course_id, user_id):
     proficiency = course_api.get_course_metrics_proficiency(course_id, user_id)
-    proficiency.points = floatformat(proficiency.points, 0)
-    proficiency.course_avg = floatformat(proficiency.course_avg, 0)
+    proficiency.points = round_to_int(proficiency.points)
+    proficiency.course_avg = round_to_int(proficiency.course_avg)
     tailor_leader_list(proficiency.leaders)
     return proficiency
 
@@ -285,7 +287,7 @@ def tailor_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
         if hasattr(leader, 'points_scored'):
-            leader.points_scored = floatformat(leader.points_scored, 0)
+            leader.points_scored = round_to_int(leader.points_scored)
         if leader.avatar_url is None:
             leader.avatar_url = user_models.UserResponse.default_image_url()
 
@@ -330,7 +332,7 @@ def get_social_metrics(course_id, user_id):
     return {
         'points': user.points if user else 0,
         'position': user.rank if user else None,
-        'course_avg': floatformat(course_avg, 0),
+        'course_avg': round_to_int(course_avg),
         'leaders': leaders[:3]
     }
 
@@ -372,7 +374,7 @@ def inject_gradebook_info(user_id, course):
                     points = section.section_total[0]
                     max_points = section.section_total[1]
                     if max_points > 0:
-                        percent = int(round(100*points/max_points))
+                        percent = round_to_int(100*points/max_points)
                     else:
                         percent = 0
                     assesments[section.url_name] = percent
