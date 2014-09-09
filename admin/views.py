@@ -1137,6 +1137,8 @@ def permissions(request):
             roles.append(_('ADMIN'))
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_TA, []):
             roles.append(_('TA'))
+        if user.id in group_members.get(PERMISSION_GROUPS.CLIENT_ADMIN, []):
+            roles.append(_('COMPANY ADMIN'))
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
             roles.append(_('OBSERVER'))
         user.roles = ", ".join(roles)
@@ -1181,13 +1183,22 @@ def edit_permissions(request, user_id):
                         'role': role
                     })
             try:
-                permissions.save(form.cleaned_data.get('admin'), per_course_roles)
+                permissions.save(form.cleaned_data.get('permissions'), per_course_roles)
             except PermissionSaveError as err:
                 error = str(err)
             else:
                 return HttpResponseRedirect('/admin/permissions')
     else:
-        initial_data = permissions.initial_data()
+        initial_data = {
+            'permissions': permissions.current_permissions
+        }
+
+        for course in permissions.courses:
+            initial_data[course.id] = []
+            for role in permissions.user_roles:
+                if course.id == role.course_id:
+                    initial_data[course.id].append(role.role)
+
         form = PermissionForm(permissions.courses, initial=initial_data, label_suffix='')
 
     data = {
