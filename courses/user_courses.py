@@ -1,6 +1,5 @@
 import functools
 from django.conf import settings
-from django.template.defaultfilters import floatformat
 from django.core.exceptions import PermissionDenied
 
 from accounts.middleware.thread_local import get_static_tab_context
@@ -9,7 +8,7 @@ from admin.models import Program
 from api_client import user_api, course_api
 from license import controller as license_controller
 
-from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
+from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time, round_to_int
 
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
@@ -186,10 +185,10 @@ def load_course_progress(course, user_id):
                                                            settings.PROGRESS_IGNORE_COMPONENTS)
         if len(lesson_component_ids) > 0:
             matches = set(lesson_component_ids).intersection(completed_ids)
-            lesson.progress = 100 * len(matches) / len(lesson_component_ids)
+            lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
     actual_completions = set(component_ids).intersection(completed_ids)
     try:
-        course.user_progress = floatformat(100 * len(actual_completions)/len(component_ids), 0)
+        course.user_progress = round_to_int(100 * len(actual_completions)/len(component_ids))
     except ZeroDivisionError:
         course.user_progress = 0
 
