@@ -14,9 +14,6 @@ Apros.views.HomeCourses = Backbone.View.extend({
   events: {
     'click .nav-left:not(.disabled)':   'rotate',
     'click .nav-right:not(.disabled)':  'rotate',
-    'click .rotator a':                 'touchcheck',
-    'touchstart .rotator':              'touchstart',
-    'touchend .rotator':                'touchend'
   },
 
   rotate: function(event) {
@@ -47,32 +44,19 @@ Apros.views.HomeCourses = Backbone.View.extend({
     this.btn_right.toggleClass('disabled', last_in_view);
   },
 
-  touchcheck: function(e) {
-    if (this.current_touch) e.preventDefault();
-  },
-
-  touchstart: function(e) {
-    this.current_touch = e.originalEvent.touches[0];
-  },
-
-  touchend: function(e) {
-    _this = this;
-    touch = e.originalEvent.changedTouches[0];
-    diff  = this.current_touch.screenX - touch.screenX;
-    console.log(diff);
-    if (diff > 0) {
-      this.$('.nav-right:not(.disabled)').click();
-    } else {
-      this.$('.nav-left:not(.disabled)').click();
-    }
-
-    setTimeout(function(){ delete _this.current_touch; }, 250);
-  },
-
   render: function() {
     this.center_on_bookmark();
 
     var last_in_view = this.per_section - 1 >= this.cards.last().index();
     this.btn_right.toggleClass('disabled', last_in_view);
+
+    _this = self;
+    this.$(".rotator").touchwipe({
+      wipeLeft: function() { _this.$('.nav-right:not(.disabled)').click(); },
+      wipeRight: function() { _this.$('.nav-left:not(.disabled)').click(); },
+      min_move_x: 20,
+      min_move_y: 20,
+      preventDefaultEvents: true
+    });
   }
 });
