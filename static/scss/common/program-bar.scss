@@ -76,6 +76,13 @@
             display: block;
             color: $mckinsey-academy-alt-blue;
           }
+          a.current{
+            color: $mckinsey-orange;
+          }
+
+          a.done{
+            color: $mckinsey-academy-black;
+          }
 
           a:hover { color: $mckinsey-academy-blue-gray; }
 

@@ -1,9 +1,21 @@
 - for lesson in course.chapters
-  - if lesson.is_released and lesson.id != current_chapter.id
-    %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
-      Lesson ={lesson.index}: ={lesson.name}
-      .lesson-progress-bar
-        .bar{style: "width:#{lesson.progress}%;"}
+  - if lesson.is_released and lesson.id != current_chapter.id 
+    - if course.current_lesson == lesson
+      %a.current{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
+        Lesson ={lesson.index}: ={lesson.name}
+        .lesson-progress-bar
+          .bar{style: "width:#{lesson.progress}%;"}
+    - else
+      - if lesson.progress == 100
+        %a.done{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
+          Lesson ={lesson.index}: ={lesson.name}
+          .lesson-progress-bar
+            .bar{style: "width:#{lesson.progress}%;"}
+      - else
+        %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
+          Lesson ={lesson.index}: ={lesson.name}
+          .lesson-progress-bar
+            .bar{style: "width:#{lesson.progress}%;"}
   - else
     %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}", disabled: None}
       Lesson ={lesson.index}: ={lesson.name}
