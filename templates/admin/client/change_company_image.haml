@@ -1,0 +1,11 @@
+.set_company_image_wrapper
+  %h1.title
+    Company photo
+  .close-reveal-modal
+    %i.fa.fa-times-circle
+  %br
+  - block upload_company_image
+  - include "admin/client/upload_company_image.haml"
+  - block edit_company_image
+  - include "admin/client/edit_company_image.haml"
+

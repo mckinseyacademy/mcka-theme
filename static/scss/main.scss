@@ -348,17 +348,18 @@ form {
   text-align: center !important;
 }
 
-.set_profile_image_wrapper{
+.set_profile_image_wrapper, .set_company_image_wrapper{
   width:100%;
 }
 
-.change_profile_form, .upload-profile-image{
+.change_profile_form, .upload-profile-image,
+.change_company_image_form, .upload-company-image{
   width:50%;
   float:left;
   min-height: 350px;
 }
 
-.upload-profile-image{
+.upload-profile-image, .upload-company-image{
   width:46%;
   margin-right: 2%;
   padding-right: 2%;
@@ -381,7 +382,7 @@ form {
       display:inline;
     }
   }
-  img.spinner.upload-profile{
+  img.spinner.upload-image, img.spinner.upload-company{
     position:relative;
     top:0px;
     left:5px;
@@ -412,12 +413,12 @@ form {
   }
 }
 
-#edit-user-image-modal{
+#edit-user-image-modal, #edit-company-image-modal{
   img{
     max-width: rem-calc(250);
     max-height: rem-calc(250);
   }
-  .user-uploaded-image{
+  .user-uploaded-image, .company-uploaded-image{
     max-width:100%;
   }
   .helptext{

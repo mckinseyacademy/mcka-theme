@@ -8,6 +8,7 @@ from .models import Client, Program
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.json_object import JsonObjectWithImage
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -19,6 +20,7 @@ PROGRAM_YEAR_CHOICES = [yr for yr in range(THIS_YEAR, THIS_YEAR + 10)]
 class ClientForm(forms.Form):
 
     ''' add a new client to the system '''
+    image_url = forms.CharField(max_length=255, initial=JsonObjectWithImage.default_image_url(), required=False)
     display_name = forms.CharField(max_length=255)
     contact_name = forms.CharField(max_length=255)
     contact_phone = forms.CharField(max_length=20)
@@ -100,3 +102,7 @@ class PermissionForm(forms.Form):
             )
 
         self._per_course_roles = [course.id for course in courses]
+
+class UploadCompanyImageForm(forms.Form):
+    ''' form to upload file for company image '''
+    company_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)

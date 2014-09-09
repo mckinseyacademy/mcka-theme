@@ -1,6 +1,6 @@
-- block edit_profile_image
-  .change_profile_form
-    %form#cropping-form{'action': '/accounts/user_profile/image/edit', 'method': 'POST'}
+- block edit_company_image
+  .change_company_image_form
+    %form#company-cropping-form{'action': '/admin/clients/#{client_id}/image/edit', 'method': 'POST'}
       %label.label-10
         %span.label-5
           STEP 2:
@@ -8,11 +8,11 @@
       %hr
       - csrf_token
       %p
-        Drag and adjust cropping tool to edit you profile image.
+        Drag and adjust cropping tool to edit you company image.
       .img-container
-          %img.user-uploaded-image{'src': "#{profile_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
+          %img.company-uploaded-image{'src': "#{company_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
       .img-preview
-      %input.upload-image-url{'type': 'hidden', 'name': 'upload-image-url'}
+      %input.upload-image-url{'type': 'hidden', 'name': 'upload-image-url', 'value': '#{company_image}'}
       %input.width-position{'type': 'hidden', 'name': 'width-position'}
       %input.height-position{'type': 'hidden', 'name': 'height-position'}
       %input.x1-position{'type': 'hidden', 'name': 'x1-position'}
