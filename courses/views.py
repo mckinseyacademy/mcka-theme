@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext as _
 
 from admin.controller import load_course
@@ -17,7 +16,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
 from main.models import CuratedContentItem
 
-from .controller import inject_gradebook_info
+from .controller import inject_gradebook_info, round_to_int
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
@@ -52,9 +51,9 @@ def course_landing_page(request, course_id):
         "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
-        "proficiency": int(round(proficiency.points)),
+        "proficiency": round_to_int(proficiency.points),
         "proficiency_graph": int(5 * round(proficiency.points/5)),
-        "cohort_proficiency_average": int(round(proficiency.course_avg)),
+        "cohort_proficiency_average": round_to_int(proficiency.course_avg),
         "cohort_proficiency_graph": int(5 * round(proficiency.course_avg/5)),
         "social": social,
         "average_progress": average_progress(course, request.user.id),
@@ -265,9 +264,9 @@ def course_progress(request, course_id):
 
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
-        grader.weight = floatformat(grader.weight*100, 0)
+        grader.weight = round_to_int(grader.weight*100)
 
-    pass_grade = floatformat(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100, 0)
+    pass_grade = round_to_int(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
 
     workgroup_avg_sections = [section for section in gradebook.courseware_summary if section.display_name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
@@ -278,10 +277,10 @@ def course_progress(request, course_id):
         # format scores & grades
         for activity in group_activities:
             if activity.score is not None:
-                activity.score = floatformat(activity.score, 0)
+                activity.score = round_to_int(activity.score)
             for i, grade in enumerate(activity.grades):
                 if grade is not None:
-                    activity.grades[i] = floatformat(grade, 0)
+                    activity.grades[i] = round_to_int(grade)
     else:
         group_activities = None
         group_work_avg = None
@@ -301,14 +300,14 @@ def course_progress(request, course_id):
             'color': '#66a5b5'
         })
 
-    total = floatformat(gradebook.grade_summary.percent*100, 0)
+    total = round_to_int(gradebook.grade_summary.percent*100)
     bar_chart[0]['values'].append({
         'label': 'TOTAL',
         'value': total,
         'color': '#e37121'
     })
 
-    pro_forma = floatformat(gradebook.pro_forma_grade, 0)
+    pro_forma = round_to_int(gradebook.pro_forma_grade)
     bar_chart[0]['values'].append({
         'value': pro_forma,
         'color': 'none'
