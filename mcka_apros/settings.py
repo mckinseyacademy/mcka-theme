@@ -257,6 +257,15 @@ IGNORE_ROLES = [
     'instructor',
 ]
 
+# progress bar chart colours
+PROGRESS_BAR_COLORS = {
+    "normal": "#b1c2cc",# $mckinsey-academy-blue-gray
+    "dropped": "#e5ebee",# $mckinsey-academy-bright-gray
+    "group_work": "#66a5b5",# $mckinsey-academy-turquoise
+    "total": "#e37222",# $mckinsey-orange
+    "proforma": "none",
+}
+
 try:
     from local_settings import *
 except ImportError:
