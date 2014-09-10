@@ -1159,14 +1159,6 @@ def edit_permissions(request, user_id):
     define or edit existing roles for a single user
     '''
     user = user_api.get_user(user_id)
-
-    # make sure user is in administrative company or has no company association
-    organizations = user_api.get_user_organizations(user_id)
-    in_companies = len(organizations) > 0
-    in_admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), False)
-    if in_companies and not in_admin_company:
-        return HttpResponse("Error") # this should never happen
-
     error = None
 
     permissions = Permissions(user_id)
