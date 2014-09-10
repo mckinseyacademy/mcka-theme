@@ -272,9 +272,9 @@ def is_number(s):
     return True
 
 def get_proficiency_leaders(course_id, user_id):
-    proficiency = course_api.get_course_metrics_proficiency(course_id, user_id)
-    proficiency.points = round_to_int(proficiency.points)
-    proficiency.course_avg = round_to_int(proficiency.course_avg)
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id)
+    proficiency.user_grade_display = round_to_int(100*proficiency.user_grade)
+    proficiency.course_avg_display = round_to_int(100*proficiency.course_avg) if proficiency.course_avg else 0
     tailor_leader_list(proficiency.leaders)
     return proficiency
 
