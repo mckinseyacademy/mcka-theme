@@ -108,6 +108,25 @@ class Course(CategorisedJsonObject):
         return None
 
     @property
+    def formatted_end_date(self):
+        if hasattr(self, 'end') and not self.end is None:
+            return "{} {}".format(
+                _("Available"),
+                self.end.strftime(settings.DATE_DISPLAY_FORMAT)
+            )
+        return None
+    @property
+    def formatted_time_span(self):
+        start = end = ''
+        if hasattr(self, 'start') and not self.start is None:
+            start = self.start.strftime(settings.SHORT_DATE_FORMAT)
+        if hasattr(self, 'end') and not self.end is None:
+            end = self.end.strftime(settings.SHORT_DATE_FORMAT)
+        return "{} - {}".format(
+            start, end
+        )
+
+    @property
     def percent_complete_message(self):
         if hasattr(self, 'percent_complete'):
             return "{}% {}".format(

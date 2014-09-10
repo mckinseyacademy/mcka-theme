@@ -82,6 +82,47 @@
       }
     }
   }
+  ul.courses-tiles{
+    float:left;
+    display: inline;
+
+    li.course-tile{
+      display:inline-table;
+      width: 180px;
+      height: 180px;
+      background: $pure-white;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+      .label-11, .label-12{
+        height: 70px;
+        overflow: hidden;
+      }
+      .label-11, .label-12, .course-stats{
+        padding: 0 10px 0 10px;
+      }
+      .course-stats{
+        .course-stat-label{
+          color: #666666;
+          @include font-spec(10, semibold, 12);
+        }
+        .course-stat-value{
+          color: #666666;
+          @include font-spec(10, normal, 12);
+        }
+      }
+      a.page-to.course-link{
+        float:right;
+        padding: 0px 15px 5px 0;
+      }
+      .course-image{
+        width:100%;
+        height: 20px;
+        max-height:20px;
+        margin-bottom: 10px;
+      }
+    }
+  }
 
   .company-image img{
     width:40px;

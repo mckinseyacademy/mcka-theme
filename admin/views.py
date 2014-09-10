@@ -20,7 +20,7 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from api_client.group_api import PERMISSION_GROUPS
 
 from accounts.models import RemoteUser, UserActivation
-from accounts.controller import save_profile_image
+from accounts.controller import save_profile_image, is_future_start
 
 from main.models import CuratedContentItem
 from api_client import course_api
@@ -79,21 +79,34 @@ def home(request):
     )
 
 
+# @permission_group_required(PERMISSION_GROUPS.CLIENT_ADMIN)
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_home(request, client_id=None):
-    if request.user.is_mcka_admin:
-        valid_client_id = client_id
+def client_admin_home(request):
+    organizations = user_api.get_user_organizations(request.user.id)
+    organization = []
+    if len(organizations) > 0:
+        organization = organizations[0]
+        organization = Client.fetch(organization.id)
 
-    # make sure client admin can access only his company
-    elif request.user.is_client_admin:
-        orgs = user_api.get_user_organizations(request.user.id)
-        if orgs:
-            valid_client_id = orgs[0].id
+        programs = []
+        enrolledStudents = []
+        for program in organization.fetch_programs():
+            program.courses = []
+            for course in program.fetch_courses():
+                users = course_api.get_users_list_in_organizations(course.course_id, organization.id)
+                program.courses.append(_prepare_course_display(course_api.get_course(course.course_id)))
+            programs.append(_prepare_program_display(program))
 
+
+    data = {
+        'client': organization,
+        'programs': programs,
+    }
 
     return render(
         request,
-        'admin/client_admin_home.haml'
+        'admin/client_admin_home.haml',
+        data,
     )
 
 
@@ -663,6 +676,11 @@ def _prepare_program_display(program):
             )
 
     return program
+
+def _prepare_course_display(course):
+    if hasattr(course, "start") and hasattr(course, "end"):
+        course.date_range = course.formatted_time_span
+    return course
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
