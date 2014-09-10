@@ -324,14 +324,14 @@ def get_course_metrics_by_city(course_id, cities=None):
 
 
 @api_error_protect
-def get_course_metrics_proficiency(course_id, user_id=None, count=3):
+def get_course_metrics_grades(course_id, user_id=None, count=3):
     ''' retrieves users who are leading in terms of points_scored'''
 
     qs_params = {"count": count}
     if user_id:
         qs_params["user_id"] = user_id
 
-    url = '{}/{}/{}/metrics/proficiency/leaders?{}'.format(
+    url = '{}/{}/{}/metrics/grades/leaders?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,

@@ -39,9 +39,11 @@ def course_landing_page(request, course_id):
     set_current_course_for_user(request, course_id)
     static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
-    proficiency = course_api.get_course_metrics_proficiency(course_id, request.user.id)
+    proficiency = course_api.get_course_metrics_grades(course_id, request.user.id)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
+
+    course_avg_proficiency = 0 if proficiency.course_avg is None else proficiency.course_avg
 
     data = {
         "user": request.user,
@@ -51,10 +53,10 @@ def course_landing_page(request, course_id):
         "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
-        "proficiency": round_to_int(proficiency.points),
-        "proficiency_graph": int(5 * round(proficiency.points/5)),
-        "cohort_proficiency_average": round_to_int(proficiency.course_avg),
-        "cohort_proficiency_graph": int(5 * round(proficiency.course_avg/5)),
+        "proficiency": round_to_int(proficiency.user_grade * 100),
+        "proficiency_graph": int(5 * round(proficiency.user_grade * 20)),
+        "cohort_proficiency_average": round_to_int(course_avg_proficiency * 100),
+        "cohort_proficiency_graph": int(5 * round(course_avg_proficiency * 20)),
         "social": social,
         "average_progress": average_progress(course, request.user.id),
     }
@@ -307,9 +309,9 @@ def course_progress(request, course_id):
         'color': '#e37121'
     })
 
-    pro_forma = round_to_int(gradebook.pro_forma_grade)
+    proforma_grade = round_to_int(gradebook.proforma_grade * 100)
     bar_chart[0]['values'].append({
-        'value': pro_forma,
+        'value': proforma_grade,
         'color': 'none'
 
     })

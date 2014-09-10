@@ -444,3 +444,11 @@ div.xblock-student_view {
 .reveal-modal.open{
   z-index: 100002;
 }
+
+#intro_modal {
+  #mk-intro-video {
+    margin: 20px 0;
+  }
+
+  i.fa { color: $mckinsey-academy-bright-gray; }
+}

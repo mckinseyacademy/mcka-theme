@@ -17,7 +17,6 @@ def _build_file_list(folder, ext):
 
         matching_files.extend(["/".join([folder_name,name]) for name in files if os.path.splitext(name)[-1]==ext])
 
-
     os.chdir(current_dir)
 
     return matching_files
@@ -59,6 +58,7 @@ js_files.extend([
     'js/vendor/d3.v3.js',
     'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
+    'js/vendor/jquery.touchwipe.min.js',
     'js/application.js',
     'js/router.js',
 ])

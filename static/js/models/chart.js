@@ -60,7 +60,7 @@ Apros.models.Chart = Backbone.Model.extend({
     //set pro_forma class for last bar
     temp.attr('class', function(d,i){
       return i == tempSize - 1 ? 'pro_forma' : 'nv-bar';
-    }) 
+    });
 
     svg.select('.pro_forma rect')
       .style('fill', 'none')
@@ -68,10 +68,12 @@ Apros.models.Chart = Backbone.Model.extend({
       .style('stroke-dasharray', '2,2')
       .style('stroke-opacity', '1');
 
-    svg.select('.pro_forma text')
-      .style('visibility', 'visible');
+    var pro_forma = svg.select('.pro_forma text');
+    pro_forma
+      .style('visibility', 'visible')
+      .text(d3.format("d")(pro_forma.text()));
 
-  }, 
+  },
 
   historical_bar_chart: function(selector) {
     this.selector = selector;

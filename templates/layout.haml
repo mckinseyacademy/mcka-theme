@@ -38,13 +38,6 @@
     %meta{name: "msapplication-TileImage", content: "/static/favicons/mstile-144x144.png"}
     %meta{name: "msapplication-config", content: "/static/favicons/browserconfig.xml"}
 
-    /[if lt IE 9]
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js"}
-      %script{src: "//s3.amazonaws.com/nwapi/nwmatcher/nwmatcher-1.2.5-min.js"}
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"}
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"}
-
     -# CSS
     - block css
       %link{rel: "stylesheet", href: "{% static 'css/normalize.css' %}"}
@@ -86,6 +79,13 @@
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
         ga('create', '{{ ga_tracking_id }}', 'mckinseyacademy.com');
         ga('send', 'pageview');
+
+    /[if lt IE 9]
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js"}
+      %script{src: "//s3.amazonaws.com/nwapi/nwmatcher/nwmatcher-1.2.5-min.js"}
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"}
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"}
 
   %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program{% endif %}"}
     - block help_context
@@ -136,6 +136,15 @@
           .close-box
             %i.fa.fa-times-circle
           %p We're sorry, McKinsey Academy is not compatible with your browser. Please update your browser to access course content. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
+
+    - if request.user.is_authenticated
+      #intro_modal.reveal-modal.small{'data-reveal': None}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        %h1 Welcome to McKinsey Academy
+        %p McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage. This video will walk you through our learner experience.
+        #mk-intro-video{'data-video-id': "9tOWNzbTp-8IG91k2Y9bSI0bpJMx5dUz"}
+        %p.style-6 This product walkthrough can always be found in the page specific help <i class="fa fa-question-circle"></i>.
 
     -# Override if you need another version of jQuery
     - block foundation_jquery

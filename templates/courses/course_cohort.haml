@@ -33,9 +33,9 @@
       %section
         %header
           .label-5 Proficiency:
-          .label-4 cohort average = ={proficiency.course_avg}
-          - if proficiency.position
-            .rank your proficiency position: <br><span>#={proficiency.position}</span> with <span>={proficiency.points}</span>
+          .label-4 cohort average = ={proficiency.course_avg_display}
+          - if proficiency.user_position and proficiency.user_grade
+           .rank your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span>
           - else
             .rank your proficiency position <br> will be displayed here
           - if proficiency.leaders
