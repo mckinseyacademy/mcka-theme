@@ -11,6 +11,14 @@
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
             Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
         %hr
+        %select#company_filter
+          -for org in organization_options
+            - if organization_id == org.0
+              %option{value: "={org.0}", selected: "selected"}
+                = org.1
+            - else
+              %option{value: "={org.0}" }
+                = org.1
         %section
           %table.data-table
             %thead
@@ -52,4 +60,8 @@
       paging: false,
       "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
     });
+
     ajaxify_overlay_form('#edit-permissions', 'form');
+    $('#company_filter').on('change', function() {
+       window.location.search = 'organization=' + $(this).val();
+    })

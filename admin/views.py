@@ -1104,44 +1104,60 @@ def permissions(request):
     '''
     Show users within "Administrative" company, and also users that have no company association
     '''
+
     organizations = Organization.list()
-    admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
 
-    # fetch users users that have no company association
     additional_fields = ["organizations"]
-    users = user_api.get_users(has_organizations=False,fields=additional_fields)
+    users = []
 
-    # fetch users in administrative company
-    admin_users = []
-    if admin_company and admin_company.users:
-        ids = [str(id) for id in admin_company.users]
-        admin_users = user_api.get_users(ids=ids,fields=additional_fields)
+    ADMINISTRATIVE = 0
+    organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
+    organization_options.extend([(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY])
 
-    users.extend(admin_users)
+    org_id = int(request.GET.get('organization', ADMINISTRATIVE))
+
+    if org_id == ADMINISTRATIVE:
+        # fetch users users that have no company association
+        users = user_api.get_users(has_organizations=False, fields=additional_fields)
+
+        # fetch users in administrative company
+        admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
+        admin_users = []
+        if admin_company and admin_company.users:
+            ids = [str(id) for id in admin_company.users]
+            admin_users = user_api.get_users(ids=ids,fields=additional_fields)
+
+        users.extend(admin_users)
+
+    else:
+        org = next((org for org in organizations if org.id == org_id), None)
+        if org:
+            ids = [str(id) for id in org.users]
+            users = user_api.get_users(ids=ids, fields=additional_fields)
+
 
     # get the groups and for each group get the list of users, then intersect them appropriately
-
     groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
     group_members = {group.name : [gu.id for gu in group_api.get_users_in_group(group.id)] for group in groups}
 
     for user in users:
         group_names = [g.name for g in groups]
         roles = []
-
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_ADMIN, []):
             roles.append(_('ADMIN'))
-
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_TA, []):
             roles.append(_('TA'))
-
+        if user.id in group_members.get(PERMISSION_GROUPS.CLIENT_ADMIN, []):
+            roles.append(_('COMPANY ADMIN'))
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
             roles.append(_('OBSERVER'))
-
         user.roles = ", ".join(roles)
         user.company_list = ", ".join([org.display_name for org in user.organizations])
 
     data = {
-        'users': users
+        'users': users,
+        'organization_options': organization_options,
+        'organization_id': org_id
     }
     return render(request, 'admin/permissions/list.haml', data)
 
@@ -1153,14 +1169,6 @@ def edit_permissions(request, user_id):
     define or edit existing roles for a single user
     '''
     user = user_api.get_user(user_id)
-
-    # make sure user is in administrative company or has no company association
-    organizations = user_api.get_user_organizations(user_id)
-    in_companies = len(organizations) > 0
-    in_admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), False)
-    if in_companies and not in_admin_company:
-        return HttpResponse("Error") # this should never happen
-
     error = None
 
     permissions = Permissions(user_id)
@@ -1177,13 +1185,22 @@ def edit_permissions(request, user_id):
                         'role': role
                     })
             try:
-                permissions.save(form.cleaned_data.get('admin'), per_course_roles)
+                permissions.save(form.cleaned_data.get('permissions'), per_course_roles)
             except PermissionSaveError as err:
                 error = str(err)
             else:
                 return HttpResponseRedirect('/admin/permissions')
     else:
-        initial_data = permissions.initial_data()
+        initial_data = {
+            'permissions': permissions.current_permissions
+        }
+
+        for course in permissions.courses:
+            initial_data[course.id] = []
+            for role in permissions.user_roles:
+                if course.id == role.course_id:
+                    initial_data[course.id].append(role.role)
+
         form = PermissionForm(permissions.courses, initial=initial_data, label_suffix='')
 
     data = {
