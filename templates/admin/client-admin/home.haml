@@ -19,7 +19,7 @@
       %ul.courses-tiles
         -for course in program.courses
           %li.course-tile
-            .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50%;'}
+            .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50% / 190px auto;'}
             -if course.started
               %a{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
                 .label-11
