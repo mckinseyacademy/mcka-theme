@@ -20,13 +20,13 @@
         -for course in program.courses
           %li.course-tile
             .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50%;'}
-            %a{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
-              -if course.started
+            -if course.started
+              %a{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
                 .label-11
                   = course.name
-              -else
-                .label-12
-                  = course.name
+            -else
+              .label-12
+                = course.name
             .course-stats
               .course-stat-label Course run:
                 %span.course-stat-value
@@ -40,5 +40,5 @@
                 %a.course-link{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
                   %i.fa.fa-chevron-right
                -else
-                %a.course-link.not-started{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
+                %a.course-link.not-started
                   %i.fa.fa-chevron-right
