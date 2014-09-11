@@ -14,6 +14,7 @@ from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
+from lib.util import DottableDict
 from main.models import CuratedContentItem
 
 from .controller import inject_gradebook_info, round_to_int
@@ -28,6 +29,17 @@ from .user_courses import get_current_course_for_user, set_current_course_for_us
 from lib.util import LegacyIdConvert
 
 # Create your views here.
+
+_progress_bar_dictionary = {
+    "normal": "#b1c2cc",
+    "dropped": "#e5ebee",
+    "group_work": "#66a5b5",
+    "total": "#e37121",
+    "proforma": "none",
+}
+if settings.PROGRESS_BAR_COLORS:
+    _progress_bar_dictionary.update(settings.PROGRESS_BAR_COLORS)
+PROGRESS_BAR_COLORS = DottableDict(_progress_bar_dictionary)
 
 @login_required
 @check_user_course_access
@@ -288,32 +300,63 @@ def course_progress(request, course_id):
         group_work_avg = None
 
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
-    for grade in gradebook.grade_summary.section_breakdown:
-        bar_chart[0]['values'].append({
-           'label': grade.label,
-           'value': grade.percent*100,
-           'color': '#b1c2cc'
-        })
 
-    if group_work_avg:
-        bar_chart[0]['values'].append({
-            'label': 'GROUP WORK\n AVG.',
-            'value': group_work_avg,
-            'color': '#66a5b5'
-        })
+    section_breakdown = gradebook.grade_summary.section_breakdown
+    categories = set([grade.category for grade in section_breakdown])
+
+    # helper to determine is grade is "dropped" - definition of this may change and easy to replace in one location
+    def is_dropped(grade):
+        return hasattr(grade, 'mark')
+
+    category_map = {}
+    group_category = None
+    has_values_for = DottableDict({})
+    for category in categories:
+        category_map[category] = [grade for grade in section_breakdown if grade.category == category]
+        if category.startswith(settings.GROUP_PROJECT_IDENTIFIER):
+            group_category = category
+
+    for cat in [category for category in categories if category != group_category]:
+        for grade in category_map[cat]:
+            color = PROGRESS_BAR_COLORS.normal
+            if is_dropped(grade):
+                color = PROGRESS_BAR_COLORS.dropped
+                has_values_for.dropped = True
+            else:
+                has_values_for.normal = True
+
+            bar_chart[0]['values'].append({
+               'label': grade.label,
+               'value': grade.percent*100,
+               'color': color,
+            })
+
+    activity_index = 0
+    if group_category is not None:
+        has_values_for.group_work = True
+        for grade in category_map[group_category]:
+            if not is_dropped(grade):
+                label = grade.label
+                if group_activities and activity_index < len(group_activities):
+                    label = group_activities[activity_index].name
+                bar_chart[0]['values'].append({
+                   'label': label,
+                   'value': grade.percent*100,
+                   'color': PROGRESS_BAR_COLORS.group_work,
+                })
+                activity_index += 1
 
     total = round_to_int(gradebook.grade_summary.percent*100)
     bar_chart[0]['values'].append({
         'label': 'TOTAL',
         'value': total,
-        'color': '#e37121'
+        'color': PROGRESS_BAR_COLORS.total
     })
 
     proforma_grade = round_to_int(gradebook.proforma_grade * 100)
     bar_chart[0]['values'].append({
         'value': proforma_grade,
-        'color': 'none'
-
+        'color': PROGRESS_BAR_COLORS.proforma
     })
 
     data = {
@@ -322,6 +365,7 @@ def course_progress(request, course_id):
         'graders': graders,
         'group_activities': group_activities,
         "average_progress": average_progress(course, request.user.id),
+        "has_values_for": has_values_for,
     }
     return render(request, 'courses/course_progress.haml', data)
 
