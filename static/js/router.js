@@ -1,17 +1,24 @@
 var Router = Backbone.Router.extend({
   routes: {
-    '':                              'home',
-    'courses/*course_id/progress':   'course_progress',
-    'courses/*course_id/overview':   'course_overview',
-    'courses/*course_id/cohort':     'course_cohort',
-    'courses/*course_id/group_work': 'course_group_work',
-    'courses/*course_id/resources':  'course_resources',
-    'courses/*course_id':            'course_index'
+    '':                               'home',
+    'contact/':                       'contact',
+    'courses/*course_id/progress':    'course_progress',
+    'courses/*course_id/overview':    'course_overview',
+    'courses/*course_id/cohort':      'course_cohort',
+    'courses/*course_id/group_work':  'course_group_work',
+    'courses/*course_id/resources':   'course_resources',
+    'courses/*course_id':             'course_index'
   },
 
   home: function() {
     var el = $('#home-landing');
     new Apros.views.HomeLanding({el: el}).render();
+  },
+
+  contact: function() {
+    var el = $('#contact-page');
+    new Apros.views.Contact({el: el}).render();
+    $('#support_success').foundation('reveal', 'open');
   },
 
   course_index: function() {

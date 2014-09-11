@@ -257,6 +257,13 @@ IGNORE_ROLES = [
     'instructor',
 ]
 
+# Zendesk Settings
+ZENDESK_API = {
+    'username': 'andy@mckinseyacademy.com',
+    'token': 'uiXVhEjOO2Os7NxUUBQvMZvsqBGDqfUJBPC8PAsG',
+    'subdomain': 'mckinseyacademy',
+}
+
 try:
     from local_settings import *
 except ImportError:

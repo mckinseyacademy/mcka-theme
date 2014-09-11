@@ -39,7 +39,7 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns(
     '',
-    url(r'^(?P<page_name>.*)/$', include('marketing.urls'), name='marketing'),
+    url(r'^', include('marketing.urls'), name='marketing'),
 )
 
 handler404 = views.error_404
