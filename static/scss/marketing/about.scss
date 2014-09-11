@@ -64,5 +64,34 @@
         h4 { max-width: 140px; }
       }
     }
+
+    &.faculty {
+      margin: 20px 0 0;
+      list-style-type: none;
+      @include clearfix;
+
+      li {
+        float: left;
+        width: 50%;
+        height: 85px;
+
+        img {
+          float: left;
+          margin-right: rem-calc(10);
+          @include square-size(50px);
+        }
+
+        > div {
+          float: left;
+          width: 280px;
+        }
+
+        @media #{$small-only} {
+          width: 100%;
+          height: auto;
+          margin-bottom: rem-calc(25);
+        }
+      }
+    }
   }
 }
