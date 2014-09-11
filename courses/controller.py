@@ -12,6 +12,8 @@ from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.project_models import Project
 from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
+from api_client.gradebook_models import CourseSummary, GradeSummary
+from api_client.json_object import JsonObject
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
 
@@ -19,6 +21,27 @@ from admin.controller import load_course, get_group_activity_xblock, is_group_ac
 # pylint: disable=maybe-no-member
 
 # logic functions - recieve api implementor for test
+
+class AcademyGradeAssessmentType(JsonObject):
+    @property
+    def type_name(self):
+        return self.type[len(settings.GROUP_PROJECT_IDENTIFIER):] if self.is_group_assessment else self.type;
+
+    @property
+    def is_group_assessment(self):
+        return self.type.startswith(settings.GROUP_PROJECT_IDENTIFIER)
+
+class AcademyGradePolicy(JsonObject):
+    object_map = {
+        "GRADER": AcademyGradeAssessmentType,
+    }
+
+class AcademyGradebook(JsonObject):
+    object_map = {
+        "courseware_summary": CourseSummary,
+        "grade_summary": GradeSummary,
+        "grading_policy": AcademyGradePolicy,
+    }
 
 def build_page_info_for_course(
     request,
@@ -365,7 +388,7 @@ def load_lesson_estimated_time(course):
 def inject_gradebook_info(user_id, course):
     # Inject lesson assessment scores
     assesments = {}
-    gradebook = user_api.get_user_gradebook(user_id, course.id)
+    gradebook = user_api.get_user_gradebook(user_id, course.id, AcademyGradebook)
     if gradebook.courseware_summary:
         for lesson in gradebook.courseware_summary:
             percent = None

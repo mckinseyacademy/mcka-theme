@@ -106,6 +106,7 @@
       &.completed:before { background-color: $mckinsey-academy-blue-gray; }
       &.group-work:before { background-color: $mckinsey-academy-turquoise; }
       &.current-grade:before { background-color: $mckinsey-orange; }
+      &.dropped:before { background-color: $mckinsey-academy-bright-gray; }
     }
   }
 

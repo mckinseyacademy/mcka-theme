@@ -256,7 +256,7 @@ def get_user_course_detail(user_id, course_id):
     return JP.from_json(response.read(), user_models.UserCourseStatus)
 
 @api_error_protect
-def get_user_gradebook(user_id, course_id):
+def get_user_gradebook(user_id, course_id, gradebook_model=gradebook_models.Gradebook):
     ''' get grades for the user for this course'''
     response = GET(
         '{}/{}/{}/courses/{}/grades'.format(
@@ -267,7 +267,7 @@ def get_user_gradebook(user_id, course_id):
         )
     )
 
-    return JP.from_json(response.read(), gradebook_models.Gradebook)
+    return JP.from_json(response.read(), gradebook_model)
 
 @api_error_protect
 def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
