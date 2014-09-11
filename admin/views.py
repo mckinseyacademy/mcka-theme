@@ -76,8 +76,18 @@ def home(request):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_home(request):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_home(request, client_id=None):
+    if request.user.is_mcka_admin:
+        valid_client_id = client_id
+
+    # make sure client admin can access only his company
+    elif request.user.is_client_admin:
+        orgs = user_api.get_user_organizations(request.user.id)
+        if orgs:
+            valid_client_id = orgs[0].id
+
+
     return render(
         request,
         'admin/client_admin_home.haml'
