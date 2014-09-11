@@ -10,6 +10,9 @@
         %h1
           %span= _("Client: ")
           %span= client.display_name
+
+        - if user.is_mcka_admin
+          %a{href: "/admin/client-admin/={client.id}", target: "_blank"} Access Company Dashboard
         %hr
         %section
           %header
