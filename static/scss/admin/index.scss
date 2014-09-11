@@ -85,6 +85,7 @@
   ul.courses-tiles{
     float:left;
     display: inline;
+    width: 100%;
 
     li.course-tile{
       display:inline-table;
@@ -111,9 +112,12 @@
           @include font-spec(10, normal, 12);
         }
       }
-      a.page-to.course-link{
+      a.course-link{
         float:right;
         padding: 0px 15px 5px 0;
+      }
+      .not-started{
+        color: #868685;
       }
       .course-image{
         width:100%;

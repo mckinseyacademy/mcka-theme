@@ -79,24 +79,31 @@ def home(request):
     )
 
 
-# @permission_group_required(PERMISSION_GROUPS.CLIENT_ADMIN)
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_home(request):
-    organizations = user_api.get_user_organizations(request.user.id)
-    organization = []
-    if len(organizations) > 0:
-        organization = organizations[0]
-        organization = Client.fetch(organization.id)
+def client_admin_home(request, client_id=None):
 
-        programs = []
-        enrolledStudents = []
-        for program in organization.fetch_programs():
-            program.courses = []
-            for course in program.fetch_courses():
-                users = course_api.get_users_list_in_organizations(course.course_id, organization.id)
-                program.courses.append(_prepare_course_display(course_api.get_course(course.course_id)))
-            programs.append(_prepare_program_display(program))
+    if request.user.is_mcka_admin:
+        valid_client_id = client_id
 
+    # make sure client admin can access only his company
+    elif request.user.is_client_admin:
+        orgs = user_api.get_user_organizations(request.user.id)
+        if orgs:
+            valid_client_id = orgs[0].id
+
+    organization = Client.fetch(valid_client_id)
+
+    programs = []
+    for program in organization.fetch_programs():
+        coursesIDs = []
+        program.courses = []
+        for course in program.fetch_courses():
+            users = course_api.get_users_list_in_organizations(course.course_id, organization.id)
+            course = _prepare_course_display(course_api.get_course(course.course_id))
+            if course.id not in coursesIDs:
+                program.courses.append(course)
+                coursesIDs.append(course.id)
+        programs.append(_prepare_program_display(program))
 
     data = {
         'client': organization,
@@ -105,7 +112,16 @@ def client_admin_home(request):
 
     return render(
         request,
-        'admin/client_admin_home.haml',
+        'admin/client-admin/home.haml',
+        data,
+    )
+
+def client_admin_course(request, client_id, course_id):
+
+    data = {}
+    return render(
+        request,
+        'admin/client-admin/course.haml',
         data,
     )
 
@@ -679,7 +695,12 @@ def _prepare_program_display(program):
 
 def _prepare_course_display(course):
     if hasattr(course, "start") and hasattr(course, "end"):
-        course.date_range = course.formatted_time_span
+        if is_future_start(course.start):
+            course.date_range = _("Coming Soon")
+        elif course.end != None and is_future_start(course.end) == False:
+            course.date_range = _("Archived")
+        else:
+            course.date_range = course.formatted_time_span
     return course
 
 @ajaxify_http_redirects
