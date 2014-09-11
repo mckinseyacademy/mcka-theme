@@ -19,12 +19,16 @@
     .grades
       %ul
         - for grader in graders
-          %li ={grader.type}: ={grader.weight} percent of your grade
+          %li ={grader.type_name}: ={grader.weight} percent of your grade
       #chart-grades
         %svg
     %ul.legend
-      %li.completed.label-3 Completed
-      %li.group-work.label-3 Group Work avg.
+      - if has_values_for.normal
+        %li.completed.label-3 Completed
+      - if has_values_for.dropped
+        %li.dropped.label-3 Dropped
+      - if has_values_for.group_work
+        %li.group-work.label-3 Group Work
       %li.current-grade.label-3 Current grade
     %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     %hr

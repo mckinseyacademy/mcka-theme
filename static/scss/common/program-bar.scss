@@ -137,22 +137,29 @@
         content: ':';
       }
     }
-    a.course-name, .course-name{
+
+    a.course-name, .course-name {
       @include font-spec(12, bold);
       padding: 5px 0;
       color: $pure-black;
-      &.unavailable{
+      display: block;
+      line-height: rem-calc(14);
+
+      &.unavailable {
         color: $mckinsey-dark-grey;
       }
-      &.current{
+
+      &.current {
         color: $mckinsey-orange;
       }
     }
-    a.course-name{
+
+    a.course-name {
       &:hover{
         color: $mckinsey-academy-blue-gray;
       }
     }
+
     .status{
       @include font-spec(10, semibold);
       font-style: italic;
