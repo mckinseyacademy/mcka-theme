@@ -1327,7 +1327,7 @@ def company_image_edit(request, client_id="new"):
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
 
-            request.user = save_profile_image(request, cropped_example, image_url)
+            save_profile_image(cropped_example, image_url)
         if client_id == 'new':
             return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
         else:
@@ -1353,8 +1353,7 @@ def upload_company_image(request, client_id='new'):
                     company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
                 else:
                     company_image = 'images/company_image-{}.jpg'.format(client_id)
-                request.user = save_profile_image(request, Image.open(temp_image), company_image)
-            #    request.user.avatar_url = '/accounts/images/company_image-{}.jpg'.format(client_id)
+                save_profile_image(Image.open(temp_image), company_image)
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
 

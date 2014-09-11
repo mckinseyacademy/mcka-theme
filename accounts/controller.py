@@ -45,7 +45,7 @@ def is_future_start(date):
     else:
         return True
 
-def save_profile_image(request, cropped_example, image_url):
+def save_profile_image(cropped_example, image_url):
 
     import StringIO
     from PIL import Image
@@ -74,7 +74,6 @@ def save_profile_image(request, cropped_example, image_url):
     cropped_image_40_path = default_storage.save(image_url[:-4] + '-40.jpg', thumb_io_40)
     cropped_image_path = default_storage.save(image_url[:-4] + '.jpg', thumb_io)
 
-    return request.user
 
 def _rescale_image(img, width, height, force=True):
     """Rescale the given image, optionally cropping it to make sure the result image has the specified width and height."""
