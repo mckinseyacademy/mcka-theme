@@ -2,7 +2,7 @@
   "taglines": [
     {
       "type": "tagline",
-      "content": "Empowering business professionals to advance their careers by bringing the practitioner’s perspective to business education"
+      "content": "McKinsey Academy helps organizations thrive by accelerating their talent advantage"
     }
   ],
   "videos": [
@@ -14,19 +14,11 @@
   "entry_points": [
     {
       "type": "entry-point",
-      "title": "Leadership Channel:",
-      "icon": "lightbulb",
-      "icon_color": "blue-gray",
-      "subtitle": "Distinguished Alumni Lecture Series:",
-      "content": "McKinsey Academy participants have access to leadership insights from distinguished McKinsey alumni as well as other global CEOs."
-    },
-    {
-      "type": "entry-point",
       "title": "ABOUT McKINSEY ACADEMY:",
       "icon": "advisors",
       "icon_color": "green",
       "subtitle": "Academic Advisory Council ",
-      "content": "The Advisory Council will shape the research agenda for McKinsey Academy, offer perspectives on successful and emerging pedagogical methods, and suggest ideas for future experimentation."
+      "content": "The Academic Advisory Council helps to shape the research agenda for McKinsey Academy, offers perspectives on successful and emerging pedagogical methods, and suggests ideas for future experimentation."
     },
     {
       "type": "entry-point",
@@ -42,15 +34,15 @@
       "icon_color": "blue-gray",
       "title": "OUR PROGRAM OFFERING:",
       "subtitle": "Introducing the McKinsey Management Program:",
-      "content": "Launching Summer 2014 to build business capabilities for rising professionals, functional experts, and entrepreneurs."
+      "content": "The McKinsey Management Program is our inaugural set of courses for rising professionals looking to build leadership and management capabilities."
     },
     {
       "type": "entry-point",
       "icon": "people",
       "icon_color": "green",
       "title": "ABOUT McKINSEY ACADEMY:",
-      "subtitle": "McKinsey Academy is a premium digital platform for business education.",
-      "content": "We empower leaders and professionals to build the skills and capabilities to enhance individual effectiveness for improved corporate performance."
+      "subtitle": "McKinsey Academy is a dynamic digital platform for business education.",
+      "content": "McKinsey Academy provides scalable business education that is rigorous, relevant, and applicable."
     },
     {
       "type": "entry-point",
@@ -66,37 +58,37 @@
       "type": "distinctive-feature",
       "background": "bg-pp",
       "title": "Practitioner's perspective",
-      "content": "Courses leverage practical, real-world experiences, ensuring relevant capability building for each individual"
+      "content": "Taught by McKinsey partners and external business leaders who provide practical \"how to\" guidance."
     },
     {
       "type": "distinctive-feature",
       "background": "bg-sl",
       "title": "Social Learning with Group-based Projects",
-      "content": "Collaboration with peers across industries and geographies, and in community discussion forums"
+      "content": "Collaboration with peers across industries and geographies, and in community discussion forums."
     },
     {
       "type": "distinctive-feature",
       "background": "bg-df",
       "title": "Deep feedback",
-      "content": "Immediate, response-contingent feedback enables richer learning and provides guidance on where to go to learn more"
+      "content": "Immediate, response- contingent feedback enables richer learning and provides guidance on where to go to learn more."
     },
     {
       "type": "distinctive-feature",
       "background": "bg-ta",
       "title": "McKinsey TA guidance",
-      "content": "McKinsey consultants serve as teaching assistants, providing distinctive engagement and guidance"
+      "content": "McKinsey consultants serve as teaching assistants, providing distinctive engagement and guidance."
     },
     {
       "type": "distinctive-feature",
       "background": "bg-al",
       "title": "ADAPTIVE LEARNING MECHANICS",
-      "content": "Rich learning experience incorporates ground-breaking techniques in adaptive learning and game mechanics"
+      "content": "Rich learning experience incorporates ground-breaking techniques in adaptive learning and game mechanics."
     },
     {
       "type": "distinctive-feature",
       "background": "bg-cp",
-      "title": "Curated programs",
-      "content": "Courses are created, convened and curated to meaningfully advance business capabilities of McKinsey Academy’s target audience"
+      "title": "Rigorous Analytics",
+      "content": "Advanced analytics measure participant progress, social engagement, and proficiency vs. peers."
     }
   ],
   "quotes": [
