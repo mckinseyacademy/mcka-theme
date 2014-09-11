@@ -308,7 +308,11 @@ form {
 }
 
 #mckinsey_help {
-  p { margin-top: rem-calc(20); }
+  p {
+    margin-bottom: rem-calc(20);
+    &:last-child { margin-bottom: 0; }
+  }
+  #mk-help-video { margin-bottom: rem-calc(20); }
 }
 
 .modal-title {
