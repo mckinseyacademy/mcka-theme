@@ -83,6 +83,15 @@
     }
   }
 
+  .company-image img{
+    width:40px;
+    height:40px;
+  }
+
+  #id_image_url, label[for="id_image_url"]{
+    display:none;
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';

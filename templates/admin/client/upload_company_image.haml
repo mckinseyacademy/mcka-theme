@@ -1,0 +1,20 @@
+-load staticfiles
+- block upload_company_image
+.upload-company-image
+  %form#upload-company-image-form{action: "/admin/clients/#{client_id}/upload_company_image", method: "POST", enctype: "multipart/form-data"}
+    %label.label-10
+      %span.label-5
+        STEP 1:
+      SELECT NEW COMPANY IMAGE
+    %hr
+    - csrf_token
+    .browse-wrapper
+      %button#browse-company-image.button.tiny.radius{'type': 'button'} Browse
+      %label{'for': 'id_company_image'} No file selected.
+      = form
+      %img.spinner.upload-company{'src': "{% static 'image/loading-spin.svg' %}", 'alt': "Loading icon"}
+    %br
+    %br
+    .error.warning
+      - if error
+        = error

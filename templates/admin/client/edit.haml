@@ -1,10 +1,15 @@
+- load staticfiles
 %header
   %h1= _("Edit Client details")
   %p.description Edit clients details using this form
 
 .close-reveal-modal
-  %i.fa.fa-times-circle 
-  
+  %i.fa.fa-times-circle
+
+.company-image
+  %img{src: "#{company_image}"}
+  %a#edit-company-image{"data-reveal-id": "edit-company-image-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client_id}/change_company_image"}
+    change photo
 %form.admin-form{action: "/admin/clients/#{client_id}/edit", method: "POST"}
   .error
     - if error
@@ -13,3 +18,10 @@
   %fieldset= form.as_p
   .submit-area
     %input.button.radius.small{type: "submit", value: "#{submit_label}"}
+
+-# Jquery Cropper
+- block cropper_jquery
+  %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
+  %script{src: "{% static 'js/vendor/jquery.form.js' %}"}
+  %script{src: "{% static 'js/image_editor.js' %}"}
+  %script{src: "{% static 'js/company_image_edit.js' %}"}

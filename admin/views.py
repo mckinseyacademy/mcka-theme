@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
+from django.utils.dateformat import format
 from django.core.exceptions import ValidationError
 from django.core import serializers
 
@@ -19,11 +20,12 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from api_client.group_api import PERMISSION_GROUPS
 
 from accounts.models import RemoteUser, UserActivation
+from accounts.controller import save_profile_image
 
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
-from api_client import group_api, workgroup_api
+from api_client import group_api, workgroup_api, organization_api
 from api_client.json_object import Objectifier
 from api_client.api_error import ApiError
 from api_client.project_models import Project
@@ -50,6 +52,7 @@ from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
 from .forms import PermissionForm
+from .forms import UploadCompanyImageForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -243,6 +246,7 @@ def client_new(request):
         "form": form,
         "error": error,
         "submit_label": _("Save Client"),
+        "company_image": "/static/image/empty_avatar.png",
     }
 
     return render(
@@ -278,6 +282,7 @@ def client_edit(request, client_id):
     data = {
         "form": form,
         "client_id": client_id,
+        "company_image": client.image_url(),
         "error": error,
         "submit_label": _("Save Client"),
     }
@@ -1252,5 +1257,122 @@ def workgroup_course_assignments(request, course_id):
     return render(
         request,
         'admin/workgroup/project_assignment.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image="/static/image/empty_avatar.png"):
+    ''' handles requests for login form and their submission '''
+    if(client_id != 'new'):
+
+        client = organization_api.fetch_organization(client_id)
+        company_image = client.image_url(size=200, path='absolute')
+
+    if '?' in company_image:
+        company_image = company_image + '&' + format(datetime.now(), u'U')
+    else:
+        company_image = company_image + '?' + format(datetime.now(), u'U')
+
+    form = UploadCompanyImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+        "company_image": company_image,
+    }
+
+    return render(
+        request,
+        'admin/client/{}.haml'.format(template),
+        data
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def company_image_edit(request, client_id="new"):
+    if request.method == 'POST':
+        heightPosition = request.POST.get('height-position')
+        widthPosition = request.POST.get('width-position')
+        x1Position = request.POST.get('x1-position')
+        x2Position = request.POST.get('x2-position')
+        y1Position = request.POST.get('y1-position')
+        y2Position = request.POST.get('y2-position')
+        if client_id == 'new':
+            CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
+        else:
+            client = organization_api.fetch_organization(client_id)
+            CompanyImageUrl = client.image_url(size=200, path='relative')
+
+        from PIL import Image
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+
+        if CompanyImageUrl[:10] == '/accounts/':
+            image_url = CompanyImageUrl[10:]
+        elif CompanyImageUrl[:8] == '/static/':
+            prefix = 'https://' if request.is_secure() else 'http://'
+            image_url = prefix + request.get_host() + CompanyImageUrl
+        else:
+            image_url = CompanyImageUrl
+
+        if default_storage.exists(image_url):
+
+            original = Image.open(default_storage.open(image_url))
+
+            width, height = original.size   # Get dimensions
+            left = int(x1Position)
+            top = int(y1Position)
+            right = int(x2Position)
+            bottom = int(y2Position)
+            cropped_example = original.crop((left, top, right, bottom))
+
+            save_profile_image(cropped_example, image_url)
+        if client_id == 'new':
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
+        else:
+            return change_company_image(request, client_id, 'edit_company_image')
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def upload_company_image(request, client_id='new'):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = UploadCompanyImageForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            from PIL import Image
+
+            temp_image = request.FILES['company_image']
+            allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
+            if temp_image.content_type in allowed_types:
+                if client_id == 'new':
+                    company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
+                else:
+                    company_image = 'images/company_image-{}.jpg'.format(client_id)
+                save_profile_image(Image.open(temp_image), company_image)
+            else:
+                error = "Error uploading file. Please try again and be sure to use an accepted file format."
+
+            return HttpResponse(change_company_image(request, client_id, 'change_company_image', error, '/accounts/' + company_image), content_type='text/html')
+        else:
+            error = "Error uploading file. Please try again and be sure to use an accepted file format."
+            return HttpResponse(change_company_image(request, client_id, 'change_company_image', error, '/accounts/' + company_image), content_type='text/html')
+    else:
+        ''' adds a new image '''
+        form = UploadCompanyImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+    }
+
+    return render(
+        request,
+        'admins/clients/upload_company_image.haml',
         data
     )

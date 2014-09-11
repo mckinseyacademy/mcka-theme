@@ -1,11 +1,11 @@
 ''' Objects for users / authentication built from json responses from API '''
 import json
 from datetime import datetime
-from .json_object import JsonObject
+from .json_object import JsonObject, JsonObjectWithImage
 import organization_api
 
 
-class Organization(JsonObject):
+class Organization(JsonObjectWithImage):
     #required_fields = ["display_name", "contact_name", "contact_phone", "contact_email", ]
 
     ''' object representing a organization from api json response '''

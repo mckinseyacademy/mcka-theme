@@ -45,7 +45,7 @@ def is_future_start(date):
     else:
         return True
 
-def save_profile_image(request, cropped_example, image_url):
+def save_profile_image(cropped_example, image_url):
 
     import StringIO
     from PIL import Image
@@ -70,14 +70,10 @@ def save_profile_image(request, cropped_example, image_url):
     if default_storage.exists(image_url[:-4] + '-120.jpg'):
         default_storage.delete(image_url[:-4] + '-120.jpg')
 
-    cropped_image_120_path = default_storage.save('images/profile_image-{}-120.jpg'.format(request.user.id), thumb_io_120)
-    cropped_image_40_path = default_storage.save('images/profile_image-{}-40.jpg'.format(request.user.id), thumb_io_40)
-    cropped_image_path = default_storage.save('images/profile_image-{}.jpg'.format(request.user.id), thumb_io)
-    request.user.avatar_url = '/accounts/' + cropped_image_path
-    request.user.save()
-    user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + cropped_image_path})
+    cropped_image_120_path = default_storage.save(image_url[:-4] + '-120.jpg', thumb_io_120)
+    cropped_image_40_path = default_storage.save(image_url[:-4] + '-40.jpg', thumb_io_40)
+    cropped_image_path = default_storage.save(image_url[:-4] + '.jpg', thumb_io)
 
-    return request.user
 
 def _rescale_image(img, width, height, force=True):
     """Rescale the given image, optionally cropping it to make sure the result image has the specified width and height."""

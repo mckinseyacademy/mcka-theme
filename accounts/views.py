@@ -424,8 +424,10 @@ def user_profile_image_edit(request):
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
 
-            request.user = save_profile_image(request, cropped_example, image_url)
-            request.user.avatar_url = '/accounts/' + image_url
+            save_profile_image(cropped_example, image_url + '.jpg')
+            user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + image_url + '.jpg'})
+            request.user.avatar_url = '/accounts/' + image_url + '.jpg'
+            request.user.save()
             RemoteUser.remove_from_cache(request.user.id)
         return change_profile_image(request, request.user.id, 'edit_profile_image')
 
@@ -471,8 +473,10 @@ def upload_profile_image(request, user_id):
             temp_image = request.FILES['profile_image']
             allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
             if temp_image.content_type in allowed_types:
-                request.user = save_profile_image(request, Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
+                save_profile_image(Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
+                user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/images/profile_image-{}.jpg'.format(user_id)})
                 request.user.avatar_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
+                request.user.save()
                 RemoteUser.remove_from_cache(request.user.id)
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
