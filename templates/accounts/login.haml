@@ -55,6 +55,7 @@
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/jquery.query-object.js' %}"}
   :javascript
     ajaxify_overlay_form('#reset-password', 'form');
     $('form input[type="text"]').on('keypress', function(){
@@ -63,5 +64,12 @@
     $(function(){
       if($('#generalModal input.show-modal').length > 0){
         $('#generalModal').foundation('reveal', 'open');
+      }
+
+      // Preserve hash value in ?next= argument
+      if(window.location.hash !== ''){
+        var next_with_hash = $.query.get('next') + window.location.hash,
+            query_with_hash = $.query.set('next', next_with_hash).toString();
+        window.history.replaceState({}, '', query_with_hash);
       }
     })
