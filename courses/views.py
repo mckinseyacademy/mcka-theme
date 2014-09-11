@@ -332,18 +332,19 @@ def course_progress(request, course_id):
             })
 
     activity_index = 0
-    has_values_for.group_work = group_category is not None
-    for grade in category_map[group_category]:
-        if not is_dropped(grade):
-            label = grade.label
-            if group_activities and activity_index < len(group_activities):
-                label = group_activities[activity_index].name
-            bar_chart[0]['values'].append({
-               'label': label,
-               'value': grade.percent*100,
-               'color': PROGRESS_BAR_COLORS.group_work,
-            })
-            activity_index += 1
+    if group_category is not None:
+        has_values_for.group_work = True
+        for grade in category_map[group_category]:
+            if not is_dropped(grade):
+                label = grade.label
+                if group_activities and activity_index < len(group_activities):
+                    label = group_activities[activity_index].name
+                bar_chart[0]['values'].append({
+                   'label': label,
+                   'value': grade.percent*100,
+                   'color': PROGRESS_BAR_COLORS.group_work,
+                })
+                activity_index += 1
 
     total = round_to_int(gradebook.grade_summary.percent*100)
     bar_chart[0]['values'].append({
