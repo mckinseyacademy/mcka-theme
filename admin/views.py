@@ -127,6 +127,8 @@ def client_admin_home(request, client_id=None):
         data,
     )
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_course(request, client_id, course_id):
     course = course_api.get_course(course_id)
     metrics = course_api.get_course_metrics(course_id)
@@ -144,6 +146,8 @@ def client_admin_course(request, client_id, course_id):
         data,
     )
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_course_participants(request, client_id, course_id):
 
     data = {
@@ -156,6 +160,7 @@ def client_admin_course_participants(request, client_id, course_id):
         data,
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_course_analytics(request, client_id, course_id):
 
     data = {
