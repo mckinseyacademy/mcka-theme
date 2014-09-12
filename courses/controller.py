@@ -177,7 +177,8 @@ def locate_chapter_page(
         last_sequential_id = position_tree.sequential.id if position_tree else None
         sequential_candidates = [s for s in chapter.sequentials if s.id == last_sequential_id]
         if len(sequential_candidates) > 0 and sequential_candidates[0].pages:
-            last_page_id = position_tree.vertical.id if position_tree else None
+            # last_page_id = position_tree.vertical.id if position_tree else None
+            last_page_id = None
             page_candidates = [p for p in sequential_candidates[0].pages if p.id == last_page_id]
             if len(page_candidates) > 0:
                 page = page_candidates[0]

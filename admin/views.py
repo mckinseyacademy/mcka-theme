@@ -168,9 +168,20 @@ def client_admin_course(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
 
+    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+    total_participants = len(participants)
+
+    users_ids = [str(user.id) for user in participants]
+    additional_fields = ["full_name", "title", "avatar_url"]
+    students = user_api.get_users(ids=users_ids, fields=additional_fields)
+    for student in students: 
+        student.avatar_url = student.image_url(size=40)
+
     data = {
         'client_id': client_id,
-        'course_id': course_id
+        'course_id': course_id,
+        'total_participants': total_participants,
+        'students': students
     }
     return render(
         request,

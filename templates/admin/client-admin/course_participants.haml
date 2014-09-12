@@ -1,6 +1,73 @@
 - extends "admin/admin_layout.haml"
-
+- load staticfiles
 - block content
   .admin-detail.row
     .large-12.large.columns
       - include 'admin/client-admin/course_header.haml'
+  .admin-detail.row
+    .large-12.large.columns
+      - block admin_detail
+        %h1
+          %span= _("Participants: ")
+          %span= course.name
+        .sub-1.add= _("Data Download ")
+        .add-message= _("The following button downloads a list of all students enrolled in this course, their percent complete, impct scores, and course grade, along with profile informations such as email address and username.")
+        %br
+        %a.button.radius.small{href: "/admin/courses/#{course.id}/download_course_report", target: "_blank"} 
+          Download Report for course
+        %hr
+        .sub-1.add= _("Student-Specific grade inspection ")
+        .add-message= _("Specify the name of a student to access their details")
+        %br
+        / %input{type: "search"}
+        / %hr
+	    %table.student-list
+	      %thead
+          %tr
+            .sub-1.add= _("Participants: ")
+              %span= total_participants
+            %th
+  	        %th Name
+  	          %span{class: 'asc'}
+  	            ▲
+  	          %span{class: 'desc'}
+  	            ▼
+  	        %th Complete
+  	          %span{class: 'asc'}
+  	            ▲
+  	          %span{class: 'desc'}
+  	            ▼
+  	        %th
+  	        %th
+  	        %th
+	      %tbody
+  		    - for student in students
+  		      %tr.student{id: "#{student.id}"}
+              %td
+                %div.user-image
+                  -if student.avatar_url
+                    %img{src: "#{student.avatar_url}"}
+  		        %td
+  		          %a{href: "#{}"}= student.full_name
+  		          %p= student.username
+  		          %p= student.title
+  		        %td= '30'
+  		        %td
+  		          %a{href: "mailto:#{student.email}"}= "Email"
+  		        %td
+  		          %a{href: "#{}"}= "View progress page"
+  		        %td
+  		          %a{href: "#{}"}= "Un-enroll participant"
+
+	  
+- block js_snippets
+  %script{src: "{% static 'js/admin.js' %}"}
+  :javascript
+    $(function(){
+
+      $('.student-list').dataTable({
+          paging: false,
+          autoWidth: false,
+          "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
+      }); 
+    });
