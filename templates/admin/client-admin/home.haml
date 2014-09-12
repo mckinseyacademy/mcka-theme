@@ -21,7 +21,7 @@
           %li.course-tile
             .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50% / 190px auto;'}
             -if course.started
-              %a{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
+              %a{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
                 .label-11
                   = course.name
             -else
@@ -32,12 +32,16 @@
                 %span.course-stat-value
                   = course.date_range
               .course-stat-label Participants:
+                %span.course-stat-value
+                  = course.metrics.users_enrolled
               .course-stat-label Started:
+                %span.course-stat-value
+                  = course.metrics.users_started
               .course-stat-label Completed:
               .course-stat-label % Completed:
             .go-to-link
               -if course.started
-                %a.course-link{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
+                %a.course-link{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
                   %i.fa.fa-chevron-right
                -else
                 %a.course-link.not-started

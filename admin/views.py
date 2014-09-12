@@ -107,6 +107,7 @@ def client_admin_home(request, client_id=None):
             If it can't be replicated by the API team, we can account it to my systems buggines.
             """
             if course.id not in coursesIDs:
+                course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
                 program.courses.append(course)
                 coursesIDs.append(course.id)
         programs.append(_prepare_program_display(program))
