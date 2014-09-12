@@ -1,0 +1,37 @@
+- extends "admin/admin_layout.haml"
+
+- block content
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/client-admin/course_header.haml'
+  .row
+    .large-12.large.columns
+        %h1
+          %span= _("Course Info: ")
+          %span
+            = course.name
+        %hr
+  .row
+    .large-6.large.columns
+      %h2= _("ENROLLMENT INFORMATION")
+      %p= _("Total number of participants: ")
+
+      %h2= _("BASIC COURSE INFORMATION")
+      %ul
+        %li= _("Course name: ")
+        %li= _("Course start date: ")
+        %li= _("Course end date: ")
+        %li= _("Grade cutoffs: ")
+
+    .large-6.large.columns
+      %h2= _("PARTICIPANTS")
+      %ul
+        %li= _("Participants: ")
+        %li= _("Started: ")
+        %li= _("Completed: ")
+        %li= _("% Completed: ")
+
+      %h2= _("FORUM INFORMATION")
+      %ul
+        %li= _("Active discussions: ")
+        %li= _("Posts: ")
