@@ -71,6 +71,30 @@ def ajaxify_http_redirects(func):
 
     return wrapper
 
+def client_admin_access(func):
+    '''
+    Ensure company admins can view only their company.
+    MCKA Admin can view all clients in the system.
+    '''
+    def wrapper(request, client_id=None, *args, **kwargs):
+        valid_client_id = None
+        if request.user.is_mcka_admin:
+            valid_client_id = client_id
+
+        # make sure client admin can access only his company
+        elif request.user.is_client_admin:
+            orgs = user_api.get_user_organizations(request.user.id)
+            if orgs:
+                valid_client_id = orgs[0].id
+
+        if valid_client_id is None:
+            raise Http404
+
+        return func(request, valid_client_id, *args, **kwargs)
+
+    return wrapper
+
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def home(request):
@@ -81,21 +105,10 @@ def home(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_home(request, client_id=None):
-    valid_client_id = None
-    if request.user.is_mcka_admin:
-        valid_client_id = client_id
+@client_admin_access
+def client_admin_home(request, client_id):
 
-    # make sure client admin can access only his company
-    elif request.user.is_client_admin:
-        orgs = user_api.get_user_organizations(request.user.id)
-        if orgs:
-            valid_client_id = orgs[0].id
-
-    if valid_client_id is None:
-        raise Http404
-
-    organization = Client.fetch(valid_client_id)
+    organization = Client.fetch(client_id)
 
     programs = []
     for program in organization.fetch_programs():
@@ -129,6 +142,7 @@ def client_admin_home(request, client_id=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
 def client_admin_course(request, client_id, course_id):
     course = course_api.get_course(course_id)
     metrics = course_api.get_course_metrics(course_id)
@@ -148,6 +162,7 @@ def client_admin_course(request, client_id, course_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
 
     data = {
@@ -161,6 +176,7 @@ def client_admin_course_participants(request, client_id, course_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
 def client_admin_course_analytics(request, client_id, course_id):
 
     data = {
