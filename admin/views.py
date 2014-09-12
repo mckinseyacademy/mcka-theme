@@ -149,7 +149,7 @@ def client_admin_course(request, client_id, course_id):
     data = {
         'client_id': client_id,
         'course_id': course_id,
-        'course': course,
+        'course_info': course,
         'course_start': course.start.strftime('%m/%d/%Y') if course.start else '',
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,

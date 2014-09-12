@@ -9,7 +9,7 @@
         %h1
           %span= _("Course Info: ")
           %span
-            = course.name
+            = course_info.name
         %hr
   .row
     .large-6.large.columns
@@ -21,7 +21,7 @@
       %h2= _("BASIC COURSE INFORMATION")
       %ul
         %li= _("Course name:")
-          %b= course.number
+          %b= course_info.number
         %li= _("Course start date:")
           %b= course_start
         %li= _("Course end date:")
