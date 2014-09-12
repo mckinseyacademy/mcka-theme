@@ -129,10 +129,12 @@ def client_admin_home(request, client_id=None):
 
 def client_admin_course(request, client_id, course_id):
     course = course_api.get_course(course_id)
+    metrics = course_api.get_course_metrics(course_id)
     data = {
         'client_id': client_id,
         'course_id': course_id,
-        'course': course
+        'course': course,
+        'metrics': metrics,
     }
     return render(
         request,
