@@ -134,6 +134,8 @@ def client_admin_course(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         'course': course,
+        'course_start': course.start.strftime('%m/%d/%Y'),
+        'course_end': course.end.strftime('%m/%d/%Y'),
         'metrics': metrics,
     }
     return render(
