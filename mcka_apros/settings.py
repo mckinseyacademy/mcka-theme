@@ -257,6 +257,13 @@ IGNORE_ROLES = [
     'instructor',
 ]
 
+# Zendesk Settings
+ZENDESK_API = {
+    'username': 'andy@mckinseyacademy.com',
+    'token': 'uiXVhEjOO2Os7NxUUBQvMZvsqBGDqfUJBPC8PAsG',
+    'subdomain': 'mckinseyacademy',
+}
+
 # progress bar chart colours
 PROGRESS_BAR_COLORS = {
     "normal": "#b1c2cc",# $mckinsey-academy-blue-gray
