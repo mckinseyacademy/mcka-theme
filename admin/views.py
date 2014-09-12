@@ -189,6 +189,20 @@ def client_admin_course_participants(request, client_id, course_id):
         data,
     )
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_download_course_report(request, client_id, course_id):
+    filename = "Empty Report.csv"
+    response = HttpResponse(
+        "Report is TBD",
+        content_type='text/csv'
+    )
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_analytics(request, client_id, course_id):
