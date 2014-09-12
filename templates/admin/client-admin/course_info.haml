@@ -14,26 +14,31 @@
   .row
     .large-6.large.columns
       %h2= _("ENROLLMENT INFORMATION")
-      %p= _("Total number of participants: ")
-        = metrics.users_enrolled
+      %p= _("Total number of participants:")
+        %b= metrics.users_enrolled
       %br
 
       %h2= _("BASIC COURSE INFORMATION")
       %ul
-        %li= _("Course name: ")
-        %li= _("Course start date: ")
-        %li= _("Course end date: ")
-        %li= _("Grade cutoffs: ")
+        %li= _("Course name:")
+          %b= course.number
+        %li= _("Course start date:")
+          %b
+        %li= _("Course end date:")
+          %b
+        %li= _("Grade cutoffs:")
+          %b
 
     .large-6.large.columns
       %h2= _("PARTICIPANTS")
       %ul
-        %li= _("Participants: ")
-        %li= _("Started: ")
-        %li= _("Completed: ")
-        %li= _("% Completed: ")
+        %li= _("Participants:")
+          %b
+        %li= _("Started:")
+        %li= _("Completed:")
+        %li= _("% Completed:")
 
       %h2= _("FORUM INFORMATION")
       %ul
-        %li= _("Active discussions: ")
-        %li= _("Posts: ")
+        %li= _("Active discussions:")
+        %li= _("Posts:")
