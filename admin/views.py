@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.utils.dateformat import format
@@ -81,7 +82,7 @@ def home(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_home(request, client_id=None):
-
+    valid_client_id = None
     if request.user.is_mcka_admin:
         valid_client_id = client_id
 
@@ -90,6 +91,9 @@ def client_admin_home(request, client_id=None):
         orgs = user_api.get_user_organizations(request.user.id)
         if orgs:
             valid_client_id = orgs[0].id
+
+    if valid_client_id is None:
+        raise Http404
 
     organization = Client.fetch(valid_client_id)
 
