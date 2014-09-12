@@ -176,8 +176,13 @@
     &.entry-point {
       padding: 20px 15px;
 
+      .nav-1 {
+        color: $mckinsey-blue;
+      }
+
       .subtitle {
         margin-bottom: 20px;
+        color: $mckinsey-academy-black;
         @include font-spec(18, normal, 22);
       }
 
