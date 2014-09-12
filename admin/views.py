@@ -128,11 +128,39 @@ def client_admin_home(request, client_id=None):
     )
 
 def client_admin_course(request, client_id, course_id):
-
-    data = {}
+    course = course_api.get_course(course_id)
+    data = {
+        'client_id': client_id,
+        'course_id': course_id,
+        'course': course
+    }
     return render(
         request,
-        'admin/client-admin/course.haml',
+        'admin/client-admin/course_info.haml',
+        data,
+    )
+
+def client_admin_course_participants(request, client_id, course_id):
+
+    data = {
+        'client_id': client_id,
+        'course_id': course_id
+    }
+    return render(
+        request,
+        'admin/client-admin/course_participants.haml',
+        data,
+    )
+
+def client_admin_course_analytics(request, client_id, course_id):
+
+    data = {
+        'client_id': client_id,
+        'course_id': course_id
+    }
+    return render(
+        request,
+        'admin/client-admin/course_analytics.haml',
         data,
     )
 
