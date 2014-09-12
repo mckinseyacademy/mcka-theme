@@ -1,0 +1,44 @@
+- extends "admin/admin_layout.haml"
+
+- block content
+  .row{style: "margin-top:80px;"}
+    .header
+      .company-image
+        .img{'src': '#{client.image_url}'}
+      %h1
+        = client.display_name
+      %p
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    %hr
+    -for program in programs
+      .sub-2
+        = program.display_name
+        Courses:
+      %br
+      %br
+      %ul.courses-tiles
+        -for course in program.courses
+          %li.course-tile
+            .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50% / 190px auto;'}
+            -if course.started
+              %a{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
+                .label-11
+                  = course.name
+            -else
+              .label-12
+                = course.name
+            .course-stats
+              .course-stat-label Course run:
+                %span.course-stat-value
+                  = course.date_range
+              .course-stat-label Participants:
+              .course-stat-label Started:
+              .course-stat-label Completed:
+              .course-stat-label % Completed:
+            .go-to-link
+              -if course.started
+                %a.course-link{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
+                  %i.fa.fa-chevron-right
+               -else
+                %a.course-link.not-started
+                  %i.fa.fa-chevron-right

@@ -20,7 +20,7 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from api_client.group_api import PERMISSION_GROUPS
 
 from accounts.models import RemoteUser, UserActivation
-from accounts.controller import save_profile_image
+from accounts.controller import save_profile_image, is_future_start
 
 from main.models import CuratedContentItem
 from api_client import course_api
@@ -81,6 +81,7 @@ def home(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_home(request, client_id=None):
+
     if request.user.is_mcka_admin:
         valid_client_id = client_id
 
@@ -90,10 +91,44 @@ def client_admin_home(request, client_id=None):
         if orgs:
             valid_client_id = orgs[0].id
 
+    organization = Client.fetch(valid_client_id)
+
+    programs = []
+    for program in organization.fetch_programs():
+        coursesIDs = []
+        program.courses = []
+        for course in program.fetch_courses():
+            users = course_api.get_users_list_in_organizations(course.course_id, organization.id)
+            course = _prepare_course_display(course_api.get_course(course.course_id))
+            """
+            TODO: For some reason API returned duplicate courses when doing program.fetch_courses
+            on my local machine. (Dino)
+            This should be inspected and fixed on the API side first, and then check can be removed.
+            If it can't be replicated by the API team, we can account it to my systems buggines.
+            """
+            if course.id not in coursesIDs:
+                program.courses.append(course)
+                coursesIDs.append(course.id)
+        programs.append(_prepare_program_display(program))
+
+    data = {
+        'client': organization,
+        'programs': programs,
+    }
 
     return render(
         request,
-        'admin/client_admin_home.haml'
+        'admin/client-admin/home.haml',
+        data,
+    )
+
+def client_admin_course(request, client_id, course_id):
+
+    data = {}
+    return render(
+        request,
+        'admin/client-admin/course.haml',
+        data,
     )
 
 
@@ -663,6 +698,16 @@ def _prepare_program_display(program):
             )
 
     return program
+
+def _prepare_course_display(course):
+    if hasattr(course, "start") and hasattr(course, "end"):
+        if is_future_start(course.start):
+            course.date_range = _("Coming Soon")
+        elif course.end != None and is_future_start(course.end) == False:
+            course.date_range = _("Archived")
+        else:
+            course.date_range = course.formatted_time_span
+    return course
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
