@@ -47,6 +47,7 @@ from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
+from .controller import generate_course_report
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -192,16 +193,38 @@ def client_admin_course_participants(request, client_id, course_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_download_course_report(request, client_id, course_id):
-    filename = "Empty Report.csv"
+    filename = slugify(
+        unicode(
+            "{} Course Report for {} on {}".format(
+                client_id,
+                course_id,
+                datetime.now().isoformat()
+            )
+        )
+    ) + ".csv"
+
+    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+
+    users_ids = [str(user.id) for user in participants]
+    additional_fields = ["full_name", "title", "avatar_url"]
+    students = user_api.get_users(ids=users_ids, fields=additional_fields)
+
+    url_prefix = "{}://{}".format(
+        "https" if request.is_secure() else "http",
+        request.META['HTTP_HOST']
+    )
+
     response = HttpResponse(
-        "Report is TBD",
+        generate_course_report(client_id, course_id, url_prefix, students),
         content_type='text/csv'
     )
+
     response['Content-Disposition'] = 'attachment; filename={}'.format(
         filename
     )
 
     return response
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
