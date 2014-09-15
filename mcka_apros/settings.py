@@ -264,6 +264,13 @@ ZENDESK_API = {
     'subdomain': 'mckinseyacademy',
 }
 
+# Mailchimp Settings
+MAILCHIMP_API = {
+    'dc': 'us3',
+    'key': 'a619ba3dfa632c8984c96f6ec254aa4a-us3',
+    'stay_informed_list_id': 'd61ad96c25',
+}
+
 # progress bar chart colours
 PROGRESS_BAR_COLORS = {
     "normal": "#b1c2cc",# $mckinsey-academy-blue-gray
