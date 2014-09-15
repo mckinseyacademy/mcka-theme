@@ -293,13 +293,22 @@ def get_course_completions(course_id, user_id=None):
     return JP.from_json(response.read())
 
 @api_error_protect
-def get_course_metrics(course_id):
+def get_course_metrics(course_id, *args, **kwargs):
     ''' retrieves course metrics '''
 
-    url = '{}/{}/{}/metrics'.format(
+    qs_params = {}
+
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
+
+    url = '{}/{}/{}/metrics/?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
-        course_id
+        course_id,
+        urlencode(qs_params),
     )
 
     response = GET(url)

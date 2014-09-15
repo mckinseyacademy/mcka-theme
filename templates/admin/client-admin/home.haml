@@ -13,7 +13,7 @@
     -for program in programs
       .sub-2
         = program.display_name
-        Courses:
+        = _("Courses:")
       %br
       %br
       %ul.courses-tiles
@@ -21,23 +21,32 @@
           %li.course-tile
             .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50% / 190px auto;'}
             -if course.started
-              %a{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
+              %a{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
                 .label-11
                   = course.name
             -else
               .label-12
                 = course.name
             .course-stats
-              .course-stat-label Course run:
+              .course-stat-label
+                = _("Course run:")
                 %span.course-stat-value
                   = course.date_range
-              .course-stat-label Participants:
-              .course-stat-label Started:
-              .course-stat-label Completed:
-              .course-stat-label % Completed:
+              .course-stat-label
+                = _("Participants:")
+                %span.course-stat-value
+                  = course.metrics.users_enrolled
+              .course-stat-label
+                = _("Started:")
+                %span.course-stat-value
+                  = course.metrics.users_started
+              .course-stat-label
+                = _("Completed:")
+              .course-stat-label
+                = _("% Completed:")
             .go-to-link
               -if course.started
-                %a.course-link{'href': '/admin/client-admin/#{client.id}/course/#{course.id}'}
+                %a.course-link{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
                   %i.fa.fa-chevron-right
                -else
                 %a.course-link.not-started
