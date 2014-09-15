@@ -240,6 +240,32 @@ def client_admin_course_analytics(request, client_id, course_id):
         data,
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_unenroll(request, client_id, course_id):
+    error = None
+    # if request.method == 'POST':
+    #     form = EditFullNameForm(request.POST)
+    #     if form.is_valid():
+    #         try:
+    #             user_api.update_user_information(request.user.id, {
+    #                 'first_name': form.data['first_name'],
+    #                 'last_name': form.data['last_name']
+    #             })
+    #         except ApiError as err:
+    #             error = err.message
+    # else:
+    #     form = EditFullNameForm()
+
+    user_data = {
+        # 'error': error,
+        # 'title':  _('Enter your full name'),
+        # 'form': form,
+        # 'submit_label': _('Save')
+    }
+    return render(request, 'admin/client-admin/unenroll.haml', user_data)
+
+
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_list(request):

@@ -57,7 +57,7 @@
   		        %td
   		          %a{href: "#{}"}= "View progress page"
   		        %td
-  		          %a{href: "#{}"}= "Un-enroll participant"
+  		          %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
 
 	  
 - block js_snippets
