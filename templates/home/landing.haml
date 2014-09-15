@@ -12,13 +12,13 @@
             %i{class: "mk-icon-#{cell.icon}"}
           .nav-1= cell.title
           .subtitle= cell.subtitle
-          .label-2= cell.content
+          .label-2= cell.content|safe
           %i.fa.fa-arrow-circle-right
       - elif cell.type == 'distinctive-feature'
         %a.cell.distinctive-feature{href: '/experience', class: "#{cell.background}"}
           .nav-1 Distinctive Features:
           .title= cell.title
-          .content= cell.content
+          .content= cell.content|safe
           %i.fa.fa-arrow-right
       - elif cell.type == 'quote'
         .cell.quote
