@@ -1,10 +1,13 @@
 ''' rendering templates from requests related to marketing '''
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import TemplateDoesNotExist
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.views.decorators.http import require_POST
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
-from .forms import TechSupportForm
+from .forms import TechSupportForm, SubscribeForm
 
 def infer_default_navigation(request, page_name):
     page = "marketing/{0}.haml".format(page_name)
@@ -13,25 +16,29 @@ def infer_default_navigation(request, page_name):
     except TemplateDoesNotExist:
         raise Http404
 
-def contact(request, tech_support_form=TechSupportForm):
-    support_data = None
-    submitted = None
-
-    if request.method == "POST":
-        form = tech_support_form(request.POST)
-        if form.is_valid():
-            form.save()
-            submitted = True
-            form = tech_support_form()
-    else:
-        form = tech_support_form()
-
+def contact(request, tech_support_form=TechSupportForm, subscribe_form=SubscribeForm):
     data = {
-        "form": form,
-        "form_submitted": submitted,
+        "support_form": tech_support_form(),
+        "subscribe_form": subscribe_form(),
     }
 
     return render(request, 'marketing/contact.haml', data)
+
+@require_POST
+def support(request, tech_support_form=TechSupportForm):
+    form = tech_support_form(request.POST)
+    if form.is_valid():
+        form.save()
+        messages.success(request, _('Thank you. We will get back to you as soon as possible.'))
+    return redirect('/contact/')
+
+@require_POST
+def subscribe(request, subscribe_form=SubscribeForm):
+    form = subscribe_form(request.POST)
+    if form.is_valid():
+        form.save()
+        messages.success(request, _('Thank you for your interest in McKinsey Academy. We will keep you updated.'))
+    return redirect('/contact/')
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def styleguide(request):

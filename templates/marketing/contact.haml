@@ -22,31 +22,32 @@
         .large-6.columns
           .background-white
             .sub-1 CONTACT US
-            %p Email us to find out more about McKinsey Academy, or share comments and feedback.
+            %p Email us to find out more about McKinsey Academy. You can also share your comments and provide feedback at the same address.
             %a.mk-email.button.small.radius{href: 'mailto:info@mckinseyacademy.com'} Email McKinsey Academy
-          .background-white.hidden
+          .background-white
             .sub-1 STAY INFORMED
             %p To stay informed about McKinsey Academy, please enter your email address below.
-            %form{action: '/', method: 'post'}
+            %form{action: '/subscribe/', method: 'POST'}
+              - csrf_token
               %fieldset
-                %div
-                  %input{type: 'email', placeholder: 'Email'}
+                = subscribe_form
                 %div
                   %input.button.small.radius{type: 'submit', value: 'Submit'}
         .large-6.columns.background-white
           .sub-1 TECH SUPPORT
-          %p Please tell us more and we will get back to you as soon as possible.
-          %form#tech-support{action: '/contact/', method: 'POST'}
+          %p Please tell us more and we will respond quickly.
+          %form#tech-support{action: '/support/', method: 'POST'}
             - csrf_token
             %fieldset
-              = form
+              = support_form
               %div
                 %input.button.small.radius{type: 'submit', value: 'Submit'}
         %section.trouble.label-2.hidden
           Having trouble with the email button above?
           %a{href: '#'} Click here.
-  - if form_submitted
+  - if messages
     #support_success.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
-      %p Thank you. We will get back to you as soon as possible.
+      - for message in messages
+        %p= message
