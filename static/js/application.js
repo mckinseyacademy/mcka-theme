@@ -162,6 +162,8 @@ $(function(){
 
   var intro_modal = $('#intro_modal');
   if (intro_modal.length && !localStorage.intro_shown) {
+    // @TODO temp return until actual video is in place
+    return
     var intro_video = $('#mk-intro-video'),
         player = OO.Player.create('mk-intro-video', intro_video.data('video-id'), {width: '460px', height: '260px'});
     intro_modal.data('ooyala_player', player);
