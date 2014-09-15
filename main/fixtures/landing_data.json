@@ -26,7 +26,7 @@
       "icon": "faculty",
       "icon_color": "warm-gray",
       "subtitle": "We provide an immersive experience for our learners:",
-      "content": "Curated and discoverable content<br>Intuitive navigation through courses and lessons<br>Tools for social interaction within cohorts Data visualizations of progress"
+      "content": "Curated and discoverable content<br>Intuitive navigation through courses and lessons<br>Tools for social interaction within cohorts<br>Data visualizations of progress"
     },
     {
       "type": "entry-point",
@@ -50,7 +50,7 @@
       "icon_color": "turquoise",
       "title": "OUR PEDAGOGY:",
       "subtitle": "McKinsey Academy Pedagogy is based on four core principles:",
-      "content": "Learning by doing<br>Focus on expert performance<br>Deep feedback Social Learning"
+      "content": "Learning by doing<br>Focus on expert performance<br>Deep feedback<br>Social Learning"
     }
   ],
   "features": [
