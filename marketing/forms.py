@@ -9,6 +9,7 @@ from django.utils.safestring import mark_safe
 from django.conf import settings
 
 import urllib2 as url_access
+from urllib2 import HTTPError
 import base64
 import json
 
@@ -70,3 +71,27 @@ class TechSupportForm(forms.Form):
         url_request.add_header("Authorization", "Basic %s" % USER_AUTH)
         url_request.add_header("Content-Type", "application/json")
         url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
+
+class SubscribeForm(forms.Form):
+    auto_id = False
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Email')}))
+
+    def save(self):
+        data = {
+            'apikey': settings.MAILCHIMP_API['key'],
+            'id': settings.MAILCHIMP_API['stay_informed_list_id'],
+            'email': {
+                'email': self.cleaned_data['email'],
+            },
+        }
+
+        subscribe_url = 'https://{}.api.mailchimp.com/2.0/lists/subscribe.json'.format(
+            settings.MAILCHIMP_API['dc']
+        )
+
+        url_request = url_access.Request(url=subscribe_url)
+        url_request.add_header("Content-Type", "application/json")
+        try:
+            url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
+        except HTTPError, e:
+            return False
