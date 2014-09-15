@@ -17,9 +17,10 @@ TIMEOUT = 20
 
 TECH_SUPPORT_CHOICES = (
     ("", "Please Select…"),
-    ("problem", _("Site Issue")),
+    ("problem", _("Technical Issue")),
     ("incident", _("Course Issue")),
-    ("incident", _("Lesson Issue")),
+    ("question", _("Question")),
+    ("task", _("Suggestion")),
 )
 
 USER_TOKEN = '{}/token:{}'.format(
