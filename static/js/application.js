@@ -42,7 +42,12 @@ $(function(){
         break;
       default:
         $('.player-wrapper').append($('<div />', {id: 'ooyala_mckinsey'}));
-        var ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '740px', height: '425px'});
+        var ooyala = null;
+        if ($('body').hasClass('ie8')) {
+          ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '740px', height: '425px'});
+        } else {
+          ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '100%', height: '100%'});
+        }
         modal.data('ooyala', ooyala);
 
     }

@@ -87,7 +87,7 @@
       %script{src: "//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"}
       %script{src: "//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"}
 
-  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program{% endif %}"}
+  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}"}
     - block help_context
 
     -# Header
