@@ -7,7 +7,7 @@
         .cell.col-2.tagline
           %span= cell.content
       - elif cell.type == 'entry-point'
-        %a.cell.entry-point{href: '/experience'}
+        %a.cell.entry-point{href: "#{cell.url}"}
           .icon-circled{class: "#{cell.icon_color}"}
             %i{class: "mk-icon-#{cell.icon}"}
           .nav-1= cell.title
@@ -15,7 +15,7 @@
           .label-2= cell.content|safe
           %i.fa.fa-arrow-circle-right
       - elif cell.type == 'distinctive-feature'
-        %a.cell.distinctive-feature{href: '/experience', class: "#{cell.background}"}
+        %a.cell.distinctive-feature{href: "#{cell.url}", class: "#{cell.background}"}
           .nav-1 Distinctive Features:
           .title= cell.title
           .content= cell.content|safe
