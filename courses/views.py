@@ -17,7 +17,7 @@ from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
 
-from .controller import inject_gradebook_info, round_to_int
+from .controller import inject_gradebook_info, round_to_int, Proficiency
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
@@ -51,11 +51,9 @@ def course_landing_page(request, course_id):
     set_current_course_for_user(request, course_id)
     static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
-    proficiency = course_api.get_course_metrics_grades(course_id, request.user.id)
+    proficiency = course_api.get_course_metrics_grades(course_id, request.user.id, grade_object_type=Proficiency)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
-
-    course_avg_proficiency = 0 if proficiency.course_avg is None else proficiency.course_avg
 
     data = {
         "user": request.user,
@@ -65,10 +63,10 @@ def course_landing_page(request, course_id):
         "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
         "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
-        "proficiency": round_to_int(proficiency.user_grade * 100),
-        "proficiency_graph": int(5 * round(proficiency.user_grade * 20)),
-        "cohort_proficiency_average": round_to_int(course_avg_proficiency * 100),
-        "cohort_proficiency_graph": int(5 * round(course_avg_proficiency * 20)),
+        "proficiency": round_to_int(proficiency.user_grade_value * 100),
+        "proficiency_graph": int(5 * round(proficiency.user_grade_value * 20)),
+        "cohort_proficiency_average": round_to_int(proficiency.course_average_value * 100),
+        "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "social": social,
         "average_progress": average_progress(course, request.user.id),
     }
