@@ -149,27 +149,27 @@
       i.fa { margin-top: 25px; }
 
       &.bg-al {
-        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_al', 300px 300px, 'jpg');
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_al', 300px 300px, 'jpg', null, '@2x');
       }
 
       &.bg-cp {
-        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_cp', 300px 300px, 'jpg');
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_cp', 300px 300px, 'jpg', null, '@2x');
       }
 
       &.bg-df {
-        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_df', 300px 300px, 'jpg');
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_df', 300px 300px, 'jpg', null, '@2x');
       }
 
       &.bg-pp {
-        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_pp', 300px 300px, 'jpg');
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_pp', 300px 300px, 'jpg', null, '@2x');
       }
 
       &.bg-sl {
-        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_sl', 300px 300px, 'jpg');
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_sl', 300px 300px, 'jpg', null, '@2x');
       }
 
       &.bg-ta {
-        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_ta', 300px 300px, 'jpg');
+        @include retina-image('/static/image/home-grid/McKA_home_tiles_df_ta', 300px 300px, 'jpg', null, '@2x');
       }
     }
 
@@ -194,7 +194,7 @@
     }
 
     &.video {
-      @include retina-image('/static/image/home-grid/McKA_home_tiles_video', 300px 300px, 'jpg');
+      @include retina-image('/static/image/home-grid/McKA_home_tiles_video', 300px 300px, 'jpg', null, '@2x');
 
       .fa-play-circle {
         position: absolute;
