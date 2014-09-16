@@ -1,12 +1,6 @@
 header[role=banner].background-blue {
   .logo {
-    background-image: none;
-    height: 60%;
-    left: 25px;
-    top: 8px;
-    position: relative;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding.png', sizingMethod='scale');
-    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding.png', sizingMethod='scale')";
+    -ms-behavior: url(/static/js/vendor/backgroundsize.min.htc);
   }
   nav {
     ul {
