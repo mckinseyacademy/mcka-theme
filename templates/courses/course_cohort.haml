@@ -46,7 +46,7 @@
                   .person-name ={leader.username}
                   - if leader.title
                     .person-title ={leader.title}
-                  .person-rank #={leader.rank} <span>={leader.points_scored}</span>
+                  .person-rank #={leader.rank} <span>={leader.grade_display_value}</span>
           - else
             .user.dummy
               %img.avatar{src: '/static/image/empty_avatar.png'}
