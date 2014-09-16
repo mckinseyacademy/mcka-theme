@@ -1,12 +1,12 @@
 header[role=banner].background-blue {
-  .logo{
+  .logo {
     background-image: none;
     height: 60%;
     left: 25px;
     top: 8px;
     position: relative;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding_beta.png', sizingMethod='scale');
-    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding_beta.png', sizingMethod='scale')";
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding.png', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/static/image/McK_McKA_cobranding.png', sizingMethod='scale')";
   }
   nav {
     ul {
