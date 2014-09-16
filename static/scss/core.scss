@@ -1,6 +1,7 @@
 @import 'includes';
 @import "foundation/components/grid";
 @import "foundation/components/buttons";
+// Note: Remove hover from form-select mixin for IE8 to work in forms
 @import "foundation/components/forms";
 @import "foundation/components/reveal";
 @import "foundation/components/type";
