@@ -1,3 +1,5 @@
+@import 'ie8_fonts';
+
 header[role=banner].background-blue {
   .logo {
     -ms-behavior: url(/static/js/vendor/backgroundsize.min.htc);
@@ -67,4 +69,11 @@ header[role=banner].background-blue {
 
 #mckinsey_video {
   width: 800px;
+}
+
+#about-page,
+#experience-page {
+  p {
+    margin-bottom: 0;
+  }
 }
