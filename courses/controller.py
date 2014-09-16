@@ -327,8 +327,8 @@ def get_progress_leaders(course_id, user_id):
 def tailor_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
         leader.rank = rank
-        if hasattr(leader, 'points_scored'):
-            leader.points_scored = round_to_int(leader.points_scored)
+        if hasattr(leader, 'grade'):
+            leader.grade_display_value = round_to_int(100 * leader.grade)
         if leader.avatar_url is None:
             leader.avatar_url = user_models.UserResponse.default_image_url()
 
