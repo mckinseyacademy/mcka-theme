@@ -27,14 +27,15 @@
         %li= _("Course end date:")
           %b= course_end
         %li= _("Grade cutoffs:")
-          %b
+          %b= cutoffs
 
     .large-6.large.columns
       %h2= _("PARTICIPANTS")
       %ul
         %li= _("Participants:")
-          %b
+          %b= metrics.users_enrolled
         %li= _("Started:")
+          %b= metrics.users_started
         %li= _("Completed:")
         %li= _("% Completed:")
 
