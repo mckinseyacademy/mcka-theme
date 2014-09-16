@@ -18,7 +18,8 @@
       "icon": "advisors",
       "icon_color": "green",
       "subtitle": "Academic Advisory Council ",
-      "content": "The Academic Advisory Council helps to shape the research agenda for McKinsey Academy, offers perspectives on successful and emerging pedagogical methods, and suggests ideas for future experimentation."
+      "content": "The Academic Advisory Council helps to shape the research agenda for McKinsey Academy, offers perspectives on successful and emerging pedagogical methods, and suggests ideas for future experimentation.",
+      "url": "/about/"
     },
     {
       "type": "entry-point",
@@ -26,7 +27,8 @@
       "icon": "faculty",
       "icon_color": "warm-gray",
       "subtitle": "We provide an immersive experience for our learners:",
-      "content": "Curated and discoverable content<br>Intuitive navigation through courses and lessons<br>Tools for social interaction within cohorts<br>Data visualizations of progress"
+      "content": "Curated and discoverable content<br>Intuitive navigation through courses and lessons<br>Tools for social interaction within cohorts<br>Data visualizations of progress",
+      "url": "/experience/"
     },
     {
       "type": "entry-point",
@@ -34,7 +36,8 @@
       "icon_color": "blue-gray",
       "title": "OUR PROGRAM OFFERING:",
       "subtitle": "Introducing the McKinsey Management Program:",
-      "content": "The McKinsey Management Program is our inaugural set of courses for rising professionals looking to build leadership and management capabilities."
+      "content": "The McKinsey Management Program is our inaugural set of courses for rising professionals looking to build leadership and management capabilities.",
+      "url": "/programs/"
     },
     {
       "type": "entry-point",
@@ -42,7 +45,8 @@
       "icon_color": "green",
       "title": "ABOUT McKINSEY ACADEMY:",
       "subtitle": "McKinsey Academy is a dynamic digital platform for business education.",
-      "content": "McKinsey Academy provides scalable business education that is rigorous, relevant, and applicable."
+      "content": "McKinsey Academy provides scalable business education that is rigorous, relevant, and applicable.",
+      "url": "/about/"
     },
     {
       "type": "entry-point",
@@ -50,7 +54,8 @@
       "icon_color": "turquoise",
       "title": "OUR PEDAGOGY:",
       "subtitle": "McKinsey Academy Pedagogy is based on four core principles:",
-      "content": "Learning by doing<br>Focus on expert performance<br>Deep feedback<br>Social Learning"
+      "content": "Learning by doing<br>Focus on expert performance<br>Deep feedback<br>Social Learning",
+      "url": "/experience/"
     }
   ],
   "features": [
@@ -58,37 +63,43 @@
       "type": "distinctive-feature",
       "background": "bg-pp",
       "title": "Practitioner's perspective",
-      "content": "Taught by McKinsey partners and external business leaders who provide practical \"how to\" guidance."
+      "content": "Taught by McKinsey partners and external business leaders who provide practical \"how to\" guidance.",
+      "url": "/experience/"
     },
     {
       "type": "distinctive-feature",
       "background": "bg-sl",
       "title": "Social Learning with Group-based Projects",
-      "content": "Collaboration with peers across industries and geographies, and in community discussion forums."
+      "content": "Collaboration with peers across industries and geographies, and in community discussion forums.",
+      "url": "/experience/"
     },
     {
       "type": "distinctive-feature",
       "background": "bg-df",
       "title": "Deep feedback",
-      "content": "Immediate, response- contingent feedback enables richer learning and provides guidance on where to go to learn more."
+      "content": "Immediate, response- contingent feedback enables richer learning and provides guidance on where to go to learn more.",
+      "url": "/experience/"
     },
     {
       "type": "distinctive-feature",
       "background": "bg-ta",
       "title": "McKinsey TA guidance",
-      "content": "McKinsey consultants serve as teaching assistants, providing distinctive engagement and guidance."
+      "content": "McKinsey consultants serve as teaching assistants, providing distinctive engagement and guidance.",
+      "url": "/experience/"
     },
     {
       "type": "distinctive-feature",
       "background": "bg-al",
       "title": "ADAPTIVE LEARNING MECHANICS",
-      "content": "Rich learning experience incorporates ground-breaking techniques in adaptive learning and game mechanics."
+      "content": "Rich learning experience incorporates ground-breaking techniques in adaptive learning and game mechanics.",
+      "url": "/experience/"
     },
     {
       "type": "distinctive-feature",
       "background": "bg-cp",
       "title": "Rigorous Analytics",
-      "content": "Advanced analytics measure participant progress, social engagement, and proficiency vs. peers."
+      "content": "Advanced analytics measure participant progress, social engagement, and proficiency vs. peers.",
+      "url": "/experience/"
     }
   ],
   "quotes": [

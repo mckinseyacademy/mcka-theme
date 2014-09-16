@@ -36,11 +36,11 @@ class TechSupportForm(forms.Form):
     name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Name')}))
     email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Email')}))
     comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('Please provide details')}))
-    device = forms.CharField(widget=forms.HiddenInput())
-    device_language = forms.CharField(widget=forms.HiddenInput())
-    browser_type = forms.CharField(widget=forms.HiddenInput())
-    browser_version = forms.CharField(widget=forms.HiddenInput())
-    user_agent = forms.CharField(widget=forms.HiddenInput())
+    device = forms.CharField(widget=forms.HiddenInput(), required=False)
+    device_language = forms.CharField(widget=forms.HiddenInput(), required=False)
+    browser_type = forms.CharField(widget=forms.HiddenInput(), required=False)
+    browser_version = forms.CharField(widget=forms.HiddenInput(), required=False)
+    user_agent = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def save(self):
         data = {
