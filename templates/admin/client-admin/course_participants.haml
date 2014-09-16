@@ -13,7 +13,7 @@
         .sub-1.add= _("Data Download ")
         .add-message= _("The following button downloads a list of all students enrolled in this course, their percent complete, impct scores, and course grade, along with profile informations such as email address and username.")
         %br
-        %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/download_course_report", target: "_blank"} 
+        %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/download_course_report", target: "_blank"}
           Download Report for course
         %hr
         .sub-1.add= _("Student-Specific grade inspection ")
@@ -51,7 +51,8 @@
   		          %a{href: "#{}"}= student.full_name
   		          %p= student.username
   		          %p= student.title
-  		        %td= '30'
+  		        %td= student.progress
+                = '%'
   		        %td
   		          %a{href: "mailto:#{student.email}"}= "Email"
   		        %td
@@ -59,7 +60,7 @@
   		        %td
   		          %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
 
-	  
+
 - block js_snippets
   :javascript
     $(function(){
@@ -68,5 +69,5 @@
           paging: false,
           autoWidth: false,
           "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
-      }); 
+      });
     });

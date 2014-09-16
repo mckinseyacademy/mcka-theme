@@ -59,6 +59,7 @@ from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnatt
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 
+from courses.user_courses import return_course_progress
 
 def ajaxify_http_redirects(func):
     def wrapper(*args, **kwargs):
@@ -171,12 +172,16 @@ def client_admin_course_participants(request, client_id, course_id):
 
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
     total_participants = len(participants)
-
-    users_ids = [str(user.id) for user in participants]
-    additional_fields = ["full_name", "title", "avatar_url"]
-    students = user_api.get_users(ids=users_ids, fields=additional_fields)
-    for student in students: 
-        student.avatar_url = student.image_url(size=40)
+    course = course_api.get_course(course_id, depth=4)
+    if total_participants > 0:
+        users_ids = [str(user.id) for user in participants]
+        additional_fields = ["full_name", "title", "avatar_url"]
+        students = user_api.get_users(ids=users_ids, fields=additional_fields)
+        for student in students:
+            student.avatar_url = student.image_url(size=40)
+            student.progress = return_course_progress(course, student.id)
+    else:
+        students = []
 
     data = {
         'client_id': client_id,

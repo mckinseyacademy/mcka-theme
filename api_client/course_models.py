@@ -170,7 +170,8 @@ class Course(CategorisedJsonObject):
         for lesson in self.chapters:
             for sequential in lesson.sequentials:
                 for page in sequential.pages:
-                    components.extend([child.id for child in page.children if child.category not in filter_out_categories])
+                    if hasattr(page, 'children'):
+                        components.extend([child.id for child in page.children if child.category not in filter_out_categories])
         return components
 
     def lesson_component_ids(self, lesson_id, completions=None, filter_out_categories=[]):
