@@ -43,6 +43,25 @@ class AcademyGradebook(JsonObject):
         "grading_policy": AcademyGradePolicy,
     }
 
+class Proficiency(JsonObject):
+
+    @property
+    def user_grade_value(self):
+        return self.user_grade if hasattr(self, "user_grade") and self.user_grade is not None else 0
+
+    @property
+    def user_grade_display(self):
+        return round_to_int(100*self.user_grade_value)
+
+    @property
+    def course_average_value(self):
+        return self.course_avg if hasattr(self, "course_avg") and self.course_avg is not None else 0
+
+    @property
+    def course_average_display(self):
+        return round_to_int(100*self.course_average_value)
+
+
 def build_page_info_for_course(
     request,
     course_id,
@@ -295,10 +314,9 @@ def is_number(s):
     return True
 
 def get_proficiency_leaders(course_id, user_id):
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id)
-    proficiency.user_grade_display = round_to_int(100*proficiency.user_grade)
-    proficiency.course_avg_display = round_to_int(100*proficiency.course_avg) if proficiency.course_avg else 0
-    tailor_leader_list(proficiency.leaders)
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id, grade_object_type=Proficiency)
+    if hasattr(proficiency, "leaders"):
+        tailor_leader_list(proficiency.leaders)
     return proficiency
 
 def get_progress_leaders(course_id, user_id):

@@ -324,7 +324,7 @@ def get_course_metrics_by_city(course_id, cities=None):
 
 
 @api_error_protect
-def get_course_metrics_grades(course_id, user_id=None, count=3):
+def get_course_metrics_grades(course_id, user_id=None, count=3, grade_object_type=JsonObject):
     ''' retrieves users who are leading in terms of points_scored'''
 
     qs_params = {"count": count}
@@ -339,7 +339,7 @@ def get_course_metrics_grades(course_id, user_id=None, count=3):
     )
     response = GET(url)
 
-    return JP.from_json(response.read())
+    return JP.from_json(response.read(), grade_object_type)
 
 @api_error_protect
 def get_course_metrics_completions(course_id, user_id=None, count=3):
