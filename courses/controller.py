@@ -13,7 +13,7 @@ from api_client.project_models import Project
 from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
 from api_client.gradebook_models import CourseSummary, GradeSummary
-from api_client.json_object import JsonObject
+from api_client.json_object import JsonObject, DataOnly
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
 
@@ -34,6 +34,7 @@ class AcademyGradeAssessmentType(JsonObject):
 class AcademyGradePolicy(JsonObject):
     object_map = {
         "GRADER": AcademyGradeAssessmentType,
+        "GRADE_CUTOFFS": DataOnly,
     }
 
 class AcademyGradebook(JsonObject):

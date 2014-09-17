@@ -278,7 +278,8 @@ def course_progress(request, course_id):
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
 
-    pass_grade = round_to_int(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
+    cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
+    pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
 
     workgroup_avg_sections = [section for section in gradebook.courseware_summary if section.display_name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
