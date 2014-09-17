@@ -312,7 +312,7 @@ def get_course_metrics(course_id, *args, **kwargs):
     )
 
     response = GET(url)
-    return JP.from_json(response.read())
+    return JP.from_json(response.read(), course_models.CourseMetrics)
 
 @api_error_protect
 def get_course_metrics_by_city(course_id, cities=None):

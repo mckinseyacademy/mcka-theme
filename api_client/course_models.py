@@ -5,7 +5,7 @@ import math
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-from .json_object import CategorisedJsonObject, JsonObject
+from .json_object import CategorisedJsonObject, JsonObject, DataOnly
 
 # Temporary id converter to fix up problems post opaque keys
 from lib.util import LegacyIdConvert
@@ -227,3 +227,9 @@ class CourseContentGroup(JsonObject):
 
     def __unicode__(self):
         return "group {} in course {}".format(self.group_id, self.course_id)
+
+
+class CourseMetrics(JsonObject):
+    object_map = {
+        "grade_cutoffs": DataOnly
+    }

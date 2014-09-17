@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.utils.dateformat import format
@@ -70,6 +71,30 @@ def ajaxify_http_redirects(func):
 
     return wrapper
 
+def client_admin_access(func):
+    '''
+    Ensure company admins can view only their company.
+    MCKA Admin can view all clients in the system.
+    '''
+    def wrapper(request, client_id=None, *args, **kwargs):
+        valid_client_id = None
+        if request.user.is_mcka_admin:
+            valid_client_id = client_id
+
+        # make sure client admin can access only his company
+        elif request.user.is_client_admin:
+            orgs = user_api.get_user_organizations(request.user.id)
+            if orgs:
+                valid_client_id = orgs[0].id
+
+        if valid_client_id is None:
+            raise Http404
+
+        return func(request, valid_client_id, *args, **kwargs)
+
+    return wrapper
+
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def home(request):
@@ -80,18 +105,10 @@ def home(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_home(request, client_id=None):
+@client_admin_access
+def client_admin_home(request, client_id):
 
-    if request.user.is_mcka_admin:
-        valid_client_id = client_id
-
-    # make sure client admin can access only his company
-    elif request.user.is_client_admin:
-        orgs = user_api.get_user_organizations(request.user.id)
-        if orgs:
-            valid_client_id = orgs[0].id
-
-    organization = Client.fetch(valid_client_id)
+    organization = Client.fetch(client_id)
 
     programs = []
     for program in organization.fetch_programs():
@@ -123,12 +140,55 @@ def client_admin_home(request, client_id=None):
         data,
     )
 
-def client_admin_course(request, client_id, course_id):
 
-    data = {}
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course(request, client_id, course_id):
+    course = course_api.get_course(course_id)
+    metrics = course_api.get_course_metrics(course_id, organization=client_id)
+    cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in metrics.grade_cutoffs.iteritems()])
+
+    data = {
+        'client_id': client_id,
+        'course_id': course_id,
+        'course_info': course,
+        'course_start': course.start.strftime('%m/%d/%Y') if course.start else '',
+        'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
+        'metrics': metrics,
+        'cutoffs': cutoffs
+    }
     return render(
         request,
-        'admin/client-admin/course.haml',
+        'admin/client-admin/course_info.haml',
+        data,
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_participants(request, client_id, course_id):
+
+    data = {
+        'client_id': client_id,
+        'course_id': course_id
+    }
+    return render(
+        request,
+        'admin/client-admin/course_participants.haml',
+        data,
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_analytics(request, client_id, course_id):
+
+    data = {
+        'client_id': client_id,
+        'course_id': course_id
+    }
+    return render(
+        request,
+        'admin/client-admin/course_analytics.haml',
         data,
     )
 

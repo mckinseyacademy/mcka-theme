@@ -4,6 +4,8 @@ from admin import views
 urlpatterns = patterns(
     'admin',
     url(r'^$', views.home, name='admin_home'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants$', views.client_admin_course_participants, name='client_admin_course_participants'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics$', views.client_admin_course_analytics, name='client_admin_course_analytics'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)$', views.client_admin_course, name='client_admin_course'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),
