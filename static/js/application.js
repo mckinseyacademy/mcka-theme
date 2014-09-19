@@ -161,14 +161,15 @@ $(function(){
 
   var help_video = $('#mk-help-video');
   if (help_video.length) {
-    var player = OO.Player.create('mk-help-video', help_video.data('video-id'), {width: '320px', height: '180px'});
+    var player = OO.Player.create('mk-help-video', help_video.data('video-id'), {width: '100%', height: '300px'});
     $('#mckinsey_help').data('ooyala_player', player);
   }
 
   var intro_modal = $('#intro_modal');
   if (intro_modal.length && !localStorage.intro_shown) {
     var intro_video = $('#mk-intro-video'),
-        player = OO.Player.create('mk-intro-video', intro_video.data('video-id'), {width: '460px', height: '260px'});
+        width = $('body').hasClass('ie8') ? '460px' : '100%',
+        player = OO.Player.create('mk-intro-video', intro_video.data('video-id'), {width: width, height: '260px'});
     intro_modal.data('ooyala_player', player);
     intro_modal.foundation('reveal', 'open');
     localStorage.intro_shown = true;
