@@ -335,8 +335,8 @@ def course_progress(request, course_id):
         for grade in category_map[group_category]:
             if not is_dropped(grade):
                 label = grade.label
-                if group_activities and activity_index < len(group_activities):
-                    label = group_activities[activity_index].name
+                # if group_activities and activity_index < len(group_activities):
+                #     label = group_activities[activity_index].name
                 bar_chart[0]['values'].append({
                    'label': label,
                    'value': grade.percent*100,
