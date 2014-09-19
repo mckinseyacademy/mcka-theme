@@ -1,6 +1,7 @@
 ''' API calls with respect to users and authentication '''
 from urllib2 import HTTPError
 from urllib import urlencode
+import copy
 import json
 from lib.util import DottableDict
 
@@ -70,10 +71,11 @@ def get_users(fields=[], *args, **kwargs):
     default_fields = ['id', 'email', 'username']
 
     ''' get all users that meet filter criteria'''
-    fields.extend(default_fields)
+    request_fields = copy.copy(fields)
+    request_fields.extend(default_fields)
     qs_params = {
         "page_size": 0,
-        "fields": ",".join(fields),
+        "fields": ",".join(request_fields),
     }
 
     for karg in kwargs:
