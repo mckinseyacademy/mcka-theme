@@ -2,7 +2,9 @@
 
 As the edX API starts to mature it becomes more desirable to develop the Apros product while hooked up to a real edX LMS system.
 
-This document explains how to achieve this in a development environment. The steps we'll follow are as follows:
+This document explains how to achieve this in a development environment. For instructions on setting Apros inside edx-platform devstack virtual box see [Installing Apros inside devstack virtual box][devstack-apros-setup]. 
+
+The steps we'll follow are as follows:
 
 1. Setup edX Environment
 - Setup Apros Environment
@@ -10,7 +12,9 @@ This document explains how to achieve this in a development environment. The ste
 - Prepare LMS to respond to API / XBlock requests from Apros
 - Configure your system to use a common domain between Apros and LMS
 
-_Throughout, this document refers to the names `lms.local.org` and `mckinseyacademy.local.org`. It should be noted that these are simply names that we'll use when adding the systems to the same domain. You can use whatever names you like, but the important thing is that they have a common domain, to allow easy access to the LMS session cookie within Apros which enables data transfer through the XBlock._
+_Throughout, this document refers to the names `lms.local.org` and `mckinseyacademy.local.org`. It should be noted that these are simply names that we'll use when adding the systems to the same domain. You can use whatever names you like, but the important thing is that they have a common domain, to allow easy access to the LMS session cookie within Apros which enables data transfer through the XBlock.
+
+[devstack-apros-setup]: devstack_apros_setup.md
 
 ## Step 1 - Setup edX devstack Environment
 
@@ -19,6 +23,50 @@ By far the simplest way to set up the edX system is to install the devstack envi
 Follow the instructions at https://github.com/edx/configuration/wiki/edX-Developer-Stack
 
 The devstack environment maps some local ports so that LMS and CMS (Studio) serve content on the host machines ports 8000 and 8001 respectively.
+
+Please note that edx/edx-platform devstack does not support LMS API, so edx-solutions/edx-platform should be used instead.
+
+### Setting up solutions devstack
+
+Start with a shiny new upstream devstack. Then checkout solutions in your edx-platform repo.
+
+Next, clear and rebuilt the Python dependencies
+
+As vagrant user:
+```
+sudo virtualenv --clear /edx/app/edxapp/venvs/edxapp
+sudo chown edxapp:edxapp -R /edx/app/edxapp/venvs/edxapp
+sudo su edxapp  #make sure prompt reads ~/edx-platform
+pip install -r requirements/edx/paver.txt
+pip install python-memcached==1.48  # Until edx-solutions/edx-platform#152 is closed
+paver install_prereqs
+pip install -r requirements/edx/custom.txt
+```
+Finally give the same treatment to the db.
+
+> The correct way to do this would involve `echo "DROP DATABASE edxapp;" | mysql -uedxapp001 -ppassword edxapp` `echo "CREATE DATABASE edxapp;" | mysql -uedxapp001 -ppassword` but then paver seems unable to rebuild on MySQL
+
+Simply switch to SQLite `nano ~/lms.auth.json`:
+
+```
+    "DATABASES": {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "edxapp.db"
+        },
+    }
+```
+
+And then `paver update_db --settings=devstack`. 
+
+The only way to reliably create new users is manually via the lms.
+(The confirmation mail can be read from the terminal, where all e-mails are printed by default.)
+
+You might also want to assign staff rights to at least one user, to do this (assuming that your user in named `staff`):
+
+```
+sqlite3 edxapp.db <<<'update auth_user set is_superuser=1, is_staff=1 where username="staff";'
+```
 
 ### Run LMS
 
@@ -246,6 +294,8 @@ To stop nginx use the command:
 
 ## After you're done
 
+See [Initial configuration][initial-configuration] for details on configuring Apros programs, clients and students.
+
 You may wish to enable to local mock server if you so desire. To do this, add the following to your local_settings.py file:
 
     RUN_LOCAL_MOCK_API = True
@@ -266,3 +316,4 @@ The LOCAL_MOCK_API_FILES can be amended with additional files from which to take
 apiary.apib - contains a copy of the API Blueprint from apiary
 mock_supplementals.apib - currently contains specific responses for demo course in edX LMS as setup within devstack
 
+[initial-configuration]: apros_initial_configuration.md
