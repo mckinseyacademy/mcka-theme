@@ -145,7 +145,10 @@
   }
 
   .student-progress-list{
-    background: $mckinsey-academy-turquoise;
+    background: $mckinsey-academy-light-gray;
+    .empty-cell{
+      background: $pure-white;
+    }
   }
   .user-image img{
     max-width:40px;
@@ -154,6 +157,10 @@
 
   .dataTable .expanded-group.group-item-expander{
     background:$mckinsey-academy-warm-gray;
+  }
+
+  .dataTable td.course-progress{
+    float:left;
   }
 
   @import './admin-list';

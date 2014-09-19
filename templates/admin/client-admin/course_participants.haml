@@ -67,6 +67,7 @@
   :javascript
     $(function(){
 
+      var accordionTableFlag = true;
       $('.student-list').dataTable({
           paging: false,
           autoWidth: false,
@@ -82,12 +83,16 @@
         var that = $(this);
         var link = that.data('link');
         var userid = that.data('userid');
-        if($('.student-progress-list[name="' + userid + '"]').length == 0){
+        if($('.student-progress-list[name="' + userid + '"]').length == 0 && accordionTableFlag){
+          accordionTableFlag = false;
           $.ajax({
             'url': link,
             'method': 'GET'
           }).done(function(data){
             $('tr#' + userid).after(data);
+            accordionTableFlag = true;
+          }).fail(function(){
+            accordionTableFlag = true;
           });
         }
         else{
