@@ -61,9 +61,10 @@
   		        %td
   		          %a{href: "#{}"}= "View progress page"
   		        %td
-  		          %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
+  		          %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
 
 - block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   :javascript
     $(function(){
 
@@ -101,3 +102,5 @@
       });
 
     });
+
+    ajaxify_overlay_form('#edit_field_modal', 'form');

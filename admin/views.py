@@ -245,29 +245,28 @@ def client_admin_course_analytics(request, client_id, course_id):
         data,
     )
 
+@ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_unenroll(request, client_id, course_id):
+def client_admin_unenroll_participant(request, client_id, course_id, user_id):
     error = None
-    # if request.method == 'POST':
-    #     form = EditFullNameForm(request.POST)
-    #     if form.is_valid():
-    #         try:
-    #             user_api.update_user_information(request.user.id, {
-    #                 'first_name': form.data['first_name'],
-    #                 'last_name': form.data['last_name']
-    #             })
-    #         except ApiError as err:
-    #             error = err.message
-    # else:
-    #     form = EditFullNameForm()
+    if request.method == 'POST':
+        try:
+            user_api.unenroll_user_from_course(user_id, course_id)
+            redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+        except ApiError as err:
+            error = err.message
 
-    user_data = {
-        # 'error': error,
-        # 'title':  _('Enter your full name'),
-        # 'form': form,
-        # 'submit_label': _('Save')
+    participant = user_api.get_user(user_id)
+
+    data = {
+        'participant': participant,
+        'unenroll_course': _("Un-enroll from this course"),
+        'unenroll_program': _("Un-enroll from entire program "),
+        'client_id': client_id,
+        'course_id': course_id,
     }
-    return render(request, 'admin/client-admin/unenroll.haml', user_data)
+    return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):
