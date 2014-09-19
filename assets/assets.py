@@ -33,6 +33,7 @@ js_ie8_files.extend([
     #'js/vendor/d3.v3.js',
     #'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
+    'js/vendor/jquery.dataTables.rowGrouping.js',
     'js/application.js',
     'js/router.js',
 ])
@@ -58,6 +59,7 @@ js_files.extend([
     'js/vendor/d3.v3.js',
     'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
+    'js/vendor/jquery.dataTables.rowGrouping.js',
     'js/vendor/jquery.touchwipe.min.js',
     'js/application.js',
     'js/router.js',

@@ -144,6 +144,18 @@
     display:none;
   }
 
+  .student-progress-list{
+    background: $mckinsey-academy-turquoise;
+  }
+  .user-image img{
+    max-width:40px;
+    max-height: 40px;
+  }
+
+  .dataTable .expanded-group.group-item-expander{
+    background:$mckinsey-academy-warm-gray;
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';

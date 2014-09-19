@@ -1,0 +1,15 @@
+-for course in courses
+  %tr.course-stats.student-progress-list{name: "#{student.id}"}
+    %td
+      .show-user-progress{'data-link': '/admin/client-admin/#{client_id}/courses/#{course_id}/users/#{student.id}/progress', 'data-userid': '#{student.id}'}= student.full_name
+    %td.course-name
+      = course.name
+    %td.course-progress
+      = course.progress
+      = _('%')
+    %td.course-completed
+      = course.completed
+    %td.course-progress-link
+      %a{'href': '#',}
+        = _("View Progress Page")
+    %td

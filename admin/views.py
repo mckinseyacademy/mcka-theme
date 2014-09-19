@@ -269,7 +269,26 @@ def client_admin_unenroll(request, client_id, course_id):
     }
     return render(request, 'admin/client-admin/unenroll.haml', user_data)
 
-
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_user_progress(request, client_id, course_id, user_id):
+    userCourses = user_api.get_user_courses(user_id)
+    student = user_api.get_user(user_id)
+    student.avatar_url = student.image_url(size=40)
+    courses = []
+    for courseName in userCourses:
+        course = course_api.get_course(courseName.id, depth=4)
+        if course.id != course_id:
+            course.progress = return_course_progress(course, user_id)
+            courses.append(course)
+    data = {
+        'courses' : courses,
+        'student' : student,
+    }
+    return render(
+        request,
+        'admin/client-admin/user_progress.haml',
+        data
+    )
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)

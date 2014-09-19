@@ -27,7 +27,8 @@
             .sub-1.add= _("Participants: ")
               %span= total_participants
             %th
-  	        %th Name
+            %th User Name
+  	        %th Full Name
   	          %span{class: 'asc'}
   	            ▲
   	          %span{class: 'desc'}
@@ -48,18 +49,19 @@
                   -if student.avatar_url
                     %img{src: "#{student.avatar_url}"}
   		        %td
-  		          %a{href: "#{}"}= student.full_name
-  		          %p= student.username
-  		          %p= student.title
-  		        %td= student.progress
-                = '%'
+  		          .show-user-progress{'data-link': '/admin/client-admin/#{client_id}/courses/#{course_id}/users/#{student.id}/progress', 'data-userid': '#{student.id}'}= student.full_name
+              %td
+                %p= student.username
+                %p= student.title
+  		        %td
+                = student.progress
+                = _('%')
   		        %td
   		          %a{href: "mailto:#{student.email}"}= "Email"
   		        %td
   		          %a{href: "#{}"}= "View progress page"
   		        %td
   		          %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
-
 
 - block js_snippets
   :javascript
@@ -69,5 +71,28 @@
           paging: false,
           autoWidth: false,
           "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
+      }).rowGrouping({  bExpandableGrouping: true,
+                bExpandSingleGroup: true,
+                iExpandGroupOffset: -1,
+                iGroupingColumnIndex: 1,
+                sGroupingColumnSortDirection: "asc",
+                iGroupingOrderByColumnIndex: 1});
+
+      $(document).on('click', '.show-user-progress', function(){
+        var that = $(this);
+        var link = that.data('link');
+        var userid = that.data('userid');
+        if($('.student-progress-list[name="' + userid + '"]').length == 0){
+          $.ajax({
+            'url': link,
+            'method': 'GET'
+          }).done(function(data){
+            $('tr#' + userid).after(data);
+          });
+        }
+        else{
+          $('.student-progress-list[name="' + userid + '"]').toggle();
+        }
       });
+
     });
