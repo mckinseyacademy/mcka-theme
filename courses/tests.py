@@ -67,7 +67,7 @@ class UrlsTest(TestCase):
         self.assertEqual(resolver.view_name, 'course_overview')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
 
-        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/news')
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/announcements')
         self.assertEqual(resolver.view_name, 'course_news')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
 
