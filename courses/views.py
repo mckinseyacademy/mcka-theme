@@ -421,7 +421,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     return render(request, 'courses/course_lessons.haml', data)
 
 def course_notready(request, course_id):
-    return render(request, 'courses/course_notready.haml')
+    course = load_course(course_id, request=request)
+    return render(request, 'courses/course_notready.haml', {"course": course})
 
 @login_required
 @check_user_course_access

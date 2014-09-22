@@ -160,6 +160,9 @@ def locate_chapter_page(
         user_api_impl - optional api client module to use (useful in mocks)
     '''
     course = load_course(course_id, 4, course_api_impl, request=request)
+    if not course.started:
+        return course_id, None, None
+
     chapter = None
     page = None
 
