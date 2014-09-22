@@ -21,47 +21,47 @@
         %br
         / %input{type: "search"}
         / %hr
-	    %table.student-list
-	      %thead
+      %table.student-list
+        %thead
           %tr
             .sub-1.add= _("Participants: ")
               %span= total_participants
             %th
             %th User Name
-  	        %th Full Name
-  	          %span{class: 'asc'}
-  	            ▲
-  	          %span{class: 'desc'}
-  	            ▼
-  	        %th Complete
-  	          %span{class: 'asc'}
-  	            ▲
-  	          %span{class: 'desc'}
-  	            ▼
-  	        %th
-  	        %th
-  	        %th
-	      %tbody
-  		    - for student in students
-  		      %tr.student{id: "#{student.id}"}
+            %th Full Name
+              %span{class: 'asc'}
+                ▲
+              %span{class: 'desc'}
+                ▼
+            %th Complete
+              %span{class: 'asc'}
+                ▲
+              %span{class: 'desc'}
+                ▼
+            %th
+            %th
+            %th
+        %tbody
+          - for student in students
+            %tr.student{id: "#{student.id}"}
               %td
                 %div.user-image
                   -if student.avatar_url
                     %img{src: "#{student.avatar_url}"}
-  		        %td
-  		          .show-user-progress{'data-link': '/admin/client-admin/#{client_id}/courses/#{course_id}/users/#{student.id}/progress', 'data-userid': '#{student.id}'}= student.full_name
+              %td
+                .show-user-progress{'data-link': '/admin/client-admin/#{client_id}/courses/#{course_id}/users/#{student.id}/progress', 'data-userid': '#{student.id}'}= student.full_name
               %td
                 %p= student.username
                 %p= student.title
-  		        %td
+              %td
                 = student.progress
                 = _('%')
-  		        %td
-  		          %a{href: "mailto:#{student.email}"}= "Email"
-  		        %td
-  		          %a{href: "#{}"}= "View progress page"
-  		        %td
-  		          %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
+              %td
+                %a{href: "mailto:#{student.email}"}= "Email"
+              %td
+                %a{href: "#{}"}= "View progress page"
+              %td
+                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
