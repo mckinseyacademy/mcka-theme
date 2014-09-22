@@ -244,6 +244,19 @@ def enroll_user_in_course(user_id, course_id):
     courses = JP.from_json(response.read(), course_models.Course)
 
 @api_error_protect
+def unenroll_user_from_course(user_id, course_id):
+    ''' unenroll a User from a Course (inactivates the enrollment) '''
+    response = DELETE(
+        '{}/{}/{}/courses/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            course_id
+        )
+    )
+    return (response.code == 204)
+
+@api_error_protect
 def get_user_course_detail(user_id, course_id):
     ''' get details for the user for this course'''
     response = GET(

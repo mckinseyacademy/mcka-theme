@@ -192,6 +192,10 @@ def load_course_progress(course, user_id):
     except ZeroDivisionError:
         course.user_progress = 0
 
+def return_course_progress(course, user_id):
+    load_course_progress(course, user_id)
+    return course.user_progress
+
 
 def standard_data(request):
     ''' Makes user and program info available to all templates '''

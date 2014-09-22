@@ -45,6 +45,10 @@ class Program(BaseGroupModel):
         group_api.add_user_to_group(user_id, self.id)
         return license_controller.assign_license(self.id, client_id, user_id)
 
+    def remove_user(self, client_id, user_id):
+        group_api.remove_user_from_group(user_id, self.id)
+        return license_controller.revoke_license(self.id, client_id, user_id)
+
     @classmethod
     def user_programs_with_course(cls, user_id, course_id):
         return user_api.get_user_groups(user_id, group_type=cls.group_type, group_object=cls, course=course_id)

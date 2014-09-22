@@ -1,0 +1,37 @@
+-if courses
+  %tr.course-stats.student-progress-list{name: "#{student.id}"}
+    %td.empty-cell
+      .hidden.show-user-progress{'data-userid': '#{student.id}'}= student.full_name
+    %td
+      %i
+        = _("Also enrolled in: ")
+    %td
+    %td
+    %td
+    %td.empty-cell
+  -for course in courses
+    %tr.course-stats.student-progress-list{name: "#{student.id}"}
+      %td.empty-cell
+        .hidden.show-user-progress{'data-userid': '#{student.id}'}= student.full_name
+      %td.course-name
+        = course.name
+      %td.course-progress
+        = course.progress
+        = _('%')
+      %td.course-completed
+        = course.completed
+      %td.course-progress-link
+        %a{'href': '#',}
+          = _("View Progress Page")
+      %td.empty-cell
+-else
+  %tr.course-stats.student-progress-list{name: "#{student.id}"}
+    %td.empty-cell
+      .hidden.show-user-progress{'data-userid': '#{student.id}'}= student.full_name
+    %td
+      %i
+        = _("No other courses enrolled.")
+    %td
+    %td
+    %td
+    %td.empty-cell
