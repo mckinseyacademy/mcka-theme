@@ -417,6 +417,10 @@ form {
 }
 
 #edit-user-image-modal{
+  position: fixed;
+  top: 50% !important;
+  margin-top: -214px;
+
   img{
     max-width: rem-calc(250);
     max-height: rem-calc(250);
