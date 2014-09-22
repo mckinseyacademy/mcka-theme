@@ -331,7 +331,7 @@ class ActivationForm(NoSuffixLabelForm):
     password = forms.CharField(widget=forms.PasswordInput(), 
         label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
     #confirm_password = forms.CharField(widget=forms.PasswordInput())
-    username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="required-field"></span>'))
+    username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
     title = forms.CharField(max_length=255, required=False)
