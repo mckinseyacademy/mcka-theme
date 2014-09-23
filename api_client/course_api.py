@@ -212,7 +212,8 @@ def add_group_to_course_content(group_id, course_id, content_id):
 def get_users_content_filtered(course_id, content_id, *args, **kwargs):
     ''' filter and get course content'''
 
-    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    qs_params = {}
+    qs_params.update(kwargs)
     response = GET(
         '{}/{}/{}/content/{}/users?{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -327,12 +328,11 @@ def get_course_metrics_by_city(course_id, cities=None):
 
 
 @api_error_protect
-def get_course_metrics_grades(course_id, user_id=None, count=3, grade_object_type=JsonObject):
+def get_course_metrics_grades(course_id, grade_object_type=JsonObject, **kwargs):
     ''' retrieves users who are leading in terms of points_scored'''
 
-    qs_params = {"count": count}
-    if user_id:
-        qs_params["user_id"] = user_id
+    qs_params = {"count": 3}
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/metrics/grades/leaders?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -345,12 +345,11 @@ def get_course_metrics_grades(course_id, user_id=None, count=3, grade_object_typ
     return JP.from_json(response.read(), grade_object_type)
 
 @api_error_protect
-def get_course_metrics_completions(course_id, user_id=None, count=3):
+def get_course_metrics_completions(course_id, **kwargs):
     ''' retrieves users who are leading in terms of  course module completions '''
 
-    qs_params = {"count": count}
-    if user_id:
-        qs_params["user_id"] = user_id
+    qs_params = {"count": 3}
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/metrics/completions/leaders?{}'.format(
         settings.API_SERVER_ADDRESS,

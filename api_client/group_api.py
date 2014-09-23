@@ -231,7 +231,8 @@ def get_courses_in_group(group_id):
 def get_groups_in_group(group_id, group_object=JsonObject, *args, **kwargs):
     ''' get list of groups associated with a specific group '''
 
-    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    qs_params = {}
+    qs_params.update(kwargs)
     response = GET(
         '{}/{}/{}/groups?{}'.format(
             settings.API_SERVER_ADDRESS,

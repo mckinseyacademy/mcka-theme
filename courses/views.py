@@ -51,7 +51,7 @@ def course_landing_page(request, course_id):
     set_current_course_for_user(request, course_id)
     static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
-    proficiency = course_api.get_course_metrics_grades(course_id, request.user.id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
 

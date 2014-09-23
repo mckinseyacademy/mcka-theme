@@ -267,7 +267,7 @@ def round_to_int(value):
     return int(round(value))
 
 def average_progress(course, user_id):
-    metrics = course_api.get_course_metrics_completions(course.id, user_id)
+    metrics = course_api.get_course_metrics_completions(course.id, user_id=user_id, skipleaders=True)
     return metrics.course_avg
 
 def progress_percent(completion_count, module_count):
@@ -315,13 +315,13 @@ def is_number(s):
     return True
 
 def get_proficiency_leaders(course_id, user_id):
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     if hasattr(proficiency, "leaders"):
         tailor_leader_list(proficiency.leaders)
     return proficiency
 
 def get_progress_leaders(course_id, user_id):
-    completions = course_api.get_course_metrics_completions(course_id, user_id)
+    completions = course_api.get_course_metrics_completions(course_id, user_id=user_id)
     tailor_leader_list(completions.leaders)
     return completions
 

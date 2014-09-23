@@ -68,11 +68,9 @@ def get_user_dict(user_id):
 
 @api_error_protect
 def get_users(fields=[], *args, **kwargs):
-    default_fields = ['id', 'email', 'username']
-
     ''' get all users that meet filter criteria'''
-    request_fields = copy.copy(fields)
-    request_fields.extend(default_fields)
+    request_fields = ['id', 'email', 'username']
+    request_fields.extend(fields)
     qs_params = {
         "page_size": 0,
         "fields": ",".join(request_fields),
@@ -209,7 +207,9 @@ def delete_user_role(user_id, course_id, role):
 @api_error_protect
 def get_user_groups(user_id, group_type=None, group_object=GroupInfo, *args, **kwargs):
     ''' get the groups in which this user is a member '''
-    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    qs_params = {}
+    qs_params.update(kwargs)
+
     if group_type:
         qs_params["type"] = group_type
 
