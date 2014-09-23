@@ -95,6 +95,9 @@ class Course(CategorisedJsonObject):
     date_fields = ["start", "end",]
 
     @property
+    def display_id(self):
+        return LegacyIdConvert.legacy_from_new(self.id)
+    @property
     def nav_url(self):
         return '/courses/{}'.format(self.id)
 
@@ -200,6 +203,14 @@ class Course(CategorisedJsonObject):
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
+
+    @property
+    def display_id(self):
+        return LegacyIdConvert.legacy_from_new(self.course_id)
+
+    @property
+    def real_id(self):
+        return LegacyIdConvert.new_from_legacy(self.course_id, self.course_id)
 
 class CourseList(JsonObject):
     object_map = {

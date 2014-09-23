@@ -18,7 +18,6 @@ from django.core import serializers
 
 from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
-from lib.util import LegacyIdConvert
 from api_client.group_api import PERMISSION_GROUPS
 
 from accounts.models import RemoteUser, UserActivation
@@ -122,8 +121,8 @@ def client_admin_home(request, client_id):
         program.courses = []
         for course in program.fetch_courses():
             program.coursesIDs.append(course.course_id)
-            if LegacyIdConvert.legacy_from_new(course.course_id) not in coursesIDs:
-                coursesIDs.append(LegacyIdConvert.legacy_from_new(course.course_id))
+            if course.display_id not in coursesIDs:
+                coursesIDs.append(course.display_id)
         programs.append(_prepare_program_display(program))
 
 
