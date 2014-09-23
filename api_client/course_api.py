@@ -129,6 +129,21 @@ def get_course(course_id, depth=3):
 
     return course
 
+def get_courses(course_ids):
+    '''
+    Retrieves course structure information from the API for specified courses
+    '''
+
+    course_ids = ','.join(course_ids)
+
+    response = GET('{}/{}/?course_id={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_ids)
+    )
+
+    return CJP.from_json(response.read()).results
+
 @api_error_protect
 def get_course_content(course_id, content_id):
     ''' returns course content'''
