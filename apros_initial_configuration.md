@@ -74,8 +74,8 @@ Note that neither existing student-program nor student-course links are not show
 cause any harm to add a student to the same program/course several times. Also, there's no option to unenroll, so not checking some courses student already 
 been added to won't result in unenrolling from them.
 
-To verify you have succeed, log in as student and make sure you have a blue menu reading the name of the course to the right. And a set of 
-buttons to the left. If you can see it, clicking on the first icon (computer one) will show dropdown menu with a list of lessons in selected course.
+To verify you have succeed, log in as student and make sure you have a blue menu reading the name of the course to the left and a set of 
+buttons to the right. If you can see it, clicking on the first icon (computer one) will show dropdown menu with a list of lessons in selected course.
 You can change the course by clicking "four squares" icon to the left of course name.
 
 [admin-controller]: https://github.com/mckinseyacademy/mcka_apros/blob/master/admin/controller.py#L148

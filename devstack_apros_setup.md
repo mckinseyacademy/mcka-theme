@@ -2,7 +2,7 @@
 # Prerequisites
 
 Follow mcka_apros [setup notes][mcka-apros-setup], executing all Apros-related scripts inside virtual box. Setup assumes you checkout 
-Apros repository on host machine and than share Apros root folder with devstack virtual box.
+Apros repository on host machine and then share Apros root folder with devstack virtual box.
 
 [mcka-apros-setup]: https://github.com/mckinseyacademy/mcka_apros/blob/master/SetupNotes.md
 
