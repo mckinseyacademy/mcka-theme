@@ -436,7 +436,7 @@ def generate_course_report(client_id, course_id, url_prefix, students):
     output_line(activity_names_row)
 
     for student in students:
-        user_row = [student.full_name,student.username,student.title,"30",student.email]
+        user_row = [student.full_name,student.username,student.title,str(student.progress)+"%",student.email]
         output_line(user_row)
 
     return '\n'.join(output_lines)

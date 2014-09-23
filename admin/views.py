@@ -213,6 +213,9 @@ def client_admin_download_course_report(request, client_id, course_id):
     users_ids = [str(user.id) for user in participants]
     additional_fields = ["full_name", "title", "avatar_url"]
     students = user_api.get_users(ids=users_ids, fields=additional_fields)
+    course = course_api.get_course(course_id, depth=4)
+    for student in students:
+        student.progress = return_course_progress(course, student.id)
 
     url_prefix = "{}://{}".format(
         "https" if request.is_secure() else "http",
