@@ -128,8 +128,13 @@
     .post-update,
     a.post-cancel {
       &, &:visited, &:hover, &:focus {
-        margin-left: 20px;
-        margin-top: 15px;
+        margin: 15px 0px;
+      }
+    }
+
+    a.post-cancel {
+      &, &:visited, &:hover, &:focus {
+        float: left;
       }
     }
   }
