@@ -42,11 +42,32 @@ pip install python-memcached==1.48  # Until edx-solutions/edx-platform#152 is cl
 paver install_prereqs
 pip install -r requirements/edx/custom.txt
 ```
-Finally give the same treatment to the db.
+Finally give the same treatment to the db. The correct way to do this would involve 
 
-> The correct way to do this would involve `echo "DROP DATABASE edxapp;" | mysql -uedxapp001 -ppassword edxapp` `echo "CREATE DATABASE edxapp;" | mysql -uedxapp001 -ppassword` but then paver seems unable to rebuild on MySQL
+    echo "DROP DATABASE edxapp;" | mysql -uedxapp001 -ppassword edxapp` `echo "CREATE DATABASE edxapp;" | mysql -uedxapp001 -ppassword` 
+    
+but then paver seems unable to rebuild on MySQL. The reason behind this is the fact that `django-openid-auth` uses 
+`models.TextField(max_length=2047)` as a foreign key field and MySQL seems don't like it as
 
-Simply switch to SQLite `nano ~/lms.auth.json`:
+> Index prefixes on foreign key columns are not supported. One consequence of this is that BLOB and TEXT columns cannot 
+be included in a foreign key because indexes on those columns must always include a prefix length.
+
+To solve that, modify /edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/django_openid_auth/models.py, so that 
+`UserOpenID.claimed_id` becomes `CharField`:
+
+    class UserOpenID(models.Model):
+        user = models.ForeignKey(User)
+        claimed_id = models.CharField(max_length=2047, unique=True)
+        display_id = models.TextField(max_length=2047)
+        
+There's a little problem here: *it still wouldn't work*. Broken snippet is given here to draw your attention to the fact 
+that steps to fix it could potentially lead to incorrect behavior of openid authentication. Django does not support 
+`unique=True` on `CharFields` longer than 255 characters, so there are two options:
+
+* Set `unique=False` losing identity integrity and potentially allowing multiple users have same claimed_id
+* Set `max_length=255` losing precision and potentially truncating longer claimed_id
+
+Yet another alternative would be to switch to SQLite `nano ~/lms.auth.json`:
 
 ```
     "DATABASES": {
@@ -57,15 +78,15 @@ Simply switch to SQLite `nano ~/lms.auth.json`:
     }
 ```
 
-And then `paver update_db --settings=devstack`. 
+After following any of these three paths, do `paver update_db --settings=devstack` to rebuild the database. 
 
-The only way to reliably create new users is manually via the lms.
-(The confirmation mail can be read from the terminal, where all e-mails are printed by default.)
+Apros comes with a set of seed data, including preconfigured users. Unfortunately, it can't be loaded at this step, as 
+it requires more configuration, so this is explained later in this document (see *Build Apros database and load seed data*)
 
 You might also want to assign staff rights to at least one user, to do this (assuming that your user in named `staff`):
 
 ```
-sqlite3 edxapp.db <<<'update auth_user set is_superuser=1, is_staff=1 where username="staff";'
+./manage.py dbshell <<< 'update auth_user set is_superuser=1, is_staff=1 where username="staff";'
 ```
 
 ### Run LMS
@@ -159,8 +180,11 @@ The value of `EDX_API_KEY` will need to match the API_KEY as configured within t
 These commands should be run before starting Apros for the first time:
 
     manage.py syncdb --migrate
-
     manage.py load_seed_data
+
+This would build Apros database and load seed data into LMS database, including [preconfigured users][load-seed-data].
+
+[load-seed-data]: https://github.com/mckinseyacademy/mcka_apros/blob/master/main/management/commands/load_seed_data.py#L36-L55
 
 #### Run Apros (on port 3000)
 
