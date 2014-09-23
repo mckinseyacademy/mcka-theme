@@ -93,6 +93,7 @@
   .discussion-submit-post,
   .add-response .add-response-btn,
   .comments .comment-form .discussion-submit-comment,
+  .discussion a.post-cancel,
   .discussion-article .post-update {
     &, &:hover {
       border-color: transparent;
@@ -124,7 +125,8 @@
   }
 
   .discussion-article {
-    .post-update {
+    .post-update,
+    a.post-cancel {
       &, &:visited, &:hover, &:focus {
         margin: 15px 0px;
       }
@@ -373,11 +375,8 @@ body > .tooltip {
 }
 
 /* Special Close button for modals and New Post */
-#course-discussion .discussion-content a.post-cancel,
 #course-discussion .discussion-content a.new-post-cancel,
-#course-lessons .discussion-module .discussion a.post-cancel,
 #course-lessons .discussion-module .discussion a.new-post-cancel,
-#course-group-work .discussion-module .discussion a.post-cancel,
 #course-group-work .discussion-module .discussion a.new-post-cancel,
 .modal .inner-wrapper .close-modal.dismiss {
     width: 1.5em;
