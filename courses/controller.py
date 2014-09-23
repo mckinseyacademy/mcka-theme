@@ -168,7 +168,7 @@ def locate_chapter_page(
 
     position_tree = get_course_position_tree(user_id, course_id, user_api_impl)
     if chapter_id is None:
-        chapter_id = position_tree.chapter.id if position_tree else None
+        chapter_id = position_tree.chapter.id if position_tree and hasattr(position_tree, "chapter") else None
     chapter_candidates = [c for c in course.chapters if c.id == chapter_id]
     if len(chapter_candidates) > 0:
         chapter = chapter_candidates[0]
@@ -177,10 +177,10 @@ def locate_chapter_page(
         chapter = course.chapters[0]
 
     if chapter and chapter.sequentials:
-        last_sequential_id = position_tree.sequential.id if position_tree else None
+        last_sequential_id = position_tree.sequential.id if position_tree and hasattr(position_tree, "sequential") else None
         sequential_candidates = [s for s in chapter.sequentials if s.id == last_sequential_id]
         if len(sequential_candidates) > 0 and sequential_candidates[0].pages:
-            last_page_id = position_tree.vertical.id if position_tree else None
+            last_page_id = position_tree.vertical.id if position_tree and hasattr(position_tree, "vertical") else None
             page_candidates = [p for p in sequential_candidates[0].pages if p.id == last_page_id]
             if len(page_candidates) > 0:
                 page = page_candidates[0]
