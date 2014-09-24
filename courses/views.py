@@ -336,8 +336,8 @@ def course_progress(request, course_id):
         for grade in category_map[group_category]:
             if not is_dropped(grade):
                 label = grade.label
-                if group_activities and activity_index < len(group_activities):
-                    label = group_activities[activity_index].name
+                # if group_activities and activity_index < len(group_activities):
+                #     label = group_activities[activity_index].name
                 bar_chart[0]['values'].append({
                    'label': label,
                    'value': grade.percent*100,
@@ -422,7 +422,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     return render(request, 'courses/course_lessons.haml', data)
 
 def course_notready(request, course_id):
-    return render(request, 'courses/course_notready.haml')
+    course = load_course(course_id, request=request)
+    return render(request, 'courses/course_notready.haml', {"course": course})
 
 @login_required
 @check_user_course_access
