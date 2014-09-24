@@ -12,6 +12,8 @@ from django.utils import timezone
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 
+from django.utils.functional import cached_property
+
 
 class RemoteUser(AbstractUser):
     ''' user object that exists only in cache '''
@@ -68,27 +70,27 @@ class RemoteUser(AbstractUser):
 #    def get_short_name(self):
 #        return self.username
 
-    @property
+    @cached_property
     def is_mcka_admin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_ADMIN)
 
-    @property
+    @cached_property
     def is_mcka_subadmin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_SUBADMIN)
 
-    @property
+    @cached_property
     def is_client_admin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
 
-    @property
+    @cached_property
     def is_client_subadmin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
 
-    @property
+    @cached_property
     def is_mcka_ta(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.MCKA_TA)
 
-    @property
+    @cached_property
     def is_client_ta(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_TA)
 
