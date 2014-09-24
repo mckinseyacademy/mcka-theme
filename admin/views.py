@@ -121,19 +121,19 @@ def client_admin_home(request, client_id):
         program.courses = []
         for course in program.fetch_courses():
             program.coursesIDs.append(course.course_id)
-            if course.course_id not in coursesIDs:
-                coursesIDs.append(course.course_id)
+            coursesIDs.append(course.course_id)
         programs.append(_prepare_program_display(program))
 
-
+    coursesIDs = list(set(coursesIDs))
     courses = course_api.get_courses(course_id=coursesIDs)
+
     for course in courses:
         course = _prepare_course_display(course)
         course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
         for program in programs:
             if course.id in program.coursesIDs:
                 program.courses.append(course)
-                program.coursesIDs.remove(course.id)
+
 
     data = {
         'client': organization,
