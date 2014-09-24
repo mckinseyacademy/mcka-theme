@@ -44,6 +44,13 @@ or:
 
 ## Step 2 - Setup Apros Environment
 
+### Setup McKinsey Academy project on your machine
+
+    git clone git@github.com:mckinseyacademy/mcka_apros.git
+or
+
+    git clone https://github.com/mckinseyacademy/mcka_apros.git
+
 ### Install Python requirements
 Requirements are configured using the command `$ pip install -r requirements.txt`
 
@@ -53,20 +60,16 @@ _(if you experience an error when installing mySql package on Mavericks try this
 
 ### Install Other requirements
 We require SASS to be used to build assets
-    `gem install sass`
 
-_If `gem` is not installed, e.g. on a vanilla Windows machine, one may need to install ruby and gem framework to get started - this is left as an excercise to the reader_
+    gem install sass --version 3.3.14
+
+Notes:
+* Sass 3.4+ is not compatible - see https://github.com/zurb/foundation-rails/pull/96
+* _If `gem` is not installed, e.g. on a vanilla Windows machine, one may need to install ruby and gem framework to get started - this is left as an excercise to the reader_
 
 
 
 ## Step 3 - Prepare Apros to talk to specific instance of LMS
-
-### Setup McKinsey Academy project on your machine
-
-    git clone git@github.com:mckinseyacademy/mcka_apros.git
-or
-
-    git clone https://github.com/mckinseyacademy/mcka_apros.git
 
 ### Override specific settings in `local_settings.py` file
 
@@ -102,6 +105,14 @@ The value of `EDX_API_KEY` will need to match the API_KEY as configured within t
     EDX_API_KEY = 'test_api_key'
 
 **Now your Apros system is ready to talk to an LMS system**
+
+#### Set up the database and seed data
+
+These commands should be run before starting Apros for the first time:
+
+    manage.py syncdb --migrate
+
+    manage.py load_seed_data
 
 #### Run Apros (on port 3000)
 
