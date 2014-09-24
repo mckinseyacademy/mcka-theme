@@ -113,23 +113,27 @@ def client_admin_home(request, client_id):
     organization = Client.fetch(client_id)
 
     programs = []
-    for program in organization.fetch_programs():
-        coursesIDs = []
+    coursesIDs = []
+    programsAPI = organization.fetch_programs()
+
+    for program in programsAPI:
+        program.coursesIDs = []
         program.courses = []
         for course in program.fetch_courses():
-            users = course_api.get_users_list_in_organizations(course.course_id, organization.id)
-            course = _prepare_course_display(course_api.get_course(course.course_id))
-            """
-            TODO: For some reason API returned duplicate courses when doing program.fetch_courses
-            on my local machine. (Dino)
-            This should be inspected and fixed on the API side first, and then check can be removed.
-            If it can't be replicated by the API team, we can account it to my systems buggines.
-            """
-            if course.id not in coursesIDs:
-                course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
-                program.courses.append(course)
-                coursesIDs.append(course.id)
+            program.coursesIDs.append(course.course_id)
+            coursesIDs.append(course.course_id)
         programs.append(_prepare_program_display(program))
+
+    coursesIDs = list(set(coursesIDs))
+    courses = course_api.get_courses(course_id=coursesIDs)
+
+    for course in courses:
+        course = _prepare_course_display(course)
+        course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
+        for program in programs:
+            if course.id in program.coursesIDs:
+                program.courses.append(course)
+
 
     data = {
         'client': organization,
