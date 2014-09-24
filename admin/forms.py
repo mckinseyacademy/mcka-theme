@@ -85,7 +85,7 @@ class PermissionForm(forms.Form):
     )
 
     def available_roles(self):
-        return ((USER_ROLES.STAFF, _("TA")), (USER_ROLES.OBSERVER, _("OBSERVER")))
+        return ((USER_ROLES.TA, _("TA")), (USER_ROLES.OBSERVER, _("OBSERVER")))
 
     def per_course_roles(self):
         return [self[name] for name in self._per_course_roles]

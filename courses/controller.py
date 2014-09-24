@@ -14,6 +14,7 @@ from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
 from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
+from api_client.user_api import USER_ROLES
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
 
@@ -382,7 +383,7 @@ def get_social_metrics(course_id, user_id):
     }
 
 def get_ta_users(course_id):
-    role = "staff"
+    role = USER_ROLES.TA
     ta_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
     additional_fields = ["title", "avatar_url", "city", "full_name"]
     ta_users = user_api.get_users(ids=ta_users_base,fields=additional_fields) if len(ta_users_base) > 0 else []
