@@ -21,7 +21,8 @@ GROUP_API = getattr(settings, 'GROUP_API', 'api/server/groups')
 USER_ROLES = DottableDict(
     STAFF='staff',
     INSTRUCTOR='instructor',
-    OBSERVER='observer'
+    OBSERVER='observer',
+    TA='assistant',
 )
 
 VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "gender", "title", "is_active", "avatar_url"]
@@ -163,7 +164,7 @@ def get_user_roles(user_id):
 
 @api_error_protect
 def add_user_role(user_id, course_id, role):
-    ''' add role for course, roles are 'instructor' and 'staff' '''
+    ''' add role for course, roles are 'instructor' and 'assistant' '''
     data = {
         'course_id': course_id,
         'role': role

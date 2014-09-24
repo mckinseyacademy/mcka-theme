@@ -12,7 +12,7 @@ class Permissions(object):
     ''' Handles loading and saving user permissions and roles '''
 
     permission_for_role = {
-        USER_ROLES.STAFF: PERMISSION_GROUPS.MCKA_TA,
+        USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA,
         USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
     }
 
