@@ -5,16 +5,14 @@
 
   input[type="button"],
   button {
-    & {
-      @include button($button-sml, $primary-color, true);
+    @include button($button-sml, $primary-color, true);
 
-      &:hover {
-        background-color: $mckinsey-academy-blue-gray;
-      }
+    &:hover {
+      background-color: $mckinsey-academy-blue-gray;
+    }
 
-      &:disabled {
-        cursor: default;
-      }
+    &:disabled {
+      cursor: default;
     }
   }
 
