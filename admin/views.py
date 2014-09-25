@@ -21,7 +21,7 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from api_client.group_api import PERMISSION_GROUPS
 
 from accounts.models import RemoteUser, UserActivation
-from accounts.controller import save_profile_image, is_future_start
+from accounts.controller import save_profile_image, is_future_start, save_new_client_image
 
 from main.models import CuratedContentItem
 from api_client import course_api
@@ -423,6 +423,16 @@ def client_new(request):
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
                 client = Client.create(name, client_data)
+                if hasattr(client, 'logo_url') and client.logo_url is not None:
+                    old_image_url = client.logo_url
+                    if old_image_url[:10] == '/accounts/':
+                        old_image_url = old_image_url[10:]
+                    elif old_image_url[:8] == '/static/':
+                        prefix = 'https://' if request.is_secure() else 'http://'
+                        old_image_url = prefix + request.get_host() + old_image_url
+                    company_image = 'images/company_image-{}.jpg'.format(client.id)
+                    save_new_client_image(old_image_url, company_image, client)
+
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
 
@@ -1468,7 +1478,7 @@ def change_company_image(request, client_id='new', template='change_company_imag
     ''' handles requests for login form and their submission '''
     if(client_id != 'new'):
 
-        client = organization_api.fetch_organization(client_id)
+        client = Organization.fetch(client_id)
         company_image = client.image_url(size=200, path='absolute')
 
     if '?' in company_image:
@@ -1504,7 +1514,7 @@ def company_image_edit(request, client_id="new"):
         if client_id == 'new':
             CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
         else:
-            client = organization_api.fetch_organization(client_id)
+            client = Organization.fetch(client_id)
             CompanyImageUrl = client.image_url(size=200, path='relative')
 
         from PIL import Image
@@ -1534,6 +1544,8 @@ def company_image_edit(request, client_id="new"):
         if client_id == 'new':
             return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
         else:
+            client.logo_url = '/accounts/' + image_url
+            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + image_url})
             return change_company_image(request, client_id, 'edit_company_image')
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
@@ -1554,13 +1566,16 @@ def upload_company_image(request, client_id='new'):
             if temp_image.content_type in allowed_types:
                 if client_id == 'new':
                     company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
+                    save_profile_image(Image.open(temp_image), company_image)
                 else:
                     company_image = 'images/company_image-{}.jpg'.format(client_id)
-                save_profile_image(Image.open(temp_image), company_image)
+                    client = Organization.fetch(client_id)
+                    save_profile_image(Image.open(temp_image), company_image)
+                    client.logo_url = '/accounts/' + company_image
+                    client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + company_image})
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
-
-            return HttpResponse(change_company_image(request, client_id, 'change_company_image', error, '/accounts/' + company_image), content_type='text/html')
+            return HttpResponse(change_company_image(request=request, client_id=client_id, template='change_company_image', error=error, company_image='/accounts/' + company_image), content_type='text/html')
         else:
             error = "Error uploading file. Please try again and be sure to use an accepted file format."
             return HttpResponse(change_company_image(request, client_id, 'change_company_image', error, '/accounts/' + company_image), content_type='text/html')

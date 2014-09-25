@@ -45,6 +45,40 @@ def is_future_start(date):
     else:
         return True
 
+def save_new_client_image(old_image_url, new_image_url, client):
+
+    import StringIO
+    from PIL import Image
+    from django.core.files.storage import default_storage
+
+    old_image_url_40 = old_image_url[:-4] + '-40.jpg'
+    old_image_url_120 = old_image_url[:-4] + '-120.jpg'
+    new_image_url_40 = new_image_url[:-4] + '-40.jpg'
+    new_image_url_120 = new_image_url[:-4] + '-120.jpg'
+
+    if default_storage.exists(old_image_url):
+
+        thumb_io_120 = StringIO.StringIO()
+        thumb_io_40 = StringIO.StringIO()
+        thumb_io = StringIO.StringIO()
+
+        original = Image.open(default_storage.open(old_image_url))
+        original.convert('RGB').save(thumb_io, format='JPEG')
+        cropped_image_path = default_storage.save(new_image_url, thumb_io)
+
+        original_40 = Image.open(default_storage.open(old_image_url_40))
+        original_40.convert('RGB').save(thumb_io_40, format='JPEG')
+        cropped_image_path_40 = default_storage.save(new_image_url_40, thumb_io_40)
+
+        original_120 = Image.open(default_storage.open(old_image_url_120))
+        original_120.convert('RGB').save(thumb_io_120, format='JPEG')
+        cropped_image_path_120 = default_storage.save(new_image_url_120, thumb_io_120)
+
+        default_storage.delete(old_image_url)
+        default_storage.delete(old_image_url_40)
+        default_storage.delete(old_image_url_120)
+        client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
+
 def save_profile_image(cropped_example, image_url):
 
     import StringIO

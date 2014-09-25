@@ -37,7 +37,7 @@ $(function(){
     $('label[for="id_company_image"]').text(ImageFileName);
     imageEditor.DoFileUpload(e, $(this), imageClass, modal);
     $('.company-image img').attr('src', data.image_url);
-    $('#id_image_url').val(data.image_url);
+    $('#id_logo_url').val(data.logo_url);
   });
 
   $('#edit-company-image-modal').on('submit', '#company-cropping-form', function(e){
@@ -50,11 +50,11 @@ $(function(){
       url: form.attr('action'),
       data: form.serialize()
     }).done(function(data){
-        if(data){
+        if(typeof(data) != 'undefined'){
           if(typeof data.image_url != 'undefined'){
               $('#new-principal').foundation('reveal', 'open');
               $('.company-image img').attr('src', data.image_url);
-              $('#id_image_url').val(data.image_url);
+              $('#id_logo_url').val(data.image_url);
           }
           else{
             $('#edit-company-image-modal').foundation('reveal', 'close');
