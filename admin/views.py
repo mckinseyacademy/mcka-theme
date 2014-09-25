@@ -266,14 +266,21 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 
     participant = user_api.get_user(user_id)
 
+    confirm_msg = _("Are you sure you would like to un-enroll user {} {} from the course?").format(participant.first_name, participant.last_name)
+
     data = {
         'participant': participant,
         'unenroll_course': _("Un-enroll from this course"),
         'unenroll_program': _("Un-enroll from entire program "),
+        'confirmation_message': confirm_msg,
         'client_id': client_id,
         'course_id': course_id,
     }
-    return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
+
+    if 'confirm' in request.GET:
+        return render(request, 'admin/client-admin/unenroll_dialog_confirm.haml', data)
+    else:
+        return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):

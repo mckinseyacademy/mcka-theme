@@ -1,0 +1,11 @@
+%h2.title.text-center= confirmation_message
+%form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll", method: "POST"}
+  - csrf_token
+  = form
+  .error
+    - if error
+      = error
+  %input{type: "hidden", value: "confirm"}
+  %p.text-center
+    %input.button.radius.small{type: "submit", value: "Yes"}
+    %a.close-dialog.button.radius.small= "No"

@@ -63,6 +63,8 @@
               %td
                 %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
 
+  #unenroll-confirm-dialog.reveal-modal.small{'data-reveal': None}
+
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   :javascript
@@ -103,4 +105,14 @@
 
     });
 
-    ajaxify_overlay_form('#edit_field_modal', 'form');
+    ajaxify_overlay_form('#unenroll-confirm-dialog', 'form');
+
+    $('#unenroll-confirm-dialog').on('click', '.close-dialog', function() {
+      $('#unenroll-confirm-dialog').foundation('reveal', 'close');
+    });
+
+    $('#edit_field_modal').on('click', '#unenroll_course', function(e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      $('#unenroll-confirm-dialog').foundation('reveal', 'open', href);
+    });
