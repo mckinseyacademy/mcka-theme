@@ -29,6 +29,10 @@ class Workgroup(JsonObject):
         return workgroup_api.get_workgroup_users(workgroup_id, group_object=cls)
 
     @classmethod
+    def get_workgroup_groups(cls, workgroup_id):
+        return workgroup_api.get_workgroup_groups(workgroup_id)
+
+    @classmethod
     def get_workgroup_review_items(cls, workgroup_id):
         return workgroup_api.get_workgroup_review_items(workgroup_id)
 

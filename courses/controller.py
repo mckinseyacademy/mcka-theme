@@ -10,7 +10,7 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.project_models import Project
-from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
+from api_client.group_api import get_groups_of_type, get_users_in_group, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
 from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
@@ -292,21 +292,31 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
 
     review_items = WorkGroup.get_workgroup_review_items(project_workgroup.id)
 
-    # distinct reviewers
-    reviewer_ids = set([item.reviewer for item in review_items])
+    # workgroup review assignments
+    assignment_count = 0
+    workgroup_groups = WorkGroup.get_workgroup_groups(project_workgroup.id)
 
     # find group activities in this project
-
     group_activities = get_group_project_activities(project_chapter)
     for activity in group_activities:
         group_project_xblock = get_group_activity_xblock(activity)
         activity_reviews = [item for item in review_items if group_project_xblock.id == item.content_id]
+
+        assignment_count = 0
+        for group in workgroup_groups:
+            if group.data.xblock_id == group_project_xblock.id:
+                assignment_count += len(get_users_in_group(group.id))
+
+        # distinct reviewers
+        reviewer_ids = set([ar.reviewer for ar in activity_reviews])
 
         # average by reviewer
         activity.grades = []
         for reviewer_id in reviewer_ids:
             grades = [int(review.answer) for review in activity_reviews if reviewer_id == review.reviewer and is_number(review.answer)]
             activity.grades.append(mean(grades))
+
+        activity.pending_grades = [0] * (assignment_count - len(activity.grades))
 
         # average score for this activity
         activity.score = mean(filter(None, activity.grades))
