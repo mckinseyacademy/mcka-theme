@@ -266,13 +266,10 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 
     participant = user_api.get_user(user_id)
 
-    confirm_msg = _("Are you sure you would like to un-enroll user {} {} from the course?").format(participant.first_name, participant.last_name)
-
     data = {
         'participant': participant,
         'unenroll_course': _("Un-enroll from this course"),
         'unenroll_program': _("Un-enroll from entire program "),
-        'confirmation_message': confirm_msg,
         'client_id': client_id,
         'course_id': course_id,
     }

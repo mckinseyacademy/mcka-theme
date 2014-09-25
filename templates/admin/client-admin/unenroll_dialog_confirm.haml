@@ -1,4 +1,7 @@
-%h2.title.text-center= confirmation_message
+%p.title.text-center
+  = _("Are you sure you would like to un-enroll user")
+  %strong= participant.full_name
+  = _("from the course?")
 %form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll", method: "POST"}
   - csrf_token
   = form
