@@ -273,7 +273,11 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
         'client_id': client_id,
         'course_id': course_id,
     }
-    return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
+
+    if 'confirm' in request.GET:
+        return render(request, 'admin/client-admin/unenroll_dialog_confirm.haml', data)
+    else:
+        return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):

@@ -2,17 +2,13 @@
   %h1= _("Un-enroll participant")
   %hr
   .sub-1 ={participant.first_name} ={participant.last_name}
-  %p= _("You can un-enroll this participant from only this course, or from the entire program (all courses they are currently enrolled in).")
+
+%p= _("You can un-enroll this participant from only this course, or from the entire program (all courses they are currently enrolled in).")
 
 .close-reveal-modal
   %i.fa.fa-times-circle
 
-%form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll", method: "POST"}
-  - csrf_token
-  = form
-  .error
-    - if error
-      = error
-
-  .text-center
-    %input.button.radius.small{type: "submit", value: "#{unenroll_course}"}
+%br
+%p.text-center
+  %a#unenroll_course.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll?confirm"}
+    = unenroll_course
