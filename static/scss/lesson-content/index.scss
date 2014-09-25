@@ -3,8 +3,9 @@
     display: none;
   }
 
-  input {
-    &[type="button"] {
+  input[type="button"],
+  button {
+    & {
       @include button($button-sml, $primary-color, true);
 
       &:hover {
