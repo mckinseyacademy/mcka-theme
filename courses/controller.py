@@ -61,7 +61,10 @@ class Proficiency(JsonObject):
 
     @property
     def course_average_display(self):
-        return round_to_int(100*self.course_average_value)
+        display_value = round_to_int(100*self.course_average_value)
+        if display_value < 1 and self.course_average_value > 0:
+            display_value = 1
+        return display_value
 
 
 def build_page_info_for_course(
