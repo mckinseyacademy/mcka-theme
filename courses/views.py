@@ -65,7 +65,7 @@ def course_landing_page(request, course_id):
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "proficiency": round_to_int(proficiency.user_grade_value * 100),
         "proficiency_graph": int(5 * round(proficiency.user_grade_value * 20)),
-        "cohort_proficiency_average": round_to_int(proficiency.course_average_value * 100),
+        "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "social": social,
         "average_progress": average_progress(course, request.user.id),
