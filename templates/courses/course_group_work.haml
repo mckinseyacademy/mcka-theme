@@ -46,7 +46,7 @@
       var height_right = $('#group-project-users').height();
 
       if (height_right > height_left){
-        $('.discussion-module').css('margin-top', height_right - height_left);
+        $('.discussion-module').css('margin-top', (height_right - height_left).toString()+"px");
       }
 
       var group_activity_step_map = {};
