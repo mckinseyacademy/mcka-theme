@@ -22,7 +22,7 @@
             %span= _("Group Project:")
             %span= group_project.name
           .lesson-content
-        .large-4.medium-4.columns.splitpiece.right
+        .large-4.medium-4.columns.splitpiece.right#group-project-users
           .group-members
             %h4= _("Group Members")
             - for member in project_group.members
@@ -43,7 +43,7 @@
   :javascript
     $(function(){
       var height_left = $('.group-project-xblock-wrapper').height();
-      var height_right = $('.right').height();
+      var height_right = $('#group-project-users').height();
 
       if (height_right > height_left){
         $('.discussion-module').css('margin-top', height_right - height_left);
