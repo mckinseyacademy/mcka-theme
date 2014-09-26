@@ -45,10 +45,8 @@
       var height_left = $('.group-project-xblock-wrapper').height();
       var height_right = $('.right').height();
 
-      var height_delta = Math.abs(height_left - height_right);
-
-      if (height_delta > 0){
-        $('.discussion-module').css('margin-top',height_delta);
+      if (height_right > height_left){
+        $('.discussion-module').css('margin-top', height_right - height_left);
       }
 
       var group_activity_step_map = {};
