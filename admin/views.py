@@ -476,7 +476,7 @@ def client_edit(request, client_id):
     else:
         ''' edit a client '''
         client = Client.fetch(client_id)
-        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone}
+        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone, 'logo_url': client.logo_url}
         form = ClientForm(data_dict)
 
     # set focus to company name field
@@ -1546,7 +1546,7 @@ def company_image_edit(request, client_id="new"):
         else:
             client.logo_url = '/accounts/' + image_url
             client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + image_url})
-            return change_company_image(request, client_id, 'edit_company_image')
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url, 'client_id': client.id}), content_type="application/json")
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def upload_company_image(request, client_id='new'):

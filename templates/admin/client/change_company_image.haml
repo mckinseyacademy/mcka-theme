@@ -3,6 +3,7 @@
     Company photo
   .close-reveal-modal
     %i.fa.fa-times-circle
+  %input#edit_image_client_id{'type': 'hidden', 'value': '#{client_id}'}
   %br
   - block upload_company_image
   - include "admin/client/upload_company_image.haml"

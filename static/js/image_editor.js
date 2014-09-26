@@ -46,7 +46,7 @@ $.imageEditor = function(){
       if (fileUpload.length > 0) {
 
           //check file is of valid type or not
-          if (ValidFileType.toLowerCase().indexOf(extension) < 0) {
+          if (ValidFileType.toLowerCase().indexOf(extension.toLowerCase()) < 0) {
               errorBlock.html("Error uploading file. Please try again and be sure to use an accepted file format.");
           }
           else{
