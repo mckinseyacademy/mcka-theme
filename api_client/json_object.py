@@ -137,7 +137,7 @@ class JsonObject(Objectifier):
 
 class JsonObjectWithImage(JsonObject):
 
-    def image_url(self, size=40, path='absolute'):
+    def image_url(self, size=48, path='absolute'):
         ''' return default avatar unless the user has one '''
         # TODO: is the size param going to be used here?
         if hasattr(self, 'avatar_url') and self.avatar_url is not None:

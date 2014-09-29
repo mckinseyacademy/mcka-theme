@@ -178,7 +178,7 @@ def client_admin_course_participants(request, client_id, course_id):
         additional_fields = ["full_name", "title", "avatar_url"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
         for student in students:
-            student.avatar_url = student.image_url(size=40)
+            student.avatar_url = student.image_url(size=48)
             student.progress = return_course_progress(course, student.id)
     else:
         students = []
@@ -272,7 +272,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 def client_admin_user_progress(request, client_id, course_id, user_id):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
-    student.avatar_url = student.image_url(size=40)
+    student.avatar_url = student.image_url(size=48)
     courses = []
     for courseName in userCourses:
         course = course_api.get_course(courseName.id, depth=4)

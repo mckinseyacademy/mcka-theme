@@ -54,14 +54,14 @@ class Organization(JsonObjectWithImage):
             self.groups.remove(user_id)
             organization_api.update_organization(self.id, {"groups": self.groups})
 
-    def image_url(self, size=40, path='absolute'):
+    def image_url(self, size=48, path='absolute'):
         ''' return default logo unless the user has one '''
         # TODO: is the size param going to be used here?
         if hasattr(self, 'logo_url') and self.logo_url is not None:
-            if size <= 40:
-                image_url = self.logo_url[:-4] + '-40.jpg'
-            elif size <= 120:
-                image_url = self.logo_url[:-4] + '-120.jpg'
+            if size <= 48:
+                image_url = self.logo_url[:-4] + '-48.jpg'
+            elif size <= 160:
+                image_url = self.logo_url[:-4] + '-160.jpg'
             else:
                 image_url = self.logo_url
 

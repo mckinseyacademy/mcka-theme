@@ -384,7 +384,7 @@ def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
     user_data = {
-        "user_image_url": user.image_url(size=120, path='absolute'),
+        "user_image_url": user.image_url(size=160, path='absolute'),
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
