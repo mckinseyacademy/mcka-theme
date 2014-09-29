@@ -363,7 +363,7 @@ def get_social_metrics(course_id, user_id):
     for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
         user = user_dict[u_id]
         user.points = social_total(user_metrics)
-        user.avatar_url = user.image_url(40)
+        user.avatar_url = user.image_url(size=48)
         point_sum += user.points
         users.append(user)
 

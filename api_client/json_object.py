@@ -161,15 +161,11 @@ class JsonObjectWithImage(JsonObject):
         Fix resized images from 40 to 48 and 120 to 160.
         Can be removed after all images have been resized.
         """
-        if size <= 160:
+        if size <= 160 and image_url[:8] != '/static/':
 
             if image_url[:10] == '/accounts/':
                 image_url_storage = image_url[10:]
                 avatar_url = self.avatar_url[10:]
-            elif profileImageUrl[:8] == '/static/':
-                prefix = 'https://' if request.is_secure() else 'http://'
-                image_url_storage = prefix + request.get_host() + image_url
-                avatar_url = prefix + request.get_host() + self.avatar_url
             else:
                 image_url_storage = image_url
                 avatar_url = self.avatar_url
