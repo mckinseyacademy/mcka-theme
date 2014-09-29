@@ -21,13 +21,13 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from api_client.group_api import PERMISSION_GROUPS
 
 from accounts.models import RemoteUser, UserActivation
-from accounts.controller import save_profile_image, is_future_start
+from accounts.controller import is_future_start
 
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
 from api_client import group_api, workgroup_api, organization_api
-from api_client.json_object import Objectifier
+from api_client.json_object import Objectifier, JsonObjectWithImage
 from api_client.api_error import ApiError
 from api_client.project_models import Project
 from api_client.organization_models import Organization
@@ -182,7 +182,7 @@ def client_admin_course_participants(request, client_id, course_id):
         additional_fields = ["full_name", "title", "avatar_url"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
         for student in students:
-            student.avatar_url = student.image_url(size=40)
+            student.avatar_url = student.image_url(size=48)
             student.progress = return_course_progress(course, student.id)
     else:
         students = []
@@ -283,7 +283,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 def client_admin_user_progress(request, client_id, course_id, user_id):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
-    student.avatar_url = student.image_url(size=40)
+    student.avatar_url = student.image_url(size=48)
     courses = []
     for courseName in userCourses:
         course = course_api.get_course(courseName.id, depth=4)
@@ -1541,7 +1541,7 @@ def company_image_edit(request, client_id="new"):
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
 
-            save_profile_image(cropped_example, image_url)
+            JsonObjectWithImage.save_profile_image(cropped_example, image_url)
         if client_id == 'new':
             return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
         else:
@@ -1567,7 +1567,7 @@ def upload_company_image(request, client_id='new'):
                     company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
                 else:
                     company_image = 'images/company_image-{}.jpg'.format(client_id)
-                save_profile_image(Image.open(temp_image), company_image)
+                JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
 
