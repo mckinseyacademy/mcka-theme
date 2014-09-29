@@ -255,6 +255,7 @@ PROGRESS_IGNORE_COMPONENTS = [
 # roles which should neither updated nor deleted while updating other roles
 IGNORE_ROLES = [
     'instructor',
+    'staff',
 ]
 
 # Zendesk Settings

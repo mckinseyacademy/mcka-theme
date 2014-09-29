@@ -130,6 +130,27 @@ def get_course(course_id, depth=3):
     return course
 
 @api_error_protect
+def get_courses(**kwargs):
+    '''
+    Retrieves course structure information from the API for specified courses
+    '''
+    qs_params = {"page_size": 0}
+
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
+
+    response = GET('{}/{}/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        urlencode(qs_params))
+    )
+
+    return CJP.from_json(response.read())
+
+@api_error_protect
 def get_course_content(course_id, content_id):
     ''' returns course content'''
     response = GET(

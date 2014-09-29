@@ -65,7 +65,7 @@ def course_landing_page(request, course_id):
         "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "proficiency": round_to_int(proficiency.user_grade_value * 100),
         "proficiency_graph": int(5 * round(proficiency.user_grade_value * 20)),
-        "cohort_proficiency_average": round_to_int(proficiency.course_average_value * 100),
+        "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "social": social,
         "average_progress": average_progress(course, request.user.id),
@@ -336,8 +336,8 @@ def course_progress(request, course_id):
         for grade in category_map[group_category]:
             if not is_dropped(grade):
                 label = grade.label
-                if group_activities and activity_index < len(group_activities):
-                    label = group_activities[activity_index].name
+                # if group_activities and activity_index < len(group_activities):
+                #     label = group_activities[activity_index].name
                 bar_chart[0]['values'].append({
                    'label': label,
                    'value': grade.percent*100,
@@ -422,7 +422,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     return render(request, 'courses/course_lessons.haml', data)
 
 def course_notready(request, course_id):
-    return render(request, 'courses/course_notready.haml')
+    course = load_course(course_id, request=request)
+    return render(request, 'courses/course_notready.haml', {"course": course})
 
 @login_required
 @check_user_course_access

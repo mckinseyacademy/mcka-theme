@@ -1,6 +1,7 @@
 import functools
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
 
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
@@ -26,7 +27,7 @@ def _load_intersecting_program_courses(program, courses):
 def get_current_course_by_user_id(user_id):
     # Return first active course in the user's list
     courses = user_api.get_user_courses(user_id)
-    courses = [c for c in courses if c.is_active]
+    courses = [c for c in courses if c.is_active and c.started]
     if len(courses) > 0:
         course_id = courses[0].id
         return course_id
@@ -123,13 +124,16 @@ class CourseAccessDeniedError(PermissionDenied):
     '''
     Exception to be thrown when course access is denied
     '''
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, course_id, user_id):
+        self.course_id = course_id
+        self.user_id = user_id
         super(CourseAccessDeniedError, self).__init__()
 
     def __str__(self):
-        return "Access denied to course '{}'".format(self.value)
+        return "Access denied to course '{}' for user {}".format(self.course_id, self.user_id)
 
+    def __unicode__(self):
+        return u"Access denied to course '{}' for user {}".format(self.course_id, self.user_id)
 
 def check_user_course_access(func):
     '''
@@ -143,12 +147,15 @@ def check_user_course_access(func):
                 set_current_course_for_user(request, course_id)
                 program = get_current_program_for_user(request)
                 if program is None:
-                    raise CourseAccessDeniedError(course_id)
+                    raise CourseAccessDeniedError(course_id, request.user.id)
             course_access = [c for c in program.courses if c.id == course_id]
             if len(course_access) < 1 and program.outside_courses and len(program.outside_courses) > 0:
                 course_access = [c for c in program.outside_courses if c.id == course_id]
             if len(course_access) < 1:
-                raise CourseAccessDeniedError(course_id)
+                raise CourseAccessDeniedError(course_id, request.user.id)
+            # Finally, even if they've got access - if not started redirect to notready page
+            if not course_access[0].started:
+                return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
         except CourseAccessDeniedError:
             # they've tried to go elsewhere, so let's not even worry about holding
             # onto the last course visited, trash it so a visit to homepage after
@@ -214,8 +221,11 @@ def standard_data(request):
             course_id = get_current_course_for_user(request)
             if not course_id is None:
                 course = load_course(course_id, request=request)
+                if not course.started:
+                    raise CourseAccessDeniedError(course_id, request.user.id)
         except:
             clear_current_course_for_user(request)
+            course = None
             course_id = get_current_course_for_user(request)
 
         program = get_current_program_for_user(request)

@@ -1,2 +1,18 @@
-.error
-  This course does not appear to be ready yet
+- extends "courses/course_main.haml"
+
+- block page_title
+  %title
+    = course.name
+    = _("has not yet started")
+
+- block content
+  %article.row
+    .medium-10.medium-centered.columns.course-page
+      .error
+        =course.name
+        = _("starts in")
+        =course.days_till_start
+        - if course.days_till_start > 1
+          = _("days")
+        - else
+          = _("day")

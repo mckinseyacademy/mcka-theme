@@ -14,6 +14,7 @@ from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
 from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
+from api_client.user_api import USER_ROLES
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
 
@@ -60,7 +61,10 @@ class Proficiency(JsonObject):
 
     @property
     def course_average_display(self):
-        return round_to_int(100*self.course_average_value)
+        display_value = round_to_int(100*self.course_average_value)
+        if display_value < 1 and self.course_average_value > 0:
+            display_value = 1
+        return display_value
 
 
 def build_page_info_for_course(
@@ -161,12 +165,15 @@ def locate_chapter_page(
         user_api_impl - optional api client module to use (useful in mocks)
     '''
     course = load_course(course_id, 4, course_api_impl, request=request)
+    if not course.started:
+        return course_id, None, None
+
     chapter = None
     page = None
 
     position_tree = get_course_position_tree(user_id, course_id, user_api_impl)
     if chapter_id is None:
-        chapter_id = position_tree.chapter.id if position_tree else None
+        chapter_id = position_tree.chapter.id if position_tree and hasattr(position_tree, "chapter") else None
     chapter_candidates = [c for c in course.chapters if c.id == chapter_id]
     if len(chapter_candidates) > 0:
         chapter = chapter_candidates[0]
@@ -175,10 +182,10 @@ def locate_chapter_page(
         chapter = course.chapters[0]
 
     if chapter and chapter.sequentials:
-        last_sequential_id = position_tree.sequential.id if position_tree else None
+        last_sequential_id = position_tree.sequential.id if position_tree and hasattr(position_tree, "sequential") else None
         sequential_candidates = [s for s in chapter.sequentials if s.id == last_sequential_id]
         if len(sequential_candidates) > 0 and sequential_candidates[0].pages:
-            last_page_id = position_tree.vertical.id if position_tree else None
+            last_page_id = position_tree.vertical.id if position_tree and hasattr(position_tree, "vertical") else None
             page_candidates = [p for p in sequential_candidates[0].pages if p.id == last_page_id]
             if len(page_candidates) > 0:
                 page = page_candidates[0]
@@ -379,7 +386,7 @@ def get_social_metrics(course_id, user_id):
     }
 
 def get_ta_users(course_id):
-    role = "staff"
+    role = USER_ROLES.TA
     ta_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
     additional_fields = ["title", "avatar_url", "city", "full_name"]
     ta_users = user_api.get_users(ids=ta_users_base,fields=additional_fields) if len(ta_users_base) > 0 else []

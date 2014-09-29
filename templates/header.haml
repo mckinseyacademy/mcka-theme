@@ -29,13 +29,13 @@
             .user-name= user.username
             %i.fa.fa-sort-asc
             .user-image
-              %img{src: "#{user.avatar_url}", alt: "#{user.username}"}
+              %img{src: "#{user.image_url}", alt: "#{user.username}"}
             #profile-container{data-dropdown-content: "true"}
         - else
           .login-action
             %a.tiny.radius.button{href: "/accounts/login"}= _("Log in")
   - block program_bar
-    - if program and course
+    - if program and course and course.started
       .program-bar.background-alt-blue
         .row.collapse
           .medium-6.columns

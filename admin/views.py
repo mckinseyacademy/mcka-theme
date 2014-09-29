@@ -21,13 +21,13 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from api_client.group_api import PERMISSION_GROUPS
 
 from accounts.models import RemoteUser, UserActivation
-from accounts.controller import save_profile_image, is_future_start, save_new_client_image
+from accounts.controller import is_future_start, save_new_client_image
 
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
 from api_client import group_api, workgroup_api, organization_api
-from api_client.json_object import Objectifier
+from api_client.json_object import Objectifier, JsonObjectWithImage
 from api_client.api_error import ApiError
 from api_client.project_models import Project
 from api_client.organization_models import Organization
@@ -113,23 +113,27 @@ def client_admin_home(request, client_id):
     organization = Client.fetch(client_id)
 
     programs = []
-    for program in organization.fetch_programs():
-        coursesIDs = []
+    coursesIDs = []
+    programsAPI = organization.fetch_programs()
+
+    for program in programsAPI:
+        program.coursesIDs = []
         program.courses = []
         for course in program.fetch_courses():
-            users = course_api.get_users_list_in_organizations(course.course_id, organization.id)
-            course = _prepare_course_display(course_api.get_course(course.course_id))
-            """
-            TODO: For some reason API returned duplicate courses when doing program.fetch_courses
-            on my local machine. (Dino)
-            This should be inspected and fixed on the API side first, and then check can be removed.
-            If it can't be replicated by the API team, we can account it to my systems buggines.
-            """
-            if course.id not in coursesIDs:
-                course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
-                program.courses.append(course)
-                coursesIDs.append(course.id)
+            program.coursesIDs.append(course.course_id)
+            coursesIDs.append(course.course_id)
         programs.append(_prepare_program_display(program))
+
+    coursesIDs = list(set(coursesIDs))
+    courses = course_api.get_courses(course_id=coursesIDs)
+
+    for course in courses:
+        course = _prepare_course_display(course)
+        course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
+        for program in programs:
+            if course.id in program.coursesIDs:
+                program.courses.append(course)
+
 
     data = {
         'client': organization,
@@ -213,6 +217,9 @@ def client_admin_download_course_report(request, client_id, course_id):
     users_ids = [str(user.id) for user in participants]
     additional_fields = ["full_name", "title", "avatar_url"]
     students = user_api.get_users(ids=users_ids, fields=additional_fields)
+    course = course_api.get_course(course_id, depth=4)
+    for student in students:
+        student.progress = return_course_progress(course, student.id)
 
     url_prefix = "{}://{}".format(
         "https" if request.is_secure() else "http",
@@ -266,7 +273,11 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
         'client_id': client_id,
         'course_id': course_id,
     }
-    return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
+
+    if 'confirm' in request.GET:
+        return render(request, 'admin/client-admin/unenroll_dialog_confirm.haml', data)
+    else:
+        return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):
@@ -1540,7 +1551,7 @@ def company_image_edit(request, client_id="new"):
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
 
-            save_profile_image(cropped_example, image_url)
+            JsonObjectWithImage.save_profile_image(cropped_example, image_url)
         if client_id == 'new':
             return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
         else:
@@ -1566,11 +1577,11 @@ def upload_company_image(request, client_id='new'):
             if temp_image.content_type in allowed_types:
                 if client_id == 'new':
                     company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
-                    save_profile_image(Image.open(temp_image), company_image)
+                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
                 else:
                     company_image = 'images/company_image-{}.jpg'.format(client_id)
                     client = Organization.fetch(client_id)
-                    save_profile_image(Image.open(temp_image), company_image)
+                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
                     client.logo_url = '/accounts/' + company_image
                     client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + company_image})
             else:
