@@ -703,7 +703,7 @@ def program_detail(request, program_id, detail_view="detail"):
         data["courses"] = course_api.get_course_list()
         selected_ids = [course.course_id for course in program.fetch_courses()]
         for course in data["courses"]:
-            course.legacy_id = LegacyIdConvert.legacy_from_new(course.id)
+            course.instance = course.id.replace("slashes:", "")
             course.class_name = "selected" if course.id in selected_ids else None
         data["course_count"] = len(selected_ids)
 
