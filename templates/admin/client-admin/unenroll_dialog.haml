@@ -12,3 +12,8 @@
 %p.text-center
   %a#unenroll_course.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll?confirm"}
     = unenroll_course
+  %br
+  %a#unenroll_program.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll?program&confirm"}
+    = unenroll_program
+  %br
+  %a.close-dialog= _('Cancel')

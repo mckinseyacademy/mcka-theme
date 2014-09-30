@@ -1,0 +1,14 @@
+#unenroll_course,
+#unenroll_program {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+#unenroll_program {
+  &:link, &:visited {
+    background: $mckinsey-orange;
+  }
+  &:hover {
+    background: $mckinsey-academy-warm-gray;
+  }
+}

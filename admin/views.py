@@ -256,9 +256,22 @@ def client_admin_course_analytics(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_unenroll_participant(request, client_id, course_id, user_id):
     error = None
+    is_program = 'program' in request.GET
+    should_confirm = 'confirm' in request.GET
     if request.method == 'POST':
         try:
-            user_api.unenroll_user_from_course(user_id, course_id)
+            # un-enroll from program
+            if is_program:
+                user_api.unenroll_user_from_course(user_id, course_id)
+                user_programs = Program.user_program_list(user_id)
+                for program in user_programs:
+                    if course_id in [course.course_id for course in program.fetch_courses()]:
+                        program.remove_user(client_id, user_id)
+
+            # un-enroll from course
+            else:
+                user_api.unenroll_user_from_course(user_id, course_id)
+
             redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
             return HttpResponseRedirect(redirect_url)
         except ApiError as err:
@@ -272,9 +285,11 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
         'unenroll_program': _("Un-enroll from entire program "),
         'client_id': client_id,
         'course_id': course_id,
+        'is_program': is_program,
+        'query': "?program" if is_program else "",
     }
 
-    if 'confirm' in request.GET:
+    if should_confirm:
         return render(request, 'admin/client-admin/unenroll_dialog_confirm.haml', data)
     else:
         return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
