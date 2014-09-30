@@ -20,7 +20,7 @@ PROGRAM_YEAR_CHOICES = [yr for yr in range(THIS_YEAR, THIS_YEAR + 10)]
 class ClientForm(forms.Form):
 
     ''' add a new client to the system '''
-    image_url = forms.CharField(max_length=255, initial=JsonObjectWithImage.default_image_url(), required=False)
+    logo_url = forms.CharField(max_length=255, initial=JsonObjectWithImage.default_image_url(), required=False)
     display_name = forms.CharField(max_length=255)
     contact_name = forms.CharField(max_length=255)
     contact_phone = forms.CharField(max_length=20)

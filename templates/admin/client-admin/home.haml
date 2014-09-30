@@ -1,12 +1,15 @@
 - extends "admin/admin_layout.haml"
+- load staticfiles
 
 - block content
   .row{style: "margin-top:80px;"}
     .header
-      .company-image
-        .img{'src': '#{client.image_url}'}
       %h1
         = client.display_name
+      .company-image
+        %img{src: "#{company_image}"}
+        %a#edit-company-image{"data-reveal-id": "edit-company-image-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/change_company_image"}
+          change photo
       %p
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     %hr
@@ -51,3 +54,12 @@
                -else
                 %a.course-link.not-started
                   %i.fa.fa-chevron-right
+
+  - block change_company_image
+    #edit-company-image-modal.reveal-modal.medium{'data-reveal': 'true'}
+
+- block js_snippets
+  %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
+  %script{src: "{% static 'js/vendor/jquery.form.js' %}"}
+  %script{src: "{% static 'js/image_editor.js' %}"}
+  %script{src: "{% static 'js/client_admin_image_edit.js' %}"}

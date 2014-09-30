@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 from .json_object import JsonObject, JsonObjectWithImage
 import organization_api
+from django.conf import settings
 
 
 class Organization(JsonObjectWithImage):
@@ -52,6 +53,25 @@ class Organization(JsonObjectWithImage):
         if group_id in self.groups:
             self.groups.remove(user_id)
             organization_api.update_organization(self.id, {"groups": self.groups})
+
+    def image_url(self, size=48, path='absolute'):
+        ''' return default logo unless the user has one '''
+        # TODO: is the size param going to be used here?
+        if hasattr(self, 'logo_url') and self.logo_url is not None:
+            if size <= 48:
+                image_url = self.logo_url[:-4] + '-48.jpg'
+            elif size <= 160:
+                image_url = self.logo_url[:-4] + '-160.jpg'
+            else:
+                image_url = self.logo_url
+
+            if path == 'absolute' and settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
+                from django.core.files.storage import default_storage
+                image_url = default_storage.url(
+                    self._strip_proxy_image_url(image_url))
+        else:
+            image_url = self.default_image_url()
+        return image_url
 
 
 class OrganizationList(JsonObject):
