@@ -1,59 +1,76 @@
 - extends 'admin/admin_layout.haml'
 - block content
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/workgroup/detail_header.haml'
   .workgroup-report
     .row
       .large-12.large-centered.columns
         %header
           %h1
-            = _("Workgroups Report for")
+            = _("Group Work:")
             = course.name
-        - for project in projects
+            (
+            %span><
+              = course.display_id
+            )
+          .sub-1
+            = _("Group Work Project Status")
+          %div
+            = _("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.")
+          .sub-2
+            = _("Total Group Work Projects:")
+            = total_group_count
+
+    - for project in projects
+      .row
+        .large-12.large-centered.columns
           %hr
           %section
             .sub-1
               = _("Project:")
               %span= project.name
-            %table
-              %thead
-                %tr
-                  %th{colspan: 2}
-                  - for activity in project.activities
-                    %th{colspan: 4}= activity.name
-                %tr
-                  %th= _("Group")
+            .sub-2
+              = _("Group Work Projects:")
+              = project.group_count
+          %table.group-list
+            %thead
+              %tr
+                %th
+                - for activity in project.activities
+                  %th.activity-name{colspan: 3, title: "#{activity.name}"}
+                    = _("Activity")
+                    = activity.index
+                    - if activity.grade_type
+                      %span.grade-type
+                        = activity.grade_type
+              %tr
+                %th
+                - for activity in project.activities
                   %th
-                  - for activity in project.activities
-                    %th= _("Upload")
-                    %th= _("Evaluation")
-                    %th= _("Grade")
-                    %th
-              %tbody
-                - for workgroup in project.workgroups
-                  %tr
-                    %td= workgroup.name
-                    %td
-                    - for activity_status in workgroup.activity_statuses
-                      %td= activity_status.upload
-                      %td= activity_status.evaluation
-                      - if activity_status.ta_graded
-                        %td
-                          %a{href: "#{activity_status.review_link}", class:"#{activity_status.modifier_class}"}
-                            TA Graded
-                      - else
-                        %td= activity_status.grade
+                    = activity.upload_date
+                  %th
+                    = activity.evaluation_date
+                  %th
+                    = activity.grade_date
+              %tr
+                %th= _("Group")
+                - for activity in project.activities
+                  %th= _("Upload")
+                  %th= _("Evaluation")
+                  %th= _("Grade")
+
+            %tbody
+              - for workgroup in project.workgroups
+                %tr
+                  %td
+                    %a{href:"/admin/workgroup/course/#{course.id}/group_work_status/#{workgroup.id}"}
+                      = workgroup.name
+                  - for activity_status in workgroup.activity_statuses
+                    %td{class: "status #{activity_status.upload}"}
+                    %td{class: "status #{activity_status.evaluation}"}
+                    - if activity_status.ta_graded
                       %td
-                  - for user in workgroup.users
-                    %tr
-                      %td
-                      %td= user.username
-                      - for user_activity_status in user.activity_statuses
-                        %td= user_activity_status.upload
-                        %td= user_activity_status.evaluation
-                        - if activity_status.ta_graded
-                          %td --
-                        - else
-                          %td= user_activity_status.grade
-                        %td
-                          - for review_group in user_activity_status.review_groups
-                            %a{href: "#{review_group.review_link}", class:"#{review_group.modifier_class}"}
-                              = review_group.name
+                        = _("--")
+                    - else
+                      %td{class: "status #{activity_status.grade}"}

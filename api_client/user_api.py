@@ -385,7 +385,7 @@ def get_user_preferences(user_id):
     return json.loads(response.read())
 
 @api_error_protect
-def get_user_organizations(user_id, organization_object=organization_models.OrganizationList):
+def get_user_organizations(user_id, organization_object=organization_models.Organization):
     ''' return organizations with which the user is associated '''
     response = GET(
         '{}/{}/{}/organizations/?page_size=0'.format(

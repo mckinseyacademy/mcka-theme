@@ -82,7 +82,14 @@ def _build_date_field(json_date_string_value):
         return None
 
     try:
-        format_string = "%Y-%m-%dT%H:%M:%S.%fZ" if "." in json_date_string_value else "%Y-%m-%dT%H:%M:%SZ"
+        if "T" in json_date_string_value:
+            if "." in json_date_string_value:
+                format_string = "%Y-%m-%dT%H:%M:%S.%fZ"
+            else:
+                format_string = "%Y-%m-%dT%H:%M:%SZ"
+        else:
+            format_string = "%Y-%m-%d"
+
         return datetime.datetime.strptime(
             json_date_string_value,
             format_string

@@ -1025,12 +1025,17 @@ def download_group_projects_report(request, course_id):
     return response
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def group_projects_report(request, course_id):
-    wcd = WorkgroupCompletionData(course_id)
+def group_work_status(request, course_id, group_id=None):
+    wcd = WorkgroupCompletionData(course_id, group_id)
+    data = wcd.build_report_data()
+    data.update({'selected_client_tab':'group_work_status'})
+
+    template = 'admin/workgroup/workgroup_{}report.haml'.format('detail_' if group_id else '')
+
     return render(
         request,
-        'admin/workgroup/workgroup_report.haml',
-        wcd.build_report_data()
+        template,
+        data
     )
 
 

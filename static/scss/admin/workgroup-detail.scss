@@ -122,10 +122,143 @@
 }
 
 .workgroup-report{
-  a.incomplete{
+  table{
+    width: 100%;
+    &.group-list{
+      th{
+        background: #DDDDDD;
+        &:not([colspan]){
+          &:nth-of-type(2),
+          &:nth-of-type(3),
+          &:nth-of-type(4),
+          &:nth-of-type(8),
+          &:nth-of-type(9),
+          &:nth-of-type(10){
+            background: #CCCCCC;
+          }
+        }
+        &[colspan]{
+          &:nth-of-type(2),&:nth-of-type(4){
+            background: #CCCCCC;
+          }
+          &:nth-of-type(3){
+            background: #DDDDDD;
+          }
+        }
+      }
+      td{
+        &:not([colspan]){
+          &:nth-of-type(2),
+          &:nth-of-type(3),
+          &:nth-of-type(4),
+          &:nth-of-type(8),
+          &:nth-of-type(9),
+          &:nth-of-type(10){
+            background: #EEEEEE;
+          }
+        }
+      }
+    }
+    &.group-detail{
+      th{
+        background: #DDDDDD;
+        &:not([colspan]){
+          &:nth-of-type(2),
+          &:nth-of-type(3),
+          &:nth-of-type(4),
+          &:nth-of-type(5),
+          &:nth-of-type(10),
+          &:nth-of-type(11),
+          &:nth-of-type(12),
+          &:nth-of-type(13){
+            background: #CCCCCC;
+          }
+        }
+        &[colspan]{
+          &:nth-of-type(2),&:nth-of-type(4){
+            background: #CCCCCC;
+          }
+          &:nth-of-type(3){
+            background: #DDDDDD;
+          }
+        }
+      }
+      td{
+        &:not([colspan]){
+          &:nth-of-type(2),
+          &:nth-of-type(3),
+          &:nth-of-type(4),
+          &:nth-of-type(5),
+          &:nth-of-type(10),
+          &:nth-of-type(11),
+          &:nth-of-type(12),
+          &:nth-of-type(13){
+            background: #EEEEEE;
+          }
+        }
+      }
+    }
+  }
+  th,td{
+    text-align: center;
+    white-space: nowrap;
+  }
+  tr.group-status{
+    border-bottom: 1px solid #CCCCCC;
+    td{
+      &:first-child{
+        text-align: left;
+      }
+    }
+  }
+  td{
+    @include font-spec(12);
+    a{
+      @include font-spec(12);
+    }
+    &.group-user-info{
+      max-width: 200px;
+      text-align: left;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding-left: 20px;
+    }
+  }
+  .activity-name{
+    .grade-type{
+      text-transform: uppercase;
+      &::before{
+        content: '-';
+      }
+    }
+  }
+  .status{
+    &.complete{
+      color: $mckinsey-green;
+      &::before{
+        content: 'complete';
+      }
+    }
+    &.incomplete{
+      &::before{
+        content: 'incomplete';
+      }
+    }
+    &.irrelevant{
+      &::before{
+        content: '--';
+      }
+    }
+  }
+  .overdue{
     color: $mckinsey-red;
+  }
+  a.incomplete{
     &::after{
       content: '*';
+    }
+    &:hover{
+      color: $mckinsey-academy-blue-gray;
     }
   }
 }
