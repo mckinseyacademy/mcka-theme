@@ -42,4 +42,16 @@
       %h2= _("FORUM INFORMATION")
       %ul
         %li= _("Active discussions:")
+          %b= metrics.num_active_threads
         %li= _("Posts:")
+          %b= metrics.num_posts
+    %hr
+    .large-12.large.columns
+      %h2= _("STATUS")
+      %p
+        %i= _("Current status of all participants who have completed, are in progress, or not yet started this course.")
+      %br
+      .large-8.large.columns
+      #email_not_started.large-4.large.columns
+        %a{href:""}
+          = _("Email participants not started")
