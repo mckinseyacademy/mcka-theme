@@ -1,8 +1,12 @@
 %p.title.text-center
   = _("Are you sure you would like to un-enroll user")
   %strong= participant.full_name
-  = _("from the course?")
-%form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll", method: "POST"}
+  - if is_program
+    = _("from the program?")
+  - else
+    = _("from the course?")
+
+%form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll#{query}", method: "POST"}
   - csrf_token
   = form
   .error

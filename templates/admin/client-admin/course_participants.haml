@@ -107,11 +107,15 @@
 
     ajaxify_overlay_form('#unenroll-confirm-dialog', 'form');
 
+    $('#edit_field_modal').on('click', '.close-dialog', function() {
+      $('#edit_field_modal').foundation('reveal', 'close');
+    });
+
     $('#unenroll-confirm-dialog').on('click', '.close-dialog', function() {
       $('#unenroll-confirm-dialog').foundation('reveal', 'close');
     });
 
-    $('#edit_field_modal').on('click', '#unenroll_course', function(e) {
+    $('#edit_field_modal').on('click', '#unenroll_course, #unenroll_program', function(e) {
       e.preventDefault();
       var href = $(this).attr('href');
       $('#unenroll-confirm-dialog').foundation('reveal', 'open', href);
