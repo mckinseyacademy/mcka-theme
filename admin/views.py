@@ -134,10 +134,11 @@ def client_admin_home(request, client_id):
             if course.id in program.coursesIDs:
                 program.courses.append(course)
 
-
+    company_image = organization.image_url(size=48)
     data = {
         'client': organization,
         'programs': programs,
+        'company_image': company_image
     }
 
     return render(
