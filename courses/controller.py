@@ -17,6 +17,7 @@ from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
+from admin.models import ReviewAssignmentGroup
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -294,7 +295,7 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
 
     # workgroup review assignments
     assignment_count = 0
-    workgroup_groups = WorkGroup.get_workgroup_groups(project_workgroup.id)
+    assignments = ReviewAssignmentGroup.list_for_workgroup(project_workgroup.id)
 
     # find group activities in this project
     group_activities = get_group_project_activities(project_chapter)
@@ -303,9 +304,9 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
         activity_reviews = [item for item in review_items if group_project_xblock.id == item.content_id]
 
         assignment_count = 0
-        for group in workgroup_groups:
-            if group.data.xblock_id == group_project_xblock.id:
-                assignment_count += len(get_users_in_group(group.id))
+        for assignment in assignments:
+            if assignment.data.xblock_id == group_project_xblock.id:
+                assignment_count += len(get_users_in_group(assignment.id))
 
         # distinct reviewers
         reviewer_ids = set([ar.reviewer for ar in activity_reviews])
