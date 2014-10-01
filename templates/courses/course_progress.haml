@@ -75,10 +75,9 @@
               %td.lesson-progress
                 %ul.group-grades
                   - for grade in activity.grades
-                    - ifequal grade None
-                      %li -
-                    - else
-                      %li ={grade}
+                    %li ={grade}
+                  - for i in activity.pending_grades
+                    %li -
 
   #progress_modal.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
