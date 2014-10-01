@@ -186,16 +186,17 @@ class CompanyAdminAccessDeniedError(PermissionDenied):
 
 def check_company_admin_user_access(func):
     '''
-    Decorator which will raise a CompanyAdminAccessDeniedError if user and adminuser do not have a common organization
+    Decorator which will raise a CompanyAdminAccessDeniedError if user and company admin user do not have a common organization
     '''
     @functools.wraps(func)
     def admin_user_user_access_checker(request, user_id, *args, **kwargs):
-        def org_set(uid):
-            return set([o.id for o in user_api.get_user_organizations(uid)])
+        if not request.user.is_mcka_admin:
+            def org_set(uid):
+                return set([o.id for o in user_api.get_user_organizations(uid)])
 
-        common_orgs = org_set(user_id).intersection(org_set(request.user.id))
-        if len(common_orgs) < 1:
-            raise CompanyAdminAccessDeniedError(user_id, request.user.id)
+            common_orgs = org_set(user_id).intersection(org_set(request.user.id))
+            if len(common_orgs) < 1:
+                raise CompanyAdminAccessDeniedError(user_id, request.user.id)
 
         return func(request, user_id, *args, **kwargs)
 

@@ -380,7 +380,7 @@ def _course_progress_for_user(request, course_id, user_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def course_user_progress(request, user_id, course_id):
     return _course_progress_for_user(request, course_id, user_id)
 
