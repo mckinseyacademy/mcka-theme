@@ -161,25 +161,29 @@ class JsonObjectWithImage(JsonObject):
         Fix resized images from 40 to 48 and 120 to 160.
         Can be removed after all images have been resized.
         """
-        if size <= 160 and image_url[:8] != '/static/':
 
-            if image_url[:10] == '/accounts/':
-                image_url_storage = image_url[10:]
-                avatar_url = self.avatar_url[10:]
-            else:
-                image_url_storage = image_url
-                avatar_url = self.avatar_url
+        try:
+            if size <= 160 and image_url[:8] != '/static/':
 
-            if default_storage.exists(image_url_storage) == False:
-                from PIL import Image
+                if image_url[:10] == '/accounts/':
+                    image_url_storage = image_url[10:]
+                    avatar_url = self.avatar_url[10:]
+                else:
+                    image_url_storage = image_url
+                    avatar_url = self.avatar_url
 
-                if default_storage.exists(avatar_url[:-4] + '-40.jpg'):
-                    default_storage.delete(avatar_url[:-4] + '-40.jpg')
-                if default_storage.exists(avatar_url[:-4] + '-120.jpg'):
-                    default_storage.delete(avatar_url[:-4] + '-120.jpg')
+                if default_storage.exists(image_url_storage) == False:
+                    from PIL import Image
 
-                original = Image.open(default_storage.open(avatar_url))
-                self.save_profile_image(original, avatar_url)
+                    if default_storage.exists(avatar_url[:-4] + '-40.jpg'):
+                        default_storage.delete(avatar_url[:-4] + '-40.jpg')
+                    if default_storage.exists(avatar_url[:-4] + '-120.jpg'):
+                        default_storage.delete(avatar_url[:-4] + '-120.jpg')
+
+                    original = Image.open(default_storage.open(avatar_url))
+                    self.save_profile_image(original, avatar_url)
+        except:
+            image_url = self.default_image_url()
 
         return image_url
 
