@@ -1,6 +1,7 @@
 import urllib2 as url_access
 import datetime
 import copy
+import os
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -51,31 +52,24 @@ def save_new_client_image(old_image_url, new_image_url, client):
     from PIL import Image
     from django.core.files.storage import default_storage
 
-    old_image_url_48 = old_image_url[:-4] + '-48.jpg'
-    old_image_url_160 = old_image_url[:-4] + '-160.jpg'
-    new_image_url_48 = new_image_url[:-4] + '-48.jpg'
-    new_image_url_160 = new_image_url[:-4] + '-160.jpg'
+    new_image_url_name = os.path.splitext(new_image_url)[0]
+    old_image_url_name = os.path.splitext(old_image_url)[0]
 
     if default_storage.exists(old_image_url):
 
-        thumb_io_160 = StringIO.StringIO()
-        thumb_io_48 = StringIO.StringIO()
-        thumb_io = StringIO.StringIO()
+        io_new_client_image(old_image_url, new_image_url)
 
-        original = Image.open(default_storage.open(old_image_url))
-        original.convert('RGB').save(thumb_io, format='JPEG')
-        cropped_image_path = default_storage.save(new_image_url, thumb_io)
+        for generate_size in settings.GENERATE_IMAGE_SIZES:
+            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size)
+            new_gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size)
+            io_new_client_image(old_gen_image_url, new_gen_image_url)
 
-        original_48 = Image.open(default_storage.open(old_image_url_48))
-        original_48.convert('RGB').save(thumb_io_48, format='JPEG')
-        cropped_image_path_48 = default_storage.save(new_image_url_48, thumb_io_48)
+        client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url)})
 
-        original_160 = Image.open(default_storage.open(old_image_url_160))
-        original_160.convert('RGB').save(thumb_io_160, format='JPEG')
-        cropped_image_path_160 = default_storage.save(new_image_url_160, thumb_io_160)
+def io_new_client_image(old_gen_image_url, new_gen_image_url):
 
-        default_storage.delete(old_image_url)
-        default_storage.delete(old_image_url_48)
-        default_storage.delete(old_image_url_160)
-        client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
-
+    thumb_io = StringIO.StringIO()
+    original = Image.open(default_storage.open(old_gen_image_url))
+    original.convert('RGB').save(thumb_io, format='JPEG')
+    cropped_image_path = default_storage.save(new_gen_image_url, thumb_io)
+    default_storage.delete(old_gen_image_url)

@@ -176,10 +176,8 @@ class JsonObjectWithImage(JsonObject):
 
     def _strip_proxy_image_url(self, profileImageUrl):
         if profileImageUrl[:10] == '/accounts/':
-            image_url = profileImageUrl[10:]
-        else:
-            image_url = profileImageUrl
-        return image_url
+            profileImageUrl = profileImageUrl.replace('/accounts/', '')
+        return profileImageUrl
 
     def have_size(self, size):
         test_path = self._strip_proxy_image_url(
@@ -201,13 +199,13 @@ class JsonObjectWithImage(JsonObject):
             if self.have_size(delete_size):
                 self.delete_size(delete_size)
 
-        if default_storage.exists(self.avatar_url):
-            image_path = self._strip_proxy_image_url(self.avatar_url)
+        image_path = self._strip_proxy_image_url(self.avatar_url)
+        if default_storage.exists(image_path):
+            from PIL import Image
             original_image = Image.open(
                 default_storage.open(image_path)
             )
             self.save_profile_image(original_image, image_path)
-            self.avatar_url = image_path
 
     @classmethod
     def save_profile_image(cls, cropped_example, image_url):

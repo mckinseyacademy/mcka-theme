@@ -1,9 +1,11 @@
 ''' Objects for users / authentication built from json responses from API '''
 import json
+import os
 from datetime import datetime
 from .json_object import JsonObject, JsonObjectWithImage
 import organization_api
 from django.conf import settings
+from django.core.files.storage import default_storage
 
 
 class Organization(JsonObjectWithImage):
@@ -55,23 +57,51 @@ class Organization(JsonObjectWithImage):
             organization_api.update_organization(self.id, {"groups": self.groups})
 
     def image_url(self, size=48, path='absolute'):
-        ''' return default logo unless the user has one '''
+        ''' return default avatar unless the user has one '''
         # TODO: is the size param going to be used here?
-        if hasattr(self, 'logo_url') and self.logo_url is not None:
-            if size <= 48:
-                image_url = self.logo_url[:-4] + '-48.jpg'
-            elif size <= 160:
-                image_url = self.logo_url[:-4] + '-160.jpg'
-            else:
+
+        try:
+            if hasattr(self, 'logo_url') and self.logo_url is not None:
+                usable_sizes = [s for s in settings.GENERATE_IMAGE_SIZES if s >= size]
+                best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
+
+                # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
+                if best_image_size and size == best_image_size and not self.have_size(size):
+                    self._clean_and_resize_images()
+
                 image_url = self.logo_url
 
-            if path == 'absolute' and settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
-                from django.core.files.storage import default_storage
-                image_url = default_storage.url(
-                    self._strip_proxy_image_url(image_url))
-        else:
-            image_url = self.default_image_url()
+                if best_image_size and self.have_size(best_image_size):
+                    image_url = self._get_specific_size_url(best_image_size)
+
+                if not default_storage.exists(self._strip_proxy_image_url(image_url)):
+                    image_url = JsonObjectWithImage.default_image_url()
+                elif path == 'absolute' and settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
+                    image_url = default_storage.url(
+                        self._strip_proxy_image_url(image_url)
+                    )
+            else:
+                image_url = JsonObjectWithImage.default_image_url()
+        except:
+            image_url = JsonObjectWithImage.default_image_url()
+
         return image_url
+
+    def _get_specific_size_url(self, size):
+        return "{}-{}.jpg".format(os.path.splitext(self.logo_url)[0], size)
+
+    def _clean_and_resize_images(self):
+        for delete_size in settings.REMOVE_IMAGE_SIZES:
+            if self.have_size(delete_size):
+                self.delete_size(delete_size)
+
+        image_path = self._strip_proxy_image_url(self.logo_url)
+        if default_storage.exists(image_path):
+            from PIL import Image
+            original_image = Image.open(
+                default_storage.open(image_path)
+            )
+            self.save_profile_image(original_image, image_path)
 
 
 class OrganizationList(JsonObject):
