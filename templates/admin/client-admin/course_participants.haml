@@ -59,7 +59,7 @@
               %td
                 %a{href: "mailto:#{student.email}"}= "Email"
               %td
-                %a{href: "#{}"}= "View progress page"
+                %a{href: "/courses/#{course_id}/progress/#{student.id}"}= "View progress page"
               %td
                 %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
 

@@ -1,4 +1,5 @@
 import copy
+import functools
 import json
 from datetime import datetime
 import urllib2 as url_access
@@ -62,6 +63,7 @@ from .permissions import Permissions, PermissionSaveError
 from courses.user_courses import return_course_progress
 
 def ajaxify_http_redirects(func):
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         obj = func(*args, **kwargs)
         request = args[0]
@@ -78,6 +80,7 @@ def client_admin_access(func):
     Ensure company admins can view only their company.
     MCKA Admin can view all clients in the system.
     '''
+    @functools.wraps(func)
     def wrapper(request, client_id=None, *args, **kwargs):
         valid_client_id = None
         if request.user.is_mcka_admin:
