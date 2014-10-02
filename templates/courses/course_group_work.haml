@@ -42,6 +42,20 @@
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
   :javascript
     $(function(){
+      var adjust_discussion_height = function(){
+        $('.discussion-module').css('visibility', 'hidden');
+        _.defer(function(){
+          $('.discussion-module').css('margin-top', 'auto');
+
+          var height_left = $('.group-project-xblock-wrapper').height();
+          var height_right = $('#group-project-users').height();
+
+          if (height_right > height_left){
+            $('.discussion-module').css('margin-top', (height_right - height_left).toString()+'px');
+          }
+          $('.discussion-module').css('visibility', 'visible');
+        });
+      };
 
       var group_activity_step_map = {};
       $(document).on('steps_available', function(target, step_map){
@@ -80,6 +94,10 @@
         $(document).trigger('select_stage', $(this).data('activate'));
       });
 
+      // height may have changed whenever we load new data into the xblock... need to re-check height at this point
+      $(document).on('select_stage', adjust_discussion_height);
+      $(document).on('data_loaded', adjust_discussion_height);
+
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
       var lesson_data = {
         courseId: '{{ legacy_course_id }}',
@@ -88,17 +106,7 @@
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
       };
-      
-      var deferred_promise = lesson_content.xblock(lesson_data);
 
-      deferred_promise[0].done(function() {
-        var height_left = $('.group-project-xblock-wrapper').height();
-        var height_right = $('#group-project-users').height();
-
-        if (height_right > height_left){
-          $('.discussion-module').css('margin-top', (height_right - height_left).toString()+'px');
-        }
-      });
-      
+      lesson_content.xblock(lesson_data);
 
     });
