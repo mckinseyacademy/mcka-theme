@@ -42,12 +42,6 @@
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
   :javascript
     $(function(){
-      var height_left = $('.group-project-xblock-wrapper').height();
-      var height_right = $('#group-project-users').height();
-
-      if (height_right > height_left){
-        $('.discussion-module').css('margin-top', (height_right - height_left).toString()+"px");
-      }
 
       var group_activity_step_map = {};
       $(document).on('steps_available', function(target, step_map){
@@ -94,6 +88,17 @@
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
       };
-      lesson_content.xblock(lesson_data);
+      
+      var deferred_promise = lesson_content.xblock(lesson_data);
+
+      deferred_promise[0].done(function() {
+        var height_left = $('.group-project-xblock-wrapper').height();
+        var height_right = $('#group-project-users').height();
+
+        if (height_right > height_left){
+          $('.discussion-module').css('margin-top', (height_right - height_left).toString()+'px');
+        }
+      });
+      
 
     });
