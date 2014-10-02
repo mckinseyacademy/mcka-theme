@@ -153,7 +153,7 @@ def client_admin_home(request, client_id):
 def client_admin_course(request, client_id, course_id):
     course = course_api.get_course(course_id)
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
-    cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in metrics.grade_cutoffs.iteritems()])
+    cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
 
     data = {
         'client_id': client_id,
