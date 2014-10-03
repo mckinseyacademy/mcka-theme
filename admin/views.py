@@ -133,6 +133,10 @@ def client_admin_home(request, client_id):
     for course in courses:
         course = _prepare_course_display(course)
         course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
+        course.metrics.users_completed = organization_api.get_grade_complete_count(client_id, course_id=course.id).users_grade_complete_count
+        course.metrics.percent_completed = '0%'
+        if course.metrics.users_completed > 0:
+            course.metrics.percent_completed = "{}%".format(int(int(course.metrics.users_enrolled) / int(course.metrics.users_completed)))
         for program in programs:
             if course.id in program.coursesIDs:
                 program.courses.append(course)
