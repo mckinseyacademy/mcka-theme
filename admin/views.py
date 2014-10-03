@@ -256,9 +256,14 @@ def client_admin_download_course_report(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_analytics(request, client_id, course_id):
 
+    course = course_api.get_course(course_id)
+    metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
+    average_progress = metrics.course_avg
+
     data = {
         'client_id': client_id,
-        'course_id': course_id
+        'course': course,
+        'average_progress': average_progress,
     }
     return render(
         request,
