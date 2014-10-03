@@ -441,3 +441,9 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     return '\n'.join(output_lines)
 
+def get_organizations_users_completion(client_id, course_id, users_enrolled):
+    users_completed = organization_api.get_grade_complete_count(client_id, course_id=course_id).users_grade_complete_count
+    percent_completed = '0%'
+    if users_completed > 0:
+        percent_completed = "{}%".format(int(int(users_enrolled) / int(users_completed)))
+    return users_completed, percent_completed
