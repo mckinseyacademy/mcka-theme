@@ -45,8 +45,12 @@
                   = course.metrics.users_started
               .course-stat-label
                 = _("Completed:")
+                %span.course-stat-value
+                  = course.metrics.users_completed
               .course-stat-label
                 = _("% Completed:")
+                %span.course-stat-value
+                  = course.metrics.percent_completed
             .go-to-link
               -if course.started
                 %a.course-link{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}

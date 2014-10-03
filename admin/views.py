@@ -49,6 +49,7 @@ from .controller import getStudentsWithCompanies, filter_groups_and_students, pa
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
 from .controller import generate_course_report
+from .controller import get_organizations_users_completion
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -133,6 +134,7 @@ def client_admin_home(request, client_id):
     for course in courses:
         course = _prepare_course_display(course)
         course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
+        course.metrics.users_completed, course.metrics.percent_completed = get_organizations_users_completion(client_id, course.id, course.metrics.users_enrolled)
         for program in programs:
             if course.id in program.coursesIDs:
                 program.courses.append(course)
@@ -156,6 +158,7 @@ def client_admin_home(request, client_id):
 def client_admin_course(request, client_id, course_id):
     course = course_api.get_course(course_id)
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
+    metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
 
     data = {
