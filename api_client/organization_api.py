@@ -107,9 +107,13 @@ def update_organization(organization_id, organization_data, organization_object=
 @api_error_protect
 def get_grade_complete_count(organization_id, organization_object=JsonObject, *args, **kwargs):
     qs_params = {}
-    qs_params.update(kwargs)
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
     response = GET(
-        '{}/{}/{}/metrics?{}'.format(
+        '{}/{}/{}/metrics/?{}'.format(
             settings.API_SERVER_ADDRESS,
             ORGANIZATION_API,
             organization_id,
