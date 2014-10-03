@@ -94,6 +94,7 @@
       background: $pure-white;
       margin-right: 20px;
       margin-bottom: 20px;
+      vertical-align: bottom;
       @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
       .label-11, .label-12{
         height: 70px;
