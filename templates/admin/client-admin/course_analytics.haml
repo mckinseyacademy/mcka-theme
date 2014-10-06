@@ -20,6 +20,14 @@
 
         .sub-1= _("Progress")
         %p.style-5= _("% of content consumed by participants (total number of modules completed divided by total number of modules)")
+        .progress_stats
+          %ul
+            %li= _("Your Company: ")
+              %span.progress-stat= course.company_progress
+              %span= _("%")
+            %li= _("Your Cohort: ")
+              %span.progress-stat= course.cohort_progress
+              %span= _("%")
         %hr
 
         .proficiency-engagement

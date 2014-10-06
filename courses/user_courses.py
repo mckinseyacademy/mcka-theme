@@ -216,7 +216,7 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
             if lesson_description:
                 lesson.description = lesson_description.content
 
-def load_course_progress(course, user_id):
+def _get_course_progress_data(course, user_id):
     completions = course_api.get_course_completions(course.id, user_id)
     completed_ids = [result.content_id for result in completions]
     component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
@@ -228,10 +228,21 @@ def load_course_progress(course, user_id):
             matches = set(lesson_component_ids).intersection(completed_ids)
             lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
     actual_completions = set(component_ids).intersection(completed_ids)
+    return len(actual_completions), len(component_ids)
+
+def load_course_progress(course, user_id):
+    actual_completions_len, component_ids_len = _get_course_progress_data(course, user_id)
     try:
         course.user_progress = round_to_int(float(100 * len(actual_completions))/len(component_ids))
     except ZeroDivisionError:
         course.user_progress = 0
+
+def return_course_progress(course, user_id):
+    load_course_progress(course, user_id)
+    return course.user_progress
+
+def return_course_completions_stats(course, user_id):
+    return _get_course_progress_data(course, user_id)
 
 def standard_data(request):
     ''' Makes user and program info available to all templates '''
