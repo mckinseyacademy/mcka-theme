@@ -1,3 +1,11 @@
+var map_opts = {
+  zoomControl: true,
+  minZoom: 1,
+  zoom: 1,
+  attributionControl: false,
+  worldCopyJump: true
+}
+
 Apros.views.CourseCohort = Backbone.View.extend({
 
   profiles: true,
@@ -23,43 +31,52 @@ Apros.views.CourseCohort = Backbone.View.extend({
     'click .student-data a': 'toggle_profiles'
   },
 
-  initialize: function(){
+  initialize: function() {
+    this.collection = new Apros.collections.CohortCities;
+    this.listenTo(this.collection, 'sync', this.addGeodata);
+    this.map = L.mapbox.map('map-cohort', mapbox_map_id, map_opts)
+      .setView([51.505, -0.09], 1);
+  },
+
+  addGeodata: function(models) {
     var _this = this;
-    var tile_url = 'https://{s}.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/{z}/{x}/{y}.png';
-    var map_opts = {
-      zoomControl: true,
-      minZoom: 1,
-      zoom: 1,
-      center: [51.505, -0.09],
-      attributionControl: false
+    var geoJsonData = {
+      type: 'FeatureCollection',
+      features: []
     }
 
-    this.users = CohortMapUsers;
-    this.ta_user = TAUser;
-    this.citiesMap = CohortMapCities;
-    this.setCities(this.citiesMap, this.users, this.ta_user, this.city_list, this.cities);
-    this.model.setUrl(this.city_list.join(';'));
-    this.map = L.map('map-cohort', map_opts);
-    L.tileLayer(tile_url).addTo(this.map);
-    this.map.on('zoomend', function(){
-      if(_this.map.getZoom() >= 1){
-        _this.zoomLevel = _this.map.getZoom();
-      }
-      else{
-        _this.zoomLevel = 1;
-      }
-      _this.map.removeLayer(_this.layers);
-      _this.drawLayers(_this.model, _this.city_list, _this.cities, _this.users, _this.iconsFlag);
-    });
-    this.delayPopupClose();
-    if(this.city_list.length > 0){
-      this.model.fetch({
-        'success': function(model, response){
-          model.save(model.parse(response));
-          _this.render();
+    models.each(function(model){
+      var size = model.size(),
+          radius = 3 + (47 * size) / (25 + size);
+
+      geoJsonData.features.push({
+        type: 'Feature',
+        properties: {
+          count: radius,
+          popup: '<div class="city-name">' + model.name() + '<div><div class="city-participants">Participants: ' + model.size() + '</div>'
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: model.latLng()
         }
       });
-    }
+    });
+
+    var geoJson = L.geoJson(geoJsonData, {
+      pointToLayer: function(feature, latlng) {
+        var marker = L.circleMarker(latlng, {
+          color: '#3384CA',
+          fillColor: '#3384CA',
+          stroke: false,
+          fillOpacity: 0.5,
+          radius: feature.properties.count
+        });
+        marker.bindPopup(feature.properties.popup, {'closeOnClick': false});
+        _this.hoverizePopup(marker);
+        return marker;
+      }
+    }).addTo(this.map);
+
   },
 
   update_scope: function(e) {
@@ -104,7 +121,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
     return layers;
   },
 
-  createCircle: function(data, city, layers){
+  createCircle: function(data, city, layers) {
       var city_name = data.query.join(' ');
       var radius = 3 + (47 * city.count) / (25 + city.count);
       if(typeof data.results[0] != 'undefined'){
@@ -150,7 +167,6 @@ Apros.views.CourseCohort = Backbone.View.extend({
     $.each(citiesMap, function(key, value){
       if(value.city){
         var city = value.city.toLowerCase();
-        city_list.push(city);
         cities[city] = ({'count': value.count, 'name': value.city, 'users': [], 'ta_user': []});
       }
     });
@@ -225,14 +241,14 @@ Apros.views.CourseCohort = Backbone.View.extend({
   },
 
   render_map: function() {
-    var _this = this;
     this.drawLayers(this.model, this.city_list, this.cities, this.users, this.iconsFlag);
     var svg = $('#map-cohort .leaflet-overlay-pane').find('svg');
     svg.css({'width': (svg.attr('width') + 'px'),  'height': (svg.attr('height') + 'px')});
   },
 
   render: function() {
-    this.iconsFlag = true;
-    this.render_map(true);
+    //this.iconsFlag = true;
+    //this.render_map();
+    this.collection.fetch();
   }
 });

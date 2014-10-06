@@ -281,6 +281,13 @@ PROGRESS_BAR_COLORS = {
     "proforma": "none",
 }
 
+# Mapbox settings
+MAPBOX_API = {
+    'map_id': 'mckinseyacademy.i2hg775e',
+    'public_token': 'pk.eyJ1IjoibWNraW5zZXlhY2FkZW15IiwiYSI6ImpXeXZfM0UifQ.U9z171wwWYtDbn_Fv-6nlg',
+    'secret_token': 'sk.eyJ1IjoibWNraW5zZXlhY2FkZW15IiwiYSI6Im9vX1JtRmcifQ.cW8tajahj-HfnK00IsD9qg',
+}
+
 try:
     from local_settings import *
 except ImportError:

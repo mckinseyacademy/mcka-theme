@@ -26,7 +26,6 @@ js_ie8_files.extend(_build_file_list("js/polyfills", ".js"))
 js_ie8_files.extend(_build_file_list("js/plugins", ".js"))
 js_ie8_files.extend([
     'js/vendor/jquery.form.js',
-    'js/vendor/leaflet.js',
     'js/vendor/json2.js',
     'js/vendor/underscore.js',
     'js/vendor/backbone.js',
@@ -38,6 +37,7 @@ js_ie8_files.extend([
     'js/router.js',
 ])
 js_ie8_files.extend(_build_file_list("js/models", ".js"))
+js_ie8_files.extend(_build_file_list("js/collections", ".js"))
 js_ie8_files.extend(_build_file_list("js/views", ".js"))
 # Javascript squashing
 JS_IE8 = Bundle(
@@ -52,7 +52,6 @@ js_files.extend(_build_file_list("js/polyfills", ".js"))
 js_files.extend(_build_file_list("js/plugins", ".js"))
 js_files.extend([
     'js/vendor/jquery.form.js',
-    'js/vendor/leaflet.js',
     'js/vendor/json2.js',
     'js/vendor/underscore.js',
     'js/vendor/backbone.js',
@@ -65,6 +64,7 @@ js_files.extend([
     'js/router.js',
 ])
 js_files.extend(_build_file_list("js/models", ".js"))
+js_files.extend(_build_file_list("js/collections", ".js"))
 js_files.extend(_build_file_list("js/views", ".js"))
 
 # Javascript squashing

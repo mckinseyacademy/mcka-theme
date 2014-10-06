@@ -41,11 +41,11 @@
     -# CSS
     - if not request.is_IE8
       %link{href: '//fonts.googleapis.com/css?family=Open+Sans:400,600,700', rel: 'stylesheet', type: 'text/css'}
+      %link{href: '//api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.css', rel: 'stylesheet'}
 
     - block css
       %link{rel: "stylesheet", href: "{% static 'css/normalize.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/font-awesome.css' %}"}
-      %link{rel: "stylesheet", href: "{% static 'css/leaflet.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
 
@@ -151,7 +151,11 @@
 
     -# Override if you need another version of jQuery
     - block foundation_jquery
-      %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
+      /[if lt IE 9]
+        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
+      <!--[if (gte IE 9) | (!IE)]><!-->
+        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
+      <!--<![endif]-->
 
     -# jQuery-cookie
     - block jquery_cookie
