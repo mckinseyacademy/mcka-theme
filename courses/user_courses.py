@@ -229,7 +229,7 @@ def load_course_progress(course, user_id):
             lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
     actual_completions = set(component_ids).intersection(completed_ids)
     try:
-        course.user_progress = round_to_int(100 * len(actual_completions)/len(component_ids))
+        course.user_progress = round_to_int(float(100 * len(actual_completions))/len(component_ids))
     except ZeroDivisionError:
         course.user_progress = 0
 
