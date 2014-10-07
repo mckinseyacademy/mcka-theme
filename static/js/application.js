@@ -182,4 +182,9 @@ $(function(){
       player.pause();
     }
   });
+
+  if ($.urlParam('modal')) {
+    var modalId = $.urlParam('modal');
+    $('#' + modalId).foundation('reveal', 'open');
+  }
 });
