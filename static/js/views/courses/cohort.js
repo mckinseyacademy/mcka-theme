@@ -86,12 +86,15 @@ Apros.views.CourseCohort = Backbone.View.extend({
   },
 
   toggle_profiles: function(e) {
-    var _this = this;
     e.preventDefault();
-    this.map.removeLayer(_this.layers);
+    this.$('.student-data a').toggle();
+    var _this = this;
     this.iconsFlag = !this.iconsFlag;
-    $('.student-data a').toggle();
-    this.render_map();
+    console.log(this.iconsFlag);
+    this.map.featureLayer.setFilter(function(f){
+      console.log(f.properties);
+      return _this.iconsFlag;
+    });
   },
 
   createIcon: function(user, loc, layers, x, y, className){
@@ -119,25 +122,6 @@ Apros.views.CourseCohort = Backbone.View.extend({
     this.hoverizePopup(marker);
     layers.push(marker);
     return layers;
-  },
-
-  createCircle: function(data, city, layers) {
-      var city_name = data.query.join(' ');
-      var radius = 3 + (47 * city.count) / (25 + city.count);
-      if(typeof data.results[0] != 'undefined'){
-        var loc = data.results[0][0];
-        var marker = L.circleMarker([loc.lat, loc.lon], {
-            color: '#3384CA',
-            fillColor: '#3384CA',
-            stroke: false,
-            fillOpacity: 0.5
-        }).setRadius(radius)
-          .bindPopup('<div class="city-name">' + city.name + '<div><div class="city-participants">Participants: ' + city.count + '</div>',
-            {'closeOnClick': false});
-        this.hoverizePopup(marker);
-        layers.push(marker);
-      }
-      return layers;
   },
 
   hoverizePopup: function(marker){
@@ -240,15 +224,8 @@ Apros.views.CourseCohort = Backbone.View.extend({
     return layers;
   },
 
-  render_map: function() {
-    this.drawLayers(this.model, this.city_list, this.cities, this.users, this.iconsFlag);
-    var svg = $('#map-cohort .leaflet-overlay-pane').find('svg');
-    svg.css({'width': (svg.attr('width') + 'px'),  'height': (svg.attr('height') + 'px')});
-  },
-
   render: function() {
-    //this.iconsFlag = true;
-    //this.render_map();
+    this.iconsFlag = true;
     this.collection.fetch();
   }
 });
