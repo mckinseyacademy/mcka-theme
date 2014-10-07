@@ -183,6 +183,7 @@ $(function(){
     }
   });
 
+  console.log($.urlParam('modal'));
   if ($.urlParam('modal')) {
     var modalId = $.urlParam('modal');
     $('#' + modalId).foundation('reveal', 'open');
