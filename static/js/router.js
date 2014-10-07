@@ -34,7 +34,7 @@ var Router = Backbone.Router.extend({
 
   course_overview: function(course_id) {
     var container = $('#mk-player');
-    if (container.length) {
+    if (container.length && typeof OO !== 'undefined') {
       OO.Player.create('mk-player', container.data('video-id'), {width: '100%', height: '100%'});
     }
   },
