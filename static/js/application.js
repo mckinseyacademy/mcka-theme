@@ -167,10 +167,6 @@ $(function(){
 
   var intro_modal = $('#intro_modal');
   if (intro_modal.length && !localStorage.intro_shown) {
-    var intro_video = $('#mk-intro-video'),
-        width = $('body').hasClass('ie8') ? '460px' : '100%',
-        player = OO.Player.create('mk-intro-video', intro_video.data('video-id'), {width: width, height: '260px'});
-    intro_modal.data('ooyala_player', player);
     intro_modal.foundation('reveal', 'open');
     localStorage.intro_shown = true;
   }
@@ -187,4 +183,15 @@ $(function(){
     var modalId = $.urlParam('modal');
     $('#' + modalId).foundation('reveal', 'open');
   }
+
+  $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+    var modal = $(this),
+        video = $('[data-video-id]', modal);
+    if (video.length && typeof OO !== 'undefined') {
+      var width = $('body').hasClass('ie8') ? '460px' : '100%',
+          player = OO.Player.create(video.attr('id'), video.data('video-id'), {width: width, height: '260px'});
+      modal.data('ooyala_player', player);
+    }
+  });
+
 });
