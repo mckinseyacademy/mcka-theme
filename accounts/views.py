@@ -380,6 +380,10 @@ def home(request):
     return render(request, 'home/landing.haml', data)
 
 @login_required
+def protected_home(request):
+    return home(request)
+
+@login_required
 def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
