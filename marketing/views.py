@@ -42,4 +42,4 @@ def subscribe(request, subscribe_form=SubscribeForm):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def styleguide(request):
-    return render(request, 'styleguide.haml')
+    return render(request, 'marketing/styleguide.haml')
