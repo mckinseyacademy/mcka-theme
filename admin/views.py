@@ -22,6 +22,7 @@ from django.core.urlresolvers import reverse
 from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.user_api import USER_ROLES
 
 from accounts.models import RemoteUser, UserActivation
 from accounts.controller import is_future_start, save_new_client_image
@@ -316,9 +317,12 @@ def client_admin_email_not_started_users(request, client_id, course_id):
     total_participants = len(participants)
     if total_participants > 0:
         users_ids=[]
+        role = USER_ROLES.TA
+        ta_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
         for participant in participants:
             if return_course_progress(course, participant.id) == 0:
-                users_ids.append(str(participant.id))
+                if str(participant.id) not in ta_users_base:
+                    users_ids.append(str(participant.id))
         additional_fields = ["full_name", "email"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
 

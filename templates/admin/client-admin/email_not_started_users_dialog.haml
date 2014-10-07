@@ -2,18 +2,21 @@
   %h1= _("Send email to non-started participants")
   %hr
 
-  %form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", method: "POST"}
-    - csrf_token
-    = form
-    .large-4.large.columns
-      %h2= _("List of participants")
-      %br
-      - for student in students
-        %tr.student{id: "#{student.id}"}
-          %td
-            %p= student.full_name
-    .large-8.large.columns
-      %h2= _("Message")
-      %br
-        %textarea{id: "email-text", rows: 10, cols:10, name: "message"}
-      %input.button.radius.small{type: "submit", value: "Send email", disabled: "disabled", id: "send-non-started-email"}
+.close-reveal-modal
+  %i.fa.fa-times-circle
+
+%form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", method: "POST"}
+  - csrf_token
+  = form
+  .large-4.large.columns
+    %h2= _("List of participants")
+    %br
+    - for student in students
+      %tr.student{id: "#{student.id}"}
+        %td
+          %p= student.full_name
+  .large-8.large.columns
+    %h2= _("Message")
+    %br
+      %textarea{id: "email-text", rows: 10, cols:10, name: "message"}
+    %input.button.radius.small{type: "submit", value: "Send email", disabled: "disabled", id: "send-non-started-email"}
