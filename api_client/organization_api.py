@@ -1,6 +1,7 @@
 ''' API calls with respect to organizations '''
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from urllib import urlencode
 
 from lib.util import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
@@ -102,6 +103,26 @@ def update_organization(organization_id, organization_data, organization_object=
     )
 
     return JP.from_json(response.read(), organization_object)
+
+@api_error_protect
+def get_grade_complete_count(organization_id, organization_object=JsonObject, *args, **kwargs):
+    qs_params = {}
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
+    response = GET(
+        '{}/{}/{}/metrics/?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+            urlencode(qs_params),
+        )
+    )
+
+    return JP.from_json(response.read(), organization_object)
+
 
 ORGANIZATION_ERROR_CODE_MESSAGES = {
     "create_organization": {

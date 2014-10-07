@@ -59,7 +59,7 @@
               %td
                 %a{href: "mailto:#{student.email}"}= "Email"
               %td
-                %a{href: "#{}"}= "View progress page"
+                %a{href: "/courses/#{course_id}/progress/#{student.id}"}= "View progress page"
               %td
                 %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
 
@@ -107,11 +107,15 @@
 
     ajaxify_overlay_form('#unenroll-confirm-dialog', 'form');
 
+    $('#edit_field_modal').on('click', '.close-dialog', function() {
+      $('#edit_field_modal').foundation('reveal', 'close');
+    });
+
     $('#unenroll-confirm-dialog').on('click', '.close-dialog', function() {
       $('#unenroll-confirm-dialog').foundation('reveal', 'close');
     });
 
-    $('#edit_field_modal').on('click', '#unenroll_course', function(e) {
+    $('#edit_field_modal').on('click', '#unenroll_course, #unenroll_program', function(e) {
       e.preventDefault();
       var href = $(this).attr('href');
       $('#unenroll-confirm-dialog').foundation('reveal', 'open', href);

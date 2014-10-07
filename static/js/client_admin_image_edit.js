@@ -11,20 +11,6 @@ $(function(){
     imageEditor.reloadImages(imageClass, modal);
   });
 
-  $(document).on('closed.fndtn.reveal', '#edit-company-image-modal', function () {
-    var image = $('.company-uploaded-image').attr('src');
-    if($('#edit_image_client_id').val() == 'new'){
-      $('#new-principal').foundation('reveal', 'open');
-      $('.company-image img').attr('src', image);
-      $('#id_logo_url').val(image);
-    }
-    else{
-      $('#edit-principal').foundation('reveal', 'open');
-      $('.company-image img').attr('src', image);
-      $('#id_logo_url').val(image);
-    }
-  });
-
   $(document).on('mouseenter', '#id_company_image', function(){
     $('#browse-company-image').addClass('hover');
   });
@@ -46,7 +32,6 @@ $(function(){
     imageEditor.DoFileUpload(e, $(this), imageClass, modal);
     var image = $('.company-uploaded-image').attr('src');
     $('.company-image img').attr('src', image);
-    $('#id_logo_url').val(image);
   });
 
   $('#edit-company-image-modal').on('submit', '#company-cropping-form', function(e){
@@ -60,19 +45,8 @@ $(function(){
       data: form.serialize()
     }).done(function(data){
         if(typeof(data) != 'undefined'){
-          if(typeof data.image_url != 'undefined' && typeof data.client_id == 'undefined'){
-              $('#new-principal').foundation('reveal', 'open');
-              $('.company-image img').attr('src', data.image_url);
-              $('#id_logo_url').val(data.image_url);
-          }
-          else if(typeof data.client_id != 'undefined'){
-              $('#edit-principal').foundation('reveal', 'open');
-              $('.company-image img').attr('src', data.image_url);
-              $('#id_logo_url').val(data.image_url);
-          }
-          else{
-            $('#edit-company-image-modal').foundation('reveal', 'close');
-          }
+          $('.company-image img').attr('src', data.image_url);
+          $('#edit-company-image-modal').foundation('reveal', 'close');
         }
       });
     });

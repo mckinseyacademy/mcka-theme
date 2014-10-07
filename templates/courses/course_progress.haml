@@ -5,9 +5,20 @@
     = program.display_name
     = _(" | Progress | Courses | McKinsey Academy")
 
+- block header
+  - if progress_user.id == user.id
+    - include "header.haml"
+  - else
+    - include "admin/admin_header.haml"
+
 - block current_content
   #course-progress
-    %h1 Course Progress for '={user.username}'
+    - if progress_user.id == user.id
+      %h1
+        Course Progress for '={progress_user.username}'
+    - else
+      %h1.admin-view
+        Viewing Course Progress for '={progress_user.username} (={progress_user.full_name})'
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     .sub-1 PROGRESS
@@ -75,10 +86,9 @@
               %td.lesson-progress
                 %ul.group-grades
                   - for grade in activity.grades
-                    - ifequal grade None
-                      %li -
-                    - else
-                      %li ={grade}
+                    %li ={grade}
+                  - for i in activity.pending_grades
+                    %li -
 
   #progress_modal.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal

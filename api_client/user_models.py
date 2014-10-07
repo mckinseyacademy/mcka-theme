@@ -40,7 +40,7 @@ class UserResponse(JsonObjectWithImage):
         for field, value in self.__dict__.iteritems():
             if field not in unserializable_fields:
                 if field == 'avatar_url':
-                    setattr(self, 'avatar_url', self.image_url(size=40))
+                    setattr(self, 'avatar_url', self.image_url(size=48))
                 user[field] = self.get(field)
         return user
 

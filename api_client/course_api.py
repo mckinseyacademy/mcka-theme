@@ -11,6 +11,7 @@ from .json_object import JsonObject
 from .json_requests import GET
 from .json_requests import POST
 
+from .group_models import GroupInfo
 from . import course_models
 
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
@@ -163,6 +164,27 @@ def get_course_content(course_id, content_id):
     )
 
     return JP.from_json(response.read())
+
+@api_error_protect
+def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args, **kwargs):
+    ''' get groups associated with this course '''
+    qs_params = {}
+    qs_params.update(kwargs)
+
+    if group_type:
+        qs_params["type"] = group_type
+
+    url = '{}/{}/{}/groups'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+    )
+
+    if len(qs_params.keys()) > 0:
+        url += "?{}".format(urlencode(qs_params))
+
+    response = GET(url)
+    return JP.from_json(response.read(), group_object)
 
 @api_error_protect
 def get_user_list_json(course_id, program_id = None, client_id = None):

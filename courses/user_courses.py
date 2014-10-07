@@ -169,6 +169,40 @@ def check_user_course_access(func):
 
     return user_course_access_checker
 
+class CompanyAdminAccessDeniedError(PermissionDenied):
+    '''
+    Exception to be thrown when company admin has no company in common with desired user to view
+    '''
+    def __init__(self, user_id, admin_user_id):
+        self.user_id = user_id
+        self.admin_user_id = admin_user_id
+        super(CompanyAdminAccessDeniedError, self).__init__()
+
+    def __str__(self):
+        return "Access denied to user {} for data belonging to {}".format(self.admin_user_id, self.user_id)
+
+    def __unicode__(self):
+        return u"Access denied to user {} for data belonging to {}".format(self.admin_user_id, self.user_id)
+
+def check_company_admin_user_access(func):
+    '''
+    Decorator which will raise a CompanyAdminAccessDeniedError if user and company admin user do not have a common organization
+    '''
+    @functools.wraps(func)
+    def admin_user_user_access_checker(request, user_id, *args, **kwargs):
+        if not request.user.is_mcka_admin:
+            def org_set(uid):
+                return set([o.id for o in user_api.get_user_organizations(uid)])
+
+            common_orgs = org_set(user_id).intersection(org_set(request.user.id))
+            if len(common_orgs) < 1:
+                raise CompanyAdminAccessDeniedError(user_id, request.user.id)
+
+        return func(request, user_id, *args, **kwargs)
+
+    return admin_user_user_access_checker
+
+
 def _inject_formatted_data(program, course, page_id, static_tab_info=None):
     if program:
         for program_course in program.courses:

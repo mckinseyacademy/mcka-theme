@@ -12,7 +12,7 @@ The steps we'll follow are as follows:
 - Prepare LMS to respond to API / XBlock requests from Apros
 - Configure your system to use a common domain between Apros and LMS
 
-_Throughout, this document refers to the names `lms.local.org` and `mckinseyacademy.local.org`. It should be noted that these are simply names that we'll use when adding the systems to the same domain. You can use whatever names you like, but the important thing is that they have a common domain, to allow easy access to the LMS session cookie within Apros which enables data transfer through the XBlock.
+Throughout, this document refers to the names `lms.mcka.local` and `mcka.local`. It should be noted that these are simply names that we'll use when adding the systems to the same domain. You can use whatever names you like, but the important thing is that they have a common domain, to allow easy access to the LMS session cookie within Apros which enables data transfer through the XBlock.
 
 [devstack-apros-setup]: devstack_apros_setup.md
 
@@ -161,10 +161,10 @@ _Sqlite is sometimes easier to operate with than mySql, but this is purely a cho
 #### Configure the name to use for the LMS instance, like this:
 
     API_SERVER_ADDRESS = 'http://localhost:8000'
-    LMS_BASE_DOMAIN = 'local.org'
+    LMS_BASE_DOMAIN = 'mcka.local'
     LMS_SUB_DOMAIN = 'lms'
 
-`API_SERVER_ADDRESS` could be the dns name that we'll setup later (e.g. http://lms.local.org)
+`API_SERVER_ADDRESS` could be the dns name that we'll setup later (e.g. http://lms.mcka.local)
 `LMS_BASE_DOMAIN` will be a common domain for both the LMS system and Apros system.
 `LMS_SUB_DOMAIN` is the subdomain for the LMS system
 
@@ -210,7 +210,7 @@ This file can only be found in the devstack environment
 
 #### Add an array of servers for which the LMS will support CORS requests:
     "CORS_ORIGIN_WHITELIST": [
-        "mckinseyacademy.local.org"
+        "mcka.local"
     ],
 
 _This should include the fully qualified domain name for the Apros system that we'll set up_
@@ -248,73 +248,32 @@ EDX_API_KEY also needs to be set in lms.auth.json - we are not sure why this is
 
 ## Step 5 - Configure your machine to use a common domain for Apros and LMS
 
-So, the systems are now setup to talk to each other using the names `lms.local.org` and `mckinseyacademy.local.org`. Now, we need to ensure that the systems will respond to those names with the correct data. There are a numer of ways of doing this, but a good way is using nginx.
+So, the systems are now setup to talk to each other using the names `lms.mcka.local` and `mcka.local`. Now, we need to ensure that the systems will respond to those names with the correct data. There are a numer of ways of doing this, but an easy way is the included basic reverse proxy server.
 
 ### Map names in local hosts file
 
 To allow your machine to address those names locally add the following entries to your hosts file:
 
     # LMS and API client names
-    127.0.0.1       lms.local.org
-    127.0.0.1       mckinseyacademy.local.org
+    127.0.0.1       mcka.local
+    127.0.0.1       cms.mcka.local
+    127.0.0.1       studio.mcka.local
 
+Ensure that the settings in`local_settings.py` match the entries in your hosts file.
 
-### Install nginx
+### Set up the reverse proxy server
 
 This proxy setup is required for xblocks authoring to work properly, since the lms and cms must be able to share cookies.
 
-* On Mac - `brew install nginx`
-* On Windows - Follow the instuctions at http://nginx.org/en/docs/windows.html
-* On Linux - `sudo yum install nginx` or `sudo apt-get install nginx` depending upon your system (refer to http://nginx.org/en/linux_packages.html for more details)
+The proxy server requires twisted, so first run `pip install twisted`
 
-It is worth a quick look at the nginx beginners' guide - http://nginx.org/en/docs/beginners_guide.html
+Now you can start the proxy with this command:
 
-### Edit nginx.conf to proxy calls to local web applications
+    python -m util.devproxy
 
-nginx uses information in the `nginx.conf` file to configure its operation _(by default on Mac it appears to be installed in /usr/local/etc/nginx)_
+Once it's running, you can browse to http://mcka.local:8888 to see Apros.
 
-Change `nginx.conf` to proxy calls to `lms.local.org` and `mckinseyacademy.local.org` as follows:
-
-    # 1 - McKinsey Academy server
-    server {
-        listen 80;
-        server_name  mckinseyacademy.local.org;
-        merge_slashes off;
-        location / {
-            # proxy to django listening on 127.0.0.1:3000
-            proxy_pass http://localhost:3000/;
-        }
-        # proxy calls to c4x to lms asset host
-        location /c4x/ {
-            proxy_pass http://localhost:8000/c4x/;
-        }
-    }
-    #
-    # 2 - LMS Server
-    server {
-        listen 80;
-        server_name  lms.local.org;
-        merge_slashes off;
-        location / {
-            # proxy to django listening on 127.0.0.1:8000
-            proxy_pass http://localhost:8000/;
-        }
-    }
-
-
-### Startup nginx
-
-Simply execute the command `(sudo) nginx`.
-
-If you edit the nginx.conf file at any time, you will need to reload nginx with the following command:
-
-    (sudo) nginx -s reload
-
-**With Python environments one may become used to changes taking effect without a restart - changes to nginx.conf will not take effect unless the reload command is executed**
-
-To stop nginx use the command:
-
-    (sudo) nginx -s quit
+If you want to run the proxy on port 80, add `DEV_PROXY_PORT = 80` to your `local_settings.py`, and start the proxy with `sudo python -m util.devproxy`
 
 ## After you're done
 

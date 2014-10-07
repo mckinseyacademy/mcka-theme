@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 
 from api_client import user_api, course_api
+from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
@@ -25,7 +26,7 @@ from django.test import TestCase
 # from importlib import import_module
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation, UserPasswordReset
-from .controller import user_activation_with_data, ActivationError, is_future_start, save_profile_image
+from .controller import user_activation_with_data, ActivationError, is_future_start
 from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
@@ -39,6 +40,7 @@ from django.contrib.auth.views import password_reset, password_reset_confirm, pa
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
+
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
@@ -384,7 +386,7 @@ def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
     user_data = {
-        "user_image_url": user.image_url(size=120, path='absolute'),
+        "user_image_url": user.image_url(size=160, path='absolute'),
         "user": user
     }
     return render(request, 'accounts/user_profile.haml', user_data)
@@ -424,7 +426,7 @@ def user_profile_image_edit(request):
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
 
-            save_profile_image(cropped_example, image_url + '.jpg')
+            JsonObjectWithImage.save_profile_image(cropped_example, image_url + '.jpg')
             user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + image_url + '.jpg'})
             request.user.avatar_url = '/accounts/' + image_url + '.jpg'
             request.user.save()
@@ -473,7 +475,7 @@ def upload_profile_image(request, user_id):
             temp_image = request.FILES['profile_image']
             allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
             if temp_image.content_type in allowed_types:
-                save_profile_image(Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
+                JsonObjectWithImage.save_profile_image(Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
                 user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/images/profile_image-{}.jpg'.format(user_id)})
                 request.user.avatar_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
                 request.user.save()

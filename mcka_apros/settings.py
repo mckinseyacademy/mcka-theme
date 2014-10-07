@@ -288,6 +288,11 @@ MAPBOX_API = {
     'secret_token': 'sk.eyJ1IjoibWNraW5zZXlhY2FkZW15IiwiYSI6Im9vX1JtRmcifQ.cW8tajahj-HfnK00IsD9qg',
 }
 
+# image sizes to generate from the originally uploaded file
+GENERATE_IMAGE_SIZES = [48, 160]
+# remove any of these sizes while regenerating the changed images
+REMOVE_IMAGE_SIZES = [40, 120]
+
 try:
     from local_settings import *
 except ImportError:

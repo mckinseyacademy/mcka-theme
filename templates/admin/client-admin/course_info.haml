@@ -37,9 +37,13 @@
         %li= _("Started:")
           %b= metrics.users_started
         %li= _("Completed:")
+          %b= metrics.users_completed
         %li= _("% Completed:")
+          %b= metrics.percent_completed
 
       %h2= _("FORUM INFORMATION")
       %ul
         %li= _("Active discussions:")
+          %b= metrics.num_active_threads
         %li= _("Posts:")
+          %b= metrics.num_threads
