@@ -38,7 +38,7 @@
            .rank your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span>
           - else
             .rank your proficiency position <br> will be displayed here
-          - if proficiency.leaders
+          - if proficiency.has_leaders
             - for leader in proficiency.leaders
               .user
                 %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
@@ -70,11 +70,11 @@
         %header
           .label-5 Progress:
           .label-4 cohort average = ={completions.course_average_display}%
-          - if completions.position
+          - if completions.position and completions.user_progress_value
             .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
           - else
             .rank your progress position <br> will be displayed here
-          - if completions.leaders
+          - if completions.has_leaders
             - for leader in completions.leaders
               .user
                 %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}

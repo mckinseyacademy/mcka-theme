@@ -63,6 +63,10 @@ class Proficiency(JsonObject):
     def course_average_display(self):
         return round_to_int_bump_zero(100*self.course_average_value)
 
+    @property
+    def has_leaders(self):
+        return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].grade > 0
+
 class UserProgress(JsonObject):
     @property
     def user_progress_value(self):
@@ -84,6 +88,10 @@ class Progress(UserProgress):
     @property
     def course_average_display(self):
         return round_to_int_bump_zero(self.course_average_value)
+
+    @property
+    def has_leaders(self):
+        return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].user_progress_value > 0
 
 
 def build_page_info_for_course(
