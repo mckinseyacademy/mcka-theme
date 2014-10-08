@@ -61,7 +61,7 @@ from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnatt
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 
-from courses.user_courses import return_course_progress
+from courses.controller import return_course_progress, organization_course_progress_user_list
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -183,14 +183,16 @@ def client_admin_course_participants(request, client_id, course_id):
 
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
     total_participants = len(participants)
-    course = course_api.get_course(course_id, depth=4)
     if total_participants > 0:
         users_ids = [str(user.id) for user in participants]
+        users_progress = organization_course_progress_user_list(course_id, client_id)
+        user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+
         additional_fields = ["full_name", "title", "avatar_url"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
         for student in students:
             student.avatar_url = student.image_url(size=48)
-            student.progress = return_course_progress(course, student.id)
+            student.progress = user_progress_lookup[str(student.id)] if str(student.id) in user_progress_lookup else 0
     else:
         students = []
 
@@ -222,11 +224,13 @@ def client_admin_download_course_report(request, client_id, course_id):
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
 
     users_ids = [str(user.id) for user in participants]
+    users_progress = organization_course_progress_user_list(course_id, client_id)
+    user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+
     additional_fields = ["full_name", "title", "avatar_url"]
     students = user_api.get_users(ids=users_ids, fields=additional_fields)
-    course = course_api.get_course(course_id, depth=4)
     for student in students:
-        student.progress = return_course_progress(course, student.id)
+        student.progress = user_progress_lookup[str(student.id)] if str(student.id) in user_progress_lookup else 0
 
     url_prefix = "{}://{}".format(
         "https" if request.is_secure() else "http",

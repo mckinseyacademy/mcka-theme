@@ -298,9 +298,26 @@ def round_to_int_bump_zero(value):
         rounded_value = 1
     return rounded_value
 
+def _individual_course_progress_metrics(course_id, user_id):
+    return course_api.get_course_metrics_completions(
+        course_id,
+        user_id=user_id,
+        completions_object_type=Progress,
+        skipleaders=True
+    )
+
+def organization_course_progress_user_list(course_id, organization_id):
+    return course_api.get_course_metrics_completions(
+        course_id,
+        organizations=organization_id,
+        completions_object_type=Progress
+    ).leaders
+
+def return_course_progress(course, user_id):
+    return _individual_course_progress_metrics(course.id, user_id).user_progress_display
+
 def average_progress(course, user_id):
-    metrics = course_api.get_course_metrics_completions(course.id, user_id=user_id, completions_object_type=Progress, skipleaders=True)
-    return metrics.course_average_display
+    return _individual_course_progress_metrics(course.id, user_id).course_average_display
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
