@@ -8,17 +8,8 @@ var map_opts = {
 
 Apros.views.CourseCohort = Backbone.View.extend({
 
-  iconsFlag: true,
-  users: [],
-  ta_user: [],
-  city_list: [],
-  zoomLevel: 1,
   popupTimeout: false,
   popupTime: 700,
-
-  defaults: {
-    model: new Apros.models.LocationData
-  },
 
   events: {
     'click .select-board a': 'update_scope',
@@ -30,47 +21,56 @@ Apros.views.CourseCohort = Backbone.View.extend({
     this.listenTo(this.collection, 'sync', this.addGeodata);
     this.map = L.mapbox.map('map-cohort', mapbox_map_id, map_opts)
       .setView([51.505, -0.09], 1);
+    this.mapLayer = L.mapbox.featureLayer().addTo(this.map);
+    this.listenTo(this.mapLayer, 'layeradd', this.addLayer);
   },
 
-  addGeodata: function(models) {
-    var _this = this;
-    var geoJsonData = {
+  geoJsonTemplate: function() {
+    var geoJson = {
       type: 'FeatureCollection',
       features: []
     }
+    return geoJson;
+  },
+
+  addGeodata: function(models) {
+    var _this = this,
+        cityJsonData = this.geoJsonTemplate(),
+        userJsonData = this.geoJsonTemplate();
 
     models.each(function(model){
-      var size = model.size(),
-          radius = 3 + (47 * size) / (25 + size);
+      var users = _this.collection.usersByCity(model.name()),
+          step = (2 * Math.PI) / users.length,
+          angle = 0;
 
-      geoJsonData.features.push({
-        type: 'Feature',
-        properties: {
-          count: radius,
-          popup: '<div class="city-name">' + model.name() + '<div><div class="city-participants">Participants: ' + model.size() + '</div>'
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: model.latLng()
-        }
+      cityJsonData.features.push(model.markerGeoJson());
+
+      _(users).each(function(user, idx){
+        userJsonData.features.push(model.userGeoJson(user));
       });
     });
 
-    var geoJson = L.geoJson(geoJsonData, {
+    var geoJson = L.geoJson(cityJsonData, {
       pointToLayer: function(feature, latlng) {
-        var marker = L.circleMarker(latlng, {
-          color: '#3384CA',
-          fillColor: '#3384CA',
-          stroke: false,
-          fillOpacity: 0.5,
-          radius: feature.properties.count
-        });
-        marker.bindPopup(feature.properties.popup, {'closeOnClick': false});
-        _this.hoverizePopup(marker);
+        var marker = L.circleMarker(latlng, feature.properties.circle);
         return marker;
       }
     }).addTo(this.map);
 
+    this.mapLayer.setGeoJSON(userJsonData);
+  },
+
+  addLayer: function(e) {
+    var marker = e.layer,
+        feature = marker.feature,
+        latlng = feature.geometry.coordinates;
+
+    if (feature.properties.icon) {
+      marker.setIcon(L.icon(feature.properties.icon));
+    }
+
+    marker.bindPopup(feature.properties.popup, {'closeOnClick': false});
+    this.hoverizePopup(marker);
   },
 
   update_scope: function(e) {
@@ -81,41 +81,14 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   toggle_profiles: function(e) {
     e.preventDefault();
+    var _this = this,
+        el = $(e.currentTarget),
+        show = /Show/.test(el.text());
     this.$('.student-data a').toggle();
-    var _this = this;
-    this.iconsFlag = !this.iconsFlag;
-    console.log(this.iconsFlag);
-    this.map.featureLayer.setFilter(function(f){
-      console.log(f.properties);
-      return _this.iconsFlag;
+    this.mapLayer.setFilter(function(f){
+      var toggle = f.properties.icon ? show : true;
+      return toggle;
     });
-  },
-
-  createIcon: function(user, loc, layers, x, y, className){
-    var myIcon = L.icon({
-      iconUrl: user.avatar_url,
-      iconRetinaUrl: user.avatar_url,
-      iconSize: [40, 40],
-      className: className
-    });
-    if(user.title == null){
-      user.title = '';
-    }
-    if(className == 'ta_user'){
-      myIcon.iconSize = [44, 44];
-      var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name +
-        '</div><div class="person-title">' + user.title + '</div><br><a href="#" data-reveal-id="contact-ta">Email</a>',
-        {'closeOnClick': false});
-    }else{
-      var marker = L.marker([(loc.lat + x), (loc.lon + y)], {icon: myIcon})
-      .bindPopup('<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name +
-        '</div><div class="person-title">' + user.title + '</div>',
-        {'closeOnClick': false});
-    }
-    this.hoverizePopup(marker);
-    layers.push(marker);
-    return layers;
   },
 
   hoverizePopup: function(marker){
@@ -129,20 +102,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
     });
   },
 
-  delayPopupClose: function(){
-    var _this = this;
-    var popup = $('.leaflet-popup-pane');
-    popup.on('mouseover', function(){
-      clearTimeout(_this.popupTimeout);
-    });
-    popup.on('mouseout', function (e) {
-      var that = this;
-      _this.popupTimeout = setTimeout(function(){_this.map.closePopup();}, _this.popupTime);
-    });
-  },
-
   render: function() {
-    this.iconsFlag = true;
     this.collection.fetch();
   }
 });

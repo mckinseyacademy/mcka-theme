@@ -6,5 +6,54 @@ Apros.models.City = Backbone.Model.extend({
   size: function() {
     var city = this.get('text');
     return this.collection.userCities()[city];
+  },
+
+  markerGeoJson: function() {
+    var size = this.size(),
+        radius = 3 + (47 * size) / (25 + size);
+
+    var geoJson = {
+      type: 'Feature',
+      properties: {
+        popup: '<div class="city-name">' + this.name() + '<div><div class="city-participants">Participants: ' + this.size() + '</div>',
+        circle: {
+          color: '#3384CA',
+          fillColor: '#3384CA',
+          stroke: false,
+          fillOpacity: 0.5,
+          radius: radius
+        }
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: this.latLng()
+      }
+    }
+
+    return geoJson;
+  },
+
+  userGeoJson: function(user) {
+    var geoJson = {
+      type: 'Feature',
+      properties: {
+        popup: '<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name + '</div><div class="person-title">' + user.title + '</div>',
+        icon: {
+          iconUrl: user.avatar_url,
+          iconRetinaUrl: user.avatar_url,
+          iconSize: [40, 40]
+        }
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: this.latLng()
+      }
+    }
+
+    if (user.ta_username) {
+      geoJson.properties.popup += '<br><a href="#" data-reveal-id="contact-ta">Email</a>';
+    }
+
+    return geoJson;
   }
 });

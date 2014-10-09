@@ -21,5 +21,11 @@ Apros.collections.CohortCities = Backbone.Collection.extend({
       return user.city;
     });
     return this.citySize;
+  },
+
+  usersByCity: function(city) {
+    return _(CohortMapUsers).filter(function(user){
+      return user.city === city;
+    });
   }
 });
