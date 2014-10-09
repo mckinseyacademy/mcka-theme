@@ -388,7 +388,7 @@ def get_course_metrics_grades(course_id, grade_object_type=JsonObject, **kwargs)
     return JP.from_json(response.read(), grade_object_type)
 
 @api_error_protect
-def get_course_metrics_completions(course_id, **kwargs):
+def get_course_metrics_completions(course_id, completions_object_type=JsonObject, **kwargs):
     ''' retrieves users who are leading in terms of  course module completions '''
 
     qs_params = {"count": 3}
@@ -402,7 +402,7 @@ def get_course_metrics_completions(course_id, **kwargs):
     )
     response = GET(url)
 
-    return JP.from_json(response.read())
+    return JP.from_json(response.read(), completions_object_type)
 
 @api_error_protect
 def get_course_social_metrics(course_id):

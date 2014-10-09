@@ -47,7 +47,6 @@ class AcademyGradebook(JsonObject):
     }
 
 class Proficiency(JsonObject):
-
     @property
     def user_grade_value(self):
         return self.user_grade if hasattr(self, "user_grade") and self.user_grade is not None else 0
@@ -62,10 +61,37 @@ class Proficiency(JsonObject):
 
     @property
     def course_average_display(self):
-        display_value = round_to_int(100*self.course_average_value)
-        if display_value < 1 and self.course_average_value > 0:
-            display_value = 1
-        return display_value
+        return round_to_int_bump_zero(100*self.course_average_value)
+
+    @property
+    def has_leaders(self):
+        return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].grade > 0
+
+class UserProgress(JsonObject):
+    @property
+    def user_progress_value(self):
+        return self.completions if hasattr(self, "completions") and self.completions is not None else 0
+
+    @property
+    def user_progress_display(self):
+        return round_to_int(self.user_progress_value)
+
+class Progress(UserProgress):
+    object_map = {
+        "leaders": UserProgress,
+    }
+
+    @property
+    def course_average_value(self):
+        return self.course_avg if hasattr(self, "course_avg") and self.course_avg is not None else 0
+
+    @property
+    def course_average_display(self):
+        return round_to_int_bump_zero(self.course_average_value)
+
+    @property
+    def has_leaders(self):
+        return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].user_progress_value > 0
 
 
 def build_page_info_for_course(
@@ -274,9 +300,33 @@ def load_static_tabs(course_id):
 def round_to_int(value):
     return int(round(value))
 
+def round_to_int_bump_zero(value):
+    rounded_value = round_to_int(value)
+    if rounded_value < 1 and value > 0:
+        rounded_value = 1
+    return rounded_value
+
+def _individual_course_progress_metrics(course_id, user_id):
+    return course_api.get_course_metrics_completions(
+        course_id,
+        user_id=user_id,
+        completions_object_type=Progress,
+        skipleaders=True
+    )
+
+def organization_course_progress_user_list(course_id, organization_id, count=3):
+    return course_api.get_course_metrics_completions(
+        course_id,
+        organizations=organization_id,
+        count=count,
+        completions_object_type=Progress
+    ).leaders
+
+def return_course_progress(course, user_id):
+    return _individual_course_progress_metrics(course.id, user_id).user_progress_display
+
 def average_progress(course, user_id):
-    metrics = course_api.get_course_metrics_completions(course.id, user_id=user_id, skipleaders=True)
-    return metrics.course_avg
+    return _individual_course_progress_metrics(course.id, user_id).course_average_display
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
@@ -339,7 +389,7 @@ def get_proficiency_leaders(course_id, user_id):
     return proficiency
 
 def get_progress_leaders(course_id, user_id):
-    completions = course_api.get_course_metrics_completions(course_id, user_id=user_id)
+    completions = course_api.get_course_metrics_completions(course_id, user_id=user_id, completions_object_type=Progress)
     tailor_leader_list(completions.leaders)
     return completions
 
@@ -378,7 +428,7 @@ def get_social_metrics(course_id, user_id):
         point_sum += user.points
         users.append(user)
 
-    course_avg = point_sum / total_enrollments if total_enrollments > 0 else 0
+    course_avg = float(point_sum) / total_enrollments if total_enrollments > 0 else 0
 
     # sort by social score
     leaders = sorted(users, key=lambda u: u.points, reverse=True)
@@ -392,7 +442,7 @@ def get_social_metrics(course_id, user_id):
     return {
         'points': user.points if user else 0,
         'position': user.rank if user else None,
-        'course_avg': round_to_int(course_avg),
+        'course_avg': round_to_int_bump_zero(course_avg),
         'leaders': leaders[:3]
     }
 
