@@ -262,6 +262,35 @@
     ul{
       li{
         display:block;
+        }
+      }
+    }
+
+  #program_course_list {
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    tr {
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+    }
+    tbody tr:nth-child(odd) {
+      background: #fff;
+    }
+    tbody tr:last-child {
+      border-left: none;
+      border-right: none;
+      border-top: 1px solid #ddd;
+      background: $mckinsey-academy-bright-gray;
+      td {
+        background: $mckinsey-academy-bright-gray;
+        font-style: italic;
+        color: $mckinsey-dark-grey;
+        b {
+          font-style: normal;
+          color: $mckinsey-orange;
+        }
       }
     }
   }
