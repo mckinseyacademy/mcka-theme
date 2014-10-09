@@ -6,6 +6,7 @@ import urllib2 as url_access
 from urllib import quote as urlquote
 
 from django.conf import settings
+from django.core.mail import EmailMessage
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -16,10 +17,12 @@ from django.utils.text import slugify
 from django.utils.dateformat import format
 from django.core.exceptions import ValidationError
 from django.core import serializers
+from django.core.urlresolvers import reverse
 
 from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.user_api import USER_ROLES
 
 from accounts.models import RemoteUser, UserActivation
 from accounts.controller import is_future_start, save_new_client_image
@@ -304,6 +307,51 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
         return render(request, 'admin/client-admin/unenroll_dialog_confirm.haml', data)
     else:
         return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_email_not_started(request, client_id, course_id):
+    students = []
+    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+    course = course_api.get_course(course_id)
+    total_participants = len(participants)
+    if total_participants > 0:
+        obs_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
+        users_progress = organization_course_progress_user_list(course_id, client_id, count=total_participants)
+        user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+        users_ids = [str(p.id) for p in participants if str(p.id) not in user_progress_lookup and str(p.id) not in obs_users_base]
+        additional_fields = ["full_name", "email"]
+        students = user_api.get_users(ids=users_ids, fields=additional_fields)
+
+    error = None
+    if request.method == 'POST':
+        user = user_api.get_user(request.user.id)
+        email_header_from = user.email
+        email_from = "{}<{}>".format(
+            user.formatted_name,
+            settings.APROS_EMAIL_SENDER
+        )
+        email_to = [student.email for student in students]
+        email_content = request.POST["message"]
+        email_subject = "Start the {} Course!".format(course.name)
+
+        try:
+            email = EmailMessage(email_subject, email_content, email_from, email_to, headers = {'Reply-To': email_header_from})
+            email.send(fail_silently=False)
+        except ApiError as err:
+            error = err.message
+
+        redirect_url = reverse('client_admin_course', kwargs={'client_id': client_id, 'course_id': course_id})
+        return HttpResponseRedirect(redirect_url)
+
+    data = {
+        'students': students,
+        'client_id': client_id,
+        'course_id': course_id,
+    }
+
+    return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):

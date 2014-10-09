@@ -1,5 +1,5 @@
 - extends "admin/admin_layout.haml"
-
+- load staticfiles
 - block content
   .admin-detail.row
     .large-12.large.columns
@@ -47,3 +47,35 @@
           %b= metrics.num_active_threads
         %li= _("Posts:")
           %b= metrics.num_threads
+    %hr
+    .large-12.large.columns
+      %h2= _("STATUS")
+      %p
+        %i= _("Current status of all participants who have completed, are in progress, or not yet started this course.")
+      %br
+      .large-8.large.columns
+      #email_not_started.large-4.large.columns
+        - if metrics.users_started < metrics.users_enrolled
+          %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", data-reveal-id: "send-email-not-started-modal", data-reveal-ajax: "true"}= _("Email participants not started")
+        - else
+          %a.no-participants= _("Email participants not started")
+            .mcka-tooltip
+              %p.style-4
+                All participants have already started the course
+
+    #send-email-not-started-modal.reveal-modal.medium{'data-reveal': None}
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    $(document).on('keyup', '#email-text', function(e) {
+      if(e.target.value === ''){
+        $('#send-non-started-email').attr('disabled', 'disabled');
+      } else {
+        $("#send-non-started-email").removeAttr('disabled');
+      }
+    });
+
+    $(document).on('submit', 'form', function(e) {
+      $('#send-non-started-email').attr('disabled', 'disabled');
+    });

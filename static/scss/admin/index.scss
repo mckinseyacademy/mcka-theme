@@ -5,6 +5,47 @@
     margin-bottom: 0;
   }
 
+  .no-participants {
+    cursor: default;
+
+    &:hover {
+      .mcka-tooltip { display: block; }
+    }
+  }
+
+  .mcka-tooltip {
+    color: $mckinsey-dark-grey;
+    position: absolute;
+    background: $pure-white;
+    border-radius: 5px;
+    border: 1px solid $border-line;
+    white-space: nowrap;
+    padding: 5px;
+    right: 100%;
+    margin-top: -20px;
+    display: none;
+    @include font-spec(12);
+
+    &.lesson-page { margin-top: -13px; }
+
+    .vertical-index {
+      color: $mckinsey-academy-alt-blue;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      border-style: solid;
+      border-width: 6px;
+      top: 50%;
+      margin-top: -6px;
+      right: -12px;
+      border-color: transparent transparent transparent $pure-white;
+    }
+  }
+
   .admin-detail{
     ul{
       list-style: none;
