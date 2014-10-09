@@ -39,14 +39,12 @@ Apros.views.CourseCohort = Backbone.View.extend({
         userJsonData = this.geoJsonTemplate();
 
     models.each(function(model){
-      var users = _this.collection.usersByCity(model.name()),
-          step = (2 * Math.PI) / users.length,
-          angle = 0;
+      var users = _this.collection.usersByCity(model.name());
 
       cityJsonData.features.push(model.markerGeoJson());
 
       _(users).each(function(user, idx){
-        userJsonData.features.push(model.userGeoJson(user));
+        userJsonData.features.push(model.userGeoJson(user, idx));
       });
     });
 
@@ -64,13 +62,22 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   addLayer: function(e) {
     var marker = e.layer,
-        feature = marker.feature;
+        feature = marker.feature,
+        width = feature.properties.icon.iconSize[0],
+        offset = [0,0];
 
     if (feature.properties.icon) {
       marker.setIcon(L.icon(feature.properties.icon));
+      offset[0] = -(feature.properties.icon.iconAnchor[0] - (width/2))
+      offset[1] = -(feature.properties.icon.iconAnchor[1] - (width/2))
     }
 
-    marker.bindPopup(feature.properties.popup, {'closeOnClick': false});
+    var popup_opts = {
+      closeOnClick: false,
+      offset: offset
+    }
+
+    marker.bindPopup(feature.properties.popup, popup_opts);
     this.hoverizePopup(marker);
   },
 

@@ -33,7 +33,9 @@ Apros.models.City = Backbone.Model.extend({
     return geoJson;
   },
 
-  userGeoJson: function(user) {
+  userGeoJson: function(user, idx) {
+    var width = 40;
+
     var geoJson = {
       type: 'Feature',
       properties: {
@@ -41,7 +43,8 @@ Apros.models.City = Backbone.Model.extend({
         icon: {
           iconUrl: user.avatar_url,
           iconRetinaUrl: user.avatar_url,
-          iconSize: [40, 40]
+          iconSize: [width, width],
+          iconAnchor: [-8 * idx, (width / 2 * idx) + width]
         }
       },
       geometry: {
