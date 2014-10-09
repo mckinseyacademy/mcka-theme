@@ -8,16 +8,10 @@ var map_opts = {
 
 Apros.views.CourseCohort = Backbone.View.extend({
 
-  profiles: true,
-  layers: [],
   iconsFlag: true,
-  fetchedData: false,
-  userProfilesVisible: true,
   users: [],
   ta_user: [],
-  citiesMap: [],
   city_list: [],
-  cities: {},
   zoomLevel: 1,
   popupTimeout: false,
   popupTime: 700,
@@ -145,83 +139,6 @@ Apros.views.CourseCohort = Backbone.View.extend({
       var that = this;
       _this.popupTimeout = setTimeout(function(){_this.map.closePopup();}, _this.popupTime);
     });
-  },
-
-  setCities: function(citiesMap, users, ta_user, city_list, cities){
-    $.each(citiesMap, function(key, value){
-      if(value.city){
-        var city = value.city.toLowerCase();
-        cities[city] = ({'count': value.count, 'name': value.city, 'users': [], 'ta_user': []});
-      }
-    });
-    $.each(users, function(key, value){
-      if(value.city){
-        var city = value.city.toLowerCase();
-        if($.inArray(city, city_list) < 0){
-          city_list.push(city);
-          cities[city] = ({'name': value.city, 'users': [], 'ta_user': []});
-        }
-        cities[city].users.push(value);
-      }
-    });
-    if(typeof ta_user.city != 'undefined'){
-      var city = ta_user.city.toLowerCase();
-      if($.inArray(city, city_list) < 0){
-        city_list.push(city);
-        cities[city] = ({'name': ta_user.city, 'ta_user': []});
-      }
-      cities[city].ta_user = ta_user;
-    }
-    this.cities = cities;
-  },
-
-  drawLayers: function(data, city_list, cities, users, iconsFlag){
-      var layers = [];
-      var _this = this;
-      $.each(city_list, function(key, citykey){
-        var city = cities[citykey];
-        var numElements = 0;
-        if(city && city.users){
-          numElements = city.users.length + 1;
-        }
-        var angle = 0;
-        var step = (2*Math.PI) / numElements;
-        var cityData = data.get(citykey);
-        if(typeof cityData != 'undefined'){
-          if(typeof cityData.results != 'undefined'){
-            if(typeof cityData.results[0] != 'undefined'){
-              layers = _this.createCircle(cityData, city, layers);
-              if(iconsFlag){
-                var loc = cityData.results[0][0];
-                if(typeof city != 'undefined'){
-                  if(typeof city.users != 'undefined' && city.users.length > 0){
-                    $.each(city.users, function(key2, user){
-                      if(typeof cityData.results[0] != 'undefined'){
-                        layers = _this.drawUserIcon(user, layers, loc, angle, step, 'user');
-                        angle += step;
-                      }
-                    });
-                  }
-                  if(typeof city.ta_user.username != 'undefined'){
-                    layers = _this.drawUserIcon(city.ta_user, layers, loc, angle, step, 'ta_user');
-                    angle += step;
-                  }
-                }
-              }
-            }
-          }
-        }
-      });
-      this.layers = L.layerGroup(layers).addTo(_this.map);
-    },
-
-  drawUserIcon: function(user, layers, loc, angle, step, className){
-    var _this = this;
-    var zoomFactor = Math.pow(2, (_this.zoomLevel - 1));
-    var x = 20 / zoomFactor * Math.cos(angle);
-    var y = 20 / zoomFactor * Math.sin(angle);
-    layers = _this.createIcon(user, loc, layers, x, y, className);
-    return layers;
   },
 
   render: function() {

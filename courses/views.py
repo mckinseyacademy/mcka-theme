@@ -144,13 +144,6 @@ def course_cohort(request, course_id):
                     metrics.groups_users.append(user.to_dict())
     metrics.groups_users = json.dumps(metrics.groups_users)
 
-    metrics.cities = []
-    cities = course_api.get_course_metrics_by_city(course_id)
-    for city in cities:
-        if city.city != '':
-            metrics.cities.append({'city': city.city, 'count': city.count})
-    metrics.cities = json.dumps(metrics.cities)
-
     data = {
         'proficiency': proficiency,
         'completions': completions,
