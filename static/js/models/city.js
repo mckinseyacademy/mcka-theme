@@ -4,8 +4,18 @@ Apros.models.City = Backbone.Model.extend({
   latLng: function() { return this.get('geometry').coordinates; },
 
   size: function() {
-    var city = this.get('text');
-    return this.collection.userCities()[city];
+    var name = this.name();
+    var found = _(CohortMapCities).find(function(city){
+      return city.city === name;
+    });
+    return found.count;
+  },
+
+  users: function() {
+    var city = this.name();
+    return _(CohortMapUsers).filter(function(user){
+      return user.city === city;
+    });
   },
 
   markerGeoJson: function() {
@@ -33,8 +43,9 @@ Apros.models.City = Backbone.Model.extend({
     return geoJson;
   },
 
-  userGeoJson: function(user, idx) {
-    var width = 40;
+  userGeoJson: function(user, idx, isTA) {
+    var size = isTA ? 44 : 40;
+    var className = isTA ? 'ta_user' : 'user';
 
     var geoJson = {
       type: 'Feature',
@@ -43,8 +54,9 @@ Apros.models.City = Backbone.Model.extend({
         icon: {
           iconUrl: user.avatar_url,
           iconRetinaUrl: user.avatar_url,
-          iconSize: [width, width],
-          iconAnchor: [-8 * idx, (width / 2 * idx) + width]
+          iconSize: [size, size],
+          iconAnchor: [-8 * idx, (size / 2 * idx) + size],
+          className: className
         }
       },
       geometry: {
@@ -53,7 +65,7 @@ Apros.models.City = Backbone.Model.extend({
       }
     }
 
-    if (user.ta_username) {
+    if (isTA) {
       geoJson.properties.popup += '<br><a href="#" data-reveal-id="contact-ta">Email</a>';
     }
 

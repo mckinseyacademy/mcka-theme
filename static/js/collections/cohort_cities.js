@@ -2,7 +2,10 @@ Apros.collections.CohortCities = Backbone.Collection.extend({
   model: Apros.models.City,
 
   url: function() {
-    var cityList = _(this.userCities()).keys().join(';');
+    var cityList = _(CohortMapCities).reduce(function(list, city){
+      var prefix = list.length ? ';' : ''
+      return list += prefix + city.city;
+    }, '');
     return 'https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/' + cityList + '.json?access_token=' + L.mapbox.accessToken;
   },
 
@@ -13,19 +16,5 @@ Apros.collections.CohortCities = Backbone.Collection.extend({
       });
     });
     return _(cities).compact();
-  },
-
-  userCities: function() {
-    if (this.citySize) return this.citySize;
-    this.citySize = _(CohortMapUsers).countBy(function(user){
-      return user.city;
-    });
-    return this.citySize;
-  },
-
-  usersByCity: function(city) {
-    return _(CohortMapUsers).filter(function(user){
-      return user.city === city;
-    });
   }
 });
