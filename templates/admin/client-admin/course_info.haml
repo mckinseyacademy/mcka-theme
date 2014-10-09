@@ -48,10 +48,21 @@
         %li= _("Posts:")
           %b= metrics.num_threads
     %hr
-    .large-12.large.columns
-      %h2= _("STATUS")
-      %p
-        %i= _("Current status of all participants who have completed, are in progress, or not yet started this course.")
+    %h2= _("STATUS")
+    %p= _("Current status of all participants who have completed, are in progress, or not yet started this course.")
+    #course-status-chart-wrapper
+      %svg#course-status-chart
+    .status-chart-legend
+      %ul.inline-list
+        %li
+          .color.warm-gray
+          = _("Completed")
+        %li
+          .color.turquoise
+          = _("In progress")
+        %li
+          .color.orange
+          = _("Not Started")
       %br
       .large-8.large.columns
       #email_not_started.large-4.large.columns
