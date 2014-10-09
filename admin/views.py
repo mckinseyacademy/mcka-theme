@@ -310,19 +310,17 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_email_not_started_users(request, client_id, course_id):
+def client_admin_email_not_started(request, client_id, course_id):
     students = []
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
     course = course_api.get_course(course_id, depth=4)
     total_participants = len(participants)
     if total_participants > 0:
-        users_ids=[]
-        role = USER_ROLES.TA
-        ta_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
-        for participant in participants:
-            if return_course_progress(course, participant.id) == 0:
-                if str(participant.id) not in ta_users_base:
-                    users_ids.append(str(participant.id))
+        role = USER_ROLES.OBSERVER
+        obs_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
+        users_progress = organization_course_progress_user_list(course_id, client_id)
+        user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+        users_ids = [str(p.id) for p in participants if str(p.id) not in user_progress_lookup and str(p.id) not in obs_users_base]
         additional_fields = ["full_name", "email"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
 
@@ -353,7 +351,8 @@ def client_admin_email_not_started_users(request, client_id, course_id):
         'course_id': course_id,
     }
 
-    return render(request, 'admin/client-admin/email_not_started_users_dialog.haml', data)
+    return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):
