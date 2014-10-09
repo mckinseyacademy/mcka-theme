@@ -69,6 +69,20 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
         .orient("left")
         .tickFormat(formatPercent);
 
+    function make_x_axis() {
+        return d3.svg.axis()
+            .scale(x)
+             .orient("bottom")
+             .ticks(5)
+    }
+
+    function make_y_axis() {
+        return d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(5)
+    }
+
     var area = d3.svg.area()
         .x(function(d) { return x(d.week); })
         .y0(function(d) { return y(d.y0); })
@@ -121,6 +135,21 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
+
+    svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(make_x_axis()
+            .tickSize(-height, 0, 0)
+            .tickFormat("")
+        )
+
+    svg.append("g")
+        .attr("class", "grid")
+        .call(make_y_axis()
+            .tickSize(-width, 0, 0)
+            .tickFormat("")
+        )
   }
 
 });
