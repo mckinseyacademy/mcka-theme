@@ -106,3 +106,4 @@ class PermissionForm(forms.Form):
 class UploadCompanyImageForm(forms.Form):
     ''' form to upload file for company image '''
     company_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
+

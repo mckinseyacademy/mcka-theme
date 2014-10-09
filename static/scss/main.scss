@@ -10,11 +10,18 @@ body{
   }
 }
 
-main[role=main] { margin-bottom: 100px; }
+main[role=main] {
+  min-height: 50%;
+  margin-bottom: 100px;
+}
 
 h1 {
   color: $mckinsey-academy-turquoise;
   @include font-spec(22, normal, 24);
+
+  a {
+    @include font-spec(22, normal, 24);
+  }
 }
 
 h2 {
@@ -153,7 +160,6 @@ blockquote {
   padding-bottom:10px;
   color: #868685;
 }
-
 
 .nav-1,
 .nav-2 {

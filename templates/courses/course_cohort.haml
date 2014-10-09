@@ -38,7 +38,7 @@
            .rank your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span>
           - else
             .rank your proficiency position <br> will be displayed here
-          - if proficiency.leaders
+          - if proficiency.has_leaders
             - for leader in proficiency.leaders
               .user
                 %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
@@ -69,12 +69,12 @@
       %section
         %header
           .label-5 Progress:
-          .label-4 cohort average = ={completions.course_avg}%
-          - if completions.position
-            .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.completions}%</span>
+          .label-4 cohort average = ={completions.course_average_display}%
+          - if completions.position and completions.user_progress_value
+            .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
           - else
             .rank your progress position <br> will be displayed here
-          - if completions.leaders
+          - if completions.has_leaders
             - for leader in completions.leaders
               .user
                 %img.avatar{src: '={leader.avatar_url}', title: '={leader.username}'}
@@ -82,7 +82,7 @@
                   .person-name ={leader.username}
                   - if leader.title
                     .person-title ={leader.title}
-                  .person-rank #={leader.rank} <span>={leader.completions}%</span>
+                  .person-rank #={leader.rank} <span>={leader.user_progress_display}%</span>
           - else
             .user.dummy
               %img.avatar{src: '/static/image/empty_avatar.png'}
