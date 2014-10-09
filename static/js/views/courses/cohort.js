@@ -53,6 +53,8 @@ Apros.views.CourseCohort = Backbone.View.extend({
     var geoJson = L.geoJson(cityJsonData, {
       pointToLayer: function(feature, latlng) {
         var marker = L.circleMarker(latlng, feature.properties.circle);
+        marker.bindPopup(feature.properties.popup, {'closeOnClick': false});
+        _this.hoverizePopup(marker);
         return marker;
       }
     }).addTo(this.map);
@@ -62,8 +64,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
 
   addLayer: function(e) {
     var marker = e.layer,
-        feature = marker.feature,
-        latlng = feature.geometry.coordinates;
+        feature = marker.feature;
 
     if (feature.properties.icon) {
       marker.setIcon(L.icon(feature.properties.icon));
