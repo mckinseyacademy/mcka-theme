@@ -314,10 +314,11 @@ def _individual_course_progress_metrics(course_id, user_id):
         skipleaders=True
     )
 
-def organization_course_progress_user_list(course_id, organization_id):
+def organization_course_progress_user_list(course_id, organization_id, count=3):
     return course_api.get_course_metrics_completions(
         course_id,
         organizations=organization_id,
+        count=count,
         completions_object_type=Progress
     ).leaders
 
