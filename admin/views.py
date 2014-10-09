@@ -1020,6 +1020,10 @@ def workgroup_group_remove(request, group_id):
             data,
         )
 
+    elif request.method == 'DELETE':
+        WorkGroup.delete(group_id)
+        return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
+
     return HttpResponse('', content_type='application/json')
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
