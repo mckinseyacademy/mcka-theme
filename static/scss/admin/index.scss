@@ -205,6 +205,48 @@
     float:left;
   }
 
+  #course-status-chart-wrapper {
+    margin: 0 auto;
+    width: 860px;
+    svg{
+      .grid .tick {
+        stroke: $mckinsey-dark-grey;
+        opacity: 0.7;
+      }
+      .grid path {
+        stroke-width: 0;
+      }
+    }
+  }
+
+  .status-chart-legend {
+    width:100%;
+    margin-left:10%;
+    ul.inline-list {
+      display:inline;
+      float:left;
+      list-style: none;
+      li{
+        display:inline-block;
+        .color {
+          width: rem-calc(12px);
+          height: rem-calc(12px);
+          float: left;
+          margin-right: 5px;
+        }
+        .warm-gray{
+          background: $mckinsey-academy-warm-gray;
+        }
+        .turquoise{
+                  background: $mckinsey-academy-turquoise;
+        }
+        .orange{
+                  background: $mckinsey-orange;
+        }
+      }
+    }
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';
