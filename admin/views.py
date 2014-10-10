@@ -158,6 +158,7 @@ def client_admin_home(request, client_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
 def client_admin_program_detail(request, client_id):
     # In the future, when Companies have multiple program running,
     # we will need to allow them a drop down that allows them to choose from all programs.
