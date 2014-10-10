@@ -247,6 +247,25 @@
     }
   }
 
+  .admin-analytics-progress-wrapper{
+    height:360px;
+    width:760px;
+    float: left;
+  }
+  .admin-analytics-participant-activity-wrapper{
+    height:360px;
+    width:100%;
+    float: left;
+  }
+  .progress_stats{
+    float:left;
+    ul{
+      li{
+        display:block;
+      }
+    }
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';

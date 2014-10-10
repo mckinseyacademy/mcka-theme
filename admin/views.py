@@ -65,6 +65,7 @@ from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletio
 from .permissions import Permissions, PermissionSaveError
 
 from courses.controller import return_course_progress, organization_course_progress_user_list
+from courses.user_courses import return_course_completions_stats
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -256,9 +257,40 @@ def client_admin_download_course_report(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_analytics(request, client_id, course_id):
 
+    course = course_api.get_course(course_id)
+    students = course_api.get_users_list_in_organizations(course_id, client_id)
+    cohort_students = course_api.get_user_list(course_id)
+    metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
+    average_progress = metrics.course_avg
+
+    completed_modules = 0
+    course_modules = 0
+    cohort_completed_modules = 0
+    cohort_course_modules = 0
+
+    for student in students:
+        student_completed, graded = return_course_completions_stats(course, student.id)
+        completed_modules += student_completed
+        course_modules += graded
+    for student in cohort_students:
+        student_completed, graded = return_course_completions_stats(course, student.id)
+        cohort_completed_modules += student_completed
+        cohort_course_modules += graded
+
+    try:
+        course.company_progress = int(completed_modules/course_modules)
+    except ZeroDivisionError:
+        course.company_progress = 0
+    try:
+        course.cohort_progress = int(cohort_completed_modules/cohort_course_modules)
+    except ZeroDivisionError:
+        course.cohort_progress = 0
+
+
     data = {
         'client_id': client_id,
-        'course_id': course_id
+        'course': course,
+        'average_progress': average_progress,
     }
     return render(
         request,
