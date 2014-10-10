@@ -1,48 +1,19 @@
 Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
 
-  initialize: function(){
-    this.render();
+  initialize: function(options){
+    this.options = options;
+    var _this = this;
+    this.model.setUrl(this.options.client_id, this.options.course_id);
+    this.model.fetch({
+      success: function(model, response){
+        model.save(model.parse(response));
+        _this.render();
+      }
+    });
   },
 
   render: function(){
-    var dataJson = [
-            {
-                "week": 1,
-                "Not started": 78,
-                "In progress": 22,
-                "Completed": 0
-            },
-            {
-                "week": 2,
-                "Not started": 70,
-                "In progress": 25,
-                "Completed": 5
-            },
-            {
-                "week": 3,
-                "Not started": 60,
-                "In progress": 30,
-                "Completed": 10
-            },
-            {
-                "week": 4,
-                "Not started": 40,
-                "In progress": 20,
-                "Completed": 40
-            },
-            {
-                "week": 5,
-                "Not started": 10,
-                "In progress": 35,
-                "Completed": 55
-            },
-            {
-                "week": 6,
-                "Not started": 5,
-                "In progress": 25,
-                "Completed": 70
-            }
-  ];
+    var _this = this;
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width = 860 - margin.left - margin.right,
@@ -68,6 +39,10 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
         .scale(y)
         .orient("left")
         .tickFormat(formatPercent);
+
+    var dataJson = $.map(_this.model.attributes, function(value, index) {
+                        return [value];
+                    });
 
     function make_x_axis() {
         return d3.svg.axis()
