@@ -11,6 +11,7 @@ from .json_object import JsonObject
 from .json_requests import GET
 from .json_requests import POST
 
+from .group_models import GroupInfo
 from . import course_models
 
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
@@ -105,7 +106,7 @@ def get_course_news(course_id):
     return JP.from_json(response.read()).postings
 
 @api_error_protect
-def get_course(course_id, depth = 3):
+def get_course(course_id, depth=3):
     '''
     Retrieves course structure information from the API for specified course
     '''
@@ -130,6 +131,27 @@ def get_course(course_id, depth = 3):
     return course
 
 @api_error_protect
+def get_courses(**kwargs):
+    '''
+    Retrieves course structure information from the API for specified courses
+    '''
+    qs_params = {"page_size": 0}
+
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
+
+    response = GET('{}/{}/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        urlencode(qs_params))
+    )
+
+    return CJP.from_json(response.read())
+
+@api_error_protect
 def get_course_content(course_id, content_id):
     ''' returns course content'''
     response = GET(
@@ -142,6 +164,27 @@ def get_course_content(course_id, content_id):
     )
 
     return JP.from_json(response.read())
+
+@api_error_protect
+def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args, **kwargs):
+    ''' get groups associated with this course '''
+    qs_params = {}
+    qs_params.update(kwargs)
+
+    if group_type:
+        qs_params["type"] = group_type
+
+    url = '{}/{}/{}/groups'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+    )
+
+    if len(qs_params.keys()) > 0:
+        url += "?{}".format(urlencode(qs_params))
+
+    response = GET(url)
+    return JP.from_json(response.read(), group_object)
 
 @api_error_protect
 def get_user_list_json(course_id, program_id = None, client_id = None):
@@ -212,7 +255,8 @@ def add_group_to_course_content(group_id, course_id, content_id):
 def get_users_content_filtered(course_id, content_id, *args, **kwargs):
     ''' filter and get course content'''
 
-    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    qs_params = {}
+    qs_params.update(kwargs)
     response = GET(
         '{}/{}/{}/content/{}/users?{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -258,12 +302,6 @@ def get_users_filtered_by_role(course_id):
 @api_error_protect
 def get_course_content_groups(course_id, content_id):
     ''' fetch associates groups to specific content within specific course '''
-    print '{}/{}/{}/content/{}/groups'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            content_id,
-        )
     response = GET(
         '{}/{}/{}/content/{}/groups'.format(
             settings.API_SERVER_ADDRESS,
@@ -293,17 +331,26 @@ def get_course_completions(course_id, user_id=None):
     return JP.from_json(response.read())
 
 @api_error_protect
-def get_course_metrics(course_id):
+def get_course_metrics(course_id, *args, **kwargs):
     ''' retrieves course metrics '''
 
-    url = '{}/{}/{}/metrics'.format(
+    qs_params = {}
+
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
+
+    url = '{}/{}/{}/metrics/?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
-        course_id
+        course_id,
+        urlencode(qs_params),
     )
 
     response = GET(url)
-    return JP.from_json(response.read())
+    return JP.from_json(response.read(), course_models.CourseMetrics)
 
 @api_error_protect
 def get_course_metrics_by_city(course_id, cities=None):
@@ -324,12 +371,11 @@ def get_course_metrics_by_city(course_id, cities=None):
 
 
 @api_error_protect
-def get_course_metrics_grades(course_id, user_id=None, count=3, grade_object_type=JsonObject):
+def get_course_metrics_grades(course_id, grade_object_type=JsonObject, **kwargs):
     ''' retrieves users who are leading in terms of points_scored'''
 
-    qs_params = {"count": count}
-    if user_id:
-        qs_params["user_id"] = user_id
+    qs_params = {"count": 3}
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/metrics/grades/leaders?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -342,12 +388,11 @@ def get_course_metrics_grades(course_id, user_id=None, count=3, grade_object_typ
     return JP.from_json(response.read(), grade_object_type)
 
 @api_error_protect
-def get_course_metrics_completions(course_id, user_id=None, count=3):
+def get_course_metrics_completions(course_id, completions_object_type=JsonObject, **kwargs):
     ''' retrieves users who are leading in terms of  course module completions '''
 
-    qs_params = {"count": count}
-    if user_id:
-        qs_params["user_id"] = user_id
+    qs_params = {"count": 3}
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/metrics/completions/leaders?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -357,7 +402,7 @@ def get_course_metrics_completions(course_id, user_id=None, count=3):
     )
     response = GET(url)
 
-    return JP.from_json(response.read())
+    return JP.from_json(response.read(), completions_object_type)
 
 @api_error_protect
 def get_course_social_metrics(course_id):

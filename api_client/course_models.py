@@ -5,7 +5,7 @@ import math
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-from .json_object import CategorisedJsonObject, JsonObject
+from .json_object import CategorisedJsonObject, JsonObject, DataOnly
 
 # Temporary id converter to fix up problems post opaque keys
 from lib.util import LegacyIdConvert
@@ -95,6 +95,9 @@ class Course(CategorisedJsonObject):
     date_fields = ["start", "end",]
 
     @property
+    def display_id(self):
+        return LegacyIdConvert.legacy_from_new(self.id)
+    @property
     def nav_url(self):
         return '/courses/{}'.format(self.id)
 
@@ -106,6 +109,25 @@ class Course(CategorisedJsonObject):
                 self.start.strftime(settings.DATE_DISPLAY_FORMAT)
             )
         return None
+
+    @property
+    def formatted_end_date(self):
+        if hasattr(self, 'end') and not self.end is None:
+            return "{} {}".format(
+                _("Available"),
+                self.end.strftime(settings.DATE_DISPLAY_FORMAT)
+            )
+        return None
+    @property
+    def formatted_time_span(self):
+        start = end = ''
+        if hasattr(self, 'start') and not self.start is None:
+            start = self.start.strftime(settings.SHORT_DATE_FORMAT)
+        if hasattr(self, 'end') and not self.end is None:
+            end = self.end.strftime(settings.SHORT_DATE_FORMAT)
+        return "{} - {}".format(
+            start, end
+        )
 
     @property
     def percent_complete_message(self):
@@ -151,7 +173,8 @@ class Course(CategorisedJsonObject):
         for lesson in self.chapters:
             for sequential in lesson.sequentials:
                 for page in sequential.pages:
-                    components.extend([child.id for child in page.children if child.category not in filter_out_categories])
+                    if hasattr(page, 'children'):
+                        components.extend([child.id for child in page.children if child.category not in filter_out_categories])
         return components
 
     def lesson_component_ids(self, lesson_id, completions=None, filter_out_categories=[]):
@@ -181,6 +204,14 @@ class Course(CategorisedJsonObject):
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
 
+    @property
+    def display_id(self):
+        return LegacyIdConvert.legacy_from_new(self.course_id)
+
+    @property
+    def real_id(self):
+        return LegacyIdConvert.new_from_legacy(self.course_id, self.course_id)
+
 class CourseList(JsonObject):
     object_map = {
         "courses": CourseListCourse
@@ -208,3 +239,9 @@ class CourseContentGroup(JsonObject):
 
     def __unicode__(self):
         return "group {} in course {}".format(self.group_id, self.course_id)
+
+
+class CourseMetrics(JsonObject):
+    object_map = {
+        "grade_cutoffs": DataOnly
+    }

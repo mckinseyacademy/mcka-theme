@@ -281,6 +281,11 @@ PROGRESS_BAR_COLORS = {
     "proforma": "none",
 }
 
+# image sizes to generate from the originally uploaded file
+GENERATE_IMAGE_SIZES = [48, 160]
+# remove any of these sizes while regenerating the changed images
+REMOVE_IMAGE_SIZES = [40, 120]
+
 try:
     from local_settings import *
 except ImportError:

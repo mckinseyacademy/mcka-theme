@@ -416,3 +416,34 @@ def get_group_project_activities(group_project_chapter):
 def get_group_activity_xblock(activity):
     return [gp for gp in activity.pages[0].children if gp.category == GROUP_PROJECT_CATEGORY][0]
 
+
+def generate_course_report(client_id, course_id, url_prefix, students):
+
+    output_lines = []
+
+    def output_line(line_data_array):
+        output_lines.append(','.join(line_data_array))
+
+    activity_names_row = ["Client ID","","Course ID",""]
+    output_line(activity_names_row)
+
+    group_header_row = [client_id,"", course_id]
+    output_line(group_header_row)
+
+    output_line("--------")
+
+    activity_names_row = ["Full Name","Username","Title","Complete %","Email"]
+    output_line(activity_names_row)
+
+    for student in students:
+        user_row = [student.full_name,student.username,student.title,"{}%".format(str(student.progress)),student.email]
+        output_line(user_row)
+
+    return '\n'.join(output_lines)
+
+def get_organizations_users_completion(client_id, course_id, users_enrolled):
+    users_completed = organization_api.get_grade_complete_count(client_id, courses=course_id).users_grade_complete_count
+    percent_completed = '0%'
+    if users_enrolled > 0:
+        percent_completed = "{}%".format(int(int(users_completed) / int(users_enrolled) * 100))
+    return users_completed, percent_completed

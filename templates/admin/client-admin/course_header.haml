@@ -1,0 +1,20 @@
+%ul
+  %li
+    - if request.resolver_match.url_name == 'client_admin_course'
+      %span.selected= _("Course Info")
+    - else
+      %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}"}
+        = _("Course Info")
+  %li
+    - if request.resolver_match.url_name == 'client_admin_course_participants'
+      %span.selected= _("Participants")
+    - else
+      %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/participants"}
+        = _("Participants")
+  %li
+    - if request.resolver_match.url_name == 'client_admin_course_analytics'
+      %span.selected= _("Analytics")
+    - else
+      %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/analytics"}
+        = _("Analytics")
+        

@@ -10,13 +10,14 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.project_models import Project
-from api_client.group_api import get_groups_of_type, PERMISSION_GROUPS
+from api_client.group_api import get_groups_of_type, get_users_in_group, PERMISSION_GROUPS
 from api_client.group_models import GroupInfo
 from api_client.gradebook_models import CourseSummary, GradeSummary
-from api_client.json_object import JsonObject
+from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
+from admin.models import ReviewAssignmentGroup
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -35,6 +36,7 @@ class AcademyGradeAssessmentType(JsonObject):
 class AcademyGradePolicy(JsonObject):
     object_map = {
         "GRADER": AcademyGradeAssessmentType,
+        "GRADE_CUTOFFS": DataOnly,
     }
 
 class AcademyGradebook(JsonObject):
@@ -45,7 +47,6 @@ class AcademyGradebook(JsonObject):
     }
 
 class Proficiency(JsonObject):
-
     @property
     def user_grade_value(self):
         return self.user_grade if hasattr(self, "user_grade") and self.user_grade is not None else 0
@@ -60,10 +61,37 @@ class Proficiency(JsonObject):
 
     @property
     def course_average_display(self):
-        display_value = round_to_int(100*self.course_average_value)
-        if display_value < 1 and self.course_average_value > 0:
-            display_value = 1
-        return display_value
+        return round_to_int_bump_zero(100*self.course_average_value)
+
+    @property
+    def has_leaders(self):
+        return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].grade > 0
+
+class UserProgress(JsonObject):
+    @property
+    def user_progress_value(self):
+        return self.completions if hasattr(self, "completions") and self.completions is not None else 0
+
+    @property
+    def user_progress_display(self):
+        return round_to_int(self.user_progress_value)
+
+class Progress(UserProgress):
+    object_map = {
+        "leaders": UserProgress,
+    }
+
+    @property
+    def course_average_value(self):
+        return self.course_avg if hasattr(self, "course_avg") and self.course_avg is not None else 0
+
+    @property
+    def course_average_display(self):
+        return round_to_int_bump_zero(self.course_average_value)
+
+    @property
+    def has_leaders(self):
+        return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].user_progress_value > 0
 
 
 def build_page_info_for_course(
@@ -272,9 +300,33 @@ def load_static_tabs(course_id):
 def round_to_int(value):
     return int(round(value))
 
+def round_to_int_bump_zero(value):
+    rounded_value = round_to_int(value)
+    if rounded_value < 1 and value > 0:
+        rounded_value = 1
+    return rounded_value
+
+def _individual_course_progress_metrics(course_id, user_id):
+    return course_api.get_course_metrics_completions(
+        course_id,
+        user_id=user_id,
+        completions_object_type=Progress,
+        skipleaders=True
+    )
+
+def organization_course_progress_user_list(course_id, organization_id, count=3):
+    return course_api.get_course_metrics_completions(
+        course_id,
+        organizations=organization_id,
+        count=count,
+        completions_object_type=Progress
+    ).leaders
+
+def return_course_progress(course, user_id):
+    return _individual_course_progress_metrics(course.id, user_id).user_progress_display
+
 def average_progress(course, user_id):
-    metrics = course_api.get_course_metrics_completions(course.id, user_id)
-    return metrics.course_avg
+    return _individual_course_progress_metrics(course.id, user_id).course_average_display
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
@@ -291,21 +343,31 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
 
     review_items = WorkGroup.get_workgroup_review_items(project_workgroup.id)
 
-    # distinct reviewers
-    reviewer_ids = set([item.reviewer for item in review_items])
+    # workgroup review assignments
+    assignment_count = 0
+    assignments = ReviewAssignmentGroup.list_for_workgroup(project_workgroup.id)
 
     # find group activities in this project
-
     group_activities = get_group_project_activities(project_chapter)
     for activity in group_activities:
         group_project_xblock = get_group_activity_xblock(activity)
         activity_reviews = [item for item in review_items if group_project_xblock.id == item.content_id]
+
+        assignment_count = 0
+        for assignment in assignments:
+            if assignment.data.xblock_id == group_project_xblock.id:
+                assignment_count += len(get_users_in_group(assignment.id))
+
+        # distinct reviewers
+        reviewer_ids = set([ar.reviewer for ar in activity_reviews])
 
         # average by reviewer
         activity.grades = []
         for reviewer_id in reviewer_ids:
             grades = [int(review.answer) for review in activity_reviews if reviewer_id == review.reviewer and is_number(review.answer)]
             activity.grades.append(mean(grades))
+
+        activity.pending_grades = [0] * (assignment_count - len(activity.grades))
 
         # average score for this activity
         activity.score = mean(filter(None, activity.grades))
@@ -321,13 +383,13 @@ def is_number(s):
     return True
 
 def get_proficiency_leaders(course_id, user_id):
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     if hasattr(proficiency, "leaders"):
         tailor_leader_list(proficiency.leaders)
     return proficiency
 
 def get_progress_leaders(course_id, user_id):
-    completions = course_api.get_course_metrics_completions(course_id, user_id)
+    completions = course_api.get_course_metrics_completions(course_id, user_id=user_id, completions_object_type=Progress)
     tailor_leader_list(completions.leaders)
     return completions
 
@@ -362,11 +424,11 @@ def get_social_metrics(course_id, user_id):
     for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
         user = user_dict[u_id]
         user.points = social_total(user_metrics)
-        user.avatar_url = user.image_url(40)
+        user.avatar_url = user.image_url(size=48)
         point_sum += user.points
         users.append(user)
 
-    course_avg = point_sum / total_enrollments if total_enrollments > 0 else 0
+    course_avg = float(point_sum) / total_enrollments if total_enrollments > 0 else 0
 
     # sort by social score
     leaders = sorted(users, key=lambda u: u.points, reverse=True)
@@ -380,7 +442,7 @@ def get_social_metrics(course_id, user_id):
     return {
         'points': user.points if user else 0,
         'position': user.rank if user else None,
-        'course_avg': round_to_int(course_avg),
+        'course_avg': round_to_int_bump_zero(course_avg),
         'leaders': leaders[:3]
     }
 

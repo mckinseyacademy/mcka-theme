@@ -1,30 +1,37 @@
 import copy
+import functools
 import json
 from datetime import datetime
 import urllib2 as url_access
 from urllib import quote as urlquote
 
 from django.conf import settings
+from django.core.mail import EmailMessage
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
+from django.utils.dateformat import format
 from django.core.exceptions import ValidationError
 from django.core import serializers
+from django.core.urlresolvers import reverse
 
 from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.user_api import USER_ROLES
 
 from accounts.models import RemoteUser, UserActivation
+from accounts.controller import is_future_start, save_new_client_image
 
 from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
-from api_client import group_api, workgroup_api
-from api_client.json_object import Objectifier
+from api_client import group_api, workgroup_api, organization_api
+from api_client.json_object import Objectifier, JsonObjectWithImage
 from api_client.api_error import ApiError
 from api_client.project_models import Project
 from api_client.organization_models import Organization
@@ -44,18 +51,24 @@ from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
+from .controller import generate_course_report
+from .controller import get_organizations_users_completion
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
 from .forms import ProgramAssociationForm
 from .forms import CuratedContentItemForm
 from .forms import PermissionForm
+from .forms import UploadCompanyImageForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 
+from courses.controller import return_course_progress, organization_course_progress_user_list
+from courses.user_courses import return_course_completions_stats
 
 def ajaxify_http_redirects(func):
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         obj = func(*args, **kwargs)
         request = args[0]
@@ -67,6 +80,31 @@ def ajaxify_http_redirects(func):
 
     return wrapper
 
+def client_admin_access(func):
+    '''
+    Ensure company admins can view only their company.
+    MCKA Admin can view all clients in the system.
+    '''
+    @functools.wraps(func)
+    def wrapper(request, client_id=None, *args, **kwargs):
+        valid_client_id = None
+        if request.user.is_mcka_admin:
+            valid_client_id = client_id
+
+        # make sure client admin can access only his company
+        elif request.user.is_client_admin:
+            orgs = user_api.get_user_organizations(request.user.id)
+            if orgs:
+                valid_client_id = orgs[0].id
+
+        if valid_client_id is None:
+            raise Http404
+
+        return func(request, valid_client_id, *args, **kwargs)
+
+    return wrapper
+
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 def home(request):
@@ -76,11 +114,296 @@ def home(request):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_home(request):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_home(request, client_id):
+
+    organization = Client.fetch(client_id)
+
+    programs = []
+    coursesIDs = []
+    programsAPI = organization.fetch_programs()
+
+    for program in programsAPI:
+        program.coursesIDs = []
+        program.courses = []
+        for course in program.fetch_courses():
+            program.coursesIDs.append(course.course_id)
+            coursesIDs.append(course.course_id)
+        programs.append(_prepare_program_display(program))
+
+    coursesIDs = list(set(coursesIDs))
+    courses = course_api.get_courses(course_id=coursesIDs)
+
+    for course in courses:
+        course = _prepare_course_display(course)
+        course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
+        course.metrics.users_completed, course.metrics.percent_completed = get_organizations_users_completion(client_id, course.id, course.metrics.users_enrolled)
+        for program in programs:
+            if course.id in program.coursesIDs:
+                program.courses.append(course)
+
+    company_image = organization.image_url(size=48)
+    data = {
+        'client': organization,
+        'programs': programs,
+        'company_image': company_image
+    }
+
     return render(
         request,
-        'admin/client_admin_home.haml'
+        'admin/client-admin/home.haml',
+        data,
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course(request, client_id, course_id):
+    course = course_api.get_course(course_id)
+    metrics = course_api.get_course_metrics(course_id, organization=client_id)
+    metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
+    cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
+
+    data = {
+        'client_id': client_id,
+        'course_id': course_id,
+        'course_info': course,
+        'course_start': course.start.strftime('%m/%d/%Y') if course.start else '',
+        'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
+        'metrics': metrics,
+        'cutoffs': cutoffs
+    }
+    return render(
+        request,
+        'admin/client-admin/course_info.haml',
+        data,
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_participants(request, client_id, course_id):
+
+    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+    total_participants = len(participants)
+    if total_participants > 0:
+        users_ids = [str(user.id) for user in participants]
+        users_progress = organization_course_progress_user_list(course_id, client_id, count=total_participants)
+        user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+
+        additional_fields = ["full_name", "title", "avatar_url"]
+        students = user_api.get_users(ids=users_ids, fields=additional_fields)
+        for student in students:
+            student.avatar_url = student.image_url(size=48)
+            student.progress = user_progress_lookup[str(student.id)] if str(student.id) in user_progress_lookup else 0
+    else:
+        students = []
+
+    data = {
+        'client_id': client_id,
+        'course_id': course_id,
+        'total_participants': total_participants,
+        'students': students
+    }
+    return render(
+        request,
+        'admin/client-admin/course_participants.haml',
+        data,
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_download_course_report(request, client_id, course_id):
+    filename = slugify(
+        unicode(
+            "{} Course Report for {} on {}".format(
+                client_id,
+                course_id,
+                datetime.now().isoformat()
+            )
+        )
+    ) + ".csv"
+
+    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+
+    users_ids = [str(user.id) for user in participants]
+    users_progress = organization_course_progress_user_list(course_id, client_id, count=len(participants))
+    user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+
+    additional_fields = ["full_name", "title", "avatar_url"]
+    students = user_api.get_users(ids=users_ids, fields=additional_fields)
+    for student in students:
+        student.progress = user_progress_lookup[str(student.id)] if str(student.id) in user_progress_lookup else 0
+
+    url_prefix = "{}://{}".format(
+        "https" if request.is_secure() else "http",
+        request.META['HTTP_HOST']
+    )
+
+    response = HttpResponse(
+        generate_course_report(client_id, course_id, url_prefix, students),
+        content_type='text/csv'
+    )
+
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_analytics(request, client_id, course_id):
+
+    course = course_api.get_course(course_id)
+    students = course_api.get_users_list_in_organizations(course_id, client_id)
+    cohort_students = course_api.get_user_list(course_id)
+    metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
+    average_progress = metrics.course_avg
+
+    completed_modules = 0
+    course_modules = 0
+    cohort_completed_modules = 0
+    cohort_course_modules = 0
+
+    for student in students:
+        student_completed, graded = return_course_completions_stats(course, student.id)
+        completed_modules += student_completed
+        course_modules += graded
+    for student in cohort_students:
+        student_completed, graded = return_course_completions_stats(course, student.id)
+        cohort_completed_modules += student_completed
+        cohort_course_modules += graded
+
+    try:
+        course.company_progress = int(completed_modules/course_modules)
+    except ZeroDivisionError:
+        course.company_progress = 0
+    try:
+        course.cohort_progress = int(cohort_completed_modules/cohort_course_modules)
+    except ZeroDivisionError:
+        course.cohort_progress = 0
+
+
+    data = {
+        'client_id': client_id,
+        'course': course,
+        'average_progress': average_progress,
+    }
+    return render(
+        request,
+        'admin/client-admin/course_analytics.haml',
+        data,
+    )
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_unenroll_participant(request, client_id, course_id, user_id):
+    error = None
+    is_program = 'program' in request.GET
+    should_confirm = 'confirm' in request.GET
+    if request.method == 'POST':
+        try:
+            # un-enroll from program
+            if is_program:
+                user_api.unenroll_user_from_course(user_id, course_id)
+                user_programs = Program.user_program_list(user_id)
+                for program in user_programs:
+                    if course_id in [course.course_id for course in program.fetch_courses()]:
+                        program.remove_user(client_id, user_id)
+
+            # un-enroll from course
+            else:
+                user_api.unenroll_user_from_course(user_id, course_id)
+
+            redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+        except ApiError as err:
+            error = err.message
+
+    participant = user_api.get_user(user_id)
+
+    data = {
+        'participant': participant,
+        'unenroll_course': _("Un-enroll from this course"),
+        'unenroll_program': _("Un-enroll from entire program "),
+        'client_id': client_id,
+        'course_id': course_id,
+        'is_program': is_program,
+        'query': "?program" if is_program else "",
+    }
+
+    if should_confirm:
+        return render(request, 'admin/client-admin/unenroll_dialog_confirm.haml', data)
+    else:
+        return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_email_not_started(request, client_id, course_id):
+    students = []
+    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+    course = course_api.get_course(course_id)
+    total_participants = len(participants)
+    if total_participants > 0:
+        obs_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
+        users_progress = organization_course_progress_user_list(course_id, client_id, count=total_participants)
+        user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+        users_ids = [str(p.id) for p in participants if str(p.id) not in user_progress_lookup and str(p.id) not in obs_users_base]
+        additional_fields = ["full_name", "email"]
+        students = user_api.get_users(ids=users_ids, fields=additional_fields)
+
+    error = None
+    if request.method == 'POST':
+        user = user_api.get_user(request.user.id)
+        email_header_from = user.email
+        email_from = "{}<{}>".format(
+            user.formatted_name,
+            settings.APROS_EMAIL_SENDER
+        )
+        email_to = [student.email for student in students]
+        email_content = request.POST["message"]
+        email_subject = "Start the {} Course!".format(course.name)
+
+        try:
+            email = EmailMessage(email_subject, email_content, email_from, email_to, headers = {'Reply-To': email_header_from})
+            email.send(fail_silently=False)
+        except ApiError as err:
+            error = err.message
+
+        redirect_url = reverse('client_admin_course', kwargs={'client_id': client_id, 'course_id': course_id})
+        return HttpResponseRedirect(redirect_url)
+
+    data = {
+        'students': students,
+        'client_id': client_id,
+        'course_id': course_id,
+    }
+
+    return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_user_progress(request, client_id, course_id, user_id):
+    userCourses = user_api.get_user_courses(user_id)
+    student = user_api.get_user(user_id)
+    student.avatar_url = student.image_url(size=48)
+    courses = []
+    for courseName in userCourses:
+        course = course_api.get_course(courseName.id, depth=4)
+        if course.id != course_id:
+            course.progress = return_course_progress(course, user_id)
+            courses.append(course)
+    data = {
+        'courses' : courses,
+        'student' : student,
+    }
+    return render(
+        request,
+        'admin/client-admin/user_progress.haml',
+        data
     )
 
 
@@ -217,6 +540,16 @@ def client_new(request):
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
                 client = Client.create(name, client_data)
+                if hasattr(client, 'logo_url') and client.logo_url is not None:
+                    old_image_url = client.logo_url
+                    if old_image_url[:10] == '/accounts/':
+                        old_image_url = old_image_url[10:]
+                    elif old_image_url[:8] == '/static/':
+                        prefix = 'https://' if request.is_secure() else 'http://'
+                        old_image_url = prefix + request.get_host() + old_image_url
+                    company_image = 'images/company_image-{}.jpg'.format(client.id)
+                    save_new_client_image(old_image_url, company_image, client)
+
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
 
@@ -233,6 +566,7 @@ def client_new(request):
         "form": form,
         "error": error,
         "submit_label": _("Save Client"),
+        "company_image": "/static/image/empty_avatar.png",
     }
 
     return render(
@@ -259,7 +593,7 @@ def client_edit(request, client_id):
     else:
         ''' edit a client '''
         client = Client.fetch(client_id)
-        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone}
+        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone, 'logo_url': client.logo_url}
         form = ClientForm(data_dict)
 
     # set focus to company name field
@@ -268,6 +602,7 @@ def client_edit(request, client_id):
     data = {
         "form": form,
         "client_id": client_id,
+        "company_image": client.image_url(),
         "error": error,
         "submit_label": _("Save Client"),
     }
@@ -484,7 +819,7 @@ def program_detail(request, program_id, detail_view="detail"):
         data["courses"] = course_api.get_course_list()
         selected_ids = [course.course_id for course in program.fetch_courses()]
         for course in data["courses"]:
-            course.legacy_id = LegacyIdConvert.legacy_from_new(course.id)
+            course.instance = course.id.replace("slashes:", "")
             course.class_name = "selected" if course.id in selected_ids else None
         data["course_count"] = len(selected_ids)
 
@@ -648,6 +983,16 @@ def _prepare_program_display(program):
             )
 
     return program
+
+def _prepare_course_display(course):
+    if hasattr(course, "start") and hasattr(course, "end"):
+        if is_future_start(course.start):
+            course.date_range = _("Coming Soon")
+        elif course.end != None and is_future_start(course.end) == False:
+            course.date_range = _("Archived")
+        else:
+            course.date_range = course.formatted_time_span
+    return course
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -1098,44 +1443,60 @@ def permissions(request):
     '''
     Show users within "Administrative" company, and also users that have no company association
     '''
+
     organizations = Organization.list()
-    admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
 
-    # fetch users users that have no company association
     additional_fields = ["organizations"]
-    users = user_api.get_users(has_organizations=False,fields=additional_fields)
+    users = []
 
-    # fetch users in administrative company
-    admin_users = []
-    if admin_company and admin_company.users:
-        ids = [str(id) for id in admin_company.users]
-        admin_users = user_api.get_users(ids=ids,fields=additional_fields)
+    ADMINISTRATIVE = 0
+    organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
+    organization_options.extend([(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY])
 
-    users.extend(admin_users)
+    org_id = int(request.GET.get('organization', ADMINISTRATIVE))
+
+    if org_id == ADMINISTRATIVE:
+        # fetch users users that have no company association
+        users = user_api.get_users(has_organizations=False, fields=additional_fields)
+
+        # fetch users in administrative company
+        admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
+        admin_users = []
+        if admin_company and admin_company.users:
+            ids = [str(id) for id in admin_company.users]
+            admin_users = user_api.get_users(ids=ids,fields=additional_fields)
+
+        users.extend(admin_users)
+
+    else:
+        org = next((org for org in organizations if org.id == org_id), None)
+        if org:
+            ids = [str(id) for id in org.users]
+            users = user_api.get_users(ids=ids, fields=additional_fields)
+
 
     # get the groups and for each group get the list of users, then intersect them appropriately
-
     groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
     group_members = {group.name : [gu.id for gu in group_api.get_users_in_group(group.id)] for group in groups}
 
     for user in users:
         group_names = [g.name for g in groups]
         roles = []
-
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_ADMIN, []):
             roles.append(_('ADMIN'))
-
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_TA, []):
             roles.append(_('TA'))
-
+        if user.id in group_members.get(PERMISSION_GROUPS.CLIENT_ADMIN, []):
+            roles.append(_('COMPANY ADMIN'))
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
             roles.append(_('OBSERVER'))
-
         user.roles = ", ".join(roles)
         user.company_list = ", ".join([org.display_name for org in user.organizations])
 
     data = {
-        'users': users
+        'users': users,
+        'organization_options': organization_options,
+        'organization_id': org_id
     }
     return render(request, 'admin/permissions/list.haml', data)
 
@@ -1147,14 +1508,6 @@ def edit_permissions(request, user_id):
     define or edit existing roles for a single user
     '''
     user = user_api.get_user(user_id)
-
-    # make sure user is in administrative company or has no company association
-    organizations = user_api.get_user_organizations(user_id)
-    in_companies = len(organizations) > 0
-    in_admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), False)
-    if in_companies and not in_admin_company:
-        return HttpResponse("Error") # this should never happen
-
     error = None
 
     permissions = Permissions(user_id)
@@ -1171,13 +1524,22 @@ def edit_permissions(request, user_id):
                         'role': role
                     })
             try:
-                permissions.save(form.cleaned_data.get('admin'), per_course_roles)
+                permissions.save(form.cleaned_data.get('permissions'), per_course_roles)
             except PermissionSaveError as err:
                 error = str(err)
             else:
                 return HttpResponseRedirect('/admin/permissions')
     else:
-        initial_data = permissions.initial_data()
+        initial_data = {
+            'permissions': permissions.current_permissions
+        }
+
+        for course in permissions.courses:
+            initial_data[course.id] = []
+            for role in permissions.user_roles:
+                if course.id == role.course_id:
+                    initial_data[course.id].append(role.role)
+
         form = PermissionForm(permissions.courses, initial=initial_data, label_suffix='')
 
     data = {
@@ -1229,5 +1591,127 @@ def workgroup_course_assignments(request, course_id):
     return render(
         request,
         'admin/workgroup/project_assignment.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image="/static/image/empty_avatar.png"):
+    ''' handles requests for login form and their submission '''
+    if(client_id != 'new'):
+
+        client = Organization.fetch(client_id)
+        company_image = client.image_url(size=200, path='absolute')
+
+    if '?' in company_image:
+        company_image = company_image + '&' + format(datetime.now(), u'U')
+    else:
+        company_image = company_image + '?' + format(datetime.now(), u'U')
+
+    form = UploadCompanyImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+        "company_image": company_image,
+    }
+
+    return render(
+        request,
+        'admin/client/{}.haml'.format(template),
+        data
+    )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def company_image_edit(request, client_id="new"):
+    if request.method == 'POST':
+        heightPosition = request.POST.get('height-position')
+        widthPosition = request.POST.get('width-position')
+        x1Position = request.POST.get('x1-position')
+        x2Position = request.POST.get('x2-position')
+        y1Position = request.POST.get('y1-position')
+        y2Position = request.POST.get('y2-position')
+        if client_id == 'new':
+            CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
+        else:
+            client = Organization.fetch(client_id)
+            CompanyImageUrl = client.image_url(size=200, path='relative')
+
+        from PIL import Image
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+
+        if CompanyImageUrl[:10] == '/accounts/':
+            image_url = CompanyImageUrl[10:]
+        elif CompanyImageUrl[:8] == '/static/':
+            prefix = 'https://' if request.is_secure() else 'http://'
+            image_url = prefix + request.get_host() + CompanyImageUrl
+        else:
+            image_url = CompanyImageUrl
+
+        if default_storage.exists(image_url):
+
+            original = Image.open(default_storage.open(image_url))
+
+            width, height = original.size   # Get dimensions
+            left = int(x1Position)
+            top = int(y1Position)
+            right = int(x2Position)
+            bottom = int(y2Position)
+            cropped_example = original.crop((left, top, right, bottom))
+
+            JsonObjectWithImage.save_profile_image(cropped_example, image_url)
+        if client_id == 'new':
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
+        else:
+            client.logo_url = '/accounts/' + image_url
+            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + image_url})
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url, 'client_id': client.id}), content_type="application/json")
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def upload_company_image(request, client_id='new'):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = UploadCompanyImageForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            from PIL import Image
+
+            temp_image = request.FILES['company_image']
+            allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
+            if temp_image.content_type in allowed_types:
+                if client_id == 'new':
+                    company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
+                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
+                else:
+                    company_image = 'images/company_image-{}.jpg'.format(client_id)
+                    client = Organization.fetch(client_id)
+                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
+                    client.logo_url = '/accounts/' + company_image
+                    client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + company_image})
+            else:
+                error = "Error uploading file. Please try again and be sure to use an accepted file format."
+            return HttpResponse(change_company_image(request=request, client_id=client_id, template='change_company_image', error=error, company_image='/accounts/' + company_image), content_type='text/html')
+        else:
+            error = "Error uploading file. Please try again and be sure to use an accepted file format."
+            return HttpResponse(change_company_image(request, client_id, 'change_company_image', error, '/accounts/' + company_image), content_type='text/html')
+    else:
+        ''' adds a new image '''
+        form = UploadCompanyImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+    }
+
+    return render(
+        request,
+        'admins/clients/upload_company_image.haml',
         data
     )

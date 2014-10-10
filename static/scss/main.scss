@@ -10,11 +10,18 @@ body{
   }
 }
 
-main[role=main] { margin-bottom: 100px; }
+main[role=main] {
+  min-height: 50%;
+  margin-bottom: 100px;
+}
 
 h1 {
   color: $mckinsey-academy-turquoise;
   @include font-spec(22, normal, 24);
+
+  a {
+    @include font-spec(22, normal, 24);
+  }
 }
 
 h2 {
@@ -142,6 +149,18 @@ blockquote {
   @include font-spec(12, semibold, 14);
 }
 
+.label-11 {
+  @include font-spec(14, semibold, 18);
+  padding-bottom:10px;
+  color: $mckinsey-academy-alt-blue;
+}
+
+.label-12 {
+  @include font-spec(14, semibold, 18);
+  padding-bottom:10px;
+  color: #868685;
+}
+
 .nav-1,
 .nav-2 {
   @include font-spec(12, bold, 14);
@@ -165,7 +184,8 @@ blockquote {
 .person-title,
 .person-fullname,
 .city-name,
-.city-participants {
+.city-participants
+{
   @include font-spec(12, semibold, 14);
 }
 
@@ -352,17 +372,18 @@ form {
   text-align: center !important;
 }
 
-.set_profile_image_wrapper{
+.set_profile_image_wrapper, .set_company_image_wrapper{
   width:100%;
 }
 
-.change_profile_form, .upload-profile-image{
+.change_profile_form, .upload-profile-image,
+.change_company_image_form, .upload-company-image{
   width:50%;
   float:left;
   min-height: 350px;
 }
 
-.upload-profile-image{
+.upload-profile-image, .upload-company-image{
   width:46%;
   margin-right: 2%;
   padding-right: 2%;
@@ -385,7 +406,7 @@ form {
       display:inline;
     }
   }
-  img.spinner.upload-profile{
+  img.spinner.upload-image, img.spinner.upload-company{
     position:relative;
     top:0px;
     left:5px;
@@ -416,7 +437,7 @@ form {
   }
 }
 
-#edit-user-image-modal{
+#edit-user-image-modal, #edit-company-image-modal{
   position: fixed;
   top: 50% !important;
   margin-top: -214px;
@@ -425,7 +446,7 @@ form {
     max-width: rem-calc(250);
     max-height: rem-calc(250);
   }
-  .user-uploaded-image{
+  .user-uploaded-image, .company-uploaded-image{
     max-width:100%;
   }
   .helptext{

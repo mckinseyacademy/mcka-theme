@@ -1,0 +1,18 @@
+%p.title.text-center
+  = _("Are you sure you would like to un-enroll user")
+  %strong= participant.full_name
+  - if is_program
+    = _("from the program?")
+  - else
+    = _("from the course?")
+
+%form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{participant.id}/unenroll#{query}", method: "POST"}
+  - csrf_token
+  = form
+  .error
+    - if error
+      = error
+  %input{type: "hidden", value: "confirm"}
+  %p.text-center
+    %input.button.radius.small{type: "submit", value: "Yes"}
+    %a.close-dialog.button.radius.small= "No"

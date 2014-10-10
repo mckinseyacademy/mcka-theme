@@ -34,9 +34,17 @@ PERMISSION_GROUPS = DottableDict(
 @api_error_protect
 def get_groups_of_type(group_type, group_object=JsonObject, *args, **kwargs):
     ''' gets all groups of provided type'''
-    qs_params = {karg : kwargs[karg] for karg in kwargs}
-    qs_params["page_size"] = 0
-    qs_params["type"] = group_type
+
+    qs_params = {
+        "page_size": 0,
+        "type": group_type,
+    }
+
+    for karg in kwargs:
+        if isinstance(kwargs[karg], list):
+            qs_params[karg] = ",".join(kwargs[karg])
+        else:
+            qs_params[karg] = kwargs[karg]
 
     response = GET(
         '{}/{}/?{}'.format(
@@ -223,7 +231,8 @@ def get_courses_in_group(group_id):
 def get_groups_in_group(group_id, group_object=JsonObject, *args, **kwargs):
     ''' get list of groups associated with a specific group '''
 
-    qs_params = {karg : kwargs[karg] for karg in kwargs}
+    qs_params = {}
+    qs_params.update(kwargs)
     response = GET(
         '{}/{}/{}/groups?{}'.format(
             settings.API_SERVER_ADDRESS,

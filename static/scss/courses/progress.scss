@@ -1,6 +1,16 @@
 #course-progress {
   h1 {
     margin-bottom: 40px;
+    &.admin-view{
+      @include font-spec(16);
+      width: 100%;
+      background-color: $mckinsey-orange;
+      color: $pure-white;
+      text-align: center;
+      padding: 10px;
+      text-transform: uppercase;
+      margin-top: 15px;
+    }
   }
 
   .course-progress {

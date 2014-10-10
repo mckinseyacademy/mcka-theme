@@ -33,6 +33,7 @@ js_ie8_files.extend([
     #'js/vendor/d3.v3.js',
     #'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
+    'js/vendor/jquery.dataTables.rowGrouping.js',
     'js/application.js',
     'js/router.js',
 ])
@@ -58,6 +59,7 @@ js_files.extend([
     'js/vendor/d3.v3.js',
     'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
+    'js/vendor/jquery.dataTables.rowGrouping.js',
     'js/vendor/jquery.touchwipe.min.js',
     'js/application.js',
     'js/router.js',
@@ -85,6 +87,7 @@ register('scss_core', SCSS_CORE)
 
 CSS_CORE = Bundle(
     SCSS_CORE,
+    filters='cssmin',
     output='packed_core.css'
 )
 register('css_core', CSS_CORE)
@@ -100,6 +103,7 @@ register('scss_app', SCSS_APP)
 
 CSS_APP = Bundle(
     SCSS_APP,
+    filters='cssmin',
     output='packed_app.css'
 )
 register('css_app', CSS_APP)
@@ -115,6 +119,7 @@ register('scss_admin', SCSS_ADMIN)
 
 CSS_ADMIN = Bundle(
     SCSS_ADMIN,
+    filters='cssmin',
     output='packed_admin.css'
 )
 register('css_admin', CSS_ADMIN)
@@ -130,6 +135,7 @@ register('scss_ie8', SCSS_IE8)
 
 CSS_IE8 = Bundle(
     SCSS_IE8,
+    filters='cssmin',
     output='packed_ie8.css'
 )
 register('css_ie8', CSS_IE8)

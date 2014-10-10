@@ -2,9 +2,7 @@
 import hashlib
 import json
 
-from django.conf import settings
-
-from .json_object import JsonObject
+from .json_object import JsonObject, JsonObjectWithImage
 
 
 # ignore too few public methods witin this file - these models almost always
@@ -12,7 +10,7 @@ from .json_object import JsonObject
 # pylint: disable=too-few-public-methods,no-member
 
 
-class UserResponse(JsonObject):
+class UserResponse(JsonObjectWithImage):
 
     ''' object representing a user from api json response '''
     required_fields = ["email", "username"]
@@ -22,37 +20,6 @@ class UserResponse(JsonObject):
         if hasattr(self, attr):
             return getattr(self, attr)
         return ''
-
-    def image_url(self, size=40, path='absolute'):
-        ''' return default avatar unless the user has one '''
-        # TODO: is the size param going to be used here?
-        if hasattr(self, 'avatar_url') and self.avatar_url is not None:
-            if size <= 40:
-                image_url = self.avatar_url[:-4] + '-40.jpg'
-            elif size <= 120:
-                image_url = self.avatar_url[:-4] + '-120.jpg'
-            else:
-                image_url = self.avatar_url
-
-            if path == 'absolute' and settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
-                from django.core.files.storage import default_storage
-                image_url = default_storage.url(
-                    self._strip_proxy_image_url(image_url))
-        else:
-            image_url = self.default_image_url()
-        return image_url
-
-    @classmethod
-    def default_image_url(cls):
-        return "/static/image/empty_avatar.png"
-
-
-    def _strip_proxy_image_url(self, profileImageUrl):
-        if profileImageUrl[:10] == '/accounts/':
-            image_url = profileImageUrl[10:]
-        else:
-            image_url = profileImageUrl
-        return image_url
 
     @property
     def formatted_name(self):
@@ -73,7 +40,7 @@ class UserResponse(JsonObject):
         for field, value in self.__dict__.iteritems():
             if field not in unserializable_fields:
                 if field == 'avatar_url':
-                    setattr(self, 'avatar_url', self.image_url(size=40))
+                    setattr(self, 'avatar_url', self.image_url(size=48))
                 user[field] = self.get(field)
         return user
 

@@ -22,7 +22,7 @@ from .controller import build_page_info_for_course, locate_chapter_page, load_st
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
-from .user_courses import check_user_course_access, standard_data
+from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
 
 # Temporary id converter to fix up problems post opaque keys
@@ -51,7 +51,7 @@ def course_landing_page(request, course_id):
     set_current_course_for_user(request, course_id)
     static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
-    proficiency = course_api.get_course_metrics_grades(course_id, request.user.id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
 
@@ -265,26 +265,26 @@ def course_discussion_userprofile(request, course_id, user_id):
     }
     return render(request, 'courses/course_discussion_userprofile.haml', data)
 
-@login_required
-@check_user_course_access
-def course_progress(request, course_id):
+def _course_progress_for_user(request, course_id, user_id):
 
     course = load_course(course_id, request=request)
+    progress_user = user_api.get_user(user_id)
 
     # add in all the grading information
-    gradebook = inject_gradebook_info(request.user.id, course)
+    gradebook = inject_gradebook_info(user_id, course)
 
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
 
-    pass_grade = round_to_int(gradebook.grading_policy.GRADE_CUTOFFS.Pass*100)
+    cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
+    pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
 
     workgroup_avg_sections = [section for section in gradebook.courseware_summary if section.display_name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
-    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+    project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
-        group_activities, group_work_avg = group_project_reviews(request.user.id, course_id, project_group, group_project)
+        group_activities, group_work_avg = group_project_reviews(user_id, course_id, project_group, group_project)
 
         # format scores & grades
         for activity in group_activities:
@@ -362,10 +362,32 @@ def course_progress(request, course_id):
         'pass_grade': pass_grade,
         'graders': graders,
         'group_activities': group_activities,
-        "average_progress": average_progress(course, request.user.id),
+        "average_progress": average_progress(course, user_id),
         "has_values_for": has_values_for,
+        "progress_user": progress_user,
     }
+
+    if progress_user.id != request.user.id:
+        # Inject course progress for nav header
+        load_course_progress(course, user_id)
+        # Add index to lesson
+        for idx, lesson in enumerate(course.chapters, start=1):
+            lesson.index = idx
+
+        data["course"] = course
+
     return render(request, 'courses/course_progress.haml', data)
+
+@login_required
+@check_company_admin_user_access
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def course_user_progress(request, user_id, course_id):
+    return _course_progress_for_user(request, course_id, user_id)
+
+@login_required
+@check_user_course_access
+def course_progress(request, course_id):
+    return _course_progress_for_user(request, course_id, request.user.id)
 
 @login_required
 @check_user_course_access

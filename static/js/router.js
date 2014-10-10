@@ -1,13 +1,16 @@
 var Router = Backbone.Router.extend({
   routes: {
-    '':                               'home',
-    'contact/':                       'contact',
-    'courses/*course_id/progress':    'course_progress',
-    'courses/*course_id/overview':    'course_overview',
-    'courses/*course_id/cohort':      'course_cohort',
-    'courses/*course_id/group_work':  'course_group_work',
-    'courses/*course_id/resources':   'course_resources',
-    'courses/*course_id':             'course_index'
+    '':                                       'home',
+    'contact/':                               'contact',
+    'courses/*course_id/progress':            'course_progress',
+    'courses/*course_id/progress/*user_id':   'course_progress',
+    'courses/*course_id/overview':            'course_overview',
+    'courses/*course_id/cohort':              'course_cohort',
+    'courses/*course_id/group_work':          'course_group_work',
+    'courses/*course_id/resources':           'course_resources',
+    'courses/*course_id':                     'course_index',
+    'admin/client-admin/*organization_id/courses/*course_id/analytics':   'client_admin_course_analytics',
+    'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info'
   },
 
   home: function() {
@@ -50,6 +53,15 @@ var Router = Backbone.Router.extend({
   },
 
   course_discussion: function(course_id) {
+  },
+
+  client_admin_course_analytics: function(organization_id, course_id) {
+    new Apros.views.AdminAnalyticsParticipantActivity({el: $('#admin-analytics-participant-activity')}).render();
+    new Apros.views.AdminAnalyticsProgress({el: $('#admin-analytics-progress')}).render();
+  },
+
+  client_admin_course_info: function(organization_id, course_id) {
+    new Apros.views.ClientAdminCourseInfo({el: $('#course-status-chart')});
   }
 });
 

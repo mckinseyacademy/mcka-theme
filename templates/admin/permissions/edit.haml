@@ -14,11 +14,10 @@
 
   %table
     %tbody
-      %tr
-        %td
-          = form.admin.label_tag
-        %td
-          = form.admin
+      - for permission in form.permissions
+        %tr
+          %td
+            = permission
 
   - if form.per_course_roles
 

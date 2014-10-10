@@ -7,6 +7,8 @@ from django.forms.extras.widgets import SelectDateWidget
 from .models import Client, Program
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
+from api_client.group_api import PERMISSION_GROUPS
+from api_client.json_object import JsonObjectWithImage
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -18,6 +20,7 @@ PROGRAM_YEAR_CHOICES = [yr for yr in range(THIS_YEAR, THIS_YEAR + 10)]
 class ClientForm(forms.Form):
 
     ''' add a new client to the system '''
+    logo_url = forms.CharField(max_length=255, initial=JsonObjectWithImage.default_image_url(), required=False)
     display_name = forms.CharField(max_length=255)
     contact_name = forms.CharField(max_length=255)
     contact_phone = forms.CharField(max_length=20)
@@ -69,8 +72,17 @@ class CuratedContentItemForm(forms.ModelForm):
 
 class PermissionForm(forms.Form):
     ''' edit roles for a single user '''
-    admin = forms.BooleanField(required=False, label=_("ADMIN"))
     _per_course_roles = []
+
+    permissions = forms.MultipleChoiceField(
+        required=False,
+        label='',
+        widget=forms.CheckboxSelectMultiple,
+        choices=[
+            (PERMISSION_GROUPS.MCKA_ADMIN, _("ADMIN")),
+            (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
+        ]
+    )
 
     def available_roles(self):
         return ((USER_ROLES.TA, _("TA")), (USER_ROLES.OBSERVER, _("OBSERVER")))
@@ -84,9 +96,14 @@ class PermissionForm(forms.Form):
         for course in courses:
             self.fields[course.id] = forms.MultipleChoiceField(
                 required=False,
-                label=course.name,
+                label="{} ({})".format(course.name, course.display_id),
                 widget=forms.CheckboxSelectMultiple,
                 choices=self.available_roles()
             )
 
         self._per_course_roles = [course.id for course in courses]
+
+class UploadCompanyImageForm(forms.Form):
+    ''' form to upload file for company image '''
+    company_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
+

@@ -5,6 +5,47 @@
     margin-bottom: 0;
   }
 
+  .no-participants {
+    cursor: default;
+
+    &:hover {
+      .mcka-tooltip { display: block; }
+    }
+  }
+
+  .mcka-tooltip {
+    color: $mckinsey-dark-grey;
+    position: absolute;
+    background: $pure-white;
+    border-radius: 5px;
+    border: 1px solid $border-line;
+    white-space: nowrap;
+    padding: 5px;
+    right: 100%;
+    margin-top: -20px;
+    display: none;
+    @include font-spec(12);
+
+    &.lesson-page { margin-top: -13px; }
+
+    .vertical-index {
+      color: $mckinsey-academy-alt-blue;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      border-style: solid;
+      border-width: 6px;
+      top: 50%;
+      margin-top: -6px;
+      right: -12px;
+      border-color: transparent transparent transparent $pure-white;
+    }
+  }
+
   .admin-detail{
     ul{
       list-style: none;
@@ -82,10 +123,153 @@
       }
     }
   }
+  ul.courses-tiles{
+    float:left;
+    display: inline;
+    width: 100%;
+
+    li.course-tile{
+      display:inline-block;
+      width: 190px;
+      height: 190px;
+      background: $pure-white;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      vertical-align: bottom;
+      @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+      .label-11, .label-12{
+        height: 70px;
+        overflow: hidden;
+      }
+      .label-11, .label-12, .course-stats{
+        padding: 0 10px 0 10px;
+      }
+      .course-stats{
+        .course-stat-label{
+          color: #666666;
+          @include font-spec(10, semibold, 12);
+        }
+        .course-stat-value{
+          color: #666666;
+          @include font-spec(10, normal, 12);
+        }
+      }
+      a.course-link{
+        float:right;
+        padding: 0px 15px 5px 0;
+        width:20px;
+        height:20px;
+        i{
+          width:20px;
+          height:20px;
+          font-size:20px;
+        }
+      }
+      .not-started{
+        color: #868685;
+      }
+      .course-image{
+        width:100%;
+        height: 25px;
+        max-height:25px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .company-image img{
+    width:40px;
+    height:40px;
+  }
+
+  #id_logo_url, label[for="id_logo_url"]{
+    display:none;
+  }
+
+  .student-progress-list{
+    background: $mckinsey-academy-light-gray;
+    .empty-cell{
+      background: $pure-white;
+    }
+  }
+  .student-list .user-image img{
+    max-width:40px;
+    max-height: 40px;
+  }
+
+  .dataTable .expanded-group.group-item-expander{
+    background:$mckinsey-academy-warm-gray;
+  }
+
+  .dataTable td.course-progress{
+    float:left;
+  }
+
+  #course-status-chart-wrapper {
+    margin: 0 auto;
+    width: 860px;
+    svg{
+      .grid .tick {
+        stroke: $mckinsey-dark-grey;
+        opacity: 0.7;
+      }
+      .grid path {
+        stroke-width: 0;
+      }
+    }
+  }
+
+  .status-chart-legend {
+    width:100%;
+    margin-left:10%;
+    ul.inline-list {
+      display:inline;
+      float:left;
+      list-style: none;
+      li{
+        display:inline-block;
+        .color {
+          width: rem-calc(12px);
+          height: rem-calc(12px);
+          float: left;
+          margin-right: 5px;
+        }
+        .warm-gray{
+          background: $mckinsey-academy-warm-gray;
+        }
+        .turquoise{
+                  background: $mckinsey-academy-turquoise;
+        }
+        .orange{
+                  background: $mckinsey-orange;
+        }
+      }
+    }
+  }
+
+  .admin-analytics-progress-wrapper{
+    height:360px;
+    width:760px;
+    float: left;
+  }
+  .admin-analytics-participant-activity-wrapper{
+    height:360px;
+    width:100%;
+    float: left;
+  }
+  .progress_stats{
+    float:left;
+    ul{
+      li{
+        display:block;
+      }
+    }
+  }
 
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';
   @import './dataTable';
   @import './permissions';
+  @import './unenroll';
 }
