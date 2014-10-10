@@ -233,13 +233,9 @@ def _get_course_progress_data(course, user_id):
 def load_course_progress(course, user_id):
     actual_completions_len, component_ids_len = _get_course_progress_data(course, user_id)
     try:
-        course.user_progress = round_to_int(float(100 * len(actual_completions))/len(component_ids))
+        course.user_progress = round_to_int(float(100 * actual_completions_len)/component_ids_len)
     except ZeroDivisionError:
         course.user_progress = 0
-
-def return_course_progress(course, user_id):
-    load_course_progress(course, user_id)
-    return course.user_progress
 
 def return_course_completions_stats(course, user_id):
     return _get_course_progress_data(course, user_id)
