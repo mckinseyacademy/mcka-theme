@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/status$', views.client_admin_course_status, name='client_admin_course_status'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/users/(?P<user_id>[0-9]+)/progress$', views.client_admin_user_progress, name='client_admin_user_progress'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)$', views.client_admin_course, name='client_admin_course'),
+    url(r'^client-admin/programs/(?P<program_id>.+)/download_program_report', views.client_admin_download_program_report, name='download_program_report'),
     url(r'^client-admin/programs', views.client_admin_program_detail, name='client_admin_program_detail'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),

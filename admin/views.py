@@ -50,7 +50,7 @@ from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
-from .controller import generate_course_report
+from .controller import generate_course_report, generate_program_report
 from .controller import get_organizations_users_completion
 from .controller import get_course_metrics_for_organization
 from .forms import ClientForm
@@ -274,6 +274,51 @@ def client_admin_download_course_report(request, client_id, course_id):
 
     response = HttpResponse(
         generate_course_report(client_id, course_id, url_prefix, students),
+        content_type='text/csv'
+    )
+
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_download_program_report(request, client_id, program_id):
+    program = Client.fetch(client_id).fetch_programs()[0]
+
+    filename = slugify(
+        unicode(
+            "{} Program Report for {} on {}".format(
+                client_id,
+                program_id,
+                datetime.now().isoformat()
+            )
+        )
+    ) + ".csv"
+
+    program_courses = program.fetch_courses()
+    course_ids = list(set([pc.course_id for pc in program_courses]))
+    courses = course_api.get_courses(course_id=course_ids)
+
+    for course in courses:
+        course.metrics = get_course_metrics_for_organization(course.id, client_id)
+
+    total_avg_grade = 0
+    total_pct_completed = 0
+    if courses:
+        count = float(len(courses))
+        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
+        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
+
+    url_prefix = "{}://{}".format(
+        "https" if request.is_secure() else "http",
+        request.META['HTTP_HOST']
+    )
+
+    response = HttpResponse(
+        generate_program_report(client_id, program_id, url_prefix, courses, total_avg_grade, total_pct_completed),
         content_type='text/csv'
     )
 
