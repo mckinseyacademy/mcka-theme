@@ -37,6 +37,7 @@ js_ie8_files.extend([
     'js/application.js',
     'js/router.js',
 ])
+js_ie8_files.extend(_build_file_list("js/common", ".js"))
 js_ie8_files.extend(_build_file_list("js/models", ".js"))
 js_ie8_files.extend(_build_file_list("js/views", ".js"))
 # Javascript squashing
@@ -64,6 +65,7 @@ js_files.extend([
     'js/application.js',
     'js/router.js',
 ])
+js_files.extend(_build_file_list("js/common", ".js"))
 js_files.extend(_build_file_list("js/models", ".js"))
 js_files.extend(_build_file_list("js/views", ".js"))
 

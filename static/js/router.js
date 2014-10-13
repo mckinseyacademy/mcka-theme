@@ -56,12 +56,24 @@ var Router = Backbone.Router.extend({
   },
 
   client_admin_course_analytics: function(organization_id, course_id) {
-    new Apros.views.AdminAnalyticsParticipantActivity({el: $('#admin-analytics-participant-activity')}).render();
-    new Apros.views.AdminAnalyticsProgress({el: $('#admin-analytics-progress')}).render();
+    var participantsModel = new Apros.models.ParticipantsAnalyticsChart();
+    new Apros.views.AdminAnalyticsParticipantActivity({model: participantsModel,
+                                                      el: $('#admin-analytics-participant-activity'),
+                                                      client_id: organization_id,
+                                                      course_id: course_id});
+    var progressModel = new Apros.models.AnalyticsProgressChart();
+    new Apros.views.AdminAnalyticsProgress({model: progressModel,
+                                          el: $('#admin-analytics-progress'),
+                                          client_id: organization_id,
+                                          course_id: course_id});
   },
 
   client_admin_course_info: function(organization_id, course_id) {
-    new Apros.views.ClientAdminCourseInfo({el: $('#course-status-chart')});
+    var model = new Apros.models.CourseInfoStatusChart();
+    new Apros.views.ClientAdminCourseInfo({model: model,
+                                          el: $('#course-status-chart'),
+                                          client_id: organization_id,
+                                          course_id: course_id});
   }
 });
 
