@@ -447,3 +447,14 @@ def get_organizations_users_completion(client_id, course_id, users_enrolled):
     if users_enrolled > 0:
         percent_completed = "{}%".format(int(int(users_completed) / int(users_enrolled) * 100))
     return users_completed, percent_completed
+
+
+def get_course_metrics_for_organization(course_id, client_id):
+    metrics = course_api.get_course_metrics(course_id, organization=client_id)
+    org_metrics = organization_api.get_grade_complete_count(client_id, courses=course_id)
+    metrics.users_grade_complete_count = org_metrics.users_grade_complete_count
+    metrics.users_grade_average = org_metrics.users_grade_average
+    metrics.percent_completed = 0
+    if metrics.users_enrolled:
+        metrics.percent_completed = int(int(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
+    return metrics

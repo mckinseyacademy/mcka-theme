@@ -53,6 +53,7 @@ from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
 from .controller import generate_course_report
 from .controller import get_organizations_users_completion
+from .controller import get_course_metrics_for_organization
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -156,6 +157,37 @@ def client_admin_home(request, client_id):
         data,
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_program_detail(request, client_id):
+    # In the future, when Companies have multiple program running,
+    # we will need to allow them a drop down that allows them to choose from all programs.
+    program = Client.fetch(client_id).fetch_programs()[0]
+    program_courses = program.fetch_courses()
+    course_ids = list(set([pc.course_id for pc in program_courses]))
+    courses = course_api.get_courses(course_id=course_ids)
+
+    for course in courses:
+        course.metrics = get_course_metrics_for_organization(course.id, client_id)
+
+    total_avg_grade = 0
+    total_pct_completed = 0
+    if courses:
+        count = float(len(courses))
+        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
+        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
+
+    data = {
+        'program': program,
+        'courses': courses,
+        'total_avg_grade': total_avg_grade,
+        'total_pct_completed': total_pct_completed
+    }
+    return render(
+        request,
+        'admin/client-admin/program_detail.haml',
+        data,
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
