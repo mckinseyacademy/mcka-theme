@@ -37,7 +37,6 @@ from api_client.project_models import Project
 from api_client.organization_models import Organization
 from api_client.workgroup_models import Submission
 from license import controller as license_controller
-from lib.util import LegacyIdConvert
 
 from .models import Client
 from .models import Program
