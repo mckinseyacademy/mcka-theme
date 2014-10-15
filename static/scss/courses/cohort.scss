@@ -77,11 +77,10 @@
   }
 
   .leaderboards {
-    display: table-row;
+    width:100%;
 
     table {
-      display: table-cell;
-      width: 760px;
+      width: 100%;
       padding: 0 0px;
       border: none;
       border-collapse: separate;
@@ -124,7 +123,7 @@
 
           .rank {
             text-align: center;
-            margin: 0px 0;
+            margin: 20px 0;
             @include font-spec(18, normal, 24);
             span { @include font-spec(24, bold, 24); }
           }
