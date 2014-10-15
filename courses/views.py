@@ -25,9 +25,6 @@ from .controller import get_group_project_for_user_course, get_group_project_for
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
 
-# Temporary id converter to fix up problems post opaque keys
-from lib.util import LegacyIdConvert
-
 # Create your views here.
 
 _progress_bar_dictionary = {
@@ -187,7 +184,7 @@ def _render_group_work(request, course, project_group, group_project):
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "course_id": course.id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course.id),
+        "legacy_course_id": course.id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "project_group": project_group,
@@ -250,7 +247,7 @@ def course_discussion(request, course_id):
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
         "course_id": course_id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
+        "legacy_course_id": course_id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "mcka_ta": mcka_ta
@@ -414,7 +411,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "program": program,
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
+        "legacy_course_id": course_id,
     }
 
     if not current_sequential.is_started:
