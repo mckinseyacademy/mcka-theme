@@ -63,7 +63,7 @@
             %tbody
               - for workgroup in project.workgroups
                 %tr
-                  %td
+                  %td{"data-order": "#{workgroup.id}"}
                     %a{href:"/admin/workgroup/course/#{course.id}/group_work_status/#{workgroup.id}"}
                       = workgroup.name
                   - for activity_status in workgroup.activity_statuses
@@ -74,3 +74,11 @@
                         = _("--")
                     - else
                       %td{class: "status #{activity_status.grade}"}
+- block js_snippets
+  :javascript
+    $(function(){
+      $('.group-list').dataTable({
+        paging: false,
+        searching: false
+      });
+    });

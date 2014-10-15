@@ -127,7 +127,7 @@
     &.group-list{
       th{
         background: #DDDDDD;
-        &:not([colspan]){
+        &[colspan="1"]{
           &:nth-of-type(2),
           &:nth-of-type(3),
           &:nth-of-type(4),
@@ -137,7 +137,7 @@
             background: #CCCCCC;
           }
         }
-        &[colspan]{
+        &[colspan="3"]{
           &:nth-of-type(2),&:nth-of-type(4){
             background: #CCCCCC;
           }
@@ -147,7 +147,7 @@
         }
       }
       td{
-        &:not([colspan]){
+        &[colspan="1"]{
           &:nth-of-type(2),
           &:nth-of-type(3),
           &:nth-of-type(4),
@@ -162,7 +162,7 @@
     &.group-detail{
       th{
         background: #DDDDDD;
-        &:not([colspan]){
+        &[colspan="1"]{
           &:nth-of-type(2),
           &:nth-of-type(3),
           &:nth-of-type(4),
@@ -174,7 +174,7 @@
             background: #CCCCCC;
           }
         }
-        &[colspan]{
+        &[colspan="4"]{
           &:nth-of-type(2),&:nth-of-type(4){
             background: #CCCCCC;
           }
@@ -184,7 +184,7 @@
         }
       }
       td{
-        &:not([colspan]){
+        &[colspan="1"]{
           &:nth-of-type(2),
           &:nth-of-type(3),
           &:nth-of-type(4),

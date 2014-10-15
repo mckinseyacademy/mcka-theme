@@ -62,7 +62,8 @@
                   %th= _("Grading")
             %tbody
               %tr.group-status
-                %td= _("Group Status")
+                %td{"data-order": "aaa"}
+                  = _("Group Status")
                 - for activity_status in workgroup.activity_statuses
                   %td{class: "status #{activity_status.upload}"}
                   %td{class: "status #{activity_status.evaluation}"}
@@ -81,7 +82,7 @@
                 - for row_index in user.review_row_indexer
                   %tr
                     - if row_index == 0
-                      %td.group-user-info{rowspan: "#{user.review_row_count}", title: "#{user.username}\n#{user.email}\n#{user.company}"}
+                      %td.group-user-info{"data-order": "#{user.username}", rowspan: "#{user.review_row_count}", title: "#{user.username}\n#{user.email}\n#{user.company}"}
                         %div= user.username
                         %div
                           %a{href: "mailto:#{user.email}"}
@@ -111,3 +112,16 @@
                               %a{href: "#{review_group.review_link}", class:"#{review_group.modifier_class}"}
                                 = review_group.name
 
+- block js_snippets
+  :javascript
+    $(function(){
+      $('.group-detail').dataTable({
+        paging: false,
+        searching: false
+      }).on('order.dt', function(){
+        $('.group-detail tbody').prepend($('.group-status'));
+        $('.group-detail tbody tr').each(function(i, row){
+          $(row).removeClass('odd even').addClass(i % 2 ? 'even' : 'odd');
+        })
+      });
+    });
