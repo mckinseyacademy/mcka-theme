@@ -303,6 +303,12 @@
     }
   }
 
+  .course-engagement {
+    .visualization {
+      margin: 20px auto 15px;
+    }
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';
