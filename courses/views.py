@@ -489,7 +489,7 @@ def contact_ta(request, course_id):
         settings.APROS_EMAIL_SENDER
     )
     email_to = settings.TA_EMAIL_GROUP
-    email_content = "<a href='http://{}/courses/{}/group_work'>{}</a><br/>".format(request.get_host(), course_id, group_project.name) + request.POST["ta_message"]
+    email_content = "<a href='{}'>{}</a><br/>".format(request.build_absolute_uri(), group_project.name) + request.POST["ta_message"]
     email_subject = "{} | {} | {}".format(course.name, course.id, group_project.name)
     try:
         email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
