@@ -7,6 +7,7 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
+from django.views.decorators.http import require_POST
 
 from admin.controller import load_course
 from admin.models import WorkGroup
@@ -568,3 +569,11 @@ def contact_member(request, course_id, group_id):
             content_type='application/json'
         )
 
+@require_POST
+@login_required
+@check_user_course_access
+def add_lesson_note(request, course_id, chapter_id):
+    return HttpResponse(
+        json.dumps({"status": _("Note Saved")}),
+        content_type='application/json'
+    )

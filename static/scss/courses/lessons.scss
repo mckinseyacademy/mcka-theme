@@ -159,6 +159,12 @@
   .lesson-not-started{
     margin-top: 20px;
   }
+
+  @import "./lesson_notes";
+}
+
+#course-lessons {
+  margin-top: rem-calc(15);
 }
 
 #module_list {
