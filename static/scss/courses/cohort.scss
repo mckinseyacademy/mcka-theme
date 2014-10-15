@@ -79,75 +79,93 @@
   .leaderboards {
     display: table-row;
 
-    section {
+    table {
       display: table-cell;
-      width: percentage(1/3);
-      padding: 0 10px;
-      border-right: 1px solid $almost-white;
-      &:first-child { padding-left: 0; }
-      &:last-child { border-right: none; }
+      width: 760px;
+      padding: 0 0px;
+      border: none;
+      border-collapse: separate;
 
-      header {
-        .label-5 {
-          position: relative;
+      tr:first-child {
+        td {
+          padding-top: 0;
+        }
+      }
 
-          &:after {
-            content: "\f05a";
-            color: $almost-white;
-            margin-left: 5px;
-            font-family: FontAwesome;
-          }
+      tr{
+        td:first-child { padding-left: 0; }
+        td:last-child { border-right: none; }
 
-          a {
-            position: absolute;
-            bottom: 2px;
-            left: 110px;
-            text-transform: lowercase;
-            @include font-spec(12, bold);
-          }
+        .even, .alt, &:nth-of-type(even) {
+          background: $pure-white;
         }
 
-        .rank {
-          text-align: center;
-          margin: 20px 0;
-          @include font-spec(18, normal, 24);
-          span { @include font-spec(24, bold, 24); }
-        }
+        td {
+          border-right: 1px solid $almost-white;
+          padding-bottom: 0px;
+          .label-5 {
+            position: relative;
 
-        .user {
-          padding: 10px;
-          border-top: 1px solid $almost-white;
-          @include clearfix;
+            &:after {
+              content: "\f05a";
+              color: $almost-white;
+              margin-left: 5px;
+              font-family: FontAwesome;
+            }
 
-          .avatar {
-            width: 40px;
-            height: 40px;
-            float: left;
-            margin-right: 10px;
-          }
-
-          .info {
-            margin-left: 60px;
-
-            .person-rank {
-              color: $mckinsey-academy-blue-gray;
-              @include font-spec(18, bold, 24);
-
-              span {
-                color: $mckinsey-academy-black;
-                @include font-spec(24, bold, 24);
-              }
+            a {
+              position: absolute;
+              bottom: 2px;
+              left: 110px;
+              text-transform: lowercase;
+              @include font-spec(12, bold);
             }
           }
 
-          &.dummy {
-            color: $mckinsey-grey;
-            .person-title,
-            .person-username,
-            .person-fullname,
-            .person-rank,
-            .person-rank span {
+          .rank {
+            text-align: center;
+            margin: 0px 0;
+            @include font-spec(18, normal, 24);
+            span { @include font-spec(24, bold, 24); }
+          }
+
+          .user {
+            padding: 10px 10px 0 10px;
+            border-top: 1px solid $almost-white;
+            @include clearfix;
+
+            .avatar {
+              width: 40px;
+              height: 40px;
+              float: left;
+              margin-right: 10px;
+            }
+
+            .info {
+              margin-left: 60px;
+
+              .person-rank {
+                color: $mckinsey-academy-blue-gray;
+                white-space: nowrap;
+                @include font-spec(18, bold, 24);
+
+                span {
+                  color: $mckinsey-academy-black;
+                  @include font-spec(24, bold, 24);
+                }
+              }
+            }
+
+            &.dummy {
               color: $mckinsey-grey;
+              .person-title,
+              .person-username,
+              .person-fullname,
+              .person-rank,
+              .person-rank span {
+                color: $mckinsey-grey;
+                white-space: nowrap;
+              }
             }
           }
         }
