@@ -41,6 +41,8 @@
   table {
     &.dataTable { width: 100%; }
 
+    caption {text-align: left; margin-bottom: 10px; }
+
     .dataTable {
       clear: both;
       margin: 0.5em 0 !important;
