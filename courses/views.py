@@ -155,6 +155,7 @@ def course_cohort(request, course_id):
         'metrics': metrics,
         'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
+        'leaderboard_ranks': [1,2,3],
     }
     return render(request, 'courses/course_cohort.haml', data)
 
