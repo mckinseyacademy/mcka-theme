@@ -685,6 +685,7 @@ def client_new(request):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_edit(request, client_id):
     error = None
+    client = Client.fetch(client_id)
     if request.method == 'POST':  # If the form has been submitted...
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -696,10 +697,13 @@ def client_edit(request, client_id):
             except ApiError as err:
                 error = err.message
     else:
-        ''' edit a client '''
-        client = Client.fetch(client_id)
-        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone, 'logo_url': client.logo_url}
-        form = ClientForm(data_dict)
+        form = ClientForm({
+            'contact_name': client.contact_name,
+            'display_name': client.display_name,
+            'contact_email': client.contact_email,
+            'contact_phone': client.contact_phone,
+            'logo_url': client.logo_url
+        })
 
     # set focus to company name field
     form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
