@@ -3,7 +3,7 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
@@ -489,11 +489,15 @@ def contact_ta(request, course_id):
         settings.APROS_EMAIL_SENDER
     )
     email_to = settings.TA_EMAIL_GROUP
-    email_content = "<a href='{}'>{}</a><br/>".format(request.build_absolute_uri(), group_project.name) + request.POST["ta_message"]
+    group_work_uri = request.build_absolute_uri()
+    email_message = request.POST["ta_message"]
+    html_content = "<a href='{}'>{}</a><br/>".format(group_work_uri, group_project.name) + email_message
+    text_content = group_work_uri + "\n" + email_message
     email_subject = "{} | {} | {}".format(course.name, course.id, group_project.name)
     try:
-        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email = EmailMultiAlternatives(email_subject, html_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
         email.content_subtype = "html"
+        email.attach_alternative(text_content, "text/plain")
         email.send(fail_silently=False)
     except:
         return HttpResponse(
