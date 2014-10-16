@@ -12,9 +12,6 @@ from .json_requests import GET, POST, DELETE
 from . import user_models
 from . import course_models
 
-# Temporary id converter to fix up problems post opaque keys
-from lib.util import LegacyIdConvert
-
 
 GROUP_API = getattr(settings, 'GROUP_API', 'api/server/groups')
 
@@ -221,9 +218,6 @@ def get_courses_in_group(group_id):
     )
 
     courses_list = JP.from_json(response.read(), course_models.CourseListCourse)
-    for course in courses_list:
-        course.course_id = LegacyIdConvert.new_from_legacy(course.course_id, course.course_id)
-
     return courses_list
 
 

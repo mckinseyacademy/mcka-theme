@@ -86,6 +86,7 @@ MIDDLEWARE_CLASSES = (
     'accounts.middleware.thread_local.ThreadLocal',
     'debug_toolbar.middleware.DebugToolbarMiddleware',      # explicitly add this, otherwise this doesn't seem to appear on AWS environments
     'accounts.middleware.ajax_redirect.AjaxRedirect',
+    'lib.middleware.handle_prior_ids.PriorIdRequest',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'

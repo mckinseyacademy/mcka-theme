@@ -22,10 +22,10 @@
         / %input{type: "search"}
         / %hr
       %table.student-list
+        %caption
+          .sub-1.add= _("Participants: ")
+            %span= total_participants
         %thead
-          %tr
-            .sub-1.add= _("Participants: ")
-              %span= total_participants
             %th
             %th User Name
             %th Full Name

@@ -441,9 +441,50 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     return '\n'.join(output_lines)
 
+
+def generate_program_report(client_name, program_id, url_prefix, courses, total_avg_grade, total_pet_completed):
+
+    output_lines = []
+
+    def output_line(line_data_array):
+        output_lines.append(','.join(line_data_array))
+
+    activity_names_row = ["Client Name","","Program ID",""]
+    output_line(activity_names_row)
+
+    group_header_row = [client_name,"", str(program_id)]
+    output_line(group_header_row)
+
+    output_line("--------")
+
+    activity_names_row = ["Courses","Participants","Started","Completed","Completed (%)", "Avg. Grade"]
+    output_line(activity_names_row)
+
+    for course in courses:
+        course_row = [course.name,str(course.metrics.users_enrolled),str(course.metrics.users_started),str(course.metrics.users_grade_complete_count),str(course.metrics.percent_completed)+"%",str(course.metrics.users_grade_average)]
+        output_line(course_row)
+
+    total_row = ["","","","Total:",str(total_avg_grade),str(total_pet_completed)]
+
+    output_line(total_row)
+
+    return '\n'.join(output_lines)
+
+
 def get_organizations_users_completion(client_id, course_id, users_enrolled):
     users_completed = organization_api.get_grade_complete_count(client_id, courses=course_id).users_grade_complete_count
     percent_completed = '0%'
     if users_enrolled > 0:
-        percent_completed = "{}%".format(int(int(users_completed) / int(users_enrolled) * 100))
+        percent_completed = "{}%".format(int((float(users_completed) / float(users_enrolled)) * 100))
     return users_completed, percent_completed
+
+
+def get_course_metrics_for_organization(course_id, client_id):
+    metrics = course_api.get_course_metrics(course_id, organization=client_id)
+    org_metrics = organization_api.get_grade_complete_count(client_id, courses=course_id)
+    metrics.users_grade_complete_count = org_metrics.users_grade_complete_count
+    metrics.users_grade_average = org_metrics.users_grade_average
+    metrics.percent_completed = 0
+    if metrics.users_enrolled:
+        metrics.percent_completed = int(int(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
+    return metrics

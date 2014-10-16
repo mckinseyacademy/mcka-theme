@@ -136,6 +136,7 @@
       margin-right: 20px;
       margin-bottom: 20px;
       vertical-align: bottom;
+      position: relative;
       @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
       .label-11, .label-12{
         height: 70px;
@@ -174,6 +175,11 @@
         max-height:25px;
         margin-bottom: 10px;
       }
+      .go-to-link{
+        position: absolute;
+        top: 160px;
+        left:170px;
+      }
     }
   }
 
@@ -203,6 +209,96 @@
 
   .dataTable td.course-progress{
     float:left;
+  }
+
+  #course-status-chart-wrapper {
+    margin: 0 auto;
+    width: 860px;
+    svg{
+      .grid .tick {
+        stroke: $mckinsey-dark-grey;
+        opacity: 0.7;
+      }
+      .grid path {
+        stroke-width: 0;
+      }
+    }
+  }
+
+  .status-chart-legend {
+    width:100%;
+    margin-left:10%;
+    ul.inline-list {
+      display:inline;
+      float:left;
+      list-style: none;
+      li{
+        display:inline-block;
+        .color {
+          width: rem-calc(12px);
+          height: rem-calc(12px);
+          float: left;
+          margin-right: 5px;
+        }
+        .warm-gray{
+          background: $mckinsey-academy-warm-gray;
+        }
+        .turquoise{
+                  background: $mckinsey-academy-turquoise;
+        }
+        .orange{
+                  background: $mckinsey-orange;
+        }
+      }
+    }
+  }
+
+  .admin-analytics-progress-wrapper{
+    height:360px;
+    width:760px;
+    float: left;
+  }
+  .admin-analytics-participant-activity-wrapper{
+    height:360px;
+    width:100%;
+    float: left;
+  }
+  .progress_stats{
+    float:left;
+    ul{
+      li{
+        display:block;
+        }
+      }
+    }
+
+  #program_course_list {
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    tr {
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+    }
+    tbody tr:nth-child(odd) {
+      background: #fff;
+    }
+    tbody tr:last-child {
+      border-left: none;
+      border-right: none;
+      border-top: 1px solid #ddd;
+      background: $mckinsey-academy-bright-gray;
+      td {
+        background: $mckinsey-academy-bright-gray;
+        font-style: italic;
+        color: $mckinsey-dark-grey;
+        b {
+          font-style: normal;
+          color: $mckinsey-orange;
+        }
+      }
+    }
   }
 
   @import './admin-list';

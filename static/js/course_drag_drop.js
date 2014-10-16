@@ -60,7 +60,7 @@
           data: {
             students: students,
             group_id: group_id,
-            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'),
+            'csrfmiddlewaretoken':  $.cookie('apros_csrftoken')
           },
           method: 'POST'
         }).done(function(data){
@@ -72,6 +72,21 @@
           else {
             alert(data.status);
           }
+        });
+      };
+
+      var deleteGroup = function(group_id, url){
+        $.ajax({
+          url: url,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+          },
+          data: {
+            "group_id": group_id
+          },
+          method: 'DELETE'
+        }).done(function(data){
+          window.location.reload(true);
         });
       };
 
@@ -90,6 +105,7 @@
 
       return {
         updateGroup: updateGroup,
+        deleteGroup: deleteGroup,
         removeStudent: removeStudent,
         accordion: accordion,
         accordianSlide: accordianSlide,
@@ -187,6 +203,17 @@
         }
         else{
           alert('All students added to private group have to be members of same company.');
+        }
+      }
+    });
+
+    $('.delete-group').on('click', function(){
+      var $this = $(this);
+      if(!$this.hasClass('disabled')){
+        if(confirm("Are you sure you want to remove this group? Doing so will remove submissions and feedback associated with the group.")){
+          var group = $this.data('group-id');
+          var url = $this.data('url');
+          courseDrag.deleteGroup(group, url);
         }
       }
     });

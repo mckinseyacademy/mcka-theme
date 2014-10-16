@@ -66,8 +66,11 @@
                           - if user.is_mcka_admin
                             %a.remove{href: '/admin/workgroup/group/#{group.id}/remove'}
                               %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
-                    .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
-                      Update
+                    - if user.is_mcka_admin
+                      .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
+                        = _("Update")
+                      .delete-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/#{group.id}/remove', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
+                        = _("Delete")
   #create-project-modal.reveal-modal{"data-reveal": "true"}
     %form#new-project-form{action: "/admin/workgroup/project/create/#{course.id}", method: "POST"}
       .close-reveal-modal

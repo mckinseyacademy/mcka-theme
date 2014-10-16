@@ -1,0 +1,48 @@
+- extends 'admin/admin_layout.haml'
+- block content
+  .admin-detail.row
+    .large-12.large.columns
+      - block admin_detail
+        %h1
+          %span= _("Program: ")
+          %span
+            = program.display_name
+            (
+            %span><
+              = program.name
+            )
+        %p
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+          nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.
+        %br
+          %a.button.radius.small{href: "/admin/client-admin/programs/#{program.id}/download_program_report", target: "_blank"}
+            = _("Download Report for Program")
+      %hr
+  .admin-detail.row
+    .large-12.large.columns
+      %table#program_course_list
+        %thead
+          %tr
+            %th= _("COURSES")
+            %th= _("Participants")
+            %th= _("Started")
+            %th= _("Completed")
+            %th= _("% Completed")
+            %th= _("Avg. grade")
+        %tbody
+          - for course in courses
+            %tr
+              %td= course.name
+              %td= course.metrics.users_enrolled
+              %td= course.metrics.users_started
+              %td= course.metrics.users_grade_complete_count
+              %td ={course.metrics.percent_completed}%
+              %td= course.metrics.users_grade_average
+          %tr
+            %td{colspan: 4}= _("Totals (% completed, avg. grade) only apply to courses that have started.")
+            %td
+              %b ={total_pct_completed}%
+            %td
+              %b= total_avg_grade
+
