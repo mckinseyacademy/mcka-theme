@@ -442,17 +442,17 @@ def generate_course_report(client_id, course_id, url_prefix, students):
     return '\n'.join(output_lines)
 
 
-def generate_program_report(client_id, program_id, url_prefix, courses, total_avg_grade, total_pet_completed):
+def generate_program_report(client_name, program_id, url_prefix, courses, total_avg_grade, total_pet_completed):
 
     output_lines = []
 
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    activity_names_row = ["Client ID","","Program ID",""]
+    activity_names_row = ["Client Name","","Program ID",""]
     output_line(activity_names_row)
 
-    group_header_row = [str(client_id),"", str(program_id)]
+    group_header_row = [client_name,"", str(program_id)]
     output_line(group_header_row)
 
     output_line("--------")

@@ -286,7 +286,8 @@ def client_admin_download_course_report(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_download_program_report(request, client_id, program_id):
-    program = Client.fetch(client_id).fetch_programs()[0]
+    organization = Client.fetch(client_id)
+    program = organization.fetch_programs()[0]
 
     filename = slugify(
         unicode(
@@ -318,7 +319,7 @@ def client_admin_download_program_report(request, client_id, program_id):
     )
 
     response = HttpResponse(
-        generate_program_report(client_id, program_id, url_prefix, courses, total_avg_grade, total_pct_completed),
+        generate_program_report(organization.name, program_id, url_prefix, courses, total_avg_grade, total_pct_completed),
         content_type='text/csv'
     )
 
