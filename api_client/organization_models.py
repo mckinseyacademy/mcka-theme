@@ -102,9 +102,3 @@ class Organization(JsonObjectWithImage):
                 default_storage.open(image_path)
             )
             self.save_profile_image(original_image, image_path)
-
-
-class OrganizationList(JsonObject):
-    object_map = {
-        "results": Organization
-    }

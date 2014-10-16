@@ -157,6 +157,8 @@
       <!--[if (gte IE 9) | (!IE)]><!-->
         %script{src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
       <!--<![endif]-->
+      %script
+        window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.js' %}"><\/script>')
 
     -# jQuery-cookie
     - block jquery_cookie

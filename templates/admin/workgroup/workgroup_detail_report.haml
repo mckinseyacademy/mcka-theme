@@ -1,0 +1,134 @@
+- extends 'admin/admin_layout.haml'
+- block content
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/workgroup/detail_header.haml'
+  .workgroup-report
+    .row
+      .large-12.large-centered.columns
+        %header
+          %h1
+            = _("Group Work:")
+            = course.name
+          .sub-1
+            = _("Group Work Project Status")
+          %div
+            = _("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.")
+
+    - for project in projects
+      - for workgroup in project.workgroups
+        .row
+          .large-12.large-centered.columns
+            %hr
+            %section
+              .sub-1
+                %span= workgroup.name
+                = _("Detail:")
+          %table.group-detail
+            %thead
+              %tr
+                %th
+                - for activity in project.activities
+                  %th.activity-name{colspan: 4, title: "#{activity.name}"}
+                    = _("Activity")
+                    = activity.index
+                    - if activity.grade_type
+                      %span.grade-type
+                        = activity.grade_type
+              %tr
+                %th
+                - for activity in project.activities
+                  %th
+                    = activity.upload_date
+                  %th
+                    = activity.evaluation_date
+                  %th
+                    = activity.grade_date
+                  %th
+              %tr
+                %th
+                  -#= _("Email Group") (present in design, but not in story board - appears to be a future desire)
+                - for activity in project.activities
+                  %th= _("Upload")
+                  %th= _("Evaluation")
+                  %th
+                    - if activity.review_link
+                      %a{href: "#{activity.review_link}"}
+                        = _("Grade")
+                    - else
+                      = _("Grade")
+                  %th= _("Grading")
+            %tbody
+              %tr.group-status
+                %td{"data-order": "aaa"}
+                  = _("Group Status")
+                - for activity_status in workgroup.activity_statuses
+                  %td{class: "status #{activity_status.upload}"}
+                  %td{class: "status #{activity_status.evaluation}"}
+                  - if activity_status.ta_graded
+                    %td
+                      = _("--")
+                  - else
+                    %td{class: "status #{activity_status.grade}"}
+                  %td
+                    - if activity_status.ta_graded
+                      %a{href: "#{activity_status.review_link}", class:"#{activity_status.modifier_class}"}
+                        TA Graded
+                    - else
+                      = _("--")
+              - for user in workgroup.users
+                - for row_index in user.review_row_indexer
+                  %tr
+                    - if row_index == 0
+                      %td.group-user-info{"data-order": "#{user.username}", rowspan: "#{user.review_row_count}", title: "#{user.username}\n#{user.email}\n#{user.company}"}
+                        %div= user.username
+                        %div
+                          %a{href: "mailto:#{user.email}"}
+                            = user.email
+                        %div
+                          = user.company
+                      - for user_activity_status in user.activity_statuses
+                        %td{class: "status #{user_activity_status.upload}"}
+                        %td{class: "status #{user_activity_status.evaluation}"}
+                        - if activity_status.ta_graded
+                          %td --
+                        - else
+                          %td{class: "status #{user_activity_status.grade}"}
+                        %td
+                          - for review_group in user_activity_status.review_groups
+                            - if review_group.index == row_index
+                              %a{href: "#{review_group.review_link}", class:"#{review_group.modifier_class}"}
+                                = review_group.name
+                    - else
+                      - for user_activity_status in user.activity_statuses
+                        %td
+                        %td
+                        %td
+                        %td
+                          - for review_group in user_activity_status.review_groups
+                            - if review_group.index == row_index
+                              %a{href: "#{review_group.review_link}", class:"#{review_group.modifier_class}"}
+                                = review_group.name
+        .row
+          .large-12.large-centered.columns
+            %ul.nav-links
+              %li
+                %a{href: "#{workgroup.review_link}"}
+                  = _("Go to Group page on platform")
+              %li
+                %a{href: "/admin/workgroup/course/#{course.id}/group_work_status"}
+                  = _("View all groups for course")
+
+- block js_snippets
+  :javascript
+    $(function(){
+      $('.group-detail').dataTable({
+        paging: false,
+        searching: false
+      }).on('order.dt', function(){
+        $('.group-detail tbody').prepend($('.group-status'));
+        $('.group-detail tbody tr').each(function(i, row){
+          $(row).removeClass('odd even').addClass(i % 2 ? 'even' : 'odd');
+        })
+      });
+    });

@@ -3,7 +3,7 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
@@ -478,6 +478,8 @@ def infer_default_navigation(request):
 @login_required
 @check_user_course_access
 def contact_ta(request, course_id):
+    course = load_course(course_id, request=request)
+    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
     user = user_api.get_user(request.user.id)
     email_header_from = user.email
     email_from = "{}<{}>".format(
@@ -485,11 +487,15 @@ def contact_ta(request, course_id):
         settings.APROS_EMAIL_SENDER
     )
     email_to = settings.TA_EMAIL_GROUP
-    email_content = request.POST["ta_message"]
-    course = course_api.get_course(course_id)
-    email_subject = "Ask a TA - {}".format(course.name)
+    group_work_uri = request.build_absolute_uri()
+    email_message = request.POST["ta_message"]
+    html_content = "<a href='{}'>{}</a><br/>".format(group_work_uri, group_project.name) + email_message
+    text_content = group_work_uri + "\n" + email_message
+    email_subject = "{} | {} | {}".format(course.name, course.id, group_project.name)
     try:
-        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email = EmailMultiAlternatives(email_subject, html_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email.content_subtype = "html"
+        email.attach_alternative(text_content, "text/plain")
         email.send(fail_silently=False)
     except:
         return HttpResponse(
