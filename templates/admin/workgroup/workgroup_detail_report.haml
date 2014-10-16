@@ -24,8 +24,6 @@
               .sub-1
                 %span= workgroup.name
                 = _("Detail:")
-                %a{href: "#{workgroup.review_link}"}
-                  = _("Go to Group page on platform")
           %table.group-detail
             %thead
               %tr
@@ -111,6 +109,15 @@
                             - if review_group.index == row_index
                               %a{href: "#{review_group.review_link}", class:"#{review_group.modifier_class}"}
                                 = review_group.name
+        .row
+          .large-12.large-centered.columns
+            %ul.nav-links
+              %li
+                %a{href: "#{workgroup.review_link}"}
+                  = _("Go to Group page on platform")
+              %li
+                %a{href: "/admin/workgroup/course/#{course.id}/group_work_status"}
+                  = _("View all groups for course")
 
 - block js_snippets
   :javascript
