@@ -12,7 +12,13 @@
       = error
   - csrf_token
   %fieldset
-    %legend.sub-1= _("Create New Program")
-    = form.as_p
+    - for field in form
+      .row
+        .small-3.columns
+        .small-9.columns= field.errors
+      .row
+        .small-3.columns= field.label_tag
+        .small-9.columns= field
+
   .submit-area
     %input.button.radius.small{type: "submit", value: "#{submit_label}"}

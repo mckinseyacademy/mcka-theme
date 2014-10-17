@@ -1,3 +1,5 @@
+@import "foundation/components/grid";
+
 #new-principal, #edit-principal {
   padding: rem-calc(20);
 
@@ -17,34 +19,27 @@
       margin: 0;
 
       label {
-        float: left;
-        clear: both;
-        line-height: rem-calc(37);
-        width: rem-calc(150);
         font-weight: 600;
       }
 
-      input,
       select {
+        width: 32%;
         float: left;
-      }
-
-      input { width: rem-calc(444); }
-
-      select {
-        margin-right: rem-calc(15);
-        width: rem-calc(138);
+        margin-right: 2%;
+        &:last-child {
+          margin-right: 0;
+        }
       }
 
       .errorlist{
-        margin: 0 0 0 rem-calc(150);
+        margin: 0;
         clear: both;
       }
     }
 
     .submit-area {
       text-align: right;
-      padding-right: rem-calc(64);
+      padding-right: rem-calc(32);
     }
   }
 }
