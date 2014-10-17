@@ -148,6 +148,12 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
+    user_roles = request.user.get_roles_on_course(course_id)
+    is_observer = False
+    for role in user_roles:
+        if role.role == 'observer':
+            is_observer = True
+
     data = {
         'proficiency': proficiency,
         'completions': completions,
@@ -156,6 +162,7 @@ def course_cohort(request, course_id):
         'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
         'leaderboard_ranks': [1,2,3],
+        'is_observer': is_observer,
     }
     return render(request, 'courses/course_cohort.haml', data)
 

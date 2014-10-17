@@ -41,7 +41,9 @@
               .header
                 .label-5 Proficiency:
                 .label-4 cohort average = ={proficiency.course_average_display}
-                - if proficiency.user_position and proficiency.user_grade_value
+                - if is_observer
+                 .rank As an Observer you will not appear on the proficiency leaderboard
+                - elif proficiency.user_position and proficiency.user_grade_value
                  .rank your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span>
                 - else
                   .rank your proficiency position <br> will be displayed here
@@ -51,7 +53,9 @@
               .header
                 .label-5 Progress:
                 .label-4 cohort average = ={completions.course_average_display}%
-                - if completions.position and completions.user_progress_value
+                - if is_observer
+                 .rank As an Observer you will not appear on the progress leaderboard
+                - elif completions.position and completions.user_progress_value
                   .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
                 - else
                   .rank your progress position <br> will be displayed here
@@ -61,7 +65,9 @@
                 .label-5 Engagement:
                   -# %a{href: '#'} view all           //  will be used in next version
                 .label-4 cohort average = ={social.course_avg} points
-                - if social.position
+                - if is_observer
+                 .rank As an Observer you will not appear on the engagement leaderboard
+                - elif social.position
                   .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
                 - else
                   .rank your engagement position <br> will be displayed here
