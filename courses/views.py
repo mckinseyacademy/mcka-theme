@@ -13,6 +13,7 @@ from admin.models import WorkGroup
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
@@ -148,6 +149,9 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
+    user_roles = request.user.get_roles_on_course(course_id)
+    is_observer = (len([r for r in user_roles if r.role==USER_ROLES.OBSERVER]) > 0)
+
     data = {
         'proficiency': proficiency,
         'completions': completions,
@@ -156,6 +160,7 @@ def course_cohort(request, course_id):
         'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
         'leaderboard_ranks': [1,2,3],
+        'is_observer': is_observer,
     }
     return render(request, 'courses/course_cohort.haml', data)
 
