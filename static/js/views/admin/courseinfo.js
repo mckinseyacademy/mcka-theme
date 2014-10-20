@@ -28,7 +28,7 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
     var y = d3.scale.linear()
         .range([height, 0]);
 
-    var color = d3.scale.ordinal().domain([1, 2, 3]).range(['#E37222', '#66A5B5', '#D3D1BA']);
+    var color = d3.scale.ordinal().domain(["Not started", "In progress", "Completed"]).range(['#E37222', '#66A5B5', '#D3D1BA']);
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -72,8 +72,6 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    color.domain(d3.keys(dataJson[0]).filter(function(key) { return key !== "week"; }));
-
     var percentages = stack(color.domain().map(function(name) {
       return {
         name: name,
@@ -95,12 +93,12 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
         .attr("d", function(d) { return area(d.values); })
         .style("fill", function(d) { return color(d.name); });
 
-    percentage.append("text")
+/*    percentage.append("text")
         .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
         .attr("transform", function(d) { return "translate(" + x(d.value.week) + "," + y(d.value.y0 + d.value.y / 2) + ")"; })
         .attr("x", -66)
         .attr("dy", ".35em")
-        .text(function(d) { return d.name; });
+        .text(function(d) { return d.name; }); */
 
     svg.append("g")
         .attr("class", "x axis")

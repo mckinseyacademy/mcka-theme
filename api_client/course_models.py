@@ -1,6 +1,7 @@
 ''' Objects for courses built from json responses from API '''
 import datetime
 import math
+import json
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -246,3 +247,21 @@ class CourseTimeSeriesMetrics(JsonObject):
         'users_not_started': DataOnly,
         'users_started': DataOnly
     }
+
+    def to_json(self):
+        ''' return CourseTimeSeriesMetrics object as json '''
+        return json.dumps(self.to_dict())
+
+    def to_dict(self):
+        ''' return CourseTimeSeriesMetrics object as dict '''
+        unserializable_fields = []
+        user = {}
+        for field, value in self.__dict__.iteritems():
+            if field not in unserializable_fields:
+                user[field] = self.get(field)
+        return user
+
+    def get(self, attr):
+        if hasattr(self, attr):
+            return getattr(self, attr)
+        return ''

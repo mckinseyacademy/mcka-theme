@@ -397,9 +397,59 @@ def client_admin_course_analytics_progress(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_status(request, client_id, course_id):
-    json = '[{"week":1,"Not started":78,"In progress":22,"Completed":0},{"week":2,"Not started":70,"In progress":25,"Completed":5},{"week":3,"Not started":60,"In progress":30,"Completed":10},{"week":4,"Not started":40,"In progress":20,"Completed":40},{"week":5,"Not started":10,"In progress":35,"Completed":55},{"week":6,"Not started":5,"In progress":25,"Completed":70}]'
+    course = course_api.get_course(course_id)
+    start_date = course.start
+    end_date = datetime.now()
+    if course.end != None:
+        if end_date > course.end:
+            end_date = course.end
+    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id).to_dict()
+    metricsJson = []
+    length = len(metrics['users_started'])
+    day = 1
+    week = 1
+    started = 0
+    completed = 0
+    not_started = 0
+    for i, metric in enumerate(metrics['users_started']):
+        if day > 0 and day < 8:
+            started += metrics['users_started'][i][1]
+            not_started += metrics['users_not_started'][i][1]
+            completed += metrics['users_completed'][i][1]
+            day += 1
+        else:
+            total = not_started + started + completed
+            if total != 0:
+                metricsJson.append({"week": week,
+                    "Not started": float(not_started) / total * 100,
+                    "In progress": float(started) / total * 100,
+                    "Completed": float(completed) / total * 100})
+            else:
+                metricsJson.append({"week": week,
+                    "Not started": 0,
+                    "In progress": 0,
+                    "Completed": 0})
+            started = metrics['users_started'][i][1]
+            completed = metrics['users_not_started'][i][1]
+            not_started = metrics['users_completed'][i][1]
+            week += 1
+            day = 1
+
+    if day != 1:
+        total = not_started + started + completed
+        if total != 0:
+            metricsJson.append({"week": week,
+                "Not started": float(not_started) / total * 100,
+                "In progress": float(started) / total * 100,
+                "Completed": float(completed) / total * 100})
+        else:
+            metricsJson.append({"week": week,
+                "Not started": 0,
+                "In progress": 0,
+                "Completed": 0})
+
     return HttpResponse(
-                json,
+                json.dumps(metricsJson),
                 content_type='application/json'
             )
 
