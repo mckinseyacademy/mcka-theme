@@ -400,22 +400,22 @@ def client_admin_course_status(request, client_id, course_id):
     course = course_api.get_course(course_id)
     start_date = course.start
     end_date = datetime.now()
-    if course.end != None:
+    if course.end is not None:
         if end_date > course.end:
             end_date = course.end
-    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id).to_dict()
+    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
     metricsJson = []
-    length = len(metrics['users_started'])
+    length = len(metrics.users_started)
     day = 1
     week = 1
     started = 0
     completed = 0
     not_started = 0
-    for i, metric in enumerate(metrics['users_started']):
+    for i, metric in enumerate(metrics.users_started):
         if day > 0 and day < 8:
-            started += metrics['users_started'][i][1]
-            not_started += metrics['users_not_started'][i][1]
-            completed += metrics['users_completed'][i][1]
+            started += metrics.users_started[i][1]
+            not_started += metrics.users_not_started[i][1]
+            completed += metrics.users_completed[i][1]
             day += 1
         else:
             total = not_started + started + completed
@@ -429,9 +429,9 @@ def client_admin_course_status(request, client_id, course_id):
                     "Not started": 0,
                     "In progress": 0,
                     "Completed": 0})
-            started = metrics['users_started'][i][1]
-            completed = metrics['users_not_started'][i][1]
-            not_started = metrics['users_completed'][i][1]
+            started = metrics.users_started[i][1]
+            completed = metrics.users_not_started[i][1]
+            not_started = metrics.users_completed[i][1]
             week += 1
             day = 1
 
