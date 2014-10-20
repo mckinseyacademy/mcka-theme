@@ -238,3 +238,11 @@ class CourseMetrics(JsonObject):
     object_map = {
         "grade_cutoffs": DataOnly
     }
+
+class CourseTimeSeriesMetrics(JsonObject):
+    object_map = {
+        'users_completed': DataOnly,
+        'modules_completed': DataOnly,
+        'users_not_started': DataOnly,
+        'users_started': DataOnly
+    }
