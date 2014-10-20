@@ -13,6 +13,7 @@ from admin.models import WorkGroup
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
@@ -149,10 +150,7 @@ def course_cohort(request, course_id):
     metrics.cities = json.dumps(metrics.cities)
 
     user_roles = request.user.get_roles_on_course(course_id)
-    is_observer = False
-    for role in user_roles:
-        if role.role == 'observer':
-            is_observer = True
+    is_observer = (len([r for r in user_roles if r.role==USER_ROLES.OBSERVER]) > 0)
 
     data = {
         'proficiency': proficiency,
