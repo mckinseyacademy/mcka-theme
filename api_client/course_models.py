@@ -1,6 +1,7 @@
 ''' Objects for courses built from json responses from API '''
 import datetime
 import math
+import json
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -237,4 +238,12 @@ class CourseContentGroup(JsonObject):
 class CourseMetrics(JsonObject):
     object_map = {
         "grade_cutoffs": DataOnly
+    }
+
+class CourseTimeSeriesMetrics(JsonObject):
+    object_map = {
+        'users_completed': DataOnly,
+        'modules_completed': DataOnly,
+        'users_not_started': DataOnly,
+        'users_started': DataOnly
     }

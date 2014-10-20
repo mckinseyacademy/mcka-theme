@@ -418,6 +418,29 @@ def get_course_social_metrics(course_id):
 
     return JP.from_json(response.read())
 
+
+@api_error_protect
+def get_course_time_series_metrics(course_id, start_date, end_date, organization_id=None, time_series_object=course_models.CourseTimeSeriesMetrics):
+    ''' a list of Metrics for the specified Course in time series format '''
+
+    qs_params = {
+        'start_date': start_date,
+        'end_date': end_date
+    }
+    if organization_id:
+        qs_params['organization'] = organization_id
+
+    url = '{}/{}/{}/time-series-metrics?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params),
+    )
+    response = GET(url)
+
+    return JP.from_json(response.read(), time_series_object)
+
+
 @api_error_protect
 def get_course_projects(course_id, page_size=0, project_object=JsonObject):
     ''' Fetches all the project objects for the course '''
