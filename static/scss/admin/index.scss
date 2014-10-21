@@ -287,6 +287,16 @@
     ul{
       li{
         display:block;
+        padding: 5px 0;
+        .progress-stat.company{
+            @include font-spec(20, bold);
+            color: $mckinsey-academy-turquoise;
+
+          }
+        .progress-stat.cohort{
+            @include font-spec(20, bold);
+            color: $mckinsey-academy-blue-gray;
+          }
         }
       }
     }

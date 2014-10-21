@@ -502,3 +502,30 @@ def get_course_metrics_for_organization(course_id, client_id):
     if metrics.users_enrolled:
         metrics.percent_completed = int(int(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
     return metrics
+
+def get_course_analytics_progress_data(course, course_modules, client_id=None):
+    if client_id:
+        users_count = len(course_api.get_users_list_in_organizations(course.id, client_id))
+    else:
+        users_count = len(course_api.get_user_list(course.id))
+    total = users_count * len(course_modules)
+    start_date = course.start
+    end_date = datetime.now()
+    if course.end is not None:
+        if end_date > course.end:
+            end_date = course.end
+    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, organization_id=client_id)
+    metricsJson = []
+    day = 1
+    week = 0
+    mod_completed = 0
+    for i, metric in enumerate(metrics.modules_completed):
+        mod_completed = metrics.modules_completed[i][1]
+        metricsJson.append([(day + week * 7), round((float(mod_completed) / total * 100), 2)])
+        if day > 0 and day < 8:
+            day += 1
+        else:
+            week += 1
+            day = 1
+
+    return metricsJson
