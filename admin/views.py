@@ -191,7 +191,7 @@ def client_admin_program_detail(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course(request, client_id, course_id):
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
@@ -334,7 +334,7 @@ def client_admin_download_program_report(request, client_id, program_id):
 @client_admin_access
 def client_admin_course_analytics(request, client_id, course_id):
 
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     students = course_api.get_users_list_in_organizations(course_id, client_id)
     cohort_students = course_api.get_user_list(course_id)
     metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
@@ -397,7 +397,7 @@ def client_admin_course_analytics_progress(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_status(request, client_id, course_id):
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     start_date = course.start
     end_date = datetime.now()
     if course.end is not None:
@@ -500,7 +500,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 def client_admin_email_not_started(request, client_id, course_id):
     students = []
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     total_participants = len(participants)
     if total_participants > 0:
         obs_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
@@ -547,7 +547,7 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
     student.avatar_url = student.image_url(size=48)
     courses = []
     for courseName in userCourses:
-        course = course_api.get_course(courseName.id, depth=4)
+        course = load_course(courseName.id, depth=4)
         if course.id != course_id:
             course.progress = return_course_progress(course, user_id)
             courses.append(course)

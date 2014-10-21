@@ -523,7 +523,7 @@ def contact_group(request, course_id, group_id):
     )
     group = WorkGroup.fetch_with_members(group_id)
     students = group.members
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     email_to = [student.email for student in students]
     email_content = request.POST["group_message"]
     email_subject = "Group Project Message - {}".format(course.name)
@@ -551,7 +551,7 @@ def contact_member(request, course_id, group_id):
     )
     email_to = request.POST["member-email"]
     email_content = request.POST["member_message"]
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     email_subject = "Group Project Message - {}".format(course.name) #just for testing
 
     group = WorkGroup.fetch_with_members(group_id)

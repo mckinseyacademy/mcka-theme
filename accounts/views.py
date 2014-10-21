@@ -19,6 +19,7 @@ from api_client import user_api, course_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program
+from admin.controller import load_course
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
 from django.core import mail
@@ -101,8 +102,7 @@ def login(request):
                                     IF user course object had start/due date, we
                                     would do one less API call
                                     '''
-                                    full_course_object = course_api.get_course(
-                                        course_id)
+                                    full_course_object = load_course(course_id)
                                     if hasattr(full_course_object, 'start'):
                                         future_start_date = is_future_start(full_course_object.start)
                                     elif hasattr(program, 'start_date') and future_start_date is False:
