@@ -1,6 +1,7 @@
 import copy
 import functools
 import json
+import re
 from datetime import datetime
 import urllib2 as url_access
 from urllib import quote as urlquote
@@ -1744,7 +1745,7 @@ def workgroup_course_assignments(request, course_id):
             activity.xblock = WorkGroupActivityXBlock.fetch_from_uri(get_group_activity_xblock(activity).uri)
             activity_assignments = [pag for pag in project_assignment_groups if hasattr(pag, "xblock_id") and pag.xblock_id == activity.xblock.id]
             activity.has_assignments = (len(activity_assignments) > 0)
-            activity.js_safe_id = activity.id.split('+')[-1]
+            activity.js_safe_id = re.sub(r'\W', '', activity.id)
 
     data = {
         "course": course,
