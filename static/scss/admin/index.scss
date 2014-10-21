@@ -93,6 +93,22 @@
     }
   }
 
+  .student-list thead{
+    background-color: $mckinsey-academy-warm-gray;
+  }
+
+  .student-list{
+
+    caption{
+      text-align: left; margin-bottom: 10px;
+
+      .add-message {
+        @include font-spec(12, normal);
+        font-style: italic;
+      }
+    }
+  }
+
   #student-list.columns {
     padding-left: 0;
     .dataTable .student td:last-child{
