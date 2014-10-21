@@ -33,12 +33,12 @@
                 ▲
               %span{class: 'desc'}
                 ▼
-            %th.progress Progress
+            %th Progress
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
                 ▼
-            %th.completed Completed
+            %th Completed
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
@@ -58,10 +58,10 @@
                   %a= student.full_name
                 %p= student.username
                 %p= student.title
-              %td.progress
+              %td
                 = student.progress
                 = _('%')
-              %td.completed
+              %td
                 - if student.progress == 100
                   = _("Yes")
                 - else

@@ -94,24 +94,18 @@
   }
 
   .student-list thead{
-    background-color: #d3d1ba;
+    background-color: $mckinsey-academy-warm-gray;
   }
 
   .student-list{
-    font-size: 10px !important;
 
     caption{
       text-align: left; margin-bottom: 10px;
 
       .add-message {
-        font-size: 0.75em;
+        @include font-spec(12, normal);
         font-style: italic;
-        font-weight: normal;
       }
-    }
-
-    tr, th{
-      .completed, .progress {text-align: center;}
     }
   }
 
