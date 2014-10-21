@@ -6,7 +6,6 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
     this.model.setUrl(this.options.client_id, this.options.course_id);
     this.model.fetch({
       success: function(model, response){
-        model.save(model.parse(response));
         _this.render();
       }
     });
