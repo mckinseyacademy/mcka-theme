@@ -391,11 +391,11 @@ def client_admin_course_analytics(request, client_id, course_id):
 def client_admin_course_analytics_participants(request, client_id, course_id):
     course = course_api.get_course(course_id)
     start_date = course.start
-    end_date = course.end if course.end else datetime.today()
-    time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, client_id)
+    end_date = course.end if course.end and course.end < datetime.today() else datetime.today()
+    time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
     data = {
         'modules_completed': time_series_metrics.modules_completed,
-        'participants': []
+        'participants': time_series_metrics.active_users
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
