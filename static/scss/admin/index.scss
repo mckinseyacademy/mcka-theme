@@ -300,44 +300,7 @@
         background: $mckinsey-academy-warm-gray;
         @include square-size(100px);
         margin: 20px auto 15px;
-        .progress-radial {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-        }
-
-        $step: 5;
-        $loops: round(100 / $step);
-        $increment: 360 / $loops;
-        $half: round($loops / 2);
-        @for $i from 0 through $loops {
-
-          &.cohort-progress-#{$i*$step} {
-            .triangle {
-              $deg: -90deg + ($increment * $i);
-              @include transform(rotate($deg) translate(55px));
-            }
-          }
-
-          &.progress-#{$i*$step} {
-            @if $i < $half {
-              $nextdeg: 90deg + ( $increment * $i );
-              .progress-radial {
-                @include background(linear-gradient(90deg, $mckinsey-academy-warm-gray 50%, transparent 50%, transparent), linear-gradient($nextdeg, $mckinsey-academy-black 50%, $mckinsey-academy-warm-gray 50%, $mckinsey-academy-warm-gray));
-                -pie-background: linear-gradient(90deg, $mckinsey-academy-warm-gray 50%, transparent 50%, transparent) repeat scroll 0 0%, linear-gradient($nextdeg, $mckinsey-academy-black 50%, $mckinsey-academy-warm-gray 50%, $mckinsey-academy-warm-gray);
-                behavior: url(/static/js/vendor/css3pie/PIE.htc);
-              }
-            } @else {
-              $nextdeg: -90deg + ( $increment * ( $i - $half ) );
-              .progress-radial {
-                @include background(linear-gradient($nextdeg, $mckinsey-academy-black 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, $mckinsey-academy-black 50%, $mckinsey-academy-warm-gray 50%, $mckinsey-academy-warm-gray));
-                -pie-background: linear-gradient($nextdeg, $mckinsey-academy-black 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)), linear-gradient(270deg, $mckinsey-academy-black 50%, $mckinsey-academy-warm-gray 50%, $mckinsey-academy-warm-gray);
-                behavior: url(/static/js/vendor/css3pie/PIE.htc);
-              }
-            }
-          }
-        }
+        @include circle-chart($mckinsey-academy-warm-gray, $mckinsey-academy-black);
       }
       .cohort-average{
         margin: 0 auto;
