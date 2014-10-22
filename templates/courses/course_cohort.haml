@@ -252,7 +252,10 @@
 
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
+  %script{src: '//api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js'}
   %script
     var CohortMapUsers = {{metrics.groups_users|safe}};
     var CohortMapCities = {{metrics.cities|safe}};
     var TAUser = {{ta_user|safe}};
+    var mapbox_map_id = "{{mapbox_map_id}}";
+    L.mapbox.accessToken = "{{mapbox_token}}";

@@ -25,6 +25,8 @@ def settings_data(request):
         "ta_email_group": settings.TA_EMAIL_GROUP,
         "ie_favicon_prefix": ie_favicon_prefix,
         "session_id": request.session.session_key,
+        "mapbox_token": settings.MAPBOX_API['public_token'],
+        "mapbox_map_id": settings.MAPBOX_API['map_id'],
     }
     return data
 

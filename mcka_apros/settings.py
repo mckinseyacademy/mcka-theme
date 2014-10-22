@@ -282,6 +282,13 @@ PROGRESS_BAR_COLORS = {
     "proforma": "none",
 }
 
+# Mapbox settings
+MAPBOX_API = {
+    'map_id': 'mckinseyacademy.i2hg775e',
+    'public_token': 'pk.eyJ1IjoibWNraW5zZXlhY2FkZW15IiwiYSI6ImpXeXZfM0UifQ.U9z171wwWYtDbn_Fv-6nlg',
+    'secret_token': 'sk.eyJ1IjoibWNraW5zZXlhY2FkZW15IiwiYSI6Im9vX1JtRmcifQ.cW8tajahj-HfnK00IsD9qg',
+}
+
 # image sizes to generate from the originally uploaded file
 GENERATE_IMAGE_SIZES = [48, 160]
 # remove any of these sizes while regenerating the changed images
