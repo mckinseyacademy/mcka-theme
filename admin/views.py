@@ -359,14 +359,14 @@ def client_admin_course_analytics(request, client_id, course_id):
     try:
         progress = float(completed_modules)/course_modules
         course.company_progress = int(progress * 100)
-        course.company_progress_chart = int(5*round(progress)*20)
+        course.company_progress_chart = int(5*round(progress*20))
     except ZeroDivisionError:
         course.company_progress = 0
         course.company_progress_chart = 0
     try:
         progress = float(cohort_completed_modules)/cohort_course_modules
         course.cohort_progress = int(progress * 100)
-        course.cohort_progress_chart = int(5*round(progress)*20)
+        course.cohort_progress_chart = int(5*round(progress*20))
     except ZeroDivisionError:
         course.cohort_progress = 0
         course.cohort_progress_chart = 0
