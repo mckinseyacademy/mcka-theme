@@ -32,6 +32,9 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
     var xAxis = d3.svg.axis()
         .scale(x)
         .ticks([6])
+        .tickFormat(function(d){
+            return Math.ceil(d / 7) + ' week'
+        })
         .orient("bottom");
 
     var yAxis = d3.svg.axis()
@@ -58,7 +61,7 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
     }
 
     var area = d3.svg.area()
-        .x(function(d) { return x(d.week); })
+        .x(function(d) { return x(d.day); })
         .y0(function(d) { return y(d.y0); })
         .y1(function(d) { return y(d.y0 + d.y); });
 
@@ -75,12 +78,12 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
       return {
         name: name,
         values: dataJson.map(function(d) {
-          return {week: d.week, y: d[name] / 100};
+          return {day: d.day, y: d[name] / 100};
         })
       };
     }));
 
-    x.domain(d3.extent(dataJson, function(d) { return d.week; }));
+    x.domain(d3.extent(dataJson, function(d) { return d.day; }));
 
     var percentage = svg.selectAll(".browser")
         .data(percentages)
