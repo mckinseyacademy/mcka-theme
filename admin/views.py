@@ -393,12 +393,6 @@ def client_admin_course_analytics_participants(request, client_id, course_id):
     start_date = course.start
     end_date = course.end if course.end else datetime.today()
     time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, client_id)
-
-    # convert dates to timestamps
-    format_string = "%Y-%m-%dT%H:%M:%SZ"
-    for item in time_series_metrics.modules_completed:
-        item[0] = mktime(datetime.strptime(item[0], format_string).timetuple())
-
     data = {
         'modules_completed': time_series_metrics.modules_completed,
         'participants': []
