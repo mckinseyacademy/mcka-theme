@@ -291,6 +291,34 @@
       }
     }
 
+  .proficiency-engagement{
+    .course-proficiency{
+      margin:0 10%;
+      text-align: left;
+      .visualization {
+        border-radius: 50%;
+        background: $mckinsey-academy-warm-gray;
+        @include square-size(100px);
+        margin: 20px auto 15px;
+        @include circle-chart($mckinsey-academy-warm-gray, $mckinsey-academy-black);
+      }
+      .cohort-average{
+        margin: 0 auto;
+        text-align:center;
+      }
+      .inner-circle {
+        background: $mckinsey-academy-turquoise;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        margin: -35px 0 0 -35px;
+        z-index: 5;
+        @include square-size(70px);
+      }
+    }
+  }
+
   #program_course_list {
     background: none;
     border-left: none;

@@ -5,6 +5,7 @@ import re
 from datetime import datetime
 import urllib2 as url_access
 from urllib import quote as urlquote
+import math
 
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -356,13 +357,19 @@ def client_admin_course_analytics(request, client_id, course_id):
         cohort_course_modules += graded
 
     try:
-        course.company_progress = int(completed_modules/course_modules)
+        progress = float(completed_modules)/course_modules
+        course.company_progress = int(progress * 100)
+        course.company_progress_chart = int(5*round(progress*20))
     except ZeroDivisionError:
         course.company_progress = 0
+        course.company_progress_chart = 0
     try:
-        course.cohort_progress = int(cohort_completed_modules/cohort_course_modules)
+        progress = float(cohort_completed_modules)/cohort_course_modules
+        course.cohort_progress = int(progress * 100)
+        course.cohort_progress_chart = int(5*round(progress*20))
     except ZeroDivisionError:
         course.cohort_progress = 0
+        course.cohort_progress_chart = 0
 
 
     data = {

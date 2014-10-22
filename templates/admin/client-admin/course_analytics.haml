@@ -36,26 +36,25 @@
 
         .proficiency-engagement
           .large-6.left
-            .sub-1= _("Proficiency")
-            %p.style-5= _("Average grade based on current grade of participants.")
+            .course-proficiency
+              .sub-1= _("Proficiency")
+              %p.style-5= _("Average grade based on current grade of participants.")
 
-            %section.course-progress
-            - if course.company_progress == 0
-              .zero
-                %div
-                  %span= _("Your course progress will be displayed here.")
-            .sub-2.progress-link
-              Progress:
-              %a{href: "/courses/#{course.id}/cohort"}
-                %i.fa.fa-arrow-circle-right
-            .visualization
-              .total{style: "left:#{course.company_progress}%;"}
-                ={course.company_progress}%
-              .bar.gradient{class: "{% if course.company_progress < average_progress %}trailing{% endif %}", style: "width:#{course.company_progress}%;"}
-              .triangle{style: "left:#{average_progress}%"}
-            .label-4 cohort average = ={average_progress}%
-            %p.style-5= _("Note: Grades may not appear until later in the course depending on number of graded items and their location within course content.")
-            %hr
+              %section.course-progress
+              - if course.company_progress == 0
+                .zero
+                  %div
+                    %span= _("Your course proficiency will be displayed here.")
+              .visualization{'class': "progress-#{course.company_progress_chart} cohort-progress-#{course.cohort_progress_chart}"}
+                .total= course.company_progress
+                .inner-circle.gradient
+                .progress-radial.gradient
+                .triangle
+              .cohort-average
+                .label-4 cohort average = ={average_progress}%
+              %br
+              %p.style-5= _("Note: Grades may not appear until later in the course depending on number of graded items and their location within course content.")
+              %hr
           .large-6.left
             .sub-1= _("Engagement")
             %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
