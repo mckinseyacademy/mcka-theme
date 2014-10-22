@@ -27,11 +27,13 @@
         .progress_stats
           %ul
             %li= _("Your Company: ")
-              %span.progress-stat= course.company_progress
-              %span= _("%")
+              %br
+              %span.progress-stat.company= course.company_progress
+              %span.progress-stat.company= _("%")
             %li= _("Your Cohort: ")
-              %span.progress-stat= course.cohort_progress
-              %span= _("%")
+              %br
+              %span.progress-stat.cohort= course.cohort_progress
+              %span.progress-stat.cohort= _("%")
         %hr
 
         .proficiency-engagement

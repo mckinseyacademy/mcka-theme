@@ -187,15 +187,13 @@ def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args,
     return JP.from_json(response.read(), group_object)
 
 @api_error_protect
-def get_user_list_json(course_id, program_id = None, client_id = None):
+def get_user_list_json(course_id, program_id = None):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
     qs_params = {}
     if program_id:
         qs_params['project'] = program_id
-    if client_id:
-        qs_params['client'] = client_id
 
     response = GET('{}/{}/{}/users?{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -208,9 +206,9 @@ def get_user_list_json(course_id, program_id = None, client_id = None):
     return response.read()
 
 @api_error_protect
-def get_user_list(course_id, program_id = None, client_id = None):
+def get_user_list(course_id, program_id = None):
 
-    return JP.from_json(get_user_list_json(course_id, program_id, client_id), course_models.CourseEnrollmentList).enrollments
+    return JP.from_json(get_user_list_json(course_id, program_id), course_models.CourseEnrollmentList).enrollments
 
 @api_error_protect
 def get_users_list_in_organizations(course_id, organizations):

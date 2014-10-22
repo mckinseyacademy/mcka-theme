@@ -55,6 +55,7 @@ from .controller import upload_student_list_threaded
 from .controller import generate_course_report, generate_program_report
 from .controller import get_organizations_users_completion
 from .controller import get_course_metrics_for_organization
+from .controller import get_course_analytics_progress_data
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -396,11 +397,16 @@ def client_admin_course_analytics_participants(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_analytics_progress(request, client_id, course_id):
-    json = '[{"key":"Your Company","values":[[1,0],[1.5,13],[2,24],[2.5,45],[3,57],[3.5,59],[4,63],[4.5,67],[5,72],[5.5,78]]},{"key":"Your Cohort","values":[[1,0],[1.5,12],[2,25],[2.5,46],[3,60],[3.5,65],[4,70],[4.5,80],[5,93],[5.5,100]]}]'
+    course = load_course(course_id)
+    course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+
+
+    jsonResult = [{"key": "Your Company", "values": get_course_analytics_progress_data(course, course_modules, client_id=client_id)},
+                    {"key": "Your Cohort", "values": get_course_analytics_progress_data(course, course_modules)}]
     return HttpResponse(
-                    json,
-                    content_type='application/json'
-                )
+                json.dumps(jsonResult),
+                content_type='application/json'
+            )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
