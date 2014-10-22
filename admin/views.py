@@ -423,8 +423,8 @@ def client_admin_course_status(request, client_id, course_id):
     week = 0
     for i, metric in enumerate(metrics.users_started):
         started = metrics.users_started[i][1]
-        completed = metrics.users_not_started[i][1]
-        not_started = metrics.users_completed[i][1]
+        completed = metrics.users_completed[i][1]
+        not_started = metrics.users_not_started[i][1]
         total = not_started + started + completed
         if total != 0:
             metricsJson.append({"day": (day + week * 7),
