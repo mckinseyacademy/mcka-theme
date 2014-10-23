@@ -61,3 +61,9 @@
             .sub-1= _("Engagement")
             %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
             %hr
+            .course-engagement
+              .visualization{class: "{% if engagement.points >= 90 %}filled{% endif %}"}
+                .band-1{class: "{% if engagement.points >= 30 %}filled{% endif %}"}
+                .band-2{class: "{% if engagement.points >= 60 %}filled{% endif %}"}
+                .total= engagement.employee_avg
+              .label-4 cohort average = ={engagement.course_avg} points

@@ -69,6 +69,7 @@ from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletio
 from .permissions import Permissions, PermissionSaveError
 
 from courses.controller import return_course_progress, organization_course_progress_user_list
+from courses.controller import social_total, round_to_int_bump_zero
 from courses.user_courses import return_course_completions_stats
 
 def ajaxify_http_redirects(func):
@@ -373,12 +374,23 @@ def client_admin_course_analytics(request, client_id, course_id):
         course.cohort_progress = 0
         course.cohort_progress_chart = 0
 
+    employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
+    employee_point_sum = sum([social_total(user_metrics) for user_metrics in employee_engagement.users.__dict__.iteritems()])
+    employee_avg = float(employee_point_sum)/employee_engagement.total_enrollments if employee_engagement.total_enrollments > 0 else 0
+
+    course_engagement = course_api.get_course_social_metrics(course_id)
+    course_point_sum = sum([social_total(user_metrics) for user_metrics in course_engagement.users.__dict__.iteritems()])
+    course_avg = float(course_point_sum)/course_engagement.total_enrollments if course_engagement.total_enrollments > 0 else 0
 
     data = {
         'client_id': client_id,
         'course_id': course_id,
         'course': course,
         'average_progress': average_progress,
+        'engagement': {
+            'employee_avg': round_to_int_bump_zero(employee_avg),
+            'course_avg': round_to_int_bump_zero(course_avg)
+        }
     }
     return render(
         request,

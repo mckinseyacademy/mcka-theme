@@ -403,14 +403,18 @@ def get_course_metrics_completions(course_id, completions_object_type=JsonObject
     return JP.from_json(response.read(), completions_object_type)
 
 @api_error_protect
-def get_course_social_metrics(course_id):
+def get_course_social_metrics(course_id, organization_id=None):
     ''' fetch social metrics for course '''
+    qs_params = {}
+    if organization_id:
+        qs_params['organization'] = organization_id
 
     response = GET(
-        '{}/{}/{}/metrics/social/'.format(
+        '{}/{}/{}/metrics/social/?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
+            urlencode(qs_params)
         )
     )
 
