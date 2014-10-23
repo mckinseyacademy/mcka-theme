@@ -584,14 +584,22 @@ def contact_member(request, course_id, group_id):
             content_type='application/json'
         )
 
-@require_POST
 @login_required
 @check_user_course_access
+def course_notes(request, course_id):
+    notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
+    notes = [note.as_json() for note in notes]
+    return HttpResponse(json.dumps(notes), mimetype="application/json")
+
+#@require_POST
+#@login_required
+#@check_user_course_access
 def add_lesson_note(request, course_id, chapter_id):
     note = LessonNotesItem(
         body = request.POST['body'],
+        user_id = request.user.id,
         course_id = course_id,
-        lesson_id = chapter_id
+        lesson_id = chapter_id,
     )
     note.save()
 

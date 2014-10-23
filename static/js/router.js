@@ -76,9 +76,10 @@ var Router = Backbone.Router.extend({
                                           course_id: course_id});
   },
 
-  course_lesson: function(course_id, lesson_id) {
-    var el = $('#course-lessons');
-    new Apros.views.CourseLesson({el: el}).render();
+  course_lesson: function(courseId, lessonId) {
+    var el = $('#course-lessons'),
+        collection = new Apros.collections.CourseNotes(null, {courseId: courseId})
+    new Apros.views.CourseLesson({el: el, collection: collection}).render();
 
   }
 });

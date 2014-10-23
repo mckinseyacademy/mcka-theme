@@ -1,4 +1,5 @@
 Apros.views.CourseLesson = Backbone.View.extend({
+
   events: {
     'submit .notes-search': 'notesSubmit',
     'input input[type=search]': 'notesSearch',
@@ -45,5 +46,9 @@ Apros.views.CourseLesson = Backbone.View.extend({
       var form = this.$('.notes-entry');
       $.post(form.attr('action'), form.serialize());
     }
+  },
+
+  render: function() {
+    this.collection.fetch();
   }
 });
