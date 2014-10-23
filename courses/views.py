@@ -582,6 +582,6 @@ def add_lesson_note(request, course_id, chapter_id):
     note.save()
 
     return HttpResponse(
-        json.dumps(result.as_json()),
+        json.dumps(note.as_json()),
         mimetype="application/json"
     )
