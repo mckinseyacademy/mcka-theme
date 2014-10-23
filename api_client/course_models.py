@@ -242,8 +242,10 @@ class CourseMetrics(JsonObject):
 
 class CourseTimeSeriesMetrics(JsonObject):
     object_map = {
-        'users_completed': DataOnly,
+        'active_users': DataOnly,
         'modules_completed': DataOnly,
+        'users_completed': DataOnly,
+        'users_enrolled': DataOnly,
         'users_not_started': DataOnly,
-        'users_started': DataOnly
+        'users_started': DataOnly,
     }
