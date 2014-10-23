@@ -484,7 +484,15 @@ def infer_default_navigation(request):
 @check_user_course_access
 def contact_ta(request, course_id):
     course = load_course(course_id, request=request)
-    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+    email_subject = "{} | {}".format(course.name, course.id)
+    html_content = ""
+    text_content = ""
+    if request.POST["contact-from"] == "group-work":
+        project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+        email_subject += " | {}".format(group_project.name)
+        group_work_uri = request.build_absolute_uri().replace("/teaching_assistant", "/group_work")
+        html_content = "<p><a href='{}'>{}</a></p>".format(group_work_uri, email_subject)
+        text_content = group_work_uri + "\n"
     user = user_api.get_user(request.user.id)
     email_header_from = user.email
     email_from = "{}<{}>".format(
@@ -492,15 +500,12 @@ def contact_ta(request, course_id):
         settings.APROS_EMAIL_SENDER
     )
     email_to = settings.TA_EMAIL_GROUP
-    group_work_uri = request.build_absolute_uri()
     email_message = request.POST["ta_message"]
-    html_content = "<a href='{}'>{}</a><br/>".format(group_work_uri, group_project.name) + email_message
-    text_content = group_work_uri + "\n" + email_message
-    email_subject = "{} | {} | {}".format(course.name, course.id, group_project.name)
+    html_content += "<p>{}</p>".format(email_message)
+    text_content += email_message
     try:
-        email = EmailMultiAlternatives(email_subject, html_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
-        email.content_subtype = "html"
-        email.attach_alternative(text_content, "text/plain")
+        email = EmailMultiAlternatives(email_subject, text_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email.attach_alternative(html_content, "text/html")
         email.send(fail_silently=False)
     except:
         return HttpResponse(
