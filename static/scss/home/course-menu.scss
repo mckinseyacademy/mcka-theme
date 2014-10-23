@@ -60,7 +60,7 @@
         }
 
         .front .name {
-          @include hyphens(auto);
+          font-size: rem-calc(17);
           word-break: break-word; // Non standard for webkit
         }
 
