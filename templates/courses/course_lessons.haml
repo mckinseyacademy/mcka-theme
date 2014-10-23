@@ -20,10 +20,11 @@
     %ul
       - for module in course.current_lesson.modules
         %li
-          %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
-          %a.module{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
-            Module ={module.index}:
-          %span.label-3= module.name
+          .col-left
+            %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+            %a.module{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
+              Module ={module.index}:
+          .col-right.label-3= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
 

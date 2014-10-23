@@ -183,6 +183,18 @@
         }
       }
 
+      .col-left,
+      .col-right {
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      .col-right {
+        max-width: 255px;
+        margin: 5px 0 0 5px;
+        line-height: rem-calc(12);
+      }
+
       .fa { @include font-spec(16); }
       .fa-check-circle { color: $mckinsey-green; }
       .fa-circle { color: $mckinsey-academy-light-gray; }
