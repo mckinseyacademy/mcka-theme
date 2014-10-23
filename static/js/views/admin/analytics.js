@@ -5,7 +5,6 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
     this.model.setUrl(this.options.client_id, this.options.course_id);
     this.model.fetch({
       success: function(model, response){
-        model.save(model.parse(response));
         _this.render();
       }
     });
@@ -21,15 +20,20 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
       var chart = nv.models.cumulativeLineChart()
                     .x(function(d) { return d[0] })
                     .y(function(d) { return d[1]/100 }) //adjusting, 100% is 1.00, not 100 as it is in the data
-                    .color(['#3384CA', '#B1C2CC'])
+                    .color(['#66A5B5', '#B1C2CC'])
                     .useInteractiveGuideline(true)
                     .width(width).height(height)
                     ;
 
-       chart.xAxis
-          .tickValues([1,2,3,4,5,6])
+      var weeksNumber = dataJson[0].values.length;
+      var weekslabelsNum = parseInt(weeksNumber / 6);
+
+      chart.xAxis
+          .tickValues(Array.apply(null, {length: dataJson[0].values.length}).map(Number.call, Number))
           .tickFormat(function(d) {
-              return d + ' week';
+              if((d%weekslabelsNum) == 0){
+                return Math.ceil(d / 7) + ' week';
+              }
             });
 
       chart.yAxis
@@ -54,7 +58,6 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
     this.model.setUrl(this.options.client_id, this.options.course_id);
     this.model.fetch({
       success: function(model, response){
-        model.save(model.parse(response));
         _this.render();
       }
     });
@@ -72,22 +75,24 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
               .margin({top: 30, right: 60, bottom: 50, left: 70})
               //We can set x data accessor to use index. Reason? So the bars all appear evenly spaced.
               .x(function(d,i) { return i })
-              .y(function(d,i) {return d[1] })
-              .tooltips(false)
-              ;
+              .y(function(d,i) { return d[1] })
+              .tooltips(false);
 
-        chart.xAxis.tickFormat(function(d) {
-          var dx = dataJson[0].values[d] && dataJson[0].values[d][0] || 0;
-          return d3.time.format('%x')(new Date(dx))
+        var weeks = d3.range(0, dataJson[0].values.length, 7)
+        chart.xAxis.tickValues(weeks).tickFormat(function(d) {
+          return 1 + Math.floor(d / 7);
         });
 
-        chart.bars.forceY([0]);
 
         d3.select(_this.el)
           .datum(dataJson)
           .transition()
           .duration(0)
           .call(chart);
+
+        d3.select(_this.el)
+          .selectAll('.nv-x .nv-axisMaxMin:last-child>text')
+          .text('weeks')
 
         d3.select(_this.el)
           .append("text")

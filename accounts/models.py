@@ -13,6 +13,7 @@ from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 
 from django.utils.functional import cached_property
+from api_client import user_api
 
 
 class RemoteUser(AbstractUser):
@@ -48,6 +49,14 @@ class RemoteUser(AbstractUser):
         '''
         RemoteUser.temp_user_cache[self.id] = self
         return True
+
+    def get_roles(self):
+        ''' Return user roles list '''
+        return user_api.get_user_roles(self.id)
+
+    def get_roles_on_course(self, course_id):
+        roles = self.get_roles()
+        return [role for role in roles if role.course_id == course_id]
 
     @staticmethod
     def cached_fetch(user_id):

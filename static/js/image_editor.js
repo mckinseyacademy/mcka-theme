@@ -63,6 +63,7 @@ $.imageEditor = function(){
       var form = that.parents('form').first();
       modal.find('.error').html('');
       var validate = FileTypeValidate(that.val(), modal.find('.error'));
+      ImageFileName = that.val().length > 25 ? (that.val().substr(0,25) + '...') : that.val();
       if(validate){
         $('img.spinner.upload-image').show();
         var options = {

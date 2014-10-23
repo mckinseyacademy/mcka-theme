@@ -93,6 +93,22 @@
     }
   }
 
+  .student-list thead{
+    background-color: $mckinsey-academy-warm-gray;
+  }
+
+  .student-list{
+
+    caption{
+      text-align: left; margin-bottom: 10px;
+
+      .add-message {
+        @include font-spec(12, normal);
+        font-style: italic;
+      }
+    }
+  }
+
   #student-list.columns {
     padding-left: 0;
     .dataTable .student td:last-child{
@@ -136,6 +152,7 @@
       margin-right: 20px;
       margin-bottom: 20px;
       vertical-align: bottom;
+      position: relative;
       @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
       .label-11, .label-12{
         height: 70px;
@@ -167,12 +184,18 @@
       }
       .not-started{
         color: #868685;
+        cursor: initial;
       }
       .course-image{
         width:100%;
         height: 25px;
         max-height:25px;
         margin-bottom: 10px;
+      }
+      .go-to-link{
+        position: absolute;
+        top: 160px;
+        left:170px;
       }
     }
   }
@@ -208,6 +231,7 @@
   #course-status-chart-wrapper {
     margin: 0 auto;
     width: 860px;
+    height: 400px;
     svg{
       .grid .tick {
         stroke: $mckinsey-dark-grey;
@@ -228,6 +252,7 @@
       list-style: none;
       li{
         display:inline-block;
+        line-height: 1rem;
         .color {
           width: rem-calc(12px);
           height: rem-calc(12px);
@@ -262,7 +287,80 @@
     ul{
       li{
         display:block;
+        padding: 5px 0;
+        .progress-stat.company{
+            @include font-spec(20, bold);
+            color: $mckinsey-academy-turquoise;
+
+          }
+        .progress-stat.cohort{
+            @include font-spec(20, bold);
+            color: $mckinsey-academy-blue-gray;
+          }
+        }
       }
+    }
+
+  .proficiency-engagement{
+    .course-proficiency{
+      margin:0 10%;
+      text-align: left;
+      .visualization {
+        border-radius: 50%;
+        background: $mckinsey-academy-warm-gray;
+        @include square-size(100px);
+        margin: 20px auto 15px;
+        @include circle-chart($mckinsey-academy-warm-gray, $mckinsey-academy-black);
+      }
+      .cohort-average{
+        margin: 0 auto;
+        text-align:center;
+      }
+      .inner-circle {
+        background: $mckinsey-academy-turquoise;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        margin: -35px 0 0 -35px;
+        z-index: 5;
+        @include square-size(70px);
+      }
+    }
+  }
+
+  #program_course_list {
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    tr {
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+    }
+    tbody tr:nth-child(odd) {
+      background: #fff;
+    }
+    tbody tr:last-child {
+      border-left: none;
+      border-right: none;
+      border-top: 1px solid #ddd;
+      background: $mckinsey-academy-bright-gray;
+      td {
+        background: $mckinsey-academy-bright-gray;
+        font-style: italic;
+        color: $mckinsey-dark-grey;
+        b {
+          font-style: normal;
+          color: $mckinsey-orange;
+        }
+      }
+    }
+  }
+
+  .course-engagement {
+    .visualization {
+      margin: 20px auto 15px;
     }
   }
 

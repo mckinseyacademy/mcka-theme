@@ -1,14 +1,12 @@
 ''' Objects for courses built from json responses from API '''
 import datetime
 import math
+import json
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from .json_object import CategorisedJsonObject, JsonObject, DataOnly
-
-# Temporary id converter to fix up problems post opaque keys
-from lib.util import LegacyIdConvert
 
 # Create your models here.
 
@@ -68,9 +66,7 @@ class Page(_HasCourseDates):
     required_fields = ["id", "name", ]
 
     def vertical_usage_id(self):
-        # Convert to old model
-        page_id = LegacyIdConvert.legacy_from_new(self.id)
-        return page_id.replace('/', ';_')
+        return self.id.replace('/', ';_')
 
     def child_category_list(self):
         if not hasattr(self, "children"):
@@ -96,7 +92,8 @@ class Course(CategorisedJsonObject):
 
     @property
     def display_id(self):
-        return LegacyIdConvert.legacy_from_new(self.id)
+        return self.id
+
     @property
     def nav_url(self):
         return '/courses/{}'.format(self.id)
@@ -206,11 +203,8 @@ class CourseListCourse(JsonObject):
 
     @property
     def display_id(self):
-        return LegacyIdConvert.legacy_from_new(self.course_id)
+        return self.course_id
 
-    @property
-    def real_id(self):
-        return LegacyIdConvert.new_from_legacy(self.course_id, self.course_id)
 
 class CourseList(JsonObject):
     object_map = {
@@ -244,4 +238,14 @@ class CourseContentGroup(JsonObject):
 class CourseMetrics(JsonObject):
     object_map = {
         "grade_cutoffs": DataOnly
+    }
+
+class CourseTimeSeriesMetrics(JsonObject):
+    object_map = {
+        'active_users': DataOnly,
+        'modules_completed': DataOnly,
+        'users_completed': DataOnly,
+        'users_enrolled': DataOnly,
+        'users_not_started': DataOnly,
+        'users_started': DataOnly,
     }

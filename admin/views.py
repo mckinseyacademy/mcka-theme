@@ -1,9 +1,12 @@
 import copy
 import functools
 import json
+import re
 from datetime import datetime
+from time import mktime
 import urllib2 as url_access
 from urllib import quote as urlquote
+import math
 
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -37,7 +40,6 @@ from api_client.project_models import Project
 from api_client.organization_models import Organization
 from api_client.workgroup_models import Submission
 from license import controller as license_controller
-from lib.util import LegacyIdConvert
 
 from .models import Client
 from .models import Program
@@ -51,8 +53,10 @@ from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
-from .controller import generate_course_report
+from .controller import generate_course_report, generate_program_report
 from .controller import get_organizations_users_completion
+from .controller import get_course_metrics_for_organization
+from .controller import get_course_analytics_progress_data
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -65,6 +69,7 @@ from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletio
 from .permissions import Permissions, PermissionSaveError
 
 from courses.controller import return_course_progress, organization_course_progress_user_list
+from courses.controller import social_total, round_to_int_bump_zero
 from courses.user_courses import return_course_completions_stats
 
 def ajaxify_http_redirects(func):
@@ -156,11 +161,42 @@ def client_admin_home(request, client_id):
         data,
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_program_detail(request, client_id):
+    # In the future, when Companies have multiple program running,
+    # we will need to allow them a drop down that allows them to choose from all programs.
+    program = Client.fetch(client_id).fetch_programs()[0]
+    program_courses = program.fetch_courses()
+    course_ids = list(set([pc.course_id for pc in program_courses]))
+    courses = course_api.get_courses(course_id=course_ids)
+
+    for course in courses:
+        course.metrics = get_course_metrics_for_organization(course.id, client_id)
+
+    total_avg_grade = 0
+    total_pct_completed = 0
+    if courses:
+        count = float(len(courses))
+        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
+        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
+
+    data = {
+        'program': program,
+        'courses': courses,
+        'total_avg_grade': total_avg_grade,
+        'total_pct_completed': total_pct_completed
+    }
+    return render(
+        request,
+        'admin/client-admin/program_detail.haml',
+        data,
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course(request, client_id, course_id):
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
@@ -252,12 +288,58 @@ def client_admin_download_course_report(request, client_id, course_id):
 
     return response
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_download_program_report(request, client_id, program_id):
+    organization = Client.fetch(client_id)
+    program = organization.fetch_programs()[0]
+
+    filename = slugify(
+        unicode(
+            "{} Program Report for {} on {}".format(
+                client_id,
+                program_id,
+                datetime.now().isoformat()
+            )
+        )
+    ) + ".csv"
+
+    program_courses = program.fetch_courses()
+    course_ids = list(set([pc.course_id for pc in program_courses]))
+    courses = course_api.get_courses(course_id=course_ids)
+
+    for course in courses:
+        course.metrics = get_course_metrics_for_organization(course.id, client_id)
+
+    total_avg_grade = 0
+    total_pct_completed = 0
+    if courses:
+        count = float(len(courses))
+        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
+        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
+
+    url_prefix = "{}://{}".format(
+        "https" if request.is_secure() else "http",
+        request.META['HTTP_HOST']
+    )
+
+    response = HttpResponse(
+        generate_program_report(organization.name, program_id, url_prefix, courses, total_avg_grade, total_pct_completed),
+        content_type='text/csv'
+    )
+
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_analytics(request, client_id, course_id):
 
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     students = course_api.get_users_list_in_organizations(course_id, client_id)
     cohort_students = course_api.get_user_list(course_id)
     metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
@@ -278,20 +360,37 @@ def client_admin_course_analytics(request, client_id, course_id):
         cohort_course_modules += graded
 
     try:
-        course.company_progress = int(completed_modules/course_modules)
+        progress = float(completed_modules)/course_modules
+        course.company_progress = int(progress * 100)
+        course.company_progress_chart = int(5*round(progress*20))
     except ZeroDivisionError:
         course.company_progress = 0
+        course.company_progress_chart = 0
     try:
-        course.cohort_progress = int(cohort_completed_modules/cohort_course_modules)
+        progress = float(cohort_completed_modules)/cohort_course_modules
+        course.cohort_progress = int(progress * 100)
+        course.cohort_progress_chart = int(5*round(progress*20))
     except ZeroDivisionError:
         course.cohort_progress = 0
+        course.cohort_progress_chart = 0
 
+    employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
+    employee_point_sum = sum([social_total(user_metrics) for user_metrics in employee_engagement.users.__dict__.iteritems()])
+    employee_avg = float(employee_point_sum)/employee_engagement.total_enrollments if employee_engagement.total_enrollments > 0 else 0
+
+    course_engagement = course_api.get_course_social_metrics(course_id)
+    course_point_sum = sum([social_total(user_metrics) for user_metrics in course_engagement.users.__dict__.iteritems()])
+    course_avg = float(course_point_sum)/course_engagement.total_enrollments if course_engagement.total_enrollments > 0 else 0
 
     data = {
         'client_id': client_id,
         'course_id': course_id,
         'course': course,
         'average_progress': average_progress,
+        'engagement': {
+            'employee_avg': round_to_int_bump_zero(employee_avg),
+            'course_avg': round_to_int_bump_zero(course_avg)
+        }
     }
     return render(
         request,
@@ -302,27 +401,66 @@ def client_admin_course_analytics(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_analytics_participants(request, client_id, course_id):
-    json = '[{"key":"# Completed modules","bar":true,"color":"#3384CA","values":[[1136005200000,5],[1138683600000,5],[1141102800000,7],[1143781200000,0],[1146369600000,0],[1149048000000,0],[1151640000000,0],[1154318400000,0],[1156996800000,0],[1159588800000,10],[1162270800000,13],[1164862800000,15],[1167541200000,10],[1170219600000,9],[1172638800000,6],[1175313600000,14],[1177905600000,17],[1180584000000,18],[1183176000000,17],[1185854400000,16],[1188532800000,17],[1191124800000,19],[1193803200000,20],[1196398800000,20],[1199077200000,15],[1201755600000,17],[1204261200000,14],[1206936000000,14],[1209528000000,14],[1212206400000,17],[1214798400000,18],[1217476800000,18],[1220155200000,19],[1222747200000,18],[1225425600000,18],[1228021200000,18],[1230699600000,19],[1233378000000,20],[1235797200000,20],[1238472000000,20],[1241064000000,20],[1243742400000,18],[1246334400000,18],[1249012800000,20],[1251691200000,20],[1254283200000,16],[1256961600000,17],[1259557200000,17],[1262235600000,15],[1264914000000,20],[1267333200000,20],[1270008000000,17],[1272600000000,17],[1275278400000,16],[1277870400000,16],[1280548800000,14],[1283227200000,13],[1285819200000,19],[1288497600000,16],[1291093200000,17],[1293771600000,18],[1296450000000,18],[1298869200000,18],[1301544000000,18],[1304136000000,19],[1306814400000,18],[1309406400000,20]]},{"key":"# of Participants","color":"#E37222","values":[[1136005200000,71.89],[1138683600000,75.51],[1141102800000,68.49],[1143781200000,62.72],[1146369600000,70.39],[1149048000000,59.77],[1151640000000,57.27],[1154318400000,67.96],[1156996800000,67.85],[1159588800000,76.98],[1162270800000,81.08],[1164862800000,91.66],[1167541200000,84.84],[1170219600000,85.73],[1172638800000,84.61],[1175313600000,92.91],[1177905600000,99.8],[1180584000000,121.191],[1183176000000,122.04],[1185854400000,131.76],[1188532800000,138.48],[1191124800000,153.47],[1193803200000,189.95],[1196398800000,182.22],[1199077200000,198.08],[1201755600000,135.36],[1204261200000,125.02],[1206936000000,143.5],[1209528000000,173.95],[1212206400000,188.75],[1214798400000,167.44],[1217476800000,158.95],[1220155200000,169.53],[1222747200000,113.66],[1225425600000,107.59],[1228021200000,92.67],[1230699600000,85.35],[1233378000000,90.13],[1235797200000,89.31],[1238472000000,105.12],[1241064000000,125.83],[1243742400000,135.81],[1246334400000,142.43],[1249012800000,163.39],[1251691200000,168.21],[1254283200000,185.35],[1256961600000,188.5],[1259557200000,199.91],[1262235600000,210.732],[1264914000000,192.063],[1267333200000,204.62],[1270008000000,235],[1272600000000,261.09],[1275278400000,256.88],[1277870400000,251.53],[1280548800000,257.25],[1283227200000,243.1],[1285819200000,283.75],[1288497600000,300.98],[1291093200000,311.15],[1293771600000,322.56],[1296450000000,339.32],[1298869200000,353.21],[1301544000000,348.5075],[1304136000000,350.13],[1306814400000,347.83],[1309406400000,335.67],[1312084800000,390.48],[1314763200000,384.83],[1317355200000,381.32],[1320033600000,404.78],[1322629200000,382.2],[1325307600000,405],[1327986000000,456.48],[1330491600000,542.44],[1333166400000,599.55],[1335758400000,583.98]]}]'
-    return HttpResponse(
-                    json,
-                    content_type='application/json'
-                )
+    course = course_api.get_course(course_id)
+    start_date = course.start
+    end_date = course.end if course.end and course.end < datetime.today() else datetime.today()
+    time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
+    data = {
+        'modules_completed': time_series_metrics.modules_completed,
+        'participants': time_series_metrics.active_users
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_analytics_progress(request, client_id, course_id):
-    json = '[{"key":"Your Company","values":[[1,0],[1.5,13],[2,24],[2.5,45],[3,57],[3.5,59],[4,63],[4.5,67],[5,72],[5.5,78]]},{"key":"Your Cohort","values":[[1,0],[1.5,12],[2,25],[2.5,46],[3,60],[3.5,65],[4,70],[4.5,80],[5,93],[5.5,100]]}]'
+    course = load_course(course_id)
+    course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+
+
+    jsonResult = [{"key": "Your Company", "values": get_course_analytics_progress_data(course, course_modules, client_id=client_id)},
+                    {"key": "Your Cohort", "values": get_course_analytics_progress_data(course, course_modules)}]
     return HttpResponse(
-                    json,
-                    content_type='application/json'
-                )
+                json.dumps(jsonResult),
+                content_type='application/json'
+            )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_status(request, client_id, course_id):
-    json = '[{"week":1,"Not started":78,"In progress":22,"Completed":0},{"week":2,"Not started":70,"In progress":25,"Completed":5},{"week":3,"Not started":60,"In progress":30,"Completed":10},{"week":4,"Not started":40,"In progress":20,"Completed":40},{"week":5,"Not started":10,"In progress":35,"Completed":55},{"week":6,"Not started":5,"In progress":25,"Completed":70}]'
+    course = load_course(course_id)
+    start_date = course.start
+    end_date = datetime.now()
+    if course.end is not None:
+        if end_date > course.end:
+            end_date = course.end
+    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
+    metricsJson = []
+    day = 1
+    week = 0
+    for i, metric in enumerate(metrics.users_started):
+        started = metrics.users_started[i][1]
+        completed = metrics.users_completed[i][1]
+        not_started = metrics.users_not_started[i][1]
+        total = not_started + started + completed
+        if total != 0:
+            metricsJson.append({"day": (day + week * 7),
+                "Not started": float(not_started) / total * 100,
+                "In progress": float(started) / total * 100,
+                "Completed": float(completed) / total * 100})
+        else:
+            metricsJson.append({"day": (day + week * 7),
+                "Not started": 0,
+                "In progress": 0,
+                "Completed": 0})
+        if day > 0 and day < 8:
+            day += 1
+        else:
+            week += 1
+            day = 1
+
     return HttpResponse(
-                json,
+                json.dumps(metricsJson),
                 content_type='application/json'
             )
 
@@ -373,7 +511,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 def client_admin_email_not_started(request, client_id, course_id):
     students = []
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     total_participants = len(participants)
     if total_participants > 0:
         obs_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
@@ -420,7 +558,7 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
     student.avatar_url = student.image_url(size=48)
     courses = []
     for courseName in userCourses:
-        course = course_api.get_course(courseName.id, depth=4)
+        course = load_course(courseName.id, depth=4)
         if course.id != course_id:
             course.progress = return_course_progress(course, user_id)
             courses.append(course)
@@ -608,6 +746,7 @@ def client_new(request):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_edit(request, client_id):
     error = None
+    client = Client.fetch(client_id)
     if request.method == 'POST':  # If the form has been submitted...
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -619,10 +758,13 @@ def client_edit(request, client_id):
             except ApiError as err:
                 error = err.message
     else:
-        ''' edit a client '''
-        client = Client.fetch(client_id)
-        data_dict = {'contact_name': client.contact_name, 'display_name': client.display_name, 'contact_email': client.contact_email, 'contact_phone': client.contact_phone, 'logo_url': client.logo_url}
-        form = ClientForm(data_dict)
+        form = ClientForm({
+            'contact_name': client.contact_name,
+            'display_name': client.display_name,
+            'contact_email': client.contact_email,
+            'contact_phone': client.contact_phone,
+            'logo_url': client.logo_url
+        })
 
     # set focus to company name field
     form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
@@ -994,12 +1136,17 @@ def download_group_projects_report(request, course_id):
     return response
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def group_projects_report(request, course_id):
-    wcd = WorkgroupCompletionData(course_id)
+def group_work_status(request, course_id, group_id=None):
+    wcd = WorkgroupCompletionData(course_id, group_id)
+    data = wcd.build_report_data()
+    data.update({'selected_client_tab':'group_work_status'})
+
+    template = 'admin/workgroup/workgroup_{}report.haml'.format('detail_' if group_id else '')
+
     return render(
         request,
-        'admin/workgroup/workgroup_report.haml',
-        wcd.build_report_data()
+        template,
+        data
     )
 
 
@@ -1309,7 +1456,8 @@ def workgroup_group_create(request, course_id):
                 )
                 return HttpResponse(json.dumps({'message': ''}), content_type="application/json")
 
-        lastId = len(project.workgroups)
+        workgroups = sorted(project.workgroups)
+        lastId = 0 if not workgroups else int(workgroup_api.get_workgroup(workgroups[-1]).name.split()[-1])
 
         workgroup = WorkGroup.create(
             'Group {}'.format(lastId + 1),
@@ -1608,7 +1756,7 @@ def workgroup_course_assignments(request, course_id):
             activity.xblock = WorkGroupActivityXBlock.fetch_from_uri(get_group_activity_xblock(activity).uri)
             activity_assignments = [pag for pag in project_assignment_groups if hasattr(pag, "xblock_id") and pag.xblock_id == activity.xblock.id]
             activity.has_assignments = (len(activity_assignments) > 0)
-            activity.js_safe_id = activity.id.split('+')[-1]
+            activity.js_safe_id = re.sub(r'\W', '', activity.id)
 
     data = {
         "course": course,

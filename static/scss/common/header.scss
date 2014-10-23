@@ -221,6 +221,7 @@ header[role=banner].background-blue {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            @include font-spec(10, semibold, 14);
           }
         }
       }

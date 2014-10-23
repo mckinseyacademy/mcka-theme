@@ -110,11 +110,6 @@ class Client(organization_models.Organization):
     def fetch_students_by_enrolled(self):
         return organization_api.get_users_by_enrolled(self.id)
 
-class ClientList(organization_models.OrganizationList):
-    object_map = {
-        "results": Client
-    }
-
 class WorkGroup(workgroup_models.Workgroup):
 
     @property
@@ -141,9 +136,15 @@ class WorkGroup(workgroup_models.Workgroup):
 
         return workgroup
 
+class WorkgroupMilestoneDates(JsonObject):
+    date_fields = ['upload', 'evaluation', 'grade']
+
 class WorkGroupActivityXBlock(JsonObject):
 
-    required_fields = ['group_reviews_required_count', 'user_review_count']
+    required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates']
+    object_map = {
+        'milestone_dates': WorkgroupMilestoneDates,
+    }
 
     @classmethod
     def fetch_from_uri(cls, uri):

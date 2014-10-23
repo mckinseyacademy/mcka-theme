@@ -6,6 +6,12 @@
       %a{href:"/admin/workgroup/course/#{course.id}"}
         = _("Create & Edit Groups")
   %li
+    - if selected_client_tab == 'group_work_status'
+      %span.selected= _("Group Work Status")
+    - else
+      %a{href:"/admin/workgroup/course/#{course.id}/group_work_status"}
+        = _("Group Work Status")
+  %li
     - if selected_client_tab == 'assignments'
       %span.selected= _("Assignment Info")
     - else

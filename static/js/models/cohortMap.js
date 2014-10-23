@@ -3,7 +3,6 @@ Apros.models.LocationData = Backbone.Model.extend({
   sync: function(method, model, options) {
       var params = _.extend({
           type: 'GET',
-          dataType: 'jsonp',
           url: model.url,
           processData: false
       }, options);
@@ -22,9 +21,11 @@ Apros.models.LocationData = Backbone.Model.extend({
     return response;
   },
 
-  setUrl: function(query){
-    query = (query == '')?'%2F':query;
-    this.url = 'https://api.tiles.mapbox.com/v3/mckinseyacademy.i2hg775e/geocode/' + query + '.json';
+  setUrl: function(query) {
+    var query = (query == '') ? '%2F' : query,
+        mb_token = $('meta[name=mapbox-token]').attr('content'),
+        root_url = "https://api.tiles.mapbox.com/v4/geocode/mapbox.places-v1/";
+    this.url = root_url + query + '.json?access_token=' + mb_token;
   }
 
 });

@@ -10,6 +10,7 @@
         = error
     - csrf_token
     %textarea{placeholder: "Enter your message for the TA here", name: "ta_message"}
+    %input#contact-from{'type': 'hidden', 'name': 'contact-from', 'value': '#{contact_from}'}
     %input.button.radius.small{type: "submit", value: "Submit", 'disabled': 'disabled'}
 #email-team.reveal-modal.small{"data-reveal": "true"}
   .close-reveal-modal

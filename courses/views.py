@@ -3,7 +3,7 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
@@ -14,6 +14,7 @@ from admin.models import WorkGroup
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
@@ -26,9 +27,6 @@ from .controller import get_progress_leaders, get_proficiency_leaders, get_socia
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
-
-# Temporary id converter to fix up problems post opaque keys
-from lib.util import LegacyIdConvert
 
 # Create your views here.
 
@@ -153,6 +151,9 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city.city, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
+    user_roles = request.user.get_roles_on_course(course_id)
+    is_observer = (len([r for r in user_roles if r.role==USER_ROLES.OBSERVER]) > 0)
+
     data = {
         'proficiency': proficiency,
         'completions': completions,
@@ -160,6 +161,8 @@ def course_cohort(request, course_id):
         'metrics': metrics,
         'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
+        'leaderboard_ranks': [1,2,3],
+        'is_observer': is_observer,
     }
     return render(request, 'courses/course_cohort.haml', data)
 
@@ -189,7 +192,7 @@ def _render_group_work(request, course, project_group, group_project):
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "course_id": course.id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course.id),
+        "legacy_course_id": course.id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "project_group": project_group,
@@ -252,7 +255,7 @@ def course_discussion(request, course_id):
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
         "course_id": course_id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
+        "legacy_course_id": course_id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "mcka_ta": mcka_ta
@@ -416,7 +419,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "program": program,
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
-        "legacy_course_id": LegacyIdConvert.legacy_from_new(course_id),
+        "legacy_course_id": course_id,
     }
 
     if not current_sequential.is_started:
@@ -482,6 +485,16 @@ def infer_default_navigation(request):
 @login_required
 @check_user_course_access
 def contact_ta(request, course_id):
+    course = load_course(course_id, request=request)
+    email_subject = "{} | {}".format(course.name, course.id)
+    html_content = ""
+    text_content = ""
+    if request.POST["contact-from"] == "group-work":
+        project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+        email_subject += " | {}".format(group_project.name)
+        group_work_uri = request.build_absolute_uri().replace("/teaching_assistant", "/group_work")
+        html_content = "<p><a href='{}'>{}</a></p>".format(group_work_uri, email_subject)
+        text_content = group_work_uri + "\n"
     user = user_api.get_user(request.user.id)
     email_header_from = user.email
     email_from = "{}<{}>".format(
@@ -489,11 +502,12 @@ def contact_ta(request, course_id):
         settings.APROS_EMAIL_SENDER
     )
     email_to = settings.TA_EMAIL_GROUP
-    email_content = request.POST["ta_message"]
-    course = course_api.get_course(course_id)
-    email_subject = "Ask a TA - {}".format(course.name)
+    email_message = request.POST["ta_message"]
+    html_content += "<p>{}</p>".format(email_message)
+    text_content += email_message
     try:
-        email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email = EmailMultiAlternatives(email_subject, text_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email.attach_alternative(html_content, "text/html")
         email.send(fail_silently=False)
     except:
         return HttpResponse(
@@ -516,7 +530,7 @@ def contact_group(request, course_id, group_id):
     )
     group = WorkGroup.fetch_with_members(group_id)
     students = group.members
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     email_to = [student.email for student in students]
     email_content = request.POST["group_message"]
     email_subject = "Group Project Message - {}".format(course.name)
@@ -544,7 +558,7 @@ def contact_member(request, course_id, group_id):
     )
     email_to = request.POST["member-email"]
     email_content = request.POST["member_message"]
-    course = course_api.get_course(course_id)
+    course = load_course(course_id)
     email_subject = "Group Project Message - {}".format(course.name) #just for testing
 
     group = WorkGroup.fetch_with_members(group_id)

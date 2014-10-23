@@ -44,6 +44,7 @@ class UserResponse(JsonObjectWithImage):
                 user[field] = self.get(field)
         return user
 
+
 class AuthenticationResponse(JsonObject):
 
     ''' object representing an authenticated session from api json response '''
