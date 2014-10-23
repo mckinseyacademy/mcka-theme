@@ -187,10 +187,11 @@
       .col-right {
         display: inline-block;
         vertical-align: top;
+        width: 24%;
       }
 
       .col-right {
-        max-width: 255px;
+        width: 73%;
         margin: 5px 0 0 5px;
         line-height: rem-calc(12);
       }
