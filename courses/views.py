@@ -18,6 +18,7 @@ from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
 
+from .models import LessonNotesItem
 from .controller import inject_gradebook_info, round_to_int, Proficiency
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
@@ -573,7 +574,14 @@ def contact_member(request, course_id, group_id):
 @login_required
 @check_user_course_access
 def add_lesson_note(request, course_id, chapter_id):
+    note = LessonNotesItem(
+        body = request.POST['body'],
+        course_id = course_id,
+        lesson_id = chapter_id
+    )
+    note.save()
+
     return HttpResponse(
-        json.dumps({"status": _("Note Saved")}),
-        content_type='application/json'
+        json.dumps(result.as_json()),
+        mimetype="application/json"
     )
