@@ -165,6 +165,7 @@
     $('.remove-student-icon').on('click', function(e){
         e.preventDefault();
         courseDrag.removeStudent($(this), $(this).parent('a').attr('href'));
+        $('#student-group-action').off('click');
     });
 
     $('#student-group-action').on('click', function(){
