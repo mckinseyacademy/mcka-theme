@@ -591,9 +591,9 @@ def course_notes(request, course_id):
     notes = [note.as_json() for note in notes]
     return HttpResponse(json.dumps(notes), mimetype="application/json")
 
-#@require_POST
-#@login_required
-#@check_user_course_access
+@require_POST
+@login_required
+@check_user_course_access
 def add_lesson_note(request, course_id, chapter_id):
     note = LessonNotesItem(
         body = request.POST['body'],
