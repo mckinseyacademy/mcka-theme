@@ -418,15 +418,13 @@ def get_course_social_metrics(course_id):
 
 
 @api_error_protect
-def get_course_time_series_metrics(course_id, start_date, end_date, organization_id=None, time_series_object=course_models.CourseTimeSeriesMetrics):
+def get_course_time_series_metrics(course_id, start_date, end_date, time_series_object=course_models.CourseTimeSeriesMetrics, *args, **kwargs):
     ''' a list of Metrics for the specified Course in time series format '''
-
     qs_params = {
         'start_date': start_date,
         'end_date': end_date
     }
-    if organization_id:
-        qs_params['organization'] = organization_id
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/time-series-metrics?{}'.format(
         settings.API_SERVER_ADDRESS,
