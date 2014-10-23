@@ -33,3 +33,7 @@ class Project(JsonObject):
     @classmethod
     def fetch_projects_for_course(cls, course_id):
         return course_api.get_course_projects(course_id, project_object=cls)
+
+    @classmethod
+    def delete(cls, project_id):
+        return project_api.delete_project(project_id)

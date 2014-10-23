@@ -1321,9 +1321,10 @@ def workgroup_programs_list(request):
     )
 
 class GroupProjectInfo(object):
-    def __init__(self, id, name, organization=None, organization_id=0):
+    def __init__(self, id, name, status, organization=None, organization_id=0):
         self.id = id
         self.name = name
+        self.status = status
         self.organization = organization
         self.organization_id = organization_id
 
@@ -1331,22 +1332,32 @@ def load_group_projects_info_for_course(course, companies):
     group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
     group_projects = []
     for project in Project.fetch_projects_for_course(course.id):
+        try:
+            project_name = group_project_lookup[project.content_id]
+            project_status = 1
+        except:
+            project_name = project.content_id
+            project_status = 0
+
         if project.organization is None:
             group_projects.append(
                 GroupProjectInfo(
                     project.id,
-                    group_project_lookup[project.content_id],
+                    project_name,
+                    project_status
                 )
             )
         else:
             group_projects.append(
                 GroupProjectInfo(
                     project.id,
-                    group_project_lookup[project.content_id],
+                    project_name,
+                    project_status,
                     companies[project.organization].display_name,
                     companies[project.organization].id,
                 )
             )
+
     return group_projects
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
@@ -1480,6 +1491,38 @@ def workgroup_project_create(request, course_id):
     response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
     response.status_code = status_code
     return response
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_remove_project(request, project_id):
+    message = _("Error deleting project")
+    status_code = 400
+
+    try:
+        project = Project.fetch(project_id)
+    except ApiError as e:
+        message = e.message
+        status_code = e.code
+        response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
+        response.status_code = status_code
+        return response
+
+    for workgroup_id in project.workgroups:
+        workgroup = WorkGroup.fetch(workgroup_id)
+        for user in workgroup.get_workgroup_users(workgroup.id):
+            workgroup.remove_user(user.id)
+            WorkGroup.delete(workgroup.id)
+
+    try:
+        project.delete(project_id)
+    except ApiError as e:
+        message = e.message
+        status_code = e.code
+        response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
+        response.status_code = status_code
+        return response
+
+    return HttpResponse(json.dumps({"message": "Project deleted successfully."}), content_type="application/json")
 
 
 @ajaxify_http_redirects

@@ -39,7 +39,7 @@ def fetch_project_from_url(url, project_object=JsonObject):
 def delete_project(project_id):
     ''' delete project by id '''
     response = DELETE(
-        '{}/{}/{}'.format(
+        '{}/{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
             PROJECT_API,
             project_id,
