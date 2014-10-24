@@ -11,6 +11,7 @@
             )
       - else
         %option{"value": "#{group_project.id}", "selected": "selected", "data-organization": "#{group_project.organization_id}", "class": 'red'}
+          = _('Deleted - ')
           = group_project.name
           - if group_project.organization
             (
@@ -28,6 +29,7 @@
             )
       - else
         %option{"value": "#{group_project.id}", "data-organization": "#{group_project.organization_id}", 'class': 'red'}
+          = _('Deleted - ')
           = group_project.name
           - if group_project.organization
             (

@@ -1499,22 +1499,7 @@ def workgroup_remove_project(request, project_id):
     status_code = 400
 
     try:
-        project = Project.fetch(project_id)
-    except ApiError as e:
-        message = e.message
-        status_code = e.code
-        response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
-        response.status_code = status_code
-        return response
-
-    for workgroup_id in project.workgroups:
-        workgroup = WorkGroup.fetch(workgroup_id)
-        for user in workgroup.get_workgroup_users(workgroup.id):
-            workgroup.remove_user(user.id)
-            WorkGroup.delete(workgroup.id)
-
-    try:
-        project.delete(project_id)
+        Project.delete(project_id)
     except ApiError as e:
         message = e.message
         status_code = e.code
