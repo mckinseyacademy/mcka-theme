@@ -340,39 +340,14 @@ def client_admin_download_program_report(request, client_id, program_id):
 def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
-    students = course_api.get_users_list_in_organizations(course_id, client_id)
-    cohort_students = course_api.get_user_list(course_id)
-    metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
-    average_progress = metrics.course_avg
 
-    completed_modules = 0
-    course_modules = 0
-    cohort_completed_modules = 0
-    cohort_course_modules = 0
+    cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
+    course.cohort_progress = int(cohort_metrics.course_avg)
+    course.cohort_progress_chart = int(5*round(float(cohort_metrics.course_avg)/5))
 
-    for student in students:
-        student_completed, graded = return_course_completions_stats(course, student.id)
-        completed_modules += student_completed
-        course_modules += graded
-    for student in cohort_students:
-        student_completed, graded = return_course_completions_stats(course, student.id)
-        cohort_completed_modules += student_completed
-        cohort_course_modules += graded
-
-    try:
-        progress = float(completed_modules)/course_modules
-        course.company_progress = int(progress * 100)
-        course.company_progress_chart = int(5*round(progress*20))
-    except ZeroDivisionError:
-        course.company_progress = 0
-        course.company_progress_chart = 0
-    try:
-        progress = float(cohort_completed_modules)/cohort_course_modules
-        course.cohort_progress = int(progress * 100)
-        course.cohort_progress_chart = int(5*round(progress*20))
-    except ZeroDivisionError:
-        course.cohort_progress = 0
-        course.cohort_progress_chart = 0
+    company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True)
+    course.company_progress = int(company_metrics.course_avg)
+    course.company_progress_chart = int(5*round(float(company_metrics.course_avg)/5))
 
     employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
     employee_point_sum = sum([social_total(user_metrics) for user_metrics in employee_engagement.users.__dict__.iteritems()])
@@ -386,7 +361,7 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         'course': course,
-        'average_progress': average_progress,
+        'average_progress': course.cohort_progress,
         'engagement': {
             'employee_avg': round_to_int_bump_zero(employee_avg),
             'course_avg': round_to_int_bump_zero(course_avg)
