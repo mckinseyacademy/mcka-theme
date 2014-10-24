@@ -21,24 +21,24 @@
         %br
         / %input{type: "search"}
         / %hr
-      %table.student-list
+      %table#course-participants.student-list.ready-for-collapse
         %caption
           .sub-1.add= _("Participants: ")
             %span= total_participants
           .add-message= _("Progress = # of modules complete out of total number of modules. Course Completed = completion of all required course work.")
         %thead
             %th
-            %th Name
+            %th.sorting-column Name
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
                 ▼
-            %th Progress
+            %th.sorting-column Progress
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
                 ▼
-            %th Completed
+            %th.sorting-column Course Completed
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
@@ -54,8 +54,9 @@
                   -if student.avatar_url
                     %img{src: "#{student.avatar_url}"}
               %td
-                .show-user-progress{'data-link': '/admin/client-admin/#{client_id}/courses/#{course_id}/users/#{student.id}/progress', 'data-userid': '#{student.id}'}
-                  %a= student.full_name
+                %a.show-user-progress{'data-link': '/admin/client-admin/#{client_id}/courses/#{course_id}/users/#{student.id}/progress', 'data-userid': '#{student.id}'}
+                  %i.fa.fa-caret-right.collapse-arrow
+                  %span= student.full_name
                 %p= student.username
                 %p= student.title
               %td
@@ -83,15 +84,6 @@
       var accordionTableFlag = true;
       $('.student-list').dataTable({
           paging: false,
-          "columns": [
-            null,
-            { "width": "25%" },
-            { "width": "25%" },
-            { "width": "25%" },
-            null,
-            null,
-            null
-          ],
           "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
       });
 
@@ -100,6 +92,7 @@
         var link = that.data('link');
         var userid = that.data('userid');
         if($('.student-progress-list[name="' + userid + '"]').length == 0 && accordionTableFlag){
+          $("table").toggleClass('ready-for-collapse collapse-in-progress');
           accordionTableFlag = false;
           $.ajax({
             'url': link,
@@ -109,11 +102,15 @@
             accordionTableFlag = true;
           }).fail(function(){
             accordionTableFlag = true;
+          }).always(function(){
+            $("table").toggleClass('collapse-in-progress ready-for-collapse');
           });
         }
         else{
           $('.student-progress-list[name="' + userid + '"]').toggle();
         }
+
+        $('.collapse-arrow', this).toggleClass('fa-caret-right fa-caret-down');
       });
 
       $('input[type$="search"]').attr('placeholder','Student name');
