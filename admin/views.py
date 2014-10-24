@@ -1770,7 +1770,7 @@ def workgroup_course_assignments(request, course_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image="/static/image/empty_avatar.png"):
     ''' handles requests for login form and their submission '''
     if(client_id != 'new'):
@@ -1799,7 +1799,7 @@ def change_company_image(request, client_id='new', template='change_company_imag
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def company_image_edit(request, client_id="new"):
     if request.method == 'POST':
         heightPosition = request.POST.get('height-position')
@@ -1845,7 +1845,7 @@ def company_image_edit(request, client_id="new"):
             client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + image_url})
             return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url, 'client_id': client.id}), content_type="application/json")
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def upload_company_image(request, client_id='new'):
     ''' handles requests for login form and their submission '''
     error = None
