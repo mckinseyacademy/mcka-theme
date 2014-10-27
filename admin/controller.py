@@ -570,3 +570,22 @@ def get_admin_users(organizations, org_id, ADMINISTRATIVE):
             users = user_api.get_users(ids=ids, fields=additional_fields)
 
     return users
+
+def get_program_data_for_report(client_id, program_id=None):
+    programs = Client.fetch(client_id).fetch_programs()
+    program = next((p for p in programs if p.id == program_id), programs[0])
+    program_courses = program.fetch_courses()
+    course_ids = list(set([pc.course_id for pc in program_courses]))
+    courses = course_api.get_courses(course_id=course_ids)
+
+    for course in courses:
+        course.metrics = get_course_metrics_for_organization(course.id, client_id)
+
+    total_avg_grade = 0
+    total_pct_completed = 0
+    if courses:
+        count = float(len(courses))
+        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
+        total_pct_completed = sum([c.metrics.percent_completed for c in courses]) / count
+
+    return program, courses, total_avg_grade, total_pct_completed

@@ -37,7 +37,8 @@
               %td= course.metrics.users_enrolled
               %td= course.metrics.users_started
               %td= course.metrics.users_grade_complete_count
-              %td ={course.metrics.percent_completed}%
+              %td= course.metrics.percent_completed | floatformat:0
+                \%
               %td= course.metrics.users_grade_average | floatformat:-2
           %tr
             %td{colspan: 4}= _("Totals (% completed, avg. grade) only apply to courses that have started.")
