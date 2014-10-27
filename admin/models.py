@@ -80,7 +80,10 @@ class ReviewAssignmentGroup(BaseGroupModel):
 class Client(organization_models.Organization):
 
     def fetch_programs(self):
-        programs = [Program.fetch(program_id) for program_id in self.groups]
+
+        groups = [Program.fetch(program_id) for program_id in self.groups]
+        programs = [group for group in groups if group.type == "series"]
+
         for program in programs:
             try:
                 program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id, self.id)

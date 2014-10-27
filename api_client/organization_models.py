@@ -36,6 +36,10 @@ class Organization(JsonObjectWithImage):
     def fetch_from_url(cls, url):
         return organization_api.fetch_organization_from_url(url, organization_object=cls)
 
+    @classmethod
+    def fetch_contact_groups(cls, organization_id):
+        return organization_api.get_organization_groups(organization_id, type="contact_group")
+
     def add_user(self, user_id):
         if user_id not in self.users:
             self.users.append(user_id)
