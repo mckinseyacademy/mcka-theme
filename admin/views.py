@@ -152,7 +152,8 @@ def client_admin_home(request, client_id):
     data = {
         'client': organization,
         'programs': programs,
-        'company_image': company_image
+        'company_image': company_image,
+        'selected_tab': 'home',
     }
 
     return render(
@@ -590,6 +591,7 @@ def client_admin_contact(request, client_id):
     data = {
         'client': client,
         'contacts': contacts,
+        'selected_tab': 'contact',
     }
     return render(
         request,

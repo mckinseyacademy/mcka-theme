@@ -2,7 +2,10 @@
 - load staticfiles
 
 - block content
-  .row{style: "margin-top:80px;"}
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/client-admin/client_admin_header.haml'
+  .row
     .header
       %h1
         = client.display_name
