@@ -342,11 +342,11 @@ def client_admin_course_analytics(request, client_id, course_id):
     course = load_course(course_id)
 
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
-    course.cohort_progress = int(cohort_metrics.course_avg)
+    course.cohort_progress = cohort_metrics.course_avg
     course.cohort_progress_chart = int(5*round(float(cohort_metrics.course_avg)/5))
 
     company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True)
-    course.company_progress = int(company_metrics.course_avg)
+    course.company_progress = company_metrics.course_avg
     course.company_progress_chart = int(5*round(float(company_metrics.course_avg)/5))
 
     employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
