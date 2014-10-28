@@ -31,7 +31,7 @@ Apros repository on host machine and then share Apros root folder with devstack 
 
 * Reload vagrant config with `vagrant reload`, log in into vagrant box using `vagrant ssh`
 * Modify nginx.conf so `server` tags added in [step 4][nginx-proxy] listen on port 8002. Reload nginx with `(sudo) nginx -s reload`
-* Modify `lms.env.json' `CORS_ORIGIN_WHITELIST` to contain `mckinseyacademy.local.org:**8002**`
+* Modify `lms.env.json` `CORS_ORIGIN_WHITELIST` to contain `mckinseyacademy.local.org:**8002**`
 * Modify `mcka_apros/mcka_apros/local_settings.py` so all references to `local.org` contains port as well
 
         API_SERVER_ADDRESS = 'http://lms.local.org:8002'

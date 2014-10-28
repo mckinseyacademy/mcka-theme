@@ -152,7 +152,8 @@ def client_admin_home(request, client_id):
     data = {
         'client': organization,
         'programs': programs,
-        'company_image': company_image
+        'company_image': company_image,
+        'selected_tab': 'home',
     }
 
     return render(
@@ -340,39 +341,14 @@ def client_admin_download_program_report(request, client_id, program_id):
 def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
-    students = course_api.get_users_list_in_organizations(course_id, client_id)
-    cohort_students = course_api.get_user_list(course_id)
-    metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
-    average_progress = metrics.course_avg
 
-    completed_modules = 0
-    course_modules = 0
-    cohort_completed_modules = 0
-    cohort_course_modules = 0
+    cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
+    course.cohort_progress = int(cohort_metrics.course_avg)
+    course.cohort_progress_chart = int(5*round(float(cohort_metrics.course_avg)/5))
 
-    for student in students:
-        student_completed, graded = return_course_completions_stats(course, student.id)
-        completed_modules += student_completed
-        course_modules += graded
-    for student in cohort_students:
-        student_completed, graded = return_course_completions_stats(course, student.id)
-        cohort_completed_modules += student_completed
-        cohort_course_modules += graded
-
-    try:
-        progress = float(completed_modules)/course_modules
-        course.company_progress = int(progress * 100)
-        course.company_progress_chart = int(5*round(progress*20))
-    except ZeroDivisionError:
-        course.company_progress = 0
-        course.company_progress_chart = 0
-    try:
-        progress = float(cohort_completed_modules)/cohort_course_modules
-        course.cohort_progress = int(progress * 100)
-        course.cohort_progress_chart = int(5*round(progress*20))
-    except ZeroDivisionError:
-        course.cohort_progress = 0
-        course.cohort_progress_chart = 0
+    company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True)
+    course.company_progress = int(company_metrics.course_avg)
+    course.company_progress_chart = int(5*round(float(company_metrics.course_avg)/5))
 
     employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
     employee_point_sum = sum([social_total(user_metrics) for user_metrics in employee_engagement.users.__dict__.iteritems()])
@@ -386,7 +362,7 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         'course': course,
-        'average_progress': average_progress,
+        'average_progress': course.cohort_progress,
         'engagement': {
             'employee_avg': round_to_int_bump_zero(employee_avg),
             'course_avg': round_to_int_bump_zero(course_avg)
@@ -572,6 +548,31 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
         data
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_contact(request, client_id):
+    client = Client.fetch(client_id)
+
+    groups = Client.fetch_contact_groups(client_id)
+
+    contacts = []
+    fields = ['phone', 'full_name', 'title', 'avatar_url']
+
+    for group in groups:
+        if group.type == "contact_group":
+            users = group_api.get_users_in_group(group.id)
+            user_ids = [str(user.id) for user in users]
+            contacts.extend(user_api.get_users(fields=fields, ids=(',').join(user_ids)))
+
+    data = {
+        'client': client,
+        'contacts': contacts,
+        'selected_tab': 'contact',
+    }
+    return render(
+        request,
+        'admin/client-admin/contact.haml',
+        data
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_list(request):
@@ -1338,9 +1339,10 @@ def workgroup_programs_list(request):
     )
 
 class GroupProjectInfo(object):
-    def __init__(self, id, name, organization=None, organization_id=0):
+    def __init__(self, id, name, status, organization=None, organization_id=0):
         self.id = id
         self.name = name
+        self.status = status
         self.organization = organization
         self.organization_id = organization_id
 
@@ -1348,22 +1350,32 @@ def load_group_projects_info_for_course(course, companies):
     group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
     group_projects = []
     for project in Project.fetch_projects_for_course(course.id):
+        try:
+            project_name = group_project_lookup[project.content_id]
+            project_status = 1
+        except:
+            project_name = project.content_id
+            project_status = 0
+
         if project.organization is None:
             group_projects.append(
                 GroupProjectInfo(
                     project.id,
-                    group_project_lookup[project.content_id],
+                    project_name,
+                    project_status
                 )
             )
         else:
             group_projects.append(
                 GroupProjectInfo(
                     project.id,
-                    group_project_lookup[project.content_id],
+                    project_name,
+                    project_status,
                     companies[project.organization].display_name,
                     companies[project.organization].id,
                 )
             )
+
     return group_projects
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
@@ -1497,6 +1509,23 @@ def workgroup_project_create(request, course_id):
     response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
     response.status_code = status_code
     return response
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def workgroup_remove_project(request, project_id):
+    message = _("Error deleting project")
+    status_code = 400
+
+    try:
+        Project.delete(project_id)
+    except ApiError as e:
+        message = e.message
+        status_code = e.code
+        response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
+        response.status_code = status_code
+        return response
+
+    return HttpResponse(json.dumps({"message": "Project deleted successfully."}), content_type="application/json")
 
 
 @ajaxify_http_redirects
@@ -1770,7 +1799,7 @@ def workgroup_course_assignments(request, course_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image="/static/image/empty_avatar.png"):
     ''' handles requests for login form and their submission '''
     if(client_id != 'new'):
@@ -1799,7 +1828,7 @@ def change_company_image(request, client_id='new', template='change_company_imag
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def company_image_edit(request, client_id="new"):
     if request.method == 'POST':
         heightPosition = request.POST.get('height-position')
@@ -1845,7 +1874,7 @@ def company_image_edit(request, client_id="new"):
             client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + image_url})
             return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url, 'client_id': client.id}), content_type="application/json")
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def upload_company_image(request, client_id='new'):
     ''' handles requests for login form and their submission '''
     error = None

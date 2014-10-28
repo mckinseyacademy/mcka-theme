@@ -90,6 +90,20 @@
         });
       };
 
+      var deleteProject = function(form){
+        var button = form.find('#delete-project-button')
+        button.addClass('disabled').attr('disabled', 'disabled');
+        $.ajax({
+          url: form.attr('action'),
+          data: form.serialize(),
+          method: 'POST'
+        }).done(function(data){
+          button.removeClass('disabled').attr('disabled', false);
+          alert(data.message);
+          window.location.reload(true);
+        });
+      }
+
       var list_groups_for_selected_project = function(project_id, organization_id){
         var groupBoxes = $('.select-group-box').hide();
         groupBoxes.filter('[data-project-id="' + project_id + '"]').show();
@@ -106,6 +120,7 @@
       return {
         updateGroup: updateGroup,
         deleteGroup: deleteGroup,
+        deleteProject: deleteProject,
         removeStudent: removeStudent,
         accordion: accordion,
         accordianSlide: accordianSlide,
@@ -165,6 +180,7 @@
     $('.remove-student-icon').on('click', function(e){
         e.preventDefault();
         courseDrag.removeStudent($(this), $(this).parent('a').attr('href'));
+        $('#student-group-action').off('click');
     });
 
     $('#student-group-action').on('click', function(){
@@ -216,6 +232,21 @@
           courseDrag.deleteGroup(group, url);
         }
       }
+    });
+
+    $('#delete-project-modal').on('click', '.close-dialog', function() {
+      $('#delete-project-modal').foundation('reveal', 'close');
+    });
+
+    $('#delete-project-modal').on('open.fndtn.reveal', function () {
+      $('#delete-project-form').attr('action', '/admin/workgroup/project/' + $('.group-project-select').val() + '/delete');
+      $('#delete-project-view-name').html($('.group-project-select option:selected').text());
+    });
+
+    $('#delete-project-button').on('click', function(e){
+      e.preventDefault();
+      var form = $('#delete-project-form');
+      courseDrag.deleteProject(form);
     });
 
     var selected_project = $('.group-project-select');
