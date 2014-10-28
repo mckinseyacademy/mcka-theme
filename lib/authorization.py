@@ -42,7 +42,7 @@ def permission_group_required(*group_names):
                 template = loader.get_template('not_authorized.haml')
                 context = RequestContext(request, {'request_path': request.path})
                 return HttpResponseForbidden(template.render(context))
-            path = urlquote(request.get_full_path)
+            path = urlquote(request.get_full_path())
             login_tuple = settings.LOGIN_URL, REDIRECT_FIELD_NAME, path
             return HttpResponseRedirect('%s?%s=%s' % login_tuple)
         return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
