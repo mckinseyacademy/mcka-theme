@@ -23,9 +23,11 @@ class LessonNotesItem(db_models.Model):
             lesson_id = self.lesson_id,
             lesson_index = lesson.index,
             lesson_name = lesson.name,
+            lesson_navigation_url = lesson.navigation_url,
             module_id = self.module_id,
             module_index = module.index,
             module_name = module.name,
+            module_navigation_url = module.navigation_url,
             created_at = self.created_at.isoformat(),
             updated_at = self.updated_at.isoformat(),
         )

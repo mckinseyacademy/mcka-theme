@@ -216,12 +216,14 @@ class Course(CategorisedJsonObject):
         except:
             return None
 
-    def inject_indexes(self):
+    def inject_basic_data(self):
         for idx, lesson in enumerate(self.chapters, start=1):
             lesson.index = idx
+            lesson.navigation_url = '/courses/{}/lessons/{}'.format(self.id, lesson.id)
             for sequential in lesson.sequentials:
                 for idx, module in enumerate(sequential.pages, start=1):
                     module.index = idx
+                    module.navigation_url = '{}/module/{}'.format(lesson.navigation_url, module.id)
         return self
 
 class CourseListCourse(JsonObject):
