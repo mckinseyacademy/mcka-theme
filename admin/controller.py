@@ -529,3 +529,44 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
             day = 1
 
     return metricsJson
+
+def get_contacts_for_client(client_id):
+    groups = Client.fetch_contact_groups(client_id)
+
+    contacts = []
+    fields = ['phone', 'full_name', 'title', 'avatar_url']
+
+    for group in groups:
+        if group.type == "contact_group":
+            users = group_api.get_users_in_group(group.id)
+            if len(users) > 0:
+                user_ids = [str(user.id) for user in users]
+                contacts.extend(user_api.get_users(fields=fields, ids=(',').join(user_ids)))
+
+    return contacts
+
+def get_admin_users(organizations, org_id, ADMINISTRATIVE):
+
+    users = []
+    additional_fields = ["organizations"]
+
+    if org_id == ADMINISTRATIVE:
+        # fetch users users that have no company association
+        users = user_api.get_users(has_organizations=False, fields=additional_fields)
+
+        # fetch users in administrative company
+        admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
+        admin_users = []
+        if admin_company and admin_company.users:
+            ids = [str(id) for id in admin_company.users]
+            admin_users = user_api.get_users(ids=ids,fields=additional_fields)
+
+        users.extend(admin_users)
+
+    else:
+        org = next((org for org in organizations if org.id == org_id), None)
+        if org:
+            ids = [str(id) for id in org.users]
+            users = user_api.get_users(ids=ids, fields=additional_fields)
+
+    return users

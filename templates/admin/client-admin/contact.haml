@@ -17,17 +17,4 @@
       %br
       %br
       %ul.contact-tiles
-        -for contact in contacts
-          %li.contact-tile
-            %img.profile-image{"src": '#{contact.image_url}'}
-            .contact-infos
-              .contact-info-value.contact-name
-                = contact.full_name
-              .contact-info-value
-                %i
-                  = contact.title
-              .contact-info-value
-                %i
-                  = contact.phone
-              .contact-info-value
-                %a{href: "mailto:#{contact.email}"}= "Email"
+        - include 'admin/client-admin/contact_tiles.haml'

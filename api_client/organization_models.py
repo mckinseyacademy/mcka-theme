@@ -38,7 +38,11 @@ class Organization(JsonObjectWithImage):
 
     @classmethod
     def fetch_contact_groups(cls, organization_id):
-        return organization_api.get_organization_groups(organization_id, type="contact_group")
+        """
+        TO-DO: REMOVE DOUBLE CHECK OF CONTACT GROUP TYPE ONCE API STARTS RECOGNIZING FILTER
+        """
+        groups = organization_api.get_organization_groups(organization_id, type="contact_group")
+        return [group for group in groups if group.type == "contact_group"]
 
     def add_user(self, user_id):
         if user_id not in self.users:

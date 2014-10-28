@@ -1,0 +1,41 @@
+- extends 'admin/client/detail.haml'
+- load staticfiles
+- block admin_detail
+  %h1
+    %span= _("Client: ")
+    %span= client.display_name
+  %hr
+  %section
+  %h2
+    %span= _("Current Contacts: ")
+  %br
+  %ul.contact-tiles
+    - include 'admin/client-admin/contact_tiles.haml'
+    %li.contact-tile.add-new-contact{"data-reveal-id": "add_contact", "data-reveal-ajax": "/admin/clients/#{client.id}/contact/add"}
+      %i{'class': "fa fa-plus-square-o"}
+  #add_contact.reveal-modal.medium{"data-reveal": "true"}
+- block js_snippets
+  :javascript
+    $(function(){
+      $(document).on('click', '.user-list tr', function(){
+        var that = $(this);
+        that.toggleClass('selected');
+        var checkbox = that.find('[type="checkbox"]');
+        if(checkbox.prop('checked') == true){
+          checkbox.prop('checked', false);
+        }
+        else{
+          checkbox.prop('checked', true);
+        }
+      });
+      $(document).on('click', '.contact-tile .fa-times-circle', function(){
+        var that = $(this);
+        $.ajax({
+          'url': window.location.href + '/' + that.data('userid') + '/remove',
+          'method': 'POST',
+          'data':{'csrfmiddlewaretoken':  $.cookie('apros_csrftoken')}
+        }).done(function(){
+          window.location.reload(true);
+        });
+      });
+    });
