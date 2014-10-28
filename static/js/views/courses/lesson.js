@@ -3,6 +3,7 @@ Apros.views.CourseLesson = Backbone.View.extend({
   initialize: function() {
     this.noteViews = [];
     this.listenTo(this.collection, 'add', this.addNote);
+    this.listenTo(this.collection, 'sort', this.sorted);
   },
 
   events: {
@@ -12,7 +13,8 @@ Apros.views.CourseLesson = Backbone.View.extend({
     'mousemove': 'mousemove',
     'mouseup': 'mouseup',
     'keydown .notes-input': 'saveNote',
-    'change #notes-expand': 'scrollNotes'
+    'change #notes-expand': 'scrollNotes',
+    'click .notes-sort': 'sortNotes'
   },
 
   notesSubmit: function(e) {
@@ -21,7 +23,7 @@ Apros.views.CourseLesson = Backbone.View.extend({
 
   notesSearch: function(e) {
     var el = $(e.currentTarget);
-    this.noteViews.forEach(function(view){
+    this.noteViews.forEach(function(view) {
       view.highlight(el.val());
     });
   },
@@ -69,6 +71,23 @@ Apros.views.CourseLesson = Backbone.View.extend({
   scrollNotes: function(e) {
     var notes = this.$('.notes-inner');
     notes.scrollTop(notes.prop("scrollHeight"));
+  },
+
+  sortNotes: function(e) {
+    var field = $(e.currentTarget).data('field');
+    this.collection.changeSort(field);
+  },
+
+  sorted: function(col) {
+    var _this = this;
+    this.noteViews.forEach(function(view) {
+      view.remove();
+    });
+
+    this.noteViews = [];
+    this.collection.each(function(note){
+      _this.addNote(note);
+    });
   },
 
   render: function() {
