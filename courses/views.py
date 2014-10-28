@@ -1,5 +1,6 @@
 ''' rendering templates from requests related to courses '''
 import json
+import csv
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -583,6 +584,22 @@ def contact_member(request, course_id, group_id):
             json.dumps({"message": _("Message not sent. Email is not valid")}), #replace with another message
             content_type='application/json'
         )
+
+@login_required
+@check_user_course_access
+def course_export_notes(request, course_id):
+    course = load_course(course_id).inject_basic_data()
+    notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
+
+    response = HttpResponse(mimetype='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="mcka_course_notes.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Created At', 'Course Name', 'Lesson Name', 'Module Name', 'Note'])
+
+    for note in notes:
+        writer.writerow(note.as_csv(course))
+
+    return response
 
 @login_required
 @check_user_course_access

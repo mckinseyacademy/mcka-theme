@@ -11,6 +11,11 @@ class LessonNotesItem(db_models.Model):
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
 
+    def as_csv(self, course):
+        lesson = course.get_lesson(self.lesson_id)
+        module = course.get_module(self.lesson_id, self.module_id)
+        return [self.created_at, course.name, lesson.name, module.name, self.body]
+
     def as_json(self, course):
         lesson = course.get_lesson(self.lesson_id)
         module = course.get_module(self.lesson_id, self.module_id)

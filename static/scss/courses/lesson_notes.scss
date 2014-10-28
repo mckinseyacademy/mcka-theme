@@ -29,7 +29,7 @@
       right: 15px;
 
       label[for=notes-expand] .fa {
-        color: #becdd6;
+        color: $mckinsey-academy-blue-gray;
       }
     }
   }
@@ -54,6 +54,12 @@
       li {
         float: left;
         margin-right: rem-calc(15);
+
+        a, a:visited {
+          &.on .fa {
+            color: $mckinsey-academy-blue-gray;
+          }
+        }
       }
     }
 

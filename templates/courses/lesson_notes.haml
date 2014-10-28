@@ -6,13 +6,13 @@
         %label{for: 'notes-expand'}
           %i.fa.fa-pencil-square-o
       %li
-        %a.download
+        %a.download{href: "/courses/#{course_id}/export_notes/" }
           %i.fa.fa-download
       %li
         %a.notes-sort{'data-field': 'time'}
           %i.fa.fa-clock-o
       %li
-        %a.notes-sort{'data-field': 'lesson'}
+        %a.notes-sort.on{'data-field': 'lesson'}
           %i.fa.fa-list-ol
     %form.notes-search
       %input{type: 'search', placeholder: 'Search your notes'}

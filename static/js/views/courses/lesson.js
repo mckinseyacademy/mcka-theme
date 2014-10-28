@@ -74,8 +74,9 @@ Apros.views.CourseLesson = Backbone.View.extend({
   },
 
   sortNotes: function(e) {
-    var field = $(e.currentTarget).data('field');
-    this.collection.changeSort(field);
+    var el = $(e.currentTarget).addClass('on');
+    this.$('.notes-sort').not(el).removeClass('on');
+    this.collection.changeSort(el.data('field'));
   },
 
   sorted: function(col) {
