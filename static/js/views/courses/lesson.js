@@ -1,6 +1,7 @@
 Apros.views.CourseLesson = Backbone.View.extend({
 
   initialize: function() {
+    this.noteViews = [];
     this.listenTo(this.collection, 'add', this.addNote);
   },
 
@@ -10,7 +11,8 @@ Apros.views.CourseLesson = Backbone.View.extend({
     'mousedown .notes-resize': 'mousedown',
     'mousemove': 'mousemove',
     'mouseup': 'mouseup',
-    'keydown .notes-input': 'saveNote'
+    'keydown .notes-input': 'saveNote',
+    'change #notes-expand': 'scrollNotes'
   },
 
   notesSubmit: function(e) {
@@ -19,9 +21,9 @@ Apros.views.CourseLesson = Backbone.View.extend({
 
   notesSearch: function(e) {
     var el = $(e.currentTarget);
-    if (el.val().length > 2) {
-      console.log(el.val());
-    }
+    this.noteViews.forEach(function(view){
+      view.highlight(el.val());
+    });
   },
 
   mousedown: function(e) {
@@ -45,7 +47,9 @@ Apros.views.CourseLesson = Backbone.View.extend({
   },
 
   addNote: function(note) {
-    console.log(note.toJSON());
+    var view = new Apros.views.LessonNote({model: note}).render();
+    this.noteViews.push(view);
+    this.$('.notes-list').append(view.$el);
   },
 
   saveNote: function(e) {
@@ -56,9 +60,15 @@ Apros.views.CourseLesson = Backbone.View.extend({
       $.post(form.attr('action'), form.serialize())
         .done(function(data){
           var note = new Apros.models.CourseNote(data);
+          _this.$('.notes-input').val('');
           _this.collection.add(note);
         });
     }
+  },
+
+  scrollNotes: function(e) {
+    var notes = this.$('.notes-inner');
+    notes.scrollTop(notes.prop("scrollHeight"));
   },
 
   render: function() {

@@ -98,7 +98,26 @@
     .notes-inner {
       border: 1px solid $almost-white;
       overflow: auto;
+      height: 107px;
       min-height: 107px;
+    }
+
+    ul.notes-list {
+      margin: 0;
+
+      li {
+        padding: 15px;
+
+        .module {
+          color: $mckinsey-academy-alt-blue;
+        }
+
+        .body {
+          .hlt {
+            background: $highlight;
+          }
+        }
+      }
     }
 
     .notes-entry {
@@ -113,6 +132,7 @@
         border: none;
         box-shadow: none;
         min-height: 105px;
+        padding: 15px;
       }
     }
   }

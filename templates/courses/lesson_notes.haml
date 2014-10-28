@@ -19,9 +19,10 @@
       %input{type: 'submit', value: '&#xf002;'}
   .notes-area
     .notes-inner
-      %ul
+      %ul.notes-list
       %form.notes-entry{action: "/courses/#{course_id}/lessons/#{course.current_lesson.id}/notes/", method: 'POST'}
         - csrf_token
+        %input{type: 'hidden', name: 'module_id', value: "#{course.current_module.id}"}
         %textarea.notes-input{name: 'body', placeholder: 'Enter course notes&hellip;'}
         %input{type: 'submit'}
   .notes-resize
