@@ -1472,14 +1472,20 @@ def workgroup_project_create(request, course_id):
         if private_project == "on":
             organization = request.POST["new-project-company"]
 
-        try:
-            project = Project.create(course_id, project_section, organization)
-            message = _("Project successfully created")
-            status_code = 200
+        existing_projects = Project.fetch_projects_for_course(course_id)
 
-        except ApiError as e:
-            message = e.message
-            status_code = e.code
+        if project_section in [p.content_id for p in existing_projects]:
+            message = _("Project already exists")
+            status_code = 409 # 409 = conflict
+        else:
+            try:
+                project = Project.create(course_id, project_section, organization)
+                message = _("Project successfully created")
+                status_code = 200
+
+            except ApiError as e:
+                message = e.message
+                status_code = e.code
     response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
     response.status_code = status_code
     return response
