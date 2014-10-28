@@ -31,6 +31,7 @@ BLANK_ACTIVITY_STATUS = DottableDict({
     "evaluation": "irrelevant",
     "ta_graded": False,
     "grade": "irrelevant",
+    "review_groups": [],
 })
 
 class WorkgroupCompletionData(object):
