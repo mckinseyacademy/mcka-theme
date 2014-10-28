@@ -1,0 +1,13 @@
+%ul
+  %li
+    - if selected_tab == 'home'
+      %span.selected= _("Overview")
+    - else
+      %a{href:"/admin/client-admin/#{client.id}"}
+        = _("Overview")
+  %li
+    - if selected_tab == 'contact'
+      %span.selected= _("Contact")
+    - else
+      %a{href:"/admin/client-admin/#{client.id}/contact"}
+        = _("Contact")

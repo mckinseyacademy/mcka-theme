@@ -152,7 +152,8 @@ def client_admin_home(request, client_id):
     data = {
         'client': organization,
         'programs': programs,
-        'company_image': company_image
+        'company_image': company_image,
+        'selected_tab': 'home',
     }
 
     return render(
@@ -547,6 +548,31 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
         data
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_contact(request, client_id):
+    client = Client.fetch(client_id)
+
+    groups = Client.fetch_contact_groups(client_id)
+
+    contacts = []
+    fields = ['phone', 'full_name', 'title', 'avatar_url']
+
+    for group in groups:
+        if group.type == "contact_group":
+            users = group_api.get_users_in_group(group.id)
+            user_ids = [str(user.id) for user in users]
+            contacts.extend(user_api.get_users(fields=fields, ids=(',').join(user_ids)))
+
+    data = {
+        'client': client,
+        'contacts': contacts,
+        'selected_tab': 'contact',
+    }
+    return render(
+        request,
+        'admin/client-admin/contact.haml',
+        data
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def course_meta_content_course_list(request):

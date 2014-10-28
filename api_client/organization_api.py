@@ -76,6 +76,22 @@ def get_organizations(organization_object=JsonObjectWithImage):
 
     return JP.from_json(response.read(), organization_object)
 
+@api_error_protect
+def get_organization_groups(organization_id, groups_object=JsonObject, *args, **kwargs):
+    ''' fetch all organization groups '''
+    qs_params = {}
+    qs_params.update(kwargs)
+
+    response = GET(
+        '{}/{}/{}/groups?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+            urlencode(qs_params)
+        )
+    )
+
+    return JP.from_json(response.read(), groups_object)
 
 @api_error_protect
 def delete_organization(organization_id):

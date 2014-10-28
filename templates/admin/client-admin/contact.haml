@@ -1,0 +1,33 @@
+- extends "admin/admin_layout.haml"
+
+- block content
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/client-admin/client_admin_header.haml'
+  .admin-detail.row
+    .large-12.large.columns
+      - block admin_detail
+        %h1
+          %span= _("Contact: ")
+          %span= client.display_name
+        %br
+        %p= _("If you need assistance or have questions please contact your McKinsey Admin representative(s) below.")
+
+    .large-12.large.columns
+      %br
+      %br
+      %ul.contact-tiles
+        -for contact in contacts
+          %li.contact-tile
+            %img.profile-image{"src": '#{contact.image_url}'}
+            .contact-infos
+              .contact-info-value.contact-name
+                = contact.full_name
+              .contact-info-value
+                %i
+                  = contact.title
+              .contact-info-value
+                %i
+                  = contact.phone
+              .contact-info-value
+                %a{href: "mailto:#{contact.email}"}= "Email"

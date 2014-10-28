@@ -200,6 +200,45 @@
     }
   }
 
+  ul.contact-tiles{
+    float:left;
+    display: inline;
+    width: 100%;
+
+    li.contact-tile{
+      display:inline-block;
+      width: 190px;
+      height: 90px;
+      background: $pure-white;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      vertical-align: top;
+      position: relative;
+      text-transform:none;
+      @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+      .contact-infos{
+        max-width:120px;
+        width:120px;
+        display: inline-block;
+        overflow:hidden;
+        word-wrap: break-word;
+        .contact-info-value{
+          color: #666666;
+          @include font-spec(10, normal, 12);
+        }
+        .contact-name{
+          @include font-spec(12, semibold, 13);
+        }
+      }
+      .profile-image{
+        height:45px;
+        width:45px;
+        float:left;
+        margin:0 7px;
+      }
+    }
+  }
+
   .company-image img{
     width:40px;
     height:40px;
