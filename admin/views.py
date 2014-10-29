@@ -57,6 +57,7 @@ from .controller import generate_course_report, generate_program_report
 from .controller import get_organizations_users_completion
 from .controller import get_course_metrics_for_organization
 from .controller import get_course_analytics_progress_data
+from .controller import check_project_exists
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -1766,13 +1767,19 @@ def workgroup_course_assignments(request, course_id):
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = Project.fetch_projects_for_course(course.id)
+    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
 
     for project in group_projects:
-        project.selected = (selected_project_id == str(project.id))
-        group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
-        project.name = group_project_chapter.name
-        # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
-        project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
+        project.status = check_project_exists(project, group_project_lookup)
+        if project.status == 1:
+            project.selected = (selected_project_id == str(project.id))
+            group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
+            project.name = group_project_chapter.name
+            # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
+            project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
+        else:
+            project.activities = []
+            project.name = project.content_id
 
         if project.organization:
             project.organization = Organization.fetch(project.organization).display_name

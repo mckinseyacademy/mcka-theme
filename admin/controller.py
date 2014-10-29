@@ -529,3 +529,10 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
             day = 1
 
     return metricsJson
+
+def check_project_exists(project, group_project_lookup):
+    status = 0
+    if group_project_lookup.has_key(project.content_id):
+        status = 1
+    return status
+
