@@ -552,6 +552,7 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
 def client_admin_contact(request, client_id):
     client = Client.fetch(client_id)
 
@@ -844,7 +845,7 @@ def client_detail_contact(request, client_id):
         'admin/client/contact.haml',
         data,
     )
-
+@ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail_add_contact(request, client_id):
 
@@ -867,7 +868,8 @@ def client_detail_add_contact(request, client_id):
             except ApiError as err:
                 error = err.message
 
-        return HttpResponseRedirect('/admin/clients/{}/contact'.format(client_id))
+        if error == None:
+            return HttpResponseRedirect('/admin/clients/{}/contact'.format(client_id))
 
     organizations = Organization.list()
     ADMINISTRATIVE = 0

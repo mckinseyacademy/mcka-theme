@@ -256,6 +256,9 @@
     }
   }
   .user-list-form{
+    .user-list{
+      display:none;
+    }
     tr.selected{
       background: $mckinsey-academy-warm-gray;
     }

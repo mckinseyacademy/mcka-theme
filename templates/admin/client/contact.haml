@@ -15,9 +15,12 @@
       %i{'class': "fa fa-plus-square-o"}
   #add_contact.reveal-modal.medium{"data-reveal": "true"}
 - block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/admin.js' %}"}
   :javascript
     $(function(){
-      $(document).on('click', '.user-list tr', function(){
+      ajaxify_overlay_form('#add_contact', 'form');
+      $(document).on('click', '.user-list tr.student', function(){
         var that = $(this);
         that.toggleClass('selected');
         var checkbox = that.find('[type="checkbox"]');
@@ -34,8 +37,28 @@
           'url': window.location.href + '/' + that.data('userid') + '/remove',
           'method': 'POST',
           'data':{'csrfmiddlewaretoken':  $.cookie('apros_csrftoken')}
-        }).done(function(){
+        }).done(function(data){
+          if(data.status){
+            alert(data.status);
+          }
           window.location.reload(true);
+        });
+      });
+      $(document).on('opened.fndtn.reveal', '#add_contact', function(){
+        $('.user-list').dataTable({
+          paging: false,
+          autoWidth: false,
+          scrollY: "250px",
+          scrollCollapse: true,
+          "drawCallback": function( settings ) {
+                $('.user-list').show();
+                $('.dataTables_scrollBody').css('height', '250px');
+            },
+          "createdRow": function( row, data, index){
+            var charNumber = [20, 30, null];
+            setTableColumns(row, charNumber);
+          },
+          "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
         });
       });
     });
