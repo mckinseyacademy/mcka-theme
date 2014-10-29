@@ -28,11 +28,11 @@
           %ul
             %li= _("Your Company: ")
               %br
-              %span.progress-stat.company= course.company_progress
+              %span.progress-stat.company= course.company_progress | floatformat:0
               %span.progress-stat.company= _("%")
             %li= _("Your Cohort: ")
               %br
-              %span.progress-stat.cohort= course.cohort_progress
+              %span.progress-stat.cohort= course.cohort_progress | floatformat:0
               %span.progress-stat.cohort= _("%")
         %hr
 
