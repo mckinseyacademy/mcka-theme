@@ -30,7 +30,6 @@ from api_client.user_api import USER_ROLES
 from accounts.models import RemoteUser, UserActivation
 from accounts.controller import is_future_start, save_new_client_image
 
-from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
 from api_client import group_api, workgroup_api, organization_api
@@ -39,7 +38,13 @@ from api_client.api_error import ApiError
 from api_client.project_models import Project
 from api_client.organization_models import Organization
 from api_client.workgroup_models import Submission
+from courses.controller import Progress, Proficiency
+from courses.controller import return_course_progress, organization_course_progress_user_list
+from courses.controller import social_total, round_to_int_bump_zero
+from courses.user_courses import return_course_completions_stats
+
 from license import controller as license_controller
+from main.models import CuratedContentItem
 
 from .models import Client
 from .models import Program
@@ -67,11 +72,6 @@ from .forms import UploadCompanyImageForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
-
-from courses.controller import return_course_progress, organization_course_progress_user_list
-from courses.controller import social_total, round_to_int_bump_zero
-from courses.controller import Proficiency
-from courses.user_courses import return_course_completions_stats
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -343,12 +343,12 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
 
-    # progres
-    cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
-    course.cohort_progress = cohort_metrics.course_avg
+    # progress
+    cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
+    course.cohort_progress = cohort_metrics.course_average_display
 
-    company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True)
-    course.company_progress = company_metrics.course_avg
+    company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True, completions_object_type=Progress)
+    course.company_progress = company_metrics.course_average_display
 
     # proficiency
     company_proficiency = organization_api.get_grade_complete_count(client_id, course_id=course_id)

@@ -520,7 +520,7 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
     week = 0
     mod_completed = 0
     for i, metric in enumerate(metrics.modules_completed):
-        mod_completed = metrics.modules_completed[i][1]
+        mod_completed += metrics.modules_completed[i][1]
         metricsJson.append([(day + week * 7), round((float(mod_completed) / total * 100), 2)])
         if day > 0 and day < 8:
             day += 1
