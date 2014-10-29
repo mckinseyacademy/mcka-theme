@@ -838,6 +838,7 @@ def client_detail_contact(request, client_id):
         'client': client,
         'contacts': contacts,
         'view_type': 'admin',
+        'selected_client_tab': 'contact',
     }
 
     return render(
