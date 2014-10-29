@@ -1,5 +1,6 @@
 ''' rendering templates from requests related to courses '''
 import json
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -499,6 +500,8 @@ def contact_ta(request, course_id):
         user.formatted_name,
         settings.APROS_EMAIL_SENDER
     )
+    timestamp = datetime.now().strftime('%b %d %Y %H:%M:%S')
+    email_subject += " | {}".format(gtimestamp)
     email_to = settings.TA_EMAIL_GROUP
     email_message = request.POST["ta_message"]
     html_content += "<p>{}</p>".format(email_message)
