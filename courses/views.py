@@ -501,7 +501,7 @@ def contact_ta(request, course_id):
         settings.APROS_EMAIL_SENDER
     )
     timestamp = datetime.now().strftime('%b %d %Y %H:%M:%S')
-    email_subject += " | {}".format(gtimestamp)
+    email_subject += " | {}".format(timestamp)
     email_to = settings.TA_EMAIL_GROUP
     email_message = request.POST["ta_message"]
     html_content += "<p>{}</p>".format(email_message)
