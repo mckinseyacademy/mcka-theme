@@ -59,7 +59,7 @@ from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
-from .controller import generate_course_report, generate_program_report
+from .controller import generate_course_report
 from .controller import get_organizations_users_completion
 from .controller import get_course_metrics_for_organization
 from .controller import get_course_analytics_progress_data
@@ -286,7 +286,7 @@ def client_admin_download_course_report(request, client_id, course_id):
 @client_admin_access
 def client_admin_download_program_report(request, client_id, program_id):
     organization = Client.fetch(client_id)
-
+    program, courses, total_avg_grade, total_pct_completed = get_program_data_for_report(client_id, program_id)
     filename = slugify(
         unicode(
             "{} Program Report for {} on {}".format(
@@ -296,23 +296,15 @@ def client_admin_download_program_report(request, client_id, program_id):
             )
         )
     ) + ".csv"
-
-    program, courses, total_avg_grade, total_pct_completed = get_program_data_for_report(client_id, program_id)
-
-    url_prefix = "{}://{}".format(
-        "https" if request.is_secure() else "http",
-        request.META['HTTP_HOST']
-    )
-
-    response = HttpResponse(
-        generate_program_report(organization.name, program_id, url_prefix, courses, total_avg_grade, total_pct_completed),
-        content_type='text/csv'
-    )
-
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
-        filename
-    )
-
+    data = {
+        'client_name': organization.name,
+        'program_id': program_id,
+        'courses': courses,
+        'total_avg_grade': total_avg_grade,
+        'total_pct_completed': total_pct_completed
+    }
+    response = render(request, 'admin/client-admin/program_report.txt', data, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
     return response
 
 

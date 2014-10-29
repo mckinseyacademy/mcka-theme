@@ -43,7 +43,8 @@
           %tr
             %td{colspan: 4}= _("Totals (% completed, avg. grade) only apply to courses that have started.")
             %td
-              %b ={total_pct_completed}%
+              %b= total_pct_completed | floatformat:0
+                \%
             %td
               %b= total_avg_grade | floatformat:-2
 
