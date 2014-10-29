@@ -70,6 +70,7 @@ from .permissions import Permissions, PermissionSaveError
 
 from courses.controller import return_course_progress, organization_course_progress_user_list
 from courses.controller import social_total, round_to_int_bump_zero
+from courses.controller import Proficiency
 from courses.user_courses import return_course_completions_stats
 
 def ajaxify_http_redirects(func):
@@ -342,14 +343,18 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
 
+    # progres
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
     course.cohort_progress = cohort_metrics.course_avg
-    course.cohort_progress_chart = int(5*round(float(cohort_metrics.course_avg)/5))
 
     company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True)
     course.company_progress = company_metrics.course_avg
-    course.company_progress_chart = int(5*round(float(company_metrics.course_avg)/5))
 
+    # proficiency
+    company_proficiency = organization_api.get_grade_complete_count(client_id, course_id=course_id)
+    course_proficiency = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency)
+
+    # engagement
     employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
     employee_point_sum = sum([social_total(user_metrics[1]) for user_metrics in employee_engagement.users.__dict__.iteritems()])
     employee_avg = float(employee_point_sum)/employee_engagement.total_enrollments if employee_engagement.total_enrollments > 0 else 0
@@ -359,14 +364,13 @@ def client_admin_course_analytics(request, client_id, course_id):
     course_avg = float(course_point_sum)/course_engagement.total_enrollments if course_engagement.total_enrollments > 0 else 0
 
     data = {
-        'client_id': client_id,
-        'course_id': course_id,
         'course': course,
-        'average_progress': course.cohort_progress,
-        'engagement': {
-            'employee_avg': round_to_int_bump_zero(employee_avg),
-            'course_avg': round_to_int_bump_zero(course_avg)
-        }
+        'company_proficiency': company_proficiency.users_grade_average * 100,
+        'company_proficiency_graph': int(5 * round(company_proficiency.users_grade_average * 20)),
+        'cohort_proficiency_graph': int(5 * round(course_proficiency.course_average_value * 20)),
+        'cohort_proficiency': course_proficiency.course_average_display,
+        'company_engagement': round_to_int_bump_zero(employee_avg),
+        'cohort_engagement': round_to_int_bump_zero(course_avg),
     }
     return render(
         request,
