@@ -10,7 +10,6 @@ from api_client import course_api, user_api, group_api
 
 from .controller import load_course
 from .controller import get_group_project_activities
-from .controller import check_project_exists
 from .models import WorkGroup
 from .models import WorkGroupActivityXBlock
 
@@ -58,18 +57,10 @@ class WorkgroupCompletionData(object):
         group_project_lookup = {gp.id: gp.name for gp in self.course.group_project_chapters}
 
         if group_id is None:
-            self.projects = Project.fetch_projects_for_course(course_id)
+            self.projects = [p for p in Project.fetch_projects_for_course(course_id) if group_project_lookup.has_key(p.content_id)]
         else:
             self.workgroup_id = int(group_id)
-            self.projects = [Project.fetch(WorkGroup.fetch(self.workgroup_id).project)]
-
-        """
-        Check and remove deleted projects from report
-        """
-        for i, project in enumerate(self.projects):
-            project.status = check_project_exists(project, group_project_lookup)
-            if project.status == 0:
-                del(self.projects[i])
+            self.projects = [p for p in Project.fetch(WorkGroup.fetch(self.workgroup_id).project) if group_project_lookup.has_key(p.content_id)]
 
         self._load(course_id)
 
