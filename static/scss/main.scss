@@ -338,6 +338,12 @@ form {
     &:last-child { margin-bottom: 0; }
   }
   #mk-help-video { margin-bottom: rem-calc(20); }
+  #support-contact-email {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+  }
 }
 
 .modal-title {
