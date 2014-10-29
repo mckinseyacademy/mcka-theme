@@ -52,6 +52,7 @@ from .models import WorkGroup
 from .models import WorkGroupActivityXBlock
 from .models import ReviewAssignmentGroup
 from .models import UserRegistrationBatch, UserRegistrationError
+from .models import ContactGroup
 from .controller import get_student_list_as_file, get_group_list_as_file
 from .controller import fetch_clients_with_program
 from .controller import load_course
@@ -62,6 +63,8 @@ from .controller import generate_course_report, generate_program_report
 from .controller import get_organizations_users_completion
 from .controller import get_course_metrics_for_organization
 from .controller import get_course_analytics_progress_data
+from .controller import get_contacts_for_client
+from .controller import get_admin_users
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -553,24 +556,17 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
 def client_admin_contact(request, client_id):
     client = Client.fetch(client_id)
 
-    groups = Client.fetch_contact_groups(client_id)
-
-    contacts = []
-    fields = ['phone', 'full_name', 'title', 'avatar_url']
-
-    for group in groups:
-        if group.type == "contact_group":
-            users = group_api.get_users_in_group(group.id)
-            user_ids = [str(user.id) for user in users]
-            contacts.extend(user_api.get_users(fields=fields, ids=(',').join(user_ids)))
+    contacts = get_contacts_for_client(client_id)
 
     data = {
         'client': client,
         'contacts': contacts,
         'selected_tab': 'contact',
+        'view_type': 'client',
     }
     return render(
         request,
@@ -833,6 +829,87 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         request,
         view,
         data,
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_detail_contact(request, client_id):
+
+    client = Client.fetch(client_id)
+
+    contacts = get_contacts_for_client(client_id)
+
+    data = {
+        'client': client,
+        'contacts': contacts,
+        'view_type': 'admin',
+        'selected_client_tab': 'contact',
+    }
+
+    return render(
+        request,
+        'admin/client/contact.haml',
+        data,
+    )
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_detail_add_contact(request, client_id):
+
+    error = None
+    client = Client.fetch(client_id)
+    contacts = get_contacts_for_client(client_id)
+    contact_ids = [contact.id for contact in contacts]
+
+    if request.method == 'POST':
+        contact_groups = Client.fetch_contact_groups(client_id)
+        if len(contact_groups) == 0:
+            contact_group = ContactGroup.create(('Contact Group - ' + str(client_id)), {})
+            client.add_group(contact_group.id)
+        else:
+            contact_group = contact_groups[0]
+        selected_users =request.POST.getlist('checks[]')
+        for user in selected_users:
+            try:
+                group_api.add_user_to_group(user, contact_group.id)
+            except ApiError as err:
+                error = err.message
+
+        if error == None:
+            return HttpResponseRedirect('/admin/clients/{}/contact'.format(client_id))
+
+    organizations = Organization.list()
+    ADMINISTRATIVE = 0
+    org_id = 0
+    admin_users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
+    users = [user for user in admin_users if user.id not in contact_ids]
+
+    data = {
+        'client': client,
+        'contacts': contacts,
+        'users': users,
+        'error': error,
+    }
+
+    return render(
+        request,
+        'admin/client/add_contact.haml',
+        data,
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_detail_remove_contact(request, client_id, user_id):
+
+    contact_group = Client.fetch_contact_groups(client_id)[0]
+    try:
+        group_api.remove_user_from_group(user_id, contact_group.id)
+    except ApiError as err:
+        return HttpResponse(
+            json.dumps({"status": err.message}),
+            content_type='application/json'
+        )
+
+    return HttpResponse(
+        json.dumps({"status": _("Contact has been removed.")}),
+        content_type='application/json'
     )
 
 @ajaxify_http_redirects
@@ -1652,7 +1729,6 @@ def generate_assignments(request, project_id, activity_id):
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def permissions(request):
     '''
@@ -1661,34 +1737,12 @@ def permissions(request):
 
     organizations = Organization.list()
 
-    additional_fields = ["organizations"]
-    users = []
-
     ADMINISTRATIVE = 0
     organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
     organization_options.extend([(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY])
 
     org_id = int(request.GET.get('organization', ADMINISTRATIVE))
-
-    if org_id == ADMINISTRATIVE:
-        # fetch users users that have no company association
-        users = user_api.get_users(has_organizations=False, fields=additional_fields)
-
-        # fetch users in administrative company
-        admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
-        admin_users = []
-        if admin_company and admin_company.users:
-            ids = [str(id) for id in admin_company.users]
-            admin_users = user_api.get_users(ids=ids,fields=additional_fields)
-
-        users.extend(admin_users)
-
-    else:
-        org = next((org for org in organizations if org.id == org_id), None)
-        if org:
-            ids = [str(id) for id in org.users]
-            users = user_api.get_users(ids=ids, fields=additional_fields)
-
+    users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
 
     # get the groups and for each group get the list of users, then intersect them appropriately
     groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)

@@ -17,3 +17,9 @@
     - else
       %a{href:"/admin/clients/#{client.id}/courses"}
         = _("Assign Students to Courses")
+  %li
+    - if selected_client_tab == 'contact'
+      %span.selected= _("Assign Contacts to Client")
+    - else
+      %a{href:"/admin/clients/#{client.id}/contact"}
+        = _("Assign Contacts to Client")

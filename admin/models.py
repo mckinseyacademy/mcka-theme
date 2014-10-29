@@ -76,6 +76,10 @@ class ReviewAssignmentGroup(BaseGroupModel):
     def list_for_workgroup(cls, workgroup_id):
         return [cls.fetch(rag.id) for rag in workgroup_api.get_workgroup_groups(workgroup_id)]
 
+class ContactGroup(BaseGroupModel):
+
+    group_type = "contact_group"
+
 
 class Client(organization_models.Organization):
 

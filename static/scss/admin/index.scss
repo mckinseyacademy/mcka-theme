@@ -274,6 +274,33 @@
         float:left;
         margin:0 7px;
       }
+      .fa.fa-times-circle{
+        float: right;
+        margin-bottom: -15px;
+        position: relative;
+        top: -15px;
+        vertical-align: top;
+        color: $mckinsey-grey;
+        cursor: pointer;
+      }
+    }
+    li.contact-tile.add-new-contact{
+      text-align:center;
+      vertical-align: center;
+      color: $mckinsey-grey;
+      cursor: pointer;
+      i.fa-plus-square-o{
+        font-size:45px;
+        line-height: 45px;
+      }
+    }
+  }
+  .user-list-form{
+    .user-list{
+      display:none;
+    }
+    tr.selected{
+      background: $mckinsey-academy-warm-gray;
     }
   }
 
