@@ -81,7 +81,6 @@
   }
   .course-list .course,
   .student-list .student{
-    cursor: pointer;
     &:hover{
       background-color: $admin-table-row-hover-color;
     }
@@ -93,11 +92,29 @@
     }
   }
 
-  .student-list thead{
-    background-color: $mckinsey-academy-warm-gray;
+  .ready-for-collapse{
+    cursor: auto;
+    tr a,
+    tr .sorting-column{
+      cursor: pointer;
+    }
   }
 
-  .student-list{
+  .collapse-in-progress{
+    cursor: progress;
+    tr,
+    tr a,
+    tr sorting-column {
+      cursor: progress;
+    }
+  }
+
+  #course-participants{
+
+    .student a {
+      width: auto;
+      overflow: visible;
+    }
 
     caption{
       text-align: left; margin-bottom: 10px;
@@ -105,6 +122,27 @@
       .add-message {
         @include font-spec(12, normal);
         font-style: italic;
+      }
+    }
+
+    thead{
+      background-color: $mckinsey-academy-warm-gray;
+
+      th,
+      th span{
+        @include font-spec(10, bold);
+      }
+    }
+
+    tbody{
+      td, td a, td p{
+        @include font-spec(10, bold);
+      }
+      tr.even {
+        background: #F9;
+      }
+      tr.odd {
+        background: $pure-white;
       }
     }
   }
@@ -249,9 +287,12 @@
   }
 
   .student-progress-list{
-    background: $mckinsey-academy-light-gray;
     .empty-cell{
       background: $pure-white;
+    }
+    tbody {
+      tr.even {background: #F9};
+      tr.odd {background: $pure-white};
     }
   }
   .student-list .user-image img{
