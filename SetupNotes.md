@@ -1,131 +1,140 @@
-# Setting up McKinsey Academy (Apros) with local LMS
+# Setting up McKinsey Academy (Apros) with a local LMS Installation
 
-As the edX API starts to mature it becomes more desirable to develop the Apros product while hooked up to a real edX LMS system.
-
-This document explains how to achieve this in a development environment. For instructions on setting Apros inside edx-platform devstack virtual box see [Installing Apros inside devstack virtual box][devstack-apros-setup]. 
+This document aims to guide a new developer to set up an Apros installation. While this guide is primarily aimed 
+toward developers, the instructions within could be modified to create a deployment instance.
 
 The steps we'll follow are as follows:
 
-1. Setup edX Environment
-- Setup Apros Environment
-- Prepare the McKinsey Academy project to talk to specific version of LMS
-- Prepare LMS to respond to API / XBlock requests from Apros
-- Configure your system to use a common domain between Apros and LMS
+1. Setup the edX Environment
+2. Setup the Apros Environment
+3. Modify the LMS installation to use the features we want so it can communicate with Apros
+4. Set up the reverse Proxy server
+5. Start Apros
 
-Throughout, this document refers to the names `lms.mcka.local` and `mcka.local`. It should be noted that these are simply names that we'll use when adding the systems to the same domain. You can use whatever names you like, but the important thing is that they have a common domain, to allow easy access to the LMS session cookie within Apros which enables data transfer through the XBlock.
+This document will make the assumptions that:
 
-[devstack-apros-setup]: devstack_apros_setup.md
+* You will be using the domain name `lms.mcka.local` for your LMS instance on port 8000 (the devstack default).
+* You will be using the domain name `cms.mcka.local` for your CMS instance on port 8001 (the devstack default).
+* You will be using the domain name `mcka.local` for your Apros instance.
+* You wish to use a SQLite database and basic development server for this environment on port 3000.
+* You will be using a Vagrant VM-based devstack.
 
 ## Step 1 - Setup edX devstack Environment
 
-By far the simplest way to set up the edX system is to install the devstack environment which includes a virtualbox environment that runs a separate machine to host the edX platform and conveniently shares folders so that the edX-platform code resides on the host machine.
+While it is possible to create a development environment on your machine, it is highly recommended to use a vagrant 
+instance. The instructions for the rest of this document assume you will do so.
 
-Follow the instructions at https://github.com/edx/configuration/wiki/edX-Developer-Stack
+Follow the directions on the [Solutions wiki][solutions-wiki] to set up an *edx-solutions* devstack.
 
-The devstack environment maps some local ports so that LMS and CMS (Studio) serve content on the host machines ports 8000 and 8001 respectively.
+[solutions-wiki]: http://github.com/edx-solutions/edx-platform/wiki/Setting-up-the-solutions-devstack
 
-Please note that edx/edx-platform devstack does not support LMS API, so edx-solutions/edx-platform should be used instead.
+### Set up the Host System to Recognize the Hostnames
 
-### Setting up solutions devstack
-
-Start with a shiny new upstream devstack. Then checkout solutions in your edx-platform repo.
-
-Next, clear and rebuilt the Python dependencies
-
-As vagrant user:
-```
-sudo virtualenv --clear /edx/app/edxapp/venvs/edxapp
-sudo chown edxapp:edxapp -R /edx/app/edxapp/venvs/edxapp
-sudo su edxapp  #make sure prompt reads ~/edx-platform
-pip install -r requirements/edx/paver.txt
-pip install python-memcached==1.48  # Until edx-solutions/edx-platform#152 is closed
-paver install_prereqs
-pip install -r requirements/edx/custom.txt
-```
-Finally give the same treatment to the db. The correct way to do this would involve 
-
-    echo "DROP DATABASE edxapp;" | mysql -uedxapp001 -ppassword edxapp` `echo "CREATE DATABASE edxapp;" | mysql -uedxapp001 -ppassword` 
-    
-but then paver seems unable to rebuild on MySQL. The reason behind this is the fact that `django-openid-auth` uses 
-`models.TextField(max_length=2047)` as a foreign key field and MySQL seems don't like it as
-
-> Index prefixes on foreign key columns are not supported. One consequence of this is that BLOB and TEXT columns cannot 
-be included in a foreign key because indexes on those columns must always include a prefix length.
-
-To solve that, modify /edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/django_openid_auth/models.py, so that 
-`UserOpenID.claimed_id` becomes `CharField`:
-
-    class UserOpenID(models.Model):
-        user = models.ForeignKey(User)
-        claimed_id = models.CharField(max_length=2047, unique=True)
-        display_id = models.TextField(max_length=2047)
+* Add the following lines to host system `/etc/hosts`. This will allow your host machine to know where the domain names 
+should point to. It will also work for the guest instance, since the guest instance trusts the host's name lookups.
         
-There's a little problem here: *it still wouldn't work*. Broken snippet is given here to draw your attention to the fact 
-that steps to fix it could potentially lead to incorrect behavior of openid authentication. Django does not support 
-`unique=True` on `CharFields` longer than 255 characters, so there are two options:
+        127.0.0.1 	mcka.local
+        127.0.0.1 	lms.mcka.local
+        127.0.0.1 	cms.mcka.local
 
-* Set `unique=False` losing identity integrity and potentially allowing multiple users have same claimed_id
-* Set `max_length=255` losing precision and potentially truncating longer claimed_id
+### Create a user to run Apros under
 
-Yet another alternative would be to switch to SQLite `nano ~/lms.auth.json`:
+Just as `edxapp` is used to run the LMS and CMS, you will want a separate user with its own Python Virtual Environment
+and Ruby Version Manager to run Apros under.
 
-```
-    "DATABASES": {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "edxapp.db"
-        },
-    }
-```
+Log into the vagrant instance with `vagrant ssh`. From the vagrant user's prompt, run:
 
-After following any of these three paths, do `paver update_db --settings=devstack` to rebuild the database. 
+    # Needed for RVM.
+    sudo apt-get install -y gawk libreadline6-dev libyaml-dev sqlite3 autoconf libgdbm-dev \
+        libncurses5-dev automake libtool libffi-dev libsqlite3-dev bison
+        
+If this is your first time creating this VM (that is, you haven't already modified your vagrant file as specified 
+in the next section), do the following:
 
-Apros comes with a set of seed data, including preconfigured users. Unfortunately, it can't be loaded at this step, as 
-it requires more configuration, so this is explained later in this document (see *Build Apros database and load seed data*)
+    sudo useradd apros --home /edx/app/apros --gid www-data --create-home --shell /bin/bash 
 
-You might also want to assign staff rights to at least one user, to do this (assuming that your user in named `staff`):
+Otherwise, do this:
 
-```
-./manage.py dbshell <<< 'update auth_user set is_superuser=1, is_staff=1 where username="staff";'
-```
+    sudo useradd apros --home /edx/app/apros --gid www-data --shell /bin/bash
+    sudo cp -r /etc/skel/. /edx/app/apros/
+    sudo chown apros:www-data /edx/app/apros
 
-### Run LMS
+Next, run:
 
-To run LMS, use the following command:
+    sudo su - apros # The prompt should now say you're logged in as apros@
+    mkdir venvs
+    virtualenv venvs/mcka_apros
+    # Standard warnings about curling to bash apply.
+    bash <(curl -sSL https://get.rvm.io) stable
+    # This will automatically be sourced on the next login.
+    source /edx/app/apros/.rvm/scripts/rvm
+    # If this fails for some reason, it should give you a list of 
+    # things to install with apt.
+    rvm install ruby-1.9.3 --autolibs=read-fail
+    rvm use 1.9.3 --default
+    
 
-    paver devstack lms
+Edit the user's .bashrc file in your favorite editor. Add the lines:
 
-This will compile any assets that are out of date and then run the django server. If you are confident there are no assets to compile (e.g. different runs with no source updates) one can start up the server more quickly using the command:
-
-    paver devstack --fast lms
-
-### (Optional) Run CMS (Studio)
-
-Similarly, Studio is configured to startup with the command:
-
-    paver devstack studio
-
-or:
-
-    paver devstack --fast studio
+    cd ~/mcka_apros
+    source ~/venvs/mcka_apros/bin/activate  # Use the Apros Python environment.
+    source ~/.rvm/scripts/rvm # Load RVM into a shell session *as a function*
 
 
+...at the top, before anything else. Finally, exit this user's shell. We'll be loading back into it later.
+
+Do not worry that the directory `mcka_apros` does not exist. It will be created in the next section.
+
+### Modify the VagrantFile
+* Modify the devstack Vagrantfile to forward required port by adding the following lines:
+  
+        config.vm.network :forwarded_port, guest: 80, host: 8080
+
+  You will want to *forward port 80 on your host machine to port 8080, because of the privileged port restrictions*.
+  The method for this differs from OS to OS, but some guides are available 
+  [here for mac](http://www.dmuth.org/node/1404/web-development-port-80-and-443-vagrant) and 
+  [here for linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user).
+  The guide for mac has some extra tips you may be able to backport to your Linux installation. Several Apros features do
+  not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS.
+
+* Clone the Apros repository **in your vagrant staging folder**, like so:
+
+ 
+    git clone git@github.com:mckinseyacademy/mcka_apros.git
+
+ or
+ 
+    git clone https://github.com/mckinseyacademy/mcka_apros.git
+ 
+ Make note of the path to the repository, as you will use it in the next step.
+
+* Share Apros root folder with the VM by adding the following lines into Vargant file. There are lines similar to these already
+  in the file, make sure you add them to proper place. There are `if ENV['VAGRANT_USE_VBOXFS'] == 'true'` block, first line should go to 
+  `True` branch, second line to `False` branch
+
+        config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
+            create: true, owner: "apros", group: "www-data"
+
+        config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
+            create: true, nfs: true
+
+* Reload vagrant config with `vagrant reload`, log in into vagrant box using `vagrant ssh`. If the vagrant instance was
+ not running, use `vagrant up` instead of `vagrant reload`.
 
 ## Step 2 - Setup Apros Environment
 
-### Setup McKinsey Academy project on your machine
+After following the previous instructions, you should be able to jump right into the codebase at any time by running:
 
-    git clone git@github.com:mckinseyacademy/mcka_apros.git
-or
-
-    git clone https://github.com/mckinseyacademy/mcka_apros.git
+    vagrant ssh
+    sudo su apros
+    
+We'll do Apros's configuration as this user.
 
 ### Install Python requirements
-Requirements are configured using the command `$ pip install -r requirements.txt`
+Apros's requirements are handled in a requirements.txt file. To install the requirements, run:
+ 
+    pip install -r requirements.txt
 
-_(if you experience an error when installing mySql package on Mavericks try this command instead
-`$ CFLAGS=-Wunused-command-line-argument-hard-error-in-future pip install -r requirements.txt`
-    )_
 
 ### Install Other requirements
 We require SASS to be used to build assets
@@ -134,17 +143,17 @@ We require SASS to be used to build assets
 
 Notes:
 * Sass 3.4+ is not compatible - see https://github.com/zurb/foundation-rails/pull/96
-* _If `gem` is not installed, e.g. on a vanilla Windows machine, one may need to install ruby and gem framework to get started - this is left as an excercise to the reader_
 
 
+### Override Specific Settings
 
-## Step 3 - Prepare Apros to talk to specific instance of LMS
+The McKinsey Academy application hosts it's `settings.py` file within the mcka_apros app folder (this is a subfolder 
+within the same-named `mcka_apros` repository root folder). Alongside this file, create a new file 
+named `local_settings.py`.
 
-### Override specific settings in `local_settings.py` file
+#### Set up the database
 
-The McKinsey Academy application hosts it's `settings.py` file within the mcka_apros app folder. Alongside this file, create a new file named `local_settings.py`.
-
-#### If you'd like to use Sqlite instead of mySQL, add the following lines:
+**If you'd like to use Sqlite instead of MySQL, add the following lines**:
 
     import os
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -156,49 +165,24 @@ The McKinsey Academy application hosts it's `settings.py` file within the mcka_a
         }
     }
 
-_Sqlite is sometimes easier to operate with than mySql, but this is purely a choice for the developer. It may be wise to stick with mySql if you want to remain as close to the production environment as desired._
+_Sqlite is sometimes easier to operate with than mySql, but this is purely a choice for the developer. It may be wise to stick with MySql if you want to remain as close to the production environment as desired._
+
+**If you want to use MySQL, you will need to create a MySQL database with users and permissions according to the `settings.py` file, or ones of your own creation in `local_settings.py`.**
 
 #### Configure the name to use for the LMS instance, like this:
 
-    API_SERVER_ADDRESS = 'http://localhost:8000'
+    API_SERVER_ADDRESS = 'http://lms.mcka.local'
     LMS_BASE_DOMAIN = 'mcka.local'
     LMS_SUB_DOMAIN = 'lms'
 
-`API_SERVER_ADDRESS` could be the dns name that we'll setup later (e.g. http://lms.mcka.local)
-`LMS_BASE_DOMAIN` will be a common domain for both the LMS system and Apros system.
+`API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
+`LMS_BASE_DOMAIN` This is the base domain name of the LMS system, with its port.
 `LMS_SUB_DOMAIN` is the subdomain for the LMS system
 
-#### (Optional for development) Configure the API_KEY
-The value of `EDX_API_KEY` will need to match the API_KEY as configured within the LMS system; as long as they both match they can talk to each other - unless you are running LMS in __development__ mode (in which most development is performed)
 
-    EDX_API_KEY = 'test_api_key'
+## Step 3 - Prepare the LMS for Apros
 
-**Now your Apros system is ready to talk to an LMS system**
-
-#### Set up the database and seed data
-
-These commands should be run before starting Apros for the first time:
-
-    manage.py syncdb --migrate
-    manage.py load_seed_data
-
-This would build Apros database and load seed data into LMS database, including [preconfigured users][load-seed-data].
-
-[load-seed-data]: https://github.com/mckinseyacademy/mcka_apros/blob/master/main/management/commands/load_seed_data.py#L36-L55
-
-#### Run Apros (on port 3000)
-
-The edX virtual environment has LMS running on port 8000. You will wish to run Apros on a different port than LMS. _This document assumes that this port is 3000, but you can choose any free port you like_
-
-Start up Apros in development mode, which automatically updates assets from the source code therein. This is done with the following command (note that the default port is 3000 so it can be left off unless you want to override):
-
-    ./manage.py rundev 3000
-
-
-
-
-
-## Step 4 - Prepare LMS to accept communication from Apros
+The LMS will need a few additional settings to work with Apros.
 
 ### Override specific settings in lms.env.json
 
@@ -208,74 +192,96 @@ This file can only be found in the devstack environment
 - `cd ~`
 - Edit the file `lms.env.json` in your favourite command-line editor
 
-#### Add an array of servers for which the LMS will support CORS requests:
-    "CORS_ORIGIN_WHITELIST": [
-        "mcka.local"
-    ],
+At the top of the dictionary, add this line:
 
-_This should include the fully qualified domain name for the Apros system that we'll set up_
+        "ADDL_INSTALLED_APPS": ["progress"],
+        
+This will install the progress application.
 
-#### Enable API, CORS and PROGRESS Headers
-You should find the FEATURES section already existing. _It appears that these are generally kept in alphabetical order._
+You should find the **FEATURES** section already exists, and you will want to add a few items to it. _It appears that these are generally kept in alphabetical order, but for simplicity, you may wish to just add these items to the **beginning** of the array._
 
-    "FEATURES": {
         "API": true,
-        ...
-        "ENABLE_CORS_HEADERS": true,
-        ...
         "MARK_PROGRESS_ON_GRADING_EVENT": true,
-        ...
         "SIGNAL_ON_SCORE_CHANGED": true,
-        ...
         "STUDENT_GRADEBOOK": true,
-        ...
         "STUDENT_PROGRESS": true,
-        ...
-    },
+        
+Finally, run:
 
-#### (Optional for development) Configure the API_KEY
-This will need to match the API_KEY that the client is using.
+    paver update_db --settings=devstack
 
-    "EDX_API_KEY": "test_api_key"
-
-#### (If you are setting EDX_API_KEY) Configure the API_KEY in lms.auth.json
-EDX_API_KEY also needs to be set in lms.auth.json - we are not sure why this is
-
-    "EDX_API_KEY": "test_api_key"
-
-**Now your LMS system is ready to receive communication from Apros**
+This will install the tables for the `progress` application.
 
 
+### Step 4 - Set up the reverse proxy server
 
+For security purposes, browsers have very rigid rules on how they'll handle sharing of content between domains and ports. 
+In order to make sure that Apros is able to load remote resources from the LMS (such as assets and the content of XBlocks),
+you will need to set up a reverse proxy server.
 
-## Step 5 - Configure your machine to use a common domain for Apros and LMS
+As the `vagrant` user, run:
 
-So, the systems are now setup to talk to each other using the names `lms.mcka.local` and `mcka.local`. Now, we need to ensure that the systems will respond to those names with the correct data. There are a numer of ways of doing this, but an easy way is the included basic reverse proxy server.
+    sudo apt-get -y install nginx
+    
+Create a file at `/etc/nginx/sites-available/mcka_apros`
+    
+...and paste in these contents:
 
-### Map names in local hosts file
+    server {
+        listen 80;
+        
+        server_name mcka.local;
+        
+        location / {
+            proxy_pass http://localhost:3000;
+            proxy_set_header Host $host;
+        }
+    }
 
-To allow your machine to address those names locally add the following entries to your hosts file:
+    server {
+        listen 80;
 
-    # LMS and API client names
-    127.0.0.1       mcka.local
-    127.0.0.1       cms.mcka.local
-    127.0.0.1       studio.mcka.local
+        server_name lms.mcka.local;
 
-Ensure that the settings in`local_settings.py` match the entries in your hosts file.
+        location / {
+            proxy_pass http://localhost:8000;
+            proxy_set_header Host $host;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header "Access-Control-Allow-Credentials" "true";
+            add_header "Access-Control-Allow-Origin" "http://mcka.local";
+            add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+            if ($request_method = 'OPTIONS') {
+                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
+        }
+    }
 
-### Set up the reverse proxy server
+Enable this new virtual host with:
 
-This proxy setup is required for xblocks authoring to work properly, since the lms and cms must be able to share cookies.
+    sudo ln -s /etc/nginx/sites-{available,enabled}/mcka_apros
+    sudo service nginx restart
+    
 
-The proxy server requires twisted, so first run `pip install twisted`
+## Step 5 - Start Apros
 
-Now you can start the proxy with this command:
+#### Set up the database and seed data
 
-    python -m util.devproxy
+To begin setting up Apros, **launch the LMS and forum/comment service and leave them running**. Then, run the following commands as the `apros` user: 
 
-Once it's running, you can browse to http://mcka.local:8888 to see Apros.
+    manage.py syncdb --migrate
+    manage.py load_seed_data
 
-If you want to run the proxy on port 80, add `DEV_PROXY_PORT = 80` to your `local_settings.py`, and start the proxy with `sudo python -m util.devproxy`
+This will build the Apros database and load seed data into the LMS database, including [preconfigured users][load-seed-data].
+
+[load-seed-data]: https://github.com/mckinseyacademy/mcka_apros/blob/master/main/management/commands/load_seed_data.py#L36-L55
+
+At this point, everything should be in place, and you should be able to start Apros from the `apros` user's command line with:
+
+    ./manage.py rundev 3000
+    
+**Make sure the LMS and the Forum/Comment services are running whenever you run Apros** as Apros relies on remote API calls to these.
 
 ## After you're done
 
@@ -302,3 +308,24 @@ apiary.apib - contains a copy of the API Blueprint from apiary
 mock_supplementals.apib - currently contains specific responses for demo course in edX LMS as setup within devstack
 
 [initial-configuration]: apros_initial_configuration.md
+
+## Appendix A: Troubleshooting
+
+### Logins don't work
+
+Try the following:
+
+    * Make sure both LMS and Apros are running
+    * Clear all cookies.
+    * Restart LMS and Apros
+    
+Sessions are a bit persnickety in Apros due to the fact that they must be aligned between both the LMS and Apros.
+
+## Appendix B: 'Real-Word' Deployments
+
+Deployments of Apros that are publicly accessible should differ in several respects. Chiefly:
+
+1. The database used should be MySQL instead of SQLite.
+2. A proper WSGI application server should serve Apros and the LMS, such as Gunicorn or uwsgi. See the edx-platform 
+   documentation for information of deploying edx-platform for production.
+3. You will need to generate and set API keys for use between the server and Apros, and turn off the DEBUG flag.
