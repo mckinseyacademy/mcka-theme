@@ -183,7 +183,7 @@ def client_admin_program_detail(request, client_id):
         total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
 
     data = {
-        'program': program,
+        'program_info': program,
         'courses': courses,
         'total_avg_grade': total_avg_grade,
         'total_pct_completed': total_pct_completed
