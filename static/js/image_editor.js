@@ -63,9 +63,10 @@ $.imageEditor = function(){
       var form = that.parents('form').first();
       modal.find('.error').html('');
       var validate = FileTypeValidate(that.val(), modal.find('.error'));
-      ImageFileName = that.val().length > 25 ? (that.val().substr(0,25) + '...') : that.val();
+      ImageFileName = that.val().replace(/^.*\\/, "").length > 25 ? (that.val().replace(/^.*\\/, "").substr(0,25) + '...') : that.val().replace(/^.*\\/, "");
       if(validate){
         $('img.spinner.upload-image').show();
+        $('label[for="id_profile_image"]').text(ImageFileName);
         var options = {
                     url     : form.attr('action'),
                     type    : 'POST',
