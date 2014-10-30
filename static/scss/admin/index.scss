@@ -1,5 +1,9 @@
 #admin-body {
 
+  main[role=main] {
+    padding-top: 40px;
+  }
+
   button,
   .button {
     margin-bottom: 0;
