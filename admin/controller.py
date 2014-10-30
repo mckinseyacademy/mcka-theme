@@ -500,7 +500,7 @@ def get_course_metrics_for_organization(course_id, client_id):
     metrics.users_grade_average = org_metrics.users_grade_average
     metrics.percent_completed = 0
     if metrics.users_enrolled:
-        metrics.percent_completed = int(int(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
+        metrics.percent_completed = int(float(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
     return metrics
 
 def get_course_analytics_progress_data(course, course_modules, client_id=None):
