@@ -59,12 +59,13 @@ from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
-from .controller import generate_course_report, generate_program_report
+from .controller import generate_course_report
 from .controller import get_organizations_users_completion
 from .controller import get_course_metrics_for_organization
 from .controller import get_course_analytics_progress_data
 from .controller import get_contacts_for_client
 from .controller import get_admin_users
+from .controller import get_program_data_for_report
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -169,22 +170,10 @@ def client_admin_home(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_program_detail(request, client_id):
+
     # In the future, when Companies have multiple program running,
     # we will need to allow them a drop down that allows them to choose from all programs.
-    program = Client.fetch(client_id).fetch_programs()[0]
-    program_courses = program.fetch_courses()
-    course_ids = list(set([pc.course_id for pc in program_courses]))
-    courses = course_api.get_courses(course_id=course_ids)
-
-    for course in courses:
-        course.metrics = get_course_metrics_for_organization(course.id, client_id)
-
-    total_avg_grade = 0
-    total_pct_completed = 0
-    if courses:
-        count = float(len(courses))
-        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
-        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
+    program, courses, total_avg_grade, total_pct_completed = get_program_data_for_report(client_id)
 
     data = {
         'program_info': program,
@@ -297,8 +286,7 @@ def client_admin_download_course_report(request, client_id, course_id):
 @client_admin_access
 def client_admin_download_program_report(request, client_id, program_id):
     organization = Client.fetch(client_id)
-    program = organization.fetch_programs()[0]
-
+    program, courses, total_avg_grade, total_pct_completed = get_program_data_for_report(client_id, program_id)
     filename = slugify(
         unicode(
             "{} Program Report for {} on {}".format(
@@ -308,35 +296,15 @@ def client_admin_download_program_report(request, client_id, program_id):
             )
         )
     ) + ".csv"
-
-    program_courses = program.fetch_courses()
-    course_ids = list(set([pc.course_id for pc in program_courses]))
-    courses = course_api.get_courses(course_id=course_ids)
-
-    for course in courses:
-        course.metrics = get_course_metrics_for_organization(course.id, client_id)
-
-    total_avg_grade = 0
-    total_pct_completed = 0
-    if courses:
-        count = float(len(courses))
-        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
-        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
-
-    url_prefix = "{}://{}".format(
-        "https" if request.is_secure() else "http",
-        request.META['HTTP_HOST']
-    )
-
-    response = HttpResponse(
-        generate_program_report(organization.name, program_id, url_prefix, courses, total_avg_grade, total_pct_completed),
-        content_type='text/csv'
-    )
-
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
-        filename
-    )
-
+    data = {
+        'client_name': organization.name,
+        'program_id': program_id,
+        'courses': courses,
+        'total_avg_grade': total_avg_grade,
+        'total_pct_completed': total_pct_completed
+    }
+    response = render(request, 'admin/client-admin/program_report.txt', data, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
     return response
 
 
