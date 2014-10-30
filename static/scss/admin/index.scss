@@ -109,6 +109,10 @@
     }
   }
 
+  .participants-message {
+    @include font-spec(14, normal, 22);
+  }
+
   #course-participants{
 
     .student a {

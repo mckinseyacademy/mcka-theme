@@ -11,13 +11,13 @@
           %span= _("Participants: ")
           %span= course.name
         .sub-1.add= _("Data Download ")
-        .add-message= _("The following button downloads a list of all participants enrolled in this course, their percent complete, impct scores, and course grade, along with profile informations such as email address and username.")
+        .participants-message= _("The following button downloads a list of all participants enrolled in this course, their percent complete, engagement scores, and course grade, along with profile informations such as email address and username.")
         %br
         %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/download_course_report", target: "_blank"}
           Download Report for course
         %hr
         .sub-1.add= _("Participant-Specific grade inspection ")
-        .add-message= _("Specify the name of a participant to access their details")
+        .participants-message= _("Specify the name of a participant to access their details")
         %br
         / %input{type: "search"}
         / %hr
