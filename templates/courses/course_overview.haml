@@ -28,7 +28,7 @@
         .video-preview
           #mk_overview_player.thumb
             - if overview.video
-              #mk-player{'data-video-id': "#{overview.video}"}
+              #mk-player{'data-video-id': "#{overview.course_video}"}
             - elif overview.course_image_url
               %img{src: '#{overview.course_image_url}'}
           .video-overview.hidden
