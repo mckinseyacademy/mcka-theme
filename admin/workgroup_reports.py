@@ -54,13 +54,15 @@ class WorkgroupCompletionData(object):
     def __init__(self, course_id, group_id=None):
         self.activity_xblocks = {}
         self.course = load_course(course_id)
+        group_project_lookup = {gp.id: gp.name for gp in self.course.group_project_chapters}
+
         if group_id is None:
-            self.projects = Project.fetch_projects_for_course(course_id)
-            self._load(course_id)
+            self.projects = [p for p in Project.fetch_projects_for_course(course_id) if group_project_lookup.has_key(p.content_id)]
         else:
             self.workgroup_id = int(group_id)
-            self.projects = [Project.fetch(WorkGroup.fetch(self.workgroup_id).project)]
-            self._load(course_id)
+            self.projects = [p for p in Project.fetch(WorkGroup.fetch(self.workgroup_id).project) if group_project_lookup.has_key(p.content_id)]
+
+        self._load(course_id)
 
 
     @staticmethod
