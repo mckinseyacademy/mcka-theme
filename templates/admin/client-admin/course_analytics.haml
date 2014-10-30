@@ -28,11 +28,11 @@
           %ul
             %li= _("Your Company: ")
               %br
-              %span.progress-stat.company= course.company_progress
+              %span.progress-stat.company= course.company_progress | floatformat:0
               %span.progress-stat.company= _("%")
             %li= _("Your Cohort: ")
               %br
-              %span.progress-stat.cohort= course.cohort_progress
+              %span.progress-stat.cohort= course.cohort_progress | floatformat:0
               %span.progress-stat.cohort= _("%")
         %hr
 
@@ -41,29 +41,24 @@
             .course-proficiency
               .sub-1= _("Proficiency")
               %p.style-5= _("Average grade based on current grade of participants.")
-
-              %section.course-progress
-              - if course.company_progress == 0
-                .zero
-                  %div
-                    %span= _("Your course proficiency will be displayed here.")
-              .visualization{'class': "progress-#{course.company_progress_chart} cohort-progress-#{course.cohort_progress_chart}"}
-                .total= course.company_progress
+              .visualization{'class': "progress-#{company_proficiency_graph} cohort-progress-#{cohort_proficiency_graph}"}
+                .total= company_proficiency | floatformat:0
                 .inner-circle.gradient
                 .progress-radial.gradient
                 .triangle
               .cohort-average
-                .label-4 cohort average = ={average_progress}%
+                .label-4 cohort average = ={cohort_proficiency}
               %br
               %p.style-5= _("Note: Grades may not appear until later in the course depending on number of graded items and their location within course content.")
               %hr
+
           .large-6.left
             .sub-1= _("Engagement")
             %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
             %hr
             .course-engagement
-              .visualization{class: "{% if engagement.points >= 90 %}filled{% endif %}"}
-                .band-1{class: "{% if engagement.points >= 30 %}filled{% endif %}"}
-                .band-2{class: "{% if engagement.points >= 60 %}filled{% endif %}"}
-                .total= engagement.employee_avg
-              .label-4 cohort average = ={engagement.course_avg} points
+              .visualization{class: "{% if company_engagement >= 90 %}filled{% endif %}"}
+                .band-1{class: "{% if company_engagement >= 30 %}filled{% endif %}"}
+                .band-2{class: "{% if company_engagement >= 60 %}filled{% endif %}"}
+                .total= company_engagement
+              .label-4 cohort average = ={cohort_engagement} points

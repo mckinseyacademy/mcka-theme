@@ -328,11 +328,22 @@ form {
 }
 
 #mckinsey_help {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
   p {
     margin-bottom: rem-calc(20);
     &:last-child { margin-bottom: 0; }
   }
   #mk-help-video { margin-bottom: rem-calc(20); }
+  #support-contact-email {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+  }
 }
 
 .modal-title {
