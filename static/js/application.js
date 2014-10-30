@@ -119,6 +119,14 @@ $(function(){
     $('.user-info >.fa').toggleClass('fa-sort-asc fa-sort-desc');
   });
 
+  $('.user-info .user-image').on('click', function(){
+    if (!$('#profile-container').hasClass('open')) {
+      setTimeout(function(){
+        Foundation.libs.dropdown.toggle($('.user-info'));
+      }, 5);
+    }
+  });
+
   $('.course-name.unavailable, .status.unavailable').on('click', function(){
     var generalModal = $('#generalModal');
     var days = $(this).data('numdays');
