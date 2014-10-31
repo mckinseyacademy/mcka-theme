@@ -9,6 +9,39 @@
     padding-bottom: 50px;
   }
 
+  fieldset { margin:0; padding: 0; border:0; }
+
+  .forum-nav {
+    select {
+      margin: 0;
+      padding: 0;
+      height: auto;
+    }
+
+    input {
+      margin: 0;
+      padding: 0;
+    }
+
+    .forum-nav-browse-current {
+      font-size: rem-calc(10);
+    }
+  }
+
+  .forum-new-post-form {
+    min-width: 500px;
+
+    .field-label {
+      width: 100%
+    }
+
+    .field-help {
+      display: block;
+      padding-left: 0;
+      width: 100%;
+    }
+  }
+
 /* Ask a TA */
   .ask-ta {
 
