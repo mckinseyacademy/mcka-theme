@@ -60,7 +60,7 @@ class WorkgroupCompletionData(object):
             self.projects = [p for p in Project.fetch_projects_for_course(course_id) if group_project_lookup.has_key(p.content_id)]
         else:
             self.workgroup_id = int(group_id)
-            self.projects = [p for p in Project.fetch(WorkGroup.fetch(self.workgroup_id).project) if group_project_lookup.has_key(p.content_id)]
+            self.projects = [Project.fetch(WorkGroup.fetch(self.workgroup_id).project)]
 
         self._load(course_id)
 
