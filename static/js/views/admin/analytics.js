@@ -19,20 +19,23 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
       var width = 750, height = 350;
       var chart = nv.models.cumulativeLineChart()
                     .x(function(d) { return d[0] })
-                    .y(function(d) { return d[1]/100 }) //adjusting, 100% is 1.00, not 100 as it is in the data
+                    .y(function(d) { return Math.ceil(d[1])/100 }) //adjusting, 100% is 1.00, not 100 as it is in the data
                     .color(['#66A5B5', '#B1C2CC'])
                     .useInteractiveGuideline(true)
                     .width(width).height(height)
                     ;
 
       var weeksNumber = dataJson[0].values.length;
-      var weekslabelsNum = parseInt(weeksNumber / 6);
+      var weekslabelsNum = parseInt(weeksNumber / 6) > 1 ? parseInt(weeksNumber / 6) : 1;
 
       chart.xAxis
           .tickValues(Array.apply(null, {length: dataJson[0].values.length}).map(Number.call, Number))
           .tickFormat(function(d) {
-              if((d%weekslabelsNum) == 0){
+              if((d%weekslabelsNum) == 0  && d != 0 && weekslabelsNum != 1){
                 return Math.ceil(d / 7) + ' week';
+              }
+              else if(weekslabelsNum == 1){
+                return d + ' day';
               }
             });
 

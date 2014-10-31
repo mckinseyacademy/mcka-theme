@@ -486,7 +486,7 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
         if end_date > course.end:
             end_date = course.end
     metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, organization_id=client_id)
-    metricsJson = []
+    metricsJson = [[0,0]]
     day = 1
     week = 0
     mod_completed = 0
