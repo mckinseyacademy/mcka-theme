@@ -44,7 +44,7 @@ $(function(){
     }
     $('label[for="id_company_image"]').text(ImageFileName);
     imageEditor.DoFileUpload(e, $(this), imageClass, modal);
-    var image = $('.company-uploaded-image').attr('src');
+    var image = $('.company-uploaded-image').attr('src').split('?')[0];
     $('.company-image img').attr('src', image);
     $('#id_logo_url').val(image);
   });
