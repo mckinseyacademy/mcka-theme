@@ -12,7 +12,7 @@ $(function(){
   });
 
   $(document).on('closed.fndtn.reveal', '#edit-company-image-modal', function () {
-    var image = $('.company-uploaded-image').attr('src');
+    var image = $('.company-uploaded-image').attr('src').split('?')[0];
     if($('#edit_image_client_id').val() == 'new'){
       $('#new-principal').foundation('reveal', 'open');
       $('.company-image img').attr('src', image);
