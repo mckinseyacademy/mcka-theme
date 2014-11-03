@@ -1548,8 +1548,9 @@ def workgroup_project_create(request, course_id):
             organization = request.POST["new-project-company"]
 
         existing_projects = Project.fetch_projects_for_course(course_id)
+        matching_projects = [p for p in existing_projects if p.content_id == project_section and p.organization == organization]
 
-        if project_section in [p.content_id for p in existing_projects]:
+        if len(matching_projects) > 0:
             message = _("Project already exists")
             status_code = 409 # 409 = conflict
         else:
