@@ -670,6 +670,7 @@ def client_list(request):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_new(request):
     error = None
+    company_image = "/static/image/empty_avatar.png"
     if request.method == 'POST':  # If the form has been submitted...
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -677,7 +678,7 @@ def client_new(request):
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
                 client = Client.create(name, client_data)
-                if hasattr(client, 'logo_url') and client.logo_url is not None:
+                if hasattr(client, 'logo_url') and client.logo_url:
                     old_image_url = client.logo_url
                     if old_image_url[:10] == '/accounts/':
                         old_image_url = old_image_url[10:]
@@ -692,6 +693,9 @@ def client_new(request):
 
             except ApiError as err:
                 error = err.message
+        else:
+            if request.POST['logo_url']:
+                company_image = request.POST['logo_url']
     else:
         ''' adds a new client '''
         form = ClientForm()  # An unbound form
@@ -703,7 +707,7 @@ def client_new(request):
         "form": form,
         "error": error,
         "submit_label": _("Save Client"),
-        "company_image": "/static/image/empty_avatar.png",
+        "company_image": company_image,
     }
 
     return render(

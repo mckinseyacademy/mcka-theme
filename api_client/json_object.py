@@ -223,6 +223,7 @@ class JsonObjectWithImage(JsonObject):
         # Save normal path
         image_url_name = os.path.splitext(image_url)[0]
         save_image_url = "{}.jpg".format(image_url_name)
+        default_storage.delete(save_image_url)
         cls._save_image(cropped_example, save_image_url)
 
         # And save special sizes to generate
