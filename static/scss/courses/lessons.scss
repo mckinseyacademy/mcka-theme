@@ -183,16 +183,13 @@
         }
       }
 
-      .col-left,
-      .col-right {
-        display: inline-block;
-        vertical-align: top;
-        width: 24%;
+      .col-left {
+        float: left;
       }
 
       .col-right {
-        width: 73%;
-        margin: 5px 0 0 5px;
+        margin-left: 85px;
+        margin-top: 5px;
         line-height: rem-calc(12);
       }
 
