@@ -23,7 +23,7 @@
   .visualization {
     border-radius: 50%;
     margin: 20px 0 15px;
-    background: $mckinsey-academy-blue-gray;
+    background: $visualization-bg;
     @include square-size(100px);
 
     .total {
@@ -70,7 +70,7 @@
 
 .course-progress {
   .visualization {
-    background: $mckinsey-academy-blue-gray;
+    background: $visualization-bg;
     border-radius: 50px;
     width: 308px;
     height: 17px;
@@ -115,7 +115,7 @@
 
 .course-engagement {
   .visualization {
-    background: #d8e1e6;
+    background: $visualization-bg;
     border-radius: 50%;
     margin: 20px 0 15px;
     @include square-size(100px);
