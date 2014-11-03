@@ -675,7 +675,7 @@ def client_new(request):
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
                 client = Client.create(name, client_data)
-                if hasattr(client, 'logo_url') and client.logo_url is not None:
+                if hasattr(client, 'logo_url') and client.logo_url:
                     old_image_url = client.logo_url
                     if old_image_url[:10] == '/accounts/':
                         old_image_url = old_image_url[10:]
