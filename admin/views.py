@@ -342,6 +342,8 @@ def client_admin_course_analytics(request, client_id, course_id):
         'cohort_proficiency': course_proficiency.course_average_display,
         'company_engagement': round_to_int_bump_zero(employee_avg),
         'cohort_engagement': round_to_int_bump_zero(course_avg),
+        'client_id': client_id,
+        'course_id': course_id,
     }
     return render(
         request,
