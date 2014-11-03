@@ -25,7 +25,7 @@
                 %a{href: '/admin/client-admin'}= _("Client Admin")
       - block user_region
         - if request.user.is_authenticated
-          %a.user-info{href: "#", data-dropdown: "profile-container"}
+          %a.user-info{data-dropdown: "profile-container"}
             .user-name= user.username
             %i.fa.fa-sort-asc
             .user-image
