@@ -6,6 +6,7 @@ import urllib2 as url_access
 import datetime
 import math
 import logging
+import string
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
@@ -41,7 +42,6 @@ from django.contrib.auth.views import password_reset, password_reset_confirm, pa
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
-
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
@@ -404,8 +404,7 @@ def user_profile_image_edit(request):
         x2Position = request.POST.get('x2-position')
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
-        user = user_api.get_user(request.user.id)
-        profileImageUrl = user.image_url(size=200, path='relative')
+        profileImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2]
 
         from PIL import Image
         from django.core.files.storage import default_storage
@@ -429,21 +428,24 @@ def user_profile_image_edit(request):
             right = int(x2Position)
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
-
-            JsonObjectWithImage.save_profile_image(cropped_example, image_url + '.jpg')
-            user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + image_url + '.jpg'})
-            request.user.avatar_url = '/accounts/' + image_url + '.jpg'
+            new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
+            JsonObjectWithImage.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
+            user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + new_image_url})
+            request.user.avatar_url = '/accounts/' + new_image_url
             request.user.save()
             RemoteUser.remove_from_cache(request.user.id)
-        return change_profile_image(request, request.user.id, 'edit_profile_image')
+        return change_profile_image(request, request.user.id, template='edit_profile_image')
 
 @login_required
-def change_profile_image(request, user_id, template='change_profile_image', error=None):
+def change_profile_image(request, user_id, template='change_profile_image', user_profile_image=None, error=None):
     ''' handles requests for login form and their submission '''
 
     user = user_api.get_user(user_id)
+    if user_profile_image:
+        profile_image = user_profile_image
+    else:
+        profile_image = user.image_url(size=200, path='absolute')
 
-    profile_image = user.image_url(size=200, path='absolute')
     if '?' in profile_image:
         profile_image = profile_image + '&' + format(datetime.datetime.now(), u'U')
     else:
@@ -478,19 +480,18 @@ def upload_profile_image(request, user_id):
 
             temp_image = request.FILES['profile_image']
             allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
+            avatar_url = request.user.avatar_url
+
             if temp_image.content_type in allowed_types:
-                JsonObjectWithImage.save_profile_image(Image.open(temp_image), 'images/profile_image-{}.jpg'.format(user_id))
-                user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/images/profile_image-{}.jpg'.format(user_id)})
-                request.user.avatar_url = '/accounts/images/profile_image-{}.jpg'.format(user_id)
-                request.user.save()
-                RemoteUser.remove_from_cache(request.user.id)
+                JsonObjectWithImage.save_profile_image(Image.open(temp_image), 'images/' + settings.TEMP_IMAGE_FOLDER + 'profile_image-{}.jpg'.format(user_id))
+                avatar_url = '/accounts/images/' + settings.TEMP_IMAGE_FOLDER + 'profile_image-{}.jpg'.format(user_id)
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
 
-            return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
+            return HttpResponse(change_profile_image(request, request.user.id, template='change_profile_image', user_profile_image=avatar_url, error=error), content_type='text/html')
         else:
             error = "Error uploading file. Please try again and be sure to use an accepted file format."
-            return HttpResponse(change_profile_image(request, request.user.id, 'change_profile_image', error), content_type='text/html')
+            return HttpResponse(change_profile_image(request, request.user.id, template='change_profile_image', error=error), content_type='text/html')
     else:
         ''' adds a new image '''
         form = UploadProfileImageForm(request)  # An unbound form
