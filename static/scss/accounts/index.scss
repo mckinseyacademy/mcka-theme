@@ -93,3 +93,21 @@
     @include font-spec(14, normal, 22);
   }
 }
+
+#upload-profile-image-form{
+
+  .spinner-image{
+    position: relative;
+    width: inherit;
+    height: 69px;
+  }
+
+  img.spinner.upload-image{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+}
