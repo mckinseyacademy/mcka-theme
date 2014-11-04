@@ -3,7 +3,7 @@ var template_string = '<header>' +
                       '<a href="<%= module_navigation_url %>" class="label-4 module"> Module <%= module_index %>: <%= module_name %> | </a>' +
                       '<time class="label-4" datetime="<%= created_at %>"><%= moment(created_at).format("M/D/YY h:mma") %></time>' +
                       '</header>' +
-                      '<div class="body"><%= body %></div>';
+                      '<div class="body" contenteditable><%= body %></div>';
 
 Apros.views.LessonNote = Backbone.View.extend({
   tagName: "li",
