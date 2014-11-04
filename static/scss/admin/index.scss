@@ -143,8 +143,11 @@
     }
 
     tbody{
-      td, td a, td p{
-        @include font-spec(10, bold);
+      td, td p{
+        @include font-spec(10);
+      }
+      ta, a{
+        @include font-spec(10, 600);
       }
       tr.even {
         background: #F9;
