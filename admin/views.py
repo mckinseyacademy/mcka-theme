@@ -357,7 +357,7 @@ def client_admin_course_analytics_participants(request, client_id, course_id):
     course = course_api.get_course(course_id)
     start_date = course.start
     end_date = course.end if course.end and course.end < datetime.today() else datetime.today()
-    time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
+    time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization=client_id)
     data = {
         'modules_completed': time_series_metrics.modules_completed,
         'participants': time_series_metrics.active_users
@@ -387,7 +387,7 @@ def client_admin_course_status(request, client_id, course_id):
     if course.end is not None:
         if end_date > course.end:
             end_date = course.end
-    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
+    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization=client_id)
     metricsJson = []
     day = 1
     week = 0
