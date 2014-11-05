@@ -205,6 +205,7 @@ You should find the **FEATURES** section already exists, and you will want to ad
         "SIGNAL_ON_SCORE_CHANGED": true,
         "STUDENT_GRADEBOOK": true,
         "STUDENT_PROGRESS": true,
+        "ORGANIZATIONS_APP": true,
         
 Finally, run:
 
