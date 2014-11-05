@@ -105,16 +105,25 @@ class ReviewAssignmentProcessor(object):
 
 
     def store_assignments(self, course_id):
+
+        def exists(workgroup_id):
+            existing_assignments = ReviewAssignmentGroup.list_for_workgroup(workgroup_id)
+            for assignment in existing_assignments:
+                if set([u.id for u in assignment.get_users()]) == set(self.workgroup_reviewers[wg.id]):
+                    return True
+            return False
+
         for wg in self.workgroups:
-            now = datetime.datetime.today()
-            rag = ReviewAssignmentGroup.create(
-                "Assignment group for {}".format(wg.id),
-                {
-                    "assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-                    "xblock_id": self.xblock_id,
-                }
-            )
-            rag.add_course(course_id)
-            rag.add_workgroup(wg.id)
-            for user_id in self.workgroup_reviewers[wg.id]:
-                rag.add_user(user_id)
+            if not exists(wg.id):
+                now = datetime.datetime.today()
+                rag = ReviewAssignmentGroup.create(
+                    "Assignment group for {}".format(wg.id),
+                    {
+                        "assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                        "xblock_id": self.xblock_id,
+                    }
+                )
+                rag.add_course(course_id)
+                rag.add_workgroup(wg.id)
+                for user_id in self.workgroup_reviewers[wg.id]:
+                    rag.add_user(user_id)
