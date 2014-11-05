@@ -31,6 +31,7 @@ BLANK_ACTIVITY_STATUS = DottableDict({
     "evaluation": "irrelevant",
     "ta_graded": False,
     "grade": "irrelevant",
+    "graded": "irrelevant",
     "review_groups": [],
 })
 
@@ -184,7 +185,8 @@ class WorkgroupCompletionData(object):
                     )
                     activity_status.ta_graded = group_xblock.ta_graded
                     activity_status.review_link = self._review_link(g, a)
-                    activity_status.modifier_class = report_completion_boolean(self.is_group_complete(group_xblock, user_ids), get_due_date(group_xblock, 'grade'))
+                    activity_status.graded = report_completion_boolean(self.is_group_complete(group_xblock, user_ids), get_due_date(group_xblock, 'grade'))
+                    activity_status.modifier_class = activity_status.graded
 
                     g.activity_statuses.append(activity_status)
 
