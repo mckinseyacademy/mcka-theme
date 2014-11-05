@@ -59,7 +59,7 @@ def save_new_client_image(old_image_url, new_image_url, client):
 
         io_new_client_image(old_image_url, new_image_url)
 
-        for generate_size in settings.GENERATE_IMAGE_SIZES:
+        for generate_size in settings.COMPANY_GENERATE_IMAGE_SIZES:
             old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size)
             new_gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size)
             io_new_client_image(old_gen_image_url, new_gen_image_url)

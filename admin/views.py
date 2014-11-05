@@ -1915,7 +1915,7 @@ def company_image_edit(request, client_id="new"):
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
             new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
-            JsonObjectWithImage.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
+            Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
         if client_id == 'new':
             return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url}), content_type="application/json")
         else:
@@ -1941,10 +1941,10 @@ def upload_company_image(request, client_id='new'):
             if temp_image.content_type in allowed_types:
                 if client_id == 'new':
                     company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
-                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
+                    Organization.save_profile_image(Image.open(temp_image), company_image)
                 else:
                     company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}.jpg'.format(client_id)
-                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
+                    Organization.save_profile_image(Image.open(temp_image), company_image)
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
             return HttpResponse(change_company_image(request=request, client_id=client_id, template='change_company_image', error=error, company_image='/accounts/' + company_image), content_type='text/html')
