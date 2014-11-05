@@ -50,15 +50,14 @@
                 .label-4 cohort average = ={cohort_proficiency}
               %br
               %p.style-5= _("Note: Grades may not appear until later in the course depending on number of graded items and their location within course content.")
-              %hr
 
           .large-6.left
-            .sub-1= _("Engagement")
-            %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
-            %hr
             .course-engagement
+              .sub-1= _("Engagement")
+              %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
               .visualization{class: "{% if company_engagement >= 90 %}filled{% endif %}"}
                 .band-1{class: "{% if company_engagement >= 30 %}filled{% endif %}"}
                 .band-2{class: "{% if company_engagement >= 60 %}filled{% endif %}"}
                 .total= company_engagement
-              .label-4 cohort average = ={cohort_engagement} points
+              .cohort-average
+                .label-4 cohort average = ={cohort_engagement} points
