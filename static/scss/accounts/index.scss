@@ -102,12 +102,16 @@
     height: 69px;
   }
 
-  img.spinner.upload-image{
+  .spinner.upload-image{
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     margin: auto;
+    &.svg-ie-image{
+      padding-top:5px;
+      padding-left:40%;
+    }
   }
 }
