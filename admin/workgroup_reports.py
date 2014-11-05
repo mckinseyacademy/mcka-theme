@@ -254,12 +254,12 @@ def generate_workgroup_csv_report(course_id, url_prefix):
 
         activity_names_row = ["",""]
         for activity in project.activities:
-            activity_names_row.extend(["",activity.name,"",""])
+            activity_names_row.extend(["",activity.name,"","",""])
         output_line(activity_names_row)
 
         group_header_row = ["Group",""]
         for activity in project.activities:
-            group_header_row.extend(["Upload","Evaluation","Grade"])
+            group_header_row.extend(["Upload","Evaluation","Review","Review Groups","Graded"])
         output_line(group_header_row)
 
         for workgroup in project.workgroups:
@@ -272,7 +272,7 @@ def generate_workgroup_csv_report(course_id, url_prefix):
                         "*" if activity_status.modifier_class=="incomplete" else "",
                         "{}{}".format(url_prefix, activity_status.review_link),
                     )
-                workgroup_row.extend([grade_value,""])
+                workgroup_row.extend([grade_value,"",activity_status.graded])
             output_line(workgroup_row)
 
             for user in workgroup.users:
@@ -287,7 +287,7 @@ def generate_workgroup_csv_report(course_id, url_prefix):
                                 "{}{}".format(url_prefix, review_group.review_link),
                             )
                         )
-                    user_row.append('; '.join(review_group_data))
+                    user_row.extend(['; '.join(review_group_data), "--"])
                 output_line(user_row)
 
         output_line("--------")
