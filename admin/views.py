@@ -1262,7 +1262,7 @@ def add_courses(request, program_id):
 
     selected_ids = [course.course_id for course in program.fetch_courses()]
 
-    for course_id in courses:
+    for course_id in [c for c in courses if c not in selected_ids]:
         try:
             program.add_course(course_id)
         except ApiError as e:
