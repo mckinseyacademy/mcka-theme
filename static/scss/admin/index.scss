@@ -316,8 +316,8 @@
   }
 
   .company-image img{
-    width:40px;
-    height:40px;
+    max-width:40px;
+    max-height:40px;
   }
 
   #id_logo_url, label[for="id_logo_url"]{

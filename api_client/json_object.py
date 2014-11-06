@@ -154,7 +154,7 @@ class JsonObjectWithImage(JsonObject):
 
         try:
             if hasattr(self, 'avatar_url') and self.avatar_url is not None:
-                usable_sizes = [s for s in settings.GENERATE_IMAGE_SIZES if s >= size]
+                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size]
                 best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
 
                 # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
@@ -175,7 +175,6 @@ class JsonObjectWithImage(JsonObject):
                 image_url = JsonObjectWithImage.default_image_url()
         except:
             image_url = JsonObjectWithImage.default_image_url()
-
         return image_url
 
     @classmethod
@@ -216,6 +215,10 @@ class JsonObjectWithImage(JsonObject):
             self.save_profile_image(original_image, image_path)
 
     @classmethod
+    def get_image_sizes(cls):
+        return settings.PROFILE_GENERATE_IMAGE_SIZES
+
+    @classmethod
     def save_profile_image(cls, cropped_example, image_url, new_image_url=None):
         from PIL import Image
         from django.core.files.storage import default_storage
@@ -234,10 +237,10 @@ class JsonObjectWithImage(JsonObject):
         cls._save_image(cropped_example, new_image_url)
 
         # And save special sizes to generate
-        for generate_size in settings.GENERATE_IMAGE_SIZES:
-            gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size)
-            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size)
-            cropped_image = cls._rescale_image(cropped_example, generate_size, generate_size)
+        for generate_size in cls.get_image_sizes():
+            gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size[0])
+            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size[0])
+            cropped_image = cls._rescale_image(cropped_example, generate_size[0], generate_size[1])
             try:
                 default_storage.delete(old_gen_image_url)
             except:

@@ -70,7 +70,7 @@ class Organization(JsonObjectWithImage):
 
         try:
             if hasattr(self, 'logo_url') and self.logo_url is not None:
-                usable_sizes = [s for s in settings.GENERATE_IMAGE_SIZES if s >= size]
+                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size]
                 best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
 
                 # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
@@ -94,6 +94,10 @@ class Organization(JsonObjectWithImage):
             image_url = JsonObjectWithImage.default_image_url()
 
         return image_url
+
+    @classmethod
+    def get_image_sizes(cls):
+        return settings.COMPANY_GENERATE_IMAGE_SIZES
 
     def _get_specific_size_url(self, size):
         return "{}-{}.jpg".format(os.path.splitext(self.logo_url)[0], size)
