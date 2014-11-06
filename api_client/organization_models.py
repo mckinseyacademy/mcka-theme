@@ -70,7 +70,7 @@ class Organization(JsonObjectWithImage):
 
         try:
             if hasattr(self, 'logo_url') and self.logo_url is not None:
-                usable_sizes = [s for s in self.get_image_sizes() if s >= size]
+                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size]
                 best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
 
                 # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate

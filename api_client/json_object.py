@@ -154,7 +154,7 @@ class JsonObjectWithImage(JsonObject):
 
         try:
             if hasattr(self, 'avatar_url') and self.avatar_url is not None:
-                usable_sizes = [s for s in self.get_image_sizes() if s >= size]
+                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size]
                 best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
 
                 # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
@@ -238,9 +238,9 @@ class JsonObjectWithImage(JsonObject):
 
         # And save special sizes to generate
         for generate_size in cls.get_image_sizes():
-            gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size)
-            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size)
-            cropped_image = cls._rescale_image(cropped_example, generate_size, generate_size)
+            gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size[0])
+            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size[0])
+            cropped_image = cls._rescale_image(cropped_example, generate_size[0], generate_size[1])
             try:
                 default_storage.delete(old_gen_image_url)
             except:
