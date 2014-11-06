@@ -6,7 +6,12 @@ window.Apros = {
   initialize: function() {
     var route     = window.location.pathname.replace(/\/$/, ''),
         has_push  = window.history && window.history.pushState ? true : false;
-    $('header[role=banner] a[href="' + route + '"]').addClass('selected');
+
+    $('header[role=banner] nav[role=navigation] a').each(function(){
+      if(route.indexOf($(this).attr('href')) > -1){
+        $(this).addClass('selected');
+      }
+    });
     Backbone.history.start({pushState: has_push, hashChange: false});
   }
 }
