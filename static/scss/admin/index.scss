@@ -430,10 +430,6 @@
         margin: 20px auto 15px;
         @include circle-chart($mckinsey-academy-warm-gray, $mckinsey-academy-black);
       }
-      .cohort-average{
-        margin: 0 auto;
-        text-align:center;
-      }
       .inner-circle {
         background: $mckinsey-academy-turquoise;
         position: absolute;
@@ -444,6 +440,18 @@
         z-index: 5;
         @include square-size(70px);
       }
+    }
+    .course-engagement {
+      padding: 0 10%;
+      text-align: left;
+      border-left: 1px solid $almost-white;
+      .visualization {
+        margin: 20px auto 15px;
+      }
+    }
+    .cohort-average{
+      margin: 0 auto;
+      text-align:center;
     }
   }
 
@@ -473,12 +481,6 @@
           color: $mckinsey-orange;
         }
       }
-    }
-  }
-
-  .course-engagement {
-    .visualization {
-      margin: 20px auto 15px;
     }
   }
 
