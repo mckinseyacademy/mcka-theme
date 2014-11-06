@@ -207,6 +207,21 @@ def remove_user_from_group(user_id, group_id):
     return (response.code == 204)
 
 @api_error_protect
+def remove_course_from_group(course_id, group_id, group_object=JsonObject):
+    ''' removes course from group '''
+
+    response = DELETE(
+        '{}/{}/{}/courses/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            GROUP_API,
+            group_id,
+            course_id,
+        )
+    )
+
+    return (response.code == 204)
+
+@api_error_protect
 def get_courses_in_group(group_id):
     ''' get list of courses associated with a specific group '''
     response = GET(

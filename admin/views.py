@@ -1260,13 +1260,25 @@ def program_association(request, client_id):
 def add_courses(request, program_id):
     program = Program.fetch(program_id)
     courses = request.POST.getlist("courses[]")
-    for course_id in courses:
+
+    selected_ids = [course.course_id for course in program.fetch_courses()]
+
+    for course_id in [c for c in courses if c not in selected_ids]:
         try:
             program.add_course(course_id)
         except ApiError as e:
             # Ignore 409 errors, because they indicate a course already added
             if e.code != 409:
                 raise
+
+    for course_id in selected_ids:
+        if course_id not in courses:
+            try:
+                program.remove_course(course_id)
+            except ApiError as e:
+                message = e.message
+                status_code = e.code
+
 
     return HttpResponse(
         json.dumps({"message": _("Successfully saved courses to {} program").format(program.display_name)}),
