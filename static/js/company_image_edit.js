@@ -12,16 +12,11 @@ $(function(){
   });
 
   $(document).on('closed.fndtn.reveal', '#edit-company-image-modal', function () {
-    var image = $('.company-uploaded-image').attr('src').split('?')[0];
     if($('#edit_image_client_id').val() == 'new'){
       $('#new-principal').foundation('reveal', 'open');
-      $('.company-image img').attr('src', image);
-      $('#id_logo_url').val(image);
     }
     else{
       $('#edit-principal').foundation('reveal', 'open');
-      $('.company-image img').attr('src', image);
-      $('#id_logo_url').val(image);
     }
   });
 
@@ -44,9 +39,6 @@ $(function(){
     }
     $('label[for="id_company_image"]').text(ImageFileName);
     imageEditor.DoFileUpload(e, $(this), imageClass, modal);
-    var image = $('.company-uploaded-image').attr('src').split('?')[0];
-    $('.company-image img').attr('src', image);
-    $('#id_logo_url').val(image);
   });
 
   $('#edit-company-image-modal').on('submit', '#company-cropping-form', function(e){

@@ -294,6 +294,8 @@ GENERATE_IMAGE_SIZES = [48, 160]
 # remove any of these sizes while regenerating the changed images
 REMOVE_IMAGE_SIZES = [40, 120]
 
+TEMP_IMAGE_FOLDER = "profile_temp_images/"
+
 try:
     from local_settings import *
 except ImportError:

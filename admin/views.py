@@ -7,6 +7,7 @@ from time import mktime
 import urllib2 as url_access
 from urllib import quote as urlquote
 import math
+import string
 
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -1846,10 +1847,11 @@ def workgroup_course_assignments(request, course_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image="/static/image/empty_avatar.png"):
+def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image=None):
     ''' handles requests for login form and their submission '''
-    if(client_id != 'new'):
-
+    if(client_id == 'new' and not company_image):
+        company_image = "/static/image/empty_avatar.png"
+    elif not company_image:
         client = Organization.fetch(client_id)
         company_image = client.image_url(size=200, path='absolute')
 
@@ -1883,11 +1885,10 @@ def company_image_edit(request, client_id="new"):
         x2Position = request.POST.get('x2-position')
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
-        if client_id == 'new':
-            CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
-        else:
+        CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
+
+        if client_id != 'new':
             client = Organization.fetch(client_id)
-            CompanyImageUrl = client.image_url(size=200, path='relative')
 
         from PIL import Image
         from django.core.files.storage import default_storage
@@ -1901,6 +1902,8 @@ def company_image_edit(request, client_id="new"):
         else:
             image_url = CompanyImageUrl
 
+        new_image_url = image_url
+
         if default_storage.exists(image_url):
 
             original = Image.open(default_storage.open(image_url))
@@ -1911,14 +1914,14 @@ def company_image_edit(request, client_id="new"):
             right = int(x2Position)
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
-
-            JsonObjectWithImage.save_profile_image(cropped_example, image_url)
+            new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
+            JsonObjectWithImage.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
         if client_id == 'new':
-            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url}), content_type="application/json")
         else:
-            client.logo_url = '/accounts/' + image_url
-            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + image_url})
-            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url, 'client_id': client.id}), content_type="application/json")
+            client.logo_url = '/accounts/' + new_image_url
+            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url, 'client_id': client.id}), content_type="application/json")
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def upload_company_image(request, client_id='new'):
@@ -1937,14 +1940,11 @@ def upload_company_image(request, client_id='new'):
             allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
             if temp_image.content_type in allowed_types:
                 if client_id == 'new':
-                    company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
+                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
                     JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
                 else:
-                    company_image = 'images/company_image-{}.jpg'.format(client_id)
-                    client = Organization.fetch(client_id)
+                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}.jpg'.format(client_id)
                     JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
-                    client.logo_url = '/accounts/' + company_image
-                    client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + company_image})
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
             return HttpResponse(change_company_image(request=request, client_id=client_id, template='change_company_image', error=error, company_image='/accounts/' + company_image), content_type='text/html')

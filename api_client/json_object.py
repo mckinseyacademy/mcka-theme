@@ -4,6 +4,7 @@ import collections
 import datetime
 import os
 import StringIO
+import string
 
 from django.conf import settings
 from django.core.files.storage import default_storage
@@ -215,21 +216,32 @@ class JsonObjectWithImage(JsonObject):
             self.save_profile_image(original_image, image_path)
 
     @classmethod
-    def save_profile_image(cls, cropped_example, image_url):
+    def save_profile_image(cls, cropped_example, image_url, new_image_url=None):
         from PIL import Image
         from django.core.files.storage import default_storage
         from django.core.files.base import ContentFile
 
+        if not new_image_url:
+            new_image_url = image_url
+
         # Save normal path
-        image_url_name = os.path.splitext(image_url)[0]
-        save_image_url = "{}.jpg".format(image_url_name)
-        default_storage.delete(save_image_url)
-        cls._save_image(cropped_example, save_image_url)
+        old_image_url_name = os.path.splitext(image_url)[0]
+        new_image_url_name = os.path.splitext(new_image_url)[0]
+        try:
+            default_storage.delete(image_url)
+        except:
+            pass
+        cls._save_image(cropped_example, new_image_url)
 
         # And save special sizes to generate
         for generate_size in settings.GENERATE_IMAGE_SIZES:
-            gen_image_url = "{}-{}.jpg".format(image_url_name, generate_size)
+            gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size)
+            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size)
             cropped_image = cls._rescale_image(cropped_example, generate_size, generate_size)
+            try:
+                default_storage.delete(old_gen_image_url)
+            except:
+                pass
             cls._save_image(cropped_image, gen_image_url)
 
     @classmethod
