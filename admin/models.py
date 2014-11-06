@@ -75,6 +75,9 @@ class ReviewAssignmentGroup(BaseGroupModel):
     def add_user(self, user_id):
         return group_api.add_user_to_group(user_id, self.id)
 
+    def remove_user(self, user_id):
+        return group_api.remove_user_from_group(user_id, self.id)
+
     @classmethod
     def list_for_workgroup(cls, workgroup_id):
         return [cls.fetch(rag.id) for rag in workgroup_api.get_workgroup_groups(workgroup_id)]
