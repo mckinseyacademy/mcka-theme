@@ -62,6 +62,16 @@
     }
   }
 
+  .contact-title,
+  .contact-info{
+    display: inline-block;
+  }
+
+  .contact-title{
+    position: relative;
+    vertical-align: top;
+  }
+
   input[type=submit]{
     &[disabled]{
       cursor: not-allowed;
