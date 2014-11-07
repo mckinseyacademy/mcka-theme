@@ -461,5 +461,5 @@ class EditFullNameForm(forms.Form):
 
 class EditTitleForm(forms.Form):
     ''' edit user title '''
-    title = forms.CharField(max_length=255, label='')
+    title = forms.CharField(max_length=255, label='', required=False)
 
