@@ -418,6 +418,12 @@ def client_admin_course_status(request, client_id, course_id):
                 content_type='application/json'
             )
 
+def _remove_student_from_course(student_id, course_id):
+    # Mark this student as an observer for this course, so that their data is ignored in roll-up activities
+    permissions = Permissions(student_id)
+    permissions.add_course_role(course_id, USER_ROLES.OBSERVER)
+    user_api.unenroll_user_from_course(student_id, course_id)
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_unenroll_participant(request, client_id, course_id, user_id):
@@ -428,7 +434,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
         try:
             # un-enroll from program
             if is_program:
-                user_api.unenroll_user_from_course(user_id, course_id)
+                _remove_student_from_course(user_id, course_id)
                 user_programs = Program.user_program_list(user_id)
                 for program in user_programs:
                     if course_id in [course.course_id for course in program.fetch_courses()]:
@@ -436,7 +442,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 
             # un-enroll from course
             else:
-                user_api.unenroll_user_from_course(user_id, course_id)
+                _remove_student_from_course(user_id, course_id)
 
             redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
             return HttpResponseRedirect(redirect_url)
