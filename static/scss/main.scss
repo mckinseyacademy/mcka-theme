@@ -281,6 +281,12 @@ button,
   position: relative;
   @include perspective(1000px);
 
+  &:hover {
+    .front .bookmark {
+      display: none;
+    }
+  }
+
   @media #{$large-up} {
 
     &:hover {
