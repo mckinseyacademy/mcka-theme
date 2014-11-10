@@ -69,20 +69,20 @@ $.imageEditor = function(){
       var validate = FileTypeValidate(that.val(), modal.find('.error'));
       ImageFileName = that.val().replace(/^.*\\/, "").length > 25 ? (that.val().replace(/^.*\\/, "").substr(0,25) + '...') : that.val().replace(/^.*\\/, "");
       if(validate){
-        $('img.spinner.upload-image').show();
+        $('.spinner.upload-image').show();
         $('label[for="id_profile_image"]').text(ImageFileName);
         var options = {
                     url     : form.attr('action'),
                     type    : 'POST',
                     contentType: false,
                     success:function( data ) {
-                        $('img.spinner.upload-image').hide();
+                        $('.spinner.upload-image').hide();
                           modal.html(data);
                           $('label[for="id_profile_image"]').text(ImageFileName);
                           reloadImages(imageClass, modal, aspectRatio);
                         },
                     error: function( data ){
-                          $('img.spinner.upload-image').hide();
+                          $('.spinner.upload-image').hide();
                           modal.find('.error').append('<p class="warning">Please select file first.</p>');
                         }
                     }
