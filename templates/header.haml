@@ -47,6 +47,8 @@
             .label-4.program-name<
               = program.display_name
             %h4.course-name
+              - if course.ended
+                %span= _("COURSE CLOSED")
               %a{href: "#{course.nav_url}"}= course.name
           .medium-6.columns.course_nav
             - include "courses/content_page/course_tabs.haml"

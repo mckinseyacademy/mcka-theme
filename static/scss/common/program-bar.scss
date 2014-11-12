@@ -9,6 +9,10 @@
   }
 
   .course-name {
+    span {
+      background: $mckinsey-orange;
+    }
+
     a {
       color: $pure-white;
       &:hover{
