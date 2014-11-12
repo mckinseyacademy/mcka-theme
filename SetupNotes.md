@@ -252,8 +252,6 @@ Create a file at `/etc/nginx/sites-available/mcka_apros`
             add_header "Access-Control-Allow-Origin" "http://mcka.local";
             add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
             if ($request_method = 'OPTIONS') {
-                add_header 'Content-Type' 'text/plain charset=UTF-8';
-                add_header 'Content-Length' 0;
                 return 204;
             }
         }
