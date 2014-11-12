@@ -28,7 +28,7 @@
     }
   }
 
-  .forum-new-post-form {
+  .forum-new-post-form, .thread-content-wrapper form.edit-post-form {
     min-width: 500px;
 
     .field-label {
@@ -40,6 +40,12 @@
       padding-left: 0;
       width: 100%;
     }
+  }
+
+  .discussion-response div.edit-post-form {
+    background: none;
+    padding: 0;
+    min-width: 400px;
   }
 
 /* Ask a TA */
