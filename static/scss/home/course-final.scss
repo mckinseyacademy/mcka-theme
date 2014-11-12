@@ -1,0 +1,10 @@
+#course-final-grade {
+  padding: 20px 0;
+  color: $mckinsey-dark-grey;
+  text-align: center;
+  @include font-spec(18, normal, 24);
+
+  .final-grade {
+    font-weight: 700;
+  }
+}

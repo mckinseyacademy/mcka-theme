@@ -14,7 +14,10 @@
         %hr
         - include "courses/content_page/course_menu.haml"
         %hr
-        - include "courses/content_page/course_discover.haml"
+        - if course.ended
+          - include "courses/content_page/course_final_grade.haml"
+        - else
+          - include "courses/content_page/course_discover.haml"
         %hr
         %article.course-quote
           %blockquote= quote.body
