@@ -19,6 +19,8 @@ from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
 from admin.models import ReviewAssignmentGroup
 
+from lib.util import PriorIdConvert
+
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
 
@@ -492,7 +494,7 @@ def inject_gradebook_info(user_id, course):
     for lesson in course.chapters:
         lesson.assesment_score = None
         for sequential in lesson.sequentials:
-            url_name = sequential.id.split('+')[-1]
+            url_name = PriorIdConvert.new_from_prior(sequential.id).split('/')[-1]
             if url_name in assesments:
                 lesson.assesment_score = assesments[url_name]
                 break
