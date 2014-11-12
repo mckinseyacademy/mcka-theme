@@ -42,7 +42,7 @@ Apros.views.CourseCohort = Backbone.View.extend({
       var users = model.users()
       cityJsonData.features.push(model.markerGeoJson());
 
-      if (TAUser.username && model.name() === TAUser.city) {
+      if (typeof TAUser !== 'undefined' && TAUser.username && model.name() === TAUser.city) {
         var user = model.userGeoJson(TAUser, users.length, true);
         userJsonData.features.push(user);
       }
