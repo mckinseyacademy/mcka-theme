@@ -208,4 +208,11 @@ $(function(){
     }
   });
 
+  // Placeholder fix
+  $(document).on('focus', '.placeholdersjs', function(){
+    $(this).addClass('focused_placeholder');
+  }).on('blur', '.placeholdersjs', function(){
+    $(this).removeClass('focused_placeholder');
+  });
+
 });
