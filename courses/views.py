@@ -122,6 +122,8 @@ def course_cohort(request, course_id):
     ta_user_json = json.dumps({})
     ta_user = choose_random_ta(course_id)
     if ta_user and hasattr(ta_user, 'to_json'):
+        if not ta_user.title:
+            ta_user.title = ''
         ta_user_json = ta_user.to_json()
     ta_user_id = ta_user.id if ta_user else None
 
@@ -140,6 +142,8 @@ def course_cohort(request, course_id):
             for student in workgroup.users:
                 user = user_dict[student.id]
                 if user.city and user.city != '' and ta_user_id != user.id:
+                    if not user.title:
+                        user.title = ''
                     metrics.groups_users.append(user.to_dict())
     metrics.groups_users = json.dumps(metrics.groups_users)
 
