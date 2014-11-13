@@ -7,6 +7,7 @@ import datetime
 import math
 import logging
 import string
+import re
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
@@ -71,6 +72,13 @@ def _validate_path(redirect_to):
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
+
+    # Redirect IE to home page, login not available
+    if request.META.has_key('HTTP_USER_AGENT'):
+        ua = request.META['HTTP_USER_AGENT'].lower()
+        if re.search('msie [1-8]\.', ua):
+            return HttpResponseRedirect('/')
+
     if request.method == 'POST':  # If the form has been submitted...
         form = LoginForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
