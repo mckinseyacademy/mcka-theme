@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 from lib.util import DottableDict
 from api_client.project_models import Project
 from api_client import course_api, user_api, group_api
+from api_client.organization_models import Organization
 
 from .controller import load_course
 from .controller import get_group_project_activities
@@ -96,13 +97,16 @@ class WorkgroupCompletionData(object):
                 review_assignments = [wg for ag in assignment_groups for wg in group_api.get_workgroups_in_group(ag.id)]
                 if u.id not in self.user_review_assignments:
                     self.user_review_assignments[u.id] = {}
-                self.user_review_assignments[u.id][group_xblock.id] = [self.project_workgroups[project.id][ra.id] for ra in review_assignments]
+                self.user_review_assignments[u.id][group_xblock.id] = [self.project_workgroups[project.id][ra.id] for ra in review_assignments if ra.id in self.project_workgroups[project.id]]
 
     def _load(self, course_id):
         completion_data = course_api.get_course_completions(course_id)
         self.completions = {WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage) : c for c in completion_data}
 
         for project in self.projects:
+            if project.organization:
+                organization = Organization.fetch(project.organization)
+                project.organization_name = organization.display_name
             self.project_workgroups[project.id] = {w_id:WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups}
             group_project = [ch for ch in self.course.group_project_chapters if ch.id == project.content_id][0]
             project.name = group_project.name
@@ -250,6 +254,9 @@ def generate_workgroup_csv_report(course_id, url_prefix):
     wcd = WorkgroupCompletionData(course_id)
 
     for project in wcd.build_report_data()["projects"]:
+        if project.organization:
+            organization = Organization.fetch(project.organization)
+            project.organization_name = organization.display_name
         output_line([project.name])
 
         activity_names_row = ["",""]

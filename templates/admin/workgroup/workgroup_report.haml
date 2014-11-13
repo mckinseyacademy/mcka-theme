@@ -30,6 +30,9 @@
             .sub-1
               = _("Project:")
               %span= project.name
+              - if project.organization_name
+                %span= _(' - ')
+                %span= project.organization_name
             .sub-2
               = _("Group Work Projects:")
               = project.group_count
