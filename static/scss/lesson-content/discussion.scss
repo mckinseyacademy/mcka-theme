@@ -342,7 +342,10 @@
         label[for="new-post-anonymous-to-peers"]::after {
             content:"Posting anonymously will not add engagement points.";
             color: $mckinsey-orange;
+            cursor: default;
             display: block;
+            font-size: 14px;
+            line-height: 18px;
         }
       }
     }
