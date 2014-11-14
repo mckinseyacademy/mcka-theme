@@ -40,6 +40,20 @@
 #course-discussion .discussion-content {
   background: #fff !important;
 
+  .field-input .post-type-label {
+      margin: 0px;
+  }
+
+  .thread-content-wrapper {
+    .forum-new-post-form, .edit-post-form {
+      min-width: 700px;
+    }
+  }
+
+  .discussion-response .edit-post-form {
+      min-width: 600px;
+  }
+
   .discussion-article {
     background-image: none;
 
