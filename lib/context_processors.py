@@ -13,7 +13,6 @@ def settings_data(request):
     if request.META.has_key('HTTP_USER_AGENT'):
         ua = request.META['HTTP_USER_AGENT'].lower()
         if re.search('msie ', ua):
-            request.is_IE = True
             ie_favicon_prefix = "{}://{}".format(
                 "https" if request.is_secure() else "http",
                 request.META['HTTP_HOST'],

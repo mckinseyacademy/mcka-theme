@@ -12,11 +12,8 @@
       %button#browse-company-image.button.tiny.radius{'type': 'button'} Browse
       %label{'for': 'id_company_image'} No file selected.
       = form
-      - if request.is_IE
-        %svg.spinner.upload-company.svg-ie-image{'style': "text-align:center;"}
-          %image{'xlink:href': "{% static 'image/loading-spin.gif' %}", 'src': "{% static 'image/loading-spin.gif' %}",  'width': "40", 'height': "40"}
-      - else
-        %img.spinner.upload-company{'src': "{% static 'image/loading-spin.svg' %}", 'alt': "Loading icon"}
+      %svg.spinner.upload-company.svg-ie-image{'style': "text-align:center;"}
+        %image{'xlink:href': "{% static 'image/loading-spin.gif' %}", 'src': "{% static 'image/loading-spin.gif' %}",  'width': "40", 'height': "40"}
     %br
     %br
     .error.warning
