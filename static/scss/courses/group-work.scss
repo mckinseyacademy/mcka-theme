@@ -189,6 +189,7 @@
   }
   .action_buttons .button{
     margin-left: 12px;
+    @include font-spec(14, 700, 18);
   }
   .xblock-reveal.reveal-modal.open{
     @media #{$large-up}{
