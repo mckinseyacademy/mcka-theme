@@ -23,6 +23,7 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
                     .color(['#66A5B5', '#B1C2CC'])
                     .useInteractiveGuideline(true)
                     .width(width).height(height)
+                    .showControls(false)
                     ;
 
       var weeksNumber = dataJson[0].values.length;
