@@ -32,7 +32,7 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
           .tickValues(Array.apply(null, {length: dataJson[0].values.length}).map(Number.call, Number))
           .tickFormat(function(d) {
               if(daysNumber > 7 && d%7 == 0){
-                return (Math.ceil(d / 7) + 1);
+                return (Math.floor(d / 7) + 1);
               }
               else if (daysNumber <= 7){
                 return d;
@@ -48,7 +48,8 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
 
       d3.select(_this.el)
           .selectAll('.nv-x .nv-axisMaxMin:last-child>text')
-          .text(function(){return daysNumber > 7 ? 'weeks': 'days';});
+          .text(function(){return daysNumber > 7 ? 'weeks': 'days';})
+          .attr('x', 20);
 
       return chart;
     });
