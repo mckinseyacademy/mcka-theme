@@ -3,7 +3,7 @@ $(function(){
   var imageClass = ".company-uploaded-image";
   var imageEditor = $.imageEditor();
   var modal = $('#edit-company-image-modal');
-  var aspectRatio = 1.778;
+  var aspectRatio = 3.5;
 
   $(document).on('opened.fndtn.reveal', '#edit-company-image-modal', function () {
     $(this).find('img').error(function() {
