@@ -23,7 +23,7 @@
         = course.completed
       %td
       %td.course-progress-link
-        %a{'href': '#',}
+        %a{'href': '/courses/#{course.id}/progress/#{student.id}',}
           = _("View progress page")
       %td
 -else
