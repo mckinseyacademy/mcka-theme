@@ -291,10 +291,10 @@ MAPBOX_API = {
 
 # image sizes to generate from the originally uploaded file
 PROFILE_GENERATE_IMAGE_SIZES = [[48, 48], [160, 160]]
-COMPANY_GENERATE_IMAGE_SIZES = [[80, 45], [160, 90]]
+COMPANY_GENERATE_IMAGE_SIZES = [[140, 40], [175, 50]]
 # remove any of these sizes while regenerating the changed images
 PROFILE_REMOVE_IMAGE_SIZES = [40, 120]
-COMPANY_REMOVE_IMAGE_SIZES = [40, 120]
+COMPANY_REMOVE_IMAGE_SIZES = [40, 120, 80, 160]
 
 TEMP_IMAGE_FOLDER = "profile_temp_images/"
 
