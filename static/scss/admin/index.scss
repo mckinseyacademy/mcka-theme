@@ -72,12 +72,6 @@
     vertical-align: top;
   }
 
-  input[type=submit]{
-    &[disabled]{
-      cursor: not-allowed;
-    }
-  }
-
   #upload_error_list{
     li{
       @include font-spec(12);
