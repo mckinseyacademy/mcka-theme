@@ -215,7 +215,7 @@ def client_admin_course(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
-
+    course = load_course(course_id)
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
     total_participants = len(participants)
     if total_participants > 0:
@@ -234,6 +234,7 @@ def client_admin_course_participants(request, client_id, course_id):
     data = {
         'client_id': client_id,
         'course_id': course_id,
+        'course': course,
         'total_participants': total_participants,
         'students': students
     }
