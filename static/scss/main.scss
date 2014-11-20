@@ -493,3 +493,8 @@ div.xblock-student_view {
 
   i.fa { color: $mckinsey-academy-bright-gray; }
 }
+
+/* Placeholders fix for IE */
+.placeholdersjs.focused_placeholder{
+  color: $mckinsey-academy-black;
+}
