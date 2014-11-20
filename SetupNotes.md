@@ -33,9 +33,9 @@ Follow the directions on the [Solutions wiki][solutions-wiki] to set up an *edx-
 * Add the following lines to host system `/etc/hosts`. This will allow your host machine to know where the domain names 
 should point to. It will also work for the guest instance, since the guest instance trusts the host's name lookups.
         
-        127.0.0.1 	mcka.local
-        127.0.0.1 	lms.mcka.local
-        127.0.0.1 	cms.mcka.local
+        127.0.0.1   mcka.local
+        127.0.0.1   lms.mcka.local
+        127.0.0.1   cms.mcka.local
 
 ### Create a user to run Apros under
 
@@ -328,3 +328,94 @@ Deployments of Apros that are publicly accessible should differ in several respe
 2. A proper WSGI application server should serve Apros and the LMS, such as Gunicorn or uwsgi. See the edx-platform 
    documentation for information of deploying edx-platform for production.
 3. You will need to generate and set API keys for use between the server and Apros, and turn off the DEBUG flag.
+
+
+## Appendix C: Production-like assets management
+
+Static assets (js, css, images, etc.) are served in quite different ways in development and production:
+
+* Development serves assets from where they are, thus allowing for quicker modify-reload-check cycle.
+* Production uses pipelines ([django-pipeline][dj-pipeline]) to concatenate js and css files into larger bundles
+to improve page load time. To further reduce application server load, static files are served by nginx.
+
+So, to achieve prodution-like assets management in development, the following steps need to be performed:
+
+* Enable pipelines: pipelines are governed by two settings: `PIPELINES` and `FEATURES['USE_DJANGO_PIPELINE']`.
+  Both need to be set to true. While it's possible to set `FEATURES['USE_DJANGO_PIPELINE']` via `[cl]ms.env.json`,
+  `PIPELINES` can only be set in configuration file (e.g. `[cl]ms/envs/devstack.py`). **Please make sure you don't
+  accidentally commit it.**
+* Set up nginx proxying. The cleaniest way would be to copy `/etc/nginx/sites-available/mcka_apros` (e.g. `mcka_apros_prod`) 
+  and modify it's contents, than toggle between `mcka_apros` and `mcka_apros_prod`. [Nginx ensite][nginx_ensite] script 
+  comes in very handy for toggling them.
+
+`mcka_apros_prod` should contain the following rules added to corresponding `location` sections.
+
+For `server_name mcka.local` location:
+
+    location ~ /static/(?P<file>.*) {
+        root /edx/app/apros/mcka_apros;      # this should point to apros root folder, containing manage.py
+        try_files /static_cache/$file /static/$file @proxy_to_lms_nginx;
+    }
+    
+    location @proxy_to_lms_nginx {
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+        proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+        proxy_set_header Host $host;
+
+        proxy_redirect off;
+        proxy_pass http://localhost:8000;    # this should be address of lms, as seen from inside the virtual box
+    }
+
+For `server_name lms.mcka.local` location:
+
+    location ~ ^/static/(?P<file>.*) {
+        root /edx/var/edxapp/;               # this should point to where lms collectstatic puts static files
+        try_files /staticfiles/$file /course_static/$file =404;
+
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+        add_header "Access-Control-Allow-Credentials" "true";
+        add_header "Access-Control-Allow-Origin" "http://mcka.local";
+        add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+
+        # return a 403 for static files that shouldn't be
+        # in the staticfiles directory
+        location ~ ^/static/(?:.*)(?:\.xml|\.json|README.TXT) {
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+            add_header "Access-Control-Allow-Credentials" "true";
+            add_header "Access-Control-Allow-Origin" "http://mcka.local";
+            add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+            return 403;
+        }
+
+        # http://www.red-team-design.com/firefox-doesnt-allow-cross-domain-fonts-by-default
+        location ~ "/static/(?P<collected>.*\.[0-9a-f]{12}\.(eot|otf|ttf|woff))" {
+            expires max;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+            add_header "Access-Control-Allow-Credentials" "true";
+            add_header "Access-Control-Allow-Origin" "http://mcka.local";
+            add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+            try_files /staticfiles/$collected /course_static/$collected =404;
+        }
+
+        # Set django-pipelined files to maximum cache time
+        location ~ "/static/(?P<collected>.*\.[0-9a-f]{12}\..*)" {
+            expires max;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+            add_header "Access-Control-Allow-Credentials" "true";
+            add_header "Access-Control-Allow-Origin" "http://mcka.local";
+            add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+
+            # Without this try_files, files that have been run through
+            # django-pipeline return 404s
+            try_files /staticfiles/$collected /course_static/$collected =404;
+        }
+
+        # Expire other static files immediately (there should be very few / none of these)
+        expires epoch;
+    }
+
+Cors headers `add_header` blocks are identical and must be duplicated in all nested locations, as it appears that `add_header` directives are not inherited. 
+
+[dj-pipeline]: http://django-pipeline.readthedocs.org/en/latest/
+[nginx_ensite]: https://github.com/perusio/nginx_ensite
