@@ -102,6 +102,7 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
         d3.select(_this.el)
           .selectAll('.nv-x .nv-axisMaxMin:last-child>text')
           .text('weeks')
+          .attr('x', 20)
 
         d3.select(_this.el)
           .append("text")
