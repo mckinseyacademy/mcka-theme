@@ -206,6 +206,7 @@ You should find the **FEATURES** section already exists, and you will want to ad
         "STUDENT_GRADEBOOK": true,
         "STUDENT_PROGRESS": true,
         "ORGANIZATIONS_APP": true,
+        "PROJECTS_APP": true,
         
 Finally, run:
 
