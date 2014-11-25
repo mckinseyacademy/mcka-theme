@@ -59,7 +59,7 @@ $(function(){
     }
   });
 
-  $(document).on('close', '[data-reveal]', function () {
+  $(document).on('close.fndtn.reveal', '[data-reveal]', function () {
     var modal   = $(this),
         ooyala  = modal.data('ooyala');
     if (ooyala) {
@@ -194,8 +194,14 @@ $(function(){
   });
 
   if ($.urlParam('modal')) {
-    var modalId = $.urlParam('modal');
-    $('#' + modalId).foundation('reveal', 'open');
+    var modalId = $.urlParam('modal'),
+        anchor = $('[data-reveal-id=' + modalId + ']'),
+        modal = $('#' + modalId);
+    if (anchor.length) {
+      anchor.click()
+    } else {
+      modal.foundation('reveal', 'open');
+    }
   }
 
   $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
