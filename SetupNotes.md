@@ -345,6 +345,10 @@ So, to achieve prodution-like assets management in development, the following st
   Both need to be set to true. While it's possible to set `FEATURES['USE_DJANGO_PIPELINE']` via `[cl]ms.env.json`,
   `PIPELINES` can only be set in configuration file (e.g. `[cl]ms/envs/devstack.py`). **Please make sure you don't
   accidentally commit it.**
+* Set `DEBUG` setting to `False` - there are some mechanisms in XBlock runtime system that rewrite urls starting with `/static/`
+  to be served from course modulestore. There's a shortcut through that mechanism enabled by `DEBUG=True`,
+  so URLs that exist in filesystem are served from filesystem yielding significantly different URLs. This setting can be
+  set in `[cl]ms/envs/devstack.py` as well. Again, **please make sure you don't accidentally commit it.**
 * Set up nginx proxying. The cleaniest way would be to copy `/etc/nginx/sites-available/mcka_apros` (e.g. `mcka_apros_prod`) 
   and modify it's contents, than toggle between `mcka_apros` and `mcka_apros_prod`. [Nginx ensite][nginx_ensite] script 
   comes in very handy for toggling them.
