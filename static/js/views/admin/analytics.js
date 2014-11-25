@@ -31,6 +31,7 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
       chart.xAxis
           .tickValues(Array.apply(null, {length: dataJson[0].values.length}).map(Number.call, Number))
           .tickFormat(function(d) {
+            //  return (Math.floor(d) + 1);
               if(daysNumber > 7 && d%7 == 0){
                 return (Math.floor(d / 7) + 1);
               }
@@ -77,6 +78,8 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
     var dataJson = $.map(_this.model.attributes, function(value, index) {
                     return [value];
                 });
+    // Add emptu first entry in dataJson (bug in nv.d3 requires it)
+    dataJson[0].values.unshift([0,0]);
 
     nv.addGraph(function() {
         var chart = nv.models.linePlusBarChart()

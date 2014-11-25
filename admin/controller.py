@@ -500,7 +500,7 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
             day += 1
         else:
             week += 1
-            day = 1
+            day = 2
 
     return metricsJson
 
