@@ -142,7 +142,7 @@
           %p We're sorry, McKinsey Academy is not compatible with your browser. Please update your browser to access course content. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
 
     - if request.user.is_authenticated
-      #intro_modal.reveal-modal.small{'data-reveal': None}
+      #intro_modal.reveal-modal.small{'data-reveal': None, 'data-options': "close_on_esc: false;"}
         .close-reveal-modal
           %i.fa.fa-times-circle
         %h1 Welcome to McKinsey Academy
