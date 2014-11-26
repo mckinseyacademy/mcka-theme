@@ -48,34 +48,39 @@
     min-width: 400px;
   }
 
-/* Ask a TA */
-  .ask-ta {
+  .discussion-body {
+    /* ask-ta is absolutely positioned so it calculates position and size against first absolute or relative positioned parent */
+    position: relative;
 
-    height: 80px;
-    padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid #aaa;
-    border-bottom: none;
-    position: absolute;
-    top: -78px;
-    width: 31%;
+    /* Ask a TA */
+    .ask-ta {
 
-    .group-member {
-      padding-bottom: 10px;
-      height: 50px;
+      height: 80px;
+      padding: 10px;
+      background-color: #ffffff;
+      border: 1px solid #aaa;
+      border-bottom: none;
+      position: absolute;
+      top: -78px;
+      width: 31%;
 
-      .avatar {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        float: left;
+      .group-member {
+        padding-bottom: 10px;
+        height: 50px;
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
+          float: left;
+        }
+
+        .person-info {
+          margin-left: 50px;
+        }
       }
 
-      .person-info {
-        margin-left: 50px;
-      }
     }
-
   }
 
   /* Sidebar */
