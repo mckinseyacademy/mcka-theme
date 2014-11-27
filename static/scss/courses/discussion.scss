@@ -1,10 +1,11 @@
 /* See ../lesson-content/discussion.scss for rules shared with lession discussion */
-
-#course-discussion .discussion-content {
-  .discussion-course-new {
+#course-discussion {
+  .discussion-course {
     margin-top: 10px;
   }
+}
 
+#course-discussion .discussion-content {
   .new-post-article {
     padding-bottom: 50px;
   }
@@ -28,7 +29,7 @@
     }
   }
 
-  .forum-new-post-form, .thread-content-wrapper form.edit-post-form {
+  .new-post-article form.forum-new-post-form, .thread-content-wrapper form.edit-post-form {
     min-width: 500px;
 
     .field-label {
@@ -42,10 +43,12 @@
     }
   }
 
-  .discussion-response div.edit-post-form {
-    background: none;
-    padding: 0;
-    min-width: 400px;
+  .discussion-response, .comments {
+    div.edit-post-form {
+      background: none;
+      padding: 0;
+      min-width: 400px;
+    }
   }
 
   .discussion-body {
@@ -158,6 +161,16 @@
       .votes-count {
         background-color: #D4D4D4;
       }
+    }
+  }
+
+  .comments {
+    .response-body {
+      width: 80%;
+    }
+
+    .comment-actions-list {
+      width: 19%;
     }
   }
 
