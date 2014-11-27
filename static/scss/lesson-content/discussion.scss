@@ -44,14 +44,18 @@
       margin: 0px;
   }
 
-  .thread-content-wrapper {
+  .thread-content-wrapper, .new-post-article {
     .forum-new-post-form, .edit-post-form {
       min-width: 700px;
     }
   }
 
-  .discussion-response .edit-post-form {
+  .discussion-response, .comments {
+    .edit-post-form {
       min-width: 600px;
+      background: none;
+      padding: 0;
+    }
   }
 
   .discussion-article {
