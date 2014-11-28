@@ -26,17 +26,16 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
                     .showControls(false)
                     ;
 
-      var weeksNumber = dataJson[0].values.length;
-      var weekslabelsNum = parseInt(weeksNumber / 6) > 1 ? parseInt(weeksNumber / 6) : 1;
+      var daysNumber = dataJson[0].values.length;
 
       chart.xAxis
           .tickValues(Array.apply(null, {length: dataJson[0].values.length}).map(Number.call, Number))
           .tickFormat(function(d) {
-              if((d%weekslabelsNum) == 0  && d != 0 && weekslabelsNum != 1){
-                return Math.ceil(d / 7) + ' week';
+              if(daysNumber > 7 && d%7 == 0){
+                return (Math.floor(d / 7) + 1);
               }
-              else if(weekslabelsNum == 1){
-                return d + ' day';
+              else if (daysNumber <= 7){
+                return d;
               }
             });
 
@@ -46,6 +45,11 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
       d3.select(_this.el)
           .datum(dataJson)
           .transition().duration(500).call(chart).style({ 'width': width, 'height': height });
+
+      d3.select(_this.el)
+          .selectAll('.nv-x .nv-axisMaxMin:last-child>text')
+          .text(function(){return daysNumber > 7 ? 'weeks': 'days';})
+          .attr('x', 20);
 
       return chart;
     });
@@ -73,6 +77,8 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
     var dataJson = $.map(_this.model.attributes, function(value, index) {
                     return [value];
                 });
+    // Add empty first entry in dataJson (bug in nv.d3 requires it)
+    dataJson[0].values.unshift([0,0]);
 
     nv.addGraph(function() {
         var chart = nv.models.linePlusBarChart()

@@ -491,16 +491,11 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
         metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date)
     metricsJson = [[0,0]]
     day = 1
-    week = 0
     mod_completed = 0
     for i, metric in enumerate(metrics.modules_completed):
         mod_completed += metrics.modules_completed[i][1]
-        metricsJson.append([(day + week * 7), round((float(mod_completed) / total * 100), 2)])
-        if day > 0 and day < 8:
-            day += 1
-        else:
-            week += 1
-            day = 1
+        metricsJson.append([day, round((float(mod_completed) / total * 100), 2)])
+        day += 1
 
     return metricsJson
 
