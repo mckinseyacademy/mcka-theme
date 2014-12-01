@@ -1340,19 +1340,38 @@ def add_students_to_program(request, client_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_course(request, client_id):
+
+    def enroll_user_in_course(user_id, course_id):
+        try:
+            user_api.enroll_user_in_course(user_id, course_id)
+        except ApiError as e:
+            # Ignore 409 errors, because they indicate a user already added
+            if e.code != 409:
+                raise
+
     courses = request.POST.getlist("courses[]")
-    students = request.POST.getlist("students[]")
-    for student_id in students:
-        for course_id in courses:
-            try:
-                user_api.enroll_user_in_course(student_id, course_id)
-            except ApiError as e:
-                # Ignore 409 errors, because they indicate a user already added
-                if e.code != 409:
-                    raise
+    students = [int(u_id) for u_id in request.POST.getlist("students[]")]
+    exception_messages = []
+    for course_id in courses:
+        enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u.id in students}
+        for student_id in students:
+            if student_id in enrolled_users:
+                exception_messages.append(_("{} already enrolled in {}").format(
+                    enrolled_users[student_id],
+                    course_id
+                ))
+            else:
+                enroll_user_in_course(student_id, course_id)
+
+    message = _("Successfully associated students to courses")
+    if len(exception_messages) > 0:
+        message = _("Successfully associated students to courses, with {} messages:\n\t{}").format(
+            len(exception_messages),
+            "\n\t".join(exception_messages),
+        )
 
     return HttpResponse(
-        json.dumps({"message": _("Successfully associated students to courses")}),
+        json.dumps({"message": message}),
         content_type='application/json'
     )
 
