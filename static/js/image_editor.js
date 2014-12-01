@@ -1,6 +1,7 @@
 $.imageEditor = function(){
 
   var ImageFileName = "No file Selected";
+  var aspectRatio = 1;
 
   function reInitCropper(imageClass, modal){
     var $image = modal.find(".img-container").find(imageClass),
@@ -12,7 +13,7 @@ $.imageEditor = function(){
     $dataWidth = modal.find(".width-position"),
     $profileImageUrl = modal.find(".upload-image-url");
     $image.cropper({
-        aspectRatio: 1,
+        aspectRatio: aspectRatio,
         done: function(data) {
                 $dataX1.val(data.x1);
                 $dataY1.val(data.y1);
@@ -25,9 +26,12 @@ $.imageEditor = function(){
     });
   }
 
-  function reloadImages(imageClass, modal){
+  function reloadImages(imageClass, modal, AR){
     var d = new Date();
     var now = d.getTime();
+    if (typeof AR != 'undefined'){
+      aspectRatio = AR;
+    }
     modal.find(".img-container").find(imageClass).load(function(){
       if($(this).attr('src').indexOf('/empty_avatar.png') == -1){
         $('.crop-save-image').attr('disabled', false);
@@ -63,21 +67,22 @@ $.imageEditor = function(){
       var form = that.parents('form').first();
       modal.find('.error').html('');
       var validate = FileTypeValidate(that.val(), modal.find('.error'));
-      ImageFileName = that.val().length > 25 ? (that.val().substr(0,25) + '...') : that.val();
+      ImageFileName = that.val().replace(/^.*\\/, "").length > 25 ? (that.val().replace(/^.*\\/, "").substr(0,25) + '...') : that.val().replace(/^.*\\/, "");
       if(validate){
-        $('img.spinner.upload-image').show();
+        $('.spinner.upload-image').show();
+        $('label[for="id_profile_image"]').text(ImageFileName);
         var options = {
                     url     : form.attr('action'),
                     type    : 'POST',
                     contentType: false,
                     success:function( data ) {
-                        $('img.spinner.upload-image').hide();
+                        $('.spinner.upload-image').hide();
                           modal.html(data);
                           $('label[for="id_profile_image"]').text(ImageFileName);
-                          reloadImages(imageClass, modal);
+                          reloadImages(imageClass, modal, aspectRatio);
                         },
                     error: function( data ){
-                          $('img.spinner.upload-image').hide();
+                          $('.spinner.upload-image').hide();
                           modal.find('.error').append('<p class="warning">Please select file first.</p>');
                         }
                     }

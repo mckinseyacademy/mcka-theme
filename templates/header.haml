@@ -25,7 +25,7 @@
                 %a{href: '/admin/client-admin'}= _("Client Admin")
       - block user_region
         - if request.user.is_authenticated
-          %a.user-info{href: "#", data-dropdown: "profile-container"}
+          %a.user-info{data-dropdown: "profile-container"}
             .user-name= user.username
             %i.fa.fa-sort-asc
             .user-image
@@ -47,6 +47,8 @@
             .label-4.program-name<
               = program.display_name
             %h4.course-name
+              - if course.ended
+                %span= _("COURSE CLOSED")
               %a{href: "#{course.nav_url}"}= course.name
           .medium-6.columns.course_nav
             - include "courses/content_page/course_tabs.haml"

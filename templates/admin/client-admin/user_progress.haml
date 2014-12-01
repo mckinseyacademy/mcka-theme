@@ -9,7 +9,7 @@
     %td
     %td
     %td
-    %td.empty-cell
+    %td
   -for course in courses
     %tr.course-stats.student-progress-list{name: "#{student.id}"}
       %td.empty-cell
@@ -23,9 +23,9 @@
         = course.completed
       %td
       %td.course-progress-link
-        %a{'href': '#',}
+        %a{'href': '/courses/#{course.id}/progress/#{student.id}',}
           = _("View progress page")
-      %td.empty-cell
+      %td
 -else
   %tr.course-stats.student-progress-list{name: "#{student.id}"}
     %td.empty-cell
@@ -36,4 +36,5 @@
     %td
     %td
     %td
-    %td.empty-cell
+    %td
+    %td

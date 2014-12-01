@@ -1,7 +1,7 @@
 - extends "admin/admin_layout.haml"
 
 - block content
-  .row{style: "margin-top:80px;"}
+  .row
     %p This is the course meta content list page.
     %p
     %table
@@ -12,12 +12,12 @@
         %td TYPE
         %td
         %td
-    
+
       - for item in items
         %tr
-          %td 
+          %td
             = item.id
-          %td 
+          %td
             = item.sequence
           %td
             = item.title
@@ -29,5 +29,5 @@
           %td
             %a{href: '/admin/course-meta-content/item/#{item.id}/delete'}
               Delete
-    %p 
+    %p
       %a{href: '/admin/course-meta-content/item/new?course_id=#{course_id}'} Create New Item

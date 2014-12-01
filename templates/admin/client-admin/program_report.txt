@@ -1,0 +1,6 @@
+Client Name, , Program ID,
+{{client_name}}, , {{program_id}}
+-,-,-,-,-,-
+Courses, Participants, Started, Completed, Completed (%), Avg. Grade
+{% for course in courses %}{{course.name}}, {{course.metrics.users_enrolled}}, {{course.metrics.users_started}}, {{course.metrics.users_grade_complete_count}}, {{course.metrics.percent_completed | floatformat:0}}%, {{course.metrics.users_grade_average | floatformat:0}}
+{% endfor %},,, Total:, {{total_pct_completed | floatformat:0}}%, {{total_avg_grade | floatformat:0}}

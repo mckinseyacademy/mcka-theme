@@ -456,35 +456,6 @@ def generate_course_report(client_id, course_id, url_prefix, students):
     return '\n'.join(output_lines)
 
 
-def generate_program_report(client_name, program_id, url_prefix, courses, total_avg_grade, total_pet_completed):
-
-    output_lines = []
-
-    def output_line(line_data_array):
-        output_lines.append(','.join(line_data_array))
-
-    activity_names_row = ["Client Name","","Program ID",""]
-    output_line(activity_names_row)
-
-    group_header_row = [client_name,"", str(program_id)]
-    output_line(group_header_row)
-
-    output_line("--------")
-
-    activity_names_row = ["Courses","Participants","Started","Completed","Completed (%)", "Avg. Grade"]
-    output_line(activity_names_row)
-
-    for course in courses:
-        course_row = [course.name,str(course.metrics.users_enrolled),str(course.metrics.users_started),str(course.metrics.users_grade_complete_count),str(course.metrics.percent_completed)+"%",str(course.metrics.users_grade_average)]
-        output_line(course_row)
-
-    total_row = ["","","","Total:",str(total_avg_grade),str(total_pet_completed)]
-
-    output_line(total_row)
-
-    return '\n'.join(output_lines)
-
-
 def get_organizations_users_completion(client_id, course_id, users_enrolled):
     users_completed = organization_api.get_grade_complete_count(client_id, courses=course_id).users_grade_complete_count
     percent_completed = '0%'
@@ -500,7 +471,7 @@ def get_course_metrics_for_organization(course_id, client_id):
     metrics.users_grade_average = org_metrics.users_grade_average
     metrics.percent_completed = 0
     if metrics.users_enrolled:
-        metrics.percent_completed = int(int(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
+        metrics.percent_completed = int(float(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
     return metrics
 
 def get_course_analytics_progress_data(course, course_modules, client_id=None):
@@ -514,18 +485,76 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
     if course.end is not None:
         if end_date > course.end:
             end_date = course.end
-    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, organization_id=client_id)
-    metricsJson = []
+    if client_id:
+        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, organization=client_id)
+    else:
+        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date)
+    metricsJson = [[0,0]]
     day = 1
-    week = 0
     mod_completed = 0
     for i, metric in enumerate(metrics.modules_completed):
-        mod_completed = metrics.modules_completed[i][1]
-        metricsJson.append([(day + week * 7), round((float(mod_completed) / total * 100), 2)])
-        if day > 0 and day < 8:
-            day += 1
-        else:
-            week += 1
-            day = 1
+        mod_completed += metrics.modules_completed[i][1]
+        metricsJson.append([day, round((float(mod_completed) / total * 100), 2)])
+        day += 1
 
     return metricsJson
+
+def get_contacts_for_client(client_id):
+    groups = Client.fetch_contact_groups(client_id)
+
+    contacts = []
+    fields = ['phone', 'full_name', 'title', 'avatar_url']
+
+    for group in groups:
+        if group.type == "contact_group":
+            users = group_api.get_users_in_group(group.id)
+            if len(users) > 0:
+                user_ids = [str(user.id) for user in users]
+                contacts.extend(user_api.get_users(fields=fields, ids=(',').join(user_ids)))
+
+    return contacts
+
+def get_admin_users(organizations, org_id, ADMINISTRATIVE):
+
+    users = []
+    additional_fields = ["organizations"]
+
+    if org_id == ADMINISTRATIVE:
+        # fetch users users that have no company association
+        users = user_api.get_users(has_organizations=False, fields=additional_fields)
+
+        # fetch users in administrative company
+        admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
+        admin_users = []
+        if admin_company and admin_company.users:
+            ids = [str(id) for id in admin_company.users]
+            admin_users = user_api.get_users(ids=ids,fields=additional_fields)
+
+        users.extend(admin_users)
+
+    else:
+        org = next((org for org in organizations if org.id == org_id), None)
+        if org:
+            ids = [str(id) for id in org.users]
+            users = user_api.get_users(ids=ids, fields=additional_fields)
+
+    return users
+
+def get_program_data_for_report(client_id, program_id=None):
+    programs = Client.fetch(client_id).fetch_programs()
+    program = next((p for p in programs if p.id == program_id), programs[0])
+    program_courses = program.fetch_courses()
+    course_ids = list(set([pc.course_id for pc in program_courses]))
+    courses = course_api.get_courses(course_id=course_ids)
+
+    for course in courses:
+        course.metrics = get_course_metrics_for_organization(course.id, client_id)
+
+    total_avg_grade = 0
+    total_pct_completed = 0
+    if courses:
+        count = float(len(courses))
+        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
+        total_pct_completed = sum([c.metrics.percent_completed for c in courses]) / count
+
+    return program, courses, total_avg_grade, total_pct_completed

@@ -34,12 +34,11 @@
         done(function() {
           if ($('#discussion-ta-template').length > 0) {
             $('.discussion-body').prepend($("#discussion-ta-template").html());
-            $('.discussion-body').css('margin-top', '40px');
           }
       });
     })
-  - if mcka_ta
-    %script{:id => "discussion-ta-template", :type => "text/template"}
+  - if mcka_ta and not course.ended
+    %script#discussion-ta-template{type: "text/template"}
       .ask-ta
         .group-member
           %img.avatar{:src => "#{mcka_ta.image_url}" }
@@ -49,5 +48,5 @@
               - if mcka_ta.title
                 .person-title= mcka_ta.title
               .email
-                %a.email-member{:data-member-email => '', :href => '#', :data-reveal-id => 'contact-ta'}
+                %a.email-member{'data-member-email': '', 'data-reveal-id': 'contact-ta'}
                   Email

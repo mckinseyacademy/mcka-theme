@@ -59,14 +59,17 @@ def save_new_client_image(old_image_url, new_image_url, client):
 
         io_new_client_image(old_image_url, new_image_url)
 
-        for generate_size in settings.GENERATE_IMAGE_SIZES:
-            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size)
-            new_gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size)
+        for generate_size in settings.COMPANY_GENERATE_IMAGE_SIZES:
+            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size[0])
+            new_gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size[0])
             io_new_client_image(old_gen_image_url, new_gen_image_url)
-
-        client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url)})
+        client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url_name)})
 
 def io_new_client_image(old_gen_image_url, new_gen_image_url):
+
+    import StringIO
+    from PIL import Image
+    from django.core.files.storage import default_storage
 
     thumb_io = StringIO.StringIO()
     original = Image.open(default_storage.open(old_gen_image_url))

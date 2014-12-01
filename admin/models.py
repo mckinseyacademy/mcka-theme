@@ -38,6 +38,9 @@ class Program(BaseGroupModel):
     def add_course(self, course_id):
         return group_api.add_course_to_group(course_id, self.id)
 
+    def remove_course(self, course_id):
+        return group_api.remove_course_from_group(course_id, self.id)
+
     def fetch_courses(self):
         return group_api.get_courses_in_group(self.id)
 
@@ -72,9 +75,16 @@ class ReviewAssignmentGroup(BaseGroupModel):
     def add_user(self, user_id):
         return group_api.add_user_to_group(user_id, self.id)
 
+    def remove_user(self, user_id):
+        return group_api.remove_user_from_group(user_id, self.id)
+
     @classmethod
     def list_for_workgroup(cls, workgroup_id):
         return [cls.fetch(rag.id) for rag in workgroup_api.get_workgroup_groups(workgroup_id)]
+
+class ContactGroup(BaseGroupModel):
+
+    group_type = "contact_group"
 
 
 class Client(organization_models.Organization):

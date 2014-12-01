@@ -4,11 +4,13 @@ Apros.models.City = Backbone.Model.extend({
   latLng: function() { return this.get('geometry').coordinates; },
 
   size: function() {
-    var name = this.name();
+    var name  = this.name().toLowerCase(),
+        total = 0;
     var found = _(CohortMapCities).find(function(city){
-      return city.city === name;
+      return city.city.toLowerCase() === name;
     });
-    return found.count;
+    if (found) total = found.count;
+    return total;
   },
 
   users: function() {

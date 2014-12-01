@@ -115,6 +115,13 @@ class Course(CategorisedJsonObject):
                 self.end.strftime(settings.DATE_DISPLAY_FORMAT)
             )
         return None
+
+    @property
+    def short_end_date(self):
+        if hasattr(self, 'end') and not self.end is None:
+            return self.end.strftime(settings.SHORT_DATE_FORMAT)
+        return None
+
     @property
     def formatted_time_span(self):
         start = end = ''

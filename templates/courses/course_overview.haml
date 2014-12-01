@@ -28,9 +28,9 @@
         .video-preview
           #mk_overview_player.thumb
             - if overview.video
-              #mk-player{'data-video-id': "#{overview.video}"}
-            - else
-              %img{src: 'https://s3-us-west-2.amazonaws.com/mckinseyacademy/assets/OverviewTempImage.png'}
+              #mk-player{'data-video-id': "#{overview.course_video}"}
+            - elif overview.course_image_url
+              %img{src: '#{overview.course_image_url}'}
           .video-overview.hidden
             %i.fa.fa-play-circle
             %span Course Overview

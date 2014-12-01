@@ -64,7 +64,7 @@ function enable_selection(selections, activator){
 
     var data = {};
     for (var i = 0; i < selections.length; ++i){
-      var min_count = selections[i].minimum_count ? selections[i].minimum_count : 1;
+      var min_count = typeof selections[i].minimum_count != 'undefined' ? selections[i].minimum_count : 1;
       if(selections[i].use_value){
         data[selections[i].submit_name] = $(selections[i].selector).val();
       }

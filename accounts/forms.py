@@ -327,8 +327,8 @@ class ActivationForm(NoSuffixLabelForm):
     #first_name = forms.CharField(max_length=255)
     #last_name = forms.CharField(max_length=255)
 
-    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('E-mail'))
-    password = forms.CharField(widget=forms.PasswordInput(), 
+    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
+    password = forms.CharField(widget=forms.PasswordInput(),
         label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
     #confirm_password = forms.CharField(widget=forms.PasswordInput())
     username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
@@ -461,5 +461,5 @@ class EditFullNameForm(forms.Form):
 
 class EditTitleForm(forms.Form):
     ''' edit user title '''
-    title = forms.CharField(max_length=255, label='')
+    title = forms.CharField(max_length=255, label='', required=False)
 

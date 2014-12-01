@@ -3,12 +3,13 @@ $(function(){
   var imageClass = ".user-uploaded-image";
   var imageEditor = $.imageEditor();
   var modal = $('#edit-user-image-modal');
+  var aspectRatio = 1;
 
   $(document).on('opened.fndtn.reveal', '#edit-user-image-modal', function () {
     $(this).find('img').error(function() {
       $(this).hide();
     });
-    imageEditor.reloadImages(imageClass, modal);
+    imageEditor.reloadImages(imageClass, modal, aspectRatio);
   });
 
   $(document).on('closed.fndtn.reveal', '#edit-user-image-modal', function () {

@@ -1,3 +1,5 @@
+import copy
+
 from api_client import user_api, group_api, course_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
@@ -8,7 +10,9 @@ from django.conf import settings
 class PermissionSaveError(Exception):
     pass
 
+
 class Permissions(object):
+
     ''' Handles loading and saving user permissions and roles '''
 
     permission_for_role = {
@@ -22,6 +26,22 @@ class Permissions(object):
         self.courses = course_api.get_course_list()
         self.user_roles = user_api.get_user_roles(user_id)
         self.user_id = user_id
+
+    def add_course_role(self, course_id, role):
+        per_course_roles = [{"course_id": p.course_id, "role": p.role}
+                            for p in self.user_roles if p.course_id != course_id and p.role != role]
+        per_course_roles.append({
+            "course_id": course_id,
+            "role": role,
+        })
+        self.save(copy.copy(self.current_permissions), per_course_roles)
+
+    def remove_course_role(self, course_id, role):
+        per_course_roles = [{"course_id": p.course_id, "role": p.role}
+                            for p in self.user_roles if p.course_id != course_id and p.role != role]
+        role_permission = self.permission_for_role.get(course_role['role'], None)
+        new_permissions = [perm for perm in self.current_permissions if perm != role_permission]
+        self.save(new_permissions, per_course_roles)
 
     def save(self, new_permissions, per_course_roles):
         try:
@@ -66,4 +86,3 @@ class Permissions(object):
         group_id = self.get_group_id(permission_name)
         if group_id:
             group_api.remove_user_from_group(self.user_id, group_id)
-

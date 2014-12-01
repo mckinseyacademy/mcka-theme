@@ -21,10 +21,11 @@
     %ul
       - for module in course.current_lesson.modules
         %li
-          %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
-          %a.module{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
-            Module ={module.index}:
-          %span.label-3= module.name
+          .col-left
+            %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+            %a.module{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
+              Module ={module.index}:
+          .col-right.label-3= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
 
@@ -39,6 +40,10 @@
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
       };
+      // Temporary hack to prevent xblock-ooyala from loading the ooyala player library.
+      // Ooyala player is always loaded in apros, so no need to load it again for the xblock.
+      // The hash corresponds to the ooyala player JS library script.
+      lesson_content.data('loaded_resource_hashes', ['207f215b40019e34c7c46cb5b46b140e']);
       lesson_content.xblock(lesson_data);
 
       $('#course-group-work .lesson-module-status').on('click', function(){

@@ -48,7 +48,6 @@
                 - else
                   .rank your proficiency position <br> will be displayed here
 
-
             %td
               .header
                 .label-5 Progress:
@@ -88,7 +87,7 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.0}
+                    .person-rank #={leaderboard_ranks.0}
                       %span 100
             %td
               - if completions.has_leaders and completions.leaders.0
@@ -105,8 +104,8 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.0}
-                      %span 100 %
+                    .person-rank #={leaderboard_ranks.0}
+                      %span 100%
             %td
               - if social.leaders and social.leaders.0
                 .user
@@ -122,7 +121,7 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.0}
+                    .person-rank #={leaderboard_ranks.0}
                       %span 100 pts.
           %tr
             %td
@@ -140,7 +139,7 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.1}
+                    .person-rank #={leaderboard_ranks.1}
                       %span 100
             %td
               - if completions.has_leaders and completions.leaders.1
@@ -157,8 +156,8 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.1}
-                      %span 100 %
+                    .person-rank #={leaderboard_ranks.1}
+                      %span 100%
             %td
               - if social.leaders and social.leaders.1
                 .user
@@ -174,7 +173,7 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.1}
+                    .person-rank #={leaderboard_ranks.1}
                       %span 100 pts.
           %tr
             %td
@@ -192,7 +191,7 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.2}
+                    .person-rank #={leaderboard_ranks.2}
                       %span 100
             %td
               - if completions.has_leaders and completions.leaders.2
@@ -209,8 +208,8 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.2}
-                      %span 100 %
+                    .person-rank #={leaderboard_ranks.2}
+                      %span 100%
             %td
               - if social.leaders and social.leaders.2
                 .user
@@ -226,7 +225,7 @@
                   .info
                     .person-name username
                     .person-title title
-                    .person-rank # ={leaderboard_ranks.2}
+                    .person-rank #={leaderboard_ranks.2}
                       %span 100 pts.
 
     %hr.hidden
@@ -256,6 +255,7 @@
   %script
     var CohortMapUsers = {{metrics.groups_users|safe}};
     var CohortMapCities = {{metrics.cities|safe}};
-    var TAUser = {{ta_user|safe}};
+    - if not course.ended
+      var TAUser = {{ta_user|safe}};
     var mapbox_map_id = "{{mapbox_map_id}}";
     L.mapbox.accessToken = "{{mapbox_token}}";

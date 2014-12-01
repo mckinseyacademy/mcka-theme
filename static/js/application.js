@@ -6,7 +6,12 @@ window.Apros = {
   initialize: function() {
     var route     = window.location.pathname.replace(/\/$/, ''),
         has_push  = window.history && window.history.pushState ? true : false;
-    $('header[role=banner] a[href="' + route + '"]').addClass('selected');
+
+    $('header[role=banner] nav[role=navigation] a').each(function(){
+      if(route.indexOf($(this).attr('href')) > -1){
+        $(this).addClass('selected');
+      }
+    });
     Backbone.history.start({pushState: has_push, hashChange: false});
   }
 }
@@ -54,7 +59,7 @@ $(function(){
     }
   });
 
-  $(document).on('close', '[data-reveal]', function () {
+  $(document).on('close.fndtn.reveal', '[data-reveal]', function () {
     var modal   = $(this),
         ooyala  = modal.data('ooyala');
     if (ooyala) {
@@ -119,6 +124,14 @@ $(function(){
     $('.user-info >.fa').toggleClass('fa-sort-asc fa-sort-desc');
   });
 
+  $('.user-info .user-image').on('click', function(){
+    if (!$('#profile-container').hasClass('open')) {
+      setTimeout(function(){
+        Foundation.libs.dropdown.toggle($('.user-info'));
+      }, 5);
+    }
+  });
+
   $('.course-name.unavailable, .status.unavailable').on('click', function(){
     var generalModal = $('#generalModal');
     var days = $(this).data('numdays');
@@ -181,8 +194,14 @@ $(function(){
   });
 
   if ($.urlParam('modal')) {
-    var modalId = $.urlParam('modal');
-    $('#' + modalId).foundation('reveal', 'open');
+    var modalId = $.urlParam('modal'),
+        anchor = $('[data-reveal-id=' + modalId + ']'),
+        modal = $('#' + modalId);
+    if (anchor.length) {
+      anchor.click()
+    } else {
+      modal.foundation('reveal', 'open');
+    }
   }
 
   $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
@@ -193,6 +212,13 @@ $(function(){
           player = OO.Player.create(video.attr('id'), video.data('video-id'), {width: width, height: '260px'});
       modal.data('ooyala_player', player);
     }
+  });
+
+  // Placeholder fix
+  $(document).on('focus', '.placeholdersjs', function(){
+    $(this).addClass('focused_placeholder');
+  }).on('blur', '.placeholdersjs', function(){
+    $(this).removeClass('focused_placeholder');
   });
 
 });

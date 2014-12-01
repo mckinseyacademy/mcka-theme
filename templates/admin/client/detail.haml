@@ -22,11 +22,12 @@
             %span Client Company:
             %span= client.display_name
           .contact
-            %span Client Contact:
-            %span.contact-info
+            .contact-title Client Contact:
+            .contact-info
               %span= client.contact_name
-              %span= client.email
-              %span= client.phone
+              %br
+              %span= client.contact_phone
+              %span | <a href='mailto:#{client.contact_email}'>#{client.contact_email}</a>
         %hr
         %section
           %header Students:

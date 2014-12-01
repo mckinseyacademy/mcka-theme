@@ -30,6 +30,9 @@
             .sub-1
               = _("Project:")
               %span= project.name
+              - if project.organization_name
+                %span= _(' - ')
+                %span= project.organization_name
             .sub-2
               = _("Group Work Projects:")
               = project.group_count
@@ -38,7 +41,7 @@
               %tr
                 %th
                 - for activity in project.activities
-                  %th.activity-name{colspan: 3, title: "#{activity.name}"}
+                  %th.activity-name{colspan: 4, title: "#{activity.name}"}
                     = _("Activity")
                     = activity.index
                     - if activity.grade_type
@@ -53,12 +56,15 @@
                     = activity.evaluation_date
                   %th
                     = activity.grade_date
+                  %th
+                    = activity.grade_date
               %tr
                 %th= _("Group")
                 - for activity in project.activities
                   %th= _("Upload")
                   %th= _("Evaluation")
-                  %th= _("Grade")
+                  %th= _("Review")
+                  %th= _("Graded")
 
             %tbody
               - for workgroup in project.workgroups
@@ -74,6 +80,8 @@
                         = _("--")
                     - else
                       %td{class: "status #{activity_status.grade}"}
+                    %td
+                      %a{href: "#{activity_status.review_link}", class: "status #{activity_status.graded}"}
 - block js_snippets
   :javascript
     $(function(){

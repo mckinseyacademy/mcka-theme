@@ -1,0 +1,19 @@
+-for contact in contacts
+  %li.contact-tile
+    -if view_type == "admin"
+      %i.fa.fa-times-circle{'title': 'REMOVE', 'data-userid': '#{contact.id}'}
+    %img.profile-image{"src": '#{contact.image_url}'}
+    .contact-infos
+      .contact-info-value.contact-name
+        = contact.full_name
+      -if contact.title
+        .contact-info-value
+          %i
+            = contact.title
+      -if contact.phone
+        .contact-info-value
+          %i
+            = contact.phone
+      -if contact.email
+        .contact-info-value
+          %a{href: "mailto:#{contact.email}"}= "Email"

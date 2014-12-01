@@ -1,42 +1,89 @@
 /* See ../lesson-content/discussion.scss for rules shared with lession discussion */
-
-#course-discussion .discussion-content {
-  .discussion-course-new {
+#course-discussion {
+  .discussion-course {
     margin-top: 10px;
   }
+}
 
+#course-discussion .discussion-content {
   .new-post-article {
     padding-bottom: 50px;
   }
 
-/* Ask a TA */
-  .ask-ta {
+  fieldset { margin:0; padding: 0; border:0; }
 
-    height: 80px;
-    padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid #aaa;
-    border-bottom: none;
-    position: absolute;
-    top: -78px;
-    width: 31%;
-
-    .group-member {
-      padding-bottom: 10px;
-      height: 50px;
-
-      .avatar {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        float: left;
-      }
-
-      .person-info {
-        margin-left: 50px;
-      }
+  .forum-nav {
+    select {
+      margin: 0;
+      padding: 0;
+      height: auto;
     }
 
+    input {
+      margin: 0;
+      padding: 0;
+    }
+
+    .forum-nav-browse-current {
+      font-size: rem-calc(10);
+    }
+  }
+
+  .new-post-article form.forum-new-post-form, .thread-content-wrapper form.edit-post-form {
+    min-width: 500px;
+
+    .field-label {
+      width: 100%
+    }
+
+    .field-help {
+      display: block;
+      padding-left: 0;
+      width: 100%;
+    }
+  }
+
+  .discussion-response, .comments {
+    div.edit-post-form {
+      background: none;
+      padding: 0;
+      min-width: 400px;
+    }
+  }
+
+  .discussion-body {
+    /* ask-ta is absolutely positioned so it calculates position and size against first absolute or relative positioned parent */
+    position: relative;
+
+    /* Ask a TA */
+    .ask-ta {
+
+      height: 80px;
+      padding: 10px;
+      background-color: #ffffff;
+      border: 1px solid #aaa;
+      border-bottom: none;
+      position: absolute;
+      top: -78px;
+      width: 31%;
+
+      .group-member {
+        padding-bottom: 10px;
+        height: 50px;
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
+          float: left;
+        }
+
+        .person-info {
+          margin-left: 50px;
+        }
+      }
+
+    }
   }
 
   /* Sidebar */
@@ -114,6 +161,16 @@
       .votes-count {
         background-color: #D4D4D4;
       }
+    }
+  }
+
+  .comments {
+    .response-body {
+      width: 80%;
+    }
+
+    .comment-actions-list {
+      width: 19%;
     }
   }
 

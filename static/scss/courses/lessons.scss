@@ -189,6 +189,16 @@
         }
       }
 
+      .col-left {
+        float: left;
+      }
+
+      .col-right {
+        margin-left: 85px;
+        margin-top: 5px;
+        line-height: rem-calc(12);
+      }
+
       .fa { @include font-spec(16); }
       .fa-check-circle { color: $mckinsey-green; }
       .fa-circle { color: $mckinsey-academy-light-gray; }

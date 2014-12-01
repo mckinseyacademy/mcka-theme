@@ -7,6 +7,7 @@ from time import mktime
 import urllib2 as url_access
 from urllib import quote as urlquote
 import math
+import string
 
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -30,7 +31,6 @@ from api_client.user_api import USER_ROLES
 from accounts.models import RemoteUser, UserActivation
 from accounts.controller import is_future_start, save_new_client_image
 
-from main.models import CuratedContentItem
 from api_client import course_api
 from api_client import user_api
 from api_client import group_api, workgroup_api, organization_api
@@ -39,7 +39,13 @@ from api_client.api_error import ApiError
 from api_client.project_models import Project
 from api_client.organization_models import Organization
 from api_client.workgroup_models import Submission
+from courses.controller import Progress, Proficiency
+from courses.controller import return_course_progress, organization_course_progress_user_list
+from courses.controller import social_total, round_to_int_bump_zero
+from courses.user_courses import return_course_completions_stats
+
 from license import controller as license_controller
+from main.models import CuratedContentItem
 
 from .models import Client
 from .models import Program
@@ -47,16 +53,20 @@ from .models import WorkGroup
 from .models import WorkGroupActivityXBlock
 from .models import ReviewAssignmentGroup
 from .models import UserRegistrationBatch, UserRegistrationError
+from .models import ContactGroup
 from .controller import get_student_list_as_file, get_group_list_as_file
 from .controller import fetch_clients_with_program
 from .controller import load_course
 from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
 from .controller import get_group_project_activities, get_group_activity_xblock
 from .controller import upload_student_list_threaded
-from .controller import generate_course_report, generate_program_report
+from .controller import generate_course_report
 from .controller import get_organizations_users_completion
 from .controller import get_course_metrics_for_organization
 from .controller import get_course_analytics_progress_data
+from .controller import get_contacts_for_client
+from .controller import get_admin_users
+from .controller import get_program_data_for_report
 from .forms import ClientForm
 from .forms import ProgramForm
 from .forms import UploadStudentListForm
@@ -67,10 +77,6 @@ from .forms import UploadCompanyImageForm
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
-
-from courses.controller import return_course_progress, organization_course_progress_user_list
-from courses.controller import social_total, round_to_int_bump_zero
-from courses.user_courses import return_course_completions_stats
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -165,25 +171,13 @@ def client_admin_home(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_program_detail(request, client_id):
+
     # In the future, when Companies have multiple program running,
     # we will need to allow them a drop down that allows them to choose from all programs.
-    program = Client.fetch(client_id).fetch_programs()[0]
-    program_courses = program.fetch_courses()
-    course_ids = list(set([pc.course_id for pc in program_courses]))
-    courses = course_api.get_courses(course_id=course_ids)
-
-    for course in courses:
-        course.metrics = get_course_metrics_for_organization(course.id, client_id)
-
-    total_avg_grade = 0
-    total_pct_completed = 0
-    if courses:
-        count = float(len(courses))
-        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
-        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
+    program, courses, total_avg_grade, total_pct_completed = get_program_data_for_report(client_id)
 
     data = {
-        'program': program,
+        'program_info': program,
         'courses': courses,
         'total_avg_grade': total_avg_grade,
         'total_pct_completed': total_pct_completed
@@ -221,7 +215,7 @@ def client_admin_course(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
-
+    course = load_course(course_id)
     participants = course_api.get_users_list_in_organizations(course_id, client_id)
     total_participants = len(participants)
     if total_participants > 0:
@@ -240,6 +234,7 @@ def client_admin_course_participants(request, client_id, course_id):
     data = {
         'client_id': client_id,
         'course_id': course_id,
+        'course': course,
         'total_participants': total_participants,
         'students': students
     }
@@ -293,8 +288,7 @@ def client_admin_download_course_report(request, client_id, course_id):
 @client_admin_access
 def client_admin_download_program_report(request, client_id, program_id):
     organization = Client.fetch(client_id)
-    program = organization.fetch_programs()[0]
-
+    program, courses, total_avg_grade, total_pct_completed = get_program_data_for_report(client_id, program_id)
     filename = slugify(
         unicode(
             "{} Program Report for {} on {}".format(
@@ -304,35 +298,15 @@ def client_admin_download_program_report(request, client_id, program_id):
             )
         )
     ) + ".csv"
-
-    program_courses = program.fetch_courses()
-    course_ids = list(set([pc.course_id for pc in program_courses]))
-    courses = course_api.get_courses(course_id=course_ids)
-
-    for course in courses:
-        course.metrics = get_course_metrics_for_organization(course.id, client_id)
-
-    total_avg_grade = 0
-    total_pct_completed = 0
-    if courses:
-        count = float(len(courses))
-        total_avg_grade = sum([c.metrics.users_grade_average for c in courses]) / count
-        total_pct_completed = int(sum([c.metrics.percent_completed for c in courses]) / count)
-
-    url_prefix = "{}://{}".format(
-        "https" if request.is_secure() else "http",
-        request.META['HTTP_HOST']
-    )
-
-    response = HttpResponse(
-        generate_program_report(organization.name, program_id, url_prefix, courses, total_avg_grade, total_pct_completed),
-        content_type='text/csv'
-    )
-
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
-        filename
-    )
-
+    data = {
+        'client_name': organization.name,
+        'program_id': program_id,
+        'courses': courses,
+        'total_avg_grade': total_avg_grade,
+        'total_pct_completed': total_pct_completed
+    }
+    response = render(request, 'admin/client-admin/program_report.txt', data, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
     return response
 
 
@@ -342,31 +316,36 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
 
-    cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True)
-    course.cohort_progress = int(cohort_metrics.course_avg)
-    course.cohort_progress_chart = int(5*round(float(cohort_metrics.course_avg)/5))
+    # progress
+    cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
+    course.cohort_progress = cohort_metrics.course_average_display
 
-    company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True)
-    course.company_progress = int(company_metrics.course_avg)
-    course.company_progress_chart = int(5*round(float(company_metrics.course_avg)/5))
+    company_metrics = course_api.get_course_metrics_completions(course.id, organizations=client_id, skipleaders=True, completions_object_type=Progress)
+    course.company_progress = company_metrics.course_average_display
 
+    # proficiency
+    company_proficiency = organization_api.get_grade_complete_count(client_id, course_id=course_id)
+    course_proficiency = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency)
+
+    # engagement
     employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
-    employee_point_sum = sum([social_total(user_metrics) for user_metrics in employee_engagement.users.__dict__.iteritems()])
+    employee_point_sum = sum([social_total(user_metrics[1]) for user_metrics in employee_engagement.users.__dict__.iteritems()])
     employee_avg = float(employee_point_sum)/employee_engagement.total_enrollments if employee_engagement.total_enrollments > 0 else 0
 
     course_engagement = course_api.get_course_social_metrics(course_id)
-    course_point_sum = sum([social_total(user_metrics) for user_metrics in course_engagement.users.__dict__.iteritems()])
+    course_point_sum = sum([social_total(user_metrics[1]) for user_metrics in course_engagement.users.__dict__.iteritems()])
     course_avg = float(course_point_sum)/course_engagement.total_enrollments if course_engagement.total_enrollments > 0 else 0
 
     data = {
+        'course': course,
+        'company_proficiency': company_proficiency.users_grade_average * 100,
+        'company_proficiency_graph': int(5 * round(company_proficiency.users_grade_average * 20)),
+        'cohort_proficiency_graph': int(5 * round(course_proficiency.course_average_value * 20)),
+        'cohort_proficiency': course_proficiency.course_average_display,
+        'company_engagement': round_to_int_bump_zero(employee_avg),
+        'cohort_engagement': round_to_int_bump_zero(course_avg),
         'client_id': client_id,
         'course_id': course_id,
-        'course': course,
-        'average_progress': course.cohort_progress,
-        'engagement': {
-            'employee_avg': round_to_int_bump_zero(employee_avg),
-            'course_avg': round_to_int_bump_zero(course_avg)
-        }
     }
     return render(
         request,
@@ -380,7 +359,7 @@ def client_admin_course_analytics_participants(request, client_id, course_id):
     course = course_api.get_course(course_id)
     start_date = course.start
     end_date = course.end if course.end and course.end < datetime.today() else datetime.today()
-    time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
+    time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization=client_id)
     data = {
         'modules_completed': time_series_metrics.modules_completed,
         'participants': time_series_metrics.active_users
@@ -410,7 +389,7 @@ def client_admin_course_status(request, client_id, course_id):
     if course.end is not None:
         if end_date > course.end:
             end_date = course.end
-    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization_id=client_id)
+    metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization=client_id)
     metricsJson = []
     day = 1
     week = 0
@@ -440,6 +419,12 @@ def client_admin_course_status(request, client_id, course_id):
                 content_type='application/json'
             )
 
+def _remove_student_from_course(student_id, course_id):
+    # Mark this student as an observer for this course, so that their data is ignored in roll-up activities
+    permissions = Permissions(student_id)
+    permissions.add_course_role(course_id, USER_ROLES.OBSERVER)
+    user_api.unenroll_user_from_course(student_id, course_id)
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_unenroll_participant(request, client_id, course_id, user_id):
@@ -450,7 +435,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
         try:
             # un-enroll from program
             if is_program:
-                user_api.unenroll_user_from_course(user_id, course_id)
+                _remove_student_from_course(user_id, course_id)
                 user_programs = Program.user_program_list(user_id)
                 for program in user_programs:
                     if course_id in [course.course_id for course in program.fetch_courses()]:
@@ -458,7 +443,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 
             # un-enroll from course
             else:
-                user_api.unenroll_user_from_course(user_id, course_id)
+                _remove_student_from_course(user_id, course_id)
 
             redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
             return HttpResponseRedirect(redirect_url)
@@ -549,24 +534,17 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
 def client_admin_contact(request, client_id):
     client = Client.fetch(client_id)
 
-    groups = Client.fetch_contact_groups(client_id)
-
-    contacts = []
-    fields = ['phone', 'full_name', 'title', 'avatar_url']
-
-    for group in groups:
-        if group.type == "contact_group":
-            users = group_api.get_users_in_group(group.id)
-            user_ids = [str(user.id) for user in users]
-            contacts.extend(user_api.get_users(fields=fields, ids=(',').join(user_ids)))
+    contacts = get_contacts_for_client(client_id)
 
     data = {
         'client': client,
         'contacts': contacts,
         'selected_tab': 'contact',
+        'view_type': 'client',
     }
     return render(
         request,
@@ -700,6 +678,7 @@ def client_list(request):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_new(request):
     error = None
+    company_image = "/static/image/empty_avatar.png"
     if request.method == 'POST':  # If the form has been submitted...
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -707,7 +686,7 @@ def client_new(request):
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
                 client = Client.create(name, client_data)
-                if hasattr(client, 'logo_url') and client.logo_url is not None:
+                if hasattr(client, 'logo_url') and client.logo_url:
                     old_image_url = client.logo_url
                     if old_image_url[:10] == '/accounts/':
                         old_image_url = old_image_url[10:]
@@ -722,6 +701,9 @@ def client_new(request):
 
             except ApiError as err:
                 error = err.message
+        else:
+            if request.POST['logo_url']:
+                company_image = request.POST['logo_url']
     else:
         ''' adds a new client '''
         form = ClientForm()  # An unbound form
@@ -733,7 +715,7 @@ def client_new(request):
         "form": form,
         "error": error,
         "submit_label": _("Save Client"),
-        "company_image": "/static/image/empty_avatar.png",
+        "company_image": company_image,
     }
 
     return render(
@@ -829,6 +811,87 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         request,
         view,
         data,
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_detail_contact(request, client_id):
+
+    client = Client.fetch(client_id)
+
+    contacts = get_contacts_for_client(client_id)
+
+    data = {
+        'client': client,
+        'contacts': contacts,
+        'view_type': 'admin',
+        'selected_client_tab': 'contact',
+    }
+
+    return render(
+        request,
+        'admin/client/contact.haml',
+        data,
+    )
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_detail_add_contact(request, client_id):
+
+    error = None
+    client = Client.fetch(client_id)
+    contacts = get_contacts_for_client(client_id)
+    contact_ids = [contact.id for contact in contacts]
+
+    if request.method == 'POST':
+        contact_groups = Client.fetch_contact_groups(client_id)
+        if len(contact_groups) == 0:
+            contact_group = ContactGroup.create(('Contact Group - ' + str(client_id)), {})
+            client.add_group(contact_group.id)
+        else:
+            contact_group = contact_groups[0]
+        selected_users =request.POST.getlist('checks[]')
+        for user in selected_users:
+            try:
+                group_api.add_user_to_group(user, contact_group.id)
+            except ApiError as err:
+                error = err.message
+
+        if error == None:
+            return HttpResponseRedirect('/admin/clients/{}/contact'.format(client_id))
+
+    organizations = Organization.list()
+    ADMINISTRATIVE = 0
+    org_id = 0
+    admin_users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
+    users = [user for user in admin_users if user.id not in contact_ids]
+
+    data = {
+        'client': client,
+        'contacts': contacts,
+        'users': users,
+        'error': error,
+    }
+
+    return render(
+        request,
+        'admin/client/add_contact.haml',
+        data,
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_detail_remove_contact(request, client_id, user_id):
+
+    contact_group = Client.fetch_contact_groups(client_id)[0]
+    try:
+        group_api.remove_user_from_group(user_id, contact_group.id)
+    except ApiError as err:
+        return HttpResponse(
+            json.dumps({"status": err.message}),
+            content_type='application/json'
+        )
+
+    return HttpResponse(
+        json.dumps({"status": _("Contact has been removed.")}),
+        content_type='application/json'
     )
 
 @ajaxify_http_redirects
@@ -1204,13 +1267,25 @@ def program_association(request, client_id):
 def add_courses(request, program_id):
     program = Program.fetch(program_id)
     courses = request.POST.getlist("courses[]")
-    for course_id in courses:
+
+    selected_ids = [course.course_id for course in program.fetch_courses()]
+
+    for course_id in [c for c in courses if c not in selected_ids]:
         try:
             program.add_course(course_id)
         except ApiError as e:
             # Ignore 409 errors, because they indicate a course already added
             if e.code != 409:
                 raise
+
+    for course_id in selected_ids:
+        if course_id not in courses:
+            try:
+                program.remove_course(course_id)
+            except ApiError as e:
+                message = e.message
+                status_code = e.code
+
 
     return HttpResponse(
         json.dumps({"message": _("Successfully saved courses to {} program").format(program.display_name)}),
@@ -1265,19 +1340,38 @@ def add_students_to_program(request, client_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def add_students_to_course(request, client_id):
+
+    def enroll_user_in_course(user_id, course_id):
+        try:
+            user_api.enroll_user_in_course(user_id, course_id)
+        except ApiError as e:
+            # Ignore 409 errors, because they indicate a user already added
+            if e.code != 409:
+                raise
+
     courses = request.POST.getlist("courses[]")
-    students = request.POST.getlist("students[]")
-    for student_id in students:
-        for course_id in courses:
-            try:
-                user_api.enroll_user_in_course(student_id, course_id)
-            except ApiError as e:
-                # Ignore 409 errors, because they indicate a user already added
-                if e.code != 409:
-                    raise
+    students = [int(u_id) for u_id in request.POST.getlist("students[]")]
+    exception_messages = []
+    for course_id in courses:
+        enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u.id in students}
+        for student_id in students:
+            if student_id in enrolled_users:
+                exception_messages.append(_("{} already enrolled in {}").format(
+                    enrolled_users[student_id],
+                    course_id
+                ))
+            else:
+                enroll_user_in_course(student_id, course_id)
+
+    message = _("Successfully associated students to courses")
+    if len(exception_messages) > 0:
+        message = _("Successfully associated students to courses, with {} messages:\n\t{}").format(
+            len(exception_messages),
+            "\n\t".join(exception_messages),
+        )
 
     return HttpResponse(
-        json.dumps({"message": _("Successfully associated students to courses")}),
+        json.dumps({"message": message}),
         content_type='application/json'
     )
 
@@ -1352,10 +1446,10 @@ def load_group_projects_info_for_course(course, companies):
     for project in Project.fetch_projects_for_course(course.id):
         try:
             project_name = group_project_lookup[project.content_id]
-            project_status = 1
+            project_status = True
         except:
             project_name = project.content_id
-            project_status = 0
+            project_status = False
 
         if project.organization is None:
             group_projects.append(
@@ -1498,14 +1592,21 @@ def workgroup_project_create(request, course_id):
         if private_project == "on":
             organization = request.POST["new-project-company"]
 
-        try:
-            project = Project.create(course_id, project_section, organization)
-            message = _("Project successfully created")
-            status_code = 200
+        existing_projects = Project.fetch_projects_for_course(course_id)
+        matching_projects = [p for p in existing_projects if p.content_id == project_section and p.organization == organization]
 
-        except ApiError as e:
-            message = e.message
-            status_code = e.code
+        if len(matching_projects) > 0:
+            message = _("Project already exists")
+            status_code = 409 # 409 = conflict
+        else:
+            try:
+                project = Project.create(course_id, project_section, organization)
+                message = _("Project successfully created")
+                status_code = 200
+
+            except ApiError as e:
+                message = e.message
+                status_code = e.code
     response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
     response.status_code = status_code
     return response
@@ -1642,7 +1743,6 @@ def generate_assignments(request, project_id, activity_id):
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def permissions(request):
     '''
@@ -1651,34 +1751,12 @@ def permissions(request):
 
     organizations = Organization.list()
 
-    additional_fields = ["organizations"]
-    users = []
-
     ADMINISTRATIVE = 0
     organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
     organization_options.extend([(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY])
 
     org_id = int(request.GET.get('organization', ADMINISTRATIVE))
-
-    if org_id == ADMINISTRATIVE:
-        # fetch users users that have no company association
-        users = user_api.get_users(has_organizations=False, fields=additional_fields)
-
-        # fetch users in administrative company
-        admin_company = next((org for org in organizations if org.name == settings.ADMINISTRATIVE_COMPANY), None)
-        admin_users = []
-        if admin_company and admin_company.users:
-            ids = [str(id) for id in admin_company.users]
-            admin_users = user_api.get_users(ids=ids,fields=additional_fields)
-
-        users.extend(admin_users)
-
-    else:
-        org = next((org for org in organizations if org.id == org_id), None)
-        if org:
-            ids = [str(id) for id in org.users]
-            users = user_api.get_users(ids=ids, fields=additional_fields)
-
+    users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
 
     # get the groups and for each group get the list of users, then intersect them appropriately
     groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
@@ -1766,13 +1844,20 @@ def workgroup_course_assignments(request, course_id):
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = Project.fetch_projects_for_course(course.id)
+    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
 
     for project in group_projects:
-        project.selected = (selected_project_id == str(project.id))
-        group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
-        project.name = group_project_chapter.name
-        # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
-        project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
+        if group_project_lookup.has_key(project.content_id):
+            project.status = True
+            project.selected = (selected_project_id == str(project.id))
+            group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
+            project.name = group_project_chapter.name
+            # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
+            project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
+        else:
+            project.status = False
+            project.activities = []
+            project.name = project.content_id
 
         if project.organization:
             project.organization = Organization.fetch(project.organization).display_name
@@ -1800,10 +1885,11 @@ def workgroup_course_assignments(request, course_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image="/static/image/empty_avatar.png"):
+def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image=None):
     ''' handles requests for login form and their submission '''
-    if(client_id != 'new'):
-
+    if(client_id == 'new' and not company_image):
+        company_image = "/static/image/empty_avatar.png"
+    elif not company_image:
         client = Organization.fetch(client_id)
         company_image = client.image_url(size=200, path='absolute')
 
@@ -1837,11 +1923,10 @@ def company_image_edit(request, client_id="new"):
         x2Position = request.POST.get('x2-position')
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
-        if client_id == 'new':
-            CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
-        else:
+        CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
+
+        if client_id != 'new':
             client = Organization.fetch(client_id)
-            CompanyImageUrl = client.image_url(size=200, path='relative')
 
         from PIL import Image
         from django.core.files.storage import default_storage
@@ -1855,6 +1940,8 @@ def company_image_edit(request, client_id="new"):
         else:
             image_url = CompanyImageUrl
 
+        new_image_url = image_url
+
         if default_storage.exists(image_url):
 
             original = Image.open(default_storage.open(image_url))
@@ -1865,14 +1952,14 @@ def company_image_edit(request, client_id="new"):
             right = int(x2Position)
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
-
-            JsonObjectWithImage.save_profile_image(cropped_example, image_url)
+            new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
+            Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
         if client_id == 'new':
-            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url}), content_type="application/json")
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url}), content_type="application/json")
         else:
-            client.logo_url = '/accounts/' + image_url
-            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + image_url})
-            return HttpResponse(json.dumps({'image_url': '/accounts/' + image_url, 'client_id': client.id}), content_type="application/json")
+            client.logo_url = '/accounts/' + new_image_url
+            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url, 'client_id': client.id}), content_type="application/json")
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def upload_company_image(request, client_id='new'):
@@ -1891,14 +1978,11 @@ def upload_company_image(request, client_id='new'):
             allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
             if temp_image.content_type in allowed_types:
                 if client_id == 'new':
-                    company_image = 'images/company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
-                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
+                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
+                    Organization.save_profile_image(Image.open(temp_image), company_image)
                 else:
-                    company_image = 'images/company_image-{}.jpg'.format(client_id)
-                    client = Organization.fetch(client_id)
-                    JsonObjectWithImage.save_profile_image(Image.open(temp_image), company_image)
-                    client.logo_url = '/accounts/' + company_image
-                    client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + company_image})
+                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}.jpg'.format(client_id)
+                    Organization.save_profile_image(Image.open(temp_image), company_image)
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
             return HttpResponse(change_company_image(request=request, client_id=client_id, template='change_company_image', error=error, company_image='/accounts/' + company_image), content_type='text/html')

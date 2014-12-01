@@ -2,7 +2,6 @@
 #course-group-work .discussion-module {
   border: 1px solid $mckinsey-grey;
   border-radius: 5px;
-  width: 760px;
 
   *:focus {
     outline: 0;
@@ -15,7 +14,14 @@
   }
 }
 
+#course-lessons .discussion-module {
+  width: 100%
+}
+
 #course-group-work .discussion-module {
+  // Calculated ratio of group work width to course page width
+  width: 760px / 511.65625px * 100%;
+
   // Remove option to post anonymously from the group work discussions
   .discussion-anonymous,
   label[for="new-post-anonymous"] {
@@ -33,6 +39,24 @@
 #course-group-work .discussion-module,
 #course-discussion .discussion-content {
   background: #fff !important;
+
+  .field-input .post-type-label {
+      margin: 0px;
+  }
+
+  .thread-content-wrapper, .new-post-article {
+    .forum-new-post-form, .edit-post-form {
+      min-width: 700px;
+    }
+  }
+
+  .discussion-response, .comments {
+    .edit-post-form {
+      min-width: 600px;
+      background: none;
+      padding: 0;
+    }
+  }
 
   .discussion-article {
     background-image: none;
@@ -338,10 +362,14 @@
           margin-right: 0;
         }
 
-        &::after {
+        label[for="new-post-anonymous"]::after,
+        label[for="new-post-anonymous-to-peers"]::after {
             content:"Posting anonymously will not add engagement points.";
             color: $mckinsey-orange;
+            cursor: default;
             display: block;
+            font-size: 14px;
+            line-height: 18px;
         }
       }
     }

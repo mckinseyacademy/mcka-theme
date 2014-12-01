@@ -106,15 +106,35 @@ class ReviewAssignmentProcessor(object):
 
     def store_assignments(self, course_id):
         for wg in self.workgroups:
-            now = datetime.datetime.today()
-            rag = ReviewAssignmentGroup.create(
-                "Assignment group for {}".format(wg.id),
-                {
-                    "assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-                    "xblock_id": self.xblock_id,
-                }
-            )
-            rag.add_course(course_id)
-            rag.add_workgroup(wg.id)
-            for user_id in self.workgroup_reviewers[wg.id]:
-                rag.add_user(user_id)
+            # check for existing assignments
+            existing_assignments = ReviewAssignmentGroup.list_for_workgroup(wg.id)
+            if len(existing_assignments) > 0:
+                # pick one existing assignment
+                rag = existing_assignments[0]
+
+                # delete other (superfluous) assignments
+                for ea in existing_assignments[1:]:
+                    ReviewAssignmentGroup.delete(ea.id)
+
+                old_reviewers = set([u.id for u in rag.get_users()])
+                new_reviewers = set(self.workgroup_reviewers[wg.id])
+
+                for user_id in new_reviewers - old_reviewers:
+                    rag.add_user(user_id)
+
+                for user_id in old_reviewers - new_reviewers:
+                    rag.remove_user(user_id)
+
+            else:
+                now = datetime.datetime.today()
+                rag = ReviewAssignmentGroup.create(
+                    "Assignment group for {}".format(wg.id),
+                    {
+                        "assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                        "xblock_id": self.xblock_id,
+                    }
+                )
+                rag.add_course(course_id)
+                rag.add_workgroup(wg.id)
+                for user_id in self.workgroup_reviewers[wg.id]:
+                    rag.add_user(user_id)

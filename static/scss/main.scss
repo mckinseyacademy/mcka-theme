@@ -81,6 +81,8 @@ hr {
 
 img { max-width: 100%; height: auto; }
 
+#mk_overview_player img { max-height: 100%; }
+
 blockquote {
   color: $mckinsey-academy-black;
   padding: 0;
@@ -279,6 +281,12 @@ button,
   position: relative;
   @include perspective(1000px);
 
+  &:hover {
+    .front .bookmark {
+      display: none;
+    }
+  }
+
   @media #{$large-up} {
 
     &:hover {
@@ -328,11 +336,15 @@ form {
 }
 
 #mckinsey_help {
+  word-wrap: break-word;
   p {
     margin-bottom: rem-calc(20);
     &:last-child { margin-bottom: 0; }
   }
   #mk-help-video { margin-bottom: rem-calc(20); }
+  #support-contact-email {
+    word-wrap: break-word;
+  }
 }
 
 .modal-title {
@@ -406,7 +418,7 @@ form {
       display:inline;
     }
   }
-  img.spinner.upload-image, img.spinner.upload-company{
+  .spinner.upload-image, .spinner.upload-company{
     position:relative;
     top:0px;
     left:5px;
@@ -480,4 +492,9 @@ div.xblock-student_view {
   }
 
   i.fa { color: $mckinsey-academy-bright-gray; }
+}
+
+/* Placeholders fix for IE */
+.placeholdersjs.focused_placeholder{
+  color: $mckinsey-academy-black;
 }

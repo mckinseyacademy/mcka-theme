@@ -31,7 +31,7 @@
               %a.email-team{href: "#", data-reveal-id: 'email-team'}
                 = _("Email your group")
           %hr
-          - if ta_user.id
+          - if ta_user.id and not course.ended
             .ask-ta
               %h4= _("Ask a TA")
               -# Temporarily use mailto: for ta link as well (add data_reveal_id back in for when dialog should be introduced

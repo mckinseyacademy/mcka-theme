@@ -6,17 +6,17 @@
         %h1
           %span= _("Program: ")
           %span
-            = program.display_name
+            = program_info.display_name
             (
             %span><
-              = program.name
+              = program_info.name
             )
         %p
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
           nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.
         %br
-          %a.button.radius.small{href: "/admin/client-admin/programs/#{program.id}/download_program_report", target: "_blank"}
+          %a.button.radius.small{href: "/admin/client-admin/programs/#{program_info.id}/download_program_report", target: "_blank"}
             = _("Download Report for Program")
       %hr
   .admin-detail.row
@@ -37,12 +37,14 @@
               %td= course.metrics.users_enrolled
               %td= course.metrics.users_started
               %td= course.metrics.users_grade_complete_count
-              %td ={course.metrics.percent_completed}%
-              %td= course.metrics.users_grade_average
+              %td= course.metrics.percent_completed | floatformat:0
+                \%
+              %td= course.metrics.users_grade_average | floatformat:0
           %tr
             %td{colspan: 4}= _("Totals (% completed, avg. grade) only apply to courses that have started.")
             %td
-              %b ={total_pct_completed}%
+              %b= total_pct_completed | floatformat:0
+                \%
             %td
-              %b= total_avg_grade
+              %b= total_avg_grade | floatformat:0
 

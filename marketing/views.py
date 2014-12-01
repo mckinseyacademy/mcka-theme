@@ -40,6 +40,5 @@ def subscribe(request, subscribe_form=SubscribeForm):
         messages.success(request, _('Thank you for your interest in McKinsey Academy. We will keep you updated.'))
     return redirect('/contact/')
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def styleguide(request):
     return render(request, 'marketing/styleguide.haml')
