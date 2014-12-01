@@ -8,7 +8,6 @@ var map_opts = {
 
 Apros.views.CourseCohort = Backbone.View.extend({
 
-  popupTimeout: false,
   popupTime: 700,
 
   events: {
@@ -107,10 +106,11 @@ Apros.views.CourseCohort = Backbone.View.extend({
     var _this = this;
     marker.on('mouseover', function (e) {
       this.openPopup();
+      clearTimeout(marker.timer);
     });
     marker.on('mouseout', function (e) {
       var that = this;
-      _this.popupTimeout = setTimeout(function(){that.closePopup();}, _this.popupTime);
+      marker.timer = setTimeout(function(){that.closePopup();}, _this.popupTime);
     });
   },
 
