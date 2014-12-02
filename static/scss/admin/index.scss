@@ -354,6 +354,8 @@
     margin: 0 auto;
     width: 860px;
     height: 400px;
+    max-width: 100%;
+
     svg{
       .grid .tick {
         stroke: $mckinsey-dark-grey;
@@ -367,7 +369,11 @@
 
   .status-chart-legend {
     width:100%;
-    margin-left:10%;
+
+    @media only screen and (min-width : 1224px) {
+      margin-left:10%;
+    }
+
     ul.inline-list {
       display:inline;
       float:left;

@@ -2,17 +2,17 @@
 - load staticfiles
 - block content
   .admin-detail.row
-    .large-12.large.columns
+    .medium-12.large.columns
       - include 'admin/client-admin/course_header.haml'
   .row
-    .large-12.large.columns
+    .medium-12.large.columns
         %h1
           %span= _("Course Info: ")
           %span
             = course_info.name
         %hr
   .row
-    .large-6.large.columns
+    .medium-6.large.columns
       %h2= _("ENROLLMENT INFORMATION")
       %p= _("Total number of participants:")
         %b= metrics.users_enrolled
@@ -29,7 +29,7 @@
         %li= _("Grade cutoffs:")
           %b= cutoffs
 
-    .large-6.large.columns
+    .medium-6.large.columns
       %h2= _("PARTICIPANTS")
       %ul
         %li= _("Participants:")
@@ -64,8 +64,8 @@
           .color.orange
           = _("Not Started")
       %br
-      .large-8.large.columns
-      #email_not_started.large-4.large.columns
+      .medium-8.large.columns
+      #email_not_started.medium-4.large.columns
         - if metrics.users_started < metrics.users_enrolled
           %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", data-reveal-id: "send-email-not-started-modal", data-reveal-ajax: "true"}= _("Email participants not started")
         - else
