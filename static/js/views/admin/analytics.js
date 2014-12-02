@@ -47,9 +47,11 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
           .transition().duration(500).call(chart).style({ 'width': width, 'height': height });
 
       d3.select(_this.el)
-          .selectAll('.nv-x .nv-axisMaxMin:last-child>text')
+          .selectAll('.nv-x .nv-axisMaxMin:last-child')
+          .append("text")
           .text(function(){return daysNumber > 7 ? 'weeks': 'days';})
-          .attr('x', 20);
+          .attr('y', 15)
+          .attr('x', 5);
 
       return chart;
     });
@@ -98,7 +100,6 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
           }
         });
 
-
         d3.select(_this.el)
           .datum(dataJson)
           .transition()
@@ -106,9 +107,11 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
           .call(chart);
 
         d3.select(_this.el)
-          .selectAll('.nv-x .nv-axisMaxMin:last-child>text')
-          .text('weeks')
-          .attr('x', 20)
+            .selectAll('.nv-x .nv-axisMaxMin:last-child')
+            .append("text")
+            .text(function(d) {return $(this).text() + ' weeks'})
+            .attr('y', 15)
+            .attr('x', 10);
 
         d3.select(_this.el)
           .append("text")
