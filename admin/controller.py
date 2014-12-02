@@ -263,7 +263,7 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head, 
 
 
 def _formatted_user_string(user):
-    return "{},{},{},{},{},{},{},{}".format(
+    return u"{},{},{},{},{},{},{},{}".format(
         user.email,
         user.first_name,
         user.last_name,
@@ -275,7 +275,7 @@ def _formatted_user_string(user):
     )
 
 def _formatted_user_string_group_list(user):
-    return "{},{},{},{}".format(
+    return u"{},{},{},{}".format(
         user.email,
         user.username,
         user.first_name,
@@ -323,7 +323,7 @@ def get_group_list_as_file(group_projects, group_project_groups):
 
     group_list_lines = []
     for group_project in group_projects:
-        group_list_lines.append("{}: {}\n".format(
+        group_list_lines.append(u"{}: {}\n".format(
                 _("PROJECT"),
                 group_project.name.upper(),
             )
