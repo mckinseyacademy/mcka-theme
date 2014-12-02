@@ -498,3 +498,31 @@ div.xblock-student_view {
 .placeholdersjs.focused_placeholder{
   color: $mckinsey-academy-black;
 }
+
+[data-tooltip] {
+  position: relative;
+
+  &:after {
+    content: attr(data-tooltip);
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    color: $mckinsey-dark-grey;
+    background: $pure-white;
+    border-radius: 5px;
+    border: 1px solid $border-line;
+    white-space: nowrap;
+    padding: 0 5px;
+    text-transform: none;
+    @include font-spec(12);
+    line-height: 18px;
+  }
+
+  &:hover {
+    &:after,
+    &:before {
+      display: block;
+    }
+  }
+}

@@ -8,7 +8,7 @@
       %span.label-3.lesson-name= course.current_lesson.name
       %span.label-3.page-desc= course.current_lesson.description
     %h1
-      %a{'data-reveal-id': 'module_list'}
+      %a{'data-reveal-id': 'module_list', "data-tooltip": "Lesson Modules"}
         %i.fa.fa-list-ul
       = course.current_module.name
     - block lesson_content
