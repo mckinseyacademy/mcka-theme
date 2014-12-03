@@ -91,13 +91,14 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
               .tooltips(false);
 
         var weeks = d3.range(0, dataJson[0].values.length, 7)
-        var lastWeek = 0;
+        var daysNumber = dataJson[0].values.length;
         chart.xAxis.tickValues(weeks).tickFormat(function(d) {
-          var currentWeek = 1 + Math.floor(d / 7);
-          if(currentWeek != lastWeek){
-            lastWeek = currentWeek;
-            return currentWeek;
-          }
+            if(daysNumber > 7 && d%7 == 0){
+              return (Math.floor(d / 7) + 1);
+            }
+            else if (daysNumber <= 7){
+              return d;
+            }
         });
 
         d3.select(_this.el)
