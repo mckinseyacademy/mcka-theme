@@ -40,7 +40,7 @@
         .row.collapse
           .medium-6.columns
             .program-menu
-              %a{href:"#", "data-dropdown": "program-menu-content"}
+              %a{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
                 %i.fa.fa-th-large
               #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
                 - include "courses/content_page/program_menu.haml"
