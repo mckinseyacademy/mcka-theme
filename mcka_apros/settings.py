@@ -298,6 +298,10 @@ COMPANY_REMOVE_IMAGE_SIZES = [40, 120, 80, 160]
 
 TEMP_IMAGE_FOLDER = "profile_temp_images/"
 
+FEATURES = {
+    'notes': False,
+}
+
 try:
     from local_settings import *
 except ImportError:
@@ -343,6 +347,3 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'util.debug_toolbar.show_toolbar'   # override when the Django Debug Toolbar appears
 }
 
-FEATURES = {
-    'notes': False,
-}
