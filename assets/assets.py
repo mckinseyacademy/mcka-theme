@@ -63,6 +63,7 @@ js_files.extend([
     'js/vendor/dataTables.foundation.js',
     'js/vendor/jquery.dataTables.rowGrouping.js',
     'js/vendor/jquery.touchwipe.min.js',
+    'js/vendor/moment-with-locales.min.js',
     'js/application.js',
     'js/router.js',
 ])

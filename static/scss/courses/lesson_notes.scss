@@ -1,0 +1,160 @@
+#notes-expand {
+  display: none;
+
+  &:not(:checked) {
+    + #lesson-notes {
+      * {
+        display: none;
+      }
+
+      nav {
+        display: block;
+
+        ul {
+          display: block;
+
+          li:first-child {
+            display: block;
+            margin: 0;
+            label { display: block; }
+            i { display: inline-block; }
+          }
+        }
+      }
+    }
+  }
+
+  &:checked {
+    + #lesson-notes {
+      right: 15px;
+
+      label[for=notes-expand] .fa {
+        color: $mckinsey-academy-blue-gray;
+      }
+    }
+  }
+}
+
+#lesson-notes {
+  position: absolute;
+  top: rem-calc(-6);
+  left: rem-calc(15);
+  z-index: 100;
+  box-shadow: 0px 3px 3.84px 0.16px rgba(153, 153, 153, 0.3);
+
+  nav {
+    padding: 6px 5px 3px 8px;
+    background: $mckinsey-academy-turquoise;
+    @include clearfix;
+
+    ul {
+      margin: 0;
+      list-style-type: none;
+
+      li {
+        float: left;
+        margin-right: rem-calc(15);
+
+        a, a:visited {
+          &.on .fa {
+            color: $mckinsey-academy-blue-gray;
+          }
+        }
+      }
+    }
+
+    label {
+      line-height: normal;
+    }
+
+    .fa {
+      color: $pure-white;
+      font-size: rem-calc(20);
+    }
+
+    form {
+      float: right;
+      white-space: nowrap;
+
+      input {
+        display: inline-block;
+        margin: 0;
+      }
+
+      input[type=search] {
+        padding: 2px;
+        height: auto;
+        width: 174px;
+        font-size: rem-calc(11);
+      }
+
+      input[type=submit] {
+        color: $pure-white;
+        font-family: FontAwesome;
+        background: none;
+        border: none;
+      }
+    }
+  }
+
+  .notes-area {
+    padding: rem-calc(13);
+    background: $pure-white;
+
+    .notes-inner {
+      border: 1px solid $almost-white;
+      overflow: auto;
+      height: 107px;
+      min-height: 107px;
+    }
+
+    ul.notes-list {
+      margin: 0;
+
+      li {
+        padding: 15px;
+
+        .module {
+          color: $mckinsey-academy-alt-blue;
+        }
+
+        .body {
+          white-space: pre;
+          .hlt {
+            background: $highlight;
+          }
+        }
+      }
+    }
+
+    .notes-entry {
+      input[type=submit] {
+        display: none;
+      }
+
+      textarea {
+        width: 100%;
+        resize: none;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        min-height: 105px;
+        padding: 15px;
+      }
+    }
+  }
+
+  .notes-resize {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    background: $mckinsey-orange;
+    width: rem-calc(50);
+    margin-left: rem-calc(-50);
+    line-height: rem-calc(20);
+    text-align: center;
+    cursor: ns-resize;
+
+    i { color: $pure-white; }
+  }
+}

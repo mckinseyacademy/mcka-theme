@@ -8,6 +8,7 @@ var Router = Backbone.Router.extend({
     'courses/*course_id/cohort':              'course_cohort',
     'courses/*course_id/group_work':          'course_group_work',
     'courses/*course_id/resources':           'course_resources',
+    'courses/*course_id/lessons/*lesson_id/module/*module_id':  'course_lesson',
     'courses/*course_id':                     'course_index',
     'admin/client-admin/*organization_id/courses/*course_id/analytics':   'client_admin_course_analytics',
     'admin/client-admin/*organization_id/courses/*course_id/participants':  '',
@@ -74,6 +75,13 @@ var Router = Backbone.Router.extend({
                                           el: $('#course-status-chart'),
                                           client_id: organization_id,
                                           course_id: course_id});
+  },
+
+  course_lesson: function(courseId, lessonId, moduleId) {
+    var el = $('#course-lessons'),
+        collection = new Apros.collections.CourseNotes(null, {courseId: courseId})
+    new Apros.views.CourseLesson({el: el, collection: collection}).render();
+
   }
 });
 

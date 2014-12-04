@@ -1,5 +1,6 @@
 ''' rendering templates from requests related to courses '''
 import json
+import csv
 from datetime import datetime
 
 from django.conf import settings
@@ -8,6 +9,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
+from django.views.decorators.http import require_POST
 
 from admin.controller import load_course
 from admin.models import WorkGroup
@@ -19,6 +21,7 @@ from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
 
+from .models import LessonNotesItem
 from .controller import inject_gradebook_info, round_to_int, Proficiency
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
@@ -589,3 +592,46 @@ def contact_member(request, course_id, group_id):
             content_type='application/json'
         )
 
+@login_required
+@check_user_course_access
+def course_export_notes(request, course_id):
+    course = load_course(course_id).inject_basic_data()
+    notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
+
+    response = HttpResponse(mimetype='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="mcka_course_notes.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Created At', 'Course Name', 'Lesson Name', 'Module Name', 'Note'])
+
+    for note in notes:
+        writer.writerow(note.as_csv(course))
+
+    return response
+
+@login_required
+@check_user_course_access
+def course_notes(request, course_id):
+    course = load_course(course_id).inject_basic_data()
+    notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
+    notes = [note.as_json(course) for note in notes]
+    return HttpResponse(json.dumps(notes), mimetype="application/json")
+
+@require_POST
+@login_required
+@check_user_course_access
+def add_lesson_note(request, course_id, chapter_id):
+    course = load_course(course_id).inject_basic_data()
+
+    note = LessonNotesItem(
+        body = request.POST['body'],
+        user_id = request.user.id,
+        course_id = course_id,
+        lesson_id = chapter_id,
+        module_id = request.POST['module_id'],
+    )
+    note.save()
+
+    return HttpResponse(
+        json.dumps(note.as_json(course)),
+        mimetype="application/json"
+    )

@@ -198,12 +198,40 @@ class Course(CategorisedJsonObject):
 
     def get_current_sequential(self, lesson_id, module_id):
         try:
-            lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
+            lesson = self.get_lesson(lesson_id)
             for sequential in lesson.sequentials:
                 if len([module for module in sequential.pages if module.id == module_id]) > 0:
                     return sequential
         except:
             return None
+
+    def get_lesson(self, lesson_id):
+        try:
+            lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
+            return lesson
+        except:
+            return None
+
+    def get_module(self, lesson_id, module_id):
+        try:
+            lesson = self.get_lesson(lesson_id)
+            for sequential in lesson.sequentials:
+                module = [module for module in sequential.pages if module.id == module_id]
+                if len(module) > 0:
+                    return module[0]
+                return None
+        except:
+            return None
+
+    def inject_basic_data(self):
+        for idx, lesson in enumerate(self.chapters, start=1):
+            lesson.index = idx
+            lesson.navigation_url = '/courses/{}/lessons/{}'.format(self.id, lesson.id)
+            for sequential in lesson.sequentials:
+                for idx, module in enumerate(sequential.pages, start=1):
+                    module.index = idx
+                    module.navigation_url = '{}/module/{}'.format(lesson.navigation_url, module.id)
+        return self
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
