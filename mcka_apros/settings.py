@@ -344,5 +344,5 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 FEATURES = {
-    'notes': True,
+    'notes': False,
 }
