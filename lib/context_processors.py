@@ -27,6 +27,7 @@ def settings_data(request):
         "session_id": request.session.session_key,
         "mapbox_token": settings.MAPBOX_API['public_token'],
         "mapbox_map_id": settings.MAPBOX_API['map_id'],
+        "apros_features": settings.FEATURES,
     }
     return data
 
