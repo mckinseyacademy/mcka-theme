@@ -69,7 +69,13 @@ a:visited {
   @include font-spec(14, semibold, 16);
 }
 
+a.button,
+a.button:visited {
+  @include font-spec(13, 700, 16);
+}
+
 a:hover { color: $mckinsey-academy-blue-gray; }
+a.button:hover { color: $pure-white; }
 
 hr {
   border: none;
@@ -233,8 +239,17 @@ button,
     @include font-spec(12, semibold, 14);
   }
 
+  a.button,
+  a.button:visited {
+    @include font-spec(13, 700, 16);
+  }
+
   a:hover {
     color: $mckinsey-academy-blue-gray;
+  }
+
+  a.button:hover {
+    color: $pure-white;
   }
 
   .person-username {

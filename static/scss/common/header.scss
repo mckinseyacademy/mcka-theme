@@ -185,8 +185,8 @@ header[role=banner].background-blue {
             height: auto;
             vertical-align: middle;
             text-align: center;
-            .button{
-              @include font-spec(14,bold);
+
+            .button {
               margin: 0 0 5px;
               color: $pure-white;
               &:hover{
@@ -250,9 +250,7 @@ header[role=banner].background-blue {
 
     .button {
       padding: 8px 15px;
-      margin: 10px;
-      @include font-spec(14px, bold);
-      &:hover { color: $pure-white; }
+      margin: 8px;
     }
 
     @media only screen
