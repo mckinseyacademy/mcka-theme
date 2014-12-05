@@ -8,6 +8,7 @@ import urllib2 as url_access
 from urllib import quote as urlquote
 import math
 import string
+import urlparse
 
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -1923,7 +1924,7 @@ def company_image_edit(request, client_id="new"):
         x2Position = request.POST.get('x2-position')
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
-        CompanyImageUrl = request.POST.get('upload-image-url').split('?')[0]
+        CompanyImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2].split('?')[0]
 
         if client_id != 'new':
             client = Organization.fetch(client_id)
@@ -1940,6 +1941,7 @@ def company_image_edit(request, client_id="new"):
         else:
             image_url = CompanyImageUrl
 
+        image_url = image_url[1:] if image_url[0] == '/' else image_url
         new_image_url = image_url
 
         if default_storage.exists(image_url):
@@ -1954,6 +1956,7 @@ def company_image_edit(request, client_id="new"):
             cropped_example = original.crop((left, top, right, bottom))
             new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
             Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
+
         if client_id == 'new':
             return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url}), content_type="application/json")
         else:
