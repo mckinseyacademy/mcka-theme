@@ -407,6 +407,10 @@
 
     #admin-analytics-progress{
       overflow: visible;
+
+      rect.nv-indexLine {
+        display:none;
+      }
     }
   }
   .admin-analytics-participant-activity-wrapper{
