@@ -408,6 +408,10 @@
     #admin-analytics-progress{
       overflow: visible;
       padding-left: 10px;
+
+      .nv-axis text, .tick.major text {
+        @include font-spec(12, bold);
+      }
     }
   }
   .admin-analytics-participant-activity-wrapper{
