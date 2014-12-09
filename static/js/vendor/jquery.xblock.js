@@ -160,7 +160,7 @@
 
                         DiscussionUtil.localUrls.push('user_profile');
                         DiscussionUtil.force_async = true;
-                        DiscussionUtil.route_prefix = 'courses/' + courseId + '/discussion/'
+                        DiscussionUtil.route_prefix = 'courses/' + courseId + '/discussion'
                     }
                 }
             };
