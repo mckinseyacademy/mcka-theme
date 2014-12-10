@@ -89,11 +89,12 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
 
     nv.addGraph(function() {
         var width = 805, height = 350;
+        var maxY = 1;
         var chart = nv.models.linePlusBarChart()
               .margin({top: 30, right: 60, bottom: 50, left: 70})
               //We can set x data accessor to use index. Reason? So the bars all appear evenly spaced.
               .x(function(d,i) { return i })
-              .y(function(d,i) { return d[1] })
+              .y(function(d,i) { maxY = d[1] > maxY ? d[1]: maxY; return d[1]; })
               .width(width).height(height)
               .tooltips(false);
 
@@ -107,6 +108,8 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
               return d;
             }
         });
+
+        chart.bars.forceY([0,maxY]);
 
         for (var property in chart.legend.dispatch) {
             chart.legend.dispatch[property] = function() { };
