@@ -18,6 +18,10 @@
       padding: 0;
       height: auto;
       line-height: normal;
+
+      &.forum-nav-filter-main-control {
+        width: rem-calc(90);
+      }
     }
 
     input {
