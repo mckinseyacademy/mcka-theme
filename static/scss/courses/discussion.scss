@@ -27,6 +27,10 @@
     input {
       margin: 0;
       padding: 0;
+
+      &.forum-nav-search-input {
+        font-size: rem-calc(10) !important;
+      }
     }
 
     .forum-nav-browse-current {
