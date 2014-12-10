@@ -33,6 +33,14 @@
       font-size: rem-calc(10);
     }
 
+    .forum-nav-header {
+      background: $mckinsey-dark-grey none;
+    }
+
+    .forum-nav-refine-bar {
+      background: $mckinsey-grey none;
+    }
+
     .forum-nav-thread-list  {
       .forum-nav-thread-wrapper-1 {
         padding-left: 5px;
