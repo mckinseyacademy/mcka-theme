@@ -46,7 +46,7 @@ $(function(){
       data: form.serialize()
     }).done(function(data){
         if(typeof(data) != 'undefined'){
-          $('.company-image img').attr('src', data.image_url);
+          $('.company-image img').attr('src', data.image_url + '?' + new Date().getTime());
           $('#edit-company-image-modal').foundation('reveal', 'close');
         }
       });

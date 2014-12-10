@@ -47,6 +47,55 @@
   .thread-content-wrapper, .new-post-article {
     .forum-new-post-form, .edit-post-form {
       min-width: 700px;
+
+      input.field-input {
+        margin-bottom: 0px;
+      }
+
+      .field-label {
+        margin-bottom: 8px;
+      }
+
+      .post-field {
+        .field-label {
+          .field-label-text {
+            font-family: "Open Sans",sans-serif;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .post-option {
+        margin-right: 10px;
+
+        span.js-anon-label,
+        span.js-anon-peers-label,
+        {
+          width: 165px;
+          display: inline-block;
+          vertical-align: top;
+
+          &::after {
+            content: "Posting anonymously will not add engagement points.";
+            color: $mckinsey-orange;
+            cursor: default;
+            display: block;
+            font-size: 14px;
+            line-height: 18px;
+            width: 190px;
+            float: right;
+            margin-top: 4px;
+          }
+        }
+      }
+
+      .submit, .cancel {
+        &, &:hover {
+          float: none;
+          margin-left: 0;
+          margin-right: $button-margin;
+        }
+      }
     }
   }
 
@@ -56,6 +105,16 @@
       background: none;
       padding: 0;
     }
+  }
+
+  .action-button {
+    .action-label {
+      padding: 0 5px;
+    }
+  }
+
+  .discussion-post {
+    .post-context { display: none; }
   }
 
   .discussion-article {
@@ -118,7 +177,9 @@
   .add-response .add-response-btn,
   .comments .comment-form .discussion-submit-comment,
   .discussion a.post-cancel,
-  .discussion-article .post-update {
+  .discussion-article .post-update,
+  .forum-new-post-form .submit,
+  .forum-new-post-form .cancel {
     &, &:hover {
       border-color: transparent;
       background-image: none;
@@ -128,12 +189,12 @@
       width: auto;
       float: right;
       @include button($button-sml, $primary-color, true);
-      margin-left: 20px;
+      margin-left: $button-margin;
       padding: 10px 28px;
+    }
 
-      &:hover {
-        background-color: $mckinsey-academy-blue-gray;
-      }
+    &:hover {
+      background-color: $mckinsey-academy-blue-gray;
     }
   }
 
@@ -321,56 +382,6 @@
         text-align: center;
         display: inline-block;
         padding: 0px;
-      }
-    }
-  }
-
-  /* New Post Article */
-
-  .new-post-article {
-    .inner-wrapper {
-      min-width: 0px;
-    }
-
-    .new-post-form {
-      background: $mckinsey-academy-bright-gray;
-      min-width: 560px;
-      position: relative;
-      margin-top: 0;
-      padding-top: 5em;
-
-      .topic_dropdown_button {
-        z-index: 98;
-      }
-
-      .form-group-label, .new-post-group {
-        color: #000000;
-      }
-
-      .form-row {
-        width: 100%;
-      }
-
-      .submit {
-        float: right;
-      }
-
-      .options {
-        float: left;
-        label {
-          color: $mckinsey-academy-black;
-          margin-right: 0;
-        }
-
-        label[for="new-post-anonymous"]::after,
-        label[for="new-post-anonymous-to-peers"]::after {
-            content:"Posting anonymously will not add engagement points.";
-            color: $mckinsey-orange;
-            cursor: default;
-            display: block;
-            font-size: 14px;
-            line-height: 18px;
-        }
       }
     }
   }

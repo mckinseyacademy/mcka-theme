@@ -412,6 +412,10 @@
       .nv-axis text, .tick.major text {
         @include font-spec(12, bold);
       }
+
+      rect.nv-indexLine {
+        display:none;
+      }
     }
   }
   .admin-analytics-participant-activity-wrapper{

@@ -55,12 +55,12 @@ $(function(){
         if(typeof(data) != 'undefined'){
           if(typeof data.image_url != 'undefined' && typeof data.client_id == 'undefined'){
               $('#new-principal').foundation('reveal', 'open');
-              $('.company-image img').attr('src', data.image_url);
+              $('.company-image img').attr('src', data.image_url + '?' + new Date().getTime());
               $('#id_logo_url').val(data.image_url);
           }
           else if(typeof data.client_id != 'undefined'){
               $('#edit-principal').foundation('reveal', 'open');
-              $('.company-image img').attr('src', data.image_url);
+              $('.company-image img').attr('src', data.image_url + '?' + new Date().getTime());
               $('#id_logo_url').val(data.image_url);
           }
           else{

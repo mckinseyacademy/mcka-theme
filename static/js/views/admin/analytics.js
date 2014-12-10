@@ -42,6 +42,11 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
       chart.yAxis
           .tickFormat(d3.format(',.1%'));
 
+
+      for (var property in chart.legend.dispatch) {
+          chart.legend.dispatch[property] = function() { };
+      }
+
       d3.select(_this.el)
           .datum(dataJson)
           .transition().duration(500).call(chart).style({ 'width': width, 'height': height });
@@ -102,6 +107,10 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
               return d;
             }
         });
+
+        for (var property in chart.legend.dispatch) {
+            chart.legend.dispatch[property] = function() { };
+        }
 
         d3.select(_this.el)
           .datum(dataJson)
