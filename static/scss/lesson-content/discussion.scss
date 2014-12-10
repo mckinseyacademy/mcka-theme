@@ -48,6 +48,14 @@
     .forum-new-post-form, .edit-post-form {
       min-width: 700px;
 
+      input.field-input {
+        margin-bottom: 0px;
+      }
+
+      .field-label {
+        margin-bottom: 8px;
+      }
+
       .post-field {
         .field-label {
           .field-label-text {

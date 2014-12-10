@@ -60,11 +60,13 @@
     }
   }
 
-  .new-post-article form.forum-new-post-form, .thread-content-wrapper form.edit-post-form {
+  .new-post-article form.forum-new-post-form,
+  .thread-content-wrapper form.edit-post-form {
     min-width: 500px;
 
     .field-label {
-      width: 100%
+      width: 100%;
+      line-height: inherit;
     }
 
     .field-help {
