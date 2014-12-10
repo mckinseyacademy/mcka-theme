@@ -48,6 +48,15 @@
     .forum-new-post-form, .edit-post-form {
       min-width: 700px;
 
+      .post-field {
+        .field-label {
+          .field-label-text {
+            font-family: "Open Sans",sans-serif;
+            font-weight: 600;
+          }
+        }
+      }
+
       .post-option {
         margin-right: 10px;
 
