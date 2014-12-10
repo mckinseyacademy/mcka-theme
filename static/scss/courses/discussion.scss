@@ -6,10 +6,6 @@
 }
 
 #course-discussion .discussion-content {
-  .new-post-article {
-    padding-bottom: 50px;
-  }
-
   fieldset { margin:0; padding: 0; border:0; }
 
   .forum-nav {
@@ -196,29 +192,4 @@
       padding-top: 0px;
     }
   }
-
-  /* New Post Article */
-
-  .new-post-article {
-    margin-bottom: 10px;
-
-    .left-column {
-      width: 35%;
-      padding-top: 0;
-    }
-
-    .right-column {
-      width: 65%;
-      padding-top: 0;
-    }
-
-    .topic-dropdown-label {
-        color: $mckinsey-academy-black;
-        font-size: 1em;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 1em;
-    }
-  }
-
 }
