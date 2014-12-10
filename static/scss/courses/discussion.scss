@@ -27,6 +27,20 @@
     .forum-nav-browse-current {
       font-size: rem-calc(10);
     }
+
+    .forum-nav-thread-list  {
+      .forum-nav-thread-title {
+        color: #000;
+      }
+
+      .forum-nav-thread-comments-count {
+        background-image: none;
+      }
+
+      .forum-nav-thread-votes-count {
+        background-color: #D4D4D4;
+      }
+    }
   }
 
   .new-post-article form.forum-new-post-form, .thread-content-wrapper form.edit-post-form {
@@ -83,84 +97,6 @@
         }
       }
 
-    }
-  }
-
-  /* Sidebar */
-  .sidebar {
-
-    .browse-search {
-      div {
-        background-color: $mckinsey-academy-alt-blue;
-        background-image: none;
-      }
-
-      .home {
-        box-shadow: -1px 0px 0px #FFF inset;
-      }
-
-      .icon {
-        color: #FFF;
-      }
-
-      .browse {
-        box-shadow: -1px 0px 0px #FFF inset;
-
-        .current-board {
-          color: #FFF;
-          text-shadow: none;
-        }
-      }
-
-      .search .post-search-field {
-        border: none;
-        box-shadow: none;
-      }
-
-      .browse-topic-drop-menu li {
-        /* This fixes layout issues with the filter dropdown in IE9+ */
-        font-size: 0;
-      }
-
-    }
-
-    .sort-bar {
-      background-color: $mckinsey-academy-bright-gray;
-      background-image: none;
-      overflow: auto;
-
-      a {
-        color: #66A5B5;
-      }
-
-      a.active {
-        background-image: none;
-        box-shadow: none;
-        background-color: $mckinsey-academy-bright-gray;
-        color: #868685;
-        text-shadow: none;
-      }
-
-    }
-
-    .post-list  {
-      .title {
-        color: #000;
-      }
-
-      a.active {
-        background-color: $mckinsey-academy-blue-gray;
-        box-shadow: none;
-        background-image: none;
-      }
-
-      .comments-count {
-        background-image: none;
-      }
-
-      .votes-count {
-        background-color: #D4D4D4;
-      }
     }
   }
 
