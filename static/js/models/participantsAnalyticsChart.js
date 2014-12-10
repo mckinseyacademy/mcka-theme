@@ -9,7 +9,7 @@ Apros.models.ParticipantsAnalyticsChart = Apros.models.ServerModel.extend({
     return [
       {
         'bar': true,
-        'color': '#3384CA',
+        'color': '#66A5B5',
         'key': '# Completed modules',
         'values': response.modules_completed
       },

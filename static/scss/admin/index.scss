@@ -402,11 +402,16 @@
 
   .admin-analytics-progress-wrapper{
     height:360px;
-    width:760px;
+    width:775px;
     float: left;
 
     #admin-analytics-progress{
       overflow: visible;
+      padding-left: 10px;
+
+      .nv-axis text, .tick.major text {
+        @include font-spec(12, bold);
+      }
 
       rect.nv-indexLine {
         display:none;
@@ -417,6 +422,12 @@
     height:360px;
     width:100%;
     float: left;
+
+    #admin-analytics-participant-activity {
+      .nv-axisMaxMin text, .tick.major text {
+        @include font-spec(12, bold);
+      }
+    }
   }
   .progress_stats{
     float:left;
