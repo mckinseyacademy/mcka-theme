@@ -71,6 +71,14 @@
           }
         }
       }
+
+      .submit, .cancel {
+        &, &:hover {
+          float: none;
+          margin-left: 0;
+          margin-right: $button-margin;
+        }
+      }
     }
   }
 
@@ -152,7 +160,9 @@
   .add-response .add-response-btn,
   .comments .comment-form .discussion-submit-comment,
   .discussion a.post-cancel,
-  .discussion-article .post-update {
+  .discussion-article .post-update,
+  .forum-new-post-form .submit,
+  .forum-new-post-form .cancel {
     &, &:hover {
       border-color: transparent;
       background-image: none;
@@ -162,12 +172,12 @@
       width: auto;
       float: right;
       @include button($button-sml, $primary-color, true);
-      margin-left: 20px;
+      margin-left: $button-margin;
       padding: 10px 28px;
+    }
 
-      &:hover {
-        background-color: $mckinsey-academy-blue-gray;
-      }
+    &:hover {
+      background-color: $mckinsey-academy-blue-gray;
     }
   }
 
