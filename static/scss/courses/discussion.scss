@@ -42,6 +42,12 @@
     }
 
     .forum-nav-thread-list  {
+      .forum-nav-thread-wrapper-0 {
+        .icon-question, .icon-comments, .icon-ok {
+          color: $mckinsey-academy-discussion-icon-gray;
+        }
+      }
+
       .forum-nav-thread-wrapper-1 {
         padding-left: 5px;
       }
