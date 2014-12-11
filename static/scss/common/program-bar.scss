@@ -135,11 +135,13 @@
     width: 275px;
     background-color: $pure-white;
     @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
-    .program-title{
+
+    .program-title {
       margin: 12px 20px 0;
-      @include font-spec(10, bold);
       text-transform: uppercase;
-      &::after{
+      @include font-spec(10, bold);
+
+      &:after{
         content: ':';
       }
     }
@@ -166,18 +168,17 @@
       }
     }
 
-    .status{
+    .status {
       @include font-spec(10, semibold);
       font-style: italic;
       color: $mckinsey-dark-grey;
+
       &.complete{
         color: $mckinsey-green;
       }
-      &.unavailable{
-        color: $almost-white;
-      }
     }
-    ul{
+
+    ul {
       margin: 0 12px;
       list-style: none;
       li{
