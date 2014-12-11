@@ -13,7 +13,7 @@ Apros.collections.CohortCities = Backbone.Collection.extend({
     response = _(response).isArray() ? response : [response];
     var cities = _(response).map(function(city) {
       return _(city.features).find(function(feature) {
-        return /^city/.test(feature.id);
+        return /^city|place/.test(feature.id);
       });
     });
     return _(cities).compact();

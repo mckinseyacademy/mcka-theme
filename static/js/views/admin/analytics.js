@@ -32,7 +32,7 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
           .tickValues(Array.apply(null, {length: dataJson[0].values.length}).map(Number.call, Number))
           .tickFormat(function(d) {
               if(daysNumber > 7 && d%7 == 0){
-                return (Math.floor(d / 7) + 1);
+                return (Math.ceil(d / 7) + 1);
               }
               else if (daysNumber <= 7){
                 return d;
