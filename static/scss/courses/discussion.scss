@@ -34,11 +34,35 @@
     }
 
     .forum-nav-header {
-      background: $mckinsey-dark-grey none;
+      width: auto;
+      background: $mckinsey-academy-alt-blue none;
+      border-bottom: 1px solid $mckinsey-academy-alt-blue;
+
+      .forum-nav-browse {
+        // have to use !important to override other !important at
+        // edx-platform/lms/static/sass/discussion/utilities/_shame.scss .forum-nav-browse rule
+        color: $pure-white !important;
+
+        &:hover, &:focus, &.is-active {
+          background-color: $mckinsey-academy-blue-gray;
+        }
+      }
     }
 
     .forum-nav-refine-bar {
-      background: $mckinsey-grey none;
+      background: $mckinsey-academy-alt-blue none;
+      color: $pure-white;
+
+      select {
+        color: $pure-white;
+        // same svg as static/scss/foundation/components/_forms.scss @mixin form-select, but white - keep in sync
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMTJweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIzcHgiIHZpZXdCb3g9IjAgMCA2IDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDYgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBvbHlnb24gcG9pbnRzPSI1Ljk5MiwwIDIuOTkyLDMgLTAuMDA4LDAgIiBzdHlsZT0iZmlsbDojZmZmZmZmIi8+PC9zdmc+);
+
+        option {
+          color: $pure-black;
+          background: $pure-white;
+        }
+      }
     }
 
     .forum-nav-thread-list  {
