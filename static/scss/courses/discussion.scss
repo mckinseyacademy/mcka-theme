@@ -76,6 +76,12 @@
         padding-left: 5px;
       }
 
+      .post-label-by-staff {
+        // need more than css to swap "Staff" for "McKinsey TA" there
+        // TODO: get more power
+        display: none;
+      }
+
       .forum-nav-thread-title {
         color: #000;
       }
