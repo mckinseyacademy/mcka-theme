@@ -18,6 +18,14 @@
   width: 100%
 }
 
+// TODO: this is a hacky fix to hide "Visible To" selector for inline discussions outside Group Work, since they aren't cohorted.
+// Proper way to not show it at all, but that requires fixing it in edx-platform, which is not achievable now due to
+// time bounds. Will bite us the day McKinsey want cohorted inline discussions outside Group Work.
+#course-lessons .post-field.group-selector-wrapper,
+#course-discussion .post-field.group-selector-wrapper {
+  display: none;
+}
+
 #course-group-work .discussion-module {
   // Calculated ratio of group work width to course page width
   width: 760px / 511.65625px * 100%;
@@ -44,6 +52,10 @@
       margin: 0px;
   }
 
+  .wmd-input {
+    background-color: $pure-white;
+  }
+
   .thread-content-wrapper, .new-post-article {
     .forum-new-post-form, .edit-post-form {
       min-width: 700px;
@@ -63,6 +75,10 @@
             font-weight: 600;
           }
         }
+      }
+
+      .js-group-select {
+        padding-right: rem-calc(15);
       }
 
       .post-option {
@@ -86,14 +102,6 @@
             float: right;
             margin-top: 4px;
           }
-        }
-      }
-
-      .submit, .cancel {
-        &, &:hover {
-          float: none;
-          margin-left: 0;
-          margin-right: $button-margin;
         }
       }
     }
@@ -209,15 +217,15 @@
     }
   }
 
-  .discussion-article {
-    .post-update,
-    a.post-cancel {
+  .discussion-article, .new-post-article {
+    .post-update, .submit,
+    a.post-cancel, a.cancel {
       &, &:visited, &:hover, &:focus {
         margin: 15px 0px;
       }
     }
 
-    a.post-cancel {
+    a.post-cancel, a.cancel {
       &, &:visited, &:hover, &:focus {
         float: left;
       }
@@ -298,18 +306,20 @@
 
   /* Course discussion banners */
 
-  .staff-banner, .community-ta-banner {
-    color: transparent;
-    padding: 0;
+  .user-label-staff, .user-label-community-ta {
+    visibility: hidden;
+    position: relative;
+    width: 0px;
+    display: inline-block;
 
     &:before {
       content: "McKinsey TA";
       text-transform: uppercase;
-      text-indent: 1ex;
       color: white;
       background-color: $mckinsey-academy-alt-blue;
-      color: white;
-      display: block;
+      visibility: visible;
+      padding: 2px 5px;
+      white-space: nowrap;
     }
   }
 
