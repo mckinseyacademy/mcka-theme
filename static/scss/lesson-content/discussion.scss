@@ -44,6 +44,10 @@
       margin: 0px;
   }
 
+  .wmd-input {
+    background-color: $pure-white;
+  }
+
   .thread-content-wrapper, .new-post-article {
     .forum-new-post-form, .edit-post-form {
       min-width: 700px;
@@ -86,14 +90,6 @@
             float: right;
             margin-top: 4px;
           }
-        }
-      }
-
-      .submit, .cancel {
-        &, &:hover {
-          float: none;
-          margin-left: 0;
-          margin-right: $button-margin;
         }
       }
     }
@@ -209,15 +205,15 @@
     }
   }
 
-  .discussion-article {
-    .post-update,
-    a.post-cancel {
+  .discussion-article, .new-post-article {
+    .post-update, .submit,
+    a.post-cancel, a.cancel {
       &, &:visited, &:hover, &:focus {
         margin: 15px 0px;
       }
     }
 
-    a.post-cancel {
+    a.post-cancel, a.cancel {
       &, &:visited, &:hover, &:focus {
         float: left;
       }
