@@ -18,6 +18,13 @@
   width: 100%
 }
 
+// TODO: this is a hacky fix to hide "Visible To" selector for inline discussions outside Group Work, since they aren't cohorted.
+// Proper way to not show it at all, but that requires fixing it in edx-platform, which is not achievable now due to
+// time bounds. Will bite us the day McKinsey want cohorted inline discussions outside Group Work.
+#course-lessons .post-field.group-selector-wrapper {
+  display: none;
+}
+
 #course-group-work .discussion-module {
   // Calculated ratio of group work width to course page width
   width: 760px / 511.65625px * 100%;
