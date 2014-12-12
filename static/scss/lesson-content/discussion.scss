@@ -298,18 +298,20 @@
 
   /* Course discussion banners */
 
-  .staff-banner, .community-ta-banner {
-    color: transparent;
-    padding: 0;
+  .user-label-staff, .user-label-community-ta {
+    visibility: hidden;
+    position: relative;
+    width: 0px;
+    display: inline-block;
 
     &:before {
       content: "McKinsey TA";
       text-transform: uppercase;
-      text-indent: 1ex;
       color: white;
       background-color: $mckinsey-academy-alt-blue;
-      color: white;
-      display: block;
+      visibility: visible;
+      padding: 2px 5px;
+      white-space: nowrap;
     }
   }
 
