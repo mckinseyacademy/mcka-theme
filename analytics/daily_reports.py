@@ -19,7 +19,7 @@ def send_email(course_name, file_name):
 	try:
 		msg = MIMEMultipart(settings.DAILY_EMAIL_REPORTS_CONFIG['data'])
 		msg['Subject'] = "Report for " + course_name + " %s" % (date.today().strftime(settings.DAILY_EMAIL_REPORTS_CONFIG['date_format']))
-		msg['To'] = settings.DAILY_EMAIL_REPORTS_CONFIG['email_space'].join(settings.DAILY_EMAIL_REPORTS_CONFIG['email_to'])
+		msg['To'] = settings.DAILY_EMAIL_REPORTS_CONFIG['email_to']
 		msg['From'] = settings.DAILY_EMAIL_REPORTS_CONFIG['email_from']
 		fp = open(settings.DAILY_EMAIL_REPORTS_CONFIG['output_directory']+file_name, 'rb')
 		file_excel=email.mime.base.MIMEBase('application','vnd.ms-excel')
@@ -333,3 +333,6 @@ if active_courses_dict:
 			sys.stdout.write("Course sending successful!"+a_course[0])
 else:
 	sys.stdout.write("No active courses") 
+
+
+
