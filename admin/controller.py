@@ -170,6 +170,14 @@ def _process_line(user_line):
         if len(fields) > 5:
             user_info["country"] = fields[5]
 
+        if len(fields) > 6:
+            # If password and username are included in the CSV,
+            # our intent is to register and activate the user
+            user_info["is_active"] = True
+            user_info["password"] = fields[7]
+            if fields[6]:
+                user_info["username"] = fields[6]
+
     except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
