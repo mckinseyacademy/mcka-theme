@@ -333,3 +333,6 @@ if active_courses_dict:
 			sys.stdout.write("Course sending successful!"+a_course[0])
 else:
 	sys.stdout.write("No active courses") 
+
+
+
