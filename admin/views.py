@@ -214,7 +214,7 @@ def client_admin_course(request, client_id, course_id):
     )
 
 def get_user_metrics_from_lookup(user_id, lookup):
-    user_metrics_value = lookup[user_id] if user_id in lookup else None
+    user_metrics_value = lookup[user_id] if user_id in lookup else 0
     return user_metrics_value
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
