@@ -170,6 +170,14 @@ def _process_line(user_line):
         if len(fields) > 5:
             user_info["country"] = fields[5]
 
+        if len(fields) > 6:
+            # If password and username are included in the CSV,
+            # our intent is to register and activate the user
+            user_info["is_active"] = True
+            user_info["password"] = fields[7]
+            if fields[6]:
+                user_info["username"] = fields[6]
+
     except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
@@ -213,7 +221,8 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
 
             if user:
                 try:
-                    activation_record = UserActivation.user_activation(user)
+                    if not user.is_active:
+                        activation_record = UserActivation.user_activation(user)
                     client.add_user(user.id)
                 except ApiError, e:
                     failure = {
@@ -241,7 +250,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
-            print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
+            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save()
 

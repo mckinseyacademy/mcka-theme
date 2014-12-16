@@ -202,6 +202,7 @@ class UserRegistrationBatch(db_models.Model):
         reg_record.save()
 
         return reg_record
+    
     @classmethod
     def clean_old(cls, ErrorModels=UserRegistrationError):
         old_records = cls.objects.filter(time_requested__lte=(timezone.now() - timedelta(days=1)))
