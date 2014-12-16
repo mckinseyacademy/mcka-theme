@@ -221,8 +221,9 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
 
             if user:
                 try:
-                    activation_record = UserActivation.user_activation(user)
-                    client.add_user(user.id)
+                    if not user.is_active:
+                        activation_record = UserActivation.user_activation(user)
+                        client.add_user(user.id)
                 except ApiError, e:
                     failure = {
                         "reason": e.message,
@@ -249,7 +250,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
-            print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
+            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save()
 
