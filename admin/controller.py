@@ -223,7 +223,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
                 try:
                     if not user.is_active:
                         activation_record = UserActivation.user_activation(user)
-                        client.add_user(user.id)
+                    client.add_user(user.id)
                 except ApiError, e:
                     failure = {
                         "reason": e.message,
