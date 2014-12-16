@@ -1,8 +1,5 @@
-#error_403,
-#error_404,
-#error_500,
-#error_503 {
-  margin-top: 100px;
+.error-page {
+  padding-top: 40px;
   .sub-1 + p { margin-bottom: 32px; }
 
   img {
