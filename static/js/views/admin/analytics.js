@@ -54,11 +54,11 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
           .transition().duration(500).call(chart).style({ 'width': width, 'height': height });
 
       d3.select(_this.el)
-          .selectAll('.nv-x .nv-axisMaxMin:last-child')
+          .selectAll('.nv-x .nvd3.nv-wrap.nv-axis')
           .append("text")
           .text(function(){return daysNumber > 7 ? 'weeks': 'days';})
           .attr('y', 15)
-          .attr('x', 10);
+          .attr('x', 680);
 
       return chart;
     });
