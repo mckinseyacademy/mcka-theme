@@ -19,7 +19,7 @@ def send_email(course_name, file_name):
 	try:
 		msg = MIMEMultipart(settings.DAILY_EMAIL_REPORTS_CONFIG['data'])
 		msg['Subject'] = "Report for " + course_name + " %s" % (date.today().strftime(settings.DAILY_EMAIL_REPORTS_CONFIG['date_format']))
-		msg['To'] = settings.DAILY_EMAIL_REPORTS_CONFIG['email_space'].join(settings.DAILY_EMAIL_REPORTS_CONFIG['email_to'])
+		msg['To'] = settings.DAILY_EMAIL_REPORTS_CONFIG['email_to']
 		msg['From'] = settings.DAILY_EMAIL_REPORTS_CONFIG['email_from']
 		fp = open(settings.DAILY_EMAIL_REPORTS_CONFIG['output_directory']+file_name, 'rb')
 		file_excel=email.mime.base.MIMEBase('application','vnd.ms-excel')
@@ -291,7 +291,7 @@ def get_reporting_courses():
 #build query for course dataset
 def build_course_dataset_query(course_name):
 	sql = list()
-	sql.append(' SELECT au.id as "User ID", au.username as "Username",au.first_name as "First Name",au.last_name as "Last Name", au.email as "Email",sce.is_active as "Activated",')
+	sql.append(' SELECT au.id as "User ID", au.username as "Username",au.first_name as "First Name",au.last_name as "Last Name", au.email as "Email",au.is_active as "Activated",')
 	sql.append('DATE_FORMAT(au.last_login, "%c/%d/%Y") as "Most Recent Login",') 
 	sql.append('DATE_FORMAT(au.date_joined, "%c/%d/%Y") as "Activation Date",')
 	sql.append('DATE_FORMAT(sce.created, "%c/%d/%Y") as "Enrollment Date", ')
@@ -300,7 +300,7 @@ def build_course_dataset_query(course_name):
 	sql.append(' FROM student_courseenrollment as sce ')
 	sql.append(' left join auth_user as au ON au.id = sce.user_id ')
 	sql.append(' WHERE course_id = "'+course_name+'" ')
-	sql.append(' and sce.is_active = 1 AND au.id NOT IN (Select sc.user_id from student_courseaccessrole as sc')
+	sql.append(' AND au.id NOT IN (Select sc.user_id from student_courseaccessrole as sc')
 	sql.append(' WHERE sc.course_id = "'+course_name+'")')
 	sql.append(' ORDER BY au.id')
 	return "".join(sql)
@@ -333,3 +333,6 @@ if active_courses_dict:
 			sys.stdout.write("Course sending successful!"+a_course[0])
 else:
 	sys.stdout.write("No active courses") 
+
+
+
