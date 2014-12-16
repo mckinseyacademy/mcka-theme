@@ -20,7 +20,7 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
       var maxY = 1;
       var chart = nv.models.cumulativeLineChart()
                     .x(function(d) { return d[0] })
-                    .y(function(d) { var y_val = Math.ceil(d[1])/100; maxY = this_value > maxY ? y_val: maxY; return y_val; }) //adjusting, 100% is 1.00, not 100 as it is in the data
+                    .y(function(d) { var y_val = Math.ceil(d[1])/100; maxY = y_val > maxY ? y_val: maxY; return y_val; }) //adjusting, 100% is 1.00, not 100 as it is in the data
                     .color(['#66A5B5', '#B1C2CC'])
                     .useInteractiveGuideline(true)
                     .width(width).height(height)
