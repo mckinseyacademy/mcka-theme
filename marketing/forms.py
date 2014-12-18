@@ -23,6 +23,10 @@ TECH_SUPPORT_CHOICES = (
     ("task", _("Suggestion")),
 )
 
+EDUCATION_CHOICES = (
+    ("", "Please Select…"),
+)
+
 USER_TOKEN = '{}/token:{}'.format(
     settings.ZENDESK_API['username'],
     settings.ZENDESK_API['token'],
@@ -96,3 +100,12 @@ class SubscribeForm(forms.Form):
             url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
         except HTTPError, e:
             return False
+
+class EdxOfferForm(forms.Form):
+    auto_id = False
+    full_name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Full name')}))
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Email')}))
+    company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Company')}))
+    title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Title')}))
+    education = forms.ChoiceField(label=_('Highest level of education completed:'), choices=EDUCATION_CHOICES)
+    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('Please describe your reason for applying in at least 100 words')}))

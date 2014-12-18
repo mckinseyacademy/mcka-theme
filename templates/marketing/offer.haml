@@ -1,0 +1,35 @@
+- extends "layout.haml"
+
+- block page_title
+  %title= _("Offer | McKinsey Academy")
+  %meta{property: "og:title", content: "McKinsey Academy Offer"}
+
+- block content
+  %article#offer-page
+    %img.tileset{src: ""}
+    .row.collapse
+      .large-11.large-centered.columns
+        %section
+          %h1 edX Offer
+        %section
+          %p McKinsey has set aside a number of places for qualified participants. We will offer priority placement to firms that propose well qualified candidates in groups of four. After reviewing applications, if we find sufficient suitable applicants we will launch the course in February 2015. If we do not find sufficient participants the course will be cancelled. Once the cohort has been declared viable, we will reach out to those who have been selected with course logistics, and will at that time secure course fees via invoice. Payment must be made in full before the course commences.
+        %section
+          .sub-1 Target Audience:
+          %p Rising professionals looking to build leadership and management capabilities.
+        %section
+          .sub-1 Course:
+          %a Structured Business Communications
+          %p Learn how to present your ideas effectively including how to deliver structured, concise, and compelling business communications.
+        %section
+          %p.style-5 Fee for course: $2,500
+          %p.style-5 Applications must be received by January 20th, 2015.
+        %hr
+        .large-6.columns.background-white
+          .sub-1 Application
+          %p Please submit the information below and we will respond.
+          %form#edx-offer{action: '/offer/', method: 'POST'}
+            - csrf_token
+            %fieldset
+              = edx_offer_form
+              %div
+                %input.button.small.radius{type: 'submit', value: 'Submit'}
