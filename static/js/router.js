@@ -2,6 +2,7 @@ var Router = Backbone.Router.extend({
   routes: {
     '':                                       'home',
     'contact/':                               'contact',
+    'edxoffer/':                              'edxoffer',
     'courses/*course_id/progress':            'course_progress',
     'courses/*course_id/progress/*user_id':   'course_progress',
     'courses/*course_id/overview':            'course_overview',
@@ -24,6 +25,11 @@ var Router = Backbone.Router.extend({
     var el = $('#contact-page');
     new Apros.views.Contact({el: el}).render();
     $('#support_success').foundation('reveal', 'open');
+  },
+
+  edxoffer: function() {
+    var el = $('#edxoffer-page');
+    new Apros.views.Edxoffer({el: el}).render();
   },
 
   course_index: function() {

@@ -5,7 +5,7 @@
   %meta{property: "og:title", content: "McKinsey Academy Offer"}
 
 - block content
-  %article#offer-page
+  %article#edxoffer-page
     %img.tileset{src: ""}
     .row.collapse
       .large-11.large-centered.columns
@@ -27,8 +27,8 @@
         .large-6.columns.background-white
           .sub-1 Application
           %p Please submit the information below and we will respond.
-          %form#edx-offer{action: '/offer/', method: 'POST'}
-            - csrf_token
+          -#<iframe src="https://docs.google.com/forms/d/1BDYsSrfUY6cRzyfSx1lsv396i-EywuepL5qRwF574dg/viewform?embedded=true#start=embed" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+          %form#edxoffer{action: '', method: 'POST', 'data-key': '1BDYsSrfUY6cRzyfSx1lsv396i-EywuepL5qRwF574dg'}
             %fieldset
               = edx_offer_form
               %div

@@ -43,9 +43,9 @@ def subscribe(request, subscribe_form=SubscribeForm):
 def styleguide(request):
     return render(request, 'marketing/styleguide.haml')
 
-def offer(request, offer_form=EdxOfferForm):
+def edxoffer(request, offer_form=EdxOfferForm):
     data = {
         "edx_offer_form": offer_form(),
     }
 
-    return render(request, 'marketing/offer.haml', data)
+    return render(request, 'marketing/edxoffer.haml', data)
