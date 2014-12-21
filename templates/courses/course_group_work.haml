@@ -6,6 +6,28 @@
     = program.display_name
     = _(" | Group Work | Courses | McKinsey Academy")
 
+- block help_context
+  #mckinsey_help.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    .sub-1 Group Work
+    %p Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
+    .help-line Access group work using the <i class="mk-icon-groupworknav"></i> icon in the main navigation bar
+    .help-line Group work is made up of one or more activities, and each activity is made up of up to 4 stages:
+    .help-line OVERVIEW - provides a high-level overview of the task(s)
+    .help-line UPLOAD - allows your team to upload deliverables for TA or peer grading
+    .help-line REVIEWS - allows you to anonymously grade peer projects and/or provide team feedback
+    .help-line GRADE - displays your team feedback and peer (or TA) grade
+    .help-line
+      .page-left
+        %i.fa.fa-chevron-left
+      Move from stage to stage within an activity using the left and right arrows; deadlines for each stage are posted, and if a particular stage has not yet opened, it is noted
+    .help-line Group work has a private inline discussion you can use to collaborate with only your group members. View these conversations in group work pages, or by accessing the larger discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar. Your private discussions, even when viewed on the main discussion page, are only visible to your group members, never to the larger cohort.
+    .help-line Email your group members (individually or combined) from the right column of each stage
+    .help-line Email your McKinsey TA from the right column of each stage.
+    .help-line This video walks you through the group work experience:
+    #mk-help-video{'data-video-id': "F0cmwxcjoRJg4g6GAcZGCl4dAGJKQ1Cj"}
+
 - block current_content
   #course-group-work
     %a.global-help{'data-reveal-id': 'mckinsey_help'}

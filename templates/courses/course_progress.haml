@@ -11,6 +11,15 @@
   - else
     - include "admin/admin_header.haml"
 
+- block help_context
+  #mckinsey_help.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    .sub-1 Progress
+    %p Below are helpful tips to review your progress. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
+    .help-line PROGRESS marks your progress (based on completion of modules and readings) through course content; the average progress of your cohort is also displayed
+    .help-line GRADE displays your proficiency against a total possible score of 100; your proficiency is based on graded assessments and group work performance.
+
 - block current_content
   #course-progress
     - if progress_user.id == user.id

@@ -352,14 +352,40 @@ form {
 
 #mckinsey_help {
   word-wrap: break-word;
-  p {
-    margin-bottom: rem-calc(20);
-    &:last-child { margin-bottom: 0; }
+
+  .help-line {
+    position: relative;
+    padding: 15px 0 15px 50px;
+    border-bottom: 1px solid $border-line;
+    &:last-of-type { border-bottom: none; }
+    i { color: $mckinsey-orange; }
+
+    .module-list {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      margin-top: rem-calc(-10);
+      font-size: rem-calc(20);
+      i { color: $mckinsey-academy-alt-blue; }
+    }
+
+    .page-left {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      margin-top: rem-calc(-15);
+      border-radius: 50%;
+      background: $mckinsey-academy-alt-blue;
+      text-align: center;
+      width: rem-calc(30);
+      height: rem-calc(30);
+      @include font-spec(18, normal, 30);
+      i { color: $pure-white; }
+    }
   }
+
   #mk-help-video { margin-bottom: rem-calc(20); }
-  #support-contact-email {
-    word-wrap: break-word;
-  }
+  #support-contact-email { word-wrap: break-word; }
 }
 
 .modal-title {
