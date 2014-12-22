@@ -217,11 +217,12 @@ def client_admin_course(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
     course = load_course(course_id)
-    participants = course_api.get_users_list_in_organizations(course_id, client_id)
-    total_participants = len(participants)
-    if total_participants > 0:
-        users_ids = [str(user.id) for user in participants]
-        users_progress = organization_course_progress_user_list(course_id, client_id, count=total_participants)
+    users = course_api.get_users_list_in_organizations(course_id, client_id)
+    obs_users_base = [user.id for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
+    total_users = len(users)
+    if total_users > 0:
+        users_ids = [str(user.id) for user in users if user.id not in obs_users_base]
+        users_progress = organization_course_progress_user_list(course_id, client_id, count=total_users)
         user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
 
         additional_fields = ["full_name", "title", "avatar_url"]
@@ -236,7 +237,7 @@ def client_admin_course_participants(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         'course': course,
-        'total_participants': total_participants,
+        'total_participants': len(students),
         'students': students
     }
     return render(
@@ -258,10 +259,11 @@ def client_admin_download_course_report(request, client_id, course_id):
         )
     ) + ".csv"
 
-    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+    users = course_api.get_users_list_in_organizations(course_id, client_id)
+    obs_users_base = [user.id for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
 
-    users_ids = [str(user.id) for user in participants]
-    users_progress = organization_course_progress_user_list(course_id, client_id, count=len(participants))
+    users_ids = [str(user.id) for user in users if user.id not in obs_users_base]
+    users_progress = organization_course_progress_user_list(course_id, client_id, count=len(users))
     user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
 
     additional_fields = ["full_name", "title", "avatar_url"]
