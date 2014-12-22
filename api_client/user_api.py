@@ -67,11 +67,54 @@ def get_user_dict(user_id):
     )
     return json.loads(response.read())
 
+def chunks(l, n):
+    """ Yield successive n-sized chunks from l.
+    """
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
+
+def _chunked_get_users_by_id(request_fields, ids):
+    result_set = []
+
+    # break down array of users into chunks of 100
+    # and make API call on these chunks. Then collate the results
+    # to return the same data interface that
+    # is expected
+    for chunk in chunks(ids, 100):
+        qs_params = {
+            "page_size": 0,
+            "fields": ",".join(request_fields),
+        }
+
+        qs_params['ids'] = ",".join(chunk)
+
+        response = GET(
+            '{}/{}?{}'.format(
+                settings.API_SERVER_ADDRESS,
+                USER_API,
+                urlencode(qs_params)
+            )
+        )
+
+        # the json.loads() will return an array datatype rather than
+        # a dictionary, so be sure to collate results in an array
+        result_set.extend(json.loads(response.read()))
+
+    return JP.from_dictionary(result_set, user_models.UserResponse)
+
 @api_error_protect
 def get_users(fields=[], *args, **kwargs):
     ''' get all users that meet filter criteria'''
     request_fields = ['id', 'email', 'username']
     request_fields.extend(fields)
+
+    # special case handling if we are retrieving a set of users
+    # since there could be an arbitrary number of
+    # ids passed through and we will need to paginate the
+    # data retrieval
+    if 'ids' in kwargs:
+        return _chunked_get_users_by_id(request_fields, kwargs['ids'])
+
     qs_params = {
         "page_size": 0,
         "fields": ",".join(request_fields),
