@@ -1,14 +1,31 @@
 Apros.views.Edxoffer = Backbone.View.extend({
   events: {
-    'submit #edxoffer': 'edxoffer_submit'
+    'input [data-entry]': 'checkInput',
+    'submit #edxoffer': 'edxofferSubmit'
   },
 
-  edxoffer_submit: function(event) {
-    var el = $(event.currentTarget),
+  checkInput: function(e) {
+    var entries = this.$('[data-entry]'),
+        count = entries.length;
+    entries.each(function() {
+      var item = $(this);
+      if (item.is('textarea')) {
+        if (/^\W*(?:\w+(?:\W+|$)){100,}$/.test(item.val())) {
+          count--;
+        }
+      } else {
+        if (item.val().length) count--;
+      }
+    });
+    this.$('input[type=submit]').prop('disabled', count !== 0);
+  },
+
+  edxofferSubmit: function(e) {
+    var el = $(e.currentTarget),
         key = el.data('key'),
         entries = $('[data-entry]', el),
         data = {};
-    event.preventDefault();
+    e.preventDefault();
 
     entries.each(function() {
       var item = $(this);
@@ -20,8 +37,10 @@ Apros.views.Edxoffer = Backbone.View.extend({
       type: 'POST',
       data: data,
       dataType: 'xml'
-    }).done(function(e){
-      console.log(e);
     });
+    setTimeout(function() {
+      $('[data-entry]').val('');
+      $('#offer_confirmation').foundation('reveal', 'open');
+    }, 300);
   }
 });

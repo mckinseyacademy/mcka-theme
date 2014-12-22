@@ -25,6 +25,11 @@ TECH_SUPPORT_CHOICES = (
 
 EDUCATION_CHOICES = (
     ("", "Please Select…"),
+    ("Bachelor's degree", _("Bachelor's degree")),
+    ("mba", _("Master's of Business Administration (MBA)")),
+    ("Master's degree", _("Master's degree (non MBA)")),
+    ("PHD", _("Doctorate (PhD)")),
+    ("other", _("Other")),
 )
 
 USER_TOKEN = '{}/token:{}'.format(
