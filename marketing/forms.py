@@ -23,6 +23,15 @@ TECH_SUPPORT_CHOICES = (
     ("task", _("Suggestion")),
 )
 
+EDUCATION_CHOICES = (
+    ("", "Please Select…"),
+    ("Bachelor's degree", _("Bachelor's degree")),
+    ("mba", _("Master's of Business Administration (MBA)")),
+    ("Master's degree", _("Master's degree (non MBA)")),
+    ("PHD", _("Doctorate (PhD)")),
+    ("other", _("Other")),
+)
+
 USER_TOKEN = '{}/token:{}'.format(
     settings.ZENDESK_API['username'],
     settings.ZENDESK_API['token'],
@@ -96,3 +105,12 @@ class SubscribeForm(forms.Form):
             url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
         except HTTPError, e:
             return False
+
+class EdxOfferForm(forms.Form):
+    auto_id = False
+    full_name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Full name'), 'data-entry': 'entry.867370117'}))
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Email'), 'data-entry': 'entry.161345890'}))
+    company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Company'), 'data-entry': 'entry.925379726'}))
+    title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Title'), 'data-entry': 'entry.143346488'}))
+    education = forms.ChoiceField(label=_('Highest level of education completed:'), choices=EDUCATION_CHOICES, widget=forms.Select(attrs={'data-entry': 'entry.24647299'}))
+    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('Please describe your reason for applying in at least 100 words'), 'data-entry': 'entry.1495472333'}))

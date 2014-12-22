@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
-from .forms import TechSupportForm, SubscribeForm
+from .forms import TechSupportForm, SubscribeForm, EdxOfferForm
 
 def infer_default_navigation(request, page_name):
     page = "marketing/{0}.haml".format(page_name)
@@ -42,3 +42,10 @@ def subscribe(request, subscribe_form=SubscribeForm):
 
 def styleguide(request):
     return render(request, 'marketing/styleguide.haml')
+
+def edxoffer(request, offer_form=EdxOfferForm):
+    data = {
+        "edx_offer_form": offer_form(),
+    }
+
+    return render(request, 'marketing/edxoffer.haml', data)
