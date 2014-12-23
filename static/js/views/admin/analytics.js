@@ -16,7 +16,7 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
                     return [value];
                 });
     nv.addGraph(function() {
-      var width = 775, height = 350;
+      var width = 770, height = 350;
       var maxY = 1;
       var chart = nv.models.cumulativeLineChart()
                     .x(function(d) { return d[0] })
@@ -58,7 +58,11 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
           .append("text")
           .text(function(){return daysNumber > 7 ? 'weeks': 'days';})
           .attr('y', 15)
-          .attr('x', 680);
+          .attr('x', 683);
+
+      d3.selectAll('.nv-background rect')
+          .on('click', function() {
+          });
 
       return chart;
     });
