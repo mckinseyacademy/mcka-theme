@@ -9,8 +9,9 @@ Apros.views.Edxoffer = Backbone.View.extend({
         count = entries.length;
     entries.each(function() {
       var item = $(this);
-      if (item.is('textarea')) {
-        if (/^\W*(?:\w+(?:\W+|$)){100,}$/.test(item.val())) {
+      if (item.attr('pattern')) {
+        var reg = new RegExp(item.attr('pattern'));
+        if (reg.test(item.val())) {
           count--;
         }
       } else {

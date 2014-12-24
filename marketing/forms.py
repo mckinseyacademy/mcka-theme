@@ -108,9 +108,9 @@ class SubscribeForm(forms.Form):
 
 class EdxOfferForm(forms.Form):
     auto_id = False
-    full_name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Full name'), 'data-entry': 'entry.867370117'}))
-    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Email'), 'data-entry': 'entry.161345890'}))
-    company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Company'), 'data-entry': 'entry.925379726'}))
-    title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Title'), 'data-entry': 'entry.143346488'}))
+    full_name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Full name'), 'required': None, 'data-entry': 'entry.867370117'}))
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'type': 'email', 'placeholder': _('Email'), 'required': '', 'pattern': '^[\w\d_.%+-]+@[\w\d.-]+\.[a-z]{2,6}$', 'data-entry': 'entry.161345890'}))
+    company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Company'), 'required': None, 'data-entry': 'entry.925379726'}))
+    title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Title'), 'required': None, 'data-entry': 'entry.143346488'}))
     education = forms.ChoiceField(label=_('Highest level of education completed:'), choices=EDUCATION_CHOICES, widget=forms.Select(attrs={'data-entry': 'entry.24647299'}))
-    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('Please describe your reason for applying in at least 100 words'), 'data-entry': 'entry.1495472333'}))
+    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('In a few lines tell us whay you would like to take the course.'), 'required': None, 'data-entry': 'entry.1495472333'}))
