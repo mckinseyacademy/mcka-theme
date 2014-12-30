@@ -795,20 +795,13 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
     }
     if detail_view == "programs" or detail_view == "courses":
         data["students"] = client.fetch_students_by_enrolled()
+        # convert all of the date strings to SHORT FORMAT
+        for student in data["students"]:
+            student.created = datetime.strptime(student.created, "%Y-%m-%dT%H:%M:%SZ" ).strftime(settings.SHORT_DATE_FORMAT)
+
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
-
-        if detail_view == "programs":
-            user_ids = [str(student.id) for student in data["students"]]
-            additional_fields = ["created", "is_active"]
-            user_dict = {str(u.id) : u for u in user_api.get_users(ids=user_ids,fields=additional_fields)} if len(user_ids) > 0 else {}
-            for student in data["students"]:
-                user = user_dict[str(student.id)]
-                if user.created:
-                    student.created = user.created.strftime(settings.SHORT_DATE_FORMAT)
-                if user.is_active == True:
-                    student.enrolled = True
 
     return render(
         request,
