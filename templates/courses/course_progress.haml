@@ -35,7 +35,10 @@
     - include "courses/visualizations/course_progress.haml"
     %hr
     .sub-1 GRADES
-    %p.style-6 You need to complete all group work and feedback activities and earn a combined course grade of at least ={pass_grade}% to work towards a program certificate of completion. Your course grade is calculated as follows:
+    - ifnotequal group_activities None
+      %p.style-6 You need to complete all group work and feedback activities and earn a combined course grade of at least ={pass_grade}% to work towards a program certificate of completion. Your course grade is calculated as follows:
+    - else
+      %p.style-6 You need a combined course grade of at least ={pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows:
     .grades
       %ul
         - for grader in graders
