@@ -221,4 +221,7 @@ $(function(){
     $(this).removeClass('focused_placeholder');
   });
 
+  if ($('#courses-unavailable').length) {
+    $('.course-name.unavailable:first').click();
+  }
 });
