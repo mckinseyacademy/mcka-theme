@@ -202,7 +202,6 @@ def check_company_admin_user_access(func):
 
     return admin_user_user_access_checker
 
-
 def _inject_formatted_data(program, course, page_id, static_tab_info=None):
     if program:
         for program_course in program.courses:
@@ -244,6 +243,7 @@ def standard_data(request):
     ''' Makes user and program info available to all templates '''
     course = None
     program = None
+    upcoming_course = None
 
     # have we already fetched this before and attached it to the current request?
     if hasattr(request, 'user_program_data'):
@@ -279,10 +279,13 @@ def standard_data(request):
 
             # Inject course progress for nav header
             load_course_progress(course, request.user.id)
+        else:
+            upcoming_course = program.courses[0]
 
     data = {
         "course": course,
         "program": program,
+        "upcoming_course": upcoming_course,
     }
 
     # point to this data from the request object, just in case we re-enter this method somewhere
