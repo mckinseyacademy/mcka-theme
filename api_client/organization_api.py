@@ -46,13 +46,17 @@ def fetch_organization(organization_id, organization_object=JsonObjectWithImage)
     return JP.from_json(response.read(), organization_object)
 
 @api_error_protect
-def get_users_by_enrolled(organization_id, user_object=JsonObjectWithImage):
+def get_users_by_enrolled(organization_id, user_object=JsonObjectWithImage, *args, **kwargs):
     ''' fetch organization users list, with additional courses enrolled flag '''
+    qs_params = {}
+    qs_params.update(kwargs)
+
     response = GET(
-        '{}/{}/{}/users/?include_course_counts=True'.format(
+        '{}/{}/{}/users/?{}'.format(
             settings.API_SERVER_ADDRESS,
             ORGANIZATION_API,
             organization_id,
+            urlencode(qs_params)
         )
     )
 

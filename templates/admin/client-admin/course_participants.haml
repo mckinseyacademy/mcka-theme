@@ -63,7 +63,7 @@
                 = student.progress
                 = _('%')
               %td
-                - if student.proficiency >= 70
+                - if student.completed
                   = _("Yes")
                 - else
                   = _("No")

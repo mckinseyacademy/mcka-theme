@@ -214,8 +214,7 @@ def client_admin_course(request, client_id, course_id):
     )
 
 def get_user_metrics_from_lookup(user_id, lookup):
-    user_metrics_value = lookup[user_id] if user_id in lookup else 0
-    return user_metrics_value
+    return lookup[user_id] if user_id in lookup else 0
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
@@ -229,15 +228,15 @@ def client_admin_course_participants(request, client_id, course_id):
         users_progress = organization_course_progress_user_list(course_id, client_id, count=total_users)
         user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
 
-        course_proficiency = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=len(participants))
-        user_grade_lookup = {str(u.id):round_to_int(100 * u.grade) for u in course_proficiency.leaders}
+        course_proficiency = organization_api.get_users_by_enrolled(client_id, course_id=course_id, include_complete_status=True, include_grades=True)
+        user_grade_lookup = {str(u.id):[round_to_int(100 * u.grade), u.complete_status] for u in course_proficiency}
 
         additional_fields = ["full_name", "title", "avatar_url"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
         for student in students:
             student.avatar_url = student.image_url(size=48)
             student.progress = get_user_metrics_from_lookup(str(student.id), user_progress_lookup)
-            student.proficiency = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
+            student.proficiency, student.completed = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
 
     else:
         students = []
@@ -279,16 +278,16 @@ def client_admin_download_course_report(request, client_id, course_id):
     course_social_metrics = course_api.get_course_social_metrics(course_id, organization_id=client_id)
     user_social_lookup = {str(u_id):social_total(user_metrics) for u_id, user_metrics in course_social_metrics.users.__dict__.iteritems()}
 
-    course_proficiency = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=len(participants))
-    user_grade_lookup = {str(u.id):round_to_int(100 * u.grade) for u in course_proficiency.leaders}
+    course_proficiency = organization_api.get_users_by_enrolled(client_id, course_id=course_id, include_complete_status=True, include_grades=True)
+    user_grade_lookup = {str(u.id):[round_to_int(100 * u.grade), u.complete_status] for u in course_proficiency}
 
     additional_fields = ["full_name", "title", "avatar_url"]
     students = user_api.get_users(ids=users_ids, fields=additional_fields)
     for student in students:
         student.progress = get_user_metrics_from_lookup(str(student.id), user_progress_lookup)
         student.engagement = get_user_metrics_from_lookup(str(student.id), user_social_lookup)
-        student.proficiency = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
-        student.completed = "Y" if student.proficiency >= 70 else "N"
+        student.proficiency, completed = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
+        student.completed = "Y" if completed else "N"
 
     students.sort(key = attrgetter('progress'), reverse = True)
 
