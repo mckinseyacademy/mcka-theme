@@ -11,6 +11,11 @@
   .course-name {
     span {
       background: $mckinsey-orange;
+
+      &.start-time {
+        background: none;
+        font-weight: normal;
+      }
     }
 
     a {

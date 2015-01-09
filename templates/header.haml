@@ -52,7 +52,12 @@
               %a{href: "#{course.nav_url}"}= course.name
           .medium-6.columns.course_nav
             - include "courses/content_page/course_tabs.haml"
-    - elif program
-      #courses-unavailable.hidden
-        - for program_course in program.courses
-          .course-name.unavailable{'data-numdays': '#{program_course.days_till_start}'}
+    - elif program and upcoming_course
+      .program-bar.background-alt-blue
+        .row.collapse
+          .medium-6.columns
+            .label-4.program-name<
+              = program.display_name
+            %h4.course-name
+              = upcoming_course.name
+              %span.start-time - course begins in ={upcoming_course.days_till_start} days
