@@ -3,6 +3,8 @@
     display: none;
   }
 
+  .feedback { z-index: 1; }
+
   input[type="button"],
   button {
     @include button($button-sml, $primary-color, true);
