@@ -38,7 +38,7 @@ header[role=banner].background-blue {
       }
     }
 
-    @media #{$screen} and (max-width: #{upper-bound($small-range)}) {
+    @media #{$screen} and (max-width: 700px) {
       height: auto;
       position: absolute;
       top: 100%;
@@ -77,7 +77,7 @@ header[role=banner].background-blue {
       background-image: url(/static/image/McK_McKA_cobranding@2x.png);
     }
 
-    @media #{$screen} and (max-width: 768px) {
+    @media #{$screen} and (max-width: 950px) {
       width: 135px;
       background-size: 265px;
       background-position: -122px 17px;
