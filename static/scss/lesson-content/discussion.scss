@@ -15,7 +15,14 @@
 }
 
 #course-lessons .discussion-module {
-  width: 100%
+  width: 100%;
+  
+  form.edit-post-form {
+    // We don't want topics displayed in the edit form.
+    .topic-wrapper {
+      display: none;
+    }
+  }
 }
 
 #course-group-work .discussion-module {
