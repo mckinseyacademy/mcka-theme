@@ -327,7 +327,7 @@ def client_admin_course_analytics(request, client_id, course_id):
     course.company_progress = company_metrics.course_average_display
 
     # proficiency
-    company_proficiency = organization_api.get_grade_complete_count(client_id, course_id=course_id)
+    company_proficiency = organization_api.get_grade_complete_count(client_id, courses=course_id)
     course_proficiency = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency)
 
     # engagement
