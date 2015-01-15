@@ -19,7 +19,6 @@ from api_client.api_error import ApiError
 
 from .models import UserPasswordReset
 
-
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
 
@@ -36,7 +35,6 @@ GENDER_CHOICES = (
     ("f", _("Female")),
     ("m", _("Male")),
 )
-
 
 YEAR_CHOICES = [("", "---"),]
 YEAR_CHOICES.extend([(year_string, year_string) for year_string in ["{}".format(year_value) for year_value in reversed(range(datetime.date.today().year - 100, datetime.date.today().year - 10))]])
@@ -297,7 +295,6 @@ COUNTRY_CHOICES = (
 READ_ONLY_IF_DATA_FIELDS = ["company", "full_name"]
 DISABLED_IF_DATA_FIELDS = []
 
-
 class UserNameInput(forms.TextInput):
     input_type = 'text'
 
@@ -328,10 +325,10 @@ class ActivationForm(NoSuffixLabelForm):
     #last_name = forms.CharField(max_length=255)
 
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
+    username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
     password = forms.CharField(widget=forms.PasswordInput(),
         label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
     #confirm_password = forms.CharField(widget=forms.PasswordInput())
-    username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
     title = forms.CharField(max_length=255, required=False)
@@ -354,7 +351,6 @@ class ActivationForm(NoSuffixLabelForm):
             for disabled in DISABLED_IF_DATA_FIELDS:
                 if disabled in user_data and len(user_data[disabled]) > 0:
                     self.fields[disabled].widget.attrs['disabled'] = 'disabled'
-
 
     # def clean(self):
     #     ''' override clean to check for password matches '''
@@ -448,7 +444,6 @@ class SetNewPasswordForm(forms.Form):
             self.user.error = error
             return self.user
         return self.user
-
 
 class UploadProfileImageForm(forms.Form):
     ''' form to upload file for profile image '''
