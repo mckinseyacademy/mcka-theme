@@ -11,6 +11,7 @@ from .models import ApiToken
 from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
 from courses.user_courses import standard_data
+from courses.controller import round_to_int, Proficiency, get_social_metrics, average_progress
 
 @require_POST
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -27,25 +28,15 @@ def api_create_token(request):
 def course(request, course_id):
     course = course_api.get_course(course_id)
     overview = course_api.get_course_overview(course_id)
-    status = None
-    week = None
-
-    if course.ended:
-        status = "COURSE_ENDED"
-    elif course.started:
-        status = "COURSE_STARTED"
-        week = course.week
-    else:
-        status = "COURSE_UNAVAILABLE"
 
     data = {
         "name": course.name,
-        "url": "https://www.mckinseyacademy.com/courses/{}".format(course_id),
+        "url": "https://www.mckinseyacademy.com{}".format(course.nav_url),
         "overview": overview.about,
         "start_date": course.start.isoformat(),
         "end_date": course.end.isoformat(),
-        "week": week,
-        "status": status,
+        "week": course.week,
+        "status": course.status,
     }
     return data
 
@@ -55,16 +46,32 @@ def course(request, course_id):
 def user_course(request):
     course = standard_data(request).get("course", None)
     overview = course_api.get_course_overview(course.id)
-    status = None
-    week = None
+    proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
+    social = get_social_metrics(course.id, request.user.id)
 
     data = {
         "name": course.name,
-        "url": "https://www.mckinseyacademy.com/courses/{}".format(course.id),
+        "url": "https://www.mckinseyacademy.com{}".format(course.nav_url),
         "overview": overview.about,
         "start_date": course.start.isoformat(),
         "end_date": course.end.isoformat(),
-        "week": week,
-        "status": status,
+        "week": course.week,
+        "status": course.status,
+        "user": {
+            "name": request.user.full_name,
+            "email": request.user.email,
+            "progress": {
+                "value": course.user_progress,
+                "cohort_avg": average_progress(course, request.user.id)
+            },
+            "proficiency": {
+                "value": round_to_int(proficiency.user_grade_value * 100),
+                "cohort_avg": proficiency.course_average_display,
+            },
+            "social": {
+                "value": social['points'],
+                "cohort_avg": social['course_avg'],
+            }
+        }
     }
     return data

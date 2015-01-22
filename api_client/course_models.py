@@ -172,9 +172,18 @@ class Course(CategorisedJsonObject):
             monday2 = (today - datetime.timedelta(days=today.weekday()))
             week = ((monday2 - monday1).days / 7) + 1
             if week < 1:
-                return 0
+                return None
             return week
-        return 0
+        return None
+
+    @property
+    def status(self):
+        if self.ended:
+            return _("COURSE_ENDED")
+        elif self.started:
+            return _("COURSE_STARTED")
+        else:
+            return _("COURSE_UNAVAILABLE")
 
     def module_count(self):
         module_count = 0
