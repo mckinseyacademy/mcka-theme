@@ -279,7 +279,7 @@ def standard_data(request):
 
             # Inject course progress for nav header
             load_course_progress(course, request.user.id)
-        else:
+        elif program and program.courses:
             upcoming_course = program.courses[0]
 
     data = {
