@@ -14,7 +14,6 @@ def api_json_response(func):
     the response is JSONP.
     '''
     def decorator(request, *args, **kwargs):
-        print "\n\n====JSON======="
         objects = func(request, *args, **kwargs)
         if isinstance(objects, HttpResponse):
             return objects
