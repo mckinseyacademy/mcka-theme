@@ -18,6 +18,7 @@ urlpatterns = patterns(
     url(r'^courses/', include('courses.urls'), name='courses'),
     url(r'^admin/', include('admin.urls'), name='admin'),
     url(r'^heartbeat$', include('heartbeat.urls'), name='heartbeat'),
+    url(r'^api/v1/', include('public_api.urls'), name='public_api'),
 )
 
 if settings.DEBUG:

@@ -164,6 +164,18 @@ class Course(CategorisedJsonObject):
             return delta.days
         return 0
 
+    @property
+    def week(self):
+        if not getattr(self, 'start', None) is None:
+            today = datetime.datetime.today()
+            monday1 = (self.start - datetime.timedelta(days=self.start.weekday()))
+            monday2 = (today - datetime.timedelta(days=today.weekday()))
+            week = ((monday2 - monday1).days / 7) + 1
+            if week < 1:
+                return 0
+            return week
+        return 0
+
     def module_count(self):
         module_count = 0
         for chapter in self.chapters:
