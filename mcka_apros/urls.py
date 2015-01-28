@@ -9,6 +9,7 @@ urlpatterns = patterns(
     '',
     url(r'^$', 'accounts.views.home', name='home'),
     url(r'^home$', 'accounts.views.protected_home', name='protected_home'),
+    url(r'^login$', 'accounts.views.login', name='login'),
     url(r'^terms/', 'main.views.terms', name='terms'),
     url(r'^privacy/', 'main.views.privacy', name='privacy'),
     url(r'^faq/', 'main.views.faq', name='faq'),
