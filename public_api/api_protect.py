@@ -1,6 +1,7 @@
 import json
 
 from functools import wraps
+from django.utils.translation import ugettext as _
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
 
 from .models import ApiToken
@@ -52,6 +53,10 @@ def api_user_protect(func):
     @wraps(func)
     def _wrapped(request, *args, **kwargs):
         email = request.META.get('HTTP_X_EMAIL', '')
+        data = {
+            "email": email,
+            "error": _("Missing email"),
+        }
         if email:
             client = Client.fetch(request.organization.client_id)
             students = client.fetch_students_by_enrolled()
@@ -60,8 +65,7 @@ def api_user_protect(func):
                 request.user = [student for student in students if student.email == email][0]
                 return func(request, *args, **kwargs)
             except:
-                return HttpResponseNotFound()
-        else:
-            return HttpResponseNotFound()
-        return HttpResponseNotFound()
+                data['error'] = _("User not found")
+                return HttpResponse(json.dumps(data), 'application/json', 400)
+        return HttpResponse(json.dumps(data), 'application/json', 400)
     return _wrapped
