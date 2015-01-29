@@ -12,6 +12,7 @@ from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
 from courses.user_courses import standard_data
 from courses.controller import round_to_int, Proficiency, get_social_metrics, average_progress
+from admin.models import Client
 
 @require_POST
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -74,4 +75,26 @@ def user_course(request):
             }
         }
     }
+    return data
+
+@api_authenticate_protect
+@api_json_response
+def users(request):
+    client = Client.fetch(request.organization.client_id)
+    students = client.fetch_students_by_enrolled()
+    data = {
+        "name": client.display_name,
+        "contact_email": client.contact_email,
+        "students": [],
+    }
+
+    for student in students:
+        data["students"].append({
+            "name": student.full_name,
+            "email": student.email,
+            "city": student.city,
+            "country": student.country,
+            "course_count": student.course_count,
+        })
+
     return data
