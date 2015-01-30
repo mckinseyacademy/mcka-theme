@@ -430,6 +430,8 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     output_lines = []
 
+    client = Client.fetch(client_id)
+
     def zero_if_none(obj, name):
         value = getattr(obj, name, 0)
         return value if value is not None else 0
@@ -441,15 +443,15 @@ def generate_course_report(client_id, course_id, url_prefix, students):
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    activity_names_row = ["Client ID","","Course ID",""]
+    activity_names_row = ["Client Name","","Course ID",""]
     output_line(activity_names_row)
 
-    group_header_row = [client_id,"", course_id]
+    group_header_row = [client.name,"", course_id]
     output_line(group_header_row)
 
     output_line("--------")
 
-    activity_names_row = ["Full Name","Username","Title","Complete %","Email"]
+    activity_names_row = ["Full Name","Username","Title","Email", "Progress %", "Engagement", "Proficiency", "Course Completed"]
     output_line(activity_names_row)
 
     for student in students:
@@ -457,8 +459,11 @@ def generate_course_report(client_id, course_id, url_prefix, students):
             blank_if_none(student, "full_name"),
             blank_if_none(student, "username"),
             blank_if_none(student, "title"),
+            blank_if_none(student, "email"),
             "{}%".format(str(zero_if_none(student, "progress"))),
-            blank_if_none(student, "email")
+            str(zero_if_none(student, "engagement")),
+            str(zero_if_none(student, "proficiency")),
+            str(blank_if_none(student, "completed"))
         ]
         output_line(user_row)
 

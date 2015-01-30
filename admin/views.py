@@ -9,6 +9,7 @@ from urllib import quote as urlquote
 import math
 import string
 import urlparse
+from operator import attrgetter
 
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -42,7 +43,7 @@ from api_client.organization_models import Organization
 from api_client.workgroup_models import Submission
 from courses.controller import Progress, Proficiency
 from courses.controller import return_course_progress, organization_course_progress_user_list
-from courses.controller import social_total, round_to_int_bump_zero
+from courses.controller import social_total, round_to_int_bump_zero, round_to_int
 from courses.user_courses import return_course_completions_stats
 
 from license import controller as license_controller
@@ -212,6 +213,8 @@ def client_admin_course(request, client_id, course_id):
         data,
     )
 
+def get_user_metrics_from_lookup(user_id, lookup):
+    return lookup[user_id] if user_id in lookup else 0
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
@@ -225,11 +228,16 @@ def client_admin_course_participants(request, client_id, course_id):
         users_progress = organization_course_progress_user_list(course_id, client_id, count=total_users)
         user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
 
+        course_proficiency = organization_api.get_users_by_enrolled(client_id, course_id=course_id, include_complete_status=True, include_grades=True)
+        user_grade_lookup = {str(u.id):[round_to_int(100 * u.grade), u.complete_status] for u in course_proficiency}
+
         additional_fields = ["full_name", "title", "avatar_url"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
         for student in students:
             student.avatar_url = student.image_url(size=48)
-            student.progress = user_progress_lookup[str(student.id)] if str(student.id) in user_progress_lookup else 0
+            student.progress = get_user_metrics_from_lookup(str(student.id), user_progress_lookup)
+            student.proficiency, student.completed = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
+
     else:
         students = []
 
@@ -246,9 +254,9 @@ def client_admin_course_participants(request, client_id, course_id):
         data,
     )
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_download_course_report(request, client_id, course_id):
+
     filename = slugify(
         unicode(
             "{} Course Report for {} on {}".format(
@@ -264,12 +272,24 @@ def client_admin_download_course_report(request, client_id, course_id):
 
     users_ids = [str(user.id) for user in users if user.id not in obs_users_base]
     users_progress = organization_course_progress_user_list(course_id, client_id, count=len(users))
+
     user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
+
+    course_social_metrics = course_api.get_course_social_metrics(course_id, organization_id=client_id)
+    user_social_lookup = {str(u_id):social_total(user_metrics) for u_id, user_metrics in course_social_metrics.users.__dict__.iteritems()}
+
+    course_proficiency = organization_api.get_users_by_enrolled(client_id, course_id=course_id, include_complete_status=True, include_grades=True)
+    user_grade_lookup = {str(u.id):[round_to_int(100 * u.grade), u.complete_status] for u in course_proficiency}
 
     additional_fields = ["full_name", "title", "avatar_url"]
     students = user_api.get_users(ids=users_ids, fields=additional_fields)
     for student in students:
-        student.progress = user_progress_lookup[str(student.id)] if str(student.id) in user_progress_lookup else 0
+        student.progress = get_user_metrics_from_lookup(str(student.id), user_progress_lookup)
+        student.engagement = get_user_metrics_from_lookup(str(student.id), user_social_lookup)
+        student.proficiency, completed = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
+        student.completed = "Y" if completed else "N"
+
+    students.sort(key = attrgetter('progress'), reverse = True)
 
     url_prefix = "{}://{}".format(
         "https" if request.is_secure() else "http",
@@ -311,7 +331,6 @@ def client_admin_download_program_report(request, client_id, program_id):
     response = render(request, 'admin/client-admin/program_report.txt', data, content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
     return response
-
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
