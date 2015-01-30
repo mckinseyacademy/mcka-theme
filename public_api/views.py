@@ -45,10 +45,13 @@ def course(request, course_id):
 @api_user_protect
 @api_json_response
 def user_course(request):
-    course = standard_data(request).get("course", None)
-    overview = course_api.get_course_overview(course.id)
-    proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
-    social = get_social_metrics(course.id, request.user.id)
+    try:
+        course = standard_data(request).get("course", None)
+        overview = course_api.get_course_overview(course.id)
+        proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
+        social = get_social_metrics(course.id, request.user.id)
+    except:
+        return {"error": "Course information invalid"}
 
     data = {
         "name": course.name,
@@ -80,8 +83,12 @@ def user_course(request):
 @api_authenticate_protect
 @api_json_response
 def users(request):
-    client = Client.fetch(request.organization.client_id)
-    students = client.fetch_students_by_enrolled()
+    try:
+        client = Client.fetch(request.organization.client_id)
+        students = client.fetch_students_by_enrolled()
+    except:
+        return {"error": "Student information not found"}
+
     data = {
         "name": client.display_name,
         "contact_email": client.contact_email,
