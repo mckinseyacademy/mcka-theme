@@ -1,4 +1,5 @@
 import json
+import re
 
 from functools import wraps
 from django.utils.translation import ugettext as _
@@ -37,13 +38,19 @@ def api_authenticate_protect(func):
         auth = request.META.get('HTTP_AUTHORIZATION', '')
         if 'token' in auth:
             try:
-                organization = ApiToken.objects.get(token = auth.split()[1])
+                token = re.search(r'[\w]{64}', auth).group(0)
+                organization = ApiToken.objects.get(token = token)
                 if organization:
                     request.organization = organization
                     return func(request, *args, **kwargs)
+                else:
+                    data = {"error": "Client not found"}
+                    return HttpResponse(json.dumps(data), 'application/json', 401)
             except:
-                return HttpResponseForbidden()
-        return HttpResponseForbidden()
+                data = {"error": "Token or Client not found"}
+                return HttpResponse(json.dumps(data), 'application/json', 401)
+        data = {"error": "Token missing"}
+        return HttpResponse(json.dumps(data), 'application/json', 401)
     return _wrapped
 
 def api_user_protect(func):
