@@ -45,13 +45,10 @@ def course(request, course_id):
 @api_user_protect
 @api_json_response
 def user_course(request):
-    try:
-        course = standard_data(request).get("course", None)
-        overview = course_api.get_course_overview(course.id)
-        proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
-        social = get_social_metrics(course.id, request.user.id)
-    except:
-        return {"error": "Course information invalid"}
+    course = standard_data(request).get("course", None)
+    overview = course_api.get_course_overview(course.id)
+    proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
+    social = get_social_metrics(course.id, request.user.id)
 
     data = {
         "name": course.name,
@@ -62,7 +59,9 @@ def user_course(request):
         "week": course.week,
         "status": course.status,
         "user": {
-            "name": request.user.full_name,
+            "first_name": request.user.first_name,
+            "last_name": request.user.last_name,
+            "username": request.user.username,
             "email": request.user.email,
             "progress": {
                 "value": course.user_progress,
@@ -97,10 +96,10 @@ def users(request):
 
     for student in students:
         data["students"].append({
-            "name": student.full_name,
+            "first_name": student.first_name,
+            "last_name": student.last_name,
+            "username": student.username,
             "email": student.email,
-            "city": student.city,
-            "country": student.country,
             "course_count": student.course_count,
         })
 
