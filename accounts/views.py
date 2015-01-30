@@ -441,7 +441,7 @@ def user_profile_image_edit(request):
             user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + new_image_url})
             request.user.avatar_url = '/accounts/' + new_image_url
             request.user.save()
-            RemoteUser.remove_from_cache(request.user.id)
+        RemoteUser.remove_from_cache(request.user.id)
         return change_profile_image(request, request.user.id, template='edit_profile_image')
 
 @login_required
