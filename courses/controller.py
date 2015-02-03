@@ -415,37 +415,55 @@ def get_social_metrics(course_id, user_id):
     ''' returns social engagement points and leaders '''
     course_metrics = course_api.get_course_social_metrics(course_id)
     total_enrollments = course_metrics.total_enrollments
-    users = []
     point_sum = 0
 
     # calculate total social score for each user in course
-    user_ids = [u_id for u_id, user_metrics in course_metrics.users.__dict__.iteritems()]
-    additional_fields = ["avatar_url","title"]
-    user_dict = {str(user.id): user for user in user_api.get_users(ids=user_ids,fields=additional_fields)} if len(user_ids) > 0 else {}
-
+    user_scores = []
     for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
-        user = user_dict[u_id]
-        user.points = social_total(user_metrics)
-        user.avatar_url = user.image_url(size=48)
-        point_sum += user.points
-        users.append(user)
+        user = {
+            "id": u_id,
+            "points": social_total(user_metrics)
+        }
+        point_sum += user["points"]
+        user_scores.append(user)
 
     course_avg = float(point_sum) / total_enrollments if total_enrollments > 0 else 0
 
     # sort by social score
-    leaders = sorted(users, key=lambda u: u.points, reverse=True)
+    sorted_users = sorted(user_scores, key=lambda u: u["points"], reverse=True)
 
     # assign rank
-    for rank, leader in enumerate(leaders, 1):
-        leader.rank = rank
+    for rank, ranked_user in enumerate(sorted_users, 1):
+        ranked_user["rank"] = rank
 
-    user = next((l for l in leaders if int(l.id) == int(user_id)), None)
+    user = next((su for su in sorted_users if int(su["id"]) == int(user_id)), None)
+
+    if user is None:
+        user_metrics = user_api.get_course_social_metrics(user_id, course_id)
+        user = {
+            "id": user_id,
+            "points": social_total(user_metrics),
+        }
+
+    leader_ids = [sorted_user["id"] for sorted_user in sorted_users[:3]]
+    additional_fields = ["avatar_url", "title"]
+    leader_dict = {
+        u.id: u for u in user_api.get_users(ids=leader_ids, fields=additional_fields)
+    } if len(leader_ids) > 0 else {}
+
+    leaders = []
+    for leader_score in sorted_users[:3]:
+        leader = leader_dict[int(leader_score["id"])]
+        leader.points = leader_score["points"]
+        leader.rank = leader_score["rank"]
+        leader.avatar_url = leader.image_url(size=48)
+        leaders.append(leader)
 
     return {
-        'points': user.points if user else 0,
-        'position': user.rank if user else None,
+        'points': user.get("points", 0),
+        'position': user.get("rank", None),
         'course_avg': round_to_int_bump_zero(course_avg),
-        'leaders': leaders[:3]
+        'leaders': leaders
     }
 
 def get_ta_users(course_id):
@@ -500,4 +518,3 @@ def inject_gradebook_info(user_id, course):
                 break
 
     return gradebook
-
