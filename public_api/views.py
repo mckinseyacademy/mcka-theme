@@ -83,7 +83,6 @@ def user_course(request):
 
     if article:
         try:
-            print article.content
             data["article"] = {
                 "title": re.search(r'data-title="([^"]+)"', article.content).group(1),
                 "author": re.search(r'data-author="([^"]+)"', article.content).group(1),
