@@ -65,6 +65,12 @@
       }
     }
 
+    .forum-nav-thread-list-wrapper {
+      .search-alert.search-by-user {
+          display: none;
+      }
+    }
+
     .forum-nav-thread-list  {
       .forum-nav-thread-wrapper-0 {
         .icon-question, .icon-comments, .icon-ok {
