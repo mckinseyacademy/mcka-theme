@@ -1,4 +1,5 @@
 ''' json for public api requests '''
+import re
 import json
 import datetime
 import functools
@@ -11,7 +12,7 @@ from .models import ApiToken
 from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
 from courses.user_courses import standard_data
-from courses.controller import round_to_int, Proficiency, get_social_metrics, average_progress
+from courses.controller import round_to_int, Proficiency, get_social_metrics, average_progress, load_static_tabs
 from admin.models import Client
 
 @require_POST
@@ -49,6 +50,8 @@ def user_course(request):
     overview = course_api.get_course_overview(course.id)
     proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
     social = get_social_metrics(course.id, request.user.id)
+    static_tabs = load_static_tabs(course.id)
+    article = static_tabs.get("article", None)
 
     data = {
         "name": course.name,
@@ -77,16 +80,27 @@ def user_course(request):
             }
         }
     }
+
+    if article:
+        try:
+            print article.content
+            data["article"] = {
+                "title": re.search(r'data-title="([^"]+)"', article.content).group(1),
+                "author": re.search(r'data-author="([^"]+)"', article.content).group(1),
+                "url": re.search(r'data-url="([^"]+)"', article.content).group(1),
+                "excerpt": re.search(r'data-excerpt="([^"]+)"', article.content).group(1),
+            }
+        except:
+            data["article"] = None
+
     return data
 
 @api_authenticate_protect
 @api_json_response
 def users(request):
-    try:
-        client = Client.fetch(request.organization.client_id)
-        students = client.fetch_students_by_enrolled()
-    except:
-        return {"error": "Student information not found"}
+    client = Client.fetch(request.organization.client_id)
+    students = client.fetch_students_by_enrolled()
+    return {"error": "Student information not found"}
 
     data = {
         "name": client.display_name,
