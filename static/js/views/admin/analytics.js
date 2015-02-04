@@ -100,7 +100,7 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
               .margin({top: 30, right: 60, bottom: 50, left: 70})
               //We can set x data accessor to use index. Reason? So the bars all appear evenly spaced.
               .x(function(d,i) { return i })
-              .y(function(d,i) { maxY = d[1] > maxY ? d[1]: maxY; return d[1]; })
+              .y(function(d,i) { return d[1]; })
               .width(width).height(height)
               .tooltips(false);
 
@@ -115,7 +115,13 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
             }
         });
 
-        chart.bars.forceY([0,maxY]);
+        // force bar chart to start at zero
+        var barMax = d3.max(dataJson[0].values, function (d) { return d[1]; });
+        chart.bars.forceY([0, barMax || 1]);
+
+        // force line chart to start at zero
+        var lineMax = d3.max(dataJson[1].values, function (d) { return d[1]; });
+        chart.lines.forceY([0, lineMax || 1]);
 
         for (var property in chart.legend.dispatch) {
             chart.legend.dispatch[property] = function() { };
