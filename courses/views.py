@@ -635,3 +635,12 @@ def add_lesson_note(request, course_id, chapter_id):
         json.dumps(note.as_json(course)),
         mimetype="application/json"
     )
+
+@login_required
+@check_user_course_access
+def course_article(request, course_id):
+    static_tabs = load_static_tabs(course_id)
+    data = {
+        "article": static_tabs.get("article", None)
+    }
+    return render(request, 'courses/course_article.haml', data)
