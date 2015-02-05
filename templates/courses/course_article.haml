@@ -1,0 +1,6 @@
+- extends "courses/course_navigation.haml"
+- block current_content
+  #course-article
+    %section
+      - autoescape off
+        = article.content
