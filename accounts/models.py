@@ -13,20 +13,19 @@ from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
 
 from django.utils.functional import cached_property
+from django.core.cache import cache
 from api_client import user_api
 
 
 class RemoteUser(AbstractUser):
     ''' user object that exists only in cache '''
-    # TODO: replace with memcached on server
-    temp_user_cache = {}
     avatar_url = None
     avatar_url_absolute = None
 
     session_key = db_models.CharField('session_key', max_length=255, unique=True)
 
     def update_response_fields(self, user_response, session_key=None):
-        ''' take api response and blend the results into this user object '''
+        ''' take API response and blend the results into this user object '''
         if session_key is not None:
             self.session_key = session_key
         self.email = user_response.email
@@ -36,7 +35,7 @@ class RemoteUser(AbstractUser):
         self.avatar_url_relative = user_response.image_url(path='relative')
 
     def image_url(self):
-        ''' get image utl for user '''
+        ''' get image URL for user '''
         return self.avatar_url
 
     #USERNAME_FIELD = "username"
@@ -45,9 +44,9 @@ class RemoteUser(AbstractUser):
     def save(self, **kwargs):
         '''
         Notice we only update the cache, not the database
-        The sourse of truth is the system we are talking to va the API
+        The source of truth is the system we are talking to via the API
         '''
-        RemoteUser.temp_user_cache[self.id] = self
+        cache.set('user_' + str(self.id), self)
         return True
 
     def get_roles(self):
@@ -60,15 +59,13 @@ class RemoteUser(AbstractUser):
 
     @staticmethod
     def cached_fetch(user_id):
-        ''' get from cache if there '''
-        if user_id in RemoteUser.temp_user_cache:
-            return RemoteUser.temp_user_cache[user_id]
-        return None
+        ''' get user from cache if there '''
+        return cache.get('user_' + str(user_id), None)
 
     @staticmethod
     def remove_from_cache(user_id):
-        ''' clean from cache when tearing down session '''
-        del RemoteUser.temp_user_cache[user_id]
+        ''' remove user from cache when tearing down session '''
+        cache.delete('user_' + str(user_id))
 
 #    def is_authenticated(self):
 #        return True
