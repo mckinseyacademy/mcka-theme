@@ -58,7 +58,7 @@ def user_course(request):
         "url": "https://www.mckinseyacademy.com{}".format(course.nav_url),
         "overview": overview.about,
         "start_date": course.start.isoformat(),
-        "end_date": course.end.isoformat(),
+        "end_date": course.end.isoformat() if course.end else None,
         "week": course.week,
         "status": course.status,
         "user": {
@@ -86,7 +86,7 @@ def user_course(request):
             data["article"] = {
                 "title": re.search(r'data-title="([^"]+)"', article.content).group(1),
                 "author": re.search(r'data-author="([^"]+)"', article.content).group(1),
-                "url": re.search(r'data-url="([^"]+)"', article.content).group(1),
+                "url": "https://www.mckinseyacademy.com{}/article".format(course.nav_url),
                 "excerpt": re.search(r'data-excerpt="([^"]+)"', article.content).group(1),
             }
         except:
