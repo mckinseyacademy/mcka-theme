@@ -1,0 +1,185 @@
+server {
+  listen 80;
+
+  server_name lms.mcka.local;
+
+  location / {
+    proxy_pass http://localhost:8000;
+    proxy_set_header Host $host;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+    add_header "Access-Control-Allow-Credentials" "true";
+    add_header "Access-Control-Allow-Origin" "http://apros.mcka.local";
+    add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+    if ($request_method = 'OPTIONS') {
+      return 204;
+    }
+  }
+
+  location ~ ^/static/(?P<file>.*) {
+    root /edx/var/edxapp/;
+    try_files /staticfiles/$file /course_static/$file =404;
+
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+    add_header "Access-Control-Allow-Credentials" "true";
+    add_header "Access-Control-Allow-Origin" "http://apros.mcka.local";
+    add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+
+    # return a 403 for static files that shouldn't be
+    # in the staticfiles directory
+    location ~ ^/static/(?:.*)(?:\.xml|\.json|README.TXT) {
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+      add_header "Access-Control-Allow-Credentials" "true";
+      add_header "Access-Control-Allow-Origin" "http://apros.mcka.local";
+      add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+      return 403;
+    }
+
+    # http://www.red-team-design.com/firefox-doesnt-allow-cross-domain-fonts-by-default
+    location ~ "/static/(?P<collected>.*\.[0-9a-f]{12}\.(eot|otf|ttf|woff))" {
+    expires max;
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+      add_header "Access-Control-Allow-Credentials" "true";
+      add_header "Access-Control-Allow-Origin" "http://apros.mcka.local";
+      add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+      try_files /staticfiles/$collected /course_static/$collected =404;
+    }
+
+    # Set django-pipelined files to maximum cache time
+    location ~ "/static/(?P<collected>.*\.[0-9a-f]{12}\..*)" {
+      expires max;
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+      add_header "Access-Control-Allow-Credentials" "true";
+      add_header "Access-Control-Allow-Origin" "http://apros.mcka.local";
+      add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+
+      # Without this try_files, files that have been run through
+      # django-pipeline return 404s
+      try_files /staticfiles/$collected /course_static/$collected =404;
+    }
+
+    # Expire other static files immediately (there should be very few / none of these)
+    expires epoch;
+  }
+}
+
+server {
+  listen 80;
+  server_name apros.mcka.local;
+  merge_slashes off;
+  client_max_body_size 20M;
+
+
+  proxy_intercept_errors on;
+
+  location / {
+    if (-f /edx/app/apros/mcka_apros/maintenance.lock) {
+        return 503;
+    }
+
+    try_files $uri @proxy_to_appros;
+  }
+
+  if ($args !~ "ajax=1") {
+      rewrite ^/courses/([^/]+)/([^/]+)/([^/]+)/discussion/forum/([^/]+/threads/[^/]+)/?$ https://$host/courses/slashes:$1+$2+$3/discussion/$4 redirect;
+  }
+
+  location ~ ^/courses/.*/discussion/forum/users/\d+/?$ {
+    try_files $uri @proxy_to_appros;
+  }
+
+  #shortcut course discussion backbone navigation to apros
+  location ~ "^/courses/.*/discussion/[\w\-]+/threads/[0-9a-f]{24}/?$" {
+    try_files $uri @proxy_to_appros;
+  }
+
+  # XBlock content from LMS
+
+  location /api/ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
+  location /heartbeat {
+    try_files $uri @proxy_to_appros;
+  }
+
+  location /mcka-api/ {
+    try_files $uri @proxy_to_appros;
+  }
+
+  #pass xblocks through to the LMS
+
+  location /xblock/resource/ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
+  location ~ ^/courses/.*/xblock/ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
+  #pass discussions through to the LMS
+
+  location ~ ^/courses/.*/discussion/ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
+  location /notification_prefs/ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
+  location /c4x/ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
+  # serve generated static content from cache
+
+  location ~ /static/(?P<file>.*) {
+    root /edx/app/apros/mcka_apros;
+    try_files /static_cache/$file /static/$file @proxy_to_lms_nginx;
+
+  }
+
+  location @proxy_to_lms_nginx {
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+    proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+    proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+    proxy_set_header Host lms.mcka.local;
+
+    proxy_redirect off;
+    proxy_pass http://lms.mcka.local:80;
+  }
+
+  location @proxy_to_lms_app {
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+    proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+    proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+    proxy_set_header Host $http_host;
+
+    proxy_redirect off;
+    proxy_pass http://localhost:8000;
+   }
+
+  location @proxy_to_appros {
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+    proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+    proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+    proxy_set_header Host $http_host;
+
+    proxy_redirect off;
+    proxy_pass http://localhost:3000;
+
+    if ($host ~* beta\.(.*)) {
+      set $www_host www.$1;
+      rewrite ^(.*)$ https://$www_host$1 permanent;
+    }
+
+    # Forward to HTTPS if we're an HTTP request...
+    if ($http_x_forwarded_proto = "http") {
+      set $do_redirect "true";
+    }
+
+    # Run our actual redirect...
+    if ($do_redirect = "true") {
+      rewrite ^ https://$host$request_uri? permanent;
+    }
+  }
+}
