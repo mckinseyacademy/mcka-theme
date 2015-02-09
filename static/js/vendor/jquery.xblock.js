@@ -153,15 +153,6 @@
 
                     return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId +
                             '/handler/' + handlerName);
-                },
-                local_overrides: {
-                    discussion: function(element, DiscussionUtil) {
-                        var courseId = $(element).data('course-id');
-
-                        DiscussionUtil.localUrls.push('user_profile');
-                        DiscussionUtil.force_async = true;
-                        DiscussionUtil.route_prefix = 'courses/' + courseId + '/discussion'
-                    }
                 }
             };
         },
@@ -229,7 +220,7 @@
 
                         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-                        if (!$this.csrfSafeMethod(settings.type) && queryDomain === lmsDomain) {
+                        if (!$this.csrfSafeMethod(settings.type)) {
                             xhr.setRequestHeader("X-CSRFToken", csrftoken);
                         }
                     }
