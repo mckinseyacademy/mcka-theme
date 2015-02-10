@@ -44,6 +44,8 @@ and Ruby Version Manager to run Apros under.
 
 Log into the vagrant instance with `vagrant ssh`. From the vagrant user's prompt, run:
 
+    # Make sure our links to all downloads are up to date.
+    sudo apt-get update
     # Needed for RVM.
     sudo apt-get install -y gawk libreadline6-dev libyaml-dev sqlite3 autoconf libgdbm-dev \
         libncurses5-dev automake libtool libffi-dev libsqlite3-dev bison
@@ -65,6 +67,7 @@ Next, run:
     mkdir venvs
     virtualenv venvs/mcka_apros
     # Standard warnings about curling to bash apply.
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
     bash <(curl -sSL https://get.rvm.io) stable
     # This will automatically be sourced on the next login.
     source /edx/app/apros/.rvm/scripts/rvm
@@ -112,10 +115,10 @@ Do not worry that the directory `mcka_apros` does not exist. It will be created 
   in the file, make sure you add them to proper place. There are `if ENV['VAGRANT_USE_VBOXFS'] == 'true'` block, first line should go to 
   `True` branch, second line to `False` branch
 
-        config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
+          config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
             create: true, owner: "apros", group: "www-data"
 
-        config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
+          config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
             create: true, nfs: true
 
 * Reload vagrant config with `vagrant reload`, log in into vagrant box using `vagrant ssh`. If the vagrant instance was
@@ -194,19 +197,19 @@ This file can only be found in the devstack environment
 
 At the top of the dictionary, add this line:
 
-        "ADDL_INSTALLED_APPS": ["progress"],
+        "ADDL_INSTALLED_APPS": ["progress", "organizations"],
         
 This will install the progress application.
 
 You should find the **FEATURES** section already exists, and you will want to add a few items to it. _It appears that these are generally kept in alphabetical order, but for simplicity, you may wish to just add these items to the **beginning** of the array._
 
-        "API": true,
-        "MARK_PROGRESS_ON_GRADING_EVENT": true,
-        "SIGNAL_ON_SCORE_CHANGED": true,
-        "STUDENT_GRADEBOOK": true,
-        "STUDENT_PROGRESS": true,
-        "ORGANIZATIONS_APP": true,
-        "PROJECTS_APP": true,
+            "API": true,
+            "MARK_PROGRESS_ON_GRADING_EVENT": true,
+            "SIGNAL_ON_SCORE_CHANGED": true,
+            "STUDENT_GRADEBOOK": true,
+            "STUDENT_PROGRESS": true,
+            "ORGANIZATIONS_APP": true,
+            "PROJECTS_APP": true,
         
 Finally, run:
 
@@ -270,8 +273,8 @@ Enable this new virtual host with:
 
 To begin setting up Apros, **launch the LMS and forum/comment service and leave them running**. Then, run the following commands as the `apros` user: 
 
-    manage.py syncdb --migrate
-    manage.py load_seed_data
+    ./manage.py syncdb --migrate
+    ./manage.py load_seed_data
 
 This will build the Apros database and load seed data into the LMS database, including [preconfigured users][load-seed-data].
 
@@ -339,7 +342,7 @@ Static assets (js, css, images, etc.) are served in quite different ways in deve
 * Production uses pipelines ([django-pipeline][dj-pipeline]) to concatenate js and css files into larger bundles
 to improve page load time. To further reduce application server load, static files are served by nginx.
 
-So, to achieve prodution-like assets management in development, the following steps need to be performed:
+So, to achieve production-like assets management in development, the following steps need to be performed:
 
 * Enable pipelines: pipelines are governed by two settings: `PIPELINES` and `FEATURES['USE_DJANGO_PIPELINE']`.
   Both need to be set to true. While it's possible to set `FEATURES['USE_DJANGO_PIPELINE']` via `[cl]ms.env.json`,
