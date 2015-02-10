@@ -121,7 +121,7 @@ class Client(organization_models.Organization):
             return user_api.get_users(ids=users_ids,fields=additional_fields)
 
     def fetch_students_by_enrolled(self):
-        return organization_api.get_users_by_enrolled(self.id)
+        return organization_api.get_users_by_enrolled(self.id, include_course_counts=True)
 
 class WorkGroup(workgroup_models.Workgroup):
 
@@ -202,7 +202,7 @@ class UserRegistrationBatch(db_models.Model):
         reg_record.save()
 
         return reg_record
-    
+
     @classmethod
     def clean_old(cls, ErrorModels=UserRegistrationError):
         old_records = cls.objects.filter(time_requested__lte=(timezone.now() - timedelta(days=1)))
