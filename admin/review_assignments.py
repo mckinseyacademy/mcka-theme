@@ -26,7 +26,7 @@ class ReviewAssignmentProcessor(object):
         assignment_group_class = kwargs.get('assignment_group_class', ReviewAssignmentGroup)
 
         for wg in self.workgroups:
-            assignment_groups = assignment_group_class.list_for_workgroup(wg.id)
+            assignment_groups = assignment_group_class.list_for_workgroup(wg.id, self.xblock_id)
             for rag in assignment_groups:
                 if delete_existing:
                     assignment_group_class.delete(rag.id)

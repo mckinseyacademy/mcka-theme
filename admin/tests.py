@@ -61,7 +61,7 @@ class MockReviewAssignmentGroup(object):
         return self.users
 
     @classmethod
-    def list_for_workgroup(cls, workgroup_id):
+    def list_for_workgroup(cls, workgroup_id, xblock_id=None):
         return MockReviewAssignmentGroupCollection.workgroup_lookup.get(workgroup_id, [])
 
     @classmethod
