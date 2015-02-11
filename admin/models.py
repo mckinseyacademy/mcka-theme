@@ -79,7 +79,14 @@ class ReviewAssignmentGroup(BaseGroupModel):
         return group_api.remove_user_from_group(user_id, self.id)
 
     @classmethod
-    def list_for_workgroup(cls, workgroup_id):
+    def list_for_workgroup(cls, workgroup_id, xblock_id=None):
+        if xblock_id:
+            assignments = []
+            for workgroup in workgroup_api.get_workgroup_groups(workgroup_id):
+                rag = cls.fetch(workgroup.id)
+                if rag.xblock_id == xblock_id:
+                    assignments.append(rag)
+            return assignments
         return [cls.fetch(rag.id) for rag in workgroup_api.get_workgroup_groups(workgroup_id)]
 
 class ContactGroup(BaseGroupModel):

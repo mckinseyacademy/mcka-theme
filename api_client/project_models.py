@@ -15,7 +15,7 @@ class Project(JsonObject):
 
     def remove_workgroup(self, workgroup_id):
         if workgroup_id in self.workgroups:
-            self.workgroups.remove(user_id)
+            self.workgroups.remove(workgroup_id)
             project_api.update_project(self.id, {"workgroups": self.workgroups})
 
     @classmethod

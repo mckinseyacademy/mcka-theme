@@ -107,7 +107,7 @@ class ReviewAssignmentProcessor(object):
     def store_assignments(self, course_id):
         for wg in self.workgroups:
             # check for existing assignments
-            existing_assignments = ReviewAssignmentGroup.list_for_workgroup(wg.id)
+            existing_assignments = ReviewAssignmentGroup.list_for_workgroup(wg.id, self.xblock_id)
             if len(existing_assignments) > 0:
                 # pick one existing assignment
                 rag = existing_assignments[0]
