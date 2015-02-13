@@ -230,6 +230,12 @@ class JsonObjectWithImage(JsonObject):
         # Save normal path
         old_image_url_name = os.path.splitext(image_url)[0]
         new_image_url_name = os.path.splitext(new_image_url)[0]
+        '''
+        There's a slight chance the image won't be deleted since
+        an exception might be raised while request for deletion was in progress,
+        e.g. because request timed out, in which case the execution will be continued.
+        It would be a good thing to delete unused profile images from S3 server by hand.
+        '''
         try:
             default_storage.delete(image_url)
         except:
