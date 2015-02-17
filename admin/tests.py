@@ -44,9 +44,10 @@ class MockUser(object):
 class MockReviewAssignmentGroup(object):
     id = "fake_id"
 
-    def __init__(self, workgroup):
+    def __init__(self, workgroup, xblock_id):
         self.workgroups = []
         self.users = []
+        self.xblock_id = xblock_id
 
         self.add_workgroup(workgroup.id)
         MockReviewAssignmentGroupCollection.workgroup_lookup[workgroup.id] = [self]
@@ -62,11 +63,14 @@ class MockReviewAssignmentGroup(object):
 
     @classmethod
     def list_for_workgroup(cls, workgroup_id, xblock_id=None):
-        return MockReviewAssignmentGroupCollection.workgroup_lookup.get(workgroup_id, [])
+        review_assignment_groups = MockReviewAssignmentGroupCollection.workgroup_lookup.get(workgroup_id, [])
+        if xblock_id:
+            review_assignment_groups = [rag for rag in review_assignment_groups if rag.xblock_id == xblock_id]
+        return review_assignment_groups
 
     @classmethod
     def delete(cls, group_id):
-        # will only get called when deleteing everything, so for mock okay to just reset complete list
+        # will only get called when deleting everything, so for mock okay to just reset complete list
         MockReviewAssignmentGroupCollection.workgroup_lookup = {}
 
 class MockReviewAssignmentGroupCollection(object):
@@ -77,7 +81,7 @@ class MockReviewAssignmentGroupCollection(object):
     def load(cls, review_assignment_processor):
         cls.workgroup_lookup = {}
         for wg in review_assignment_processor.workgroups:
-            rag = MockReviewAssignmentGroup(wg)
+            rag = MockReviewAssignmentGroup(wg, review_assignment_processor.xblock_id)
             for user_id in review_assignment_processor.workgroup_reviewers[wg.id]:
                 rag.add_user(user_id)
 
@@ -373,6 +377,45 @@ class ReviewAssignmentsTest(TestCase):
         self.assertEqual(len(rap.workgroup_reviewers[12]), 1)
         self.assertEqual(rap.workgroup_reviewers[12][0], 1)
 
+    def test_assignment_with_two_activities(self):
+        ''' one user in each workgroup - should do each others '''
+        test_user_1 = test_user(1)
+        test_user_2 = test_user(2)
+        users = [test_user_1, test_user_2]
+        workgroups = [test_workgroup(11, [test_user_1]), test_workgroup(12, [test_user_2])]
+
+        '''Generate activity review assignment for test-activity-xblock-1 activity'''
+        rap_assignment1 = ReviewAssignmentProcessor([u.id for u in users], workgroups, 'test-activity-xblock-1', 1, 0)
+        rap_assignment1.distribute(False, assignment_group_class=MockReviewAssignmentGroup)
+        MockReviewAssignmentGroupCollection.load(rap_assignment1)
+
+        '''
+        There should be one assignment for test activity xblock 1 and workgroup 11
+        There should be no assignments for test activity xblock 1 and workgroup 13 (workgroup doesn't exist)
+        There should be no assignments for test activity xblock 2 and workgroup 12 (activity doesn't exist)
+        There should be no assignments for test activity xblock 3 and workgroup 13 (both doesn't exist)
+        '''
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(11, 'test-activity-xblock-1')), 1)
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(13, 'test-activity-xblock-1')), 0)
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(12, 'test-activity-xblock-2')), 0)
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(13, 'test-activity-xblock-3')), 0)
+
+        '''Generate activity review assignment for test-activity-xblock-2 activity'''
+        rap_assignment2 = ReviewAssignmentProcessor([u.id for u in users], workgroups, 'test-activity-xblock-2', 1, 0)
+        rap_assignment2.distribute(False, assignment_group_class=MockReviewAssignmentGroup)
+        MockReviewAssignmentGroupCollection.load(rap_assignment2)
+
+        '''
+        There should be one assignment for test activity xblock 2 and workgroup 11
+        There should be no assignments for test activity xblock 2 and workgroup 13 (workgroup doesn't exist)
+        There should be no assignments for test activity xblock 3 and workgroup 12 (activity doesn't exist)
+        There should be no assignments for test activity xblock 4 and workgroup 13 (both doesn't exist)
+        '''
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(11, 'test-activity-xblock-2')), 1)
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(13, 'test-activity-xblock-2')), 0)
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(12, 'test-activity-xblock-3')), 0)
+        self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(13, 'test-activity-xblock-4')), 0)
+
 class UrlsTest(TestCase):
 
     def test_url_patterns(self):
@@ -442,7 +485,6 @@ class UrlsTest(TestCase):
 
         resolver = resolve('/admin/programs')
         self.assertEqual(resolver.view_name, 'program_list')
-
 
 
 class AdminFormsTests(TestCase):
