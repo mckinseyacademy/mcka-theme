@@ -28,6 +28,7 @@
 
       var removeStudent = function(el, link){
           var parent = el.parents('.select-group-box');
+          var self = this;
           data = {
             'student' : el.attr('name'),
             'csrfmiddlewaretoken':  $.cookie('apros_csrftoken'),
@@ -39,9 +40,10 @@
             data: data,
             method: 'POST'
           }).done(function(data){
-            if(data != ''){
+            if(data !== ''){
               data_table.fnDestroy();
               $('#student-list table').html(data);
+              self.list_groups_for_selected_project();
               data_table= $('.student-list').dataTable({
                 paging: false,
                 autoWidth: false,
@@ -91,7 +93,7 @@
       };
 
       var deleteProject = function(form){
-        var button = form.find('#delete-project-button')
+        var button = form.find('#delete-project-button');
         button.addClass('disabled').attr('disabled', 'disabled');
         $.ajax({
           url: form.attr('action'),
@@ -102,9 +104,9 @@
           alert(data.message);
           window.location.reload(true);
         });
-      }
+      };
 
-      var list_groups_for_selected_project = function(project_id, organization_id){
+      var list_groups_for_project = function(project_id, organization_id){
         var groupBoxes = $('.select-group-box').hide();
         groupBoxes.filter('[data-project-id="' + project_id + '"]').show();
         var available_users = $('#student-list .student');
@@ -115,6 +117,13 @@
           available_users.show();
         }
 
+      };
+
+      var list_groups_for_selected_project = function(){
+        var selected_project = $('.group-project-select');
+        var project_id = selected_project.val();
+        var organization_id = selected_project.find('option[value="' + project_id + '"]').data('organization');
+        this.list_groups_for_project(project_id, organization_id);
       };
 
       return {
@@ -128,9 +137,10 @@
         activator: activator,
         course_id: course_id,
         data_table: data_table,
+        list_groups_for_project: list_groups_for_project,
         list_groups_for_selected_project: list_groups_for_selected_project
-      }
-    }
+      };
+    };
 
   $(function(){
 
@@ -193,8 +203,8 @@
       var $this = $(this);
       var project_id = $this.val();
       var organization_id = $this.find('option[value="' + project_id + '"]').data('organization');
-      courseDrag.list_groups_for_selected_project(project_id, organization_id);
-      courseDrag.list_groups_for_selected_project(val[0], val[1]);
+      courseDrag.list_groups_for_project(project_id, organization_id);
+      courseDrag.list_groups_for_project(val[0], val[1]);
     });
 
     $('.update-group').on('click', function(){
@@ -249,9 +259,6 @@
       courseDrag.deleteProject(form);
     });
 
-    var selected_project = $('.group-project-select');
-    var project_id = selected_project.val();
-    var organization_id = selected_project.find('option[value="' + project_id + '"]').data('organization');
-    courseDrag.list_groups_for_selected_project(project_id, organization_id);
+    courseDrag.list_groups_for_selected_project();
 
   });
