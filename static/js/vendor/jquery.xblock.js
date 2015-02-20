@@ -21,8 +21,10 @@
 //
 
 (function($) {
+    if (typeof $.xblock !== "undefined")
+        return;
 
-    function getLink(linkDom){
+    function getJumpToLink(linkDom) {
         var link_templates = [
             /^\/courses\/([^\/]+\/[^\/]+)\/([^\/]+)\/jump_to\/(.+)/,
             /^\/courses\/([^\/]+\/[^\/]+)\/([^\/]+)\/jump_to_id\/(.+)/
@@ -40,9 +42,6 @@
             }
         }
     }
-
-    if (typeof $.xblock !== "undefined")
-        return;
 
     $.xblock = {
         window: window,
@@ -171,38 +170,34 @@
 
             $('.xblock', root).not('.xblock-initialized').each(function(index, blockDOM) {
                 var initFnName = $(blockDOM).data('init');
-                if (initFnName) {
-                    // Don't fail when the page still contains XModules
-                    if (initFnName === 'XBlockToXModuleShim') {
-                        console.log('Warning: Unsupported XModule JS init', blockDOM);
-                        return;
-                    }
-
-                    if (typeof window[initFnName] != 'function') {
-                        console.log('Warning: Undefined init function for XBlock', blockDOM, initFnName);
-                        return;
-                    }
-
-                    console.log('Initializing XBlock JS', initFnName, blockDOM);
-                    window[initFnName]($this.getRuntime(options, root), blockDOM);
+                if (!initFnName) {
+                    return;
                 }
 
+                // Don't fail when the page still contains XModules
+                if (initFnName === 'XBlockToXModuleShim') {
+                    console.log('Warning: Unsupported XModule JS init', blockDOM);
+                    return;
+                }
+
+                if (typeof window[initFnName] != 'function') {
+                    console.log('Warning: Undefined init function for XBlock', blockDOM, initFnName);
+                    return;
+                }
+
+                console.log('Initializing XBlock JS', initFnName, blockDOM);
+                window[initFnName]($this.getRuntime(options, root), blockDOM);
                 $(blockDOM).addClass('xblock-initialized');
             });
         },
 
         eventsInit: function(options, root) {
-            // Catch jump_to and jump_to_id URLs
-            $('a', root).not('.xblock-jump').each(function(index, linkDOM) {
-                var link_found = getLink(linkDOM);
-
+            root.on('click', 'a', function(evt) {
+                var link_found = getJumpToLink(this);
                 if (link_found) {
-                    $(linkDOM).on('click', function(e) {
-                        e.preventDefault();
-                        console.log(link_found.course_id, link_found.block_type, link_found.block_id);
-                        $(linkDOM).trigger('xblock_jump', [link_found.course_id, link_found.block_type, link_found.block_id]);
-                    });
-                    $(linkDOM).addClass('xblock-jump');
+                    evt.preventDefault();
+                    console.log(link_found.course_id, link_found.block_type, link_found.block_id);
+                    $(this).trigger('xblock_jump', [link_found.course_id, link_found.block_type, link_found.block_id]);
                 }
             });
         },
