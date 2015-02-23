@@ -26,7 +26,7 @@ class ReviewAssignmentProcessor(object):
         assignment_group_class = kwargs.get('assignment_group_class', ReviewAssignmentGroup)
 
         for wg in self.workgroups:
-            assignment_groups = assignment_group_class.list_for_workgroup(wg.id)
+            assignment_groups = assignment_group_class.list_for_workgroup(wg.id, self.xblock_id)
             for rag in assignment_groups:
                 if delete_existing:
                     assignment_group_class.delete(rag.id)
@@ -107,7 +107,7 @@ class ReviewAssignmentProcessor(object):
     def store_assignments(self, course_id):
         for wg in self.workgroups:
             # check for existing assignments
-            existing_assignments = ReviewAssignmentGroup.list_for_workgroup(wg.id)
+            existing_assignments = ReviewAssignmentGroup.list_for_workgroup(wg.id, self.xblock_id)
             if len(existing_assignments) > 0:
                 # pick one existing assignment
                 rag = existing_assignments[0]
