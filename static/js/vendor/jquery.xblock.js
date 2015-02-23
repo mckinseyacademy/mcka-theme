@@ -270,7 +270,7 @@
 
         init: function(options, root) {
             var $this = this,
-                deferred = $.Deferred();
+                deferred = $.Deferred(),
                 blockURL = this.getViewUrl('student_view', options);
 
             // Set the LMS session cookie on the shared domain to authenticate on the LMS
@@ -290,6 +290,7 @@
                 url: blockURL,
                 dataType: 'json',
                 data: options.data,
+                cache: false,
                 xhrFields: {
                     withCredentials: true
                 }
