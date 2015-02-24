@@ -1,0 +1,43 @@
+server {
+    listen 80;
+
+    server_name apros.mcka.local;
+
+    location ~ /static/(?P<file>.*) {
+        root /edx/app/apros/mcka_apros;
+        try_files /static_cache/$file /static/$file @proxy_to_lms_nginx;
+    }
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+    }
+
+    location @proxy_to_lms_nginx {
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+        proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+        proxy_set_header Host $http_host;
+
+        proxy_redirect off;
+        proxy_pass http://localhost:8000;
+    }
+}
+
+server {
+    listen 80;
+
+    server_name lms.mcka.local;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+        add_header "Access-Control-Allow-Credentials" "true";
+        add_header "Access-Control-Allow-Origin" "http://apros.mcka.local";
+        add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
+        if ($request_method = 'OPTIONS') {
+            return 204;
+        }
+    }
+}

@@ -168,9 +168,11 @@ named `local_settings.py`.
         }
     }
 
-_Sqlite is sometimes easier to operate with than mySql, but this is purely a choice for the developer. It may be wise to stick with MySql if you want to remain as close to the production environment as desired._
+_Sqlite is sometimes easier to operate with than mySql, but this is purely a choice for the developer. It may be wise to
+stick with MySql if you want to remain as close to the production environment as desired._
 
-**If you want to use MySQL, you will need to create a MySQL database with users and permissions according to the `settings.py` file, or ones of your own creation in `local_settings.py`.**
+**If you want to use MySQL, you will need to create a MySQL database with users and permissions according to the 
+`settings.py` file, or ones of your own creation in `local_settings.py`.**
 
 #### Configure the name to use for the LMS instance, like this:
 
@@ -201,7 +203,9 @@ At the top of the dictionary, add this line:
         
 This will install the progress application.
 
-You should find the **FEATURES** section already exists, and you will want to add a few items to it. _It appears that these are generally kept in alphabetical order, but for simplicity, you may wish to just add these items to the **beginning** of the array._
+You should find the **FEATURES** section already exists, and you will want to add a few items to it. 
+_It appears that these are generally kept in alphabetical order, but for simplicity, you may wish to just add these 
+items to the **beginning** of the array._
 
             "API": true,
             "MARK_PROGRESS_ON_GRADING_EVENT": true,
@@ -228,43 +232,19 @@ As the `vagrant` user, run:
 
     sudo apt-get -y install nginx
     
-Create a file at `/etc/nginx/sites-available/mcka_apros`
-    
-...and paste in these contents:
-
-    server {
-        listen 80;
-        
-        server_name apros.mcka.local;
-        
-        location / {
-            proxy_pass http://localhost:3000;
-            proxy_set_header Host $host;
-        }
-    }
-
-    server {
-        listen 80;
-
-        server_name lms.mcka.local;
-
-        location / {
-            proxy_pass http://localhost:8000;
-            proxy_set_header Host $host;
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-            add_header "Access-Control-Allow-Credentials" "true";
-            add_header "Access-Control-Allow-Origin" "http://apros.mcka.local";
-            add_header "Access-Control-Allow-Headers" "X-CSRFToken,X-Requested-With,Keep-Alive,User-Agent,If-Modified-Since,Cache-Control,Content-Type,DNT,X-Mx-ReqToken";
-            if ($request_method = 'OPTIONS') {
-                return 204;
-            }
-        }
-    }
+Create a file at `/etc/nginx/sites-available/mcka_apros` using [example development config][example-config]. **Note that this is a 
+minimal working example that lacks some special rules set in production.** Some minor features not necessary for most of 
+development may not work (e.g. serving discussion user profiles from Apros rather than LMS). For complete example 
+replicating actual production rules see [Appendix C][appendix-c].
 
 Enable this new virtual host with:
 
     sudo ln -s /etc/nginx/sites-{available,enabled}/mcka_apros
     sudo service nginx restart
+    
+
+[example-config]: mcka_apros
+[appendix-c]: #appendix-c-complete-production-routing
     
 
 ## Step 5 - Start Apros
@@ -334,7 +314,59 @@ Deployments of Apros that are publicly accessible should differ in several respe
 3. You will need to generate and set API keys for use between the server and Apros, and turn off the DEBUG flag.
 
 
-## Appendix C: Production-like assets management
+## Appendix C: Complete production routing
+
+In production environment both Apros and LMS are served from the same domain, and sophisticated nginx rule set is used
+to separate them. As a result, all requests pass through the same nginx server, so further customization is possible.
+Another advantage of such setup is that there are no CORS requests at all.
+ 
+So, in order to serve both LMS and Apros on the same domain, one need the following:
+
+* (First time only) Set up production nginx proxying. The cleaniest way to do that while still being able to revert to 
+  simpler setup would be to create new nginx virtual server (e.g. `mcka_apros_production`) using [example 
+  production-like config][example-nginx-config]. 
+* Switch to `mcka_apros_production` config. [Nginx ensite][nginx_ensite] script comes in very handy for switching between
+  nginx virtual server configurations. 
+* Modify Apros settings file so that `LMS_SUB_DOMAIN+'.'+LMS_BASE_DOMAIN` would be equal to Apros domain name. Example
+  nginx config assumes `apros.mcka.local`, so the values should be: `LMS_SUB_DOMAIN='apros'`, `LMS_BASE_DOMAIN='mcka.local'`
+* Don't forget to restart Apros if it was already running.
+
+One way to make sure everything works as expected is to check Ajax requests sent by discussion xblock. With development
+settings it uses lms domain name explicitly (i.e. request goes to `lms.mcka.local/...`), while with production-like it goes 
+to Apros domain first, than got processed by nginx rules (i.e. request goes to `apros.mcka.local/...`)
+
+To revert to development configuration simply unod these steps, i.e. set `LMS_SUB_DOMAIN='lms'` and switch back to `mcka_apros`.
+
+Please note that [example config][example-nginx-config] is built based on actual ansible scripts used to deploy
+[apros][apros-ansible-config], minus `apros_app_server` upstream and related directives (they are replaced with 
+hard-coded reference to `localhost:3000` where Apros should be served by default). 
+
+
+Apros does not work correctly if accessed from a non-standard HTTP port, so all nginx setups mentioned serves it on port 
+80. However, there's a problem that Apros runs in a devstack virtual box, so port 80 is not directly accessible from 
+host system, and it cannot be mapped to host's port 80 via Vagrantfile as mapping to priviledged ports (<1024) is 
+restricted to superusers only. There are two options to solve this issue:
+
+1. Vagrant maps guest port 80 to host port 8080. So, in order to access Apros at default HTTP port you will need to set 
+   up a port redirect rule on your host system to forward traffic from port 80 to 8080. If you are using Linux, an 
+   iptables script to do so can be found [there][apros-iptables]. Note those iptables rules are are transient, so script
+   needs to be executed on every host system reload.
+2. Devstack box is configured with two network interfaces, one of which is "Host-only adapter". If you do not plan to
+   access Apros from any machine except localhost, you could edit `/etc/hosts` (or its equivalent in your OS) to contain 
+   the following rules, **instead** of rules set up earlier (actual IP might change later, check out 
+   `config.vm.network :private_network, ip: "192.168.33.10".` directive.
+   
+   
+       192.168.33.10   apros.mcka.local lms.mcka.local studio.mcka.local
+
+
+[example-nginx-config]: mcka_apros_production
+[apros-iptables]: iptables_config.sh
+[nginx_ensite]: https://github.com/perusio/nginx_ensite
+[apros-ansible-config]: https://github.com/open-craft/ansible-private/blob/master/roles/mckinsey_apros/templates/edx/app/nginx/sites-available/mcka_apros.j2
+
+
+## Appendix D: Production-like assets management
 
 Static assets (js, css, images, etc.) are served in quite different ways in development and production:
 
@@ -344,6 +376,10 @@ to improve page load time. To further reduce application server load, static fil
 
 So, to achieve production-like assets management in development, the following steps need to be performed:
 
+* (First time only) Create yet another nginx config `mcka_apros_production_pipelined` using [example production-like 
+  config with pipelines][example-pipelined-apros-config]. This config is essentially equal to [example production-like 
+  config][example-nginx-config], except `location @proxy_to_lms_nginx` points to virtual server set up in `lms_pipeline_assets`, 
+  rather than to LMS application location, and `lms.mcka.local` section rewritten to properly serve pipelined static assets.
 * Enable pipelines: pipelines are governed by `FEATURES['USE_DJANGO_PIPELINE']` and disabled in development environment
   by default. To set it to true edit `[cl]ms.env.json` so that `FEATURES` block has `'USE_DJANGO_PIPELINE': true`.
 * Set `DEBUG` setting to `False` - there are some mechanisms in XBlock runtime system that rewrite urls starting with `/static/`
@@ -353,19 +389,22 @@ So, to achieve production-like assets management in development, the following s
 * Setting `DEBUG` to `False` activates the edx api key mechanism; in case you haven't configured it yet you should not be 
   able to log in into Apros. To solve this issue edit `lms/envs/devstack.py` so that `EDX_API_KEY` values both in 
   `edx-platform/lms/envs/devstack.py` and `mcka_apros/mcka_apros/settings.py` match.
-* Set up nginx proxying. The cleaniest way would be to create new nginx site config (e.g. `mcka_apros_production`) 
-  using [example config][example-nginx-config], than toggle between `mcka_apros` and `mcka_apros_production`. 
-  [Nginx ensite][nginx_ensite] script comes in very handy for toggling them.
+* As `edxapp` user run `paver update_assets --settings=devstack` - this will place compiled assets to where `lms_pipeline_assets`
+  expects them to be. Note that `paver devstack lms` does not run `collectstatic` so it won't work here. 
+* Switch to `mcka_apros_production_pipelined`. This replaces `mcka_apros_production`, so `mcka_apros` and `mcka_apros_production`
+  must be disabled.
+  
+To make sure everything works as expected check what static assets are loaded. If you see something like 
+`lms-style-app-extend1.[12 hex digits].css` pipelines are enabled properly.
+  
+To revert to production config with non-pipelined assets switch back to `mcka_apros_production` and undo all `[cl]ms/envs/devstack.py`
+modifications. It's fine to leave `USE_DJANGO_PIPELINE` set to true in `[cl]ms.env.json` as static url rewrites shortcut
+the actual rewriting if `DEBUG` is set to true.
 
-Please note that [example config][example-nginx-config] is built based on actual ansible scripts used to deploy
-[apros][apros-ansible-config] and [lms static files management][static-ansible-config]. Some host system port redirection 
-rules are required as Apros and lms listens on port `80`, an iptables script to add those rules can be found [there][apros-iptables]
-(note rules added are transient ones so script needs to be executed on every host system reload).
 
 [dj-pipeline]: http://django-pipeline.readthedocs.org/en/latest/
 [example-nginx-config]: mcka_apros_production
-[apros-iptables]: iptables_config.sh
-[nginx_ensite]: https://github.com/perusio/nginx_ensite
-[apros-ansible-config]: https://github.com/open-craft/ansible-private/blob/master/roles/mckinsey_apros/templates/edx/app/nginx/sites-available/mcka_apros.j2
-[static-ansible-config]: https://github.com/open-craft/ansible-private/blob/master/roles/nginxtra/templates/edx-deployment/sites/static-files.j2
+[example-pipelined-apros-config]: mcka_apros_production_pipelined
+[example-pipelined-static-config]: lms_pipeline_assets
+
 
