@@ -14,12 +14,12 @@ window.Apros = {
     });
     Backbone.history.start({pushState: has_push, hashChange: false});
   }
-}
+};
 
 _(Apros).extend(Backbone.Events);
 
 $(function(){
-  Apros.initialize()
+  Apros.initialize();
   /* Javascript to initialise on ready as defined by jquery */
 
   // Load video overlay based on video url
@@ -67,6 +67,11 @@ $(function(){
       modal.removeData('ooyala');
     }
     $('.player-wrapper', modal).empty();
+  });
+
+  $(document).on("xblock_jump", function(eventObject, course_id, block_type, block_id){
+    var url = "/courses/" + course_id + "/" + block_type + "/lessons/i4x://" + course_id + "/vertical/" + block_id;
+    window.location.href = url;
   });
 
   // Load user profile information on demand
