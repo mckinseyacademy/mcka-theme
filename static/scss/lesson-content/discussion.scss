@@ -306,19 +306,21 @@
   /* Course discussion banners */
 
   .user-label-staff, .user-label-community-ta {
-    visibility: hidden;
     position: relative;
-    width: 0px;
+    padding: 0;
+    margin: 0;
+    width: 70px;
     display: inline-block;
 
     &:before {
+      width: 70px;
       content: "McKinsey TA";
       text-transform: uppercase;
       color: white;
       background-color: $mckinsey-academy-alt-blue;
-      visibility: visible;
-      padding: 2px 5px;
+      text-align: center;
       white-space: nowrap;
+      position: absolute;
     }
   }
 
