@@ -69,6 +69,14 @@ def _validate_path(redirect_to):
         logger.error('Invalid Redirect: {}'.format(redirect_to))
         raise
 
+def _get_stored_image_url(request, image_url):
+    if image_url[:10] == '/accounts/':
+        return image_url[10:]
+    elif image_url[:8] == '/static/':
+        prefix = 'https://' if request.is_secure() else 'http://'
+        return prefix + request.host() + image_url
+    return image_url
+
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -406,6 +414,7 @@ def user_profile(request):
 @login_required
 def user_profile_image_edit(request):
     if request.method == 'POST':
+        user_id = request.user.id
         heightPosition = request.POST.get('height-position')
         widthPosition = request.POST.get('width-position')
         x1Position = request.POST.get('x1-position')
@@ -413,18 +422,15 @@ def user_profile_image_edit(request):
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
         profileImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2]
+        avatar_url = user_api.get_user(user_id).image_url(size=None, path='relative')
 
         from PIL import Image
         from django.core.files.storage import default_storage
         from django.core.files.base import ContentFile
 
-        if profileImageUrl[:10] == '/accounts/':
-            image_url = profileImageUrl[10:]
-        elif profileImageUrl[:8] == '/static/':
-            prefix = 'https://' if request.is_secure() else 'http://'
-            image_url = prefix + request.get_host() + profileImageUrl
-        else:
-            image_url = profileImageUrl
+        image_url = _get_stored_image_url(request, profileImageUrl)
+        if avatar_url != JsonObjectWithImage.default_image_url():
+            avatar_url = _get_stored_image_url(request, avatar_url)
 
         if default_storage.exists(image_url):
 
@@ -437,12 +443,19 @@ def user_profile_image_edit(request):
             bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
             new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
-            JsonObjectWithImage.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
-            user_api.update_user_information(request.user.id,  {'avatar_url': '/accounts/' + new_image_url})
+            JsonObjectWithImage.save_profile_image(cropped_example, avatar_url, new_image_url=new_image_url)
+            user_api.update_user_information(user_id, {'avatar_url': '/accounts/' + new_image_url})
             request.user.avatar_url = '/accounts/' + new_image_url
             request.user.save()
-        RemoteUser.remove_from_cache(request.user.id)
-        return change_profile_image(request, request.user.id, template='edit_profile_image')
+        RemoteUser.remove_from_cache(user_id)
+
+        # delete user profile images from TEMP_IMAGE_FOLDER
+        temp_folder_path = 'images/' + settings.TEMP_IMAGE_FOLDER
+        for filename in default_storage.listdir(temp_folder_path)[1]:
+            if 'profile_image-{}'.format(user_id) in filename:
+                default_storage.delete(temp_folder_path + filename)
+
+        return change_profile_image(request, user_id, template='edit_profile_image')
 
 @login_required
 def change_profile_image(request, user_id, template='change_profile_image', user_profile_image=None, error=None):
@@ -452,7 +465,7 @@ def change_profile_image(request, user_id, template='change_profile_image', user
     if user_profile_image:
         profile_image = user_profile_image
     else:
-        profile_image = user.image_url(size=200, path='absolute')
+        profile_image = user.image_url(size=None, path='absolute')
 
     if '?' in profile_image:
         profile_image = profile_image + '&' + format(datetime.datetime.now(), u'U')
@@ -491,8 +504,9 @@ def upload_profile_image(request, user_id):
             avatar_url = request.user.avatar_url
 
             if temp_image.content_type in allowed_types:
-                JsonObjectWithImage.save_profile_image(Image.open(temp_image), 'images/' + settings.TEMP_IMAGE_FOLDER + 'profile_image-{}.jpg'.format(user_id))
-                avatar_url = '/accounts/images/' + settings.TEMP_IMAGE_FOLDER + 'profile_image-{}.jpg'.format(user_id)
+                temp_image_url = settings.TEMP_IMAGE_FOLDER + 'profile_image-{}-{}.jpg'.format(user_id, datetime.datetime.now().strftime("%s"))
+                JsonObjectWithImage.save_profile_image(Image.open(temp_image), 'images/' + temp_image_url)
+                avatar_url = '/accounts/images/' + temp_image_url
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
 

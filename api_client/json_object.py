@@ -149,13 +149,15 @@ class JsonObject(Objectifier):
 class JsonObjectWithImage(JsonObject):
 
     def image_url(self, size=48, path='absolute'):
-        ''' return default avatar unless the user has one '''
-        # TODO: is the size param going to be used here?
+        '''
+        Return default avatar unless the user has one
 
+        Specify size=None if you want the original image
+        '''
         try:
             if hasattr(self, 'avatar_url') and self.avatar_url is not None:
-                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size]
-                best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
+                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size] if size else None
+                best_image_size = min(usable_sizes) if usable_sizes else None
 
                 # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
                 if best_image_size and size == best_image_size and not self.have_size(size):
@@ -230,6 +232,12 @@ class JsonObjectWithImage(JsonObject):
         # Save normal path
         old_image_url_name = os.path.splitext(image_url)[0]
         new_image_url_name = os.path.splitext(new_image_url)[0]
+        '''
+        There's a slight chance the image won't be deleted since
+        an exception might be raised while request for deletion was in progress,
+        e.g. because request timed out, in which case the execution will be continued.
+        It would be a good thing to delete unused profile images from S3 server by hand.
+        '''
         try:
             default_storage.delete(image_url)
         except:

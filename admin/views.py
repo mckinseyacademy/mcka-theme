@@ -1906,7 +1906,7 @@ def change_company_image(request, client_id='new', template='change_company_imag
         company_image = "/static/image/empty_avatar.png"
     elif not company_image:
         client = Organization.fetch(client_id)
-        company_image = client.image_url(size=200, path='absolute')
+        company_image = client.image_url(size=None, path='absolute')
 
     if '?' in company_image:
         company_image = company_image + '&' + format(datetime.now(), u'U')
