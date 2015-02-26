@@ -15,6 +15,10 @@ Mckinsey Academy custom front end application
 * CSS and JS are compiled automatically upon save (for dev) when you run
 `$ ./manage.py rundev`
 
+* Detailed setup notes can be found [there][setup-notes]
+
+[setup-notes]: /docs/SetupNotes.md
+
 #### Templates
 We are using standard Django templates, but we are preprocessing them with haml preprocessor (installed via pip)
 haml is a lovely markup, quick reference:
