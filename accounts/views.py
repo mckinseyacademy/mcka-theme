@@ -422,7 +422,7 @@ def user_profile_image_edit(request):
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
         profileImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2]
-        avatar_url = user_api.get_user(user_id).image_url(size=200, path='relative')
+        avatar_url = user_api.get_user(user_id).image_url(size=None, path='relative')
 
         from PIL import Image
         from django.core.files.storage import default_storage
@@ -444,12 +444,12 @@ def user_profile_image_edit(request):
             cropped_example = original.crop((left, top, right, bottom))
             new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
             JsonObjectWithImage.save_profile_image(cropped_example, avatar_url, new_image_url=new_image_url)
-            user_api.update_user_information(user_id,  {'avatar_url': '/accounts/' + new_image_url})
+            user_api.update_user_information(user_id, {'avatar_url': '/accounts/' + new_image_url})
             request.user.avatar_url = '/accounts/' + new_image_url
             request.user.save()
         RemoteUser.remove_from_cache(user_id)
 
-        #delete user profile images from TEMP_IMAGE_FOLDER
+        # delete user profile images from TEMP_IMAGE_FOLDER
         temp_folder_path = 'images/' + settings.TEMP_IMAGE_FOLDER
         for filename in default_storage.listdir(temp_folder_path)[1]:
             if 'profile_image-{}'.format(user_id) in filename:
@@ -465,7 +465,7 @@ def change_profile_image(request, user_id, template='change_profile_image', user
     if user_profile_image:
         profile_image = user_profile_image
     else:
-        profile_image = user.image_url(size=200, path='absolute')
+        profile_image = user.image_url(size=None, path='absolute')
 
     if '?' in profile_image:
         profile_image = profile_image + '&' + format(datetime.datetime.now(), u'U')

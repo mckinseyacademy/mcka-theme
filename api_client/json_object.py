@@ -149,13 +149,15 @@ class JsonObject(Objectifier):
 class JsonObjectWithImage(JsonObject):
 
     def image_url(self, size=48, path='absolute'):
-        ''' return default avatar unless the user has one '''
-        # TODO: is the size param going to be used here?
+        '''
+        Return default avatar unless the user has one
 
+        Specify size=None if you want the original image
+        '''
         try:
             if hasattr(self, 'avatar_url') and self.avatar_url is not None:
-                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size]
-                best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
+                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size] if size else None
+                best_image_size = min(usable_sizes) if usable_sizes else None
 
                 # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
                 if best_image_size and size == best_image_size and not self.have_size(size):
