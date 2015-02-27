@@ -98,7 +98,9 @@ Do not worry that the directory `mcka_apros` does not exist. It will be created 
   [here for mac](http://www.dmuth.org/node/1404/web-development-port-80-and-443-vagrant) and 
   [here for linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user).
   The guide for mac has some extra tips you may be able to backport to your Linux installation. Several Apros features do
-  not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS.
+  not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS. NOTE: for
+  Yosemite OSX users ipfw (which that link describes) is no longer available, please see this [link for
+  Yosemite](http://www.abetobing.com/blog/port-forwarding-mac-os-yosemite-81.html)
 
 * Clone the Apros repository **in your vagrant staging folder**, like so:
 
