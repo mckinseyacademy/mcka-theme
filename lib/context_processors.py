@@ -3,9 +3,46 @@ from django.conf import settings
 
 from courses.user_courses import standard_data
 
+from edx_notifications.server.web.utils import get_notifications_widget_context
+
+import logging
+
+log = logging.getLogger(__name__)
+
+
 def user_program_data(request):
     ''' Makes user and program info available to all templates '''
-    return standard_data(request)
+
+    data = standard_data(request)
+
+    # add in edx-notifications context
+    data.update({
+        "refresh_watcher": {
+            "name": "short-poll",
+            "args": {
+                "poll_period_secs": 10,
+            }
+        },
+        "global_variables": {
+            # we only selectively want dates in the unread
+            # pane
+            "always_show_dates_on_unread": False,
+            "hide_link_is_visible": False,
+        },
+        "view_audios": {
+            # no audio alert for now
+            "notification_alert": None,
+        },
+    })
+
+    if 'course' in data and data['course']:
+        if data['course'].id:
+            data.update({
+                'namespace': data['course'].id
+            })
+    data = get_notifications_widget_context(data)
+
+    return data
 
 def settings_data(request):
     ''' makes global settings available to all templates '''
@@ -29,5 +66,6 @@ def settings_data(request):
         "mapbox_map_id": settings.MAPBOX_API['map_id'],
         "apros_features": settings.FEATURES,
     }
+
     return data
 

@@ -134,7 +134,34 @@ def login(request):
                     else:
                         redirect_to = '/'
 
-                return HttpResponseRedirect(redirect_to)  # Redirect after POST
+                response = HttpResponseRedirect(redirect_to)  # Redirect after POST
+
+                hostname = request.get_host()
+                wildcard_hostname = hostname
+                try:
+                    wildcard_hostname = '.'+string.join(hostname.split('.')[1:],'.')
+                except:
+                    pass
+
+                # for localdev testing with a vagrant image
+                # sometimes we want to set our cookies
+                # as wildcards. If so, specify IS_EDXAPP_ON_SAME_DOMAIN=False
+                # in the local_settings.py
+                use_wildcards_for_cookies = not getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True)
+
+                if 'remote_session_key' in request.session:
+                    response.set_cookie(
+                        'sessionid',
+                        request.session["remote_session_key"],
+                        domain=wildcard_hostname if use_wildcards_for_cookies else None
+                    )
+                if hasattr(user, 'csrftoken'):
+                    response.set_cookie(
+                        'csrftoken',
+                        user.csrftoken,
+                        domain=wildcard_hostname if use_wildcards_for_cookies else None
+                    )
+                return response
             except ApiError as err:
                 error = err.message
 
@@ -163,7 +190,26 @@ def login(request):
         "error": error,
         "login_label": _("Log in to my McKinsey Academy account & access my courses"),
         }
-    return render(request, 'accounts/login.haml', data)
+    response = render(request, 'accounts/login.haml', data)
+
+    if request.method == 'GET':
+        # if loading the login page
+        # then remove all LMS-bound wildcard cookies which may have been set in the past. We do that
+        # by setting a cookie that already expired
+
+        hostname = request.get_host()
+        wildcard_hostname = hostname
+        try:
+            wildcard_hostname = '.'+string.join(hostname.split('.')[1:],'.')
+        except:
+            pass
+
+        expire_in_past = datetime.datetime.strftime(datetime.datetime.utcnow() - datetime.timedelta(days=7), "%a, %d-%b-%Y %H:%M:%S GMT")
+        response.set_cookie('sessionid', 'to-delete', domain=wildcard_hostname, expires=expire_in_past)
+        response.set_cookie('csrftoken', 'to-delete', domain=wildcard_hostname, expires=expire_in_past)
+
+    return response
+
 
 def logout(request):
     return logout_handler.logout(request)

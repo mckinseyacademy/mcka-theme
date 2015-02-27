@@ -43,6 +43,9 @@
         sessionId: '{{ remote_session_key }}',
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
       };
       $.when.apply($, discussion_content.xblock(discussion_data)).
         done(function() {

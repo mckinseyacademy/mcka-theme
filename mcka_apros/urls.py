@@ -20,6 +20,7 @@ urlpatterns = patterns(
     url(r'^admin/', include('admin.urls'), name='admin'),
     url(r'^heartbeat$', include('heartbeat.urls'), name='heartbeat'),
     url(r'^mcka-api/v1/', include('public_api.urls'), name='public_api'),
+    url(r'^api/', include('edx_notifications.server.api.urls_mock')),
 )
 
 if settings.DEBUG:
