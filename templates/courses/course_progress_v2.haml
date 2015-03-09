@@ -1,0 +1,49 @@
+- extends "courses/course_navigation.haml"
+
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Progress | Courses | McKinsey Academy")
+
+- block header
+  - if progress_user.id == user.id
+    - include "header.haml"
+  - else
+    - include "admin/admin_header.haml"
+
+-block content
+  %article#course-progress-v2.row
+    .medium-10.medium-centered.columns.course-page
+      %h1 Dashboard for '={progress_user.username}'
+    .medium-10.medium-centered.columns.course-page
+      .label-5 PROFICIENCY
+      %p.style-6 Your current grade is 60 following completion of 1 of 3 graded items in this course. The cohort average is 57.
+      %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: 10% assessment, 30% final assessment, 60% group work (split evenly across activities). Click here to read more about how we may share your course information.
+    .medium-10.medium-centered.columns.course-page
+      .label-5 ENGAGEMENT
+      %p.style-6 Your current engagement score is ={social.points}. The cohort average is ={social.course_avg}.
+      %table
+        %thead
+          %tr
+            %th Overall:
+            %th Measured Engagement:
+            %th Stats:
+        %tbody
+          %tr
+            %td.visual{rowspan: 5}
+              - include "courses/visualizations/course_engagement.haml"
+            %td Number of <span>New Posts</span> you created
+            %td.number{class: "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
+          %tr
+            %td Number of <span>Replies</span> you made to other posts
+            %td.number{class: "{% if social.metrics.num_replies == 0 %}zero{% endif %}"}= social.metrics.num_replies
+          %tr
+            %td Number of <span>Replies</span> to your comments
+            %td.number{class: "{% if social.metrics.num_comments_generated == 0 %}zero{% endif %}"}= social.metrics.num_comments_generated
+          %tr
+            %td Number of <span>Upvotes</span> your posts have received
+            %td.number{class: "{% if social.metrics.num_upvotes == 0 %}zero{% endif %}"}= social.metrics.num_upvotes
+          %tr
+            %td Number of your posts being <span>Followed</span>
+            %td.number{class: "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
+      %p.style-6 Note: Your engagement score increases through your social interactions with other participants in your cohort through participation in the <a href="#{course.nav_url}/discussion">discussion</a> forums.

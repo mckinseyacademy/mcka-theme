@@ -95,7 +95,6 @@ class Progress(UserProgress):
     def has_leaders(self):
         return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].user_progress_value > 0
 
-
 def build_page_info_for_course(
     request,
     course_id,
@@ -422,7 +421,8 @@ def get_social_metrics(course_id, user_id):
     for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
         user = {
             "id": u_id,
-            "points": social_total(user_metrics)
+            "points": social_total(user_metrics),
+            "metrics": user_metrics,
         }
         point_sum += user["points"]
         user_scores.append(user)
@@ -443,6 +443,7 @@ def get_social_metrics(course_id, user_id):
         user = {
             "id": user_id,
             "points": social_total(user_metrics),
+            "metrics": user_metrics,
         }
 
     leader_ids = [sorted_user["id"] for sorted_user in sorted_users[:3]]
@@ -462,6 +463,7 @@ def get_social_metrics(course_id, user_id):
     return {
         'points': user.get("points", 0),
         'position': user.get("rank", None),
+        'metrics': user.get("metrics", {}),
         'course_avg': round_to_int_bump_zero(course_avg),
         'leaders': leaders
     }

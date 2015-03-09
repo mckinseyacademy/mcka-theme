@@ -1,0 +1,75 @@
+#course-progress-v2 {
+  table {
+    margin: rem-calc(20) 0;
+    width: 100%;
+    border: none;
+
+    thead {
+      background: #f3f3f3;
+
+      th {
+        color: $mckinsey-dark-grey;
+        padding: 0;
+        text-indent: 12px;
+        text-transform: uppercase;
+        border-bottom: 1px solid $border-line;
+        border-right: 1px solid $border-line;
+        @include font-spec(12, 600, 20);
+        &:first-child { width: 22% }
+
+        &:last-child {
+          width: 33%;
+          border-right: none;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-of-type(even) {
+          background: none;
+        }
+
+        td {
+          color: $mckinsey-dark-grey;
+          text-indent: rem-calc(12);
+          padding: rem-calc(18) 0;
+          border-bottom: 1px solid $border-line;
+          border-right: 1px solid $border-line;
+          @include font-spec(12, normal, 14);
+          &:last-child { border-right: none; }
+
+          &.visual {
+            text-indent: 0;
+            text-align: center;
+            vertical-align: top;
+
+            section {
+              display: inline-block;
+            }
+          }
+
+          &.number {
+            color: $mckinsey-academy-black;
+            @include font-spec(18, 700);
+            &.zero { color: $mckinsey-grey; }
+          }
+
+          span {
+            color: $mckinsey-academy-black;
+            font-weight: 600;
+          }
+
+          .course-engagement {
+            .zero,
+            .sub-2,
+            .label-4,
+            .info {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
