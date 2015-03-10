@@ -20,7 +20,10 @@
         = course.progress
         = _('%')
       %td.course-completed
-        = course.completed
+        - if course.completed
+          = _("Yes")
+        - else
+          = _("No")
       %td
       %td.course-progress-link
         %a{'href': '/courses/#{course.id}/progress/#{student.id}',}
