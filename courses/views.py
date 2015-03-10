@@ -389,6 +389,27 @@ def _course_progress_for_user(request, course_id, user_id):
 
     return render(request, 'courses/course_progress.haml', data)
 
+def _course_progress_for_user_v2(request, course_id, user_id):
+    course = load_course(course_id, request=request)
+    progress_user = user_api.get_user(user_id)
+    social = get_social_metrics(course_id, user_id)
+
+    data = {
+        "social": social,
+        "progress_user": progress_user,
+    }
+
+    if progress_user.id != request.user.id:
+        # Inject course progress for nav header
+        load_course_progress(course, user_id)
+        # Add index to lesson
+        for idx, lesson in enumerate(course.chapters, start=1):
+            lesson.index = idx
+
+        data["course"] = course
+
+    return render(request, 'courses/course_progress_v2.haml', data)
+
 @login_required
 @check_company_admin_user_access
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
@@ -399,6 +420,17 @@ def course_user_progress(request, user_id, course_id):
 @check_user_course_access
 def course_progress(request, course_id):
     return _course_progress_for_user(request, course_id, request.user.id)
+
+@login_required
+@check_company_admin_user_access
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def course_user_progress_v2(request, user_id, course_id):
+    return _course_progress_for_user_v2(request, course_id, user_id)
+
+@login_required
+@check_user_course_access
+def course_progress_v2(request, course_id):
+    return _course_progress_for_user_v2(request, course_id, request.user.id)
 
 @login_required
 @check_user_course_access

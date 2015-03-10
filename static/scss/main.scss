@@ -59,6 +59,10 @@ p {
     color: $mckinsey-dark-grey;
     font-style: italic;
     @include font-spec(12, semibold, 14);
+
+    a, a:visited {
+      @include font-spec(12, semibold, 14);
+    }
   }
 }
 
