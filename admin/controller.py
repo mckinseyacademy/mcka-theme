@@ -436,9 +436,14 @@ def generate_course_report(client_id, course_id, url_prefix, students):
         value = getattr(obj, name, 0)
         return value if value is not None else 0
 
-    def blank_if_none(obj, name):
+    def prepare_value(obj, name):
         value = getattr(obj, name, None)
-        return value if value is not None else ''
+        """
+        Fields that contain commas, quotes, and CR/LF need to be wrapped in double-quotes.
+        If double-quotes are used to enclose fields, then a double-quote appearing inside a field must be escaped
+        by preceding it with another double quote.
+        """
+        return '"{}"'.format(value.replace('"', '""')) if value is not None else ''
 
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
@@ -456,14 +461,14 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     for student in students:
         user_row = [
-            blank_if_none(student, "full_name"),
-            blank_if_none(student, "username"),
-            blank_if_none(student, "title"),
-            blank_if_none(student, "email"),
+            prepare_value(student, "full_name"),
+            prepare_value(student, "username"),
+            prepare_value(student, "title"),
+            prepare_value(student, "email"),
             "{}%".format(str(zero_if_none(student, "progress"))),
             str(zero_if_none(student, "engagement")),
             str(zero_if_none(student, "proficiency")),
-            str(blank_if_none(student, "completed"))
+            str(prepare_value(student, "completed"))
         ]
         output_line(user_row)
 
