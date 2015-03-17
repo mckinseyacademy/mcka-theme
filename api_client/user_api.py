@@ -329,6 +329,19 @@ def get_user_gradebook(user_id, course_id, gradebook_model=gradebook_models.Grad
     return JP.from_json(response.read(), gradebook_model)
 
 @api_error_protect
+def get_user_grades(user_id, gradebook_model=gradebook_models.Gradebook):
+    ''' get grades for the user for all courses'''
+    response = GET(
+        '{}/{}/{}/courses/grades'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id
+        )
+    )
+
+    return JP.from_json(response.read(), gradebook_model)
+
+@api_error_protect
 def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
     '''
     Let the openedx server know the most recently visited page

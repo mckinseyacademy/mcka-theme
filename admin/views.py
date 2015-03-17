@@ -536,13 +536,14 @@ def client_admin_email_not_started(request, client_id, course_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):
-    userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
     student.avatar_url = student.image_url(size=48)
     courses = []
-    for courseName in userCourses:
-        course = load_course(courseName.id, depth=4)
+    grades = user_api.get_user_grades(user_id)
+    for grade in grades:
+        course = load_course(grade.course_id, depth=4)
         if course.id != course_id:
+            course.completed = grade.complete_status
             course.progress = return_course_progress(course, user_id)
             courses.append(course)
     data = {
