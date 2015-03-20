@@ -15,9 +15,36 @@
   %article#course-progress-v2.row
     .medium-10.medium-centered.columns.course-page
       %h1 Dashboard for '={progress_user.username}'
+      .label-5 PROGRESS
+      %p.style-6 You are ={course.user_progress}% of the way through the course based on completion of modules within lessons. The cohort average is ={average_progress}%.
+      %table.user-progress
+        %thead
+          %tr
+            %th # Modules
+            %th Overall
+        %tbody
+          %tr
+            %td <span>120</span> in this course
+            %td.visual
+              - include "courses/visualizations/course_progress.haml"
     .medium-10.medium-centered.columns.course-page
       .label-5 PROFICIENCY
-      %p.style-6 Your current grade is 60 following completion of 1 of 3 graded items in this course. The cohort average is 57.
+      %p.style-6 Your current grade is ={proficiency} following completion of 0 of 5 graded items in this course. The cohort average is ={cohort_proficiency_average}.
+      %table
+        %thead
+          %tr
+            %th Overall:
+            %th Graded Items:
+            %th Grade:
+        %tbody
+          %tr
+            %td.visual{rowspan: 100}
+              - include "courses/visualizations/course_proficiency.haml"
+          - for lesson in course.chapters
+            - ifnotequal lesson.assesment_score None
+              %tr
+                %td= lesson.name
+                %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
       %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: 10% assessment, 30% final assessment, 60% group work (split evenly across activities). Click here to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
       .label-5 ENGAGEMENT

@@ -393,10 +393,26 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
     social = get_social_metrics(course_id, user_id)
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
+
+    # add in all the grading information
+    gradebook = inject_gradebook_info(user_id, course)
+
+    graders = gradebook.grading_policy.GRADER
+    for grader in graders:
+        grader.weight = round_to_int(grader.weight*100)
+
+    cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
+    pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
 
     data = {
         "social": social,
         "progress_user": progress_user,
+        "proficiency": round_to_int(proficiency.user_grade_value * 100),
+        "proficiency_graph": int(5 * round(proficiency.user_grade_value * 20)),
+        "cohort_proficiency_average": proficiency.course_average_display,
+        "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
+        "average_progress": average_progress(course, request.user.id),
     }
 
     if progress_user.id != request.user.id:
