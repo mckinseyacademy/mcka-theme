@@ -28,17 +28,17 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
                     ;
 
       var daysNumber = dataJson[0].values.length;
+      var lessThanAWeekOld = daysNumber <= 7;
+      var tickValues = (lessThanAWeekOld) ? d3.range(0, daysNumber) : d3.range(0, daysNumber, 7);
 
-      chart.xAxis
-          .tickValues(Array.apply(null, {length: dataJson[0].values.length}).map(Number.call, Number))
-          .tickFormat(function(d) {
-              if(daysNumber > 7 && d%7 == 0){
-                return (Math.ceil(d / 7));
-              }
-              else if (daysNumber <= 7){
-                return d;
-              }
-            });
+      chart.xAxis.tickValues(tickValues).tickFormat(function(d) {
+          if(daysNumber > 7 && d%7 == 0){
+            return (Math.floor(d / 7));
+          }
+          else if (lessThanAWeekOld) {
+            return d;
+          }
+      });
 
       chart.lines.forceY([0, maxY]);
       chart.yAxis
@@ -56,7 +56,7 @@ Apros.views.AdminAnalyticsProgress = Backbone.View.extend({
       d3.select(_this.el)
           .selectAll('.nv-x .nvd3.nv-wrap.nv-axis')
           .append("text")
-          .text(function(){return daysNumber > 7 ? 'weeks': 'days';})
+          .text(function(){return lessThanAWeekOld ? 'days': 'weeks';})
           .attr('y', 15)
           .attr('x', 683);
 
@@ -104,13 +104,16 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
               .width(width).height(height)
               .tooltips(false);
 
-        var weeks = d3.range(0, dataJson[0].values.length, 7)
         var daysNumber = dataJson[0].values.length;
-        chart.xAxis.tickValues(weeks).tickFormat(function(d) {
+        var lessThanAWeekOld = daysNumber <= 7;
+
+        var tickValues = (lessThanAWeekOld) ? d3.range(0, daysNumber) : d3.range(0, daysNumber, 7);
+
+        chart.xAxis.tickValues(tickValues).tickFormat(function(d) {
             if(daysNumber > 7 && d%7 == 0){
               return (Math.floor(d / 7));
             }
-            else if (daysNumber <= 7){
+            else if (lessThanAWeekOld) {
               return d;
             }
         });
@@ -123,10 +126,6 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
         var lineMax = d3.max(dataJson[1].values, function (d) { return d[1]; });
         chart.lines.forceY([0, lineMax || 1]);
 
-        for (var property in chart.legend.dispatch) {
-            chart.legend.dispatch[property] = function() { };
-        }
-
         d3.select(_this.el)
           .datum(dataJson)
           .transition()
@@ -136,7 +135,7 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
         d3.select(_this.el)
             .selectAll('.nv-x .nv-axisMaxMin:last-child')
             .append("text")
-            .text(function(d) {return $(this).text() + ' weeks'})
+            .text(function(){return lessThanAWeekOld ? 'days': 'weeks';})
             .attr('y', 15)
             .attr('x', 10);
 
