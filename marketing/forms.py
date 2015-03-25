@@ -113,4 +113,4 @@ class EdxOfferForm(forms.Form):
     company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Company'), 'required': None, 'data-entry': 'entry.925379726'}))
     title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Title'), 'required': None, 'data-entry': 'entry.143346488'}))
     education = forms.ChoiceField(label=_('Highest level of education completed:'), choices=EDUCATION_CHOICES, widget=forms.Select(attrs={'data-entry': 'entry.24647299'}))
-    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('In a few lines tell us whay you would like to take the course.'), 'required': None, 'data-entry': 'entry.1495472333'}))
+    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('In a few lines tell us why you would like to take the course.'), 'required': None, 'data-entry': 'entry.1495472333'}))
