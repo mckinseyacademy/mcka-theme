@@ -4,6 +4,14 @@
     width: 100%;
     border: none;
 
+    &.user-progress {
+      thead {
+        th {
+          &:last-child { width: 78%; }
+        }
+      }
+    }
+
     thead {
       background: #f3f3f3;
 
@@ -43,6 +51,7 @@
             text-indent: 0;
             text-align: center;
             vertical-align: top;
+            border-right: 1px solid $border-line;
 
             section {
               display: inline-block;
@@ -60,12 +69,33 @@
             font-weight: 600;
           }
 
-          .course-engagement {
+          .course-proficiency,
+          .course-engagement,
+          .course-progress {
             .zero,
             .sub-2,
             .label-4,
-            .info {
+            .info,
+            .triangle {
               display: none;
+            }
+          }
+
+          .course-progress {
+
+            .visualization {
+              margin: 0;
+              width: rem-calc(500);
+            }
+
+            .total {
+              color: $pure-black;
+              left: auto !important;
+              top: 0;
+              text-align: left;
+              width: rem-calc(50);
+              right: rem-calc(-85);
+              @include font-spec(18, 700);
             }
           }
         }
