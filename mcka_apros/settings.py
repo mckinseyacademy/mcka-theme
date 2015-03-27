@@ -224,11 +224,11 @@ SHORT_DATE_FORMAT = "%m/%d/%Y"
 # Points for social activities
 SOCIAL_METRIC_POINTS = {
     'num_threads': 10,
-    'num_comments': 2,
-    'num_replies': 1,
-    'num_upvotes': 5,
+    'num_comments': 5,
+    'num_replies': 5,
+    'num_upvotes': 25,
     'num_thread_followers': 5,
-    'num_comments_generated': 1,
+    'num_comments_generated': 15,
 }
 
 ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
