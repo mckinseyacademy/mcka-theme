@@ -29,11 +29,24 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
 
     var color = d3.scale.ordinal().domain(["Not started", "In progress", "Completed"]).range(['#E37222', '#66A5B5', '#D3D1BA']);
 
+    var dataJson = $.map(_this.model.attributes, function(value, index) {
+        return [value];
+    });
+
+    var daysNumber = dataJson.length;
+    var lessThanAWeekOld = daysNumber <= 7;
+
+    // Add empty first entry in dataJson (first presented day should be day 0 when the course is less than a week old)
+    if (lessThanAWeekOld) dataJson.unshift({'Completed': 0, 'In progress': 0, 'Not started': 0, 'day': 0});
+
+    var tickValues = lessThanAWeekOld ? d3.range(0, daysNumber) : d3.range(1, daysNumber, 7);
+
     var xAxis = d3.svg.axis()
         .scale(x)
-        .ticks([6])
+        .tickValues(tickValues)
         .tickFormat(function(d){
-            return Math.ceil(d / 7) + ' week'
+            if (lessThanAWeekOld) return d + ' day';
+            return Math.floor(d / 7) + ' week';
         })
         .orient("bottom");
 
@@ -41,10 +54,6 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
         .scale(y)
         .orient("left")
         .tickFormat(formatPercent);
-
-    var dataJson = $.map(_this.model.attributes, function(value, index) {
-                        return [value];
-                    });
 
     function make_x_axis() {
         return d3.svg.axis()
