@@ -13,7 +13,7 @@
     }
 
     thead {
-      background: #f3f3f3;
+      background: $mckinsey-academy-table-head;
 
       th {
         color: $mckinsey-dark-grey;
@@ -82,10 +82,12 @@
           }
 
           .course-progress {
+            width: 100%;
+            padding: 0 25px;
 
             .visualization {
               margin: 0;
-              width: rem-calc(500);
+              width: 92%;
             }
 
             .total {
