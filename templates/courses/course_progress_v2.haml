@@ -38,13 +38,12 @@
             %th Grade:
         %tbody
           %tr
-            %td.visual{rowspan: 100}
+            %td.visual{rowspan: "#{graded_items_rows}"}
               - include "courses/visualizations/course_proficiency.haml"
-          - for lesson in course.chapters
-            - ifnotequal lesson.assesment_score None
-              %tr
-                %td= lesson.name
-                %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
+          - for lesson in graded_items
+            %tr
+              %td= lesson.name
+              %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
       %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: 10% assessment, 30% final assessment, 60% group work (split evenly across activities). Click here to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
       .label-5 ENGAGEMENT

@@ -404,6 +404,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
+    graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
 
     data = {
         "social": social,
@@ -413,6 +414,8 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "average_progress": average_progress(course, request.user.id),
+        "graded_items": graded_items,
+        "graded_items_rows": len(graded_items) + 1,
     }
 
     if progress_user.id != request.user.id:
