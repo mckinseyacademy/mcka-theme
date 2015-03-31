@@ -582,3 +582,9 @@ div.xblock-student_view {
     }
   }
 }
+
+i.status {
+  color: $almost-white;
+  &.partial { color: $mckinsey-status-partial; }
+  &.complete { color: $mckinsey-green; }
+}

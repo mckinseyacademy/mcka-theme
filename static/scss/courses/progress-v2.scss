@@ -5,9 +5,19 @@
     border: none;
 
     &.user-progress {
+      margin-bottom: 0;
+      + table { margin-top: 0; }
       thead {
         th {
           &:last-child { width: 78%; }
+        }
+      }
+
+      tbody {
+        tr {
+          td {
+            &.visual { border-right: none; }
+          }
         }
       }
     }
@@ -40,8 +50,7 @@
 
         td {
           color: $mckinsey-dark-grey;
-          text-indent: rem-calc(12);
-          padding: rem-calc(18) 0;
+          padding: rem-calc(18) rem-calc(12);
           border-bottom: 1px solid $border-line;
           border-right: 1px solid $border-line;
           @include font-spec(12, normal, 14);
@@ -67,6 +76,10 @@
           span {
             color: $mckinsey-academy-black;
             font-weight: 600;
+          }
+
+          a, a:visited {
+            @include font-spec(12, 700);
           }
 
           .course-proficiency,
@@ -102,6 +115,16 @@
           }
         }
       }
+    }
+  }
+
+  .legend-status {
+    margin-bottom: rem-calc(16);
+
+    div {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: rem-calc(12);
     }
   }
 }

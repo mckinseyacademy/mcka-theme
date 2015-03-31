@@ -407,6 +407,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
     completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
 
+    for l in course.chapters:
+        print vars(l);
+
     data = {
         "social": social,
         "progress_user": progress_user,
@@ -419,6 +422,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "completed_items_count": len(completed_items),
         "graded_items_count": len(graded_items),
         "graded_items_rows": len(graded_items) + 1,
+        "module_count": course.module_count,
     }
 
     if progress_user.id != request.user.id:
