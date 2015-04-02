@@ -126,6 +126,10 @@ Apros.views.AdminAnalyticsParticipantActivity = Backbone.View.extend({
         var lineMax = d3.max(dataJson[1].values, function (d) { return d[1]; });
         chart.lines.forceY([0, lineMax || 1]);
 
+        for (var property in chart.legend.dispatch) {
+          chart.legend.dispatch[property] = function() { };
+        }
+
         d3.select(_this.el)
           .datum(dataJson)
           .transition()
