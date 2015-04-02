@@ -6,7 +6,25 @@
 
     &.user-progress {
       margin-bottom: 0;
-      + table { margin-top: 0; }
+
+      + table {
+        margin-top: 0;
+
+        tbody {
+          td.lesson-with-list {
+            position: relative;
+            padding-right: rem-calc(25);
+
+            a[data-reveal-id] {
+              position: absolute;
+              top: 50%;
+              right: rem-calc(10);
+              margin-top: -6px;
+            }
+          }
+        }
+      }
+
       thead {
         th {
           &:last-child { width: 78%; }
