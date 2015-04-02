@@ -39,6 +39,22 @@ class UrlsTest(TestCase):
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
         self.assertEqual(resolver.kwargs['chapter_id'], 'i4x://edX/Open_DemoX/chapter/interactive_demonstrations')
 
+    def test_infer_page_navigation_url(self):
+        resolver = resolve('/courses/c152/lessons/jump_to_page/ch153')
+        self.assertEqual(resolver.view_name, 'infer_page_navigation')
+        self.assertEqual(resolver.kwargs['course_id'], 'c152')
+        self.assertEqual(resolver.kwargs['page_id'], 'ch153')
+
+        resolver = resolve('/courses/ABC/123/456/789/lessons/jump_to_page/XYZ/987/654/321')
+        self.assertEqual(resolver.view_name, 'infer_page_navigation')
+        self.assertEqual(resolver.kwargs['course_id'], 'ABC/123/456/789')
+        self.assertEqual(resolver.kwargs['page_id'], 'XYZ/987/654/321')
+
+        resolver = resolve('/courses/edX/Open_DemoX/edx_demo_course/lessons/jump_to_page/i4x://edX/Open_DemoX/page/interactive_demonstrations')
+        self.assertEqual(resolver.view_name, 'infer_page_navigation')
+        self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
+        self.assertEqual(resolver.kwargs['page_id'], 'i4x://edX/Open_DemoX/page/interactive_demonstrations')
+
     def test_navigate_to_lesson_module_url(self):
         resolver = resolve('/courses/c152/lessons/ch153/module/p154')
         self.assertEqual(resolver.view_name, 'navigate_to_lesson_module')
@@ -393,3 +409,14 @@ class CoursesAPITest(TestCase):
         self.assertEqual(course_id, "9")
         self.assertEqual(chapter_id, "10")
         self.assertEqual(page_id, "100")
+
+    def test_get_chapter_by_page(self):
+        self.assertEqual(controller.get_chapter_by_page(None, "0", "100", MockCourseAPI), "10")
+        self.assertEqual(controller.get_chapter_by_page(None, "0", "102", MockCourseAPI), "10")
+        self.assertEqual(controller.get_chapter_by_page(None, "0", "110", MockCourseAPI), "11")
+        self.assertEqual(controller.get_chapter_by_page(None, "0", "113", MockCourseAPI), "11")
+        self.assertEqual(controller.get_chapter_by_page(None, "0", "121", MockCourseAPI), "12")
+        self.assertEqual(controller.get_chapter_by_page(None, "0", "123", MockCourseAPI), "12")
+        self.assertIsNone(controller.get_chapter_by_page(None, "0", "150", MockCourseAPI))
+        self.assertIsNone(controller.get_chapter_by_page(None, "0", "I'm page", MockCourseAPI))
+        self.assertIsNone(controller.get_chapter_by_page(None, "0", "I'm page too", MockCourseAPI))
