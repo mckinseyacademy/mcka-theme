@@ -36,11 +36,25 @@
           %tbody
             - for lesson in course.chapters
               %tr
-                %td
+                %td.lesson-with-list
                   %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                   %a{href: "#{lesson.navigation_url}"}
                     Lesson ={lesson.index}:
                   ={lesson.name}
+                  %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "Lesson Modules"}
+                    %i.fa.fa-list-ul
+                  %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
+                    %p.style-2 You have completed ={lesson.progress}% of Lesson ={lesson.index}:
+                    %ul
+                      - for module in lesson.modules
+                        %li
+                          .col-left
+                            %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+                            %a.module{href: "#{module.navigation_url}"}
+                              Module ={module.index}:
+                          .col-right.label-3= module.name
+                    .close-reveal-modal
+                      %i.fa.fa-times-circle
         .legend-status
           .label-3 <i class="status fa fa-circle"></i> not started
           .label-3 <i class="status fa fa-circle partial"></i> partially complete

@@ -17,7 +17,7 @@
       .lesson-content
       .lesson-discussion
     - include "courses/content_page/lesson_pager.haml"
-  #module_list.reveal-modal.tiny{'data-reveal': True}
+  #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
     %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
     %ul
       - for module in course.current_lesson.modules
