@@ -452,6 +452,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items_rows": len(graded_items) + 1,
         "module_count": course.module_count,
         "weeks": sorted(weeks.values(), key=lambda w: w["index"]),
+        "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders)
     }
 
     if progress_user.id != request.user.id:

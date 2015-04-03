@@ -19,7 +19,11 @@
               font-style: italic;
               text-transform: uppercase;
               @include font-spec(12, 600);
-              span { color: $mckinsey-academy-black; }
+
+              span {
+                color: $mckinsey-academy-black;
+                font-style: normal;
+              }
             }
 
             .lesson-with-list {

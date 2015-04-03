@@ -83,7 +83,7 @@
                 %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                 %a{href: "#{lesson.navigation_url}"}= lesson.name
               %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
-      %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: 10% assessment, 30% final assessment, 60% group work (split evenly across activities). <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+      %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders} (split evenly across activities). <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
       .label-5 ENGAGEMENT
       %p.style-6 Your current engagement score is ={social.points}. The cohort average is ={social.course_avg}.
