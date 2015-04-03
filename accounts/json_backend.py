@@ -29,6 +29,8 @@ class JsonBackend(object):
         auth_info = user_api.authenticate(username, password)
         auth_info.user = user_api.get_user(auth_info.user.id)
         user = self._load_user(auth_info.user, auth_info.token)
+        if hasattr(auth_info, 'csrftoken'):
+            user.csrftoken = auth_info.csrftoken
 
         return user
 

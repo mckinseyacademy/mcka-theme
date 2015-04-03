@@ -201,6 +201,7 @@ def _render_group_work(request, course, project_group, group_project):
         "legacy_course_id": course.id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "project_group": project_group,
         "group_project": group_project,
         "current_sequential": sequential,
@@ -264,6 +265,7 @@ def course_discussion(request, course_id):
         "legacy_course_id": course_id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "mcka_ta": mcka_ta
     }
     return render(request, 'courses/course_discussion.haml', data)
@@ -505,6 +507,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
     return render(request, 'courses/course_lessons.haml', data)
 

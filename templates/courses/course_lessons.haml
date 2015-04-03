@@ -40,6 +40,9 @@
         sessionId: '{{ remote_session_key }}',
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
       };
       // Temporary hack to prevent xblock-ooyala from loading the ooyala player library.
       // Ooyala player is always loaded in apros, so no need to load it again for the xblock.
