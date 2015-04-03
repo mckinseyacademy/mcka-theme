@@ -1,7 +1,7 @@
 ''' rendering templates from requests related to courses '''
 import json
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -409,6 +409,35 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
     completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
 
+    # Create weeks breakdown of lessons
+    weeks = {}
+    no_due_date = []
+    for lesson in course.chapters:
+        due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+        if len(due_dates) == 0:
+            no_due_date.append(lesson)
+        else:
+            due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+            week_start = (due_date - timedelta(days=due_date.weekday()))
+            week_end = week_start + timedelta(days=6)
+            key = week_end.strftime("%s")
+
+            if key in weeks:
+                weeks[key]["lessons"].append(lesson)
+            else:
+                weeks[key] = {
+                    "index": len(weeks) + 1,
+                    "start": week_start.strftime("%m/%d"),
+                    "end": week_end.strftime("%m/%d"),
+                    "lessons": [lesson],
+                }
+
+    if len(no_due_date) > 0:
+        weeks["no_due_date"] = {
+            "index": len(weeks) + 1,
+            "lessons": no_due_date,
+        }
+
     data = {
         "social": social,
         "progress_user": progress_user,
@@ -422,6 +451,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items_count": len(graded_items),
         "graded_items_rows": len(graded_items) + 1,
         "module_count": course.module_count,
+        "weeks": sorted(weeks.values(), key=lambda w: w["index"]),
     }
 
     if progress_user.id != request.user.id:
