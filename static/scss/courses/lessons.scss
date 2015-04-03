@@ -80,10 +80,15 @@
       cursor: pointer;
       background-color: $mckinsey-academy-alt-blue;
 
-      &:hover {
+      &:hover:not(.disabled) {
         z-index: 150;
         background-color: $mckinsey-academy-blue-gray;
         .mcka-tooltip { display: block; }
+      }
+
+      &.disabled {
+        background-color: $mckinsey-academy-blue-gray;
+        pointer-events: none;
       }
 
       .go-to-next {
