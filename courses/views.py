@@ -22,7 +22,7 @@ from lib.util import DottableDict
 from main.models import CuratedContentItem
 
 from .models import LessonNotesItem
-from .controller import inject_gradebook_info, round_to_int, Proficiency
+from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_by_page
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
@@ -567,6 +567,25 @@ def infer_chapter_navigation(request, course_id, chapter_id):
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
         return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
+
+
+@login_required
+@check_user_course_access
+def infer_page_navigation(request, course_id, page_id):
+    '''
+    Go to the specified page
+    If no course given, system tries to go to location within last visited course
+    '''
+    if not course_id:
+        course_id = get_current_course_for_user(request)
+
+    chapter_id = get_chapter_by_page(request, course_id, page_id)
+
+    if course_id and chapter_id and page_id:
+        return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
+    else:
+        return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
+
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
