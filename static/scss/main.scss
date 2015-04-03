@@ -573,6 +573,7 @@ div.xblock-student_view {
     text-transform: none;
     @include font-spec(12);
     line-height: 18px;
+    z-index: 999;
   }
 
   &:hover {
@@ -587,4 +588,209 @@ i.status {
   color: $almost-white;
   &.partial { color: $mckinsey-status-partial; }
   &.complete { color: $mckinsey-green; }
+}
+
+.text-warning{
+  color: #e37527;
+}
+span.xns-counter {
+  background: #e37527;
+  padding: 0px 5px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 1;
+  top: 15px;
+  left: 12px;
+  font-size: 10px;
+  line-height: 16px;
+  width: 16px;
+}
+span.xns-counter.double-digit {
+  padding: 0px 2px;
+}
+span.xns-counter.multi-digit {
+  padding: 0px 2px;
+  width: auto;  // allow it to turn into an oval
+}
+
+.xns-pane {
+  background-color: #ffffff;
+  box-shadow: -3px 3px 4px 0 rgba(51, 51, 51, 0.2);
+  border-radius: 0 0 4px 4px;
+  border-style: solid;
+  border-width: 1px;
+  right: 0px;
+  position: absolute;
+  top: 48px;
+  width: 340px;
+  display: none;
+}
+.xns-container{
+  border-top: 0px;
+  border-radius: 0 0 3px 3px;
+  padding: 0px 0px 20px 10px;
+  position: relative;
+  max-height: 490px;
+
+  .xns-list-header {
+  }
+
+  .xns-list-body {
+    overflow: auto;
+    height: 442px;
+  }
+
+  .xns-item {
+    position: relative;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #F5F5F5;
+    cursor: pointer;
+  }
+
+  h3.xns-group {
+    text-transform: uppercase;
+    padding-bottom: 0px;
+    font-size: .85714rem;
+    font-weight: 700;
+    font-family: open sans;
+    color: #333333;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #E0E0E0;
+  }
+  ul.xns-tab-list {
+    padding-bottom: 10px;
+  }
+  ul {
+    font-size: .85714rem;
+  }
+  ul.xns-items {
+    list-style-type: none;
+    margin-left: 0px;
+    padding-right: 15px;
+    line-height: 1.2em;
+    a {
+      color: #3384CA;
+      &:hover {
+        color: #7d888e;
+      }
+    }
+  }
+  .xns-close{
+    float: right;
+    font-weight: bold;
+    color: #999;
+    opacity: 0.7;
+    cursor: pointer;
+    padding-right: 10px;
+    display: inline-block;
+    line-height: 15px;
+    &:hover{
+      opacity: 0.9;
+    }
+  }
+  h2{
+    color: #3384CA;
+  }
+  .xns-list-header {
+
+    padding-top: 20px;
+
+    h2 {
+      display: none;
+    }
+  }
+  .xns-actions{
+
+    ul{
+      margin-left: 0px;
+      margin-bottom: 0px;
+      li{
+        display: inline-block;
+        padding: 0 15px;
+        border-right: 1px solid #ddd;
+        &:first-child{
+          padding-left: 0;
+        }
+        &:last-child{
+          padding-right: 0;
+          border: none;
+        }
+        &.active a{
+          color: #999;
+          text-decoration: none;
+          cursor: default;
+        }
+        &.disabled a{
+          color: #999;
+          text-decoration: none;
+          cursor: default;
+        }
+        a {
+          color: #3384CA;
+          font-family: open sans;
+          font-size: .85714rem;
+          font-weight: 700;
+          &:hover {
+            color: #7d888e;
+          }
+        }
+      }
+    }
+  }
+  .xns-no-notifications-msg {
+    color: #333;
+  }
+  .xns-date{
+    color: #868685;
+    font-family: open sans;
+    font-weight: 600;
+    font-size: .85714rem;
+    font-style: italic;
+  }
+  .xns-item-body{
+    color: #333333;
+    font-size: .85714rem;
+    font-weight: 600;
+    line-height: 17px;
+    position: relative;
+    width: 96%
+  }
+  .xns-item:hover .xns-close-item{
+     display: block;
+  }
+  .xns-close-item {
+      display: none;
+      height: 20px;
+      position: absolute;
+      right: -7px;
+      text-align: center;
+      top: 0px;
+      width: 16px;
+      opacity: 0.8;
+      color: #666;
+      padding-left: 2px;
+  }
+  .xns-close-item-x {
+    display:none;
+  }
+  .xns-close-item:hover{
+      opacity: 1;
+  }
+  .xns-title {
+    color: #3384CA;
+    font-weight: 700;
+  }
+  .xns-alert {
+    font-family: open sans;
+    color: #E37222;
+    font-height: 10pt;
+    font-weight: 700;
+  }
+  .xns-username {
+    font-weight: 700;
+  }
+  .xns-rank {
+    font-weight: 700;
+  }
 }

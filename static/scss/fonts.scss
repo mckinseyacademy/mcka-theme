@@ -59,3 +59,118 @@
 .mk-icon-advisors:before { content: '\e806'; }
 .mk-icon-document:before { content: '\e807'; }
 .mk-icon-groupworknav:before { content: '\e808'; }
+
+/* edx-notification visuals */
+
+/* all these need to be optimized in some global rule */
+.xns-content.all .xns-item-body .xns-group_work .xns-title:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  color: #B1C2CB;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+
+  line-height: 1em;
+  margin-left: .2em;
+
+  content: '\e808';
+}
+
+/* all these need to be optimized in some global rule */
+.xns-content.all .xns-item-body .xns-discussions:before {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  color: #B1C2CB;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+
+  line-height: 1em;
+  margin-left: .2em;
+  content: "\f0e6";
+}
+
+/* all these need to be optimized in some global rule */
+.xns-content.all .xns-item-body .xns-announcements .xns-title:before {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  color: #B1C2CB;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: 0em;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+
+  line-height: 1em;
+  margin-left: .2em;
+
+  /* announcements render a documents icon */
+  content: "\f0f6";
+}
+
+/* all these need to be optimized in some global rule */
+.xns-content.all .xns-item-body .xns-leaderboards:before {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  color: #B1C2CB;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+
+  line-height: 1em;
+  margin-left: .2em;
+  content: "\f0ac";
+}
+
+.xns-item .xns-close-item:before {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  speak: none;
+  color: #666;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+
+  line-height: 1em;
+  margin-left: .2em;
+  content: "\f057";
+}

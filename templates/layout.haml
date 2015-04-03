@@ -91,6 +91,22 @@
       %script{src: "//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"}
       %script{src: "//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"}
 
+    -# Override if you need another version of jQuery
+    - block foundation_jquery
+      /[if lt IE 9]
+        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
+      <!--[if (gte IE 9) | (!IE)]><!-->
+        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
+      <!--<![endif]-->
+      %script
+        window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.js' %}"><\/script>')
+
+    -# edx-notifications script dependencies
+    - block edx_notifications
+      %script{src: "/static/js/vendor/underscore.js"}
+      %script{src: "/static/js/vendor/backbone.js"}
+      %script{src: "/static/js/vendor/date.js"}
+
   %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}"}
     - block help_context
 
@@ -149,16 +165,6 @@
         %p McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage. This video will walk you through our learner experience.
         #mk-intro-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
         %p.style-6 This product walkthrough can always be found in the page specific help <i class="fa fa-question-circle"></i>.
-
-    -# Override if you need another version of jQuery
-    - block foundation_jquery
-      /[if lt IE 9]
-        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
-      <!--[if (gte IE 9) | (!IE)]><!-->
-        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
-      <!--<![endif]-->
-      %script
-        window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.js' %}"><\/script>')
 
     -# jQuery-cookie
     - block jquery_cookie

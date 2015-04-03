@@ -215,15 +215,10 @@
                     withCredentials: true,
                 },
                 beforeSend: function(xhr, settings) {
-                    if (!options.useCurrentHost) {
-                        var queryDomain = $('<a>').prop('href', settings.url).prop('hostname'),
-                            lmsDomain = $this.getLmsDomain(options);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-                        if (!$this.csrfSafeMethod(settings.type)) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        }
+                    if (!$this.csrfSafeMethod(settings.type)) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
                 }
             });
