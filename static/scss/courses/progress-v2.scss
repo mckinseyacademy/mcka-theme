@@ -11,15 +11,27 @@
         margin-top: 0;
 
         tbody {
-          td.lesson-with-list {
-            position: relative;
-            padding-right: rem-calc(25);
+          td {
+            vertical-align: bottom;
 
-            a[data-reveal-id] {
-              position: absolute;
-              top: 50%;
-              right: rem-calc(10);
-              margin-top: -6px;
+            &.week {
+              color: $mckinsey-dark-grey;
+              font-style: italic;
+              text-transform: uppercase;
+              @include font-spec(12, 600);
+              span { color: $mckinsey-academy-black; }
+            }
+
+            .lesson-with-list {
+              position: relative;
+              padding-right: rem-calc(25);
+
+              a[data-reveal-id] {
+                position: absolute;
+                top: 50%;
+                right: rem-calc(10);
+                margin-top: -6px;
+              }
             }
           }
         }
