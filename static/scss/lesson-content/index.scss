@@ -1,5 +1,8 @@
 .lesson-content {
-  overflow-x: auto;
+  overflow-x: hidden;
+  // height is not set so it automatically resizes to include all content - essentially it is a noop to sidestep
+  // an issue described in http://stackoverflow.com/a/6433475/882918
+  overflow-y: hidden;
 
   .wrap-instructor-info {
     display: none;
