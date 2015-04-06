@@ -68,7 +68,7 @@ def api_user_protect(func):
             client = Client.fetch(request.organization.client_id)
             students = client.fetch_students_by_enrolled()
             try:
-                user = next((student for student in students if student.email == email), None)
+                user = next((student for student in students if student.email.lower() == email.lower()), None)
                 if user:
                     request.user = user
                     return func(request, *args, **kwargs)
