@@ -254,6 +254,36 @@ class Course(CategorisedJsonObject):
                     module.navigation_url = '{}/module/{}'.format(lesson.navigation_url, module.id)
         return self
 
+    def lessons_by_week(self):
+        weeks = {}
+        no_due_date = []
+        for lesson in self.chapters:
+            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+            if len(due_dates) == 0:
+                no_due_date.append(lesson)
+            else:
+                due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+                week_start = (due_date - datetime.timedelta(days=due_date.weekday()))
+                week_end = week_start + datetime.timedelta(days=6)
+                key = week_end.strftime("%s")
+
+                if key in weeks:
+                    weeks[key]["lessons"].append(lesson)
+                else:
+                    weeks[key] = {
+                        "index": len(weeks) + 1,
+                        "start": week_start.strftime("%m/%d"),
+                        "end": week_end.strftime("%m/%d"),
+                        "lessons": [lesson],
+                    }
+
+        if len(no_due_date) > 0:
+            weeks["no_due_date"] = {
+                "index": len(weeks) + 1,
+                "lessons": no_due_date,
+            }
+        return sorted(weeks.values(), key=lambda w: w["index"])
+
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
 

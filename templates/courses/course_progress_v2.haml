@@ -24,7 +24,7 @@
             %th Overall
         %tbody
           %tr
-            %td <span>={module_count}</span> in this course
+            %td <span>={course.module_count}</span> in this course
             %td.visual
               - include "courses/visualizations/course_progress.haml"
         %table
@@ -34,7 +34,7 @@
               %th Individual Learning:
               %th Group Work (Due Date):
           %tbody
-            - for week in weeks
+            - for week in course.lessons_by_week
               %tr
                 - if week.start
                   %td.week <span>Week ={week.index}:</span> ={week.start}-={week.end}
