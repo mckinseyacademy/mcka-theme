@@ -424,9 +424,6 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         group_activities = None
         group_work_avg = None
 
-    print "\n\n============="
-    for activity in group_activities:
-        print vars(activity)
     data = {
         "social": social,
         "progress_user": progress_user,
