@@ -83,6 +83,18 @@
                 %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                 %a{href: "#{lesson.navigation_url}"}= lesson.name
               %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
+          - ifnotequal group_activities None
+            - for activity in group_activities
+              - ifnotequal activity.score None
+                %tr
+                  %td
+                    %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
+                      %a{href: "#{activity.navigation_url}"}= activity.name
+                  - ifequal activity.score None
+                    %td.number.zero 0
+                  - else
+                    %td.number= activity.score
+
       %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders} (split evenly across activities). <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
       .label-5 ENGAGEMENT
