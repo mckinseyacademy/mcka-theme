@@ -226,7 +226,7 @@ $(function(){
     $(this).removeClass('focused_placeholder');
   });
 
-  $.xblock.dispatcher.bind('navigation', function(event, data) {
+  $.xblock.getRuntime().listenTo('navigation', function(event, data) {
     var mapping = {'lock': 'addClass', 'unlock': 'removeClass'};
     var result = mapping[data.state];
     if (result !== undefined) {
