@@ -409,6 +409,21 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
     completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
 
+    project_group, group_project = get_group_project_for_user_course(user_id, course)
+    if project_group and group_project:
+        group_activities, group_work_avg = group_project_reviews(user_id, course_id, project_group, group_project)
+
+        # format scores & grades
+        for activity in group_activities:
+            if activity.score is not None:
+                activity.score = round_to_int(activity.score)
+            for i, grade in enumerate(activity.grades):
+                if grade is not None:
+                    activity.grades[i] = round_to_int(grade)
+    else:
+        group_activities = None
+        group_work_avg = None
+
     data = {
         "social": social,
         "progress_user": progress_user,
@@ -420,7 +435,8 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items": graded_items,
         "completed_items_count": len(completed_items),
         "graded_items_count": len(graded_items),
-        "graded_items_rows": len(graded_items) + 1,
+        "graded_items_rows": len(graded_items) + len(group_activities or []) + 1,
+        "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders)
     }
 
@@ -538,7 +554,6 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     else:
         return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
-
 @login_required
 @check_user_course_access
 def infer_page_navigation(request, course_id, page_id):
@@ -555,7 +570,6 @@ def infer_page_navigation(request, course_id, page_id):
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
         return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
-
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''

@@ -28,6 +28,7 @@
 
             .lesson-with-list {
               position: relative;
+              margin-bottom: rem-calc(5);
               padding-right: rem-calc(25);
 
               a[data-reveal-id] {

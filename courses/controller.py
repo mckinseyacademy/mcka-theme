@@ -380,6 +380,7 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
             activity.grades.append(mean(grades))
 
         activity.pending_grades = [0] * (assignment_count - len(activity.grades))
+        activity.is_pending = len(activity.pending_grades) > 0
 
         # average score for this activity
         activity.score = mean(filter(None, activity.grades))
