@@ -99,6 +99,22 @@
 
           &#lessons-content {
             color: $mckinsey-academy-black;
+
+            a, a:visited {
+              i.fa { @include font-spec(16); }
+
+              .col-left,
+              .col-right {
+                display: inline-block;
+                vertical-align: top;
+              }
+
+              .col-right {
+                max-width: rem-calc(150);
+                color: $mckinsey-dark-grey;
+                font-weight: 400;
+              }
+            }
           }
 
           &#announcements-content {
