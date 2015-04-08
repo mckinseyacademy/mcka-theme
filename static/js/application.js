@@ -235,4 +235,13 @@ $(function(){
   }).on('blur', '.placeholdersjs', function(){
     $(this).removeClass('focused_placeholder');
   });
+
+  $.xblock.getRuntime().listenTo('navigation', function(event, data) {
+    var mapping = {'lock': 'addClass', 'unlock': 'removeClass'};
+    var result = mapping[data.state];
+    if (result !== undefined) {
+      var arrows = $('.page-to');
+      arrows[result]('disabled');
+    }
+  })
 });
