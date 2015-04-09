@@ -257,13 +257,15 @@ class Course(CategorisedJsonObject):
     def lessons_by_week(self):
         weeks = {}
         no_due_date = []
+
         for lesson in self.chapters:
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
             if len(due_dates) == 0:
                 no_due_date.append(lesson)
             else:
                 due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
-                week_start = (due_date - datetime.timedelta(days=due_date.weekday()))
+                due_date = due_date.replace(hour=0, minute=0, second=0, microsecond=0)
+                week_start = due_date - datetime.timedelta(days=due_date.weekday())
                 week_end = week_start + datetime.timedelta(days=6)
                 key = week_end.strftime("%s")
 
@@ -275,6 +277,7 @@ class Course(CategorisedJsonObject):
                         "start": week_start.strftime("%m/%d"),
                         "end": week_end.strftime("%m/%d"),
                         "lessons": [lesson],
+                        "group_activities": [],
                     }
 
         if len(no_due_date) > 0:
@@ -282,6 +285,19 @@ class Course(CategorisedJsonObject):
                 "index": len(weeks) + 1,
                 "lessons": no_due_date,
             }
+
+        if not self.group_activities is None:
+            for activity in self.group_activities:
+                due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
+                week_start = due_date - datetime.timedelta(days=due_date.weekday())
+                week_end = week_start + datetime.timedelta(days=6)
+                key = week_end.strftime("%s")
+                activity.due_on = activity.due.strftime("%B %e")
+
+                if key in weeks:
+                    weeks[key]["has_group"] = True
+                    weeks[key]["group_activities"].append(activity)
+
         return sorted(weeks.values(), key=lambda w: w["index"])
 
 class CourseListCourse(JsonObject):

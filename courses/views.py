@@ -423,6 +423,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     else:
         group_activities = None
         group_work_avg = None
+    course.group_activities = group_activities
 
     data = {
         "social": social,
