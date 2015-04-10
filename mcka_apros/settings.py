@@ -163,6 +163,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 # the LMS cookies at the domain level from apros
 SESSION_COOKIE_NAME = 'apros_sessionid'
 CSRF_COOKIE_NAME = 'apros_csrftoken'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_TIMEOUT_SECONDS = 300
 
 # LMS
@@ -224,11 +225,11 @@ SHORT_DATE_FORMAT = "%m/%d/%Y"
 # Points for social activities
 SOCIAL_METRIC_POINTS = {
     'num_threads': 10,
-    'num_comments': 2,
-    'num_replies': 1,
-    'num_upvotes': 5,
+    'num_comments': 15,
+    'num_replies': 15,
+    'num_upvotes': 25,
     'num_thread_followers': 5,
-    'num_comments_generated': 1,
+    'num_comments_generated': 15,
 }
 
 ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
@@ -365,4 +366,15 @@ DAILY_EMAIL_REPORTS_CONFIG = {
     "apros_db_name":"default",
     "file_format":".xlsx",
 }
+
+################################### EDX-NOTIFICATIONS SUBSYSTEM ######################################
+
+INSTALLED_APPS += (
+    'edx_notifications.server.web',
+)
+
+TEMPLATE_LOADERS += (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
 

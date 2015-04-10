@@ -5,15 +5,59 @@
     border: none;
 
     &.user-progress {
+      margin-bottom: 0;
+
+      + table {
+        margin-top: 0;
+
+        tbody {
+          td {
+            vertical-align: bottom;
+
+            &.week {
+              color: $mckinsey-dark-grey;
+              font-style: italic;
+              text-transform: uppercase;
+              @include font-spec(12, 600);
+
+              span {
+                color: $mckinsey-academy-black;
+                font-style: normal;
+              }
+            }
+
+            .lesson-with-list {
+              position: relative;
+              padding-right: rem-calc(25);
+
+              a[data-reveal-id] {
+                position: absolute;
+                top: 50%;
+                right: rem-calc(10);
+                margin-top: -6px;
+              }
+            }
+          }
+        }
+      }
+
       thead {
         th {
           &:last-child { width: 78%; }
         }
       }
+
+      tbody {
+        tr {
+          td {
+            &.visual { border-right: none; }
+          }
+        }
+      }
     }
 
     thead {
-      background: #f3f3f3;
+      background: $mckinsey-academy-table-head;
 
       th {
         color: $mckinsey-dark-grey;
@@ -40,8 +84,7 @@
 
         td {
           color: $mckinsey-dark-grey;
-          text-indent: rem-calc(12);
-          padding: rem-calc(18) 0;
+          padding: rem-calc(18) rem-calc(12);
           border-bottom: 1px solid $border-line;
           border-right: 1px solid $border-line;
           @include font-spec(12, normal, 14);
@@ -69,6 +112,10 @@
             font-weight: 600;
           }
 
+          a, a:visited {
+            @include font-spec(12, 700);
+          }
+
           .course-proficiency,
           .course-engagement,
           .course-progress {
@@ -82,10 +129,12 @@
           }
 
           .course-progress {
+            width: 100%;
+            padding: 0 25px;
 
             .visualization {
               margin: 0;
-              width: rem-calc(500);
+              width: 92%;
             }
 
             .total {
@@ -100,6 +149,16 @@
           }
         }
       }
+    }
+  }
+
+  .legend-status {
+    margin-bottom: rem-calc(16);
+
+    div {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: rem-calc(12);
     }
   }
 }

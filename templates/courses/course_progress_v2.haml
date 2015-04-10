@@ -24,12 +24,49 @@
             %th Overall
         %tbody
           %tr
-            %td <span>120</span> in this course
+            %td <span>={module_count}</span> in this course
             %td.visual
               - include "courses/visualizations/course_progress.haml"
+        %table
+          %thead
+            %tr
+              %th Course Run:
+              %th Individual Learning:
+              %th Group Work (Due Date):
+          %tbody
+            - for week in weeks
+              %tr
+                - if week.start
+                  %td.week <span>Week ={week.index}:</span> ={week.start}-={week.end}
+                %td{colspan: "{% if not week.start %} 2 {% endif %}"}
+                  - for lesson in week.lessons
+                    .lesson-with-list
+                      %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
+                      %a{href: "#{lesson.navigation_url}"}
+                        Lesson ={lesson.index}:
+                      ={lesson.name}
+                      %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "Lesson Modules"}
+                        %i.fa.fa-list-ul
+                      %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
+                        %p.style-2 You have completed ={lesson.progress}% of Lesson ={lesson.index}:
+                        %ul
+                          - for module in lesson.modules
+                            %li
+                              .col-left
+                                %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+                                %a.module{href: "#{module.navigation_url}"}
+                                  Module ={module.index}:
+                              .col-right.label-3= module.name
+                        .close-reveal-modal
+                          %i.fa.fa-times-circle
+        .legend-status
+          .label-3 <i class="status fa fa-circle"></i> not started
+          .label-3 <i class="status fa fa-circle partial"></i> partially complete
+          .label-3 <i class="status fa fa-check-circle complete"></i> complete
+        %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm UTC.
     .medium-10.medium-centered.columns.course-page
       .label-5 PROFICIENCY
-      %p.style-6 Your current grade is ={proficiency} following completion of 0 of 5 graded items in this course. The cohort average is ={cohort_proficiency_average}.
+      %p.style-6 Your current grade is ={proficiency} following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}.
       %table
         %thead
           %tr
@@ -38,14 +75,15 @@
             %th Grade:
         %tbody
           %tr
-            %td.visual{rowspan: 100}
+            %td.visual{rowspan: "#{graded_items_rows}"}
               - include "courses/visualizations/course_proficiency.haml"
-          - for lesson in course.chapters
-            - ifnotequal lesson.assesment_score None
-              %tr
-                %td= lesson.name
-                %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
-      %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: 10% assessment, 30% final assessment, 60% group work (split evenly across activities). Click here to read more about how we may share your course information.
+          - for lesson in graded_items
+            %tr
+              %td
+                %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
+                %a{href: "#{lesson.navigation_url}"}= lesson.name
+              %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
+      %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders} (split evenly across activities). <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
       .label-5 ENGAGEMENT
       %p.style-6 Your current engagement score is ={social.points}. The cohort average is ={social.course_avg}.
@@ -74,3 +112,10 @@
             %td Number of your posts being <span>Followed</span>
             %td.number{class: "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
       %p.style-6 Note: Your engagement score increases through your social interactions with other participants in your cohort through participation in the <a href="#{course.nav_url}/discussion">discussion</a> forums.
+
+  #progress_modal.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %p
+      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
+      %a{href: '/privacy'} privacy policy.

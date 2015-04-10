@@ -69,9 +69,19 @@ $(function(){
     $('.player-wrapper', modal).empty();
   });
 
-  $(document).on("xblock_jump", function(eventObject, course_id, block_type, block_id){
-    var url = "/courses/" + course_id + "/" + block_type + "/lessons/i4x://" + course_id + "/vertical/" + block_id;
-    window.location.href = url;
+  $(document).on("xblock_jump", function(eventObject, course_id, block_type, block_id, jump_type){
+    var course_url = "/courses/" + course_id + "/" + block_type + "/lessons/jump_to_page/",
+        page_url;
+    if (jump_type === "jump_to") {
+        page_url = block_id;
+    }
+    else {
+      if (jump_type !== "jump_to_id") {
+          console.log("Unknown jump type: " + jump_type + " - assuming jump by id");
+      }
+      page_url = "i4x://" + course_id + "/vertical/" + block_id;
+    }
+    window.location.href = course_url + page_url;
   });
 
   // Load user profile information on demand

@@ -1,7 +1,7 @@
 ''' rendering templates from requests related to courses '''
 import json
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -22,7 +22,7 @@ from lib.util import DottableDict
 from main.models import CuratedContentItem
 
 from .models import LessonNotesItem
-from .controller import inject_gradebook_info, round_to_int, Proficiency
+from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_by_page
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
@@ -201,6 +201,7 @@ def _render_group_work(request, course, project_group, group_project):
         "legacy_course_id": course.id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "project_group": project_group,
         "group_project": group_project,
         "current_sequential": sequential,
@@ -264,6 +265,7 @@ def course_discussion(request, course_id):
         "legacy_course_id": course_id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "mcka_ta": mcka_ta
     }
     return render(request, 'courses/course_discussion.haml', data)
@@ -404,6 +406,37 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
+    graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
+    completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
+
+    # Create weeks breakdown of lessons
+    weeks = {}
+    no_due_date = []
+    for lesson in course.chapters:
+        due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+        if len(due_dates) == 0:
+            no_due_date.append(lesson)
+        else:
+            due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+            week_start = (due_date - timedelta(days=due_date.weekday()))
+            week_end = week_start + timedelta(days=6)
+            key = week_end.strftime("%s")
+
+            if key in weeks:
+                weeks[key]["lessons"].append(lesson)
+            else:
+                weeks[key] = {
+                    "index": len(weeks) + 1,
+                    "start": week_start.strftime("%m/%d"),
+                    "end": week_end.strftime("%m/%d"),
+                    "lessons": [lesson],
+                }
+
+    if len(no_due_date) > 0:
+        weeks["no_due_date"] = {
+            "index": len(weeks) + 1,
+            "lessons": no_due_date,
+        }
 
     data = {
         "social": social,
@@ -413,6 +446,13 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "average_progress": average_progress(course, request.user.id),
+        "graded_items": graded_items,
+        "completed_items_count": len(completed_items),
+        "graded_items_count": len(graded_items),
+        "graded_items_rows": len(graded_items) + 1,
+        "module_count": course.module_count,
+        "weeks": sorted(weeks.values(), key=lambda w: w["index"]),
+        "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders)
     }
 
     if progress_user.id != request.user.id:
@@ -498,6 +538,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
     return render(request, 'courses/course_lessons.haml', data)
 
@@ -527,6 +568,25 @@ def infer_chapter_navigation(request, course_id, chapter_id):
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
         return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
+
+
+@login_required
+@check_user_course_access
+def infer_page_navigation(request, course_id, page_id):
+    '''
+    Go to the specified page
+    If no course given, system tries to go to location within last visited course
+    '''
+    if not course_id:
+        course_id = get_current_course_for_user(request)
+
+    chapter_id = get_chapter_by_page(request, course_id, page_id)
+
+    if course_id and chapter_id and page_id:
+        return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
+    else:
+        return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
+
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
