@@ -11,6 +11,12 @@
         margin-top: 0;
 
         tbody {
+          tr:last-child {
+            td.empty {
+              border-bottom: 1px solid $border-line;
+            }
+          }
+
           td {
             vertical-align: bottom;
 
@@ -26,16 +32,35 @@
               }
             }
 
+            &.empty {
+              border: none;
+            }
+
             .lesson-with-list {
               position: relative;
               margin-bottom: rem-calc(5);
               padding-right: rem-calc(25);
+
+              .lesson-col-left,
+              .lesson-col-right {
+                display: inline-block;
+                vertical-align: top;
+              }
+
+              .lesson-col-right {
+                max-width: 65%;
+              }
 
               a[data-reveal-id] {
                 position: absolute;
                 top: 50%;
                 right: rem-calc(10);
                 margin-top: -6px;
+              }
+
+              span {
+                color: $mckinsey-orange;
+                font-weight: 600;
               }
             }
           }

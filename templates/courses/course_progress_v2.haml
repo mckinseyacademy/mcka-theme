@@ -42,9 +42,10 @@
                   - for lesson in week.lessons
                     .lesson-with-list
                       %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
-                      %a{href: "#{lesson.navigation_url}"}
-                        Lesson ={lesson.index}:
-                      ={lesson.name}
+                      .lesson-col-left
+                        %a{href: "#{lesson.navigation_url}"}
+                          Lesson ={lesson.index}:
+                      .lesson-col-right= lesson.name
                       %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "Lesson Modules"}
                         %i.fa.fa-list-ul
                       %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
@@ -59,6 +60,15 @@
                               .col-right.label-3= module.name
                         .close-reveal-modal
                           %i.fa.fa-times-circle
+                - if week.has_group
+                  %td
+                    - for activity in week.group_activities
+                      .lesson-with-list
+                        %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% if activity.is_pending %}partial{% endif %}{% endif %}"}
+                        %a{href: "#{lesson.navigation_url}"}= activity.name
+                        %span= activity.due_on
+                - else
+                  %td.empty
         .legend-status
           .label-3 <i class="status fa fa-circle"></i> not started
           .label-3 <i class="status fa fa-circle partial"></i> partially complete
@@ -89,14 +99,15 @@
                 %tr
                   %td
                     %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
-                      %a{href: "#{activity.navigation_url}"}= activity.name
+                    %a{href: "#{activity.navigation_url}"}= activity.name
                   %td Grading in progress
               - else
                 - ifnotequal activity.score None
                   %tr
                     %td
                       %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
-                        %a{href: "#{activity.navigation_url}"}= activity.name
+                      %a{href: "#{activity.navigation_url}"} Group Work:
+                      ={activity.name}
                     - ifequal activity.score None
                       %td.number.zero 0
                     - else
