@@ -273,7 +273,7 @@ class Course(CategorisedJsonObject):
                     weeks[key]["lessons"].append(lesson)
                 else:
                     weeks[key] = {
-                        "index": len(weeks) + 1,
+                        "sort_by": week_end,
                         "start": week_start.strftime("%m/%d"),
                         "end": week_end.strftime("%m/%d"),
                         "lessons": [lesson],
@@ -297,8 +297,18 @@ class Course(CategorisedJsonObject):
                 if key in weeks:
                     weeks[key]["has_group"] = True
                     weeks[key]["group_activities"].append(activity)
+                else:
+                    weeks[key] = {
+                        "sort_by": week_end,
+                        "start": week_start.strftime("%m/%d"),
+                        "end": week_end.strftime("%m/%d"),
+                        "has_group": True,
+                        "group_only": True,
+                        "lessons": [],
+                        "group_activities": [activity],
+                    }
 
-        return sorted(weeks.values(), key=lambda w: w["index"])
+        return sorted(weeks.values(), key=lambda w: w["sort_by"])
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]

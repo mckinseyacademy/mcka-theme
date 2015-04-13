@@ -39,6 +39,8 @@
                 - if week.start
                   %td.week <span>Week ={week.index}:</span> ={week.start}-={week.end}
                 %td{colspan: "{% if not week.start %} 2 {% endif %}"}
+                  - if week.group_only
+                    %div N/A (focus on Group Work)
                   - for lesson in week.lessons
                     .lesson-with-list
                       %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
