@@ -193,18 +193,17 @@
             });
         },
 
-        eventsInit: function(options, root) {
-            root.on('click', 'a', function(evt) {
+        watchLinks: function(options, root) {
+            function jumper(evt) {
                 var link_found = getJumpToLink(this);
                 if (link_found) {
                     evt.preventDefault();
                     console.log(link_found.course_id, link_found.block_type, link_found.block_id);
-                    $(this).trigger(
-                        'xblock_jump',
-                        [link_found.course_id, link_found.block_type, link_found.block_id, link_found.jump_type]
-                    );
+                    var link = $(this);
+                    link.attr('href', (options.rewriter(link_found) || link.attr('href')));
                 }
-            });
+            }
+            root.on('mouseup', 'a', jumper)
         },
 
         csrfSafeMethod: function(method) {
@@ -294,7 +293,7 @@
 
                 $this.loadResources(response.resources, options, root).done(function() {
                     console.log('All XBlock resources successfully loaded');
-                    $this.eventsInit(options, root);
+                    $this.watchLinks(options, root);
                     $this.jsInit(options, root);
                     deferred.resolve();
                 });
