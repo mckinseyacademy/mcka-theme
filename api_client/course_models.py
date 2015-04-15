@@ -307,8 +307,10 @@ class Course(CategorisedJsonObject):
                         "lessons": [],
                         "group_activities": [activity],
                     }
-
-        return sorted(weeks.values(), key=lambda w: w["sort_by"])
+        weeks = sorted(weeks.values(), key=lambda w: w["sort_by"])
+        for idx, week in enumerate(weeks, start=1):
+            week["index"] = idx
+        return weeks
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
