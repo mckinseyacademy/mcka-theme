@@ -101,7 +101,8 @@
                 %tr
                   %td
                     %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
-                    %a{href: "#{activity.navigation_url}"}= activity.name
+                    %a{href: "#{activity.navigation_url}"} Group Work:
+                    ={activity.name}
                   %td Grading in progress
               - else
                 - ifnotequal activity.score None
