@@ -127,6 +127,7 @@
         sessionId: '{{ remote_session_key }}',
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
         {% if use_current_host %}
         useCurrentHost: true,
         {% endif %}
