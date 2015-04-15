@@ -15,9 +15,10 @@ window.Apros = {
     Backbone.history.start({pushState: has_push, hashChange: false});
   },
 
-  rewriter: function(jump_link){
+  jumpLinkRewriter: function(jump_link){
     // Used to rewrite a hrefs on Jump to URLs. See JQuery XBlock for more details.
-    var course_url = "/courses/" + jump_link.course_id + "/" + jump_link.block_type + "/lessons/jump_to_page/", page_url;
+    var course_url = "/courses/" + jump_link.course_id + "/" + jump_link.block_type + "/lessons/jump_to_page/",
+        page_url;
     if (jump_link.jump_type === "jump_to") {
       page_url = jump_link.block_id;
     }

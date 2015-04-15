@@ -59,7 +59,10 @@
             lmsSecureURL: false, // Is the LMS on HTTPS?
             useCurrentHost: false, // set to true to load xblock using the current location.hostnam
             disableGlobalOptions: false, // set to true to disable the global_options behavior.
-            data: {}              // additional data to send to student_view. send as GET parameters
+            data: {},             // additional data to send to student_view. send as GET parameters
+            jumpLinkRewriter: function (jumpToLink) {} // Function to rewrite jump links if needed for your target platform.
+                                                       // See getJumpToLink for details of the object that will be handed to
+                                                       // this function.
         },
 
         global_options: null,
@@ -200,7 +203,7 @@
                     evt.preventDefault();
                     console.log(link_found.course_id, link_found.block_type, link_found.block_id);
                     var link = $(this);
-                    link.attr('href', (options.rewriter(link_found) || link.attr('href')));
+                    link.attr('href', (options.jumpLinkRewriter(link_found) || link.attr('href')));
                 }
             }
             root.on('mouseup', 'a', jumper)
