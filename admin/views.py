@@ -402,6 +402,7 @@ def client_admin_course_analytics_progress(request, client_id, course_id):
                 content_type='application/json'
             )
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_status(request, client_id, course_id):
@@ -413,33 +414,37 @@ def client_admin_course_status(request, client_id, course_id):
             end_date = course.end
     metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization=client_id)
     metricsJson = []
-    day = 1
-    week = 0
+    completed = 0
+    started = 0
     for i, metric in enumerate(metrics.users_started):
-        started = metrics.users_started[i][1]
-        completed = metrics.users_completed[i][1]
+        started += metrics.users_started[i][1]
+        completed += metrics.users_completed[i][1]
         not_started = metrics.users_not_started[i][1]
-        total = not_started + started + completed
+        total = not_started + started
         if total != 0:
-            metricsJson.append({"day": (day + week * 7),
-                "Not started": float(not_started) / total * 100,
-                "In progress": float(started) / total * 100,
-                "Completed": float(completed) / total * 100})
+            metricsJson.append(
+                {
+                    "day": i + 1,
+                    "Not started": float(not_started) / total * 100,
+                    "In progress": float(started - completed) / total * 100,
+                    "Completed": float(completed) / total * 100
+                }
+            )
         else:
-            metricsJson.append({"day": (day + week * 7),
-                "Not started": 0,
-                "In progress": 0,
-                "Completed": 0})
-        if day > 0 and day < 8:
-            day += 1
-        else:
-            week += 1
-            day = 1
+            metricsJson.append(
+                {
+                    "day": i + 1,
+                    "Not started": 0,
+                    "In progress": 0,
+                    "Completed": 0
+                }
+            )
 
     return HttpResponse(
-                json.dumps(metricsJson),
-                content_type='application/json'
-            )
+        json.dumps(metricsJson),
+        content_type='application/json'
+    )
+
 
 def _remove_student_from_course(student_id, course_id):
     # Mark this student as an observer for this course, so that their data is ignored in roll-up activities
