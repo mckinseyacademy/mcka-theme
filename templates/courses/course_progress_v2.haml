@@ -79,7 +79,7 @@
         %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm UTC.
     .medium-10.medium-centered.columns.course-page
       .label-5 PROFICIENCY
-      %p.style-6 Your current grade is ={proficiency} following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}.
+      %p.style-6 Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%.
       %table
         %thead
           %tr
@@ -123,7 +123,7 @@
                     - else
                       %td.number= activity.score
 
-      %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders} (split evenly across activities). <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+      %p.style-6 Your proficiency score is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
       .label-5 ENGAGEMENT
       %p.style-6 Your current engagement score is ={social.points}. The cohort average is ={social.course_avg}.
