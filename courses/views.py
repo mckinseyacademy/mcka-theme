@@ -400,6 +400,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
 
+    print "\n\n======GRADER======="
+    print vars(gradebook)
+
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
@@ -410,7 +413,6 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
 
     completed_items_count = len(completed_items)
-    graded_items_count = len(graded_items)
 
     project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
@@ -418,8 +420,6 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
         # format scores & grades
         for activity in group_activities:
-            if activity.is_pending or activity.score is not None:
-                graded_items_count += 1
             if activity.score is not None:
                 completed_items_count += 1
                 activity.score = round_to_int(activity.score)
@@ -429,7 +429,6 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     else:
         group_activities = None
         group_work_avg = None
-    course.group_activities = group_activities
 
     data = {
         "social": social,
@@ -439,10 +438,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "average_progress": average_progress(course, request.user.id),
-        "graded_items": graded_items,
         "completed_items_count": completed_items_count,
-        "graded_items_count": graded_items_count,
-        "graded_items_rows": len(graded_items) + len(group_activities or []) + 1,
+        "graded_items_count": len(course.graded_items()),
+        "graded_items_rows": len(course.graded_items()) + 1,
         "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders)
     }

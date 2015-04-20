@@ -20,8 +20,8 @@
       %table.user-progress
         %thead
           %tr
-            %th # Modules
-            %th Overall
+            %th # Modules:
+            %th Overall:
         %tbody
           %tr
             %td <span>={course.module_count}</span> in this course
@@ -89,7 +89,7 @@
           %tr
             %td.visual{rowspan: "#{graded_items_rows}"}
               - include "courses/visualizations/course_proficiency.haml"
-          - for lesson in graded_items
+          - for lesson in course.graded_items
             %tr
               %td
                 %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
