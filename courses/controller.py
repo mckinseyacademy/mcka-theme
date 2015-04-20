@@ -531,4 +531,11 @@ def inject_gradebook_info(user_id, course):
                 lesson.assesment_score = assesments[url_name]
                 break
 
+    for chapter in course.group_project_chapters:
+        for activity in chapter.sequentials:
+            activity.is_graded = False
+            url_name = PriorIdConvert.new_from_prior(activity.id).split('/')[-1]
+            if url_name in assesments:
+                activity.is_graded = True
+
     return gradebook

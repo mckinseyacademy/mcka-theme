@@ -90,7 +90,7 @@
           %tr
             %td.visual{rowspan: "#{graded_items_rows}"}
               - include "courses/visualizations/course_proficiency.haml"
-          - for lesson in course.graded_items
+          - for lesson in course.graded_items.lessons
             %tr
               %td
                 .lesson-row-item
@@ -98,30 +98,28 @@
                   .lesson-item-name
                     %a{href: "#{lesson.navigation_url}"}= lesson.name
               %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
-          - ifnotequal group_activities None
-            - for activity in group_activities
-              - if activity.is_pending
-                %tr
-                  %td
-                    .lesson-row-item
-                      %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
-                      .lesson-item-name
-                        %a{href: "#{activity.navigation_url}"} Group Work:
-                    ={activity.name}
-                  %td Grading in progress
-              - else
-                - ifnotequal activity.score None
-                  %tr
-                    %td
-                      .lesson-row-item
-                        %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
-                        .lesson-item-name
-                          %a{href: "#{activity.navigation_url}"} Group Work:
-                          ={activity.name}
-                    - ifequal activity.score None
-                      %td.number.zero 0
-                    - else
-                      %td.number= activity.score
+          - for activity in course.graded_items.group_activities
+            - if activity.is_pending
+              %tr
+                %td
+                  .lesson-row-item
+                    %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
+                    .lesson-item-name
+                      %a{href: "#{activity.navigation_url}"} Group Work:
+                  ={activity.name}
+                %td Grading in progress
+            - else
+              %tr
+                %td
+                  .lesson-row-item
+                    %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
+                    .lesson-item-name
+                      %a{href: "#{activity.navigation_url}"} Group Work:
+                      ={activity.name}
+                - ifequal activity.score None
+                  %td.number.zero 0
+                - else
+                  %td.number= activity.score
 
       %p.style-6 Your proficiency score is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
