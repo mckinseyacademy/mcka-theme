@@ -76,19 +76,15 @@
             top: 100% !important;
           }
 
-          > * {
+          .lesson-row-item {
+            padding: 10px 0;
             width: 235px;
             border-bottom: 1px solid $almost-white;
-            @include font-spec(12, semibold, 14);
             &:last-child { border-bottom: none; }
           }
 
           a, a:visited {
-            display: block;
             color: $mckinsey-academy-alt-blue;
-          }
-          a.current{
-            color: $mckinsey-orange;
           }
 
           a.done{
@@ -102,18 +98,6 @@
 
             a, a:visited {
               i.fa { @include font-spec(16); }
-
-              .col-left,
-              .col-right {
-                display: inline-block;
-                vertical-align: top;
-              }
-
-              .col-right {
-                max-width: rem-calc(150);
-                color: $mckinsey-dark-grey;
-                font-weight: 400;
-              }
             }
           }
 

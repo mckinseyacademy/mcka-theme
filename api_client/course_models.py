@@ -286,8 +286,9 @@ class Course(CategorisedJsonObject):
                 "lessons": no_due_date,
             }
 
-        if not self.group_activities is None:
-            for activity in self.group_activities:
+        for chapter in self.group_project_chapters:
+            for activity in chapter.sequentials:
+                print vars(activity)
                 due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
                 week_start = due_date - datetime.timedelta(days=due_date.weekday())
                 week_end = week_start + datetime.timedelta(days=6)
@@ -307,10 +308,19 @@ class Course(CategorisedJsonObject):
                         "lessons": [],
                         "group_activities": [activity],
                     }
+
         weeks = sorted(weeks.values(), key=lambda w: w["sort_by"])
         for idx, week in enumerate(weeks, start=1):
             week["index"] = idx
         return weeks
+
+    def graded_items(self):
+        graded_items = [lesson for lesson in self.chapters if lesson.assesment_score != None]
+        #for chapter in self.group_project_chapters:
+            #for activity in chapter:
+                #print "\n\n=========ACTIVITIY============"
+                #print vars(activity)
+        return graded_items
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
