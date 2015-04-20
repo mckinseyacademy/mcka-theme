@@ -590,6 +590,34 @@ i.status {
   &.complete { color: $mckinsey-green; }
 }
 
+.lesson-row-item {
+  line-height: rem-calc(16);
+
+  i.status {
+    float: left;
+    @include font-spec(16);
+  }
+
+  .lesson-item-name {
+    margin-left: 18px;
+    @include font-spec(12, 500, 16);
+
+    a, a:visited {
+      @include font-spec(12, 600);
+
+      &.current,
+      &.current:visited {
+        color: $mckinsey-orange;
+      }
+    }
+
+    span {
+      color: $mckinsey-dark-grey;
+      font-weight: 400;
+    }
+  }
+}
+
 .text-warning{
   color: #e37527;
 }

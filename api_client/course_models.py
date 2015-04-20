@@ -287,7 +287,7 @@ class Course(CategorisedJsonObject):
             }
 
         for chapter in self.group_project_chapters:
-            for activity in chapter:
+            for activity in chapter.sequentials:
                 print vars(activity)
                 due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
                 week_start = due_date - datetime.timedelta(days=due_date.weekday())

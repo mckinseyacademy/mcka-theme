@@ -42,16 +42,6 @@
               margin-bottom: rem-calc(5);
               padding-right: rem-calc(25);
 
-              .lesson-col-left,
-              .lesson-col-right {
-                display: inline-block;
-                vertical-align: top;
-              }
-
-              .lesson-col-right {
-                max-width: 65%;
-              }
-
               a[data-reveal-id] {
                 position: absolute;
                 top: 50%;

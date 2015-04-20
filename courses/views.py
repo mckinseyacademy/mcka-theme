@@ -409,10 +409,11 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
-    graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
-    completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
+    #graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
+    #completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
 
-    completed_items_count = len(completed_items)
+    #completed_items_count = len(completed_items)
+    weeks = course.lessons_by_week()
 
     project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
@@ -421,7 +422,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         # format scores & grades
         for activity in group_activities:
             if activity.score is not None:
-                completed_items_count += 1
+                #completed_items_count += 1
                 activity.score = round_to_int(activity.score)
             for i, grade in enumerate(activity.grades):
                 if grade is not None:
@@ -438,7 +439,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "average_progress": average_progress(course, request.user.id),
-        "completed_items_count": completed_items_count,
+        #"completed_items_count": completed_items_count,
         "graded_items_count": len(course.graded_items()),
         "graded_items_rows": len(course.graded_items()) + 1,
         "group_activities": group_activities,

@@ -21,12 +21,12 @@
     %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
     %ul
       - for module in course.current_lesson.modules
-        %li
-          .col-left
-            %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
-            %a.module{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
+        %li.lesson-row-item
+          %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+          .lesson-item-name
+            %a{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
               Module ={module.index}:
-          .col-right.label-3= module.name
+            %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
 
