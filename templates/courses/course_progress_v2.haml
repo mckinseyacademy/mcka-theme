@@ -105,7 +105,7 @@
                   .lesson-row-item
                     %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
                     .lesson-item-name
-                      %a{href: "#{activity.navigation_url}"} Group Work:
+                      %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
                   ={activity.name}
                 %td Grading in progress
             - else
@@ -114,7 +114,7 @@
                   .lesson-row-item
                     %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
                     .lesson-item-name
-                      %a{href: "#{activity.navigation_url}"} Group Work:
+                      %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
                       ={activity.name}
                 - ifequal activity.score None
                   %td.number.zero 0
