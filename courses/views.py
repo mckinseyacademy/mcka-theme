@@ -425,6 +425,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         group_activities = None
         group_work_avg = None
 
+    graded_items_count = sum(len(graded) for graded in course.graded_items().values())
     data = {
         "social": social,
         "progress_user": progress_user,
@@ -434,8 +435,8 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "average_progress": average_progress(course, request.user.id),
         "completed_items_count": completed_items_count,
-        "graded_items_count": sum(len(graded) for graded in course.graded_items().values()),
-        "graded_items_rows": len(course.graded_items()) + 1,
+        "graded_items_count": graded_items_count,
+        "graded_items_rows": graded_items_count + 1,
         "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders)
     }
