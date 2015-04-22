@@ -68,7 +68,8 @@
                       .lesson-with-list.lesson-row-item
                         %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% if activity.is_pending %}partial{% endif %}{% endif %}"}
                         .lesson-item-name
-                          %a{href: "#{lesson.navigation_url}"}= activity.name
+                          %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"}
+                            ={activity.name}:
                           %span= activity.due_on
                 - else
                   %td.empty
