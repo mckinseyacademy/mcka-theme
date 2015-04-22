@@ -43,7 +43,7 @@
                     %div N/A (focus on Group Work)
                   - for lesson in week.lessons
                     .lesson-with-list.lesson-row-item
-                      %i.status.fa{class: "fa-{% if lesson.assesment_score != 0 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
+                      %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                       .lesson-item-name
                         %a{href: "#{lesson.navigation_url}"}
                           Lesson ={lesson.index}:
