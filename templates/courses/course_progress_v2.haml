@@ -106,7 +106,7 @@
                     %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% endif %}"}
                     .lesson-item-name
                       %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
-                  ={activity.name}
+                      ={activity.name}
                 %td Grading in progress
             - else
               %tr
