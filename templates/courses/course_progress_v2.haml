@@ -36,9 +36,11 @@
           %tbody
             - for week in course.lessons_by_week
               %tr
-                - if week.start
-                  %td.week <span>Week ={week.index}:</span> ={week.start}-={week.end}
-                %td{colspan: "{% if not week.start %} 2 {% endif %}"}
+                %td.week
+                  - if week.start
+                    %span Week ={week.index}:
+                    ={week.start}-={week.end}
+                %td
                   - if week.group_only
                     %div N/A (focus on Group Work)
                   - for lesson in week.lessons
