@@ -91,6 +91,10 @@
           border-right: none;
         }
       }
+
+      &.col-2 {
+        th:first-child { width: auto; }
+      }
     }
 
     tbody {

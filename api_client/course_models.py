@@ -185,6 +185,18 @@ class Course(CategorisedJsonObject):
         else:
             return _("COURSE_UNAVAILABLE")
 
+    @property
+    def is_evergreen(self):
+        for lesson in self.chapters:
+            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+            if len(due_dates) > 0:
+                return False
+        for chapter in self.group_project_chapters:
+            for activity in chapter.sequentials:
+                if activity.due != None:
+                    return False
+        return True
+
     def module_count(self):
         module_count = 0
         for chapter in self.chapters:
