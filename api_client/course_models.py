@@ -268,7 +268,10 @@ class Course(CategorisedJsonObject):
             else:
                 due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
                 due_date = due_date.replace(hour=0, minute=0, second=0, microsecond=0)
-                week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
+                if due_date.weekday() == 0:
+                    week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+                else:
+                    week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
                 week_end = week_start + datetime.timedelta(days=6)
                 key = week_end.strftime("%s")
 
@@ -290,7 +293,10 @@ class Course(CategorisedJsonObject):
                     no_due_date["group_activities"].append(activity)
                 else:
                     due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
-                    week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
+                    if due_date.weekday() == 0:
+                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+                    else:
+                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
                     week_end = week_start + datetime.timedelta(days=6)
                     key = week_end.strftime("%s")
                     activity.due_on = activity.due.strftime("%B %e")
