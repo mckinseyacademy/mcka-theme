@@ -191,10 +191,6 @@ class Course(CategorisedJsonObject):
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
             if len(due_dates) > 0:
                 return False
-        for chapter in self.group_project_chapters:
-            for activity in chapter.sequentials:
-                if activity.due != None:
-                    return False
         return True
 
     def module_count(self):
@@ -300,7 +296,9 @@ class Course(CategorisedJsonObject):
 
         for chapter in self.group_project_chapters:
             for activity in chapter.sequentials:
-                if activity.due == None:
+                if activity.due:
+                    activity.due_on = activity.due.strftime("%B %e")
+                if activity.due == None or len(weeks.values()) == 0:
                     no_due_date["has_group"] = True
                     no_due_date["group_activities"].append(activity)
                 else:
