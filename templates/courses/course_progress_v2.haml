@@ -28,17 +28,21 @@
             %td.visual
               - include "courses/visualizations/course_progress.haml"
       %table
-        %thead
+        %thead{class: "{% if course.is_evergreen %}col-2{% endif %}"}
           %tr
-            %th Course Run:
+            - if not course.is_evergreen
+              %th Course Run:
             %th Individual Learning:
             %th Group Work (Due Date):
         %tbody
           - for week in course.lessons_by_week
             %tr
-              - if week.start
-                %td.week <span>Week ={week.index}:</span> ={week.start}-={week.end}
-              %td{colspan: "{% if not week.start %} 2 {% endif %}"}
+              - if not course.is_evergreen
+                %td.week
+                  - if week.start
+                    %span Week ={week.index}:
+                    ={week.start}-={week.end}
+              %td
                 - if week.group_only
                   %div N/A (focus on Group Work)
                 - for lesson in week.lessons
@@ -121,7 +125,6 @@
                   %td.number.zero 0
                 - else
                   %td.number= activity.score
-
       .legend-status
         .label-3 <i class="status fa fa-circle"></i> not started / incomplete
         .label-3 <i class="status fa fa-check-circle complete"></i> complete
@@ -158,5 +161,5 @@
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p
-      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
+      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
       %a{href: '/privacy'} privacy policy.

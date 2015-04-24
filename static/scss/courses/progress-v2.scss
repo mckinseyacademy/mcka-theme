@@ -39,7 +39,7 @@
 
             .lesson-with-list {
               position: relative;
-              margin-bottom: rem-calc(5);
+              margin-bottom: rem-calc(10);
               padding-right: rem-calc(25);
 
               a[data-reveal-id] {
@@ -90,6 +90,10 @@
           width: 33%;
           border-right: none;
         }
+      }
+
+      &.col-2 {
+        th:first-child { width: auto; }
       }
     }
 
