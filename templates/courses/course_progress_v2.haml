@@ -28,17 +28,21 @@
             %td.visual
               - include "courses/visualizations/course_progress.haml"
         %table
-          %thead
+          %thead{class: "{% if course.is_evergreen %}col-2{% endif %}"}
             %tr
-              %th Course Run:
+              - if not course.is_evergreen
+                %th Course Run:
               %th Individual Learning:
               %th Group Work (Due Date):
           %tbody
             - for week in course.lessons_by_week
               %tr
-                - if week.start
-                  %td.week <span>Week ={week.index}:</span> ={week.start}-={week.end}
-                %td{colspan: "{% if not week.start %} 2 {% endif %}"}
+                - if not course.is_evergreen
+                  %td.week
+                    - if week.start
+                      %span Week ={week.index}:
+                      ={week.start}-={week.end}
+                %td
                   - if week.group_only
                     %div N/A (focus on Group Work)
                   - for lesson in week.lessons
