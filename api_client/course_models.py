@@ -193,6 +193,10 @@ class Course(CategorisedJsonObject):
                 return False
         return True
 
+    @property
+    def has_group_work(self):
+        return len(self.group_project_chapters) > 0
+
     def module_count(self):
         module_count = 0
         for chapter in self.chapters:
