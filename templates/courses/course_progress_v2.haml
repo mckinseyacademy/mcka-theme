@@ -33,7 +33,8 @@
             - if not course.is_evergreen
               %th Course Run:
             %th Individual Learning:
-            %th Group Work (Due Date):
+            - if course.has_group_work
+              %th Group Work (Due Date):
         %tbody
           - for week in course.lessons_by_week
             %tr
@@ -76,7 +77,8 @@
                           ={activity.name}:
                         %span= activity.due_on
               - else
-                %td.empty
+                - if course.has_group_work
+                  %td.empty
       .legend-status
         .label-3 <i class="status fa fa-circle"></i> not started
         .label-3 <i class="status fa fa-circle partial"></i> partially complete
