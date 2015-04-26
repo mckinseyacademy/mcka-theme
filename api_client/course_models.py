@@ -344,7 +344,7 @@ class Course(CategorisedJsonObject):
         }
         graded_lessons = [lesson for lesson in self.chapters if lesson.assesment_score != None]
         for lesson in graded_lessons:
-            for sequential in lesson.sequentials:
+            for sequential in lesson.sequentials if sequential.name.find('Assessment') != -1:
                 for module in sequential.pages:
                     is_assesment = module.name.find('Assessment') != -1
                     if is_assesment:
