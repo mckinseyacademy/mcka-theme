@@ -71,7 +71,7 @@
                 %td
                   - for activity in week.group_activities
                     .lesson-with-list.lesson-row-item
-                      %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle {% if activity.is_pending %}partial{% endif %}{% endif %}"}
+                      %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle{% endif %}"}
                       .lesson-item-name
                         %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"}
                           ={activity.name}:
