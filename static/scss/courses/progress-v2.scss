@@ -18,13 +18,12 @@
           }
 
           td {
-            vertical-align: bottom;
+            vertical-align: top;
 
             &.week {
               color: $mckinsey-dark-grey;
               font-style: italic;
               text-transform: uppercase;
-              vertical-align: top;
               @include font-spec(12, 600);
 
               span {
