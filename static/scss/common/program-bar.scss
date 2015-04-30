@@ -156,6 +156,11 @@
       }
     }
 
+    .courses {
+      max-height: rem-calc(350);
+      overflow: auto;
+    }
+
     a.course-name, .course-name {
       @include font-spec(12, bold);
       padding: 5px 0;
