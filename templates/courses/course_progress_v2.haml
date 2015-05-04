@@ -20,53 +20,73 @@
       %table.user-progress
         %thead
           %tr
-            %th # Modules
-            %th Overall
+            %th # Modules:
+            %th Overall:
         %tbody
           %tr
-            %td <span>={module_count}</span> in this course
+            %td <span>={course.module_count}</span> in this course
             %td.visual
               - include "courses/visualizations/course_progress.haml"
-        %table
-          %thead
-            %tr
+      %table
+        %thead{class: "{% if course.is_evergreen %}col-2{% endif %}"}
+          %tr
+            - if not course.is_evergreen
               %th Course Run:
-              %th Individual Learning:
+            %th Individual Learning:
+            - if course.has_group_work
               %th Group Work (Due Date):
-          %tbody
-            - for week in weeks
-              %tr
-                - if week.start
-                  %td.week <span>Week ={week.index}:</span> ={week.start}-={week.end}
-                %td{colspan: "{% if not week.start %} 2 {% endif %}"}
-                  - for lesson in week.lessons
-                    .lesson-with-list
-                      %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
+        %tbody
+          - for week in course.lessons_by_week
+            %tr
+              - if not course.is_evergreen
+                %td.week
+                  - if week.start
+                    %span Week ={week.index}:
+                    ={week.start}-={week.end}
+              %td
+                - if week.group_only
+                  %div N/A (focus on Group Work)
+                - for lesson in week.lessons
+                  .lesson-with-list.lesson-row-item
+                    %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
+                    .lesson-item-name
                       %a{href: "#{lesson.navigation_url}"}
                         Lesson ={lesson.index}:
                       ={lesson.name}
-                      %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "Lesson Modules"}
-                        %i.fa.fa-list-ul
-                      %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
-                        %p.style-2 You have completed ={lesson.progress}% of Lesson ={lesson.index}:
-                        %ul
-                          - for module in lesson.modules
-                            %li
-                              .col-left
-                                %i.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
-                                %a.module{href: "#{module.navigation_url}"}
-                                  Module ={module.index}:
-                              .col-right.label-3= module.name
-                        .close-reveal-modal
-                          %i.fa.fa-times-circle
-        .legend-status
-          .label-3 <i class="status fa fa-circle"></i> not started
-          .label-3 <i class="status fa fa-circle partial"></i> partially complete
-          .label-3 <i class="status fa fa-check-circle complete"></i> complete
-        %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm UTC.
+                    %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "Lesson Modules"}
+                      %i.fa.fa-list-ul
+                    %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
+                      %p.style-2 You have completed ={lesson.progress}% of Lesson ={lesson.index}:
+                      %ul
+                        - for module in lesson.modules
+                          %li.lesson-row-item
+                            %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+                            .lesson-item-name
+                              %a{href: "#{module.navigation_url}"}
+                                Module ={module.index}:
+                              %span= module.name
+                      .close-reveal-modal
+                        %i.fa.fa-times-circle
+              - if week.has_group
+                %td
+                  - for activity in week.group_activities
+                    .lesson-with-list.lesson-row-item
+                      %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle{% endif %}"}
+                      .lesson-item-name
+                        %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"}
+                          ={activity.name}:
+                        %span= activity.due_on
+              - else
+                - if course.has_group_work
+                  %td.empty
+      .legend-status
+        .label-3 <i class="status fa fa-circle"></i> not started
+        .label-3 <i class="status fa fa-circle partial"></i> partially complete
+        .label-3 <i class="status fa fa-check-circle complete"></i> complete
+      %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
     .medium-10.medium-centered.columns.course-page
       .label-5 PROFICIENCY
-      %p.style-6 Your current grade is ={proficiency} following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}.
+      %p.style-6 Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%.
       %table
         %thead
           %tr
@@ -77,16 +97,46 @@
           %tr
             %td.visual{rowspan: "#{graded_items_rows}"}
               - include "courses/visualizations/course_proficiency.haml"
-          - for lesson in graded_items
+          - for module in course.graded_items.modules
             %tr
               %td
-                %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
-                %a{href: "#{lesson.navigation_url}"}= lesson.name
-              %td.number{class: "{% if lesson.assesment_score == 0 %}zero{% endif %}"}= lesson.assesment_score
-      %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders} (split evenly across activities). <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+                .lesson-row-item
+                  %i.status.fa{class: "fa-{% if module.is_complete %}check-circle complete{% else %}circle{% endif %}"}
+                  .lesson-item-name
+                    %a{href: "#{module.navigation_url}"}= module.name
+              %td.number{class: "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
+          - for activity in course.graded_items.group_activities
+            - if activity.score
+              %tr
+                %td
+                  .lesson-row-item
+                    %i.status.fa.fa-check-circle.complete
+                    .lesson-item-name
+                      %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
+                      ={activity.name}
+                - ifequal activity.score None
+                  %td.number.zero 0
+                - else
+                  %td.number= activity.score
+            - else
+              %tr
+                %td
+                  .lesson-row-item
+                    %i.status.fa.fa-circle
+                    .lesson-item-name
+                      %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
+                      ={activity.name}
+                - if activity.is_pending
+                  %td Grading in progress
+                - else
+                  %td.number.zero 0
+      .legend-status
+        .label-3 <i class="status fa fa-circle"></i> not started / incomplete
+        .label-3 <i class="status fa fa-check-circle complete"></i> complete
+      %p.style-6 Your proficiency score is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     .medium-10.medium-centered.columns.course-page
       .label-5 ENGAGEMENT
-      %p.style-6 Your current engagement score is ={social.points}. The cohort average is ={social.course_avg}.
+      %p.style-6 Your current engagement score is ={social.points} based on your social interactions with other participants in your cohort in the <a href="#{course.nav_url}/discussion">discussion</a> forums. The cohort average is ={social.course_avg}.
       %table
         %thead
           %tr
@@ -103,7 +153,7 @@
             %td Number of <span>Replies</span> you made to other posts
             %td.number{class: "{% if social.metrics.num_replies == 0 %}zero{% endif %}"}= social.metrics.num_replies
           %tr
-            %td Number of <span>Replies</span> to your comments
+            %td Number of <span>Comments Generated </span> by your posts
             %td.number{class: "{% if social.metrics.num_comments_generated == 0 %}zero{% endif %}"}= social.metrics.num_comments_generated
           %tr
             %td Number of <span>Upvotes</span> your posts have received
@@ -111,11 +161,10 @@
           %tr
             %td Number of your posts being <span>Followed</span>
             %td.number{class: "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
-      %p.style-6 Note: Your engagement score increases through your social interactions with other participants in your cohort through participation in the <a href="#{course.nav_url}/discussion">discussion</a> forums.
 
   #progress_modal.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p
-      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
+      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
       %a{href: '/privacy'} privacy policy.

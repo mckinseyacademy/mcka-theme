@@ -406,38 +406,26 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
-    graded_items = [lesson for lesson in course.chapters if lesson.assesment_score != None]
-    completed_items = [lesson for lesson in graded_items if lesson.assesment_score > 0]
+    completed_items_count = len([module for module in course.graded_items()["modules"] if module.assesment_score > 0])
 
-    # Create weeks breakdown of lessons
-    weeks = {}
-    no_due_date = []
-    for lesson in course.chapters:
-        due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
-        if len(due_dates) == 0:
-            no_due_date.append(lesson)
-        else:
-            due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
-            week_start = (due_date - timedelta(days=due_date.weekday()))
-            week_end = week_start + timedelta(days=6)
-            key = week_end.strftime("%s")
+    project_group, group_project = get_group_project_for_user_course(user_id, course)
+    if project_group and group_project:
+        group_activities, group_work_avg = group_project_reviews(user_id, course_id, project_group, group_project)
 
-            if key in weeks:
-                weeks[key]["lessons"].append(lesson)
-            else:
-                weeks[key] = {
-                    "index": len(weeks) + 1,
-                    "start": week_start.strftime("%m/%d"),
-                    "end": week_end.strftime("%m/%d"),
-                    "lessons": [lesson],
-                }
+        # format scores & grades
+        for activity in group_activities:
+            if activity.is_graded and activity.score is not None:
+                completed_items_count += 1
+            if activity.score is not None:
+                activity.score = round_to_int(activity.score)
+            for i, grade in enumerate(activity.grades):
+                if grade is not None:
+                    activity.grades[i] = round_to_int(grade)
+    else:
+        group_activities = None
+        group_work_avg = None
 
-    if len(no_due_date) > 0:
-        weeks["no_due_date"] = {
-            "index": len(weeks) + 1,
-            "lessons": no_due_date,
-        }
-
+    graded_items_count = sum(len(graded) for graded in course.graded_items().values())
     data = {
         "social": social,
         "progress_user": progress_user,
@@ -446,13 +434,11 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "average_progress": average_progress(course, request.user.id),
-        "graded_items": graded_items,
-        "completed_items_count": len(completed_items),
-        "graded_items_count": len(graded_items),
-        "graded_items_rows": len(graded_items) + 1,
-        "module_count": course.module_count,
-        "weeks": sorted(weeks.values(), key=lambda w: w["index"]),
-        "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders)
+        "completed_items_count": completed_items_count,
+        "graded_items_count": graded_items_count,
+        "graded_items_rows": graded_items_count + 1,
+        "group_activities": group_activities,
+        "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
     }
 
     if progress_user.id != request.user.id:
@@ -569,7 +555,6 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     else:
         return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
-
 @login_required
 @check_user_course_access
 def infer_page_navigation(request, course_id, page_id):
@@ -586,7 +571,6 @@ def infer_page_navigation(request, course_id, page_id):
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
         return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
-
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''

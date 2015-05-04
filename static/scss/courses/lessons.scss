@@ -80,10 +80,15 @@
       cursor: pointer;
       background-color: $mckinsey-academy-alt-blue;
 
-      &:hover {
+      &:hover:not(.disabled) {
         z-index: 150;
         background-color: $mckinsey-academy-blue-gray;
         .mcka-tooltip { display: block; }
+      }
+
+      &.disabled {
+        background-color: $mckinsey-academy-blue-gray;
+        pointer-events: none;
       }
 
       .go-to-next {
@@ -180,26 +185,6 @@
       padding: 6px 0;
       border-bottom: 1px solid $border-line;
 
-      .module {
-        @include font-spec(12, 600);
-
-        &.current,
-        &.current:visited {
-          color: $mckinsey-orange;
-        }
-      }
-
-      .col-left {
-        float: left;
-      }
-
-      .col-right {
-        margin-left: 85px;
-        margin-top: 5px;
-        line-height: rem-calc(12);
-      }
-
-      .fa { @include font-spec(16); }
       .fa-check-circle { color: $mckinsey-green; }
       .fa-circle { color: $mckinsey-academy-light-gray; }
 

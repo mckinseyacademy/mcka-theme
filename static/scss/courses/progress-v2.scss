@@ -11,8 +11,14 @@
         margin-top: 0;
 
         tbody {
+          tr:last-child {
+            td.empty {
+              border-bottom: 1px solid $border-line;
+            }
+          }
+
           td {
-            vertical-align: bottom;
+            vertical-align: top;
 
             &.week {
               color: $mckinsey-dark-grey;
@@ -26,15 +32,26 @@
               }
             }
 
+            &.empty {
+              border: none;
+            }
+
             .lesson-with-list {
               position: relative;
+              margin-bottom: rem-calc(10);
               padding-right: rem-calc(25);
+              max-width: rem-calc(335);
 
               a[data-reveal-id] {
                 position: absolute;
                 top: 50%;
                 right: rem-calc(10);
                 margin-top: -6px;
+              }
+
+              span {
+                color: $mckinsey-orange;
+                font-weight: 600;
               }
             }
           }
@@ -73,6 +90,10 @@
           width: 33%;
           border-right: none;
         }
+      }
+
+      &.col-2 {
+        th:first-child { width: auto; }
       }
     }
 

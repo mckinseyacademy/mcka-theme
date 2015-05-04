@@ -380,6 +380,7 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
             activity.grades.append(mean(grades))
 
         activity.pending_grades = [0] * (assignment_count - len(activity.grades))
+        activity.is_pending = len(activity.pending_grades) > 0
 
         # average score for this activity
         activity.score = mean(filter(None, activity.grades))
@@ -529,5 +530,12 @@ def inject_gradebook_info(user_id, course):
             if url_name in assesments:
                 lesson.assesment_score = assesments[url_name]
                 break
+
+    for chapter in course.group_project_chapters:
+        for activity in chapter.sequentials:
+            activity.is_graded = False
+            url_name = PriorIdConvert.new_from_prior(activity.id).split('/')[-1]
+            if url_name in assesments:
+                activity.is_graded = True
 
     return gradebook

@@ -13,6 +13,22 @@ window.Apros = {
       }
     });
     Backbone.history.start({pushState: has_push, hashChange: false});
+  },
+
+  jumpLinkRewriter: function(jump_link){
+    // Used to rewrite a hrefs on Jump to URLs. See JQuery XBlock for more details.
+    var course_url = "/courses/" + jump_link.course_id + "/" + jump_link.block_type + "/lessons/jump_to_page/",
+        page_url;
+    if (jump_link.jump_type === "jump_to") {
+      page_url = jump_link.block_id;
+    }
+    else {
+      if (jump_link.jump_type !== "jump_to_id") {
+        console.log("Unknown jump type: " + jump_link.jump_type + " - assuming jump by id");
+      }
+      page_url = "i4x://" + jump_link.course_id + "/vertical/" + jump_link.block_id;
+    }
+    return course_url + page_url;
   }
 };
 
@@ -67,21 +83,6 @@ $(function(){
       modal.removeData('ooyala');
     }
     $('.player-wrapper', modal).empty();
-  });
-
-  $(document).on("xblock_jump", function(eventObject, course_id, block_type, block_id, jump_type){
-    var course_url = "/courses/" + course_id + "/" + block_type + "/lessons/jump_to_page/",
-        page_url;
-    if (jump_type === "jump_to") {
-        page_url = block_id;
-    }
-    else {
-      if (jump_type !== "jump_to_id") {
-          console.log("Unknown jump type: " + jump_type + " - assuming jump by id");
-      }
-      page_url = "i4x://" + course_id + "/vertical/" + block_id;
-    }
-    window.location.href = course_url + page_url;
   });
 
   // Load user profile information on demand
@@ -235,4 +236,13 @@ $(function(){
   }).on('blur', '.placeholdersjs', function(){
     $(this).removeClass('focused_placeholder');
   });
+
+  $.xblock.getRuntime().listenTo('navigation', function(event, data) {
+    var mapping = {'lock': 'addClass', 'unlock': 'removeClass'};
+    var result = mapping[data.state];
+    if (result !== undefined) {
+      var arrows = $('.page-to');
+      arrows[result]('disabled');
+    }
+  })
 });
