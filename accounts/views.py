@@ -455,6 +455,7 @@ def user_profile(request):
         "user_image_url": user.image_url(size=160, path='absolute'),
         "user": user
     }
+
     return render(request, 'accounts/user_profile.haml', user_data)
 
 @login_required
