@@ -29,4 +29,4 @@ python-memcached==1.53
 django-storages==1.1.8
 pytz==2014.4
 XlsxWriter==0.6.4
--e git+https://github.com/edx/edx-notifications.git@9650c7cc7016a95b28966a70f6b9bdf6ff256196#egg=edx-notifications
+-e git+https://github.com/edx/edx-notifications.git@8960d99d64a36b475fa88f55d6818146e87fe48b#egg=edx-notifications
