@@ -498,6 +498,24 @@ def get_course_social_metrics(user_id, course_id):
 
     return JP.from_json(response.read())
 
+@api_error_protect
+def mark_user_notification_read(user_id, msg_id, read=True):
+    '''Sets a user notification message as read'''
+
+    response = POST(
+        '{}/{}/{}/notifications/{}/'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            msg_id
+        ),
+        {
+            'read': read
+        }
+    )
+
+    return True
+
 USER_ERROR_CODE_MESSAGES = {
     "update_user_information": {
         409: _(("User with matching username "
