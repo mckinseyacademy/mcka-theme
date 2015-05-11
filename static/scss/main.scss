@@ -573,7 +573,7 @@ div.xblock-student_view {
     text-transform: none;
     @include font-spec(12);
     line-height: 18px;
-    z-index: 999;
+    z-index: 999999;
   }
 
   &:hover {
