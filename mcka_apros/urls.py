@@ -21,6 +21,7 @@ urlpatterns = patterns(
     url(r'^heartbeat$', include('heartbeat.urls'), name='heartbeat'),
     url(r'^mcka-api/v1/', include('public_api.urls'), name='public_api'),
     url(r'^api/', include('edx_notifications.server.api.urls_mock')),
+    url(r'^notification_redir$', 'main.views.notification_redir'),
 )
 
 if settings.DEBUG:

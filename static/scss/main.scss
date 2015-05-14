@@ -653,6 +653,10 @@ span.xns-counter.multi-digit {
   width: 340px;
   display: none;
 }
+.xns-pane-all .xns-item-body .xns-date {
+    /* hide dates when viewing all notifications */
+    display: none;
+}
 .xns-container{
   border-top: 0px;
   border-radius: 0 0 3px 3px;
@@ -820,5 +824,19 @@ span.xns-counter.multi-digit {
   }
   .xns-rank {
     font-weight: 700;
+  }
+}
+div.notification-digest {
+  height: auto !important;
+  .xns-tooltip-icon {
+    display: none;
+  }
+  .xns-preference-pane-header {
+    font-weight: bold !important;
+    margin-bottom: 2px !important;
+  }
+  .xns-notification-preferences-list input[type="checkbox"] {
+    margin-top: 3px;
+    margin-bottom: 3px;
   }
 }
