@@ -26,7 +26,7 @@ window.Apros = {
       if (jump_link.jump_type !== "jump_to_id") {
         console.log("Unknown jump type: " + jump_link.jump_type + " - assuming jump by id");
       }
-      page_url = "i4x://" + jump_link.course_id + "/vertical/" + jump_link.block_id;
+      page_url = jump_link.block_id;
     }
     return course_url + page_url;
   }

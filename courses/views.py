@@ -22,9 +22,9 @@ from lib.util import DottableDict
 from main.models import CuratedContentItem
 
 from .models import LessonNotesItem, FeatureFlags
-from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_by_page
-from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
-from .controller import update_bookmark, progress_percent, group_project_reviews
+from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location
+from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
+from .controller import update_bookmark, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
@@ -566,12 +566,17 @@ def infer_page_navigation(request, course_id, page_id):
     if not course_id:
         course_id = get_current_course_for_user(request)
 
-    chapter_id = get_chapter_by_page(request, course_id, page_id)
+    chapter_id, vertical_id, final_target_id = get_chapter_and_target_by_location(request, course_id, page_id)
 
-    if course_id and chapter_id and page_id:
-        return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
+    if course_id and chapter_id and vertical_id:
+        redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
+
+        if final_target_id != chapter_id and final_target_id != vertical_id:
+            redirect_url += '?activate={final_target_id}'.format(final_target_id=final_target_id)
     else:
-        return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
+        redirect_url = '/courses/{}/notready'.format(course_id)
+
+    return HttpResponseRedirect(redirect_url)
 
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
