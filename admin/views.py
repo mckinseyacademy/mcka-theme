@@ -1798,6 +1798,8 @@ def permissions(request):
             roles.append(_('TA'))
         if user.id in group_members.get(PERMISSION_GROUPS.CLIENT_ADMIN, []):
             roles.append(_('COMPANY ADMIN'))
+        if user.id in group_members.get(PERMISSION_GROUPS.INTERNAL_ADMIN, []):
+            roles.append(_('INTERNAL ADMIN'))
         if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
             roles.append(_('OBSERVER'))
         user.roles = ", ".join(roles)

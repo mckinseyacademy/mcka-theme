@@ -80,6 +80,7 @@ class PermissionForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         choices=[
             (PERMISSION_GROUPS.MCKA_ADMIN, _("ADMIN")),
+            (PERMISSION_GROUPS.INTERNAL_ADMIN, _("INTERNAL ADMIN")),
             (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
         ]
     )
