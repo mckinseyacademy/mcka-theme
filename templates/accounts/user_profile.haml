@@ -32,6 +32,11 @@
           = _("Email")
         .fieldcontent
           = user.email
+    .notification-digest
+      .profile-icon-pane
+        %i.fa.fa-exclamation-circle
+      .field-group
+        .xns-preference-pane-container
     .logout
       %a.button.small.radius{href: "/accounts/logout"}
         = _("Log out")
@@ -43,3 +48,5 @@
   %script{src: "{% static 'js/image_editor.js' %}"}
   %script{src: "{% static 'js/user_profile_edit.js' %}"}
 
+- include "django/notifications_widget_preferences_header.html"
+- include "django/notifications_widget_preferences_body.html"

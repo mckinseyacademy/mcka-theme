@@ -332,7 +332,7 @@ class ActivationForm(NoSuffixLabelForm):
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
     title = forms.CharField(max_length=255, required=False)
-    city = forms.CharField(max_length=255, required=False)
+    city = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}))
     country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=False)
     level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES, required=False)
     gender = forms.ChoiceField(choices=GENDER_CHOICES, required=False)
