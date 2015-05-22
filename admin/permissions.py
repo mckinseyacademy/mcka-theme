@@ -1,4 +1,5 @@
 import copy
+from admin.models import internal_admin_role_granted, internal_admin_role_revoked
 
 from api_client import user_api, group_api, course_api
 from api_client.user_api import USER_ROLES
@@ -81,8 +82,10 @@ class Permissions(object):
         group_id = self.get_group_id(permission_name)
         if group_id:
             group_api.add_user_to_group(self.user_id, group_id)
+            internal_admin_role_granted.send(user_id=self.user_id)
 
     def remove_permission(self, permission_name):
         group_id = self.get_group_id(permission_name)
         if group_id:
             group_api.remove_user_from_group(self.user_id, group_id)
+            internal_admin_role_revoked.send(user_id=self.user_id)

@@ -9,6 +9,7 @@ import random
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.db import models as db_models
+from django.dispatch import Signal
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -36,10 +37,14 @@ class Program(BaseGroupModel):
     group_type = "series"
 
     def add_course(self, course_id):
-        return group_api.add_course_to_group(course_id, self.id)
+        result = group_api.add_course_to_group(course_id, self.id)
+        course_added_to_program.send(course_id=course_id, program_id=self.id)
+        return result
 
     def remove_course(self, course_id):
-        return group_api.remove_course_from_group(course_id, self.id)
+        result = group_api.remove_course_from_group(course_id, self.id)
+        course_removed_from_program.send(course_id=course_id, program_id=self.id)
+        return result
 
     def fetch_courses(self):
         return group_api.get_courses_in_group(self.id)
@@ -113,6 +118,8 @@ class Client(organization_models.Organization):
 
         # set up licenses
         license_controller.create_licenses(program_id, self.id, places)
+
+        program_added_to_client.send(client_id=self.id, program_id=program_id)
 
         return self
 
@@ -216,3 +223,10 @@ class UserRegistrationBatch(db_models.Model):
                 old_error.delete()
             old_record.delete()
         return True
+
+
+internal_admin_role_granted = Signal(providing_args=['user_id'])
+internal_admin_role_revoked = Signal(providing_args=['user_id'])
+course_added_to_program = Signal(providing_args=['course_id', 'program_id'])
+course_removed_from_program = Signal(providing_args=['course_id', 'program_id'])
+program_added_to_client = Signal(providing_args=['client_id', 'program_id'])
