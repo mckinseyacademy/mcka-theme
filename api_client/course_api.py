@@ -296,39 +296,6 @@ def get_users_filtered_by_role(course_id):
 
     return JP.from_json(response.read())
 
-
-@api_error_protect
-def add_course_role_to_user(course_id, user_id, role):
-    data = {
-        'user_id': user_id,
-        'role': role
-    }
-
-    response = POST(
-        '{}/{}/{}/roles'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-        ),
-        data
-    )
-
-    return JP.from_json(response.read())
-
-@api_error_protect
-def revoke_course_role_from_user(course_id, user_id, role):
-    response = DELETE(
-        '{server_address}/{courseware_endpoint}/{course_id}/roles/{role_id}/users/{user_id}'.format(
-            server_address=settings.API_SERVER_ADDRESS,
-            courseware_endpoint=COURSEWARE_API,
-            course_id=course_id,
-            role_id=role,
-            user_id=user_id
-        )
-    )
-
-    return (response.code == 204)
-
 @api_error_protect
 def get_course_content_groups(course_id, content_id):
     ''' fetch associates groups to specific content within specific course '''

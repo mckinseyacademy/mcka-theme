@@ -38,12 +38,12 @@ class Program(BaseGroupModel):
 
     def add_course(self, course_id):
         result = group_api.add_course_to_group(course_id, self.id)
-        course_added_to_program.send(course_id=course_id, program_id=self.id)
+        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='added')
         return result
 
     def remove_course(self, course_id):
         result = group_api.remove_course_from_group(course_id, self.id)
-        course_removed_from_program.send(course_id=course_id, program_id=self.id)
+        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='removed')
         return result
 
     def fetch_courses(self):
@@ -119,7 +119,7 @@ class Client(organization_models.Organization):
         # set up licenses
         license_controller.create_licenses(program_id, self.id, places)
 
-        program_added_to_client.send(client_id=self.id, program_id=program_id)
+        program_added_to_client.send(sender=self.__class__, client_id=self.id, program_id=program_id)
 
         return self
 
@@ -225,8 +225,6 @@ class UserRegistrationBatch(db_models.Model):
         return True
 
 
-internal_admin_role_granted = Signal(providing_args=['user_id'])
-internal_admin_role_revoked = Signal(providing_args=['user_id'])
-course_added_to_program = Signal(providing_args=['course_id', 'program_id'])
-course_removed_from_program = Signal(providing_args=['course_id', 'program_id'])
+internal_admin_role_event = Signal(providing_args=['user_id', 'action'])
+course_program_event = Signal(providing_args=['course_id', 'program_id', 'action'])
 program_added_to_client = Signal(providing_args=['client_id', 'program_id'])
