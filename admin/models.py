@@ -38,12 +38,12 @@ class Program(BaseGroupModel):
 
     def add_course(self, course_id):
         result = group_api.add_course_to_group(course_id, self.id)
-        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='added')
+        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='add')
         return result
 
     def remove_course(self, course_id):
         result = group_api.remove_course_from_group(course_id, self.id)
-        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='removed')
+        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='remove')
         return result
 
     def fetch_courses(self):
