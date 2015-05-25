@@ -105,7 +105,7 @@ def client_admin_access(func):
             valid_client_id = client_id
 
         # make sure client admin can access only his company
-        elif request.user.is_client_admin:
+        elif request.user.is_client_admin or request.user.is_internal_admin:
             orgs = user_api.get_user_organizations(request.user.id)
             if orgs:
                 valid_client_id = orgs[0].id
@@ -119,7 +119,7 @@ def client_admin_access(func):
 
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def home(request):
     return render(
         request,
@@ -127,7 +127,9 @@ def home(request):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+)
 @client_admin_access
 def client_admin_home(request, client_id):
 
@@ -190,7 +192,7 @@ def client_admin_program_detail(request, client_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def client_admin_course(request, client_id, course_id):
     course = load_course(course_id)
@@ -216,7 +218,7 @@ def client_admin_course(request, client_id, course_id):
 def get_user_metrics_from_lookup(user_id, lookup):
     return lookup[user_id] if user_id in lookup else 0
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
     course = load_course(course_id)
@@ -254,7 +256,7 @@ def client_admin_course_participants(request, client_id, course_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_download_course_report(request, client_id, course_id):
 
     filename = slugify(
@@ -403,7 +405,7 @@ def client_admin_course_analytics_progress(request, client_id, course_id):
             )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def client_admin_course_status(request, client_id, course_id):
     course = load_course(course_id)
@@ -453,7 +455,7 @@ def _remove_student_from_course(student_id, course_id):
     user_api.unenroll_user_from_course(student_id, course_id)
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_unenroll_participant(request, client_id, course_id, user_id):
     error = None
     is_program = 'program' in request.GET
@@ -539,7 +541,7 @@ def client_admin_email_not_started(request, client_id, course_id):
     return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
