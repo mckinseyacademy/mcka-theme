@@ -1,18 +1,15 @@
 import copy
 import logging
-from admin.models import internal_admin_role_event, course_program_event, program_added_to_client, Program, Client
+from admin.models import (
+    internal_admin_role_event, course_program_event, program_client_event, Client,
+    ROLE_ACTIONS, ASSOCIATION_ACTIONS
+)
 
-from api_client import user_api, group_api, course_api
+from api_client import user_api, group_api, course_api, organization_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
 from api_client.api_error import ApiError
 from django.conf import settings
-from lib.util import DottableDict
-
-ROLE_ACTIONS = DottableDict(
-    GRANT='grant',
-    REVOKE='revoke'
-)
 
 
 class PermissionSaveError(Exception):
@@ -110,19 +107,25 @@ class InternalAdminRoleManager(object):
     }
 
     _course_operations_map = {
-        'add': user_api.add_user_role,
-        'remove': user_api.delete_user_role
+        ASSOCIATION_ACTIONS.ADD: user_api.add_user_role,
+        ASSOCIATION_ACTIONS.REMOVE: user_api.delete_user_role
+    }
+
+    _program_operations_map = {
+        ASSOCIATION_ACTIONS.ADD: user_api.add_user_role,
+        ASSOCIATION_ACTIONS.REMOVE: user_api.delete_user_role
     }
 
     def __init__(self):
-        self.internal_admins_group_id = next(
+        internal_admins_group_id = next(
             group.id
             for group in group_api.get_groups_of_type(PERMISSION_TYPE)
             if group.name == PERMISSION_GROUPS.INTERNAL_ADMIN
         )
+        self._all_internal_admins = set(user.id for user in group_api.get_users_in_group(internal_admins_group_id))
 
-    def _get_all_internal_admins(self):
-        return group_api.get_users_in_group(self.internal_admins_group_id)
+    def _get_internal_admins_in_organization(self, organization):
+        return self._all_internal_admins & set(student.id for student in organization.fetch_students())
 
     def handle_internal_admin_role_event(self, sender, *args, **kwargs):
         user_id, action = kwargs.get('user_id'), kwargs.get('action')
@@ -143,19 +146,25 @@ class InternalAdminRoleManager(object):
     def handle_course_program_event(self, sender, *args, **kwargs):
         course_id, program_id, action = kwargs.get('course_id'), kwargs.get('program_id'), kwargs.get('action')
         organizations = group_api.get_organizations_in_group(program_id, group_object=Client)
-        all_internal_admins = set(user.id for user in self._get_all_internal_admins())
 
         user_ids = set()
         for org in organizations:
-            users_in_org = set(student.id for student in org.fetch_students())
-            user_ids |= (all_internal_admins & users_in_org)
+            user_ids |= self._get_internal_admins_in_organization(org)
 
         operation = self._course_operations_map.get(action)
 
         self._do_role_management(operation, user_ids, [course_id], USER_ROLES.INSTRUCTOR)
 
-    def handle_program_added_to_client(self, sender, *args, **kwargs):
-        pass
+    def handle_program_client_event(self, sender, *args, **kwargs):
+        client_id, program_id, action = kwargs.get('client_id'), kwargs.get('program_id'), kwargs.get('action')
+        organization = organization_api.fetch_organization(client_id, organization_object=Client)
+
+        user_ids = self._get_internal_admins_in_organization(organization)
+        course_ids = set(course.course_id for course in group_api.get_courses_in_group(program_id))
+
+        operation = self._program_operations_map.get(action)
+
+        self._do_role_management(operation, user_ids, course_ids, USER_ROLES.INSTRUCTOR)
 
     @classmethod
     def _do_role_management(cls, operation, users, courses, role):
@@ -167,4 +176,4 @@ _internal_admin_role_manager = InternalAdminRoleManager()
 
 internal_admin_role_event.connect(_internal_admin_role_manager.handle_internal_admin_role_event)
 course_program_event.connect(_internal_admin_role_manager.handle_course_program_event)
-program_added_to_client.connect(_internal_admin_role_manager.handle_program_added_to_client)
+program_client_event.connect(_internal_admin_role_manager.handle_program_client_event)

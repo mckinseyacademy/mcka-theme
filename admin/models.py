@@ -1,6 +1,7 @@
 from api_client import group_api, workgroup_api, organization_api, user_api, course_api
 from api_client import group_models, user_models, workgroup_models, organization_models, project_models
 from api_client.json_object import JsonObject
+from lib.util import DottableDict
 from license import controller as license_controller
 from django.conf import settings
 
@@ -38,12 +39,16 @@ class Program(BaseGroupModel):
 
     def add_course(self, course_id):
         result = group_api.add_course_to_group(course_id, self.id)
-        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='add')
+        course_program_event.send(
+            sender=self.__class__, course_id=course_id, program_id=self.id, action=ASSOCIATION_ACTIONS.ADD
+        )
         return result
 
     def remove_course(self, course_id):
         result = group_api.remove_course_from_group(course_id, self.id)
-        course_program_event.send(sender=self.__class__, course_id=course_id, program_id=self.id, action='remove')
+        course_program_event.send(
+            sender=self.__class__, course_id=course_id, program_id=self.id, action=ASSOCIATION_ACTIONS.REMOVE
+        )
         return result
 
     def fetch_courses(self):
@@ -119,7 +124,9 @@ class Client(organization_models.Organization):
         # set up licenses
         license_controller.create_licenses(program_id, self.id, places)
 
-        program_added_to_client.send(sender=self.__class__, client_id=self.id, program_id=program_id)
+        program_client_event.send(
+            sender=self.__class__, client_id=self.id, program_id=program_id, action=ASSOCIATION_ACTIONS.ADD
+        )
 
         return self
 
@@ -225,6 +232,16 @@ class UserRegistrationBatch(db_models.Model):
         return True
 
 
+ROLE_ACTIONS = DottableDict(
+    GRANT='grant',
+    REVOKE='revoke'
+)
+
+ASSOCIATION_ACTIONS = DottableDict(
+    ADD='add',
+    REMOVE='remove'
+)
+
 internal_admin_role_event = Signal(providing_args=['user_id', 'action'])
 course_program_event = Signal(providing_args=['course_id', 'program_id', 'action'])
-program_added_to_client = Signal(providing_args=['client_id', 'program_id'])
+program_client_event = Signal(providing_args=['client_id', 'program_id', 'action'])
