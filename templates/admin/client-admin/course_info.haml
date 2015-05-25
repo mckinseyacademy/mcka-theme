@@ -11,71 +11,71 @@
         %span
           = course_info.name
       %hr
-    .row
-      .medium-6.large.columns
-        %h2= _("ENROLLMENT INFORMATION")
-        %p= _("Total number of participants:")
+  .row
+    .medium-6.large.columns
+      %h2= _("ENROLLMENT INFORMATION")
+      %p= _("Total number of participants:")
+        %b= metrics.users_enrolled
+      %br
+
+      %h2= _("BASIC COURSE INFORMATION")
+      %ul
+        %li= _("Course name:")
+          %b= course_info.number
+        %li= _("Course start date:")
+          %b= course_start
+        %li= _("Course end date:")
+          %b= course_end
+        %li= _("Grade cutoffs:")
+          %b= cutoffs
+
+    .medium-6.large.columns
+      %h2= _("PARTICIPANTS")
+      %ul
+        %li= _("Participants:")
           %b= metrics.users_enrolled
+        %li= _("Started:")
+          %b= metrics.users_started
+        %li= _("Completed:")
+          %b= metrics.users_completed
+        %li= _("% Completed:")
+          %b= metrics.percent_completed
+
+      %h2= _("FORUM INFORMATION")
+      %ul
+        %li= _("Active discussions:")
+          %b= metrics.num_active_threads
+        %li= _("Threads:")
+          %b= metrics.num_threads
+    %hr
+    - if user.is_client_admin
+      %h2= _("STATUS")
+      %p= _("Current status of all participants who have completed, are in progress, or not yet started this course.")
+      #course-status-chart-wrapper
+        %svg#course-status-chart
+      .status-chart-legend
+        %ul.inline-list
+          %li
+            .color.warm-gray
+            = _("Completed")
+          %li
+            .color.turquoise
+            = _("In progress")
+          %li
+            .color.orange
+            = _("Not Started")
         %br
+        .medium-8.large.columns
+        #email_not_started.medium-4.large.columns
+          - if metrics.users_started < metrics.users_enrolled
+            %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", data-reveal-id: "send-email-not-started-modal", data-reveal-ajax: "true"}= _("Email participants not started")
+          - else
+            %a.no-participants= _("Email participants not started")
+              .mcka-tooltip
+                %p.style-4
+                  All participants have already started the course
 
-        %h2= _("BASIC COURSE INFORMATION")
-        %ul
-          %li= _("Course name:")
-            %b= course_info.number
-          %li= _("Course start date:")
-            %b= course_start
-          %li= _("Course end date:")
-            %b= course_end
-          %li= _("Grade cutoffs:")
-            %b= cutoffs
-
-      .medium-6.large.columns
-        %h2= _("PARTICIPANTS")
-        %ul
-          %li= _("Participants:")
-            %b= metrics.users_enrolled
-          %li= _("Started:")
-            %b= metrics.users_started
-          %li= _("Completed:")
-            %b= metrics.users_completed
-          %li= _("% Completed:")
-            %b= metrics.percent_completed
-
-        %h2= _("FORUM INFORMATION")
-        %ul
-          %li= _("Active discussions:")
-            %b= metrics.num_active_threads
-          %li= _("Threads:")
-            %b= metrics.num_threads
-      %hr
-      - if user.is_client_admin
-        %h2= _("STATUS")
-        %p= _("Current status of all participants who have completed, are in progress, or not yet started this course.")
-        #course-status-chart-wrapper
-          %svg#course-status-chart
-        .status-chart-legend
-          %ul.inline-list
-            %li
-              .color.warm-gray
-              = _("Completed")
-            %li
-              .color.turquoise
-              = _("In progress")
-            %li
-              .color.orange
-              = _("Not Started")
-          %br
-          .medium-8.large.columns
-          #email_not_started.medium-4.large.columns
-            - if metrics.users_started < metrics.users_enrolled
-              %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", data-reveal-id: "send-email-not-started-modal", data-reveal-ajax: "true"}= _("Email participants not started")
-            - else
-              %a.no-participants= _("Email participants not started")
-                .mcka-tooltip
-                  %p.style-4
-                    All participants have already started the course
-
-        #send-email-not-started-modal.reveal-modal.medium{'data-reveal': None}
+      #send-email-not-started-modal.reveal-modal.medium{'data-reveal': None}
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
