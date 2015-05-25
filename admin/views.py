@@ -2,79 +2,63 @@ import copy
 import functools
 import json
 import re
-from datetime import datetime
-from time import mktime
-import urllib2 as url_access
-from urllib import quote as urlquote
-import math
 import string
 import urlparse
+
+from datetime import datetime
+from urllib import quote as urlquote
 from operator import attrgetter
 
 from django.conf import settings
 from django.core.mail import EmailMessage
-from django.utils.translation import ugettext as _
-from django.shortcuts import render, redirect
-from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.text import slugify
-from django.utils.dateformat import format
-from django.core.exceptions import ValidationError
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render, redirect
 from django.template import loader, RequestContext
+from django.utils.dateformat import format
+from django.utils.text import slugify
+from django.utils.translation import ugettext as _
 
-from lib.authorization import permission_group_required
-from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 
-from accounts.models import RemoteUser, UserActivation
+from lib.authorization import permission_group_required
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
+
+from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
 
-from api_client import course_api
-from api_client import user_api
-from api_client import group_api, workgroup_api, organization_api
-from api_client.json_object import Objectifier, JsonObjectWithImage
+from api_client import course_api, user_api, group_api, workgroup_api, organization_api
 from api_client.api_error import ApiError
-from api_client.project_models import Project
 from api_client.organization_models import Organization
+from api_client.project_models import Project
 from api_client.workgroup_models import Submission
-from courses.controller import Progress, Proficiency
-from courses.controller import return_course_progress, organization_course_progress_user_list
-from courses.controller import social_total, round_to_int_bump_zero, round_to_int
-from courses.user_courses import return_course_completions_stats
+
+from courses.controller import (
+    Progress, Proficiency,
+    return_course_progress, organization_course_progress_user_list,
+    social_total, round_to_int_bump_zero, round_to_int
+)
 
 from license import controller as license_controller
 from main.models import CuratedContentItem
 
-from .models import Client
-from .models import Program
-from .models import WorkGroup
-from .models import WorkGroupActivityXBlock
-from .models import ReviewAssignmentGroup
-from .models import UserRegistrationBatch, UserRegistrationError
-from .models import ContactGroup
-from .controller import get_student_list_as_file, get_group_list_as_file
-from .controller import fetch_clients_with_program
-from .controller import load_course
-from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
-from .controller import get_group_project_activities, get_group_activity_xblock
-from .controller import upload_student_list_threaded
-from .controller import generate_course_report
-from .controller import get_organizations_users_completion
-from .controller import get_course_metrics_for_organization
-from .controller import get_course_analytics_progress_data
-from .controller import get_contacts_for_client
-from .controller import get_admin_users
-from .controller import get_program_data_for_report
-from .forms import ClientForm
-from .forms import ProgramForm
-from .forms import UploadStudentListForm
-from .forms import ProgramAssociationForm
-from .forms import CuratedContentItemForm
-from .forms import PermissionForm
-from .forms import UploadCompanyImageForm
+from .models import (
+    Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
+    UserRegistrationBatch, UserRegistrationError
+)
+from .controller import (
+    get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
+    getStudentsWithCompanies, filter_groups_and_students,
+    get_group_project_activities, get_group_activity_xblock,
+    upload_student_list_threaded, generate_course_report, get_organizations_users_completion,
+    get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report
+)
+from .forms import (
+    ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
+    PermissionForm, UploadCompanyImageForm
+)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
