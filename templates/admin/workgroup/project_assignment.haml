@@ -19,10 +19,11 @@
           .add-message
             - block principal_message
               %p= _("Generate random peer-reviews for project activities")
-          %div
-            %p
-              %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
-                Downloadable Workgroup Completion Report
+          - if user.is_mcka_admin or user.is_mcka_ta
+            %div
+              %p
+                %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
+                  Downloadable Workgroup Completion Report
         %hr
         %section
           .sub-1= _("Project:")
