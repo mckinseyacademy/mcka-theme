@@ -588,7 +588,7 @@ def client_admin_contact(request, client_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_meta_content_course_list(request):
     courses = course_api.get_course_list()
     for course in courses:
@@ -605,7 +605,7 @@ def course_meta_content_course_list(request):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_meta_content_course_items(request):
     course_id = request.GET.get('course_id', None)
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
@@ -621,7 +621,7 @@ def course_meta_content_course_items(request):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_meta_content_course_item_new(request):
     error = None
     if request.method == "POST":
@@ -651,7 +651,7 @@ def course_meta_content_course_item_new(request):
         )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_meta_content_course_item_edit(request, item_id):
     error = None
     item = CuratedContentItem.objects.filter(id=item_id)[0]
@@ -680,7 +680,7 @@ def course_meta_content_course_item_edit(request, item_id):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_meta_content_course_item_delete(request, item_id):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
     course_id = urlquote(item.course_id)
@@ -1201,7 +1201,7 @@ def download_program_report(request, program_id):
     return response
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def download_group_projects_report(request, course_id):
     filename = slugify(
         unicode(
@@ -1228,7 +1228,7 @@ def download_group_projects_report(request, course_id):
 
     return response
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def group_work_status(request, course_id, group_id=None):
     wcd = WorkgroupCompletionData(course_id, group_id)
     data = wcd.build_report_data()
@@ -1405,7 +1405,7 @@ def add_students_to_course(request, client_id):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def workgroup_list(request):
     ''' handles requests for login form and their submission '''
 
@@ -1430,7 +1430,7 @@ def workgroup_list(request):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def workgroup_programs_list(request):
     ''' handles requests for login form and their submission '''
 
@@ -1501,7 +1501,7 @@ def load_group_projects_info_for_course(course, companies):
 
     return group_projects
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def workgroup_detail(request, course_id, workgroup_id):
     '''
     Get detailed information about the specific workgroup for this course
@@ -1536,7 +1536,7 @@ def workgroup_detail(request, course_id, workgroup_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def workgroup_course_detail(request, course_id):
     ''' handles requests for login form and their submission '''
 
@@ -1729,7 +1729,7 @@ def download_group_list(request, course_id):
 
     return response
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def generate_assignments(request, project_id, activity_id):
     error = _("Problem generating activity review assignments")
     status_code = 400
@@ -1864,7 +1864,7 @@ def edit_permissions(request, user_id):
     }
     return render(request, 'admin/permissions/edit.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def workgroup_course_assignments(request, course_id):
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id)
