@@ -15,15 +15,14 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
-from django.http import Http404
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.utils.dateformat import format
 from django.core.exceptions import ValidationError
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.template import loader, RequestContext
 
 from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
@@ -117,6 +116,84 @@ def client_admin_access(func):
 
     return wrapper
 
+
+class AccessCheckerDecorators(object):
+    @classmethod
+    def _get_organization_for_user(cls, user):
+        orgs = user_api.get_user_organizations(user.id, organization_object=Client)
+        if orgs:
+            return orgs[0]
+        return None
+
+    @classmethod
+    def _get_courses_for_organization(cls, org):
+        courses = []
+        for program in org.fetch_programs():
+            courses.extend(program.fetch_courses())
+
+        return courses
+
+    @classmethod
+    def _get_users_in_organization(cls, org):
+        return [str(user_id) for user_id in org.users]
+
+    @classmethod
+    def course_access_wrapper(cls, func):
+        """
+        Ensure restricted roles (company admin and internal admin)
+        can only access courses in mapped to their companies.
+
+        Note it changes function signature, passing additional parameter allowed_courses_ids. Due to the fact it would
+        make a huge list of courses for mcka admin, if user is mcka admin allowed_courses_ids is None
+        """
+        @functools.wraps(func)
+        def wrapper(request, *args, **kwargs):
+            allowed_courses_ids = []
+            if request.user.is_mcka_admin:
+                allowed_courses_ids = None
+            elif request.user.is_client_admin or request.user.is_internal_admin:
+                org = cls._get_organization_for_user(request.user)
+                if org:
+                    allowed_courses_ids = [course.course_id for course in cls._get_courses_for_organization(org)]
+
+            return func(request, *args, allowed_courses_ids=allowed_courses_ids, **kwargs)
+
+        return wrapper
+
+    @classmethod
+    def users_access_wrapper(cls, func):
+        """
+        Ensure restricted roles (company admin and internal admin)
+        can only access users in their companies.
+
+        Note it changes function signature, passing additional parameter allowed_user_ids. Due to the fact it would
+        make a huge list of users for mcka admin, if user is mcka admin allowed_users_ids is None
+        """
+        @functools.wraps(func)
+        def wrapper(request, *args, **kwargs):
+            allowed_users_ids = []
+            if request.user.is_mcka_admin:
+                allowed_users_ids = None
+            elif request.user.is_client_admin or request.user.is_internal_admin:
+                org = cls._get_organization_for_user(request.user)
+                if org:
+                    allowed_users_ids = cls._get_users_in_organization(org)
+
+            return func(request, *args, allowed_users_ids=allowed_users_ids, **kwargs)
+
+        return wrapper
+
+_checker = AccessCheckerDecorators()
+checked_course_access = _checker.course_access_wrapper
+checked_user_access = _checker.users_access_wrapper
+
+
+def _check_has_course_access(request, course_id, allowed_courses_ids):
+    if allowed_courses_ids and course_id not in allowed_courses_ids:
+        template = loader.get_template('not_authorized.haml')
+        context = RequestContext(request, {'request_path': request.path})
+        return HttpResponseForbidden(template.render(context))
+    return None
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -589,8 +666,9 @@ def client_admin_contact(request, client_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def course_meta_content_course_list(request):
-    courses = course_api.get_course_list()
+@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
+def course_meta_content_course_list(request, allowed_courses_ids=None):
+    courses = course_api.get_course_list(ids=allowed_courses_ids)
     for course in courses:
         course.id = urlquote(course.id)
 
@@ -606,8 +684,12 @@ def course_meta_content_course_list(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def course_meta_content_course_items(request):
+@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
+def course_meta_content_course_items(request, allowed_courses_ids=None):
     course_id = request.GET.get('course_id', None)
+    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
+    if access_course_check_failed:
+        return access_course_check_failed
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
     data = {
         "course_id": urlquote(course_id),
@@ -622,11 +704,15 @@ def course_meta_content_course_items(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def course_meta_content_course_item_new(request):
+@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
+def course_meta_content_course_item_new(request, allowed_courses_ids=None):
     error = None
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
         course_id = form.data['course_id']
+        access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
+        if access_course_check_failed:
+            return access_course_check_failed
         if form.is_valid():
             item = form.save()
             return redirect('/admin/course-meta-content/items?course_id=%s' % urlquote(course_id))
@@ -634,7 +720,10 @@ def course_meta_content_course_item_new(request):
             error = "please fix the problems indicated below."
     else:
         course_id = request.GET.get('course_id', None)
-        init = {'course_id': course_id }
+        access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
+        if access_course_check_failed:
+            return access_course_check_failed
+        init = {'course_id': course_id}
         form = CuratedContentItemForm(initial=init)
 
     data = {
@@ -652,6 +741,7 @@ def course_meta_content_course_item_new(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+# TODO: add course check
 def course_meta_content_course_item_edit(request, item_id):
     error = None
     item = CuratedContentItem.objects.filter(id=item_id)[0]
@@ -681,6 +771,7 @@ def course_meta_content_course_item_edit(request, item_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+# TODO: add course check
 def course_meta_content_course_item_delete(request, item_id):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
     course_id = urlquote(item.course_id)

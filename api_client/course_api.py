@@ -32,11 +32,14 @@ OBJECT_CATEGORY_MAP = {
 CJP = CategorisedJsonParser(OBJECT_CATEGORY_MAP)
 
 @api_error_protect
-def get_course_list():
+def get_course_list(ids=None):
     '''
     Retrieves list of courses from openedx server
     '''
     qs_params = {"page_size": 0}
+    if ids:
+        qs_params['course_id'] = ",".join(ids)
+
     response = GET('{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
