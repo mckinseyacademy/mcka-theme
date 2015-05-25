@@ -119,7 +119,30 @@ class AccessCheckerDecorators(object):
 
     @classmethod
     def _get_users_in_organization(cls, org):
-        return [str(user_id) for user_id in org.users]
+        return set(user_id for user_id in org.users)
+
+    @classmethod
+    def program_access_wrapper(cls, func):
+        """
+        Ensure restricted roles (company admin and internal admin)
+        can only access programs mapped to their companies.
+
+        Note it changes function signature, passing additional parameter allowed_program_ids. Due to the fact it would
+        make a huge list of programs for mcka admin, if user is mcka admin allowed_program_ids is None
+        """
+        @functools.wraps(func)
+        def wrapper(request, *args, **kwargs):
+            allowed_program_ids = []
+            if request.user.is_mcka_admin:
+                allowed_program_ids = None
+            elif request.user.is_client_admin or request.user.is_internal_admin:
+                org = cls._get_organization_for_user(request.user)
+                if org:
+                    allowed_program_ids = set(program.id for program in org.fetch_programs())
+
+            return func(request, *args, allowed_program_ids=allowed_program_ids, **kwargs)
+
+        return wrapper
 
     @classmethod
     def course_access_wrapper(cls, func):
@@ -138,7 +161,7 @@ class AccessCheckerDecorators(object):
             elif request.user.is_client_admin or request.user.is_internal_admin:
                 org = cls._get_organization_for_user(request.user)
                 if org:
-                    allowed_courses_ids = [course.course_id for course in cls._get_courses_for_organization(org)]
+                    allowed_courses_ids = set(course.course_id for course in cls._get_courses_for_organization(org))
 
             return func(request, *args, allowed_courses_ids=allowed_courses_ids, **kwargs)
 
@@ -170,6 +193,7 @@ class AccessCheckerDecorators(object):
 _checker = AccessCheckerDecorators()
 checked_course_access = _checker.course_access_wrapper
 checked_user_access = _checker.users_access_wrapper
+checked_program_access = _checker.program_access_wrapper
 
 def _return_not_authorized(request):
     template = loader.get_template('not_authorized.haml')
@@ -1620,7 +1644,7 @@ def download_group_list(request, course_id, allowed_courses_ids=None, allowed_us
     course = load_course(course_id, request=request)
     students, companies = getStudentsWithCompanies(course, allowed_users_ids)
     group_projects = load_group_projects_info_for_course(course, companies)
-    group_project_groups, students = filter_groups_and_students(group_projects, students)
+    group_project_groups, students = filter_groups_and_students(group_projects, students, allowed_users_ids)
 
     filename = slugify(unicode("Groups List for {} on {}".format(
         course.name,
@@ -1638,14 +1662,9 @@ def download_group_list(request, course_id, allowed_courses_ids=None, allowed_us
     return response
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def download_group_projects_report(request, course_id, allowed_courses_ids=None, allowed_users_ids=None):
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
-
+# TODO: add internal admin access
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def download_group_projects_report(request, course_id):
     filename = slugify(
         unicode(
             "Group Report for {} on {}".format(
@@ -1672,12 +1691,9 @@ def download_group_projects_report(request, course_id, allowed_courses_ids=None,
     return response
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-def group_work_status(request, course_id, group_id=None, allowed_courses_ids=None):
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+# TODO: add internal admin access
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def group_work_status(request, course_id, group_id=None):
     wcd = WorkgroupCompletionData(course_id, group_id)
     data = wcd.build_report_data()
     data.update({'selected_client_tab':'group_work_status'})
@@ -1800,6 +1816,7 @@ def workgroup_course_detail(request, course_id, allowed_courses_ids=None, allowe
     access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
     if access_course_check_failed:
         return access_course_check_failed
+
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id, request=request)
 
@@ -1809,7 +1826,7 @@ def workgroup_course_detail(request, course_id, allowed_courses_ids=None, allowe
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = load_group_projects_info_for_course(course, companies)
-    group_project_groups, students = filter_groups_and_students(group_projects, students)
+    group_project_groups, students = filter_groups_and_students(group_projects, students, allowed_users_ids)
 
     for project in group_projects:
         project.groups = group_project_groups[project.id]
@@ -1833,16 +1850,16 @@ def workgroup_course_detail(request, course_id, allowed_courses_ids=None, allowe
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-def workgroup_programs_list(request, allowed_courses_ids=None):
+@checked_program_access  # note this decorator changes method signature by adding allowed_program_ids parameter
+def workgroup_programs_list(request, allowed_program_ids=None):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
-        group_id = request.POST["group_id"]
+        program_id = request.POST["group_id"]
     if request.method == 'GET':
-        group_id = request.GET["group_id"]
+        program_id = request.GET["group_id"]
 
-    if group_id == 'select':
+    if program_id == 'select':
         return render(
             request,
             'admin/workgroup/courses_list.haml',
@@ -1851,11 +1868,11 @@ def workgroup_programs_list(request, allowed_courses_ids=None):
             }
         )
     else:
-        program = Program.fetch(group_id)
-        courses = program.fetch_courses()
+        if allowed_program_ids and int(program_id) not in allowed_program_ids:
+            return _return_not_authorized(request)
 
-        if allowed_courses_ids:
-            courses = [course for course in courses if course.course_id in allowed_courses_ids]
+        program = Program.fetch(program_id)
+        courses = program.fetch_courses()
 
         data = {
             "courses": courses,
@@ -1869,7 +1886,7 @@ def workgroup_programs_list(request, allowed_courses_ids=None):
 
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
 def workgroup_group_update(request, group_id, course_id, allowed_courses_ids=None, allowed_users_ids=None):
@@ -1879,9 +1896,10 @@ def workgroup_group_update(request, group_id, course_id, allowed_courses_ids=Non
 
     if request.method == 'POST':
 
-        students = set(request.POST.getlist("students[]"))
+        students = set(int(user_id) for user_id in request.POST.getlist('students[]'))
         if allowed_users_ids:
-            students &= allowed_courses_ids
+            students &= allowed_users_ids
+
         try:
             workgroup = WorkGroup.fetch(group_id)
             workgroup.add_user_list(students)
@@ -1893,7 +1911,7 @@ def workgroup_group_update(request, group_id, course_id, allowed_courses_ids=Non
 
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
 def workgroup_group_create(request, course_id, allowed_courses_ids=None, allowed_users_ids=None):
@@ -1902,16 +1920,16 @@ def workgroup_group_create(request, course_id, allowed_courses_ids=None, allowed
         return access_course_check_failed
 
     if request.method == 'POST':
-        students = set(request.POST.getlist('students[]'))
+        students = set(int(user_id) for user_id in request.POST.getlist('students[]'))
         if allowed_users_ids:
-            students &= allowed_courses_ids
+            students &= allowed_users_ids
         project_id = request.POST['project_id']
 
         # load project, and make sure if private that all students are in the correct organisation
         project = Project.fetch(project_id)
         if project.organization is not None:
             organization = Organization.fetch(project.organization)
-            bad_users = [u for u in students if int(u) not in organization.users]
+            bad_users = [u for u in students if u not in organization.users]
 
             if len(bad_users) > 0:
                 message = "Bad users {} for private project".format(
@@ -1944,7 +1962,7 @@ def workgroup_group_remove(request, group_id, allowed_courses_ids=None, allowed_
 
         remove_student = request.POST['student']
 
-        if allowed_users_ids and remove_student not in allowed_users_ids:
+        if allowed_users_ids and int(remove_student) not in allowed_users_ids:
             return _return_not_authorized(request)
 
         workgroup = WorkGroup.fetch(group_id)
@@ -1956,7 +1974,7 @@ def workgroup_group_remove(request, group_id, allowed_courses_ids=None, allowed_
         students, companies = getStudentsWithCompanies(course, allowed_users_ids)
 
         group_projects = load_group_projects_info_for_course(course, companies)
-        group_project_groups, students = filter_groups_and_students(group_projects, students)
+        group_project_groups, students = filter_groups_and_students(group_projects, students, allowed_users_ids)
 
         data = {
             "students": students,
@@ -2031,7 +2049,8 @@ def workgroup_remove_project(request, project_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def workgroup_list(request):
+@checked_program_access # note this decorator changes method signature by adding allowed_program_ids parameter
+def workgroup_list(request, allowed_program_ids=None):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
@@ -2040,6 +2059,9 @@ def workgroup_list(request):
 
 
     programs = Program.list()
+
+    if allowed_program_ids:
+        programs = [program for program in programs if program.id in allowed_program_ids]
 
     data = {
         "principal_name": _("Group Work"),

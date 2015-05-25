@@ -356,25 +356,33 @@ def fetch_clients_with_program(program_id):
 
     return clients
 
-def filter_groups_and_students(group_projects, students):
+def filter_groups_and_students(group_projects, students, allowed_users_ids=None):
 
     group_project_groups = {}
     groupedStudents = []
+
+    groups_to_hide = set()
 
     for group_project in group_projects:
         groups = project_api.get_project_workgroups(group_project.id, WorkGroup)
 
         for group in groups:
-            group_users = {u.id : u for u in group.users}
+            group_users = {u.id: u for u in group.users}
             students_in_group = [s for s in students if s.id in group_users.keys()]
             groupedStudents.extend(students_in_group)
+
+            if allowed_users_ids is not None:
+                original_length = len(group.users)
+                group.users = [user for user in group.users if user.id in allowed_users_ids]
+                if len(group.users) != original_length:
+                    groups_to_hide.add(group.id)
 
             for group_student in students_in_group:
                 group_users[group_student.id].company = getattr(group_student, "company", None)
 
             group.students_count = len(group.users)
 
-        group_project_groups[group_project.id] = groups
+        group_project_groups[group_project.id] = [group for group in groups if group.id not in groups_to_hide]
 
     for student in groupedStudents:
         if student in students:
@@ -382,12 +390,15 @@ def filter_groups_and_students(group_projects, students):
 
     return group_project_groups, students
 
-def getStudentsWithCompanies(course):
+def getStudentsWithCompanies(course, allowed_users_ids=None):
     students = course_api.get_user_list(course.id)
 
-    users_ids = [str(user.id) for user in students]
+    users_ids = set(user.id for user in students)
+    if allowed_users_ids:
+        users_ids &= allowed_users_ids
+
     additional_fields = ["organizations"]
-    students = user_api.get_users(ids=users_ids, fields=additional_fields)
+    students = user_api.get_users(ids=[str(user_id) for user_id in users_ids], fields=additional_fields)
 
     companies = {}
     for student in students:
