@@ -13,6 +13,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.template import loader, RequestContext
@@ -63,6 +64,7 @@ from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnatt
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 
+
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -76,135 +78,143 @@ def ajaxify_http_redirects(func):
 
     return wrapper
 
-def client_admin_access(func):
-    '''
-    Ensure company admins can view only their company.
-    MCKA Admin can view all clients in the system.
-    '''
-    @functools.wraps(func)
-    def wrapper(request, client_id=None, *args, **kwargs):
-        valid_client_id = None
-        if request.user.is_mcka_admin:
-            valid_client_id = client_id
 
-        # make sure client admin can access only his company
-        elif request.user.is_client_admin or request.user.is_internal_admin:
-            orgs = user_api.get_user_organizations(request.user.id)
-            if orgs:
-                valid_client_id = orgs[0].id
+class AccessChecker(object):
+    @staticmethod
+    def _get_organization_for_user(user):
+        try:
+            return user_api.get_user_organizations(user.id, organization_object=Client)[0]
+        except IndexError:
+            return None
 
-        if valid_client_id is None:
-            raise Http404
-
-        return func(request, valid_client_id, *args, **kwargs)
-
-    return wrapper
-
-
-class AccessCheckerDecorators(object):
-    @classmethod
-    def _get_organization_for_user(cls, user):
-        orgs = user_api.get_user_organizations(user.id, organization_object=Client)
-        if orgs:
-            return orgs[0]
-        return None
-
-    @classmethod
-    def _get_courses_for_organization(cls, org):
+    @staticmethod
+    def _get_courses_for_organization(org):
         courses = []
         for program in org.fetch_programs():
             courses.extend(program.fetch_courses())
 
-        return courses
+        return set(course.course_id for course in courses)
 
-    @classmethod
-    def _get_users_in_organization(cls, org):
-        return set(user_id for user_id in org.users)
+    @staticmethod
+    def _do_wrapping(func, request, restrict_to_key, restrict_to_callback, *args, **kwargs):
+        restrict_to_ids = []
+        if request.user.is_mcka_admin:
+            restrict_to_ids = None
+        elif request.user.is_client_admin or request.user.is_internal_admin:
+            org = AccessChecker._get_organization_for_user(request.user)
+            if org:
+                restrict_to_ids = restrict_to_callback(org)
 
-    @classmethod
-    def program_access_wrapper(cls, func):
+        kwargs[restrict_to_key] = restrict_to_ids
+
+        try:
+            return func(request, *args, **kwargs)
+        except PermissionDenied:
+            template = loader.get_template('not_authorized.haml')
+            context = RequestContext(request, {'request_path': request.path})
+            return HttpResponseForbidden(template.render(context))
+
+    @staticmethod
+    def check_has_course_access(request, course_id, restrict_to_courses_ids):
+        if restrict_to_courses_ids is not None and course_id not in restrict_to_courses_ids:
+            raise PermissionDenied()
+
+    @staticmethod
+    def check_has_program_access(request, program_id, restrict_to_programs_ids):
+        if restrict_to_programs_ids is not None and program_id not in restrict_to_programs_ids:
+            raise PermissionDenied()
+
+    @staticmethod
+    def check_has_user_access(request, student_id, restrict_to_users_ids):
+        if restrict_to_users_ids is not None and student_id not in restrict_to_users_ids:
+            raise PermissionDenied()
+
+    @staticmethod
+    def program_access_wrapper(func):
         """
         Ensure restricted roles (company admin and internal admin)
         can only access programs mapped to their companies.
 
-        Note it changes function signature, passing additional parameter allowed_program_ids. Due to the fact it would
-        make a huge list of programs for mcka admin, if user is mcka admin allowed_program_ids is None
+        Note it changes function signature, passing additional parameter restrict_to_programs_ids. Due to the fact it would
+        make a huge list of programs for mcka admin, if user is mcka admin restrict_to_programs_ids is None
         """
         @functools.wraps(func)
         def wrapper(request, *args, **kwargs):
-            allowed_program_ids = []
-            if request.user.is_mcka_admin:
-                allowed_program_ids = None
-            elif request.user.is_client_admin or request.user.is_internal_admin:
-                org = cls._get_organization_for_user(request.user)
-                if org:
-                    allowed_program_ids = set(program.id for program in org.fetch_programs())
-
-            return func(request, *args, allowed_program_ids=allowed_program_ids, **kwargs)
+            restrict_to_callback = lambda org: set(program.id for program in org.fetch_programs())
+            return AccessChecker._do_wrapping(
+                func, request, 'restrict_to_programs_ids', restrict_to_callback, *args, **kwargs
+            )
 
         return wrapper
 
-    @classmethod
-    def course_access_wrapper(cls, func):
+    @staticmethod
+    def course_access_wrapper(func):
         """
         Ensure restricted roles (company admin and internal admin)
-        can only access courses in mapped to their companies.
+        can only access courses mapped to their companies.
 
-        Note it changes function signature, passing additional parameter allowed_courses_ids. Due to the fact it would
-        make a huge list of courses for mcka admin, if user is mcka admin allowed_courses_ids is None
+        Note it changes function signature, passing additional parameter restrict_to_courses_ids. Due to the fact it 
+        would make a huge list of courses for mcka admin, if user is mcka admin restrict_to_courses_ids is None
         """
         @functools.wraps(func)
         def wrapper(request, *args, **kwargs):
-            allowed_courses_ids = []
-            if request.user.is_mcka_admin:
-                allowed_courses_ids = None
-            elif request.user.is_client_admin or request.user.is_internal_admin:
-                org = cls._get_organization_for_user(request.user)
-                if org:
-                    allowed_courses_ids = set(course.course_id for course in cls._get_courses_for_organization(org))
-
-            return func(request, *args, allowed_courses_ids=allowed_courses_ids, **kwargs)
+            restrict_to_callback = AccessChecker._get_courses_for_organization
+            return AccessChecker._do_wrapping(
+                func, request, 'restrict_to_courses_ids', restrict_to_callback, *args, **kwargs
+            )
 
         return wrapper
 
-    @classmethod
-    def users_access_wrapper(cls, func):
+    @staticmethod
+    def users_access_wrapper(func):
         """
         Ensure restricted roles (company admin and internal admin)
         can only access users in their companies.
 
         Note it changes function signature, passing additional parameter allowed_user_ids. Due to the fact it would
-        make a huge list of users for mcka admin, if user is mcka admin allowed_users_ids is None
+        make a huge list of users for mcka admin, if user is mcka admin restrict_to_users_ids is None
         """
         @functools.wraps(func)
         def wrapper(request, *args, **kwargs):
-            allowed_users_ids = []
-            if request.user.is_mcka_admin:
-                allowed_users_ids = None
-            elif request.user.is_client_admin or request.user.is_internal_admin:
-                org = cls._get_organization_for_user(request.user)
-                if org:
-                    allowed_users_ids = cls._get_users_in_organization(org)
-
-            return func(request, *args, allowed_users_ids=allowed_users_ids, **kwargs)
+            restrict_to_callback = lambda org: set(user_id for user_id in org.users)
+            return AccessChecker._do_wrapping(
+                func, request, 'restrict_to_users_ids', restrict_to_callback, *args, **kwargs
+            )
 
         return wrapper
 
-_checker = AccessCheckerDecorators()
-checked_course_access = _checker.course_access_wrapper
-checked_user_access = _checker.users_access_wrapper
-checked_program_access = _checker.program_access_wrapper
+    @staticmethod
+    def client_admin_wrapper(func):
+        """
+        Ensure company admins can view only their company.
+        MCKA Admin can view all clients in the system.
+        """
+        @functools.wraps(func)
+        def wrapper(request, client_id=None, *args, **kwargs):
+            valid_client_id = None
+            if request.user.is_mcka_admin:
+                valid_client_id = client_id
 
-def _return_not_authorized(request):
-    template = loader.get_template('not_authorized.haml')
-    context = RequestContext(request, {'request_path': request.path})
-    return HttpResponseForbidden(template.render(context))
+            # make sure client admin can access only his company
+            elif request.user.is_client_admin or request.user.is_internal_admin:
+                org = AccessChecker._get_organization_for_user(request.user)
+                if org:
+                    valid_client_id = org.id
+
+            if valid_client_id is None:
+                raise Http404
+
+            return func(request, valid_client_id, *args, **kwargs)
+
+        return wrapper
+
+checked_course_access = AccessChecker.course_access_wrapper
+checked_user_access = AccessChecker.users_access_wrapper
+checked_program_access = AccessChecker.program_access_wrapper
+client_admin_access = AccessChecker.client_admin_wrapper
 
 
-def _check_has_course_access(request, course_id, allowed_courses_ids):
-    if allowed_courses_ids and course_id not in allowed_courses_ids:
-        return _return_not_authorized(request)
-    return None
+
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -677,9 +687,9 @@ def client_admin_contact(request, client_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-def course_meta_content_course_list(request, allowed_courses_ids=None):
-    courses = course_api.get_course_list(ids=allowed_courses_ids)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_list(request, restrict_to_courses_ids=None):
+    courses = course_api.get_course_list(ids=restrict_to_courses_ids)
     for course in courses:
         course.id = urlquote(course.id)
 
@@ -695,12 +705,11 @@ def course_meta_content_course_list(request, allowed_courses_ids=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-def course_meta_content_course_items(request, allowed_courses_ids=None):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_items(request, restrict_to_courses_ids=None):
     course_id = request.GET.get('course_id', None)
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
     data = {
         "course_id": urlquote(course_id),
@@ -715,15 +724,13 @@ def course_meta_content_course_items(request, allowed_courses_ids=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-def course_meta_content_course_item_new(request, allowed_courses_ids=None):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
     error = None
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
         course_id = form.data['course_id']
-        access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-        if access_course_check_failed:
-            return access_course_check_failed
+        AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
         if form.is_valid():
             item = form.save()
             return redirect('/admin/course-meta-content/items?course_id=%s' % urlquote(course_id))
@@ -731,9 +738,7 @@ def course_meta_content_course_item_new(request, allowed_courses_ids=None):
             error = "please fix the problems indicated below."
     else:
         course_id = request.GET.get('course_id', None)
-        access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-        if access_course_check_failed:
-            return access_course_check_failed
+        AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
         init = {'course_id': course_id}
         form = CuratedContentItemForm(initial=init)
 
@@ -1634,17 +1639,15 @@ def upload_company_image(request, client_id='new'):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def download_group_list(request, course_id, allowed_courses_ids=None, allowed_users_ids=None):
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def download_group_list(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     course = load_course(course_id, request=request)
-    students, companies = getStudentsWithCompanies(course, allowed_users_ids)
+    students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
     group_projects = load_group_projects_info_for_course(course, companies)
-    group_project_groups, students = filter_groups_and_students(group_projects, students, allowed_users_ids)
+    group_project_groups, students = filter_groups_and_students(group_projects, students, restrict_to_users_ids)
 
     filename = slugify(unicode("Groups List for {} on {}".format(
         course.name,
@@ -1708,21 +1711,19 @@ def group_work_status(request, course_id, group_id=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def workgroup_detail(request, course_id, workgroup_id, allowed_courses_ids=None, allowed_users_ids=None):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     '''
     Get detailed information about the specific workgroup for this course
     '''
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     workgroup = WorkGroup.fetch(workgroup_id)
     additional_fields = ["avatar_url"]
     user_ids = set(u.id for u in workgroup.users)
-    if allowed_users_ids:
-        user_ids &= allowed_users_ids
+    if restrict_to_users_ids is not None:
+        user_ids &= restrict_to_users_ids
     users = user_api.get_users(ids=[str(id) for id in user_ids], fields=additional_fields)
     project = Project.fetch(workgroup.project)
 
@@ -1752,16 +1753,14 @@ def workgroup_detail(request, course_id, workgroup_id, allowed_courses_ids=None,
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def workgroup_course_assignments(request, course_id, allowed_courses_ids=None, allowed_users_ids=None):
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id)
 
-    students, companies = getStudentsWithCompanies(course, allowed_users_ids)
+    students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
 
     if len(course.group_project_chapters) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
@@ -1809,24 +1808,22 @@ def workgroup_course_assignments(request, course_id, allowed_courses_ids=None, a
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def workgroup_course_detail(request, course_id, allowed_courses_ids=None, allowed_users_ids=None):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id, request=request)
 
-    students, companies = getStudentsWithCompanies(course, allowed_users_ids)
+    students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
 
     if len(course.group_project_chapters) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = load_group_projects_info_for_course(course, companies)
-    group_project_groups, students = filter_groups_and_students(group_projects, students, allowed_users_ids)
+    group_project_groups, students = filter_groups_and_students(group_projects, students, restrict_to_users_ids)
 
     for project in group_projects:
         project.groups = group_project_groups[project.id]
@@ -1850,8 +1847,8 @@ def workgroup_course_detail(request, course_id, allowed_courses_ids=None, allowe
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_program_access  # note this decorator changes method signature by adding allowed_program_ids parameter
-def workgroup_programs_list(request, allowed_program_ids=None):
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+def workgroup_programs_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
@@ -1868,8 +1865,7 @@ def workgroup_programs_list(request, allowed_program_ids=None):
             }
         )
     else:
-        if allowed_program_ids and int(program_id) not in allowed_program_ids:
-            return _return_not_authorized(request)
+        AccessChecker.check_has_program_access(request, int(program_id), restrict_to_programs_ids)
 
         program = Program.fetch(program_id)
         courses = program.fetch_courses()
@@ -1887,18 +1883,16 @@ def workgroup_programs_list(request, allowed_program_ids=None):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def workgroup_group_update(request, group_id, course_id, allowed_courses_ids=None, allowed_users_ids=None):
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     if request.method == 'POST':
 
         students = set(int(user_id) for user_id in request.POST.getlist('students[]'))
-        if allowed_users_ids:
-            students &= allowed_users_ids
+        if restrict_to_users_ids is not None:
+            students &= restrict_to_users_ids
 
         try:
             workgroup = WorkGroup.fetch(group_id)
@@ -1912,20 +1906,18 @@ def workgroup_group_update(request, group_id, course_id, allowed_courses_ids=Non
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def workgroup_group_create(request, course_id, allowed_courses_ids=None, allowed_users_ids=None):
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     if request.method == 'POST':
         students = set(int(user_id) for user_id in request.POST.getlist('students[]'))
-        if allowed_users_ids:
-            students &= allowed_users_ids
+        if restrict_to_users_ids is not None:
+            students &= restrict_to_users_ids
         project_id = request.POST['project_id']
 
-        # load project, and make sure if private that all students are in the correct organisation
+        # load project, and make sure if private that all students are in the correct organization
         project = Project.fetch(project_id)
         if project.organization is not None:
             organization = Organization.fetch(project.organization)
@@ -1955,15 +1947,13 @@ def workgroup_group_create(request, course_id, allowed_courses_ids=None, allowed
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding allowed_users_ids parameter
-def workgroup_group_remove(request, group_id, allowed_courses_ids=None, allowed_users_ids=None):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_group_remove(request, group_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     if request.method == 'POST':
 
         remove_student = request.POST['student']
-
-        if allowed_users_ids and int(remove_student) not in allowed_users_ids:
-            return _return_not_authorized(request)
+        AccessChecker.check_has_user_access(request, int(remove_student), restrict_to_users_ids)
 
         workgroup = WorkGroup.fetch(group_id)
         workgroup.remove_user(remove_student)
@@ -1971,10 +1961,10 @@ def workgroup_group_remove(request, group_id, allowed_courses_ids=None, allowed_
         course_id = request.POST['course_id']
         course = load_course(course_id, request=request)
 
-        students, companies = getStudentsWithCompanies(course, allowed_users_ids)
+        students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
 
         group_projects = load_group_projects_info_for_course(course, companies)
-        group_project_groups, students = filter_groups_and_students(group_projects, students, allowed_users_ids)
+        group_project_groups, students = filter_groups_and_students(group_projects, students, restrict_to_users_ids)
 
         data = {
             "students": students,
@@ -1994,14 +1984,12 @@ def workgroup_group_remove(request, group_id, allowed_courses_ids=None, allowed_
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding allowed_courses_ids parameter
-def workgroup_project_create(request, course_id, allowed_courses_ids=None):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     message = _("Error creating project")
     status_code = 400
 
-    access_course_check_failed = _check_has_course_access(request, course_id, allowed_courses_ids)
-    if access_course_check_failed:
-        return access_course_check_failed
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     if request.method == "POST":
         project_section = request.POST["project_section"]
@@ -2049,8 +2037,8 @@ def workgroup_remove_project(request, project_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_program_access # note this decorator changes method signature by adding allowed_program_ids parameter
-def workgroup_list(request, allowed_program_ids=None):
+@checked_program_access # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+def workgroup_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
@@ -2060,8 +2048,8 @@ def workgroup_list(request, allowed_program_ids=None):
 
     programs = Program.list()
 
-    if allowed_program_ids:
-        programs = [program for program in programs if program.id in allowed_program_ids]
+    if restrict_to_programs_ids is not None:
+        programs = [program for program in programs if program.id in restrict_to_programs_ids]
 
     data = {
         "principal_name": _("Group Work"),
@@ -2146,19 +2134,20 @@ def permissions(request):
     groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
     group_members = {group.name : [gu.id for gu in group_api.get_users_in_group(group.id)] for group in groups}
 
+    _role_map = {
+        PERMISSION_GROUPS.MCKA_ADMIN: _('ADMIN'),
+        PERMISSION_GROUPS.MCKA_TA: _('TA'),
+        PERMISSION_GROUPS.CLIENT_ADMIN: _('COMPANY ADMIN'),
+        PERMISSION_GROUPS.INTERNAL_ADMIN: _('INTERNAL ADMIN'),
+        PERMISSION_GROUPS.MCKA_OBSERVER: _('OBSERVER'),
+    }
+
     for user in users:
-        group_names = [g.name for g in groups]
-        roles = []
-        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_ADMIN, []):
-            roles.append(_('ADMIN'))
-        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_TA, []):
-            roles.append(_('TA'))
-        if user.id in group_members.get(PERMISSION_GROUPS.CLIENT_ADMIN, []):
-            roles.append(_('COMPANY ADMIN'))
-        if user.id in group_members.get(PERMISSION_GROUPS.INTERNAL_ADMIN, []):
-            roles.append(_('INTERNAL ADMIN'))
-        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
-            roles.append(_('OBSERVER'))
+        roles = [
+            role_name
+            for role_key, role_name in _role_map.iteritems()
+            if user.id in group_members.get(role_key, [])
+        ]
         user.roles = ", ".join(roles)
         user.company_list = ", ".join([org.display_name for org in user.organizations])
 

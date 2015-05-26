@@ -356,7 +356,7 @@ def fetch_clients_with_program(program_id):
 
     return clients
 
-def filter_groups_and_students(group_projects, students, allowed_users_ids=None):
+def filter_groups_and_students(group_projects, students, restrict_to_users_ids=None):
 
     group_project_groups = {}
     groupedStudents = []
@@ -371,9 +371,9 @@ def filter_groups_and_students(group_projects, students, allowed_users_ids=None)
             students_in_group = [s for s in students if s.id in group_users.keys()]
             groupedStudents.extend(students_in_group)
 
-            if allowed_users_ids is not None:
+            if restrict_to_users_ids is not None:
                 original_length = len(group.users)
-                group.users = [user for user in group.users if user.id in allowed_users_ids]
+                group.users = [user for user in group.users if user.id in restrict_to_users_ids]
                 if len(group.users) != original_length:
                     groups_to_hide.add(group.id)
 
@@ -390,12 +390,12 @@ def filter_groups_and_students(group_projects, students, allowed_users_ids=None)
 
     return group_project_groups, students
 
-def getStudentsWithCompanies(course, allowed_users_ids=None):
+def getStudentsWithCompanies(course, restrict_to_users_ids=None):
     students = course_api.get_user_list(course.id)
 
     users_ids = set(user.id for user in students)
-    if allowed_users_ids:
-        users_ids &= allowed_users_ids
+    if restrict_to_users_ids is not None:
+        users_ids &= restrict_to_users_ids
 
     additional_fields = ["organizations"]
     students = user_api.get_users(ids=[str(user_id) for user_id in users_ids], fields=additional_fields)

@@ -116,21 +116,24 @@ class InternalAdminRoleManager(object):
         ASSOCIATION_ACTIONS.REMOVE: user_api.delete_user_role
     }
 
-    def __init__(self):
+    @staticmethod
+    def get_all_internal_admins():
         internal_admins_group_id = next(
             group.id
             for group in group_api.get_groups_of_type(PERMISSION_TYPE)
             if group.name == PERMISSION_GROUPS.INTERNAL_ADMIN
         )
-        self._all_internal_admins = set(user.id for user in group_api.get_users_in_group(internal_admins_group_id))
+        return set(user.id for user in group_api.get_users_in_group(internal_admins_group_id))
 
-    def _get_internal_admins_in_organization(self, organization):
-        return self._all_internal_admins & set(student.id for student in organization.fetch_students())
+    @classmethod
+    def _get_internal_admins_in_organization(cls, organization):
+        return cls.get_all_internal_admins() & set(student.id for student in organization.fetch_students())
 
-    def handle_internal_admin_role_event(self, sender, *args, **kwargs):
+    @classmethod
+    def handle_internal_admin_role_event(cls, sender, *args, **kwargs):
         user_id, action = kwargs.get('user_id'), kwargs.get('action')
-        if action not in self._role_actions_map:
-            self._logger.info("Unknown role action %s - skipping", action)
+        if action not in cls._role_actions_map:
+            cls._logger.info("Unknown role action %s - skipping", action)
 
         organizations = user_api.get_user_organizations(user_id, organization_object=Client)
         course_ids = set()
@@ -139,32 +142,34 @@ class InternalAdminRoleManager(object):
                 program_courses = program.fetch_courses()
                 course_ids |= set(course.course_id for course in program_courses)
 
-        operation = self._role_actions_map.get(action)
+        operation = cls._role_actions_map[action]
 
-        self._do_role_management(operation, [user_id], course_ids, USER_ROLES.INSTRUCTOR)
+        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INSTRUCTOR)
 
-    def handle_course_program_event(self, sender, *args, **kwargs):
+    @classmethod
+    def handle_course_program_event(cls, sender, *args, **kwargs):
         course_id, program_id, action = kwargs.get('course_id'), kwargs.get('program_id'), kwargs.get('action')
         organizations = group_api.get_organizations_in_group(program_id, group_object=Client)
 
         user_ids = set()
         for org in organizations:
-            user_ids |= self._get_internal_admins_in_organization(org)
+            user_ids |= cls._get_internal_admins_in_organization(org)
 
-        operation = self._course_operations_map.get(action)
+        operation = cls._course_operations_map[action]
 
-        self._do_role_management(operation, user_ids, [course_id], USER_ROLES.INSTRUCTOR)
+        cls._do_role_management(operation, user_ids, [course_id], USER_ROLES.INSTRUCTOR)
 
-    def handle_program_client_event(self, sender, *args, **kwargs):
+    @classmethod
+    def handle_program_client_event(cls, sender, *args, **kwargs):
         client_id, program_id, action = kwargs.get('client_id'), kwargs.get('program_id'), kwargs.get('action')
         organization = organization_api.fetch_organization(client_id, organization_object=Client)
 
-        user_ids = self._get_internal_admins_in_organization(organization)
+        user_ids = cls._get_internal_admins_in_organization(organization)
         course_ids = set(course.course_id for course in group_api.get_courses_in_group(program_id))
 
-        operation = self._program_operations_map.get(action)
+        operation = cls._program_operations_map[action]
 
-        self._do_role_management(operation, user_ids, course_ids, USER_ROLES.INSTRUCTOR)
+        cls._do_role_management(operation, user_ids, course_ids, USER_ROLES.INSTRUCTOR)
 
     @classmethod
     def _do_role_management(cls, operation, users, courses, role):
@@ -172,8 +177,6 @@ class InternalAdminRoleManager(object):
             for user_id in users:
                 operation(user_id, course_id, role)
 
-_internal_admin_role_manager = InternalAdminRoleManager()
-
-internal_admin_role_event.connect(_internal_admin_role_manager.handle_internal_admin_role_event)
-course_program_event.connect(_internal_admin_role_manager.handle_course_program_event)
-program_client_event.connect(_internal_admin_role_manager.handle_program_client_event)
+internal_admin_role_event.connect(InternalAdminRoleManager.handle_internal_admin_role_event)
+course_program_event.connect(InternalAdminRoleManager.handle_course_program_event)
+program_client_event.connect(InternalAdminRoleManager.handle_program_client_event)
