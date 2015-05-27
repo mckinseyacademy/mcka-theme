@@ -16,7 +16,7 @@
 
 #course-lessons .discussion-module {
   width: 100%;
-  
+
   form.edit-post-form {
     // We don't want topics displayed in the edit form.
     .topic-wrapper {
@@ -371,6 +371,10 @@
   .helpgrid-row {
     td {
       border: 1px solid #B2B2B2;
+    }
+
+    &.helpgrid-row-notification {
+      display: none;
     }
 
     .row-title {
