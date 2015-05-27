@@ -20,90 +20,12 @@ This document will make the assumptions that:
 
 ## Step 1 - Set up the Solutions Devstack
 
-Follow the instructions about prerequisites at the [Configuration repo wiki](https://github.com/edx/configuration/wiki/edX-Developer-Stack). When you get to the section about the Vagrant file, stop, and do this instead:
+While it is possible to create a development environment on your machine, it is highly recommended to use a vagrant 
+instance. The instructions for the rest of this document assume you will do so.
 
-    mkdir solutions
-    cd solutions
-    curl -L https://raw.githubusercontent.com/edx/configuration/master/vagrant/release/devstack/Vagrantfile > Vagrantfile
-    vagrant plugin install vagrant-vbguest
+Follow the directions on the [Solutions wiki][solutions-wiki] to set up an *edx-solutions* devstack.
 
-Next, edit the `Vagrantfile` and change this line:
-
-    OPENEDX_RELEASE=$1
-
-...to:
-
-    OPENEDX_RELEASE="named-release/birch"
-
-and save. Finally, run:
-
-    vagrant up
-
-...to make sure you're building on top of the birch release, which the solution's devstack is based on, and to make sure vagrant knows what settings to load each time it runs.
-
-Next, checkout solutions in your edx-platform repo. If you want to support multiple remotes, we recommend making 'origin' point to edx-solutions and have 'upstream' point to edx/edx-platform. To do so, on your host, change the directories to where devstack checked out edx/edx-platform.
-
-```
-cd ~/solutions/edx-platform  # for example, in case your Devstack is built in ~/devstack, otherwise, change this path
-git remote add solutions https://github.com/edx-solutions/edx-platform.git
-git remote rename origin upstream
-git remote rename solutions origin
-git fetch origin
-git checkout -b master origin/master
-```
-
-
-Next, `vagrant ssh` into the Vagrant box, then we have to update the Python dependencies. As the vagrant user, run:
-```
-sudo su edxapp	#make sure prompt reads ~/edx-platform
-unset NO_PREREQ_INSTALL
-# Clean out all files which aren't tracked by git, like old precompiled python files and some generated CSS.
-git clean -fx
-paver install_prereqs
-```
-
-We also have to turn on some features in the lms.env.json file before re-generating the database. As the first entry in the lms.env.json object, add:
-
-```
-"ADDL_INSTALLED_APPS": ["progress", "organizations"],
-```
-
-Then, add to the FEATURES section of the lms.env.json file:
-
-```
-        "API": true,
-        "MARK_PROGRESS_ON_GRADING_EVENT": true,
-        "SIGNAL_ON_SCORE_CHANGED": true,
-        "STUDENT_GRADEBOOK": true,
-        "STUDENT_PROGRESS": true,
-        "ORGANIZATIONS_APP": true,
-        "PROJECTS_APP": true,
-```
-
-We will now need to update the DB to include these applications and the custom fields we've added to other apps:
-
-```
-paver update_db --settings=devstack
-```
-
-We also use a forked version of the cs_comment_client repo. To use that, in your host:
-
-```
-cd ~/devstack/cs_comments_service # For example, in case your Devstack is built in ~/devstack, otherwise, change this path
-git remote add solutions https://github.com/edx-solutions/cs_comments_service.git
-git remote rename origin upstream
-git remote rename solutions origin
-git fetch origin
-git checkout origin/master -b master
-```
-
-[solutions-comment]: https://github.com/edx-solutions/cs_comments_service
-
-After all of these steps, you may want to return to the `edxapp` user and run all unit tests to verify the integrity of the runtime environment:
-
-```
-paver test_python
-```
+[solutions-wiki]: http://github.com/edx-solutions/edx-platform/wiki/Setting-up-the-solutions-devstack
 
 ### Set up the Host System to Recognize the Hostnames
 
