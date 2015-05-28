@@ -355,13 +355,7 @@
   }
 
   .notification-checkbox {
-    border: none;
-    padding: 0px;
-    margin-top: 5px;
-
-    .email-setting {
-      margin: 0px;
-    }
+    display: none;
   }
 
   .home-helpgrid {
@@ -371,10 +365,6 @@
   .helpgrid-row {
     td {
       border: 1px solid #B2B2B2;
-    }
-
-    &.helpgrid-row-notification {
-      display: none;
     }
 
     .row-title {
@@ -457,5 +447,14 @@ body > .tooltip {
       background-image: url("/static/image/lesson-content/discussion/close_button.png");
       opacity: 0.7;
     }
+}
+
+#course-discussion .discussion-content .helpgrid-row-notification span.row-description {
+  visibility: hidden;
+}
+
+#course-discussion .discussion-content .helpgrid-row-notification span.row-description::before {
+  content: "You can enable daily or weekly notification digests which show discussion activity by accessing your profile dropdown.";
+  visibility: visible;
 }
 
