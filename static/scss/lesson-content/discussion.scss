@@ -393,6 +393,17 @@
       }
     }
   }
+
+  .helpgrid-row-notification {
+    .row-item-full {
+      &::before {
+        content: "You can enable daily or weekly notification digests which show discussion activity by accessing your profile dropdown.";
+      }
+      .row-description {
+        display: none;
+      }
+    }
+  }
 }
 
 /* Alert messages */
@@ -448,13 +459,3 @@ body > .tooltip {
       opacity: 0.7;
     }
 }
-
-#course-discussion .discussion-content .helpgrid-row-notification span.row-description {
-  visibility: hidden;
-}
-
-#course-discussion .discussion-content .helpgrid-row-notification span.row-description::before {
-  content: "You can enable daily or weekly notification digests which show discussion activity by accessing your profile dropdown.";
-  visibility: visible;
-}
-
