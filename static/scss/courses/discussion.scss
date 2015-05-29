@@ -156,6 +156,12 @@
         .person-info {
           margin-left: 50px;
         }
+
+        .person-title {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
       }
 
     }
