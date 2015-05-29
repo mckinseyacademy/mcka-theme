@@ -23,6 +23,15 @@
       display: none;
     }
   }
+
+  .forum-new-post-form {
+    .field-label {
+      width: 55%;
+    }
+    .field-help {
+      width: 45%;
+    }
+  }
 }
 
 #course-group-work .discussion-module {
