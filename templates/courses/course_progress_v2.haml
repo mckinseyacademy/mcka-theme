@@ -151,7 +151,7 @@
             %td.number{class: "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
           %tr
             %td Number of <span>Replies</span> you made to other posts
-            %td.number{class: "{% if social.metrics.num_replies == 0 %}zero{% endif %}"}= social.metrics.num_replies
+            %td.number{class: "{% if total_replies == 0 %}zero{% endif %}"}= total_replies
           %tr
             %td Number of <span>Comments Generated </span> by your posts
             %td.number{class: "{% if social.metrics.num_comments_generated == 0 %}zero{% endif %}"}= social.metrics.num_comments_generated
