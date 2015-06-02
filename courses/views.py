@@ -439,6 +439,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items_rows": graded_items_count + 1,
         "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
+        "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
     }
 
     if progress_user.id != request.user.id:
