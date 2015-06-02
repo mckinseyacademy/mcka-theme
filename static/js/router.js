@@ -3,6 +3,7 @@ var Router = Backbone.Router.extend({
     '':                                       'home',
     'contact/':                               'contact',
     'edxoffer/':                              'edxoffer',
+    'productwalkthrough/':                    'productwalkthrough',
     'courses/*course_id/progress':            'course_progress',
     'courses/*course_id/progress/*user_id':   'course_progress',
     'courses/*course_id/overview':            'course_overview',
@@ -30,6 +31,13 @@ var Router = Backbone.Router.extend({
   edxoffer: function() {
     var el = $('#edxoffer-page');
     new Apros.views.Edxoffer({el: el}).render();
+  },
+
+  productwalkthrough: function() {
+    var container = $('#mk-productwalkthrough-video');
+    if (container.length && typeof OO !== 'undefined') {
+      OO.Player.create('mk-productwalkthrough-video', container.data('video-id'), {width: '100%', height: '400px'});
+    }
   },
 
   course_index: function() {
