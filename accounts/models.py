@@ -57,6 +57,11 @@ class RemoteUser(AbstractUser):
         roles = self.get_roles()
         return [role for role in roles if role.course_id == course_id]
 
+    def is_course_admin(self, course_id):
+        """
+        Return True if the user is an internal admin for this particular course.
+        """
+
     @staticmethod
     def cached_fetch(user_id):
         ''' get user from cache if there '''

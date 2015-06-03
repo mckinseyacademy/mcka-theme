@@ -757,10 +757,11 @@ def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-# TODO: add course check
-def course_meta_content_course_item_edit(request, item_id):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_ids=None):
     error = None
     item = CuratedContentItem.objects.filter(id=item_id)[0]
+    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST, instance=item)
         if form.is_valid():
@@ -787,9 +788,10 @@ def course_meta_content_course_item_edit(request, item_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-# TODO: add course check
-def course_meta_content_course_item_delete(request, item_id):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_delete(request, item_id, restrict_to_courses_ids=None):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
+    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
     course_id = urlquote(item.course_id)
     item.delete()
 
@@ -1665,9 +1667,10 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
     return response
 
 
-# TODO: add internal admin access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def download_group_projects_report(request, course_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def download_group_projects_report(request, course_id, restrict_to_courses_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
     filename = slugify(
         unicode(
             "Group Report for {} on {}".format(
@@ -1694,9 +1697,10 @@ def download_group_projects_report(request, course_id):
     return response
 
 
-# TODO: add internal admin access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def group_work_status(request, course_id, group_id=None):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
     wcd = WorkgroupCompletionData(course_id, group_id)
     data = wcd.build_report_data()
     data.update({'selected_client_tab':'group_work_status'})
