@@ -88,6 +88,23 @@ def login(request):
         if re.search('msie [1-8]\.', ua):
             return HttpResponseRedirect('/')
 
+    if request.method == 'GET' and 'sessionid' in request.COOKIES:
+        # The user may already be logged in to the LMS.
+        # (e.g. they used the LMS's third_party_auth to authenticate, then got redirected back here)
+        try:
+            user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
+        except ApiError as err:
+            error = err.message
+        if user:
+            request.session["remote_session_key"] = user.session_key
+            auth.login(request, user)
+
+            redirect_to = _get_qs_value_from_url(
+                'next', request.META['HTTP_REFERER']
+            ) if 'HTTP_REFERER' in request.META else None
+            redirect_to = redirect_to or '/'
+            return HttpResponseRedirect(redirect_to)
+
     if request.method == 'POST':  # If the form has been submitted...
         form = LoginForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass

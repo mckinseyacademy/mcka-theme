@@ -22,12 +22,21 @@ class JsonBackend(object):
         user.save()
         return user
 
-    def authenticate(self, username=None, password=None):
+    def authenticate(self, username=None, password=None, remote_session_key=None):
         '''
         Implements django authenticate that delegates to API
         '''
-        auth_info = user_api.authenticate(username, password)
-        auth_info.user = user_api.get_user(auth_info.user.id)
+        if username and password:
+            auth_info = user_api.authenticate(username, password)
+            auth_info.user = user_api.get_user(auth_info.user.id)
+        elif remote_session_key:
+            try:
+                auth_info = user_api.get_session(remote_session_key)
+                auth_info.user = user_api.get_user(auth_info.user_id)
+            except ApiError as err:
+                if err.code == 404:
+                    return None  # This session ID is not valid
+                raise  # This session ID could be valid but an error occurred.
         user = self._load_user(auth_info.user, auth_info.token)
         if hasattr(auth_info, 'csrftoken'):
             user.csrftoken = auth_info.csrftoken

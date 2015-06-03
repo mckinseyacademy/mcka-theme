@@ -148,6 +148,18 @@ def delete_session(session_key):
     )
 
 @api_error_protect
+def get_session(session_key):
+    ''' get associated openedx session '''
+    response = GET(
+        '{}/{}/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            AUTH_API,
+            session_key
+        )
+    )
+    return JP.from_json(response.read())
+
+@api_error_protect
 def register_user(user_hash):
     ''' register the given user within the openedx server '''
     response = POST(
