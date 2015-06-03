@@ -19,7 +19,7 @@ import Queue
 import atexit
 
 
-GROUP_PROJECT_CATEGORY = 'group-project'
+GROUP_PROJECT_CATEGORIES = {'group-project', 'group-project-v2'}
 
 
 def _worker():
@@ -417,13 +417,13 @@ def parse_studentslist_from_post(postValues):
     return students, project_id
 
 def is_group_activity(sequential):
-    return len(sequential.pages) > 0 and GROUP_PROJECT_CATEGORY in sequential.pages[0].child_category_list()
+    return len(sequential.pages) > 0 and GROUP_PROJECT_CATEGORIES & set(sequential.pages[0].child_category_list())
 
 def get_group_project_activities(group_project_chapter):
     return [s for s in group_project_chapter.sequentials if is_group_activity(s)]
 
 def get_group_activity_xblock(activity):
-    return [gp for gp in activity.pages[0].children if gp.category == GROUP_PROJECT_CATEGORY][0]
+    return [gp for gp in activity.pages[0].children if gp.category in GROUP_PROJECT_CATEGORIES][0]
 
 
 def generate_course_report(client_id, course_id, url_prefix, students):
