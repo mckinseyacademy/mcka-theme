@@ -195,7 +195,7 @@ class Course(CategorisedJsonObject):
 
     @property
     def has_group_work(self):
-        return len(self.group_project_chapters) > 0
+        return len(self.group_projects) > 0
 
     def module_count(self):
         module_count = 0
@@ -298,8 +298,8 @@ class Course(CategorisedJsonObject):
                         "group_activities": [],
                     }
 
-        for chapter in self.group_project_chapters:
-            for activity in chapter.sequentials:
+        for project in self.group_projects:
+            for activity in project.activities:
                 if activity.due:
                     activity.due_on = activity.due.strftime("%B %e")
                 if activity.due == None or len(weeks.values()) == 0:
@@ -352,8 +352,8 @@ class Course(CategorisedJsonObject):
                             module.assesment_score = lesson.assesment_score
                             graded_items["modules"].append(module)
 
-        for chapter in self.group_project_chapters:
-            for activity in chapter.sequentials:
+        for project in self.group_projects:
+            for activity in project.activities:
                 if activity.is_graded:
                     graded_items["group_activities"].append(activity)
 

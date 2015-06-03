@@ -101,12 +101,12 @@
         $('.activity_dots .lesson-module-status').removeClass('complete current');
         for(var i=0; i<ordered_list.length; ++i){
           if(ordered_list[i] == activate_id){
-            $('.activity_dots .lesson-module-status[data-activate='+activate_id+']')
+            $('.activity_dots .lesson-module-status[data-activate="'+activate_id+'"]')
               .addClass('current');
             add_class = null;
           }
           else if(add_class){
-            $('.activity_dots .lesson-module-status[data-activate='+ordered_list[i]+']')
+            $('.activity_dots .lesson-module-status[data-activate="'+ordered_list[i]+'"]')
               .addClass(add_class);
           }
         }

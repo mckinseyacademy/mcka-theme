@@ -53,8 +53,7 @@ from .models import (
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
-    getStudentsWithCompanies, filter_groups_and_students,
-    get_group_project_activities, get_group_activity_xblock,
+    getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report
 )
@@ -1496,7 +1495,7 @@ class GroupProjectInfo(object):
         self.organization_id = organization_id
 
 def load_group_projects_info_for_course(course, companies):
-    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
+    group_project_lookup = {gp.id: gp.name for gp in course.group_projects}
     group_projects = []
     for project in Project.fetch_projects_for_course(course.id):
         try:
@@ -1754,11 +1753,11 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
     project = Project.fetch(workgroup.project)
 
     course = load_course(course_id, request=request)
-    projects = [gp for gp in course.group_project_chapters if gp.id == project.content_id and len(gp.sequentials) > 0]
+    projects = [gp for gp in course.group_projects if gp.id == project.content_id and len(gp.activities) > 0]
     activities = []
     if len(projects) > 0:
         project.name = projects[0].name
-        activities = get_group_project_activities(projects[0])
+        activities = projects[0].activities
 
     submission_map = workgroup_api.get_latest_workgroup_submissions_by_id(workgroup.id, Submission)
     submissions = [v for k,v in submission_map.iteritems()]
@@ -1791,16 +1790,16 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = Project.fetch_projects_for_course(course.id)
-    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
+    group_project_lookup = {gp.id: gp for gp in course.group_projects}
 
     for project in group_projects:
-        if group_project_lookup.has_key(project.content_id):
+        if project.content_id in group_project_lookup:
             project.status = True
             project.selected = (selected_project_id == str(project.id))
-            group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
-            project.name = group_project_chapter.name
+            project_definition = group_project_lookup[project.content_id]
+            project.name = project_definition.name
             # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
-            project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
+            project.activities = copy.deepcopy(project_definition.activities)
         else:
             project.status = False
             project.activities = []
@@ -1843,7 +1842,7 @@ def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, re
 
     students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
 
-    if len(course.group_project_chapters) < 1:
+    if len(course.group_projects) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = load_group_projects_info_for_course(course, companies)
