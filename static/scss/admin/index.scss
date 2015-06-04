@@ -146,18 +146,32 @@
       }
     }
 
-    tbody{
-      td, td p{
+    tbody {
+      td, td p {
         @include font-spec(10);
       }
-      ta, a{
+      tr {
+        .even {
+          background: #F9;
+        }
+        .odd {
+          background: $pure-white;
+        }
+      }
+      .fa {
+        @include font-spec(16);
+      }
+      ta, a {
         @include font-spec(10, 600);
       }
-      tr.even {
-        background: #F9;
+      td.actions {
+        white-space: nowrap;
       }
-      tr.odd {
-        background: $pure-white;
+      .divider {
+        display: inline-block;
+        width: 1px;
+        height: 10px;
+        background-color: $mckinsey-grey;
       }
     }
   }

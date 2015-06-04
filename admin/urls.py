@@ -5,6 +5,7 @@ urlpatterns = patterns(
     'admin',
     url(r'^$', views.home, name='admin_home'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/(?P<user_id>[0-9]+)/unenroll$', views.client_admin_unenroll_participant, name='client_admin_unenroll'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/(?P<user_id>[0-9]+)/edit-email$', views.client_admin_edit_email, name='client_admin_edit_email'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/email_not_started$', views.client_admin_email_not_started, name='client_admin_email_not_started'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/download_course_report$', views.client_admin_download_course_report, name='download_course_report'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants$', views.client_admin_course_participants, name='client_admin_course_participants'),

@@ -58,8 +58,8 @@ from .controller import (
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
-    PermissionForm, UploadCompanyImageForm
-)
+    PermissionForm, UploadCompanyImageForm,
+    EditEmailForm)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -551,6 +551,39 @@ def _remove_student_from_course(student_id, course_id):
     permissions = Permissions(student_id)
     permissions.add_course_role(course_id, USER_ROLES.OBSERVER)
     user_api.unenroll_user_from_course(student_id, course_id)
+
+
+@ajaxify_http_redirects
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+def client_admin_edit_email(request, client_id, course_id, user_id):
+    """
+    Supplies a modal for editing a user's email address.
+    """
+    error = None
+    participant = user_api.get_user(user_id)
+    form = EditEmailForm()
+    if request.method == 'POST':
+        form = EditEmailForm(data=request.POST)
+        if form.is_valid():
+            try:
+                user_api.update_user_information(user_id, {'email': form.cleaned_data['email']})
+                redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
+                return HttpResponseRedirect(redirect_url)
+            except ApiError as err:
+                error = err.message
+
+    data = {
+        'participant': participant,
+        'edit_email': _("Edit Email"),
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'error': error,
+    }
+
+    return render(request, 'admin/client-admin/edit_email_modal.haml', data)
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -2041,14 +2074,13 @@ def workgroup_remove_project(request, project_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_program_access # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def workgroup_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
         if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
             return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
-
 
     programs = Program.list()
 
