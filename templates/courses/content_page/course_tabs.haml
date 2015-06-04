@@ -4,15 +4,18 @@
       %i.mk-icon-lessonsnav
     #lessons-content.course-tab-dropdown{"data-dropdown-content": True}
       - include "courses/content_page/lesson_menu.haml"
-  %li
-    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", href: "/courses/#{course.id}/discussion", "data-tooltip": "Discussion"}
-      %i.fa.fa-comments-o
-  %li
-    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_group_work' %}selected{% endifequal %}", href: "/courses/#{course.id}/group_work", "data-tooltip": "Group Work"}
-      %i.mk-icon-groupworknav
-  %li
-    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_cohort' %}selected{% endifequal %}", href: "/courses/#{course.id}/cohort", "data-tooltip": "Cohort"}
-      %i.fa.fa-globe
+  - if feature_flags.discussions
+    %li
+      %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", href: "/courses/#{course.id}/discussion", "data-tooltip": "Discussion"}
+        %i.fa.fa-comments-o
+  - if feature_flags.group_work
+    %li
+      %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_group_work' %}selected{% endifequal %}", href: "/courses/#{course.id}/group_work", "data-tooltip": "Group Work"}
+        %i.mk-icon-groupworknav
+  - if feature_flags.cohort_map
+    %li
+      %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_cohort' %}selected{% endifequal %}", href: "/courses/#{course.id}/cohort", "data-tooltip": "Cohort"}
+        %i.fa.fa-globe
   %li
     %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/progress", "data-tooltip": "Progress"}
       %i.fa.fa-bar-chart-o

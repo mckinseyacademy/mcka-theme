@@ -31,3 +31,26 @@
               Delete
     %p
       %a{href: '/admin/course-meta-content/item/new?course_id=#{course_id}'} Create New Item
+  #feature-flags.row
+    %p This is the course feature list.
+    %form#feature-flags-form{action: "/courses/#{course_id}/feature_flag", method: 'POST'}
+      - csrf_token
+      %ul
+        %li
+          - if feature_flags.discussions
+            %input#discussions{type: 'checkbox', name: 'discussions', checked: None}
+          - else
+            %input#discussions{type: 'checkbox', name: 'discussions'}
+          %label{for: 'discussions'} Discussions
+        %li
+          - if feature_flags.group_work
+            %input#group_work{type: 'checkbox', name: 'group_work', checked: None}
+          - else
+            %input#group_work{type: 'checkbox', name: 'group_work'}
+          %label{for: 'group_work'} Group Work
+        %li
+          - if feature_flags.cohort_map
+            %input#cohort_map{type: 'checkbox', name: 'cohort_map', checked: None}
+          - else
+            %input#cohort_map{type: 'checkbox', name: 'cohort_map'}
+          %label{for: 'cohort_map'} Cohort Map
