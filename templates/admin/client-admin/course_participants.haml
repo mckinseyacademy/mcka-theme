@@ -68,13 +68,20 @@
                 - else
                   = _("No")
               %td
-                %a{href: "mailto:#{student.email}"}= "Email"
+                %a{href: "mailto:#{student.email}"}
+                  = student.email
+                - if user.is_internal_admin
+                  %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit-email', data-reveal-ajax: "true"}
+                    %i.fa.fa-pencil
               %td
-                %a{href: "/courses/#{course_id}/progress/#{student.id}", target: "_blank"}= "View progress page"
+                %a{href: "/courses/#{course_id}/progress/#{student.id}", target: "_blank"}
+                  %i.fa.fa-bar-chart-o
               %td
-                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
+                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}
+                  %i.fa.fa-times-circle-o
 
   #unenroll-confirm-dialog.reveal-modal.small{'data-reveal': None}
+  #edit-email.reveal-modal.small{'data-reveal': None}
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
@@ -118,6 +125,7 @@
     });
 
     ajaxify_overlay_form('#unenroll-confirm-dialog', 'form');
+    ajaxify_overlay_form('#edit-email', 'form');
 
     $('#edit_field_modal').on('click', '.close-dialog', function() {
       $('#edit_field_modal').foundation('reveal', 'close');

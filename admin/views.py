@@ -58,8 +58,8 @@ from .controller import (
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
-    PermissionForm, UploadCompanyImageForm
-)
+    PermissionForm, UploadCompanyImageForm,
+    EditEmailForm)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -552,6 +552,39 @@ def _remove_student_from_course(student_id, course_id):
     permissions.add_course_role(course_id, USER_ROLES.OBSERVER)
     user_api.unenroll_user_from_course(student_id, course_id)
 
+
+@ajaxify_http_redirects
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+def client_admin_edit_email(request, client_id, course_id, user_id):
+    """
+    Supplies a modal for editing a user's email address.
+    """
+    error = None
+    participant = user_api.get_user(user_id)
+    form = EditEmailForm({'email': participant.email})
+    if request.method == 'POST':
+        form = EditEmailForm(data=request.POST)
+        if form.is_valid():
+            try:
+                user_api.update_user_information(user_id, {'email': form.cleaned_data['email']})
+                redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
+                return HttpResponseRedirect(redirect_url)
+            except ApiError as err:
+                error = err.message
+
+    data = {
+        'participant': participant,
+        'edit_email': _("Edit Email"),
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'error': error,
+    }
+
+    return render(request, 'admin/client-admin/edit_email_modal.haml', data)
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_unenroll_participant(request, client_id, course_id, user_id):
@@ -757,10 +790,11 @@ def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-# TODO: add course check
-def course_meta_content_course_item_edit(request, item_id):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_ids=None):
     error = None
     item = CuratedContentItem.objects.filter(id=item_id)[0]
+    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST, instance=item)
         if form.is_valid():
@@ -787,9 +821,10 @@ def course_meta_content_course_item_edit(request, item_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-# TODO: add course check
-def course_meta_content_course_item_delete(request, item_id):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_delete(request, item_id, restrict_to_courses_ids=None):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
+    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
     course_id = urlquote(item.course_id)
     item.delete()
 
@@ -1665,9 +1700,11 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
     return response
 
 
-# TODO: add internal admin access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def download_group_projects_report(request, course_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def download_group_projects_report(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
     filename = slugify(
         unicode(
             "Group Report for {} on {}".format(
@@ -1683,7 +1720,7 @@ def download_group_projects_report(request, course_id):
     )
 
     response = HttpResponse(
-        generate_workgroup_csv_report(course_id, url_prefix),
+        generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids),
         content_type='text/csv'
     )
 
@@ -1694,10 +1731,12 @@ def download_group_projects_report(request, course_id):
     return response
 
 
-# TODO: add internal admin access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def group_work_status(request, course_id, group_id=None):
-    wcd = WorkgroupCompletionData(course_id, group_id)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    wcd = WorkgroupCompletionData(course_id, group_id, restrict_to_users_ids)
     data = wcd.build_report_data()
     data.update({'selected_client_tab':'group_work_status'})
 
@@ -2037,14 +2076,13 @@ def workgroup_remove_project(request, project_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_program_access # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def workgroup_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
         if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
             return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
-
 
     programs = Program.list()
 

@@ -27,6 +27,10 @@ class ClientForm(forms.Form):
     contact_email = forms.EmailField()
 
 
+class EditEmailForm(forms.Form):
+    ''' Used to edit a user's email address. '''
+    email = forms.EmailField()
+
 class ProgramForm(forms.Form):
 
     ''' add a new program to the system '''
