@@ -53,9 +53,10 @@ class WorkgroupCompletionData(object):
             self.activity_xblocks[activity_id] = WorkGroupActivityXBlock.fetch_from_activity(self.course.id, activity_id)
         return self.activity_xblocks[activity_id]
 
-    def __init__(self, course_id, group_id=None):
+    def __init__(self, course_id, group_id=None, restrict_to_users_ids=None):
         self.activity_xblocks = {}
         self.course = load_course(course_id)
+        self.restrict_to_users_ids = restrict_to_users_ids
         group_project_lookup = {gp.id: gp.name for gp in self.course.group_project_chapters}
 
         if group_id is None:
@@ -176,7 +177,15 @@ class WorkgroupCompletionData(object):
                 if self.workgroup_id and group_xblock.ta_graded:
                     a.review_link = self._review_link(p.workgroups[0], a)
 
+            remove_groups = set()
             for g in p.workgroups:
+                if self.restrict_to_users_ids is not None:
+                    g.users = [user for user in g.users if user.id in self.restrict_to_users_ids]
+
+                if not g.users:
+                    remove_groups.add(g.id)
+                    continue
+
                 g.review_link = self._review_link(g)
                 user_ids = [u.id for u in g.users]
                 g.activity_statuses = []
@@ -229,6 +238,8 @@ class WorkgroupCompletionData(object):
                     u.review_row_count = u.max_review_count if u.max_review_count > 0 else 1
                     u.review_row_indexer = range(0, u.review_row_count)
 
+            p.workgroups = [workgroup for workgroup in p.workgroups if workgroup.id not in remove_groups]
+
             while len(p.activities) < 3:
                 # Need copy here, because we assign different indexes below
                 p.activities.append(copy.copy(BLANK_ACTIVITY))
@@ -244,14 +255,14 @@ class WorkgroupCompletionData(object):
             "total_group_count": total_group_count,
         }
 
-def generate_workgroup_csv_report(course_id, url_prefix):
+def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None):
 
     output_lines = []
 
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    wcd = WorkgroupCompletionData(course_id)
+    wcd = WorkgroupCompletionData(course_id, restrict_to_users_ids=restrict_to_users_ids)
 
     for project in wcd.build_report_data()["projects"]:
         if project.organization:

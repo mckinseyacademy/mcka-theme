@@ -1702,7 +1702,8 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-def download_group_projects_report(request, course_id, restrict_to_courses_ids=None):
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def download_group_projects_report(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
     filename = slugify(
         unicode(
@@ -1719,7 +1720,7 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
     )
 
     response = HttpResponse(
-        generate_workgroup_csv_report(course_id, url_prefix),
+        generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids),
         content_type='text/csv'
     )
 
@@ -1732,9 +1733,10 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None):
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
-    wcd = WorkgroupCompletionData(course_id, group_id)
+    wcd = WorkgroupCompletionData(course_id, group_id, restrict_to_users_ids)
     data = wcd.build_report_data()
     data.update({'selected_client_tab':'group_work_status'})
 
