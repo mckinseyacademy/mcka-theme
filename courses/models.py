@@ -36,3 +36,18 @@ class LessonNotesItem(db_models.Model):
             created_at = self.created_at.isoformat(),
             updated_at = self.updated_at.isoformat(),
         )
+
+class FeatureFlags(db_models.Model):
+    course_id = db_models.CharField(max_length=200, unique=False, db_index=True)
+    group_work = db_models.BooleanField(default=True)
+    discussions = db_models.BooleanField(default=True)
+    cohort_map = db_models.BooleanField(default=True)
+
+    def as_json(self):
+        return dict(
+            id = self.id,
+            course_id = self.course_id,
+            group_work = self.group_work,
+            discussions = self.discussions,
+            cohort_map = self.cohort_map,
+        )

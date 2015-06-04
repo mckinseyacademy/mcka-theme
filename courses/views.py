@@ -21,7 +21,7 @@ from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
 
-from .models import LessonNotesItem
+from .models import LessonNotesItem, FeatureFlags
 from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_by_page
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
@@ -737,3 +737,18 @@ def course_article(request, course_id):
         "article": static_tabs.get("article", None)
     }
     return render(request, 'courses/course_article.haml', data)
+
+@require_POST
+@login_required
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_feature_flag(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    feature_flags.group_work = request.POST.get('group_work', None) == 'on'
+    feature_flags.discussions = request.POST.get('discussions', None) == 'on'
+    feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
+    feature_flags.save()
+
+    return HttpResponse(
+        json.dumps(feature_flags.as_json()),
+        content_type="application/json"
+    )
