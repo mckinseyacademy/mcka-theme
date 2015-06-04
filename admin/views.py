@@ -563,7 +563,7 @@ def client_admin_edit_email(request, client_id, course_id, user_id):
     """
     error = None
     participant = user_api.get_user(user_id)
-    form = EditEmailForm()
+    form = EditEmailForm({'email': participant.email})
     if request.method == 'POST':
         form = EditEmailForm(data=request.POST)
         if form.is_valid():
