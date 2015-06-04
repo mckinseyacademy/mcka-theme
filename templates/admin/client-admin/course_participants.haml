@@ -70,8 +70,9 @@
               %td
                 %a{href: "mailto:#{student.email}"}
                   = student.email
-                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit-email', data-reveal-ajax: "true"}
-                  %i.fa.fa-pencil
+                - if user.is_internal_admin
+                  %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit-email', data-reveal-ajax: "true"}
+                    %i.fa.fa-pencil
               %td
                 %a{href: "/courses/#{course_id}/progress/#{student.id}", target: "_blank"}
                   %i.fa.fa-bar-chart-o

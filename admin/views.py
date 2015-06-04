@@ -555,7 +555,7 @@ def _remove_student_from_course(student_id, course_id):
 
 @ajaxify_http_redirects
 @permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
 )
 def client_admin_edit_email(request, client_id, course_id, user_id):
     """
