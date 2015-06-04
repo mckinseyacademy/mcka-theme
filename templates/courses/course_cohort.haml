@@ -36,12 +36,6 @@
     %hr
     .leaderboard-header
       %h1 Leaderboards
-      -#%ul.select-board
-        -# commented part will be used in next version
-        -# %li
-        -#   %a.selected{href: '#'} global cohort
-        -# %li
-        -#   %a{href: '#'} my company
     .leaderboards
       %table
         %colgroup
@@ -72,17 +66,17 @@
                 - else
                   .rank your progress position <br> will be displayed here
 
-            %td
-              .header
-                .label-5 Engagement:
-                  -# %a{href: '#'} view all           //  will be used in next version
-                .label-4 cohort average = ={social.course_avg} points
-                - if is_observer
-                 .rank As an Observer you will not appear on the engagement leaderboard
-                - elif social.position
-                  .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
-                - else
-                  .rank your engagement position <br> will be displayed here
+            - if feature_flags.discussions
+              %td
+                .header
+                  .label-5 Engagement:
+                  .label-4 cohort average = ={social.course_avg} points
+                  - if is_observer
+                   .rank As an Observer you will not appear on the engagement leaderboard
+                  - elif social.position
+                    .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
+                  - else
+                    .rank your engagement position <br> will be displayed here
 
           %tr
             %td
@@ -119,23 +113,24 @@
                     .person-title title
                     .person-rank #={leaderboard_ranks.0}
                       %span 100%
-            %td
-              - if social.leaders and social.leaders.0
-                .user
-                  %img.avatar{src: '={social.leaders.0.avatar_url}', title: '={social.leaders.0.username}'}
-                  .info
-                    .person-name ={social.leaders.0.username}
-                    - if social.leaders.0.title
-                      .person-title ={social.leaders.0.title}
-                    .person-rank #={social.leaders.0.rank} <span>={social.leaders.0.points} pts.</span>
-              - else
-                .user.dummy
-                  %img.avatar{src: '/static/image/empty_avatar.png'}
-                  .info
-                    .person-name username
-                    .person-title title
-                    .person-rank #={leaderboard_ranks.0}
-                      %span 100 pts.
+            - if feature_flags.discussions
+              %td
+                - if social.leaders and social.leaders.0
+                  .user
+                    %img.avatar{src: '={social.leaders.0.avatar_url}', title: '={social.leaders.0.username}'}
+                    .info
+                      .person-name ={social.leaders.0.username}
+                      - if social.leaders.0.title
+                        .person-title ={social.leaders.0.title}
+                      .person-rank #={social.leaders.0.rank} <span>={social.leaders.0.points} pts.</span>
+                - else
+                  .user.dummy
+                    %img.avatar{src: '/static/image/empty_avatar.png'}
+                    .info
+                      .person-name username
+                      .person-title title
+                      .person-rank #={leaderboard_ranks.0}
+                        %span 100 pts.
           %tr
             %td
               - if proficiency.has_leaders and  proficiency.leaders.1
@@ -171,23 +166,24 @@
                     .person-title title
                     .person-rank #={leaderboard_ranks.1}
                       %span 100%
-            %td
-              - if social.leaders and social.leaders.1
-                .user
-                  %img.avatar{src: '={social.leaders.1.avatar_url}', title: '={social.leaders.1.username}'}
-                  .info
-                    .person-name ={social.leaders.1.username}
-                    - if social.leaders.1.title
-                      .person-title ={social.leaders.1.title}
-                    .person-rank #={social.leaders.1.rank} <span>={social.leaders.1.points} pts.</span>
-              - else
-                .user.dummy
-                  %img.avatar{src: '/static/image/empty_avatar.png'}
-                  .info
-                    .person-name username
-                    .person-title title
-                    .person-rank #={leaderboard_ranks.1}
-                      %span 100 pts.
+            - if feature_flags.discussions
+              %td
+                - if social.leaders and social.leaders.1
+                  .user
+                    %img.avatar{src: '={social.leaders.1.avatar_url}', title: '={social.leaders.1.username}'}
+                    .info
+                      .person-name ={social.leaders.1.username}
+                      - if social.leaders.1.title
+                        .person-title ={social.leaders.1.title}
+                      .person-rank #={social.leaders.1.rank} <span>={social.leaders.1.points} pts.</span>
+                - else
+                  .user.dummy
+                    %img.avatar{src: '/static/image/empty_avatar.png'}
+                    .info
+                      .person-name username
+                      .person-title title
+                      .person-rank #={leaderboard_ranks.1}
+                        %span 100 pts.
           %tr
             %td
               - if proficiency.has_leaders and  proficiency.leaders.2
@@ -223,23 +219,24 @@
                     .person-title title
                     .person-rank #={leaderboard_ranks.2}
                       %span 100%
-            %td
-              - if social.leaders and social.leaders.2
-                .user
-                  %img.avatar{src: '={social.leaders.2.avatar_url}', title: '={social.leaders.2.username}'}
-                  .info
-                    .person-name ={social.leaders.2.username}
-                    - if social.leaders.2.title
-                      .person-title ={social.leaders.2.title}
-                    .person-rank #={social.leaders.2.rank} <span>={social.leaders.2.points} pts.</span>
-              - else
-                .user.dummy
-                  %img.avatar{src: '/static/image/empty_avatar.png'}
-                  .info
-                    .person-name username
-                    .person-title title
-                    .person-rank #={leaderboard_ranks.2}
-                      %span 100 pts.
+            - if feature_flags.discussions
+              %td
+                - if social.leaders and social.leaders.2
+                  .user
+                    %img.avatar{src: '={social.leaders.2.avatar_url}', title: '={social.leaders.2.username}'}
+                    .info
+                      .person-name ={social.leaders.2.username}
+                      - if social.leaders.2.title
+                        .person-title ={social.leaders.2.title}
+                      .person-rank #={social.leaders.2.rank} <span>={social.leaders.2.points} pts.</span>
+                - else
+                  .user.dummy
+                    %img.avatar{src: '/static/image/empty_avatar.png'}
+                    .info
+                      .person-name username
+                      .person-title title
+                      .person-rank #={leaderboard_ranks.2}
+                        %span 100 pts.
 
     %hr.hidden
     .user-content.hidden
