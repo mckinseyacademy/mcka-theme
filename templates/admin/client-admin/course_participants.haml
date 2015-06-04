@@ -70,7 +70,7 @@
               %td
                 %a{href: "mailto:#{student.email}"}
                   = student.email
-                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit_field_modal', data-reveal-ajax: "true"}
+                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit-email', data-reveal-ajax: "true"}
                   %i.fa.fa-pencil
               %td
                 %a{href: "/courses/#{course_id}/progress/#{student.id}", target: "_blank"}
