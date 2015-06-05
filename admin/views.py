@@ -562,8 +562,8 @@ def client_admin_edit_email(request, client_id, course_id, user_id):
     Supplies a modal for editing a user's email address.
     """
     error = None
-    participant = user_api.get_user(user_id)
-    form = EditEmailForm({'email': participant.email})
+    student = user_api.get_user(user_id)
+    form = EditEmailForm({'email': student.email})
     if request.method == 'POST':
         form = EditEmailForm(data=request.POST)
         if form.is_valid():
@@ -575,7 +575,7 @@ def client_admin_edit_email(request, client_id, course_id, user_id):
                 error = err.message
 
     data = {
-        'participant': participant,
+        'student': student,
         'edit_email': _("Edit Email"),
         'form': form,
         'client_id': client_id,

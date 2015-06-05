@@ -126,6 +126,7 @@
     .student a {
       width: auto;
       overflow: visible;
+      display: inline-block;
     }
 
     caption{
@@ -164,14 +165,16 @@
       ta, a {
         @include font-spec(10, 600);
       }
-      td.actions {
-        white-space: nowrap;
+      .actions {
+        text-align: right;
       }
       .divider {
         display: inline-block;
         width: 1px;
-        height: 10px;
+        height: 1.25em;
         background-color: $mckinsey-grey;
+        margin-left: 1em;
+        margin-right: 1em;
       }
     }
   }
@@ -528,6 +531,12 @@
           color: $mckinsey-orange;
         }
       }
+    }
+  }
+
+  #edit_field_modal{
+    .submit-area {
+      text-align: right;
     }
   }
 

@@ -44,8 +44,6 @@
               %span{class: 'desc'}
                 ▼
             %th
-            %th
-            %th
         %tbody
           - for student in students
             %tr.student{id: "#{student.id}"}
@@ -67,16 +65,16 @@
                   = _("Yes")
                 - else
                   = _("No")
-              %td
+              %td.actions
                 %a{href: "mailto:#{student.email}"}
                   = student.email
-                - if user.is_internal_admin
-                  %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit-email', data-reveal-ajax: "true"}
+                - if user.is_internal_admin or user.is_mcka_admin
+                  %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit_field_modal', data-reveal-ajax: "true"}
                     %i.fa.fa-pencil
-              %td
+                %span.divider
                 %a{href: "/courses/#{course_id}/progress/#{student.id}", target: "_blank"}
                   %i.fa.fa-bar-chart-o
-              %td
+                %span.divider
                 %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}
                   %i.fa.fa-times-circle-o
 
@@ -125,7 +123,7 @@
     });
 
     ajaxify_overlay_form('#unenroll-confirm-dialog', 'form');
-    ajaxify_overlay_form('#edit-email', 'form');
+    ajaxify_overlay_form('#edit_field_modal', 'form');
 
     $('#edit_field_modal').on('click', '.close-dialog', function() {
       $('#edit_field_modal').foundation('reveal', 'close');
