@@ -27,6 +27,10 @@ class ClientForm(forms.Form):
     contact_email = forms.EmailField()
 
 
+class EditEmailForm(forms.Form):
+    ''' Used to edit a user's email address. '''
+    email = forms.EmailField()
+
 class ProgramForm(forms.Form):
 
     ''' add a new program to the system '''
@@ -80,6 +84,7 @@ class PermissionForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         choices=[
             (PERMISSION_GROUPS.MCKA_ADMIN, _("ADMIN")),
+            (PERMISSION_GROUPS.INTERNAL_ADMIN, _("INTERNAL ADMIN")),
             (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
         ]
     )

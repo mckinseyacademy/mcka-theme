@@ -5,6 +5,7 @@ urlpatterns = patterns(
     'admin',
     url(r'^$', views.home, name='admin_home'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/(?P<user_id>[0-9]+)/unenroll$', views.client_admin_unenroll_participant, name='client_admin_unenroll'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/(?P<user_id>[0-9]+)/edit-email$', views.client_admin_edit_email, name='client_admin_edit_email'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/email_not_started$', views.client_admin_email_not_started, name='client_admin_email_not_started'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/download_course_report$', views.client_admin_download_course_report, name='download_course_report'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants$', views.client_admin_course_participants, name='client_admin_course_participants'),
@@ -18,12 +19,15 @@ urlpatterns = patterns(
     url(r'^client-admin/programs', views.client_admin_program_detail, name='client_admin_program_detail'),
     url(r'^client-admin/contact', views.client_admin_contact, name='client_admin_contact'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
+
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),
     url(r'^course-meta-content/items', views.course_meta_content_course_items, name='course_meta_content_course_items'),
     url(r'^course-meta-content/item/new', views.course_meta_content_course_item_new, name='course_meta_content_course_item_new'),
     url(r'^course-meta-content/item/(?P<item_id>[0-9]+)/edit', views.course_meta_content_course_item_edit, name='course_meta_content_course_item_edit'),
     url(r'^course-meta-content/item/(?P<item_id>[0-9]+)/delete', views.course_meta_content_course_item_delete, name='course_meta_content_course_item_delete'),
+
     url(r'^not_authorized', views.not_authorized, name='not_authorized'),
+
     url(r'^clients/client_new', views.client_new, name='client_new'),
     url(r'^clients/(?P<client_id>[0-9]+)/edit', views.client_edit, name='client_edit'),
     url(r'^clients/(?P<client_id>[0-9]+)$', views.client_detail, name='client_detail'),
@@ -45,6 +49,7 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/contact', views.client_detail_contact, name='client_detail_contact'),
     url(r'^clients/(?P<client_id>[0-9]+)/(?P<detail_view>.*)', views.client_detail, name='client_detail'),
     url(r'^clients', views.client_list, name='client_list'),
+
     url(r'^programs/program_new', views.program_new, name='program_new'),
     url(r'^programs/(?P<program_id>[0-9]+)/edit', views.program_edit, name='program_edit'),
     url(r'^programs/(?P<program_id>[0-9]+)$', views.program_detail, name='program_detail'),
@@ -52,6 +57,7 @@ urlpatterns = patterns(
     url(r'^programs/(?P<program_id>[0-9]+)/download_program_report', views.download_program_report, name='download_program_report'),
     url(r'^programs/(?P<program_id>[0-9]+)/(?P<detail_view>.*)', views.program_detail, name='program_detail'),
     url(r'^programs', views.program_list, name='program_list'),
+
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_list', views.download_group_list, name='download_group_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_projects_report', views.download_group_projects_report, name='download_group_projects_report'),
     url(r'^workgroup/course/(?P<course_id>.*)/group_work_status/(?P<group_id>.*)', views.group_work_status, name='group_work_status'),
@@ -66,7 +72,9 @@ urlpatterns = patterns(
     url(r'^workgroup/project/create/(?P<course_id>.*)', views.workgroup_project_create, name='workgroup_project_create'),
     url(r'^workgroup/project/(?P<project_id>[0-9]+)/delete', views.workgroup_remove_project, name='workgroup_remove_project'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
+
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),
+
     url(r'^project/(?P<project_id>.*)/activity/(?P<activity_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments')
 )

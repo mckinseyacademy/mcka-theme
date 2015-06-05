@@ -36,8 +36,8 @@ BLANK_ACTIVITY_STATUS = DottableDict({
     "review_groups": [],
 })
 
-class WorkgroupCompletionData(object):
 
+class WorkgroupCompletionData(object):
     projects = None
     completions = None
     course = None
@@ -48,18 +48,22 @@ class WorkgroupCompletionData(object):
     user_review_assignments = {}
 
     activity_xblocks = {}
+
     def _get_activity_xblock(self, activity_id):
         if activity_id not in self.activity_xblocks:
-            self.activity_xblocks[activity_id] = WorkGroupActivityXBlock.fetch_from_activity(self.course.id, activity_id)
+            self.activity_xblocks[activity_id] = WorkGroupActivityXBlock.fetch_from_activity(self.course.id,
+                                                                                             activity_id)
         return self.activity_xblocks[activity_id]
 
-    def __init__(self, course_id, group_id=None):
+    def __init__(self, course_id, group_id=None, restrict_to_users_ids=None):
         self.activity_xblocks = {}
         self.course = load_course(course_id)
+        self.restrict_to_users_ids = restrict_to_users_ids
         group_project_lookup = {gp.id: gp.name for gp in self.course.group_project_chapters}
 
         if group_id is None:
-            self.projects = [p for p in Project.fetch_projects_for_course(course_id) if group_project_lookup.has_key(p.content_id)]
+            self.projects = [p for p in Project.fetch_projects_for_course(course_id) if
+                             group_project_lookup.has_key(p.content_id)]
         else:
             self.workgroup_id = int(group_id)
             self.projects = [Project.fetch(WorkGroup.fetch(self.workgroup_id).project)]
@@ -73,13 +77,13 @@ class WorkgroupCompletionData(object):
         return format_string.format(content_id, user_id, stage)
 
     def is_complete(self, group_xblock, user_id, stage=None):
-        if stage=='grade' and group_xblock.ta_graded:
+        if stage == 'grade' and group_xblock.ta_graded:
             return None
 
         return WorkgroupCompletionData._make_completion_key(group_xblock.id, user_id, stage) in self.completions
 
     def is_group_complete(self, group_xblock, user_ids, stage=None):
-        if stage=='grade' and group_xblock.ta_graded:
+        if stage == 'grade' and group_xblock.ta_graded:
             return None
 
         complete = True
@@ -93,21 +97,30 @@ class WorkgroupCompletionData(object):
         for u in pw.users:
             for a in self.project_activities[project.id]:
                 group_xblock = self._get_activity_xblock(a.id)
-                assignment_groups = user_api.get_user_groups(u.id, group_type='reviewassignment', data__xblock_id=group_xblock.id)
+                assignment_groups = user_api.get_user_groups(u.id, group_type='reviewassignment',
+                                                             data__xblock_id=group_xblock.id)
                 review_assignments = [wg for ag in assignment_groups for wg in group_api.get_workgroups_in_group(ag.id)]
                 if u.id not in self.user_review_assignments:
                     self.user_review_assignments[u.id] = {}
-                self.user_review_assignments[u.id][group_xblock.id] = [self.project_workgroups[project.id][ra.id] for ra in review_assignments if ra.id in self.project_workgroups[project.id]]
+                self.user_review_assignments[u.id][group_xblock.id] = [
+                    self.project_workgroups[project.id][ra.id]
+                    for ra in review_assignments if
+                    ra.id in self.project_workgroups[project.id]
+                ]
 
     def _load(self, course_id):
         completion_data = course_api.get_course_completions(course_id)
-        self.completions = {WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage) : c for c in completion_data}
+        self.completions = {
+            WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage): c for c in completion_data
+        }
 
         for project in self.projects:
             if project.organization:
                 organization = Organization.fetch(project.organization)
                 project.organization_name = organization.display_name
-            self.project_workgroups[project.id] = {w_id:WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups}
+            self.project_workgroups[project.id] = {
+                w_id: WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups
+            }
             group_project = [ch for ch in self.course.group_project_chapters if ch.id == project.content_id][0]
             project.name = group_project.name
             self.project_activities[project.id] = get_group_project_activities(group_project)
@@ -163,7 +176,9 @@ class WorkgroupCompletionData(object):
         for p in self.projects:
             # only take the first 3 activities
             p.activities = self.project_activities[p.id][0:3]
-            p.workgroups = [self.project_workgroups[p.id][self.workgroup_id]] if self.workgroup_id else [g for k, g in self.project_workgroups[p.id].iteritems()]
+            p.workgroups = [self.project_workgroups[p.id][self.workgroup_id]] if self.workgroup_id else [
+                g for k, g in self.project_workgroups[p.id].iteritems()
+            ]
             p.group_count = len(p.workgroups)
             total_group_count += p.group_count
 
@@ -176,7 +191,15 @@ class WorkgroupCompletionData(object):
                 if self.workgroup_id and group_xblock.ta_graded:
                     a.review_link = self._review_link(p.workgroups[0], a)
 
+            remove_groups = set()
             for g in p.workgroups:
+                if self.restrict_to_users_ids is not None:
+                    g.users = [user for user in g.users if user.id in self.restrict_to_users_ids]
+
+                if not g.users:
+                    remove_groups.add(g.id)
+                    continue
+
                 g.review_link = self._review_link(g)
                 user_ids = [u.id for u in g.users]
                 g.activity_statuses = []
@@ -184,12 +207,18 @@ class WorkgroupCompletionData(object):
                     group_xblock = self._get_activity_xblock(a.id)
                     activity_status = DottableDict(
                         {
-                            s:report_completion_boolean(self.is_group_complete(group_xblock, user_ids, s), get_due_date(group_xblock, s)) for s in COMPLETION_STAGES
+                            s: report_completion_boolean(
+                                self.is_group_complete(group_xblock, user_ids, s),
+                                get_due_date(group_xblock, s)
+                            )
+                            for s in COMPLETION_STAGES
                         }
                     )
                     activity_status.ta_graded = group_xblock.ta_graded
                     activity_status.review_link = self._review_link(g, a)
-                    activity_status.graded = report_completion_boolean(self.is_group_complete(group_xblock, user_ids), get_due_date(group_xblock, 'grade'))
+                    activity_status.graded = report_completion_boolean(
+                        self.is_group_complete(group_xblock, user_ids),get_due_date(group_xblock, 'grade')
+                    )
                     activity_status.modifier_class = activity_status.graded
 
                     g.activity_statuses.append(activity_status)
@@ -207,7 +236,11 @@ class WorkgroupCompletionData(object):
                         group_xblock = self._get_activity_xblock(a.id)
                         user_activity_status = DottableDict(
                             {
-                                s:report_completion_boolean(self.is_complete(group_xblock, u.id, s), get_due_date(group_xblock, s)) for s in individual_stages
+                                s: report_completion_boolean(
+                                    self.is_complete(group_xblock, u.id, s),
+                                    get_due_date(group_xblock, s)
+                                )
+                                for s in individual_stages
                             }
                         )
                         user_activity_status.upload = IRRELEVANT
@@ -219,7 +252,9 @@ class WorkgroupCompletionData(object):
                             review_group.index = idx
                             idx += 1
                             review_group.review_link = self._review_link(review_group, a)
-                            review_group.modifier_class = report_completion_boolean(self.is_workgroup_activity_complete(review_group, group_xblock), get_due_date(group_xblock, 'grade'))
+                            review_group.modifier_class = report_completion_boolean(
+                                self.is_workgroup_activity_complete(review_group, group_xblock),
+                                get_due_date(group_xblock, 'grade'))
 
                         u.activity_statuses.append(user_activity_status)
 
@@ -228,6 +263,8 @@ class WorkgroupCompletionData(object):
 
                     u.review_row_count = u.max_review_count if u.max_review_count > 0 else 1
                     u.review_row_indexer = range(0, u.review_row_count)
+
+            p.workgroups = [workgroup for workgroup in p.workgroups if workgroup.id not in remove_groups]
 
             while len(p.activities) < 3:
                 # Need copy here, because we assign different indexes below
@@ -244,14 +281,14 @@ class WorkgroupCompletionData(object):
             "total_group_count": total_group_count,
         }
 
-def generate_workgroup_csv_report(course_id, url_prefix):
 
+def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None):
     output_lines = []
 
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    wcd = WorkgroupCompletionData(course_id)
+    wcd = WorkgroupCompletionData(course_id, restrict_to_users_ids=restrict_to_users_ids)
 
     for project in wcd.build_report_data()["projects"]:
         if project.organization:
@@ -259,40 +296,41 @@ def generate_workgroup_csv_report(course_id, url_prefix):
             project.organization_name = organization.display_name
         output_line([project.name])
 
-        activity_names_row = ["",""]
+        activity_names_row = ["", ""]
         for activity in project.activities:
-            activity_names_row.extend(["",activity.name,"","",""])
+            activity_names_row.extend(["", activity.name, "", "", ""])
         output_line(activity_names_row)
 
-        group_header_row = ["Group",""]
+        group_header_row = ["Group", ""]
         for activity in project.activities:
-            group_header_row.extend(["Upload","Evaluation","Review","Review Groups","Graded"])
+            group_header_row.extend(["Upload", "Evaluation", "Review", "Review Groups", "Graded"])
         output_line(group_header_row)
 
         for workgroup in project.workgroups:
-            workgroup_row = [workgroup.name,""]
+            workgroup_row = [workgroup.name, ""]
             for activity_status in workgroup.activity_statuses:
-                workgroup_row.extend([activity_status.upload,activity_status.evaluation])
+                workgroup_row.extend([activity_status.upload, activity_status.evaluation])
                 grade_value = activity_status.grade
                 if activity_status.ta_graded:
                     grade_value = "TA Graded{} ({})".format(
-                        "*" if activity_status.modifier_class=="incomplete" else "",
+                        "*" if activity_status.modifier_class == "incomplete" else "",
                         "{}{}".format(url_prefix, activity_status.review_link),
                     )
-                workgroup_row.extend([grade_value,"",activity_status.graded])
+                workgroup_row.extend([grade_value, "", activity_status.graded])
             output_line(workgroup_row)
 
             for user in workgroup.users:
-                user_row = ["",user.username]
+                user_row = ["", user.username]
                 for user_activity_status in user.activity_statuses:
-                    user_row.extend([user_activity_status.upload,user_activity_status.evaluation,user_activity_status.grade])
+                    user_row.extend(
+                        [user_activity_status.upload, user_activity_status.evaluation, user_activity_status.grade])
                     review_group_data = []
                     for review_group in user_activity_status.review_groups:
                         review_group_data.append("{}{} ({})".format(
-                              review_group.name,
-                              "*" if review_group.modifier_class=="incomplete" else "",
-                                "{}{}".format(url_prefix, review_group.review_link),
-                            )
+                            review_group.name,
+                            "*" if review_group.modifier_class == "incomplete" else "",
+                            "{}{}".format(url_prefix, review_group.review_link),
+                        )
                         )
                     user_row.extend(['; '.join(review_group_data), "--"])
                 output_line(user_row)

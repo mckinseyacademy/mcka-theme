@@ -44,8 +44,6 @@
               %span{class: 'desc'}
                 ▼
             %th
-            %th
-            %th
         %tbody
           - for student in students
             %tr.student{id: "#{student.id}"}
@@ -67,14 +65,21 @@
                   = _("Yes")
                 - else
                   = _("No")
-              %td
-                %a{href: "mailto:#{student.email}"}= "Email"
-              %td
-                %a{href: "/courses/#{course_id}/progress/#{student.id}", target: "_blank"}= "View progress page"
-              %td
-                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}= "Un-enroll participant"
+              %td.actions
+                %a{href: "mailto:#{student.email}"}
+                  = student.email
+                - if user.is_internal_admin or user.is_mcka_admin
+                  %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", data-reveal-id: 'edit_field_modal', data-reveal-ajax: "true"}
+                    %i.fa.fa-pencil
+                %span.divider
+                %a{href: "/courses/#{course_id}/progress/#{student.id}", target: "_blank"}
+                  %i.fa.fa-bar-chart-o
+                %span.divider
+                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}
+                  %i.fa.fa-times-circle-o
 
   #unenroll-confirm-dialog.reveal-modal.small{'data-reveal': None}
+  #edit-email.reveal-modal.small{'data-reveal': None}
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
@@ -118,6 +123,7 @@
     });
 
     ajaxify_overlay_form('#unenroll-confirm-dialog', 'form');
+    ajaxify_overlay_form('#edit_field_modal', 'form');
 
     $('#edit_field_modal').on('click', '.close-dialog', function() {
       $('#edit_field_modal').foundation('reveal', 'close');

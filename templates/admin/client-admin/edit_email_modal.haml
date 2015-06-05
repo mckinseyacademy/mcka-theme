@@ -1,0 +1,16 @@
+%header
+  %h1= _("Edit Email")
+  %hr
+%div.sub-1= student.full_name
+
+.close-reveal-modal
+  %i.fa.fa-times-circle
+
+%form.admin-form.edit-principle.email-edit-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/edit-email", method: "POST"}
+  - csrf_token
+  = form
+  .error
+    - if error
+      = error
+  %div.submit-area
+    %input.button.radius.small{type: "submit", value: "Save"}
