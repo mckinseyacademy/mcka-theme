@@ -15,7 +15,7 @@ var Router = Backbone.Router.extend({
     'admin/client-admin/*organization_id/courses/*course_id/analytics':   'client_admin_course_analytics',
     'admin/client-admin/*organization_id/courses/*course_id/participants':  '',
     'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
-    'admin/course-meta-content/items': 'admin_course_meta'
+    'admin/course-meta-content/items/*course_id': 'admin_course_meta'
   },
 
   home: function() {
@@ -99,7 +99,7 @@ var Router = Backbone.Router.extend({
 
   },
 
-  admin_course_meta: function() {
+  admin_course_meta: function(courseId) {
     var el = $('#feature-flags');
     new Apros.views.AdminCourseMeta({el: el}).render();
   }
