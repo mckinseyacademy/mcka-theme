@@ -21,7 +21,7 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
 
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),
-    url(r'^course-meta-content/items', views.course_meta_content_course_items, name='course_meta_content_course_items'),
+    url(r'^course-meta-content/items/(?P<course_id>.+)$', views.course_meta_content_course_items, name='course_meta_content_course_items'),
     url(r'^course-meta-content/item/new', views.course_meta_content_course_item_new, name='course_meta_content_course_item_new'),
     url(r'^course-meta-content/item/(?P<item_id>[0-9]+)/edit', views.course_meta_content_course_item_edit, name='course_meta_content_course_item_edit'),
     url(r'^course-meta-content/item/(?P<item_id>[0-9]+)/delete', views.course_meta_content_course_item_delete, name='course_meta_content_course_item_delete'),
