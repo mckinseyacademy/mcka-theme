@@ -432,6 +432,7 @@ def client_admin_download_program_report(request, client_id, program_id):
 def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
+    (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -463,6 +464,7 @@ def client_admin_course_analytics(request, client_id, course_id):
         'cohort_engagement': round_to_int_bump_zero(course_avg),
         'client_id': client_id,
         'course_id': course_id,
+        "feature_flags": features,
     }
     return render(
         request,
