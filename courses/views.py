@@ -110,6 +110,10 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.cohort_map:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
+
     course = load_course(course_id, request=request)
 
     proficiency = get_proficiency_leaders(course_id, request.user.id)
@@ -214,6 +218,9 @@ def _render_group_work(request, course, project_group, group_project):
 @login_required
 @check_user_course_access
 def user_course_group_work(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.group_work:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     # remove this in case we are a TA who is taking a course themselves
     user_api.delete_user_preference(request.user.id, "TA_REVIEW_WORKGROUP")
@@ -239,6 +246,9 @@ def workgroup_course_group_work(request, course_id, workgroup_id):
 @login_required
 @check_user_course_access
 def course_discussion(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.discussions:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     course = load_course(course_id, request=request)
     has_course_discussion = False
