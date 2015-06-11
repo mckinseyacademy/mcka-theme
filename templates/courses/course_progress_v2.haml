@@ -28,12 +28,12 @@
             %td.visual
               - include "courses/visualizations/course_progress.haml"
       %table
-        %thead{class: "{% if course.is_evergreen %}col-2{% endif %}"}
+        %thead{class: "{% if course.is_evergreen %}col-2{% endif %} {% if not feature_flags.group_work %}no-group-work{% endif %}"}
           %tr
             - if not course.is_evergreen
               %th Course Run:
             %th Individual Learning:
-            - if course.has_group_work
+            - if feature_flags.group_work and course.has_group_work
               %th Group Work (Due Date):
         %tbody
           - for week in course.lessons_by_week
@@ -67,18 +67,19 @@
                               %span= module.name
                       .close-reveal-modal
                         %i.fa.fa-times-circle
-              - if week.has_group
-                %td
-                  - for activity in week.group_activities
-                    .lesson-with-list.lesson-row-item
-                      %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle{% endif %}"}
-                      .lesson-item-name
-                        %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"}
-                          ={activity.name}:
-                        %span= activity.due_on
-              - else
-                - if course.has_group_work
-                  %td.empty
+              - if feature_flags.group_work
+                - if week.has_group
+                  %td
+                    - for activity in week.group_activities
+                      .lesson-with-list.lesson-row-item
+                        %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle{% endif %}"}
+                        .lesson-item-name
+                          %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"}
+                            ={activity.name}:
+                          %span= activity.due_on
+                - else
+                  - if course.has_group_work
+                    %td.empty
       .legend-status
         .label-3 <i class="status fa fa-circle"></i> not started
         .label-3 <i class="status fa fa-circle partial"></i> partially complete
@@ -105,31 +106,32 @@
                   .lesson-item-name
                     %a{href: "#{module.navigation_url}"}= module.name
               %td.number{class: "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
-          - for activity in course.graded_items.group_activities
-            - if activity.score
-              %tr
-                %td
-                  .lesson-row-item
-                    %i.status.fa.fa-check-circle.complete
-                    .lesson-item-name
-                      %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
-                      ={activity.name}
-                - ifequal activity.score None
-                  %td.number.zero 0
-                - else
-                  %td.number= activity.score
-            - else
-              %tr
-                %td
-                  .lesson-row-item
-                    %i.status.fa.fa-circle
-                    .lesson-item-name
-                      %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
-                      ={activity.name}
-                - if activity.is_pending
-                  %td Grading in progress
-                - else
-                  %td.number.zero 0
+          - if feature_flags.group_work
+            - for activity in course.graded_items.group_activities
+              - if activity.score
+                %tr
+                  %td
+                    .lesson-row-item
+                      %i.status.fa.fa-check-circle.complete
+                      .lesson-item-name
+                        %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
+                        ={activity.name}
+                  - ifequal activity.score None
+                    %td.number.zero 0
+                  - else
+                    %td.number= activity.score
+              - else
+                %tr
+                  %td
+                    .lesson-row-item
+                      %i.status.fa.fa-circle
+                      .lesson-item-name
+                        %a{href: "/courses/#{course.id}/group_work?seqid=#{activity.id}"} Group Work:
+                        ={activity.name}
+                  - if activity.is_pending
+                    %td Grading in progress
+                  - else
+                    %td.number.zero 0
       .legend-status
         .label-3 <i class="status fa fa-circle"></i> not started / incomplete
         .label-3 <i class="status fa fa-check-circle complete"></i> complete

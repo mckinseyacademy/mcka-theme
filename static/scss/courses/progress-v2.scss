@@ -95,6 +95,10 @@
       &.col-2 {
         th:first-child { width: auto; }
       }
+
+      &.no-group-work {
+        th:last-child { width: auto; }
+      }
     }
 
     tbody {
