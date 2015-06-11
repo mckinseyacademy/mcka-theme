@@ -2,6 +2,9 @@
   %h1= _("Edit Email")
   %hr
 %div.sub-1= student.full_name
+%p
+  %a{href: "mailto:#{student.email}"}
+    = student.email
 
 .close-reveal-modal
   %i.fa.fa-times-circle
@@ -13,4 +16,5 @@
     - if error
       = error
   %div.submit-area
+    %input.button.radius.small.close-reveal-modal.alternative-action.close-modal-inline{value: "Cancel", name: "Cancel"}
     %input.button.radius.small{type: "submit", value: "Save"}

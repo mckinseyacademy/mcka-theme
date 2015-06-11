@@ -1,7 +1,7 @@
 ''' forms for administration objects '''
 from datetime import date
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
 
 from .models import Client, Program
@@ -29,7 +29,7 @@ class ClientForm(forms.Form):
 
 class EditEmailForm(forms.Form):
     ''' Used to edit a user's email address. '''
-    email = forms.EmailField()
+    email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': _("Enter new email address")}))
 
 class ProgramForm(forms.Form):
 
