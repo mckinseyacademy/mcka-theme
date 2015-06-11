@@ -339,7 +339,7 @@ def client_admin_course_participants(request, client_id, course_id):
     data = {
         'client_id': client_id,
         'course_id': course_id,
-        'course': course,
+        'target_course': course,
         'total_participants': len(students),
         'students': students
     }
