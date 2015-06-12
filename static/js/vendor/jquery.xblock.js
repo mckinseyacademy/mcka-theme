@@ -310,7 +310,7 @@
 
             var activateChild = getParameterByName('activate');
             if (activateChild) {
-                data['activate_child_id'] = activateChild;
+                data['activate_block_id'] = activateChild;
             }
 
             // Set the LMS session cookie on the shared domain to authenticate on the LMS

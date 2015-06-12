@@ -179,7 +179,7 @@ def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
 
 def get_chapter_and_target_by_location(request, course_id, location_id, course_api_impl=course_api):
     '''
-    Returns chapter id for given page and course ids.
+    Returns chapter, vertical, and final target id for a given course and location.
     '''
     nav = course_api_impl.get_course_navigation(course_id, location_id)
 
