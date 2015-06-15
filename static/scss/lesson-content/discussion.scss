@@ -16,11 +16,20 @@
 
 #course-lessons .discussion-module {
   width: 100%;
-  
+
   form.edit-post-form {
     // We don't want topics displayed in the edit form.
     .topic-wrapper {
       display: none;
+    }
+  }
+
+  .forum-new-post-form {
+    .field-label {
+      width: 55%;
+    }
+    .field-help {
+      width: 45%;
     }
   }
 }
@@ -355,13 +364,7 @@
   }
 
   .notification-checkbox {
-    border: none;
-    padding: 0px;
-    margin-top: 5px;
-
-    .email-setting {
-      margin: 0px;
-    }
+    display: none;
   }
 
   .home-helpgrid {
@@ -396,6 +399,17 @@
         text-align: center;
         display: inline-block;
         padding: 0px;
+      }
+    }
+  }
+
+  .helpgrid-row-notification {
+    .row-item-full {
+      &::before {
+        content: "You can enable daily\0020(or weekly) notification digests which show discussion activity by accessing your profile dropdown.";
+      }
+      .row-description {
+        display: none;
       }
     }
   }
@@ -454,4 +468,3 @@ body > .tooltip {
       opacity: 0.7;
     }
 }
-

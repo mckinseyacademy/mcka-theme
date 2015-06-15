@@ -26,6 +26,12 @@
 
       &.forum-nav-search-input {
         font-size: rem-calc(10) !important;
+        @include placeholder {
+          color: #a0a0a0;
+        }
+        &.placeholdersjs {
+          color: #a0a0a0;
+        }
       }
     }
 
@@ -50,6 +56,7 @@
     }
 
     .forum-nav-refine-bar {
+      padding: 5px;
       background: $mckinsey-academy-alt-blue none;
       color: $pure-white;
 
@@ -155,6 +162,12 @@
 
         .person-info {
           margin-left: 50px;
+        }
+
+        .person-title {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
       }
 

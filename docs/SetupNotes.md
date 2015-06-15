@@ -5,9 +5,8 @@ toward developers, the instructions within could be modified to create a deploym
 
 The steps we'll follow are as follows:
 
-1. Setup the edX Environment
-2. Setup the Apros Environment
-3. Modify the LMS installation to use the features we want so it can communicate with Apros
+1. Setup the Solutions Devstack
+3. Setup the Apros Environment
 4. Set up the reverse Proxy server
 5. Start Apros
 
@@ -19,7 +18,7 @@ This document will make the assumptions that:
 * You wish to use a SQLite database and basic development server for this environment on port 3000.
 * You will be using a Vagrant VM-based devstack.
 
-## Step 1 - Setup edX devstack Environment
+## Step 1 - Set up the Solutions Devstack
 
 While it is possible to create a development environment on your machine, it is highly recommended to use a vagrant 
 instance. The instructions for the rest of this document assume you will do so.
@@ -79,48 +78,52 @@ Next, run:
 
 Edit the user's .bashrc file in your favorite editor. Add the lines:
 
-    cd ~/mcka_apros
     source ~/venvs/mcka_apros/bin/activate  # Use the Apros Python environment.
     source ~/.rvm/scripts/rvm # Load RVM into a shell session *as a function*
 
 
-...at the top, before anything else. Finally, exit this user's shell. We'll be loading back into it later.
+...at the top, before anything else. After the line `[ -z "$PS1" ] && return` add:
+
+    cd ~/mcka_apros
+
+Finally, exit this user's shell. We'll be loading back into it later.
 
 Do not worry that the directory `mcka_apros` does not exist. It will be created in the next section.
 
 ### Modify the VagrantFile
-* Modify the devstack Vagrantfile to forward required port by adding the following lines:
+* Look for the port forwarding section of the Vagrant file, and add this line:
   
         config.vm.network :forwarded_port, guest: 80, host: 8080
 
   You will want to *forward port 80 on your host machine to port 8080, because of the privileged port restrictions*.
   The method for this differs from OS to OS, but some guides are available 
-  [here for mac](http://www.dmuth.org/node/1404/web-development-port-80-and-443-vagrant) and 
+  [here for mac](https://www.danpurdy.co.uk/web-development/osx-yosemite-port-forwarding-for-vagrant/) and 
   [here for linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user).
   The guide for mac has some extra tips you may be able to backport to your Linux installation. Several Apros features do
-  not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS. NOTE: for
-  Yosemite OSX users ipfw (which that link describes) is no longer available, please see this [link for
-  Yosemite](http://www.abetobing.com/blog/port-forwarding-mac-os-yosemite-81.html)
+  not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS.
 
 * Clone the Apros repository **in your vagrant staging folder**, like so:
 
- 
-    git clone git@github.com:mckinseyacademy/mcka_apros.git
 
- or
+        git clone git@github.com:mckinseyacademy/mcka_apros.git
+
+  or
+
+      git clone https://github.com/mckinseyacademy/mcka_apros.git
+
+
+After the line `ora_mount_dir = "ora"` add:
  
-    git clone https://github.com/mckinseyacademy/mcka_apros.git
- 
- Make note of the path to the repository, as you will use it in the next step.
+    mcka_mount_dir = "mcka_apros"
 
 * Share Apros root folder with the VM by adding the following lines into Vargant file. There are lines similar to these already
   in the file, make sure you add them to proper place. There are `if ENV['VAGRANT_USE_VBOXFS'] == 'true'` block, first line should go to 
   `True` branch, second line to `False` branch
 
-          config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
+          config.vm.synced_folder "#{mcka_mount_dir}", "/edx/app/apros/mcka_apros",
             create: true, owner: "apros", group: "www-data"
 
-          config.vm.synced_folder "<path-to-mcka-root-folder-on-host-machine>", "/edx/app/apros/mcka_apros",
+          config.vm.synced_folder "#{mcka_mount_dir}", "/edx/app/apros/mcka_apros",
             create: true, nfs: true
 
 * Reload vagrant config with `vagrant reload`, log in into vagrant box using `vagrant ssh`. If the vagrant instance was
@@ -179,52 +182,14 @@ stick with MySql if you want to remain as close to the production environment as
 #### Configure the name to use for the LMS instance, like this:
 
     API_SERVER_ADDRESS = 'http://lms.mcka.local'
-    LMS_BASE_DOMAIN = 'mcka.local'
-    LMS_SUB_DOMAIN = 'lms'
+    LMS_BASE_DOMAIN='mcka.local'
+    LMS_SUB_DOMAIN='apros'
 
 `API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
-`LMS_BASE_DOMAIN` This is the base domain name of the LMS system, with its port.
-`LMS_SUB_DOMAIN` is the subdomain for the LMS system
+`LMS_BASE_DOMAIN` This is the base domain users will fetch LMS assets from.
+`LMS_SUB_DOMAIN` is the subdomain for the LMS system that users will fetch assets from-- note that it's the same as apros because we use NginX's reverse proxying to do a bit of magic later in the configuration.
 
-
-## Step 3 - Prepare the LMS for Apros
-
-The LMS will need a few additional settings to work with Apros.
-
-### Override specific settings in lms.env.json
-
-This file can only be found in the devstack environment
-
-- Log in as edxapp user `vagrant ssh -c "sudo su edxapp"`
-- `cd ~`
-- Edit the file `lms.env.json` in your favourite command-line editor
-
-At the top of the dictionary, add this line:
-
-        "ADDL_INSTALLED_APPS": ["progress", "organizations"],
-        
-This will install the progress application.
-
-You should find the **FEATURES** section already exists, and you will want to add a few items to it. 
-_It appears that these are generally kept in alphabetical order, but for simplicity, you may wish to just add these 
-items to the **beginning** of the array._
-
-            "API": true,
-            "MARK_PROGRESS_ON_GRADING_EVENT": true,
-            "SIGNAL_ON_SCORE_CHANGED": true,
-            "STUDENT_GRADEBOOK": true,
-            "STUDENT_PROGRESS": true,
-            "ORGANIZATIONS_APP": true,
-            "PROJECTS_APP": true,
-        
-Finally, run:
-
-    paver update_db --settings=devstack
-
-This will install the tables for the `progress` application.
-
-
-### Step 4 - Set up the reverse proxy server
+### Step 3 - Set up the reverse proxy server
 
 For security purposes, browsers have very rigid rules on how they'll handle sharing of content between domains and ports. 
 In order to make sure that Apros is able to load remote resources from the LMS (such as assets and the content of XBlocks),
@@ -233,11 +198,12 @@ you will need to set up a reverse proxy server.
 As the `vagrant` user, run:
 
     sudo apt-get -y install nginx
-    
-Create a file at `/etc/nginx/sites-available/mcka_apros` using [example development config][example-config]. **Note that this is a 
-minimal working example that lacks some special rules set in production.** Some minor features not necessary for most of 
-development may not work (e.g. serving discussion user profiles from Apros rather than LMS). For complete example 
-replicating actual production rules see [Appendix C][appendix-c].
+
+Create a file at `/etc/nginx/sites-available/mcka_apros` with [these contents][example-nginx-config]. **Note these rules aren't *precisely* like production.** If you need to precompile assets for pipelining, see [Appendix C][appendix-c].
+
+[example-nginx-config]: mcka_apros_production
+[nginx_ensite]: https://github.com/perusio/nginx_ensite
+[apros-ansible-config]: https://github.com/open-craft/ansible-private/blob/master/roles/mckinsey_apros/templates/edx/app/nginx/sites-available/mcka_apros.j2
 
 Enable this new virtual host with:
 
@@ -256,7 +222,16 @@ Enable this new virtual host with:
 To begin setting up Apros, **launch the LMS and forum/comment service and leave them running**. Then, run the following commands as the `apros` user: 
 
     ./manage.py syncdb --migrate
+    mkdir /edx/app/apros/mcka_apros/static/gen
     ./manage.py load_seed_data
+    ./manage.py rundev 3000
+
+Wait for the above to finish pre-processing, then Ctrl+C out of it.
+It will bring bundles of assets up to date, which will then need to be further collected.
+It is finished processing when it says 'Watching 10 bundles for changes...'
+Finally, collect all the static assets.
+
+    ./manage.py collectstatic --noinput
 
 This will build the Apros database and load seed data into the LMS database, including [preconfigured users][load-seed-data].
 
@@ -316,59 +291,7 @@ Deployments of Apros that are publicly accessible should differ in several respe
 3. You will need to generate and set API keys for use between the server and Apros, and turn off the DEBUG flag.
 
 
-## Appendix C: Complete production routing
-
-In production environment both Apros and LMS are served from the same domain, and sophisticated nginx rule set is used
-to separate them. As a result, all requests pass through the same nginx server, so further customization is possible.
-Another advantage of such setup is that there are no CORS requests at all.
- 
-So, in order to serve both LMS and Apros on the same domain, one need the following:
-
-* (First time only) Set up production nginx proxying. The cleaniest way to do that while still being able to revert to 
-  simpler setup would be to create new nginx virtual server (e.g. `mcka_apros_production`) using [example 
-  production-like config][example-nginx-config]. 
-* Switch to `mcka_apros_production` config. [Nginx ensite][nginx_ensite] script comes in very handy for switching between
-  nginx virtual server configurations. 
-* Modify Apros settings file so that `LMS_SUB_DOMAIN+'.'+LMS_BASE_DOMAIN` would be equal to Apros domain name. Example
-  nginx config assumes `apros.mcka.local`, so the values should be: `LMS_SUB_DOMAIN='apros'`, `LMS_BASE_DOMAIN='mcka.local'`
-* Don't forget to restart Apros if it was already running.
-
-One way to make sure everything works as expected is to check Ajax requests sent by discussion xblock. With development
-settings it uses lms domain name explicitly (i.e. request goes to `lms.mcka.local/...`), while with production-like it goes 
-to Apros domain first, than got processed by nginx rules (i.e. request goes to `apros.mcka.local/...`)
-
-To revert to development configuration simply unod these steps, i.e. set `LMS_SUB_DOMAIN='lms'` and switch back to `mcka_apros`.
-
-Please note that [example config][example-nginx-config] is built based on actual ansible scripts used to deploy
-[apros][apros-ansible-config], minus `apros_app_server` upstream and related directives (they are replaced with 
-hard-coded reference to `localhost:3000` where Apros should be served by default). 
-
-
-Apros does not work correctly if accessed from a non-standard HTTP port, so all nginx setups mentioned serves it on port 
-80. However, there's a problem that Apros runs in a devstack virtual box, so port 80 is not directly accessible from 
-host system, and it cannot be mapped to host's port 80 via Vagrantfile as mapping to priviledged ports (<1024) is 
-restricted to superusers only. There are two options to solve this issue:
-
-1. Vagrant maps guest port 80 to host port 8080. So, in order to access Apros at default HTTP port you will need to set 
-   up a port redirect rule on your host system to forward traffic from port 80 to 8080. If you are using Linux, an 
-   iptables script to do so can be found [there][apros-iptables]. Note those iptables rules are are transient, so script
-   needs to be executed on every host system reload.
-2. Devstack box is configured with two network interfaces, one of which is "Host-only adapter". If you do not plan to
-   access Apros from any machine except localhost, you could edit `/etc/hosts` (or its equivalent in your OS) to contain 
-   the following rules, **instead** of rules set up earlier (actual IP might change later, check out 
-   `config.vm.network :private_network, ip: "192.168.33.10".` directive.
-   
-   
-       192.168.33.10   apros.mcka.local lms.mcka.local studio.mcka.local
-
-
-[example-nginx-config]: mcka_apros_production
-[apros-iptables]: iptables_config.sh
-[nginx_ensite]: https://github.com/perusio/nginx_ensite
-[apros-ansible-config]: https://github.com/open-craft/ansible-private/blob/master/roles/mckinsey_apros/templates/edx/app/nginx/sites-available/mcka_apros.j2
-
-
-## Appendix D: Production-like assets management
+## Appendix C: Production-like assets management
 
 Static assets (js, css, images, etc.) are served in quite different ways in development and production:
 
@@ -376,10 +299,10 @@ Static assets (js, css, images, etc.) are served in quite different ways in deve
 * Production uses pipelines ([django-pipeline][dj-pipeline]) to concatenate js and css files into larger bundles
 to improve page load time. To further reduce application server load, static files are served by nginx.
 
-So, to achieve production-like assets management in development, the following steps need to be performed:
+Setting this up requires creating a new NginX configuration. For easier switching between configurations, consider [NginX Ensite][nginx_ensite]. To get yourself up and running with pipeline:
 
-* (First time only) Create yet another nginx config `mcka_apros_production_pipelined` using [example production-like 
-  config with pipelines][example-pipelined-apros-config]. This config is essentially equal to [example production-like 
+* (First time only) Create another nginx config `mcka_apros_production_pipelined` using [example production-like 
+  config with pipelines][example-pipelined-apros-config]. This config is essentially equal to [the normal 
   config][example-nginx-config], except `location @proxy_to_lms_nginx` points to virtual server set up in `lms_pipeline_assets`, 
   rather than to LMS application location, and `lms.mcka.local` section rewritten to properly serve pipelined static assets.
 * Enable pipelines: pipelines are governed by `FEATURES['USE_DJANGO_PIPELINE']` and disabled in development environment
@@ -395,7 +318,7 @@ So, to achieve production-like assets management in development, the following s
   expects them to be. Note that `paver devstack lms` does not run `collectstatic` so it won't work here. 
 * Switch to `mcka_apros_production_pipelined`. This replaces `mcka_apros_production`, so `mcka_apros` and `mcka_apros_production`
   must be disabled.
-  
+
 To make sure everything works as expected check what static assets are loaded. If you see something like 
 `lms-style-app-extend1.[12 hex digits].css` pipelines are enabled properly.
   
@@ -405,8 +328,31 @@ the actual rewriting if `DEBUG` is set to true.
 
 
 [dj-pipeline]: http://django-pipeline.readthedocs.org/en/latest/
+[nginx_ensite]: https://github.com/perusio/nginx_ensite
 [example-nginx-config]: mcka_apros_production
 [example-pipelined-apros-config]: mcka_apros_production_pipelined
 [example-pipelined-static-config]: lms_pipeline_assets
 
 
+## Appendix D: Setting up an XBlock development workflow
+
+XBlocks are usually developed using the workbench, and then finally tested on the platform. Accordingly, a good workflow for developing them is to run the workbench on the host machine, and allow access to the code via the Vagrant box. To set up this workflow, you should enter the vagrant directory for your solutions devstack, where the folders edx-platform, cs_comments_service and mcka_apros reside, and create a new directory with named `xblocks` alongside these.
+
+Next, edit your vagrant file. After the line:
+
+    mcka_mount_dir = "mcka_apros"
+    
+...add:
+
+    xblock_mount_dir = "xblocks"
+    
+Later in the file, make sure you add them to proper place. There is a `if ENV['VAGRANT_USE_VBOXFS'] == 'true'` block, first line should go to 
+  `True` branch, second line to `False` branch
+
+          config.vm.synced_folder "#{xblock_mount_dir}", "/edx/app/edxapp/xblocks",
+            create: true, owner: "edxapp", group: "www-data"
+
+          config.vm.synced_folder "#{xblock_mount_dir}", "/edx/app/edxapp/xblocks",
+            create: true, nfs: true
+
+You will then be able to access this directory as the edxapp user from `~/xblocks` within the VM, and install them from there while editing them from whatever virtualenvs you like on the host.
