@@ -294,6 +294,11 @@
             return cookieOptions;
         },
 
+        get_querystring: function(){
+            // For easier test stubbing.
+            return location.search;
+        },
+
         init: function(options, root) {
             var $this = this,
                 deferred = $.Deferred(),
@@ -304,7 +309,7 @@
             function getParameterByName(name) {
                 name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
                 var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                    results = regex.exec(location.search);
+                    results = regex.exec($this.get_querystring());
                 return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
             }
 
