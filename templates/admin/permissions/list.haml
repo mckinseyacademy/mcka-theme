@@ -9,14 +9,15 @@
           .sub-1 
           .add-message
         %hr
-        %select#company_filter
-          -for org in organization_options
-            - if organization_id == org.0
-              %option{value: "={org.0}", selected: "selected"}
-                = org.1
-            - else
-              %option{value: "={org.0}" }
-                = org.1
+        - if organization_options
+          %select#company_filter
+            -for org in organization_options
+              - if organization_id == org.0
+                %option{value: "={org.0}", selected: "selected"}
+                  = org.1
+              - else
+                %option{value: "={org.0}" }
+                  = org.1
         %section
           %table.data-table
             %thead

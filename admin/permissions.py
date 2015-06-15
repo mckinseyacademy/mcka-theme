@@ -25,7 +25,7 @@ class Permissions(object):
         USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
     }
 
-    def __init__(self, user_id):
+    def __init__(self, user_id, ):
         self.permission_groups = group_api.get_groups_of_type(PERMISSION_TYPE)
         self.current_permissions = [pg.name for pg in user_api.get_user_groups(user_id, PERMISSION_TYPE)]
         self.courses = course_api.get_course_list()
