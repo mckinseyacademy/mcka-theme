@@ -339,7 +339,7 @@ def client_admin_course_participants(request, client_id, course_id):
     data = {
         'client_id': client_id,
         'course_id': course_id,
-        'course': course,
+        'target_course': course,
         'total_participants': len(students),
         'students': students
     }
@@ -556,7 +556,7 @@ def client_admin_edit_email(request, client_id, course_id, user_id):
     """
     error = None
     student = user_api.get_user(user_id)
-    form = EditEmailForm({'email': student.email})
+    form = EditEmailForm()
     if request.method == 'POST':
         form = EditEmailForm(data=request.POST)
         if form.is_valid():
@@ -1522,7 +1522,11 @@ def load_group_projects_info_for_course(course, companies):
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+@client_admin_access
 def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image=None):
     ''' handles requests for login form and their submission '''
     if(client_id == 'new' and not company_image):
@@ -1551,7 +1555,11 @@ def change_company_image(request, client_id='new', template='change_company_imag
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+@client_admin_access
 def company_image_edit(request, client_id="new"):
     if request.method == 'POST':
         heightPosition = request.POST.get('height-position')
@@ -1600,7 +1608,10 @@ def company_image_edit(request, client_id="new"):
             client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
             return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url, 'client_id': client.id}), content_type="application/json")
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN
+)
 def upload_company_image(request, client_id='new'):
     ''' handles requests for login form and their submission '''
     error = None

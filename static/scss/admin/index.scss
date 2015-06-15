@@ -176,6 +176,9 @@
         margin-left: 1em;
         margin-right: 1em;
       }
+      .course-progress-link {
+        text-align: right;
+      }
     }
   }
 
@@ -538,6 +541,31 @@
     .submit-area {
       text-align: right;
     }
+  }
+
+  .email-edit-form {
+    label[for="id_email"] {
+      display: none;
+    }
+    margin-top: 2em;
+  }
+
+  .alternative-action {
+    color: $mckinsey-academy-alt-blue;
+    background-color: $pure-white;
+    margin-right: 0;
+    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+    /* Not sure why this is needed. Padding remains, auto is insufficient. */
+    width: 8em;
+  }
+  .close-modal-inline {
+    position: inherit;
+    top: inherit;
+    right: inherit;
+    font-size: inherit;
+    line-height: inherit;
   }
 
   @import './admin-list';
