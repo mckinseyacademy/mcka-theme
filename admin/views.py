@@ -667,15 +667,20 @@ def client_admin_email_not_started(request, client_id, course_id):
 
     return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def client_admin_user_progress(request, client_id, course_id, user_id):
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+@checked_course_access # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def client_admin_user_progress(request, client_id, course_id, user_id, restrict_to_courses_ids=None):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
     student.avatar_url = student.image_url(size=48)
     courses = []
-    grades = {grade.course_id:grade for grade in user_api.get_user_grades(user_id)}
+    grades = {grade.course_id: grade for grade in user_api.get_user_grades(user_id)}
     for courseName in userCourses:
         course = load_course(courseName.id, depth=4)
+        if (restrict_to_courses_ids is not None) and (course.id not in restrict_to_courses_ids):
+            continue
         if course.id != course_id:
             grade = grades.get(course.id, None)
             if grade:
@@ -686,8 +691,8 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
                 course.progress = 0
             courses.append(course)
     data = {
-        'courses' : courses,
-        'student' : student,
+        'courses': courses,
+        'student': student,
     }
     return render(
         request,
