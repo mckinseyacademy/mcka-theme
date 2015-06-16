@@ -2032,10 +2032,11 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     return response
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def workgroup_remove_project(request, project_id):
-    message = _("Error deleting project")
-    status_code = 400
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
+    project = Project.fetch(project_id)
+    AccessChecker.check_has_course_access(request, project.course_id, restrict_to_courses_ids)
 
     try:
         Project.delete(project_id)
