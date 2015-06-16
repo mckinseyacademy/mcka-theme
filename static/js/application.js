@@ -12,7 +12,7 @@ window.Apros = {
         $(this).addClass('selected');
       }
     });
-    Backbone.history.start({pushState: has_push, hashChange: !has_push});
+    Backbone.history.start({pushState: has_push, hashChange: false});
   },
 
   jumpLinkRewriter: function(jump_link){
