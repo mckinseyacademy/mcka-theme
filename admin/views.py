@@ -2084,7 +2084,8 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
-def edit_permissions(request, user_id, restrict_to_users_ids=None):
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_courses_ids=None):
     '''
     define or edit existing roles for a single user
     '''
@@ -2098,18 +2099,30 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None):
         AccessChecker.check_has_user_access(request, int(user_id), restrict_to_users_ids)
 
     permissions = Permissions(user_id)
+    courses = permissions.courses
+    if restrict_to_courses_ids is not None:
+        courses = [course for course in courses if course.id in restrict_to_courses_ids]
 
     if request.method == 'POST':
-        form = form_class(permissions.courses, request.POST)
+        form = form_class(courses, request.POST)
         if form.is_valid():
             per_course_roles = []
-            for course in permissions.courses:
+            for course in courses:
                 course_roles = form.cleaned_data.get(course.id, [])
                 for role in course_roles:
                     per_course_roles.append({
                         'course_id': course.id,
                         'role': role
                     })
+            # Include the current settings for courses which the user doesn't have the right to modify.
+            for course in permissions.courses:
+                if course not in courses:
+                    extension = [
+                        {'course_id': course.id, 'role': role.role}
+                        for role in permissions.user_roles if role.course_id == course.id
+                    ]
+                    per_course_roles.extend(extension)
+
             if request.user.is_mcka_admin:
                 new_perms = form.cleaned_data.get('permissions')
             else:
@@ -2125,13 +2138,13 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None):
             'permissions': permissions.current_permissions
         }
 
-        for course in permissions.courses:
+        for course in courses:
             initial_data[course.id] = []
             for role in permissions.user_roles:
                 if course.id == role.course_id:
                     initial_data[course.id].append(role.role)
 
-        form = form_class(permissions.courses, initial=initial_data, label_suffix='')
+        form = form_class(courses, initial=initial_data, label_suffix='')
 
     data = {
         'form': form,
