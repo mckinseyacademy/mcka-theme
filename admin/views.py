@@ -100,7 +100,7 @@ class AccessChecker(object):
         restrict_to_ids = []
         if request.user.is_mcka_admin:
             restrict_to_ids = None
-        elif request.user.is_client_admin or request.user.is_internal_admin or request.user.is_mcka_ta:
+        else:
             org = AccessChecker._get_organization_for_user(request.user)
             if org:
                 restrict_to_ids = restrict_to_callback(org)
