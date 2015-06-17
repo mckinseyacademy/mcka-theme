@@ -100,7 +100,7 @@ class AccessChecker(object):
         restrict_to_ids = []
         if request.user.is_mcka_admin:
             restrict_to_ids = None
-        elif request.user.is_client_admin or request.user.is_internal_admin:
+        elif request.user.is_client_admin or request.user.is_internal_admin or request.user.is_mcka_ta:
             org = AccessChecker._get_organization_for_user(request.user)
             if org:
                 restrict_to_ids = restrict_to_callback(org)
@@ -132,7 +132,7 @@ class AccessChecker(object):
     @staticmethod
     def program_access_wrapper(func):
         """
-        Ensure restricted roles (company admin and internal admin)
+        Ensure restricted roles (company admin, internal admin, ta)
         can only access programs mapped to their companies.
 
         Note it changes function signature, passing additional parameter restrict_to_programs_ids. Due to the fact it would
@@ -150,7 +150,7 @@ class AccessChecker(object):
     @staticmethod
     def course_access_wrapper(func):
         """
-        Ensure restricted roles (company admin and internal admin)
+        Ensure restricted roles (company admin, internal admin, ta)
         can only access courses mapped to their companies.
 
         Note it changes function signature, passing additional parameter restrict_to_courses_ids. Due to the fact it
@@ -168,7 +168,7 @@ class AccessChecker(object):
     @staticmethod
     def users_access_wrapper(func):
         """
-        Ensure restricted roles (company admin and internal admin)
+        Ensure restricted roles (company admin, internal admin, ta)
         can only access users in their companies.
 
         Note it changes function signature, passing additional parameter allowed_user_ids. Due to the fact it would
