@@ -50,6 +50,7 @@ class Permissions(object):
 
     def save(self, new_permissions, per_course_roles):
         try:
+            print per_course_roles
             # update user roles
             if per_course_roles:
                 user_api.update_user_roles(self.user_id, {'roles': per_course_roles,
@@ -144,7 +145,7 @@ class InternalAdminRoleManager(object):
 
         operation = cls._role_actions_map[action]
 
-        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INSTRUCTOR)
+        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INTERNAL_ADMIN)
 
     @classmethod
     def handle_course_program_event(cls, sender, *args, **kwargs):
