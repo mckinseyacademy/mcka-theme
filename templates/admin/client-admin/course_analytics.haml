@@ -53,11 +53,12 @@
 
           .medium-6.left
             .course-engagement
-              .sub-1= _("Engagement")
-              %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
-              .visualization{class: "{% if company_engagement >= 90 %}filled{% endif %}"}
-                .band-1{class: "{% if company_engagement >= 30 %}filled{% endif %}"}
-                .band-2{class: "{% if company_engagement >= 60 %}filled{% endif %}"}
-                .total= company_engagement
-              .cohort-average
-                .label-4 cohort average = ={cohort_engagement} points
+              - if feature_flags.discussions
+                .sub-1= _("Engagement")
+                %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
+                .visualization{class: "{% if company_engagement >= 90 %}filled{% endif %}"}
+                  .band-1{class: "{% if company_engagement >= 30 %}filled{% endif %}"}
+                  .band-2{class: "{% if company_engagement >= 60 %}filled{% endif %}"}
+                  .total= company_engagement
+                .cohort-average
+                  .label-4 cohort average = ={cohort_engagement} points

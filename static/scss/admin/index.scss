@@ -126,6 +126,7 @@
     .student a {
       width: auto;
       overflow: visible;
+      display: inline-block;
     }
 
     caption{
@@ -146,18 +147,37 @@
       }
     }
 
-    tbody{
-      td, td p{
+    tbody {
+      td, td p {
         @include font-spec(10);
       }
-      ta, a{
+      tr {
+        .even {
+          background: #F9;
+        }
+        .odd {
+          background: $pure-white;
+        }
+      }
+      .fa {
+        @include font-spec(16);
+      }
+      ta, a {
         @include font-spec(10, 600);
       }
-      tr.even {
-        background: #F9;
+      .actions {
+        text-align: right;
       }
-      tr.odd {
-        background: $pure-white;
+      .divider {
+        display: inline-block;
+        width: 1px;
+        height: 1.25em;
+        background-color: $mckinsey-grey;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+      .course-progress-link {
+        text-align: right;
       }
     }
   }
@@ -517,10 +537,42 @@
     }
   }
 
+  #edit_field_modal{
+    .submit-area {
+      text-align: right;
+    }
+  }
+
+  .email-edit-form {
+    label[for="id_email"] {
+      display: none;
+    }
+    margin-top: 2em;
+  }
+
+  .alternative-action {
+    color: $mckinsey-academy-alt-blue;
+    background-color: $pure-white;
+    margin-right: 0;
+    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+    /* Not sure why this is needed. Padding remains, auto is insufficient. */
+    width: 8em;
+  }
+  .close-modal-inline {
+    position: inherit;
+    top: inherit;
+    right: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';
   @import './dataTable';
   @import './permissions';
   @import './unenroll';
+  @import './feature-flags';
 }

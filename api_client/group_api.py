@@ -25,7 +25,8 @@ PERMISSION_GROUPS = DottableDict(
     CLIENT_ADMIN='mcka_role_client_admin',
     CLIENT_SUBADMIN='mcka_role_client_subadmin',
     CLIENT_TA='mcka_role_client_ta',
-    CLIENT_OBSERVER='mcka_role_client_observer'
+    CLIENT_OBSERVER='mcka_role_client_observer',
+    INTERNAL_ADMIN='mcka_role_internal_admin',
 )
 
 @api_error_protect

@@ -1,9 +1,9 @@
 - extends "header.haml"
 
 - block header_home
-  - if user.is_mcka_admin
+  - if user.is_mcka_admin or user.is_internal_admin
     %a.admin-logo{href: '/admin'}
-  - elif user.is_client_admin
+  - elif user.is_client_admin or user.is_internal_admin
     %a.admin-logo{href: '/admin/client-admin'}
 
 - block header_menu
@@ -14,17 +14,19 @@
           %a{href: '/admin/clients'}= _("Clients")
         %li
           %a{href: '/admin/programs'}= _("Programs")
-      - if user.is_mcka_admin or user.is_mcka_ta
+      - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin
         %li
           %a{href: '/admin/workgroup'}= _("Group Work")
-      - if user.is_mcka_admin
+      - if user.is_mcka_admin or user.is_internal_admin
         %li
           %a{href: '/admin/course-meta-content'}= _("Course Content")
+      - if user.is_mcka_admin
         %li
           %a{href: '/admin/permissions'}= _("Roles & Permissions")
-      - if user.is_client_admin
+      - if user.is_client_admin or user.is_internal_admin
         %li
           %a{href: '/admin/client-admin/courses'}= _("Courses")
+      - if user.is_client_admin
         %li
           %a{href: '/admin/client-admin/programs'}= _("Programs")
         %li

@@ -21,7 +21,7 @@ from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
 
-from .models import LessonNotesItem
+from .models import LessonNotesItem, FeatureFlags
 from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_by_page
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, progress_percent, group_project_reviews
@@ -110,6 +110,10 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.cohort_map:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
+
     course = load_course(course_id, request=request)
 
     proficiency = get_proficiency_leaders(course_id, request.user.id)
@@ -214,6 +218,9 @@ def _render_group_work(request, course, project_group, group_project):
 @login_required
 @check_user_course_access
 def user_course_group_work(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.group_work:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     # remove this in case we are a TA who is taking a course themselves
     user_api.delete_user_preference(request.user.id, "TA_REVIEW_WORKGROUP")
@@ -239,6 +246,9 @@ def workgroup_course_group_work(request, course_id, workgroup_id):
 @login_required
 @check_user_course_access
 def course_discussion(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.discussions:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     course = load_course(course_id, request=request)
     has_course_discussion = False
@@ -439,6 +449,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items_rows": graded_items_count + 1,
         "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
+        "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
     }
 
     if progress_user.id != request.user.id:
@@ -454,7 +465,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_user_progress(request, user_id, course_id):
     return _course_progress_for_user(request, course_id, user_id)
 
@@ -465,7 +476,7 @@ def course_progress(request, course_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_user_progress_v2(request, user_id, course_id):
     return _course_progress_for_user_v2(request, course_id, user_id)
 
@@ -736,3 +747,18 @@ def course_article(request, course_id):
         "article": static_tabs.get("article", None)
     }
     return render(request, 'courses/course_article.haml', data)
+
+@require_POST
+@login_required
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def course_feature_flag(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    feature_flags.group_work = request.POST.get('group_work', None) == 'on'
+    feature_flags.discussions = request.POST.get('discussions', None) == 'on'
+    feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
+    feature_flags.save()
+
+    return HttpResponse(
+        json.dumps(feature_flags.as_json()),
+        content_type="application/json"
+    )

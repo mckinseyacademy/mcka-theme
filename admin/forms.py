@@ -1,7 +1,7 @@
 ''' forms for administration objects '''
 from datetime import date
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
 
 from .models import Client, Program
@@ -26,6 +26,10 @@ class ClientForm(forms.Form):
     contact_phone = forms.CharField(max_length=20)
     contact_email = forms.EmailField()
 
+
+class EditEmailForm(forms.Form):
+    ''' Used to edit a user's email address. '''
+    email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': _("Enter new email address")}))
 
 class ProgramForm(forms.Form):
 
@@ -80,6 +84,7 @@ class PermissionForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         choices=[
             (PERMISSION_GROUPS.MCKA_ADMIN, _("ADMIN")),
+            (PERMISSION_GROUPS.INTERNAL_ADMIN, _("INTERNAL ADMIN")),
             (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
         ]
     )

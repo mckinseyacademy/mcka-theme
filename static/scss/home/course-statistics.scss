@@ -49,4 +49,11 @@
       max-width: 100%;
     }
   }
+
+  &.no-social {
+    section {
+      width: 40%;
+      &.course-progress { width: 60%; }
+    }
+  }
 }

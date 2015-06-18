@@ -8,8 +8,6 @@
     %td
     %td
     %td
-    %td
-    %td
   -for course in courses
     %tr.course-stats.student-progress-list{name: "#{student.id}"}
       %td.empty-cell
@@ -24,11 +22,9 @@
           = _("Yes")
         - else
           = _("No")
-      %td
       %td.course-progress-link
         %a{'href': '/courses/#{course.id}/progress/#{student.id}', target: "_blank"}
-          = _("View progress page")
-      %td
+          %i.fa.fa-bar-chart-o
 -else
   %tr.course-stats.student-progress-list{name: "#{student.id}"}
     %td.empty-cell
@@ -36,8 +32,6 @@
     %td
       %i
         = _("No other courses enrolled.")
-    %td
-    %td
     %td
     %td
     %td

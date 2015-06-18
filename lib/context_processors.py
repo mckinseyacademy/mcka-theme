@@ -2,13 +2,13 @@ import re
 from django.conf import settings
 
 from courses.user_courses import standard_data
+from courses.models import FeatureFlags
 
 from edx_notifications.server.web.utils import get_notifications_widget_context
 
 import logging
 
 log = logging.getLogger(__name__)
-
 
 def user_program_data(request):
     ''' Makes user and program info available to all templates '''
@@ -37,8 +37,11 @@ def user_program_data(request):
 
     if 'course' in data and data['course']:
         if data['course'].id:
+            (features, created) = FeatureFlags.objects.get_or_create(course_id=data['course'].id)
+
             data.update({
-                'namespace': data['course'].id
+                'namespace': data['course'].id,
+                'feature_flags': features,
             })
     data = get_notifications_widget_context(data)
 

@@ -11,10 +11,11 @@
     - else
       %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/participants"}
         = _("Participants")
-  %li
-    - if request.resolver_match.url_name == 'client_admin_course_analytics'
-      %span.selected= _("Analytics")
-    - else
-      %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/analytics"}
-        = _("Analytics")
+  - if user.is_client_admin
+    %li
+      - if request.resolver_match.url_name == 'client_admin_course_analytics'
+        %span.selected= _("Analytics")
+      - else
+        %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/analytics"}
+          = _("Analytics")
         

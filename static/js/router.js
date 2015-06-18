@@ -3,6 +3,7 @@ var Router = Backbone.Router.extend({
     '':                                       'home',
     'contact/':                               'contact',
     'edxoffer/':                              'edxoffer',
+    'productwalkthrough/':                    'productwalkthrough',
     'courses/*course_id/progress':            'course_progress',
     'courses/*course_id/progress/*user_id':   'course_progress',
     'courses/*course_id/overview':            'course_overview',
@@ -13,7 +14,8 @@ var Router = Backbone.Router.extend({
     'courses/*course_id':                     'course_index',
     'admin/client-admin/*organization_id/courses/*course_id/analytics':   'client_admin_course_analytics',
     'admin/client-admin/*organization_id/courses/*course_id/participants':  '',
-    'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info'
+    'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
+    'admin/course-meta-content/items/*course_id': 'admin_course_meta'
   },
 
   home: function() {
@@ -30,6 +32,13 @@ var Router = Backbone.Router.extend({
   edxoffer: function() {
     var el = $('#edxoffer-page');
     new Apros.views.Edxoffer({el: el}).render();
+  },
+
+  productwalkthrough: function() {
+    var container = $('#mk-productwalkthrough-video');
+    if (container.length && typeof OO !== 'undefined') {
+      OO.Player.create('mk-productwalkthrough-video', container.data('video-id'), {width: '100%', height: '400px'});
+    }
   },
 
   course_index: function() {
@@ -88,6 +97,11 @@ var Router = Backbone.Router.extend({
         collection = new Apros.collections.CourseNotes(null, {courseId: courseId})
     new Apros.views.CourseLesson({el: el, collection: collection}).render();
 
+  },
+
+  admin_course_meta: function(courseId) {
+    var el = $('#feature-flags');
+    new Apros.views.AdminCourseMeta({el: el}).render();
   }
 });
 

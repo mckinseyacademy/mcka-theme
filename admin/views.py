@@ -2,80 +2,66 @@ import copy
 import functools
 import json
 import re
-from datetime import datetime
-from time import mktime
-import urllib2 as url_access
-from urllib import quote as urlquote
-import math
 import string
 import urlparse
+
+from datetime import datetime
+from urllib import quote as urlquote
 from operator import attrgetter
 
 from django.conf import settings
 from django.core.mail import EmailMessage
-from django.utils.translation import ugettext as _
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
-from django.http import Http404
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.text import slugify
-from django.utils.dateformat import format
-from django.core.exceptions import ValidationError
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render, redirect
+from django.template import loader, RequestContext
+from django.utils.dateformat import format
+from django.utils.text import slugify
+from django.utils.translation import ugettext as _
 
-from lib.authorization import permission_group_required
-from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 
-from accounts.models import RemoteUser, UserActivation
+from lib.authorization import permission_group_required
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
+
+from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
 
-from api_client import course_api
-from api_client import user_api
-from api_client import group_api, workgroup_api, organization_api
-from api_client.json_object import Objectifier, JsonObjectWithImage
+from api_client import course_api, user_api, group_api, workgroup_api, organization_api
 from api_client.api_error import ApiError
-from api_client.project_models import Project
 from api_client.organization_models import Organization
+from api_client.project_models import Project
 from api_client.workgroup_models import Submission
-from courses.controller import Progress, Proficiency
-from courses.controller import return_course_progress, organization_course_progress_user_list
-from courses.controller import social_total, round_to_int_bump_zero, round_to_int
-from courses.user_courses import return_course_completions_stats
+
+from courses.controller import (
+    Progress, Proficiency,
+    return_course_progress, organization_course_progress_user_list,
+    social_total, round_to_int_bump_zero, round_to_int
+)
+
+from courses.models import FeatureFlags
 
 from license import controller as license_controller
 from main.models import CuratedContentItem
 
-from .models import Client
-from .models import Program
-from .models import WorkGroup
-from .models import WorkGroupActivityXBlock
-from .models import ReviewAssignmentGroup
-from .models import UserRegistrationBatch, UserRegistrationError
-from .models import ContactGroup
-from .controller import get_student_list_as_file, get_group_list_as_file
-from .controller import fetch_clients_with_program
-from .controller import load_course
-from .controller import getStudentsWithCompanies, filter_groups_and_students, parse_studentslist_from_post
-from .controller import get_group_project_activities, get_group_activity_xblock
-from .controller import upload_student_list_threaded
-from .controller import generate_course_report
-from .controller import get_organizations_users_completion
-from .controller import get_course_metrics_for_organization
-from .controller import get_course_analytics_progress_data
-from .controller import get_contacts_for_client
-from .controller import get_admin_users
-from .controller import get_program_data_for_report
-from .forms import ClientForm
-from .forms import ProgramForm
-from .forms import UploadStudentListForm
-from .forms import ProgramAssociationForm
-from .forms import CuratedContentItemForm
-from .forms import PermissionForm
-from .forms import UploadCompanyImageForm
+from .models import (
+    Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
+    UserRegistrationBatch, UserRegistrationError
+)
+from .controller import (
+    get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
+    getStudentsWithCompanies, filter_groups_and_students,
+    get_group_project_activities, get_group_activity_xblock,
+    upload_student_list_threaded, generate_course_report, get_organizations_users_completion,
+    get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report
+)
+from .forms import (
+    ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
+    PermissionForm, UploadCompanyImageForm,
+    EditEmailForm)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -93,41 +79,150 @@ def ajaxify_http_redirects(func):
 
     return wrapper
 
-def client_admin_access(func):
-    '''
-    Ensure company admins can view only their company.
-    MCKA Admin can view all clients in the system.
-    '''
-    @functools.wraps(func)
-    def wrapper(request, client_id=None, *args, **kwargs):
-        valid_client_id = None
+class AccessChecker(object):
+    @staticmethod
+    def _get_organization_for_user(user):
+        try:
+            return user_api.get_user_organizations(user.id, organization_object=Client)[0]
+        except IndexError:
+            return None
+
+    @staticmethod
+    def _get_courses_for_organization(org):
+        courses = []
+        for program in org.fetch_programs():
+            courses.extend(program.fetch_courses())
+
+        return set(course.course_id for course in courses)
+
+    @staticmethod
+    def _do_wrapping(func, request, restrict_to_key, restrict_to_callback, *args, **kwargs):
+        restrict_to_ids = []
         if request.user.is_mcka_admin:
-            valid_client_id = client_id
+            restrict_to_ids = None
+        else:
+            org = AccessChecker._get_organization_for_user(request.user)
+            if org:
+                restrict_to_ids = restrict_to_callback(org)
 
-        # make sure client admin can access only his company
-        elif request.user.is_client_admin:
-            orgs = user_api.get_user_organizations(request.user.id)
-            if orgs:
-                valid_client_id = orgs[0].id
+        kwargs[restrict_to_key] = restrict_to_ids
 
-        if valid_client_id is None:
-            raise Http404
+        try:
+            return func(request, *args, **kwargs)
+        except PermissionDenied:
+            template = loader.get_template('not_authorized.haml')
+            context = RequestContext(request, {'request_path': request.path})
+            return HttpResponseForbidden(template.render(context))
 
-        return func(request, valid_client_id, *args, **kwargs)
+    @staticmethod
+    def check_has_course_access(request, course_id, restrict_to_courses_ids):
+        if restrict_to_courses_ids is not None and course_id not in restrict_to_courses_ids:
+            raise PermissionDenied()
 
-    return wrapper
+    @staticmethod
+    def check_has_program_access(request, program_id, restrict_to_programs_ids):
+        if restrict_to_programs_ids is not None and program_id not in restrict_to_programs_ids:
+            raise PermissionDenied()
 
+    @staticmethod
+    def check_has_user_access(request, student_id, restrict_to_users_ids):
+        if restrict_to_users_ids is not None and student_id not in restrict_to_users_ids:
+            raise PermissionDenied()
 
+    @staticmethod
+    def program_access_wrapper(func):
+        """
+        Ensure restricted roles (company admin, internal admin, ta)
+        can only access programs mapped to their companies.
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+        Note it changes function signature, passing additional parameter restrict_to_programs_ids. Due to the fact it would
+        make a huge list of programs for mcka admin, if user is mcka admin restrict_to_programs_ids is None
+        """
+        @functools.wraps(func)
+        def wrapper(request, *args, **kwargs):
+            restrict_to_callback = lambda org: set(program.id for program in org.fetch_programs())
+            return AccessChecker._do_wrapping(
+                func, request, 'restrict_to_programs_ids', restrict_to_callback, *args, **kwargs
+            )
+
+        return wrapper
+
+    @staticmethod
+    def course_access_wrapper(func):
+        """
+        Ensure restricted roles (company admin, internal admin, ta)
+        can only access courses mapped to their companies.
+
+        Note it changes function signature, passing additional parameter restrict_to_courses_ids. Due to the fact it
+        would make a huge list of courses for mcka admin, if user is mcka admin restrict_to_courses_ids is None
+        """
+        @functools.wraps(func)
+        def wrapper(request, *args, **kwargs):
+            restrict_to_callback = AccessChecker._get_courses_for_organization
+            return AccessChecker._do_wrapping(
+                func, request, 'restrict_to_courses_ids', restrict_to_callback, *args, **kwargs
+            )
+
+        return wrapper
+
+    @staticmethod
+    def users_access_wrapper(func):
+        """
+        Ensure restricted roles (company admin, internal admin, ta)
+        can only access users in their companies.
+
+        Note it changes function signature, passing additional parameter allowed_user_ids. Due to the fact it would
+        make a huge list of users for mcka admin, if user is mcka admin restrict_to_users_ids is None
+        """
+        @functools.wraps(func)
+        def wrapper(request, *args, **kwargs):
+            restrict_to_callback = lambda org: set(user_id for user_id in org.users)
+            return AccessChecker._do_wrapping(
+                func, request, 'restrict_to_users_ids', restrict_to_callback, *args, **kwargs
+            )
+
+        return wrapper
+
+    @staticmethod
+    def client_admin_wrapper(func):
+        """
+        Ensure company admins can view only their company.
+        MCKA Admin can view all clients in the system.
+        """
+        @functools.wraps(func)
+        def wrapper(request, client_id=None, *args, **kwargs):
+            valid_client_id = None
+            if request.user.is_mcka_admin:
+                valid_client_id = client_id
+
+            # make sure client admin can access only his company
+            elif request.user.is_client_admin or request.user.is_internal_admin:
+                org = AccessChecker._get_organization_for_user(request.user)
+                if org:
+                    valid_client_id = org.id
+
+            if valid_client_id is None:
+                raise Http404
+
+            return func(request, valid_client_id, *args, **kwargs)
+
+        return wrapper
+
+checked_course_access = AccessChecker.course_access_wrapper
+checked_user_access = AccessChecker.users_access_wrapper
+checked_program_access = AccessChecker.program_access_wrapper
+client_admin_access = AccessChecker.client_admin_wrapper
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def home(request):
     return render(
         request,
         'admin/home.haml'
     )
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+)
 @client_admin_access
 def client_admin_home(request, client_id):
 
@@ -190,7 +285,7 @@ def client_admin_program_detail(request, client_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def client_admin_course(request, client_id, course_id):
     course = load_course(course_id)
@@ -216,7 +311,7 @@ def client_admin_course(request, client_id, course_id):
 def get_user_metrics_from_lookup(user_id, lookup):
     return lookup[user_id] if user_id in lookup else 0
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
     course = load_course(course_id)
@@ -244,7 +339,7 @@ def client_admin_course_participants(request, client_id, course_id):
     data = {
         'client_id': client_id,
         'course_id': course_id,
-        'course': course,
+        'target_course': course,
         'total_participants': len(students),
         'students': students
     }
@@ -254,7 +349,7 @@ def client_admin_course_participants(request, client_id, course_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_download_course_report(request, client_id, course_id):
 
     filename = slugify(
@@ -337,6 +432,7 @@ def client_admin_download_program_report(request, client_id, program_id):
 def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
+    (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -368,6 +464,7 @@ def client_admin_course_analytics(request, client_id, course_id):
         'cohort_engagement': round_to_int_bump_zero(course_avg),
         'client_id': client_id,
         'course_id': course_id,
+        "feature_flags": features,
     }
     return render(
         request,
@@ -394,7 +491,6 @@ def client_admin_course_analytics_progress(request, client_id, course_id):
     course = load_course(course_id)
     course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
 
-
     jsonResult = [{"key": "Your Company", "values": get_course_analytics_progress_data(course, course_modules, client_id=client_id)},
                     {"key": "Your Cohort", "values": get_course_analytics_progress_data(course, course_modules)}]
     return HttpResponse(
@@ -402,8 +498,7 @@ def client_admin_course_analytics_progress(request, client_id, course_id):
                 content_type='application/json'
             )
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def client_admin_course_status(request, client_id, course_id):
     course = load_course(course_id)
@@ -445,7 +540,6 @@ def client_admin_course_status(request, client_id, course_id):
         content_type='application/json'
     )
 
-
 def _remove_student_from_course(student_id, course_id):
     # Mark this student as an observer for this course, so that their data is ignored in roll-up activities
     permissions = Permissions(student_id)
@@ -453,7 +547,39 @@ def _remove_student_from_course(student_id, course_id):
     user_api.unenroll_user_from_course(student_id, course_id)
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+def client_admin_edit_email(request, client_id, course_id, user_id):
+    """
+    Supplies a modal for editing a user's email address.
+    """
+    error = None
+    student = user_api.get_user(user_id)
+    form = EditEmailForm()
+    if request.method == 'POST':
+        form = EditEmailForm(data=request.POST)
+        if form.is_valid():
+            try:
+                user_api.update_user_information(user_id, {'email': form.cleaned_data['email']})
+                redirect_url = "/admin/client-admin/{}/courses/{}/participants".format(client_id, course_id)
+                return HttpResponseRedirect(redirect_url)
+            except ApiError as err:
+                error = err.message
+
+    data = {
+        'student': student,
+        'edit_email': _("Edit Email"),
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'error': error,
+    }
+
+    return render(request, 'admin/client-admin/edit_email_modal.haml', data)
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_unenroll_participant(request, client_id, course_id, user_id):
     error = None
     is_program = 'program' in request.GET
@@ -538,8 +664,7 @@ def client_admin_email_not_started(request, client_id, course_id):
 
     return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_user_progress(request, client_id, course_id, user_id):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
@@ -586,9 +711,10 @@ def client_admin_contact(request, client_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content_course_list(request):
-    courses = course_api.get_course_list()
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_list(request, restrict_to_courses_ids=None):
+    courses = course_api.get_course_list(ids=restrict_to_courses_ids)
     for course in courses:
         course.id = urlquote(course.id)
 
@@ -602,14 +728,17 @@ def course_meta_content_course_list(request):
         data
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_items(request, course_id, restrict_to_courses_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content_course_items(request):
-    course_id = request.GET.get('course_id', None)
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
     data = {
         "course_id": urlquote(course_id),
-        "items": items
+        "items": items,
+        "feature_flags": features,
     }
 
     return render(
@@ -618,21 +747,23 @@ def course_meta_content_course_items(request):
         data
     )
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content_course_item_new(request):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
     error = None
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
         course_id = form.data['course_id']
+        AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
         if form.is_valid():
             item = form.save()
-            return redirect('/admin/course-meta-content/items?course_id=%s' % urlquote(course_id))
+            return redirect('/admin/course-meta-content/items/%s' % urlquote(course_id))
         else:
             error = "please fix the problems indicated below."
     else:
         course_id = request.GET.get('course_id', None)
-        init = {'course_id': course_id }
+        AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+        init = {'course_id': course_id}
         form = CuratedContentItemForm(initial=init)
 
     data = {
@@ -640,7 +771,7 @@ def course_meta_content_course_item_new(request):
         "form": form,
         "error": error,
         "form_action": "/admin/course-meta-content/item/new",
-        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % urlquote(course_id)
+        "cancel_link": "/admin/course-meta-content/items/%s" % urlquote(course_id)
     }
     return render(
             request,
@@ -648,16 +779,17 @@ def course_meta_content_course_item_new(request):
             data
         )
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content_course_item_edit(request, item_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_ids=None):
     error = None
     item = CuratedContentItem.objects.filter(id=item_id)[0]
+    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('/admin/course-meta-content/items?course_id=%s' % urlquote(item.course_id))
+            return redirect('/admin/course-meta-content/items/%s' % urlquote(item.course_id))
         else:
             error = "please fix the problems indicated below."
     else:
@@ -668,7 +800,7 @@ def course_meta_content_course_item_edit(request, item_id):
         "error": error,
         "item": item,
         "form_action": "/admin/course-meta-content/item/%d/edit" % item.id,
-        "cancel_link": "/admin/course-meta-content/items?course_id=%s" % urlquote(item.course_id)
+        "cancel_link": "/admin/course-meta-content/items/%s" % urlquote(item.course_id)
     }
 
     return render(
@@ -677,15 +809,15 @@ def course_meta_content_course_item_edit(request, item_id):
         data
     )
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_meta_content_course_item_delete(request, item_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_meta_content_course_item_delete(request, item_id, restrict_to_courses_ids=None):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
+    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
     course_id = urlquote(item.course_id)
     item.delete()
 
-    return redirect('/admin/course-meta-content/items?course_id=%s' % course_id)
-
+    return redirect('/admin/course-meta-content/items/%s' % course_id)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_list(request):
@@ -706,7 +838,6 @@ def client_list(request):
         'admin/client/list.haml',
         data
     )
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -758,7 +889,6 @@ def client_new(request):
         data
     )
 
-
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_edit(request, client_id):
@@ -799,7 +929,6 @@ def client_edit(request, client_id):
         'admin/client/edit.haml',
         data
     )
-
 
 def _format_upload_results(upload_results):
     upload_results.message = _("Successfully processed {} of {} records").format(
@@ -958,9 +1087,6 @@ def client_resend_user_invite(request, client_id, user_id):
             content_type='application/json'
         )
 
-
-
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_list(request):
     programs = Program.list()
@@ -979,7 +1105,6 @@ def program_list(request):
         'admin/program/list.haml',
         data
     )
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -1015,7 +1140,6 @@ def program_new(request):
         'admin/program/new.haml',
         data
     )
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -1064,7 +1188,6 @@ def program_edit(request, program_id):
         data
     )
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def program_detail(request, program_id, detail_view="detail"):
     program = Program.fetch(program_id)
@@ -1089,7 +1212,6 @@ def program_detail(request, program_id, detail_view="detail"):
         view,
         data,
     )
-
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def upload_student_list(request, client_id):
@@ -1184,7 +1306,6 @@ def download_student_list(request, client_id):
 
     return response
 
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_program_report(request, program_id):
     filename = "Empty Report.csv"
@@ -1197,49 +1318,6 @@ def download_program_report(request, program_id):
     )
 
     return response
-
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def download_group_projects_report(request, course_id):
-    filename = slugify(
-        unicode(
-            "Group Report for {} on {}".format(
-                course_id,
-                datetime.now().isoformat()
-            )
-        )
-    ) + ".csv"
-
-    url_prefix = "{}://{}".format(
-        "https" if request.is_secure() else "http",
-        request.META['HTTP_HOST']
-    )
-
-    response = HttpResponse(
-        generate_workgroup_csv_report(course_id, url_prefix),
-        content_type='text/csv'
-    )
-
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
-        filename
-    )
-
-    return response
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def group_work_status(request, course_id, group_id=None):
-    wcd = WorkgroupCompletionData(course_id, group_id)
-    data = wcd.build_report_data()
-    data.update({'selected_client_tab':'group_work_status'})
-
-    template = 'admin/workgroup/workgroup_{}report.haml'.format('detail_' if group_id else '')
-
-    return render(
-        request,
-        template,
-        data
-    )
-
 
 def _prepare_program_display(program):
     if hasattr(program, "start_date") and hasattr(program, "end_date"):
@@ -1312,7 +1390,6 @@ def add_courses(request, program_id):
             except ApiError as e:
                 message = e.message
                 status_code = e.code
-
 
     return HttpResponse(
         json.dumps({"message": _("Successfully saved courses to {} program").format(program.display_name)}),
@@ -1402,63 +1479,6 @@ def add_students_to_course(request, client_id):
         content_type='application/json'
     )
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def workgroup_list(request):
-    ''' handles requests for login form and their submission '''
-
-    if request.method == 'POST':
-        if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
-            return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
-
-
-    programs = Program.list()
-
-    data = {
-        "principal_name": _("Group Work"),
-        "principal_name_plural": _("Group Work"),
-        "principal_new_url": "/admin/workgroup/workgroup_new",
-        "programs": programs,
-    }
-
-    return render(
-        request,
-        'admin/workgroup/list.haml',
-        data
-    )
-
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def workgroup_programs_list(request):
-    ''' handles requests for login form and their submission '''
-
-    if request.method == 'POST':
-        group_id = request.POST["group_id"]
-    if request.method == 'GET':
-        group_id = request.GET["group_id"]
-
-    if group_id == 'select':
-        return render(
-            request,
-            'admin/workgroup/courses_list.haml',
-            {
-                "courses": {},
-            }
-        )
-    else:
-        program = Program.fetch(group_id)
-        courses = program.fetch_courses()
-
-        data = {
-            "courses": courses,
-        }
-
-    return render(
-        request,
-        'admin/workgroup/courses_list.haml',
-        data
-    )
-
 class GroupProjectInfo(object):
     def __init__(self, id, name, status, organization=None, organization_id=0):
         self.id = id
@@ -1499,15 +1519,230 @@ def load_group_projects_info_for_course(course, companies):
 
     return group_projects
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def workgroup_detail(request, course_id, workgroup_id):
+def not_authorized(request):
+    return render(request, 'admin/not_authorized.haml')
+
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+@client_admin_access
+def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image=None):
+    ''' handles requests for login form and their submission '''
+    if(client_id == 'new' and not company_image):
+        company_image = "/static/image/empty_avatar.png"
+    elif not company_image:
+        client = Organization.fetch(client_id)
+        company_image = client.image_url(size=None, path='absolute')
+
+    if '?' in company_image:
+        company_image = company_image + '&' + format(datetime.now(), u'U')
+    else:
+        company_image = company_image + '?' + format(datetime.now(), u'U')
+
+    form = UploadCompanyImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+        "company_image": company_image,
+    }
+
+    return render(
+        request,
+        'admin/client/{}.haml'.format(template),
+        data
+    )
+
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+@client_admin_access
+def company_image_edit(request, client_id="new"):
+    if request.method == 'POST':
+        heightPosition = request.POST.get('height-position')
+        widthPosition = request.POST.get('width-position')
+        x1Position = request.POST.get('x1-position')
+        x2Position = request.POST.get('x2-position')
+        y1Position = request.POST.get('y1-position')
+        y2Position = request.POST.get('y2-position')
+        CompanyImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2].split('?')[0]
+
+        if client_id != 'new':
+            client = Organization.fetch(client_id)
+
+        from PIL import Image
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+
+        if CompanyImageUrl[:10] == '/accounts/':
+            image_url = CompanyImageUrl[10:]
+        elif CompanyImageUrl[:8] == '/static/':
+            prefix = 'https://' if request.is_secure() else 'http://'
+            image_url = prefix + request.get_host() + CompanyImageUrl
+        else:
+            image_url = CompanyImageUrl
+
+        image_url = image_url[1:] if image_url[0] == '/' else image_url
+        new_image_url = image_url
+
+        if default_storage.exists(image_url):
+
+            original = Image.open(default_storage.open(image_url))
+
+            width, height = original.size   # Get dimensions
+            left = int(x1Position)
+            top = int(y1Position)
+            right = int(x2Position)
+            bottom = int(y2Position)
+            cropped_example = original.crop((left, top, right, bottom))
+            new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
+            Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
+
+        if client_id == 'new':
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url}), content_type="application/json")
+        else:
+            client.logo_url = '/accounts/' + new_image_url
+            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
+            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url, 'client_id': client.id}), content_type="application/json")
+
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+def upload_company_image(request, client_id='new'):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = UploadCompanyImageForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            from PIL import Image
+
+            temp_image = request.FILES['company_image']
+            allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
+            if temp_image.content_type in allowed_types:
+                if client_id == 'new':
+                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
+                    Organization.save_profile_image(Image.open(temp_image), company_image)
+                else:
+                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}.jpg'.format(client_id)
+                    Organization.save_profile_image(Image.open(temp_image), company_image)
+            else:
+                error = "Error uploading file. Please try again and be sure to use an accepted file format."
+            return HttpResponse(change_company_image(request=request, client_id=client_id, template='change_company_image', error=error, company_image='/accounts/' + company_image), content_type='text/html')
+        else:
+            error = "Error uploading file. Please try again and be sure to use an accepted file format."
+            return HttpResponse(change_company_image(request, client_id, 'change_company_image', error, '/accounts/' + company_image), content_type='text/html')
+    else:
+        ''' adds a new image '''
+        form = UploadCompanyImageForm(request)  # An unbound form
+
+    data = {
+        "form": form,
+        "client_id": client_id,
+        "error": error,
+    }
+
+    return render(
+        request,
+        'admins/clients/upload_company_image.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def download_group_list(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+
+    course = load_course(course_id, request=request)
+    students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
+    group_projects = load_group_projects_info_for_course(course, companies)
+    group_project_groups, students = filter_groups_and_students(group_projects, students, restrict_to_users_ids)
+
+    filename = slugify(unicode("Groups List for {} on {}".format(
+        course.name,
+        datetime.now().isoformat()
+    )))
+
+    response = HttpResponse(
+        get_group_list_as_file(group_projects, group_project_groups),
+        content_type='text/csv'
+    )
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(
+        filename
+    )
+
+    return response
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def download_group_projects_report(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    filename = slugify(
+        unicode(
+            "Group Report for {} on {}".format(
+                course_id,
+                datetime.now().isoformat()
+            )
+        )
+    ) + ".csv"
+
+    url_prefix = "{}://{}".format(
+        "https" if request.is_secure() else "http",
+        request.META['HTTP_HOST']
+    )
+
+    response = HttpResponse(
+        generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids),
+        content_type='text/csv'
+    )
+
+    response['Content-Disposition'] = 'attachment; filename={}'.format(
+        filename
+    )
+
+    return response
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    wcd = WorkgroupCompletionData(course_id, group_id, restrict_to_users_ids)
+    data = wcd.build_report_data()
+    data.update({'selected_client_tab':'group_work_status'})
+
+    template = 'admin/workgroup/workgroup_{}report.haml'.format('detail_' if group_id else '')
+
+    return render(
+        request,
+        template,
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     '''
     Get detailed information about the specific workgroup for this course
     '''
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+
     workgroup = WorkGroup.fetch(workgroup_id)
     additional_fields = ["avatar_url"]
-    user_ids = [str(u.id) for u in workgroup.users]
-    users = user_api.get_users(ids=user_ids,fields=additional_fields)
+    user_ids = set(u.id for u in workgroup.users)
+    if restrict_to_users_ids is not None:
+        user_ids &= restrict_to_users_ids
+    users = user_api.get_users(ids=[str(id) for id in user_ids], fields=additional_fields)
     project = Project.fetch(workgroup.project)
 
     course = load_course(course_id, request=request)
@@ -1534,20 +1769,77 @@ def workgroup_detail(request, course_id, workgroup_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def workgroup_course_detail(request, course_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    selected_project_id = request.GET.get("project_id", None)
+    course = load_course(course_id)
+
+    students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
+
+    if len(course.group_project_chapters) < 1:
+        return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
+
+    group_projects = Project.fetch_projects_for_course(course.id)
+    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
+
+    for project in group_projects:
+        if group_project_lookup.has_key(project.content_id):
+            project.status = True
+            project.selected = (selected_project_id == str(project.id))
+            group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
+            project.name = group_project_chapter.name
+            # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
+            project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
+        else:
+            project.status = False
+            project.activities = []
+            project.name = project.content_id
+
+        if project.organization:
+            project.organization = Organization.fetch(project.organization).display_name
+
+        project_assignment_groups = []
+        for workgroup in project.workgroups:
+            project_assignment_groups.extend(ReviewAssignmentGroup.list_for_workgroup(workgroup))
+
+        for activity in project.activities:
+            activity.xblock = WorkGroupActivityXBlock.fetch_from_uri(get_group_activity_xblock(activity).uri)
+            activity_assignments = [pag for pag in project_assignment_groups if hasattr(pag, "xblock_id") and pag.xblock_id == activity.xblock.id]
+            activity.has_assignments = (len(activity_assignments) > 0)
+            activity.js_safe_id = re.sub(r'\W', '', activity.id)
+
+    data = {
+        "course": course,
+        "group_projects": group_projects,
+        "selected_client_tab": "assignments",
+    }
+
+    return render(
+        request,
+        'admin/workgroup/project_assignment.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id, request=request)
 
-    students, companies = getStudentsWithCompanies(course)
+    students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
 
     if len(course.group_project_chapters) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = load_group_projects_info_for_course(course, companies)
-    group_project_groups, students = filter_groups_and_students(group_projects, students)
+    group_project_groups, students = filter_groups_and_students(group_projects, students, restrict_to_users_ids)
 
     for project in group_projects:
         project.groups = group_project_groups[project.id]
@@ -1569,19 +1861,80 @@ def workgroup_course_detail(request, course_id):
         data
     )
 
-@ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def workgroup_group_create(request, course_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+def workgroup_programs_list(request, restrict_to_programs_ids=None):
+    ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
-        students = request.POST.getlist('students[]')
+        program_id = request.POST["group_id"]
+    if request.method == 'GET':
+        program_id = request.GET["group_id"]
+
+    if program_id == 'select':
+        return render(
+            request,
+            'admin/workgroup/courses_list.haml',
+            {
+                "courses": {},
+            }
+        )
+    else:
+        AccessChecker.check_has_program_access(request, int(program_id), restrict_to_programs_ids)
+
+        program = Program.fetch(program_id)
+        courses = program.fetch_courses()
+
+        data = {
+            "courses": courses,
+        }
+
+    return render(
+        request,
+        'admin/workgroup/courses_list.haml',
+        data
+    )
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+
+    if request.method == 'POST':
+
+        students = set(int(user_id) for user_id in request.POST.getlist('students[]'))
+        if restrict_to_users_ids is not None:
+            students &= restrict_to_users_ids
+
+        try:
+            workgroup = WorkGroup.fetch(group_id)
+            workgroup.add_user_list(students)
+            return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
+
+        except ApiError as err:
+            error = err.message
+            return HttpResponse(json.dumps({'status': error}), content_type="application/json")
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+
+    if request.method == 'POST':
+        students = set(int(user_id) for user_id in request.POST.getlist('students[]'))
+        if restrict_to_users_ids is not None:
+            students &= restrict_to_users_ids
         project_id = request.POST['project_id']
 
-        # load project, and make sure if private that all students are in the correct organisation
+        # load project, and make sure if private that all students are in the correct organization
         project = Project.fetch(project_id)
         if project.organization is not None:
             organization = Organization.fetch(project.organization)
-            bad_users = [u for u in students if int(u) not in organization.users]
+            bad_users = [u for u in students if u not in organization.users]
 
             if len(bad_users) > 0:
                 message = "Bad users {} for private project".format(
@@ -1605,12 +1958,49 @@ def workgroup_group_create(request, course_id):
 
     return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def workgroup_group_remove(request, group_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
+    if request.method == 'POST':
+
+        remove_student = request.POST['student']
+        AccessChecker.check_has_user_access(request, int(remove_student), restrict_to_users_ids)
+
+        workgroup = WorkGroup.fetch(group_id)
+        workgroup.remove_user(remove_student)
+
+        course_id = request.POST['course_id']
+        course = load_course(course_id, request=request)
+
+        students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
+
+        group_projects = load_group_projects_info_for_course(course, companies)
+        group_project_groups, students = filter_groups_and_students(group_projects, students, restrict_to_users_ids)
+
+        data = {
+            "students": students,
+        }
+        return render(
+            request,
+            'admin/workgroup/student_table.haml',
+            data,
+        )
+
+    elif request.method == 'DELETE':
+        WorkGroup.delete(group_id)
+        return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
+
+    return HttpResponse('', content_type='application/json')
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def workgroup_project_create(request, course_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     message = _("Error creating project")
     status_code = 400
+
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
 
     if request.method == "POST":
         project_section = request.POST["project_section"]
@@ -1655,161 +2045,32 @@ def workgroup_remove_project(request, project_id):
 
     return HttpResponse(json.dumps({"message": "Project deleted successfully."}), content_type="application/json")
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+def workgroup_list(request, restrict_to_programs_ids=None):
+    ''' handles requests for login form and their submission '''
 
-@ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def workgroup_group_update(request, group_id, course_id):
     if request.method == 'POST':
+        if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
+            return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
-        students = request.POST.getlist("students[]")
-        try:
-            workgroup = WorkGroup.fetch(group_id)
-            workgroup.add_user_list(students)
-            return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
+    programs = Program.list()
 
-        except ApiError as err:
-            error = err.message
-            return HttpResponse(json.dumps({'status': error}), content_type="application/json")
-
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def workgroup_group_remove(request, group_id):
-    if request.method == 'POST':
-
-        remove_student = request.POST['student']
-
-        workgroup = WorkGroup.fetch(group_id)
-        workgroup.remove_user(remove_student)
-
-        course_id = request.POST['course_id']
-        course = load_course(course_id, request=request)
-
-        students, companies = getStudentsWithCompanies(course)
-
-        group_projects = load_group_projects_info_for_course(course, companies)
-        group_project_groups, students = filter_groups_and_students(group_projects, students)
-
-        data = {
-            "students": students,
-        }
-        return render(
-            request,
-            'admin/workgroup/student_table.haml',
-            data,
-        )
-
-    elif request.method == 'DELETE':
-        WorkGroup.delete(group_id)
-        return HttpResponse(json.dumps({'status': 'success'}), content_type="application/json")
-
-    return HttpResponse('', content_type='application/json')
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def download_group_list(request, course_id):
-
-    course = load_course(course_id, request=request)
-    students, companies = getStudentsWithCompanies(course)
-    group_projects = load_group_projects_info_for_course(course, companies)
-    group_project_groups, students = filter_groups_and_students(group_projects, students)
-
-    filename = slugify(unicode("Groups List for {} on {}".format(
-        course.name,
-        datetime.now().isoformat()
-    )))
-
-    response = HttpResponse(
-        get_group_list_as_file(group_projects, group_project_groups),
-        content_type='text/csv'
-    )
-    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(
-        filename
-    )
-
-    return response
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def generate_assignments(request, project_id, activity_id):
-    error = _("Problem generating activity review assignments")
-    status_code = 400
-    try:
-        project = Project.fetch(project_id)
-
-        # Fetch workgroups
-        workgroups = [WorkGroup.fetch(wg) for wg in project.workgroups]
-        # Get list of all users
-        user_ids = []
-        for wkgrp in workgroups:
-            user_ids.extend(wkgrp.user_ids)
-
-        group_xblock = WorkGroupActivityXBlock.fetch_from_activity(project.course_id, activity_id)
-
-        rap = ReviewAssignmentProcessor(
-            user_ids,
-            workgroups,
-            group_xblock.id,
-            group_xblock.group_reviews_required_count,
-            group_xblock.user_review_count
-        )
-        rap.distribute(request.POST.get("delete_choice", "off") == "on")
-        rap.store_assignments(project.course_id)
-
-        return HttpResponse(json.dumps({"message": _("Project review assignments allocated")}), content_type='application/json')
-
-    except ApiError as err:
-        error = err.message
-        status_code = err.code
-
-    except ReviewAssignmentUnattainableError as e:
-        error = _("Not enough groups to meet review criteria")
-
-    response = HttpResponse(json.dumps({"message": error}), content_type="application/json")
-    response.status_code = status_code
-    return response
-
-
-def not_authorized(request):
-    return render(request, 'admin/not_authorized.haml')
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def permissions(request):
-    '''
-    Show users within "Administrative" company, and also users that have no company association
-    '''
-
-    organizations = Organization.list()
-
-    ADMINISTRATIVE = 0
-    organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
-    organization_options.extend([(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY])
-
-    org_id = int(request.GET.get('organization', ADMINISTRATIVE))
-    users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
-
-    # get the groups and for each group get the list of users, then intersect them appropriately
-    groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
-    group_members = {group.name : [gu.id for gu in group_api.get_users_in_group(group.id)] for group in groups}
-
-    for user in users:
-        group_names = [g.name for g in groups]
-        roles = []
-        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_ADMIN, []):
-            roles.append(_('ADMIN'))
-        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_TA, []):
-            roles.append(_('TA'))
-        if user.id in group_members.get(PERMISSION_GROUPS.CLIENT_ADMIN, []):
-            roles.append(_('COMPANY ADMIN'))
-        if user.id in group_members.get(PERMISSION_GROUPS.MCKA_OBSERVER, []):
-            roles.append(_('OBSERVER'))
-        user.roles = ", ".join(roles)
-        user.company_list = ", ".join([org.display_name for org in user.organizations])
+    if restrict_to_programs_ids is not None:
+        programs = [program for program in programs if program.id in restrict_to_programs_ids]
 
     data = {
-        'users': users,
-        'organization_options': organization_options,
-        'organization_id': org_id
+        "principal_name": _("Group Work"),
+        "principal_name_plural": _("Group Work"),
+        "principal_new_url": "/admin/workgroup/workgroup_new",
+        "programs": programs,
     }
-    return render(request, 'admin/permissions/list.haml', data)
 
+    return render(
+        request,
+        'admin/workgroup/list.haml',
+        data
+    )
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
@@ -1860,176 +2121,84 @@ def edit_permissions(request, user_id):
     }
     return render(request, 'admin/permissions/edit.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-def workgroup_course_assignments(request, course_id):
-    selected_project_id = request.GET.get("project_id", None)
-    course = load_course(course_id)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def permissions(request):
+    '''
+    Show users within "Administrative" company, and also users that have no company association
+    '''
 
-    students, companies = getStudentsWithCompanies(course)
+    organizations = Organization.list()
 
-    if len(course.group_project_chapters) < 1:
-        return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
+    ADMINISTRATIVE = 0
+    organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
+    organization_options.extend([(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY])
 
-    group_projects = Project.fetch_projects_for_course(course.id)
-    group_project_lookup = {gp.id: gp.name for gp in course.group_project_chapters}
+    org_id = int(request.GET.get('organization', ADMINISTRATIVE))
+    users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
 
-    for project in group_projects:
-        if group_project_lookup.has_key(project.content_id):
-            project.status = True
-            project.selected = (selected_project_id == str(project.id))
-            group_project_chapter = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
-            project.name = group_project_chapter.name
-            # Needs to be a separate copy here because we'd like to distinguish when 2 projects are both using the same activities below
-            project.activities = copy.deepcopy(get_group_project_activities(group_project_chapter))
-        else:
-            project.status = False
-            project.activities = []
-            project.name = project.content_id
+    # get the groups and for each group get the list of users, then intersect them appropriately
+    groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
+    group_members = {group.name : [gu.id for gu in group_api.get_users_in_group(group.id)] for group in groups}
 
-        if project.organization:
-            project.organization = Organization.fetch(project.organization).display_name
-
-        project_assignment_groups = []
-        for workgroup in project.workgroups:
-            project_assignment_groups.extend(ReviewAssignmentGroup.list_for_workgroup(workgroup))
-
-        for activity in project.activities:
-            activity.xblock = WorkGroupActivityXBlock.fetch_from_uri(get_group_activity_xblock(activity).uri)
-            activity_assignments = [pag for pag in project_assignment_groups if hasattr(pag, "xblock_id") and pag.xblock_id == activity.xblock.id]
-            activity.has_assignments = (len(activity_assignments) > 0)
-            activity.js_safe_id = re.sub(r'\W', '', activity.id)
-
-    data = {
-        "course": course,
-        "group_projects": group_projects,
-        "selected_client_tab": "assignments",
+    _role_map = {
+        PERMISSION_GROUPS.MCKA_ADMIN: _('ADMIN'),
+        PERMISSION_GROUPS.MCKA_TA: _('TA'),
+        PERMISSION_GROUPS.CLIENT_ADMIN: _('COMPANY ADMIN'),
+        PERMISSION_GROUPS.INTERNAL_ADMIN: _('INTERNAL ADMIN'),
+        PERMISSION_GROUPS.MCKA_OBSERVER: _('OBSERVER'),
     }
 
-    return render(
-        request,
-        'admin/workgroup/project_assignment.haml',
-        data
-    )
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image=None):
-    ''' handles requests for login form and their submission '''
-    if(client_id == 'new' and not company_image):
-        company_image = "/static/image/empty_avatar.png"
-    elif not company_image:
-        client = Organization.fetch(client_id)
-        company_image = client.image_url(size=None, path='absolute')
-
-    if '?' in company_image:
-        company_image = company_image + '&' + format(datetime.now(), u'U')
-    else:
-        company_image = company_image + '?' + format(datetime.now(), u'U')
-
-    form = UploadCompanyImageForm(request)  # An unbound form
+    for user in users:
+        roles = [
+            role_name
+            for role_key, role_name in _role_map.iteritems()
+            if user.id in group_members.get(role_key, [])
+        ]
+        user.roles = ", ".join(roles)
+        user.company_list = ", ".join([org.display_name for org in user.organizations])
 
     data = {
-        "form": form,
-        "client_id": client_id,
-        "error": error,
-        "company_image": company_image,
+        'users': users,
+        'organization_options': organization_options,
+        'organization_id': org_id
     }
+    return render(request, 'admin/permissions/list.haml', data)
 
-    return render(
-        request,
-        'admin/client/{}.haml'.format(template),
-        data
-    )
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def generate_assignments(request, project_id, activity_id):
+    error = _("Problem generating activity review assignments")
+    status_code = 400
+    try:
+        project = Project.fetch(project_id)
 
+        # Fetch workgroups
+        workgroups = [WorkGroup.fetch(wg) for wg in project.workgroups]
+        # Get list of all users
+        user_ids = []
+        for wkgrp in workgroups:
+            user_ids.extend(wkgrp.user_ids)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def company_image_edit(request, client_id="new"):
-    if request.method == 'POST':
-        heightPosition = request.POST.get('height-position')
-        widthPosition = request.POST.get('width-position')
-        x1Position = request.POST.get('x1-position')
-        x2Position = request.POST.get('x2-position')
-        y1Position = request.POST.get('y1-position')
-        y2Position = request.POST.get('y2-position')
-        CompanyImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2].split('?')[0]
+        group_xblock = WorkGroupActivityXBlock.fetch_from_activity(project.course_id, activity_id)
 
-        if client_id != 'new':
-            client = Organization.fetch(client_id)
+        rap = ReviewAssignmentProcessor(
+            user_ids,
+            workgroups,
+            group_xblock.id,
+            group_xblock.group_reviews_required_count,
+            group_xblock.user_review_count
+        )
+        rap.distribute(request.POST.get("delete_choice", "off") == "on")
+        rap.store_assignments(project.course_id)
 
-        from PIL import Image
-        from django.core.files.storage import default_storage
-        from django.core.files.base import ContentFile
+        return HttpResponse(json.dumps({"message": _("Project review assignments allocated")}), content_type='application/json')
 
-        if CompanyImageUrl[:10] == '/accounts/':
-            image_url = CompanyImageUrl[10:]
-        elif CompanyImageUrl[:8] == '/static/':
-            prefix = 'https://' if request.is_secure() else 'http://'
-            image_url = prefix + request.get_host() + CompanyImageUrl
-        else:
-            image_url = CompanyImageUrl
+    except ApiError as err:
+        error = err.message
+        status_code = err.code
 
-        image_url = image_url[1:] if image_url[0] == '/' else image_url
-        new_image_url = image_url
+    except ReviewAssignmentUnattainableError as e:
+        error = _("Not enough groups to meet review criteria")
 
-        if default_storage.exists(image_url):
-
-            original = Image.open(default_storage.open(image_url))
-
-            width, height = original.size   # Get dimensions
-            left = int(x1Position)
-            top = int(y1Position)
-            right = int(x2Position)
-            bottom = int(y2Position)
-            cropped_example = original.crop((left, top, right, bottom))
-            new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
-            Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
-
-        if client_id == 'new':
-            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url}), content_type="application/json")
-        else:
-            client.logo_url = '/accounts/' + new_image_url
-            client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
-            return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url, 'client_id': client.id}), content_type="application/json")
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def upload_company_image(request, client_id='new'):
-    ''' handles requests for login form and their submission '''
-    error = None
-    if request.method == 'POST':  # If the form has been submitted...
-        # A form bound to the POST data and FILE data
-        form = UploadCompanyImageForm(request.POST, request.FILES)
-        if form.is_valid():  # All validation rules pass
-
-            from django.core.files.storage import default_storage
-            from django.core.files.base import ContentFile
-            from PIL import Image
-
-            temp_image = request.FILES['company_image']
-            allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
-            if temp_image.content_type in allowed_types:
-                if client_id == 'new':
-                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}-{}-{}.jpg'.format(client_id, request.user.id, format(datetime.now(), u'U'))
-                    Organization.save_profile_image(Image.open(temp_image), company_image)
-                else:
-                    company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}.jpg'.format(client_id)
-                    Organization.save_profile_image(Image.open(temp_image), company_image)
-            else:
-                error = "Error uploading file. Please try again and be sure to use an accepted file format."
-            return HttpResponse(change_company_image(request=request, client_id=client_id, template='change_company_image', error=error, company_image='/accounts/' + company_image), content_type='text/html')
-        else:
-            error = "Error uploading file. Please try again and be sure to use an accepted file format."
-            return HttpResponse(change_company_image(request, client_id, 'change_company_image', error, '/accounts/' + company_image), content_type='text/html')
-    else:
-        ''' adds a new image '''
-        form = UploadCompanyImageForm(request)  # An unbound form
-
-    data = {
-        "form": form,
-        "client_id": client_id,
-        "error": error,
-    }
-
-    return render(
-        request,
-        'admins/clients/upload_company_image.haml',
-        data
-    )
+    response = HttpResponse(json.dumps({"message": error}), content_type="application/json")
+    response.status_code = status_code
+    return response
