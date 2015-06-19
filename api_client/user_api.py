@@ -23,6 +23,7 @@ USER_ROLES = DottableDict(
     INSTRUCTOR='instructor',
     OBSERVER='observer',
     TA='assistant',
+    INTERNAL_ADMIN='internal_admin',
 )
 
 VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "gender", "title", "is_active", "avatar_url"]

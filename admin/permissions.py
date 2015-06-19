@@ -25,7 +25,7 @@ class Permissions(object):
         USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
     }
 
-    def __init__(self, user_id):
+    def __init__(self, user_id, ):
         self.permission_groups = group_api.get_groups_of_type(PERMISSION_TYPE)
         self.current_permissions = [pg.name for pg in user_api.get_user_groups(user_id, PERMISSION_TYPE)]
         self.courses = course_api.get_course_list()
@@ -40,13 +40,6 @@ class Permissions(object):
             "role": role,
         })
         self.save(copy.copy(self.current_permissions), per_course_roles)
-
-    def remove_course_role(self, course_id, role):
-        per_course_roles = [{"course_id": p.course_id, "role": p.role}
-                            for p in self.user_roles if p.course_id != course_id and p.role != role]
-        role_permission = self.permission_for_role.get(course_role['role'], None)
-        new_permissions = [perm for perm in self.current_permissions if perm != role_permission]
-        self.save(new_permissions, per_course_roles)
 
     def save(self, new_permissions, per_course_roles):
         try:
@@ -144,7 +137,7 @@ class InternalAdminRoleManager(object):
 
         operation = cls._role_actions_map[action]
 
-        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INSTRUCTOR)
+        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INTERNAL_ADMIN)
 
     @classmethod
     def handle_course_program_event(cls, sender, *args, **kwargs):

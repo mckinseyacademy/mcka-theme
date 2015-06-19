@@ -28,7 +28,7 @@
           .large-7.medium-7.columns
             - include 'admin/workgroup/project_dropdown.haml'
           .large-5.medium-5.columns.group-selection
-            - if user.is_mcka_admin
+            - if user.is_mcka_admin or user.is_internal_admin
               %a#create-group-project.button.radius.tiny{href: "#", "data-reveal-id": "create-project-modal"}
                 %span= _("Create New Group Project")
               %a#delete-group-project.button.radius.tiny{href: "#", "data-reveal-id": "delete-project-modal"}

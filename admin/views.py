@@ -60,7 +60,7 @@ from .controller import (
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
-    PermissionForm, UploadCompanyImageForm,
+    AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -79,16 +79,21 @@ def ajaxify_http_redirects(func):
 
     return wrapper
 
+def permission_denied(request):
+    template = loader.get_template('not_authorized.haml')
+    context = RequestContext(request, {'request_path': request.path})
+    return HttpResponseForbidden(template.render(context))
+
 class AccessChecker(object):
     @staticmethod
-    def _get_organization_for_user(user):
+    def get_organization_for_user(user):
         try:
             return user_api.get_user_organizations(user.id, organization_object=Client)[0]
         except IndexError:
             return None
 
     @staticmethod
-    def _get_courses_for_organization(org):
+    def get_courses_for_organization(org):
         courses = []
         for program in org.fetch_programs():
             courses.extend(program.fetch_courses())
@@ -101,7 +106,7 @@ class AccessChecker(object):
         if request.user.is_mcka_admin:
             restrict_to_ids = None
         else:
-            org = AccessChecker._get_organization_for_user(request.user)
+            org = AccessChecker.get_organization_for_user(request.user)
             if org:
                 restrict_to_ids = restrict_to_callback(org)
 
@@ -110,9 +115,7 @@ class AccessChecker(object):
         try:
             return func(request, *args, **kwargs)
         except PermissionDenied:
-            template = loader.get_template('not_authorized.haml')
-            context = RequestContext(request, {'request_path': request.path})
-            return HttpResponseForbidden(template.render(context))
+            return permission_denied(request)
 
     @staticmethod
     def check_has_course_access(request, course_id, restrict_to_courses_ids):
@@ -158,7 +161,7 @@ class AccessChecker(object):
         """
         @functools.wraps(func)
         def wrapper(request, *args, **kwargs):
-            restrict_to_callback = AccessChecker._get_courses_for_organization
+            restrict_to_callback = AccessChecker.get_courses_for_organization
             return AccessChecker._do_wrapping(
                 func, request, 'restrict_to_courses_ids', restrict_to_callback, *args, **kwargs
             )
@@ -197,7 +200,7 @@ class AccessChecker(object):
 
             # make sure client admin can access only his company
             elif request.user.is_client_admin or request.user.is_internal_admin:
-                org = AccessChecker._get_organization_for_user(request.user)
+                org = AccessChecker.get_organization_for_user(request.user)
                 if org:
                     valid_client_id = org.id
 
@@ -664,15 +667,20 @@ def client_admin_email_not_started(request, client_id, course_id):
 
     return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def client_admin_user_progress(request, client_id, course_id, user_id):
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
+)
+@checked_course_access # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def client_admin_user_progress(request, client_id, course_id, user_id, restrict_to_courses_ids=None):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
     student.avatar_url = student.image_url(size=48)
     courses = []
-    grades = {grade.course_id:grade for grade in user_api.get_user_grades(user_id)}
+    grades = {grade.course_id: grade for grade in user_api.get_user_grades(user_id)}
     for courseName in userCourses:
         course = load_course(courseName.id, depth=4)
+        if (restrict_to_courses_ids is not None) and (course.id not in restrict_to_courses_ids):
+            continue
         if course.id != course_id:
             grade = grades.get(course.id, None)
             if grade:
@@ -683,8 +691,8 @@ def client_admin_user_progress(request, client_id, course_id, user_id):
                 course.progress = 0
             courses.append(course)
     data = {
-        'courses' : courses,
-        'student' : student,
+        'courses': courses,
+        'student': student,
     }
     return render(
         request,
@@ -2029,10 +2037,11 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     return response
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def workgroup_remove_project(request, project_id):
-    message = _("Error deleting project")
-    status_code = 400
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
+    project = Project.fetch(project_id)
+    AccessChecker.check_has_course_access(request, project.course_id, restrict_to_courses_ids)
 
     try:
         Project.delete(project_id)
@@ -2073,29 +2082,53 @@ def workgroup_list(request, restrict_to_programs_ids=None):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def edit_permissions(request, user_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_courses_ids=None):
     '''
     define or edit existing roles for a single user
     '''
     user = user_api.get_user(user_id)
     error = None
 
+    if request.user.is_mcka_admin:
+        form_class = AdminPermissionForm
+    else:
+        form_class = BasePermissionForm
+        AccessChecker.check_has_user_access(request, int(user_id), restrict_to_users_ids)
+
     permissions = Permissions(user_id)
+    courses = permissions.courses
+    if restrict_to_courses_ids is not None:
+        courses = [course for course in courses if course.id in restrict_to_courses_ids]
 
     if request.method == 'POST':
-        form = PermissionForm(permissions.courses, request.POST)
+        form = form_class(courses, request.POST)
         if form.is_valid():
             per_course_roles = []
-            for course in permissions.courses:
+            for course in courses:
                 course_roles = form.cleaned_data.get(course.id, [])
                 for role in course_roles:
                     per_course_roles.append({
                         'course_id': course.id,
                         'role': role
                     })
+            # Include the current settings for courses which the user doesn't have the right to modify.
+            for course in permissions.courses:
+                if course not in courses:
+                    extension = [
+                        {'course_id': course.id, 'role': role.role}
+                        for role in permissions.user_roles if role.course_id == course.id
+                    ]
+                    per_course_roles.extend(extension)
+
+            if request.user.is_mcka_admin:
+                new_perms = form.cleaned_data.get('permissions')
+            else:
+                new_perms = permissions.current_permissions
             try:
-                permissions.save(form.cleaned_data.get('permissions'), per_course_roles)
+                permissions.save(new_perms, per_course_roles)
             except PermissionSaveError as err:
                 error = str(err)
             else:
@@ -2105,13 +2138,13 @@ def edit_permissions(request, user_id):
             'permissions': permissions.current_permissions
         }
 
-        for course in permissions.courses:
+        for course in courses:
             initial_data[course.id] = []
             for role in permissions.user_roles:
                 if course.id == role.course_id:
                     initial_data[course.id].append(role.role)
 
-        form = PermissionForm(permissions.courses, initial=initial_data, label_suffix='')
+        form = form_class(courses, initial=initial_data, label_suffix='')
 
     data = {
         'form': form,
@@ -2121,31 +2154,41 @@ def edit_permissions(request, user_id):
     }
     return render(request, 'admin/permissions/edit.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def permissions(request):
     '''
-    Show users within "Administrative" company, and also users that have no company association
+    For McKinsey Admins, show users within "Administrative" company, and also users that have no company association.
+
+    For Internal Admins, show users within their company.
     '''
-
     organizations = Organization.list()
-
     ADMINISTRATIVE = 0
-    organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
-    organization_options.extend([(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY])
 
-    org_id = int(request.GET.get('organization', ADMINISTRATIVE))
-    users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
+    if request.user.is_mcka_admin:
+        organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
+        organization_options.extend(
+            [(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY]
+        )
+        org_id = int(request.GET.get('organization', ADMINISTRATIVE))
+        users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
+    else:
+        org = AccessChecker.get_organization_for_user(request.user)
+        if not org:
+            return permission_denied(request)
+        organization_options = None
+        org_id = org.id
+        users = get_admin_users(organizations, org_id, ADMINISTRATIVE)
 
     # get the groups and for each group get the list of users, then intersect them appropriately
     groups = group_api.get_groups_of_type(group_api.PERMISSION_TYPE)
     group_members = {group.name : [gu.id for gu in group_api.get_users_in_group(group.id)] for group in groups}
 
     _role_map = {
-        PERMISSION_GROUPS.MCKA_ADMIN: _('ADMIN'),
         PERMISSION_GROUPS.MCKA_TA: _('TA'),
+        PERMISSION_GROUPS.MCKA_OBSERVER: _('OBSERVER'),
+        PERMISSION_GROUPS.MCKA_ADMIN: _('ADMIN'),
         PERMISSION_GROUPS.CLIENT_ADMIN: _('COMPANY ADMIN'),
         PERMISSION_GROUPS.INTERNAL_ADMIN: _('INTERNAL ADMIN'),
-        PERMISSION_GROUPS.MCKA_OBSERVER: _('OBSERVER'),
     }
 
     for user in users:
