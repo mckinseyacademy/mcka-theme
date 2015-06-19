@@ -95,11 +95,9 @@ class ReviewAssignmentGroup(BaseGroupModel):
             review_assignment_groups = [rag for rag in review_assignment_groups if rag.xblock_id == xblock_id]
         return review_assignment_groups
 
-
 class ContactGroup(BaseGroupModel):
 
     group_type = "contact_group"
-
 
 class Client(organization_models.Organization):
 
@@ -231,6 +229,13 @@ class UserRegistrationBatch(db_models.Model):
             old_record.delete()
         return True
 
+class ClientNavLinks(db_models.Model):
+    client_id = db_models.IntegerField(unique=False, db_index=True)
+    link_name = db_models.CharField(max_length=200)
+    link_label = db_models.CharField(max_length=200)
+    link_url= db_models.CharField(max_length=200)
+    created_at = db_models.DateTimeField(auto_now_add=True)
+    updated_at = db_models.DateTimeField(auto_now=True)
 
 ROLE_ACTIONS = DottableDict(
     GRANT='grant',

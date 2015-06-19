@@ -23,3 +23,9 @@
     - else
       %a{href:"/admin/clients/#{client.id}/contact"}
         = _("Assign Contacts to Client")
+  %li
+    - if selected_client_tab == 'nav_links'
+      %span.selected= _("Nav Links")
+    - else
+      %a{href:"/admin/clients/#{client.id}/nav_links"}
+        = _("Nav Links")

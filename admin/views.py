@@ -49,7 +49,7 @@ from main.models import CuratedContentItem
 
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
-    UserRegistrationBatch, UserRegistrationError
+    UserRegistrationBatch, UserRegistrationError, ClientNavLinks
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -988,6 +988,39 @@ def client_detail_contact(request, client_id):
         'admin/client/contact.haml',
         data,
     )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def client_detail_nav_links(request, client_id):
+
+    client = Client.fetch(client_id)
+
+    if request.method == 'POST':
+        for i in range(1, 5):
+            link_name = request.POST['name_%s' % i]
+            link_label = request.POST['label_%s' % i]
+            link_url = request.POST['link_%s' % i]
+            if link_label and link_url:
+                (link, created) = ClientNavLinks.objects.get_or_create(
+                        client_id=client_id,
+                        link_name=link_name,
+                        link_label=link_label,
+                        link_url=link_url
+                )
+
+    nav_links = ClientNavLinks.objects.filter(client_id=client_id)
+
+    data = {
+        'client': client,
+        'nav_links': nav_links,
+        'selected_client_tab': 'nav_links',
+    }
+
+    return render(
+        request,
+        'admin/client/nav_links.haml',
+        data,
+    )
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def client_detail_add_contact(request, client_id):
