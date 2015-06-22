@@ -44,7 +44,7 @@
                     %span Week ={week.index}:
                     ={week.start}-={week.end}
               %td
-                - if week.group_only
+                - if feature_flags.group_work and week.group_only
                   %div N/A (focus on Group Work)
                 - for lesson in week.lessons
                   .lesson-with-list.lesson-row-item
