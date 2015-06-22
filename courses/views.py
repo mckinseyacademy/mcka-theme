@@ -405,6 +405,8 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     progress_user = user_api.get_user(user_id)
     social = get_social_metrics(course_id, user_id)
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    course.group_work_enabled = feature_flags.group_work
 
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
