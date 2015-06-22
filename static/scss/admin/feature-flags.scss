@@ -4,5 +4,12 @@
   ul {
     margin-top: rem-calc(10);
     list-style-type: none;
+
+    li {
+      p {
+        max-width: rem-calc(345);
+        padding-bottom: rem-calc(20);
+      }
+    }
   }
 }
