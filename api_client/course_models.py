@@ -344,7 +344,7 @@ class Course(CategorisedJsonObject):
         }
         graded_lessons = [lesson for lesson in self.chapters if lesson.assesment_score != None]
         for lesson in graded_lessons:
-            for sequential in lesson.sequentials: 
+            for sequential in lesson.sequentials:
                 if sequential.name.find('Assessment') != -1:
                     for module in sequential.pages:
                         is_assesment = module.name.find('Assessment') != -1
@@ -352,10 +352,11 @@ class Course(CategorisedJsonObject):
                             module.assesment_score = lesson.assesment_score
                             graded_items["modules"].append(module)
 
-        for project in self.group_projects:
-            for activity in project.activities:
-                if activity.is_graded:
-                    graded_items["group_activities"].append(activity)
+        if self.group_work_enabled:
+            for project in self.group_projects:
+                for activity in project.activities:
+                    if activity.is_graded:
+                        graded_items["group_activities"].append(activity)
 
         return graded_items
 
