@@ -178,18 +178,18 @@ def course_cohort(request, course_id):
 
 def _render_group_work(request, course, project_group, group_project):
 
-    seqid = request.GET.get("seqid", None)
-    if seqid and " " in seqid:
-        seqid = seqid.replace(" ", "+")
+    actid = request.GET.get("actid", None)
+    if actid and " " in actid:
+        actid = actid.replace(" ", "+")
 
     if not group_project is None:
-        sequential, page = group_project_location(
+        activity, usage_id = group_project_location(
             group_project,
-            seqid
+            actid
         )
-        vertical_usage_id = page.vertical_usage_id() if page else None
+        vertical_usage_id = usage_id
     else:
-        sequential = page = vertical_usage_id = None
+        activity = vertical_usage_id = None
 
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
@@ -208,8 +208,7 @@ def _render_group_work(request, course, project_group, group_project):
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "project_group": project_group,
         "group_project": group_project,
-        "current_sequential": sequential,
-        "current_page": page,
+        "current_activity": activity,
         "ta_user": ta_user,
         "group_work_url": request.path_info,
     }

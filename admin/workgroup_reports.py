@@ -10,7 +10,6 @@ from api_client import course_api, user_api, group_api
 from api_client.organization_models import Organization
 
 from .controller import load_course
-from .controller import get_group_project_activities
 from .models import WorkGroup
 from .models import WorkGroupActivityXBlock
 
@@ -59,11 +58,12 @@ class WorkgroupCompletionData(object):
         self.activity_xblocks = {}
         self.course = load_course(course_id)
         self.restrict_to_users_ids = restrict_to_users_ids
-        group_project_lookup = {gp.id: gp.name for gp in self.course.group_project_chapters}
+        group_project_lookup = {gp.id: gp.name for gp in self.course.group_projects}
 
         if group_id is None:
-            self.projects = [p for p in Project.fetch_projects_for_course(course_id) if
-                             group_project_lookup.has_key(p.content_id)]
+            self.projects = [
+                p for p in Project.fetch_projects_for_course(course_id) if p.content_id in group_project_lookup
+            ]
         else:
             self.workgroup_id = int(group_id)
             self.projects = [Project.fetch(WorkGroup.fetch(self.workgroup_id).project)]
@@ -118,12 +118,10 @@ class WorkgroupCompletionData(object):
             if project.organization:
                 organization = Organization.fetch(project.organization)
                 project.organization_name = organization.display_name
-            self.project_workgroups[project.id] = {
-                w_id: WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups
-            }
-            group_project = [ch for ch in self.course.group_project_chapters if ch.id == project.content_id][0]
+            self.project_workgroups[project.id] = {w_id:WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups}
+            group_project = [gp for gp in self.course.group_projects if gp.id == project.content_id][0]
             project.name = group_project.name
-            self.project_activities[project.id] = get_group_project_activities(group_project)
+            self.project_activities[project.id] = group_project.activities
 
             # load up user review assignments
             if self.workgroup_id:
@@ -138,7 +136,7 @@ class WorkgroupCompletionData(object):
 
     def _review_link(self, workgroup, activity=None):
         if activity:
-            return "/courses/{}/group_work/{}?seqid={}".format(
+            return "/courses/{}/group_work/{}?actid={}".format(
                 self.course.id,
                 workgroup.id,
                 activity.id,

@@ -83,9 +83,9 @@
       %label{"for": "project_section"}
         Project Section
       %select#project_section{type: "text", name: "project_section"}
-        - for group_project_chapter in course.group_project_chapters
-          %option{value: "#{group_project_chapter.id}"}
-            = group_project_chapter.name
+        - for group_project in course.group_projects
+          %option{value: "#{group_project.id}"}
+            = group_project.name
       %input#new-project-private{type: "checkbox", name: "new-project-private"}
       %label{"for": "new-project-private"}
         Is project private

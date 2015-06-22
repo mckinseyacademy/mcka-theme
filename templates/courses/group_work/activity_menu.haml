@@ -1,12 +1,12 @@
 %ul.lesson-menu
-  - for sequential in group_project.sequentials
+  - for activity in group_project.activities
     %li
-      - if sequential.id != current_sequential.id
-        %a{href: "#{group_work_url}?seqid=#{sequential.id}"}
-          = sequential.name
+      - if activity.id != current_activity.id
+        %a{href: "#{group_work_url}?actid=#{activity.id}"}
+          = activity.name
       - else
-        %a.selected{href: "#{group_work_url}?seqid=#{sequential.id}"}
-          = sequential.name
-        - if sequential.is_group_activity
+        %a.selected{href: "#{group_work_url}?actid=#{activity.id}"}
+          = activity.name
+        - if activity.is_group_activity
           %span.activity_dots
 

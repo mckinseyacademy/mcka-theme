@@ -7,10 +7,12 @@ from django.conf import settings
 
 import hashlib
 import random
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.utils import timezone
 from django.db import models as db_models
 from django.dispatch import Signal
+
+GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'group-project-v2-activity'
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -172,10 +174,7 @@ class WorkgroupMilestoneDates(JsonObject):
 
 class WorkGroupActivityXBlock(JsonObject):
 
-    required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates']
-    object_map = {
-        'milestone_dates': WorkgroupMilestoneDates,
-    }
+    required_fields = ['group_reviews_required_count', 'user_review_count']
 
     @classmethod
     def fetch_from_uri(cls, uri):
@@ -184,6 +183,8 @@ class WorkGroupActivityXBlock(JsonObject):
     @classmethod
     def fetch_from_activity(cls, course_id, activity_id):
         activity = course_api.get_course_content_detail(course_id, activity_id)
+        if activity.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY:
+            return course_api.get_module_details(activity.uri, cls.required_fields, cls)
         vertical = course_api.get_module_details(activity.children[0].uri)
         return course_api.get_module_details(vertical.children[0].uri, cls.required_fields, cls)
 
