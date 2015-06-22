@@ -137,7 +137,7 @@ class InternalAdminRoleManager(object):
 
         operation = cls._role_actions_map[action]
 
-        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INTERNAL_ADMIN)
+        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INSTRUCTOR)
 
     @classmethod
     def handle_course_program_event(cls, sender, *args, **kwargs):

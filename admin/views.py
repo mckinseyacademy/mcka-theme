@@ -826,10 +826,15 @@ def course_meta_content_course_item_delete(request, item_id, restrict_to_courses
 
     return redirect('/admin/course-meta-content/items/%s' % course_id)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_list(request):
     ''' handles requests for login form and their submission '''
     clients = Client.list()
+    if not request.user.is_mcka_admin:
+        clients = [
+            client for client in clients
+            if client.id == AccessChecker.get_organization_for_user(request.user).id
+        ]
     for client in clients:
         client.detail_url = '/admin/clients/{}'.format(client.id)
 
@@ -838,6 +843,7 @@ def client_list(request):
         "principal_name_plural": _("Clients"),
         "principal_new_url": "/admin/clients/client_new",
         "principals": clients,
+        "read_only": not request.user.is_mcka_admin,
     }
 
     return render(
@@ -897,7 +903,8 @@ def client_new(request):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
 def client_edit(request, client_id):
     error = None
     client = Client.fetch(client_id)
@@ -945,7 +952,8 @@ def _format_upload_results(upload_results):
 
     return upload_results
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
 
@@ -996,7 +1004,8 @@ def client_detail_contact(request, client_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
 def client_detail_nav_links(request, client_id):
 
     client = Client.fetch(client_id)
@@ -1091,7 +1100,8 @@ def client_detail_remove_contact(request, client_id, user_id):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
 def client_resend_user_invite(request, client_id, user_id):
     ''' handles requests for resending student invites '''
     if request.method == 'POST':  # If the form has been submitted...
@@ -1253,7 +1263,8 @@ def program_detail(request, program_id, detail_view="detail"):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
 def upload_student_list(request, client_id):
     ''' handles requests for login form and their submission '''
     error = None
@@ -1288,12 +1299,13 @@ def upload_student_list(request, client_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
 def upload_student_list_check(request, client_id, task_key):
     ''' checks on status of student list upload '''
 
     reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
-    UserRegistrationBatch.clean_old();
+    UserRegistrationBatch.clean_old()
     if len(reg_status) > 0:
         reg_status = reg_status[0]
         if reg_status.attempted == (reg_status.failed + reg_status.succeded):
@@ -1323,13 +1335,14 @@ def upload_student_list_check(request, client_id, task_key):
             content_type='application/json'
         )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
 def download_student_list(request, client_id):
     client = Client.fetch(client_id)
     filename = slugify(
         unicode(
             "Student List for {} on {}".format(
-                client.display_name,datetime.now().isoformat()
+                client.display_name, datetime.now().isoformat()
             )
         )
     )
@@ -1398,7 +1411,6 @@ def program_association(request, client_id):
         "form": form,
         "client": client,
         "error": error,
-        #"programs": [program for program in _prepare_program_display(program_list)],
         "programs": program_list,
     }
 
@@ -1437,10 +1449,27 @@ def add_courses(request, program_id):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def add_students_to_program(request, client_id):
-    program = Program.fetch(request.POST.get("program"))
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+@client_admin_access
+def add_students_to_program(request, client_id, restrict_to_programs_ids=None, restrict_to_users_ids=None):
+    program_id = request.POST.get("program")
+    AccessChecker.check_has_program_access(
+        request.user, program_id=program_id, restrict_to_programs_ids=restrict_to_programs_ids
+    )
+    program = Program.fetch(program_id)
     program.courses = program.fetch_courses()
     students = request.POST.getlist("students[]")
+    try:
+        if restrict_to_users_ids is not None:
+            students = [student_id for student_id in students if int(student_id) in restrict_to_users_ids]
+    except ValueError:
+        response = HttpResponse(
+            json.dumps({"message": _("Invalid student_id specified: {}").format(student_id)}),
+            content_type='application/json'
+        )
+        response.status_code = 400
+        return response
     allocated, assigned = license_controller.licenses_report(
         program.id, client_id)
     remaining = allocated - assigned
@@ -1482,8 +1511,11 @@ def add_students_to_program(request, client_id):
         content_type='application/json'
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def add_students_to_course(request, client_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def add_students_to_course(request, client_id, restrict_to_users_ids=None, restrict_to_courses_ids=None):
 
     def enroll_user_in_course(user_id, course_id):
         try:
@@ -1494,7 +1526,11 @@ def add_students_to_course(request, client_id):
                 raise
 
     courses = request.POST.getlist("courses[]")
+    if restrict_to_courses_ids is not None:
+        courses = [course_id for course_id in courses if course_id in restrict_to_courses_ids]
     students = [int(u_id) for u_id in request.POST.getlist("students[]")]
+    if restrict_to_users_ids is not None:
+        students = [u_id for u_id in students if u_id in restrict_to_users_ids]
     exception_messages = []
     for course_id in courses:
         enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u.id in students}
@@ -1652,6 +1688,7 @@ def company_image_edit(request, client_id="new"):
     PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
     PERMISSION_GROUPS.INTERNAL_ADMIN
 )
+@client_admin_access
 def upload_company_image(request, client_id='new'):
     ''' handles requests for login form and their submission '''
     error = None
@@ -2158,7 +2195,8 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_c
             if request.user.is_mcka_admin:
                 new_perms = form.cleaned_data.get('permissions')
             else:
-                new_perms = permissions.current_permissions
+                # Make a copy, or else we'll end up editing it while using it.
+                new_perms = list(permissions.current_permissions)
             try:
                 permissions.save(new_perms, per_course_roles)
             except PermissionSaveError as err:
