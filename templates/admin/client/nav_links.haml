@@ -1,0 +1,38 @@
+- extends 'admin/client/detail.haml'
+- load staticfiles
+- block admin_detail
+  %h1
+    %span= _("Client: ")
+    %span= client.display_name
+  %hr
+  %section
+  %h2
+    %p You can change the global navigation links for this client across all courses for this client's participants. Please note that you will need to preview the navigation to check for spacing, spelling, and link behavior before you have the opportunity to save these links. You can make edits after previewing if needed.
+  %br
+  #nav-links
+    %header
+      .sub-2 Label:
+      .sub-2 Link:
+    %form{action: "/admin/clients/#{client.id}/nav_links", method: 'POST'}
+      - csrf_token
+      %fieldset
+        %ol
+          %li
+            %input{type: 'hidden', name: 'name_1', value: 'about'}
+            %input{type: 'text', name: 'label_1', placeholder: 'enter label', value: "#{nav_links.0.link_label}"}
+            %input{type: 'url', name: 'link_1', placeholder: 'enter link', value: "#{nav_links.0.link_url}"}
+          %li
+            %input{type: 'hidden', name: 'name_2', value: 'programs'}
+            %input{type: 'text', name: 'label_2', placeholder: 'enter label', value: "#{nav_links.1.link_label}"}
+            %input{type: 'url', name: 'link_2', placeholder: 'enter link', value: "#{nav_links.1.link_url}"}
+          %li
+            %input{type: 'hidden', name: 'name_3', value: 'experience'}
+            %input{type: 'text', name: 'label_3', placeholder: 'enter label', value: "#{nav_links.2.link_label}"}
+            %input{type: 'url', name: 'link_3', placeholder: 'enter link', value: "#{nav_links.2.link_url}"}
+          %li
+            %input{type: 'hidden', name: 'name_4', value: 'contact'}
+            %input{type: 'text', name: 'label_4', placeholder: 'enter label', value: "#{nav_links.3.link_label}"}
+            %input{type: 'url', name: 'link_4', placeholder: 'enter link', value: "#{nav_links.3.link_url}"}
+      %div
+        %input{type: 'reset', value: 'Cancel'}
+        %input.button.radius.tiny{type: 'submit', value: 'Save Links'}

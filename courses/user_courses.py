@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
-from admin.models import Program
+from admin.models import Program, ClientNavLinks
 from api_client import user_api, course_api
 from license import controller as license_controller
 
@@ -244,6 +244,7 @@ def standard_data(request):
     course = None
     program = None
     upcoming_course = None
+    client_nav_links = None
 
     # have we already fetched this before and attached it to the current request?
     if hasattr(request, 'user_program_data'):
@@ -282,10 +283,18 @@ def standard_data(request):
         elif program and program.courses:
             upcoming_course = program.courses[0]
 
+        organizations = user_api.get_user_organizations(request.user.id)
+
+        if len(organizations) > 0:
+            organization = organizations[0]
+            client_nav_links = ClientNavLinks.objects.filter(client_id=organization.id)
+            client_nav_links = dict((link.link_name, link) for link in client_nav_links)
+
     data = {
         "course": course,
         "program": program,
         "upcoming_course": upcoming_course,
+        "client_nav_links": client_nav_links,
     }
 
     # point to this data from the request object, just in case we re-enter this method somewhere
