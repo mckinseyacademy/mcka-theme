@@ -10,13 +10,25 @@
         %nav{role: 'navigation'}
           %ul
             %li
-              %a{href: '/about'}= _("About")
+              - if client_nav_links.about
+                %a{href: "#{client_nav_links.about.link_url}"}= client_nav_links.about.link_label
+              - else
+                %a{href: '/about'}= _("About")
             %li
-              %a{href: '/programs'}= _("Programs")
+              - if client_nav_links.programs
+                %a{href: "#{client_nav_links.programs.link_url}"}= client_nav_links.programs.link_label
+              - else
+                %a{href: '/programs'}= _("Programs")
             %li
-              %a{href: '/experience'}= _("Experience")
+              - if client_nav_links.experience
+                %a{href: "#{client_nav_links.experience.link_url}"}= client_nav_links.experience.link_label
+              - else
+                %a{href: '/experience'}= _("Experience")
             %li
-              %a{href: '/contact'}= _("Contact")
+              - if client_nav_links.contact
+                %a{href: "#{client_nav_links.contact.link_url}"}= client_nav_links.contact.link_label
+              - else
+                %a{href: '/contact'}= _("Contact")
             - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin
               %li
                 %a{href: '/admin'}= _("McKA Admin")
