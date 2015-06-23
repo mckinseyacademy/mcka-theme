@@ -11,7 +11,7 @@
           %span= _("Client: ")
           %span= client.display_name
 
-        - if user.is_mcka_admin
+        - if user.is_mcka_admin or user.is_internal_admin
           %a{href: "/admin/client-admin/={client.id}", target: "_blank"} Access Company Dashboard
         %hr
         %section
@@ -39,13 +39,14 @@
               Download Student List
             .upload_results
         %hr
-        %section
-          %header Add a Program:
-          %div Add a program to a client
-          .manage-programs
-            %a.button.radius.small{"data-reveal-id": "add_program", "data-reveal-ajax": "/admin/clients/#{client.id}/program_association", href: ""}
-              Add Program
-        %hr
+        - if user.is_mcka_admin
+          %section
+            %header Add a Program:
+            %div Add a program to a client
+            .manage-programs
+              %a.button.radius.small{"data-reveal-id": "add_program", "data-reveal-ajax": "/admin/clients/#{client.id}/program_association", href: ""}
+                Add Program
+          %hr
         %section
           %header Programs:
           - include 'admin/client/program_list.haml'

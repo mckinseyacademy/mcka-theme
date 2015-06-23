@@ -29,10 +29,13 @@
                 %a{href: "#{client_nav_links.contact.link_url}"}= client_nav_links.contact.link_label
               - else
                 %a{href: '/contact'}= _("Contact")
-            - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin
+            - if user.is_mcka_admin or user.is_mcka_ta
               %li
                 %a{href: '/admin'}= _("McKA Admin")
-            - if user.is_client_admin or user.is_internal_admin
+            - if user.is_internal_admin
+              %li
+                %a{href: '/admin'}= _("Internal Admin")
+            - if user.is_client_admin
               %li
                 %a{href: '/admin/client-admin'}= _("Client Admin")
       - block user_region
