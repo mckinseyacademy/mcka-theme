@@ -11,7 +11,9 @@ from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
 
-from .models import Client, WorkGroup, UserRegistrationError, GROUP_PROJECT_V2_ACTIVITY_CATEGORY
+from .models import (
+    Client, WorkGroup, UserRegistrationError, GROUP_PROJECT_V2_ACTIVITY_CATEGORY, GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
+)
 
 import threading
 import Queue
@@ -22,10 +24,17 @@ GROUP_PROJECT_V2_CATEGORY = 'group-project-v2'
 
 
 class GroupProject(object):
-    def __init__(self, project_id, name, activities):
+    def __init__(self, project_id, name, activities, navigator=None):
         self.id = project_id
         self.name = name
         self.activities = activities
+        self.navigator = navigator
+
+    @property
+    def escaped_navigator_usage_id(self):
+        if self.navigator is None:
+            return None
+        return self.navigator.id.replace('/', ';_')
 
 def _worker():
     while True:
@@ -105,7 +114,15 @@ def _load_course(course_id, depth=5, course_api_impl=course_api):
             course.group_projects.append(group_project)
         elif is_group_project_v2_chapter(chapter):
             blocks = _find_group_project_v2_blocks_in_chapter(chapter)
-            projects = [GroupProject(block.id, block.name, block.children) for block, seq in blocks]
+            projects = [
+                GroupProject(
+                    block.id,
+                    block.name,
+                    [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY],
+                    [child for child in block.children if child.category == GROUP_PROJECT_V2_NAVIGATOR_CATEGORY][0]
+                )
+                for block, seq in blocks
+            ]
             course.group_projects.extend(projects)
 
     # Only the first discussion chapter is taken into account

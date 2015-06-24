@@ -13,6 +13,7 @@ from django.db import models as db_models
 from django.dispatch import Signal
 
 GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'group-project-v2-activity'
+GROUP_PROJECT_V2_NAVIGATOR_CATEGORY = 'group-project-v2-navigator'
 
 class BaseGroupModel(group_models.GroupInfo):
 
