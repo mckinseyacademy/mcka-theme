@@ -231,6 +231,9 @@ class UserRegistrationBatch(db_models.Model):
         return True
 
 class ClientNavLinks(db_models.Model):
+    class Meta:
+        unique_together = ['client_id', 'link_name']
+
     client_id = db_models.IntegerField(unique=False, db_index=True)
     link_name = db_models.CharField(max_length=200)
     link_label = db_models.CharField(max_length=200)
