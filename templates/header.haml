@@ -11,22 +11,22 @@
           %ul
             %li
               - if client_nav_links.about
-                %a{href: "#{client_nav_links.about.link_url}"}= client_nav_links.about.link_label
+                %a{href: "#{client_nav_links.about.link_url}", target: "_blank"}= client_nav_links.about.link_label
               - else
                 %a{href: '/about'}= _("About")
             %li
               - if client_nav_links.programs
-                %a{href: "#{client_nav_links.programs.link_url}"}= client_nav_links.programs.link_label
+                %a{href: "#{client_nav_links.programs.link_url}", target: "_blank"}= client_nav_links.programs.link_label
               - else
                 %a{href: '/programs'}= _("Programs")
             %li
               - if client_nav_links.experience
-                %a{href: "#{client_nav_links.experience.link_url}"}= client_nav_links.experience.link_label
+                %a{href: "#{client_nav_links.experience.link_url}", target: "_blank"}= client_nav_links.experience.link_label
               - else
                 %a{href: '/experience'}= _("Experience")
             %li
               - if client_nav_links.contact
-                %a{href: "#{client_nav_links.contact.link_url}"}= client_nav_links.contact.link_label
+                %a{href: "#{client_nav_links.contact.link_url}", target: "_blank"}= client_nav_links.contact.link_label
               - else
                 %a{href: '/contact'}= _("Contact")
             - if user.is_mcka_admin or user.is_mcka_ta
