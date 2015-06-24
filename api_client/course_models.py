@@ -298,36 +298,37 @@ class Course(CategorisedJsonObject):
                         "group_activities": [],
                     }
 
-        for project in self.group_projects:
-            for activity in project.activities:
-                if activity.due:
-                    activity.due_on = activity.due.strftime("%B %e")
-                if activity.due == None or len(weeks.values()) == 0:
-                    no_due_date["has_group"] = True
-                    no_due_date["group_activities"].append(activity)
-                else:
-                    due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
-                    if due_date.weekday() == 0:
-                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+        if self.group_work_enabled:
+            for project in self.group_projects:
+                for activity in project.activities:
+                    if activity.due:
+                        activity.due_on = activity.due.strftime("%B %e")
+                    if activity.due == None or len(weeks.values()) == 0:
+                        no_due_date["has_group"] = True
+                        no_due_date["group_activities"].append(activity)
                     else:
-                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
-                    week_end = week_start + datetime.timedelta(days=6)
-                    key = week_end.strftime("%s")
-                    activity.due_on = activity.due.strftime("%B %e")
+                        due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
+                        if due_date.weekday() == 0:
+                            week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+                        else:
+                            week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
+                        week_end = week_start + datetime.timedelta(days=6)
+                        key = week_end.strftime("%s")
+                        activity.due_on = activity.due.strftime("%B %e")
 
-                    if key in weeks:
-                        weeks[key]["has_group"] = True
-                        weeks[key]["group_activities"].append(activity)
-                    else:
-                        weeks[key] = {
-                            "sort_by": week_end,
-                            "start": week_start.strftime("%m/%d"),
-                            "end": week_end.strftime("%m/%d"),
-                            "has_group": True,
-                            "group_only": True,
-                            "lessons": [],
-                            "group_activities": [activity],
-                        }
+                        if key in weeks:
+                            weeks[key]["has_group"] = True
+                            weeks[key]["group_activities"].append(activity)
+                        else:
+                            weeks[key] = {
+                                "sort_by": week_end,
+                                "start": week_start.strftime("%m/%d"),
+                                "end": week_end.strftime("%m/%d"),
+                                "has_group": True,
+                                "group_only": True,
+                                "lessons": [],
+                                "group_activities": [activity],
+                            }
 
         weeks = sorted(weeks.values(), key=lambda w: w["sort_by"])
         if len(no_due_date["lessons"]) > 0 or len(no_due_date["group_activities"]) > 0:

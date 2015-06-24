@@ -84,7 +84,10 @@
         .label-3 <i class="status fa fa-circle"></i> not started
         .label-3 <i class="status fa fa-circle partial"></i> partially complete
         .label-3 <i class="status fa fa-check-circle complete"></i> complete
-      %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
+      - if feature_flags.group_work
+        %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
+      - else
+        %p.style-6 Note: "weeks" begin Tuesday and end the following Monday
     .medium-10.medium-centered.columns.course-page
       .label-5 PROFICIENCY
       %p.style-6 Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%.
