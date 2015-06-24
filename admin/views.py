@@ -1019,11 +1019,13 @@ def client_detail_nav_links(request, client_id):
                 (link, created) = ClientNavLinks.objects.get_or_create(
                         client_id=client_id,
                         link_name=link_name,
-                        link_label=link_label,
-                        link_url=link_url
                 )
+                link.link_label = link_label
+                link.link_url = link_url
+                link.save()
 
     nav_links = ClientNavLinks.objects.filter(client_id=client_id)
+    nav_links = dict((link.link_name, link) for link in nav_links)
 
     data = {
         'client': client,
