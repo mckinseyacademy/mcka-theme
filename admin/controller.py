@@ -22,6 +22,8 @@ import atexit
 GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'group-project-v2'
 
+MINIMAL_COURSE_DEPTH = 5
+
 
 class GroupProject(object):
     def __init__(self, project_id, name, activities, navigator=None):
@@ -75,7 +77,7 @@ def _find_group_project_v2_blocks_in_chapter(chapter):
         if xblock.category == GROUP_PROJECT_V2_CATEGORY
     )
 
-def _load_course(course_id, depth=5, course_api_impl=course_api):
+def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
@@ -138,7 +140,7 @@ def _load_course(course_id, depth=5, course_api_impl=course_api):
     return course
 
 
-def load_course(course_id, depth=5, course_api_impl=course_api, request=None):
+def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, request=None):
     """
     Gets the course from the API, and performs any post-processing for Apros specific purposes
 
@@ -153,6 +155,8 @@ def load_course(course_id, depth=5, course_api_impl=course_api, request=None):
         course_api_impl: module  - implementation of course API
         request: DjangoRequest - current django request
     """
+    if depth < MINIMAL_COURSE_DEPTH:
+        depth = MINIMAL_COURSE_DEPTH
     course_context = get_course_context()
     if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth", 0) >= depth:
         return course_context["course_content"]
