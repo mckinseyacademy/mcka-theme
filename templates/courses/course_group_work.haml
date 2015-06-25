@@ -36,8 +36,9 @@
       .row
         .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
     - else
-      .row
-        - include "courses/group_work/activity_menu.haml"
+      - if not group_project.navigator
+        .row
+          - include "courses/group_work/activity_menu.haml"
       .row
         .large-8.medium-8.columns.splitpiece.left
           .lesson-title
