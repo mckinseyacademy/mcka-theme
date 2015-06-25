@@ -183,6 +183,8 @@ def _render_group_work(request, course, project_group, group_project):
     if actid and " " in actid:
         actid = actid.replace(" ", "+")
 
+    select_stage = request.GET.get('select_stage', None)
+
     if not group_project is None:
         activity, usage_id = group_project_location(
             group_project,
@@ -213,6 +215,8 @@ def _render_group_work(request, course, project_group, group_project):
         "ta_user": ta_user,
         "group_work_url": request.path_info,
     }
+    if select_stage:
+        data['select_stage'] = select_stage
     return render(request, 'courses/course_group_work.haml', data)
 
 @login_required

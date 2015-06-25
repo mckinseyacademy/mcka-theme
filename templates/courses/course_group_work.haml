@@ -156,4 +156,10 @@
       };
       project_nav.xblock(project_nav_data);
       {% endif %}
+
+      {% if select_stage %}
+      $(document).on('activity_initialized', function() {
+        $(document).trigger('select_stage', '{{ select_stage }}');
+      });
+      {% endif %}
     });
