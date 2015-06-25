@@ -79,13 +79,15 @@ class Permissions(object):
         group_id = self.get_group_id(permission_name)
         if group_id:
             group_api.add_user_to_group(self.user_id, group_id)
-            internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.GRANT)
+            if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
+                internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.GRANT)
 
     def remove_permission(self, permission_name):
         group_id = self.get_group_id(permission_name)
         if group_id:
             group_api.remove_user_from_group(self.user_id, group_id)
-            internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
+            if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
+                internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
 
 
 class InternalAdminRoleManager(object):
