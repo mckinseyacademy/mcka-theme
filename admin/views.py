@@ -83,6 +83,14 @@ def permission_denied(request):
     context = RequestContext(request, {'request_path': request.path})
     return HttpResponseForbidden(template.render(context))
 
+def make_json_error(message, code):
+    response = HttpResponse(
+        json.dumps({"message": message}),
+        content_type='application/json'
+    )
+    response.status_code = code
+    return response
+
 class AccessChecker(object):
     @staticmethod
     def get_organization_for_user(user):
@@ -1450,12 +1458,17 @@ def add_courses(request, program_id):
         content_type='application/json'
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 @client_admin_access
 def add_students_to_program(request, client_id, restrict_to_programs_ids=None, restrict_to_users_ids=None):
     program_id = request.POST.get("program")
+    try:
+        program_id = int(program_id)
+    except (ValueError, TypeError):
+        return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
     AccessChecker.check_has_program_access(
         request.user, program_id=program_id, restrict_to_programs_ids=restrict_to_programs_ids
     )
@@ -1466,23 +1479,14 @@ def add_students_to_program(request, client_id, restrict_to_programs_ids=None, r
         if restrict_to_users_ids is not None:
             students = [student_id for student_id in students if int(student_id) in restrict_to_users_ids]
     except ValueError:
-        response = HttpResponse(
-            json.dumps({"message": _("Invalid student_id specified: {}").format(student_id)}),
-            content_type='application/json'
-        )
-        response.status_code = 400
-        return response
+        return make_json_error(_("Invalid student_id specified: {}").format(student_id), 400)
     allocated, assigned = license_controller.licenses_report(
         program.id, client_id)
     remaining = allocated - assigned
     if len(students) > remaining:
-        response = HttpResponse(
-            json.dumps({"message": _("Not enough places available for {} program - {} left")
-                       .format(program.display_name, remaining)}),
-            content_type='application/json',
+        return make_json_error(
+            _("Not enough places available for {} program - {} left").format(program.display_name, remaining), 403
         )
-        response.status_code = 403
-        return response
     messages = []
 
     additional_fields = ["is_active"]
