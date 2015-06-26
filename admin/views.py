@@ -839,9 +839,10 @@ def client_list(request):
     ''' handles requests for login form and their submission '''
     clients = Client.list()
     if not request.user.is_mcka_admin:
+        target_id = AccessChecker.get_organization_for_user(request.user).id
         clients = [
             client for client in clients
-            if client.id == AccessChecker.get_organization_for_user(request.user).id
+            if client.id == target_id
         ]
     for client in clients:
         client.detail_url = '/admin/clients/{}'.format(client.id)
