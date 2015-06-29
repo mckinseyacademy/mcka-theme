@@ -1020,7 +1020,7 @@ def client_detail_nav_links(request, client_id):
     client = Client.fetch(client_id)
 
     if request.method == 'POST':
-        for i in range(1, 5):
+        for i in range(1, 7):
             link_name = request.POST['name_%s' % i]
             link_label = request.POST['label_%s' % i]
             link_url = request.POST['link_%s' % i]
@@ -1458,7 +1458,6 @@ def add_courses(request, program_id):
         json.dumps({"message": _("Successfully saved courses to {} program").format(program.display_name)}),
         content_type='application/json'
     )
-
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
