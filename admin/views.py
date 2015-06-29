@@ -1967,6 +1967,14 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
 
         program = Program.fetch(program_id)
         courses = program.fetch_courses()
+        if not any([request.user.is_client_admin, request.user.is_mcka_admin, request.user.is_internal_admin]):
+            roles = request.user.get_roles()
+            # User is TA. Only show courses in program they have access to.
+            courses = [
+                course for course in courses if USER_ROLES.TA in [
+                    role.role for role in roles if role.course_id == course.course_id
+                ]
+            ]
 
         data = {
             "courses": courses,
@@ -2140,8 +2148,22 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 
     programs = Program.list()
 
-    if restrict_to_programs_ids is not None:
-        programs = [program for program in programs if program.id in restrict_to_programs_ids]
+    if restrict_to_programs_ids:
+        programs = [
+            program for program in programs
+            if program.id in restrict_to_programs_ids
+        ]
+
+    if not any([request.user.is_mcka_admin, request.user.is_client_admin, request.user.is_internal_admin]):
+        # User is a TA. They'll need to be scoped only to the courses they're a TA on, not just enrolled in.
+        roles = request.user.get_roles()
+        base_programs = programs
+        programs = []
+        for program in base_programs:
+            for course in program.fetch_courses():
+                if USER_ROLES.TA in [role.role for role in roles if role.course_id == course.course_id]:
+                    programs.append(program)
+                    break
 
     data = {
         "principal_name": _("Group Work"),
