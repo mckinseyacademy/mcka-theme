@@ -1024,12 +1024,12 @@ def client_detail_nav_links(request, client_id):
             link_name = request.POST['name_%s' % i]
             link_label = request.POST['label_%s' % i]
             link_url = request.POST['link_%s' % i]
-            if link_label and link_url:
+            if link_label or link_url:
                 (link, created) = ClientNavLinks.objects.get_or_create(
                         client_id=client_id,
                         link_name=link_name,
                 )
-                link.link_label = link_label
+                link.link_label = link_label or link_name
                 link.link_url = link_url
                 link.save()
 
