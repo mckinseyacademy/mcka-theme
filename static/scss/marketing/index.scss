@@ -5,7 +5,8 @@
 #programs-page,
 #contact-page,
 #experience-page,
-#edxoffer-page {
+#edxoffer-page,
+#fblf-page {
   overflow-x: hidden;
 
   section {
@@ -38,6 +39,35 @@
   p {
     margin-bottom: 25px;
     &:last-child { margin-bottom: 0; }
+  }
+}
+
+ul.faculty {
+  margin: 20px 0 0;
+  list-style-type: none;
+  @include clearfix;
+
+  li {
+    float: left;
+    width: 50%;
+    height: 85px;
+
+    img {
+      float: left;
+      margin-right: rem-calc(10);
+      @include square-size(50px);
+    }
+
+    > div {
+      float: left;
+      width: 280px;
+    }
+
+    @media #{$small-only} {
+      width: 100%;
+      height: auto;
+      margin-bottom: rem-calc(25);
+    }
   }
 }
 
@@ -91,3 +121,4 @@
 @import './contact';
 @import './experience';
 @import './productwalkthrough';
+@import './fblf';
