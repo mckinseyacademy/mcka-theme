@@ -1032,6 +1032,8 @@ def client_detail_nav_links(request, client_id):
                 link.link_label = link_label or link_name
                 link.link_url = link_url
                 link.save()
+            if not link_label and not link_url:
+                ClientNavLinks.objects.filter(client_id=client_id, link_name=link_name).delete()
 
     nav_links = ClientNavLinks.objects.filter(client_id=client_id)
     nav_links = dict((link.link_name, link) for link in nav_links)
