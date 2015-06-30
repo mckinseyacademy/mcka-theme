@@ -1862,7 +1862,7 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
 
     students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
 
-    if len(course.group_project_chapters) < 1:
+    if len(course.group_projects) < 1:
         return HttpResponse(json.dumps({'message': 'No group projects available for this course'}), content_type="application/json")
 
     group_projects = Project.fetch_projects_for_course(course.id)
