@@ -1,0 +1,16 @@
+- extends "layout.haml"
+
+- block page_title
+  %title= _("FBLF | McKinsey Academy")
+  %meta{property: "og:title", content: "McKinsey Academy FBLF"}
+
+- block page_description
+  %meta{name: "description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
+  %meta{property: "og:description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
+
+- block content
+  %article#fblf
+    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_FBLF.jpg", srcset: "/static/image/marketing/McKA_TopTiles_FBLF@2x.jpg 2x", alt: "McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness"}
+    .row.collapse
+      .large-10.large-centered.columns
+        %section
