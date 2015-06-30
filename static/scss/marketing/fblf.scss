@@ -1,0 +1,9 @@
+#fblf-page {
+  ul.faculty {
+    padding-left: 20px;
+  }
+
+  .label-5 {
+    @include font-spec(14px, 600);
+  }
+}
