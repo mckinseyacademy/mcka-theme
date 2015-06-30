@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 
 from admin.controller import load_course
 from admin.models import WorkGroup
+from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
@@ -751,8 +752,10 @@ def course_article(request, course_id):
 
 @require_POST
 @login_required
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_feature_flag(request, course_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     feature_flags.group_work = request.POST.get('group_work', None) == 'on'
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'
