@@ -572,7 +572,7 @@ def infer_page_navigation(request, course_id, page_id):
         redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
 
         if final_target_id not in (chapter_id, vertical_id):
-            redirect_url += '?activate={final_target_id}'.format(final_target_id=final_target_id)
+            redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
     else:
         redirect_url = '/courses/{}/notready'.format(course_id)
 
