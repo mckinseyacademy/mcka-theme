@@ -10,7 +10,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from .forms import TechSupportForm, SubscribeForm, EdxOfferForm
 
 def infer_default_navigation(request, page_name):
-    page = "marketing/{0}.haml".format(page_name)
+    page = "marketing/{0}.haml".format(page_name.lower())
     try:
         return render(request, page)
     except TemplateDoesNotExist:
