@@ -37,7 +37,7 @@
         %hr
 
         .proficiency-engagement
-          .medium-6.left
+          .medium-6{class: "{% if feature_flags.discussions %}left{% else %}medium-centered columns{% endif %}"}
             .course-proficiency
               .sub-1= _("Proficiency")
               %p.style-5= _("Average grade based on current grade of participants.")
@@ -51,9 +51,9 @@
               %br
               %p.style-5= _("Note: Grades may not appear until later in the course depending on number of graded items and their location within course content.")
 
-          .medium-6.left
-            .course-engagement
-              - if feature_flags.discussions
+          - if feature_flags.discussions
+            .medium-6.left
+              .course-engagement
                 .sub-1= _("Engagement")
                 %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
                 .visualization{class: "{% if company_engagement >= 90 %}filled{% endif %}"}
