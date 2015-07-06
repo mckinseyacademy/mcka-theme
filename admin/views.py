@@ -2225,8 +2225,14 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_c
             if request.user.is_mcka_admin:
                 new_perms = form.cleaned_data.get('permissions')
             else:
-                # Make a copy, or else we'll end up editing it while using it.
-                new_perms = list(permissions.current_permissions)
+                # TA and observer are not handled through this list when saving it-- they're calculated
+                # through the course roles.
+                # Also, this needs to be a distinct copy, lest we edit the list while using it, so a new
+                # list is created.
+                new_perms = [
+                    perm for perm in permissions.current_permissions
+                    if perm not in (PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_OBSERVER)
+                ]
             try:
                 permissions.save(new_perms, per_course_roles)
             except PermissionSaveError as err:
