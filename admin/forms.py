@@ -74,20 +74,9 @@ class CuratedContentItemForm(forms.ModelForm):
         ]
 
 
-class PermissionForm(forms.Form):
+class BasePermissionForm(forms.Form):
     ''' edit roles for a single user '''
     _per_course_roles = []
-
-    permissions = forms.MultipleChoiceField(
-        required=False,
-        label='',
-        widget=forms.CheckboxSelectMultiple,
-        choices=[
-            (PERMISSION_GROUPS.MCKA_ADMIN, _("ADMIN")),
-            (PERMISSION_GROUPS.INTERNAL_ADMIN, _("INTERNAL ADMIN")),
-            (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
-        ]
-    )
 
     def available_roles(self):
         return ((USER_ROLES.TA, _("TA")), (USER_ROLES.OBSERVER, _("OBSERVER")))
@@ -96,7 +85,7 @@ class PermissionForm(forms.Form):
         return [self[name] for name in self._per_course_roles]
 
     def __init__(self, courses, *args, **kwargs):
-        super(PermissionForm, self).__init__(*args, **kwargs)
+        super(BasePermissionForm, self).__init__(*args, **kwargs)
 
         for course in courses:
             self.fields[course.id] = forms.MultipleChoiceField(
@@ -107,6 +96,18 @@ class PermissionForm(forms.Form):
             )
 
         self._per_course_roles = [course.id for course in courses]
+
+class AdminPermissionForm(BasePermissionForm):
+    permissions = forms.MultipleChoiceField(
+        required=False,
+        label='',
+        widget=forms.CheckboxSelectMultiple,
+        choices=[
+            (PERMISSION_GROUPS.MCKA_ADMIN, _("ADMIN")),
+            (PERMISSION_GROUPS.INTERNAL_ADMIN, _("INTERNAL ADMIN")),
+            (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
+        ]
+    )
 
 class UploadCompanyImageForm(forms.Form):
     ''' form to upload file for company image '''

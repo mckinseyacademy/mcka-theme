@@ -6,14 +6,15 @@
       .large-10.large-centered.columns
         %header
           %h1.principal-title {{principal_name_plural}}: Overview
-          .sub-1.add= _("Add a new ")
-            %span= principal_name
-          .add-message
-            - block principal_message
-              Use this block to update the message describing the principal at hand
-          %a.button.radius.small{"data-reveal-id": "new-principal", "data-reveal-ajax": "#{principal_new_url}", href: ""}
-            = _("Add ")
-            %span= principal_name
+          - if not read_only
+            .sub-1.add= _("Add a new ")
+              %span= principal_name
+            .add-message
+              - block principal_message
+                Use this block to update the message describing the principal at hand
+            %a.button.radius.small{"data-reveal-id": "new-principal", "data-reveal-ajax": "#{principal_new_url}", href: ""}
+              = _("Add ")
+              %span= principal_name
         %hr
         .principal-list
           .title= principal_list_plural

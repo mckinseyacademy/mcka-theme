@@ -17,9 +17,16 @@
     - else
       %a{href:"/admin/clients/#{client.id}/courses"}
         = _("Assign Students to Courses")
+  - if user.is_mcka_admin
+    %li
+      - if selected_client_tab == 'contact'
+        %span.selected= _("Assign Contacts to Client")
+      - else
+        %a{href:"/admin/clients/#{client.id}/contact"}
+          = _("Assign Contacts to Client")
   %li
-    - if selected_client_tab == 'contact'
-      %span.selected= _("Assign Contacts to Client")
+    - if selected_client_tab == 'nav_links'
+      %span.selected= _("Nav Links")
     - else
-      %a{href:"/admin/clients/#{client.id}/contact"}
-        = _("Assign Contacts to Client")
+      %a{href:"/admin/clients/#{client.id}/nav_links"}
+        = _("Nav Links")

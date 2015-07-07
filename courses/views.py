@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 
 from admin.controller import load_course
 from admin.models import WorkGroup
+from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
@@ -178,18 +179,18 @@ def course_cohort(request, course_id):
 
 def _render_group_work(request, course, project_group, group_project):
 
-    seqid = request.GET.get("seqid", None)
-    if seqid and " " in seqid:
-        seqid = seqid.replace(" ", "+")
+    actid = request.GET.get("actid", None)
+    if actid and " " in actid:
+        actid = actid.replace(" ", "+")
 
     if not group_project is None:
-        sequential, page = group_project_location(
+        activity, usage_id = group_project_location(
             group_project,
-            seqid
+            actid
         )
-        vertical_usage_id = page.vertical_usage_id() if page else None
+        vertical_usage_id = usage_id
     else:
-        sequential = page = vertical_usage_id = None
+        activity = vertical_usage_id = None
 
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
@@ -208,8 +209,7 @@ def _render_group_work(request, course, project_group, group_project):
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "project_group": project_group,
         "group_project": group_project,
-        "current_sequential": sequential,
-        "current_page": page,
+        "current_activity": activity,
         "ta_user": ta_user,
         "group_work_url": request.path_info,
     }
@@ -406,6 +406,8 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     progress_user = user_api.get_user(user_id)
     social = get_social_metrics(course_id, user_id)
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    course.group_work_enabled = feature_flags.group_work
 
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
@@ -750,8 +752,10 @@ def course_article(request, course_id):
 
 @require_POST
 @login_required
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
-def course_feature_flag(request, course_id):
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
+    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     feature_flags.group_work = request.POST.get('group_work', None) == 'on'
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'

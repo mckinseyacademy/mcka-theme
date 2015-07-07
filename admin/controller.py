@@ -1,26 +1,31 @@
 import tempfile
 import re
 
-from django.core.servers.basehttp import FileWrapper
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, workgroup_api, organization_api, project_api
+from api_client import user_api, group_api, course_api, organization_api, project_api
 from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
 
-from .models import Client, WorkGroup, UserRegistrationError
+from .models import Client, WorkGroup, UserRegistrationError, GROUP_PROJECT_V2_ACTIVITY_CATEGORY
 
 import threading
 import Queue
 import atexit
 
+GROUP_PROJECT_CATEGORY = 'group-project'
+GROUP_PROJECT_V2_CATEGORY = 'group-project-v2'
 
-GROUP_PROJECT_CATEGORIES = {'group-project', 'group-project-v2'}
 
+class GroupProject(object):
+    def __init__(self, project_id, name, activities):
+        self.id = project_id
+        self.name = name
+        self.activities = activities
 
 def _worker():
     while True:
@@ -51,22 +56,57 @@ def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_stat
     process_uploaded_student_list(
         student_list, client_id, absolute_uri, reg_status)
 
-def _load_course(course_id, depth=4, course_api_impl=course_api):
+
+def _find_group_project_v2_blocks_in_chapter(chapter):
+    return (
+        (xblock, sequential)
+        for sequential in chapter.sequentials
+        for page in sequential.pages
+        for xblock in page.children
+        if xblock.category == GROUP_PROJECT_V2_CATEGORY
+    )
+
+def _load_course(course_id, depth=5, course_api_impl=course_api):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
+    def is_discussion_chapter(chapter):
+        return chapter.name.startswith(settings.DISCUSSION_IDENTIFIER)
+
+    def is_group_project_chapter(chapter):
+        return chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)
+
+    def is_group_project_v2_chapter(chapter):
+        try:
+            next(_find_group_project_v2_blocks_in_chapter(chapter))
+            return True
+        except StopIteration:
+            return False
+
     def is_normal_chapter(chapter):
         '''
         Check if a chapter is normal or special. GROUP_PROJECT_WORK and DISCUSSION are special chapters.
         '''
-        return (not chapter.name.startswith(settings.DISCUSSION_IDENTIFIER) and \
-                not chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER))
+        return (not is_discussion_chapter(chapter) and
+                not is_group_project_chapter(chapter) and
+                not is_group_project_v2_chapter(chapter))
 
     course = course_api_impl.get_course(course_id, depth)
 
-    # Separate special chapters
-
-    course.group_project_chapters = [chapter for chapter in course.chapters if chapter.name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
+    # Find group projects
+    course.group_projects = []
+    for chapter in course.chapters:
+        if is_group_project_chapter(chapter):
+            group_project_sequentials = [seq for seq in chapter.sequentials if is_group_activity(seq)]
+            group_project = GroupProject(
+                chapter.id, chapter.name[len(settings.GROUP_PROJECT_IDENTIFIER):],
+                group_project_sequentials
+            )
+            course.group_projects.append(group_project)
+        elif is_group_project_v2_chapter(chapter):
+            blocks = _find_group_project_v2_blocks_in_chapter(chapter)
+            projects = [GroupProject(block.id, block.name, block.children) for block, seq in blocks]
+            course.group_projects.extend(projects)
 
     # Only the first discussion chapter is taken into account
     course.discussion = None
@@ -76,18 +116,26 @@ def _load_course(course_id, depth=4, course_api_impl=course_api):
 
     course.chapters = [chapter for chapter in course.chapters if is_normal_chapter(chapter)]
 
-    for group_project in course.group_project_chapters:
-        group_project.name = group_project.name[len(settings.GROUP_PROJECT_IDENTIFIER):]
-
     set_course_context(course, depth)
 
     return course
 
 
-def load_course(course_id, depth=4, course_api_impl=course_api, request=None):
-    '''
+def load_course(course_id, depth=5, course_api_impl=course_api, request=None):
+    """
     Gets the course from the API, and performs any post-processing for Apros specific purposes
-    '''
+
+    Args:
+        course_id: str - course ID
+        depth: int - course tree depth. Fetches all course tree elements down to:
+            depth = 1 - course
+            depth = 2 - sections
+            depth = 3 - subsections
+            depth = 4 - top-level xblocks
+            depth = 5+ - nested xblocks up to (depth-4) level (i.e. 5 - children, 6 - children and grandchildren, etc.)
+        course_api_impl: module  - implementation of course API
+        request: DjangoRequest - current django request
+    """
     course_context = get_course_context()
     if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth", 0) >= depth:
         return course_context["course_content"]
@@ -427,14 +475,15 @@ def parse_studentslist_from_post(postValues):
 
     return students, project_id
 
-def is_group_activity(sequential):
-    return len(sequential.pages) > 0 and GROUP_PROJECT_CATEGORIES & set(sequential.pages[0].child_category_list())
-
-def get_group_project_activities(group_project_chapter):
-    return [s for s in group_project_chapter.sequentials if is_group_activity(s)]
+def is_group_activity(activity):
+    if activity.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY:
+        return True
+    return len(activity.pages) > 0 and GROUP_PROJECT_CATEGORY in activity.pages[0].child_category_list()
 
 def get_group_activity_xblock(activity):
-    return [gp for gp in activity.pages[0].children if gp.category in GROUP_PROJECT_CATEGORIES][0]
+    if activity.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY:
+        return activity
+    return [gp for gp in activity.pages[0].children if gp.category == GROUP_PROJECT_CATEGORY][0]
 
 
 def generate_course_report(client_id, course_id, url_prefix, students):

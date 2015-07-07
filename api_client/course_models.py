@@ -195,7 +195,7 @@ class Course(CategorisedJsonObject):
 
     @property
     def has_group_work(self):
-        return len(self.group_project_chapters) > 0
+        return len(self.group_projects) > 0
 
     def module_count(self):
         module_count = 0
@@ -298,36 +298,37 @@ class Course(CategorisedJsonObject):
                         "group_activities": [],
                     }
 
-        for chapter in self.group_project_chapters:
-            for activity in chapter.sequentials:
-                if activity.due:
-                    activity.due_on = activity.due.strftime("%B %e")
-                if activity.due == None or len(weeks.values()) == 0:
-                    no_due_date["has_group"] = True
-                    no_due_date["group_activities"].append(activity)
-                else:
-                    due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
-                    if due_date.weekday() == 0:
-                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+        if self.group_work_enabled:
+            for project in self.group_projects:
+                for activity in project.activities:
+                    if activity.due:
+                        activity.due_on = activity.due.strftime("%B %e")
+                    if activity.due == None or len(weeks.values()) == 0:
+                        no_due_date["has_group"] = True
+                        no_due_date["group_activities"].append(activity)
                     else:
-                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
-                    week_end = week_start + datetime.timedelta(days=6)
-                    key = week_end.strftime("%s")
-                    activity.due_on = activity.due.strftime("%B %e")
+                        due_date = activity.due.replace(hour=0, minute=0, second=0, microsecond=0)
+                        if due_date.weekday() == 0:
+                            week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+                        else:
+                            week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
+                        week_end = week_start + datetime.timedelta(days=6)
+                        key = week_end.strftime("%s")
+                        activity.due_on = activity.due.strftime("%B %e")
 
-                    if key in weeks:
-                        weeks[key]["has_group"] = True
-                        weeks[key]["group_activities"].append(activity)
-                    else:
-                        weeks[key] = {
-                            "sort_by": week_end,
-                            "start": week_start.strftime("%m/%d"),
-                            "end": week_end.strftime("%m/%d"),
-                            "has_group": True,
-                            "group_only": True,
-                            "lessons": [],
-                            "group_activities": [activity],
-                        }
+                        if key in weeks:
+                            weeks[key]["has_group"] = True
+                            weeks[key]["group_activities"].append(activity)
+                        else:
+                            weeks[key] = {
+                                "sort_by": week_end,
+                                "start": week_start.strftime("%m/%d"),
+                                "end": week_end.strftime("%m/%d"),
+                                "has_group": True,
+                                "group_only": True,
+                                "lessons": [],
+                                "group_activities": [activity],
+                            }
 
         weeks = sorted(weeks.values(), key=lambda w: w["sort_by"])
         if len(no_due_date["lessons"]) > 0 or len(no_due_date["group_activities"]) > 0:
@@ -344,7 +345,7 @@ class Course(CategorisedJsonObject):
         }
         graded_lessons = [lesson for lesson in self.chapters if lesson.assesment_score != None]
         for lesson in graded_lessons:
-            for sequential in lesson.sequentials: 
+            for sequential in lesson.sequentials:
                 if sequential.name.find('Assessment') != -1:
                     for module in sequential.pages:
                         is_assesment = module.name.find('Assessment') != -1
@@ -352,10 +353,11 @@ class Course(CategorisedJsonObject):
                             module.assesment_score = lesson.assesment_score
                             graded_items["modules"].append(module)
 
-        for chapter in self.group_project_chapters:
-            for activity in chapter.sequentials:
-                if activity.is_graded:
-                    graded_items["group_activities"].append(activity)
+        if self.group_work_enabled:
+            for project in self.group_projects:
+                for activity in project.activities:
+                    if activity.is_graded:
+                        graded_items["group_activities"].append(activity)
 
         return graded_items
 

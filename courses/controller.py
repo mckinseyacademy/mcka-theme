@@ -10,13 +10,12 @@ from accounts.middleware.thread_local import set_static_tab_context, get_static_
 
 from api_client import course_api, user_api, user_models, workgroup_api
 from api_client.project_models import Project
-from api_client.group_api import get_groups_of_type, get_users_in_group, PERMISSION_GROUPS
-from api_client.group_models import GroupInfo
+from api_client.group_api import get_users_in_group
 from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES
 from admin.models import WorkGroup
-from admin.controller import load_course, get_group_activity_xblock, is_group_activity, get_group_project_activities
+from admin.controller import load_course, get_group_activity_xblock, is_group_activity
 from admin.models import ReviewAssignmentGroup
 
 from lib.util import PriorIdConvert
@@ -267,7 +266,7 @@ def get_group_project_for_user_course(user_id, course):
     project_group.members = user_api.get_users(ids=user_ids,fields=additional_fields)
 
     the_user_project = Project.fetch_from_url(project_group.project)
-    group_project = [ch for ch in course.group_project_chapters if ch.id == the_user_project.content_id][0]
+    group_project = [proj for proj in course.group_projects if proj.id == the_user_project.content_id][0]
 
     return project_group, group_project
 
@@ -280,7 +279,7 @@ def get_group_project_for_workgroup_course(workgroup_id, course):
     additional_fields = ["title", "first_name", "last_name", "avatar_url"]
     workgroup.members = user_api.get_users(ids=user_ids,fields=additional_fields)
     project = Project.fetch(workgroup.project)
-    group_project = [ch for ch in course.group_project_chapters if ch.id == project.content_id][0]
+    group_project = [proj for proj in course.group_projects if proj.id == project.content_id][0]
 
     return workgroup, group_project
 
@@ -288,18 +287,22 @@ def group_project_location(group_project, sequential_id=None):
     '''
     Returns current sequential_id and page_id for the user for their group project
     '''
-    sequential = group_project.sequentials[0]
-    for seq in group_project.sequentials:
+    activity = group_project.activities[0]
+    for act in group_project.activities:
         # is it the chosen one
-        if seq.id == sequential_id:
-            sequential = seq
+        if act.id == sequential_id:
+            activity = act
 
         # Is it a group_project xblock
-        seq.is_group_activity = is_group_activity(sequential)
+        act.is_group_activity = is_group_activity(activity)
 
-    page = sequential.pages[0] if len(sequential.pages) > 0 else None
+    if hasattr(activity, 'pages'):
+        page = activity.pages[0] if len(activity.pages) > 0 else None
+        usage_id = page.vertical_usage_id() if page else None
+    else:
+        usage_id = activity.id.replace('/', ';_')
 
-    return sequential, page
+    return activity, usage_id
 
 def load_static_tabs(course_id):
     static_tabs = get_static_tab_context()
@@ -346,7 +349,7 @@ def progress_percent(completion_count, module_count):
     else:
         return 0
 
-def group_project_reviews(user_id, course_id, project_workgroup, project_chapter):
+def group_project_reviews(user_id, course_id, project_workgroup, group_project):
     '''
     Returns group work reviews & average score for a project
     '''
@@ -360,8 +363,7 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
     assignments = ReviewAssignmentGroup.list_for_workgroup(project_workgroup.id)
 
     # find group activities in this project
-    group_activities = get_group_project_activities(project_chapter)
-    for activity in group_activities:
+    for activity in group_project.activities:
         group_project_xblock = get_group_activity_xblock(activity)
         activity_reviews = [item for item in review_items if group_project_xblock.id == item.content_id]
 
@@ -376,7 +378,8 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
         # average by reviewer
         activity.grades = []
         for reviewer_id in reviewer_ids:
-            grades = [int(review.answer) for review in activity_reviews if reviewer_id == review.reviewer and is_number(review.answer)]
+            grades = [int(review.answer) for review in activity_reviews if
+                      reviewer_id == review.reviewer and is_number(review.answer)]
             activity.grades.append(mean(grades))
 
         activity.pending_grades = [0] * (assignment_count - len(activity.grades))
@@ -385,8 +388,8 @@ def group_project_reviews(user_id, course_id, project_workgroup, project_chapter
         # average score for this activity
         activity.score = mean(filter(None, activity.grades))
 
-    group_work_avg = mean([a.score for a in group_activities if not a.score is None])
-    return group_activities, group_work_avg
+    group_work_avg = mean([a.score for a in group_project.activities if not a.score is None])
+    return group_project.activities, group_work_avg
 
 def is_number(s):
     try:
@@ -531,8 +534,8 @@ def inject_gradebook_info(user_id, course):
                 lesson.assesment_score = assesments[url_name]
                 break
 
-    for chapter in course.group_project_chapters:
-        for activity in chapter.sequentials:
+    for project in course.group_projects:
+        for activity in project.activities:
             activity.is_graded = False
             url_name = PriorIdConvert.new_from_prior(activity.id).split('/')[-1]
             if url_name in assesments:
