@@ -176,16 +176,13 @@ def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
 
     return course_detail.position_tree
 
-def get_chapter_by_page(request, course_id, page_id, course_api_impl=course_api):
+def get_chapter_and_target_by_location(request, course_id, location_id, course_api_impl=course_api):
     '''
-    Returns chapter id for given page and course ids.
+    Returns chapter, vertical, and final target id for a given course and location.
     '''
-    course = load_course(course_id, 4, course_api_impl, request=request)
-    for chapter in course.chapters:
-        if page_id in (p.id for seq in chapter.sequentials for p in seq.pages):
-            return chapter.id
+    nav = course_api_impl.get_course_navigation(course_id, location_id)
 
-    return None
+    return nav.chapter, nav.vertical, nav.final_target_id
 
 def locate_chapter_page(
     request,

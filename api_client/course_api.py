@@ -486,3 +486,17 @@ def get_course_content_detail(course_id, content_id, include_fields = [], module
     )
 
     return get_module_details(url, include_fields, module_object)
+
+
+@api_error_protect
+def get_course_navigation(course_id, target_location_id):
+    url = '{}/{}/{}/navigation/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        target_location_id,
+    )
+
+    response = GET(url)
+
+    return JP.from_json(response.read())
