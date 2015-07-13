@@ -15,6 +15,15 @@ window.Apros = {
     Backbone.history.start({pushState: has_push, hashChange: false});
   },
 
+  // http://stackoverflow.com/a/901144/882918
+  getParameterByName: function (name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    // location.search is the query string.
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  },
+
   jumpLinkRewriter: function(jump_link){
     // Used to rewrite a hrefs on Jump to URLs. See JQuery XBlock for more details.
     var course_url = "/courses/" + jump_link.course_id + "/" + jump_link.block_type + "/lessons/jump_to_page/",
