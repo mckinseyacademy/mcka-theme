@@ -26,11 +26,12 @@ MINIMAL_COURSE_DEPTH = 5
 
 
 class GroupProject(object):
-    def __init__(self, project_id, name, activities, navigator=None, is_v2=False):
+    def __init__(self, project_id, name, activities, navigator=None, vertical_id=None, is_v2=False):
         self.id = project_id
         self.name = name
         self.activities = activities
         self.navigator = navigator
+        self.vertical_id = vertical_id
         self.is_v2 = is_v2
 
     @property
@@ -71,7 +72,7 @@ def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_stat
 
 def _find_group_project_v2_blocks_in_chapter(chapter):
     return (
-        (xblock, sequential)
+        (xblock, sequential, page)
         for sequential in chapter.sequentials
         for page in sequential.pages
         for xblock in page.children
@@ -118,7 +119,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
         elif is_group_project_v2_chapter(chapter):
             blocks = _find_group_project_v2_blocks_in_chapter(chapter)
             projects = []
-            for block, seq in blocks:
+            for block, seq, page in blocks:
                 try:
                     nav = [
                         child for child in block.children if child.category == GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
@@ -127,7 +128,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
                     nav = None
 
                 activities = [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY]
-                project = GroupProject(block.id, block.name, activities, nav, is_v2=True)
+                project = GroupProject(block.id, block.name, activities, nav, page.id, is_v2=True)
                 projects.append(project)
 
             course.group_projects.extend(projects)
