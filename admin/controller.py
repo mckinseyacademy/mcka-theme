@@ -26,11 +26,12 @@ MINIMAL_COURSE_DEPTH = 5
 
 
 class GroupProject(object):
-    def __init__(self, project_id, name, activities, navigator=None):
+    def __init__(self, project_id, name, activities, navigator=None, is_v2=False):
         self.id = project_id
         self.name = name
         self.activities = activities
         self.navigator = navigator
+        self.is_v2 = is_v2
 
     @property
     def escaped_navigator_usage_id(self):
@@ -116,15 +117,19 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
             course.group_projects.append(group_project)
         elif is_group_project_v2_chapter(chapter):
             blocks = _find_group_project_v2_blocks_in_chapter(chapter)
-            projects = [
-                GroupProject(
-                    block.id,
-                    block.name,
-                    [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY],
-                    [child for child in block.children if child.category == GROUP_PROJECT_V2_NAVIGATOR_CATEGORY][0]
-                )
-                for block, seq in blocks
-            ]
+            projects = []
+            for block, seq in blocks:
+                try:
+                    nav = [
+                        child for child in block.children if child.category == GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
+                    ][0]
+                except IndexError:
+                    nav = None
+
+                activities = [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY]
+                project = GroupProject(block.id, block.name, activities, nav, is_v2=True)
+                projects.append(project)
+
             course.group_projects.extend(projects)
 
     # Only the first discussion chapter is taken into account

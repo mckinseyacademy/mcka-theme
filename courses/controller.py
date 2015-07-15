@@ -284,6 +284,9 @@ def group_project_location(group_project, sequential_id=None):
     '''
     Returns current sequential_id and page_id for the user for their group project
     '''
+    if not group_project.activities:
+        return None, None
+
     activity = group_project.activities[0]
     for act in group_project.activities:
         # is it the chosen one

@@ -36,7 +36,7 @@
       .row
         .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
     - else
-      - if not group_project.navigator
+      - if not group_project.is_v2
         .row
           - include "courses/group_work/activity_menu.haml"
       .row
@@ -46,8 +46,11 @@
             %span= group_project.name
           .lesson-content
         #group-project-users.large-4.medium-4.columns.splitpiece.right
-          - if group_project.navigator
-            .project-navigator
+          - if group_project.is_v2
+            -if group_project.navigator
+              .project-navigator
+            -else
+              .no-navigator-error= _("This Group Project V2 does not contain Project Navigator - please edit course outline in Studio to include one")
           -else
             .group-members
               %h4= _("Group Members")
