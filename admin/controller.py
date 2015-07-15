@@ -12,15 +12,14 @@ from datetime import datetime
 from pytz import UTC
 
 from .models import (
-    Client, WorkGroup, UserRegistrationError, GROUP_PROJECT_V2_ACTIVITY_CATEGORY, GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
+    Client, WorkGroup, UserRegistrationError,
+    GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
+    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
 )
 
 import threading
 import Queue
 import atexit
-
-GROUP_PROJECT_CATEGORY = 'group-project'
-GROUP_PROJECT_V2_CATEGORY = 'group-project-v2'
 
 MINIMAL_COURSE_DEPTH = 5
 
