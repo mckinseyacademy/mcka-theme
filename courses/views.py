@@ -183,12 +183,10 @@ def _render_group_work(request, course, project_group, group_project):
     if actid and " " in actid:
         actid = actid.replace(" ", "+")
 
-    if not group_project is None:
-        activity, usage_id = group_project_location(
-            group_project,
-            actid
-        )
-        vertical_usage_id = usage_id
+    select_stage = request.GET.get('select_stage', None)
+
+    if group_project is not None:
+        activity, vertical_usage_id = group_project_location(group_project, actid)
     else:
         activity = vertical_usage_id = None
 
@@ -213,6 +211,8 @@ def _render_group_work(request, course, project_group, group_project):
         "ta_user": ta_user,
         "group_work_url": request.path_info,
     }
+    if select_stage:
+        data['select_stage'] = select_stage
     return render(request, 'courses/course_group_work.haml', data)
 
 @login_required
@@ -578,10 +578,15 @@ def infer_page_navigation(request, course_id, page_id):
     if not course_id:
         course_id = get_current_course_for_user(request)
 
+    course = load_course(course_id, request=request)
+    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
     chapter_id, vertical_id, final_target_id = get_chapter_and_target_by_location(request, course_id, page_id)
 
     if course_id and chapter_id and vertical_id:
+
         redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
+        if group_project.is_v2 and group_project.vertical_id == vertical_id:
+            redirect_url = "/courses/{}/group_work".format(course_id)
 
         if final_target_id not in (chapter_id, vertical_id):
             redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)

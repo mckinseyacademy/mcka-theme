@@ -15,7 +15,7 @@ from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES
 from admin.models import WorkGroup
-from admin.controller import load_course, get_group_activity_xblock, is_group_activity
+from admin.controller import load_course, get_group_activity_xblock, is_group_activity, MINIMAL_COURSE_DEPTH
 from admin.models import ReviewAssignmentGroup
 
 from lib.util import PriorIdConvert
@@ -106,7 +106,7 @@ def build_page_info_for_course(
         course_api_impl - optional api client module to use (useful in mocks)
     '''
 
-    course = copy.deepcopy(load_course(course_id, 4, course_api_impl, request=request))
+    course = copy.deepcopy(load_course(course_id, MINIMAL_COURSE_DEPTH, course_api_impl, request=request))
 
     # something sensible if we fail...
     if len(course.chapters) < 1:
@@ -199,7 +199,7 @@ def locate_chapter_page(
         course_api_impl - optional api client module to use (useful in mocks)
         user_api_impl - optional api client module to use (useful in mocks)
     '''
-    course = load_course(course_id, 4, course_api_impl, request=request)
+    course = load_course(course_id, MINIMAL_COURSE_DEPTH, course_api_impl, request=request)
     if not course.started:
         return course_id, None, None
 
@@ -284,6 +284,9 @@ def group_project_location(group_project, sequential_id=None):
     '''
     Returns current sequential_id and page_id for the user for their group project
     '''
+    if not group_project.activities:
+        return None, None
+
     activity = group_project.activities[0]
     for act in group_project.activities:
         # is it the chosen one

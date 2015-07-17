@@ -11,7 +11,9 @@ from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
 
-from .models import Client, WorkGroup, UserRegistrationError, GROUP_PROJECT_V2_ACTIVITY_CATEGORY
+from .models import (
+    Client, WorkGroup, UserRegistrationError, GROUP_PROJECT_V2_ACTIVITY_CATEGORY, GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
+)
 
 import threading
 import Queue
@@ -20,12 +22,23 @@ import atexit
 GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'group-project-v2'
 
+MINIMAL_COURSE_DEPTH = 5
+
 
 class GroupProject(object):
-    def __init__(self, project_id, name, activities):
+    def __init__(self, project_id, name, activities, navigator=None, vertical_id=None, is_v2=False):
         self.id = project_id
         self.name = name
         self.activities = activities
+        self.navigator = navigator
+        self.vertical_id = vertical_id
+        self.is_v2 = is_v2
+
+    @property
+    def escaped_navigator_usage_id(self):
+        if self.navigator is None:
+            return None
+        return self.navigator.id.replace('/', ';_')
 
 def _worker():
     while True:
@@ -59,14 +72,14 @@ def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_stat
 
 def _find_group_project_v2_blocks_in_chapter(chapter):
     return (
-        (xblock, sequential)
+        (xblock, sequential, page)
         for sequential in chapter.sequentials
         for page in sequential.pages
         for xblock in page.children
         if xblock.category == GROUP_PROJECT_V2_CATEGORY
     )
 
-def _load_course(course_id, depth=5, course_api_impl=course_api):
+def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
@@ -105,7 +118,19 @@ def _load_course(course_id, depth=5, course_api_impl=course_api):
             course.group_projects.append(group_project)
         elif is_group_project_v2_chapter(chapter):
             blocks = _find_group_project_v2_blocks_in_chapter(chapter)
-            projects = [GroupProject(block.id, block.name, block.children) for block, seq in blocks]
+            projects = []
+            for block, seq, page in blocks:
+                try:
+                    nav = [
+                        child for child in block.children if child.category == GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
+                    ][0]
+                except IndexError:
+                    nav = None
+
+                activities = [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY]
+                project = GroupProject(block.id, block.name, activities, nav, page.id, is_v2=True)
+                projects.append(project)
+
             course.group_projects.extend(projects)
 
     # Only the first discussion chapter is taken into account
@@ -121,7 +146,7 @@ def _load_course(course_id, depth=5, course_api_impl=course_api):
     return course
 
 
-def load_course(course_id, depth=5, course_api_impl=course_api, request=None):
+def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, request=None):
     """
     Gets the course from the API, and performs any post-processing for Apros specific purposes
 
@@ -136,6 +161,8 @@ def load_course(course_id, depth=5, course_api_impl=course_api, request=None):
         course_api_impl: module  - implementation of course API
         request: DjangoRequest - current django request
     """
+    if depth < MINIMAL_COURSE_DEPTH:
+        depth = MINIMAL_COURSE_DEPTH
     course_context = get_course_context()
     if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth", 0) >= depth:
         return course_context["course_content"]

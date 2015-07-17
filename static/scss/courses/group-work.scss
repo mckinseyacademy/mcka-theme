@@ -75,7 +75,6 @@
 
   .activity_section {
     min-height: 400px;
-    border-right:1px solid #cccccc;
     padding-right: 20px;
   }
 
@@ -169,6 +168,26 @@
         }
         &:last-of-type{
           border-bottom: none;
+        }
+      }
+    }
+  }
+
+  .group-project-navigator-wrapper {
+    margin-right: -27px;
+    background-color: white;
+
+    .group-project-navigator-view-selector {
+      li {
+        @include font-spec(14, normal, 18);
+        @include button($button-sml, $primary-color, true);
+        padding: 4px 6px;
+        font-size: 16px;
+        width: 50px;
+
+        &.active {
+          background-color: #555;
+          color: #eee;
         }
       }
     }

@@ -55,8 +55,8 @@ from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, generate_course_report, get_organizations_users_completion,
-    get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report
-)
+    get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
+    MINIMAL_COURSE_DEPTH)
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
@@ -677,7 +677,7 @@ def client_admin_email_not_started(request, client_id, course_id):
 @permission_group_required(
     PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
 )
-@checked_course_access # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def client_admin_user_progress(request, client_id, course_id, user_id, restrict_to_courses_ids=None):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
@@ -685,7 +685,7 @@ def client_admin_user_progress(request, client_id, course_id, user_id, restrict_
     courses = []
     grades = {grade.course_id: grade for grade in user_api.get_user_grades(user_id)}
     for courseName in userCourses:
-        course = load_course(courseName.id, depth=4)
+        course = load_course(courseName.id, depth=MINIMAL_COURSE_DEPTH)
         if (restrict_to_courses_ids is not None) and (course.id not in restrict_to_courses_ids):
             continue
         if course.id != course_id:
