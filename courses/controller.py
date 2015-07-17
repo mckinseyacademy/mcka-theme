@@ -287,6 +287,9 @@ def group_project_location(group_project, sequential_id=None):
     if not group_project.activities:
         return None, None
 
+    if group_project.is_v2:
+        return None, group_project.id.replace('/', ';_')  # activities works differently in GP V2
+
     activity = group_project.activities[0]
     for act in group_project.activities:
         # is it the chosen one
