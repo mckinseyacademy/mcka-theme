@@ -356,3 +356,7 @@ Later in the file, make sure you add them to proper place. There is a `if ENV['V
             create: true, nfs: true
 
 You will then be able to access this directory as the edxapp user from `~/xblocks` within the VM, and install them from there while editing them from whatever virtualenvs you like on the host.
+
+## Appendix E: Apros not working on a Linux host
+
+In case you have issues with the Apros website on Linux and LMS and the forum are working, chances are that the port forwarding isn't working properly. To fix that try adding the [Mac rules in Vagrant](https://www.danpurdy.co.uk/web-development/osx-yosemite-port-forwarding-for-vagrant/) with adding the [iptables rules for Linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user). Note that the added iptables rules are deleted upon reboot, if you are on Debian you can use [this](http://unix.stackexchange.com/questions/52376/why-do-iptables-rules-disappear-when-restarting-my-debian-system) to make the rules permanent.
