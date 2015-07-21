@@ -149,9 +149,13 @@ class WorkgroupCompletionData(object):
     def build_report_data(self):
         total_group_count = 0
         projects = []
-        for p in self.projects:
-            project_data = self.get_v1_data(p)
-            total_group_count += p.group_count
+        for project in self.projects:
+            group_project = self.group_project_lookup[project.content_id]
+            if group_project.is_v2:
+                project_data = self.get_v2_data(project)
+            else:
+                project_data = self.get_v1_data(project)
+            total_group_count += project_data.group_count
             projects.append(project_data)
 
         return {
@@ -280,6 +284,11 @@ class WorkgroupCompletionData(object):
             act_idx += 1
             activity.index = act_idx
         return p
+
+    def get_v2_data(self, p):
+        result = DottableDict()
+        result.group_count = len(p.workgroups)
+        return DottableDict(result)
 
 
 def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None):
