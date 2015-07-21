@@ -281,6 +281,10 @@ Try the following:
     
 Sessions are a bit persnickety in Apros due to the fact that they must be aligned between both the LMS and Apros.
 
+### Apros not working on a Linux host
+
+In case you have issues with the Apros website on Linux and LMS and the forum are working, chances are that the port forwarding isn't working properly. To fix that try adding the [Mac rules in Vagrant](https://www.danpurdy.co.uk/web-development/osx-yosemite-port-forwarding-for-vagrant/) with adding the [iptables rules for Linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user). Note that the added iptables rules are deleted upon reboot, if you are on Debian you can use [this](http://unix.stackexchange.com/questions/52376/why-do-iptables-rules-disappear-when-restarting-my-debian-system) to make the rules permanent.
+
 ## Appendix B: 'Real-Word' Deployments
 
 Deployments of Apros that are publicly accessible should differ in several respects. Chiefly:
