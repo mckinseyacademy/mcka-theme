@@ -182,6 +182,10 @@ def get_chapter_and_target_by_location(request, course_id, location_id, course_a
     '''
     nav = course_api_impl.get_course_navigation(course_id, location_id)
 
+    # If the course doesn't exist
+    if nav == None:
+        return None
+        
     return nav.chapter, nav.vertical, nav.final_target_id
 
 def locate_chapter_page(
