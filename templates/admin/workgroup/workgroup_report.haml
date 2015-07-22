@@ -41,7 +41,7 @@
               %tr
                 %th
                 - for activity in project.activities
-                  %th.activity-name{colspan: 4, title: "#{activity.name}"}
+                  %th.activity-name{colspan: "#{activity.stage_count}", title: "#{activity.name}"}
                     = _("Activity")
                     = activity.index
                     - if activity.grade_type
@@ -50,21 +50,15 @@
               %tr
                 %th
                 - for activity in project.activities
-                  %th
-                    = activity.upload_date
-                  %th
-                    = activity.evaluation_date
-                  %th
-                    = activity.grade_date
-                  %th
-                    = activity.grade_date
+                  - for stage_id, stage in activity.stages.items
+                    %th
+                      = stage.deadline
               %tr
                 %th= _("Group")
                 - for activity in project.activities
-                  %th= _("Upload")
-                  %th= _("Evaluation")
-                  %th= _("Review")
-                  %th= _("Graded")
+                  - for stage_id, stage in activity.stages.items
+                    %th
+                      = stage.name
 
             %tbody
               - for workgroup in project.workgroups
@@ -73,15 +67,13 @@
                     %a{href:"/admin/workgroup/course/#{course.id}/group_work_status/#{workgroup.id}"}
                       = workgroup.name
                   - for activity_status in workgroup.activity_statuses
-                    %td{class: "status #{activity_status.upload}"}
-                    %td{class: "status #{activity_status.evaluation}"}
-                    - if activity_status.ta_graded
-                      %td
-                        = _("--")
-                    - else
-                      %td{class: "status #{activity_status.grade}"}
-                    %td
-                      %a{href: "#{activity_status.review_link}", class: "status #{activity_status.graded}"}
+                    - for stage_id, stage in activity_status.stages.items
+                      %td{class: "status #{stage.status}"}
+                        - if stage.link
+                          %a{href: "#{stage.link}"}
+                            = stage.content
+                        - else
+                          = stage.content
 - block js_snippets
   :javascript
     $(function(){
