@@ -263,7 +263,7 @@ IGNORE_ROLES = [
 
 # Zendesk Settings
 ZENDESK_API = {
-    'username': 'andy@mckinseyacademy.com',
+    'username': 'pam@mckinseyacademy.com',
     'token': 'uiXVhEjOO2Os7NxUUBQvMZvsqBGDqfUJBPC8PAsG',
     'subdomain': 'mckinseyacademy',
 }
