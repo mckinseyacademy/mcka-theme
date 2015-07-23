@@ -8,12 +8,12 @@ from django.conf import settings
 
 from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
 
-from api_client import course_api, user_api, user_models, workgroup_api
+from api_client import course_api, user_api, user_models, workgroup_api, project_api
 from api_client.project_models import Project
 from api_client.group_api import get_users_in_group
 from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
-from api_client.user_api import USER_ROLES
+from api_client.user_api import USER_ROLES, workgroup_models
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, MINIMAL_COURSE_DEPTH
 from admin.models import ReviewAssignmentGroup
@@ -248,12 +248,17 @@ def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user
         page_id
     )
 
-def get_group_project_for_user_course(user_id, course):
+def get_group_project_for_user_course(user_id, course, workgroup_id=None):
     '''
     Returns correct group and project information for the user for this course
     '''
     # Find the user_group(s) with which this user is associated
     user_workgroups = user_api.get_user_workgroups(user_id, course.id)
+    if workgroup_id:
+        workgroup = workgroup_api.get_workgroup(workgroup_id, workgroup_models.Workgroup)
+        workgroup.project = project_api.get_project_url_by_id(workgroup.project)
+        user_workgroups = [workgroup]
+
     if len(user_workgroups) < 1:
         return None, None
 
