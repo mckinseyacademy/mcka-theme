@@ -14,16 +14,18 @@ from . import workgroup_models
 
 PROJECT_API = getattr(settings, 'PROJECT_API', 'api/server/projects')
 
+
+def get_project_url_by_id(project_id):
+    return '{}/{}/{}/'.format(
+        settings.API_SERVER_ADDRESS,
+        PROJECT_API,
+        project_id,
+    )
+
 @api_error_protect
 def get_project(project_id, project_object=JsonObject):
     ''' fetch project by id '''
-    response = GET(
-        '{}/{}/{}/'.format(
-            settings.API_SERVER_ADDRESS,
-            PROJECT_API,
-            project_id,
-        )
-    )
+    response = GET(get_project_url_by_id(project_id))
 
     project = JP.from_json(response.read(), project_object)
     return project

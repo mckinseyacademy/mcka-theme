@@ -45,6 +45,11 @@
         }
     }
 
+    function initArgs(element) {
+        var initargs = $('.xblock_json_init_args', element).text();
+        return initargs ? JSON.parse(initargs) : {};
+    }
+
     $.xblock = {
         window: window,
         location: location,
@@ -214,7 +219,7 @@
                 console.log('Initializing XBlock JS', initFnName, blockDOM);
                 var runtime = $this.getRuntime(options, blockDOM);
                 var initFn = window[initFnName];
-                blockJS = new initFn(runtime, blockDOM) || {};
+                blockJS = new initFn(runtime, blockDOM, initArgs(blockDOM)) || {};
                 blockJS.runtime = runtime;
             }
 

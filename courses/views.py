@@ -579,7 +579,8 @@ def infer_page_navigation(request, course_id, page_id):
         course_id = get_current_course_for_user(request)
 
     course = load_course(course_id, request=request)
-    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+    ta_grading_group = user_api.get_user_preferences(request.user.id).get("TA_REVIEW_WORKGROUP", None)
+    project_group, group_project = get_group_project_for_user_course(request.user.id, course, ta_grading_group)
     chapter_id, vertical_id, final_target_id = get_chapter_and_target_by_location(request, course_id, page_id)
 
     if course_id and chapter_id and vertical_id:
@@ -587,6 +588,9 @@ def infer_page_navigation(request, course_id, page_id):
         redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
         if group_project.is_v2 and group_project.vertical_id == vertical_id:
             redirect_url = "/courses/{}/group_work".format(course_id)
+
+        if ta_grading_group:
+            redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
 
         if final_target_id not in (chapter_id, vertical_id):
             redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
