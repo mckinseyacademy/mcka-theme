@@ -47,7 +47,9 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/contact/add', views.client_detail_add_contact, name='client_detail_add_contact'),
     url(r'^clients/(?P<client_id>[0-9]+)/contact/(?P<user_id>[0-9]+)/remove', views.client_detail_remove_contact, name='client_detail_remove_contact'),
     url(r'^clients/(?P<client_id>[0-9]+)/contact', views.client_detail_contact, name='client_detail_contact'),
+    url(r'^clients/(?P<client_id>[0-9]+)/navigation', views.client_detail_navigation, name='client_detail_navigation'),
     url(r'^clients/(?P<client_id>[0-9]+)/nav_links', views.client_detail_nav_links, name='client_detail_nav_links'),
+    url(r'^clients/(?P<client_id>[0-9]+)/customization', views.client_detail_customization, name='client_detail_customization'),
     url(r'^clients/(?P<client_id>[0-9]+)/(?P<detail_view>.*)', views.client_detail, name='client_detail'),
     url(r'^clients', views.client_list, name='client_list'),
 

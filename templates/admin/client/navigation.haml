@@ -6,6 +6,7 @@
     %span= client.display_name
   %hr
   %section
+  .sub-1 Custom Navigation Links
   %h2
     %p You can change the global navigation links for this client across all courses for this client's participants. Please note that you will need to preview the navigation to check for spacing, spelling, and link behavior before you have the opportunity to save these links. You can make edits after previewing if needed.
   %br
@@ -44,3 +45,30 @@
       %div
         %input{type: 'reset', value: 'Cancel'}
         %input.button.radius.tiny{type: 'submit', value: 'Save Links'}
+  %hr
+  #custom-branding
+    .sub-1 Custom Branding
+    %h2
+      %p You can change upload a logo and change the secondary navigation colors for the bar and icons across all courses for this client below. Please note that you will need to preview the custom branding to check for sizing and color before you have the opportunity to save changes. You can make edits after previewing if needed.
+    %form{action: "/admin/clients/#{client.id}/customization", method: 'POST'}
+      - csrf_token
+      %fieldset
+        %ul
+          %li
+            %label.nav2.selected Hex # for notification circle:
+            %input{type: 'text', name: 'hex_notification', placeholder: 'enter #', value: "#{customization.hex_notification}"}
+          %li
+            %label.nav2.selected Hex # for background bar:
+            %input{type: 'text', name: 'hex_background_bar', placeholder: 'enter #', value: "#{customization.hex_background_bar}"}
+          %li
+            %label.nav2.selected Hex # for program name text:
+            %input{type: 'text', name: 'hex_program_name', placeholder: 'enter #', value: "#{customization.hex_program_name}"}
+          %li
+            %label.nav2.selected Hex # for navigation icons:
+            %input{type: 'text', name: 'hex_navigation_icons', placeholder: 'enter #', value: "#{customization.hex_navigation_icons}"}
+          %li
+            %label.nav2.selected Hex # for course title text:
+            %input{type: 'text', name: 'hex_course_title', placeholder: 'enter #', value: "#{customization.hex_course_title}"}
+      %div
+        %input{type: 'reset', value: 'Cancel'}
+        %input.button.radius.tiny{type: 'submit', value: 'Save Branding'}

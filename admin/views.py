@@ -20,6 +20,7 @@ from django.template import loader, RequestContext
 from django.utils.dateformat import format
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
+from django.views.decorators.http import require_POST
 
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
@@ -49,7 +50,7 @@ from main.models import CuratedContentItem
 
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
-    UserRegistrationBatch, UserRegistrationError, ClientNavLinks
+    UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -1015,40 +1016,64 @@ def client_detail_contact(request, client_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
-def client_detail_nav_links(request, client_id):
-
+def client_detail_navigation(request, client_id):
     client = Client.fetch(client_id)
 
-    if request.method == 'POST':
-        for i in range(1, 7):
-            link_name = request.POST['name_%s' % i]
-            link_label = request.POST['label_%s' % i]
-            link_url = request.POST['link_%s' % i]
-            if link_label or link_url:
-                (link, created) = ClientNavLinks.objects.get_or_create(
-                        client_id=client_id,
-                        link_name=link_name,
-                )
-                link.link_label = link_label or link_name
-                link.link_url = link_url
-                link.save()
-            if not link_label and not link_url:
-                ClientNavLinks.objects.filter(client_id=client_id, link_name=link_name).delete()
-
+    (customization, created) = ClientCustomization.objects.get_or_create(
+        client_id=client_id,
+    )
     nav_links = ClientNavLinks.objects.filter(client_id=client_id)
     nav_links = dict((link.link_name, link) for link in nav_links)
 
     data = {
         'client': client,
         'nav_links': nav_links,
-        'selected_client_tab': 'nav_links',
+        'customization': customization,
+        'selected_client_tab': 'navigation',
     }
 
     return render(
         request,
-        'admin/client/nav_links.haml',
+        'admin/client/navigation.haml',
         data,
     )
+
+@require_POST
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
+def client_detail_nav_links(request, client_id):
+    for i in range(1, 7):
+        link_name = request.POST['name_%s' % i]
+        link_label = request.POST['label_%s' % i]
+        link_url = request.POST['link_%s' % i]
+        if link_label or link_url:
+            (link, created) = ClientNavLinks.objects.get_or_create(
+                    client_id=client_id,
+                    link_name=link_name,
+            )
+            link.link_label = link_label or link_name
+            link.link_url = link_url
+            link.save()
+        if not link_label and not link_url:
+            ClientNavLinks.objects.filter(client_id=client_id, link_name=link_name).delete()
+
+    return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
+
+@require_POST
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
+def client_detail_customization(request, client_id):
+    (customization, created) = ClientCustomization.objects.get_or_create(
+        client_id=client_id,
+    )
+    customization.hex_notification = request.POST['hex_notification']
+    customization.hex_background_bar = request.POST['hex_background_bar']
+    customization.hex_program_name = request.POST['hex_program_name']
+    customization.hex_navigation_icons = request.POST['hex_navigation_icons']
+    customization.hex_course_title = request.POST['hex_course_title']
+    customization.save()
+
+    return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)

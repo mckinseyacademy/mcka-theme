@@ -245,6 +245,14 @@ class ClientNavLinks(db_models.Model):
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
 
+class ClientCustomization(db_models.Model):
+    client_id = db_models.IntegerField(unique=True, db_index=True)
+    hex_notification = db_models.CharField(max_length=7)
+    hex_background_bar = db_models.CharField(max_length=7)
+    hex_program_name = db_models.CharField(max_length=7)
+    hex_navigation_icons = db_models.CharField(max_length=7)
+    hex_course_title = db_models.CharField(max_length=7)
+
 ROLE_ACTIONS = DottableDict(
     GRANT='grant',
     REVOKE='revoke'
