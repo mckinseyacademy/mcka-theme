@@ -41,7 +41,7 @@
               %tr
                 %th
                 - for activity in project.activities
-                  %th.activity-name{colspan: "#{activity.stage_count}", title: "#{activity.name}"}
+                  %th.activity-name{colspan: "#{activity.stage_count}", title: "#{activity.name}", class: "#{}"}
                     = _("Activity")
                     = activity.index
                     - if activity.grade_type
@@ -68,12 +68,17 @@
                       = workgroup.name
                   - for activity_status in workgroup.activity_statuses
                     - for stage_id, stage in activity_status.stages.items
-                      %td{class: "status #{stage.status}"}
-                        - if stage.link
-                          %a{href: "#{stage.link}"}
-                            = stage.content
-                        - else
-                          = stage.content
+                      - if stage.link
+                        %td
+                          - if stage.is_grading_stage
+                            - if not activity_status.ta_graded
+                              %a{href: "#{stage.link}", class: "status grading #{stage.status}"}
+                            - else
+                              = _("--")
+                          - else
+                            %a{href: "#{stage.link}", class: "status #{stage.status}"}
+                      - else
+                        %td{class: "status #{stage.status}"}
 - block js_snippets
   :javascript
     $(function(){

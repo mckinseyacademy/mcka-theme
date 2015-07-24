@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import datetime
 import copy
 
@@ -26,30 +27,30 @@ COMPLETION_STAGES = [GroupProjectV1Stages.UPLOAD, GroupProjectV1Stages.EVALUATIO
 IRRELEVANT = _('--')
 NOT_APPLICABLE = _('n/a')
 
+GP_V1_STAGES = OrderedDict([
+    (GroupProjectV1Stages.UPLOAD, DottableDict({'name': _("Upload"), 'deadline': IRRELEVANT})),
+    (GroupProjectV1Stages.EVALUATION, DottableDict({'name': _("Evaluation"), 'deadline': IRRELEVANT})),
+    (GroupProjectV1Stages.GRADE, DottableDict({'name': _("Review"), 'deadline': IRRELEVANT})),
+    (GroupProjectV1Stages.GRADED, DottableDict({'name': _("Graded"), 'deadline': IRRELEVANT})),
+])
+
 BLANK_ACTIVITY = DottableDict({
     "name": _("This activity does not exist"),
     "grade_type": None,
     "upload_date": NOT_APPLICABLE,
     "evaluation_date": NOT_APPLICABLE,
     "grade_date": NOT_APPLICABLE,
-    "stages": {
-        GroupProjectV1Stages.UPLOAD: {'name': _("Upload"), 'deadline': IRRELEVANT},
-        GroupProjectV1Stages.EVALUATION: {'name': _("Evaluate"), 'deadline': IRRELEVANT},
-        GroupProjectV1Stages.GRADE: {'name': _("Review"), 'deadline': IRRELEVANT},
-        GroupProjectV1Stages.GRADED: {'name': _("Grade"), 'deadline': IRRELEVANT},
-    },
+    "stages": GP_V1_STAGES,
     "stage_count": 4
 })
 
 BLANK_ACTIVITY_STATUS = DottableDict({
     "ta_graded": False,
     "review_groups": [],
-    "stages": {
-        GroupProjectV1Stages.UPLOAD: {'name': _("Upload"), 'deadline': IRRELEVANT},
-        GroupProjectV1Stages.EVALUATION: {'name': _("Evaluate"), 'deadline': IRRELEVANT},
-        GroupProjectV1Stages.GRADE: {'name': _("Review"), 'deadline': IRRELEVANT},
-        GroupProjectV1Stages.GRADED: {'name': _("Grade"), 'deadline': IRRELEVANT},
-    },
+    "stages": OrderedDict(
+        (stage_id, stage_data.update({'deadline': NOT_APPLICABLE}))
+        for stage_id, stage_data in GP_V1_STAGES.iteritems()
+    ),
     "stage_count": 4
 })
 
@@ -174,11 +175,11 @@ class WorkgroupCompletionData(object):
 
     def get_v1_data(self, p):
 
-        def get_due_date(group_xblock, stage_name):
-            if stage_name == GroupProjectV1Stages.GRADED:  # graded and grade share the same milestone
-                stage_name = GroupProjectV1Stages.GRADE
+        def get_due_date(group_xblock, date_name):
+            if date_name == GroupProjectV1Stages.GRADED:  # graded and grade share the same milestone
+                date_name = GroupProjectV1Stages.GRADE
             if hasattr(group_xblock, "milestone_dates"):
-                return getattr(group_xblock.milestone_dates, stage_name, None)
+                return getattr(group_xblock.milestone_dates, date_name, None)
             return None
 
         def formatted_milestone_date(group_xblock, date_name):
@@ -196,16 +197,12 @@ class WorkgroupCompletionData(object):
                 return 'incomplete'
             return 'incomplete overdue'
 
-        def get_stage_data(stage_id, is_complete, due_date, ta_grading=None, review_link=None):
+        def get_stage_data(stage_id, is_complete, due_date, review_link=None):
             result = {
                 'status': report_completion_boolean(is_complete, due_date),
-                'content': '',
-                'link': ''
+                'is_grading_stage': stage_id == GroupProjectV1Stages.GRADE,
             }
-            if stage_id == GroupProjectV1Stages.GRADE and ta_grading:
-                result['status'] = ''
-                result['content'] = IRRELEVANT
-            if stage_id == GroupProjectV1Stages.GRADED and review_link is not None:
+            if review_link is not None:
                 result['link'] = review_link
             return DottableDict(result)
 
@@ -216,16 +213,9 @@ class WorkgroupCompletionData(object):
             ]
         p.group_count = len(p.workgroups)
 
-        stages = DottableDict({
-            GroupProjectV1Stages.UPLOAD: DottableDict({'name': _("Upload"), 'deadline': None}),
-            GroupProjectV1Stages.EVALUATION: DottableDict({'name': _("Evaluation"), 'deadline': None}),
-            GroupProjectV1Stages.GRADE: DottableDict({'name': _("Review"), 'deadline': None}),
-            GroupProjectV1Stages.GRADED: DottableDict({'name': _("Graded"), 'deadline': None}),
-        })
-
         for activity in p.activities:
             group_xblock = self._get_activity_xblock(activity.id)
-            activity.stages = copy.deepcopy(stages)
+            activity.stages = copy.deepcopy(GP_V1_STAGES)
 
             for stage_key in activity.stages.keys():
                 activity.stages[stage_key]['deadline'] = formatted_milestone_date(group_xblock, stage_key)
@@ -252,20 +242,17 @@ class WorkgroupCompletionData(object):
                     'ta_graded': group_xblock.ta_graded,
                     'review_link': self._review_link(group, activity)
                 })
-                activity_status.stages = DottableDict(
-                    {
-                        stage_id: get_stage_data(
-                            stage_id,
-                            self.is_complete(group_xblock, [ser.id for ser in group.users], stage_id),
-                            get_due_date(group_xblock, stage_id),
-                            activity_status.ta_graded,
-                            activity_status.review_link
-                        )
-                        for stage_id in activity.stages
-                    }
+                activity_status.stages = OrderedDict(
+                    (stage_id, get_stage_data(
+                        stage_id,
+                        self.is_complete(group_xblock, [ser.id for ser in group.users], stage_id),
+                        get_due_date(group_xblock, stage_id),
+                        activity_status.review_link
+                    ))
+                    for stage_id in activity.stages
                 )
 
-                activity_status.modifier_class = activity_status.stages.graded.status
+                activity_status.modifier_class = activity_status.stages[GroupProjectV1Stages.GRADED].status
 
                 group.activity_statuses.append(activity_status)
 
@@ -283,18 +270,6 @@ class WorkgroupCompletionData(object):
                     group_xblock = self._get_activity_xblock(activity.id)
                     user_activity_status = DottableDict()
 
-                    user_activity_status.stages = DottableDict(
-                        {
-                            stage_id: get_stage_data(
-                                stage_id,
-                                self.is_complete(group_xblock, [user.id], stage_id),
-                                get_due_date(group_xblock, stage_id)
-                            )
-                            for stage_id in INDIVIDUAL_STAGES
-                            }
-                    )
-                    user_activity_status.stages[GroupProjectV1Stages.UPLOAD] = {'content': IRRELEVANT, 'status': ''}
-
                     user_activity_status.review_groups = self.user_review_assignments[user.id][group_xblock.id]
                     if len(user_activity_status.review_groups) > user.max_review_count:
                         user.max_review_count = len(user_activity_status.review_groups)
@@ -305,8 +280,24 @@ class WorkgroupCompletionData(object):
                         review_group.review_link = self._review_link(review_group, activity)
                         review_group.modifier_class = report_completion_boolean(
                             self.is_complete(group_xblock, [u.id for u in review_group.members], None),
-                            get_due_date(group_xblock, 'grade'))
+                            get_due_date(group_xblock, GroupProjectV1Stages.GRADE))
 
+                    stages = []
+                    for stage_id in activity.stages:
+                        stage_data = DottableDict()
+                        if stage_id in INDIVIDUAL_STAGES:
+                            stage_data = get_stage_data(
+                                stage_id,
+                                self.is_complete(group_xblock, [user.id], stage_id),
+                                get_due_date(group_xblock, stage_id)
+                            )
+                        elif stage_id == GroupProjectV1Stages.UPLOAD:
+                            stage_data = DottableDict({'status': IRRELEVANT, 'is_grading_stage': False})
+                        elif stage_id == GroupProjectV1Stages.GRADED:
+                            stage_data = DottableDict({'status': IRRELEVANT, 'is_grading_stage': False})
+                        stages.append((stage_id, stage_data))
+
+                    user_activity_status.stages = stages
                     user.activity_statuses.append(user_activity_status)
 
                 while len(user.activity_statuses) < 3:
