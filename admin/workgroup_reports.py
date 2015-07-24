@@ -67,11 +67,10 @@ class WorkgroupCompletionData(object):
 
     activity_xblocks = {}
 
-    def _get_activity_xblock(self, activity_id):
-        if activity_id not in self.activity_xblocks:
-            self.activity_xblocks[activity_id] = WorkGroupActivityXBlock.fetch_from_activity(self.course.id,
-                                                                                             activity_id)
-        return self.activity_xblocks[activity_id]
+    def _get_activity_xblock(self, act_id):
+        if act_id not in self.activity_xblocks:
+            self.activity_xblocks[act_id] = WorkGroupActivityXBlock.fetch_from_activity(self.course.id, act_id)
+        return self.activity_xblocks[act_id]
 
     def __init__(self, course_id, group_id=None, restrict_to_users_ids=None):
         self.activity_xblocks = {}
@@ -93,18 +92,6 @@ class WorkgroupCompletionData(object):
     def _make_completion_key(content_id, user_id, stage):
         format_string = '{}_{}' if stage is None else '{}_{}_{}'
         return format_string.format(content_id, user_id, stage)
-
-    def is_complete(self, group_xblock, user_ids, stage):
-        if stage is not None and stage == GroupProjectV1Stages.GRADE and group_xblock.ta_graded:
-            return None
-
-        if stage is not None and stage == GroupProjectV1Stages.GRADED:
-            stage = None
-
-        return all(
-            WorkgroupCompletionData._make_completion_key(group_xblock.id, u_id, stage) in self.completions
-            for u_id in user_ids
-        )
 
     def _load_project_workgroup_status(self, project, pw):
         for u in pw.users:
@@ -143,18 +130,6 @@ class WorkgroupCompletionData(object):
                 for k, pw in self.project_workgroups[project.id].iteritems():
                     self._load_project_workgroup_status(project, pw)
 
-    def _review_link(self, workgroup, activity=None):
-        if activity:
-            return "/courses/{}/group_work/{}?actid={}".format(
-                self.course.id,
-                workgroup.id,
-                activity.id,
-            )
-        return "/courses/{}/group_work/{}".format(
-            self.course.id,
-            workgroup.id,
-        )
-
     def build_report_data(self):
         total_group_count = 0
         projects = []
@@ -174,6 +149,22 @@ class WorkgroupCompletionData(object):
         }
 
     def get_v1_data(self, p):
+        def is_complete(group_xblock, user_ids, stage):
+            if stage is not None and stage == GroupProjectV1Stages.GRADE and group_xblock.ta_graded:
+                return None
+
+            if stage is not None and stage == GroupProjectV1Stages.GRADED:
+                stage = None
+
+            return all(
+                WorkgroupCompletionData._make_completion_key(group_xblock.id, u_id, stage) in self.completions
+                for u_id in user_ids
+            )
+
+        def review_link(course_id, workgroup, activity=None):
+            if activity:
+                return "/courses/{}/group_work/{}?actid={}".format(course_id, workgroup.id, activity.id)
+            return "/courses/{}/group_work/{}".format(course_id, workgroup.id)
 
         def get_due_date(group_xblock, date_name):
             if date_name == GroupProjectV1Stages.GRADED:  # graded and grade share the same milestone
@@ -223,7 +214,7 @@ class WorkgroupCompletionData(object):
             activity.stage_count = len(activity.stages)
             activity.grade_type = _("TA Graded") if group_xblock.ta_graded else _("Peer Graded")
             if self.workgroup_id and group_xblock.ta_graded:
-                activity.review_link = self._review_link(p.workgroups[0], activity)
+                activity.review_link = review_link(self.course.id, p.workgroups[0], activity)
 
         remove_groups = set()
         for group in p.workgroups:
@@ -234,18 +225,18 @@ class WorkgroupCompletionData(object):
                 remove_groups.add(group.id)
                 continue
 
-            group.review_link = self._review_link(group)
+            group.review_link = review_link(self.course.id, group)
             group.activity_statuses = []
             for activity in p.activities:
                 group_xblock = self._get_activity_xblock(activity.id)
                 activity_status = DottableDict({
                     'ta_graded': group_xblock.ta_graded,
-                    'review_link': self._review_link(group, activity)
+                    'review_link': review_link(self.course.id, group, activity)
                 })
                 activity_status.stages = OrderedDict(
                     (stage_id, get_stage_data(
                         stage_id,
-                        self.is_complete(group_xblock, [user.id for user in group.users], stage_id),
+                        is_complete(group_xblock, [user.id for user in group.users], stage_id),
                         get_due_date(group_xblock, stage_id),
                         activity_status.review_link
                     ))
@@ -272,9 +263,9 @@ class WorkgroupCompletionData(object):
 
                     user_activity_status.review_groups = self.user_review_assignments[user.id][group_xblock.id]
                     for review_group in user_activity_status.review_groups:
-                        review_group.review_link = self._review_link(review_group, activity)
+                        review_group.review_link = review_link(self.course.id, review_group, activity)
                         review_group.review_status = report_completion_boolean(
-                            self.is_complete(group_xblock, [u.id for u in review_group.members], None),
+                            is_complete(group_xblock, [u.id for u in review_group.members], None),
                             get_due_date(group_xblock, GroupProjectV1Stages.GRADE))
 
                     stages = []
@@ -283,7 +274,7 @@ class WorkgroupCompletionData(object):
                         if stage_id in INDIVIDUAL_STAGES:
                             stage_data = get_stage_data(
                                 stage_id,
-                                self.is_complete(group_xblock, [user.id], stage_id),
+                                is_complete(group_xblock, [user.id], stage_id),
                                 get_due_date(group_xblock, stage_id)
                             )
                         elif stage_id == GroupProjectV1Stages.UPLOAD:
@@ -291,7 +282,7 @@ class WorkgroupCompletionData(object):
                         elif stage_id == GroupProjectV1Stages.GRADED:
                             stage_data = get_stage_data(
                                 stage_id,
-                                self.is_complete(group_xblock, [u.id for u in group.users], stage_id),
+                                is_complete(group_xblock, [u.id for u in group.users], stage_id),
                                 get_due_date(group_xblock, stage_id)
                             )
                         stages.append((stage_id, stage_data))
