@@ -10,8 +10,8 @@ from api_client.project_models import Project
 from api_client import course_api, user_api, group_api
 from api_client.organization_models import Organization
 
-from .controller import load_course
-from .models import WorkGroup
+from .controller import load_course, GROUP_WORK_REPORT_DEPTH
+from .models import WorkGroup, WorkGroupV2StageXBlock, GROUP_PROJECT_V2_GRADING_STAGES
 from .models import WorkGroupActivityXBlock
 
 
@@ -52,6 +52,13 @@ BLANK_ACTIVITY_STATUS = DottableDict({
 })
 
 
+class StageCompletionStatus(object):
+    IRRELEVANT = 'irrelevant'
+    COMPLETE = 'complete'
+    INCOMPLETE = 'incomplete'
+    INCOMPLETE_OVERDUE = 'incomplete overdue'
+
+
 class WorkgroupCompletionData(object):
     projects = None
     completions = None
@@ -63,15 +70,21 @@ class WorkgroupCompletionData(object):
     user_review_assignments = {}
 
     activity_xblocks = {}
+    stage_blocks = {}
 
     def _get_activity_xblock(self, act_id):
         if act_id not in self.activity_xblocks:
             self.activity_xblocks[act_id] = WorkGroupActivityXBlock.fetch_from_activity(self.course.id, act_id)
         return self.activity_xblocks[act_id]
 
+    def _get_stage_xblock(self, uri):
+        if uri not in self.stage_blocks:
+            self.stage_blocks[uri] = WorkGroupV2StageXBlock.fetch_from_uri(uri)
+        return self.stage_blocks[uri]
+
     def __init__(self, course_id, group_id=None, restrict_to_users_ids=None):
         self.activity_xblocks = {}
-        self.course = load_course(course_id)
+        self.course = load_course(course_id, depth=GROUP_WORK_REPORT_DEPTH)
         self.restrict_to_users_ids = restrict_to_users_ids
         self.group_project_lookup = {gp.id: gp for gp in self.course.group_projects}
 
@@ -145,6 +158,11 @@ class WorkgroupCompletionData(object):
             "total_group_count": total_group_count,
         }
 
+    def format_date_value(self, date_value):
+        if date_value is None:
+            return IRRELEVANT
+        return date_value.strftime(settings.SHORT_DATE_FORMAT)
+
     def get_v1_data(self, p):
         def is_complete(group_xblock, user_ids, stage):
             if stage is not None and stage == GroupProjectV1Stages.GRADE and group_xblock.ta_graded:
@@ -172,18 +190,16 @@ class WorkgroupCompletionData(object):
 
         def formatted_milestone_date(group_xblock, date_name):
             date_value = get_due_date(group_xblock, date_name)
-            if date_value is None:
-                return IRRELEVANT
-            return date_value.strftime(settings.SHORT_DATE_FORMAT)
+            return self.format_date_value(date_value)
 
-        def report_completion_boolean(bool_value, due_date=None):
-            if bool_value is None:
-                return 'irrelevant'
-            if bool_value:
-                return 'complete'
+        def report_completion_boolean(stage_completed, due_date=None):
+            if stage_completed is None:
+                return StageCompletionStatus.IRRELEVANT
+            if stage_completed:
+                return StageCompletionStatus.COMPLETE
             elif due_date and due_date > datetime.datetime.now():
-                return 'incomplete'
-            return 'incomplete overdue'
+                return StageCompletionStatus.INCOMPLETE
+            return StageCompletionStatus.INCOMPLETE_OVERDUE
 
         def get_stage_data(stage_id, is_complete, due_date, review_link=None):
             result = {
@@ -224,16 +240,13 @@ class WorkgroupCompletionData(object):
             group.activity_statuses = []
             for activity in p.activities:
                 group_xblock = self._get_activity_xblock(activity.id)
-                activity_status = DottableDict({
-                    'ta_graded': group_xblock.ta_graded,
-                    'review_link': review_link(self.course.id, group, activity)
-                })
+                activity_status = DottableDict({'ta_graded': group_xblock.ta_graded})
                 activity_status.stages = OrderedDict(
                     (stage_id, get_stage_data(
                         stage_id,
                         is_complete(group_xblock, [user.id for user in group.users], stage_id),
                         get_due_date(group_xblock, stage_id),
-                        activity_status.review_link
+                        review_link(self.course.id, group, activity)
                     ))
                     for stage_id in activity.stages
                 )
@@ -295,10 +308,113 @@ class WorkgroupCompletionData(object):
             p.activities.append(copy.copy(BLANK_ACTIVITY))
         return p
 
-    def get_v2_data(self, p):
-        result = DottableDict()
-        result.group_count = len(p.workgroups)
+    def _v2_review_link(self, group_id, stage_id=None):
+        if stage_id:
+            return "/courses/{}/group_work/{}?activate_block_id={}".format(self.course.id, group_id, stage_id)
+        return "/courses/{}/group_work/{}".format(self.course.id, group_id)
+
+    def _v2_get_completion_status(self, activity_xblock, stage_xblock, user_ids):
+        if activity_xblock.ta_graded and stage_xblock.category in GROUP_PROJECT_V2_GRADING_STAGES:
+            return StageCompletionStatus.IRRELEVANT
+
+        complete = all(
+            WorkgroupCompletionData._make_completion_key(activity_xblock.id, u_id, stage_xblock.id) in self.completions
+            for u_id in user_ids
+        )
+        if complete:
+            return StageCompletionStatus.COMPLETE
+
+        if stage_xblock.close_date and stage_xblock.close_date < datetime.datetime.now():
+            return StageCompletionStatus.INCOMPLETE_OVERDUE
+
+        return StageCompletionStatus.INCOMPLETE
+
+    def _v2_get_stage_data(self, activity_xblock, stage_xblock, group_id, user_ids):
+        is_grading_stage = stage_xblock.category in GROUP_PROJECT_V2_GRADING_STAGES
+        result = {
+            'status': self._v2_get_completion_status(activity_xblock, stage_xblock, user_ids),
+            'is_grading_stage': is_grading_stage,
+        }
+        if is_grading_stage:
+            result['link'] = self._v2_review_link(group_id, stage_xblock.id)
         return DottableDict(result)
+
+    def _v2_get_workgroup_data(self, group, activity_xblocks):
+        group_data = DottableDict()
+        group_data.id = group.id
+        group_data.name = group.name
+
+        users = group.users
+        if self.restrict_to_users_ids is not None:
+            users = [user for user in group.users if user.id in self.restrict_to_users_ids]
+
+        if not users:
+            return None
+
+        group_data.users = users
+
+        group_data.review_link = self._v2_review_link(group)
+        group_data.activity_statuses = []
+        for activity_xblock in activity_xblocks:
+            stage_xblocks = self._v2_get_stage_xblocks(activity_xblock)
+            activity_status = DottableDict({'ta_graded': activity_xblock.ta_graded})
+            activity_status.stages = OrderedDict(
+                (
+                    stage_xblock.id,
+                    self._v2_get_stage_data(activity_xblock, stage_xblock, group.id, [user.id for user in users])
+                )
+                for stage_xblock in stage_xblocks
+            )
+
+            group_data.activity_statuses.append(activity_status)
+
+        return group_data
+
+    def _v2_get_stage_xblocks(self, activity_xblock):
+        return [self._get_stage_xblock(stage.uri) for stage in activity_xblock.children]
+
+    def get_v2_data(self, p):
+        # only take the first 3 activities
+        if self.workgroup_id:
+            target_workgroups = [self.project_workgroups[p.id][self.workgroup_id]]
+        else:
+            target_workgroups = self.project_workgroups[p.id].values()
+
+        activities = self.project_activities[p.id]
+        activity_xblocks = [self._get_activity_xblock(activity.id) for activity in activities]
+
+        result = DottableDict({
+            'name': p.name,
+            'group_count': len(target_workgroups),
+        })
+
+        result.activities = []
+        for activity in activities:
+            activity_xblock = self._get_activity_xblock(activity.id)
+            stage_xblocks = self._v2_get_stage_xblocks(activity_xblock)
+
+            stages_data = OrderedDict((
+                (
+                    stage_xblock.id,
+                    DottableDict({'name': stage_xblock.name, 'deadline': self.format_date_value(stage_xblock.close_date)})
+                )
+                for stage_xblock in stage_xblocks
+            ))
+
+            activity_data = DottableDict({
+                'name': activity.name,
+                'stage_count': len(activity.children),
+                'stages': stages_data,
+                'grade_type': _("TA Graded") if activity_xblock.ta_graded else _("Peer Graded")
+            })
+            result.activities.append(activity_data)
+
+        result.workgroups = []
+        for workgroup in target_workgroups:
+            workgroup_data = self._v2_get_workgroup_data(workgroup, activity_xblocks)
+            result.workgroups.append(workgroup_data)
+
+        return result
 
 
 def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None):
