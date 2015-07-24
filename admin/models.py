@@ -252,6 +252,7 @@ class ClientCustomization(db_models.Model):
     hex_program_name = db_models.CharField(max_length=7)
     hex_navigation_icons = db_models.CharField(max_length=7)
     hex_course_title = db_models.CharField(max_length=7)
+    hex_page_background = db_models.CharField(max_length=7)
 
 ROLE_ACTIONS = DottableDict(
     GRANT='grant',

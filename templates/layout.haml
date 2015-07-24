@@ -107,7 +107,7 @@
       %script{src: "/static/js/vendor/backbone.js"}
       %script{src: "/static/js/vendor/date.js"}
 
-  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}"}
+  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization and client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}"}
     - block help_context
 
     -# Header

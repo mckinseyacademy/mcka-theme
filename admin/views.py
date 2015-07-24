@@ -1071,6 +1071,7 @@ def client_detail_customization(request, client_id):
     customization.hex_program_name = request.POST['hex_program_name']
     customization.hex_navigation_icons = request.POST['hex_navigation_icons']
     customization.hex_course_title = request.POST['hex_course_title']
+    customization.hex_page_background = request.POST['hex_page_background']
     customization.save()
 
     return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
