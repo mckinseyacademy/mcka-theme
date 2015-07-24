@@ -173,7 +173,10 @@ class WorkgroupMilestoneDates(JsonObject):
 
 class WorkGroupActivityXBlock(JsonObject):
 
-    required_fields = ['group_reviews_required_count', 'user_review_count']
+    required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates']
+    object_map = {
+        'milestone_dates': WorkgroupMilestoneDates,
+    }
 
     @classmethod
     def fetch_from_uri(cls, uri):
