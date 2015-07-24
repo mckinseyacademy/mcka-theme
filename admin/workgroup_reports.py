@@ -37,9 +37,6 @@ GP_V1_STAGES = OrderedDict([
 BLANK_ACTIVITY = DottableDict({
     "name": _("This activity does not exist"),
     "grade_type": None,
-    "upload_date": NOT_APPLICABLE,
-    "evaluation_date": NOT_APPLICABLE,
-    "grade_date": NOT_APPLICABLE,
     "stages": GP_V1_STAGES,
     "stage_count": 4
 })
@@ -298,11 +295,6 @@ class WorkgroupCompletionData(object):
         while len(p.activities) < 3:
             # Need copy here, because we assign different indexes below
             p.activities.append(copy.copy(BLANK_ACTIVITY))
-        act_idx = 0
-        for activity in p.activities:
-            act_idx += 1
-            activity.index = act_idx
-
         return p
 
     def get_v2_data(self, p):

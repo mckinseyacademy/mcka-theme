@@ -31,7 +31,7 @@
                 - for activity in project.activities
                   %th{colspan: "{{ activity.stage_count|add:1 }}", title: "#{activity.name}", class: "activity-name activity_{% cycle 'odd' 'even' %}"}
                     = _("Activity")
-                    = activity.index
+                    = forloop.counter
                     - if activity.grade_type
                       %span.grade-type
                         = activity.grade_type
