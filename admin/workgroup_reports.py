@@ -245,7 +245,7 @@ class WorkgroupCompletionData(object):
                 activity_status.stages = OrderedDict(
                     (stage_id, get_stage_data(
                         stage_id,
-                        self.is_complete(group_xblock, [ser.id for ser in group.users], stage_id),
+                        self.is_complete(group_xblock, [user.id for user in group.users], stage_id),
                         get_due_date(group_xblock, stage_id),
                         activity_status.review_link
                     ))
@@ -271,14 +271,9 @@ class WorkgroupCompletionData(object):
                     user_activity_status = DottableDict()
 
                     user_activity_status.review_groups = self.user_review_assignments[user.id][group_xblock.id]
-                    if len(user_activity_status.review_groups) > user.max_review_count:
-                        user.max_review_count = len(user_activity_status.review_groups)
-                    idx = 0
                     for review_group in user_activity_status.review_groups:
-                        review_group.index = idx
-                        idx += 1
                         review_group.review_link = self._review_link(review_group, activity)
-                        review_group.modifier_class = report_completion_boolean(
+                        review_group.review_status = report_completion_boolean(
                             self.is_complete(group_xblock, [u.id for u in review_group.members], None),
                             get_due_date(group_xblock, GroupProjectV1Stages.GRADE))
 
@@ -294,17 +289,18 @@ class WorkgroupCompletionData(object):
                         elif stage_id == GroupProjectV1Stages.UPLOAD:
                             stage_data = DottableDict({'status': IRRELEVANT, 'is_grading_stage': False})
                         elif stage_id == GroupProjectV1Stages.GRADED:
-                            stage_data = DottableDict({'status': IRRELEVANT, 'is_grading_stage': False})
+                            stage_data = get_stage_data(
+                                stage_id,
+                                self.is_complete(group_xblock, [u.id for u in group.users], stage_id),
+                                get_due_date(group_xblock, stage_id)
+                            )
                         stages.append((stage_id, stage_data))
 
-                    user_activity_status.stages = stages
+                    user_activity_status.stages = OrderedDict(stages)
                     user.activity_statuses.append(user_activity_status)
 
                 while len(user.activity_statuses) < 3:
                     user.activity_statuses.append(BLANK_ACTIVITY_STATUS)
-
-                user.review_row_count = user.max_review_count if user.max_review_count > 0 else 1
-                user.review_row_indexer = range(0, user.review_row_count)
 
         p.workgroups = [workgroup for workgroup in p.workgroups if workgroup.id not in remove_groups]
 

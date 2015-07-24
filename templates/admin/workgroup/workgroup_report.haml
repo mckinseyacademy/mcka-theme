@@ -41,7 +41,7 @@
               %tr
                 %th
                 - for activity in project.activities
-                  %th.activity-name{colspan: "#{activity.stage_count}", title: "#{activity.name}", class: "#{}"}
+                  %th{colspan: "{{ activity.stage_count }}", title: "#{activity.name}", class: "activity-name activity_{% cycle 'odd' 'even' %}"}
                     = _("Activity")
                     = activity.index
                     - if activity.grade_type
@@ -51,13 +51,13 @@
                 %th
                 - for activity in project.activities
                   - for stage_id, stage in activity.stages.items
-                    %th
+                    %th{class: "activity_{% if forloop.parentloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
                       = stage.deadline
               %tr
                 %th= _("Group")
                 - for activity in project.activities
                   - for stage_id, stage in activity.stages.items
-                    %th
+                    %th{class: "activity_{% if forloop.parentloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
                       = stage.name
 
             %tbody
