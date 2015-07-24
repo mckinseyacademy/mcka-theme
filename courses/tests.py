@@ -524,13 +524,20 @@ class CoursesAPITest(TestCase):
         self.assertEqual(chapter_id, "10")
         self.assertEqual(page_id, "100")
 
+
     def test_get_chapter_and_target_by_location(self):
-        self.assertEqual(controller.get_chapter_and_target_by_location(None, "0", "1000", MockCourseAPI), ('10', '100', '1000'))
-        self.assertEqual(controller.get_chapter_and_target_by_location(None, "0", "1002", MockCourseAPI), ('10', '102', '1002'))
-        self.assertEqual(controller.get_chapter_and_target_by_location(None, "0", "1010", MockCourseAPI), ('11', '110', '1010'))
-        self.assertEqual(controller.get_chapter_and_target_by_location(None, "0", "1013", MockCourseAPI), ('11', '113', '1013'))
-        self.assertEqual(controller.get_chapter_and_target_by_location(None, "0", "1021", MockCourseAPI), ('12', '121', '1021'))
-        self.assertEqual(controller.get_chapter_and_target_by_location(None, "0", "1023", MockCourseAPI), ('12', '123', '1023'))
-        self.assertIsNone(controller.get_chapter_and_target_by_location(None, "0", "150", MockCourseAPI))
-        self.assertIsNone(controller.get_chapter_and_target_by_location(None, "0", "I'm page", MockCourseAPI))
-        self.assertIsNone(controller.get_chapter_and_target_by_location(None, "0", "I'm page too", MockCourseAPI))
+        def _get_chapter(course_id, location_id):
+            chapter, sequential, page = controller.get_chapter_and_target_by_location(
+                None, course_id, location_id, MockCourseAPI
+            )
+            return chapter, sequential, page
+
+        self.assertEqual(_get_chapter("0", "1000"), ('10', '100', '1000'))
+        self.assertEqual(_get_chapter("0", "1002"), ('10', '102', '1002'))
+        self.assertEqual(_get_chapter("0", "1010"), ('11', '110', '1010'))
+        self.assertEqual(_get_chapter("0", "1013"), ('11', '113', '1013'))
+        self.assertEqual(_get_chapter("0", "1021"), ('12', '121', '1021'))
+        self.assertEqual(_get_chapter("0", "1023"), ('12', '123', '1023'))
+        self.assertEqual(_get_chapter("0", "150"), (None, None, None))
+        self.assertEqual(_get_chapter("0", "I'm page"), (None, None, None))
+        self.assertEqual(_get_chapter("0", "I'm page too"), (None, None, None))
