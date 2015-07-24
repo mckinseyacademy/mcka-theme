@@ -49,10 +49,6 @@
                 - for activity in project.activities
                   - for stage_id, stage in activity.stages.items
                     %th{class: "activity_{% if forloop.parentloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
-                      - if stage.link
-                        %a{href: "#{activity.review_link}"}
-                          = stage.name
-                      - else
                         = stage.name
                   %th{class: "activity_{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
                     = _("Grading")

@@ -210,8 +210,6 @@ class WorkgroupCompletionData(object):
 
             activity.stage_count = len(activity.stages)
             activity.grade_type = _("TA Graded") if group_xblock.ta_graded else _("Peer Graded")
-            if self.workgroup_id and group_xblock.ta_graded:
-                activity.review_link = review_link(self.course.id, p.workgroups[0], activity)
 
         remove_groups = set()
         for group in p.workgroups:
