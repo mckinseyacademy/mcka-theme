@@ -19,6 +19,7 @@ class AccountsFormsTests(TestCase):
             'confirm_password': 'p455w0rd',
             'first_name': 'Test',
             'last_name': 'User',
+            'city': 'Test City',
         }
         activation_form = ActivationForm(reg_data)
 

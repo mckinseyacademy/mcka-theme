@@ -113,7 +113,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "100",
-                                    "name": "Test Page 1"
+                                    "name": "Test Page 1",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1000",
+                                            "name": "Test XBlock 1"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -125,7 +132,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "101",
-                                    "name": "Test Page 2"
+                                    "name": "Test Page 2",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1001",
+                                            "name": "Test XBlock 2"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -137,7 +151,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "102",
-                                    "name": "Test Page 3"
+                                    "name": "Test Page 3",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1002",
+                                            "name": "Test XBlock 3"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -149,7 +170,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "103",
-                                    "name": "Test Page 4"
+                                    "name": "Test Page 4",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1003",
+                                            "name": "Test XBlock 4"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -168,7 +196,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "110",
-                                    "name": "Test Page 1"
+                                    "name": "Test Page 1",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1010",
+                                            "name": "Test XBlock 1"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -180,7 +215,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "111",
-                                    "name": "Test Page 2"
+                                    "name": "Test Page 2",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1011",
+                                            "name": "Test XBlock 2"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -192,7 +234,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "112",
-                                    "name": "Test Page 3"
+                                    "name": "Test Page 3",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1012",
+                                            "name": "Test XBlock 3"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -204,7 +253,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "113",
-                                    "name": "Test Page 4"
+                                    "name": "Test Page 4",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1013",
+                                            "name": "Test XBlock 4"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -223,7 +279,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "120",
-                                    "name": "Test Page 1"
+                                    "name": "Test Page 1",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1020",
+                                            "name": "Test XBlock 1"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -235,7 +298,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "121",
-                                    "name": "Test Page 2"
+                                    "name": "Test Page 2",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1021",
+                                            "name": "Test XBlock 2"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -247,7 +317,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "122",
-                                    "name": "Test Page 3"
+                                    "name": "Test Page 3",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1022",
+                                            "name": "Test XBlock 3"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -259,7 +336,14 @@ class MockCourseAPI(object):
                                 {
                                     "category": "vertical",
                                     "id": "123",
-                                    "name": "Test Page 4"
+                                    "name": "Test Page 4",
+                                    "children":[
+                                        {
+                                            "category": "xblock",
+                                            "id": "1023",
+                                            "name": "Test XBlock 4"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -273,6 +357,36 @@ class MockCourseAPI(object):
     @staticmethod
     def get_course(course_id, depth = 3):
         return MockCourseAPI._get_course(course_id, 0)
+
+    @staticmethod
+    def _get_course_navigation(course_id, target_location_id):
+        response = None
+        course = MockCourseAPI.get_course(course_id)
+        for chapter in course.chapters:
+            for section in chapter.sequentials:
+                for vertical in section.pages:
+                    for child in vertical.children:
+                        if child.id == target_location_id:
+                            response = {
+                                "category": "course",
+                                "id": course_id,
+                                "name": "Test Course Name",
+                                'course_key': '0',
+                                'chapter': chapter.id,
+                                'section': section.id,
+                                'vertical': vertical.id,
+                                'position': '0',
+                                'final_target_id': child.id
+                            }
+        if response:
+            return course_models.Course(dictionary=response)
+        else:
+            return None
+
+    @staticmethod
+    def get_course_navigation(course_id, target_location_id):
+        return MockCourseAPI._get_course_navigation(course_id, target_location_id)
+
 
 class OtherMockCourseAPI(MockCourseAPI):
 
@@ -410,13 +524,20 @@ class CoursesAPITest(TestCase):
         self.assertEqual(chapter_id, "10")
         self.assertEqual(page_id, "100")
 
-    def test_get_chapter_by_page(self):
-        self.assertEqual(controller.get_chapter_by_page(None, "0", "100", MockCourseAPI), "10")
-        self.assertEqual(controller.get_chapter_by_page(None, "0", "102", MockCourseAPI), "10")
-        self.assertEqual(controller.get_chapter_by_page(None, "0", "110", MockCourseAPI), "11")
-        self.assertEqual(controller.get_chapter_by_page(None, "0", "113", MockCourseAPI), "11")
-        self.assertEqual(controller.get_chapter_by_page(None, "0", "121", MockCourseAPI), "12")
-        self.assertEqual(controller.get_chapter_by_page(None, "0", "123", MockCourseAPI), "12")
-        self.assertIsNone(controller.get_chapter_by_page(None, "0", "150", MockCourseAPI))
-        self.assertIsNone(controller.get_chapter_by_page(None, "0", "I'm page", MockCourseAPI))
-        self.assertIsNone(controller.get_chapter_by_page(None, "0", "I'm page too", MockCourseAPI))
+
+    def test_get_chapter_and_target_by_location(self):
+        def _get_chapter(course_id, location_id):
+            chapter, sequential, page = controller.get_chapter_and_target_by_location(
+                None, course_id, location_id, MockCourseAPI
+            )
+            return chapter, sequential, page
+
+        self.assertEqual(_get_chapter("0", "1000"), ('10', '100', '1000'))
+        self.assertEqual(_get_chapter("0", "1002"), ('10', '102', '1002'))
+        self.assertEqual(_get_chapter("0", "1010"), ('11', '110', '1010'))
+        self.assertEqual(_get_chapter("0", "1013"), ('11', '113', '1013'))
+        self.assertEqual(_get_chapter("0", "1021"), ('12', '121', '1021'))
+        self.assertEqual(_get_chapter("0", "1023"), ('12', '123', '1023'))
+        self.assertEqual(_get_chapter("0", "150"), (None, None, None))
+        self.assertEqual(_get_chapter("0", "I'm page"), (None, None, None))
+        self.assertEqual(_get_chapter("0", "I'm page too"), (None, None, None))
