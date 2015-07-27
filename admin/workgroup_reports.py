@@ -204,7 +204,7 @@ class WorkgroupCompletionData(object):
         def get_stage_data(stage_id, is_complete, due_date, review_link=None):
             result = {
                 'status': report_completion_boolean(is_complete, due_date),
-                'is_grading_stage': stage_id == GroupProjectV1Stages.GRADED,
+                'is_grading_stage': stage_id == GroupProjectV1Stages.GRADE,
             }
             if review_link is not None:
                 result['link'] = review_link
@@ -246,7 +246,7 @@ class WorkgroupCompletionData(object):
                         stage_id,
                         is_complete(group_xblock, [user.id for user in group.users], stage_id),
                         get_due_date(group_xblock, stage_id),
-                        review_link(self.course.id, group, activity)
+                        review_link(self.course.id, group, activity) if stage_id == GroupProjectV1Stages.GRADE else None
                     ))
                     for stage_id in activity.stages
                 )
@@ -416,7 +416,6 @@ class WorkgroupCompletionData(object):
             users_data.append(user_data)
 
         return users_data
-
 
     def _v2_get_stage_xblocks(self, activity_xblock):
         return [self._get_stage_xblock(stage.uri) for stage in activity_xblock.children]

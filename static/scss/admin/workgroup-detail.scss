@@ -159,6 +159,9 @@
 
         div.review-group-link {
           line-height: 2.5em;
+          &.complete {
+            color: $mckinsey-green;
+          }
         }
       }
     }
