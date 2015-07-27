@@ -52,3 +52,60 @@
     }
   }
 }
+
+#custom-branding {
+  form {
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0;
+
+      ul {
+        padding: 0;
+        margin: 20px 0 0;
+        @include clearfix;
+
+        li {
+          float: left;
+          width: 50%;
+          padding: 0;
+
+          &:nth-child(odd) {
+            padding-right: 35px;
+          }
+
+          &:nth-chid(even) {
+            padding-left: 35px;
+          }
+
+          label {
+            color: $mckinsey-dark-grey;
+            display: inline-block;
+            text-transform: none;
+            line-height: 37px;
+          }
+
+          input {
+            width: 35%;
+            float: right;
+          }
+        }
+      }
+    }
+
+    div:last-child {
+      text-align: right;
+
+      input {
+        margin-right: rem-calc(10);
+        &:last-child { margin-right: 0; }
+
+        &[type=reset] {
+          color: $mckinsey-academy-alt-blue;
+          border: none;
+          background: none;
+        }
+      }
+    }
+  }
+}
