@@ -31,7 +31,7 @@ GP_V1_STAGES = OrderedDict([
     (GroupProjectV1Stages.UPLOAD, DottableDict({'name': _("Upload"), 'deadline': IRRELEVANT})),
     (GroupProjectV1Stages.EVALUATION, DottableDict({'name': _("Evaluation"), 'deadline': IRRELEVANT})),
     (GroupProjectV1Stages.GRADE, DottableDict({'name': _("Review"), 'deadline': IRRELEVANT})),
-    (GroupProjectV1Stages.GRADED, DottableDict({'name': _("Graded"), 'deadline': IRRELEVANT})),
+    (GroupProjectV1Stages.GRADED, DottableDict({'name': _("Grading"), 'deadline': IRRELEVANT})),
 ])
 
 BLANK_ACTIVITY = DottableDict({
@@ -204,7 +204,7 @@ class WorkgroupCompletionData(object):
         def get_stage_data(stage_id, is_complete, due_date, review_link=None):
             result = {
                 'status': report_completion_boolean(is_complete, due_date),
-                'is_grading_stage': stage_id == GroupProjectV1Stages.GRADE,
+                'is_grading_stage': stage_id == GroupProjectV1Stages.GRADED,
             }
             if review_link is not None:
                 result['link'] = review_link
@@ -269,8 +269,8 @@ class WorkgroupCompletionData(object):
                     group_xblock = self._get_activity_xblock(activity.id)
                     user_activity_status = DottableDict()
 
-                    user_activity_status.review_groups = self.user_review_assignments[user.id][group_xblock.id]
-                    for review_group in user_activity_status.review_groups:
+                    review_groups = self.user_review_assignments[user.id][group_xblock.id]
+                    for review_group in review_groups:
                         review_group.review_link = review_link(self.course.id, review_group, activity)
                         review_group.review_status = report_completion_boolean(
                             is_complete(group_xblock, [u.id for u in review_group.members], None),
@@ -293,6 +293,7 @@ class WorkgroupCompletionData(object):
                                 is_complete(group_xblock, [u.id for u in group.users], stage_id),
                                 get_due_date(group_xblock, stage_id)
                             )
+                            stage_data.review_groups = review_groups
                         stages.append((stage_id, stage_data))
 
                     user_activity_status.stages = OrderedDict(stages)
@@ -329,8 +330,11 @@ class WorkgroupCompletionData(object):
 
         return StageCompletionStatus.INCOMPLETE
 
+    def _v2_is_grading_stage(self, stage_xblock):
+        return stage_xblock.category in GROUP_PROJECT_V2_GRADING_STAGES
+
     def _v2_get_stage_data(self, activity_xblock, stage_xblock, group_id, user_ids):
-        is_grading_stage = stage_xblock.category in GROUP_PROJECT_V2_GRADING_STAGES
+        is_grading_stage = self._v2_is_grading_stage(stage_xblock)
         result = {
             'status': self._v2_get_completion_status(activity_xblock, stage_xblock, user_ids),
             'is_grading_stage': is_grading_stage,
@@ -369,6 +373,50 @@ class WorkgroupCompletionData(object):
             group_data.activity_statuses.append(activity_status)
 
         return group_data
+
+    def _v2_get_workgroup_users_data(self, group, activity_xblocks):
+        users = group.users
+        if self.restrict_to_users_ids is not None:
+            users = [user for user in group.users if user.id in self.restrict_to_users_ids]
+
+        if not users:
+            return []
+
+        users_data = []
+        for user in users:
+            user_data = DottableDict({
+                'email': user.email,
+                'username': user.username
+            })
+            if self.workgroup_id:
+                organizations = user_api.get_user_organizations(user.id)
+                user_data.company = organizations[0].display_name if len(organizations) > 0 else None
+
+            user_data.activity_statuses = []
+            for activity_xblock in activity_xblocks:
+                user_activity_status = DottableDict()
+                user_activity_status.stages = OrderedDict()
+                review_groups = self.user_review_assignments[user.id][activity_xblock.id]
+
+                stage_xblocks = self._v2_get_stage_xblocks(activity_xblock)
+                for stage_xblock in stage_xblocks:
+                    stage_data = self._v2_get_stage_data(activity_xblock, stage_xblock, group.id, [user.id])
+                    if self._v2_is_grading_stage(stage_xblock):
+                        stage_data.review_groups = copy.deepcopy(review_groups)
+                        for review_group in stage_data.review_groups:
+                            review_group.review_link = self._v2_review_link(review_group.id, stage_xblock.id)
+                            review_group.review_status = self._v2_get_completion_status(
+                                activity_xblock, stage_xblock, [u.id for u in review_group.members]
+                            )
+
+                    user_activity_status.stages[stage_xblock.id] = stage_data
+
+                user_data.activity_statuses.append(user_activity_status)
+
+            users_data.append(user_data)
+
+        return users_data
+
 
     def _v2_get_stage_xblocks(self, activity_xblock):
         return [self._get_stage_xblock(stage.uri) for stage in activity_xblock.children]
@@ -412,6 +460,7 @@ class WorkgroupCompletionData(object):
         result.workgroups = []
         for workgroup in target_workgroups:
             workgroup_data = self._v2_get_workgroup_data(workgroup, activity_xblocks)
+            workgroup_data.users = self._v2_get_workgroup_users_data(workgroup, activity_xblocks)
             result.workgroups.append(workgroup_data)
 
         return result

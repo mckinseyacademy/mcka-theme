@@ -29,7 +29,7 @@
               %tr
                 %th
                 - for activity in project.activities
-                  %th{colspan: "{{ activity.stage_count|add:1 }}", title: "#{activity.name}", class: "activity-name activity_{% cycle 'odd' 'even' %}"}
+                  %th{colspan: "{{ activity.stage_count }}", title: "#{activity.name}", class: "activity-name activity_{% cycle 'odd' 'even' %}"}
                     = _("Activity")
                     = forloop.counter
                     - if activity.grade_type
@@ -41,17 +41,13 @@
                   - for stage_id, stage in activity.stages.items
                     %th{class: "activity_{% if forloop.parentloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
                       = stage.deadline
-                  %th{class: "activity_{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
-                    = _("n/a")
               %tr
                 %th
                   -#= _("Email Group") (present in design, but not in story board - appears to be a future desire)
                 - for activity in project.activities
                   - for stage_id, stage in activity.stages.items
                     %th{class: "activity_{% if forloop.parentloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
-                        = stage.name
-                  %th{class: "activity_{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}"}
-                    = _("Grading")
+                      = stage.name
             %tbody
               %tr.group-status
                 %td{"data-order": "aaa"}
@@ -70,8 +66,6 @@
                           %a{href: "#{stage.link}", class: "status #{stage.status}"}
                     - else
                       %td{class: "status #{stage.status}"}
-                  %td
-                    = _("--")
 
               - for user in workgroup.users
                 %tr
@@ -84,7 +78,13 @@
                       = user.company
                   - for user_activity_status in user.activity_statuses
                     - for stage_id, stage in user_activity_status.stages.items
-                      - if stage.link
+                      - if stage.is_grading_stage
+                        %td
+                          - for review_group in stage.review_groups
+                            %div.review-group-link
+                              %a{href: "#{review_group.review_link}", class:"#{review_group.review_status}"}
+                                = review_group.name
+                      - elif stage.link
                         %td
                           - if stage.is_grading_stage
                             - if activity_status.ta_graded
@@ -95,11 +95,6 @@
                             %a{href: "#{stage.link}", class: "status #{stage.status}"}
                       - else
                         %td{class: "status #{stage.status}"}
-                    %td
-                      - for review_group in user_activity_status.review_groups
-                        %div.review-group-link
-                          %a{href: "#{review_group.review_link}", class:"#{review_group.review_status}"}
-                            = review_group.name
         .row
           .large-12.large-centered.columns
             %ul.nav-links
