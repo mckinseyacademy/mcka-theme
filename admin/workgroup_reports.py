@@ -51,6 +51,14 @@ BLANK_ACTIVITY_STATUS = DottableDict({
     "stage_count": 4
 })
 
+BLANK_V2_STAGE_ID = 'blank_stage'
+BLANK_V2_STAGE_STATUS = DottableDict({
+    'status': IRRELEVANT,
+    'is_grading_stage': False,
+})
+
+V2_NO_STAGES_AVAILABLE = _(u'No Stages')
+
 
 class StageCompletionStatus(object):
     IRRELEVANT = 'irrelevant'
@@ -370,6 +378,9 @@ class WorkgroupCompletionData(object):
                 for stage_xblock in stage_xblocks
             )
 
+            if not activity_status.stages:
+                activity_status.stages[BLANK_V2_STAGE_ID] = BLANK_V2_STAGE_STATUS
+
             group_data.activity_statuses.append(activity_status)
 
         return group_data
@@ -411,6 +422,9 @@ class WorkgroupCompletionData(object):
 
                     user_activity_status.stages[stage_xblock.id] = stage_data
 
+                if not user_activity_status.stages:
+                    user_activity_status.stages[BLANK_V2_STAGE_ID] = BLANK_V2_STAGE_STATUS
+
                 user_data.activity_statuses.append(user_activity_status)
 
             users_data.append(user_data)
@@ -447,6 +461,9 @@ class WorkgroupCompletionData(object):
                 )
                 for stage_xblock in stage_xblocks
             ))
+
+            if not stages_data:
+                stages_data[BLANK_V2_STAGE_ID] = {'name': V2_NO_STAGES_AVAILABLE, 'deadline': IRRELEVANT}
 
             activity_data = DottableDict({
                 'name': activity.name,
