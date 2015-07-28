@@ -288,7 +288,10 @@ def standard_data(request):
 
         if len(organizations) > 0:
             organization = organizations[0]
-            client_customization = ClientCustomization.objects.get(client_id=organization.id)
+            try:
+                client_customization = ClientCustomization.objects.get(client_id=organization.id)
+            except ClientCustomization.DoesNotExist:
+                client_customization = None
             client_nav_links = ClientNavLinks.objects.filter(client_id=organization.id)
             client_nav_links = dict((link.link_name, link) for link in client_nav_links)
 
