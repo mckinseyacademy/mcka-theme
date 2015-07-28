@@ -148,38 +148,19 @@
     &.group-list, &.group-detail{
       th{
         background: #DDDDDD;
-        &[colspan="1"]{
-          &:nth-of-type(2),
-          &:nth-of-type(3),
-          &:nth-of-type(4),
-          &:nth-of-type(5),
-          &:nth-of-type(10),
-          &:nth-of-type(11),
-          &:nth-of-type(12),
-          &:nth-of-type(13){
+        &.activity_odd {
             background: #CCCCCC;
-          }
-        }
-        &[colspan="4"]{
-          &:nth-of-type(2),&:nth-of-type(4){
-            background: #CCCCCC;
-          }
-          &:nth-of-type(3){
-            background: #DDDDDD;
-          }
         }
       }
       td{
-        &[colspan="1"]{
-          &:nth-of-type(2),
-          &:nth-of-type(3),
-          &:nth-of-type(4),
-          &:nth-of-type(5),
-          &:nth-of-type(10),
-          &:nth-of-type(11),
-          &:nth-of-type(12),
-          &:nth-of-type(13){
+        &.activity_odd {
             background: #EEEEEE;
+        }
+
+        div.review-group-link {
+          line-height: 2.5em;
+          &.complete {
+            color: $mckinsey-green;
           }
         }
       }
@@ -239,7 +220,7 @@
   .overdue{
     color: $mckinsey-red;
   }
-  a.incomplete{
+  a.incomplete.grading{
     &::after{
       content: '*';
     }

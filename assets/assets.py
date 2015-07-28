@@ -75,7 +75,7 @@ js_files.extend(_build_file_list("js/views", ".js"))
 # Javascript squashing
 JS = Bundle(
     *js_files,
-    filters='jsmin',
+    # filters='jsmin',
     output='packed.js'
 )
 register('js_all', JS)

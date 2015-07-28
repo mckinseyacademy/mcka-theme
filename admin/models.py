@@ -16,6 +16,7 @@ GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'gp-v2-project'
 GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'gp-v2-activity'
 GROUP_PROJECT_V2_NAVIGATOR_CATEGORY = 'gp-v2-navigator'
+GROUP_PROJECT_V2_GRADING_STAGES = ['gp-v2-stage-peer-review']
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -173,11 +174,20 @@ class WorkGroup(workgroup_models.Workgroup):
 class WorkgroupMilestoneDates(JsonObject):
     date_fields = ['upload', 'evaluation', 'grade']
 
-class WorkGroupActivityXBlock(JsonObject):
 
+class WorkGroupV2StageXBlock(JsonObject):
+    required_fields = ['close_date']
+    date_fields = ['close_date']
+
+    @classmethod
+    def fetch_from_uri(cls, uri):
+        return course_api.get_module_details(uri, cls.required_fields, cls)
+
+
+class WorkGroupActivityXBlock(JsonObject):
     required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates']
     object_map = {
-        'milestone_dates': WorkgroupMilestoneDates,
+        'milestone_dates': WorkgroupMilestoneDates
     }
 
     @classmethod

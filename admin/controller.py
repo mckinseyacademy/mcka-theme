@@ -21,7 +21,10 @@ import threading
 import Queue
 import atexit
 
+# need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
 MINIMAL_COURSE_DEPTH = 5
+# need to load one level more deep to get Group Project V2 stages as their close dates are needed for report
+GROUP_WORK_REPORT_DEPTH = 6
 
 
 class GroupProject(object):
