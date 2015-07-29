@@ -80,6 +80,7 @@ def _get_stored_image_url(request, image_url):
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
+    request.session['ddt'] = False  # Django Debug Tool session key init.
 
     # Redirect IE to home page, login not available
     if request.META.has_key('HTTP_USER_AGENT'):
@@ -97,7 +98,6 @@ def login(request):
                 )
                 request.session["remote_session_key"] = user.session_key
                 auth.login(request, user)
-
                 redirect_to = _get_qs_value_from_url(
                     'next',
                     request.META['HTTP_REFERER']
