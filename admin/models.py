@@ -15,8 +15,8 @@ from django.dispatch import Signal
 GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'gp-v2-project'
 GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'gp-v2-activity'
-GROUP_PROJECT_V2_NAVIGATOR_CATEGORY = 'gp-v2-navigator'
 GROUP_PROJECT_V2_GRADING_STAGES = ['gp-v2-stage-peer-review']
+
 
 class BaseGroupModel(group_models.GroupInfo):
 
