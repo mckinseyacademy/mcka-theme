@@ -14,7 +14,7 @@ from pytz import UTC
 from .models import (
     Client, WorkGroup, UserRegistrationError,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
-    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
+    GROUP_PROJECT_V2_ACTIVITY_CATEGORY
 )
 
 import threading
@@ -28,19 +28,13 @@ GROUP_WORK_REPORT_DEPTH = 6
 
 
 class GroupProject(object):
-    def __init__(self, project_id, name, activities, navigator=None, vertical_id=None, is_v2=False):
+    def __init__(self, project_id, name, activities, vertical_id=None, is_v2=False):
         self.id = project_id
         self.name = name
         self.activities = activities
-        self.navigator = navigator
         self.vertical_id = vertical_id
         self.is_v2 = is_v2
 
-    @property
-    def escaped_navigator_usage_id(self):
-        if self.navigator is None:
-            return None
-        return self.navigator.id.replace('/', ';_')
 
 def _worker():
     while True:
@@ -120,18 +114,14 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
             course.group_projects.append(group_project)
         elif is_group_project_v2_chapter(chapter):
             blocks = _find_group_project_v2_blocks_in_chapter(chapter)
-            projects = []
-            for block, seq, page in blocks:
-                try:
-                    nav = [
-                        child for child in block.children if child.category == GROUP_PROJECT_V2_NAVIGATOR_CATEGORY
-                    ][0]
-                except IndexError:
-                    nav = None
-
-                activities = [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY]
-                project = GroupProject(block.id, block.name, activities, nav, page.id, is_v2=True)
-                projects.append(project)
+            projects = [
+                GroupProject(
+                    block.id, block.name,
+                    [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY],
+                    page.id, is_v2=True
+                )
+                for block, seq, page in blocks
+            ]
 
             course.group_projects.extend(projects)
 
