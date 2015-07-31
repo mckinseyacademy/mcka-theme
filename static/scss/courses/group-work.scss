@@ -176,11 +176,11 @@
   .group-project-navigator-wrapper {
     .group-project-navigator-view-selector {
       li {
-        @include font-spec(14, normal, 18);
-        @include button($button-sml, $primary-color, true);
-        padding: 4px 6px;
+        @include button($button-med, $primary-color, true);
+        padding: 6px 6px;
         font-size: 16px;
         width: 50px;
+        height: 30px;
         font-family: FontAwesome;
 
         &.active {
