@@ -33,6 +33,7 @@ class RemoteUser(AbstractUser):
         self.id = user_response.id
         self.avatar_url = user_response.image_url()
         self.avatar_url_relative = user_response.image_url(path='relative')
+        self.is_staff = user_response.is_staff
 
     def image_url(self):
         ''' get image URL for user '''
