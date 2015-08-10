@@ -1,6 +1,12 @@
 #fblf-page {
   ul.faculty {
     padding-left: 20px;
+
+    li {
+      .person-title {
+        font-style: normal;
+      }
+    }
   }
 
   .label-5 {
