@@ -3,6 +3,21 @@
   position: relative;
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
+  .client-logo {
+    position: absolute;
+    top: 0;
+    right: 50%;
+    width: 300px;
+    height: $program-bar-height;
+    text-align: center;
+    margin-right: -150px;
+
+    img {
+      max-height: 100%;
+      width: auto;
+    }
+  }
+
   .program-name {
     padding-top: 10px;
     &:after{ content: ':'; }
