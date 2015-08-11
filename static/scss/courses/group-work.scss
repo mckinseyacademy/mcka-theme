@@ -139,6 +139,11 @@
     .feedback_sections .answer{
       padding-bottom: 15px;
     }
+    .other_submission_links {
+      h4 {
+        text-transform: none;
+      }
+    }
     form{
       label.qmark::after{
         @include font-spec(14, semibold);
