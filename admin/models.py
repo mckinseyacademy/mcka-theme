@@ -7,6 +7,7 @@ from django.conf import settings
 
 import hashlib
 import random
+import os
 from datetime import timedelta
 from django.utils import timezone
 from django.db import models as db_models
@@ -16,7 +17,6 @@ GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'gp-v2-project'
 GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'gp-v2-activity'
 GROUP_PROJECT_V2_GRADING_STAGES = ['gp-v2-stage-peer-review']
-
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -174,7 +174,6 @@ class WorkGroup(workgroup_models.Workgroup):
 class WorkgroupMilestoneDates(JsonObject):
     date_fields = ['upload', 'evaluation', 'grade']
 
-
 class WorkGroupV2StageXBlock(JsonObject):
     required_fields = ['close_date']
     date_fields = ['close_date']
@@ -182,7 +181,6 @@ class WorkGroupV2StageXBlock(JsonObject):
     @classmethod
     def fetch_from_uri(cls, uri):
         return course_api.get_module_details(uri, cls.required_fields, cls)
-
 
 class WorkGroupActivityXBlock(JsonObject):
     required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates']
@@ -265,6 +263,7 @@ class ClientCustomization(db_models.Model):
     hex_navigation_icons = db_models.CharField(max_length=7)
     hex_course_title = db_models.CharField(max_length=7)
     hex_page_background = db_models.CharField(max_length=7)
+    client_logo = db_models.CharField(max_length=200)
 
 ROLE_ACTIONS = DottableDict(
     GRANT='grant',
