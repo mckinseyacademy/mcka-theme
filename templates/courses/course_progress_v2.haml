@@ -74,7 +74,7 @@
                       .lesson-with-list.lesson-row-item
                         %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle{% endif %}"}
                         .lesson-item-name
-                          %a{href: "/courses/#{course.id}/group_work?actid=#{activity.id}"}
+                          %a{href: "#{activity.link}"}
                             ={activity.name}:
                           %span= activity.due_on
                 - else
@@ -117,7 +117,7 @@
                     .lesson-row-item
                       %i.status.fa.fa-check-circle.complete
                       .lesson-item-name
-                        %a{href: "/courses/#{course.id}/group_work?actid=#{activity.id}"} Group Work:
+                        %a{href: "#{activity.link}"} Group Work:
                         ={activity.name}
                   - ifequal activity.score None
                     %td.number.zero 0
@@ -129,7 +129,7 @@
                     .lesson-row-item
                       %i.status.fa.fa-circle
                       .lesson-item-name
-                        %a{href: "/courses/#{course.id}/group_work?actid=#{activity.id}"} Group Work:
+                        %a{href: "#{activity.link}"} Group Work:
                         ={activity.name}
                   - if activity.is_pending
                     %td Grading in progress

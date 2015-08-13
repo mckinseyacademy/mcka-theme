@@ -185,7 +185,8 @@ class WorkGroupV2StageXBlock(JsonObject):
 
 
 class WorkGroupActivityXBlock(JsonObject):
-    required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates']
+    required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates', 'weight', 'due_date']
+    date_fields = ['due_date']
     object_map = {
         'milestone_dates': WorkgroupMilestoneDates
     }
