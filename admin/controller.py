@@ -1,4 +1,6 @@
 import tempfile
+import urllib
+from django.core.urlresolvers import reverse
 import re
 
 from django.utils.translation import ugettext as _
@@ -28,8 +30,11 @@ GROUP_WORK_REPORT_DEPTH = 6
 
 
 class GroupProject(object):
-    ACTIVITY_LINK_V1 = "/courses/{course_id}/group_work?actid={activity_id}"
-    ACTIVITY_LINK_V2 = "/courses/{course_id}/group_work?activate_block_id={activity_id}"
+
+    def _get_activity_link(self, course_id, activity_id):
+        base_gw_url = reverse('user_course_group_work', kwargs={'course_id': course_id})
+        query_string_key = 'activate_block_id' if self.is_v2 else 'actid'
+        return base_gw_url + "?" + urllib.urlencode({query_string_key: activity_id})
 
     def __init__(self, course_id, project_id, name, activities, vertical_id=None, is_v2=False):
         self.id = project_id
@@ -48,8 +53,7 @@ class GroupProject(object):
             if self.is_v2:
                 activity.due = activity.xblock.due_date
 
-            activity_link_tpl = self.ACTIVITY_LINK_V2 if self.is_v2 else self.ACTIVITY_LINK_V1
-            activity.link = activity_link_tpl.format(course_id=self.course_id, activity_id = activity.id)
+            activity.link = self._get_activity_link(self.course_id, activity.id)
 
         return self._activities
 
