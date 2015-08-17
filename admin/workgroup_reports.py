@@ -15,6 +15,13 @@ from .models import WorkGroup, WorkGroupV2StageXBlock, GROUP_PROJECT_V2_GRADING_
 from .models import WorkGroupActivityXBlock
 
 
+def _shallow_merge_dicts(dict1, dict2):
+    result = {}
+    result.update(dict1)
+    result.update(dict2)
+    return result
+
+
 class GroupProjectV1Stages(object):
     UPLOAD = 'upload'
     EVALUATION = 'evaluation'
@@ -45,7 +52,7 @@ BLANK_ACTIVITY_STATUS = DottableDict({
     "ta_graded": False,
     "review_groups": [],
     "stages": OrderedDict(
-        (stage_id, stage_data.update({'deadline': NOT_APPLICABLE}))
+        (stage_id, _shallow_merge_dicts(stage_data, {'deadline': NOT_APPLICABLE, 'status': IRRELEVANT}))
         for stage_id, stage_data in GP_V1_STAGES.iteritems()
     ),
     "stage_count": 4
@@ -259,8 +266,6 @@ class WorkgroupCompletionData(object):
                     for stage_id in activity.stages
                 )
 
-                activity_status.modifier_class = activity_status.stages[GroupProjectV1Stages.GRADED].status
-
                 group.activity_statuses.append(activity_status)
 
             while len(group.activity_statuses) < 3:
@@ -301,7 +306,10 @@ class WorkgroupCompletionData(object):
                                 is_complete(group_xblock, [u.id for u in group.users], stage_id),
                                 get_due_date(group_xblock, stage_id)
                             )
+
+                        if stage_data.get('is_grading_stage', False):
                             stage_data.review_groups = review_groups
+
                         stages.append((stage_id, stage_data))
 
                     user_activity_status.stages = OrderedDict(stages)
@@ -447,7 +455,11 @@ class WorkgroupCompletionData(object):
         result = DottableDict({
             'name': p.name,
             'group_count': len(target_workgroups),
+            'organization': p.organization
         })
+        if p.organization:
+            organization = Organization.fetch(p.organization)
+            result.organization_name = organization.display_name
 
         result.activities = []
         for activity in activities:
@@ -490,49 +502,64 @@ def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=N
 
     wcd = WorkgroupCompletionData(course_id, restrict_to_users_ids=restrict_to_users_ids)
 
+    # column structure:
+    # Group
+    # User
+    # For each activity
+    #   One column per stage in activity
+
     for project in wcd.build_report_data()["projects"]:
-        if project.organization:
-            organization = Organization.fetch(project.organization)
-            project.organization_name = organization.display_name
         output_line([project.name])
 
-        activity_names_row = ["", ""]
-        for activity in project.activities:
-            activity_names_row.extend(["", activity.name, "", "", ""])
+        activity_names_row = ["", ""]  # Group and User columns
+        for activity in project.activities:  # for each activity
+            # one column per stage (if no stages are present, fictional NO STAGES is added
+            activity_names_row_cells = [""] * len(activity.stages)
+            activity_names_row_cells[0] = activity.name
+            activity_names_row.extend(activity_names_row_cells)
+
         output_line(activity_names_row)
 
-        group_header_row = ["Group", ""]
-        for activity in project.activities:
-            group_header_row.extend(["Upload", "Evaluation", "Review", "Review Groups", "Graded"])
+        group_header_row = ["Group", ""]  # Group and User columns
+        for activity in project.activities:  # for each activity
+            for stage_key, stage in activity.stages.iteritems():  # column per stage
+                group_header_row.append(stage['name'])
+
         output_line(group_header_row)
 
         for workgroup in project.workgroups:
-            workgroup_row = [workgroup.name, ""]
-            for activity_status in workgroup.activity_statuses:
-                workgroup_row.extend([activity_status.upload, activity_status.evaluation])
-                grade_value = activity_status.grade
-                if activity_status.ta_graded:
-                    grade_value = "TA Graded{} ({})".format(
-                        "*" if activity_status.modifier_class == "incomplete" else "",
-                        "{}{}".format(url_prefix, activity_status.review_link),
-                    )
-                workgroup_row.extend([grade_value, "", activity_status.graded])
+            workgroup_row = [workgroup.name, ""]  # Group and User columns
+            for activity_status in workgroup.activity_statuses:  # for each activity
+                for stage_key, stage_data in activity_status.stages.iteritems():  # one column per stage
+                    if stage_data.get('is_grading_stage', False) and activity_status.ta_graded:
+                        stage_status = "TA Graded{} ({})".format(
+                            "*" if stage_data.status == "incomplete" else "",
+                            "{}{}".format(url_prefix, stage_data.link),
+                        )
+                    else:
+                        stage_status = stage_data['status']
+
+                    workgroup_row.append(stage_status)
+
             output_line(workgroup_row)
 
             for user in workgroup.users:
-                user_row = ["", user.username]
-                for user_activity_status in user.activity_statuses:
-                    user_row.extend(
-                        [user_activity_status.upload, user_activity_status.evaluation, user_activity_status.grade])
-                    review_group_data = []
-                    for review_group in user_activity_status.review_groups:
-                        review_group_data.append("{}{} ({})".format(
-                            review_group.name,
-                            "*" if review_group.modifier_class == "incomplete" else "",
-                            "{}{}".format(url_prefix, review_group.review_link),
-                        )
-                        )
-                    user_row.extend(['; '.join(review_group_data), "--"])
+                user_row = ["", user.username]  # Group and User columns
+                for user_activity_status in user.activity_statuses:  # for each activity
+                    for stage_key, stage in user_activity_status.stages.iteritems():  # one column per stage
+                        if not stage.get('is_grading_stage', False) or 'review_groups' not in stage:
+                            user_row.append(stage['status'])
+                        else:
+                            review_group_data = []
+
+                            for review_group in stage.get('review_groups', None):
+                                review_group_data.append("{}{} ({})".format(
+                                    review_group.name,
+                                    "*" if review_group.review_status == "incomplete" else "",
+                                    "{}{}".format(url_prefix, review_group.review_link),
+                                ))
+
+                            user_row.append('; '.join(review_group_data))
                 output_line(user_row)
 
         output_line("--------")

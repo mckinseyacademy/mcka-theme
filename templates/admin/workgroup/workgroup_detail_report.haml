@@ -78,7 +78,7 @@
                       = user.company
                   - for user_activity_status in user.activity_statuses
                     - for stage_id, stage in user_activity_status.stages.items
-                      - if stage.is_grading_stage
+                      - if stage.review_groups
                         %td
                           - for review_group in stage.review_groups
                             %div.review-group-link
