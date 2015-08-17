@@ -1,12 +1,11 @@
 
 // submits forms via ajax and re-renders the html
-function ajaxify_overlay_form(overlaySelector, formSelector) {
+function ajaxify_overlay_form(overlaySelector, formSelector, callback) {
   $(overlaySelector).on('submit', formSelector, function(e) {
     e.preventDefault();
     var form = $(this);
 
     form.find(':submit').prop('disabled', true);
-
     $.ajax({
       method: 'POST',
       url: form.attr('action'),
@@ -14,12 +13,16 @@ function ajaxify_overlay_form(overlaySelector, formSelector) {
     })
     .done(function(data, status, xhr) {
       var contentType = xhr.getResponseHeader('content-type') || '';
-      if (contentType.indexOf('json') > -1 && data.redirect)
+      if (contentType.indexOf('json') > -1 && data.redirect) {
         window.location.href = data.redirect;
-      else
+      }
+      else {
         form.parent().html(data);
-
-      form.find(':submit').prop('disabled', false);
+        if (callback !== undefined) {
+          callback();
+        }
+        form.find(':submit').prop('disabled', false);
+      }
     });
   });
 }

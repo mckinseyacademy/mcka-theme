@@ -4,12 +4,13 @@ import tempfile
 import os
 import math
 
+from django.forms import ValidationError
 from django.test import TestCase
 from django.test.client import Client, RequestFactory
 from django.core.urlresolvers import resolve
 
 from lib.util import DottableDict
-from .forms import ClientForm, ProgramForm
+from .forms import ClientForm, ProgramForm, ShareAccessKeyForm, MultiEmailField
 from .models import Program
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 
@@ -514,6 +515,27 @@ class AdminFormsTests(TestCase):
 
         self.assertTrue(program_form.is_valid())
 
+    def test_CreateAccessKeyForm(self):
+        # valid if data is good
+        form_data = {
+            "client_id": 1,
+            "name": "",
+            "program_id": "",
+            "course_id": "",
+        }
+        form = ShareAccessKeyForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_ShareAccessKeyForm(self):
+        # valid if data is good
+        form_data = {
+            "recipients": "student1@testorg.org, student2@testorg.org",
+            "message": "",
+        }
+        form = ShareAccessKeyForm(form_data)
+        self.assertTrue(form.is_valid())
+
+
 # class AdminViewsTests(TestCase):
 
 #     def test_home_fail(self):
@@ -600,3 +622,20 @@ class ProgramTests(TestCase):
         self.assertEqual(test_info.display_name, "Maggie")
         self.assertEqual(test_info.start_date, datetime.datetime(2014,1,1))
         self.assertEqual(test_info.end_date, datetime.datetime(2014,12,3))
+
+
+class MultiEmailFieldTest(TestCase):
+
+    def test_validation(self):
+        f = MultiEmailField()
+        self.assertRaisesMessage(ValidationError, "'This field is required.'", f.clean, None)
+        self.assertRaisesMessage(ValidationError, "'This field is required.'", f.clean, '')
+        self.assertRaisesMessage(ValidationError, "'Enter a valid email address (not-an-email-adress).'",
+            f.clean, 'test1@testorg.org,  not-an-email-adress, test2@testorg.org')
+
+    def test_normalization(self):
+        f = MultiEmailField()
+        self.assertEqual(f.clean('test1@testorg.org, test2@testorg.org'),
+            ['test1@testorg.org', 'test2@testorg.org'])
+        self.assertEqual(f.clean(' test1@testorg.org  ,  ,, test2@testorg.org,,'),
+            ['test1@testorg.org', 'test2@testorg.org'])

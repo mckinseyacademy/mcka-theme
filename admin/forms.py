@@ -3,8 +3,10 @@ from datetime import date
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
-from .models import Client, Program
+from .models import Client, Program, AccessKey
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
@@ -113,3 +115,58 @@ class UploadCompanyImageForm(forms.Form):
     ''' form to upload file for company image '''
     company_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
 
+
+
+
+class MultiEmailField(forms.Field):
+    """ Comma separated email list """
+    def to_python(self, value):
+        "Normalize data to a list of strings."
+
+        # Return an empty list if no input was given.
+        if not value:
+            return []
+        # Remove empty strings and strip all spaces
+        return filter(None, [email.strip() for email in value.split(",")])
+
+    def validate(self, value):
+        "Check if value consists only of valid emails."
+
+        # Use the parent's handling of required fields, etc.
+        super(MultiEmailField, self).validate(value)
+
+        invalid_emails = []
+
+        for email in value:
+            try:
+                validate_email(email)
+            except ValidationError as e:
+                invalid_emails.append(email)
+
+        if invalid_emails:
+            message = _('Enter a valid email address ({}).').format(', '.join(invalid_emails))
+            raise ValidationError(message, code=validate_email.code)
+
+
+class ShareAccessKeyForm(forms.Form):
+    access_key_link = forms.CharField(required=False, widget=forms.TextInput(attrs={'readonly': True}))
+    recipients = MultiEmailField(required=True,
+        widget=forms.TextInput(attrs={'placeholder': _('Email(s) separated by commas')}))
+    message = forms.CharField(required=False,
+        widget=forms.Textarea(attrs={'placeholder': _('Message (optional)')}))
+
+
+class CreateAccessKeyForm(forms.ModelForm):
+    class Meta:
+        model = AccessKey
+        fields = ['name', 'program_id', 'course_id']
+        labels = {
+            'name': _('Name'),
+            'program_id': _('Program'),
+            'course_id': _('Course Instance'),
+        }
+        widgets = {
+            'program_id': forms.Select,
+            'course_id': forms.Select(),
+            'course_id': forms.Select,
+        }

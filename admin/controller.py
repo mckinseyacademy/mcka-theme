@@ -2,6 +2,7 @@ import tempfile
 import urllib
 from django.core.urlresolvers import reverse
 import re
+import uuid
 
 from django.utils.translation import ugettext as _
 from django.conf import settings
@@ -678,3 +679,9 @@ def get_program_data_for_report(client_id, program_id=None):
         total_pct_completed = sum([c.metrics.percent_completed for c in courses]) / count
 
     return program, courses, total_avg_grade, total_pct_completed
+
+
+def generate_access_key():
+    ''' Generate a unique url-friendly code. '''
+    return str(uuid.uuid4())
+

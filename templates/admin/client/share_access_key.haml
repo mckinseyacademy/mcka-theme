@@ -1,0 +1,39 @@
+- load staticfiles
+%header
+  %h1= _("Share access key")
+  .sub-1= access_key.name
+
+.close-reveal-modal
+  %i.fa.fa-times-circle
+
+%form.admin-form{action: "access_keys/#{access_key.pk}/share", method: "POST"}
+  - if error
+    .error= error
+  - csrf_token
+  %fieldset
+    = form.access_key_code
+    = form.is_saved
+    .row
+      .small-12.columns
+        .row.collapse
+          .small-10.columns= form.access_key_link
+          .small-2.columns
+            %button#copy-access-key.button.prefix.postfix.radius{type: "button", title: "Copy to clipboard.", "data-clipboard-text": "#{form.access_key_link.value}"}
+              = _("Copy")
+            %span.tooltip{"style": "top:50px"}= _("Copied to clipboard.")
+              %span.nub
+    .row
+      .small-12.columns
+        %hr
+    .row
+      .small-12.columns
+        = form.recipients.errors
+        = form.recipients
+    .row
+      .small-12.columns
+        = form.message.errors
+        = form.message
+
+  .submit-area
+    %input.button.radius.small{type: "submit", value: "#{submit_label}"}
+
