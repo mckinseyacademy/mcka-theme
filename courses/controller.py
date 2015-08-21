@@ -548,9 +548,12 @@ def inject_gradebook_info(user_id, course):
 
     for project in course.group_projects:
         for activity in project.activities:
-            activity.is_graded = False
-            url_name = PriorIdConvert.new_from_prior(activity.id).split('/')[-1]
-            if url_name in assesments:
-                activity.is_graded = True
+            if project.is_v2:
+                activity.is_graded = activity.xblock.weight > 0
+            else:
+                activity.is_graded = False
+                url_name = PriorIdConvert.new_from_prior(activity.id).split('/')[-1]
+                if url_name in assesments:
+                    activity.is_graded = True
 
     return gradebook

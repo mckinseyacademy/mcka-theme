@@ -183,7 +183,8 @@ class WorkGroupV2StageXBlock(JsonObject):
         return course_api.get_module_details(uri, cls.required_fields, cls)
 
 class WorkGroupActivityXBlock(JsonObject):
-    required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates']
+    required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates', 'weight', 'due_date']
+    date_fields = ['due_date']
     object_map = {
         'milestone_dates': WorkgroupMilestoneDates
     }

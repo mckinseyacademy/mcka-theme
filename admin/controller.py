@@ -1,4 +1,6 @@
 import tempfile
+import urllib
+from django.core.urlresolvers import reverse
 import re
 
 from django.utils.translation import ugettext as _
@@ -12,9 +14,9 @@ from datetime import datetime
 from pytz import UTC
 
 from .models import (
-    Client, WorkGroup, UserRegistrationError,
+    Client, WorkGroup, UserRegistrationError, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
-    GROUP_PROJECT_V2_ACTIVITY_CATEGORY
+    GROUP_PROJECT_V2_ACTIVITY_CATEGORY,
 )
 
 import threading
@@ -28,12 +30,32 @@ GROUP_WORK_REPORT_DEPTH = 6
 
 
 class GroupProject(object):
-    def __init__(self, project_id, name, activities, vertical_id=None, is_v2=False):
+
+    def _get_activity_link(self, course_id, activity_id):
+        base_gw_url = reverse('user_course_group_work', kwargs={'course_id': course_id})
+        query_string_key = 'activate_block_id' if self.is_v2 else 'actid'
+        return base_gw_url + "?" + urllib.urlencode({query_string_key: activity_id})
+
+    def __init__(self, course_id, project_id, name, activities, vertical_id=None, is_v2=False):
         self.id = project_id
+        self.course_id = course_id
         self.name = name
-        self.activities = activities
+        self._activities = activities
         self.vertical_id = vertical_id
         self.is_v2 = is_v2
+
+    @property
+    def activities(self):
+        for activity in self._activities:
+            if not hasattr(activity, 'xblock'):
+                activity.xblock = WorkGroupActivityXBlock.fetch_from_activity(self.course_id, activity.id)
+
+            if self.is_v2:
+                activity.due = activity.xblock.due_date
+
+            activity.link = self._get_activity_link(self.course_id, activity.id)
+
+        return self._activities
 
 
 def _worker():
@@ -108,7 +130,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
         if is_group_project_chapter(chapter):
             group_project_sequentials = [seq for seq in chapter.sequentials if is_group_activity(seq)]
             group_project = GroupProject(
-                chapter.id, chapter.name[len(settings.GROUP_PROJECT_IDENTIFIER):],
+                course_id, chapter.id, chapter.name[len(settings.GROUP_PROJECT_IDENTIFIER):],
                 group_project_sequentials
             )
             course.group_projects.append(group_project)
@@ -116,7 +138,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
             blocks = _find_group_project_v2_blocks_in_chapter(chapter)
             projects = [
                 GroupProject(
-                    block.id, block.name,
+                    course_id, block.id, block.name,
                     [child for child in block.children if child.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY],
                     page.id, is_v2=True
                 )
