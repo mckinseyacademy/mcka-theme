@@ -258,6 +258,7 @@ class ClientNavLinks(db_models.Model):
 class ClientCustomization(db_models.Model):
     client_id = db_models.IntegerField(unique=True, db_index=True)
     hex_notification = db_models.CharField(max_length=7)
+    hex_notification_text = db_models.CharField(max_length=7)
     hex_background_bar = db_models.CharField(max_length=7)
     hex_program_name = db_models.CharField(max_length=7)
     hex_navigation_icons = db_models.CharField(max_length=7)

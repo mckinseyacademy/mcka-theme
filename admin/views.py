@@ -1067,19 +1067,21 @@ def client_detail_customization(request, client_id):
     (customization, created) = ClientCustomization.objects.get_or_create(
         client_id=client_id,
     )
-    temp_image = request.FILES['client_logo']
-    allowed_types = ["image/jpeg", "image/png", 'image/gif']
-    if temp_image and temp_image.content_type in allowed_types:
-        from django.core.files.storage import default_storage
-        from django.core.files.base import ContentFile
-        from PIL import Image
+    if request.FILES:
+        temp_image = request.FILES['client_logo']
+        allowed_types = ["image/jpeg", "image/png", 'image/gif']
+        if temp_image and temp_image.content_type in allowed_types:
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            from PIL import Image
 
-        extension = os.path.splitext(temp_image.name)[1]
-        logo_url = 'images/' + settings.TEMP_IMAGE_FOLDER + 'client_logo-{}{}'.format(client_id, extension)
-        default_storage.save(logo_url, ContentFile(temp_image.read()))
-        customization.client_logo = logo_url
+            extension = os.path.splitext(temp_image.name)[1]
+            logo_url = 'images/' + settings.TEMP_IMAGE_FOLDER + 'client_logo-{}{}'.format(client_id, extension)
+            default_storage.save(logo_url, ContentFile(temp_image.read()))
+            customization.client_logo = logo_url
 
     customization.hex_notification = request.POST['hex_notification']
+    customization.hex_notification_text = request.POST['hex_notification_text']
     customization.hex_background_bar = request.POST['hex_background_bar']
     customization.hex_program_name = request.POST['hex_program_name']
     customization.hex_navigation_icons = request.POST['hex_navigation_icons']

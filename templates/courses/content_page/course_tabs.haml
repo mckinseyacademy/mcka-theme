@@ -29,7 +29,7 @@
   %li
     %a.xns-icon{class:"nav-1", "data-tooltip": "Notifications", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
       %i.fa.fa.fa-exclamation-circle
-      %span.xns-counter{style: "{% if client_customization and client_customization.hex_notification %}background-color:#{client_customization.hex_notification};{% endif %}"}
+      %span.xns-counter{style: "{% if client_customization %}{% if client_customization.hex_notification %}background-color:#{client_customization.hex_notification};{% endif %}{% if client_customization.hex_notification_text %}color:#{client_customization.hex_notification_text};{% endif %}{% endif %}"}
 
 %div.xns-pane
 - include "django/notifications_widget.html"
