@@ -114,7 +114,7 @@ class WorkgroupCompletionData(object):
         self._load(course_id)
 
     @staticmethod
-    def _make_completion_key(content_id, user_id, stage):
+    def _make_completion_key(content_id, user_id, stage=None):
         format_string = '{}_{}' if stage is None else '{}_{}_{}'
         return format_string.format(content_id, user_id, stage)
 
@@ -335,7 +335,7 @@ class WorkgroupCompletionData(object):
             return StageCompletionStatus.IRRELEVANT
 
         complete = all(
-            WorkgroupCompletionData._make_completion_key(activity_xblock.id, u_id, stage_xblock.id) in self.completions
+            WorkgroupCompletionData._make_completion_key(stage_xblock.id, u_id) in self.completions
             for u_id in user_ids
         )
         if complete:
