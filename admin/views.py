@@ -9,9 +9,10 @@ import os.path
 from datetime import datetime
 from urllib import quote as urlquote
 from operator import attrgetter
+from smtplib import SMTPException
 
 from django.conf import settings
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
@@ -51,18 +52,19 @@ from main.models import CuratedContentItem
 
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
-    UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization
+    UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
+    AccessKey
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH)
+    MINIMAL_COURSE_DEPTH, generate_access_key)
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm)
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -1152,6 +1154,119 @@ def client_detail_remove_contact(request, client_id, user_id):
         json.dumps({"status": _("Contact has been removed.")}),
         content_type='application/json'
     )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def access_key_list(request, client_id):
+
+    def build_instance_name(program_id, course_id):
+        instance = ""
+        if program_id:
+            if program_id in programs:
+                instance = programs.get(program_id)
+                if course_id:
+                    program = Program(dictionary={'id': program_id})
+                    courses = {c.course_id: c.course_id for c in program.fetch_courses()}
+                    instance += ": {}".format(courses.get(course_id, _("Invalid Course Run")))
+            else:
+                instance = _("Invalid Program ID")
+        return instance
+
+    client = Client.fetch(client_id)
+    programs = {p.id: p.name for p in client.fetch_programs()}
+    access_keys = list(AccessKey.objects.filter(client_id=client_id))
+
+    for key in access_keys:
+        key.instance = build_instance_name(key.program_id, key.course_id)
+        key.link = request.build_absolute_uri(reverse('access_key', kwargs={'key': key.code}))
+
+    data = {
+        'client': client,
+        'access_keys': access_keys,
+        'selected_client_tab': 'access_key_list',
+    }
+
+    return render(
+        request,
+        'admin/client/access_key_list',
+        data,
+    )
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def create_access_key(request, client_id):
+    courses = []
+
+    if request.method == 'POST':  # If the form has been submitted...
+        if 'program_change' in request.POST: # A program is selected - skip validation
+            form = CreateAccessKeyForm(initial=request.POST.dict())
+        else:
+            form = CreateAccessKeyForm(request.POST) # A form bound to the POST data
+
+        # Load course choices for program
+        program_id = int(request.POST.get('program_id'))
+        if program_id:
+            program = Program(dictionary={"id": program_id})
+            courses = [(c.course_id, c.course_id) for c in program.fetch_courses()]
+
+        if form.is_valid():  # All validation rules pass
+            code = generate_access_key()
+            model = form.save(commit=False)
+            model.client_id = int(client_id)
+            model.code = code
+            model.save()
+            return HttpResponseRedirect('/admin/clients/{}/access_keys'.format(client_id))
+    else:
+        form = CreateAccessKeyForm()
+
+    client = Client.fetch(client_id)
+    programs = [(p.id, p.display_name) for p in client.fetch_programs()]
+    form.fields['program_id'].widget.choices = [(0, _('- Select -'))] + programs
+    form.fields['course_id'].widget.choices = [('', _('- Select -'))] + courses
+
+    data = {
+        'form': form,
+        'course': {"course_id": 0},
+        'submit_label': _('Save'),
+    }
+    return render(request, 'admin/client/create_access_key', data)
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def share_access_key(request, client_id, access_key_id):
+    error = None
+    access_key = AccessKey.objects.get(pk=access_key_id)
+
+    if request.method == 'POST':  # If the form has been submitted...
+        form = ShareAccessKeyForm(request.POST.copy()) # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            # @TODO Missing copy
+            subject = _('Access Key')
+            message = form.cleaned_data['message']
+            message += '\r\n\r\n{}'.format(form.cleaned_data['access_key_link'])
+            sender = settings.APROS_EMAIL_SENDER
+            mails = [(subject, message, sender, [recipient]) for recipient in form.cleaned_data['recipients']]
+            try:
+                send_mass_mail(mails, fail_silently=False)
+            except SMTPException as e:
+                error = e.message
+            else:
+                return HttpResponseRedirect('/admin/clients/{}/access_keys'.format(client_id))
+    else:
+        # An unbound form
+        link = request.build_absolute_uri(reverse('access_key', kwargs={'key': access_key.code}))
+        form = ShareAccessKeyForm(initial={'access_key_link': link})
+        form.fields['access_key_link'].widget.attrs.update({'class': 'radius'})
+
+    data = {
+        'error': error,
+        'form': form,
+        'access_key': access_key,
+        'submit_label': _('Send'),
+    }
+    return render(request, 'admin/client/share_access_key.haml', data)
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

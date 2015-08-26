@@ -20,13 +20,19 @@
   - if user.is_mcka_admin
     %li
       - if selected_client_tab == 'contact'
-        %span.selected= _("Assign Contacts to Client")
+        %span.selected= _("Contacts")
       - else
         %a{href:"/admin/clients/#{client.id}/contact"}
-          = _("Assign Contacts to Client")
+          = _("Contacts")
   %li
     - if selected_client_tab == 'navigation'
       %span.selected= _("Navigation")
     - else
       %a{href:"/admin/clients/#{client.id}/navigation"}
         = _("Navigation")
+  %li
+    - if selected_client_tab == 'access_key_list'
+      %span.selected= _("Access Keys")
+    - else
+      %a{href:"/admin/clients/#{client.id}/access_keys"}
+        = _("Access Keys")

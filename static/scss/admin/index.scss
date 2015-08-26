@@ -568,6 +568,11 @@
     line-height: inherit;
   }
 
+  .access-key-disabled td {
+    text-decoration: line-through;
+    color: $mckinsey-dark-grey;
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';

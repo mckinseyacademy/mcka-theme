@@ -1,0 +1,71 @@
+- extends 'admin/client/detail.haml'
+- load staticfiles
+- block admin_detail
+  %h1
+    %span= _("Client: ")
+    %span= client.display_name
+  %hr
+  %section
+    .large-8.columns
+      %table.access-key-list
+        %thead
+          %th= _("Name")
+          %th= _("Instance")
+          %th.text-right= _("Share")
+        %tbody
+          - for key in access_keys
+            - if key.disabled
+              %tr.access-key-disabled
+                %td= key.name
+                %td= key.instance
+                %td.text-right
+                  %span
+                    %i.fa.fa-lg.fa-paper-plane
+            - else
+              %tr
+                %td= key.name
+                %td= key.instance
+                %td.text-right
+                  %a{href: "", "data-reveal-id": "new-principal", "data-options": "hover_delay: 0;", "data-reveal-ajax": "access_keys/#{key.pk}/share"}
+                    %i.fa.fa-lg.fa-paper-plane
+    .large-4.columns
+      %label &nbsp;
+      %a#create-access-key.button.radius.tiny{"data-reveal-id": "new-principal", "data-reveal-ajax": "access_keys/create", href: ""}
+        %span= _("Create Access Key")
+
+  #new-principal.reveal-modal.medium{"data-reveal": "true"}
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
+  :javascript
+    $('.access-key-list').dataTable({paging: false, order: []});
+    ajaxify_overlay_form('#new-principal', 'form', enableCopyButton);
+    ZeroClipboard.config({swfPath: 'static/js/vendor/ZeroClipboard.swf'});
+    var dialog = $('#new-principal');
+    dialog.on('change', '#id_program_id', function () {
+      var form = dialog.find('form');
+      $.ajax({
+        method: 'POST',
+        url: form.attr('action'),
+        data: form.serialize() + '&program_change'
+      })
+      .done(function(data, status, xhr) {
+        form.parent().html(data);
+      })
+      .fail(function (data, status, error) {
+        alert(error);
+      });
+    });
+    $(document).on('opened.fndtn', '[data-reveal]', enableCopyButton);
+    function enableCopyButton() {
+      var copyBtn = $('#copy-access-key');
+      var client = new ZeroClipboard(copyBtn.get(0));
+      var tooltip = copyBtn.siblings('.tooltip');
+      client.on('aftercopy', function (event) {
+        tooltip.show();
+      });
+      copyBtn.on('mouseout', function (event) {
+        tooltip.fadeOut();
+      });
+    }

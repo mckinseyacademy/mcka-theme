@@ -638,3 +638,8 @@ def edit_title(request):
         'submit_label': _('Save')
     }
     return render(request, 'accounts/edit_field.haml', user_data)
+
+
+# TODO: Implement
+def access_key(request):
+    pass

@@ -280,3 +280,18 @@ ASSOCIATION_ACTIONS = DottableDict(
 internal_admin_role_event = Signal(providing_args=['user_id', 'action'])
 course_program_event = Signal(providing_args=['course_id', 'program_id', 'action'])
 program_client_event = Signal(providing_args=['client_id', 'program_id', 'action'])
+
+
+class AccessKey(db_models.Model):
+    """
+    A generated access code that can is used for student registration and enrollment.
+    """
+    code = db_models.CharField(max_length=50, unique=True)
+    identity_provider = db_models.CharField(blank=True, max_length=200)
+    client_id = db_models.IntegerField()
+    course_id = db_models.CharField(blank=True, max_length=200)
+    program_id = db_models.IntegerField(null=True, blank=True)
+    name = db_models.CharField(blank=True, max_length=200)
+    disabled = db_models.BooleanField(default=False)
+    expiration_date = db_models.DateTimeField(null=True, blank=True)
+    user_count = db_models.IntegerField(default=0, blank=True)
