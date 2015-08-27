@@ -99,9 +99,13 @@ def login(request):
             request.session["remote_session_key"] = user.session_key
             auth.login(request, user)
 
-            redirect_to = _get_qs_value_from_url(
-                'next', request.META['HTTP_REFERER']
-            ) if 'HTTP_REFERER' in request.META else None
+            redirect_to = None
+            if 'HTTP_REFERER' in request.META:
+                redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER'])
+
+            if not redirect_to:
+                redirect_to = request.GET.get('next', None)
+
             redirect_to = redirect_to or '/'
             return HttpResponseRedirect(redirect_to)
 
