@@ -77,6 +77,82 @@ def _get_stored_image_url(request, image_url):
         return prefix + request.host() + image_url
     return image_url
 
+
+def _get_redirect_to(request):
+    redirect_to = request.GET.get('next', None)
+
+    if not redirect_to and 'HTTP_REFERER' in request.META:
+        redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER'])
+
+    return redirect_to
+
+
+def _process_authenticated_user(request, user):
+    redirect_to = _get_redirect_to(request)
+    _validate_path(redirect_to)
+
+    request.session["remote_session_key"] = user.session_key
+    auth.login(request, user)
+
+    if not redirect_to:
+        course_id = get_current_course_for_user(request)
+        program = get_current_program_for_user(request)
+        future_start_date = False
+        if program:
+            if course_id is not None:
+                for program_course in program.courses:
+                    if program_course.id == course_id:
+                        '''
+                        THERE IS A PLACE FOR IMPROVEMENT HERE
+                        IF user course object had start/due date, we
+                        would do one less API call
+                        '''
+                        full_course_object = load_course(course_id)
+                        if hasattr(full_course_object, 'start'):
+                            future_start_date = is_future_start(full_course_object.start)
+                        elif hasattr(program, 'start_date') and future_start_date is False:
+                            future_start_date = is_future_start(program.start_date)
+            elif hasattr(program, 'start_date') and future_start_date is False:
+                future_start_date = is_future_start(program.start_date)
+
+        if course_id:
+            if future_start_date:
+                redirect_to = '/'
+            else:
+                redirect_to = '/courses/{}'.format(course_id)
+        else:
+            redirect_to = '/'
+
+    response = HttpResponseRedirect(redirect_to)  # Redirect after POST
+
+    hostname = request.get_host()
+    wildcard_hostname = hostname
+    try:
+        wildcard_hostname = '.'+string.join(hostname.split('.')[1:],'.')
+    except Exception:
+        pass
+
+    # for localdev testing with a vagrant image
+    # sometimes we want to set our cookies
+    # as wildcards. If so, specify IS_EDXAPP_ON_SAME_DOMAIN=False
+    # in the local_settings.py
+    use_wildcards_for_cookies = not getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True)
+
+    if 'remote_session_key' in request.session:
+        response.set_cookie(
+            'sessionid',
+            request.session["remote_session_key"],
+            domain=wildcard_hostname if use_wildcards_for_cookies else None
+        )
+    if hasattr(user, 'csrftoken'):
+        response.set_cookie(
+            'csrftoken',
+            user.csrftoken,
+            domain=wildcard_hostname if use_wildcards_for_cookies else None
+        )
+    return response
+
+
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -88,82 +164,31 @@ def login(request):
         if re.search('msie [1-8]\.', ua):
             return HttpResponseRedirect('/')
 
+    form = None
+
     if request.method == 'POST':  # If the form has been submitted...
-        form = LoginForm(request.POST)  # A form bound to the POST data
-        if form.is_valid():  # All validation rules pass
+        form = LoginForm(request.POST)
+        if form.is_valid():
             try:
                 user = auth.authenticate(
-                    username=request.POST['username'],
-                    password=request.POST['password']
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password']
                 )
-                request.session["remote_session_key"] = user.session_key
-                auth.login(request, user)
-                redirect_to = _get_qs_value_from_url(
-                    'next',
-                    request.META['HTTP_REFERER']
-                ) if 'HTTP_REFERER' in request.META else None
+                if user:
+                    return _process_authenticated_user(request, user)
 
-                _validate_path(redirect_to)
-
-                if not redirect_to:
-                    course_id = get_current_course_for_user(request)
-                    program = get_current_program_for_user(request)
-                    future_start_date = False
-                    if program:
-                        if course_id is not None:
-                            for program_course in program.courses:
-                                if program_course.id == course_id:
-                                    '''
-                                    THERE IS A PLACE FOR IMPROVEMENT HERE
-                                    IF user course object had start/due date, we
-                                    would do one less API call
-                                    '''
-                                    full_course_object = load_course(course_id)
-                                    if hasattr(full_course_object, 'start'):
-                                        future_start_date = is_future_start(full_course_object.start)
-                                    elif hasattr(program, 'start_date') and future_start_date is False:
-                                        future_start_date = is_future_start(program.start_date)
-                        elif hasattr(program, 'start_date') and future_start_date is False:
-                            future_start_date = is_future_start(program.start_date)
-
-                    if course_id:
-                        if future_start_date:
-                            redirect_to = '/'
-                        else:
-                            redirect_to = '/courses/{}'.format(course_id)
-                    else:
-                        redirect_to = '/'
-
-                response = HttpResponseRedirect(redirect_to)  # Redirect after POST
-
-                hostname = request.get_host()
-                wildcard_hostname = hostname
-                try:
-                    wildcard_hostname = '.'+string.join(hostname.split('.')[1:],'.')
-                except:
-                    pass
-
-                # for localdev testing with a vagrant image
-                # sometimes we want to set our cookies
-                # as wildcards. If so, specify IS_EDXAPP_ON_SAME_DOMAIN=False
-                # in the local_settings.py
-                use_wildcards_for_cookies = not getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True)
-
-                if 'remote_session_key' in request.session:
-                    response.set_cookie(
-                        'sessionid',
-                        request.session["remote_session_key"],
-                        domain=wildcard_hostname if use_wildcards_for_cookies else None
-                    )
-                if hasattr(user, 'csrftoken'):
-                    response.set_cookie(
-                        'csrftoken',
-                        user.csrftoken,
-                        domain=wildcard_hostname if use_wildcards_for_cookies else None
-                    )
-                return response
             except ApiError as err:
                 error = err.message
+
+    elif request.method == 'GET' and 'sessionid' in request.COOKIES:
+        # The user may already be logged in to the LMS.
+        # (e.g. they used the LMS's third_party_auth to authenticate, then got redirected back here)
+        try:
+            user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
+            if user:
+                return _process_authenticated_user(request, user)
+        except ApiError as err:
+            error = err.message
 
     elif 'username' in request.GET:
         # password fields get cleaned upon rendering the form, but we must
@@ -175,21 +200,21 @@ def login(request):
         # set focus to password field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
     elif 'reset' in request.GET:
-        form = LoginForm()  # An unbound form
+        form = LoginForm()
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
         form.reset = request.GET['reset']
     else:
-        form = LoginForm()  # An unbound form
+        form = LoginForm()
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "user": None,
-        "form": form,
+        "form": form or LoginForm(),
         "error": error,
         "login_label": _("Log in to my McKinsey Academy account & access my courses"),
-        }
+    }
     response = render(request, 'accounts/login.haml', data)
 
     if request.method == 'GET':
