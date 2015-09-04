@@ -193,7 +193,7 @@ class WorkgroupCompletionData(object):
 
         def review_link(course_id, workgroup, activity=None):
             if activity:
-                return "/courses/{}/group_work/{}?actid={}".format(course_id, workgroup.id, activity.id)
+                return "/courses/{}/group_work/{}?seqid={}".format(course_id, workgroup.id, activity.id)
             return "/courses/{}/group_work/{}".format(course_id, workgroup.id)
 
         def get_due_date(group_xblock, date_name):
