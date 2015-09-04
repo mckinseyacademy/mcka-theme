@@ -179,14 +179,14 @@ def course_cohort(request, course_id):
 
 def _render_group_work(request, course, project_group, group_project):
 
-    actid = request.GET.get("actid", None)
-    if actid and " " in actid:
-        actid = actid.replace(" ", "+")
+    seqid = request.GET.get("seqid", None)
+    if seqid and " " in seqid:
+        seqid = seqid.replace(" ", "+")
 
     select_stage = request.GET.get('select_stage', None)
 
     if group_project is not None:
-        activity, vertical_usage_id = group_project_location(group_project, actid)
+        activity, vertical_usage_id = group_project_location(group_project, seqid)
     else:
         activity = vertical_usage_id = None
 

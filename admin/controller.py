@@ -34,7 +34,7 @@ class GroupProject(object):
 
     def _get_activity_link(self, course_id, activity_id):
         base_gw_url = reverse('user_course_group_work', kwargs={'course_id': course_id})
-        query_string_key = 'activate_block_id' if self.is_v2 else 'actid'
+        query_string_key = 'activate_block_id' if self.is_v2 else 'seqid'
         return base_gw_url + "?" + urllib.urlencode({query_string_key: activity_id})
 
     def __init__(self, course_id, project_id, name, activities, vertical_id=None, is_v2=False):
