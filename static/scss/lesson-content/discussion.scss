@@ -228,6 +228,15 @@
     }
   }
 
+  .post-extended-content {
+    ol.responses.js-response-list {
+      margin-left: 0;
+      li.forum-response {
+        margin: 0;
+      }
+    }
+  }
+
   .discussion-article, .new-post-article {
     .post-update, .submit,
     a.post-cancel, a.cancel {
