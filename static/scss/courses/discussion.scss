@@ -101,6 +101,10 @@
 
       .forum-nav-thread-comments-count {
         background-image: none;
+        &:after {
+          z-index: auto;
+          background: none;
+        }
       }
 
       .forum-nav-thread-votes-count {
