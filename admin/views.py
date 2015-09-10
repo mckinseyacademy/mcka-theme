@@ -1177,7 +1177,7 @@ def access_key_list(request, client_id):
 
     for key in access_keys:
         key.instance = build_instance_name(key.program_id, key.course_id)
-        key.link = request.build_absolute_uri(reverse('access_key', kwargs={'key': key.code}))
+        key.link = request.build_absolute_uri(reverse('access_key', kwargs={'code': key.code}))
 
     data = {
         'client': client,
@@ -1255,7 +1255,7 @@ def share_access_key(request, client_id, access_key_id):
                 return HttpResponseRedirect('/admin/clients/{}/access_keys'.format(client_id))
     else:
         # An unbound form
-        link = request.build_absolute_uri(reverse('access_key', kwargs={'key': access_key.code}))
+        link = request.build_absolute_uri(reverse('access_key', kwargs={'code': access_key.code}))
         form = ShareAccessKeyForm(initial={'access_key_link': link})
         form.fields['access_key_link'].widget.attrs.update({'class': 'radius'})
 
