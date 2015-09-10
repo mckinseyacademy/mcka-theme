@@ -18,7 +18,7 @@
         %i.fa.fa-globe
   %li
     %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/progress", "data-tooltip": "Progress", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
-      %i.fa.fa-bar-chart-o
+      %i.old-fa-bar-chart
   %li
     %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/announcements", "data-dropdown": "announcements-content", "data-tooltip": "Course Materials", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
       %i.fa.fa-file-text-o
