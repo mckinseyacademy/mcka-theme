@@ -125,6 +125,7 @@ header[role=banner].background-blue {
     color: $user-text;
     @include font-spec(10, bold, 12);
     text-align: right;
+    $drop_down_offset: 3px;
     position: fixed;
     top: 0;
     right: 0;
@@ -136,10 +137,10 @@ header[role=banner].background-blue {
     .fa{
       position:relative;
       &.fa-sort-asc{
-        top: 3px;
+        top: $drop_down_offset;
       }
       &.fa-sort-desc{
-        top: -1px;
+        top: -1*$drop_down_offset;
       }
     }
     div {
