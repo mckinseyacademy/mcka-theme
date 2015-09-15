@@ -20,7 +20,8 @@
             .description
               %span Required fields are noted by an asterisk (
               %span.required-field><
-              %span )
+              %span ).
+              %span If you registered with your company credentials, please <a href="/accounts/sso_dispatch">click here</a>.
             %form{action: "/accounts/login/", method: "POST"}
               .error
                 - if error
