@@ -229,6 +229,11 @@ def login(request):
 def logout(request):
     return logout_handler.logout(request)
 
+
+def sso_dispatch(request):
+    return HttpResponse("SSO dispatch")
+
+
 def activate(request, activation_code):
     ''' handles requests for activation form and their submission '''
     error = None
