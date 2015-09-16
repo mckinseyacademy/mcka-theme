@@ -191,7 +191,7 @@ stick with MySql if you want to remain as close to the production environment as
 `LMS_SUB_DOMAIN` is the subdomain for the LMS system that users will fetch assets from-- note that it's the same as apros because we use NginX's reverse proxying to do a bit of magic later in the configuration.
 `EDX_API_KEY` is the api key used for accessing the LMS API.
 
-#### Configure the `EDX_API_KEY` in `lms.auth.json` file, like this:
+##### Configure the `EDX_API_KEY` in `lms.auth.json` file, like this:
 
     EDX_API_KEY = 'edx_api_key'
 
