@@ -14,6 +14,7 @@ import datetime
 import math
 import logging
 import string
+from django.views.generic import View
 import re
 
 from django.conf import settings
@@ -25,33 +26,30 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from api_client import user_api, course_api, organization_api
+from api_client import user_api, organization_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
-from admin.models import Client, Program
+from admin.models import Program
 from admin.controller import load_course, assign_student_to_client_threaded
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
-from django.core import mail
-from django.test import TestCase
-# from importlib import import_module
-# SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
+from .forms import (
+    LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, 
+    EditFullNameForm, EditTitleForm, SSOLoginForm
+)
 from django.shortcuts import resolve_url
-from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
-from django.templatetags.static import static
 
 import logout as logout_handler
 
-from django.contrib.auth.views import password_reset, password_reset_confirm, password_reset_done, password_reset_complete
+from django.contrib.auth.views import password_reset_done, password_reset_complete
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
-from django.core.mail import send_mail
 
 log = logging.getLogger(__name__)
 
@@ -162,20 +160,28 @@ def login(request):
             return HttpResponseRedirect('/')
 
     form = None
+    sso_login_form = None
+    login_mode = 'normal'
 
     if request.method == 'POST':  # If the form has been submitted...
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            try:
-                user = auth.authenticate(
-                    username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password']
-                )
-                if user:
-                    return _process_authenticated_user(request, user)
+        if 'sso_login_form_marker' not in request.POST:
+            # normal login
+            form = LoginForm(request.POST)
+            if form.is_valid():
+                try:
+                    user = auth.authenticate(
+                        username=form.cleaned_data['username'],
+                        password=form.cleaned_data['password']
+                    )
+                    if user:
+                        return _process_authenticated_user(request, user)
 
-            except ApiError as err:
-                error = err.message
+                except ApiError as err:
+                    error = err.message
+        else:
+            # SSO login
+            sso_login_form = SSOLoginForm(request.POST)
+            login_mode = 'sso'
 
     elif request.method == 'GET' and 'sessionid' in request.COOKIES:
         # The user may already be logged in to the LMS.
@@ -206,9 +212,14 @@ def login(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
+    if not login_mode:
+        login_mode = request.GET.get('login_mode', 'normal')
+
     data = {
         "user": None,
         "form": form or LoginForm(),
+        "sso_login_form": sso_login_form or SSOLoginForm(),
+        "login_mode": login_mode,
         "error": error,
         "login_label": _("Log in to my McKinsey Academy account & access my courses"),
     }
@@ -228,10 +239,6 @@ def login(request):
 
 def logout(request):
     return logout_handler.logout(request)
-
-
-def sso_dispatch(request):
-    return HttpResponse("SSO dispatch")
 
 
 def activate(request, activation_code):

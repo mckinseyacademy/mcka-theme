@@ -314,6 +314,14 @@ class NoSuffixLabelForm(forms.Form):
         kwargs.setdefault('label_suffix', '')
         super(NoSuffixLabelForm, self).__init__(*args, **kwargs)
 
+
+class SSOLoginForm(NoSuffixLabelForm):
+    """ SSO dispatch form - asks user for email to look it up in a list of SSO-enabled accounts """
+    # this is just used to differentiate this form from login form used on the same page
+    sso_login_form_marker = forms.CharField(widget=forms.HiddenInput, required=False)
+    email = forms.EmailField(max_length=255, label=mark_safe('Email address <span class="required-field"></span>'))
+
+
 class LoginForm(NoSuffixLabelForm):
     ''' login form for system '''
     username = forms.CharField(max_length=255, label=mark_safe('Username <span class="required-field"></span>'))

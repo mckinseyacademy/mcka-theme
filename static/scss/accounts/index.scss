@@ -35,6 +35,18 @@
     }
   }
 
+  span.login-mode-label {
+    // hide them both until JS code decides which one to show
+    display: none;
+  }
+
+  form {
+    &.sso-login, &.normal-login {
+      // hide them both until JS code decides which one to show
+      display: none;
+    }
+  }
+
   form label {
     @include font-spec(14, semibold);
     padding-bottom: rem-calc(10);
