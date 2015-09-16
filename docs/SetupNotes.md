@@ -184,10 +184,18 @@ stick with MySql if you want to remain as close to the production environment as
     API_SERVER_ADDRESS = 'http://lms.mcka.local'
     LMS_BASE_DOMAIN='mcka.local'
     LMS_SUB_DOMAIN='apros'
+    EDX_API_KEY = 'edx_api_key'
 
 `API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
 `LMS_BASE_DOMAIN` This is the base domain users will fetch LMS assets from.
 `LMS_SUB_DOMAIN` is the subdomain for the LMS system that users will fetch assets from-- note that it's the same as apros because we use NginX's reverse proxying to do a bit of magic later in the configuration.
+`EDX_API_KEY` is the api key used for accessing the LMS API.
+
+#### Configure the `EDX_API_KEY` in `lms.auth.json` file, like this:
+
+    EDX_API_KEY = 'edx_api_key'
+
+`EDX_API_KEY` in `lms.auth.json` and `local_settings.py` should match for apros to be able to communicate with the LMS API.
 
 ### Step 3 - Set up the reverse proxy server
 
