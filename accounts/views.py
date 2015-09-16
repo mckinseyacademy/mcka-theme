@@ -14,7 +14,6 @@ import datetime
 import math
 import logging
 import string
-from django.views.generic import View
 import re
 
 from django.conf import settings
@@ -35,7 +34,9 @@ from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
 from .models import RemoteUser, UserActivation, UserPasswordReset
-from .controller import user_activation_with_data, ActivationError, is_future_start
+from .controller import (
+    user_activation_with_data, ActivationError, is_future_start, get_sso_provider
+)
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, 
     EditFullNameForm, EditTitleForm, SSOLoginForm
@@ -182,6 +183,15 @@ def login(request):
             # SSO login
             sso_login_form = SSOLoginForm(request.POST)
             login_mode = 'sso'
+            if sso_login_form.is_valid():
+                provider = get_sso_provider(sso_login_form.cleaned_data['email'])
+                if provider:
+                    redirect_url = '/{lms_tpa_entrypoint}?auth_entry=login&next={next}&idp={provider}'.format(
+                        lms_tpa_entrypoint='auth/login/tpa-saml/', next=reverse('login'), provider=provider
+                    )
+                    return HttpResponseRedirect(redirect_url)
+                else:
+                    error = _(u"This email is not associated with any identity provider")
 
     elif request.method == 'GET' and 'sessionid' in request.COOKIES:
         # The user may already be logged in to the LMS.

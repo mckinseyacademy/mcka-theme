@@ -76,3 +76,7 @@ def io_new_client_image(old_gen_image_url, new_gen_image_url):
     original.convert('RGB').save(thumb_io, format='JPEG')
     cropped_image_path = default_storage.save(new_gen_image_url, thumb_io)
     default_storage.delete(old_gen_image_url)
+
+
+def get_sso_provider(email):
+    return 'testshib'
