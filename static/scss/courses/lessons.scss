@@ -81,7 +81,7 @@
       background-color: $mckinsey-academy-alt-blue;
 
       &:hover:not(.disabled) {
-        z-index: 150;
+        z-index: 99999;
         background-color: $mckinsey-academy-blue-gray;
         .mcka-tooltip { display: block; }
       }
