@@ -1,4 +1,5 @@
 - extends "layout.haml"
+- comment "This template is used for both /accounts/activate (normal registration) and /accounts/finalize/ (SSO registration)"
 
 - block page_title
   %title= _("Register | McKinsey Academy")
@@ -20,7 +21,7 @@
             %span Required fields are noted by an asterisk (
             %span.required-field><
             %span )
-          %form{action: "/accounts/activate/#{activation_code}", method: "POST"}
+          %form{action: "", method: "POST"}
             .error
               - if error
                 = error

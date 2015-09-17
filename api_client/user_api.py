@@ -32,14 +32,14 @@ def _clean_user_keys(user_hash):
     return {user_key: user_hash[user_key] for user_key in VALID_USER_KEYS if user_key in user_hash}
 
 @api_error_protect
-def authenticate(username, password):
+def authenticate(username, password, remote_session_key=None):
     ''' authenticate to the API server '''
     data = {
         "username": username,
         "password": password
     }
     response = POST(
-        '{}/{}/'.format(settings.API_SERVER_ADDRESS, AUTH_API),
+        '{}/{}/'.format(settings.API_SERVER_ADDRESS, AUTH_API) + (remote_session_key if remote_session_key else ''),
         data
     )
     return JP.from_json(response.read(), user_models.AuthenticationResponse)

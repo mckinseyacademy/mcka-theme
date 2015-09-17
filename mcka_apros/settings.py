@@ -169,6 +169,7 @@ SESSION_TIMEOUT_SECONDS = 300
 # LMS
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
 LMS_SUB_DOMAIN = 'lms'
+LMS_SESSION_COOKIE_DOMAIN = None  # Default: use current/same domain
 
 NO_PROGRAM_NAME = "McKinsey Management Program"
 GROUP_PROJECT_IDENTIFIER = "GROUP_PROJECT_"

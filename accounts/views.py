@@ -1,7 +1,12 @@
 ''' views for auth, sessions, users '''
+import base64
+import hashlib
+import hmac
 import json
+import os
 import random
 import urlparse
+import urllib
 import urllib2 as url_access
 from urllib import urlencode
 import datetime
@@ -11,7 +16,7 @@ import string
 import re
 
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -31,7 +36,7 @@ from django.test import TestCase
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
+from .forms import LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.utils.dateformat import format
@@ -250,11 +255,6 @@ def activate(request, activation_code):
         user_data = None
         error = _("Invalid Activation Code")
 
-    if request.method == 'POST':
-        if "accept_terms" not in request.POST or request.POST["accept_terms"] == False:
-            user_data = request.POST.copy()
-            error = _("You must accept terms of service in order to continue")
-
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
 
@@ -287,6 +287,89 @@ def activate(request, activation_code):
         "activation_code": activation_code,
         "activate_label": _("Create my McKinsey Academy account"),
         }
+    return render(request, 'accounts/activate.haml', data)
+
+
+def finalize_sso_registration(request):
+    ''' handles requests for activation form and their submission '''
+    if request.user.is_authenticated():
+        # The user should not be logged in or even registered at this point.
+        return HttpResponseRedirect('/')
+
+    # The user must have come from /access/ with a valid AccessKey:
+    try:
+        access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
+        client = user_api.get_user_organizations(access_key.client_id)[0]
+    except (AccessKey.DoesNotExist, AttributeError, IndexError):
+        return HttpResponseNotFound()
+
+    # Check the data sent by the provider:
+    hmac_key = '1private_apros_key'
+    # ^ If we are extremely concerned about highly skilled users registering with an email
+    # address other than the one sent by their provider we can make the above key configurable
+    # and use a unique value on production. Otherwise this isn't super important.
+    try:
+        # provider_data will be a dict with keys of 'email', 'full_name', etc. from the provider.
+        provider_data_str = base64.b64decode(request.GET['data'])
+        provider_data = json.loads(provider_data_str)['user_details']
+        hmac_digest = base64.b64decode(request.GET['hmac'])
+        expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
+    except:
+        return HttpResponseBadRequest("No provider data found.")
+    if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ us hmac.compare_digest instead
+        return HttpResponseForbidden("Provider data does not seem valid.")
+
+    error = None
+    user_data = None
+
+    remote_session_key = request.COOKIES.get('sessionid')
+    if not remote_session_key:
+        error = _("Authentication cookie is missing.")
+
+    if request.method == 'POST':
+        user_data = request.POST.copy()
+    initial_values = {  # Default values from the provider that the user can change:
+        'username': provider_data.get('username', ''),
+    }
+    fixed_values = {  # Values that we prevent the user from editing:
+        'company': client.display_name,
+    }
+    # We also set a fixed value for full name and email, but only if we got those from the provider:
+    if provider_data.get('fullname'):
+        fixed_values['full_name'] = provider_data['fullname']  # provider uses 'fullname', we use 'full_name'
+    if provider_data.get('email'):
+        fixed_values['email'] = provider_data['email']
+
+    form = FinalizeRegistrationForm(user_data, fixed_values, initial=initial_values)
+    if request.method == 'POST' and error is None:
+        if form.is_valid():  # If the form has been submitted...
+            # Create a random secure password for this user:
+            random_password = base64.b64encode(os.urandom(32))
+            registration_data = form.cleaned_data.copy()
+            registration_data['password'] = random_password
+            registration_data['is_active'] = True
+            # Create an account for this user and log them in:
+            user_api.register_user(registration_data)
+            new_user = auth.authenticate(
+                username=registration_data['username'],
+                password=random_password,
+                remote_session_key=remote_session_key
+            )
+            auth.login(request, new_user)
+            # Associate the user with their client/company, program, and course:
+
+            # Redirect to the LMS to link the user's account to the provider permanently:
+            lms_address = settings.API_SERVER_ADDRESS
+            complete_url = '{lms}/auth/complete/tpa-saml/'.format(lms=lms_address)
+            return HttpResponseRedirect(complete_url)
+        else:
+            error = _("Some required information was missing. Please check the fields below.")
+
+    data = {
+        "form": form,
+        "error": error,
+        "activate_label": _("Create my McKinsey Academy account"),
+    }
     return render(request, 'accounts/activate.haml', data)
 
 @ajaxify_http_redirects
@@ -655,7 +738,7 @@ def access_key(request, code):
     try:
         key = AccessKey.objects.get(code=code)
     except AccessKey.DoesNotExist as err:
-        return render(request, 'accounts/access.haml')
+        return render(request, 'accounts/access.haml', status=404)
 
     # Show the invitation landing page. It informs the user that they are about
     #  to be redirected to their company's provider.
@@ -663,14 +746,18 @@ def access_key(request, code):
     try:
         customization = ClientCustomization.objects.get(client_id=key.client_id)
     except ClientCustomization.DoesNotExist as err:
-        return render(request, 'accounts/access.haml')
+        return render(request, 'accounts/access.haml', status=404)
 
     if not customization.identity_provider:
-        return render(request, 'accounts/access.haml')
+        return render(request, 'accounts/access.haml', status=404)
 
+    request.session['sso_access_key_id'] = key.pk
+    # Note: the following assumes that portions of the LMS are accessible from the same domain
+    # as Apros (in particular that nginx is forwarding /auth/ to the LMS).
     query_args = {
         'idp': customization.identity_provider,
         'next': reverse('protected_home'),
+        'auth_entry': 'apros',
     }
     redirect_to = '/auth/login/tpa-saml/?{query}'.format(query=urlencode(query_args))
 
