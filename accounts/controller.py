@@ -1,13 +1,9 @@
-import urllib2 as url_access
 import datetime
-import copy
 import os
 
 from django.conf import settings
-from django.utils.translation import ugettext as _
 
-from api_client import user_api
-from api_client.json_object import JsonParser as JP
+from api_client import user_api, third_party_auth_api
 from api_client.api_error import ApiError
 
 class ActivationError(Exception):
@@ -79,4 +75,11 @@ def io_new_client_image(old_gen_image_url, new_gen_image_url):
 
 
 def get_sso_provider(email):
-    return 'testshib'
+    provider_associations = third_party_auth_api.get_providers_by_email(email)
+
+    if provider_associations:
+        # provider ids are prefixed with auth type: saml, oauth, etc.
+        prefixed_provider_id = provider_associations[0].provider_id
+        return "-".join(prefixed_provider_id.split("-")[1:])
+    else:
+        return None

@@ -45,6 +45,12 @@ class UserResponse(JsonObjectWithImage):
         return user
 
 
+class UserListResponse(JsonObject):
+    object_map = {
+        "results": UserResponse
+    }
+
+
 class AuthenticationResponse(JsonObject):
 
     ''' object representing an authenticated session from api json response '''
@@ -70,4 +76,15 @@ class CityResponse(JsonObject):
 class CityList(JsonObject):
     object_map = {
         "results": CityResponse
+    }
+
+
+class UserSSOProviderAssociation(JsonObject):
+    required_fields = ['provider_id', 'remote_id', 'name']
+
+
+class UserSSOProviderAssociationList(JsonObject):
+    object_map = {
+        'active': UserSSOProviderAssociation,
+        'inactive': UserSSOProviderAssociation
     }
