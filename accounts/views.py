@@ -26,7 +26,7 @@ from api_client import user_api, course_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program
-from admin.controller import load_course
+from admin.controller import load_course, assign_student_to_client_threaded
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
@@ -356,7 +356,8 @@ def finalize_sso_registration(request):
                 remote_session_key=remote_session_key
             )
             auth.login(request, new_user)
-            # Associate the user with their client/company, program, and course:
+            # Associate the user with their client/company:
+            assign_student_to_client_threaded(new_user.id, client.id)
 
             # Redirect to the LMS to link the user's account to the provider permanently:
             lms_address = settings.API_SERVER_ADDRESS
