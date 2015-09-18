@@ -346,14 +346,14 @@ class ActivationForm(BaseRegistrationForm):
     def __init__(self, *args, **kwargs):
         super(ActivationForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget = UserNameInput(attrs={'required': True})  # Custom widget with no default value
-        if isinstance(args[0], dict):
-            user_data = args[0]
+        if kwargs.get('initial'):
+            initial_data = kwargs['initial']
             for read_only in READ_ONLY_IF_DATA_FIELDS:
-                if read_only in user_data and user_data[read_only] is not None and len(user_data[read_only]) > 0:
+                if read_only in initial_data and initial_data[read_only] is not None and len(initial_data[read_only]) > 0:
                     self.fields[read_only].widget.attrs['readonly'] = 'readonly'
 
             for disabled in DISABLED_IF_DATA_FIELDS:
-                if disabled in user_data and len(user_data[disabled]) > 0:
+                if disabled in initial_data and len(initial_data[disabled]) > 0:
                     self.fields[disabled].widget.attrs['disabled'] = 'disabled'
 
 class FinalizeRegistrationForm(BaseRegistrationForm):

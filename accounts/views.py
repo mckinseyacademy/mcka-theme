@@ -232,27 +232,24 @@ def activate(request, activation_code):
     error = None
     user = None
     user_data = None
+    initial_data = {}
     try:
         activation_record = UserActivation.objects.get(activation_key=activation_code)
         user = user_api.get_user(activation_record.user_id)
         if user.is_active:
             raise
 
-        user_data = {}
         for field_name in VALID_USER_FIELDS:
             if field_name == "full_name":
-                user_data[field_name] = user.formatted_name
+                initial_data[field_name] = user.formatted_name
             elif hasattr(user, field_name):
-                user_data[field_name] = getattr(user, field_name)
-
-        # Add a fake password, or we'll get an error that the password does not match
-        user_data["password"] = user_data["confirm_password"] = "fake_password"
+                initial_data[field_name] = getattr(user, field_name)
 
         # See if we have a company for this user
         companies = user_api.get_user_organizations(user.id)
         if len(companies) > 0:
             company = companies[0]
-            user_data["company"] = company.display_name
+            initial_data["company"] = company.display_name
 
     except:
         user_data = None
@@ -277,11 +274,13 @@ def activate(request, activation_code):
                 )
             except ActivationError as activation_error:
                 error = activation_error.value
+        elif not error:
+            error = _("Some required information was missing. Please check the fields below.")
     else:
-        form = ActivationForm(user_data)
+        form = ActivationForm(user_data, initial=initial_data)
 
         # set focus to username field
-        form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "user": user,
