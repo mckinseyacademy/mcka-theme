@@ -95,7 +95,7 @@ class SsoUserFinalizationTests(TestCase):
         session = {'sso_access_key_id': self.access_key.id}
         
         self.apply_patch('django.contrib.sessions.backends.base.SessionBase._session', session)
-        self.apply_patch('api_client.user_api.get_user_organizations', return_value=[Mock(display_name='TestCo')])
+        self.apply_patch('api_client.organization_api.fetch_organization', return_value=Mock(display_name='TestCo'))
 
         def mock_render(_r, _t, data=None, status=200):
             self.response_data = data

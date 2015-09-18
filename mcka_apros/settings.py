@@ -199,6 +199,9 @@ LOCAL_MOCK_API_FILES = [
 # Set this on OpenEdx server, and within production environment to whichever value is desired
 EDX_API_KEY = 'test_api_key'
 
+# edX LMS shared secret used to validate provider data during SSO logins
+EDX_SSO_DATA_HMAC_KEY = '1private_apros_key'
+
 # Whether or not to cache courseware content locally, defult=False but can be overridden in local_settings.py
 USE_SESSION_COURSEWARE_CACHING = False
 

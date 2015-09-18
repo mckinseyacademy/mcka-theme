@@ -3,6 +3,7 @@ import base64
 import hashlib
 import hmac
 import json
+import logging
 import os
 import random
 import urlparse
@@ -22,7 +23,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 
-from api_client import user_api, course_api
+from api_client import user_api, course_api, organization_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program
@@ -49,6 +50,8 @@ from django.contrib.auth.views import password_reset, password_reset_confirm, pa
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
+
+log = logging.getLogger(__name__)
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
@@ -299,15 +302,14 @@ def finalize_sso_registration(request):
     # The user must have come from /access/ with a valid AccessKey:
     try:
         access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
-        client = user_api.get_user_organizations(access_key.client_id)[0]
+        client = organization_api.fetch_organization(access_key.client_id)
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
         return HttpResponseNotFound()
 
     # Check the data sent by the provider:
-    hmac_key = '1private_apros_key'
-    # ^ If we are extremely concerned about highly skilled users registering with an email
-    # address other than the one sent by their provider we can make the above key configurable
-    # and use a unique value on production. Otherwise this isn't super important.
+    hmac_key = settings.EDX_SSO_DATA_HMAC_KEY
+    if isinstance(hmac_key, unicode):
+        hmac_key = hmac_key.encode('utf-8')
     try:
         # provider_data will be a dict with keys of 'email', 'full_name', etc. from the provider.
         provider_data_str = base64.b64decode(request.GET['data'])
@@ -315,8 +317,9 @@ def finalize_sso_registration(request):
         hmac_digest = base64.b64decode(request.GET['hmac'])
         expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
     except:
+        log.exception("Error parsing/validating provider data (query parameter).")
         return HttpResponseBadRequest("No provider data found.")
-    if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ us hmac.compare_digest instead
+    if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ use hmac.compare_digest instead
         return HttpResponseForbidden("Provider data does not seem valid.")
 
     error = None
