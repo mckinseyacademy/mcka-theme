@@ -275,7 +275,7 @@ The LOCAL_MOCK_API_FILES can be amended with additional files from which to take
 apiary.apib - contains a copy of the API Blueprint from apiary
 mock_supplementals.apib - currently contains specific responses for demo course in edX LMS as setup within devstack
 
-[initial-configuration]: apros_initial_configuration.md
+[initial-configuration]: ../apros_initial_configuration.md
 
 ## Appendix A: Troubleshooting
 
