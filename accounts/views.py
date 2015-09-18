@@ -372,6 +372,10 @@ def finalize_sso_registration(request):
     }
     return render(request, 'accounts/activate.haml', data)
 
+def sso_error(request):
+    ''' The LMS will redirect users here if an SSO error occurs '''
+    return render(request, 'accounts/sso_error.haml', {})
+
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,
                   template_name='registration/password_reset_confirm.html',
