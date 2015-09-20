@@ -21,7 +21,7 @@ from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program
 from admin.controller import load_course
-from admin.models import AccessKey
+from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
 from django.core import mail
@@ -679,7 +679,8 @@ def access_key(request, code):
         # Show the invitation landing page. It informs the user that they are about
         #  to be redirected to their company's provider.
         lms_address = settings.API_SERVER_ADDRESS
-        idp = key.identity_provider
+        customization = ClientCustomization.objects.get(client_id=key.client_id)
+        idp = customization.identity_provider
         next = request.build_absolute_uri('/')
         redirect_to = lms_address + '/auth/login/tpa-saml?idp={}&next={}'.format(idp, next)
         data = {
