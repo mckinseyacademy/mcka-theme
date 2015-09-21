@@ -9,3 +9,4 @@ tracking.log
 /static/gen/
 /static/scss/static/gen/
 /util/djtemp/*
+/static_cache
