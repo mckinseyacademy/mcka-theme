@@ -315,7 +315,7 @@ def finalize_sso_registration(request):
         provider_data = json.loads(provider_data_str)['user_details']
         hmac_digest = base64.b64decode(request.GET['hmac'])
         expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
-    except:
+    except Exception:
         log.exception("Error parsing/validating provider data (query parameter).")
         return HttpResponseBadRequest("No provider data found.")
     if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ use hmac.compare_digest instead
