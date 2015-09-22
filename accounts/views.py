@@ -22,6 +22,8 @@ from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from api_client import user_api, course_api, organization_api
 from api_client.json_object import JsonObjectWithImage
@@ -292,11 +294,39 @@ def activate(request, activation_code):
     return render(request, 'accounts/activate.haml', data)
 
 
+@csrf_exempt
+@require_POST
 def finalize_sso_registration(request):
+    ''' Validate SSO data sent by the LMS, then display the registration form '''
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('protected_home'))
+
+    # Check the data sent by the provider:
+    hmac_key = settings.EDX_SSO_DATA_HMAC_KEY
+    if isinstance(hmac_key, unicode):
+        hmac_key = hmac_key.encode('utf-8')
+    try:
+        # provider_data will be a dict with keys of 'email', 'full_name', etc. from the provider.
+        provider_data_str = base64.b64decode(request.POST['sso_data'])
+        provider_data = json.loads(provider_data_str)['user_details']
+        hmac_digest = base64.b64decode(request.POST['sso_data_hmac'])
+        expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
+    except Exception:
+        log.exception("Error parsing/validating provider data (query parameter).")
+        return HttpResponseBadRequest("No provider data found.")
+    if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ use hmac.compare_digest instead
+        return HttpResponseForbidden("Provider data does not seem valid.")
+
+    # Store the provider data in the session and proceed to the registration form:
+    request.session['provider_data'] = provider_data
+    return HttpResponseRedirect(reverse('sso_registration_form'))
+
+
+def sso_registration_form(request):
     ''' handles requests for activation form and their submission '''
     if request.user.is_authenticated():
         # The user should not be logged in or even registered at this point.
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('protected_home'))
 
     # The user must have come from /access/ with a valid AccessKey:
     try:
@@ -305,24 +335,9 @@ def finalize_sso_registration(request):
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
         return HttpResponseNotFound()
 
-    # Check the data sent by the provider:
-    hmac_key = settings.EDX_SSO_DATA_HMAC_KEY
-    if isinstance(hmac_key, unicode):
-        hmac_key = hmac_key.encode('utf-8')
-    try:
-        # provider_data will be a dict with keys of 'email', 'full_name', etc. from the provider.
-        provider_data_str = base64.b64decode(request.GET['data'])
-        provider_data = json.loads(provider_data_str)['user_details']
-        hmac_digest = base64.b64decode(request.GET['hmac'])
-        expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
-    except Exception:
-        log.exception("Error parsing/validating provider data (query parameter).")
-        return HttpResponseBadRequest("No provider data found.")
-    if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ use hmac.compare_digest instead
-        return HttpResponseForbidden("Provider data does not seem valid.")
-
     error = None
     user_data = None
+    provider_data = request.session['provider_data']
 
     remote_session_key = request.COOKIES.get('sessionid')
     if not remote_session_key:

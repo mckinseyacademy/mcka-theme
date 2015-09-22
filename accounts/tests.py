@@ -4,7 +4,7 @@ from django.test import TestCase
 
 from .forms import ActivationForm, FinalizeRegistrationForm
 from .models import UserActivation
-from admin.models import AccessKey
+from admin.models import AccessKey, ClientCustomization
 from mock import patch, Mock
 import uuid
 
@@ -75,9 +75,7 @@ class SsoUserFinalizationTests(TestCase):
     using an access key.
     """
     SAMPLE_REQUEST_URL = (
-        '/accounts/finalize/?data=eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbm'
-        'FtZSI6ICJNZSBNeXNlbGYgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbWUiOiAiTWUg'
-        'TXlzZWxmIiwgImVtYWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifX0%3D'
+        '/accounts/finalize/?data='
         '&hmac=GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO%2B1i%2FI%3D'
     )
 
@@ -92,21 +90,39 @@ class SsoUserFinalizationTests(TestCase):
         self.client.cookies['sessionid'] = 'test_lms_session_id'
         self.client_id = 100
         self.access_key = AccessKey.objects.create(client_id=self.client_id, code=uuid.uuid4())
-        session = {'sso_access_key_id': self.access_key.id}
-        
-        self.apply_patch('django.contrib.sessions.backends.base.SessionBase._session', session)
+        ClientCustomization.objects.create(client_id=self.client_id, identity_provider='testshib')
         self.apply_patch('api_client.organization_api.fetch_organization', return_value=Mock(display_name='TestCo'))
+        #def mock_render(_r, _t, data=None, status=200):
+        #    self.response_data = data
+        #    return HttpResponse('mocked template with data: {}'.format(data))
 
-        def mock_render(_r, _t, data=None, status=200):
-            self.response_data = data
-            return HttpResponse('mocked template with data: {}'.format(data))
+        self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
 
-        self.apply_patch('django.shortcuts.render', mock_render)
 
-    def test_form(self):
-        response = self.client.get(self.SAMPLE_REQUEST_URL)
+    def test_sso_flow(self):
+        response = self.client.get('/access/{}'.format(self.access_key.code))
         self.assertEqual(response.status_code, 200)
-        form = self.response_data['form']
+        # That will then redirect us to the SSO provider...
+        self.assertTrue(response.context['redirect_to'].startswith('/auth/login/tpa-saml/?'))
+        for pair in ('auth_entry=apros', 'idp=testshib', 'next=%2Fhome'):
+            self.assertIn(pair, response.context['redirect_to'])
+
+        # The user then logs in and gets redirected back to Apros:
+        response = self.client.post('/accounts/finalize/', data={
+            'sso_data': (
+                'eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbmFtZSI6I'
+                'CJNZSBNeXNlbGYgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbW'
+                'UiOiAiTWUgTXlzZWxmIiwgImVtYWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifX0='
+            ),
+            'sso_data_hmac': 'GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO+1i/I=',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
+
+        response = self.client.get(response['Location'])
+        self.assertEqual(response.status_code, 200)
+
+        form = response.context['form']
         self.assertEqual(form.is_bound, False)
         self.assertEqual(form.initial['username'], 'myself')
         self.assertEqual(form.initial['full_name'], 'Me Myself And I')
