@@ -680,9 +680,12 @@ def access_key(request, code):
         #  to be redirected to their company's provider.
         lms_address = settings.API_SERVER_ADDRESS
         customization = ClientCustomization.objects.get(client_id=key.client_id)
-        idp = customization.identity_provider
-        next = request.build_absolute_uri('/')
-        redirect_to = lms_address + '/auth/login/tpa-saml?idp={}&next={}'.format(idp, next)
+        query_args = {
+            'idp': customization.identity_provider,
+            'next': request.build_absolute_uri(reverse('protected_home')),
+        }
+        redirect_to = '{lms}/auth/login/tpa-saml/?{query}'.format(lms=lms_address, query=urllib.urlencode(query_args))
+
         data = {
             'redirect_to': redirect_to
         }
