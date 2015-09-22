@@ -362,8 +362,7 @@ def finalize_sso_registration(request):
             assign_student_to_client_threaded(new_user.id, client.id)
 
             # Redirect to the LMS to link the user's account to the provider permanently:
-            lms_address = settings.API_SERVER_ADDRESS
-            complete_url = '{lms}/auth/complete/tpa-saml/'.format(lms=lms_address)
+            complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
             return HttpResponseRedirect(complete_url)
         else:
             error = _("Some required information was missing. Please check the fields below.")
@@ -759,14 +758,12 @@ def access_key(request, code):
         return render(request, 'accounts/access.haml', status=404)
 
     request.session['sso_access_key_id'] = key.pk
-    # Note: the following assumes that portions of the LMS are accessible from the same domain
-    # as Apros (in particular that nginx is forwarding /auth/ to the LMS).
     query_args = {
         'idp': customization.identity_provider,
-        'next': reverse('protected_home'),
+        'next': reverse('protected_home'),  # Not absolute since we assume the LMS and Apros are on the same domain
         'auth_entry': 'apros',
     }
-    redirect_to = '/auth/login/tpa-saml/?{query}'.format(query=urlencode(query_args))
+    redirect_to = settings.LMS_AUTH_URL + 'login/tpa-saml/?{query}'.format(query=urlencode(query_args))
 
     data = {
         'redirect_to': redirect_to

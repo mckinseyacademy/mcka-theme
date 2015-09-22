@@ -170,6 +170,9 @@ SESSION_TIMEOUT_SECONDS = 300
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
 LMS_SUB_DOMAIN = 'lms'
 LMS_SESSION_COOKIE_DOMAIN = None  # Default: use current/same domain
+# LMS_AUTH_URL: relative or absolute URL to the LMS's /auth/ urls, used for SSO.
+# Normally this is on the same domain as Apros and is forwarded to the LMS by an nginx reverse proxy rule
+LMS_AUTH_URL = '/auth/'
 
 NO_PROGRAM_NAME = "McKinsey Management Program"
 GROUP_PROJECT_IDENTIFIER = "GROUP_PROJECT_"
