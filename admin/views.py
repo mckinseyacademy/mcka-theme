@@ -951,7 +951,7 @@ def client_edit(request, client_id):
             'contact_email': client.contact_email,
             'contact_phone': client.contact_phone,
             'logo_url': client.logo_url,
-            'identity_provider': customization.identity_provider
+            'identity_provider': customization.identity_provider,
         })
 
     # set focus to company name field

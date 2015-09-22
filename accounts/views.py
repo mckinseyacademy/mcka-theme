@@ -11,7 +11,7 @@ import string
 import re
 
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -667,9 +667,10 @@ def edit_title(request):
 
 
 def access_key(request, code):
+
     # Abort if a user is already logged in.
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('protected_home'))
 
     # Try to find the unique code.
     try:
@@ -690,10 +691,9 @@ def access_key(request, code):
 
     query_args = {
         'idp': customization.identity_provider,
-        'next': request.build_absolute_uri(reverse('protected_home')),
+        'next': reverse('protected_home'),
     }
-    lms_address = settings.API_SERVER_ADDRESS
-    redirect_to = '{lms}/auth/login/tpa-saml/?{query}'.format(lms=lms_address, query=urlencode(query_args))
+    redirect_to = '/auth/login/tpa-saml/?{query}'.format(query=urlencode(query_args))
 
     data = {
         'redirect_to': redirect_to
