@@ -877,6 +877,13 @@ def client_new(request):
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
                 client = Client.create(name, client_data)
+                # save identity provider
+                (customization, created) = ClientCustomization.objects.get_or_create(
+                    client_id=client.id
+                )
+                customization.identity_provider = form.cleaned_data['identity_provider']
+                customization.save()
+                # save logo
                 if hasattr(client, 'logo_url') and client.logo_url:
                     old_image_url = client.logo_url
                     if old_image_url[:10] == '/accounts/':
@@ -921,11 +928,17 @@ def client_new(request):
 def client_edit(request, client_id):
     error = None
     client = Client.fetch(client_id)
+    (customization, created) = ClientCustomization.objects.get_or_create(
+        client_id=client_id,
+    )
+
     if request.method == 'POST':  # If the form has been submitted...
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
                 client = Client.update_and_fetch(client_id, request.POST)
+                customization.identity_provider = form.cleaned_data['identity_provider']
+                customization.save()
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/')
 
@@ -937,7 +950,8 @@ def client_edit(request, client_id):
             'display_name': client.display_name,
             'contact_email': client.contact_email,
             'contact_phone': client.contact_phone,
-            'logo_url': client.logo_url
+            'logo_url': client.logo_url,
+            'identity_provider': customization.identity_provider,
         })
 
     # set focus to company name field
@@ -1177,7 +1191,7 @@ def access_key_list(request, client_id):
 
     for key in access_keys:
         key.instance = build_instance_name(key.program_id, key.course_id)
-        key.link = request.build_absolute_uri(reverse('access_key', kwargs={'key': key.code}))
+        key.link = request.build_absolute_uri(reverse('access_key', kwargs={'code': key.code}))
 
     data = {
         'client': client,
@@ -1255,7 +1269,7 @@ def share_access_key(request, client_id, access_key_id):
                 return HttpResponseRedirect('/admin/clients/{}/access_keys'.format(client_id))
     else:
         # An unbound form
-        link = request.build_absolute_uri(reverse('access_key', kwargs={'key': access_key.code}))
+        link = request.build_absolute_uri(reverse('access_key', kwargs={'code': access_key.code}))
         form = ShareAccessKeyForm(initial={'access_key_link': link})
         form.fields['access_key_link'].widget.attrs.update({'class': 'radius'})
 

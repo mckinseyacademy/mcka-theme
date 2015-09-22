@@ -3,6 +3,7 @@ import json
 import random
 import urlparse
 import urllib2 as url_access
+from urllib import urlencode
 import datetime
 import math
 import logging
@@ -10,8 +11,7 @@ import string
 import re
 
 from django.conf import settings
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -22,6 +22,7 @@ from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program
 from admin.controller import load_course
+from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
 from django.core import mail
@@ -665,6 +666,37 @@ def edit_title(request):
     return render(request, 'accounts/edit_field.haml', user_data)
 
 
-# TODO: Implement
-def access_key(request):
-    pass
+def access_key(request, code):
+
+    # Abort if a user is already logged in.
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('protected_home'))
+
+    # Try to find the unique code.
+    try:
+        key = AccessKey.objects.get(code=code)
+    except AccessKey.DoesNotExist as err:
+        return render(request, 'accounts/access.haml')
+
+    # Show the invitation landing page. It informs the user that they are about
+    #  to be redirected to their company's provider.
+
+    try:
+        customization = ClientCustomization.objects.get(client_id=key.client_id)
+    except ClientCustomization.DoesNotExist as err:
+        return render(request, 'accounts/access.haml')
+
+    if not customization.identity_provider:
+        return render(request, 'accounts/access.haml')
+
+    query_args = {
+        'idp': customization.identity_provider,
+        'next': reverse('protected_home'),
+    }
+    redirect_to = '/auth/login/tpa-saml/?{query}'.format(query=urlencode(query_args))
+
+    data = {
+        'redirect_to': redirect_to
+    }
+
+    return render(request, 'accounts/access.haml', data)
