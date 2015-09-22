@@ -3,6 +3,7 @@ import json
 import random
 import urlparse
 import urllib2 as url_access
+from urllib import urlencode
 import datetime
 import math
 import logging
@@ -674,20 +675,28 @@ def access_key(request, code):
     try:
         key = AccessKey.objects.get(code=code)
     except AccessKey.DoesNotExist as err:
-        return HttpResponseNotFound()
-    else:
-        # Show the invitation landing page. It informs the user that they are about
-        #  to be redirected to their company's provider.
-        lms_address = settings.API_SERVER_ADDRESS
+        return render(request, 'accounts/access.haml')
+
+    # Show the invitation landing page. It informs the user that they are about
+    #  to be redirected to their company's provider.
+
+    try:
         customization = ClientCustomization.objects.get(client_id=key.client_id)
-        query_args = {
-            'idp': customization.identity_provider,
-            'next': request.build_absolute_uri(reverse('protected_home')),
-        }
-        redirect_to = '{lms}/auth/login/tpa-saml/?{query}'.format(lms=lms_address, query=urllib.urlencode(query_args))
+    except ClientCustomization.DoesNotExist as err:
+        return render(request, 'accounts/access.haml')
 
-        data = {
-            'redirect_to': redirect_to
-        }
+    if not customization.identity_provider:
+        return render(request, 'accounts/access.haml')
 
-        return render(request, 'accounts/access.haml', data)
+    query_args = {
+        'idp': customization.identity_provider,
+        'next': request.build_absolute_uri(reverse('protected_home')),
+    }
+    lms_address = settings.API_SERVER_ADDRESS
+    redirect_to = '{lms}/auth/login/tpa-saml/?{query}'.format(lms=lms_address, query=urlencode(query_args))
+
+    data = {
+        'redirect_to': redirect_to
+    }
+
+    return render(request, 'accounts/access.haml', data)
