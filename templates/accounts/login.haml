@@ -20,8 +20,12 @@
             .description
               %span Required fields are noted by an asterisk (
               %span.required-field><
-              %span )
-            %form{action: "/accounts/login/", method: "POST"}
+              %span ).
+              %span.login-mode-selector
+                %span.login-mode-label.mode-normal If you registered with your company credentials,
+                %span.login-mode-label.mode-sso If you did not register with your company credentials,
+                %span please <a href="#">click here</a>.
+            %form.normal-login{action: "/accounts/login/", method: "POST"}
               .error
                 - if error
                   = error
@@ -29,6 +33,16 @@
               = form
               %a{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
                 Forgot password?
+              %br
+              %br
+              %br
+              %input.button.radius.small{type: "submit", value: "#{login_label}"}
+            %form.sso-login{action: "/accounts/login/", method: "POST"}
+              .error
+                - if error
+                  = error
+              - csrf_token
+              = sso_login_form
               %br
               %br
               %br
@@ -62,9 +76,24 @@
       $('.error').text('');
     });
     $(function(){
+      var current_mode = "{{login_mode}}";
       if($('#generalModal input.show-modal').length > 0){
         $('#generalModal').foundation('reveal', 'open');
       }
+
+      function switchToMode(mode) {
+        current_mode = mode;
+        $("form.normal-login, form.sso-login").hide();
+        $("span.login-mode-label").hide();
+        $("form."+mode+"-login").show();
+        $("span.login-mode-label.mode-"+mode).show();
+      }
+
+      $(".login-mode-selector a").click(function(ev) {
+        ev.preventDefault();
+        current_mode = (current_mode != 'normal') ? 'normal' : 'sso';
+        switchToMode(current_mode);
+      });
 
       // Preserve hash value in ?next= argument
       if(window.location.hash !== ''){
@@ -79,4 +108,6 @@
           window.history.replaceState({}, '', query_with_hash);
         }
       }
+
+      switchToMode(current_mode);
     })

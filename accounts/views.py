@@ -25,37 +25,38 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from api_client import user_api, course_api, organization_api
+from api_client import user_api, organization_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
-from admin.models import Client, Program
+from admin.models import Program
 from admin.controller import load_course, assign_student_to_client_threaded
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
-from django.core import mail
-from django.test import TestCase
-# from importlib import import_module
-# SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation, UserPasswordReset
-from .controller import user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
+from .controller import (
+    user_activation_with_data, ActivationError, is_future_start, get_sso_provider
+)
+from .forms import (
+    LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, 
+    EditFullNameForm, EditTitleForm, SSOLoginForm
+)
 from django.shortcuts import resolve_url
-from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
-from django.templatetags.static import static
 
 import logout as logout_handler
 
-from django.contrib.auth.views import password_reset, password_reset_confirm, password_reset_done, password_reset_complete
+from django.contrib.auth.views import password_reset_done, password_reset_complete
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
-from django.core.mail import send_mail
 
 log = logging.getLogger(__name__)
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
+
+LOGIN_MODE_COOKIE = 'login_mode'
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -96,6 +97,10 @@ def _get_redirect_to(request):
         redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER'])
 
     return redirect_to
+
+
+def _make_cookie_expires_string(target_datetime):
+    return datetime.datetime.strftime(target_datetime, "%a, %d-%b-%Y %H:%M:%S GMT")
 
 
 def _process_authenticated_user(request, user):
@@ -162,20 +167,45 @@ def login(request):
             return HttpResponseRedirect('/')
 
     form = None
+    sso_login_form = None
+    login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
+    expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
+    expire_in_future = _make_cookie_expires_string(datetime.datetime.utcnow() + datetime.timedelta(days=365))
 
     if request.method == 'POST':  # If the form has been submitted...
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            try:
-                user = auth.authenticate(
-                    username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password']
-                )
-                if user:
-                    return _process_authenticated_user(request, user)
+        if 'sso_login_form_marker' not in request.POST:
+            # normal login
+            form = LoginForm(request.POST)
+            if form.is_valid():
+                try:
+                    user = auth.authenticate(
+                        username=form.cleaned_data['username'],
+                        password=form.cleaned_data['password']
+                    )
+                    if user:
+                        return _process_authenticated_user(request, user)
 
-            except ApiError as err:
-                error = err.message
+                except ApiError as err:
+                    error = err.message
+        else:
+            # SSO login
+            sso_login_form = SSOLoginForm(request.POST)
+            login_mode = 'sso'
+            if sso_login_form.is_valid():
+                provider = get_sso_provider(sso_login_form.cleaned_data['email'])
+                if provider:
+                    redirect_url = '{lms_auth}login/tpa-saml/?auth_entry=login&next={next}&idp={provider}'.format(
+                        lms_auth=settings.LMS_AUTH_URL, saml_tpa_entrypoint='login/tpa-saml/',
+                        next=reverse('login'), provider=provider
+                    )
+                    response = HttpResponseRedirect(redirect_url)
+                    response.set_cookie(
+                        LOGIN_MODE_COOKIE, login_mode,
+                        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
+                    )
+                    return response
+                else:
+                    error = _(u"This email is not associated with any identity provider")
 
     elif request.method == 'GET' and 'sessionid' in request.COOKIES:
         # The user may already be logged in to the LMS.
@@ -206,20 +236,29 @@ def login(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
+    if not login_mode:
+        login_mode = request.GET.get('login_mode', 'normal')
+
     data = {
         "user": None,
         "form": form or LoginForm(),
+        "sso_login_form": sso_login_form or SSOLoginForm(),
+        "login_mode": login_mode,
         "error": error,
         "login_label": _("Log in to my McKinsey Academy account & access my courses"),
     }
     response = render(request, 'accounts/login.haml', data)
+
+    response.set_cookie(
+        LOGIN_MODE_COOKIE, login_mode,
+        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
+    )
 
     if request.method == 'GET':
         # if loading the login page
         # then remove all LMS-bound wildcard cookies which may have been set in the past. We do that
         # by setting a cookie that already expired
 
-        expire_in_past = datetime.datetime.strftime(datetime.datetime.utcnow() - datetime.timedelta(days=7), "%a, %d-%b-%Y %H:%M:%S GMT")
         response.set_cookie('sessionid', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
         response.set_cookie('csrftoken', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
 
@@ -228,6 +267,7 @@ def login(request):
 
 def logout(request):
     return logout_handler.logout(request)
+
 
 def activate(request, activation_code):
     ''' handles requests for activation form and their submission '''
