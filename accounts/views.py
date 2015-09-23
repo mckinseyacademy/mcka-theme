@@ -56,6 +56,8 @@ log = logging.getLogger(__name__)
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
+LOGIN_MODE_COOKIE = 'login_mode'
+
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
     parsed_url = urlparse.urlparse(url)
@@ -95,6 +97,10 @@ def _get_redirect_to(request):
         redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER'])
 
     return redirect_to
+
+
+def _make_cookie_expires_string(target_datetime):
+    return datetime.datetime.strftime(target_datetime, "%a, %d-%b-%Y %H:%M:%S GMT")
 
 
 def _process_authenticated_user(request, user):
@@ -162,7 +168,9 @@ def login(request):
 
     form = None
     sso_login_form = None
-    login_mode = 'normal'
+    login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
+    expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
+    expire_in_future = _make_cookie_expires_string(datetime.datetime.utcnow() + datetime.timedelta(days=365))
 
     if request.method == 'POST':  # If the form has been submitted...
         if 'sso_login_form_marker' not in request.POST:
@@ -186,10 +194,16 @@ def login(request):
             if sso_login_form.is_valid():
                 provider = get_sso_provider(sso_login_form.cleaned_data['email'])
                 if provider:
-                    redirect_url = '/{lms_tpa_entrypoint}?auth_entry=login&next={next}&idp={provider}'.format(
-                        lms_tpa_entrypoint='auth/login/tpa-saml/', next=reverse('login'), provider=provider
+                    redirect_url = '{lms_auth}login/tpa-saml/?auth_entry=login&next={next}&idp={provider}'.format(
+                        lms_auth=settings.LMS_AUTH_URL, saml_tpa_entrypoint='login/tpa-saml/',
+                        next=reverse('login'), provider=provider
                     )
-                    return HttpResponseRedirect(redirect_url)
+                    response = HttpResponseRedirect(redirect_url)
+                    response.set_cookie(
+                        LOGIN_MODE_COOKIE, login_mode,
+                        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
+                    )
+                    return response
                 else:
                     error = _(u"This email is not associated with any identity provider")
 
@@ -235,12 +249,16 @@ def login(request):
     }
     response = render(request, 'accounts/login.haml', data)
 
+    response.set_cookie(
+        LOGIN_MODE_COOKIE, login_mode,
+        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
+    )
+
     if request.method == 'GET':
         # if loading the login page
         # then remove all LMS-bound wildcard cookies which may have been set in the past. We do that
         # by setting a cookie that already expired
 
-        expire_in_past = datetime.datetime.strftime(datetime.datetime.utcnow() - datetime.timedelta(days=7), "%a, %d-%b-%Y %H:%M:%S GMT")
         response.set_cookie('sessionid', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
         response.set_cookie('csrftoken', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
 
