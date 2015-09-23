@@ -1,7 +1,13 @@
 ''' views for auth, sessions, users '''
+import base64
+import hashlib
+import hmac
 import json
+import logging
+import os
 import random
 import urlparse
+import urllib
 import urllib2 as url_access
 from urllib import urlencode
 import datetime
@@ -11,17 +17,19 @@ import string
 import re
 
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
-from api_client import user_api, course_api
+from api_client import user_api, course_api, organization_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program
-from admin.controller import load_course
+from admin.controller import load_course, assign_student_to_client_threaded
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
 
@@ -31,7 +39,7 @@ from django.test import TestCase
 # SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import user_activation_with_data, ActivationError, is_future_start
-from .forms import LoginForm, ActivationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
+from .forms import LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, EditFullNameForm, EditTitleForm
 from django.shortcuts import resolve_url
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.utils.dateformat import format
@@ -44,6 +52,8 @@ from django.contrib.auth.views import password_reset, password_reset_confirm, pa
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
 from django.core.mail import send_mail
+
+log = logging.getLogger(__name__)
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
@@ -125,31 +135,17 @@ def _process_authenticated_user(request, user):
             redirect_to = '/'
 
     response = HttpResponseRedirect(redirect_to)  # Redirect after POST
-
-    hostname = request.get_host()
-    wildcard_hostname = hostname
-    try:
-        wildcard_hostname = '.'+string.join(hostname.split('.')[1:],'.')
-    except Exception:
-        pass
-
-    # for localdev testing with a vagrant image
-    # sometimes we want to set our cookies
-    # as wildcards. If so, specify IS_EDXAPP_ON_SAME_DOMAIN=False
-    # in the local_settings.py
-    use_wildcards_for_cookies = not getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True)
-
     if 'remote_session_key' in request.session:
         response.set_cookie(
             'sessionid',
             request.session["remote_session_key"],
-            domain=wildcard_hostname if use_wildcards_for_cookies else None
+            domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
     if hasattr(user, 'csrftoken'):
         response.set_cookie(
             'csrftoken',
             user.csrftoken,
-            domain=wildcard_hostname if use_wildcards_for_cookies else None
+            domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
     return response
 
@@ -223,16 +219,9 @@ def login(request):
         # then remove all LMS-bound wildcard cookies which may have been set in the past. We do that
         # by setting a cookie that already expired
 
-        hostname = request.get_host()
-        wildcard_hostname = hostname
-        try:
-            wildcard_hostname = '.'+string.join(hostname.split('.')[1:],'.')
-        except:
-            pass
-
         expire_in_past = datetime.datetime.strftime(datetime.datetime.utcnow() - datetime.timedelta(days=7), "%a, %d-%b-%Y %H:%M:%S GMT")
-        response.set_cookie('sessionid', 'to-delete', domain=wildcard_hostname, expires=expire_in_past)
-        response.set_cookie('csrftoken', 'to-delete', domain=wildcard_hostname, expires=expire_in_past)
+        response.set_cookie('sessionid', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
+        response.set_cookie('csrftoken', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
 
     return response
 
@@ -245,36 +234,28 @@ def activate(request, activation_code):
     error = None
     user = None
     user_data = None
+    initial_data = {}
     try:
         activation_record = UserActivation.objects.get(activation_key=activation_code)
         user = user_api.get_user(activation_record.user_id)
         if user.is_active:
             raise
 
-        user_data = {}
         for field_name in VALID_USER_FIELDS:
             if field_name == "full_name":
-                user_data[field_name] = user.formatted_name
+                initial_data[field_name] = user.formatted_name
             elif hasattr(user, field_name):
-                user_data[field_name] = getattr(user, field_name)
-
-        # Add a fake password, or we'll get an error that the password does not match
-        user_data["password"] = user_data["confirm_password"] = "fake_password"
+                initial_data[field_name] = getattr(user, field_name)
 
         # See if we have a company for this user
         companies = user_api.get_user_organizations(user.id)
         if len(companies) > 0:
             company = companies[0]
-            user_data["company"] = company.display_name
+            initial_data["company"] = company.display_name
 
     except:
         user_data = None
         error = _("Invalid Activation Code")
-
-    if request.method == 'POST':
-        if "accept_terms" not in request.POST or request.POST["accept_terms"] == False:
-            user_data = request.POST.copy()
-            error = _("You must accept terms of service in order to continue")
 
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
@@ -295,11 +276,13 @@ def activate(request, activation_code):
                 )
             except ActivationError as activation_error:
                 error = activation_error.value
+        elif not error:
+            error = _("Some required information was missing. Please check the fields below.")
     else:
-        form = ActivationForm(user_data)
+        form = ActivationForm(user_data, initial=initial_data)
 
         # set focus to username field
-        form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
     data = {
         "user": user,
@@ -309,6 +292,106 @@ def activate(request, activation_code):
         "activate_label": _("Create my McKinsey Academy account"),
         }
     return render(request, 'accounts/activate.haml', data)
+
+
+@csrf_exempt
+@require_POST
+def finalize_sso_registration(request):
+    ''' Validate SSO data sent by the LMS, then display the registration form '''
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('protected_home'))
+
+    # Check the data sent by the provider:
+    hmac_key = settings.EDX_SSO_DATA_HMAC_KEY
+    if isinstance(hmac_key, unicode):
+        hmac_key = hmac_key.encode('utf-8')
+    try:
+        # provider_data will be a dict with keys of 'email', 'full_name', etc. from the provider.
+        provider_data_str = base64.b64decode(request.POST['sso_data'])
+        provider_data = json.loads(provider_data_str)['user_details']
+        hmac_digest = base64.b64decode(request.POST['sso_data_hmac'])
+        expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
+    except Exception:
+        log.exception("Error parsing/validating provider data (query parameter).")
+        return HttpResponseBadRequest("No provider data found.")
+    if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ use hmac.compare_digest instead
+        return HttpResponseForbidden("Provider data does not seem valid.")
+
+    # Store the provider data in the session and proceed to the registration form:
+    request.session['provider_data'] = provider_data
+    return HttpResponseRedirect(reverse('sso_registration_form'))
+
+
+def sso_registration_form(request):
+    ''' handles requests for activation form and their submission '''
+    if request.user.is_authenticated():
+        # The user should not be logged in or even registered at this point.
+        return HttpResponseRedirect(reverse('protected_home'))
+
+    # The user must have come from /access/ with a valid AccessKey:
+    try:
+        access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
+        client = organization_api.fetch_organization(access_key.client_id)
+    except (AccessKey.DoesNotExist, AttributeError, IndexError):
+        return HttpResponseNotFound()
+
+    error = None
+    user_data = None
+    provider_data = request.session['provider_data']
+
+    remote_session_key = request.COOKIES.get('sessionid')
+    if not remote_session_key:
+        error = _("Authentication cookie is missing.")
+
+    if request.method == 'POST':
+        user_data = request.POST.copy()
+    initial_values = {  # Default values from the provider that the user can change:
+        'username': provider_data.get('username', ''),
+    }
+    fixed_values = {  # Values that we prevent the user from editing:
+        'company': client.display_name,
+    }
+    # We also set a fixed value for full name and email, but only if we got those from the provider:
+    if provider_data.get('fullname'):
+        fixed_values['full_name'] = provider_data['fullname']  # provider uses 'fullname', we use 'full_name'
+    if provider_data.get('email'):
+        fixed_values['email'] = provider_data['email']
+
+    form = FinalizeRegistrationForm(user_data, fixed_values, initial=initial_values)
+    if request.method == 'POST' and error is None:
+        if form.is_valid():  # If the form has been submitted...
+            # Create a random secure password for this user:
+            random_password = base64.b64encode(os.urandom(32))
+            registration_data = form.cleaned_data.copy()
+            registration_data['password'] = random_password
+            registration_data['is_active'] = True
+            # Create an account for this user and log them in:
+            user_api.register_user(registration_data)
+            new_user = auth.authenticate(
+                username=registration_data['username'],
+                password=random_password,
+                remote_session_key=remote_session_key
+            )
+            auth.login(request, new_user)
+            # Associate the user with their client/company:
+            assign_student_to_client_threaded(new_user.id, client.id)
+
+            # Redirect to the LMS to link the user's account to the provider permanently:
+            complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
+            return HttpResponseRedirect(complete_url)
+        else:
+            error = _("Some required information was missing. Please check the fields below.")
+
+    data = {
+        "form": form,
+        "error": error,
+        "activate_label": _("Create my McKinsey Academy account"),
+    }
+    return render(request, 'accounts/activate.haml', data)
+
+def sso_error(request):
+    ''' The LMS will redirect users here if an SSO error occurs '''
+    return render(request, 'accounts/sso_error.haml', {})
 
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,
@@ -676,7 +759,7 @@ def access_key(request, code):
     try:
         key = AccessKey.objects.get(code=code)
     except AccessKey.DoesNotExist as err:
-        return render(request, 'accounts/access.haml')
+        return render(request, 'accounts/access.haml', status=404)
 
     # Show the invitation landing page. It informs the user that they are about
     #  to be redirected to their company's provider.
@@ -684,16 +767,18 @@ def access_key(request, code):
     try:
         customization = ClientCustomization.objects.get(client_id=key.client_id)
     except ClientCustomization.DoesNotExist as err:
-        return render(request, 'accounts/access.haml')
+        return render(request, 'accounts/access.haml', status=404)
 
     if not customization.identity_provider:
-        return render(request, 'accounts/access.haml')
+        return render(request, 'accounts/access.haml', status=404)
 
+    request.session['sso_access_key_id'] = key.pk
     query_args = {
         'idp': customization.identity_provider,
-        'next': reverse('protected_home'),
+        'next': reverse('protected_home'),  # Not absolute since we assume the LMS and Apros are on the same domain
+        'auth_entry': 'apros',
     }
-    redirect_to = '/auth/login/tpa-saml/?{query}'.format(query=urlencode(query_args))
+    redirect_to = settings.LMS_AUTH_URL + 'login/tpa-saml/?{query}'.format(query=urlencode(query_args))
 
     data = {
         'redirect_to': redirect_to
