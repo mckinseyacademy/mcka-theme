@@ -586,11 +586,11 @@ def infer_page_navigation(request, course_id, page_id):
     if course_id and chapter_id and vertical_id:
 
         redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
-        if group_project.is_v2 and group_project.vertical_id == vertical_id:
+        if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
             redirect_url = "/courses/{}/group_work".format(course_id)
 
-        if ta_grading_group:
-            redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
+            if ta_grading_group:
+                redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
 
         if final_target_id not in (chapter_id, vertical_id):
             redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
