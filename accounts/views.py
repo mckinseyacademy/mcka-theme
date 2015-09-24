@@ -58,6 +58,7 @@ log = logging.getLogger(__name__)
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
 LOGIN_MODE_COOKIE = 'login_mode'
+SSO_AUTH_ENTRY = 'apros'
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -102,6 +103,20 @@ def _get_redirect_to(request):
 
 def _make_cookie_expires_string(target_datetime):
     return datetime.datetime.strftime(target_datetime, "%a, %d-%b-%Y %H:%M:%S GMT")
+
+
+def _build_sso_redirect_url(provider, next):
+    """
+    Builds redirect url for SSO login/registration
+
+    Args:
+        * provider: str - IdP slug as configured in LMS admin
+        * next: str - URL to redirect after successful authentication; can be relative since we assume the LMS and
+                      Apros are on the same domain (providing absolute might cause redirect to be ignored due to
+                      redirect sanitization in python-saml)
+    """
+    query_args = {'auth_entry': SSO_AUTH_ENTRY, 'next': next, 'idp': provider}
+    return '{lms_auth}login/tpa-saml/?{query}'.format(lms_auth=settings.LMS_AUTH_URL, query=urlencode(query_args))
 
 
 def _process_authenticated_user(request, user):
@@ -195,10 +210,7 @@ def login(request):
             if sso_login_form.is_valid():
                 provider = get_sso_provider(sso_login_form.cleaned_data['email'])
                 if provider:
-                    redirect_url = '{lms_auth}login/tpa-saml/?auth_entry=login&next={next}&idp={provider}'.format(
-                        lms_auth=settings.LMS_AUTH_URL, saml_tpa_entrypoint='login/tpa-saml/',
-                        next=reverse('login'), provider=provider
-                    )
+                    redirect_url = _build_sso_redirect_url(provider, reverse('login'))
                     response = HttpResponseRedirect(redirect_url)
                     response.set_cookie(
                         LOGIN_MODE_COOKIE, login_mode,
@@ -861,12 +873,7 @@ def access_key(request, code):
         return render(request, 'accounts/access.haml', status=404)
 
     request.session['sso_access_key_id'] = key.pk
-    query_args = {
-        'idp': customization.identity_provider,
-        'next': reverse('home'),  # Not absolute since we assume the LMS and Apros are on the same domain
-        'auth_entry': 'apros',
-    }
-    redirect_to = settings.LMS_AUTH_URL + 'login/tpa-saml/?{query}'.format(query=urlencode(query_args))
+    redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('home'))
 
     data = {
         'redirect_to': redirect_to
