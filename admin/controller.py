@@ -96,10 +96,11 @@ def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_stat
     process_uploaded_student_list(student_list, client_id, absolute_uri, reg_status)
 
 
-def assign_student_to_client_threaded(user_id, client_id):
+def assign_student_to_client_threaded(user_id, client_id, wait=False):
     '''
-    Assign a student asynchronously to a client.
-    We must do this asynchronously in the same queue that upload_student_list_threaded() uses
+    Assign a student to a client.
+    This method is asynchronously unless wait=True.
+    We must do this operation in the same queue that upload_student_list_threaded() uses
     or we could get a nasty race condition. (Part of the problem is there is no "atomic add"
     method to add a user to a client - there is just a method to update to the list and then
     save the whole list at once.)
@@ -109,6 +110,8 @@ def assign_student_to_client_threaded(user_id, client_id):
     '''
     spawn_thread()
     _do_assign_student_to_client(user_id, client_id)
+    if wait:
+        _queue.join()
 
 
 @postpone
