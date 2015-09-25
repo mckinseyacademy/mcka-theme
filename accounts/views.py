@@ -18,7 +18,7 @@ import re
 
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
@@ -32,6 +32,7 @@ from admin.models import Program
 from admin.controller import load_course, assign_student_to_client_threaded
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
+from license import controller as license_controller
 
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
@@ -369,6 +370,8 @@ def sso_registration_form(request):
         return HttpResponseRedirect(reverse('protected_home'))
 
     # The user must have come from /access/ with a valid AccessKey:
+    if 'sso_access_key_id' not in request.session:
+        return HttpResponseForbidden('Acess Key missing.')
     try:
         access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
         client = organization_api.fetch_organization(access_key.client_id)
@@ -414,7 +417,13 @@ def sso_registration_form(request):
             )
             auth.login(request, new_user)
             # Associate the user with their client/company:
-            assign_student_to_client_threaded(new_user.id, client.id)
+            assign_student_to_client_threaded(new_user.id, client.id, wait=True)
+            # Associate the user with their program and/or course:
+            if access_key.program_id:
+                _assign_student_to_program(request, new_user, client,
+                    program_id=access_key.program_id,
+                    course_ids=[access_key.course_id],
+                )
 
             # Redirect to the LMS to link the user's account to the provider permanently:
             complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
@@ -428,6 +437,39 @@ def sso_registration_form(request):
         "activate_label": _("Create my McKinsey Academy account"),
     }
     return render(request, 'accounts/activate.haml', data)
+
+
+def _assign_student_to_program(request, user, client, program_id, course_ids=None):
+    """
+    Assign the given user to the specified client, program, and/or course.
+    If any errors occur, they will be returned via django-messages.
+    """
+    program = Program.fetch(program_id)
+    program.courses = program.fetch_courses()
+    students = request.POST.getlist("students[]")
+    allocated, assigned = license_controller.licenses_report(program.id, client.id)
+    remaining = allocated - assigned
+    if remaining <= 0:
+        messages.error(request,
+            _("Unable to enroll you in the requested program, {}. No remaining places.").format(program.display_name)
+        )
+        return
+    program.add_user(client.id, user.id)
+    if course_ids:
+        valid_course_ids = set(c.course_id for c in program.fetch_courses())
+        for course_id in course_ids:
+            if course_id in valid_course_ids:
+                try:
+                    user_api.enroll_user_in_course(user.id, course_id)
+                except ApiError as e:
+                    messages.error(request,
+                        _('Unable to enroll you in course "{}". API Error code {}.').format(course_id, e.code)
+                    )
+            else:
+                messages.error(request,
+                    _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
+                )
+
 
 def sso_error(request):
     ''' The LMS will redirect users here if an SSO error occurs '''
@@ -559,7 +601,13 @@ def home(request):
     course = programData.get('course')
 
     data = {'popup': {'title': '', 'description': ''}}
-    if request.session.get('program_popup') is None:
+
+    # Display any errors/messages that may have been created during SSO onboarding:
+    flash_messages = messages.get_messages(request)
+    if flash_messages:
+        data['popup']['title'] = "Notice"
+        data['popup']['description'] = " ".join(msg.message for msg in flash_messages)
+    elif request.session.get('program_popup') is None:
         if program:
             if program.id is not Program.NO_PROGRAM_ID:
                 days = ''
@@ -815,7 +863,7 @@ def access_key(request, code):
     request.session['sso_access_key_id'] = key.pk
     query_args = {
         'idp': customization.identity_provider,
-        'next': reverse('protected_home'),  # Not absolute since we assume the LMS and Apros are on the same domain
+        'next': reverse('home'),  # Not absolute since we assume the LMS and Apros are on the same domain
         'auth_entry': 'apros',
     }
     redirect_to = settings.LMS_AUTH_URL + 'login/tpa-saml/?{query}'.format(query=urlencode(query_args))
