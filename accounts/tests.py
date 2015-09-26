@@ -1,9 +1,10 @@
 from django.conf import settings
 from django.http import HttpResponse, HttpRequest
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 
 from .forms import ActivationForm, FinalizeRegistrationForm
-from .models import UserActivation
+from .models import UserActivation, RemoteUser
+from .views import access_key
 from admin.models import AccessKey, ClientCustomization
 from mock import patch, Mock
 import uuid
@@ -67,6 +68,50 @@ class UserActivationTests(TestCase):
         activation_record = UserActivation.user_activation(user)
 
         recalled_record = UserActivation.objects.get(activation_key=activation_record.activation_key)
+
+
+class AccessLandingTests(TestCase):
+    """
+    Test view for handling invitation URLs
+    """
+
+    def apply_patch(self, *args, **kwargs):
+        patcher = patch(*args, **kwargs)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def setUp(self):
+        super(AccessLandingTests, self).setUp()
+        self.factory = RequestFactory()
+        self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
+
+    def test_redirects_authenticated(self):
+        request = self.factory.get('/access/1234')
+        request.user = RemoteUser.objects.create_user(username='johndoe', email='john@doe.org', password='password')
+        response = access_key(request, 1234)
+        self.assertEqual(response.status_code, 302)
+
+    def test_missing_access_key(self):
+        response = self.client.get('/access/1234')
+        self.assertEqual(response.status_code, 404)
+
+    def test_missing_customization(self):
+        AccessKey.objects.create(client_id=100, code=1234)
+        response = self.client.get('/access/1234')
+        self.assertEqual(response.status_code, 404)
+
+    def test_missing_identity_provider(self):
+        AccessKey.objects.create(client_id=100, code=1234)
+        ClientCustomization.objects.create(client_id=100, identity_provider='')
+        response = self.client.get('/access/1234')
+        self.assertEqual(response.status_code, 404)
+
+    def test_user_redirected(self):
+        AccessKey.objects.create(client_id=100, code=1234)
+        ClientCustomization.objects.create(client_id=100, identity_provider='testshib')
+        response = self.client.get('/access/1234')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['redirect_to'].startswith('/auth/login/tpa-saml/?'))
 
 
 class SsoUserFinalizationTests(TestCase):
