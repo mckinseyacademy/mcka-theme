@@ -107,7 +107,8 @@
                 .lesson-row-item
                   %i.status.fa{class: "fa-{% if module.is_complete %}check-circle complete{% else %}circle{% endif %}"}
                   .lesson-item-name
-                    %a{href: "#{module.navigation_url}"}= module.name
+                    %a{href: "#{module.navigation_url}"}
+                      ={module.lesson_name}: ={module.name}
               %td.number{class: "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
           - if feature_flags.group_work
             - for activity in course.graded_items.group_activities
