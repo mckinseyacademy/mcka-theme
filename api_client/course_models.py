@@ -274,29 +274,50 @@ class Course(CategorisedJsonObject):
         }
 
         for lesson in self.chapters:
-            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
-            if len(due_dates) == 0:
-                no_due_date["lessons"].append(lesson)
+            if self.course_run:
+                week_start = None
+                week_end = None
+                for group in self.course_run:
+                    if lesson.index in group['lessons']:
+                        week_start = group['start_date']
+                        week_end = group['end_date']
+                if not week_start:
+                    no_due_date["lessons"].append(lesson)
+                else:
+                    if week_end in weeks:
+                        weeks[week_end]["lessons"].append(lesson)
+                    else:
+                        weeks[week_end] = {
+                            "sort_by": datetime.datetime.strptime(week_end, '%m/%d'),
+                            "start": week_start,
+                            "end": week_end,
+                            "lessons": [lesson],
+                            "group_activities": [],
+                        }
             else:
-                due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
-                due_date = due_date.replace(hour=0, minute=0, second=0, microsecond=0)
-                if due_date.weekday() == 0:
-                    week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+                due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+                if len(due_dates) == 0:
+                    no_due_date["lessons"].append(lesson)
                 else:
-                    week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
-                week_end = week_start + datetime.timedelta(days=6)
-                key = week_end.strftime("%s")
+                    due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+                    due_date = due_date.replace(hour=0, minute=0, second=0, microsecond=0)
+                    if due_date.weekday() == 0:
+                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
+                    else:
+                        week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
+                    week_end = week_start + datetime.timedelta(days=6)
+                    key = week_end.strftime("%s")
 
-                if key in weeks:
-                    weeks[key]["lessons"].append(lesson)
-                else:
-                    weeks[key] = {
-                        "sort_by": week_end,
-                        "start": week_start.strftime("%m/%d"),
-                        "end": week_end.strftime("%m/%d"),
-                        "lessons": [lesson],
-                        "group_activities": [],
-                    }
+                    if key in weeks:
+                        weeks[key]["lessons"].append(lesson)
+                    else:
+                        weeks[key] = {
+                            "sort_by": week_end,
+                            "start": week_start.strftime("%m/%d"),
+                            "end": week_end.strftime("%m/%d"),
+                            "lessons": [lesson],
+                            "group_activities": [],
+                        }
 
         if self.group_work_enabled:
             for project in self.group_projects:
