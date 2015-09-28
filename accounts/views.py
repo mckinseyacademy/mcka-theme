@@ -171,6 +171,14 @@ def _process_authenticated_user(request, user):
     return response
 
 
+def _append_login_mode_cookie(response, login_mode):
+    expire_in_future = _make_cookie_expires_string(datetime.datetime.utcnow() + datetime.timedelta(days=365))
+    response.set_cookie(
+        LOGIN_MODE_COOKIE, login_mode,
+        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
+    )
+
+
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -186,7 +194,6 @@ def login(request):
     sso_login_form = None
     login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
     expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
-    expire_in_future = _make_cookie_expires_string(datetime.datetime.utcnow() + datetime.timedelta(days=365))
 
     if request.method == 'POST':  # If the form has been submitted...
         if 'sso_login_form_marker' not in request.POST:
@@ -199,7 +206,9 @@ def login(request):
                         password=form.cleaned_data['password']
                     )
                     if user:
-                        return _process_authenticated_user(request, user)
+                        response = _process_authenticated_user(request, user)
+                        _append_login_mode_cookie(response, login_mode)
+                        return response
 
                 except ApiError as err:
                     error = err.message
@@ -212,10 +221,7 @@ def login(request):
                 if provider:
                     redirect_url = _build_sso_redirect_url(provider, reverse('login'))
                     response = HttpResponseRedirect(redirect_url)
-                    response.set_cookie(
-                        LOGIN_MODE_COOKIE, login_mode,
-                        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
-                    )
+                    _append_login_mode_cookie(response, login_mode)
                     return response
                 else:
                     error = _(u"This email is not associated with any identity provider")
@@ -226,7 +232,9 @@ def login(request):
         try:
             user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
             if user:
-                return _process_authenticated_user(request, user)
+                response = _process_authenticated_user(request, user)
+                _append_login_mode_cookie(response, login_mode)
+                return response
         except ApiError as err:
             error = err.message
 
@@ -262,10 +270,7 @@ def login(request):
     }
     response = render(request, 'accounts/login.haml', data)
 
-    response.set_cookie(
-        LOGIN_MODE_COOKIE, login_mode,
-        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
-    )
+    _append_login_mode_cookie(response, login_mode)
 
     if request.method == 'GET':
         # if loading the login page
