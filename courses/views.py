@@ -408,6 +408,13 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     course.group_work_enabled = feature_flags.group_work
+    static_tabs = load_static_tabs(course_id)
+    course_run = static_tabs.get("course run", None)
+    if course_run:
+        try:
+            course.course_run = json.loads(course_run.content)
+        except:
+            pass
 
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
@@ -452,6 +459,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
         "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
+        "course_run": course_run,
     }
 
     if progress_user.id != request.user.id:
