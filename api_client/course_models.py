@@ -350,6 +350,7 @@ class Course(CategorisedJsonObject):
                     for module in sequential.pages:
                         is_assesment = module.name.find('Assessment') != -1
                         if is_assesment:
+                            module.lesson_name = lesson.name
                             module.assesment_score = lesson.assesment_score
                             graded_items["modules"].append(module)
 
