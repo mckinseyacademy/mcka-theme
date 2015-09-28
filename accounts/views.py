@@ -60,6 +60,9 @@ VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "c
 LOGIN_MODE_COOKIE = 'login_mode'
 SSO_AUTH_ENTRY = 'apros'
 
+MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
+                             "in order to create a new account.")
+
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
     parsed_url = urlparse.urlparse(url)
@@ -377,6 +380,11 @@ def finalize_sso_registration(request):
 
     # Store the provider data in the session and proceed to the registration form:
     request.session['provider_data'] = provider_data
+
+    if 'sso_access_key_id' not in request.session:
+        request.session['sso_error_details'] = MISSING_ACCESS_KEY_ERROR
+        return HttpResponseRedirect(reverse('sso_error'))
+
     return HttpResponseRedirect(reverse('sso_registration_form'))
 
 
@@ -388,7 +396,7 @@ def sso_registration_form(request):
 
     # The user must have come from /access/ with a valid AccessKey:
     if 'sso_access_key_id' not in request.session:
-        return HttpResponseForbidden('Acess Key missing.')
+        return HttpResponseForbidden('Access Key missing.')
     try:
         access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
         client = organization_api.fetch_organization(access_key.client_id)
@@ -490,7 +498,8 @@ def _assign_student_to_program(request, user, client, program_id, course_ids=Non
 
 def sso_error(request):
     ''' The LMS will redirect users here if an SSO error occurs '''
-    return render(request, 'accounts/sso_error.haml', {})
+    context = {'error_details': request.session.get('sso_error_details')}
+    return render(request, 'accounts/sso_error.haml', context)
 
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,

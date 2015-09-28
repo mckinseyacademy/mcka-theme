@@ -4,7 +4,7 @@ from django.test import TestCase, RequestFactory
 
 from .forms import ActivationForm, FinalizeRegistrationForm
 from .models import UserActivation, RemoteUser
-from .views import access_key
+from .views import access_key, MISSING_ACCESS_KEY_ERROR
 from admin.models import AccessKey, ClientCustomization
 from mock import patch, Mock
 import uuid
@@ -173,3 +173,20 @@ class SsoUserFinalizationTests(TestCase):
         self.assertEqual(form.initial['full_name'], 'Me Myself And I')
         self.assertEqual(form.initial['email'], 'myself@testshib.org')
         self.assertEqual(form.initial['company'], 'TestCo')
+
+    def test_sso_missing_access_key(self):
+        # The user arrives at reg finalization form without access key in session:
+        response = self.client.post('/accounts/finalize/', data={
+            'sso_data': (
+                'eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbmFtZSI6I'
+                'CJNZSBNeXNlbGYgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbW'
+                'UiOiAiTWUgTXlzZWxmIiwgImVtYWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifX0='
+            ),
+            'sso_data_hmac': 'GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO+1i/I=',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_error/')
+        session = self.client.session
+
+        self.assertIn('sso_error_details', session)
+        self.assertEqual(session['sso_error_details'], MISSING_ACCESS_KEY_ERROR)
