@@ -175,10 +175,8 @@ def _process_authenticated_user(request, user):
 
 
 def _append_login_mode_cookie(response, login_mode):
-    expire_in_future = _make_cookie_expires_string(datetime.datetime.utcnow() + datetime.timedelta(days=365))
     response.set_cookie(
-        LOGIN_MODE_COOKIE, login_mode,
-        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
+        LOGIN_MODE_COOKIE, login_mode, expires=datetime.datetime.utcnow() + datetime.timedelta(days=365)
     )
 
 
@@ -201,6 +199,7 @@ def login(request):
     if request.method == 'POST':  # If the form has been submitted...
         if 'sso_login_form_marker' not in request.POST:
             # normal login
+            login_mode = 'normal'
             form = LoginForm(request.POST)
             if form.is_valid():
                 try:
@@ -259,9 +258,6 @@ def login(request):
         form = LoginForm()
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
-
-    if not login_mode:
-        login_mode = request.GET.get('login_mode', 'normal')
 
     data = {
         "user": None,
@@ -887,7 +883,9 @@ def access_key(request, code):
         return render(request, 'accounts/access.haml', status=404)
 
     request.session['sso_access_key_id'] = key.pk
-    redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('home'))
+    # all SSO requests that might end up with user logged in must go through login view to allow session detection
+    # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
+    redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('protected_home'))
 
     data = {
         'redirect_to': redirect_to
