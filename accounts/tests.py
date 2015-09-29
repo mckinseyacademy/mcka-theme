@@ -1,6 +1,9 @@
+from urllib2 import HTTPError
 from django.conf import settings
 from django.http import HttpResponse, HttpRequest
 from django.test import TestCase, RequestFactory
+import mock
+from api_client.api_error import ApiError
 
 from .forms import ActivationForm, FinalizeRegistrationForm
 from .models import UserActivation, RemoteUser
@@ -129,6 +132,11 @@ class SsoUserFinalizationTests(TestCase):
         patcher.start()
         self.addCleanup(patcher.stop)
 
+    def make_raise_exception_side_effect(self, exception):
+        def func(*args, **kwargs):
+            raise exception
+        return func
+
     def setUp(self):
         super(SsoUserFinalizationTests, self).setUp()
         # Since we're not logged in for these tests, we must manually create a test client session:
@@ -190,3 +198,40 @@ class SsoUserFinalizationTests(TestCase):
 
         self.assertIn('sso_error_details', session)
         self.assertEqual(session['sso_error_details'], MISSING_ACCESS_KEY_ERROR)
+    
+    def test_existing_user_account_conflict(self):
+        # setting up access key id in session
+        response = self.client.get('/access/{}'.format(self.access_key.code))
+        self.assertEqual(response.status_code, 200)
+
+        # Setting up provider_data in session
+        response = self.client.post('/accounts/finalize/', data={
+            'sso_data': (
+                'eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbmFtZSI6I'
+                'CJNZSBNeXNlbGYgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbW'
+                'UiOiAiTWUgTXlzZWxmIiwgImVtYWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifX0='
+            ),
+            'sso_data_hmac': 'GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO+1i/I=',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
+
+        error_reason = "Duplicate user"
+        http_error = HTTPError("http://irrelevant", 409, error_reason, None, None)
+        api_error = ApiError(http_error, "create_user", None)
+
+        with mock.patch('accounts.views.user_api') as user_api_mock:
+            user_api_mock.register_user.side_effect = self.make_raise_exception_side_effect(api_error)
+            self.client.session['provider_data'] = {}
+
+            response = self.client.post('/accounts/sso_reg/', data={
+                'username': 'myself',
+                'full_name': 'Me Myself And I',
+                'email': 'myself@testshib.org',
+                'city': 'Mogadishu',
+                'accept_terms': True
+            })
+
+        self.assertIn('error', response.context)
+        self.assertIn(error_reason, response.context['error'])
+        self.assertIn('Failed to register user', response.context['error'])

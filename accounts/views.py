@@ -430,25 +430,28 @@ def sso_registration_form(request):
             registration_data['password'] = random_password
             registration_data['is_active'] = True
             # Create an account for this user and log them in:
-            user_api.register_user(registration_data)
-            new_user = auth.authenticate(
-                username=registration_data['username'],
-                password=random_password,
-                remote_session_key=remote_session_key
-            )
-            auth.login(request, new_user)
-            # Associate the user with their client/company:
-            assign_student_to_client_threaded(new_user.id, client.id, wait=True)
-            # Associate the user with their program and/or course:
-            if access_key.program_id:
-                _assign_student_to_program(request, new_user, client,
-                    program_id=access_key.program_id,
-                    course_ids=[access_key.course_id],
+            try:
+                user_api.register_user(registration_data)
+                new_user = auth.authenticate(
+                    username=registration_data['username'],
+                    password=random_password,
+                    remote_session_key=remote_session_key
                 )
+                auth.login(request, new_user)
+                # Associate the user with their client/company:
+                assign_student_to_client_threaded(new_user.id, client.id, wait=True)
+                # Associate the user with their program and/or course:
+                if access_key.program_id:
+                    _assign_student_to_program(request, new_user, client,
+                        program_id=access_key.program_id,
+                        course_ids=[access_key.course_id],
+                    )
 
-            # Redirect to the LMS to link the user's account to the provider permanently:
-            complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
-            return HttpResponseRedirect(complete_url)
+                # Redirect to the LMS to link the user's account to the provider permanently:
+                complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
+                return HttpResponseRedirect(complete_url)
+            except ApiError as exc:
+                error = _("Failed to register user: {exception_message}".format(exception_message=exc.message))
         else:
             error = _("Some required information was missing. Please check the fields below.")
 
