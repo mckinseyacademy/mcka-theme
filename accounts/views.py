@@ -58,6 +58,10 @@ log = logging.getLogger(__name__)
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
 LOGIN_MODE_COOKIE = 'login_mode'
+SSO_AUTH_ENTRY = 'apros'
+
+MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
+                             "in order to create a new account.")
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -102,6 +106,20 @@ def _get_redirect_to(request):
 
 def _make_cookie_expires_string(target_datetime):
     return datetime.datetime.strftime(target_datetime, "%a, %d-%b-%Y %H:%M:%S GMT")
+
+
+def _build_sso_redirect_url(provider, next):
+    """
+    Builds redirect url for SSO login/registration
+
+    Args:
+        * provider: str - IdP slug as configured in LMS admin
+        * next: str - URL to redirect after successful authentication; can be relative since we assume the LMS and
+                      Apros are on the same domain (providing absolute might cause redirect to be ignored due to
+                      redirect sanitization in python-saml)
+    """
+    query_args = {'auth_entry': SSO_AUTH_ENTRY, 'next': next, 'idp': provider}
+    return '{lms_auth}login/tpa-saml/?{query}'.format(lms_auth=settings.LMS_AUTH_URL, query=urlencode(query_args))
 
 
 def _process_authenticated_user(request, user):
@@ -156,6 +174,12 @@ def _process_authenticated_user(request, user):
     return response
 
 
+def _append_login_mode_cookie(response, login_mode):
+    response.set_cookie(
+        LOGIN_MODE_COOKIE, login_mode, expires=datetime.datetime.utcnow() + datetime.timedelta(days=365)
+    )
+
+
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -171,11 +195,11 @@ def login(request):
     sso_login_form = None
     login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
     expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
-    expire_in_future = _make_cookie_expires_string(datetime.datetime.utcnow() + datetime.timedelta(days=365))
 
     if request.method == 'POST':  # If the form has been submitted...
         if 'sso_login_form_marker' not in request.POST:
             # normal login
+            login_mode = 'normal'
             form = LoginForm(request.POST)
             if form.is_valid():
                 try:
@@ -184,7 +208,9 @@ def login(request):
                         password=form.cleaned_data['password']
                     )
                     if user:
-                        return _process_authenticated_user(request, user)
+                        response = _process_authenticated_user(request, user)
+                        _append_login_mode_cookie(response, login_mode)
+                        return response
 
                 except ApiError as err:
                     error = err.message
@@ -195,15 +221,9 @@ def login(request):
             if sso_login_form.is_valid():
                 provider = get_sso_provider(sso_login_form.cleaned_data['email'])
                 if provider:
-                    redirect_url = '{lms_auth}login/tpa-saml/?auth_entry=login&next={next}&idp={provider}'.format(
-                        lms_auth=settings.LMS_AUTH_URL, saml_tpa_entrypoint='login/tpa-saml/',
-                        next=reverse('login'), provider=provider
-                    )
+                    redirect_url = _build_sso_redirect_url(provider, reverse('login'))
                     response = HttpResponseRedirect(redirect_url)
-                    response.set_cookie(
-                        LOGIN_MODE_COOKIE, login_mode,
-                        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
-                    )
+                    _append_login_mode_cookie(response, login_mode)
                     return response
                 else:
                     error = _(u"This email is not associated with any identity provider")
@@ -214,7 +234,9 @@ def login(request):
         try:
             user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
             if user:
-                return _process_authenticated_user(request, user)
+                response = _process_authenticated_user(request, user)
+                _append_login_mode_cookie(response, login_mode)
+                return response
         except ApiError as err:
             error = err.message
 
@@ -237,9 +259,6 @@ def login(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    if not login_mode:
-        login_mode = request.GET.get('login_mode', 'normal')
-
     data = {
         "user": None,
         "form": form or LoginForm(),
@@ -250,10 +269,7 @@ def login(request):
     }
     response = render(request, 'accounts/login.haml', data)
 
-    response.set_cookie(
-        LOGIN_MODE_COOKIE, login_mode,
-        domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_future
-    )
+    _append_login_mode_cookie(response, login_mode)
 
     if request.method == 'GET':
         # if loading the login page
@@ -360,6 +376,11 @@ def finalize_sso_registration(request):
 
     # Store the provider data in the session and proceed to the registration form:
     request.session['provider_data'] = provider_data
+
+    if 'sso_access_key_id' not in request.session:
+        request.session['sso_error_details'] = MISSING_ACCESS_KEY_ERROR
+        return HttpResponseRedirect(reverse('sso_error'))
+
     return HttpResponseRedirect(reverse('sso_registration_form'))
 
 
@@ -371,7 +392,7 @@ def sso_registration_form(request):
 
     # The user must have come from /access/ with a valid AccessKey:
     if 'sso_access_key_id' not in request.session:
-        return HttpResponseForbidden('Acess Key missing.')
+        return HttpResponseForbidden('Access Key missing.')
     try:
         access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
         client = organization_api.fetch_organization(access_key.client_id)
@@ -473,7 +494,8 @@ def _assign_student_to_program(request, user, client, program_id, course_ids=Non
 
 def sso_error(request):
     ''' The LMS will redirect users here if an SSO error occurs '''
-    return render(request, 'accounts/sso_error.haml', {})
+    context = {'error_details': request.session.get('sso_error_details')}
+    return render(request, 'accounts/sso_error.haml', context)
 
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,
@@ -861,12 +883,9 @@ def access_key(request, code):
         return render(request, 'accounts/access.haml', status=404)
 
     request.session['sso_access_key_id'] = key.pk
-    query_args = {
-        'idp': customization.identity_provider,
-        'next': reverse('home'),  # Not absolute since we assume the LMS and Apros are on the same domain
-        'auth_entry': 'apros',
-    }
-    redirect_to = settings.LMS_AUTH_URL + 'login/tpa-saml/?{query}'.format(query=urlencode(query_args))
+    # all SSO requests that might end up with user logged in must go through login view to allow session detection
+    # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
+    redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('protected_home'))
 
     data = {
         'redirect_to': redirect_to
