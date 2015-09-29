@@ -1,6 +1,4 @@
 from urllib2 import HTTPError
-from django.conf import settings
-from django.http import HttpResponse, HttpRequest
 from django.test import TestCase, RequestFactory
 import mock
 from api_client.api_error import ApiError
@@ -14,9 +12,9 @@ import uuid
 
 
 class AccountsFormsTests(TestCase):
-
-    ''' Test Accounts Forms '''
-
+    """
+    Test Accounts Forms
+    """
     def test_ActivationForm(self):
         # valid if data is good
         reg_data = {
@@ -32,7 +30,6 @@ class AccountsFormsTests(TestCase):
         activation_form = ActivationForm(reg_data)
 
         self.assertTrue(activation_form.is_valid())
-
 
     def test_FinalizeRegistrationForm(self):
         user_data = {
@@ -55,13 +52,14 @@ class AccountsFormsTests(TestCase):
         self.assertEqual(form.cleaned_data['city'], 'Testerville')
 
 
-class TestUserObject():
+class TestUserObject(object):
     id = None
     email = None
 
-    def __init__(self, id, email):
-        self.id = id
+    def __init__(self, user_id, email):
+        self.id = user_id
         self.email = email
+
 
 class UserActivationTests(TestCase):
 
@@ -70,7 +68,8 @@ class UserActivationTests(TestCase):
 
         activation_record = UserActivation.user_activation(user)
 
-        recalled_record = UserActivation.objects.get(activation_key=activation_record.activation_key)
+        # If activation is broken this should raise UserActivation.DoesNotExist, hence no explicit assertions
+        UserActivation.objects.get(activation_key=activation_record.activation_key)
 
 
 class AccessLandingTests(TestCase):
@@ -133,7 +132,7 @@ class SsoUserFinalizationTests(TestCase):
         self.addCleanup(patcher.stop)
 
     def make_raise_exception_side_effect(self, exception):
-        def func(*args, **kwargs):
+        def func(*unusued_args, **unusued_kwargs):
             raise exception
         return func
 
@@ -145,12 +144,7 @@ class SsoUserFinalizationTests(TestCase):
         self.access_key = AccessKey.objects.create(client_id=self.client_id, code=uuid.uuid4())
         ClientCustomization.objects.create(client_id=self.client_id, identity_provider='testshib')
         self.apply_patch('api_client.organization_api.fetch_organization', return_value=Mock(display_name='TestCo'))
-        #def mock_render(_r, _t, data=None, status=200):
-        #    self.response_data = data
-        #    return HttpResponse('mocked template with data: {}'.format(data))
-
         self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
-
 
     def test_sso_flow(self):
         response = self.client.get('/access/{}'.format(self.access_key.code))
