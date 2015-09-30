@@ -375,7 +375,7 @@ class Course(CategorisedJsonObject):
                             module.assesment_score = lesson.assesment_score
                             graded_items["modules"].append(module)
 
-        if self.group_work_enabled:
+        if getattr(self, 'group_work_enabled', None):
             for project in self.group_projects:
                 for activity in project.activities:
                     if activity.is_graded:
