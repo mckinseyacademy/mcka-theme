@@ -274,7 +274,7 @@ class Course(CategorisedJsonObject):
         }
 
         for lesson in self.chapters:
-            if self.course_run:
+            if hasattr(self, 'course_run'):
                 week_start = None
                 week_end = None
                 for group in self.course_run:
