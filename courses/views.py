@@ -57,6 +57,8 @@ def course_landing_page(request, course_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
+    gradebook = inject_gradebook_info(request.user.id, course)
+    graded_items_count = sum(len(graded) for graded in course.graded_items().values())
 
     data = {
         "user": request.user,
@@ -72,6 +74,7 @@ def course_landing_page(request, course_id):
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "social": social,
         "average_progress": average_progress(course, request.user.id),
+        "graded_items_count": graded_items_count,
     }
     return render(request, 'courses/course_main.haml', data)
 
