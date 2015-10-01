@@ -319,7 +319,7 @@ class Course(CategorisedJsonObject):
                             "group_activities": [],
                         }
 
-        if self.group_work_enabled:
+        if getattr(self, 'group_work_enabled', None):
             for project in self.group_projects:
                 for activity in project.activities:
                     if activity.due:
