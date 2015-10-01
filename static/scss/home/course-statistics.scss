@@ -9,6 +9,7 @@
     &:last-child { border-right: none; }
 
     &.course-progress { width: 50%; }
+    &.no-border { border-right: none; }
 
     &:hover .zero {
       display: block;
