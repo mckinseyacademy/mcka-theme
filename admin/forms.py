@@ -1,6 +1,7 @@
 ''' forms for administration objects '''
 from datetime import date
 from django import forms
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email
@@ -168,6 +169,8 @@ class CreateAccessKeyForm(forms.ModelForm):
         }
         widgets = {
             'program_id': forms.Select,
-            'course_id': forms.Select(),
             'course_id': forms.Select,
+        }
+        labels = {
+            'name': mark_safe('Name <span class="required-field"></span>')
         }

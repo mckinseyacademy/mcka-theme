@@ -151,7 +151,7 @@ class SsoUserFinalizationTests(TestCase):
         self.assertEqual(response.status_code, 200)
         # That will then redirect us to the SSO provider...
         self.assertTrue(response.context['redirect_to'].startswith('/auth/login/tpa-saml/?'))
-        for pair in ('auth_entry=apros', 'idp=testshib', 'next=%2Fhome'):
+        for pair in ('auth_entry=apros', 'idp=testshib', 'next=%2Flogin'):
             self.assertIn(pair, response.context['redirect_to'])
 
         # The user then logs in and gets redirected back to Apros:
