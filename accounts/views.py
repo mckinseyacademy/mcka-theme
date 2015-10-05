@@ -888,7 +888,7 @@ def access_key(request, code):
     request.session['sso_access_key_id'] = key.pk
     # all SSO requests that might end up with user logged in must go through login view to allow session detection
     # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
-    redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('protected_home'))
+    redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('login'))
 
     data = {
         'redirect_to': redirect_to
