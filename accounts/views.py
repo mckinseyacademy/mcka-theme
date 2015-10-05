@@ -180,6 +180,12 @@ def _append_login_mode_cookie(response, login_mode):
     )
 
 
+def _expire_session_cookies(response):
+    expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
+    response.set_cookie('sessionid', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
+    response.set_cookie('csrftoken', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
+
+
 def login(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -275,15 +281,15 @@ def login(request):
         # if loading the login page
         # then remove all LMS-bound wildcard cookies which may have been set in the past. We do that
         # by setting a cookie that already expired
-
-        response.set_cookie('sessionid', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
-        response.set_cookie('csrftoken', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
+        _expire_session_cookies(response)
 
     return response
 
 
 def logout(request):
-    return logout_handler.logout(request)
+    response = logout_handler.logout(request)
+    _expire_session_cookies(response)
+    return response
 
 
 def activate(request, activation_code):
