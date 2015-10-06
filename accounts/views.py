@@ -3,12 +3,9 @@ import base64
 import hashlib
 import hmac
 import json
-import logging
 import os
 import random
 import urlparse
-import urllib
-import urllib2 as url_access
 from urllib import urlencode
 import datetime
 import math
@@ -29,15 +26,14 @@ from api_client import user_api, organization_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Program
-from admin.controller import load_course, assign_student_to_client_threaded
+from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
-from license import controller as license_controller
 
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
-    user_activation_with_data, ActivationError, is_future_start, get_sso_provider
-)
+    user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
+    process_access_key)
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, 
     EditFullNameForm, EditTitleForm, SSOLoginForm
@@ -438,14 +434,12 @@ def sso_registration_form(request):
                     remote_session_key=remote_session_key
                 )
                 auth.login(request, new_user)
-                # Associate the user with their client/company:
-                assign_student_to_client_threaded(new_user.id, client.id, wait=True)
-                # Associate the user with their program and/or course:
-                if access_key.program_id:
-                    _assign_student_to_program(request, new_user, client,
-                        program_id=access_key.program_id,
-                        course_ids=[access_key.course_id],
-                    )
+
+                error_messages = process_access_key(new_user, access_key, client)
+
+                if error_messages:
+                    for message in error_messages:
+                        messages.error(request, message)
 
                 # Redirect to the LMS to link the user's account to the provider permanently:
                 complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
@@ -461,38 +455,6 @@ def sso_registration_form(request):
         "activate_label": _("Create my McKinsey Academy account"),
     }
     return render(request, 'accounts/activate.haml', data)
-
-
-def _assign_student_to_program(request, user, client, program_id, course_ids=None):
-    """
-    Assign the given user to the specified client, program, and/or course.
-    If any errors occur, they will be returned via django-messages.
-    """
-    program = Program.fetch(program_id)
-    program.courses = program.fetch_courses()
-    students = request.POST.getlist("students[]")
-    allocated, assigned = license_controller.licenses_report(program.id, client.id)
-    remaining = allocated - assigned
-    if remaining <= 0:
-        messages.error(request,
-            _("Unable to enroll you in the requested program, {}. No remaining places.").format(program.display_name)
-        )
-        return
-    program.add_user(client.id, user.id)
-    if course_ids:
-        valid_course_ids = set(c.course_id for c in program.fetch_courses())
-        for course_id in course_ids:
-            if course_id in valid_course_ids:
-                try:
-                    user_api.enroll_user_in_course(user.id, course_id)
-                except ApiError as e:
-                    messages.error(request,
-                        _('Unable to enroll you in course "{}". API Error code {}.').format(course_id, e.code)
-                    )
-            else:
-                messages.error(request,
-                    _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
-                )
 
 
 def sso_error(request):

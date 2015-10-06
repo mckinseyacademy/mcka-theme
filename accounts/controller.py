@@ -2,9 +2,15 @@ import datetime
 import os
 
 from django.conf import settings
+from django.utils.translation import ugettext as _
+
+from admin.controller import assign_student_to_client_threaded
+from admin.models import Program
 
 from api_client import user_api, third_party_auth_api
 from api_client.api_error import ApiError
+
+from license import controller as license_controller
 
 class ActivationError(Exception):
     '''
@@ -83,3 +89,56 @@ def get_sso_provider(email):
         return "-".join(prefixed_provider_id.split("-")[1:])
     else:
         return None
+
+
+def process_access_key(user, access_key, client):
+    """
+    Processes access key for a user:
+    * Adds user to a company (if not already added to other company, otherwise fails)
+    * If program_id and course_id are specified - enrolls student into a course
+    """
+    # Associate the user with their client/company:
+    assign_student_to_client_threaded(user.id, client.id, wait=True)
+    # Associate the user with their program and/or course:
+    if access_key.program_id:
+        return assign_student_to_program(
+            user, client, program_id=access_key.program_id, course_ids=[access_key.course_id]
+        )
+
+    return []  # never return None from a method that normally returns a list
+
+
+def assign_student_to_program(user, client, program_id, course_ids=None):
+    """
+    Assign the given user to the specified client, program, and/or course.
+    If any errors occur, they will be returned via django-messages.
+    """
+    error_messages = []
+    program = Program.fetch(program_id)
+    program.courses = program.fetch_courses()
+
+    allocated, assigned = license_controller.licenses_report(program.id, client.id)
+    remaining = allocated - assigned
+    if remaining <= 0:
+        error_messages.append(
+            _("Unable to enroll you in the requested program, {}. No remaining places.").format(program.display_name)
+        )
+        return error_messages
+
+    program.add_user(client.id, user.id)
+    if course_ids:
+        valid_course_ids = set(c.course_id for c in program.fetch_courses())
+        for course_id in course_ids:
+            if course_id in valid_course_ids:
+                try:
+                    user_api.enroll_user_in_course(user.id, course_id)
+                except ApiError as e:
+                    error_messages.append(
+                        _('Unable to enroll you in course "{}". API Error code {}.').format(course_id, e.code)
+                    )
+            else:
+                error_messages.append(
+                    _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
+                )
+
+    return error_messages
