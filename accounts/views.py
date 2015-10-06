@@ -33,7 +33,8 @@ from courses.user_courses import standard_data, get_current_course_for_user, get
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
-    process_access_key)
+    process_access_key
+)
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, 
     EditFullNameForm, EditTitleForm, SSOLoginForm
@@ -54,10 +55,12 @@ log = logging.getLogger(__name__)
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
 LOGIN_MODE_COOKIE = 'login_mode'
+SSO_ACCESS_KEY_SESSION_ENTRY = 'sso_access_key_id'
 SSO_AUTH_ENTRY = 'apros'
 
 MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
                              "in order to create a new account.")
+CANT_PROCESS_ACCESS_KEY = _("There was an error enrolling you to a course using registration key you provided")
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -98,10 +101,6 @@ def _get_redirect_to(request):
         redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER'])
 
     return redirect_to
-
-
-def _make_cookie_expires_string(target_datetime):
-    return datetime.datetime.strftime(target_datetime, "%a, %d-%b-%Y %H:%M:%S GMT")
 
 
 def _build_sso_redirect_url(provider, next):
@@ -167,7 +166,37 @@ def _process_authenticated_user(request, user):
             user.csrftoken,
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
+
+    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
+        try:
+            access_key, client = _get_access_key(request)
+        except (AccessKey.DoesNotExist, AttributeError, IndexError):
+            messages.error(request, CANT_PROCESS_ACCESS_KEY)
+            return response
+
+        if access_key:
+            error_messages = _process_and_delete_access_key(request, user, access_key, client)
+
+            if error_messages:
+                for message in error_messages:
+                    messages.error(request, message)
+
     return response
+
+
+def _process_and_delete_access_key(request, user, access_key, client):
+    del request.session[SSO_ACCESS_KEY_SESSION_ENTRY]
+    return process_access_key(user, access_key, client)
+
+
+def _get_access_key(request):
+    try:
+        access_key = AccessKey.objects.get(pk=request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
+        client = organization_api.fetch_organization(access_key.client_id)
+    except (AccessKey.DoesNotExist, AttributeError, IndexError):
+        return HttpResponseNotFound()
+
+    return access_key, client
 
 
 def _append_login_mode_cookie(response, login_mode):
@@ -190,7 +219,7 @@ def login(request):
     form = None
     sso_login_form = None
     login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
-    expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
+    expire_in_past = datetime.datetime.utcnow() - datetime.timedelta(days=7)
 
     if request.method == 'POST':  # If the form has been submitted...
         if 'sso_login_form_marker' not in request.POST:
@@ -373,7 +402,7 @@ def finalize_sso_registration(request):
     # Store the provider data in the session and proceed to the registration form:
     request.session['provider_data'] = provider_data
 
-    if 'sso_access_key_id' not in request.session:
+    if SSO_ACCESS_KEY_SESSION_ENTRY not in request.session:
         request.session['sso_error_details'] = MISSING_ACCESS_KEY_ERROR
         return HttpResponseRedirect(reverse('sso_error'))
 
@@ -387,11 +416,10 @@ def sso_registration_form(request):
         return HttpResponseRedirect(reverse('protected_home'))
 
     # The user must have come from /access/ with a valid AccessKey:
-    if 'sso_access_key_id' not in request.session:
+    if SSO_ACCESS_KEY_SESSION_ENTRY not in request.session:
         return HttpResponseForbidden('Access Key missing.')
     try:
-        access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
-        client = organization_api.fetch_organization(access_key.client_id)
+        access_key, client = _get_access_key(request)
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
         return HttpResponseNotFound()
 
@@ -435,7 +463,7 @@ def sso_registration_form(request):
                 )
                 auth.login(request, new_user)
 
-                error_messages = process_access_key(new_user, access_key, client)
+                error_messages = _process_and_delete_access_key(request, new_user, access_key, client)
 
                 if error_messages:
                     for message in error_messages:
@@ -847,7 +875,7 @@ def access_key(request, code):
     if not customization.identity_provider:
         return render(request, 'accounts/access.haml', status=404)
 
-    request.session['sso_access_key_id'] = key.pk
+    request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.pk
     # all SSO requests that might end up with user logged in must go through login view to allow session detection
     # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
     redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('protected_home'))

@@ -97,8 +97,11 @@ def process_access_key(user, access_key, client):
     * Adds user to a company (if not already added to other company, otherwise fails)
     * If program_id and course_id are specified - enrolls student into a course
     """
-    # Associate the user with their client/company:
-    assign_student_to_client_threaded(user.id, client.id, wait=True)
+    company_ids = [company.id for company in user_api.get_user_organizations(user.id)]
+    if client.id not in company_ids:
+        # Associate the user with their client/company:
+        assign_student_to_client_threaded(user.id, client.id, wait=True)
+
     # Associate the user with their program and/or course:
     if access_key.program_id:
         return assign_student_to_program(
@@ -125,7 +128,9 @@ def assign_student_to_program(user, client, program_id, course_ids=None):
         )
         return error_messages
 
-    program.add_user(client.id, user.id)
+    already_enrolled = Program.user_program_list(user.id)
+    if program not in already_enrolled:
+        program.add_user(client.id, user.id)
     if course_ids:
         valid_course_ids = set(c.course_id for c in program.fetch_courses())
         for course_id in course_ids:

@@ -80,6 +80,27 @@ class Program(BaseGroupModel):
     def no_program(cls):
         return Program(dictionary={"id": Program.NO_PROGRAM_ID, "name": settings.NO_PROGRAM_NAME})
 
+    def __eq__(self, other):
+        if not isinstance(other, Program):
+            return False
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash((self.id, Program))
+
+    def __str__(self):
+        return "<{module_name}.{class_name}>: {id}>".format(
+            module_name=__name__,
+            class_name=self.__class__.__name__, id=self.id
+        )
+
+    def __unicode__(self):
+        return unicode(str(self))
+
+    def __repr__(self):
+        return unicode(self)
+
+
 class ReviewAssignmentGroup(BaseGroupModel):
     data_fields = ["assignment_date", "xblock_id"]
     date_fields = ["assignment_date"]
