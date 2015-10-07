@@ -60,7 +60,7 @@ SSO_AUTH_ENTRY = 'apros'
 
 MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
                              "in order to create a new account.")
-CANT_PROCESS_ACCESS_KEY = _("There was an error enrolling you to a course using registration key you provided")
+CANT_PROCESS_ACCESS_KEY = _("There was an error enrolling you in a course using the registration key you provided")
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -169,33 +169,27 @@ def _process_authenticated_user(request, user):
 
     if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
         try:
-            access_key, client = _get_access_key(request)
+            access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
         except (AccessKey.DoesNotExist, AttributeError, IndexError):
             messages.error(request, CANT_PROCESS_ACCESS_KEY)
             return response
 
-        if access_key:
-            error_messages = _process_and_delete_access_key(request, user, access_key, client)
-
-            if error_messages:
-                for message in error_messages:
-                    messages.error(request, message)
+        _process_access_key_and_remove_from_session(request, user, access_key, client)
 
     return response
 
 
-def _process_and_delete_access_key(request, user, access_key, client):
-    del request.session[SSO_ACCESS_KEY_SESSION_ENTRY]
-    return process_access_key(user, access_key, client)
+def _process_access_key_and_remove_from_session(request, user, access_key, client):
+    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
+        del request.session[SSO_ACCESS_KEY_SESSION_ENTRY]
+    processing_messages = process_access_key(user, access_key, client)
+    for message_level, message in processing_messages:
+        messages.add_message(request, message_level, message)
 
 
-def _get_access_key(request):
-    try:
-        access_key = AccessKey.objects.get(pk=request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
-        client = organization_api.fetch_organization(access_key.client_id)
-    except (AccessKey.DoesNotExist, AttributeError, IndexError):
-        return HttpResponseNotFound()
-
+def _get_access_key(key_code):
+    access_key = AccessKey.objects.get(code=key_code)
+    client = organization_api.fetch_organization(access_key.client_id)
     return access_key, client
 
 
@@ -419,7 +413,7 @@ def sso_registration_form(request):
     if SSO_ACCESS_KEY_SESSION_ENTRY not in request.session:
         return HttpResponseForbidden('Access Key missing.')
     try:
-        access_key, client = _get_access_key(request)
+        access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
         return HttpResponseNotFound()
 
@@ -463,11 +457,7 @@ def sso_registration_form(request):
                 )
                 auth.login(request, new_user)
 
-                error_messages = _process_and_delete_access_key(request, new_user, access_key, client)
-
-                if error_messages:
-                    for message in error_messages:
-                        messages.error(request, message)
+                _process_access_key_and_remove_from_session(request, new_user, access_key, client)
 
                 # Redirect to the LMS to link the user's account to the provider permanently:
                 complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
@@ -854,15 +844,18 @@ def edit_title(request):
 
 def access_key(request, code):
 
-    # Abort if a user is already logged in.
-    if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('protected_home'))
-
+    key, client = None, None
     # Try to find the unique code.
     try:
-        key = AccessKey.objects.get(code=code)
-    except AccessKey.DoesNotExist as err:
-        return render(request, 'accounts/access.haml', status=404)
+        key, client = _get_access_key(code)
+    except (AccessKey.DoesNotExist, AttributeError, IndexError):
+        messages.error(request, CANT_PROCESS_ACCESS_KEY)
+
+    # If already authenticated, add to a program and enroll to a course, than redirect back to home page
+    if request.user.is_authenticated():
+        if key and client:
+            _process_access_key_and_remove_from_session(request, request.user, key, client)
+        return HttpResponseRedirect(reverse('protected_home'))
 
     # Show the invitation landing page. It informs the user that they are about
     #  to be redirected to their company's provider.
@@ -875,7 +868,7 @@ def access_key(request, code):
     if not customization.identity_provider:
         return render(request, 'accounts/access.haml', status=404)
 
-    request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.pk
+    request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.code
     # all SSO requests that might end up with user logged in must go through login view to allow session detection
     # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
     redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('protected_home'))

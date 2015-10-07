@@ -86,7 +86,7 @@ class Program(BaseGroupModel):
         return self.id == other.id
 
     def __hash__(self):
-        return hash((self.id, Program))
+        return hash(self.id)
 
     def __str__(self):
         return "<{module_name}.{class_name}>: {id}>".format(
