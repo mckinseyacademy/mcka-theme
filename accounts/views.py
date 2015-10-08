@@ -3,12 +3,9 @@ import base64
 import hashlib
 import hmac
 import json
-import logging
 import os
 import random
 import urlparse
-import urllib
-import urllib2 as url_access
 from urllib import urlencode
 import datetime
 import math
@@ -29,14 +26,14 @@ from api_client import user_api, organization_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Program
-from admin.controller import load_course, assign_student_to_client_threaded
+from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
-from license import controller as license_controller
 
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
-    user_activation_with_data, ActivationError, is_future_start, get_sso_provider
+    user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
+    process_access_key
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, 
@@ -58,10 +55,12 @@ log = logging.getLogger(__name__)
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
 
 LOGIN_MODE_COOKIE = 'login_mode'
+SSO_ACCESS_KEY_SESSION_ENTRY = 'sso_access_key_id'
 SSO_AUTH_ENTRY = 'apros'
 
 MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
                              "in order to create a new account.")
+CANT_PROCESS_ACCESS_KEY = _("There was an error enrolling you in a course using the registration key you provided")
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -102,10 +101,6 @@ def _get_redirect_to(request):
         redirect_to = _get_qs_value_from_url('next', request.META['HTTP_REFERER'])
 
     return redirect_to
-
-
-def _make_cookie_expires_string(target_datetime):
-    return datetime.datetime.strftime(target_datetime, "%a, %d-%b-%Y %H:%M:%S GMT")
 
 
 def _build_sso_redirect_url(provider, next):
@@ -171,7 +166,31 @@ def _process_authenticated_user(request, user):
             user.csrftoken,
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
+
+    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
+        try:
+            access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
+        except (AccessKey.DoesNotExist, AttributeError, IndexError):
+            messages.error(request, CANT_PROCESS_ACCESS_KEY)
+            return response
+
+        _process_access_key_and_remove_from_session(request, user, access_key, client)
+
     return response
+
+
+def _process_access_key_and_remove_from_session(request, user, access_key, client):
+    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
+        del request.session[SSO_ACCESS_KEY_SESSION_ENTRY]
+    processing_messages = process_access_key(user, access_key, client)
+    for message_level, message in processing_messages:
+        messages.add_message(request, message_level, message)
+
+
+def _get_access_key(key_code):
+    access_key = AccessKey.objects.get(code=key_code)
+    client = organization_api.fetch_organization(access_key.client_id)
+    return access_key, client
 
 
 def _append_login_mode_cookie(response, login_mode):
@@ -200,7 +219,7 @@ def login(request):
     form = None
     sso_login_form = None
     login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
-    expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
+    expire_in_past = datetime.datetime.utcnow() - datetime.timedelta(days=7)
 
     if request.method == 'POST':  # If the form has been submitted...
         if 'sso_login_form_marker' not in request.POST:
@@ -383,7 +402,7 @@ def finalize_sso_registration(request):
     # Store the provider data in the session and proceed to the registration form:
     request.session['provider_data'] = provider_data
 
-    if 'sso_access_key_id' not in request.session:
+    if SSO_ACCESS_KEY_SESSION_ENTRY not in request.session:
         request.session['sso_error_details'] = MISSING_ACCESS_KEY_ERROR
         return HttpResponseRedirect(reverse('sso_error'))
 
@@ -397,11 +416,10 @@ def sso_registration_form(request):
         return HttpResponseRedirect(reverse('protected_home'))
 
     # The user must have come from /access/ with a valid AccessKey:
-    if 'sso_access_key_id' not in request.session:
+    if SSO_ACCESS_KEY_SESSION_ENTRY not in request.session:
         return HttpResponseForbidden('Access Key missing.')
     try:
-        access_key = AccessKey.objects.get(pk=request.session['sso_access_key_id'])
-        client = organization_api.fetch_organization(access_key.client_id)
+        access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
         return HttpResponseNotFound()
 
@@ -444,14 +462,8 @@ def sso_registration_form(request):
                     remote_session_key=remote_session_key
                 )
                 auth.login(request, new_user)
-                # Associate the user with their client/company:
-                assign_student_to_client_threaded(new_user.id, client.id, wait=True)
-                # Associate the user with their program and/or course:
-                if access_key.program_id:
-                    _assign_student_to_program(request, new_user, client,
-                        program_id=access_key.program_id,
-                        course_ids=[access_key.course_id],
-                    )
+
+                _process_access_key_and_remove_from_session(request, new_user, access_key, client)
 
                 # Redirect to the LMS to link the user's account to the provider permanently:
                 complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
@@ -467,38 +479,6 @@ def sso_registration_form(request):
         "activate_label": _("Create my McKinsey Academy account"),
     }
     return render(request, 'accounts/activate.haml', data)
-
-
-def _assign_student_to_program(request, user, client, program_id, course_ids=None):
-    """
-    Assign the given user to the specified client, program, and/or course.
-    If any errors occur, they will be returned via django-messages.
-    """
-    program = Program.fetch(program_id)
-    program.courses = program.fetch_courses()
-    students = request.POST.getlist("students[]")
-    allocated, assigned = license_controller.licenses_report(program.id, client.id)
-    remaining = allocated - assigned
-    if remaining <= 0:
-        messages.error(request,
-            _("Unable to enroll you in the requested program, {}. No remaining places.").format(program.display_name)
-        )
-        return
-    program.add_user(client.id, user.id)
-    if course_ids:
-        valid_course_ids = set(c.course_id for c in program.fetch_courses())
-        for course_id in course_ids:
-            if course_id in valid_course_ids:
-                try:
-                    user_api.enroll_user_in_course(user.id, course_id)
-                except ApiError as e:
-                    messages.error(request,
-                        _('Unable to enroll you in course "{}". API Error code {}.').format(course_id, e.code)
-                    )
-            else:
-                messages.error(request,
-                    _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
-                )
 
 
 def sso_error(request):
@@ -870,15 +850,18 @@ def edit_title(request):
 
 def access_key(request, code):
 
-    # Abort if a user is already logged in.
-    if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('protected_home'))
-
+    key, client = None, None
     # Try to find the unique code.
     try:
-        key = AccessKey.objects.get(code=code)
-    except AccessKey.DoesNotExist as err:
-        return render(request, 'accounts/access.haml', status=404)
+        key, client = _get_access_key(code)
+    except (AccessKey.DoesNotExist, AttributeError, IndexError):
+        messages.error(request, CANT_PROCESS_ACCESS_KEY)
+
+    # If already authenticated, add to a program and enroll to a course, than redirect back to home page
+    if request.user.is_authenticated():
+        if key and client:
+            _process_access_key_and_remove_from_session(request, request.user, key, client)
+        return HttpResponseRedirect(reverse('protected_home'))
 
     # Show the invitation landing page. It informs the user that they are about
     #  to be redirected to their company's provider.
@@ -891,7 +874,7 @@ def access_key(request, code):
     if not customization.identity_provider:
         return render(request, 'accounts/access.haml', status=404)
 
-    request.session['sso_access_key_id'] = key.pk
+    request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.code
     # all SSO requests that might end up with user logged in must go through login view to allow session detection
     # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
     redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('login'))
