@@ -14,6 +14,8 @@ import string
 import re
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_slug
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib import auth, messages
 from django.shortcuts import render
@@ -53,6 +55,7 @@ from admin.views import ajaxify_http_redirects
 log = logging.getLogger(__name__)
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
+USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]")
 
 LOGIN_MODE_COOKIE = 'login_mode'
 SSO_ACCESS_KEY_SESSION_ENTRY = 'sso_access_key_id'
@@ -409,6 +412,19 @@ def finalize_sso_registration(request):
     return HttpResponseRedirect(reverse('sso_registration_form'))
 
 
+def _cleanup_username(username):
+    """ Cleans up username to pass validation checks """
+    # uses the same check as edx-platform/lms/djangoapps/api_manager/users/views.py:UsersDetail.post
+    try:
+        validate_slug(username)
+    except ValidationError:
+        initial, username = username, USERNAME_INVALID_CHARS_REGEX.sub("", username)
+        log.info("Username '{initial_username}' does not pass validation checks; changed to '{actual_username}'".format(
+            initial_username=initial, actual_username=username
+        ))
+    return username
+
+
 def sso_registration_form(request):
     ''' handles requests for activation form and their submission '''
     if request.user.is_authenticated():
@@ -433,8 +449,11 @@ def sso_registration_form(request):
 
     if request.method == 'POST':
         user_data = request.POST.copy()
+
+    username = _cleanup_username(provider_data.get('username', ''))
+
     initial_values = {  # Default values from the provider that the user can change:
-        'username': provider_data.get('username', ''),
+        'username': username,
     }
     fixed_values = {  # Values that we prevent the user from editing:
         'company': client.display_name,
