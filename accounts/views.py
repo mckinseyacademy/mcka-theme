@@ -200,7 +200,7 @@ def _append_login_mode_cookie(response, login_mode):
 
 
 def _expire_session_cookies(response):
-    expire_in_past = _make_cookie_expires_string(datetime.datetime.utcnow() - datetime.timedelta(days=7))
+    expire_in_past = datetime.datetime.utcnow() - datetime.timedelta(days=7)
     response.set_cookie('sessionid', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
     response.set_cookie('csrftoken', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
 
