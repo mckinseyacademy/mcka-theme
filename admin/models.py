@@ -266,6 +266,7 @@ class ClientCustomization(db_models.Model):
     hex_course_title = db_models.CharField(max_length=7)
     hex_page_background = db_models.CharField(max_length=7)
     client_logo = db_models.CharField(max_length=200)
+    identity_provider = db_models.CharField(blank=True, max_length=200)
 
 ROLE_ACTIONS = DottableDict(
     GRANT='grant',
@@ -287,11 +288,10 @@ class AccessKey(db_models.Model):
     A generated access code that can is used for student registration and enrollment.
     """
     code = db_models.CharField(max_length=50, unique=True)
-    identity_provider = db_models.CharField(blank=True, max_length=200)
     client_id = db_models.IntegerField()
     course_id = db_models.CharField(blank=True, max_length=200)
     program_id = db_models.IntegerField(null=True, blank=True)
-    name = db_models.CharField(blank=True, max_length=200)
+    name = db_models.CharField(blank=False, max_length=200)
     disabled = db_models.BooleanField(default=False)
     expiration_date = db_models.DateTimeField(null=True, blank=True)
     user_count = db_models.IntegerField(default=0, blank=True)

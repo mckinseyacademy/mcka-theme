@@ -314,57 +314,73 @@ class NoSuffixLabelForm(forms.Form):
         kwargs.setdefault('label_suffix', '')
         super(NoSuffixLabelForm, self).__init__(*args, **kwargs)
 
+
+class SSOLoginForm(NoSuffixLabelForm):
+    """ SSO dispatch form - asks user for email to look it up in a list of SSO-enabled accounts """
+    # this is just used to differentiate this form from login form used on the same page
+    sso_login_form_marker = forms.CharField(widget=forms.HiddenInput, required=False)
+    email = forms.EmailField(max_length=255, label=mark_safe('Email address <span class="required-field"></span>'))
+
+
 class LoginForm(NoSuffixLabelForm):
     ''' login form for system '''
     username = forms.CharField(max_length=255, label=mark_safe('Username <span class="required-field"></span>'))
     password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe('Password <span class="required-field"></span>'))
 
-class ActivationForm(NoSuffixLabelForm):
-    ''' activation form for system '''
-    #first_name = forms.CharField(max_length=255)
-    #last_name = forms.CharField(max_length=255)
-
+class BaseRegistrationForm(NoSuffixLabelForm):
+    ''' base for ActivationForm and FinalizeRegistrationForm '''
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
-    username = forms.CharField(widget=UserNameInput(attrs={'required': True}), initial='', max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
+    username = forms.CharField(max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
     password = forms.CharField(widget=forms.PasswordInput(),
         label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
-    #confirm_password = forms.CharField(widget=forms.PasswordInput())
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
     title = forms.CharField(max_length=255, required=False)
-    city = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}))
+    city = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}), label=mark_safe('City <span class="required-field"></span>'))
     country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=False)
     level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES, required=False)
     gender = forms.ChoiceField(choices=GENDER_CHOICES, required=False)
     year_of_birth = forms.ChoiceField(choices=YEAR_CHOICES, required=False, initial=("", "---"))
     accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
-    #accept_terms = forms.CheckboxInput()
 
+    def clean_accept_terms(self):
+        value = self.cleaned_data['accept_terms']
+        if not value:
+            raise forms.ValidationError(_("You must accept terms of service in order to continue"))
+        return value
+
+class ActivationForm(BaseRegistrationForm):
+    ''' activation form for system '''
     def __init__(self, *args, **kwargs):
         super(ActivationForm, self).__init__(*args, **kwargs)
-        if isinstance(args[0], dict):
-            user_data = args[0]
+        self.fields['username'].widget = UserNameInput(attrs={'required': True})  # Custom widget with no default value
+        if kwargs.get('initial'):
+            initial_data = kwargs['initial']
             for read_only in READ_ONLY_IF_DATA_FIELDS:
-                if read_only in user_data and user_data[read_only] is not None and len(user_data[read_only]) > 0:
+                if read_only in initial_data and initial_data[read_only] is not None and len(initial_data[read_only]) > 0:
                     self.fields[read_only].widget.attrs['readonly'] = 'readonly'
 
             for disabled in DISABLED_IF_DATA_FIELDS:
-                if disabled in user_data and len(user_data[disabled]) > 0:
+                if disabled in initial_data and len(initial_data[disabled]) > 0:
                     self.fields[disabled].widget.attrs['disabled'] = 'disabled'
 
-    # def clean(self):
-    #     ''' override clean to check for password matches '''
-    #     cleaned_data = super(ActivationForm, self).clean()
-    #     password_value = cleaned_data.get("password")
-    #     confirm_password_value = cleaned_data.get("confirm_password")
+class FinalizeRegistrationForm(BaseRegistrationForm):
+    ''' activation form used to finalize a user's registration with SSO '''
+    email = forms.EmailField(max_length=225, required=True, label=mark_safe('Email'))
 
-    #     if password_value and confirm_password_value:
-    #         # Only do something if both fields are valid so far.
-    #         if confirm_password_value != password_value:
-    #             raise forms.ValidationError(
-    #                 _("Password fields do not match"),
-    #                 code='password_match_fail'
-    #             )
+    def __init__(self, user_data, fixed_values, **kwargs):
+        initial = kwargs.pop('initial', {})
+        initial.update(fixed_values)
+        args = []
+        if user_data is not None:
+            # Don't allow users to change any fixed values,
+            # but don't make this a bound form prematurely.
+            user_data.update(fixed_values)
+            args = [user_data]
+        super(FinalizeRegistrationForm, self).__init__(*args, initial=initial, **kwargs)
+        for field_name in fixed_values:
+            self.fields[field_name].widget.attrs['readonly'] = 'readonly'
+        self.fields.pop('password')  # No password required for SSO users
 
 class FpasswordForm(forms.Form):
     email = forms.EmailField(label=_("Email"), max_length=254)

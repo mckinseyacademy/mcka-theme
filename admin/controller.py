@@ -74,6 +74,16 @@ def postpone(func):
         _queue.put((func, args, kwargs))
     return decorator
 
+def spawn_thread():
+    ''' Spawn the worker thread if necessary and return it '''
+    if spawn_thread._spawned:
+        return
+    thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    thread.daemon = True # so we can exit
+    thread.start()
+    spawn_thread._spawned = True
+spawn_thread._spawned = False
+
 def _cleanup():
     _queue.join() # so we don't exit too soon
 
@@ -82,11 +92,33 @@ atexit.register(_cleanup)
 
 
 def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_status):
-    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-    _thread.daemon = True # so we can exit
-    _thread.start()
-    process_uploaded_student_list(
-        student_list, client_id, absolute_uri, reg_status)
+    spawn_thread()
+    process_uploaded_student_list(student_list, client_id, absolute_uri, reg_status)
+
+
+def assign_student_to_client_threaded(user_id, client_id, wait=False):
+    '''
+    Assign a student to a client.
+    This method is asynchronously unless wait=True.
+    We must do this operation in the same queue that upload_student_list_threaded() uses
+    or we could get a nasty race condition. (Part of the problem is there is no "atomic add"
+    method to add a user to a client - there is just a method to update to the list and then
+    save the whole list at once.)
+
+    Unlike upload_student_list_threaded(), this method is meant for internal use and does _not_
+    verify its input. You must validate all input before calling this method.
+    '''
+    spawn_thread()
+    _do_assign_student_to_client(user_id, client_id)
+    if wait:
+        _queue.join()
+
+
+@postpone
+def _do_assign_student_to_client(user_id, client_id):
+    ''' Assign a student to a client. Runs on the worker thread. '''
+    client = Client.fetch(client_id)
+    client.add_user(user_id)
 
 
 def _find_group_project_v2_blocks_in_chapter(chapter):

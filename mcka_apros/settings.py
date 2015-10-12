@@ -169,6 +169,10 @@ SESSION_TIMEOUT_SECONDS = 300
 # LMS
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
 LMS_SUB_DOMAIN = 'lms'
+LMS_SESSION_COOKIE_DOMAIN = None  # Default: use current/same domain
+# LMS_AUTH_URL: relative or absolute URL to the LMS's /auth/ urls, used for SSO.
+# Normally this is on the same domain as Apros and is forwarded to the LMS by an nginx reverse proxy rule
+LMS_AUTH_URL = '/auth/'
 
 NO_PROGRAM_NAME = "McKinsey Management Program"
 GROUP_PROJECT_IDENTIFIER = "GROUP_PROJECT_"
@@ -197,6 +201,9 @@ LOCAL_MOCK_API_FILES = [
 # EdX Api Key
 # Set this on OpenEdx server, and within production environment to whichever value is desired
 EDX_API_KEY = 'test_api_key'
+
+# edX LMS shared secret used to validate provider data during SSO logins
+EDX_SSO_DATA_HMAC_KEY = '1private_apros_key'
 
 # Whether or not to cache courseware content locally, defult=False but can be overridden in local_settings.py
 USE_SESSION_COURSEWARE_CACHING = False

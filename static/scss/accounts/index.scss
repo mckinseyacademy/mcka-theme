@@ -14,7 +14,7 @@
 
   .description{
     @include font-spec(14, normal, 24);
-    height: rem-calc(20);
+    height: rem-calc(40);
   }
 
   .tip{
@@ -32,6 +32,18 @@
 
     span {
       color: $mckinsey-orange;
+    }
+  }
+
+  span.login-mode-label {
+    // hide them both until JS code decides which one to show
+    display: none;
+  }
+
+  form {
+    &.sso-login, &.normal-login {
+      // hide them both until JS code decides which one to show
+      display: none;
     }
   }
 

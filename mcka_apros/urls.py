@@ -1,3 +1,4 @@
+import debug_toolbar
 from django.conf.urls import patterns, include, url
 from django.conf.urls import handler404
 from django.conf.urls import handler500
@@ -22,14 +23,9 @@ urlpatterns = patterns(
     url(r'^mcka-api/v1/', include('public_api.urls'), name='public_api'),
     url(r'^api/', include('edx_notifications.server.api.urls_mock')),
     url(r'^notification_redir$', 'main.views.notification_redir'),
-    url(r'^access/(?P<key>[^/]*)$', 'accounts.views.access_key', name="access_key"),
+    url(r'^access/(?P<code>[^/]*)$', 'accounts.views.access_key', name="access_key"),
+    url(r'^__debug__/', include(debug_toolbar.urls)),
 )
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
 
 if settings.RUN_LOCAL_MOCK_API:
     urlpatterns += patterns('', url(r'^mockapi/', include('mockapi.urls'), name='mockapi'),)

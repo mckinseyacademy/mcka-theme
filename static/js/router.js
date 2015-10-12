@@ -1,6 +1,7 @@
 var Router = Backbone.Router.extend({
   routes: {
     '':                                       'home',
+    'home':                                   'protected_home',
     'contact/':                               'contact',
     'edxoffer/':                              'edxoffer',
     'productwalkthrough/':                    'productwalkthrough',
@@ -21,6 +22,10 @@ var Router = Backbone.Router.extend({
   home: function() {
     var el = $('#home-landing');
     new Apros.views.HomeLanding({el: el}).render();
+  },
+
+  protected_home: function() {
+    this.home();
   },
 
   contact: function() {

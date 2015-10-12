@@ -57,6 +57,8 @@ def course_landing_page(request, course_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
     load_lesson_estimated_time(course)
     social = get_social_metrics(course_id, request.user.id)
+    gradebook = inject_gradebook_info(request.user.id, course)
+    graded_items_count = sum(len(graded) for graded in course.graded_items().values())
 
     data = {
         "user": request.user,
@@ -72,6 +74,7 @@ def course_landing_page(request, course_id):
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "social": social,
         "average_progress": average_progress(course, request.user.id),
+        "graded_items_count": graded_items_count,
     }
     return render(request, 'courses/course_main.haml', data)
 
@@ -408,6 +411,13 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     course.group_work_enabled = feature_flags.group_work
+    static_tabs = load_static_tabs(course_id)
+    course_run = static_tabs.get("course run", None)
+    if course_run:
+        try:
+            course.course_run = json.loads(course_run.content)
+        except:
+            pass
 
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
@@ -418,7 +428,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
-    completed_items_count = len([module for module in course.graded_items()["modules"] if module.assesment_score > 0])
+    completed_items_count = len([module for module in course.graded_items()["modules"] if module.assesment_score >= 0])
 
     project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
@@ -452,6 +462,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
         "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
+        "course_run": course_run,
     }
 
     if progress_user.id != request.user.id:
@@ -586,11 +597,11 @@ def infer_page_navigation(request, course_id, page_id):
     if course_id and chapter_id and vertical_id:
 
         redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
-        if group_project.is_v2 and group_project.vertical_id == vertical_id:
+        if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
             redirect_url = "/courses/{}/group_work".format(course_id)
 
-        if ta_grading_group:
-            redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
+            if ta_grading_group:
+                redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
 
         if final_target_id not in (chapter_id, vertical_id):
             redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)

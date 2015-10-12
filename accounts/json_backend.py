@@ -27,7 +27,10 @@ class JsonBackend(object):
         Implements django authenticate that delegates to API
         '''
         if username and password:
-            auth_info = user_api.authenticate(username, password)
+            # If remote_session_key is specified, we are attempting to upgrade the remote
+            # session from AnonymousUser to an authorized user, using the given credentials.
+            # Otherwise a new session will be created.
+            auth_info = user_api.authenticate(username, password, remote_session_key=remote_session_key)
             auth_info.user = user_api.get_user(auth_info.user.id)
         elif remote_session_key:
             try:
