@@ -24,10 +24,10 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from api_client import user_api, organization_api
+from api_client import user_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
-from admin.models import Program
+from admin.models import Client, Program
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
@@ -192,7 +192,7 @@ def _process_access_key_and_remove_from_session(request, user, access_key, clien
 
 def _get_access_key(key_code):
     access_key = AccessKey.objects.get(code=key_code)
-    client = organization_api.fetch_organization(access_key.client_id)
+    client = Client.fetch(access_key.client_id)
     return access_key, client
 
 

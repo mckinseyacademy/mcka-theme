@@ -5,7 +5,6 @@ import os
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-from admin.controller import assign_student_to_client_threaded
 from admin.models import Program
 
 from api_client import user_api, third_party_auth_api
@@ -107,7 +106,7 @@ def process_access_key(user, access_key, client):
 
     if client.id not in company_ids:
         # Associate the user with their client/company:
-        assign_student_to_client_threaded(user.id, client.id, wait=True)
+        client.add_user(user.id)
 
     # Associate the user with their program and/or course:
     if access_key.program_id:
