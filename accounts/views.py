@@ -868,13 +868,12 @@ def edit_title(request):
 
 
 def access_key(request, code):
-
-    key, client = None, None
+    template = 'accounts/access.html'
     # Try to find the unique code.
     try:
         key, client = _get_access_key(code)
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
-        messages.error(request, CANT_PROCESS_ACCESS_KEY)
+        return render(request, template, status=404)
 
     # If already authenticated, add to a program and enroll to a course, than redirect back to home page
     if request.user.is_authenticated():
@@ -888,10 +887,10 @@ def access_key(request, code):
     try:
         customization = ClientCustomization.objects.get(client_id=key.client_id)
     except ClientCustomization.DoesNotExist as err:
-        return render(request, 'accounts/access.haml', status=404)
+        return render(request, template, status=404)
 
     if not customization.identity_provider:
-        return render(request, 'accounts/access.haml', status=404)
+        return render(request, template, status=404)
 
     request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.code
     # all SSO requests that might end up with user logged in must go through login view to allow session detection
@@ -902,4 +901,4 @@ def access_key(request, code):
         'redirect_to': redirect_to
     }
 
-    return render(request, 'accounts/access.haml', data)
+    return render(request, template, data)

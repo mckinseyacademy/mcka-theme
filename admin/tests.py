@@ -10,7 +10,7 @@ from django.test.client import Client, RequestFactory
 from django.core.urlresolvers import resolve
 
 from lib.util import DottableDict
-from .forms import ClientForm, ProgramForm, ShareAccessKeyForm, MultiEmailField
+from .forms import ClientForm, ProgramForm, CreateAccessKeyForm, ShareAccessKeyForm, MultiEmailField
 from .models import Program
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 
@@ -519,11 +519,11 @@ class AdminFormsTests(TestCase):
         # valid if data is good
         form_data = {
             "client_id": 1,
-            "name": "",
+            "name": "Test Key",
             "program_id": "",
             "course_id": "",
         }
-        form = ShareAccessKeyForm(form_data)
+        form = CreateAccessKeyForm(form_data)
         self.assertTrue(form.is_valid())
 
     def test_ShareAccessKeyForm(self):
