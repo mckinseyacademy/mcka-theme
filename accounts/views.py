@@ -873,6 +873,7 @@ def access_key(request, code):
     try:
         key, client = _get_access_key(code)
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
+        log.exception("Invalid AccessKey. The key or associated client could not be loaded.")
         return render(request, template, status=404)
 
     # If already authenticated, add to a program and enroll to a course, than redirect back to home page
