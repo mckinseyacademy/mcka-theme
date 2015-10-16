@@ -24,10 +24,10 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from api_client import user_api, organization_api
+from api_client import user_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
-from admin.models import Program
+from admin.models import Client, Program
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
@@ -192,7 +192,7 @@ def _process_access_key_and_remove_from_session(request, user, access_key, clien
 
 def _get_access_key(key_code):
     access_key = AccessKey.objects.get(code=key_code)
-    client = organization_api.fetch_organization(access_key.client_id)
+    client = Client.fetch(access_key.client_id)
     return access_key, client
 
 
@@ -868,13 +868,13 @@ def edit_title(request):
 
 
 def access_key(request, code):
-
-    key, client = None, None
+    template = 'accounts/access.html'
     # Try to find the unique code.
     try:
         key, client = _get_access_key(code)
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
-        messages.error(request, CANT_PROCESS_ACCESS_KEY)
+        log.exception("Invalid AccessKey. The key or associated client could not be loaded.")
+        return render(request, template, status=404)
 
     # If already authenticated, add to a program and enroll to a course, than redirect back to home page
     if request.user.is_authenticated():
@@ -888,10 +888,10 @@ def access_key(request, code):
     try:
         customization = ClientCustomization.objects.get(client_id=key.client_id)
     except ClientCustomization.DoesNotExist as err:
-        return render(request, 'accounts/access.haml', status=404)
+        return render(request, template, status=404)
 
     if not customization.identity_provider:
-        return render(request, 'accounts/access.haml', status=404)
+        return render(request, template, status=404)
 
     request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.code
     # all SSO requests that might end up with user logged in must go through login view to allow session detection
@@ -902,4 +902,4 @@ def access_key(request, code):
         'redirect_to': redirect_to
     }
 
-    return render(request, 'accounts/access.haml', data)
+    return render(request, template, data)
