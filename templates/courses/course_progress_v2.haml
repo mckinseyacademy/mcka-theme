@@ -84,6 +84,8 @@
         .label-3 <i class="status fa fa-circle"></i> not started
         .label-3 <i class="status fa fa-circle partial"></i> partially complete
         .label-3 <i class="status fa fa-check-circle complete"></i> complete
+      - if course_run and feature_flags.group_work
+        %p.style-6 Note: Group Work Deliverables need to be submitted by 11pm GMT.
       - if not course_run
         - if feature_flags.group_work
           %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
