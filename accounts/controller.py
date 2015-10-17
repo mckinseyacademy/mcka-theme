@@ -147,10 +147,10 @@ def assign_student_to_program(user, client, program_id, course_ids=None):
                     processing_messages.append((
                         messages.INFO, _("Successfully enrolled you in a course {}.").format(course_id)
                     ))
-                except ApiError as e:
+                except ApiError:
                     processing_messages.append((
                         messages.ERROR,
-                        _('Unable to enroll you in course "{}". API Error: {}').format(course_id, e.message)
+                        _('Unable to enroll you in course "{}"').format(course_id)
                     ))
             else:
                 processing_messages.append((
