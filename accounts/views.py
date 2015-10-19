@@ -631,13 +631,7 @@ def home(request):
     course = programData.get('course')
 
     data = {'popup': {'title': '', 'description': ''}}
-
-    # Display any errors/messages that may have been created during SSO onboarding:
-    flash_messages = messages.get_messages(request)
-    if flash_messages:
-        data['popup']['title'] = "Notice"
-        data['popup']['description'] = " ".join(msg.message for msg in flash_messages)
-    elif request.session.get('program_popup') is None:
+    if request.session.get('program_popup') is None:
         if program:
             if program.id is not Program.NO_PROGRAM_ID:
                 days = ''

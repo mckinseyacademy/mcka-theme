@@ -137,6 +137,18 @@
         %p{'class': "lead description"}
         %a{'class': "close-reveal-modal fa fa-times-circle"}
 
+    - block messages_modal
+      - if messages
+        #messagesModal.reveal-modal.small{'data-reveal': ''}
+          %h2.title
+            Notice
+          %p{'class': "lead description"}
+            {% for message in messages %}
+            {{ message }}<br/>
+            {% endfor %}
+          %a{'class': "close-reveal-modal fa fa-times-circle"}
+            %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+
     - block change_profile_image
       #edit-user-image-modal.reveal-modal.medium{'data-reveal': 'true'}
 

@@ -254,5 +254,24 @@ $(function(){
       var arrows = $('.page-to');
       arrows[result]('disabled');
     }
-  })
+  });
+
+  var $msg_modal = $('#messagesModal');
+
+  function scroll_messages_window() {
+    var modal_offset = $msg_modal.offset();
+
+    var render_warning_popup = function(){
+        setTimeout(function(){$msg_modal.foundation('reveal', 'open');}, 500);
+    };
+
+    $('html,body').animate({
+        scrollTop: modal_offset.top,
+        scrollLeft: modal_offset.left
+    }, 0, render_warning_popup());
+  }
+
+  if ($msg_modal) {
+    setTimeout(scroll_messages_window, 10);
+  }
 });
