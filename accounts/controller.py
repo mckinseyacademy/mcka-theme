@@ -138,24 +138,32 @@ def assign_student_to_program(user, client, program_id, course_ids=None):
     already_enrolled = Program.user_program_list(user.id)
     if program not in already_enrolled:
         program.add_user(client.id, user.id)
+    course_ids_set = set(course_ids)
     if course_ids:
         valid_course_ids = set(c.course_id for c in program.courses)
-        for course_id in course_ids:
-            if course_id in valid_course_ids:
-                try:
-                    user_api.enroll_user_in_course(user.id, course_id)
-                    processing_messages.append((
-                        messages.INFO, _("Successfully enrolled you in a course {}.").format(course_id)
-                    ))
-                except ApiError:
+        courses_to_enroll_to = list(course_ids_set & valid_course_ids)
+        courses_not_in_program = (course_ids_set - valid_course_ids)
+        for course_id in courses_to_enroll_to:
+            try:
+                user_api.enroll_user_in_course(user.id, course_id)
+                processing_messages.append((
+                    messages.INFO, _('Successfully enrolled you in a course "{}".').format(course_id)
+                ))
+            except ApiError as e:
+                if e.code == 409:
                     processing_messages.append((
                         messages.ERROR,
-                        _('Unable to enroll you in course "{}"').format(course_id)
+                        _('Unable to enroll you in course "{}" - already enrolled.').format(course_id)
                     ))
-            else:
-                processing_messages.append((
-                    messages.ERROR,
-                    _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
-                ))
+                else:
+                    processing_messages.append((
+                        messages.ERROR,
+                        _('Unable to enroll you in course "{}".').format(course_id)
+                    ))
+        for course_id in courses_not_in_program:
+            processing_messages.append((
+                messages.ERROR,
+                _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
+            ))
 
     return processing_messages
