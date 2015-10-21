@@ -30,7 +30,8 @@ from api_client.api_error import ApiError
 from admin.models import Client, Program
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
-from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
+from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
+    CURRENT_PROGRAM
 
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
@@ -188,6 +189,10 @@ def _process_access_key_and_remove_from_session(request, user, access_key, clien
     processing_messages = process_access_key(user, access_key, client)
     for message_level, message in processing_messages:
         messages.add_message(request, message_level, message)
+
+    # cleaning up current program session-cached value
+    if CURRENT_PROGRAM in request.session:
+        del request.session[CURRENT_PROGRAM]
 
 
 def _get_access_key(key_code):
@@ -631,13 +636,7 @@ def home(request):
     course = programData.get('course')
 
     data = {'popup': {'title': '', 'description': ''}}
-
-    # Display any errors/messages that may have been created during SSO onboarding:
-    flash_messages = messages.get_messages(request)
-    if flash_messages:
-        data['popup']['title'] = "Notice"
-        data['popup']['description'] = " ".join(msg.message for msg in flash_messages)
-    elif request.session.get('program_popup') is None:
+    if request.session.get('program_popup') is None:
         if program:
             if program.id is not Program.NO_PROGRAM_ID:
                 days = ''
