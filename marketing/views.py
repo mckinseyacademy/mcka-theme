@@ -49,3 +49,6 @@ def edxoffer(request, offer_form=EdxOfferForm):
     }
 
     return render(request, 'marketing/edxoffer.haml', data)
+
+def fblf(request):
+    return redirect('http://www.fblf.info')
