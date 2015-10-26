@@ -93,6 +93,9 @@ def get_sso_provider(email):
         return None
 
 
+ProcessAccessKeyResult = namedtuple('ProcessAccessKeyResult', ['enrolled_in_course_ids', 'messages'])
+
+
 def process_access_key(user, access_key, client):
     """
     Processes access key for a user:
@@ -103,7 +106,7 @@ def process_access_key(user, access_key, client):
     if company_ids and client.id not in company_ids:
         error_message = _("Access Key {key} is associated with company {company}, "
                           "but you're not registered with it").format(key=access_key.code, company=client.display_name)
-        return [(messages.ERROR, error_message)]
+        return ProcessAccessKeyResult(None, [(messages.ERROR, error_message)])
 
     if client.id not in company_ids:
         # Associate the user with their client/company:
@@ -111,6 +114,7 @@ def process_access_key(user, access_key, client):
 
     # Associate the user with their program and/or course:
     processing_messages = []
+    enrolled_in_courses_ids = []
     if access_key.program_id:
         add_to_program_result = assign_student_to_program(user, client, program_id=access_key.program_id)
         program, message = add_to_program_result.program, add_to_program_result.message
@@ -121,7 +125,10 @@ def process_access_key(user, access_key, client):
             if enroll_in_course_result.message:
                 processing_messages.append(enroll_in_course_result.message)
 
-    return processing_messages
+            if enroll_in_course_result.course_id:
+                enrolled_in_courses_ids.append(enroll_in_course_result.course_id)
+
+    return ProcessAccessKeyResult(enrolled_in_courses_ids, processing_messages)
 
 
 AssignStudentToProgramResult = namedtuple('AssignStudentToProgramResult', ['program', 'message'])

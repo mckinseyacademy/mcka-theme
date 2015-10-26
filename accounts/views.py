@@ -31,7 +31,7 @@ from admin.models import Client, Program
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
-    CURRENT_PROGRAM
+    CURRENT_PROGRAM, set_current_course_for_user
 
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
@@ -128,6 +128,14 @@ def _process_authenticated_user(request, user):
     request.session["remote_session_key"] = user.session_key
     auth.login(request, user)
 
+    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
+        try:
+            access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
+        except (AccessKey.DoesNotExist, AttributeError, IndexError):
+            messages.error(request, CANT_PROCESS_ACCESS_KEY)
+        else:
+            _process_access_key_and_remove_from_session(request, user, access_key, client)
+
     if not redirect_to:
         course_id = get_current_course_for_user(request)
         program = get_current_program_for_user(request)
@@ -171,28 +179,23 @@ def _process_authenticated_user(request, user):
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
 
-    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
-        try:
-            access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
-        except (AccessKey.DoesNotExist, AttributeError, IndexError):
-            messages.error(request, CANT_PROCESS_ACCESS_KEY)
-            return response
-
-        _process_access_key_and_remove_from_session(request, user, access_key, client)
-
     return response
 
 
 def _process_access_key_and_remove_from_session(request, user, access_key, client):
     if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
         del request.session[SSO_ACCESS_KEY_SESSION_ENTRY]
-    processing_messages = process_access_key(user, access_key, client)
-    for message_level, message in processing_messages:
+    process_access_key_result = process_access_key(user, access_key, client)
+    for message_level, message in process_access_key_result.messages:
         messages.add_message(request, message_level, message)
 
     # cleaning up current program session-cached value
     if CURRENT_PROGRAM in request.session:
         del request.session[CURRENT_PROGRAM]
+
+    if process_access_key_result.enrolled_in_course_ids:
+        current_course_id = process_access_key_result.enrolled_in_course_ids[0]
+        set_current_course_for_user(request, current_course_id)
 
 
 def _get_access_key(key_code):
