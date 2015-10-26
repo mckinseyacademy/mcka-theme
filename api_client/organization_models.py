@@ -47,7 +47,7 @@ class Organization(JsonObjectWithImage):
     def add_user(self, user_id):
         if user_id not in self.users:
             self.users.append(user_id)
-            organization_api.update_organization(self.id, {"users": self.users})
+            organization_api.add_user_to_organization(self.id, user_id)
 
     def remove_user(self, user_id):
         if user_id in self.users:

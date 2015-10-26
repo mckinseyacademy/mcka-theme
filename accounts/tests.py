@@ -79,19 +79,27 @@ class AccessLandingTests(TestCase):
 
     def apply_patch(self, *args, **kwargs):
         patcher = patch(*args, **kwargs)
-        patcher.start()
         self.addCleanup(patcher.stop)
+        return patcher.start()
 
     def setUp(self):
         super(AccessLandingTests, self).setUp()
         self.factory = RequestFactory()
         self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
+        self.mock_client = Mock(display_name='TestCo')
+        self.apply_patch('api_client.organization_api.fetch_organization', return_value=self.mock_client)
 
-    def test_redirects_authenticated(self):
+    def test_enrolls_authenticated_user(self):
+        user_api = self.apply_patch('accounts.controller.user_api')
+        user_api.get_user_organizations.return_value = []
+
+        AccessKey.objects.create(client_id=100, code=1234)
         request = self.factory.get('/access/1234')
         request.user = RemoteUser.objects.create_user(username='johndoe', email='john@doe.org', password='password')
+        request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
         response = access_key(request, 1234)
         self.assertEqual(response.status_code, 302)
+        self.assertTrue(self.mock_client.add_user.called)
 
     def test_missing_access_key(self):
         response = self.client.get('/access/1234')
@@ -151,7 +159,7 @@ class SsoUserFinalizationTests(TestCase):
         self.assertEqual(response.status_code, 200)
         # That will then redirect us to the SSO provider...
         self.assertTrue(response.context['redirect_to'].startswith('/auth/login/tpa-saml/?'))
-        for pair in ('auth_entry=apros', 'idp=testshib', 'next=%2Flogin'):
+        for pair in ('auth_entry=apros', 'idp=testshib', 'next=%2Faccounts%2Flogin%2F'):
             self.assertIn(pair, response.context['redirect_to'])
 
         # The user then logs in and gets redirected back to Apros:

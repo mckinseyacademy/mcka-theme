@@ -84,10 +84,13 @@
         .label-3 <i class="status fa fa-circle"></i> not started
         .label-3 <i class="status fa fa-circle partial"></i> partially complete
         .label-3 <i class="status fa fa-check-circle complete"></i> complete
-      - if feature_flags.group_work
-        %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
-      - else
-        %p.style-6 Note: "weeks" begin Tuesday and end the following Monday
+      - if course_run and feature_flags.group_work
+        %p.style-6 Note: Group Work Deliverables need to be submitted by 11pm GMT.
+      - if not course_run
+        - if feature_flags.group_work
+          %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
+        - else
+          %p.style-6 Note: "weeks" begin Tuesday and end the following Monday
     - if graded_items_count > 0
       .medium-10.medium-centered.columns.course-page
         .label-5 PROFICIENCY
@@ -140,7 +143,7 @@
         .legend-status
           .label-3 <i class="status fa fa-circle"></i> not started / incomplete
           .label-3 <i class="status fa fa-check-circle complete"></i> complete
-        %p.style-6 Your proficiency score is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+        %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
     - if feature_flags.discussions
       .medium-10.medium-centered.columns.course-page
         .label-5 ENGAGEMENT

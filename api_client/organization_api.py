@@ -125,6 +125,20 @@ def update_organization(organization_id, organization_data, organization_object=
     return JP.from_json(response.read(), organization_object)
 
 @api_error_protect
+def add_user_to_organization(organization_id, user_id):
+    ''' Add the specified user to the given organization '''
+    data = {
+        "id": user_id,
+    }
+
+    response = POST(
+        '{}/{}/{}/users/'.format(settings.API_SERVER_ADDRESS, ORGANIZATION_API, organization_id),
+        data,
+    )
+
+    return (response.code == 201)
+
+@api_error_protect
 def get_grade_complete_count(organization_id, organization_object=JsonObject, *args, **kwargs):
     qs_params = {}
     for karg in kwargs:
