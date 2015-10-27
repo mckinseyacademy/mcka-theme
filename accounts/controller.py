@@ -1,3 +1,4 @@
+from collections import namedtuple
 import datetime
 from django.contrib import messages
 import os
@@ -92,6 +93,9 @@ def get_sso_provider(email):
         return None
 
 
+ProcessAccessKeyResult = namedtuple('ProcessAccessKeyResult', ['enrolled_in_course_ids', 'messages'])
+
+
 def process_access_key(user, access_key, client):
     """
     Processes access key for a user:
@@ -102,68 +106,81 @@ def process_access_key(user, access_key, client):
     if company_ids and client.id not in company_ids:
         error_message = _("Access Key {key} is associated with company {company}, "
                           "but you're not registered with it").format(key=access_key.code, company=client.display_name)
-        return [(messages.ERROR, error_message)]
+        return ProcessAccessKeyResult(None, [(messages.ERROR, error_message)])
 
     if client.id not in company_ids:
         # Associate the user with their client/company:
         client.add_user(user.id)
 
     # Associate the user with their program and/or course:
-    if access_key.program_id:
-        return assign_student_to_program(
-            user, client, program_id=access_key.program_id, course_ids=[access_key.course_id]
-        )
-
-    return []  # never return None from a method that normally returns a list
-
-
-def assign_student_to_program(user, client, program_id, course_ids=None):
-    """
-    Assign the given user to the specified client, program, and/or course.
-    If any errors occur, they will be returned via django-messages.
-    """
     processing_messages = []
+    enrolled_in_courses_ids = []
+    if access_key.program_id:
+        add_to_program_result = assign_student_to_program(user, client, program_id=access_key.program_id)
+        program, message = add_to_program_result.program, add_to_program_result.message
+        if message:
+            processing_messages.append(message)
+        if program and access_key.course_id:
+            enroll_in_course_result = enroll_student_in_course(user, program, access_key.course_id)
+            if enroll_in_course_result.message:
+                processing_messages.append(enroll_in_course_result.message)
+
+            if enroll_in_course_result.course_id:
+                enrolled_in_courses_ids.append(enroll_in_course_result.course_id)
+
+    return ProcessAccessKeyResult(enrolled_in_courses_ids, processing_messages)
+
+
+AssignStudentToProgramResult = namedtuple('AssignStudentToProgramResult', ['program', 'message'])
+EnrollStudentInCourseResult = namedtuple('EnrollStudentInCourseResult', ['course_id', 'message'])
+
+
+def assign_student_to_program(user, client, program_id):
+    """
+    Assign the given user to the specified client and program
+    Returns AssignStudentToProgramResult, containing the program (if exists) and messages (if any)
+    """
     program = Program.fetch(program_id)
     program.courses = program.fetch_courses()
 
     allocated, assigned = license_controller.licenses_report(program.id, client.id)
     remaining = allocated - assigned
     if remaining <= 0:
-        processing_messages.append((
+        message = (
             messages.ERROR,
             _("Unable to enroll you in the requested program, {}. No remaining places.").format(program.display_name)
-        ))
-        return processing_messages
+        )
+        return AssignStudentToProgramResult(None, message)
 
     already_enrolled = Program.user_program_list(user.id)
     if program not in already_enrolled:
         program.add_user(client.id, user.id)
-    course_ids_set = set(course_ids)
-    if course_ids:
-        valid_course_ids = set(c.course_id for c in program.courses)
-        courses_to_enroll_to = list(course_ids_set & valid_course_ids)
-        courses_not_in_program = (course_ids_set - valid_course_ids)
-        for course_id in courses_to_enroll_to:
-            try:
-                user_api.enroll_user_in_course(user.id, course_id)
-                processing_messages.append((
-                    messages.INFO, _('Successfully enrolled you in a course "{}".').format(course_id)
-                ))
-            except ApiError as e:
-                if e.code == 409:
-                    processing_messages.append((
-                        messages.ERROR,
-                        _('Unable to enroll you in course "{}" - already enrolled.').format(course_id)
-                    ))
-                else:
-                    processing_messages.append((
-                        messages.ERROR,
-                        _('Unable to enroll you in course "{}".').format(course_id)
-                    ))
-        for course_id in courses_not_in_program:
-            processing_messages.append((
-                messages.ERROR,
-                _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
-            ))
 
-    return processing_messages
+    return AssignStudentToProgramResult(program, None)
+
+
+def enroll_student_in_course(user, program, course_id):
+    """
+    Enroll the given user to the specified course in a program
+    Returns EnrollStudentInCourseResult, containing the course_id (if exists and in program) and messages (if any)
+    """
+    valid_course_ids = set(c.course_id for c in program.courses)
+    if course_id in valid_course_ids:
+        try:
+            user_api.enroll_user_in_course(user.id, course_id)
+            message = (
+                messages.INFO, _("Successfully enrolled you in a course {}.").format(course_id)
+            )
+            return EnrollStudentInCourseResult(course_id, message)
+        except ApiError as e:
+            message = (
+                messages.ERROR,
+                _('Unable to enroll you in course "{}". API Error: {}').format(course_id, e.message)
+            )
+            return EnrollStudentInCourseResult(None, message)
+    else:
+        message = (
+            messages.ERROR,
+            _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
+        )
+        return EnrollStudentInCourseResult(None, message)
