@@ -273,28 +273,35 @@ class Course(CategorisedJsonObject):
             "group_activities": [],
         }
 
+        if hasattr(self, 'course_run'):
+            for group in self.course_run:
+                year = datetime.date.today().year
+                week_start = group['start_date']
+                week_end = group['end_date']
+                weeks[week_end] = {
+                    "start": week_start,
+                    "end": week_end,
+                    "start_date": datetime.datetime.strptime('{0}/{1}'.format(week_start, year), '%m/%d/%Y'),
+                    "end_date": datetime.datetime.strptime('{0}/{1}'.format(week_end, year), '%m/%d/%Y'),
+                    "lessons": [],
+                    "group_activities": [],
+                    "grouped": group['lessons'],
+                }
+
         for lesson in self.chapters:
-            if hasattr(self, 'course_run'):
-                week_start = None
-                week_end = None
-                for group in self.course_run:
-                    if lesson.index in group['lessons']:
-                        week_start = group['start_date']
-                        week_end = group['end_date']
-                if not week_start:
-                    no_due_date["lessons"].append(lesson)
-                else:
-                    if week_end in weeks:
-                        weeks[week_end]["lessons"].append(lesson)
-                    else:
-                        weeks[week_end] = {
-                            "sort_by": datetime.datetime.strptime(week_end, '%m/%d'),
-                            "start": week_start,
-                            "end": week_end,
-                            "lessons": [lesson],
-                            "group_activities": [],
-                        }
-            else:
+            appended = None
+            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+            for key, week in weeks.iteritems():
+                if lesson.index in week['grouped']:
+                    week["lessons"].append(lesson)
+                    appended = True
+                elif len(due_dates) > 0:
+                    due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+                    if week["start_date"] < due_date < week["end_date"]:
+                        week["lessons"].append(lesson)
+                        appended = True
+
+            if not appended:
                 due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
                 if len(due_dates) == 0:
                     no_due_date["lessons"].append(lesson)
@@ -312,9 +319,10 @@ class Course(CategorisedJsonObject):
                         weeks[key]["lessons"].append(lesson)
                     else:
                         weeks[key] = {
-                            "sort_by": week_end,
                             "start": week_start.strftime("%m/%d"),
                             "end": week_end.strftime("%m/%d"),
+                            "start_date": week_start,
+                            "end_date": week_end,
                             "lessons": [lesson],
                             "group_activities": [],
                         }
@@ -336,22 +344,33 @@ class Course(CategorisedJsonObject):
                         week_end = week_start + datetime.timedelta(days=6)
                         key = week_end.strftime("%s")
                         activity.due_on = activity.due.strftime("%B %e")
+                        appended = None
 
-                        if key in weeks:
-                            weeks[key]["has_group"] = True
-                            weeks[key]["group_activities"].append(activity)
-                        else:
-                            weeks[key] = {
-                                "sort_by": week_end,
-                                "start": week_start.strftime("%m/%d"),
-                                "end": week_end.strftime("%m/%d"),
-                                "has_group": True,
-                                "group_only": True,
-                                "lessons": [],
-                                "group_activities": [activity],
-                            }
+                        for key, week in weeks.iteritems():
+                            if week["start_date"] < activity.due_on < week["end_date"]:
+                                week["lessons"].append(activity)
+                                appended = True
 
-        weeks = sorted(weeks.values(), key=lambda w: w["sort_by"])
+                        if not appended:
+                            if key in weeks:
+                                weeks[key]["has_group"] = True
+                                weeks[key]["group_activities"].append(activity)
+                            else:
+                                weeks[key] = {
+                                    "start": week_start.strftime("%m/%d"),
+                                    "end": week_end.strftime("%m/%d"),
+                                    "start_date": week_start,
+                                    "end_date": week_end,
+                                    "has_group": True,
+                                    "group_only": True,
+                                    "lessons": [],
+                                    "group_activities": [activity],
+                                }
+
+        for key, week in weeks.iteritems():
+            print "\n\n=======END======="
+            print week['end_date']
+        weeks = sorted(weeks.values(), key=lambda w: w["end_date"])
         if len(no_due_date["lessons"]) > 0 or len(no_due_date["group_activities"]) > 0:
             weeks.append(no_due_date)
 
