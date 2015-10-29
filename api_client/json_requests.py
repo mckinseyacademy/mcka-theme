@@ -12,7 +12,7 @@ JSON_HEADERS = {
     "X-Edx-Api-Key": settings.EDX_API_KEY,
 }
 
-TIMEOUT = 20
+TIMEOUT = 40
 
 
 def json_headers():
