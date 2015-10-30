@@ -173,14 +173,19 @@ def enroll_student_in_course(user, program, course_id):
             )
             return EnrollStudentInCourseResult(course_id, message)
         except ApiError as e:
-            message = (
-                messages.ERROR,
-                _('Unable to enroll you in course "{}". API Error: {}').format(course_id, e.message)
-            )
-            return EnrollStudentInCourseResult(None, message)
+            if e.code == 409:
+                message = (
+                    messages.ERROR,
+                    _('Unable to enroll you in course "{}" - already enrolled.').format(course_id)
+                )
+            else:
+                message = (
+                    messages.ERROR,
+                    _('Unable to enroll you in course "{}".').format(course_id)
+                )
     else:
         message = (
             messages.ERROR,
             _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
         )
-        return EnrollStudentInCourseResult(None, message)
+    return EnrollStudentInCourseResult(None, message)
