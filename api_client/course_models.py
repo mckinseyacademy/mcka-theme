@@ -187,6 +187,8 @@ class Course(CategorisedJsonObject):
 
     @property
     def is_evergreen(self):
+        if hasattr(self, 'course_run'):
+            return False
         for lesson in self.chapters:
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
             if len(due_dates) > 0:
@@ -292,7 +294,7 @@ class Course(CategorisedJsonObject):
             appended = None
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
             for key, week in weeks.iteritems():
-                if hasattr(week, 'grouped') and lesson.index in week['grouped']:
+                if lesson.index in week['grouped']:
                     week["lessons"].append(lesson)
                     appended = True
                 elif len(due_dates) > 0:
@@ -325,6 +327,7 @@ class Course(CategorisedJsonObject):
                             "end_date": week_end,
                             "lessons": [lesson],
                             "group_activities": [],
+                            "grouped": [],
                         }
 
         if getattr(self, 'group_work_enabled', None):
@@ -365,9 +368,9 @@ class Course(CategorisedJsonObject):
                                     "group_only": True,
                                     "lessons": [],
                                     "group_activities": [activity],
+                                    "grouped": [],
                                 }
 
-        for key, week in weeks.iteritems():
         weeks = sorted(weeks.values(), key=lambda w: w["end_date"])
         if len(no_due_date["lessons"]) > 0 or len(no_due_date["group_activities"]) > 0:
             weeks.append(no_due_date)
