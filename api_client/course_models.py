@@ -292,7 +292,7 @@ class Course(CategorisedJsonObject):
             appended = None
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
             for key, week in weeks.iteritems():
-                if lesson.index in week['grouped']:
+                if hasattr(week, 'grouped') and lesson.index in week['grouped']:
                     week["lessons"].append(lesson)
                     appended = True
                 elif len(due_dates) > 0:
@@ -368,8 +368,6 @@ class Course(CategorisedJsonObject):
                                 }
 
         for key, week in weeks.iteritems():
-            print "\n\n=======END======="
-            print week['end_date']
         weeks = sorted(weeks.values(), key=lambda w: w["end_date"])
         if len(no_due_date["lessons"]) > 0 or len(no_due_date["group_activities"]) > 0:
             weeks.append(no_due_date)
