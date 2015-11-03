@@ -277,14 +277,14 @@ class Course(CategorisedJsonObject):
 
         if hasattr(self, 'course_run'):
             for group in self.course_run:
-                year = datetime.date.today().year
-                week_start = group['start_date']
-                week_end = group['end_date']
-                weeks[week_end] = {
-                    "start": week_start,
-                    "end": week_end,
-                    "start_date": datetime.datetime.strptime('{0}/{1}'.format(week_start, year), '%m/%d/%Y'),
-                    "end_date": datetime.datetime.strptime('{0}/{1}'.format(week_end, year), '%m/%d/%Y'),
+                week_start = datetime.datetime.strptime(group['start_date'], '%m/%d/%Y')
+                week_end = datetime.datetime.strptime(group['end_date'], '%m/%d/%Y')
+                key = week_end.strftime("%s")
+                weeks[key] = {
+                    "start": week_start.strftime("%m/%d"),
+                    "end": week_end.strftime("%m/%d"),
+                    "start_date": week_start,
+                    "end_date": week_end,
                     "lessons": [],
                     "group_activities": [],
                     "grouped": group['lessons'],
