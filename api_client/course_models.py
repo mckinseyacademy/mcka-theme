@@ -350,7 +350,7 @@ class Course(CategorisedJsonObject):
                         appended = None
 
                         for key, week in weeks.iteritems():
-                            if week["start_date"] < activity.due_on < week["end_date"]:
+                            if week["start_date"] < activity.due < week["end_date"]:
                                 week["lessons"].append(activity)
                                 appended = True
 
