@@ -9,5 +9,6 @@ urlpatterns = patterns(
     url(r'^support/$', views.support, name='support'),
     url(r'^subscribe/$', views.subscribe, name='subscribe'),
     url(r'^edxoffer/$', views.edxoffer, name='edxoffer'),
+    url(r'^(?i)fblf/$', views.fblf, name='fblf'),
     url(r'^(?P<page_name>.*)/$', views.infer_default_navigation, name='infer_default_navigation'),
 )
