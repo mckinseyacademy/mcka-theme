@@ -30,7 +30,8 @@ from api_client.api_error import ApiError
 from admin.models import Client, Program
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
-from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user
+from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
+    CURRENT_PROGRAM, set_current_course_for_user
 
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
@@ -120,6 +121,32 @@ def _build_sso_redirect_url(provider, next):
     return '{lms_auth}login/tpa-saml/?{query}'.format(lms_auth=settings.LMS_AUTH_URL, query=urlencode(query_args))
 
 
+def _get_redirect_to_current_course(request):
+    course_id = get_current_course_for_user(request)
+    program = get_current_program_for_user(request)
+    future_start_date = False
+    if program:
+        if course_id is not None:
+            for program_course in program.courses:
+                if program_course.id == course_id:
+                    '''
+                    THERE IS A PLACE FOR IMPROVEMENT HERE
+                    IF user course object had start/due date, we
+                    would do one less API call
+                    '''
+                    full_course_object = load_course(course_id)
+                    if hasattr(full_course_object, 'start'):
+                        future_start_date = is_future_start(full_course_object.start)
+                    elif hasattr(program, 'start_date') and future_start_date is False:
+                        future_start_date = is_future_start(program.start_date)
+        elif hasattr(program, 'start_date'):
+            future_start_date = is_future_start(program.start_date)
+
+    if course_id and not future_start_date:
+        return reverse('course_landing_page', kwargs=dict(course_id=course_id))
+    return reverse('protected_home')
+
+
 def _process_authenticated_user(request, user):
     redirect_to = _get_redirect_to(request)
     _validate_path(redirect_to)
@@ -127,34 +154,16 @@ def _process_authenticated_user(request, user):
     request.session["remote_session_key"] = user.session_key
     auth.login(request, user)
 
-    if not redirect_to:
-        course_id = get_current_course_for_user(request)
-        program = get_current_program_for_user(request)
-        future_start_date = False
-        if program:
-            if course_id is not None:
-                for program_course in program.courses:
-                    if program_course.id == course_id:
-                        '''
-                        THERE IS A PLACE FOR IMPROVEMENT HERE
-                        IF user course object had start/due date, we
-                        would do one less API call
-                        '''
-                        full_course_object = load_course(course_id)
-                        if hasattr(full_course_object, 'start'):
-                            future_start_date = is_future_start(full_course_object.start)
-                        elif hasattr(program, 'start_date') and future_start_date is False:
-                            future_start_date = is_future_start(program.start_date)
-            elif hasattr(program, 'start_date') and future_start_date is False:
-                future_start_date = is_future_start(program.start_date)
-
-        if course_id:
-            if future_start_date:
-                redirect_to = '/'
-            else:
-                redirect_to = '/courses/{}'.format(course_id)
+    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
+        try:
+            access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
+        except (AccessKey.DoesNotExist, AttributeError, IndexError):
+            messages.error(request, CANT_PROCESS_ACCESS_KEY)
         else:
-            redirect_to = '/'
+            _process_access_key_and_remove_from_session(request, user, access_key, client)
+
+    if not redirect_to:
+        redirect_to = _get_redirect_to_current_course(request)
 
     response = HttpResponseRedirect(redirect_to)  # Redirect after POST
     if 'remote_session_key' in request.session:
@@ -170,24 +179,23 @@ def _process_authenticated_user(request, user):
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
 
-    if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
-        try:
-            access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
-        except (AccessKey.DoesNotExist, AttributeError, IndexError):
-            messages.error(request, CANT_PROCESS_ACCESS_KEY)
-            return response
-
-        _process_access_key_and_remove_from_session(request, user, access_key, client)
-
     return response
 
 
 def _process_access_key_and_remove_from_session(request, user, access_key, client):
     if SSO_ACCESS_KEY_SESSION_ENTRY in request.session:
         del request.session[SSO_ACCESS_KEY_SESSION_ENTRY]
-    processing_messages = process_access_key(user, access_key, client)
-    for message_level, message in processing_messages:
+    process_access_key_result = process_access_key(user, access_key, client)
+    for message_level, message in process_access_key_result.messages:
         messages.add_message(request, message_level, message)
+
+    # cleaning up current program session-cached value
+    if CURRENT_PROGRAM in request.session:
+        del request.session[CURRENT_PROGRAM]
+
+    if process_access_key_result.enrolled_in_course_ids:
+        current_course_id = process_access_key_result.enrolled_in_course_ids[0]
+        set_current_course_for_user(request, current_course_id)
 
 
 def _get_access_key(key_code):
@@ -631,13 +639,7 @@ def home(request):
     course = programData.get('course')
 
     data = {'popup': {'title': '', 'description': ''}}
-
-    # Display any errors/messages that may have been created during SSO onboarding:
-    flash_messages = messages.get_messages(request)
-    if flash_messages:
-        data['popup']['title'] = "Notice"
-        data['popup']['description'] = " ".join(msg.message for msg in flash_messages)
-    elif request.session.get('program_popup') is None:
+    if request.session.get('program_popup') is None:
         if program:
             if program.id is not Program.NO_PROGRAM_ID:
                 days = ''
@@ -880,7 +882,7 @@ def access_key(request, code):
     if request.user.is_authenticated():
         if key and client:
             _process_access_key_and_remove_from_session(request, request.user, key, client)
-        return HttpResponseRedirect(reverse('protected_home'))
+        return HttpResponseRedirect(_get_redirect_to_current_course(request))
 
     # Show the invitation landing page. It informs the user that they are about
     #  to be redirected to their company's provider.

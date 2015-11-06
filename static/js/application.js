@@ -2,6 +2,7 @@ window.Apros = {
   models: {},
   collections: {},
   views: {},
+  modals: [],
 
   initialize: function() {
     var route     = window.location.pathname.replace(/\/$/, ''),
@@ -39,6 +40,26 @@ window.Apros = {
       page_url = jump_link.block_id;
     }
     return course_url + page_url;
+  },
+
+  chainModal: function(order, modal_selector, entry_callback) {
+    this.modals.push({order: order, selector: modal_selector, entry_callback: entry_callback});
+  },
+
+  executeModalChain: function() {
+    if (this.modals.length == 0) {
+      return;
+    }
+
+    var sorted_modals = _.sortBy(this.modals, 'order');
+    var chainStart = sorted_modals[0].entry_callback;
+
+    var idx = 0;
+    while (sorted_modals[idx+1]) {
+      $(document).on('closed.fndtn.reveal', sorted_modals[idx].selector, sorted_modals[idx+1].entry_callback);
+      idx+=1;
+    }
+    chainStart();
   }
 };
 
@@ -205,10 +226,12 @@ $(function(){
     $('#mckinsey_help').data('ooyala_player', player);
   }
 
-  var intro_modal = $('#intro_modal');
-  if (intro_modal.length && !localStorage.intro_shown && typeof OO !== 'undefined') {
-    intro_modal.foundation('reveal', 'open');
-    localStorage.intro_shown = true;
+  var intro_modal_selector = $('#intro_modal');
+  if ($(intro_modal_selector).length && !localStorage.intro_shown && typeof OO !== 'undefined') {
+    Apros.chainModal(10, intro_modal_selector, function(){
+      $(intro_modal_selector).foundation('reveal', 'open');
+      localStorage.intro_shown = true;
+    });
   }
 
   $(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
@@ -222,11 +245,14 @@ $(function(){
   if ($.urlParam('modal')) {
     var modalId = $.urlParam('modal'),
         anchor = $('[data-reveal-id=' + modalId + ']'),
-        modal = $('#' + modalId);
+        modal_selector = '#' + modalId,
+        modal = $(modal_selector);
     if (anchor.length) {
       anchor.click()
     } else {
-      modal.foundation('reveal', 'open');
+      Apros.chainModal(20, modal_selector, function() {
+        modal.foundation('reveal', 'open');
+      });
     }
   }
 
@@ -254,5 +280,14 @@ $(function(){
       var arrows = $('.page-to');
       arrows[result]('disabled');
     }
-  })
+  });
+
+  var msg_modal_selector = '#messagesModal';
+  if ($(msg_modal_selector).length) {
+    Apros.chainModal(0, msg_modal_selector, function() {
+      setTimeout(function() {$(msg_modal_selector).foundation('reveal', 'open');}, 10);
+    });
+  }
+
+  Apros.executeModalChain();
 });
