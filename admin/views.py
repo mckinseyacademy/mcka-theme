@@ -123,17 +123,17 @@ class AccessChecker(object):
             return permission_denied(request)
 
     @staticmethod
-    def check_has_course_access(request, course_id, restrict_to_courses_ids):
+    def check_has_course_access(course_id, restrict_to_courses_ids):
         if restrict_to_courses_ids is not None and course_id not in restrict_to_courses_ids:
             raise PermissionDenied()
 
     @staticmethod
-    def check_has_program_access(request, program_id, restrict_to_programs_ids):
+    def check_has_program_access(program_id, restrict_to_programs_ids):
         if restrict_to_programs_ids is not None and program_id not in restrict_to_programs_ids:
             raise PermissionDenied()
 
     @staticmethod
-    def check_has_user_access(request, student_id, restrict_to_users_ids):
+    def check_has_user_access(student_id, restrict_to_users_ids):
         if restrict_to_users_ids is not None and student_id not in restrict_to_users_ids:
             raise PermissionDenied()
 
@@ -744,7 +744,7 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_items(request, course_id, restrict_to_courses_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
@@ -767,7 +767,7 @@ def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
         course_id = form.data['course_id']
-        AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+        AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
         if form.is_valid():
             item = form.save()
             return redirect('/admin/course-meta-content/items/%s' % urlquote(course_id))
@@ -775,7 +775,7 @@ def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
             error = "please fix the problems indicated below."
     else:
         course_id = request.GET.get('course_id', None)
-        AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+        AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
         init = {'course_id': course_id}
         form = CuratedContentItemForm(initial=init)
 
@@ -797,7 +797,7 @@ def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
 def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_ids=None):
     error = None
     item = CuratedContentItem.objects.filter(id=item_id)[0]
-    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(item.course_id, restrict_to_courses_ids)
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST, instance=item)
         if form.is_valid():
@@ -826,7 +826,7 @@ def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_i
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_item_delete(request, item_id, restrict_to_courses_ids=None):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
-    AccessChecker.check_has_course_access(request, item.course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(item.course_id, restrict_to_courses_ids)
     course_id = urlquote(item.course_id)
     item.delete()
 
@@ -1635,9 +1635,7 @@ def add_students_to_program(request, client_id, restrict_to_programs_ids=None, r
         program_id = int(program_id)
     except (ValueError, TypeError):
         return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
-    AccessChecker.check_has_program_access(
-        request.user, program_id=program_id, restrict_to_programs_ids=restrict_to_programs_ids
-    )
+    AccessChecker.check_has_program_access(program_id=program_id, restrict_to_programs_ids=restrict_to_programs_ids)
     program = Program.fetch(program_id)
     program.courses = program.fetch_courses()
     students = request.POST.getlist("students[]")
@@ -1922,7 +1920,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_list(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     course = load_course(course_id, request=request)
     students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
@@ -1948,7 +1946,7 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_projects_report(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     filename = slugify(
         unicode(
             "Group Report for {} on {}".format(
@@ -1978,7 +1976,7 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     wcd = WorkgroupCompletionData(course_id, group_id, restrict_to_users_ids)
     data = wcd.build_report_data()
     data.update({'selected_client_tab':'group_work_status'})
@@ -1998,7 +1996,7 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
     '''
     Get detailed information about the specific workgroup for this course
     '''
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     workgroup = WorkGroup.fetch(workgroup_id)
     additional_fields = ["avatar_url"]
@@ -2036,7 +2034,7 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id)
 
@@ -2091,7 +2089,7 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id, request=request)
@@ -2143,7 +2141,7 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
             }
         )
     else:
-        AccessChecker.check_has_program_access(request, int(program_id), restrict_to_programs_ids)
+        AccessChecker.check_has_program_access(int(program_id), restrict_to_programs_ids)
 
         program = Program.fetch(program_id)
         courses = program.fetch_courses()
@@ -2171,7 +2169,7 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     if request.method == 'POST':
 
@@ -2193,7 +2191,7 @@ def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     if request.method == 'POST':
         students = set(int(user_id) for user_id in request.POST.getlist('students[]'))
@@ -2236,7 +2234,7 @@ def workgroup_group_remove(request, group_id, restrict_to_courses_ids=None, rest
     if request.method == 'POST':
 
         remove_student = request.POST['student']
-        AccessChecker.check_has_user_access(request, int(remove_student), restrict_to_users_ids)
+        AccessChecker.check_has_user_access(int(remove_student), restrict_to_users_ids)
 
         workgroup = WorkGroup.fetch(group_id)
         workgroup.remove_user(remove_student)
@@ -2271,7 +2269,7 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     message = _("Error creating project")
     status_code = 400
 
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     if request.method == "POST":
         project_section = request.POST["project_section"]
@@ -2304,7 +2302,7 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
     project = Project.fetch(project_id)
-    AccessChecker.check_has_course_access(request, project.course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(project.course_id, restrict_to_courses_ids)
 
     try:
         Project.delete(project_id)
@@ -2357,7 +2355,7 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_c
         form_class = AdminPermissionForm
     else:
         form_class = BasePermissionForm
-        AccessChecker.check_has_user_access(request, int(user_id), restrict_to_users_ids)
+        AccessChecker.check_has_user_access(int(user_id), restrict_to_users_ids)
 
     permissions = Permissions(user_id)
     courses = permissions.courses
