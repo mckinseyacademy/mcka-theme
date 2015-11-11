@@ -1911,7 +1911,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     template = 'admin/workgroup/dashboard.haml'
     data = {
-        'saved_filters': [],   # TODO: fetch saved filters
+        'saved_dashboard_filters': [],   # TODO: fetch saved filters
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
         'restrict_to_users': restrict_to_users_ids
     }

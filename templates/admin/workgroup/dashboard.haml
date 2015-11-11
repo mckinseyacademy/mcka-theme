@@ -9,3 +9,33 @@
             = _("Group Work Dashboard")
           .add-message
             = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
+        %hr
+        %section
+          .large-12.medium-12
+            .sub-2= _("Filter by:")
+
+            .dashboard_filters
+              .small-3.columns
+                %select#saved_dashboard_filters
+                  %option= _("Saved Filters")
+                  %option= _("Save selection as new filter")
+                  - for filter in saved_dashboard_filters
+                    %option{value: "#{filter}"}
+
+              .small-3.columns
+                %select#program
+                  %option= _("Program")
+                  - for program in programs
+                  %option{'value': '#{program.id}'}
+                    = program.display_name
+                    (
+                    %span><= program.name
+                    )
+
+              .small-3.columns
+                %select#course
+                  %option= _("Course")
+
+              .small-3.columns
+                %select#project
+                  %option= _("Project")

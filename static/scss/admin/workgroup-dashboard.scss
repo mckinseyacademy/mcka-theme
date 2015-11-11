@@ -1,0 +1,15 @@
+.dashboard_filters {
+  margin-top: 10px;
+  .columns:first-child {
+    padding-left: 0;
+  }
+  .columns:last-child {
+    padding-right: 0;
+  }
+
+  select {
+    border-color: $mckinsey-academy-alt-blue;
+    color: $mckinsey-academy-alt-blue;
+    font-weight: 600;
+  }
+}
