@@ -80,6 +80,9 @@
         clear_select_options(target_select);
         $(target_select).trigger('change');
         var value = $(this).find('option:selected').val();
+        if (!value) {
+          return;
+        }
         var url = $(this).data('chained-filter-endpoint').replace('$value$', value);
         $.ajax({
           method: 'GET',
@@ -102,6 +105,10 @@
       }
     }
 
+    function make_report(project_id) {
+      console.log(project_id);
+    }
+
     $(document).ready(function(){
       chain_selects('select#select-program', 'select#select-course');
       chain_selects('select#select-course', 'select#select-project');
@@ -109,5 +116,10 @@
       $("select#select-project").on('change', function(){
         var value = $(this).find('option:selected').val();
         toggle_run_report(!!value);
-      })
+      });
+
+      $(".run-report a").on('click', function() {
+        var project_id = $("select#select-project").val();
+        make_report(project_id);
+      });
     });
