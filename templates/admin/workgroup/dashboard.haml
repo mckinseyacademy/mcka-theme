@@ -1,13 +1,20 @@
 - extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
-  .admin-list
+  .admin-dashboard
     .row
-      .large-10.large-centered.columns
+      .large-12.large-centered
         %header
-          %h1.principal-title
-            = _("Group Work Dashboard")
-          .add-message
+          .large-12
+            .large-10.columns
+              %h1.principal-title
+                = _("Group Work Dashboard")
+            .large-2.columns.run-report
+              %a.button.radius.small
+                %span.fa-download
+                = _("Report")
+          .row
+          .add-message.detail-message
             = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
         %hr
         %section
@@ -44,6 +51,9 @@
                 %select#select-project
                   %option{'data-static': 'true'}
                     = _("Project")
+
+        %section
+          .row.large-12.group_project_placeholder
 
 - block js_snippets
   :javascript

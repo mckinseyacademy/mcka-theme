@@ -1,5 +1,4 @@
-.dashboard_filters {
-  margin-top: 10px;
+.admin-dashboard {
   .columns:first-child {
     padding-left: 0;
   }
@@ -7,9 +6,20 @@
     padding-right: 0;
   }
 
-  select {
-    border-color: $mckinsey-academy-alt-blue;
-    color: $mckinsey-academy-alt-blue;
-    font-weight: 600;
+  .run-report {
+    text-align: right;
+  }
+
+  .detail-message {
+    margin-top: 10px;
+  }
+
+  .dashboard_filters {
+    margin-top: 10px;
+    select {
+      border-color: $mckinsey-academy-alt-blue;
+      color: $mckinsey-academy-alt-blue;
+      font-weight: 600;
+    }
   }
 }
