@@ -10,7 +10,7 @@
               %h1.principal-title
                 = _("Group Work Dashboard")
             .large-2.columns.run-report
-              %a.button.radius.small
+              %a.button.radius.small.disabled{'disabled': 'disabled'}
                 %span.fa-download
                 = _("Report")
           .row
@@ -33,7 +33,7 @@
 
               .small-3.columns
                 %select#select-program{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses"}
-                  %option{'data-static': 'true'}
+                  %option{'data-static': 'true', 'value': ''}
                     = _("Program")
                   - for program in programs
                     %option{'value': '#{program.id}'}
@@ -44,12 +44,12 @@
 
               .small-3.columns
                 %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects"}
-                  %option{'data-static': 'true'}
+                  %option{'data-static': 'true', 'value': ''}
                     = _("Course")
 
               .small-3.columns
                 %select#select-project
-                  %option{'data-static': 'true'}
+                  %option{'data-static': 'true', 'value': ''}
                     = _("Project")
 
         %section
@@ -64,7 +64,6 @@
 
     function parse_response_as_options(target_selector, data) {
       var select = $(target_selector);
-      clear_select_options(target_selector);
 
       for (var i=0; i<data.length; i++) {
         var item = data[i];
@@ -78,6 +77,8 @@
     function chain_selects(source_select, target_select) {
       // when source_select is updated, it sends ajax requests and populates target_select with values
       $(source_select).on('change', function(){
+        clear_select_options(target_select);
+        $(target_select).trigger('change');
         var value = $(this).find('option:selected').val();
         var url = $(this).data('chained-filter-endpoint').replace('$value$', value);
         $.ajax({
@@ -89,7 +90,24 @@
       });
     }
 
+    function toggle_run_report(enabled) {
+      var run_report_btn = $(".run-report a");
+      if (enabled) {
+        run_report_btn.removeAttr('disabled');
+        run_report_btn.removeClass('disabled');
+      }
+      else{
+        run_report_btn.attr('disabled', 'disabled');
+        run_report_btn.addClass('disabled');
+      }
+    }
+
     $(document).ready(function(){
       chain_selects('select#select-program', 'select#select-course');
       chain_selects('select#select-course', 'select#select-project');
+
+      $("select#select-project").on('change', function(){
+        var value = $(this).find('option:selected').val();
+        toggle_run_report(!!value);
+      })
     });
