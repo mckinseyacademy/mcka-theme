@@ -14,6 +14,7 @@ from api_client import user_api, group_api, course_api, organization_api, projec
 from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
+from api_client.project_models import Project
 from api_client.user_api import USER_ROLES
 
 from .models import (
@@ -724,3 +725,45 @@ def get_accessible_courses_from_program(user, program_id, restrict_to_courses_id
         courses = [course for course in courses if course.course_id in restrict_to_courses_ids]
 
     return courses
+
+
+def load_group_projects_info_for_course(course, companies):
+    group_project_lookup = {gp.id: gp.name for gp in course.group_projects}
+    group_projects = []
+    for project in Project.fetch_projects_for_course(course.id):
+        try:
+            project_name = group_project_lookup[project.content_id]
+            project_status = True
+        except:
+            project_name = project.content_id
+            project_status = False
+
+        if project.organization is None:
+            group_projects.append(
+                GroupProjectInfo(
+                    project.id,
+                    project_name,
+                    project_status
+                )
+            )
+        else:
+            group_projects.append(
+                GroupProjectInfo(
+                    project.id,
+                    project_name,
+                    project_status,
+                    companies[project.organization].display_name,
+                    companies[project.organization].id,
+                )
+            )
+
+    return group_projects
+
+
+class GroupProjectInfo(object):
+    def __init__(self, id, name, status, organization=None, organization_id=0):
+        self.id = id
+        self.name = name
+        self.status = status
+        self.organization = organization
+        self.organization_id = organization_id

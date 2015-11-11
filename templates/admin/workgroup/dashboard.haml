@@ -36,7 +36,7 @@
                       )
 
               .small-3.columns
-                %select#select-course
+                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects"}
                   %option{'data-static': 'true'}
                     = _("Course")
 
@@ -56,7 +56,7 @@
       var select = $(target_selector);
       clear_select_options(target_selector);
 
-      for (var i=0; i<=data.length; i++) {
+      for (var i=0; i<data.length; i++) {
         var item = data[i];
         var option = $("<option>");
         option.val(item['value']);
@@ -65,19 +65,21 @@
       }
     }
 
-    $(document).ready(function(){
-      $('select#select-program').on('change', function(){
-        var that = $(this);
-        var program_id = that.find('option:selected').val();
-        if (!program_id) {
-          return;
-        }
-        var url_tpl = that.data('chained-filter-endpoint');
-        var url = url_tpl.replace('$value$', program_id);
+    function chain_selects(source_select, target_select) {
+      // when source_select is updated, it sends ajax requests and populates target_select with values
+      $(source_select).on('change', function(){
+        var value = $(this).find('option:selected').val();
+        var url = $(this).data('chained-filter-endpoint').replace('$value$', value);
         $.ajax({
           method: 'GET',
           url: url
-        }).done(function(data){ parse_response_as_options('select#select-course', data) });
+        }).done(
+          function(data){ parse_response_as_options(target_select, data) }
+        );
       });
-      $('select#select-course').trigger('change');
+    }
+
+    $(document).ready(function(){
+      chain_selects('select#select-program', 'select#select-course');
+      chain_selects('select#select-course', 'select#select-project');
     });

@@ -21,9 +21,11 @@ from django.template import loader, RequestContext
 from django.utils.dateformat import format
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
+
 from django.views.decorators.http import require_POST
 
-from admin.controller import get_accessible_programs, get_accessible_courses_from_program
+from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
+    load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required
@@ -1725,45 +1727,6 @@ def add_students_to_course(request, client_id, restrict_to_users_ids=None, restr
         content_type='application/json'
     )
 
-class GroupProjectInfo(object):
-    def __init__(self, id, name, status, organization=None, organization_id=0):
-        self.id = id
-        self.name = name
-        self.status = status
-        self.organization = organization
-        self.organization_id = organization_id
-
-def load_group_projects_info_for_course(course, companies):
-    group_project_lookup = {gp.id: gp.name for gp in course.group_projects}
-    group_projects = []
-    for project in Project.fetch_projects_for_course(course.id):
-        try:
-            project_name = group_project_lookup[project.content_id]
-            project_status = True
-        except:
-            project_name = project.content_id
-            project_status = False
-
-        if project.organization is None:
-            group_projects.append(
-                GroupProjectInfo(
-                    project.id,
-                    project_name,
-                    project_status
-                )
-            )
-        else:
-            group_projects.append(
-                GroupProjectInfo(
-                    project.id,
-                    project_name,
-                    project_status,
-                    companies[project.organization].display_name,
-                    companies[project.organization].id,
-                )
-            )
-
-    return group_projects
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
@@ -1924,6 +1887,16 @@ def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=No
     accessible_courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_courses_ids)
 
     data = map(lambda item: {'value': item.course_id, 'display_name': item.display_name}, accessible_courses)
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=None):
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
+    course = load_course(course_id)
+    group_projects = [gp for gp in course.group_projects if gp.is_v2]  # only GPv2 support dashboard
+
+    data = map(lambda item: {'value': item.id, 'display_name': item.name}, group_projects)
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
