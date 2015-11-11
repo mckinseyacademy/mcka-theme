@@ -704,4 +704,23 @@ def get_accessible_programs(user, restrict_to_programs_ids):
                 if USER_ROLES.TA in [role.role for role in roles if role.course_id == course.course_id]:
                     programs.append(program)
                     break
+
     return programs
+
+
+def get_accessible_courses_from_program(user, program_id, restrict_to_courses_ids=None):
+    program = Program.fetch(program_id)
+    courses = program.fetch_courses()
+    if not any([user.is_client_admin, user.is_mcka_admin, user.is_internal_admin]):
+        roles = user.get_roles()
+        # User is TA. Only show courses in program they have access to.
+        courses = [
+            course for course in courses if USER_ROLES.TA in [
+                role.role for role in roles if role.course_id == course.course_id
+                ]
+            ]
+
+    if restrict_to_courses_ids:
+        courses = [course for course in courses if course.course_id in restrict_to_courses_ids]
+
+    return courses

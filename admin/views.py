@@ -23,7 +23,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
-from admin.controller import get_accessible_programs
+from admin.controller import get_accessible_programs, get_accessible_courses_from_program
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required
@@ -1917,6 +1917,16 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
     return render(request, template, data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=None, restrict_to_courses_ids=None):
+    AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
+    accessible_courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_courses_ids)
+
+    data = map(lambda item: {'value': item.course_id, 'display_name': item.display_name}, accessible_courses)
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_list(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -2142,17 +2152,7 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
         )
     else:
         AccessChecker.check_has_program_access(int(program_id), restrict_to_programs_ids)
-
-        program = Program.fetch(program_id)
-        courses = program.fetch_courses()
-        if not any([request.user.is_client_admin, request.user.is_mcka_admin, request.user.is_internal_admin]):
-            roles = request.user.get_roles()
-            # User is TA. Only show courses in program they have access to.
-            courses = [
-                course for course in courses if USER_ROLES.TA in [
-                    role.role for role in roles if role.course_id == course.course_id
-                ]
-            ]
+        courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_programs_ids)
 
         data = {
             "courses": courses,
@@ -2163,6 +2163,7 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
         'admin/workgroup/courses_list.haml',
         data
     )
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

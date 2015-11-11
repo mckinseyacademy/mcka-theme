@@ -17,25 +17,67 @@
             .dashboard_filters
               .small-3.columns
                 %select#saved_dashboard_filters
-                  %option= _("Saved Filters")
-                  %option= _("Save selection as new filter")
+                  %option{'data-static': 'true'}
+                    = _("Saved Filters")
+                  %option{'data-static': 'true'}
+                    = _("Save selection as new filter")
                   - for filter in saved_dashboard_filters
                     %option{value: "#{filter}"}
 
               .small-3.columns
-                %select#program
-                  %option= _("Program")
+                %select#select-program{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses"}
+                  %option{'data-static': 'true'}
+                    = _("Program")
                   - for program in programs
-                  %option{'value': '#{program.id}'}
-                    = program.display_name
-                    (
-                    %span><= program.name
-                    )
+                    %option{'value': '#{program.id}'}
+                      = program.display_name
+                      (
+                      %span><= program.name
+                      )
 
               .small-3.columns
-                %select#course
-                  %option= _("Course")
+                %select#select-course
+                  %option{'data-static': 'true'}
+                    = _("Course")
 
               .small-3.columns
-                %select#project
-                  %option= _("Project")
+                %select#select-project
+                  %option{'data-static': 'true'}
+                    = _("Project")
+
+- block js_snippets
+  :javascript
+    function clear_select_options(target_selector) {
+      var options = $(target_selector).find('option:not([data-static])');
+      options.remove();
+    }
+
+    function parse_response_as_options(target_selector, data) {
+      var select = $(target_selector);
+      clear_select_options(target_selector);
+
+      for (var i=0; i<=data.length; i++) {
+        var item = data[i];
+        var option = $("<option>");
+        option.val(item['value']);
+        option.html(item['display_name']);
+        select.append(option);
+      }
+    }
+
+    $(document).ready(function(){
+      $('select#select-program').on('change', function(){
+        var that = $(this);
+        var program_id = that.find('option:selected').val();
+        if (!program_id) {
+          return;
+        }
+        var url_tpl = that.data('chained-filter-endpoint');
+        var url = url_tpl.replace('$value$', program_id);
+        $.ajax({
+          method: 'GET',
+          url: url
+        }).done(function(data){ parse_response_as_options('select#select-course', data) });
+      });
+      $('select#select-course').trigger('change');
+    });
