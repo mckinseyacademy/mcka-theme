@@ -1,0 +1,11 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-list
+    .row
+      .large-10.large-centered.columns
+        %header
+          %h1.principal-title
+            = _("Group Work Dashboard")
+          .add-message
+            = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")

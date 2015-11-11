@@ -8,11 +8,13 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 
 from accounts.middleware.thread_local import set_course_context, get_course_context
+from admin.models import Program
 from api_client.api_error import ApiError
 from api_client import user_api, group_api, course_api, organization_api, project_api
 from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
+from api_client.user_api import USER_ROLES
 
 from .models import (
     Client, WorkGroup, UserRegistrationError, WorkGroupActivityXBlock,
@@ -683,3 +685,23 @@ def generate_access_key():
     ''' Generate a unique url-friendly code. '''
     return str(uuid.uuid4())
 
+
+def get_accessible_programs(user, restrict_to_programs_ids):
+    programs = Program.list()
+    if restrict_to_programs_ids:
+        programs = [
+            program for program in programs
+            if program.id in restrict_to_programs_ids
+    ]
+
+    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin]):
+        # User is a TA. They'll need to be scoped only to the courses they're a TA on, not just enrolled in.
+        roles = user.get_roles()
+        base_programs = programs
+        programs = []
+        for program in base_programs:
+            for course in program.fetch_courses():
+                if USER_ROLES.TA in [role.role for role in roles if role.course_id == course.course_id]:
+                    programs.append(program)
+                    break
+    return programs

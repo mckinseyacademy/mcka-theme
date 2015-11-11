@@ -1,16 +1,15 @@
 import copy
 import functools
 import json
-import re
 import string
 import urlparse
-import os.path
-
 from datetime import datetime
 from urllib import quote as urlquote
 from operator import attrgetter
 from smtplib import SMTPException
 
+import re
+import os.path
 from django.conf import settings
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
@@ -24,32 +23,26 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
+from admin.controller import get_accessible_programs
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
-
 from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
-
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
-
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api
 from api_client.api_error import ApiError
 from api_client.organization_models import Organization
 from api_client.project_models import Project
 from api_client.workgroup_models import Submission
-
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
     social_total, round_to_int_bump_zero, round_to_int
 )
-
 from courses.models import FeatureFlags
-
 from license import controller as license_controller
 from main.models import CuratedContentItem
-
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
@@ -68,6 +61,7 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
+
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -1911,6 +1905,20 @@ def upload_company_image(request, client_id='new'):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
+
+    template = 'admin/workgroup/dashboard.haml'
+    data = {
+        'saved_filters': [],   # TODO: fetch saved filters
+        'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
+        'restrict_to_users': restrict_to_users_ids
+    }
+
+    return render(request, template, data)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_list(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -2318,24 +2326,7 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
             return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
-    programs = Program.list()
-
-    if restrict_to_programs_ids:
-        programs = [
-            program for program in programs
-            if program.id in restrict_to_programs_ids
-        ]
-
-    if not any([request.user.is_mcka_admin, request.user.is_client_admin, request.user.is_internal_admin]):
-        # User is a TA. They'll need to be scoped only to the courses they're a TA on, not just enrolled in.
-        roles = request.user.get_roles()
-        base_programs = programs
-        programs = []
-        for program in base_programs:
-            for course in program.fetch_courses():
-                if USER_ROLES.TA in [role.role for role in roles if role.course_id == course.course_id]:
-                    programs.append(program)
-                    break
+    programs = get_accessible_programs(request.user, restrict_to_programs_ids)
 
     data = {
         "principal_name": _("Group Work"),
@@ -2349,6 +2340,7 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         'admin/workgroup/list.haml',
         data
     )
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
