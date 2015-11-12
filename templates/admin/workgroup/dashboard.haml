@@ -93,11 +93,12 @@
       });
     }
 
-    function toggle_run_report(enabled) {
+    function toggle_run_report(value) {
       var run_report_btn = $(".run-report a");
-      if (enabled) {
+      if (value) {
         run_report_btn.removeAttr('disabled');
         run_report_btn.removeClass('disabled');
+        run_report_btn.attr('href', '/admin/workgroup/course/'+value+'/download_group_projects_report');
       }
       else{
         run_report_btn.attr('disabled', 'disabled');
@@ -113,9 +114,9 @@
       chain_selects('select#select-program', 'select#select-course');
       chain_selects('select#select-course', 'select#select-project');
 
-      $("select#select-project").on('change', function(){
+      $("select#select-course").on('change', function(){
         var value = $(this).find('option:selected').val();
-        toggle_run_report(!!value);
+        toggle_run_report(value);
       });
 
       $(".run-report a").on('click', function() {
