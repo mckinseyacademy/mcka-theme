@@ -106,8 +106,32 @@
       }
     }
 
-    function make_report(project_id) {
-      console.log(project_id);
+    function make_report(course_id, project_id) {
+      var gp_placeholder = $(".group_project_placeholder");
+      if (!project_id) {
+        gp_placeholder.empty();
+        return;
+      }
+
+      make_group_project_element(course_id, project_id);
+    }
+
+    function make_group_project_element(course_id, project_id){
+      var lesson_content = $('.group_project_placeholder');
+      var lesson_data = {
+        courseId: course_id,
+        usageId: project_id,
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        block_view: 'dashboard_view',
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+
+      lesson_content.xblock(lesson_data);
     }
 
     $(document).ready(function(){
@@ -119,8 +143,9 @@
         toggle_run_report(value);
       });
 
-      $(".run-report a").on('click', function() {
+      $("select#select-project").on('change', function() {
         var project_id = $("select#select-project").val();
-        make_report(project_id);
+        var course_id = $("select#select-course").val();
+        make_report(course_id, project_id);
       });
     });

@@ -1871,10 +1871,15 @@ def upload_company_image(request, client_id='new'):
 def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
 
     template = 'admin/workgroup/dashboard.haml'
+
     data = {
-        'saved_dashboard_filters': [],   # TODO: fetch saved filters
+        'saved_dashboard_filters': [],  # TODO: fetch saved filters
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
-        'restrict_to_users': restrict_to_users_ids
+        'restrict_to_users': restrict_to_users_ids,
+        "remote_session_key": request.session.get("remote_session_key"),
+        "lms_base_domain": settings.LMS_BASE_DOMAIN,
+        "lms_sub_domain": settings.LMS_SUB_DOMAIN,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     }
 
     return render(request, template, data)
