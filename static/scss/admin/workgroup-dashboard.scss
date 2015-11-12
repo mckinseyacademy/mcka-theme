@@ -36,4 +36,17 @@
       font-weight: 600;
     }
   }
+
+  .dashboard_outline_wrapper {
+    margin-top: rem-calc(10);
+    color: $mckinsey-dark-grey;
+
+    .dashboard_outline_label {
+      font-weight: 600;
+    }
+
+    .dashboard_outline {
+      padding: 0 rem-calc(5) 0 rem-calc(5);
+    }
+  }
 }

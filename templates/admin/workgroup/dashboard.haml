@@ -32,7 +32,7 @@
                     %option{value: "#{filter}"}
 
               .small-3.columns
-                %select#select-program{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses"}
+                %select#select-program{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses", 'data-outline-component': 'program'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Program")
                   - for program in programs
@@ -43,15 +43,22 @@
                       )
 
               .small-3.columns
-                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects"}
+                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'course'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Course")
 
               .small-3.columns
-                %select#select-project
+                %select#select-project{'data-outline-component': 'project'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Project")
-
+          .large-12.dashboard_outline_wrapper
+            %span.dashboard_outline_label= _("Displaying:")
+            %span.dashboard_outline.program= _("None")
+            |
+            %span.dashboard_outline.course= _("None")
+            |
+            %span.dashboard_outline.project= _("None")
+          %hr
         %section
           .row.large-12.group_project_placeholder
 
@@ -95,14 +102,17 @@
 
     function toggle_run_report(value) {
       var run_report_btn = $(".run-report a");
+      var outline = $(".dashboard_displaying_outline");
+      var outline_empty = $(".dashboard_displaying_outline_empty");
       if (value) {
         run_report_btn.removeAttr('disabled');
         run_report_btn.removeClass('disabled');
         run_report_btn.attr('href', '/admin/workgroup/course/'+value+'/download_group_projects_report');
       }
-      else{
+      else {
         run_report_btn.attr('disabled', 'disabled');
         run_report_btn.addClass('disabled');
+        outline.html("None");
       }
     }
 
@@ -137,6 +147,15 @@
     $(document).ready(function(){
       chain_selects('select#select-program', 'select#select-course');
       chain_selects('select#select-course', 'select#select-project');
+
+      $("select#select-program, select#select-course, select#select-project").on('change', function() {
+        var outline_component_selector = ".dashboard_outline."+$(this).data('outline-component');
+        var selected_option = $(this).find('option:selected');
+        var value = selected_option.val();
+        var outline_text = (value) ? selected_option.text() : 'None';
+
+        $(outline_component_selector).html(outline_text);
+      });
 
       $("select#select-course").on('change', function(){
         var value = $(this).find('option:selected').val();
