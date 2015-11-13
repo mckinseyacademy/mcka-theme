@@ -22,16 +22,7 @@
             .sub-2= _("Filter by:")
 
             .dashboard_filters
-              .small-3.columns
-                %select#saved_dashboard_filters
-                  %option{'data-static': 'true'}
-                    = _("Saved Filters")
-                  %option{'data-static': 'true'}
-                    = _("Save selection as new filter")
-                  - for filter in saved_dashboard_filters
-                    %option{value: "#{filter}"}
-
-              .small-3.columns
+              .small-4.columns
                 %select#select-program{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses", 'data-outline-component': 'program'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Program")
@@ -42,12 +33,12 @@
                       %span><= program.name
                       )
 
-              .small-3.columns
+              .small-4.columns
                 %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'course'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Course")
 
-              .small-3.columns
+              .small-4.columns
                 %select#select-project{'data-outline-component': 'project'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Project")
