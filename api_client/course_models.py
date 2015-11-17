@@ -279,8 +279,8 @@ class Course(CategorisedJsonObject):
             for group in self.course_run:
                 week_start = datetime.datetime.strptime(group['start_date'], '%m/%d/%Y')
                 week_end = datetime.datetime.strptime(group['end_date'], '%m/%d/%Y')
-                key = week_end.strftime("%s")
-                weeks[key] = {
+                run_key = week_end.strftime("%d%m%Y")
+                weeks[run_key] = {
                     "start": week_start.strftime("%m/%d"),
                     "end": week_end.strftime("%m/%d"),
                     "start_date": week_start,
@@ -315,12 +315,12 @@ class Course(CategorisedJsonObject):
                     else:
                         week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
                     week_end = week_start + datetime.timedelta(days=6)
-                    key = week_end.strftime("%s")
+                    lesson_key = week_end.strftime("%d%m%Y")
 
                     if key in weeks:
                         weeks[key]["lessons"].append(lesson)
                     else:
-                        weeks[key] = {
+                        weeks[lesson_key] = {
                             "start": week_start.strftime("%m/%d"),
                             "end": week_end.strftime("%m/%d"),
                             "start_date": week_start,
@@ -345,7 +345,7 @@ class Course(CategorisedJsonObject):
                         else:
                             week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1)
                         week_end = week_start + datetime.timedelta(days=6)
-                        key = week_end.strftime("%s")
+                        group_key = week_end.strftime("%d%m%Y")
                         activity.due_on = activity.due.strftime("%B %e")
                         appended = None
 
@@ -356,11 +356,11 @@ class Course(CategorisedJsonObject):
                                 appended = True
 
                         if not appended:
-                            if key in weeks:
-                                weeks[key]["has_group"] = True
-                                weeks[key]["group_activities"].append(activity)
+                            if group_key in weeks:
+                                weeks[group_key]["has_group"] = True
+                                weeks[group_key]["group_activities"].append(activity)
                             else:
-                                weeks[key] = {
+                                weeks[group_key] = {
                                     "start": week_start.strftime("%m/%d"),
                                     "end": week_end.strftime("%m/%d"),
                                     "start_date": week_start,
