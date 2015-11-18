@@ -317,8 +317,8 @@ class Course(CategorisedJsonObject):
                     week_end = week_start + datetime.timedelta(days=6)
                     lesson_key = week_end.strftime("%d%m%Y")
 
-                    if key in weeks:
-                        weeks[key]["lessons"].append(lesson)
+                    if lesson_key in weeks:
+                        weeks[lesson_key]["lessons"].append(lesson)
                     else:
                         weeks[lesson_key] = {
                             "start": week_start.strftime("%m/%d"),
