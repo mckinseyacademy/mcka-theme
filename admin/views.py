@@ -2130,7 +2130,7 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
         )
     else:
         AccessChecker.check_has_program_access(int(program_id), restrict_to_programs_ids)
-        courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_programs_ids)
+        courses = get_accessible_courses_from_program(request.user, int(program_id))
 
         data = {
             "courses": courses,
