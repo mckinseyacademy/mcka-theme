@@ -1,0 +1,161 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-dashboard
+    .row
+      .large-12.large-centered
+        %header
+          .large-12
+            .large-10.columns
+              %h1.principal-title
+                = _("Group Work Dashboard")
+            .large-2.columns.run-report
+              %a.button.radius.small.disabled{'disabled': 'disabled'}
+                %span.fa-download
+                = _("Report")
+          .row
+          .add-message.detail-message
+            = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
+        %hr
+        %section
+          .large-12.medium-12
+            .sub-2= _("Filter by:")
+
+            .dashboard_filters
+              .small-4.columns
+                %select#select-program{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses", 'data-outline-component': 'program'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("Program")
+                  - for program in programs
+                    %option{'value': '#{program.id}'}
+                      = program.display_name
+                      (
+                      %span><= program.name
+                      )
+
+              .small-4.columns
+                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'course'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("Course")
+
+              .small-4.columns
+                %select#select-project{'data-outline-component': 'project'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("Project")
+          .large-12.dashboard_outline_wrapper
+            %span.dashboard_outline_label= _("Displaying:")
+            %span.dashboard_outline.program= _("None")
+            |
+            %span.dashboard_outline.course= _("None")
+            |
+            %span.dashboard_outline.project= _("None")
+          %hr
+        %section
+          .columns.large-12.group_project_placeholder
+
+- block js_snippets
+  :javascript
+    function clear_select_options(target_selector) {
+      var options = $(target_selector).find('option:not([data-static])');
+      options.remove();
+    }
+
+    function parse_response_as_options(target_selector, data) {
+      var select = $(target_selector);
+
+      for (var i=0; i<data.length; i++) {
+        var item = data[i];
+        var option = $("<option>");
+        option.val(item['value']);
+        option.html(item['display_name']);
+        select.append(option);
+      }
+    }
+
+    function chain_selects(source_select, target_select) {
+      // when source_select is updated, it sends ajax requests and populates target_select with values
+      $(source_select).on('change', function(){
+        clear_select_options(target_select);
+        $(target_select).trigger('change');
+        var value = $(this).find('option:selected').val();
+        if (!value) {
+          return;
+        }
+        var url = $(this).data('chained-filter-endpoint').replace('$value$', value);
+        $.ajax({
+          method: 'GET',
+          url: url
+        }).done(
+          function(data){ parse_response_as_options(target_select, data) }
+        );
+      });
+    }
+
+    function toggle_run_report(value) {
+      var run_report_btn = $(".run-report a");
+      var outline = $(".dashboard_displaying_outline");
+      var outline_empty = $(".dashboard_displaying_outline_empty");
+      if (value) {
+        run_report_btn.removeAttr('disabled');
+        run_report_btn.removeClass('disabled');
+        run_report_btn.attr('href', '/admin/workgroup/course/'+value+'/download_group_projects_report');
+      }
+      else {
+        run_report_btn.attr('disabled', 'disabled');
+        run_report_btn.addClass('disabled');
+        outline.html("None");
+      }
+    }
+
+    function make_report(course_id, project_id) {
+      var gp_placeholder = $(".group_project_placeholder");
+      if (!project_id) {
+        gp_placeholder.empty();
+        return;
+      }
+
+      make_group_project_element(course_id, project_id);
+    }
+
+    function make_group_project_element(course_id, project_id){
+      var lesson_content = $('.group_project_placeholder');
+      var lesson_data = {
+        courseId: course_id,
+        usageId: project_id,
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        block_view: 'dashboard_view',
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+
+      lesson_content.xblock(lesson_data);
+    }
+
+    $(document).ready(function(){
+      chain_selects('select#select-program', 'select#select-course');
+      chain_selects('select#select-course', 'select#select-project');
+
+      $("select#select-program, select#select-course, select#select-project").on('change', function() {
+        var outline_component_selector = ".dashboard_outline."+$(this).data('outline-component');
+        var selected_option = $(this).find('option:selected');
+        var value = selected_option.val();
+        var outline_text = (value) ? selected_option.text() : 'None';
+
+        $(outline_component_selector).html(outline_text);
+      });
+
+      $("select#select-course").on('change', function(){
+        var value = $(this).find('option:selected').val();
+        toggle_run_report(value);
+      });
+
+      $("select#select-project").on('change', function() {
+        var project_id = $("select#select-project").val();
+        var course_id = $("select#select-course").val();
+        make_report(course_id, project_id);
+      });
+    });
