@@ -88,6 +88,7 @@ class AccessLandingTests(TestCase):
         self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
         self.mock_client = Mock(display_name='TestCo')
         self.apply_patch('api_client.organization_api.fetch_organization', return_value=self.mock_client)
+        self.apply_patch('accounts.views._get_redirect_to_current_course', return_value='/protected_home')
 
     def test_enrolls_authenticated_user(self):
         user_api = self.apply_patch('accounts.controller.user_api')
