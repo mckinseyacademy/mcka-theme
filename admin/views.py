@@ -1888,6 +1888,10 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=None, restrict_to_courses_ids=None):
+    try:
+        program_id = int(program_id)
+    except (ValueError, TypeError):
+        return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
     AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
     accessible_courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_courses_ids)
 
