@@ -411,8 +411,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     course.group_work_enabled = feature_flags.group_work
-    static_tabs = load_static_tabs(course_id)
-    course_run = static_tabs.get("course run", None)
+    # static_tabs = load_static_tabs(course_id)
+    # course_run = static_tabs.get("course run", None)
+    course_run = None
     if course_run:
         try:
             course.course_run = json.loads(course_run.content)
