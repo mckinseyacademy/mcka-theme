@@ -1,0 +1,65 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-dashboard
+    .row
+      .large-12.large-centered
+        %header
+          .large-12
+            .large-10.columns
+              %h1.principal-title= _("Group Work Status")
+              %a{href: '#{return_url}'}= _("< Back to Group Work V2 Dashboard")
+          .row
+          .add-message.detail-message
+            = _("Detailed status by team and individual participants are below. Only graded stages are listed within the activity, though more stages may exist in the project. Filter by status (not yet started, started, complete).")
+        %hr
+        %section
+          .large-12.medium-12
+            .sub-2= _("Filter by:")
+
+            .dashboard_filters
+              .small-4.columns
+                %select#select-status
+                  %option{value: ''}= _("All")
+                  %option{value: 'not_started'}= _("Not started")
+                  %option{value: 'started'}= _("Started")
+                  %option{value: 'complete'}= _("Complete")
+
+              .small-8.columns
+                %input{type: 'text', placeholder: 'Search participants'}
+
+          .large-12.dashboard_outline_wrapper
+            %span.dashboard_outline_label= _("Displaying:")
+            %span.dashboard_outline.program= program.name
+            |
+            %span.dashboard_outline.course= course.name
+            |
+            %span.dashboard_outline.project= project.name
+          %hr
+        %section
+          .columns.large-12.group_project_placeholder
+
+- block js_snippets
+  :javascript
+    function make_group_project_element(course_id, project_id){
+      var lesson_content = $('.group_project_placeholder');
+      var lesson_data = {
+        courseId: course_id,
+        usageId: project_id,
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        block_view: 'dashboard_detail_view',
+        data: {
+            activate_block_id: Apros.getParameterByName('activate_block_id'),
+        },
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+
+      lesson_content.xblock(lesson_data);
+    }
+
+    make_group_project_element('{{course.id}}', '{{project.id}}');
