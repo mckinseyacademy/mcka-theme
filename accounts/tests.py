@@ -1,11 +1,13 @@
 from urllib2 import HTTPError
+import ddt
 from django.test import TestCase, RequestFactory
+from django.test.utils import override_settings
 import mock
 from api_client.api_error import ApiError
 
 from .forms import ActivationForm, FinalizeRegistrationForm
 from .models import UserActivation, RemoteUser
-from .views import access_key, MISSING_ACCESS_KEY_ERROR
+from .views import access_key, MISSING_ACCESS_KEY_ERROR, _cleanup_username as cleanup_username
 from admin.models import AccessKey, ClientCustomization
 from mock import patch, Mock
 import uuid
@@ -125,6 +127,41 @@ class AccessLandingTests(TestCase):
         self.assertTrue(response.context['redirect_to'].startswith('/auth/login/tpa-saml/?'))
 
 
+@ddt.ddt
+class TestUsernameCleanup(TestCase):
+    """
+    Test the _cleanup_username() method in views.py used during SSO logins.
+    """
+    def setUp(self):
+        super(TestUsernameCleanup, self).setUp()
+        get_users_patch = patch('api_client.user_api.get_users', self.mocked_get_users)
+        get_users_patch.start()
+        self.addCleanup(get_users_patch.stop)
+
+    @staticmethod
+    def mocked_get_users(username):
+        """ Mock version of user_api.get_users(...) """
+        existing_users = ["bob", "cathy", "leader"] + ["leader{}".format(i) for i in range(1, 8)]
+        if type(username) is not list:
+            username = [username]
+        return [Mock() for name in username if name in existing_users]
+
+    @ddt.data(
+        # Input, expected output
+        ("alice", "alice"),
+        ("Alice Smith", "Alice_Smith"),
+        ("@lice_Smith!'; DROP TABLE auth_users; --", "lice_Smith_DROP_TABLE_auth_users_--"),
+        ("bob", "bob1"),
+        ("cathy!!!", "cathy1"),
+        ("leader", "leader8"),
+    )
+    @ddt.unpack
+    def test_username_cleanup(self, username, expected):
+        result = cleanup_username(username)
+        self.assertEqual(result, expected)
+
+
+@ddt.ddt
 class SsoUserFinalizationTests(TestCase):
     """
     Test 'finalizing' (registering) user's account when they sign up with SSO
@@ -149,8 +186,9 @@ class SsoUserFinalizationTests(TestCase):
 
     def apply_patch(self, *args, **kwargs):
         patcher = patch(*args, **kwargs)
-        patcher.start()
+        mock = patcher.start()
         self.addCleanup(patcher.stop)
+        return mock
 
     def make_raise_exception_side_effect(self, exception):
         def func(*unusued_args, **unusued_kwargs):
@@ -190,6 +228,54 @@ class SsoUserFinalizationTests(TestCase):
         self.assertEqual(form.initial['full_name'], 'Me Myself And I')
         self.assertEqual(form.initial['email'], 'myself@testshib.org')
         self.assertEqual(form.initial['company'], 'TestCo')
+
+    @override_settings(SSO_AUTOPROVISION_PROVIDERS=['saml-testshib'])
+    @patch('api_client.user_api.register_user')
+    @patch('django.contrib.auth.login')
+    @ddt.data(True, False)
+    def test_sso_autoprovision_flow(self, with_existing_user, mock_login, mock_register_user):
+        if with_existing_user:
+            # Mock to simulate a user named 'myself' already existing on the system:
+            self.get_users_patch.side_effect = lambda username: [Mock()] if username == "myself" else []
+        # Start with an access code:
+        response = self.client.get('/access/{}'.format(self.access_key.code))
+        self.assertEqual(response.status_code, 200)
+        # That will then redirect us to the SSO provider...
+        self.assertTrue(response.context['redirect_to'].startswith('/auth/login/tpa-saml/?'))
+
+        # The user then logs in and gets redirected back to Apros:
+        response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
+
+        # The form is bypassed completely, and the user gets redirected to the LMS then the
+        # apros dashboard.
+
+        with patch('courses.user_courses.set_current_course_for_user'), \
+                patch('os.urandom', return_value='0000'), \
+                patch('django.contrib.auth.authenticate'), \
+                patch('accounts.views._process_access_key_and_remove_from_session'):
+            response = self.client.get(response['Location'])
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver/auth/complete/tpa-saml/')
+
+        # Then the user should be registered:
+        expected_username = 'myself' if not with_existing_user else 'myself1'
+        mock_register_user.assert_called_once_with({
+            'username': expected_username,
+            'city': 'Gotham',
+            'title': '',
+            'country': '',
+            'company': 'TestCo',
+            'is_active': True,
+            'year_of_birth': '',
+            'level_of_education': '',
+            'full_name': 'Me Myself And I',
+            'gender': '',
+            'accept_terms': True,
+            'password': 'MDAwMA==',
+            'email': 'myself@testshib.org',
+        })
 
     def test_sso_missing_access_key(self):
         # The user arrives at reg finalization form without access key in session:
