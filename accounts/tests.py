@@ -134,6 +134,18 @@ class SsoUserFinalizationTests(TestCase):
         '/accounts/finalize/?data='
         '&hmac=GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO%2B1i%2FI%3D'
     )
+    # SAMPLE_SSO_DATA: Example of what gets POSTed to /accounts/finalize/
+    # Recorded from the TestShib SAML IdP, using the "myself" user.
+    # The shared secret used was the default one in settings.py
+    SAMPLE_SSO_POST_DATA = {
+        'sso_data': (
+            'eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbmFtZSI6ICJNZSBNeXNlbG'
+            'YgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbWUiOiAiTWUgTXlzZWxmIiwgImVt'
+            'YWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifSwgInByb3ZpZGVyX2lkIjogInNhbWwtdGVzdHNoaWIiLC'
+            'AiYXV0aF9lbnRyeSI6ICJhcHJvcyIsICJiYWNrZW5kX25hbWUiOiAidHBhLXNhbWwifQ=='
+        ),
+        'sso_data_hmac': 'omhQTNK20h6SnPiRnpz8mWdPxmQH02heTS4J5eTxQYE=',
+    }
 
     def apply_patch(self, *args, **kwargs):
         patcher = patch(*args, **kwargs)
@@ -153,6 +165,7 @@ class SsoUserFinalizationTests(TestCase):
         self.access_key = AccessKey.objects.create(client_id=self.client_id, code=uuid.uuid4())
         ClientCustomization.objects.create(client_id=self.client_id, identity_provider='testshib')
         self.apply_patch('api_client.organization_api.fetch_organization', return_value=Mock(display_name='TestCo'))
+        self.get_users_patch = self.apply_patch('api_client.user_api.get_users', return_value=[])
         self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
 
     def test_sso_flow(self):
@@ -164,14 +177,7 @@ class SsoUserFinalizationTests(TestCase):
             self.assertIn(pair, response.context['redirect_to'])
 
         # The user then logs in and gets redirected back to Apros:
-        response = self.client.post('/accounts/finalize/', data={
-            'sso_data': (
-                'eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbmFtZSI6I'
-                'CJNZSBNeXNlbGYgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbW'
-                'UiOiAiTWUgTXlzZWxmIiwgImVtYWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifX0='
-            ),
-            'sso_data_hmac': 'GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO+1i/I=',
-        })
+        response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
 
@@ -187,35 +193,21 @@ class SsoUserFinalizationTests(TestCase):
 
     def test_sso_missing_access_key(self):
         # The user arrives at reg finalization form without access key in session:
-        response = self.client.post('/accounts/finalize/', data={
-            'sso_data': (
-                'eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbmFtZSI6I'
-                'CJNZSBNeXNlbGYgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbW'
-                'UiOiAiTWUgTXlzZWxmIiwgImVtYWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifX0='
-            ),
-            'sso_data_hmac': 'GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO+1i/I=',
-        })
+        response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], 'http://testserver/accounts/sso_error/')
         session = self.client.session
 
         self.assertIn('sso_error_details', session)
         self.assertEqual(session['sso_error_details'], MISSING_ACCESS_KEY_ERROR)
-    
+
     def test_existing_user_account_conflict(self):
         # setting up access key id in session
         response = self.client.get('/access/{}'.format(self.access_key.code))
         self.assertEqual(response.status_code, 200)
 
         # Setting up provider_data in session
-        response = self.client.post('/accounts/finalize/', data={
-            'sso_data': (
-                'eyJ1c2VyX2RldGFpbHMiOiB7InVzZXJuYW1lIjogIm15c2VsZiIsICJmdWxsbmFtZSI6I'
-                'CJNZSBNeXNlbGYgQW5kIEkiLCAibGFzdF9uYW1lIjogIkFuZCBJIiwgImZpcnN0X25hbW'
-                'UiOiAiTWUgTXlzZWxmIiwgImVtYWlsIjogIm15c2VsZkB0ZXN0c2hpYi5vcmcifX0='
-            ),
-            'sso_data_hmac': 'GHA2kEmdlxdgjmWbmAK4oa6bVxIJD3U755CyTO+1i/I=',
-        })
+        response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
 
