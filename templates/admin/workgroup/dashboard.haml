@@ -87,6 +87,8 @@
           url: url
         }).done(
           function(data){ parse_response_as_options(target_select, data) }
+        ).error(
+          function(xhr, status, error) { alert(error); }
         );
       });
     }
