@@ -205,6 +205,16 @@ EDX_API_KEY = 'test_api_key'
 # edX LMS shared secret used to validate provider data during SSO logins
 EDX_SSO_DATA_HMAC_KEY = '1private_apros_key'
 
+# A list of the provider_id values of any SSO providers for which we want the SSO user
+# registration process to be as fast as possible, skipping the registration form completely.
+# Provider IDs for the default SAML provider are of the form "saml-[slug]" where [slug] is the
+# "IdP Slug" value in /admin/third_party_auth/samlproviderconfig/
+SSO_AUTOPROVISION_PROVIDERS = ["saml-mckinsey"]
+
+# When autoprovisioning (see previous setting), set the user's city to this value. (A city is
+# required for things like the map of students, but we don't get 'city' from the SSO provider.)
+SSO_AUTOPROVISION_CITY = "Gotham"
+
 # Whether or not to cache courseware content locally, defult=False but can be overridden in local_settings.py
 USE_SESSION_COURSEWARE_CACHING = False
 
@@ -384,4 +394,3 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
-

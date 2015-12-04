@@ -39,7 +39,7 @@ from .controller import (
     process_access_key
 )
 from .forms import (
-    LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm, 
+    LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
     EditFullNameForm, EditTitleForm, SSOLoginForm
 )
 from django.shortcuts import resolve_url
@@ -401,7 +401,7 @@ def finalize_sso_registration(request):
     try:
         # provider_data will be a dict with keys of 'email', 'full_name', etc. from the provider.
         provider_data_str = base64.b64decode(request.POST['sso_data'])
-        provider_data = json.loads(provider_data_str)['user_details']
+        provider_data = json.loads(provider_data_str)
         hmac_digest = base64.b64decode(request.POST['sso_data_hmac'])
         expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
     except Exception:
@@ -421,7 +421,12 @@ def finalize_sso_registration(request):
 
 
 def _cleanup_username(username):
-    """ Cleans up username to pass validation checks """
+    """
+    Cleans up the username value that came from the SSO provider to pass validation checks.
+    This is only used for the "suggested" username, and not used for any custom username entered
+    by users into the form - that gets validated later when we call user_api.register_user(...).
+    """
+    username = username.replace(" ", "_")  # Replace spaces with underscores.
     # uses the same check as edx-platform/lms/djangoapps/api_manager/users/views.py:UsersDetail.post
     try:
         validate_slug(username)
@@ -430,6 +435,22 @@ def _cleanup_username(username):
         log.info("Username '{initial_username}' does not pass validation checks; changed to '{actual_username}'".format(
             initial_username=initial, actual_username=username
         ))
+
+    # Does the username already exist?
+    try:
+        if username and user_api.get_users(username=username):
+            # Try appending increasing numbers to the username to create a unique username.
+            username_base, append_number = username.rstrip(string.digits), 1
+            while True:
+                username = "{}{}".format(username_base, append_number)
+                if not user_api.get_users(username=username):
+                    break  # We found an unused username
+                if append_number > 1000:
+                    break  # Give up trying to find a number high enough.
+                append_number += 1 if append_number < 10 else random.randrange(1,100)
+    except ApiError:
+        log.exception("Error when checking username uniqueness.")
+        pass
     return username
 
 
@@ -450,15 +471,24 @@ def sso_registration_form(request):
     error = None
     user_data = None
     provider_data = request.session['provider_data']
+    provider_user_data = provider_data['user_details']
+    username = _cleanup_username(provider_user_data.get('username', ''))
+    should_autoprovision = provider_data['provider_id'] in settings.SSO_AUTOPROVISION_PROVIDERS
 
     remote_session_key = request.COOKIES.get('sessionid')
     if not remote_session_key:
-        error = _("Authentication cookie is missing.")
+        error = _("Authentication cookie is missing. Your session may have timed out. Please start over.")
 
     if request.method == 'POST':
         user_data = request.POST.copy()
-
-    username = _cleanup_username(provider_data.get('username', ''))
+    elif should_autoprovision:
+        # Autoprovision is enabled for this provider. Fill out the required fields that don't
+        # come from the provider so the user can skip the registration form completely.
+        user_data = {
+            'accept_terms': True,
+            'city': settings.SSO_AUTOPROVISION_CITY,
+            'username': username,
+        }
 
     initial_values = {  # Default values from the provider that the user can change:
         'username': username,
@@ -467,14 +497,15 @@ def sso_registration_form(request):
         'company': client.display_name,
     }
     # We also set a fixed value for full name and email, but only if we got those from the provider:
-    if provider_data.get('fullname'):
-        fixed_values['full_name'] = provider_data['fullname']  # provider uses 'fullname', we use 'full_name'
-    if provider_data.get('email'):
-        fixed_values['email'] = provider_data['email']
+    if provider_user_data.get('fullname'):
+        fixed_values['full_name'] = provider_user_data['fullname']  # provider uses 'fullname', we use 'full_name'
+    if provider_user_data.get('email'):
+        fixed_values['email'] = provider_user_data['email']
 
     form = FinalizeRegistrationForm(user_data, fixed_values, initial=initial_values)
-    if request.method == 'POST' and error is None:
-        if form.is_valid():  # If the form has been submitted...
+    if (request.method == 'POST' or should_autoprovision) and error is None:
+        # If the form has been submitted or auto-submitted:
+        if form.is_valid():
             # Create a random secure password for this user:
             random_password = base64.b64encode(os.urandom(32))
             registration_data = form.cleaned_data.copy()
@@ -493,7 +524,10 @@ def sso_registration_form(request):
                 _process_access_key_and_remove_from_session(request, new_user, access_key, client)
 
                 # Redirect to the LMS to link the user's account to the provider permanently:
-                complete_url = '{lms_auth}complete/tpa-saml/'.format(lms_auth=settings.LMS_AUTH_URL)
+                complete_url = '{lms_auth}complete/{backend_name}/'.format(
+                    lms_auth=settings.LMS_AUTH_URL,
+                    backend_name=provider_data['backend_name'],
+                )
                 return HttpResponseRedirect(complete_url)
             except ApiError as exc:
                 error = _("Failed to register user: {exception_message}".format(exception_message=exc.message))
