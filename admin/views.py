@@ -1880,9 +1880,9 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
         'saved_dashboard_filters': [],  # TODO: fetch saved filters
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
         'restrict_to_users': restrict_to_users_ids,
-        'selected_program_id': program_id,
-        'selected_course_id': course_id,
-        'selected_project_id': project_id,
+        'selected_program_id': program_id if program_id else "",
+        'selected_course_id': course_id if course_id else "",
+        'selected_project_id': project_id if project_id else "",
         "remote_session_key": request.session.get("remote_session_key"),
         "lms_base_domain": settings.LMS_BASE_DOMAIN,
         "lms_sub_domain": settings.LMS_SUB_DOMAIN,
