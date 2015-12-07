@@ -4,7 +4,7 @@ import json
 import string
 import urlparse
 from datetime import datetime
-from urllib import quote as urlquote
+from urllib import quote as urlquote, urlencode
 from operator import attrgetter
 from smtplib import SMTPException
 
@@ -1865,17 +1865,24 @@ def upload_company_image(request, client_id='new'):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
 
     template = 'admin/workgroup/dashboard.haml'
 
+    program_id = request.GET.get('program_id')
+    course_id = request.GET.get('course_id')
+    project_id = request.GET.get('project_id')
+
     data = {
         'saved_dashboard_filters': [],  # TODO: fetch saved filters
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
         'restrict_to_users': restrict_to_users_ids,
+        'selected_program_id': program_id if program_id else "",
+        'selected_course_id': course_id if course_id else "",
+        'selected_project_id': project_id if project_id else "",
         "remote_session_key": request.session.get("remote_session_key"),
         "lms_base_domain": settings.LMS_BASE_DOMAIN,
         "lms_sub_domain": settings.LMS_SUB_DOMAIN,
@@ -1884,7 +1891,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     return render(request, template, data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=None, restrict_to_courses_ids=None):
@@ -1892,13 +1899,16 @@ def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=No
         program_id = int(program_id)
     except (ValueError, TypeError):
         return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
+
+    user_api.set_user_preferences(request.user.id, {"DASHBOARD_PROGRAM_ID": str(program_id)})
+
     AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
     accessible_courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_courses_ids)
 
     data = map(lambda item: {'value': item.course_id, 'display_name': item.display_name}, accessible_courses)
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
@@ -1907,6 +1917,45 @@ def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=Non
 
     data = map(lambda item: {'value': item.id, 'display_name': item.name}, group_projects)
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+def groupwork_dashboard_details(
+        request, program_id, course_id, project_id, restrict_to_programs_ids=None, restrict_to_courses_ids=None
+):
+    try:
+        program_id = int(program_id)
+    except (ValueError, TypeError):
+        return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
+
+    AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
+
+    program = Program.fetch(program_id)
+    course = load_course(course_id)
+    projects = [gp for gp in course.group_projects if gp.is_v2 and gp.id == project_id]
+    if not projects:
+        raise Http404()
+
+    project = projects[0]
+    return_url_query_params = {'program_id': program.id, 'course_id': course.id, 'project_id': project.id}
+    return_url = reverse('groupwork_dashboard') + "?" + urlencode(return_url_query_params)
+
+    template = 'admin/workgroup/dashboard_details.haml'
+
+    data = {
+        'remote_session_key': request.session.get('remote_session_key'),
+        'lms_base_domain': settings.LMS_BASE_DOMAIN,
+        'lms_sub_domain': settings.LMS_SUB_DOMAIN,
+        'program': {'id': program.id, 'name': '{} ({})'.format(program.display_name, program.name)},
+        'course': {'id': course.id, 'name': course.name},
+        'project': {'id': project.id, 'name': project.name},
+        'return_url': return_url,
+        'use_current_host': getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
+    }
+
+    return render(request, template, data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter

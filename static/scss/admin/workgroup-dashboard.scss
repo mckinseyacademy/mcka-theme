@@ -49,4 +49,18 @@
       padding: 0 rem-calc(5) 0 rem-calc(5);
     }
   }
+
+  .group-project-xblock-wrapper.dashboard-detail-view {
+    table.activity-data {
+      .group-label {
+        .grade_group_icon {
+          font-family: "fontello";
+          font-size: 20px;
+          &:before {
+            content:'\e808';
+          }
+        }
+      }
+    }
+  }
 }
