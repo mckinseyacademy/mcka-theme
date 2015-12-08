@@ -26,7 +26,7 @@
                   %option{value: 'complete'}= _("Complete")
 
               .small-8.columns
-                %input{type: 'text', placeholder: 'Search participants'}
+                %input{type: 'text', placeholder: 'Search participants', id:'user_search'}
 
           .large-12.dashboard_outline_wrapper
             %span.dashboard_outline_label= _("Displaying:")
@@ -41,6 +41,11 @@
 
 - block js_snippets
   :javascript
+    var user_search_parameters = {
+      timeout: 1000, // ms
+      timeout_handle: null
+    };
+
     function make_group_project_element(course_id, project_id){
       var lesson_content = $('.group_project_placeholder');
       var lesson_data = {
@@ -62,4 +67,27 @@
       lesson_content.xblock(lesson_data);
     }
 
+    function trigger_search_event(){
+      var search_criteria = $("#user_search").val();
+      $(document).trigger('group_project_v2.details_view.search', search_criteria);
+    }
+
+    function trigger_search_clear_event() {
+      $(document).trigger('group_project_v2.details_view.search_clear');
+    }
+
     make_group_project_element('{{course.id}}', '{{project.id}}');
+
+    $(document).ready(function() {
+      $("#user_search").keyup(function() {
+        if (user_search_parameters.timeout_handle) {
+          clearTimeout(user_search_parameters.timeout_handle);
+        }
+        if ($("#user_search").val().length > 2) {
+          user_search_parameters.timeout_handle = setTimeout(trigger_search_event, user_search_parameters.timeout);
+        }
+        else {
+          trigger_search_clear_event();
+        }
+      });
+    });
