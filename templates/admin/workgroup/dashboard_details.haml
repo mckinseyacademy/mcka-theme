@@ -18,14 +18,14 @@
             .sub-2= _("Filter by:")
 
             .dashboard_filters
-              .small-4.columns
-                %select#select-status
-                  %option{value: ''}= _("All")
-                  %option{value: 'not_started'}= _("Not started")
-                  %option{value: 'started'}= _("Started")
-                  %option{value: 'complete'}= _("Complete")
+              -#.small-4.columns
+              -#  %select#select-status
+              -#    %option{value: ''}= _("All")
+              -#    %option{value: 'not_started'}= _("Not started")
+              -#    %option{value: 'started'}= _("Started")
+              -#    %option{value: 'complete'}= _("Complete")
 
-              .small-8.columns
+              .small-12.columns
                 %input{type: 'text', placeholder: 'Search participants', id:'user_search'}
 
           .large-12.dashboard_outline_wrapper
