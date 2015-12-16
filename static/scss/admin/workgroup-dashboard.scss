@@ -1,0 +1,66 @@
+.admin-dashboard {
+  .columns:first-child {
+    padding-left: 0;
+  }
+  .columns:last-child {
+    padding-right: 0;
+  }
+
+  .run-report {
+    text-align: right;
+  }
+
+  .detail-message {
+    margin-top: rem-calc(10);
+  }
+
+  .dashboard_filters {
+    margin-top: rem-calc(10);
+
+    .columns {
+      padding-left: rem-calc(2);
+      padding-right: rem-calc(2);
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    select {
+      border-color: $mckinsey-academy-alt-blue;
+      color: $mckinsey-academy-alt-blue;
+      font-weight: 600;
+    }
+  }
+
+  .dashboard_outline_wrapper {
+    margin-top: rem-calc(10);
+    color: $mckinsey-dark-grey;
+
+    .dashboard_outline_label {
+      font-weight: 600;
+    }
+
+    .dashboard_outline {
+      padding: 0 rem-calc(5) 0 rem-calc(5);
+    }
+  }
+
+  .group-project-xblock-wrapper.dashboard-detail-view {
+    table.activity-data {
+      .group-label {
+        .grade_group_icon {
+          font-family: "fontello";
+          font-size: 20px;
+          &:before {
+            content:'\e808';
+          }
+        }
+      }
+    }
+  }
+}

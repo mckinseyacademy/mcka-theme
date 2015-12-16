@@ -411,8 +411,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     course.group_work_enabled = feature_flags.group_work
-    static_tabs = load_static_tabs(course_id)
-    course_run = static_tabs.get("course run", None)
+    # static_tabs = load_static_tabs(course_id)
+    # course_run = static_tabs.get("course run", None)
+    course_run = None
     if course_run:
         try:
             course.course_run = json.loads(course_run.content)
@@ -780,7 +781,7 @@ def course_article(request, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
-    AccessChecker.check_has_course_access(request, course_id, restrict_to_courses_ids)
+    AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     feature_flags.group_work = request.POST.get('group_work', None) == 'on'
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'

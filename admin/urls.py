@@ -64,6 +64,10 @@ urlpatterns = patterns(
     url(r'^programs/(?P<program_id>[0-9]+)/(?P<detail_view>.*)', views.program_detail, name='program_detail'),
     url(r'^programs', views.program_list, name='program_list'),
 
+    url(r'^workgroup/dashboard$', views.groupwork_dashboard, name='groupwork_dashboard'),
+    url(r'^workgroup/dashboard/programs/(?P<program_id>.*)/courses$', views.groupwork_dashboard_courses, name='groupwork_dashboard_courses'),
+    url(r'^workgroup/dashboard/courses/(?P<course_id>.*)/projects$', views.groupwork_dashboard_projects, name='groupwork_dashboard_projects'),
+    url(r'^workgroup/dashboard/programs/(?P<program_id>.*)/courses/(?P<course_id>.*)/projects/(?P<project_id>.*)/details$', views.groupwork_dashboard_details, name='groupwork_dashboard_details'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_list', views.download_group_list, name='download_group_list'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_projects_report', views.download_group_projects_report, name='download_group_projects_report'),
     url(r'^workgroup/course/(?P<course_id>.*)/group_work_status/(?P<group_id>.*)', views.group_work_status, name='group_work_status'),
