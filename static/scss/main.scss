@@ -534,6 +534,26 @@ div.xblock-student_view {
   }
 }
 
+div.xblock-spinner {
+  min-height: 150px;
+  height: 100%;
+  font-size: rem-calc(20);
+  position: relative;
+}
+
+div.xblock-spinner div.spinner-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+
 .reveal-modal-bg,
 .modal-bg{
   z-index: 100001 !important;
