@@ -364,6 +364,10 @@ form {
     &:last-of-type { border-bottom: none; }
     i { color: $mckinsey-orange; }
 
+    .blue {
+      color: $mckinsey-academy-alt-blue;
+    }
+
     .module-list {
       position: absolute;
       top: 50%;
