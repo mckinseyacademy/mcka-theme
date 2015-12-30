@@ -386,9 +386,8 @@
                 var spinner_styling_wrapper = $("<div/>").addClass("spinner-wrapper").appendTo(spinner);
                 spinner_styling_wrapper.append($("<i/>").addClass('fa fa-spin fa-spinner'));
                 root.append(spinner);
-            }
-            else {
-                root.find("."+spinner_class).remove();
+            } else {
+                root.children("."+spinner_class).remove();
             }
         }
     };
