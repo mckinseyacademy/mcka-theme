@@ -64,7 +64,6 @@ from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnatt
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 
-
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -1088,9 +1087,11 @@ def client_detail_customization(request, client_id):
             from PIL import Image
 
             extension = os.path.splitext(temp_image.name)[1]
-            logo_url = 'images/' + settings.TEMP_IMAGE_FOLDER + 'client_logo-{}{}'.format(client_id, extension)
-            default_storage.save(logo_url, ContentFile(temp_image.read()))
-            customization.client_logo = logo_url
+            temp_logo_url = 'images/client_logo-{}-{}{}'.format(client_id, datetime.now().strftime("%s"), extension)
+            if default_storage.exists(temp_logo_url):
+                default_storage.delete(temp_logo_url)
+            default_storage.save(temp_logo_url, ContentFile(temp_image.read()))
+            customization.client_logo = '/accounts/' + temp_logo_url
 
     customization.hex_notification = request.POST['hex_notification']
     customization.hex_notification_text = request.POST['hex_notification_text']
@@ -1201,7 +1202,6 @@ def access_key_list(request, client_id):
         data,
     )
 
-
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def create_access_key(request, client_id):
@@ -1241,7 +1241,6 @@ def create_access_key(request, client_id):
     }
     return render(request, 'admin/client/create_access_key', data)
 
-
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def share_access_key(request, client_id, access_key_id):
@@ -1276,7 +1275,6 @@ def share_access_key(request, client_id, access_key_id):
         'submit_label': _('Send'),
     }
     return render(request, 'admin/client/share_access_key.haml', data)
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -1726,7 +1724,6 @@ def add_students_to_course(request, client_id, restrict_to_users_ids=None, restr
         json.dumps({"message": message}),
         content_type='application/json'
     )
-
 
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
@@ -2195,7 +2192,6 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
         data
     )
 
-
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2370,7 +2366,6 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         'admin/workgroup/list.haml',
         data
     )
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
