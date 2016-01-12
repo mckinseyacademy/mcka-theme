@@ -2227,6 +2227,12 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
             students &= restrict_to_users_ids
         project_id = request.POST['project_id']
 
+        if not project_id:
+            return HttpResponse(
+                json.dumps({'succecss': False, 'message': "Group wasn't created - please select project"}),
+                content_type="application/json"
+            )
+
         # load project, and make sure if private that all students are in the correct organization
         project = Project.fetch(project_id)
         if project.organization is not None:
@@ -2251,9 +2257,13 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
 
         workgroup.add_user_list(students)
 
-        return HttpResponse(json.dumps({'message': 'Group successfully created'}), content_type="application/json")
+        return HttpResponse(json.dumps(
+            {'succecss': False, 'message': 'Group successfully created'}), content_type="application/json"
+        )
 
-    return HttpResponse(json.dumps({'message': 'Group wasnt created'}), content_type="application/json")
+    return HttpResponse(json.dumps(
+        {'succecss': True, 'message': 'Group wasnt created'}), content_type="application/json"
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
