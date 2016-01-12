@@ -373,7 +373,7 @@ class WorkgroupCompletionData(object):
 
         group_data.users = users
 
-        group_data.review_link = self._v2_review_link(group)
+        group_data.review_link = self._v2_review_link(group.id)
         group_data.activity_statuses = []
         for activity_xblock in activity_xblocks:
             stage_xblocks = self._v2_get_stage_xblocks(activity_xblock)

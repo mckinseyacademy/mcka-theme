@@ -155,15 +155,21 @@
       {
         selector: ".group-project-select",
         submit_name: "project_id",
-        use_value: true
+        use_value: true,
+        not_empty: true,
+        not_empty_message: "Please select project"
       }
     ];
 
     activator = {
       selector: '#student-group-action:not(.disabled)',
-      success: function(){
-        $('#student-group-action').removeClass('disabled');
-        window.location = '/admin/workgroup/course/' + course_id + '?project_id=' + $('.group-project-select').val();
+      toggle_selector_disabled: true,
+      success: function(data){
+        if (data.success) {
+          window.location = '/admin/workgroup/course/' + course_id + '?project_id=' + $('.group-project-select').val();
+        } else {
+          alert(data.message || "Group was not created");
+        }
       }
     };
   });
@@ -194,9 +200,7 @@
     });
 
     $('#student-group-action').on('click', function(){
-      if(!$(this).hasClass('disabled')){
-        $(this).addClass('disabled');
-      }
+      disableButton($(this));
     });
 
     $('.group-project-select').on('change', function(){
