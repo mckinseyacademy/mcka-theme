@@ -119,6 +119,14 @@
     hr{
       margin: 10px 0;
     }
+    #group-project-discussion {
+      .modal-bg  {
+        z-index: 999 !important;
+      }
+      .reveal-modal {
+        z-index: 1000;
+      }
+    }
     .select_group{
       .avatar{
         background-image: none;
