@@ -491,7 +491,7 @@ class TestEnrollStudentInCourse(TestCase, ApplyPatchMixin):
 
         result = enroll_student_in_course(user, program, course_id)
         expected_message = 'You are already enrolled in course "{}"'.format(course_id)
-        self._assert_result(result, course_id, (messages.WARNING, expected_message), True, False)
+        self._assert_result(result, course_id, (messages.INFO, expected_message), True, False)
 
     def test_failed_to_eroll(self):
         course_id = 'qwerty'
