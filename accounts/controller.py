@@ -93,7 +93,9 @@ def get_sso_provider(email):
         return None
 
 
-ProcessAccessKeyResult = namedtuple('ProcessAccessKeyResult', ['enrolled_in_course_ids', 'messages'])
+ProcessAccessKeyResult = namedtuple(
+    'ProcessAccessKeyResult', ['enrolled_in_course_ids', 'new_enrollements_course_ids', 'messages']
+)
 
 
 def process_access_key(user, access_key, client):
@@ -106,7 +108,9 @@ def process_access_key(user, access_key, client):
     if company_ids and client.id not in company_ids:
         error_message = _("Access Key {key} is associated with company {company}, "
                           "but you're not registered with it").format(key=access_key.code, company=client.display_name)
-        return ProcessAccessKeyResult(None, [(messages.ERROR, error_message)])
+        return ProcessAccessKeyResult(
+            enrolled_in_course_ids=None, new_enrollements_course_ids=None, messages=[(messages.ERROR, error_message)]
+        )
 
     if client.id not in company_ids:
         # Associate the user with their client/company:
@@ -114,7 +118,8 @@ def process_access_key(user, access_key, client):
 
     # Associate the user with their program and/or course:
     processing_messages = []
-    enrolled_in_courses_ids = []
+    enrolled_in_course_ids = []
+    new_enrollements_course_ids = []
     if access_key.program_id:
         add_to_program_result = assign_student_to_program(user, client, program_id=access_key.program_id)
         program, message = add_to_program_result.program, add_to_program_result.message
@@ -125,14 +130,22 @@ def process_access_key(user, access_key, client):
             if enroll_in_course_result.message:
                 processing_messages.append(enroll_in_course_result.message)
 
-            if enroll_in_course_result.course_id:
-                enrolled_in_courses_ids.append(enroll_in_course_result.course_id)
+            if enroll_in_course_result.enrolled:
+                enrolled_in_course_ids.append(enroll_in_course_result.course_id)
 
-    return ProcessAccessKeyResult(enrolled_in_courses_ids, processing_messages)
+                if enroll_in_course_result.new_enrollment:
+                    new_enrollements_course_ids.append(enroll_in_course_result.course_id)
+
+    return ProcessAccessKeyResult(
+        enrolled_in_course_ids=enrolled_in_course_ids, new_enrollements_course_ids=new_enrollements_course_ids,
+        messages=processing_messages
+    )
 
 
 AssignStudentToProgramResult = namedtuple('AssignStudentToProgramResult', ['program', 'message'])
-EnrollStudentInCourseResult = namedtuple('EnrollStudentInCourseResult', ['course_id', 'message'])
+EnrollStudentInCourseResult = namedtuple(
+    'EnrollStudentInCourseResult', ['course_id', 'enrolled', 'new_enrollment', 'message']
+)
 
 
 def assign_student_to_program(user, client, program_id):
@@ -165,19 +178,21 @@ def enroll_student_in_course(user, program, course_id):
     Returns EnrollStudentInCourseResult, containing the course_id (if exists and in program) and messages (if any)
     """
     valid_course_ids = set(c.course_id for c in program.courses)
+    enrolled, new_enrollment = False, False
     if course_id in valid_course_ids:
         try:
             user_api.enroll_user_in_course(user.id, course_id)
             message = (
                 messages.INFO, _("Successfully enrolled you in a course {}.").format(course_id)
             )
-            return EnrollStudentInCourseResult(course_id, message)
+            enrolled, new_enrollment = True, True
         except ApiError as e:
             if e.code == 409:
                 message = (
-                    messages.ERROR,
-                    _('Unable to enroll you in course "{}" - already enrolled.').format(course_id)
+                    messages.INFO,
+                    _('You are already enrolled in course "{}"').format(course_id)
                 )
+                enrolled = True
             else:
                 message = (
                     messages.ERROR,
@@ -188,4 +203,4 @@ def enroll_student_in_course(user, program, course_id):
             messages.ERROR,
             _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
         )
-    return EnrollStudentInCourseResult(None, message)
+    return EnrollStudentInCourseResult(course_id, enrolled, new_enrollment, message)
