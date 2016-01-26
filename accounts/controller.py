@@ -108,7 +108,9 @@ def process_access_key(user, access_key, client):
     if company_ids and client.id not in company_ids:
         error_message = _("Access Key {key} is associated with company {company}, "
                           "but you're not registered with it").format(key=access_key.code, company=client.display_name)
-        return ProcessAccessKeyResult(None, [(messages.ERROR, error_message)])
+        return ProcessAccessKeyResult(
+            enrolled_in_course_ids=None, new_enrollements_course_ids=None, messages=[(messages.ERROR, error_message)]
+        )
 
     if client.id not in company_ids:
         # Associate the user with their client/company:
@@ -134,7 +136,10 @@ def process_access_key(user, access_key, client):
                 if enroll_in_course_result.new_enrollment:
                     new_enrollements_course_ids.append(enroll_in_course_result.course_id)
 
-    return ProcessAccessKeyResult(enrolled_in_course_ids, new_enrollements_course_ids, processing_messages)
+    return ProcessAccessKeyResult(
+        enrolled_in_course_ids=enrolled_in_course_ids, new_enrollements_course_ids=new_enrollements_course_ids,
+        messages=processing_messages
+    )
 
 
 AssignStudentToProgramResult = namedtuple('AssignStudentToProgramResult', ['program', 'message'])
