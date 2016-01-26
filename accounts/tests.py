@@ -1,16 +1,52 @@
 from urllib2 import HTTPError
 import ddt
+from django.contrib import messages
 from django.test import TestCase, RequestFactory
 from django.test.utils import override_settings
 import mock
-from api_client.api_error import ApiError
 
+from accounts.controller import ProcessAccessKeyResult, process_access_key, AssignStudentToProgramResult, \
+    EnrollStudentInCourseResult, enroll_student_in_course
+from api_client.api_error import ApiError
+from api_client.course_models import CourseListCourse
+from api_client.organization_models import Organization
 from .forms import ActivationForm, FinalizeRegistrationForm
 from .models import UserActivation, RemoteUser
 from .views import access_key, MISSING_ACCESS_KEY_ERROR, _cleanup_username as cleanup_username
-from admin.models import AccessKey, ClientCustomization
+from admin.models import AccessKey, ClientCustomization, Program
 from mock import patch, Mock
 import uuid
+
+
+class ApplyPatchMixin(object):
+    """ Mixin with patch helper method """
+    def apply_patch(self, *args, **kwargs):
+        """
+        Applies patch and registers a callback to stop the patch in TearDown method
+        """
+        patcher = patch(*args, **kwargs)
+        mock = patcher.start()
+        self.addCleanup(patcher.stop)
+        return mock
+
+
+def _make_user(username='johndoe', email='john@doe.org', password='password'):
+        return RemoteUser.objects.create_user(username=username, email=email, password=password)
+
+
+def _make_company(org_id, display_name='company_name'):
+    return Organization(dictionary={'id': org_id, 'display_name': display_name})
+
+
+def _make_program(prog_id=1, display_name='Test program', courses=None):
+    courses = courses if courses else []
+    program = Program(dictionary={'id': prog_id, 'display_name': display_name})
+    program.courses = courses
+    return program
+
+
+def _make_course(course_id='course_id', display_name='Course Name'):
+    return CourseListCourse(dictionary={'course_id': course_id, 'display_name': display_name})
 
 
 class AccountsFormsTests(TestCase):
@@ -74,16 +110,10 @@ class UserActivationTests(TestCase):
         UserActivation.objects.get(activation_key=activation_record.activation_key)
 
 
-class AccessLandingTests(TestCase):
+class AccessLandingTests(TestCase, ApplyPatchMixin):
     """
     Test view for handling invitation URLs
     """
-
-    def apply_patch(self, *args, **kwargs):
-        patcher = patch(*args, **kwargs)
-        self.addCleanup(patcher.stop)
-        return patcher.start()
-
     def setUp(self):
         super(AccessLandingTests, self).setUp()
         self.factory = RequestFactory()
@@ -103,6 +133,40 @@ class AccessLandingTests(TestCase):
         response = access_key(request, 1234)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.mock_client.add_user.called)
+
+    def test_switches_current_course_for_authenticated_user(self):
+        user_api = self.apply_patch('accounts.controller.user_api')
+        user_api.get_user_organizations.return_value = []
+
+        course_id = 'course_id'
+        AccessKey.objects.create(client_id=100, code=456, program_id=1, course_id=course_id)
+        request = self.factory.get('/access/1234')
+        request.user = RemoteUser.objects.create_user(username='johndoe', email='john@doe.org', password='password')
+        request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
+
+        patched_set_current_course = self.apply_patch('accounts.views.set_current_course_for_user')
+        patched_process_access_key = self.apply_patch('accounts.views.process_access_key')
+        patched_process_access_key.return_value = ProcessAccessKeyResult([course_id], ['irrelevant'], [])
+
+        access_key(request, 456)
+        patched_set_current_course.assert_called_once_with(request, course_id)
+
+    def test_switches_current_course_for_non_authenticated_user(self):
+        user_api = self.apply_patch('accounts.controller.user_api')
+        user_api.get_user_organizations.return_value = []
+
+        course_id = 'course_id'
+        AccessKey.objects.create(client_id=100, code=456, program_id=1, course_id=course_id)
+        request = self.factory.get('/access/1234')
+        request.user = Mock()
+        request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
+
+        patched_set_current_course = self.apply_patch('accounts.views.set_current_course_for_user')
+        patched_process_access_key = self.apply_patch('accounts.views.process_access_key')
+        patched_process_access_key.return_value = ProcessAccessKeyResult([course_id], ['irrelevant'], [])
+
+        access_key(request, 456)
+        patched_set_current_course.assert_called_once_with(request, course_id)
 
     def test_missing_access_key(self):
         response = self.client.get('/access/1234')
@@ -128,15 +192,13 @@ class AccessLandingTests(TestCase):
 
 
 @ddt.ddt
-class TestUsernameCleanup(TestCase):
+class TestUsernameCleanup(TestCase, ApplyPatchMixin):
     """
     Test the _cleanup_username() method in views.py used during SSO logins.
     """
     def setUp(self):
         super(TestUsernameCleanup, self).setUp()
-        get_users_patch = patch('api_client.user_api.get_users', self.mocked_get_users)
-        get_users_patch.start()
-        self.addCleanup(get_users_patch.stop)
+        self.apply_patch('api_client.user_api.get_users', self.mocked_get_users)
 
     @staticmethod
     def mocked_get_users(username):
@@ -162,7 +224,7 @@ class TestUsernameCleanup(TestCase):
 
 
 @ddt.ddt
-class SsoUserFinalizationTests(TestCase):
+class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
     """
     Test 'finalizing' (registering) user's account when they sign up with SSO
     using an access key.
@@ -183,12 +245,6 @@ class SsoUserFinalizationTests(TestCase):
         ),
         'sso_data_hmac': 'omhQTNK20h6SnPiRnpz8mWdPxmQH02heTS4J5eTxQYE=',
     }
-
-    def apply_patch(self, *args, **kwargs):
-        patcher = patch(*args, **kwargs)
-        mock = patcher.start()
-        self.addCleanup(patcher.stop)
-        return mock
 
     def make_raise_exception_side_effect(self, exception):
         def func(*unusued_args, **unusued_kwargs):
@@ -316,3 +372,133 @@ class SsoUserFinalizationTests(TestCase):
         self.assertIn('error', response.context)
         self.assertIn(error_reason, response.context['error'])
         self.assertIn('Failed to register user', response.context['error'])
+
+
+class TestProcessAccessKey(TestCase, ApplyPatchMixin):
+    """ Tests process_access_key method """
+    program = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.program = _make_program()
+
+    def setUp(self):
+        self.user_api = self.apply_patch('accounts.controller.user_api')
+        self.apply_patch(
+            'accounts.controller.assign_student_to_program',
+            return_value=AssignStudentToProgramResult(self.program, None)
+        )
+        self.patched_enroll_student_in_course = self.apply_patch('accounts.controller.enroll_student_in_course')
+        self.user_api.get_user_organizations = mock.Mock(return_value=[_make_company(1)])
+
+    def test_not_registered_with_company(self):
+        user = _make_user()
+        key = AccessKey.objects.create(client_id=1, code=1234)
+        company = _make_company(1, display_name='Other company')
+        self.user_api.get_user_organizations = mock.Mock(return_value=[_make_company(1000)])
+
+        result = process_access_key(user, key, company)
+        self.assertIsNone(result.enrolled_in_course_ids)
+        self.assertIsNone(result.new_enrollements_course_ids)
+        self.assertEqual(len(result.messages), 1)
+        message = result.messages[0]
+        expected_message = "Access Key {key} is associated with company {company}, " \
+                           "but you're not registered with it".format(key=key.code, company=company.display_name)
+        self.assertEqual(message[1], expected_message)
+
+    def test_adds_new_enrollment_to_enrolled_courses(self):
+        course_id = "Course QWERTY"
+        user = _make_user()
+        key = AccessKey.objects.create(client_id=1, code=1234, program_id=self.program.id, course_id=course_id)
+        company = _make_company(1, display_name='Other company')
+        self.patched_enroll_student_in_course.return_value = EnrollStudentInCourseResult(course_id, True, True, None)
+
+        result = process_access_key(user, key, company)
+        self.assertEqual(result.enrolled_in_course_ids, [course_id])
+        self.assertEqual(result.new_enrollements_course_ids, [course_id])
+
+    def test_adds_existing_enrollment_to_enrolled_courses(self):
+        course_id = "Course QWERTY"
+        user = _make_user()
+        key = AccessKey.objects.create(client_id=1, code=1234, program_id=self.program.id, course_id=course_id)
+        company = _make_company(1, display_name='Other company')
+        self.patched_enroll_student_in_course.return_value = EnrollStudentInCourseResult(course_id, True, False, None)
+
+        result = process_access_key(user, key, company)
+        self.assertEqual(result.enrolled_in_course_ids, [course_id])
+        self.assertEqual(result.new_enrollements_course_ids, [])
+
+    def test_skips_course_if_not_enrolled(self):
+        course_id = "Course QWERTY"
+        user = _make_user()
+        key = AccessKey.objects.create(client_id=1, code=1234, program_id=self.program.id, course_id=course_id)
+        company = _make_company(1, display_name='Other company')
+        self.patched_enroll_student_in_course.return_value = EnrollStudentInCourseResult(
+            course_id, False, False, "Message"
+        )
+
+        result = process_access_key(user, key, company)
+        self.assertEqual(result.enrolled_in_course_ids, [])
+        self.assertEqual(result.new_enrollements_course_ids, [])
+        self.assertEqual(result.messages, ["Message"])
+
+
+class TestEnrollStudentInCourse(TestCase, ApplyPatchMixin):
+    """ Tests for enroll_student_in_course method """
+    def _assert_result(self, result, course_id, expected_message, enrolled, new_enrollement):
+        self.assertEqual(result.course_id, course_id)
+        self.assertEqual(result.message, expected_message)
+        self.assertEqual(result.enrolled, enrolled)
+        self.assertEqual(result.new_enrollment, new_enrollement)
+
+    def _make_side_effect_raise_api_error(self, api_error_code):
+        thrown_error = mock.Mock()
+        thrown_error.code = api_error_code
+        thrown_error.reason = "I have no idea, but luckily it is irrelevant for the test"
+
+        def _raise(*args, **kwargs):
+            raise ApiError(thrown_error=thrown_error, function_name='irrelevant')
+        return _raise
+
+    def setUp(self):
+        self.user_api = self.apply_patch('accounts.controller.user_api')
+
+    def test_invalid_course_id(self):
+        user = _make_user()
+        program = _make_program(courses=[_make_course(course_id_iter) for course_id_iter in [1, 2]])
+        course_id = 'qwerty'
+
+        result = enroll_student_in_course(user, program, course_id)
+        expected_message = 'Unable to enroll you in course "{}" - it is no longer part of your program.'.format(
+            course_id
+        )
+        self._assert_result(result, course_id, (messages.ERROR, expected_message), False, False)
+
+    def test_new_enrollment(self):
+        course_id = 'qwerty'
+        user = _make_user()
+        program = _make_program(courses=[_make_course(course_id)])
+
+        result = enroll_student_in_course(user, program, course_id)
+        expected_message = "Successfully enrolled you in a course {}.".format(course_id)
+        self._assert_result(result, course_id, (messages.INFO, expected_message), True, True)
+
+    def test_already_enrolled(self):
+        course_id = 'qwerty'
+        user = _make_user()
+        program = _make_program(courses=[_make_course(course_id)])
+        self.user_api.enroll_user_in_course.side_effect = self._make_side_effect_raise_api_error(409)
+
+        result = enroll_student_in_course(user, program, course_id)
+        expected_message = 'You are already enrolled in course "{}"'.format(course_id)
+        self._assert_result(result, course_id, (messages.WARNING, expected_message), True, False)
+
+    def test_failed_to_eroll(self):
+        course_id = 'qwerty'
+        user = _make_user()
+        program = _make_program(courses=[_make_course(course_id)])
+        self.user_api.enroll_user_in_course.side_effect = self._make_side_effect_raise_api_error(400)
+
+        result = enroll_student_in_course(user, program, course_id)
+        expected_message = 'Unable to enroll you in course "{}".'.format(course_id)
+        self._assert_result(result, course_id, (messages.ERROR, expected_message), False, False)
