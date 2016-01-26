@@ -189,7 +189,7 @@ def enroll_student_in_course(user, program, course_id):
         except ApiError as e:
             if e.code == 409:
                 message = (
-                    messages.ERROR,
+                    messages.INFO,
                     _('You are already enrolled in course "{}"').format(course_id)
                 )
                 enrolled = True
