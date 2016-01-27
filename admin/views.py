@@ -2258,11 +2258,11 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
         workgroup.add_user_list(students)
 
         return HttpResponse(json.dumps(
-            {'succecss': False, 'message': 'Group successfully created'}), content_type="application/json"
+            {'success': True, 'message': 'Group successfully created'}), content_type="application/json"
         )
 
     return HttpResponse(json.dumps(
-        {'succecss': True, 'message': 'Group wasnt created'}), content_type="application/json"
+        {'success': False, 'message': 'Group wasnt created'}), content_type="application/json"
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
