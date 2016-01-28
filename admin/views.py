@@ -2229,7 +2229,7 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
 
         if not project_id:
             return HttpResponse(
-                json.dumps({'succecss': False, 'message': "Group wasn't created - please select project"}),
+                json.dumps({'success': False, 'message': "Group wasn't created - please select project"}),
                 content_type="application/json"
             )
 
@@ -2240,10 +2240,8 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
             bad_users = [u for u in students if u not in organization.users]
 
             if len(bad_users) > 0:
-                message = "Bad users {} for private project".format(
-                    ",".join([u for u in bad_users])
-                )
-                return HttpResponse(json.dumps({'message': ''}), content_type="application/json")
+                message = "Bad users {} for private project".format(",".join([u for u in bad_users]))
+                return HttpResponse(json.dumps({'success': False, 'message': message}), content_type="application/json")
 
         workgroups = sorted(project.workgroups)
         lastId = 0 if not workgroups else int(workgroup_api.get_workgroup(workgroups[-1]).name.split()[-1])
@@ -2262,7 +2260,7 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
         )
 
     return HttpResponse(json.dumps(
-        {'success': False, 'message': 'Group wasnt created'}), content_type="application/json"
+        {'success': False, 'message': 'Group was not created'}), content_type="application/json"
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
