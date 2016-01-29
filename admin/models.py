@@ -100,7 +100,6 @@ class Program(BaseGroupModel):
     def __repr__(self):
         return unicode(self)
 
-
 class ReviewAssignmentGroup(BaseGroupModel):
     data_fields = ["assignment_date", "xblock_id"]
     date_fields = ["assignment_date"]
@@ -288,6 +287,8 @@ class ClientCustomization(db_models.Model):
     hex_page_background = db_models.CharField(max_length=7)
     client_logo = db_models.CharField(max_length=200)
     identity_provider = db_models.CharField(blank=True, max_length=200)
+    client_background = db_models.CharField(max_length=200)
+    client_background_css = db_models.CharField(max_length=200)
 
 ROLE_ACTIONS = DottableDict(
     GRANT='grant',
@@ -302,7 +303,6 @@ ASSOCIATION_ACTIONS = DottableDict(
 internal_admin_role_event = Signal(providing_args=['user_id', 'action'])
 course_program_event = Signal(providing_args=['course_id', 'program_id', 'action'])
 program_client_event = Signal(providing_args=['client_id', 'program_id', 'action'])
-
 
 class AccessKey(db_models.Model):
     """

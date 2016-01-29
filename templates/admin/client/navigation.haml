@@ -59,6 +59,13 @@
             %a.button.radius.tiny.upload_logo Upload Logo
             %input{type: 'file', name: 'client_logo'}
           %li
+            %label.nav2.selected Upload client background:
+            %a.button.radius.tiny.upload_logo Upload Background
+            %input{type: 'file', name: 'client_background'}
+          %li
+            %label.nav2.selected CSS for background image:
+            %input{type: 'text', name: 'client_background_css', placeholder: 'enter css', maxlength: "200", value: "#{customization.client_background_css}"}
+          %li
             %label.nav2.selected Hex # for notification circle:
             %input{type: 'text', name: 'hex_notification', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_notification}"}
           %li

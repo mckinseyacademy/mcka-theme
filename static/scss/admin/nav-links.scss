@@ -68,10 +68,12 @@
         li {
           float: left;
           width: 50%;
+          height: 55px;
           padding: 0;
           position: relative;
 
-          input[name='client_logo'] {
+          input[name='client_logo'],
+          input[name='client_background'] {
             position: absolute;
             top: 0;
             right: 35px;
