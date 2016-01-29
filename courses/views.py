@@ -429,7 +429,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
-    completed_items_count = len([module for module in course.graded_items()["modules"] if module.assesment_score >= 0])
+    completed_items_count = len([module for module in course.graded_items()["modules"] if module.is_complete])
 
     project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
