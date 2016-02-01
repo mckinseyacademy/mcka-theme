@@ -166,6 +166,9 @@
       toggle_selector_disabled: true,
       success: function(data){
         if (data.success) {
+          if (data.message) {
+            alert(data.message);
+          }
           window.location = '/admin/workgroup/course/' + course_id + '?project_id=' + $('.group-project-select').val();
         } else {
           alert(data.message || "Group was not created");
@@ -197,10 +200,6 @@
         e.preventDefault();
         courseDrag.removeStudent($(this), $(this).parent('a').attr('href'));
         $('#student-group-action').off('click');
-    });
-
-    $('#student-group-action').on('click', function(){
-      disableButton($(this));
     });
 
     $('.group-project-select').on('change', function(){
