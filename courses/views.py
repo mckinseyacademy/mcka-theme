@@ -427,9 +427,16 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
 
+    # add module completion
+    completions = course_api.get_course_completions(course.id, user_id)
+    completed_ids = [result.content_id for result in completions]
+    for lesson in course.chapters:
+        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                           settings.PROGRESS_IGNORE_COMPONENTS)
+
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
-    completed_items_count = len([module for module in course.graded_items()["modules"] if module.is_complete])
+    completed_items_count = len([module for module in course.graded_items()["modules"] if getattr(module, 'is_complete', None)])
 
     project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
