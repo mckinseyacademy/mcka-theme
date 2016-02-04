@@ -314,6 +314,10 @@ def _course_progress_for_user(request, course_id, user_id):
 
         # format scores & grades
         for activity in group_activities:
+            if hasattr(activity, 'due_upon'):
+                activity.due_on = activity.due_upon
+            else:
+                activity.due_on = activity.due.strftime("%B %e") if activity.due else ""
             if activity.score is not None:
                 activity.score = round_to_int(activity.score)
             for i, grade in enumerate(activity.grades):
