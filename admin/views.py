@@ -1079,20 +1079,22 @@ def client_detail_customization(request, client_id):
         client_id=client_id,
     )
     if request.FILES:
-        temp_image = request.FILES['client_logo']
         allowed_types = ["image/jpeg", "image/png", 'image/gif']
-        if temp_image and temp_image.content_type in allowed_types:
-            from django.core.files.storage import default_storage
-            from django.core.files.base import ContentFile
-            from PIL import Image
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+        from PIL import Image
 
-            extension = os.path.splitext(temp_image.name)[1]
-            temp_logo_url = 'images/client_logo-{}-{}{}'.format(client_id, datetime.now().strftime("%s"), extension)
-            if default_storage.exists(temp_logo_url):
-                default_storage.delete(temp_logo_url)
-            default_storage.save(temp_logo_url, ContentFile(temp_image.read()))
-            customization.client_logo = '/accounts/' + temp_logo_url
+        for upload in request.FILES:
+            temp_image = request.FILES[upload]
+            if temp_image.content_type in allowed_types:
+                extension = os.path.splitext(temp_image.name)[1]
+                temp_url = 'images/{}-{}-{}{}'.format(upload, client_id, datetime.now().strftime("%s"), extension)
+                if default_storage.exists(temp_url):
+                    default_storage.delete(temp_url)
+                default_storage.save(temp_url, ContentFile(temp_image.read()))
+                setattr(customization, upload, '/accounts/' + temp_url)
 
+    customization.client_background_css = request.POST['client_background_css']
     customization.hex_notification = request.POST['hex_notification']
     customization.hex_notification_text = request.POST['hex_notification_text']
     customization.hex_background_bar = request.POST['hex_background_bar']
@@ -2229,7 +2231,7 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
 
         if not project_id:
             return HttpResponse(
-                json.dumps({'succecss': False, 'message': "Group wasn't created - please select project"}),
+                json.dumps({'success': False, 'message': "Group wasn't created - please select project"}),
                 content_type="application/json"
             )
 
@@ -2240,10 +2242,8 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
             bad_users = [u for u in students if u not in organization.users]
 
             if len(bad_users) > 0:
-                message = "Bad users {} for private project".format(
-                    ",".join([u for u in bad_users])
-                )
-                return HttpResponse(json.dumps({'message': ''}), content_type="application/json")
+                message = "Bad users {} for private project".format(",".join([u for u in bad_users]))
+                return HttpResponse(json.dumps({'success': False, 'message': message}), content_type="application/json")
 
         workgroups = sorted(project.workgroups)
         lastId = 0 if not workgroups else int(workgroup_api.get_workgroup(workgroups[-1]).name.split()[-1])
@@ -2258,11 +2258,11 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
         workgroup.add_user_list(students)
 
         return HttpResponse(json.dumps(
-            {'succecss': False, 'message': 'Group successfully created'}), content_type="application/json"
+            {'success': True, 'message': 'Group successfully created'}), content_type="application/json"
         )
 
     return HttpResponse(json.dumps(
-        {'succecss': True, 'message': 'Group wasnt created'}), content_type="application/json"
+        {'success': False, 'message': 'Group was not created'}), content_type="application/json"
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
