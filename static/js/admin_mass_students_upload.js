@@ -49,11 +49,20 @@ $(function(){
                         }).done(function(data){
                           if(data.done == 'done'){
                             clearInterval(poolingInterval);
+<<<<<<< 3e39df66d03b221a53ff28f5300117fee9b6eaeb
                             $('#enroll-error-list').html(_.template(errorsBlockTemplate, {'data': data.message}));
                             if(data.error.length > 0){
                               $('#enroll-error-list').find('#user-reg-errors').html(_.template(errorsTemplate, {'data': data}));
                               $("#upload_error_list").foundation('reveal');
                             }
+=======
+                            $('.upload_results').html(_.template(errorsBlockTemplate, {'data': data.message}));
+                            if(data.error.length > 0){
+                              $('.upload_results').find('#user-reg-errors').html(_.template(errorsTemplate, {'data': data}));
+                              $("#upload_error_list").foundation('reveal');
+                            }
+                            $('#upload_student_list').foundation('reveal', 'close');
+>>>>>>> Mass Student Enroll script
                           }
                           else if(data.done == 'failed'){
                             clearInterval(poolingInterval);
@@ -65,6 +74,14 @@ $(function(){
                           }
                         })
                       }, 10000);
+<<<<<<< 3e39df66d03b221a53ff28f5300117fee9b6eaeb
+=======
+                      $(document).on('closed.fndtn.reveal', '#upload_student_list', function () {
+                        if(poolingInterval){
+                          clearInterval(poolingInterval);
+                        }
+                      });
+>>>>>>> Mass Student Enroll script
                     },
                 error: function( data ){
                       data = $.parseJSON(data);
