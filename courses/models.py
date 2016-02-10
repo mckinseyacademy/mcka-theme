@@ -42,6 +42,7 @@ class FeatureFlags(db_models.Model):
     group_work = db_models.BooleanField(default=True)
     discussions = db_models.BooleanField(default=True)
     cohort_map = db_models.BooleanField(default=True)
+    proficiency = db_models.BooleanField(default=True)
 
     def as_json(self):
         return dict(
