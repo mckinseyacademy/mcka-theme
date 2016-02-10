@@ -797,6 +797,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.group_work = request.POST.get('group_work', None) == 'on'
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'
     feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
+    feature_flags.proficiency = request.POST.get('proficiency', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(

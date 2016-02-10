@@ -91,7 +91,7 @@
           %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
         - else
           %p.style-6 Note: "weeks" begin Tuesday and end the following Monday
-    - if graded_items_count > 0
+    - if feature_flags.proficiency and graded_items_count > 0
       .medium-10.medium-centered.columns.course-page
         .label-5 PROFICIENCY
         %p.style-6 Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%.
