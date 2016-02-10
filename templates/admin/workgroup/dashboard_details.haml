@@ -24,8 +24,14 @@
               -#    %option{value: 'not_started'}= _("Not started")
               -#    %option{value: 'started'}= _("Started")
               -#    %option{value: 'complete'}= _("Complete")
+              .small-4.columns
+                %select#company_filter{'{% if client_filter_options|length == 1 %}disabled{%endif%}': None}
+                  - for client in client_filter_options
+                    %option{'value': '{{client.id}}'}
+                      = client.name
 
-              .small-12.columns
+
+              .small-8.columns
                 %input{type: 'text', placeholder: 'Search participants', id:'user_search'}
 
           .large-12.dashboard_outline_wrapper
@@ -35,6 +41,8 @@
             %span.dashboard_outline.course= course.name
             |
             %span.dashboard_outline.project= project.name
+            |
+            %span.dashboard_outline.company= client_filter_options.0.name
           %hr
         %section
           .columns.large-12.group_project_placeholder
@@ -58,6 +66,7 @@
         block_view: 'dashboard_detail_view',
         data: {
             activate_block_id: Apros.getParameterByName('activate_block_id'),
+            client_filter_id: $('#company_filter').find(':selected').val()
         },
         {% if use_current_host %}
         useCurrentHost: true,
@@ -79,6 +88,14 @@
     make_group_project_element('{{course.id}}', '{{project.id}}');
 
     $(document).ready(function() {
+      $('#company_filter').on('change', function(){
+        $('.group_project_placeholder').html('');
+        make_group_project_element('{{course.id}}', '{{project.id}}');
+        $('.dashboard_outline_wrapper span.dashboard_outline.company').html(
+          $('#company_filter').find(':selected').html()
+         );
+         $("#user_search").val('');
+      });
       $("#user_search").keyup(function() {
         if (user_search_parameters.timeout_handle) {
           clearTimeout(user_search_parameters.timeout_handle);
