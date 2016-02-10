@@ -26,13 +26,7 @@ class JsonBackend(object):
         '''
         Implements django authenticate that delegates to API
         '''
-        if username and password:
-            # If remote_session_key is specified, we are attempting to upgrade the remote
-            # session from AnonymousUser to an authorized user, using the given credentials.
-            # Otherwise a new session will be created.
-            auth_info = user_api.authenticate(username, password, remote_session_key=remote_session_key)
-            auth_info.user = user_api.get_user(auth_info.user.id)
-        elif remote_session_key:
+        if remote_session_key and not (username and password):
             try:
                 auth_info = user_api.get_session(remote_session_key)
                 auth_info.user = user_api.get_user(auth_info.user_id)
@@ -40,6 +34,12 @@ class JsonBackend(object):
                 if err.code == 404:
                     return None  # This session ID is not valid
                 raise  # This session ID could be valid but an error occurred.
+        else:
+            # If remote_session_key is specified, we are attempting to upgrade the remote
+            # session from AnonymousUser to an authorized user, using the given credentials.
+            # Otherwise a new session will be created.
+            auth_info = user_api.authenticate(username, password, remote_session_key=remote_session_key)
+            auth_info.user = user_api.get_user(auth_info.user.id)
         user = self._load_user(auth_info.user, auth_info.token)
         if hasattr(auth_info, 'csrftoken'):
             user.csrftoken = auth_info.csrftoken
