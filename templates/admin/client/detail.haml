@@ -37,6 +37,8 @@
               Upload Student List
             %a.button.radius.small{href: "/admin/clients/#{client.id}/download_student_list", target: "_blank"}
               Download Student List
+            %a.button.radius.small{href: "/admin/clients/#{client.id}/mass_student_enroll", target: "_blank"}
+              Massive Student Enroll
             .upload_results
         %hr
         - if user.is_mcka_admin

@@ -10,18 +10,22 @@ from django.conf import settings
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from admin.models import Program
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, organization_api, project_api
+from api_client import user_api, group_api, course_api, organization_api, project_api, user_models
 from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
 from api_client.project_models import Project
 from api_client.user_api import USER_ROLES
 
+from license import controller as license_controller
+
 from .models import (
     Client, WorkGroup, UserRegistrationError, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
     GROUP_PROJECT_V2_ACTIVITY_CATEGORY,
 )
+
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 
 import threading
 import Queue
@@ -89,6 +93,12 @@ def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_stat
     _thread.daemon = True # so we can exit
     _thread.start()
     process_uploaded_student_list(student_list, client_id, absolute_uri, reg_status)
+
+def mass_student_enroll_threaded(student_list, client_id, program_id, course_id, request, req_status):
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
+    process_mass_student_enroll_list(student_list, client_id, program_id, course_id, request, req_status)  
 
 def _find_group_project_v2_blocks_in_chapter(chapter):
     return (
@@ -277,7 +287,55 @@ def _process_line(user_line):
     return user_info
 
 
-def _build_student_list_from_file(file_stream):
+def _process_line_proposed(user_line):
+    try:
+        fields = user_line.strip().split(',')
+        # format is FirstName, LastName, Email, Company, Country, City, Gender, CourseID, Status (last 3 are optional)
+
+        # temporarily set the user name to the first 30 characters of the allowed characters within the email
+        username = re.sub(r'\W', '', fields[2])
+        if len(username) > 30:
+            username = username[:29]
+
+        # Must have the first 3 fields
+        user_info = {
+            "first_name": fields[0],
+            "last_name": fields[1],
+            "email": fields[2],
+            "username": username,
+            "is_active": False,
+            "password": settings.INITIAL_PASSWORD,
+        }
+        if len(fields) > 3:
+            user_info["company"] = fields[3]
+
+        # COUNTRY NEEDS TO BE ENTERED AS A CODE
+        # if len(fields) > 4:
+        #     user_info["country"] = fields[4]
+
+        if len(fields) > 5:
+            user_info["city"] = fields[5]
+
+        if len(fields) > 6:
+            user_info["gender"] = fields[6]
+
+        # if len(fields) > 7:
+        #     # If password and username are included in the CSV,
+        #     # our intent is to register and activate the user
+        #     user_info["is_active"] = True
+        #     user_info["password"] = fields[7]
+        #     if fields[6]:
+        #         user_info["username"] = fields[6]
+
+    except Exception as e:
+        user_info = {
+            "error": _("Could not parse user info from {}").format(user_line)
+        }
+
+    return user_info
+
+
+def _build_student_list_from_file(file_stream, parse_method=_process_line):
     # Don't need to read into a tmep file if small enough
     user_objects = []
     with tempfile.TemporaryFile() as temp_file:
@@ -287,7 +345,7 @@ def _build_student_list_from_file(file_stream):
         temp_file.seek(0)
 
         # ignore first line
-        user_objects = [_process_line(user_line) for user_line in temp_file.read().splitlines()[1:]]
+        user_objects = [parse_method(user_line) for user_line in temp_file.read().splitlines()[1:]]
 
     return user_objects
 
@@ -309,7 +367,6 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
                     "reason": e.message,
                     "activity": _("Unable to register user")
                 }
-
             if user:
                 try:
                     if not user.is_active:
@@ -345,6 +402,110 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save()
 
+def company_users_list(client_id):
+    users = organization_api.get_users_by_enrolled(organization_id=client_id, user_object=user_models.UserResponse)
+    return users
+
+def enroll_user_in_course(user_id, course_id):
+    try:
+        user_api.enroll_user_in_course(user_id, course_id)
+    except ApiError as e:
+        # Ignore 409 errors, because they indicate a user already added
+        if e.code != 409:
+            raise
+
+def _enroll_users_in_list(students, client_id, program_id, course_id, request, reg_status):
+    client = Client.fetch(client_id)
+    program = Program.fetch(program_id)
+    company_users = company_users_list(client_id)
+
+    # Not validating number of available places here, because reruns would never be able to run.
+    # allocated, assigned = license_controller.licenses_report(
+    #     program.id, client_id)
+    # remaining = allocated - assigned
+
+    # if len(students) > remaining:
+    #     user_error = _("Not enough places available for {} program - {} left").format(program.display_name, remaining)
+
+    for user_dict in students:
+        failure = None
+        user_error = None
+        try:
+            user = None
+            activation_record = None
+
+            try:
+                user = user_api.register_user(user_dict)
+            except ApiError as e:
+                user = None
+                failure = {
+                    "reason": e.message,
+                    "activity": _("Unable to register user")
+                }
+
+            if user:
+                try:
+                    if not user.is_active:
+                        activation_record = UserActivation.user_activation(user)
+                    client.add_user(user.id)
+                except ApiError, e:
+                    failure = {
+                        "reason": e.message,
+                        "activity": _("User not associated with client")
+                    }
+
+            if failure:
+                user_error = _("{}: {} - {}").format(
+                    failure["activity"],
+                    failure["reason"],
+                    user_dict["email"],
+                )
+            try: 
+                # Enroll into program
+                if not user: 
+                    user = user_api.get_users(email=user_dict["email"])[0]
+
+                try:    
+                    program.add_user(client_id, user.id)
+                except Exception as e:
+                    user_error = _("{}: {} - {}").format(
+                        "User program enrollment",
+                        e.message,
+                        user_dict["email"],
+                    )
+                try:
+                    enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
+                    if user.id not in enrolled_users:
+                        enroll_user_in_course(user.id, course_id)
+                except Exception as e: 
+                    user_error = _("{}: {} - {}").format(
+                        "User course enrollment",
+                        e.message,
+                        user_dict["email"],
+                    )
+            except Exception as e: 
+                reason = e.message if e.message else _("Enrolling student error")
+                user_error = _("Error enrolling student: {}").format(
+                    reason,
+                )
+
+        except Exception as e:
+            user = None
+            reason = e.message if e.message else _("Data processing error")
+            user_error = _("Error processing data: {}").format(
+                reason,
+            )
+
+        if user_error:
+            print user_error
+            error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
+            reg_status.failed = reg_status.failed + 1
+            reg_status.save()
+        else:
+            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
+            reg_status.succeded = reg_status.succeded + 1
+            reg_status.save() 
+
 
 @postpone
 def process_uploaded_student_list(file_stream, client_id, activation_link_head, reg_status=None):
@@ -360,6 +521,20 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head, 
 
     # 2) Register the users, and associate them with client
     _register_users_in_list(user_list, client_id, activation_link_head, reg_status)
+
+@postpone
+def process_mass_student_enroll_list(file_stream, client_id, program_id, course_id, request, reg_status=None):
+    # 1) Build user list
+    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_proposed)
+    if reg_status is not None:
+        reg_status.attempted = len(user_list)
+        reg_status.save()
+    for user_info in user_list:
+        if "error" in user_info:
+            UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+    user_list = [user_info for user_info in user_list if "error" not in user_info]
+    # 2) Register the users, and associate them with client
+    _enroll_users_in_list(user_list, client_id, program_id, course_id, request, reg_status)
 
 
 def _formatted_user_string(user):
