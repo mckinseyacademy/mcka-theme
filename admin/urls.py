@@ -88,6 +88,9 @@ urlpatterns = patterns(
     url(r'^workgroup/project/(?P<project_id>[0-9]+)/delete', views.workgroup_remove_project, name='workgroup_remove_project'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
 
+    url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
+    url(r'^participants$', views.participants_list, name='participants_list'),
+
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),
 

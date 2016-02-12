@@ -50,6 +50,9 @@
       %link{rel: "stylesheet", href: "{% static 'css/old-font-awesome.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/nv.d3.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
+      %link{rel: "stylesheet", href: "{% static 'css/bbGrid.css' %}"}
+      %link{rel: "stylesheet", href: "{% static 'css/participants.css' %}"}
+
 
     {% assets "css_core" %}
       %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
@@ -107,7 +110,7 @@
       %script{src: "/static/js/vendor/underscore.js"}
       %script{src: "/static/js/vendor/backbone.js"}
       %script{src: "/static/js/vendor/date.js"}
-
+    
   %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"}
     - block help_context
 
