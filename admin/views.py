@@ -3,6 +3,7 @@ import functools
 import json
 import string
 import urlparse
+from dateutil.parser import parse as parsedate
 from datetime import datetime
 from urllib import quote as urlquote, urlencode
 from operator import attrgetter
@@ -64,6 +65,10 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -2458,6 +2463,28 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         'admin/workgroup/list.haml',
         data
     )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participants_list(request):
+    return render( request, 'admin/participants/participants_list.haml')
+
+class participants_list_api(APIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        allParticipants = user_api.get_filtered_users(request.GET)
+        for participant in allParticipants["results"]:
+            if len(participant["organizations"]) > 0:
+                participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+            else:
+                participant['organizations_custom_name'] = ""
+            participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
+            if participant["is_active"]:
+                participant["active_custom_text"]="Yes"
+            else:
+                participant["active_custom_text"]="No"
+        return Response(allParticipants)
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

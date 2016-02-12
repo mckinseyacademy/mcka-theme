@@ -23,6 +23,8 @@
           %a{href: '/admin/course-meta-content'}= _("Course Content")
       - if user.is_mcka_admin or user.is_internal_admin
         %li
+          %a{href: '/admin/participants'}= _("Participants")
+        %li
           %a{href: '/admin/permissions'}= _("Roles & Permissions")
       - if user.is_client_admin
         %li
