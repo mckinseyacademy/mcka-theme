@@ -6,8 +6,9 @@ toward developers, the instructions within could be modified to create a deploym
 The steps we'll follow are as follows:
 
 1. Setup the Solutions Devstack
-3. Setup the Apros Environment
-4. Set up the reverse Proxy server
+2. Setup the Apros Environment
+3. Set up the reverse Proxy server
+4. Start the LMS and forum services
 5. Start Apros
 
 This document will make the assumptions that:
@@ -15,7 +16,7 @@ This document will make the assumptions that:
 * You will be using the domain name `lms.mcka.local` for your LMS instance on port 8000 (the devstack default).
 * You will be using the domain name `cms.mcka.local` for your CMS instance on port 8001 (the devstack default).
 * You will be using the domain name `apros.mcka.local` for your Apros instance.
-* You wish to use a SQLite database and basic development server for this environment on port 3000.
+* You wish to use a basic development server for this environment on port 3000.
 * You will be using a Vagrant VM-based devstack.
 
 ## Step 1 - Set up the Solutions Devstack
@@ -90,7 +91,18 @@ Finally, exit this user's shell. We'll be loading back into it later.
 
 Do not worry that the directory `mcka_apros` does not exist. It will be created in the next section.
 
+### Clone the Apros repository
+
+Make sure you clone it **in the same directory as the Vagrantfile**. Run:
+
+    git clone git@github.com:mckinseyacademy/mcka_apros.git
+
+or
+
+    git clone https://github.com/mckinseyacademy/mcka_apros.git
+
 ### Modify the VagrantFile
+
 * Look for the port forwarding section of the Vagrant file, and add this line:
   
         config.vm.network :forwarded_port, guest: 80, host: 8080
@@ -102,29 +114,15 @@ Do not worry that the directory `mcka_apros` does not exist. It will be created 
   The guide for mac has some extra tips you may be able to backport to your Linux installation. Several Apros features do
   not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS.
 
-* Clone the Apros repository **in your vagrant staging folder**, like so:
+* Share Apros root folder with the VM by adding the following line to the `MOUNT_DIRS` hash in Vagrantfile:
 
-
-        git clone git@github.com:mckinseyacademy/mcka_apros.git
-
-  or
-
-      git clone https://github.com/mckinseyacademy/mcka_apros.git
-
-
-After the line `ora_mount_dir = "ora"` add:
- 
-    mcka_mount_dir = "mcka_apros"
-
-* Share Apros root folder with the VM by adding the following lines into Vargant file. There are lines similar to these already
-  in the file, make sure you add them to proper place. There are `if ENV['VAGRANT_USE_VBOXFS'] == 'true'` block, first line should go to 
-  `True` branch, second line to `False` branch
-
-          config.vm.synced_folder "#{mcka_mount_dir}", "/edx/app/apros/mcka_apros",
-            create: true, owner: "apros", group: "www-data"
-
-          config.vm.synced_folder "#{mcka_mount_dir}", "/edx/app/apros/mcka_apros",
-            create: true, nfs: true
+    ```ruby
+    MOUNT_DIRS = {
+        ...
+        :apros => {:repo => "mcka_apros", :local => "/edx/app/apros/mcka_apros", :owner => "apros"},
+        ...
+    }
+    ```
 
 * Reload vagrant config with `vagrant reload`, log in into vagrant box using `vagrant ssh`. If the vagrant instance was
  not running, use `vagrant up` instead of `vagrant reload`.
@@ -177,7 +175,11 @@ _Sqlite is sometimes easier to operate with than mySql, but this is purely a cho
 stick with MySql if you want to remain as close to the production environment as desired._
 
 **If you want to use MySQL, you will need to create a MySQL database with users and permissions according to the 
-`settings.py` file, or ones of your own creation in `local_settings.py`.**
+`settings.py` file, or ones of your own creation in `local_settings.py`.** To
+create the default databases, run:
+
+    mysqladmin -u root create mcka_apros
+    mysqladmin -u root create edx
 
 #### Configure the name to use for the LMS instance, like this:
 
@@ -197,7 +199,7 @@ stick with MySql if you want to remain as close to the production environment as
 
 `EDX_API_KEY` in `lms.auth.json` and `local_settings.py` should match for apros to be able to communicate with the LMS API.
 
-### Step 3 - Set up the reverse proxy server
+## Step 3 - Set up the reverse proxy server
 
 For security purposes, browsers have very rigid rules on how they'll handle sharing of content between domains and ports. 
 In order to make sure that Apros is able to load remote resources from the LMS (such as assets and the content of XBlocks),
@@ -222,16 +224,48 @@ Enable this new virtual host with:
 [example-config]: mcka_apros
 [appendix-c]: #appendix-c-complete-production-routing
     
+## Step 4 - Start the LMS and forum services
+
+These services need to be running for Apros to work. Start them and leave them
+running before moving on to the next step.
+
+### To start the LMS:
+
+As the `vagrant` user:
+
+    sudo su edxapp                   # switch to the edxapp user
+    cd /edx/app/edxapp/edx-platform  # where the lms lives; you should be here already
+
+    # Run the migrations. We can't use paver update_db here as solutions and
+    upstream have conflicting migrations.
+    ./manage.py lms migrate --settings=devstack --merge
+    ./manage.py cms migrate --settings=devstack --merge
+
+    # Start the LMS
+    paver devstack lms
+
+### To start the forum:
+
+As the `vagrant` user:
+
+    sudo su forum                          # switch to the forum user
+    cd /edx/app/forum/cs_comments_service  # where the forum lives; you should be here already
+    bundle install                         # install ruby dependencies
+    ruby app.rb -p 18080                   # start the forum
 
 ## Step 5 - Start Apros
 
 #### Set up the database and seed data
 
-To begin setting up Apros, **launch the LMS and forum/comment service and leave them running**. Then, run the following commands as the `apros` user: 
+To begin setting up Apros, **make sure that the LMS and forum/comment service are running**. Then, run the following commands as the `apros` user:
 
     ./manage.py syncdb --migrate
     mkdir /edx/app/apros/mcka_apros/static/gen
     ./manage.py load_seed_data
+
+This will build the Apros database and load seed data into the LMS database, including [preconfigured users][load-seed-data].
+When it finishes, run:
+
     ./manage.py rundev 3000
 
 Wait for the above to finish pre-processing, then Ctrl+C out of it.
@@ -241,15 +275,13 @@ Finally, collect all the static assets.
 
     ./manage.py collectstatic --noinput
 
-This will build the Apros database and load seed data into the LMS database, including [preconfigured users][load-seed-data].
-
-[load-seed-data]: https://github.com/mckinseyacademy/mcka_apros/blob/master/main/management/commands/load_seed_data.py#L36-L55
-
 At this point, everything should be in place, and you should be able to start Apros from the `apros` user's command line with:
 
     ./manage.py rundev 3000
     
 **Make sure the LMS and the Forum/Comment services are running whenever you run Apros** as Apros relies on remote API calls to these.
+
+[load-seed-data]: https://github.com/mckinseyacademy/mcka_apros/blob/master/main/management/commands/load_seed_data.py#L36-L55
 
 ## After you're done
 
@@ -350,21 +382,14 @@ the actual rewriting if `DEBUG` is set to true.
 
 XBlocks are usually developed using the workbench, and then finally tested on the platform. Accordingly, a good workflow for developing them is to run the workbench on the host machine, and allow access to the code via the Vagrant box. To set up this workflow, you should enter the vagrant directory for your solutions devstack, where the folders edx-platform, cs_comments_service and mcka_apros reside, and create a new directory with named `xblocks` alongside these.
 
-Next, edit your vagrant file. After the line:
+Next, edit your Vagrantfile. Add the following entry to the `MOUNT_DIRS` hash:
 
-    mcka_mount_dir = "mcka_apros"
-    
-...add:
-
-    xblock_mount_dir = "xblocks"
-    
-Later in the file, make sure you add them to proper place. There is a `if ENV['VAGRANT_USE_VBOXFS'] == 'true'` block, first line should go to 
-  `True` branch, second line to `False` branch
-
-          config.vm.synced_folder "#{xblock_mount_dir}", "/edx/app/edxapp/xblocks",
-            create: true, owner: "edxapp", group: "www-data"
-
-          config.vm.synced_folder "#{xblock_mount_dir}", "/edx/app/edxapp/xblocks",
-            create: true, nfs: true
+```ruby
+MOUNT_DIRS = {
+    ...
+    :xblocks => {:repo => "xblocks", :local => "/edx/app/edxapp/xblocks", :owner => "edxapp"},
+    ...
+}
+```
 
 You will then be able to access this directory as the edxapp user from `~/xblocks` within the VM, and install them from there while editing them from whatever virtualenvs you like on the host.
