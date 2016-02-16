@@ -1,0 +1,23 @@
+- extends "admin/admin_layout.haml"
+
+- block content 
+	#mainCourseDetailsWrapper
+		.courseDetailsNavigationButton
+			%a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
+		#courseDetailsDataWrapper
+			#courseDetailsTopContainer
+				.row
+					.courseDetailsNameAndId
+						={name}  
+						={id}
+				.row
+					.large-4.columns
+						%p ={start} - ={end}
+						%p Parcipiants: ={users_enrolled}
+					.large-4.columns
+					.large-4.columns
+
+
+
+			%hr
+	

@@ -3,7 +3,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	display:table;
-	min-width: 700px;
+	min-width: 760px;
 	max-width: 80%;
 }
 
@@ -11,4 +11,23 @@
 {
 	height: 25em;
 	overflow-y: scroll;
+}
+
+
+#mainCourseDetailsWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 900px;
+	max-width: 80%;
+}
+
+#courseDetailsDataWrapper
+{
+	margin-top: 25px;
+	margin-left: 50px;
+	color: #3384CA;
+	font-size: medium;
+	font-weight: bold;
 }

@@ -150,6 +150,29 @@ def get_course(course_id, depth=3):
     return course
 
 @api_error_protect
+def get_course_details(course_id):
+
+    response = GET('{}/{}/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics(course_id):
+
+    response = GET('{}/{}/{}/metrics'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+    
+    return json.loads(response.read())
+
+@api_error_protect
 def get_courses(**kwargs):
     '''
     Retrieves course structure information from the API for specified courses
