@@ -1,1 +1,1 @@
-Apros.models.Participant = Backbone.Model.extend({});
+  Apros.models.Participant = Backbone.Model.extend({});

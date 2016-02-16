@@ -21,6 +21,8 @@
       - if user.is_mcka_admin or user.is_internal_admin
         %li
           %a{href: '/admin/course-meta-content'}= _("Course Content")
+        %li
+          %a{href: '/admin/courses/'}= _("COURSES")       
       - if user.is_mcka_admin or user.is_internal_admin
         %li
           %a{href: '/admin/participants'}= _("Participants")

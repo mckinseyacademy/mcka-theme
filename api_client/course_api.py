@@ -13,6 +13,8 @@ from .json_requests import GET, POST, DELETE
 from .group_models import GroupInfo
 from . import course_models
 
+import json
+
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
 
 OBJECT_CATEGORY_MAP = {
@@ -47,6 +49,21 @@ def get_course_list(ids=None):
         )
     )
     return CJP.from_json(response.read())
+
+
+@api_error_protect
+def get_courses_list(getParameters):
+    '''
+    Retrieves list of courses from openedx server
+    '''
+    response = GET('{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            urlencode(getParameters)
+        )
+    )
+    return json.loads(response.read())
+
 
 @api_error_protect
 def get_course_overview(course_id):

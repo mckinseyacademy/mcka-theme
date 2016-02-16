@@ -29,7 +29,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
-from lib.authorization import permission_group_required
+from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
@@ -730,6 +730,34 @@ def client_admin_contact(request, client_id):
         'admin/client-admin/contact.haml',
         data
     )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def courses_list(request):
+    return render(request, 'admin/courses/courses_list.haml')
+
+
+class courses_list_api(APIView):
+    '''
+    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
+    '''
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, format=None):
+        allCourses = course_api.get_courses_list(request.GET)
+        for course in allCourses['results']:
+            course['program'] = None
+            course['type'] = None
+            course['configuration'] = None
+            if course['start'] is not None:
+                course['start'] = parsedate(course['start']).strftime("%Y/%m/%d")
+            if course['end'] is not None:
+                course['end'] = parsedate(course['end']).strftime("%Y/%m/%d")  
+            for data in course:
+                if course.get(data) is None:
+                    course[data] = "-"        
+        return Response(allCourses)
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
