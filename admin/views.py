@@ -1696,9 +1696,16 @@ def mass_student_enroll_check(request, client_id, task_key):
             status = _format_upload_results(reg_status)
             for error in errors:
                 error.delete()
+            attempted = reg_status.attempted
+            failed = reg_status.failed
+            succeded = reg_status.succeded
             reg_status.delete()
             return HttpResponse(
-                '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                ('{"done":"done","error":' + errors_as_json + 
+                    ', "message": "' + status.message + 
+                    '", "attempted": "' + str(attempted) + '", ' + 
+                    '"failed": "' + str(failed) + '", ' + 
+                    '"succeded": "' + str(succeded) + '"}'),
                 content_type='application/json'
             )
         else:
