@@ -1568,7 +1568,8 @@ def mass_student_enroll(request, client_id):
         form = MassStudentListForm()  # An unbound form
         restrict_to_programs_ids=None
         users = organization_api.get_users_by_enrolled(organization_id=client_id)
-        programs = get_accessible_programs(request.user, restrict_to_programs_ids)
+        client = Client.fetch(client_id)
+        programs = client.fetch_programs()
         data = {
             "form": form,
             "users": users,

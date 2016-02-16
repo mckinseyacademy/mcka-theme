@@ -15,8 +15,12 @@ $(function(){
       "<% }) %>" +
     "</ul>";
 
-  $('#id_student_list').on("change", function(){
-    $('input[type=submit]').removeAttr('disabled');
+  $('#id_student_list, .select-program, .select-course').on("change", function(){
+    var program = $('.select-program').find(":selected").val();
+    var course = $('.select-course').find(":selected").val();
+    if(program != 'select' && course != 'select' && $('#id_student_list').val() != '') {
+      $('input[type=submit]').removeAttr('disabled');
+    }
   });
 
   $('.admin-form form').on('click', 'input[type=submit]', function(e){
@@ -45,12 +49,11 @@ $(function(){
                         }).done(function(data){
                           if(data.done == 'done'){
                             clearInterval(poolingInterval);
-                            $('.upload_results').html(_.template(errorsBlockTemplate, {'data': data.message}));
+                            $('#enroll-error-list').html(_.template(errorsBlockTemplate, {'data': data.message}));
                             if(data.error.length > 0){
-                              $('.upload_results').find('#user-reg-errors').html(_.template(errorsTemplate, {'data': data}));
+                              $('#enroll-error-list').find('#user-reg-errors').html(_.template(errorsTemplate, {'data': data}));
                               $("#upload_error_list").foundation('reveal');
                             }
-                            $('#upload_student_list').foundation('reveal', 'close');
                           }
                           else if(data.done == 'failed'){
                             clearInterval(poolingInterval);
@@ -62,11 +65,6 @@ $(function(){
                           }
                         })
                       }, 10000);
-                      $(document).on('closed.fndtn.reveal', '#upload_student_list', function () {
-                        if(poolingInterval){
-                          clearInterval(poolingInterval);
-                        }
-                      });
                     },
                 error: function( data ){
                       data = $.parseJSON(data);

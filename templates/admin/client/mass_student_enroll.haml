@@ -34,9 +34,10 @@
         %span#succeded 0
         %span Failed:
         %span#failed 0
-      %input.button.radius.small{type: "submit", value: "Add Student(s)"}
+      %input.button.radius.small{type: "submit", value: "Add Student(s)", disabled: "disabled"}
     .allowed-format
       Use CSV formatted file (Comma Separated Value)
+    #enroll-error-list
 
     %script{src: "{% static 'js/vendor/jquery.form.js' %}"}
     %script{src: "{% static 'js/admin_mass_students_upload.js' %}"}
