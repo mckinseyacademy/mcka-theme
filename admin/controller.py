@@ -429,7 +429,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
 
     for user_dict in students:
         failure = None
-        user_error = None
+        user_error = []
         try:
             user = None
             activation_record = None
@@ -455,11 +455,11 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     }
 
             if failure:
-                user_error = _("{}: {} - {}").format(
+                user_error.append(_("{}: {} - {}").format(
                     failure["activity"],
                     failure["reason"],
                     user_dict["email"],
-                )
+                ))
             try: 
                 # Enroll into program
                 if not user: 
@@ -468,37 +468,40 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                 try:    
                     program.add_user(client_id, user.id)
                 except Exception as e:
-                    user_error = _("{}: {} - {}").format(
+                    user_error.append(_("{}: {} - {}").format(
                         "User program enrollment",
                         e.message,
                         user_dict["email"],
-                    )
+                    ))
                 try:
                     enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
                     if user.id not in enrolled_users:
                         enroll_user_in_course(user.id, course_id)
                 except Exception as e: 
-                    user_error = _("{}: {} - {}").format(
+                    user_error.append(_("{}: {} - {}").format(
                         "User course enrollment",
                         e.message,
                         user_dict["email"],
-                    )
+                    ))
             except Exception as e: 
                 reason = e.message if e.message else _("Enrolling student error")
-                user_error = _("Error enrolling student: {}").format(
+                user_error.append(_("Error enrolling student: {} - {}").format(
                     reason,
-                )
+                    user_dict["email"]
+                ))
 
         except Exception as e:
             user = None
             reason = e.message if e.message else _("Data processing error")
-            user_error = _("Error processing data: {}").format(
+            user_error.append(_("Error processing data: {} - {}").format(
                 reason,
-            )
+                user_dict["email"]
+            ))
 
         if user_error:
             print user_error
-            error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
+            for user_e in user_error:
+                error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
