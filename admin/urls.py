@@ -20,6 +20,9 @@ urlpatterns = patterns(
     url(r'^client-admin/contact', views.client_admin_contact, name='client_admin_contact'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
 
+    url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
+    url(r'^courses/$', views.courses_list, name='courses_list'),
+
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),
     url(r'^course-meta-content/items/(?P<course_id>.+)$', views.course_meta_content_course_items, name='course_meta_content_course_items'),
     url(r'^course-meta-content/item/new', views.course_meta_content_course_item_new, name='course_meta_content_course_item_new'),
