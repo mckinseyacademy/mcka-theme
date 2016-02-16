@@ -11,7 +11,7 @@
           actions: function(id, attributes){ 
             var thisId = attributes['id']
             var name = attributes['name']
-            return '<a href="/admin/course-meta-content/items/' + thisId + '" target="_self">' + name + '</a>'; 
+            return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
           } 
         },
         { title: 'Course ID', index: true, name: 'id' },

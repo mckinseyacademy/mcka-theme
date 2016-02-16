@@ -773,6 +773,21 @@ class courses_list_api(APIView):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def course_details(request, course_id):
+    course = course_api.get_course_details(course_id)
+    if course['start'] is not None:
+        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+    if course['end'] is not None:
+        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")  
+    for data in course:
+        if course.get(data) is None:
+            course[data] = "-"   
+    course_metrics = course_api.get_course_details_metrics(course_id)
+    course['users_enrolled'] = course_metrics['users_enrolled']
+    return render(request, 'admin/courses/course_details.haml', course)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     courses = course_api.get_course_list(ids=restrict_to_courses_ids)
