@@ -4,16 +4,31 @@ function group_work_dashboard(gp_placeholder, selected_values, lesson_data_base)
         options.remove();
     }
 
+    function make_option(value, text) {
+        var option = $("<option>");
+        option.val(value);
+        option.html(text);
+        return option;
+    }
+
     function parse_response_as_options($select, data) {
+        $select.removeAttr('disabled');
+        var have_real_options = false;
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
             if (item.disabled) {
                 continue;
             }
-            var option = $("<option>");
-            option.val(item['value']);
-            option.html(item['display_name']);
+            var option = make_option(item.value, item.display_name);
             $select.append(option);
+            have_real_options = true;
+        }
+
+        if (!have_real_options) {
+            var option = make_option("N_A", "None available");
+            $select.append(option);
+            $select.attr('disabled', 'disabled');
+            $select.val(option.val());
         }
     }
 
