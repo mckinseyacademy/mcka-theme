@@ -9,15 +9,15 @@
 - block header_menu
   %nav{role: 'navigation'}
     %ul
-      / - if user.is_mcka_admin or user.is_internal_admin
-      /   %li
-      /     %a{href: '/admin/clients'}= _("Clients")
-      / - if user.is_mcka_admin
-      /   %li
-      /     %a{href: '/admin/programs'}= _("Programs")
-      / - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin
-      /   %li
-      /     %a{href: '/admin/workgroup'}= _("Group Work")
+      - if user.is_mcka_admin or user.is_internal_admin
+        %li
+          %a{href: '/admin/clients'}= _("Clients")
+      - if user.is_mcka_admin
+        %li
+          %a{href: '/admin/programs'}= _("Programs")
+      - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin
+        %li
+          %a{href: '/admin/workgroup'}= _("Group Work")
       - if user.is_mcka_admin or user.is_internal_admin
         %li
           %a{href: '/admin/course-meta-content'}= _("Course Content")
@@ -26,13 +26,13 @@
       - if user.is_mcka_admin or user.is_internal_admin
         %li
           %a{href: '/admin/participants'}= _("Participants")
-      /   %li
-      /     %a{href: '/admin/permissions'}= _("Roles & Permissions")
-      / - if user.is_client_admin
-      /   %li
-      /     %a{href: '/admin/client-admin/courses'}= _("Courses")
-      / - if user.is_client_admin
-      /   %li
-      /     %a{href: '/admin/client-admin/programs'}= _("Programs")
-      /   %li
-      /     %a{href: '/admin/client-admin/contact'}= _("Contact")
+        %li
+          %a{href: '/admin/permissions'}= _("Roles & Permissions")
+      - if user.is_client_admin
+        %li
+          %a{href: '/admin/client-admin/courses'}= _("Courses")
+      - if user.is_client_admin
+        %li
+          %a{href: '/admin/client-admin/programs'}= _("Programs")
+        %li
+          %a{href: '/admin/client-admin/contact'}= _("Contact")
