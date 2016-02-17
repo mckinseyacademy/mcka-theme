@@ -8,6 +8,7 @@ from urllib import quote as urlquote, urlencode
 from operator import attrgetter
 from smtplib import SMTPException
 
+import operator
 import re
 import os.path
 from django.conf import settings
@@ -1965,10 +1966,16 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
     course_id = request.GET.get('course_id')
     project_id = request.GET.get('project_id')
 
+    clients_for_user = sorted([
+        {'id': organization.id, 'display_name': organization.display_name}
+        for organization in AccessChecker.get_clients_user_has_access_to(request.user)
+    ], key=operator.itemgetter('display_name'))
+
     data = {
         'saved_dashboard_filters': [],  # TODO: fetch saved filters
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
         'restrict_to_users': restrict_to_users_ids,
+        'clients_for_user': clients_for_user,
         'selected_program_id': program_id if program_id else "",
         'selected_course_id': course_id if course_id else "",
         'selected_project_id': project_id if project_id else "",
@@ -1980,6 +1987,11 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     return render(request, template, data)
 
+
+def _make_select_option_response(item_id, display_name, disabled=False):
+    return {'value': item_id, 'display_name': display_name, 'disabled': disabled}
+
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -1989,13 +2001,14 @@ def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=No
     except (ValueError, TypeError):
         return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
 
-    user_api.set_user_preferences(request.user.id, {"DASHBOARD_PROGRAM_ID": str(program_id)})
-
     AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
+
+    user_api.set_user_preferences(request.user.id, {"DASHBOARD_PROGRAM_ID": str(program_id)})
     accessible_courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_courses_ids)
 
-    data = map(lambda item: {'value': item.course_id, 'display_name': item.display_name}, accessible_courses)
+    data = [_make_select_option_response(item.course_id, item.display_name) for item in accessible_courses]
     return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2004,8 +2017,33 @@ def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=Non
     course = load_course(course_id)
     group_projects = [gp for gp in course.group_projects if gp.is_v2]  # only GPv2 support dashboard
 
-    data = map(lambda item: {'value': item.id, 'display_name': item.name}, group_projects)
+    data = [_make_select_option_response(item.id, item.name) for item in group_projects]
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+def groupwork_dashboard_companies(request, program_id=None, restrict_to_programs_ids=None):
+    if program_id:
+        try:
+            program_id = int(program_id)
+        except (ValueError, TypeError):
+            return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
+        AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
+
+    all_clients = sorted(
+        AccessChecker.get_clients_user_has_access_to(request.user),
+        key=operator.attrgetter('display_name')
+    )
+
+    if program_id:
+        accessible_clients = [client for client in all_clients if program_id in client.groups]
+
+    data = [
+        _make_select_option_response(item.id, item.display_name, item not in accessible_clients) for item in all_clients
+    ]
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
