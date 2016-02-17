@@ -45,21 +45,22 @@
 
               .small-3.columns
                 %select#select-company{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/companies", 'data-outline-component': 'company'}
-                  %option{'data-static': 'true', 'value': ''}
-                    = _("All companies")
+                  - if clients_for_user|length > 1
+                    %option{'data-static': 'true', 'value': ''}
+                      = _("All companies")
                   - for client in clients_for_user
                     %option{'value': '#{client.id}'}
                       = client.display_name
 
           .large-12.dashboard_outline_wrapper
             %span.dashboard_outline_label= _("Displaying:")
-            %span.dashboard_outline.program= _("Program")
+            %span.dashboard_outline.program
             |
-            %span.dashboard_outline.course= _("Course")
+            %span.dashboard_outline.course
             |
-            %span.dashboard_outline.project= _("Project")
+            %span.dashboard_outline.project
             |
-            %span.dashboard_outline.company= _("All Companies")
+            %span.dashboard_outline.company
           %hr
         %section
           .columns.large-12.group_project_placeholder
@@ -177,19 +178,26 @@
       set_select_value('select#select-program', selected_values.program_id);
     }
 
+    function update_display_strip_item($source_select){
+        var outline_component_selector = ".dashboard_outline."+$source_select.data('outline-component');
+        var selected_option = $source_select.find('option:selected');
+        var value = selected_option.val();
+        var outline_text = selected_option.text();
+
+        $(outline_component_selector).html(outline_text);
+    }
+
     $(document).ready(function(){
       chain_selects('select#select-program', 'select#select-course');
       chain_selects('select#select-program', 'select#select-company');
       chain_selects('select#select-course', 'select#select-project');
 
-      $("select#select-program, select#select-course, select#select-project, select#select-company").on('change', function() {
-        var outline_component_selector = ".dashboard_outline."+$(this).data('outline-component');
-        var selected_option = $(this).find('option:selected');
-        var value = selected_option.val();
-        var outline_text = selected_option.text();
+      var $filters = $("select#select-program, select#select-course, select#select-project, select#select-company");
 
-        $(outline_component_selector).html(outline_text);
+      $filters.on('change', function() {
+        update_display_strip_item($(this));
       });
+      $filters.each(function(idx, filter) { update_display_strip_item($(filter)); })
 
       $("select#select-course").on('change', function(){
         var value = $(this).find('option:selected').val();
