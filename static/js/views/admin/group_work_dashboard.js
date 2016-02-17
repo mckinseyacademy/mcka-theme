@@ -7,12 +7,12 @@ function group_work_dashboard(gp_placeholder, selected_values, lesson_data_base)
     function parse_response_as_options($select, data) {
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
+            if (item.disabled) {
+                continue;
+            }
             var option = $("<option>");
             option.val(item['value']);
             option.html(item['display_name']);
-            if (item.disabled) {
-                option.attr('disabled', 'disabled');
-            }
             $select.append(option);
         }
     }
