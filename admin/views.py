@@ -2671,6 +2671,40 @@ class participants_list_api(APIView):
                 participant["active_custom_text"]="No"
         return Response(allParticipants)
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participants_details(request, user_id):
+    selectedUser = user_api.get_user(user_id)
+    userOrganizations = user_api.get_user_organizations(user_id)
+    userOrganizationsList =[]
+    for organization in userOrganizations:
+        userOrganizationsList.append(vars(organization))
+    if selectedUser is not None:
+        selectedUser = selectedUser.to_dict()
+        if 'last_login' in selectedUser:
+            if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
+                selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+            else:
+                selectedUser['custom_last_login'] = 'N/A'
+        if len(userOrganizationsList):
+            selectedUser['company_name'] = userOrganizationsList[0]['display_name']
+            selectedUser['company_id'] = userOrganizationsList[0]['id']
+        else:
+            selectedUser['company_name'] = 'No company'
+            selectedUser['company_id'] = ''
+        if selectedUser['gender'] == '' or selectedUser['gender'] == None:
+            selectedUser['gender'] = 'N/A'
+        if selectedUser['city'] == '' and selectedUser['country'] == '':
+            selectedUser['location'] = 'N/A'
+        elif selectedUser['country'] == '':
+            selectedUser['location'] = selectedUser['city']
+        elif selectedUser['city'] == '':
+            selectedUser['location'] = selectedUser['country']
+        else:
+            selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
+        selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
+        return render( request, 'admin/participants/participant_details.haml', selectedUser)
+
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
