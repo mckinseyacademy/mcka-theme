@@ -1,5 +1,8 @@
 from api_client import group_api, workgroup_api, organization_api, user_api, course_api
-from api_client import group_models, user_models, workgroup_models, organization_models, project_models
+from api_client import(
+    group_models, user_models, workgroup_models, organization_models, project_models,
+    course_models
+)
 from api_client.json_object import JsonObject
 from lib.util import DottableDict
 from license import controller as license_controller
@@ -316,3 +319,40 @@ class AccessKey(db_models.Model):
     disabled = db_models.BooleanField(default=False)
     expiration_date = db_models.DateTimeField(null=True, blank=True)
     user_count = db_models.IntegerField(default=0, blank=True)
+
+
+class DashboardAdminQuickFilter(db_models.Model):
+    """
+    Represents a single "Quick Link Filter" that is a saved filter that
+    pre-filters dashboard. Quick links are saved on per-user basis.
+
+    Notes:
+
+        Following columns should be considered unique together:
+        (user_id, program_id, course_id, company_id, group_work_project_id)
+        This is enforced by DashboardAdminQuickFilterForm.
+
+        Due to how mysql handles unique constraint adding Meta.unique_together
+        wouldn't work for rows containing nulls --- row with nulls in any
+        of the beforementioned columns could be duplicated.
+
+        See this for details: http://bugs.mysql.com/bug.php?id=25544.
+        Since having duplicates is not a major problem (but a rather minor
+        usability issue) instead of working around this MySQL feature
+        it was decided to add this comment.
+
+    """
+
+    date_created = db_models.DateTimeField(auto_now=True, db_index=True)
+    user_id = db_models.IntegerField(null=False, db_index=True)
+    program_id = db_models.IntegerField(null=False)
+    course_id = db_models.CharField(null=False, max_length=200)
+    company_id = db_models.IntegerField(null=True, blank=True)
+    group_work_project_id = db_models.CharField(null=True, max_length=300, blank=True)
+
+    class Meta:
+        ordering = ('date_created', )
+        # Following columns should be considered unique together:
+        # (user_id, program_id, course_id, company_id, group_work_project_id)
+        # see notes in the class docstring for details.
+

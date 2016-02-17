@@ -18,6 +18,7 @@
             = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
         %hr
         %section
+          .row
           .large-12.medium-12
             .sub-2= _("Filter by:")
 
@@ -38,12 +39,12 @@
                   %option{'data-static': 'true', 'value': ''}
                     = _("Course")
 
-              .small-3.columns
+              .small-2.columns
                 %select#select-project{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'project'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Project")
 
-              .small-3.columns
+              .small-2.columns
                 %select#select-company{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/companies", 'data-outline-component': 'company'}
                   - if clients_for_user|length > 1
                     %option{'data-static': 'true', 'value': ''}
@@ -51,7 +52,18 @@
                   - for client in clients_for_user
                     %option{'value': '#{client.id}'}
                       = client.display_name
-
+              .small-2.columns
+                %a#save-filter.button.radius.small.disabled
+                  Save filter
+          #quick-links-section.hidden
+            .row
+            .large-12.medium-12
+              .sub-2= _("Saved filters:")
+            .large-12.medium-12
+              #quick-links-scroll
+                %table#quick-links
+                  %tbody
+          .row
           .large-12.dashboard_outline_wrapper
             %span.dashboard_outline_label= _("Displaying:")
             %span.dashboard_outline.program
@@ -72,22 +84,31 @@
 - block js_snippets
   %script{src: "{% static 'js/views/admin/group_work_dashboard.js' %}"}
   :javascript
-    var selected_values = {
-      'program_id': '{{ selected_program_id }}',
-      'course_id': '{{ selected_course_id }}',
-      'project_id': '{{ selected_project_id }}',
-    }
 
-    var lesson_data_base = {
-      sessionId: '{{ remote_session_key }}',
-      baseDomain: '{{ lms_base_domain }}',
-      lmsSubDomain: '{{ lms_sub_domain }}',
-      jumpLinkRewriter: Apros.jumpLinkRewriter,
-      block_view: 'dashboard_view',
-      {% if use_current_host %}
-      useCurrentHost: true,
-      {% endif %}
+    var dashboard_configuration = {
+      selected_values: {
+        program_id: '{{ selected_program_id }}',
+        course_id: '{{ selected_course_id }}',
+        project_id: '{{ selected_project_id }}',
+      },
+      lesson_data_base: {
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        block_view: 'dashboard_view',
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      },
+      gp_placeholder: $(".group_project_placeholder"),
+      quick_links_endpoints: {
+        list: "{%url 'groupwork_dashboard_links' %}",
+        add: "{%url 'groupwork_dashboard_links_add' %}",
+        delete: "{%url 'groupwork_dashboard_links_remove' %}",
+       },
+      csrf_token: '{{csrf_token}}',
     };
 
-    group_work_dashboard($(".group_project_placeholder"), selected_values, lesson_data_base);
+    group_work_dashboard(dashboard_configuration);
 
