@@ -32,6 +32,7 @@ from lib.authorization import permission_group_required
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
+from api_client import user_models
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api
 from api_client.api_error import ApiError
 from api_client.organization_models import Organization
@@ -53,13 +54,13 @@ from .models import (
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
-    upload_student_list_threaded, generate_course_report, get_organizations_users_completion,
+    upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key)
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm)
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -1537,6 +1538,87 @@ def download_student_list(request, client_id):
     )
 
     return response
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
+def mass_student_enroll(request, client_id):
+    ''' handles requests for login form and their submission '''
+    error = None
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = MassStudentListForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+            program_id = request.POST['select-program']
+            course_id = request.POST['select-course']
+            reg_status = UserRegistrationBatch.create();
+            mass_student_enroll_threaded(
+                request.FILES['student_list'],
+                client_id,
+                program_id,
+                course_id,
+                request, 
+                reg_status
+            )
+            return HttpResponse(
+                json.dumps({"task_key": _(reg_status.task_key)}),
+                content_type='text/plain'
+            )
+    else:
+        ''' adds a new client '''
+        form = MassStudentListForm()  # An unbound form
+        restrict_to_programs_ids=None
+        users = organization_api.get_users_by_enrolled(organization_id=client_id)
+        client = Client.fetch(client_id)
+        programs = client.fetch_programs()
+        data = {
+            "form": form,
+            "users": users,
+            "client_id": client_id,
+            "programs": programs, 
+            "error": error,
+        }
+
+    return render(
+        request,
+        'admin/client/mass_student_enroll.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@client_admin_access
+def mass_student_enroll_check(request, client_id, task_key):
+    ''' checks on status of student list upload '''
+
+    reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
+    UserRegistrationBatch.clean_old()
+    if len(reg_status) > 0:
+        reg_status = reg_status[0]
+        if reg_status.attempted == (reg_status.failed + reg_status.succeded):
+            errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
+            errors_as_json = serializers.serialize('json', errors)
+            status = _format_upload_results(reg_status)
+            for error in errors:
+                error.delete()
+            reg_status.delete()
+            return HttpResponse(
+                '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                content_type='application/json'
+            )
+        else:
+            return HttpResponse(
+                        json.dumps({'done': 'progress',
+                                    'attempted': reg_status.attempted,
+                                    'failed': reg_status.failed,
+                                    'succeded': reg_status.succeded}),
+                        content_type='application/json'
+                    )
+    return HttpResponse(
+            json.dumps({'done': 'failed',
+                        'attempted': '0',
+                        'failed': '0',
+                        'succeded': '0'}),
+            content_type='application/json'
+        )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 def download_program_report(request, program_id):
