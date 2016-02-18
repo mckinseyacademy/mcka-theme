@@ -769,8 +769,6 @@ def course_details(request, course_id):
     for data in course:
         if course.get(data) is None:
             course[data] = "-"   
-    course_metrics = course_api.get_course_details_metrics(course_id)
-    course['users_enrolled'] = course_metrics['users_enrolled']
     return render(request, 'admin/courses/course_details.haml', course)
 
 
