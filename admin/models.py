@@ -346,7 +346,7 @@ class DashboardAdminQuickFilter(db_models.Model):
     date_created = db_models.DateTimeField(auto_now=True, db_index=True)
     user_id = db_models.IntegerField(null=False, db_index=True)
     program_id = db_models.IntegerField(null=False)
-    course_id = db_models.CharField(null=False, max_length=200)
+    course_id = db_models.CharField(null=True, blank=True, max_length=200)
     company_id = db_models.IntegerField(null=True, blank=True)
     group_work_project_id = db_models.CharField(null=True, max_length=300, blank=True)
 

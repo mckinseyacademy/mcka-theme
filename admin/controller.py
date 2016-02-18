@@ -1,12 +1,10 @@
 import tempfile
 import urllib
-import collections as builtin_collections
-
-from django.contrib.gis.geos import collections
-from django.core.urlresolvers import reverse
+import collections
 import re
 import uuid
 
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
@@ -950,7 +948,7 @@ class GroupProjectInfo(object):
         self.organization_id = organization_id
 
 
-_QuickLinkWithRelatedObjs = builtin_collections.namedtuple(
+_QuickLinkWithRelatedObjs = collections.namedtuple(
     "_QuickLinkWithRelatedObjs", ['quick_link', 'program', 'course', 'group_work', 'client']
 )
 
@@ -966,11 +964,18 @@ def _get_quick_link_related_objects(quick_link):
     """
 
     program = Program.fetch(quick_link.program_id)
-    course =  load_course(quick_link.course_id)
+    course = None
     group_work = None
     client = None
 
-    if quick_link.group_work_project_id:
+    # Course id can be an empty string which also (I guess) means empty,
+    # so no is None here
+    if quick_link.course_id:
+        course = load_course(quick_link.course_id)
+
+    # GP id can be an empty string which also (I guess) means empty,
+    # so no is None here
+    if quick_link.course_id and quick_link.group_work_project_id:
         group_projects = [
             gp
             for gp in course.group_projects
@@ -1006,14 +1011,14 @@ def serialize_quick_link(quick_link):
     serialized = {
         "id": quick_link.pk,
         "program": {
-            "display_name":related.program.display_name,
+            "display_name": related.program.display_name,
             "id": related.program.id
         }
     }
 
     if related.course is not None:
         serialized["course"] = {
-            "display_name":related.course.name,
+            "display_name": related.course.name,
             "id": related.course.id
         }
 

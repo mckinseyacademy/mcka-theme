@@ -6,6 +6,10 @@ function group_work_dashboard(dashboard_configuration) {
     var quick_links_endpoints = dashboard_configuration['quick_links_endpoints'];
     var csrf_token = dashboard_configuration['csrf_token'];
 
+    // Value of one of select boxes when no choice is possible due to choices
+    // in previous boxes.
+    var NONE_DATA_VALUE = "N_A";
+
     // Stores mapping from quick_link_id to quick-link object
     var quick_links = {};
 
@@ -34,7 +38,7 @@ function group_work_dashboard(dashboard_configuration) {
         }
 
         if (!have_real_options) {
-            var option = make_option("N_A", "None available");
+            var option = make_option(NONE_DATA_VALUE, "None available");
             $select.append(option);
             $select.val(option.val());
         }
@@ -43,7 +47,7 @@ function group_work_dashboard(dashboard_configuration) {
 
     function update_select_status($select){
         $select.removeAttr('disabled');
-        if ($select.children("option[value=N_A]").length != 0) {
+        if ($select.children("option[value='" + NONE_DATA_VALUE + "']").length != 0) {
             $select.attr('disabled', true);
         }
     }
@@ -113,7 +117,7 @@ function group_work_dashboard(dashboard_configuration) {
         var lesson_data = $.extend({}, lesson_data_base);
         lesson_data.courseId = course_id;
         lesson_data.usageId = project_id;
-        lesson_data.data = {client_filter_id: company_id};
+        lesson_data.data = { client_filter_id: company_id };
         // This is a hack
         // jquery.xblock doesn't allow to wait until xblock gets fully rendered
         // so we'll just insert an internal div to gp_placeholder
@@ -190,20 +194,22 @@ function group_work_dashboard(dashboard_configuration) {
 
 
     function render_quick_filter_label(quick_link){
-        var label = quick_link.program.display_name + ' - ' +
-                    quick_link.course.display_name;
-        if (typeof quick_link.group_work !== 'undefined'){
-            label += ' - ' + quick_link.group_work.display_name;
+        function create_label_part(object){
+            if (typeof object === 'undefined'){
+                return '';
+            }
+            return ' - ' + object.display_name;
         }
-        if (typeof quick_link.client !== 'undefined'){
-            label += ' - ' + quick_link.client.display_name;
-        }
-        return label;
+
+        return quick_link.program.display_name +
+            create_label_part(quick_link.course) +
+            create_label_part(quick_link.group_work) +
+            create_label_part(quick_link.client);
     }
 
     function add_quick_filter_row(quick_link){
-        // If there alteady is a row for given id just remove it in this case
-        // the whole add operation will just move link to the top
+        // If there alteady is a row for given id just remove it.
+        // In such case whole add operation will just move link to the top
         remove_quick_filter_row(quick_link.id);
         quick_links[quick_link.id] = quick_link;
         var tr = $("<tr/>").data("link-id", quick_link.id)
@@ -220,6 +226,7 @@ function group_work_dashboard(dashboard_configuration) {
         }
     }
 
+
     function remove_quick_filter_row(link_id){
         delete quick_links[link_id];
         var row = $("#quick-links tr").filter(function() {
@@ -233,24 +240,27 @@ function group_work_dashboard(dashboard_configuration) {
 
 
     function save_quick_filter(){
+        function filter_value(value){
+            return value != NONE_DATA_VALUE ? value: '';
+        }
+
         var post_dict = {
-            program_id: $('#select-program').val(),
-            course_id: $('#select-course').val(),
-            company_id: $("select#select-company").val(),
-            group_work_project_id: $("select#select-project").val(),
-            action: 'add'
+            program_id: filter_value($('#select-program').val()),
+            course_id: filter_value($('#select-course').val()),
+            company_id: filter_value($("select#select-company").val()),
+            group_work_project_id: filter_value($("select#select-project").val())
         };
 
-       send_quick_filters_request(
-           'POST',
-           quick_links_endpoints.add,
-           post_dict
-       ).done(add_quick_filter_row).error(generic_error_hander)
+       send_quick_filters_request('POST', quick_links_endpoints.add, post_dict)
+           .done(add_quick_filter_row)
+           .error(generic_error_hander);
     }
+
 
     function get_link_id_from_event(evt){
         return $(evt.target).parents('tr').data('link-id');
     }
+
 
     function delete_quick_filter(evt){
         var link_id = get_link_id_from_event(evt);
@@ -270,11 +280,13 @@ function group_work_dashboard(dashboard_configuration) {
 
     }
 
+
     function toggle_buttons(){
-        var value = $("select#select-course").find('option:selected').val();
+        var value = $("select#select-course").val();
         toggle_run_report(value);
-        toggle_button($('#save-filter'), value);
+        toggle_button($('#save-filter'), $("select#select-program").val());
     }
+
 
     /**
      * This function attaches all listeners to most of the elements on the
@@ -286,7 +298,7 @@ function group_work_dashboard(dashboard_configuration) {
     function activate_ui(){
        var $filters = $("select#select-program, select#select-course, select#select-project, select#select-company");
 
-        $.each($filters, function(idx, filter){update_select_status($(filter))});
+        $.each($filters, function(idx, filter){ update_select_status($(filter)) });
 
         $("#quick-links td a").removeClass('disabled');
 
@@ -300,15 +312,20 @@ function group_work_dashboard(dashboard_configuration) {
 
         $filters.each(function (idx, filter) { update_display_strip_item($(filter)); });
 
+        $("select#select-program").on('change', function () {
+            toggle_buttons();
+        });
+
         $("select#select-course").on('change', function () {
             toggle_buttons();
         });
 
         $("select#select-project, select#select-company").on(
-            'change', function () {update_dashboard();});
+            'change', function () { update_dashboard(); });
 
         $("#quick-links").on('click', 'td.activate-quick-link a', load_selected_link);
     }
+
 
     /**
      * Detaches all events from selects on the top of the page.
@@ -319,8 +336,8 @@ function group_work_dashboard(dashboard_configuration) {
         $("#quick-links").off('click', 'td.activate-quick-link a');
         $filters.prop('disabled', true);
         $("#quick-links td a").addClass('disabled');
-
     }
+
 
     /**
      * Updates a value inside one of the select boxes.
@@ -336,12 +353,13 @@ function group_work_dashboard(dashboard_configuration) {
         } else {
             value = value.id;
         }
-        if ($select.children("option[value='N_A']").length > 0){
-            value = 'N_A';
+        if ($select.children("option[value='" + NONE_DATA_VALUE + "']").length > 0){
+            value = NONE_DATA_VALUE;
             $select.prop('disabled', true);
         }
         $select.val(value);
     }
+
 
     /**
      * Updates all selects using a quick link values.
@@ -354,7 +372,8 @@ function group_work_dashboard(dashboard_configuration) {
         update_select('select#select-company', quick_link.client);
     }
 
-    /*
+
+    /**
      * This function is called when user activates a quick-link.
      *
      * Logic is as follows:
@@ -381,9 +400,12 @@ function group_work_dashboard(dashboard_configuration) {
 
         var deferreds = [
             fire_chained_select('select#select-course', quick_link.program.id),
-            fire_chained_select('select#select-company', quick_link.program.id),
-            fire_chained_select('select#select-project', quick_link.course.id)
+            fire_chained_select('select#select-company', quick_link.program.id)
         ];
+
+        if (typeof quick_link.course !== 'undefined'){
+            deferreds.push(fire_chained_select('select#select-project', quick_link.course.id))
+        }
 
 
         $.when.apply($, deferreds).done(function () {
@@ -396,7 +418,8 @@ function group_work_dashboard(dashboard_configuration) {
         })
     }
 
-    function update_dashboard(callback){
+
+    function update_dashboard(){
         var project_id = $("select#select-project").val();
         var course_id = $("select#select-course").val();
         var company_id = $("select#select-company").val();

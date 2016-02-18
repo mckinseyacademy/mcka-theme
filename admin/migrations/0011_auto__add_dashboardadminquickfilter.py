@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('date_created', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, db_index=True, blank=True)),
             ('user_id', self.gf('django.db.models.fields.IntegerField')(db_index=True)),
             ('program_id', self.gf('django.db.models.fields.IntegerField')()),
-            ('course_id', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('course_id', self.gf('django.db.models.fields.CharField')(max_length=200, null=True)),
             ('company_id', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
             ('group_work_project_id', self.gf('django.db.models.fields.CharField')(max_length=300, null=True, blank=True)),
         ))
@@ -85,7 +85,7 @@ class Migration(SchemaMigration):
         u'admin.dashboardadminquickfilter': {
             'Meta': {'ordering': "('date_created',)", 'object_name': 'DashboardAdminQuickFilter'},
             'company_id': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'course_id': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'course_id': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True'}),
             'date_created': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'db_index': 'True', 'blank': 'True'}),
             'group_work_project_id': ('django.db.models.fields.CharField', [], {'max_length': '300', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

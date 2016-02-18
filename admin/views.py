@@ -29,7 +29,6 @@ from django.views.generic.detail import BaseDetailView
 from django.views.generic.edit import BaseCreateView
 from django.views.generic.list import BaseListView
 
-import api_client
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
@@ -2021,7 +2020,17 @@ class _BaseQuickLinkMixin(object):
         return super(_BaseQuickLinkMixin, self).dispatch(request, *args, **kwargs)
 
     def verify_link(self, link):
-        # We filter out all links user shouldn't have access to.
+        """
+        Verifies if user has access to given link. It returns bool rather than
+        raise, as in list view we'd rather filter-out all invalid links than
+        raise when e.g. Admin gets demoted we'd rather siltently filter out links
+        than raise 403.
+
+        Args:
+            link: link to be verivied
+
+        Returns: bool
+        """
         restrict_to_courses_ids = self.kwargs['restrict_to_courses_ids']
         restrict_to_programs_ids = self.kwargs['restrict_to_programs_ids']
         try:
@@ -2060,7 +2069,8 @@ class SaveQuickLink(_BaseQuickLinkMixin, BaseCreateView):
 
     def form_valid(self, form):
         # Just verify user has access to all related objects
-        self.verify_link(form.save(commit=False))
+        if not self.verify_link(form.save(commit=False)):
+            raise PermissionDenied()
         link, created = form.save_model_if_unique(self.request.user.id)
         if not created:
             # Saving to update date_created field
