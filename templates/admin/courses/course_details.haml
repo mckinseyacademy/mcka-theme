@@ -13,13 +13,16 @@
                     .courseDetailsTags
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock
-                      %p ={start} - ={end}
-                      %p Parcipiants: 
+                      - if start == '-' or end == '-'
+                        %p Evergreen
+                      - else
+                        %p ={start} - ={end}
+                      %p Parcipiants: ={users_enrolled}
                     .large-4.columns.courseDetailsCenterBlock
-                      %p Avg Progress:
-                      %p Avg Proficiency:
+                      %p Avg Progress: ={average_progress}%
+                      %p Avg Proficiency: ={proficiency}
                     .large-4.columns.courseDetailsRightBlock
-                      %p Completed:
-                      %p Passed:
+                      %p Completed: ={completed}
+                      %p Passed: ={passed}
             %hr
     
