@@ -781,6 +781,13 @@ def course_details(request, course_id):
     groups_ids = ','.join(group_id for group_id in groups_ids_list)
     course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
     course['users_enrolled'] = len(course_users['enrollments'])
+
+    company_metrics = course_api.get_course_metrics_completions(course_id, count=course['users_enrolled'], completions_object_type=Progress)
+    course['completed'] = company_metrics.completion_rate_display(course_users['enrollments'])
+    
+    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
+    course['passed'] = course_pass.pass_rate_display(course_users['enrollments'])
+
     course_data = None
     course_data = load_course(course_id, request=request)
     course_progress = 0
@@ -792,11 +799,9 @@ def course_details(request, course_id):
         course['average_progress'] = round_to_int(float(course_progress)/course['users_enrolled'])
     except ZeroDivisionError:
         course['average_progress'] = 0
-    
+
     course_proficiency = get_proficiency_leaders(course_id, request.user.id)
     course['proficiency'] = course_proficiency.course_average_display
-    course['completed'] = '-'
-    course['passed'] = '-'
     return render(request, 'admin/courses/course_details.haml', course)
 
 
