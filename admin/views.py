@@ -790,12 +790,16 @@ def course_details(request, course_id):
     course['users_enrolled'] = len(course_users['enrollments'])
     # course_metrics = course_api.get_course_details_metrics_completions(course_id)
     # course['average_progress'] = int(course_metrics['course_avg'])
+    company_metrics = course_api.get_course_metrics_completions(course_id, count=course['users_enrolled'], completions_object_type=Progress)
+    course['completed'] = company_metrics.completion_rate_display(course_users['enrollments'])
+    
+    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
+    course['passed'] = course_pass.pass_rate_display(course_users['enrollments'])
+
     course_progress = get_progress_leaders(course_id, request.user.id)
     course['average_progress'] = course_progress.course_average_display
     course_proficiency = get_proficiency_leaders(course_id, request.user.id)
     course['proficiency'] = course_proficiency.course_average_display
-    course['completed'] = '-'
-    course['passed'] = '-'
     return render(request, 'admin/courses/course_details.haml', course)
 
 
