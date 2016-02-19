@@ -70,6 +70,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from courses.controller import get_proficiency_leaders, get_progress_leaders
+
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -761,6 +763,7 @@ class courses_list_api(APIView):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def course_details(request, course_id):
+
     course = course_api.get_course_details(course_id)
     if course['start'] is not None:
         course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
@@ -769,6 +772,17 @@ def course_details(request, course_id):
     for data in course:
         if course.get(data) is None:
             course[data] = "-"   
+    group_ids = '5,6'
+    course_users = course_api.get_course_details_users_exclude_groups(course_id, group_ids)
+    course['users_enrolled'] = len(course_users['enrollments'])
+    # course_metrics = course_api.get_course_details_metrics_completions(course_id)
+    # course['average_progress'] = int(course_metrics['course_avg'])
+    course_progress = get_progress_leaders(course_id, request.user.id)
+    course['average_progress'] = course_progress.course_average_display
+    course_proficiency = get_proficiency_leaders(course_id, request.user.id)
+    course['proficiency'] = course_proficiency.course_average_display
+    course['completed'] = '-'
+    course['passed'] = '-'
     return render(request, 'admin/courses/course_details.haml', course)
 
 
