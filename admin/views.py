@@ -20,10 +20,14 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpRespons
 from django.shortcuts import render, redirect
 from django.template import loader, RequestContext
 from django.utils.dateformat import format
+from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 
 from django.views.decorators.http import require_POST
+from django.views.generic.detail import BaseDetailView
+from django.views.generic.edit import BaseCreateView
+from django.views.generic.list import BaseListView
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course
@@ -50,18 +54,21 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey
+    AccessKey, DashboardAdminQuickFilter
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key)
+    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link
+)
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm)
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm,
+    DashboardAdminQuickFilterForm
+)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -1972,7 +1979,6 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
     ], key=operator.itemgetter('display_name'))
 
     data = {
-        'saved_dashboard_filters': [],  # TODO: fetch saved filters
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
         'restrict_to_users': restrict_to_users_ids,
         'clients_for_user': clients_for_user,
@@ -1986,6 +1992,114 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
     }
 
     return render(request, template, data)
+
+class _BaseQuickLinkMixin(object):
+    """
+    A base view for all Quick links views if mainly focuses on checking permissions
+    and provides verify_link method.
+
+    Note: this needs to be added as a first in extends clause, to preserve MRO.
+    """
+
+    @method_decorator(permission_group_required(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA
+    ))
+    # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+    @method_decorator(checked_program_access)
+    # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+    @method_decorator(checked_course_access)
+    def dispatch(self, request, *args, **kwargs):
+        # Args and kwargs are saved by View class **before** decorators are applied
+        # so we save them (with params from decorators) once again here
+        self.kwargs = kwargs
+        self.args = args
+        self.all_clients = set(
+            client.id
+            for client in AccessChecker.get_clients_user_has_access_to(request.user)
+        )
+        return super(_BaseQuickLinkMixin, self).dispatch(request, *args, **kwargs)
+
+    def verify_link(self, link):
+        """
+        Verifies if user has access to given link. It returns bool rather than
+        raise, as in list view we'd rather filter-out all invalid links than
+        raise when e.g. Admin gets demoted we'd rather siltently filter out links
+        than raise 403.
+
+        Args:
+            link: link to be verivied
+
+        Returns: bool
+        """
+        restrict_to_courses_ids = self.kwargs['restrict_to_courses_ids']
+        restrict_to_programs_ids = self.kwargs['restrict_to_programs_ids']
+        try:
+            AccessChecker.check_has_course_access(link.course_id, restrict_to_courses_ids);
+            AccessChecker.check_has_program_access(link.program_id, restrict_to_programs_ids);
+            if link.company_id is not None and link.company_id not in all_clients:
+                return False
+            return True
+        except PermissionDenied:
+            return False
+
+
+class ListQuickLinks(_BaseQuickLinkMixin, BaseListView):
+
+    http_method_names = ['get']
+
+    def get_queryset(self):
+        return DashboardAdminQuickFilter.objects.filter(user_id=self.request.user.id)
+
+    def render_to_response(self, context):
+        return HttpResponse(json.dumps([
+            serialize_quick_link(link)
+            for link in context['object_list']
+            if self.verify_link(link)
+        ]), content_type="application/json")
+
+
+class SaveQuickLink(_BaseQuickLinkMixin, BaseCreateView):
+
+    http_method_names = ['post']
+    form_class = DashboardAdminQuickFilterForm
+    model = DashboardAdminQuickFilter
+
+    def form_invalid(self, form):
+        return HttpResponse(json.dumps(form.errors), status=400)
+
+    def form_valid(self, form):
+        # Just verify user has access to all related objects
+        if not self.verify_link(form.save(commit=False)):
+            raise PermissionDenied()
+        link, created = form.save_model_if_unique(self.request.user.id)
+        if not created:
+            # Saving to update date_created field
+            link.save()
+        return HttpResponse(json.dumps(
+            serialize_quick_link(link)),
+            status=201,
+            content_type="application/json"
+        )
+
+
+class DeleteQuickLink(_BaseQuickLinkMixin, BaseDetailView):
+
+    model = DashboardAdminQuickFilter
+
+    http_method_names = ['delete']
+
+    pk_url_kwarg = 'link_id'
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Calls the delete() method on the fetched object and then
+        redirects to the success URL.
+        """
+        self.object = self.get_object()
+        if self.object.user_id != self.request.user.id:
+            raise PermissionDenied()
+        self.object.delete()
+        return HttpResponse(status=204)
 
 
 def _make_select_option_response(item_id, display_name, disabled=False):
