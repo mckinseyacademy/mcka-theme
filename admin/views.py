@@ -71,6 +71,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from courses.controller import get_proficiency_leaders, get_progress_leaders
+from courses.user_courses import load_course_progress
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -771,14 +772,27 @@ def course_details(request, course_id):
         course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")  
     for data in course:
         if course.get(data) is None:
-            course[data] = "-"   
-    group_ids = '5,6'
-    course_users = course_api.get_course_details_users_exclude_groups(course_id, group_ids)
+            course[data] = "-"  
+    course_groups = course_api.get_course_details_groups(course_id) 
+    
+    groups_ids_list = []
+    for group in course_groups:
+        groups_ids_list.append(str(group['id']))
+    groups_ids = ','.join(group_id for group_id in groups_ids_list)
+    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
     course['users_enrolled'] = len(course_users['enrollments'])
-    # course_metrics = course_api.get_course_details_metrics_completions(course_id)
-    # course['average_progress'] = int(course_metrics['course_avg'])
-    course_progress = get_progress_leaders(course_id, request.user.id)
-    course['average_progress'] = course_progress.course_average_display
+    course_data = None
+    course_data = load_course(course_id, request=request)
+    course_progress = 0
+    for user in course_users['enrollments']:
+        load_course_progress(course_data, user['id'])
+        print course_data.user_progress
+        course_progress += course_data.user_progress
+    try:
+        course['average_progress'] = round_to_int(float(course_progress)/course['users_enrolled'])
+    except ZeroDivisionError:
+        course['average_progress'] = 0
+    
     course_proficiency = get_proficiency_leaders(course_id, request.user.id)
     course['proficiency'] = course_proficiency.course_average_display
     course['completed'] = '-'
