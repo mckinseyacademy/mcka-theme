@@ -545,15 +545,27 @@ def get_course_details_users(course_id):
 
 
 @api_error_protect
-def get_course_details_users_exclude_groups(course_id, group_ids):
+def get_course_details_groups(course_id):
+
+    response = GET('{}/{}/{}/groups'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_users_groups(course_id, groups_ids):
     ''' filter and get course users'''
 
     response = GET(
-        '{}/{}/{}/users?exclude_groups={}'.format(
+        '{}/{}/{}/users?groups={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
-            group_ids
+            groups_ids
         )
     )
 
