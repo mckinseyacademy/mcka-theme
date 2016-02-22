@@ -65,7 +65,6 @@ LOCAL_APPS = (
     'license',
     'heartbeat',
     'public_api',
-    'rest_framework',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
