@@ -5,8 +5,8 @@ $(function(){
       "<div id='user-reg-errors' class='errors'></div></div>";
 
   var errorsTemplate =
-    "<a href='#' data-reveal-id='upload_error_list'>Show Errors</a>" +
-    "<ul id='upload_error_list' class='reveal-modal' data-reveal='true'>" +
+    "<a href='#' data-reveal-id='enroll_error_list'>Show Errors</a>" +
+    "<ul id='enroll_error_list' class='reveal-modal' data-reveal='true'>" +
       "<div class='close-reveal-modal'>" +
         "<i class='fa fa-times-circle'></i>" +
       "</div>" +
@@ -49,11 +49,15 @@ $(function(){
                         }).done(function(data){
                           if(data.done == 'done'){
                             clearInterval(poolingInterval);
+                            $('#attempted').text(data.attempted);
+                            $('#succeded').text(data.succeded);
+                            $('#failed').text(data.failed);
                             $('#enroll-error-list').html(_.template(errorsBlockTemplate, {'data': data.message}));
                             if(data.error.length > 0){
                               $('#enroll-error-list').find('#user-reg-errors').html(_.template(errorsTemplate, {'data': data}));
-                              $("#upload_error_list").foundation('reveal');
+                              $("#enroll_error_list").foundation('reveal');
                             }
+                            $('#enroll_error_list').foundation('reveal', 'close');
                           }
                           else if(data.done == 'failed'){
                             clearInterval(poolingInterval);

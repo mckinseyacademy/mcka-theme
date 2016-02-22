@@ -1,0 +1,42 @@
+- extends "admin/admin_layout.haml"
+
+- block content 
+    #mainCourseDetailsWrapper
+        .courseDetailsNavigationButton
+            %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
+        #courseDetailsDataWrapper
+            #courseDetailsTopContainer
+                .row.courseDetailsHeader
+                    .courseDetailsNameAndId
+                      ={name}  
+                      ={id}
+                    .courseDetailsTags
+                .row.courseDetailsBlocks
+                    .large-4.columns.courseDetailsLeftBlock
+                      - if start == '-' or end == '-'
+                        %p Evergreen
+                      - else
+                        %p ={start} - ={end}
+                      %p Parcipiants: ={users_enrolled}
+                    .large-4.columns.courseDetailsCenterBlock
+                      %p Avg Progress: ={average_progress}%
+                      %p Avg Proficiency: ={proficiency}
+                    .large-4.columns.courseDetailsRightBlock
+                      %p Completed: ={completed}%
+                      %p Passed: ={passed}%
+            #courseMainDetailsContainerView
+              .courseDetailsMenuButtons.row
+                .courseParticipantsButton.large-2.columns
+                  %p PARTICIPANTS
+                .courseStatsButton.large-2.columns
+                  %p STATS
+                .courseDiscoverContentButton.large-3.columns
+                  %p DISCOVER CONTENT
+                .courseFeatureFlaggingButton.large-3.columns
+                  %p FEATURE FLAGGING  
+                .courseCommunicationsButton.large-2.columns
+                  %p COMMUNICATIONS 
+            %hr
+            #courseDetailsMainContainer
+              .row.courseParticipant
+                #courseDetailsParticipantsGrid.large-12.columns

@@ -20,6 +20,10 @@ urlpatterns = patterns(
     url(r'^client-admin/contact', views.client_admin_contact, name='client_admin_contact'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
 
+    url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
+    url(r'^courses/(?P<course_id>.*)/$', views.course_details, name='course_details'),
+    url(r'^courses/$', views.courses_list, name='courses_list'),
+
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),
     url(r'^course-meta-content/items/(?P<course_id>.+)$', views.course_meta_content_course_items, name='course_meta_content_course_items'),
     url(r'^course-meta-content/item/new', views.course_meta_content_course_item_new, name='course_meta_content_course_item_new'),
@@ -87,6 +91,10 @@ urlpatterns = patterns(
     url(r'^workgroup/project/create/(?P<course_id>.*)', views.workgroup_project_create, name='workgroup_project_create'),
     url(r'^workgroup/project/(?P<project_id>[0-9]+)/delete', views.workgroup_remove_project, name='workgroup_remove_project'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
+
+    url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
+    url(r'^participants/(?P<user_id>[0-9]+)', views.participants_details, name='participants_details'),
+    url(r'^participants$', views.participants_list, name='participants_list'),
 
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),

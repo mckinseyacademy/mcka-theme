@@ -3,6 +3,7 @@ import functools
 import json
 import string
 import urlparse
+from dateutil.parser import parse as parsedate
 from datetime import datetime
 from urllib import quote as urlquote, urlencode
 from operator import attrgetter
@@ -30,7 +31,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
-from lib.authorization import permission_group_required
+from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
@@ -69,6 +70,12 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from courses.user_courses import load_course_progress
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -738,6 +745,83 @@ def client_admin_contact(request, client_id):
         'admin/client-admin/contact.haml',
         data
     )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def courses_list(request):
+    return render(request, 'admin/courses/courses_list.haml')
+
+
+class courses_list_api(APIView):
+    '''
+    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
+    '''
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, format=None):
+        allCourses = course_api.get_courses_list(request.GET)
+        for course in allCourses['results']:
+            course['program'] = None
+            course['type'] = None
+            course['configuration'] = None
+            if course['start'] is not None:
+                course['start'] = parsedate(course['start']).strftime("%Y/%m/%d")
+            if course['end'] is not None:
+                course['end'] = parsedate(course['end']).strftime("%Y/%m/%d")  
+            for data in course:
+                if course.get(data) is None:
+                    course[data] = "-"        
+        return Response(allCourses)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def course_details(request, course_id):
+
+    course = course_api.get_course_details(course_id)
+    if course['start'] is not None:
+        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+    if course['end'] is not None:
+        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")  
+    for data in course:
+        if course.get(data) is None:
+            course[data] = "-"  
+
+    course_groups = course_api.get_course_details_groups(course_id) 
+    
+    groups_ids_list = []
+    for group in course_groups:
+        groups_ids_list.append(str(group['id']))
+    groups_ids = ','.join(group_id for group_id in groups_ids_list)
+    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+    course['users_enrolled'] = len(course_users['enrollments'])
+
+    course_data = None
+    course_data = load_course(course_id, request=request)
+    course_progress = 0
+    course_proficiency = 0
+    for user in course_users['enrollments']:
+        load_course_progress(course_data, user['id'])
+        proficiency = course_api.get_course_metrics_grades(course_id, user_id=user['id'], grade_object_type=Proficiency)
+        course_progress += course_data.user_progress
+        course_proficiency += proficiency.course_average_display
+    try:
+        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])  
+    except ZeroDivisionError:
+        course['average_progress'] = 0
+
+    company_metrics = course_api.get_course_metrics_completions(course_id, count=course['users_enrolled'], completions_object_type=Progress)
+    course['completed'] = company_metrics.completion_rate_display(course_users['enrollments'])
+    
+    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
+    course['passed'] = course_pass.pass_rate_display(course_users['enrollments'])
+
+    try:
+        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])  
+    except ZeroDivisionError:
+        course['proficiency'] = 0
+        
+    return render(request, 'admin/courses/course_details.haml', course)
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -1612,9 +1696,16 @@ def mass_student_enroll_check(request, client_id, task_key):
             status = _format_upload_results(reg_status)
             for error in errors:
                 error.delete()
+            attempted = reg_status.attempted
+            failed = reg_status.failed
+            succeded = reg_status.succeded
             reg_status.delete()
             return HttpResponse(
-                '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                ('{"done":"done","error":' + errors_as_json + 
+                    ', "message": "' + status.message + 
+                    '", "attempted": "' + str(attempted) + '", ' + 
+                    '"failed": "' + str(failed) + '", ' + 
+                    '"succeded": "' + str(succeded) + '"}'),
                 content_type='application/json'
             )
         else:
@@ -2615,6 +2706,62 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         'admin/workgroup/list.haml',
         data
     )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participants_list(request):
+    return render( request, 'admin/participants/participants_list.haml')
+
+class participants_list_api(APIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        allParticipants = user_api.get_filtered_users(request.GET)
+        for participant in allParticipants["results"]:
+            if len(participant["organizations"]) > 0:
+                participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+            else:
+                participant['organizations_custom_name'] = ""
+            participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
+            if participant["is_active"]:
+                participant["active_custom_text"]="Yes"
+            else:
+                participant["active_custom_text"]="No"
+        return Response(allParticipants)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participants_details(request, user_id):
+    selectedUser = user_api.get_user(user_id)
+    userOrganizations = user_api.get_user_organizations(user_id)
+    userOrganizationsList =[]
+    for organization in userOrganizations:
+        userOrganizationsList.append(vars(organization))
+    if selectedUser is not None:
+        selectedUser = selectedUser.to_dict()
+        if 'last_login' in selectedUser:
+            if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
+                selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+            else:
+                selectedUser['custom_last_login'] = 'N/A'
+        if len(userOrganizationsList):
+            selectedUser['company_name'] = userOrganizationsList[0]['display_name']
+            selectedUser['company_id'] = userOrganizationsList[0]['id']
+        else:
+            selectedUser['company_name'] = 'No company'
+            selectedUser['company_id'] = ''
+        if selectedUser['gender'] == '' or selectedUser['gender'] == None:
+            selectedUser['gender'] = 'N/A'
+        if selectedUser['city'] == '' and selectedUser['country'] == '':
+            selectedUser['location'] = 'N/A'
+        elif selectedUser['country'] == '':
+            selectedUser['location'] = selectedUser['city']
+        elif selectedUser['city'] == '':
+            selectedUser['location'] = selectedUser['country']
+        else:
+            selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
+        selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
+        return render( request, 'admin/participants/participant_details.haml', selectedUser)
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
