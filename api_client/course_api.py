@@ -13,8 +13,6 @@ from .json_requests import GET, POST, DELETE
 from .group_models import GroupInfo
 from . import course_models
 
-import json
-
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
 
 OBJECT_CATEGORY_MAP = {
@@ -49,7 +47,6 @@ def get_course_list(ids=None):
         )
     )
     return CJP.from_json(response.read())
-
 
 @api_error_protect
 def get_course_overview(course_id):
@@ -134,7 +131,6 @@ def get_course(course_id, depth=3):
             sequential.pages = [content_child for content_child in sequential.children if content_child.category == "vertical"]
 
     return course
-
 
 @api_error_protect
 def get_courses(**kwargs):
@@ -504,83 +500,3 @@ def get_course_navigation(course_id, target_location_id):
     response = GET(url)
 
     return JP.from_json(response.read())
-
-
-@api_error_protect
-def get_courses_list(getParameters):
-    '''
-    Retrieves list of courses from openedx server
-    '''
-    response = GET('{}/{}?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            urlencode(getParameters)
-        )
-    )
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details(course_id):
-
-    response = GET('{}/{}/{}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id)
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_users(course_id):
-
-    response = GET('{}/{}/{}/users'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id)
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_groups(course_id):
-
-    response = GET('{}/{}/{}/groups'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id)
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_users_groups(course_id, groups_ids):
-    ''' filter and get course users'''
-
-    response = GET(
-        '{}/{}/{}/users?groups={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            groups_ids
-        )
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_metrics_completions(course_id):
-    ''' retrieves users who are leading in terms of  course module completions '''
-
-    url = '{}/{}/{}/metrics/completions/leaders'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id
-    )
-    response = GET(url)
-
-    return json.loads(response.read())

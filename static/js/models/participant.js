@@ -1,1 +1,0 @@
-  Apros.models.Participant = Backbone.Model.extend({});
