@@ -3,7 +3,7 @@ function group_work_dashboard(dashboard_configuration) {
     var gp_placeholder = dashboard_configuration['gp_placeholder'];
     var selected_values = dashboard_configuration['selected_values'];
     var lesson_data_base = dashboard_configuration['lesson_data_base'];
-    var quick_links_endpoints = dashboard_configuration['quick_links_endpoints'];
+    var quick_links_endpoint = dashboard_configuration['quick_links_endpoint'];
     var csrf_token = dashboard_configuration['csrf_token'];
 
     // Value of one of select boxes when no choice is possible due to choices
@@ -45,7 +45,7 @@ function group_work_dashboard(dashboard_configuration) {
         update_select_status($select);
     }
 
-    function update_select_status($select){
+    function update_select_status($select) {
         $select.removeAttr('disabled');
         if ($select.children("option[value='" + NONE_DATA_VALUE + "']").length != 0) {
             $select.attr('disabled', true);
@@ -63,7 +63,7 @@ function group_work_dashboard(dashboard_configuration) {
      * @param target_select a selector
      * @param value value selected in previous select
      */
-    function fire_chained_select(target_select, value){
+    function fire_chained_select(target_select, value) {
         clear_select_options(target_select);
 
         var $target_select = $(target_select);
@@ -92,7 +92,7 @@ function group_work_dashboard(dashboard_configuration) {
         });
     }
 
-    function toggle_button(button, value){
+    function toggle_button(button, value) {
         if (value){
             button.removeAttr('disabled');
             button.removeClass('disabled');
@@ -117,7 +117,7 @@ function group_work_dashboard(dashboard_configuration) {
         var lesson_data = $.extend({}, lesson_data_base);
         lesson_data.courseId = course_id;
         lesson_data.usageId = project_id;
-        lesson_data.data = { client_filter_id: company_id };
+        lesson_data.data = {client_filter_id: company_id};
         // This is a hack
         // jquery.xblock doesn't allow to wait until xblock gets fully rendered
         // so we'll just insert an internal div to gp_placeholder
@@ -164,15 +164,19 @@ function group_work_dashboard(dashboard_configuration) {
      * credentials.
      * @param method
      * @param data
-     * @param url url to use
+     * @param link_id url to use
      * @returns JQuery jxhr object
      */
-    function send_quick_filters_request(method, url, data){
+    function send_quick_filters_request(method, data, link_id) {
+        var url =  quick_links_endpoint;
+        if (typeof link_id !== 'undefined'){
+            url += link_id + '/';
+        }
         return $.ajax({
             url: url,
             method: method,
             data: data,
-            beforeSend: function(xhr){
+            beforeSend: function(xhr) {
                 xhr.setRequestHeader("X-CSRFToken", csrf_token);
             }
         })
@@ -182,10 +186,10 @@ function group_work_dashboard(dashboard_configuration) {
     /**
      * Loads a list of user's quick links
      */
-    function load_quick_filters(){
-        send_quick_filters_request('GET', quick_links_endpoints.list).done(
-            function(response){
-                $.each(response, function(idx, link){
+    function load_quick_filters() {
+        send_quick_filters_request('GET').done(
+            function(response) {
+                $.each(response, function(idx, link) {
                     add_quick_filter_row(link)
                 });
             }
@@ -193,8 +197,8 @@ function group_work_dashboard(dashboard_configuration) {
     }
 
 
-    function render_quick_filter_label(quick_link){
-        function create_label_part(object){
+    function render_quick_filter_label(quick_link) {
+        function create_label_part(object) {
             if (typeof object === 'undefined'){
                 return '';
             }
@@ -207,7 +211,7 @@ function group_work_dashboard(dashboard_configuration) {
             create_label_part(quick_link.client);
     }
 
-    function add_quick_filter_row(quick_link){
+    function add_quick_filter_row(quick_link) {
         // If there alteady is a row for given id just remove it.
         // In such case whole add operation will just move link to the top
         remove_quick_filter_row(quick_link.id);
@@ -227,7 +231,7 @@ function group_work_dashboard(dashboard_configuration) {
     }
 
 
-    function remove_quick_filter_row(link_id){
+    function remove_quick_filter_row(link_id) {
         delete quick_links[link_id];
         var row = $("#quick-links tr").filter(function() {
           return $(this).data("link-id") == link_id
@@ -239,8 +243,8 @@ function group_work_dashboard(dashboard_configuration) {
     }
 
 
-    function save_quick_filter(){
-        function filter_value(value){
+    function save_quick_filter() {
+        function filter_value(value) {
             return value != NONE_DATA_VALUE ? value: '';
         }
 
@@ -251,37 +255,33 @@ function group_work_dashboard(dashboard_configuration) {
             group_work_project_id: filter_value($("select#select-project").val())
         };
 
-       send_quick_filters_request('POST', quick_links_endpoints.add, post_dict)
+       send_quick_filters_request('POST', post_dict)
            .done(add_quick_filter_row)
            .error(generic_error_hander);
     }
 
 
-    function get_link_id_from_event(evt){
+    function get_link_id_from_event(evt) {
         return $(evt.target).parents('tr').data('link-id');
     }
 
 
-    function delete_quick_filter(evt){
+    function delete_quick_filter(evt) {
         var link_id = get_link_id_from_event(evt);
         var confirm_mgs = "Do you really want to delete: \n";
         confirm_mgs += render_quick_filter_label(quick_links[link_id]);
         if (!confirm(confirm_mgs)){
             return;
         }
-        send_quick_filters_request(
-           'DELETE',
-           quick_links_endpoints.delete + link_id + "/"
-       ).done(
-            function(){
+        send_quick_filters_request('DELETE', {}, link_id).done(
+            function() {
                 remove_quick_filter_row(link_id);
             }
         ).error(generic_error_hander)
-
     }
 
 
-    function toggle_buttons(){
+    function toggle_buttons() {
         var value = $("select#select-course").val();
         toggle_run_report(value);
         toggle_button($('#save-filter'), $("select#select-program").val());
@@ -295,10 +295,12 @@ function group_work_dashboard(dashboard_configuration) {
      * Function activate_ui is supposed to be paired with deactivate_ui, that is
      * deactivate deactivates all listeners activate activates.
      */
-    function activate_ui(){
+    function activate_ui() {
        var $filters = $("select#select-program, select#select-course, select#select-project, select#select-company");
 
-        $.each($filters, function(idx, filter){ update_select_status($(filter)) });
+        $.each($filters, function(idx, filter) {
+            update_select_status($(filter));
+        });
 
         $("#quick-links td a").removeClass('disabled');
 
@@ -330,7 +332,7 @@ function group_work_dashboard(dashboard_configuration) {
     /**
      * Detaches all events from selects on the top of the page.
      */
-    function deactivate_ui(){
+    function deactivate_ui() {
         var $filters = $("select#select-program, select#select-course, select#select-project, select#select-company");
         $filters.off('change');
         $("#quick-links").off('click', 'td.activate-quick-link a');
@@ -344,7 +346,7 @@ function group_work_dashboard(dashboard_configuration) {
      * @param selector selector for a select
      * @param value if of option to select
      */
-    function update_select(selector, value){
+    function update_select(selector, value) {
         var $select = $(selector);
         $select.prop('disabled', false);
         $select.children('option').removeProp('selected');
@@ -365,7 +367,7 @@ function group_work_dashboard(dashboard_configuration) {
      * Updates all selects using a quick link values.
      * @param quick_link
      */
-    function update_selects(quick_link){
+    function update_selects(quick_link) {
         update_select('select#select-program', quick_link.program);
         update_select('select#select-course', quick_link.course);
         update_select('select#select-project', quick_link.group_work);
@@ -384,7 +386,7 @@ function group_work_dashboard(dashboard_configuration) {
      *    value and in next step we will update values of all select at once.
      * 3. Launch requests to update four selects on the top of the page with
      *    values from quick link
-     * 4. Wait until requests from 3 are procssed
+     * 4. Wait until requests from 3 are processed
      * 5. Select proper options on select boxes
      * 6. Launch request to update a dashboard
      * 7. Activate listeners on selects once again.
@@ -392,7 +394,7 @@ function group_work_dashboard(dashboard_configuration) {
      * @param evt event object associated with a user click on a quick filter
      *            link.
      */
-    function load_selected_link(evt){
+    function load_selected_link(evt) {
         var link_id = get_link_id_from_event(evt);
         var quick_link = quick_links[link_id];
 
@@ -411,7 +413,7 @@ function group_work_dashboard(dashboard_configuration) {
         $.when.apply($, deferreds).done(function () {
             update_selects(quick_link);
             var deferred = update_dashboard();
-            $.when(deferred).done(function(){
+            $.when(deferred).done(function() {
                 activate_ui();
                 toggle_buttons();
             });
@@ -419,7 +421,7 @@ function group_work_dashboard(dashboard_configuration) {
     }
 
 
-    function update_dashboard(){
+    function update_dashboard() {
         var project_id = $("select#select-project").val();
         var course_id = $("select#select-course").val();
         var company_id = $("select#select-company").val();

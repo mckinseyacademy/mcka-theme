@@ -23,11 +23,8 @@ from django.utils.dateformat import format
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
-
 from django.views.decorators.http import require_POST
-from django.views.generic.detail import BaseDetailView
-from django.views.generic.edit import BaseCreateView
-from django.views.generic.list import BaseListView
+from django.views.generic.base import View
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course
@@ -1993,13 +1990,9 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     return render(request, template, data)
 
-class _BaseQuickLinkMixin(object):
-    """
-    A base view for all Quick links views if mainly focuses on checking permissions
-    and provides verify_link method.
+class QuickLinkView(View):
 
-    Note: this needs to be added as a first in extends clause, to preserve MRO.
-    """
+    http_method_names = ['get', 'post', 'delete']
 
     @method_decorator(permission_group_required(
         PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA
@@ -2017,7 +2010,7 @@ class _BaseQuickLinkMixin(object):
             client.id
             for client in AccessChecker.get_clients_user_has_access_to(request.user)
         )
-        return super(_BaseQuickLinkMixin, self).dispatch(request, *args, **kwargs)
+        return super(QuickLinkView, self).dispatch(request, *args, **kwargs)
 
     def verify_link(self, link):
         """
@@ -2042,30 +2035,30 @@ class _BaseQuickLinkMixin(object):
         except PermissionDenied:
             return False
 
-
-class ListQuickLinks(_BaseQuickLinkMixin, BaseListView):
-
-    http_method_names = ['get']
-
-    def get_queryset(self):
-        return DashboardAdminQuickFilter.objects.filter(user_id=self.request.user.id)
-
-    def render_to_response(self, context):
+    def get(self, request, *args, **kwargs):
+        links = DashboardAdminQuickFilter.objects.filter(
+            user_id=self.request.user.id
+        )
         return HttpResponse(json.dumps([
             serialize_quick_link(link)
-            for link in context['object_list']
+            for link in links
             if self.verify_link(link)
         ]), content_type="application/json")
 
 
-class SaveQuickLink(_BaseQuickLinkMixin, BaseCreateView):
+    def post(self, request, *args, **kwargs):
+        form = DashboardAdminQuickFilterForm(request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
-    http_method_names = ['post']
-    form_class = DashboardAdminQuickFilterForm
-    model = DashboardAdminQuickFilter
-
-    def form_invalid(self, form):
-        return HttpResponse(json.dumps(form.errors), status=400)
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.user_id != self.request.user.id:
+            raise PermissionDenied()
+        self.object.delete()
+        return HttpResponse(status=204)
 
     def form_valid(self, form):
         # Just verify user has access to all related objects
@@ -2081,25 +2074,16 @@ class SaveQuickLink(_BaseQuickLinkMixin, BaseCreateView):
             content_type="application/json"
         )
 
+    def form_invalid(self, form):
+        return HttpResponse(json.dumps(form.errors), status=400)
 
-class DeleteQuickLink(_BaseQuickLinkMixin, BaseDetailView):
-
-    model = DashboardAdminQuickFilter
-
-    http_method_names = ['delete']
-
-    pk_url_kwarg = 'link_id'
-
-    def delete(self, request, *args, **kwargs):
-        """
-        Calls the delete() method on the fetched object and then
-        redirects to the success URL.
-        """
-        self.object = self.get_object()
-        if self.object.user_id != self.request.user.id:
-            raise PermissionDenied()
-        self.object.delete()
-        return HttpResponse(status=204)
+    def get_object(self):
+        try:
+            return DashboardAdminQuickFilter.objects.get(
+                id = self.kwargs['link_id']
+            )
+        except DashboardAdminQuickFilter.DoesNotExist:
+            raise Http404()
 
 
 def _make_select_option_response(item_id, display_name, disabled=False):
