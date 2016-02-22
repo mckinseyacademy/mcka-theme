@@ -1,0 +1,75 @@
+#mainCoursesWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#coursesListViewGridBlock
+{
+	height: 25em;
+	overflow-y: scroll;
+}
+
+
+#mainCourseDetailsWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 900px;
+	max-width: 80%;
+}
+
+#courseDetailsDataWrapper
+{
+	margin-top: 25px;
+	margin-left: 50px;
+}
+
+.courseDetailsHeader
+{
+	margin-bottom: 20px!important;
+}
+
+.courseDetailsNameAndId
+{
+	color: #3384CA;
+	font-size: medium;
+	font-weight: bold;
+	float: left;
+}
+
+.courseDetailsTags
+{
+	float: right;
+}
+
+.courseDetailsLeftBlock
+{
+	padding-left: 0px!important; 
+}
+
+.courseDetailsCenterBlock
+{
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	padding-left: 80px!important;
+}
+
+.courseDetailsRightBlock
+{
+	padding-left: 80px!important;
+}
+
+#courseMainDetailsContainerView
+{
+	margin-top: 50px;
+}
+
+.courseParticipantsButton
+{
+	padding-left: 0px!important;
+}
