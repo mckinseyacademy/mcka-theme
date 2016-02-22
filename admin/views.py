@@ -75,7 +75,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from courses.controller import get_proficiency_leaders, get_progress_leaders
 from courses.user_courses import load_course_progress
 
 def ajaxify_http_redirects(func):
@@ -786,6 +785,7 @@ def course_details(request, course_id):
     for data in course:
         if course.get(data) is None:
             course[data] = "-"  
+
     course_groups = course_api.get_course_details_groups(course_id) 
     
     groups_ids_list = []
@@ -798,12 +798,14 @@ def course_details(request, course_id):
     course_data = None
     course_data = load_course(course_id, request=request)
     course_progress = 0
+    course_proficiency = 0
     for user in course_users['enrollments']:
         load_course_progress(course_data, user['id'])
-        print course_data.user_progress
+        proficiency = course_api.get_course_metrics_grades(course_id, user_id=user['id'], grade_object_type=Proficiency)
         course_progress += course_data.user_progress
+        course_proficiency += proficiency.course_average_display
     try:
-        course['average_progress'] = round_to_int(float(course_progress)/course['users_enrolled'])
+        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])  
     except ZeroDivisionError:
         course['average_progress'] = 0
 
@@ -813,8 +815,11 @@ def course_details(request, course_id):
     course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
     course['passed'] = course_pass.pass_rate_display(course_users['enrollments'])
 
-    course_proficiency = get_proficiency_leaders(course_id, request.user.id)
-    course['proficiency'] = course_proficiency.course_average_display
+    try:
+        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])  
+    except ZeroDivisionError:
+        course['proficiency'] = 0
+        
     return render(request, 'admin/courses/course_details.haml', course)
 
 
