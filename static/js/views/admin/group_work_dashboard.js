@@ -3,7 +3,7 @@ function group_work_dashboard(dashboard_configuration) {
     var gp_placeholder = dashboard_configuration['gp_placeholder'];
     var selected_values = dashboard_configuration['selected_values'];
     var lesson_data_base = dashboard_configuration['lesson_data_base'];
-    var quick_links_endpoints = dashboard_configuration['quick_links_endpoints'];
+    var quick_links_endpoint = dashboard_configuration['quick_links_endpoint'];
     var csrf_token = dashboard_configuration['csrf_token'];
 
     // Value of one of select boxes when no choice is possible due to choices
@@ -164,10 +164,14 @@ function group_work_dashboard(dashboard_configuration) {
      * credentials.
      * @param method
      * @param data
-     * @param url url to use
+     * @param link_id url to use
      * @returns JQuery jxhr object
      */
-    function send_quick_filters_request(method, url, data) {
+    function send_quick_filters_request(method, data, link_id) {
+        var url =  quick_links_endpoint;
+        if (typeof link_id !== 'undefined'){
+            url += link_id + '/';
+        }
         return $.ajax({
             url: url,
             method: method,
@@ -183,7 +187,7 @@ function group_work_dashboard(dashboard_configuration) {
      * Loads a list of user's quick links
      */
     function load_quick_filters() {
-        send_quick_filters_request('GET', quick_links_endpoints.list).done(
+        send_quick_filters_request('GET').done(
             function(response) {
                 $.each(response, function(idx, link) {
                     add_quick_filter_row(link)
@@ -251,7 +255,7 @@ function group_work_dashboard(dashboard_configuration) {
             group_work_project_id: filter_value($("select#select-project").val())
         };
 
-       send_quick_filters_request('POST', quick_links_endpoints.add, post_dict)
+       send_quick_filters_request('POST', post_dict)
            .done(add_quick_filter_row)
            .error(generic_error_hander);
     }
@@ -269,15 +273,11 @@ function group_work_dashboard(dashboard_configuration) {
         if (!confirm(confirm_mgs)){
             return;
         }
-        send_quick_filters_request(
-           'DELETE',
-           quick_links_endpoints.delete + link_id + "/"
-       ).done(
+        send_quick_filters_request('DELETE', {}, link_id).done(
             function() {
                 remove_quick_filter_row(link_id);
             }
         ).error(generic_error_hander)
-
     }
 
 

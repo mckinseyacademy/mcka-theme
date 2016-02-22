@@ -67,12 +67,8 @@ urlpatterns = patterns(
     url(r'^programs', views.program_list, name='program_list'),
 
     url(r'^workgroup/dashboard$', views.groupwork_dashboard, name='groupwork_dashboard'),
-    url(r'^workgroup/dashboard/my_links$', views.ListQuickLinks.as_view(),
+    url(r'^workgroup/dashboard/my_links/(?:(?P<link_id>\d+)/)?$', views.QuickLinkView.as_view(),
         name='groupwork_dashboard_links'),
-    url(r'^workgroup/dashboard/my_links/add$', views.SaveQuickLink.as_view(),
-        name='groupwork_dashboard_links_add'),
-    url(r'^workgroup/dashboard/my_links/remove/(?:(?P<link_id>\d+)/)?$',
-        views.DeleteQuickLink.as_view(), name='groupwork_dashboard_links_remove'),
     url(r'^workgroup/dashboard/programs/(?P<program_id>.*)/courses$', views.groupwork_dashboard_courses, name='groupwork_dashboard_courses'),
     url(r'^workgroup/dashboard/programs/(?P<program_id>.*)/companies$', views.groupwork_dashboard_companies, name='groupwork_dashboard_companies'),
     url(r'^workgroup/dashboard/courses/(?P<course_id>.*)/projects$', views.groupwork_dashboard_projects, name='groupwork_dashboard_projects'),
