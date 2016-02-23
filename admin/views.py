@@ -2027,9 +2027,9 @@ class QuickLinkView(View):
         restrict_to_courses_ids = self.kwargs['restrict_to_courses_ids']
         restrict_to_programs_ids = self.kwargs['restrict_to_programs_ids']
         try:
-            AccessChecker.check_has_course_access(link.course_id, restrict_to_courses_ids);
-            AccessChecker.check_has_program_access(link.program_id, restrict_to_programs_ids);
-            if link.company_id is not None and link.company_id not in all_clients:
+            AccessChecker.check_has_course_access(link.course_id, restrict_to_courses_ids)
+            AccessChecker.check_has_program_access(link.program_id, restrict_to_programs_ids)
+            if link.company_id is not None and link.company_id not in self.all_clients:
                 return False
             return True
         except PermissionDenied:
