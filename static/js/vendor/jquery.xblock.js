@@ -271,7 +271,12 @@
 
         getLmsDomain: function(options) {
             if (options.useCurrentHost) {
-                return this.location.hostname + ':' + this.location.port;
+                if (options.lmsPort) {
+                    return this.location.hostname + ':' + options.lmsPort;
+                }
+                else {
+                    return this.location.hostname + ':' + this.location.port;
+                }
             }
             else {
                 return options.lmsSubDomain + '.' + options.baseDomain;

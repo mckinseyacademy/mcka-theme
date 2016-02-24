@@ -2050,6 +2050,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
         "remote_session_key": request.session.get("remote_session_key"),
         "lms_base_domain": settings.LMS_BASE_DOMAIN,
         "lms_sub_domain": settings.LMS_SUB_DOMAIN,
+        "lms_port": settings.LMS_PORT,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     }
 
@@ -2112,6 +2113,7 @@ def groupwork_dashboard_details(
         'remote_session_key': request.session.get('remote_session_key'),
         'lms_base_domain': settings.LMS_BASE_DOMAIN,
         'lms_sub_domain': settings.LMS_SUB_DOMAIN,
+        "lms_port": settings.LMS_PORT,
         'program': {'id': program.id, 'name': '{} ({})'.format(program.display_name, program.name)},
         'course': {'id': course.id, 'name': course.name},
         'project': {'id': project.id, 'name': project.name},
