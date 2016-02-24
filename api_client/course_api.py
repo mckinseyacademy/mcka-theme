@@ -573,14 +573,15 @@ def get_course_details_users_groups(course_id, groups_ids):
 
 
 @api_error_protect
-def get_course_details_metrics_completions(course_id):
-    ''' retrieves users who are leading in terms of  course module completions '''
+def get_course_details_metrics_social(course_id):
+    ''' fetch social metrics for course '''
 
-    url = '{}/{}/{}/metrics/completions/leaders'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id
+    response = GET(
+        '{}/{}/{}/metrics/social'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id
+        )
     )
-    response = GET(url)
 
     return json.loads(response.read())

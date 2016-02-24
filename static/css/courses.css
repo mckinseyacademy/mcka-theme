@@ -73,3 +73,19 @@
 {
 	padding-left: 0px!important;
 }
+
+#courseDetailsStatsTopic
+{
+	font-size: xx-large;
+	margin-bottom: 20px;
+}
+
+#courseDetailsStatsViewGrid
+{
+	padding-left: 0px!important;
+}
+
+#courseDetailsStatsViewGrid .bbGrid-grid
+{
+	width: 100%;
+}

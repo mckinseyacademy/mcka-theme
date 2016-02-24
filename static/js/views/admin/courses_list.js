@@ -42,7 +42,8 @@
       this.$el.scroll(this.fetchPages);
     },
     fetchPages: function(){
-      if  ($(this).scrollTop() == $(this).find('.bbGrid-container').height() - $(this).height()){
+      if  ($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20)
+      {
         coursesListViewGrid.partial_collection.getNextPage();
       }
     }

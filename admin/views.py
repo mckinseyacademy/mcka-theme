@@ -780,7 +780,7 @@ def course_details(request, course_id):
         groups_ids_list.append(str(group['id']))
     groups_ids = ','.join(group_id for group_id in groups_ids_list)
     course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
-    course['users_enrolled'] = len(course_users['enrollments'])
+    course['users_enrolled'] = len([dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])])
 
     company_metrics = course_api.get_course_metrics_completions(course_id, count=course['users_enrolled'], completions_object_type=Progress)
     course['completed'] = company_metrics.completion_rate_display(course_users['enrollments'])
@@ -807,6 +807,39 @@ def course_details(request, course_id):
         course['proficiency'] = 0
         
     return render(request, 'admin/courses/course_details.haml', course)
+
+
+class course_details_stats_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_groups = course_api.get_course_details_groups(course_id) 
+        groups_ids_list = []
+        for group in course_groups:
+            groups_ids_list.append(str(group['id']))
+        groups_ids = ','.join(group_id for group_id in groups_ids_list)
+        course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+
+        number_of_posts = 0
+        number_of_participants_posting = 0
+        course_metrics_social = course_api.get_course_details_metrics_social(course_id)
+
+        number_of_users = len([dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])])
+
+        for user in course_metrics_social['users']:
+            user_data = course_metrics_social['users'][str(user)]
+            number_of_participants_posting += 1
+            number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data['num_comments']
+            number_of_posts += number_of_posts_per_participant
+
+        course_stats = [
+            { 'name': '# of posts', 'value': number_of_posts},
+            { 'name': '% participants posting', 'value': str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'},
+            { 'name': 'Avg posts per participant', 'value': round_to_int_bump_zero(float(number_of_posts)/number_of_users)}
+        ]
+        return Response(course_stats)
+
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

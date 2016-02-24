@@ -4,7 +4,7 @@
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
             %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
-        #courseDetailsDataWrapper
+        #courseDetailsDataWrapper{:data-id => '#{id}'}
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
                     .courseDetailsNameAndId
@@ -29,7 +29,7 @@
                 .courseParticipantsButton.large-2.columns
                   %p PARTICIPANTS
                 .courseStatsButton.large-2.columns
-                  %p STATS
+                  %a{:href => '/admin/courses/#{id}/#stats', :target => '_self'}> STATS
                 .courseDiscoverContentButton.large-3.columns
                   %p DISCOVER CONTENT
                 .courseFeatureFlaggingButton.large-3.columns
@@ -40,3 +40,7 @@
             #courseDetailsMainContainer
               .row.courseParticipant
                 #courseDetailsParticipantsGrid.large-12.columns
+              .row.courseStats
+                #courseDetailsStatsTopic
+                  Social Engagement
+                #courseDetailsStatsViewGrid.large-12.columns
