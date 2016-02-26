@@ -20,7 +20,7 @@ def user_program_data(request):
         "refresh_watcher": {
             "name": "short-poll",
             "args": {
-                "poll_period_secs": 10,
+                "poll_period_secs": 30,
             }
         },
         "global_variables": {
