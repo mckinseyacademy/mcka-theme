@@ -837,7 +837,7 @@ class course_details_stats_api(APIView):
         course_stats = [
             { 'name': '# of posts', 'value': number_of_posts},
             { 'name': '% participants posting', 'value': str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'},
-            { 'name': 'Avg posts per participant', 'value': round_to_int_bump_zero(float(number_of_posts)/number_of_users)}
+            { 'name': 'Avg posts per participant', 'value': round(float(number_of_posts)/number_of_users, 1)}
         ]
         return Response(course_stats)
 
