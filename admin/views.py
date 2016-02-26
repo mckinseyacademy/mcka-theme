@@ -797,7 +797,7 @@ def course_details(request, course_id):
         load_course_progress(course_data, user['id'])
         proficiency = course_api.get_course_metrics_grades(course_id, user_id=user['id'], grade_object_type=Proficiency)
         course_progress += course_data.user_progress
-        course_proficiency += proficiency.course_average_display
+        course_proficiency += proficiency.user_grade_value
     try:
         course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])  
     except ZeroDivisionError:
