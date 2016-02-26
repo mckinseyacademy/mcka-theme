@@ -780,19 +780,20 @@ def course_details(request, course_id):
         groups_ids_list.append(str(group['id']))
     groups_ids = ','.join(group_id for group_id in groups_ids_list)
     course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
-    course['users_enrolled'] = len([dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])])
-
+    users_enrolled = [dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])]
+    course['users_enrolled'] = len(users_enrolled)
+    
     company_metrics = course_api.get_course_metrics_completions(course_id, count=course['users_enrolled'], completions_object_type=Progress)
-    course['completed'] = company_metrics.completion_rate_display(course_users['enrollments'])
+    course['completed'] = company_metrics.completion_rate_display(users_enrolled)
     
     course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
-    course['passed'] = course_pass.pass_rate_display(course_users['enrollments'])
+    course['passed'] = course_pass.pass_rate_display(users_enrolled)
 
     course_data = None
     course_data = load_course(course_id, request=request)
     course_progress = 0
     course_proficiency = 0
-    for user in course_users['enrollments']:
+    for user in users_enrolled:
         load_course_progress(course_data, user['id'])
         proficiency = course_api.get_course_metrics_grades(course_id, user_id=user['id'], grade_object_type=Proficiency)
         course_progress += course_data.user_progress
