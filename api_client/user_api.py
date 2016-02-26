@@ -558,3 +558,15 @@ USER_ERROR_CODE_MESSAGES = {
     },
 }
 ERROR_CODE_MESSAGES.update(USER_ERROR_CODE_MESSAGES)
+
+
+@api_error_protect
+def get_courses_from_user(user_id):
+
+    response = GET('{}/{}/{}/courses'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id)
+    )
+
+    return json.loads(response.read())

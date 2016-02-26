@@ -62,3 +62,18 @@
 	margin-bottom: 20px;
 	font-weight: bold;
 }
+
+/* css: frano */
+
+#participantDetailsActiveCoursesViewGridLoadingImage
+{
+	display: none;
+}
+
+#participantDetailsActiveCoursesViewGrid
+{
+	height: 25em;
+	overflow-y: scroll;
+	display: none;
+}
+

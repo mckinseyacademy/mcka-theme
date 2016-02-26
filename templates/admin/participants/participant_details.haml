@@ -3,7 +3,7 @@
   #mainParticipantsDetailsWrapper
     .participantDetailsNavigationButton
       %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
-    #participantsDetailsDataWrapper
+    #participantsDetailsDataWrapper{:data-id => '#{id}'}
       #participantsTopDetailsContainer
         .row
           .large-2.columns
@@ -22,7 +22,7 @@
           .participantProfileButton.large-2.columns
             %a{:href => '/admin/participants/#{id}', :target => '_self'}> PROFILE
           .participantActiveCoursesButton.large-3.columns
-            %a{:href => '/admin/participants/#{id}', :target => '_self'}> ACTIVE COURSES
+            %a{:href => '/admin/participants/#{id}/#active_courses', :target => '_self'}> ACTIVE COURSES
           .participantCourseHistoryButton.large-3.columns
             %a{:href => '/admin/participants/#{id}', :target => '_self'}> COURSE HISTORY
           .participantCertificatesButton.large-2.columns
@@ -89,6 +89,11 @@
             .large-12.columns.participantBottomArchiveEdit
               %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
               %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
+
+        .participantDetailsActiveCourses
+          %img{:src => "http://preloaders.net/preloaders/712/Floating%20rays.gif", :id => 'participantDetailsActiveCoursesViewGridLoadingImage'}
+          #participantDetailsActiveCoursesViewGrid.large-12.columns
+
 
 
 

@@ -18,6 +18,8 @@ var Router = Backbone.Router.extend({
     'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
     'admin/course-meta-content/items/*course_id': 'admin_course_meta',
     'admin/participants': 'participants_list',
+    'admin/participants': 'participants_list',
+    'admin/participants/*user_id/*active_courses': 'participant_details_active_courses',
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/': 'admin_course_details_stats',
     'admin/courses/*course_id/#stats': 'admin_course_details_stats'
@@ -117,6 +119,13 @@ var Router = Backbone.Router.extend({
     var collection = new Apros.collections.Participants();
     var participant_list_view = new Apros.views.ParticipantsInfo({collection: collection, el: '#participantsListViewGridBlock'});
     participant_list_view.render();
+  },
+
+  participant_details_active_courses: function(){
+    ApiUrls.participants_list = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/courses';
+    var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: ApiUrls.participants_list});
+    var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid'});
+    // participant_details_active_courses_view.render();
   },
 
   admin_courses: function(){

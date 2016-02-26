@@ -71,6 +71,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from courses.user_courses import load_course_progress
+from django.utils import timezone
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -2632,6 +2633,76 @@ def participants_details(request, user_id):
             selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
         selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
         return render( request, 'admin/participants/participant_details.haml', selectedUser)
+
+
+class participant_details_courses_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, format=None):
+        
+        user_courses = []
+        allCourses = user_api.get_courses_from_user(user_id)
+        for course in allCourses:
+            user_course = {}
+            user_course['name'] = course['name']
+            user_course['id'] = course['id']
+            user_course['program'] = '-'
+            user_course['progress'] = '-'
+            user_course['proficiency'] = '-'
+            user_course['status'] = 'Active'
+            user_course['unenroll'] = 'Unenroll'
+            user_course['start'] = course['start']
+            if course['end'] is not None:
+                user_course['end'] = course['end']
+            else: 
+                user_course['end'] = '-'
+            user_courses.append(user_course)
+        user_permissions = vars(Permissions(user_id))
+        for course_role in user_permissions['user_roles']:
+            if not any(item['id'] == vars(course_role)['course_id'] for item in user_courses):
+                course = course_api.get_course_details(vars(course_role)['course_id'])
+                user_course = {}
+                user_course['name'] = course['name']
+                user_course['id'] = course['id']
+                user_course['program'] = '-'
+                user_course['progress'] = '-'
+                user_course['proficiency'] = '-'
+                user_course['start'] = course['start']
+                if course['end'] is not None:
+                    user_course['end'] = course['end']
+                else: 
+                    user_course['end'] = '-'
+                if vars(course_role)['role'] == 'observer':
+                    user_course['status'] = 'Observer'
+                if vars(course_role)['role'] == 'assistant':
+                    user_course['status'] = 'TA'
+                user_course['unenroll'] = 'Unenroll'
+                user_courses.append(user_course)       
+            else:
+                user_course = (user_course for user_course in user_courses if user_course["id"] == vars(course_role)['course_id']).next()
+                if user_course['status'] != 'TA':
+                    if vars(course_role)['role'] == 'observer':
+                        user_course['status'] = 'Observer'
+                    if vars(course_role)['role'] == 'assistant':
+                        user_course['status'] = 'TA'
+
+        for user_course in user_courses:
+            course_data = None
+            course_data = load_course(user_course['id'], request=request)
+            load_course_progress(course_data, user_id)
+            proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
+            user_course['progress'] = course_data.user_progress
+            user_course['proficiency'] = round_to_int(proficiency.user_grade_value * 100)
+
+        active_courses = []
+        for user_course in user_courses:
+            if timezone.now() >= parsedate(user_course['start']):
+                if user_course['end'] == '-':
+                    active_courses.append(user_course)
+                elif timezone.now() <= parsedate(user_course['end']):
+                    active_courses.append(user_course)
+
+        return Response(active_courses)
 
 
 @ajaxify_http_redirects
