@@ -90,7 +90,7 @@ urlpatterns = patterns(
     url(r'^workgroup/project/(?P<project_id>[0-9]+)/delete', views.workgroup_remove_project, name='workgroup_remove_project'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
 
-    url(r'^api/participants/(?P<user_id>[0-9]+)/courses$', views.participant_details_courses_api.as_view(), name='participant_details_courses_api'),
+    url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses$', views.participant_details_active_courses_api.as_view(), name='participant_details_active_courses_api'),
     url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
     url(r'^participants/(?P<user_id>[0-9]+)', views.participants_details, name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),

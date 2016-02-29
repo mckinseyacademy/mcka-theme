@@ -2635,7 +2635,7 @@ def participants_details(request, user_id):
         return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
 
-class participant_details_courses_api(APIView):
+class participant_details_active_courses_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, user_id, format=None):

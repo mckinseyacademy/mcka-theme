@@ -122,7 +122,7 @@ var Router = Backbone.Router.extend({
   },
 
   participant_details_active_courses: function(){
-    ApiUrls.participants_list = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/courses';
+    ApiUrls.participants_list = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/active_courses';
     var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: ApiUrls.participants_list});
     var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid'});
     // participant_details_active_courses_view.render();
