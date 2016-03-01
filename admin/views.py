@@ -70,8 +70,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from courses.user_courses import load_course_progress
-
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -773,8 +771,10 @@ def course_details(request, course_id):
         if course.get(data) is None:
             course[data] = "-"  
 
+    course_all_users = course_api.get_course_details_users(course_id)
+    count = len(course_all_users['enrollments'])
+
     course_groups = course_api.get_course_details_groups(course_id) 
-    
     groups_ids_list = []
     for group in course_groups:
         groups_ids_list.append(str(group['id']))
@@ -789,24 +789,30 @@ def course_details(request, course_id):
     course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
     course['passed'] = course_pass.pass_rate_display(users_enrolled)
 
-    course_data = None
-    course_data = load_course(course_id, request=request)
     course_progress = 0
     course_proficiency = 0
-    for user in users_enrolled:
-        load_course_progress(course_data, user['id'])
-        proficiency = course_api.get_course_metrics_grades(course_id, user_id=user['id'], grade_object_type=Proficiency)
-        course_progress += course_data.user_progress
-        course_proficiency += proficiency.user_grade_value
+
+    course_completions = course_api.get_course_details_metrics_completions(course_id, count)
+    for user in course_completions['leaders']:
+        if any(item['id'] == user['id'] for item in users_enrolled):
+            user_progress = int(user['completions'])
+            course_progress += user_progress
+
+    course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+    for user in course_grades['leaders']:
+        if any(item['id'] == user['id'] for item in users_enrolled):
+            user_proficiency = float(user['grade'])*100
+            course_proficiency += user_proficiency
+
     try:
-        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])  
+        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
     except ZeroDivisionError:
         course['average_progress'] = 0
     try:
-        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])  
+        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])
     except ZeroDivisionError:
         course['proficiency'] = 0
-        
+
     return render(request, 'admin/courses/course_details.haml', course)
 
 

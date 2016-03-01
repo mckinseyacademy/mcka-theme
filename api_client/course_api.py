@@ -573,6 +573,36 @@ def get_course_details_users_groups(course_id, groups_ids):
 
 
 @api_error_protect
+def get_course_details_metrics_completions(course_id, count):
+
+    response = GET(
+        '{}/{}/{}/metrics/completions/leaders?count={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            count
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_grades(course_id, count):
+
+    response = GET(
+        '{}/{}/{}/metrics/grades/leaders?count={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            count
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
 def get_course_details_metrics_social(course_id):
     ''' fetch social metrics for course '''
 
