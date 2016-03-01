@@ -763,7 +763,7 @@ class courses_list_api(APIView):
 def course_details(request, course_id):
 
     course = course_api.get_course_details(course_id)
-    course_metrics_end = parsedate(datetime.now()).strftime("%m/%d/%Y")
+    course_metrics_end = datetime.now().strftime("%m/%d/%Y")
     if course['start'] is not None:
         course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
     if course['end'] is not None:
@@ -787,9 +787,9 @@ def course_details(request, course_id):
 
     course_completed_users = 0
     course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
-    for completed_metric in course_metrics['users_completed']:
+    for completed_metric in course_metrics.users_completed:
         course_completed_users += completed_metric[1]
-    course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
+    course['completed'] = round_to_int_bump_zero(100 * course_completed_users / len(users_enrolled))
 
     course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
     course['passed'] = course_pass.pass_rate_display(users_enrolled)
