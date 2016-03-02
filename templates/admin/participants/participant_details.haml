@@ -55,8 +55,11 @@
               .participantUsernameValue
                 ={username}
             .large-6.columns.participantEmail
-              .participantEmailLabel.labelUniversal
-                Email
+              .participantEmailLabelContainer.labelUniversal
+                .participantEmailLabel.inlineBlock
+                  Email
+                .participantEmailReset.inlineBlock
+                  %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
               .participantEmailValue
                 ={email}
           %hr
@@ -81,7 +84,7 @@
                 ={location}
             .large-6.columns.participantPermissions
               .participantPermissionsLabel.labelUniversal
-                Permissions
+                Admin Permissions
               .participantPermissionsValue
                 - for mcka_permission in mcka_permissions
                   #{mcka_permission}

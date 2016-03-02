@@ -17,7 +17,7 @@
                         %p Evergreen
                       - else
                         %p ={start} - ={end}
-                      %p Parcipiants: ={users_enrolled}
+                      %p Participants: ={users_enrolled}
                     .large-4.columns.courseDetailsCenterBlock
                       %p Avg Progress: ={average_progress}%
                       %p Avg Proficiency: ={proficiency}
@@ -27,9 +27,9 @@
             #courseMainDetailsContainerView
               .courseDetailsMenuButtons.row
                 .courseParticipantsButton.large-2.columns
-                  %p PARTICIPANTS
+                  %a{:href => '/admin/courses/#{id}/#participants', :target => '_self', :class => 'hashSinglePageButton', :data-target => 'courseParticipants'}> PARTICIPANTS
                 .courseStatsButton.large-2.columns
-                  %a{:href => '/admin/courses/#{id}/#stats', :target => '_self'}> STATS
+                  %a{:href => '/admin/courses/#{id}/#stats', :target => '_self', :class => 'hashSinglePageButton', :data-target => 'courseStats'}> STATS
                 .courseDiscoverContentButton.large-3.columns
                   %p DISCOVER CONTENT
                 .courseFeatureFlaggingButton.large-3.columns
@@ -38,9 +38,9 @@
                   %p COMMUNICATIONS 
             %hr
             #courseDetailsMainContainer
-              .row.courseParticipant
+              .row.courseParticipants.courseContentContainer
                 #courseDetailsParticipantsGrid.large-12.columns
-              .row.courseStats
+              .row.courseStats.courseContentContainer
                 #courseDetailsStatsTopic
                   Social Engagement
                 #courseDetailsStatsViewGrid.large-12.columns

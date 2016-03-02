@@ -62,9 +62,6 @@
 	margin-bottom: 20px;
 	font-weight: bold;
 }
-
-/* css: frano */
-
 #participantDetailsActiveCoursesViewGridLoadingImage
 {
 	display: none;
@@ -76,4 +73,11 @@
 	overflow-y: scroll;
 	display: none;
 }
-
+#participantsMainDetailsContainerView .participantDetailsContent 
+.participantEmailLabel{
+	display: inline-block;
+}
+#participantsMainDetailsContainerView .participantDetailsContent 
+.participantEmailReset{
+	float: right;
+}
