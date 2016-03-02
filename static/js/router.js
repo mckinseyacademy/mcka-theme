@@ -127,9 +127,13 @@ var Router = Backbone.Router.extend({
   },
 
   admin_course_details_stats: function(){
-    ApiUrls.course_details = ApiUrls.course_details+'/'+$('#courseDetailsDataWrapper').attr('data-id')+'/stats/';
-    var courseDetailsStats = new Apros.collections.CourseDetailsStats({url: ApiUrls.course_details});
+    ApiUrls.course_details_stats = ApiUrls.course_details+'/'+$('#courseDetailsDataWrapper').attr('data-id')+'/stats/';
+    ApiUrls.course_details_engagement = ApiUrls.course_details+'/'+$('#courseDetailsDataWrapper').attr('data-id')+'/engagement/';
+    var courseDetailsEngagement = new Apros.collections.CourseDetailsEngagement({url: ApiUrls.course_details_engagement});
+    var course_details_engagement_view = new Apros.views.CourseDetailsEngagementView({collection: courseDetailsEngagement, el: '#courseDetailsEngagementViewGrid'});
+    var courseDetailsStats = new Apros.collections.CourseDetailsStats({url: ApiUrls.course_details_stats});
     var course_details_stats_view = new Apros.views.CourseDetailsStatsView({collection: courseDetailsStats, el: '#courseDetailsStatsViewGrid'});
+    course_details_engagement_view.render();
     course_details_stats_view.render();
   },
   admin_course_details_participants: function(course_id){
