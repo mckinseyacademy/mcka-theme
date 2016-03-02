@@ -62,3 +62,11 @@
 	margin-bottom: 20px;
 	font-weight: bold;
 }
+#participantsMainDetailsContainerView .participantDetailsContent 
+.participantEmailLabel{
+	display: inline-block;
+}
+#participantsMainDetailsContainerView .participantDetailsContent 
+.participantEmailReset{
+	float: right;
+}

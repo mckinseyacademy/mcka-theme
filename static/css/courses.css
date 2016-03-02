@@ -89,3 +89,31 @@
 {
 	width: 100%;
 }
+
+.courseDetailsTags
+{
+	float: right;
+}
+
+.courseDetailsLeftBlock
+{
+	padding-left: 0px!important; 
+}
+
+.courseDetailsCenterBlock
+{
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	padding-left: 80px!important;
+}
+
+.courseDetailsRightBlock
+{
+	padding-left: 80px!important;
+}
+#courseDetailsParticipantsGrid
+{
+	overflow: auto;
+	width: 100%;
+	height:120em;
+}
