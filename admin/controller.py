@@ -465,7 +465,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                 # Enroll into program
                 if not user: 
                     user = user_api.get_users(email=user_dict["email"])[0]
-                if user.id in company_users:
+                if user.id in company_users_ids:
                     try:    
                         program.add_user(client_id, user.id)
                     except Exception as e:
