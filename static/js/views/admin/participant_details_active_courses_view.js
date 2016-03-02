@@ -1,6 +1,5 @@
   Apros.views.ParticipantDetailsActiveCoursesView = Backbone.View.extend({
     initialize: function(){
-      $( ".participantDetailsContent" ).hide();
       $( "#participantDetailsActiveCoursesViewGridLoadingImage" ).show();
       var self = this;
       this.collection.fetch().done(function(){

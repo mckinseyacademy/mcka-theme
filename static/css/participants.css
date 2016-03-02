@@ -45,19 +45,22 @@
 	font-size: x-large;
 	margin-bottom: 10px;
 }
-#participantsMainDetailsContainerView .participantDetailsContent{
+#participantDetailsWrapper .participantDetailsContent{
 	min-height:500px;
 	border:1px solid black;
 	background-color: white;
 	padding: 20px;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
 }
-#participantsMainDetailsContainerView .participantDetailsContent .row{
+#participantDetailsWrapper .participantDetailsContent .row{
 	margin-bottom: 20px;
 }
-#participantsMainDetailsContainerView .participantDetailsContent .participantDetailsEditText{
+#participantDetailsWrapper .participantDetailsContent .participantDetailsEditText{
 	font-size: x-large;
 }
-#participantsMainDetailsContainerView .participantDetailsContent 
+#participantDetailsWrapper .participantDetailsContent 
 .labelUniversal{
 	margin-bottom: 20px;
 	font-weight: bold;
@@ -72,12 +75,19 @@
 	height: 25em;
 	overflow-y: scroll;
 	display: none;
+	margin-left: auto;
+	margin-right: auto;
 }
-#participantsMainDetailsContainerView .participantDetailsContent 
+#participantDetailsActiveCoursesViewGrid .bbGrid-grid.table
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+#participantDetailsWrapper .participantDetailsContent 
 .participantEmailLabel{
 	display: inline-block;
 }
-#participantsMainDetailsContainerView .participantDetailsContent 
+#participantDetailsWrapper .participantDetailsContent 
 .participantEmailReset{
 	float: right;
 }

@@ -18,8 +18,7 @@ var Router = Backbone.Router.extend({
     'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
     'admin/course-meta-content/items/*course_id': 'admin_course_meta',
     'admin/participants': 'participants_list',
-    'admin/participants': 'participants_list',
-    'admin/participants/*user_id/*active_courses': 'participant_details_active_courses',
+    // 'admin/participants/*user_id/#active_courses': 'participant_details_active_courses',
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/#participants': 'admin_course_details_participants',
     'admin/courses/*course_id/#stats': 'admin_course_details_stats',
@@ -184,5 +183,32 @@ Apros.Router.linked_views = {
   'courseStats': {
     'function':Apros.Router.admin_course_details_stats,
     'drawn': false
+  },
+  'participantDetailsContent': {
+    'function': function(){},
+    'drawn': false
+  },
+  'participantDetailsActiveCourses': {
+    'function':Apros.Router.participant_details_active_courses,
+    'drawn': false
   }
+}
+
+Apros.Router.HashPageChanger = function(element) {
+  _selectedClass = $(element).attr('data-target');
+  _parentContainer = $($(element).attr('data-container'));
+  _parentContainer.find('.contentNavigationContainer').each(function(index, value){
+  val = $(value);
+  if (val.hasClass(_selectedClass))
+  {
+    val.show();
+    if (!Apros.Router.linked_views[_selectedClass]['drawn'])
+    {
+      Apros.Router.linked_views[_selectedClass]['function']();
+      Apros.Router.linked_views[_selectedClass]['drawn'] = true;
+    }
+  }
+  else
+    val.hide();
+  });
 }
