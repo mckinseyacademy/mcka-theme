@@ -829,11 +829,11 @@ def get_course_details_progress_data(course, course_modules, users):
     for i, metric in enumerate(metrics.modules_completed):
         mod_completed += metrics.modules_completed[i][1]
         if total:
-            metricsJsonAll.append([day, round((float(mod_completed) / total), 2)])
+            metricsJsonAll.append([day, round((float(mod_completed) * 100 / total), 2)])
         else:
             metricsJsonAll.append([day, 0])
         if engaged_total:
-            metricsJsonEng.append([day, round((float(mod_completed) / engaged_total), 2)])
+            metricsJsonEng.append([day, round((float(mod_completed) * 100 / engaged_total), 2)])
         else:
             metricsJsonEng.append([day, 0])
         day += 1
