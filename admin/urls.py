@@ -22,6 +22,8 @@ urlpatterns = patterns(
     
     url(r'^api/courses/(?P<course_id>.*)/stats/$', views.course_details_stats_api.as_view(), name='course_details_stats_api'),
     url(r'^api/courses/(?P<course_id>.*)/engagement/$', views.course_details_engagement_api.as_view(), name='course_details_engagement_api'),
+    url(r'^api/courses/(?P<course_id>.*)/performance/$', views.course_details_performance_api.as_view(), name='course_details_performance_api'),
+    url(r'^api/courses/(?P<course_id>.*)/timeline/$', views.course_details_cohort_timeline_api.as_view(), name='course_details_cohort_timeline_api'),
     url(r'^api/courses/(?P<course_id>.+)$', views.course_details_api.as_view(), name='course_details_api'),
     url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
     url(r'^courses/(?P<course_id>.*)/$', views.course_details, name='course_details'),

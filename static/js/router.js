@@ -126,7 +126,8 @@ var Router = Backbone.Router.extend({
     courses_list_view.render();
   },
 
-  admin_course_details_stats: function(){
+  admin_course_details_stats: function(course_id){
+    var courseId = $('#courseDetailsDataWrapper').attr('data-id');
     ApiUrls.course_details_stats = ApiUrls.course_details+'/'+$('#courseDetailsDataWrapper').attr('data-id')+'/stats/';
     ApiUrls.course_details_engagement = ApiUrls.course_details+'/'+$('#courseDetailsDataWrapper').attr('data-id')+'/engagement/';
     var courseDetailsEngagement = new Apros.collections.CourseDetailsEngagement({url: ApiUrls.course_details_engagement});
@@ -135,6 +136,11 @@ var Router = Backbone.Router.extend({
     var course_details_stats_view = new Apros.views.CourseDetailsStatsView({collection: courseDetailsStats, el: '#courseDetailsStatsViewGrid'});
     course_details_engagement_view.render();
     course_details_stats_view.render();
+
+    var progressModel = new Apros.models.CourseDetailsTimelineChart();
+    new Apros.views.AdminCourseDetailsTimeline({model: progressModel,
+                                          el: $('#course-details-timeline'),
+                                          course_id: courseId});
   },
   admin_course_details_participants: function(course_id){
 
