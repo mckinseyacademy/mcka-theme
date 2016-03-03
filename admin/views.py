@@ -868,7 +868,6 @@ class course_details_engagement_api(APIView):
         additional_fields = ["is_active"]
         course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
         course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
-        course_progress = course_metrics.course_avg
         course_leaders_ids = [leader.id for leader in course_metrics.leaders]
 
         active_users = 0
@@ -880,15 +879,16 @@ class course_details_engagement_api(APIView):
             if course_user.id in course_leaders_ids:
                 engaged_users += 1
 
-        activated = round_to_int(active_users/len(course_users)) if course_users > 0 else 0
-        engaged = round_to_int(engaged_users/len(course_users)) if course_users > 0 else 0
-        active_progress = round_to_int(engaged_progress_sum/active_users) if active_users > 0 else 0
-        engaged_progress = round_to_int(engaged_progress_sum/engaged_users) if engaged_users > 0 else 0
+        course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users_simple)) if len(course_users_simple) > 0 else 0
+        activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if course_users > 0 else 0
+        engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if course_users > 0 else 0
+        active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
+        engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum)/engaged_users) if engaged_users > 0 else 0
 
         course_stats = [
-             { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': course_progress},
-             { 'name': 'Activated', 'people': active_users, 'invited': str(activated * 100) + '%', 'progress': str(active_progress) + '%'},
-             { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged * 100) + '%', 'progress': str(engaged_progress) + '%'},
+             { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
+             { 'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
+             { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
              { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
         ]
         return Response(course_stats)
@@ -904,8 +904,8 @@ class course_details_cohort_timeline_api(APIView):
 
         metricsJson = get_course_details_progress_data(course, course_modules, users)
 
-        jsonResult = [{"key": "%% Progress", "values": metricsJson[0]},
-                        {"key": "%% Progress (Engaged)", "values": metricsJson[1]}]
+        jsonResult = [{"key": "% Progress", "values": metricsJson[0]},
+                        {"key": "% Progress (Engaged)", "values": metricsJson[1]}]
         return HttpResponse(
                     json.dumps(jsonResult),
                     content_type='application/json'
