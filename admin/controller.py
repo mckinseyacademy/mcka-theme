@@ -819,6 +819,8 @@ def get_course_details_progress_data(course, course_modules, users):
         if course_user.id in course_leaders_ids:
             engaged_total += 1
 
+    engaged_total = engaged_total * len(course_modules)
+
     metricsJsonAll = [[0,0]]
     metricsJsonEng = [[0,0]]
 
