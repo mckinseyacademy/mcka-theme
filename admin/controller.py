@@ -808,9 +808,8 @@ def get_course_details_progress_data(course, course_modules, users):
         if end_date > course.end:
             end_date = course.end
     delta = end_date - start_date
-    interval = 'weeks' if delta.days > 6 else 'days'
-    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval=interval)
- 
+    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
+
     total = len(users) * len(course_modules)
     engaged_total = 0
 
