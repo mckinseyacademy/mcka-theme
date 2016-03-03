@@ -872,7 +872,10 @@ class course_details_api(APIView):
             'staff':'Staff',
             'observer':'Observer'
             }
-            allCourseParticipants = course_api.get_user_list(course_id)        
+            #print '==============================='
+            #print vars(vars(vars(course_api.get_course(course_id))['resources'][0])['_categorised_parser'])
+            #print '==============================='
+            allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
             list_of_user_roles = GetCourseUsersRoles(course_id)
             allCoursesParticipantList = []
             len_of_all_users = len(allCourseParticipants)
@@ -881,8 +884,9 @@ class course_details_api(APIView):
             if request.GET['include_slow_fields'] == 'true':
                 allCourseParticipantsUsers = user_api.get_filtered_users(request.GET)
             else:
+                allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
                 for course_participant in allCourseParticipants:
-                    userData['ids'].append(str(vars(course_participant)['id']))
+                    userData['ids'].append(str(course_participant['id']))
                 for user_role_id in list_of_user_roles['ids']:
                     if user_role_id not in userData['ids']:
                         userData['ids'].append(user_role_id)

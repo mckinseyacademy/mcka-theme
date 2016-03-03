@@ -66,7 +66,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     }
     backup_page = this.state['currentPage'];
     this.state['currentPage'] = 1;
-    this.fetch({update:true,remove:false, success:function(collection, response, options){
+    this.fetch({remove:false, success:function(collection, response, options){
       data = response.results;
       for (var user in data)
       {

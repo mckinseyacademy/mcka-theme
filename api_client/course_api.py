@@ -216,6 +216,8 @@ def get_user_list(course_id, program_id = None):
 
     return JP.from_json(get_user_list_json(course_id, program_id), course_models.CourseEnrollmentList).enrollments
 
+
+
 @api_error_protect
 def get_users_list_in_organizations(course_id, organizations):
     '''
@@ -615,3 +617,8 @@ def get_course_details_metrics_social(course_id):
     )
 
     return json.loads(response.read())
+
+@api_error_protect
+def get_user_list_dictionary(course_id, program_id = None):
+
+    return json.loads(get_user_list_json(course_id, program_id))
