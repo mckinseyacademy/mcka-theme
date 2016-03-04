@@ -40,7 +40,17 @@
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
                 #courseDetailsParticipantsGrid.large-12.columns
-              .row.courseStats.contentNavigationContainer
-                #courseDetailsStatsTopic
+              .row.courseStats.courseContentContainer
+                #courseDetailsEngagementTopic.courseDetailsTopic
+                  Engagement Summary
+                #courseDetailsEngagementViewGrid.courseDetailsViewGrid.large-12.columns
+                #courseDetailsPerformanceTopic.courseDetailsTopic
+                  Participant Performance
+                #courseDetailsPerformanceViewGrid.courseDetailsViewGrid.large-12.columns
+                #courseDetailsStatsTopic.courseDetailsTopic
                   Social Engagement
-                #courseDetailsStatsViewGrid.large-12.columns
+                #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
+                #courseDetailsTimelineTopic.courseDetailsTopic
+                  Cohort Timeline
+                #course-details-timeline-wrapper  
+                  %svg#course-details-timeline

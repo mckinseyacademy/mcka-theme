@@ -74,18 +74,18 @@
 	padding-left: 0px!important;
 }
 
-#courseDetailsStatsTopic
+.courseDetailsTopic
 {
 	font-size: xx-large;
 	margin-bottom: 20px;
 }
 
-#courseDetailsStatsViewGrid
+.courseDetailsViewGrid
 {
 	padding-left: 0px!important;
 }
 
-#courseDetailsStatsViewGrid .bbGrid-grid
+.courseDetailsViewGrid .bbGrid-grid
 {
 	width: 100%;
 }

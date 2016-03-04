@@ -800,6 +800,46 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
 
     return metricsJson
 
+def get_course_details_progress_data(course, course_modules, users):
+
+    start_date = course.start
+    end_date = datetime.now()
+    if course.end is not None:
+        if end_date > course.end:
+            end_date = course.end
+    delta = end_date - start_date
+    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
+
+    total = len(users) * len(course_modules)
+    engaged_total = 0
+
+    course_metrics = course_api.get_course_metrics_completions(course.id, count=total)
+    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+    for course_user in users:
+        if course_user.id in course_leaders_ids:
+            engaged_total += 1
+
+    engaged_total = engaged_total * len(course_modules)
+
+    metricsJsonAll = [[0,0]]
+    metricsJsonEng = [[0,0]]
+
+    day = 1
+    mod_completed = 0
+    for i, metric in enumerate(metrics.modules_completed):
+        mod_completed += metrics.modules_completed[i][1]
+        if total:
+            metricsJsonAll.append([day, round((float(mod_completed) * 100 / total), 2)])
+        else:
+            metricsJsonAll.append([day, 0])
+        if engaged_total:
+            metricsJsonEng.append([day, round((float(mod_completed) * 100 / engaged_total), 2)])
+        else:
+            metricsJsonEng.append([day, 0])
+        day += 1
+
+    return metricsJsonAll, metricsJsonEng
+
 def get_contacts_for_client(client_id):
     groups = Client.fetch_contact_groups(client_id)
 

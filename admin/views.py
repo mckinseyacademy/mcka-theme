@@ -57,7 +57,7 @@ from .controller import (
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key)
+    MINIMAL_COURSE_DEPTH, generate_access_key, get_course_details_progress_data)
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
@@ -853,6 +853,106 @@ class course_details_stats_api(APIView):
             { 'name': 'Avg posts per participant', 'value': round(float(number_of_posts)/number_of_users, 1)}
         ]
         return Response(course_stats)
+
+class course_details_engagement_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_users_simple = course_api.get_user_list(course_id)
+        course_users_ids = [str(user.id) for user in course_users_simple]
+        roles = course_api.get_users_filtered_by_role(course_id)
+        roles_ids = [str(user.id) for user in roles]
+        for role_id in roles_ids:
+            if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+        additional_fields = ["is_active"]
+        course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
+        course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
+        course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+        active_users = 0
+        engaged_users = 0
+        engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+        for course_user in course_users:
+            if course_user.is_active is True:
+                active_users += 1
+            if course_user.id in course_leaders_ids:
+                engaged_users += 1
+
+        course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users_simple)) if len(course_users_simple) > 0 else 0
+        activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if course_users > 0 else 0
+        engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if course_users > 0 else 0
+        active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
+        engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum)/engaged_users) if engaged_users > 0 else 0
+
+        course_stats = [
+             { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
+             { 'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
+             { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
+             { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
+        ]
+        return Response(course_stats)
+
+
+class course_details_cohort_timeline_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id):
+        course = load_course(course_id)
+        course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+
+        users = course_api.get_user_list(course.id)
+
+        metricsJson = get_course_details_progress_data(course, course_modules, users)
+
+        jsonResult = [{"key": "% Progress", "values": metricsJson[0]},
+                        {"key": "% Progress (Engaged)", "values": metricsJson[1]}]
+        return HttpResponse(
+                    json.dumps(jsonResult),
+                    content_type='application/json'
+                )
+
+
+class course_details_performance_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_users_simple = course_api.get_user_list(course_id)
+        course_users_ids = [str(user.id) for user in course_users_simple]
+        roles = course_api.get_users_filtered_by_role(course_id)
+        roles_ids = [str(user.id) for user in roles]
+        for role_id in roles_ids:
+            if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+        additional_fields = ["is_active"]
+        course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
+        course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
+        course_progress = course_metrics.course_avg
+        course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+        active_users = 0
+        engaged_users = 0
+        engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+        for course_user in course_users:
+            if course_user.is_active is True:
+                active_users += 1
+            if course_user.id in course_leaders_ids:
+                engaged_users += 1
+
+        activated = round_to_int(active_users/len(course_users)) if course_users > 0 else 0
+        engaged = round_to_int(engaged_users/len(course_users)) if course_users > 0 else 0
+        active_progress = round_to_int(engaged_progress_sum/active_users) if active_users > 0 else 0
+        engaged_progress = round_to_int(engaged_progress_sum/engaged_users) if engaged_users > 0 else 0
+
+        course_stats = [
+             { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': course_progress},
+             { 'name': 'Activated', 'people': active_users, 'invited': str(activated * 100) + '%', 'progress': str(active_progress) + '%'},
+             { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged * 100) + '%', 'progress': str(engaged_progress) + '%'},
+             { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
+        ]
+        return Response(course_stats)
+
 
 def GetCourseUsersRoles(course_id):
     course_roles_users = course_api.get_users_filtered_by_role(course_id)
