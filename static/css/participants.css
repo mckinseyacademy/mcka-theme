@@ -65,20 +65,28 @@
 	margin-bottom: 20px;
 	font-weight: bold;
 }
-#participantDetailsActiveCoursesViewGridLoadingImage
-{
-	display: none;
-}
-
 #participantDetailsActiveCoursesViewGrid
 {
 	height: 25em;
 	overflow-y: scroll;
-	display: none;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+}
+#participantDetailsActiveCoursesViewGrid .bbGrid-grid.table
+{
 	margin-left: auto;
 	margin-right: auto;
 }
-#participantDetailsActiveCoursesViewGrid .bbGrid-grid.table
+#participantDetailsCourseHistoryViewGrid
+{
+	height: 25em;
+	overflow-y: scroll;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+}
+#participantDetailsCourseHistoryViewGrid .bbGrid-grid.table, #participantDetailsCourseHistoryViewGrid .bbGrid-grid-nav 
 {
 	margin-left: auto;
 	margin-right: auto;

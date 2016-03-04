@@ -27,9 +27,9 @@
             #courseMainDetailsContainerView
               .courseDetailsMenuButtons.row
                 .courseParticipantsButton.large-2.columns
-                  %a{:href => '/admin/courses/#{id}/#participants', :target => '_self', :class => 'hashSinglePageButton', :data-target => 'courseParticipants'}> PARTICIPANTS
+                  %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PARTICIPANTS
                 .courseStatsButton.large-2.columns
-                  %a{:href => '/admin/courses/#{id}/#stats', :target => '_self', :class => 'hashSinglePageButton', :data-target => 'courseStats'}> STATS
+                  %a{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  STATS
                 .courseDiscoverContentButton.large-3.columns
                   %p DISCOVER CONTENT
                 .courseFeatureFlaggingButton.large-3.columns
@@ -38,9 +38,9 @@
                   %p COMMUNICATIONS 
             %hr
             #courseDetailsMainContainer
-              .row.courseParticipants.courseContentContainer
+              .row.courseParticipants.contentNavigationContainer
                 #courseDetailsParticipantsGrid.large-12.columns
-              .row.courseStats.courseContentContainer
+              .row.courseStats.contentNavigationContainer
                 #courseDetailsStatsTopic
                   Social Engagement
                 #courseDetailsStatsViewGrid.large-12.columns

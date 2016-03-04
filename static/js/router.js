@@ -18,10 +18,7 @@ var Router = Backbone.Router.extend({
     'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
     'admin/course-meta-content/items/*course_id': 'admin_course_meta',
     'admin/participants': 'participants_list',
-    // 'admin/participants/*user_id/#active_courses': 'participant_details_active_courses',
     'admin/courses/': 'admin_courses',
-    'admin/courses/*course_id/#participants': 'admin_course_details_participants',
-    'admin/courses/*course_id/#stats': 'admin_course_details_stats',
     'admin/courses/*course_id/': 'admin_course_details_participants'
   },
 
@@ -122,10 +119,17 @@ var Router = Backbone.Router.extend({
   },
 
   participant_details_active_courses: function(){
-    ApiUrls.participants_list = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/active_courses';
-    var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: ApiUrls.participants_list});
+    var url = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/active_courses';
+    var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: url});
     var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid'});
-    // participant_details_active_courses_view.render();
+    participant_details_active_courses_view.render();
+  },
+
+  participant_details_course_history: function(){
+    var url = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/course_history';
+    var collection = new Apros.collections.ParticipantDetailsCourseHistory({url: url});
+    var participant_details_course_history_view = new Apros.views.ParticipantDetailsCourseHistoryView({collection: collection, el: '#participantDetailsCourseHistoryViewGrid'});
+    participant_details_course_history_view.render();
   },
 
   admin_courses: function(){
@@ -135,32 +139,13 @@ var Router = Backbone.Router.extend({
   },
 
   admin_course_details_stats: function(){
-    ApiUrls.course_details = ApiUrls.course_details+'/'+$('#courseDetailsDataWrapper').attr('data-id')+'/stats/';
-    var courseDetailsStats = new Apros.collections.CourseDetailsStats({url: ApiUrls.course_details});
+    var url = ApiUrls.course_details+'/'+$('#courseDetailsDataWrapper').attr('data-id')+'/stats/';
+    var courseDetailsStats = new Apros.collections.CourseDetailsStats({url: url});
     var course_details_stats_view = new Apros.views.CourseDetailsStatsView({collection: courseDetailsStats, el: '#courseDetailsStatsViewGrid'});
     course_details_stats_view.render();
   },
   admin_course_details_participants: function(course_id){
-
-    $('#courseMainDetailsContainerView').find('a.hashSinglePageButton').on('click', function()
-    {
-      _selectedClass = $(this).attr('data-target');
-      $('#courseDetailsMainContainer').find('.courseContentContainer').each(function(index, value){
-      val = $(value);
-      if (val.hasClass(_selectedClass))
-      {
-        val.show();
-        if (!Apros.Router.linked_views[_selectedClass]['drawn'])
-        {
-          Apros.Router.linked_views[_selectedClass]['function']();
-          Apros.Router.linked_views[_selectedClass]['drawn'] = true;
-        }
-      }
-      else
-        val.hide();
-      });
-    });
-    $('#courseDetailsMainContainer').find('.courseContentContainer').each(function(index, value){
+    $('#courseDetailsMainContainer').find('.contentNavigationContainer').each(function(index, value){
       val = $(value);
       if (val.hasClass('courseParticipants'))
         val.show();
@@ -191,6 +176,10 @@ Apros.Router.linked_views = {
   'participantDetailsActiveCourses': {
     'function':Apros.Router.participant_details_active_courses,
     'drawn': false
+  },
+  'participantDetailsCourseHistory': {
+    'function':Apros.Router.participant_details_course_history,
+    'drawn': false
   }
 }
 
@@ -204,8 +193,8 @@ Apros.Router.HashPageChanger = function(element) {
     val.show();
     if (!Apros.Router.linked_views[_selectedClass]['drawn'])
     {
-      Apros.Router.linked_views[_selectedClass]['function']();
       Apros.Router.linked_views[_selectedClass]['drawn'] = true;
+      Apros.Router.linked_views[_selectedClass]['function']();
     }
   }
   else

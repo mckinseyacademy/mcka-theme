@@ -2761,70 +2761,120 @@ class participant_details_active_courses_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, user_id, format=None):
-        
-        user_courses = []
-        allCourses = user_api.get_courses_from_user(user_id)
-        for course in allCourses:
+
+        if request.GET['include_slow_fields'] == 'false':
+            active_courses, course_history = get_user_courses_helper(user_id)
+            return Response(active_courses)
+        elif request.GET['include_slow_fields'] == 'true':  
+            fetch_courses =[]
+            for course_id in request.GET['ids'].split(','):
+                user_course = {}
+                user_course['id'] = course_id
+                course_data = None
+                course_data = load_course(user_course['id'], request=request)
+                load_course_progress(course_data, user_id)
+                user_course['progress'] = course_data.user_progress
+                proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
+                user_course['proficiency'] = round_to_int(proficiency.user_grade_value * 100)
+                fetch_courses.append(user_course)   
+            return Response(fetch_courses) 
+
+        return Response({})
+
+
+class participant_details_course_history_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, format=None):
+
+        active_courses, course_history = get_user_courses_helper(user_id)
+
+        user_grades = user_api.get_user_grades(user_id)
+
+        for grade in user_grades:
+            for user_course in course_history:
+                if vars(grade)['course_id'] == user_course['id']:
+                    if vars(grade)['complete_status'] == 'true':
+                        user_course['completed'] ='Yes'
+                    else:
+                        user_course['completed'] = 'No'
+                    user_course['grade'] = round_to_int(vars(grade)['current_grade'] * 100)
+                else:
+                    if user_course['status'] == 'Active':
+                        user_course['completed'] = 'No'
+                        user_course['grade'] = 0
+
+                user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
+
+        return Response(course_history) 
+
+
+def get_user_courses_helper(user_id):
+
+    user_courses = []
+    allCourses = user_api.get_courses_from_user(user_id)
+    for course in allCourses:
+        user_course = {}
+        user_course['name'] = course['name']
+        user_course['id'] = course['id']
+        user_course['program'] = '-'
+        user_course['progress'] = "."
+        user_course['proficiency'] = "."
+        user_course['completed'] ='N/A'
+        user_course['grade'] ='N/A'
+        user_course['status'] = 'Active'
+        user_course['unenroll'] = 'Unenroll'
+        user_course['start'] = course['start']
+        if course['end'] is not None:
+            user_course['end'] = course['end']
+        else: 
+            user_course['end'] = '-'
+        user_courses.append(user_course)
+    user_roles = user_api.get_user_roles(user_id)
+    for role in user_roles:
+        if not any(item['id'] == vars(role)['course_id'] for item in user_courses):
+            course = course_api.get_course_details(vars(role)['course_id'])
             user_course = {}
             user_course['name'] = course['name']
             user_course['id'] = course['id']
             user_course['program'] = '-'
-            user_course['progress'] = '-'
-            user_course['proficiency'] = '-'
-            user_course['status'] = 'Active'
-            user_course['unenroll'] = 'Unenroll'
+            user_course['progress'] = "."
+            user_course['proficiency'] = "."
+            user_course['completed'] ='N/A'
+            user_course['grade'] ='N/A'
             user_course['start'] = course['start']
             if course['end'] is not None:
                 user_course['end'] = course['end']
             else: 
                 user_course['end'] = '-'
-            user_courses.append(user_course)
-        user_permissions = vars(Permissions(user_id))
-        for course_role in user_permissions['user_roles']:
-            if not any(item['id'] == vars(course_role)['course_id'] for item in user_courses):
-                course = course_api.get_course_details(vars(course_role)['course_id'])
-                user_course = {}
-                user_course['name'] = course['name']
-                user_course['id'] = course['id']
-                user_course['program'] = '-'
-                user_course['progress'] = '-'
-                user_course['proficiency'] = '-'
-                user_course['start'] = course['start']
-                if course['end'] is not None:
-                    user_course['end'] = course['end']
-                else: 
-                    user_course['end'] = '-'
-                if vars(course_role)['role'] == 'observer':
+            if vars(role)['role'] == 'observer':
+                user_course['status'] = 'Observer'
+            if vars(role)['role'] == 'assistant':
+                user_course['status'] = 'TA'
+            user_course['unenroll'] = 'Unenroll'
+            user_courses.append(user_course)       
+        else:
+            user_course = (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id']).next()
+            if user_course['status'] != 'TA':
+                if vars(role)['role'] == 'observer':
                     user_course['status'] = 'Observer'
-                if vars(course_role)['role'] == 'assistant':
+                if vars(role)['role'] == 'assistant':
                     user_course['status'] = 'TA'
-                user_course['unenroll'] = 'Unenroll'
-                user_courses.append(user_course)       
+
+    active_courses = []
+    course_history = []    
+    for user_course in user_courses:
+        if timezone.now() >= parsedate(user_course['start']):
+            if user_course['end'] == '-':
+                active_courses.append(user_course)
+            elif timezone.now() <= parsedate(user_course['end']):
+                active_courses.append(user_course)
             else:
-                user_course = (user_course for user_course in user_courses if user_course["id"] == vars(course_role)['course_id']).next()
-                if user_course['status'] != 'TA':
-                    if vars(course_role)['role'] == 'observer':
-                        user_course['status'] = 'Observer'
-                    if vars(course_role)['role'] == 'assistant':
-                        user_course['status'] = 'TA'
+                course_history.append(user_course)
 
-        for user_course in user_courses:
-            course_data = None
-            course_data = load_course(user_course['id'], request=request)
-            load_course_progress(course_data, user_id)
-            proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
-            user_course['progress'] = course_data.user_progress
-            user_course['proficiency'] = round_to_int(proficiency.user_grade_value * 100)
+    return active_courses, course_history
 
-        active_courses = []
-        for user_course in user_courses:
-            if timezone.now() >= parsedate(user_course['start']):
-                if user_course['end'] == '-':
-                    active_courses.append(user_course)
-                elif timezone.now() <= parsedate(user_course['end']):
-                    active_courses.append(user_course)
 
-        return Response(active_courses)
 
 
 @ajaxify_http_redirects
