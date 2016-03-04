@@ -622,3 +622,17 @@ def get_course_details_metrics_social(course_id):
 def get_user_list_dictionary(course_id, program_id = None):
 
     return json.loads(get_user_list_json(course_id, program_id))
+
+
+@api_error_protect
+def get_completions_on_course(course_id):
+    ''' fetch course module completion list '''
+
+    url = '{}/{}/{}/completions/?page_size=0'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id
+    )
+    response = GET(url)
+
+    return json.loads(response.read())

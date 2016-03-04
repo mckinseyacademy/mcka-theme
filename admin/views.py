@@ -799,11 +799,12 @@ def course_details(request, course_id):
     course_progress = 0
     course_proficiency = 0
 
-    course_completions = course_api.get_course_details_metrics_completions(course_id, count)
-    for user in course_completions['leaders']:
-        if any(item['id'] == user['id'] for item in users_enrolled):
-            user_progress = int(user['completions'])
-            course_progress += user_progress
+    course_data = None
+    course_data = load_course(course['id'], request=request)
+    users_progress = get_course_progress(course_data, users_enrolled)
+
+    for user in users_progress:
+        course_progress += user['progress']
 
     course_grades = course_api.get_course_details_metrics_grades(course_id, count)
     for user in course_grades['leaders']:
@@ -821,6 +822,51 @@ def course_details(request, course_id):
         course['proficiency'] = 0
 
     return render(request, 'admin/courses/course_details.haml', course)
+
+
+def get_course_progress(course, users):
+    '''
+    Helper method for calculating user pogress on course. 
+    Returns dictionary of users with user_id and progress.
+    '''
+
+    users_progress = []
+    user_completions = []
+    for user in users:
+        user_completion = {}
+        user_completion['user_id'] = user['id']
+        user_completion['results'] = []
+        user_completions.append(user_completion)
+
+    completions = course_api.get_completions_on_course(course.id)
+
+    for completion in completions:
+        for user_completion in user_completions:
+            if completion['user_id'] == user_completion['user_id']:
+                user_completion['results'].append(completion)
+
+    for user_completion in user_completions:
+        user_progress = {}
+        user_progress['user_id'] = user_completion['user_id']
+        completed_ids = [result['content_id'] for result in user_completion['results']]
+        component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+        for lesson in course.chapters:
+            lesson.progress = 0
+            lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                               settings.PROGRESS_IGNORE_COMPONENTS)
+            if len(lesson_component_ids) > 0:
+                matches = set(lesson_component_ids).intersection(completed_ids)
+                lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+        actual_completions = set(component_ids).intersection(completed_ids)
+        actual_completions_len = len(actual_completions)
+        component_ids_len = len(component_ids)
+        try:
+            user_progress['progress'] = round_to_int(float(100 * actual_completions_len)/component_ids_len)
+        except ZeroDivisionError:
+            user_progress['progress'] = 0
+        users_progress.append(user_progress)
+
+    return users_progress
 
 
 class course_details_stats_api(APIView):
