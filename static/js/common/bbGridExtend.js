@@ -54,6 +54,35 @@ _.extend(bbGrid.TheadView.prototype, {
   })
 });
 
+
+_.extend(bbGrid.SearchView.prototype, {
+  initialize: function (options) {
+      _.bindAll(this, 'setSearchOption');
+      options.view._collection = options.view.collection;
+      this.searchOptionIndex = this.searchOptionIndex || 0;
+      this.searchText = '';
+  },
+  onSearch: function (event) {
+      var self = this,
+          $el = $(event.target);
+      this.searchText = $el.val().trim();
+      this.view.collection = this.view._collection;
+      if (this.searchText && !this.view.loadDynamic) {
+          this.view.setCollection(new this.view._collection.constructor(
+              this.view.collection.filter(function (data) {
+                  var value = null
+                  for (index = 0; index < self.view.colModel.length; index++)
+                  {
+                    value += data.get(self.view.colModel[index].name);
+                  }
+                  return ("" + value).toLowerCase().indexOf(self.searchText.toLowerCase()) >= 0;
+              })
+          ));
+      }
+      this.view.collection.trigger('reset');
+  }
+});
+
 _.extend(bbGrid.View.prototype, {
   render: function () {
       if (this.width) {

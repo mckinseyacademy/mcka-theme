@@ -43,9 +43,25 @@
       this.$el.scroll(this.fetchPages);
     },
     fetchPages: function(){
-      if  ($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20)
+      _this = this
+      if (typeof waitForLastSuccess == 'undefined')
+        waitForLastSuccess = true;
+      _intervalId = setInterval(function()
       {
-        coursesListViewGrid.partial_collection.getNextPage();
-      }
+        if ($('#mainCoursesListBlockContainer .bbGrid-pager').val().trim() === '')
+          clearInterval(_intervalId)
+        if  ($(_this).find('.bbGrid-container').height() - $(_this).height() - $(_this).scrollTop() < 20 && waitForLastSuccess)
+        {
+          waitForLastSuccess = false;
+          coursesListViewGrid.partial_collection.getNextPage({ success: function()
+            {
+              coursesListViewGrid.searchBar.onSearch({target: '#mainCoursesListBlockContainer .bbGrid-pager'});
+              waitForLastSuccess = true;
+            }});
+          if (!coursesListViewGrid.partial_collection.hasNextPage())
+            clearInterval(_intervalId);
+        }
+      }, 500);
+      
     }
   });
