@@ -55,6 +55,42 @@ _.extend(bbGrid.TheadView.prototype, {
 });
 
 _.extend(bbGrid.View.prototype, {
+  render: function () {
+      if (this.width) {
+          this.$el.css('width', this.width);
+      }
+      if (!this.$grid) {
+          this.$grid = $('<table class="bbGrid-grid table table-curved table-condensed" />');
+          if (this.caption) {
+              this.$grid.append('<caption>' + this.caption + '</caption>');
+          }
+          this.$grid.appendTo(this.el);
+      }
+      if (!this.$thead) {
+          this.thead = new this.entities.TheadView({view: this});
+          this.$thead = this.thead.render();
+          this.$grid.append(this.$thead);
+      }
+      if (!this.$navBar) {
+          this.navBar = new this.entities.NavView({view: this});
+          this.$navBar = this.navBar.render();
+          this.$grid.after(this.$navBar);
+          this.$loading = $('<div class="bbGrid-loading progress"><div class="bar bbGrid-loading-progress progress-bar progress-bar-striped active">' + this.dict.loading + '</div></div>');
+          this.$navBar.prepend(this.$loading);
+      }
+      if (!this.$searchBar && this.enableSearch) {
+          this.searchBar = new this.entities.SearchView({view: this});
+          this.$searchBar = this.searchBar.render();
+          //this.$navBar.append(this.$searchBar);
+          //this.$searchBar.appendTo(this.el);
+          $(this.container.parent()).prepend(this.$searchBar);
+      }
+      $(this.container).append(this.$el);
+      if (!this.autofetch) {
+          this.renderPage();
+      }
+      return this;
+  },
   _sortBy: function (models, attributes) {
     var attr, self = this, sortOrder;
     if (attributes.length === 1) {

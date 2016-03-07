@@ -9,10 +9,18 @@
 
 #coursesListViewGridBlock
 {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
 	height: 25em;
 	overflow-y: scroll;
 }
 
+#coursesListViewGridBlock .bbGrid-grid.table
+{
+	margin-left: auto;
+	margin-right: auto;
+}
 
 #mainCourseDetailsWrapper
 {

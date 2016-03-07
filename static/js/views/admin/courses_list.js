@@ -4,6 +4,7 @@
     },
     render: function(){
       coursesListViewGrid = new bbGrid.View({
+        enableSearch: true,
         container: this.$el,
         collection: this.collection.fullCollection,
         colModel:[
