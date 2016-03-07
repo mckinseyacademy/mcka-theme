@@ -419,6 +419,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
     client = Client.fetch(client_id)
     program = Program.fetch(program_id)
     company_users = company_users_list(client_id)
+    company_users_ids = [company_user.id for company_user in company_users]
 
     # Not validating number of available places here, because reruns would never be able to run.
     # allocated, assigned = license_controller.licenses_report(
@@ -466,24 +467,25 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                 if not user: 
                     user = user_api.get_users(email=user_dict["email"])[0]
 
-                try:    
-                    program.add_user(client_id, user.id)
-                except Exception as e:
-                    user_error.append(_("{}: {} - {}").format(
-                        "User program enrollment",
-                        e.message,
-                        user_dict["email"],
-                    ))
-                try:
-                    enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
-                    if user.id not in enrolled_users:
-                        enroll_user_in_course(user.id, course_id)
-                except Exception as e: 
-                    user_error.append(_("{}: {} - {}").format(
-                        "User course enrollment",
-                        e.message,
-                        user_dict["email"],
-                    ))
+                if (user.id in company_users_ids and failure) or not failure:
+                    try:    
+                        program.add_user(client_id, user.id)
+                    except Exception as e:
+                        user_error.append(_("{}: {} - {}").format(
+                            "User program enrollment",
+                            e.message,
+                            user_dict["email"],
+                        ))
+                    try:
+                        enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
+                        if user.id not in enrolled_users:
+                            enroll_user_in_course(user.id, course_id)
+                    except Exception as e: 
+                        user_error.append(_("{}: {} - {}").format(
+                            "User course enrollment",
+                            e.message,
+                            user_dict["email"],
+                        ))
             except Exception as e: 
                 reason = e.message if e.message else _("Enrolling student error")
                 user_error.append(_("Error enrolling student: {} - {}").format(
