@@ -22,7 +22,7 @@
         { title: 'Start', index: true, name: 'start',
           actions: function(id, attributes){ 
             if (attributes['start'] != '-'){
-              var start = attributes['start'].split('/');
+              var start = attributes['start'].split(',')[0].split('/');
               return '' + start[1] + '/' + start[2] + '/' + start[0];
             }
             return attributes['start'];
@@ -31,7 +31,7 @@
         { title: 'End', index: true, name: 'end',
           actions: function(id, attributes){ 
             if (attributes['end'] != '-'){
-              var end = attributes['end'].split('/');
+              var end = attributes['end'].split(',')[0].split('/');
               return '' + end[1] + '/' + end[2] + '/' + end[0];
             }
             return attributes['end'];
@@ -41,27 +41,29 @@
       });
       coursesListViewGrid['partial_collection'] = this.collection;
       this.$el.scroll(this.fetchPages);
+      $(document).on('onSearchEvent', this.onSearchEvent);
     },
     fetchPages: function(){
-      _this = this
-      if (typeof waitForLastSuccess == 'undefined')
-        waitForLastSuccess = true;
-      _intervalId = setInterval(function()
-      {
-        if ($('#mainCoursesListBlockContainer .bbGrid-pager').val().trim() === '')
-          clearInterval(_intervalId)
-        if  ($(_this).find('.bbGrid-container').height() - $(_this).height() - $(_this).scrollTop() < 20 && waitForLastSuccess)
+        if  ($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20)
         {
+          coursesListViewGrid.partial_collection.getNextPage();
+        }  
+    },
+    onSearchEvent: function(){
+        if (typeof waitForLastSuccess == 'undefined')
+          waitForLastSuccess = true;
+        _intervalId = setInterval(function()
+        {
+          if ($('#mainCoursesListBlockContainer .bbGrid-pager').val().trim() === '')
+            clearInterval(_intervalId)
           waitForLastSuccess = false;
           coursesListViewGrid.partial_collection.getNextPage({ success: function()
-            {
-              coursesListViewGrid.searchBar.onSearch({target: '#mainCoursesListBlockContainer .bbGrid-pager'});
-              waitForLastSuccess = true;
-            }});
+          {
+            coursesListViewGrid.searchBar.onSearch({target: '#mainCoursesListBlockContainer .bbGrid-pager'});
+            waitForLastSuccess = true;
+          }});
           if (!coursesListViewGrid.partial_collection.hasNextPage())
             clearInterval(_intervalId);
-        }
-      }, 500);
-      
-    }
+        }, 500);
+      }
   });

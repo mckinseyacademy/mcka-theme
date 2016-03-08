@@ -42,20 +42,10 @@
 	margin-right: auto;
 }
 
-#coursesListViewGridBlock .bbGrid-container
-{
-	min-height: 26em;
-}
-
 #mainCoursesListBlockContainer .bbGrid-search-bar
 {
 	float: none!important;
 	display: inline-block;
-}
-
-#mainCoursesListBlockContainer .input-group-btn
-{
-	display: none!important;
 }
 
 #mainCourseDetailsWrapper

@@ -56,30 +56,36 @@ _.extend(bbGrid.TheadView.prototype, {
 
 
 _.extend(bbGrid.SearchView.prototype, {
-  initialize: function (options) {
-      _.bindAll(this, 'setSearchOption');
-      options.view._collection = options.view.collection;
-      this.searchOptionIndex = this.searchOptionIndex || 0;
-      this.searchText = '';
-  },
+  tagName: 'div',
+    className: 'bbGrid-search-bar',
+    template: _.template(
+        '<div class="input-group">\
+            <input name="search" class="bbGrid-pager col-md-2 form-control" type="text" placeholder="Keyword Search">\
+        </div>', null, {
+          evaluate: /<%([\s\S]+?)%>/g,
+          interpolate: /<%=([\s\S]+?)%>/g,
+          escape: /<%-([\s\S]+?)%>/g
+        }
+  ),
   onSearch: function (event) {
-      var self = this,
-          $el = $(event.target);
-      this.searchText = $el.val().trim();
-      this.view.collection = this.view._collection;
-      if (this.searchText && !this.view.loadDynamic) {
-          this.view.setCollection(new this.view._collection.constructor(
-              this.view.collection.filter(function (data) {
-                  var value = null
-                  for (index = 0; index < self.view.colModel.length; index++)
-                  {
-                    value += data.get(self.view.colModel[index].name);
-                  }
-                  return ("" + value).toLowerCase().indexOf(self.searchText.toLowerCase()) >= 0;
-              })
-          ));
-      }
-      this.view.collection.trigger('reset');
+    $(document).trigger('onSearchEvent');
+    var self = this,
+        $el = $(event.target);
+    this.searchText = $el.val().trim();
+    this.view.collection = this.view._collection;
+    if (this.searchText && !this.view.loadDynamic) {
+        this.view.setCollection(new this.view._collection.constructor(
+            this.view.collection.filter(function (data) {
+                var value = null
+                for (index = 0; index < self.view.colModel.length; index++)
+                {
+                  value += data.get(self.view.colModel[index].name);
+                }
+                return ("" + value).toLowerCase().indexOf(self.searchText.toLowerCase()) >= 0;
+            })
+        ));
+    }
+    this.view.collection.trigger('reset');
   }
 });
 
@@ -110,8 +116,6 @@ _.extend(bbGrid.View.prototype, {
       if (!this.$searchBar && this.enableSearch) {
           this.searchBar = new this.entities.SearchView({view: this});
           this.$searchBar = this.searchBar.render();
-          //this.$navBar.append(this.$searchBar);
-          //this.$searchBar.appendTo(this.el);
           $(this.container.parent()).prepend(this.$searchBar);
       }
       $(this.container).append(this.$el);
