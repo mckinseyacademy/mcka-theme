@@ -28,7 +28,11 @@
               if (progress == '.') {
                 return '<i class="fa fa-spinner fa-spin"></i>';
               }
-              return '' + progress + '%'; 
+              if (progress[0] != '0')
+                return '' + progress + '%'; 
+              if (progress[1] != '0')
+                return '' + progress[1] + progress[2] + '%'; 
+              return '' + progress[2] + '%'; 
             }
           } 
         },
@@ -39,7 +43,11 @@
               if (proficiency == '.') {
                 return '<i class="fa fa-spinner fa-spin"></i>';
               }
-              return '' + proficiency; 
+              if (proficiency[0] != '0')
+                return '' + proficiency + '%'; 
+              if (proficiency[1] != '0')
+                return '' + proficiency[1] + proficiency[2] + '%'; 
+              return '' + proficiency[2] + '%'; 
             }
           } 
         },

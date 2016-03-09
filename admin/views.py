@@ -814,9 +814,7 @@ def course_details(request, course_id):
     course_progress = 0
     course_proficiency = 0
 
-    course_data = None
-    course_data = load_course(course['id'], request=request)
-    users_progress = get_course_progress(course_data, users_enrolled)
+    users_progress = get_course_progress(course_id, users_enrolled, request)
 
     for user in users_progress:
         course_progress += user['progress']
@@ -839,11 +837,13 @@ def course_details(request, course_id):
     return render(request, 'admin/courses/course_details.haml', course)
 
 
-def get_course_progress(course, users):
+def get_course_progress(course_id, users, request):
     '''
     Helper method for calculating user pogress on course. 
     Returns dictionary of users with user_id and progress.
     '''
+    course = None
+    course = load_course(course_id, request=request)
 
     users_progress = []
     user_completions = []
@@ -1026,7 +1026,6 @@ def GetCourseUsersRoles(course_id, permissions_filter_list):
         else:
             user_roles_list['data'].append(vars(course_role))
             user_roles_list['ids'].append(str(vars(course_role)['id']))
-    print user_roles_list
     return user_roles_list
 
 class course_details_api(APIView):
@@ -1077,15 +1076,34 @@ class course_details_api(APIView):
                 allCourseParticipantsUsers = user_api.get_filtered_users(requestParams)
             allCourseParticipantsUsers['full_length'] = len_of_all_users
             allCourseParticipantsUsers['current_page'] = current_page+1
-            course_data = None
-            course_data = load_course(course_id, request=request)
+
+            course_all_users = course_api.get_course_details_users(course_id)
+            count = len(course_all_users['enrollments'])
+            users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
+            course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+
             for course_participant in allCourseParticipantsUsers['results']:
                 course_participant['user_status'] = []
-                if request.GET['include_slow_fields'] == 'true':                            
-                    load_course_progress(course_data, course_participant['id'])
-                    proficiency = course_api.get_course_metrics_grades(course_id, user_id=course_participant['id'], grade_object_type=Proficiency)
-                    course_participant['progress'] = course_data.user_progress
-                    course_participant['proficiency'] = round_to_int(proficiency.user_grade_value * 100)
+                if request.GET['include_slow_fields'] == 'true':  
+                    course_participant['progress'] = int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0])
+                    course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
+                    if not course_participant['proficiency']:
+                        course_participant['proficiency'] = 0;
+                    else:
+                        course_participant['proficiency'] = int(course_participant['proficiency'][0])
+                    if course_participant['progress'] <= 9:
+                        course_participant['progress'] = '00' + str(course_participant['progress'])
+                    elif course_participant['progress'] <= 99:
+                        course_participant['progress'] = '0' + str(course_participant['progress'])
+                    elif course_participant['progress'] == 100:
+                        course_participant['progress'] = str(course_participant['progress'])
+                    if course_participant['proficiency'] <= 9:
+                        course_participant['proficiency'] = '00' + str(course_participant['proficiency'])
+                    elif course_participant['proficiency'] <= 99:
+                        course_participant['proficiency'] = '0' + str(course_participant['proficiency'])
+                    elif course_participant['proficiency'] == 100:
+                        course_participant['proficiency'] = str(course_participant['proficiency'])
+
                 else:
                     for role in list_of_user_roles['data']:
                         if role['id'] == course_participant['id']:
@@ -3115,8 +3133,20 @@ class participant_details_active_courses_api(APIView):
                 course_data = load_course(user_course['id'], request=request)
                 load_course_progress(course_data, user_id)
                 user_course['progress'] = course_data.user_progress
+                if user_course['progress'] <= 9:
+                    user_course['progress'] = '00' + str(user_course['progress'])
+                elif user_course['progress'] <= 99:
+                    user_course['progress'] = '0' + str(user_course['progress'])
+                elif user_course['progress'] == 100:
+                    user_course['progress'] = str(user_course['progress'])
                 proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
                 user_course['proficiency'] = round_to_int(proficiency.user_grade_value * 100)
+                if user_course['proficiency'] <= 9:
+                    user_course['proficiency'] = '00' + str(user_course['proficiency'])
+                elif user_course['proficiency'] <= 99:
+                    user_course['proficiency'] = '0' + str(user_course['proficiency'])
+                elif user_course['proficiency'] == 100:
+                    user_course['proficiency'] = str(user_course['proficiency'])
                 fetch_courses.append(user_course)   
             return Response(fetch_courses) 
 
