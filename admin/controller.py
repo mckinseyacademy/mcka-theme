@@ -1,9 +1,10 @@
 import tempfile
 import urllib
-from django.core.urlresolvers import reverse
+import collections
 import re
 import uuid
 
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
@@ -418,6 +419,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
     client = Client.fetch(client_id)
     program = Program.fetch(program_id)
     company_users = company_users_list(client_id)
+    company_users_ids = [company_user.id for company_user in company_users]
 
     # Not validating number of available places here, because reruns would never be able to run.
     # allocated, assigned = license_controller.licenses_report(
@@ -465,24 +467,25 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                 if not user: 
                     user = user_api.get_users(email=user_dict["email"])[0]
 
-                try:    
-                    program.add_user(client_id, user.id)
-                except Exception as e:
-                    user_error.append(_("{}: {} - {}").format(
-                        "User program enrollment",
-                        e.message,
-                        user_dict["email"],
-                    ))
-                try:
-                    enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
-                    if user.id not in enrolled_users:
-                        enroll_user_in_course(user.id, course_id)
-                except Exception as e: 
-                    user_error.append(_("{}: {} - {}").format(
-                        "User course enrollment",
-                        e.message,
-                        user_dict["email"],
-                    ))
+                if (user.id in company_users_ids and failure) or not failure:
+                    try:    
+                        program.add_user(client_id, user.id)
+                    except Exception as e:
+                        user_error.append(_("{}: {} - {}").format(
+                            "User program enrollment",
+                            e.message,
+                            user_dict["email"],
+                        ))
+                    try:
+                        enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
+                        if user.id not in enrolled_users:
+                            enroll_user_in_course(user.id, course_id)
+                    except Exception as e: 
+                        user_error.append(_("{}: {} - {}").format(
+                            "User course enrollment",
+                            e.message,
+                            user_dict["email"],
+                        ))
             except Exception as e: 
                 reason = e.message if e.message else _("Enrolling student error")
                 user_error.append(_("Error enrolling student: {} - {}").format(
@@ -945,3 +948,92 @@ class GroupProjectInfo(object):
         self.status = status
         self.organization = organization
         self.organization_id = organization_id
+
+
+_QuickLinkWithRelatedObjs = collections.namedtuple(
+    "_QuickLinkWithRelatedObjs", ['quick_link', 'program', 'course', 'group_work', 'client']
+)
+
+def _get_quick_link_related_objects(quick_link):
+
+    """
+    Queries API for object relatred with this quick link
+
+    Args:
+        quick_link: DashboardAdminQuickFilter
+
+    Returns: _QuickLinkWithRelatedObjs
+    """
+
+    program = Program.fetch(quick_link.program_id)
+    course = None
+    group_work = None
+    client = None
+
+    # Course id can be an empty string which also (I guess) means empty,
+    # so no is None here
+    if quick_link.course_id:
+        course = load_course(quick_link.course_id)
+
+    # GP id can be an empty string which also (I guess) means empty,
+    # so no is None here
+    if quick_link.course_id and quick_link.group_work_project_id:
+        group_projects = [
+            gp
+            for gp in course.group_projects
+            if gp.is_v2 and gp.id == quick_link.group_work_project_id
+        ]
+
+        # If group project can't be found we'll return quick link without
+        # the group project
+        if len(group_projects) > 0:
+             group_work = group_projects[0]
+
+    if quick_link.company_id is not None:
+        client = Client.fetch(quick_link.company_id)
+        client  = client
+
+    return _QuickLinkWithRelatedObjs(
+        quick_link=quick_link, course=course, program=program,
+        group_work=group_work, client=client
+    )
+
+
+def serialize_quick_link(quick_link):
+    """
+    Serializes quick link and associated objects to a dictionary.
+
+    Args:
+        quick_link - DashboardAdminQuickFilter
+
+    Returns: json serializable dictionary
+    """
+    related = _get_quick_link_related_objects(quick_link)
+
+    serialized = {
+        "id": quick_link.pk,
+        "program": {
+            "display_name": related.program.display_name,
+            "id": related.program.id
+        }
+    }
+
+    if related.course is not None:
+        serialized["course"] = {
+            "display_name": related.course.name,
+            "id": related.course.id
+        }
+
+    if related.group_work is not None:
+        serialized["group_work"] = {
+            "display_name": related.group_work.name,
+            "id": related.group_work.id,
+        }
+
+    if related.client is not None:
+        serialized['client'] = {
+            "display_name": related.client.display_name,
+            "id": related.client.id
+        }
+
+    return serialized

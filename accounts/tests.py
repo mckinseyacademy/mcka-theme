@@ -1,6 +1,7 @@
 from urllib2 import HTTPError
 import ddt
 from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 from django.test.utils import override_settings
 import mock
@@ -327,6 +328,23 @@ class TestUsernameCleanup(TestCase, ApplyPatchMixin):
     def test_username_cleanup(self, username, expected):
         result = cleanup_username(username)
         self.assertEqual(result, expected)
+
+
+class SsoLoginTest(TestCase, ApplyPatchMixin):
+    def setUp(self):
+        super(SsoLoginTest, self).setUp()
+        self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
+
+    def test_no_provider(self):
+        """
+        Users without SSO should end up back at the normal login form.
+        """
+        response = self.client.post(reverse('login'), {
+            'sso_login_form_marker': '',
+            'email': 'foo@bar.com',
+        })
+        self.assertTrue(response.context['error'])
+        self.assertEqual(self.client.cookies['login_mode'].value, 'normal')
 
 
 @ddt.ddt
