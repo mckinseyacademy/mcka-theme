@@ -9,6 +9,10 @@ function group_work_dashboard(dashboard_configuration) {
     // Value of one of select boxes when no choice is possible due to choices
     // in previous boxes.
     var NONE_DATA_VALUE = "N_A";
+    var QUERY_MODES = {
+        path: 'path',
+        data: 'data'
+    };
 
     // Stores mapping from quick_link_id to quick-link object
     var quick_links = {};
@@ -26,28 +30,35 @@ function group_work_dashboard(dashboard_configuration) {
     }
 
     function parse_response_as_options($select, data) {
-        var have_real_options = false;
+        var real_options_count = 0,
+            force_disable = false,
+            option, last_val;
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
             if (item.disabled) {
                 continue;
             }
-            var option = make_option(item.value, item.display_name);
+            option = make_option(item.value, item.display_name);
             $select.append(option);
-            have_real_options = true;
+            real_options_count += 1;
+            last_val = item.value;
         }
 
-        if (!have_real_options) {
-            var option = make_option(NONE_DATA_VALUE, "None available");
+        if (real_options_count == 0) {
+            option = make_option(NONE_DATA_VALUE, "None available");
             $select.append(option);
             $select.val(option.val());
         }
-        update_select_status($select);
+        if (real_options_count == 1 && $select.data('autoselect-only-option')) {
+            $select.val(last_val);  // last_val is the only actual value in this case
+            force_disable = true;
+        }
+        update_select_status($select, force_disable);
     }
 
-    function update_select_status($select) {
+    function update_select_status($select, force_disable) {
         $select.removeAttr('disabled');
-        if ($select.children("option[value='" + NONE_DATA_VALUE + "']").length != 0) {
+        if (force_disable || $select.children("option[value='" + NONE_DATA_VALUE + "']").length != 0) {
             $select.attr('disabled', true);
         }
     }
@@ -63,16 +74,19 @@ function group_work_dashboard(dashboard_configuration) {
      * @param target_select a selector
      * @param value value selected in previous select
      */
-    function fire_chained_select(target_select, value) {
-        clear_select_options(target_select);
-
+    function update_select_options(target_select, value) {
         var $target_select = $(target_select);
+        clear_select_options(target_select);
         $target_select.trigger('change');
-        var url = $target_select.data('chained-filter-endpoint').replace('$value$', value);
-        return $.ajax({
-            method: 'GET',
-            url: url
-        }).done(
+
+        if (!value && !$target_select.data('allow-empty-value')) {
+            return;
+        }
+
+        var request_params = get_url_and_data_for_select($target_select, value);
+        request_params['method'] = 'GET';
+
+        return $.ajax(request_params).done(
             function (data) {
                 parse_response_as_options($target_select, data);
                 $(target_select).trigger('options_updated');
@@ -81,14 +95,33 @@ function group_work_dashboard(dashboard_configuration) {
         ).error(generic_error_hander);
     }
 
+    function get_url_and_data_for_select($target_select, value) {
+        var result = {
+                url: $target_select.data('chained-filter-endpoint'),
+                data: {}
+            },
+            query_mode = $target_select.data('query-mode') || QUERY_MODES.path;
+
+        switch (query_mode) {
+            default:  // intentionally falling through to QUERY_MODES.path - this is the default
+            case QUERY_MODES.path:
+                result.url = result.url.replace('$value$', value);
+                break;
+            case QUERY_MODES.data:
+                if (value) {
+                    result.data[$target_select.data('value-parameter')] = value;
+                }
+                break;
+        }
+
+        return result;
+    }
+
     function chain_selects(source_select, target_select) {
         // when source_select is updated, it sends ajax requests and populates target_select with values
         $(source_select).on('change', function () {
             var value = $(this).find('option:selected').val();
-            if (!value) {
-                return;
-            }
-            fire_chained_select(target_select, value);
+            update_select_options(target_select, value);
         });
     }
 
@@ -346,7 +379,7 @@ function group_work_dashboard(dashboard_configuration) {
      * @param selector selector for a select
      * @param value if of option to select
      */
-    function update_select(selector, value) {
+    function update_select_from_quick_link(selector, value) {
         var $select = $(selector);
         $select.prop('disabled', false);
         $select.children('option').removeProp('selected');
@@ -367,11 +400,11 @@ function group_work_dashboard(dashboard_configuration) {
      * Updates all selects using a quick link values.
      * @param quick_link
      */
-    function update_selects(quick_link) {
-        update_select('select#select-program', quick_link.program);
-        update_select('select#select-course', quick_link.course);
-        update_select('select#select-project', quick_link.group_work);
-        update_select('select#select-company', quick_link.client);
+    function set_quick_link_values(quick_link) {
+        update_select_from_quick_link('select#select-program', quick_link.program);
+        update_select_from_quick_link('select#select-course', quick_link.course);
+        update_select_from_quick_link('select#select-project', quick_link.group_work);
+        update_select_from_quick_link('select#select-company', quick_link.client);
     }
 
 
@@ -401,17 +434,17 @@ function group_work_dashboard(dashboard_configuration) {
         deactivate_ui();
 
         var deferreds = [
-            fire_chained_select('select#select-course', quick_link.program.id),
-            fire_chained_select('select#select-company', quick_link.program.id)
+            update_select_options('select#select-course', quick_link.program.id),
+            update_select_options('select#select-company', quick_link.program.id)
         ];
 
         if (typeof quick_link.course !== 'undefined'){
-            deferreds.push(fire_chained_select('select#select-project', quick_link.course.id))
+            deferreds.push(update_select_options('select#select-project', quick_link.course.id))
         }
 
 
         $.when.apply($, deferreds).done(function () {
-            update_selects(quick_link);
+            set_quick_link_values(quick_link);
             var deferred = update_dashboard();
             $.when(deferred).done(function() {
                 activate_ui();
@@ -439,6 +472,7 @@ function group_work_dashboard(dashboard_configuration) {
         load_quick_filters();
 
         activate_ui();
+        update_select_options($('select#select-company')); // populating company filter with all companies
 
         $("#save-filter").click(save_quick_filter);
         $("#quick-links").on('click', 'td.delete-filter a', delete_quick_filter);

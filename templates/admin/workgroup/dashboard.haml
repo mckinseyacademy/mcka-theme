@@ -35,23 +35,19 @@
                       )
 
               .small-3.columns
-                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses", 'data-outline-component': 'course'}
+                %select#select-course{'data-chained-filter-endpoint': '/admin/workgroup/dashboard/programs/$value$/courses', 'data-outline-component': 'course'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Course")
 
               .small-2.columns
-                %select#select-project{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'project'}
+                %select#select-project{'data-chained-filter-endpoint': '/admin/workgroup/dashboard/courses/$value$/projects', 'data-outline-component': 'project'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Project")
 
               .small-2.columns
-                %select#select-company{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/companies", 'data-outline-component': 'company'}
-                  - if clients_for_user|length > 1
-                    %option{'data-static': 'true', 'value': ''}
-                      = _("All companies")
-                  - for client in clients_for_user
-                    %option{'value': '#{client.id}'}
-                      = client.display_name
+                %select#select-company{'data-chained-filter-endpoint': '/admin/workgroup/dashboard/companies', 'data-outline-component': 'company', 'data-query-mode': 'data', 'data-value-parameter': 'program_id', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("All companies")
               .small-2.columns
                 %a#save-filter.button.radius.small.disabled
                   Save filter

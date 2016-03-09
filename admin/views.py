@@ -1970,15 +1970,9 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
     course_id = request.GET.get('course_id')
     project_id = request.GET.get('project_id')
 
-    clients_for_user = sorted([
-        {'id': organization.id, 'display_name': organization.display_name}
-        for organization in AccessChecker.get_clients_user_has_access_to(request.user)
-    ], key=operator.itemgetter('display_name'))
-
     data = {
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
         'restrict_to_users': restrict_to_users_ids,
-        'clients_for_user': clients_for_user,
         'selected_program_id': program_id if program_id else "",
         'selected_course_id': course_id if course_id else "",
         'selected_project_id': project_id if project_id else "",
@@ -2121,7 +2115,8 @@ def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=Non
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
-def groupwork_dashboard_companies(request, program_id=None, restrict_to_programs_ids=None):
+def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
+    program_id = request.GET.get('program_id')
     if program_id:
         try:
             program_id = int(program_id)
@@ -2134,11 +2129,14 @@ def groupwork_dashboard_companies(request, program_id=None, restrict_to_programs
         key=operator.attrgetter('display_name')
     )
 
-    if program_id:
-        accessible_clients = [client for client in all_clients if program_id in client.groups]
+    accessible_clients = set(
+        client.id for client in all_clients
+        # all clients if program_id is not specified; otherwise only clients associated with that program
+        if not program_id or program_id in client.groups
+    )
 
     data = [
-        _make_select_option_response(item.id, item.display_name, item not in accessible_clients) for item in all_clients
+        _make_select_option_response(item.id, item.display_name, item.id not in accessible_clients) for item in all_clients
     ]
     return HttpResponse(json.dumps(data), content_type="application/json")
 
