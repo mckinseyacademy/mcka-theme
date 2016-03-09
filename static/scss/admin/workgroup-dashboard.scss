@@ -34,7 +34,59 @@
       border-color: $mckinsey-academy-alt-blue;
       color: $mckinsey-academy-alt-blue;
       font-weight: 600;
+
+      &:disabled{
+        color: $mckinsey-dark-grey;
+      }
     }
+  }
+
+  #save-filter{
+    width: 100%;
+  }
+
+  #quick-links-scroll{
+    max-height: 10rem;
+    overflow: auto;
+  }
+
+  table#quick-links{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    td {
+      border-color: $mckinsey-academy-alt-blue;
+      color: $mckinsey-academy-alt-blue;
+
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+
+      &.activate-quick-link a{
+        font-weight: 600;
+        font-size: 80%;
+      }
+
+      a.disabled , a.disabled:link, a.disabled:hover, a.disabled:visited{
+          color: $mckinsey-dark-grey;
+      }
+
+      &.delete-filter{
+        width: 2rem;
+
+        a{
+          color: $mckinsey-red;
+          font-size: 140%;
+        }
+
+        a, a:link, a:hover, a:visited{
+          .disabled{
+            color: $mckinsey-dark-grey;
+          }
+        }
+      }
+
+    }
+
   }
 
   .dashboard_outline_wrapper {

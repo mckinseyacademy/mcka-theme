@@ -9,6 +9,7 @@ from urllib import quote as urlquote, urlencode
 from operator import attrgetter
 from smtplib import SMTPException
 
+import operator
 import re
 import os.path
 from django.conf import settings
@@ -20,10 +21,11 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpRespons
 from django.shortcuts import render, redirect
 from django.template import loader, RequestContext
 from django.utils.dateformat import format
+from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
-
 from django.views.decorators.http import require_POST
+from django.views.generic.base import View
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course
@@ -50,18 +52,21 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey
+    AccessKey, DashboardAdminQuickFilter
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key, get_course_details_progress_data)
+    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data
+)
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm)
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
+    DashboardAdminQuickFilterForm
+)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -105,6 +110,14 @@ class AccessChecker(object):
             return user_api.get_user_organizations(user.id, organization_object=Client)[0]
         except IndexError:
             return None
+
+    @staticmethod
+    def get_clients_user_has_access_to(user):
+        if user.is_mcka_admin:
+            return Client.list()
+        if user.is_client_admin or user.is_internal_admin:
+            return user_api.get_user_organizations(user.id, organization_object=Client)
+        return []
 
     @staticmethod
     def get_courses_for_organization(org):
@@ -2342,10 +2355,15 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
     course_id = request.GET.get('course_id')
     project_id = request.GET.get('project_id')
 
+    clients_for_user = sorted([
+        {'id': organization.id, 'display_name': organization.display_name}
+        for organization in AccessChecker.get_clients_user_has_access_to(request.user)
+    ], key=operator.itemgetter('display_name'))
+
     data = {
-        'saved_dashboard_filters': [],  # TODO: fetch saved filters
         'programs': get_accessible_programs(request.user, restrict_to_programs_ids),
         'restrict_to_users': restrict_to_users_ids,
+        'clients_for_user': clients_for_user,
         'selected_program_id': program_id if program_id else "",
         'selected_course_id': course_id if course_id else "",
         'selected_project_id': project_id if project_id else "",
@@ -2358,6 +2376,106 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     return render(request, template, data)
 
+class QuickLinkView(View):
+
+    http_method_names = ['get', 'post', 'delete']
+
+    @method_decorator(permission_group_required(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA
+    ))
+    # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+    @method_decorator(checked_program_access)
+    # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+    @method_decorator(checked_course_access)
+    def dispatch(self, request, *args, **kwargs):
+        # Args and kwargs are saved by View class **before** decorators are applied
+        # so we save them (with params from decorators) once again here
+        self.kwargs = kwargs
+        self.args = args
+        self.all_clients = set(
+            client.id
+            for client in AccessChecker.get_clients_user_has_access_to(request.user)
+        )
+        return super(QuickLinkView, self).dispatch(request, *args, **kwargs)
+
+    def verify_link(self, link):
+        """
+        Verifies if user has access to given link. It returns bool rather than
+        raise, as in list view we'd rather filter-out all invalid links than
+        raise when e.g. Admin gets demoted we'd rather siltently filter out links
+        than raise 403.
+
+        Args:
+            link: link to be verivied
+
+        Returns: bool
+        """
+        restrict_to_courses_ids = self.kwargs['restrict_to_courses_ids']
+        restrict_to_programs_ids = self.kwargs['restrict_to_programs_ids']
+        try:
+            AccessChecker.check_has_course_access(link.course_id, restrict_to_courses_ids)
+            AccessChecker.check_has_program_access(link.program_id, restrict_to_programs_ids)
+            if link.company_id is not None and link.company_id not in self.all_clients:
+                return False
+            return True
+        except PermissionDenied:
+            return False
+
+    def get(self, request, *args, **kwargs):
+        links = DashboardAdminQuickFilter.objects.filter(
+            user_id=self.request.user.id
+        )
+        return HttpResponse(json.dumps([
+            serialize_quick_link(link)
+            for link in links
+            if self.verify_link(link)
+        ]), content_type="application/json")
+
+
+    def post(self, request, *args, **kwargs):
+        form = DashboardAdminQuickFilterForm(request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.user_id != self.request.user.id:
+            raise PermissionDenied()
+        self.object.delete()
+        return HttpResponse(status=204)
+
+    def form_valid(self, form):
+        # Just verify user has access to all related objects
+        if not self.verify_link(form.save(commit=False)):
+            raise PermissionDenied()
+        link, created = form.save_model_if_unique(self.request.user.id)
+        if not created:
+            # Saving to update date_created field
+            link.save()
+        return HttpResponse(json.dumps(
+            serialize_quick_link(link)),
+            status=201,
+            content_type="application/json"
+        )
+
+    def form_invalid(self, form):
+        return HttpResponse(json.dumps(form.errors), status=400)
+
+    def get_object(self):
+        try:
+            return DashboardAdminQuickFilter.objects.get(
+                id = self.kwargs['link_id']
+            )
+        except DashboardAdminQuickFilter.DoesNotExist:
+            raise Http404()
+
+
+def _make_select_option_response(item_id, display_name, disabled=False):
+    return {'value': item_id, 'display_name': display_name, 'disabled': disabled}
+
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2367,13 +2485,14 @@ def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=No
     except (ValueError, TypeError):
         return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
 
-    user_api.set_user_preferences(request.user.id, {"DASHBOARD_PROGRAM_ID": str(program_id)})
-
     AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
+
+    user_api.set_user_preferences(request.user.id, {"DASHBOARD_PROGRAM_ID": str(program_id)})
     accessible_courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_courses_ids)
 
-    data = map(lambda item: {'value': item.course_id, 'display_name': item.display_name}, accessible_courses)
+    data = [_make_select_option_response(item.course_id, item.display_name) for item in accessible_courses]
     return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2382,8 +2501,33 @@ def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=Non
     course = load_course(course_id)
     group_projects = [gp for gp in course.group_projects if gp.is_v2]  # only GPv2 support dashboard
 
-    data = map(lambda item: {'value': item.id, 'display_name': item.name}, group_projects)
+    data = [_make_select_option_response(item.id, item.name) for item in group_projects]
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+def groupwork_dashboard_companies(request, program_id=None, restrict_to_programs_ids=None):
+    if program_id:
+        try:
+            program_id = int(program_id)
+        except (ValueError, TypeError):
+            return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
+        AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
+
+    all_clients = sorted(
+        AccessChecker.get_clients_user_has_access_to(request.user),
+        key=operator.attrgetter('display_name')
+    )
+
+    if program_id:
+        accessible_clients = [client for client in all_clients if program_id in client.groups]
+
+    data = [
+        _make_select_option_response(item.id, item.display_name, item not in accessible_clients) for item in all_clients
+    ]
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2401,6 +2545,18 @@ def groupwork_dashboard_details(
 
     program = Program.fetch(program_id)
     course = load_course(course_id)
+
+    client_filter_options = [
+        {"id":client.id, "name":client.display_name}
+        for client in AccessChecker.get_clients_user_has_access_to(request.user)
+        if program_id in client.groups
+    ]
+
+    # If there is only a single client we will show it by default and disable the filter
+    # if there is more we also add "All companies" option.
+    if len(client_filter_options) > 1:
+        client_filter_options.insert(0, {'id':'', 'name':"All companies"})
+
     projects = [gp for gp in course.group_projects if gp.is_v2 and gp.id == project_id]
     if not projects:
         raise Http404()
@@ -2421,6 +2577,7 @@ def groupwork_dashboard_details(
         'project': {'id': project.id, 'name': project.name},
         'return_url': return_url,
         'use_current_host': getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
+        'client_filter_options': client_filter_options
     }
 
     return render(request, template, data)

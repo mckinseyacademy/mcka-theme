@@ -7,7 +7,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from .models import Client, Program, AccessKey
+from .models import Client, Program, AccessKey, DashboardAdminQuickFilter
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
@@ -190,15 +190,18 @@ class EditExistingUserForm(forms.Form):
     country = forms.CharField(required=False, widget=forms.TextInput())
     city = forms.CharField(required=False, widget=forms.TextInput())
 
+class DashboardAdminQuickFilterForm(forms.ModelForm):
 
+    class Meta:
+        model = DashboardAdminQuickFilter
+        fields = [
+            'program_id', 'course_id', 'company_id', 'group_work_project_id'
+        ]
 
-
-
-
-
-
-
-
-
-
-
+    def save_model_if_unique(self, user_id):
+        data = self.cleaned_data
+        return DashboardAdminQuickFilter.objects.get_or_create(
+            user_id=user_id, program_id=data['program_id'],
+            course_id=data['course_id'], company_id=data.get('company_id'),
+            group_work_project_id=data.get('group_work_project_id')
+        )
