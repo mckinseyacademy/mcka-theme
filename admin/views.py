@@ -61,7 +61,7 @@ from .controller import (
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm)
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm)
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -1000,12 +1000,18 @@ class course_details_performance_api(APIView):
         return Response(course_stats)
 
 
-def GetCourseUsersRoles(course_id):
+def GetCourseUsersRoles(course_id, permissions_filter_list):
     course_roles_users = course_api.get_users_filtered_by_role(course_id)
     user_roles_list = {'ids':[],'data':[]}
     for course_role in course_roles_users:
-        user_roles_list['data'].append(vars(course_role))
-        user_roles_list['ids'].append(str(vars(course_role)['id']))
+        if permissions_filter_list:
+            if vars(course_role)['role'] in permissions_filter_list:
+                user_roles_list['data'].append(vars(course_role))
+                user_roles_list['ids'].append(str(vars(course_role)['id']))
+        else:
+            user_roles_list['data'].append(vars(course_role))
+            user_roles_list['ids'].append(str(vars(course_role)['id']))
+    print user_roles_list
     return user_roles_list
 
 class course_details_api(APIView):
@@ -1018,11 +1024,9 @@ class course_details_api(APIView):
             'staff':'Staff',
             'observer':'Observer'
             }
-            #print '==============================='
-            #print vars(vars(vars(course_api.get_course(course_id))['resources'][0])['_categorised_parser'])
-            #print '==============================='
+            permissionsFilter = ['observer','assistant']
             allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
-            list_of_user_roles = GetCourseUsersRoles(course_id)
+            list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
             allCoursesParticipantList = []
             len_of_all_users = len(allCourseParticipants)
             userData = {'ids':[]}
@@ -2865,44 +2869,76 @@ class participants_list_api(APIView):
                 participant["active_custom_text"]="No"
         return Response(allParticipants)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def participants_details(request, user_id):
-    selectedUser = user_api.get_user(user_id)
-    userOrganizations = user_api.get_user_organizations(user_id)
-    userOrganizationsList =[]
-    for organization in userOrganizations:
-        userOrganizationsList.append(vars(organization))
-    if selectedUser is not None:
-        selectedUser = selectedUser.to_dict()
-        if 'last_login' in selectedUser:
-            if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
-                selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+class participant_details_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id):
+        selectedUser = user_api.get_user(user_id)
+        userOrganizations = user_api.get_user_organizations(user_id)
+        userOrganizationsList =[]
+        for organization in userOrganizations:
+            userOrganizationsList.append(vars(organization))
+        if selectedUser is not None:
+            selectedUser = selectedUser.to_dict()
+            if 'last_login' in selectedUser:
+                if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
+                    selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+                else:
+                    selectedUser['custom_last_login'] = 'N/A'
             else:
                 selectedUser['custom_last_login'] = 'N/A'
-        else:
-            selectedUser['custom_last_login'] = 'N/A'
-        if len(userOrganizationsList):
-            selectedUser['company_name'] = userOrganizationsList[0]['display_name']
-            selectedUser['company_id'] = userOrganizationsList[0]['id']
-        else:
-            selectedUser['company_name'] = 'No company'
-            selectedUser['company_id'] = ''
-        if selectedUser['gender'] == '' or selectedUser['gender'] == None:
-            selectedUser['gender'] = 'N/A'
-        if selectedUser['city'] == '' and selectedUser['country'] == '':
-            selectedUser['location'] = 'N/A'
-        elif selectedUser['country'] == '':
-            selectedUser['location'] = selectedUser['city']
-        elif selectedUser['city'] == '':
-            selectedUser['location'] = selectedUser['country']
-        else:
-            selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
-        selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
-        if not len(selectedUser['mcka_permissions']):
-            selectedUser['mcka_permissions'] = ['None']
-        return render( request, 'admin/participants/participant_details.haml', selectedUser)
+            if len(userOrganizationsList):
+                selectedUser['company_name'] = userOrganizationsList[0]['display_name']
+                selectedUser['company_id'] = userOrganizationsList[0]['id']
+            else:
+                selectedUser['company_name'] = 'No company'
+                selectedUser['company_id'] = ''
+            if selectedUser['gender'] == '' or selectedUser['gender'] == None:
+                selectedUser['gender'] = 'N/A'
+            selectedUser['city'] = selectedUser['city'].strip()
+            selectedUser['country'] = selectedUser['country'].strip()
+            if selectedUser['city'] == '' and selectedUser['country'] == '':
+                selectedUser['location'] = 'N/A'
+            elif selectedUser['country'] == '':
+                selectedUser['location'] = selectedUser['city']
+            elif selectedUser['city'] == '':
+                selectedUser['location'] = selectedUser['country']
+            else:
+                selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
+            selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
+            if not len(selectedUser['mcka_permissions']):
+                selectedUser['mcka_permissions'] = ['-']
+            return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, user_id, format=None):
+        form = EditExistingUserForm(request.POST.copy())
+        if form.is_valid():
+            filterUsers = {}
+            existing_users_length = 0
+            if request.POST['username']:
+                filterUsers = {'username' : request.POST['username']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+                for user in existing_users['results']:
+                    if int(user['id']) == int(user_id):
+                        existing_users_length -= 1
+            if request.POST['email']:
+                filterUsers = {'email' : request.POST['email']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+                for user in existing_users['results']:
+                    if int(user['id']) == int(user_id):
+                        existing_users_length -= 1
+            if (existing_users_length > 0):
+                return Response({'status':'error', 'message':'User with that username or email already exists!'})
+            else:
+                data = form.cleaned_data
+                response = user_api.update_user_information(user_id,data)
+                return Response({'status':'ok', 'message':vars(response)})
+        else:
+            return Response({'status':'error', 'message':form.errors})
 
+      
 class participant_details_active_courses_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

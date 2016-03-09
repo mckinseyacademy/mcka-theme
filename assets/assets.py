@@ -35,7 +35,8 @@ js_ie8_files.extend([
     #'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
     'js/vendor/jquery.dataTables.rowGrouping.js',
-    'js/vendor/bbGrid.js', 
+    'js/vendor/bbGrid.js',
+    'js/vendor/jquery-ui.min.js', 
     'js/application.js',
     'js/router.js',
 ])
@@ -68,6 +69,7 @@ js_files.extend([
     'js/vendor/jquery.touchwipe.min.js',
     'js/vendor/moment-with-locales.min.js',
     'js/vendor/bbGrid.js',
+    'js/vendor/jquery-ui.min.js',
     'js/application.js',
     'js/router.js',
 ])
