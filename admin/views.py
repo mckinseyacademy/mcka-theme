@@ -3087,13 +3087,13 @@ class participant_details_api(APIView):
                     if int(user['id']) == int(user_id):
                         existing_users_length -= 1
             if (existing_users_length > 0):
-                return Response({'status':'error', 'message':'User with that username or email already exists!'})
+                return Response({'status':'error', 'type': 'user_exist', 'message':'User with that username or email already exists!'})
             else:
                 data = form.cleaned_data
                 response = user_api.update_user_information(user_id,data)
                 return Response({'status':'ok', 'message':vars(response)})
         else:
-            return Response({'status':'error', 'message':form.errors})
+            return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
       
 class participant_details_active_courses_api(APIView):

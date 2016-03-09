@@ -35,23 +35,31 @@
           success: function (data, status) {
               if (data['status'] == "ok") {
                 _this.update_participant_field_data();
-                $('#participantDetailsMainModal').find('.mainText').text('Updated user data!')
+                $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
                 $('#participantDetailsMainModal').foundation('reveal', 'open');
                 $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
               }
               else {
-                var message = '';
-                for (key in data['message'])
+                if (data['type'] == 'validation_failed')
                 {
-                  message += key + ' - ' + data['message'][key] + '\n';
+                  var message = '';
+                  for (key in data['message'])
+                  {
+                    message += key + ' - ' + data['message'][key] + '\n';
+                  }
+                  $('#participantDetailsMainModal').find('.mainText').text(message);
+                  $('#participantDetailsMainModal').foundation('reveal', 'open');
                 }
-                $('#participantDetailsMainModal').find('.mainText').text(message)
-                $('#participantDetailsMainModal').foundation('reveal', 'open');
+                else if (data['type'] == 'user_exist')
+                {
+                  $('#participantDetailsMainModal').find('.mainText').text(data['message']);
+                  $('#participantDetailsMainModal').foundation('reveal', 'open');
+                }
               }
             },
             error: function(data, status)
             {
-              $('#participantDetailsMainModal').find('.mainText').text(data['responseText'])
+              $('#participantDetailsMainModal').find('.mainText').text(data['responseText']);
               $('#participantDetailsMainModal').foundation('reveal', 'open');
             }
         });
