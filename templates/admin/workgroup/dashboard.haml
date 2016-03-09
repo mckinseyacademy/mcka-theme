@@ -18,12 +18,13 @@
             = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
         %hr
         %section
+          .row
           .large-12.medium-12
             .sub-2= _("Filter by:")
 
             .dashboard_filters
-              .small-4.columns
-                %select#select-program{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses", 'data-outline-component': 'program'}
+              .small-3.columns
+                %select#select-program{'data-outline-component': 'program'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Program")
                   - for program in programs
@@ -33,106 +34,64 @@
                       %span><= program.name
                       )
 
-              .small-4.columns
-                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'course'}
+              .small-3.columns
+                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses", 'data-outline-component': 'course'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Course")
 
-              .small-4.columns
-                %select#select-project{'data-outline-component': 'project'}
+              .small-2.columns
+                %select#select-project{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'project'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Project")
+
+              .small-2.columns
+                %select#select-company{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/companies", 'data-outline-component': 'company'}
+                  - if clients_for_user|length > 1
+                    %option{'data-static': 'true', 'value': ''}
+                      = _("All companies")
+                  - for client in clients_for_user
+                    %option{'value': '#{client.id}'}
+                      = client.display_name
+              .small-2.columns
+                %a#save-filter.button.radius.small.disabled
+                  Save filter
+          #quick-links-section.hidden
+            .row
+            .large-12.medium-12
+              .sub-2= _("Saved filters:")
+            .large-12.medium-12
+              #quick-links-scroll
+                %table#quick-links
+                  %tbody
+          .row
           .large-12.dashboard_outline_wrapper
             %span.dashboard_outline_label= _("Displaying:")
-            %span.dashboard_outline.program= _("None")
-            |
-            %span.dashboard_outline.course= _("None")
-            |
-            %span.dashboard_outline.project= _("None")
+            %span.dashboard_outline.program
+              %i.fa.fa-spin.fa-spinner
+            %span= "|"
+            %span.dashboard_outline.course
+              %i.fa.fa-spin.fa-spinner
+            %span= "|"
+            %span.dashboard_outline.project
+              %i.fa.fa-spin.fa-spinner
+            %span= "|"
+            %span.dashboard_outline.company
+              %i.fa.fa-spin.fa-spinner
           %hr
         %section
           .columns.large-12.group_project_placeholder
 
 - block js_snippets
+  %script{src: "{% static 'js/views/admin/group_work_dashboard.js' %}"}
   :javascript
-    var selected_values = {
-      'program_id': '{{ selected_program_id }}',
-      'course_id': '{{ selected_course_id }}',
-      'project_id': '{{ selected_project_id }}',
-    }
 
-    function clear_select_options(target_selector) {
-      var options = $(target_selector).find('option:not([data-static])');
-      options.remove();
-    }
-
-    function parse_response_as_options(target_selector, data) {
-      var select = $(target_selector);
-
-      for (var i=0; i<data.length; i++) {
-        var item = data[i];
-        var option = $("<option>");
-        option.val(item['value']);
-        option.html(item['display_name']);
-        select.append(option);
-      }
-    }
-
-    function chain_selects(source_select, target_select) {
-      // when source_select is updated, it sends ajax requests and populates target_select with values
-      $(source_select).on('change', function(){
-        clear_select_options(target_select);
-        $(target_select).trigger('change');
-        var value = $(this).find('option:selected').val();
-        if (!value) {
-          return;
-        }
-        var url = $(this).data('chained-filter-endpoint').replace('$value$', value);
-        $.ajax({
-          method: 'GET',
-          url: url
-        }).done(
-          function(data){
-            parse_response_as_options(target_select, data);
-            $(target_select).trigger('options_updated');
-          }
-        ).error(
-          function(xhr, status, error) { alert(error); }
-        );
-      });
-    }
-
-    function toggle_run_report(value) {
-      var run_report_btn = $(".run-report a");
-      var outline = $(".dashboard_displaying_outline");
-      var outline_empty = $(".dashboard_displaying_outline_empty");
-      if (value) {
-        run_report_btn.removeAttr('disabled');
-        run_report_btn.removeClass('disabled');
-        run_report_btn.attr('href', '/admin/workgroup/course/'+value+'/download_group_projects_report');
-      }
-      else {
-        run_report_btn.attr('disabled', 'disabled');
-        run_report_btn.addClass('disabled');
-        outline.html("None");
-      }
-    }
-
-    function make_report(course_id, project_id) {
-      var gp_placeholder = $(".group_project_placeholder");
-      if (!project_id) {
-        gp_placeholder.empty();
-        return;
-      }
-
-      make_group_project_element(course_id, project_id);
-    }
-
-    function make_group_project_element(course_id, project_id){
-      var lesson_content = $('.group_project_placeholder');
-      var lesson_data = {
-        courseId: course_id,
-        usageId: project_id,
+    var dashboard_configuration = {
+      selected_values: {
+        program_id: '{{ selected_program_id }}',
+        course_id: '{{ selected_course_id }}',
+        project_id: '{{ selected_project_id }}',
+      },
+      lesson_data_base: {
         sessionId: '{{ remote_session_key }}',
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
@@ -142,53 +101,11 @@
         {% if use_current_host %}
         useCurrentHost: true,
         {% endif %}
-      };
+      },
+      gp_placeholder: $(".group_project_placeholder"),
+      quick_links_endpoint: "{%url 'groupwork_dashboard_links' %}",
+      csrf_token: '{{csrf_token}}',
+    };
 
-      lesson_content.xblock(lesson_data);
-    }
+    group_work_dashboard(dashboard_configuration);
 
-    function set_select_value(select_selector, value) {
-      $(select_selector).val(value);
-      $(select_selector).trigger('change');
-    }
-
-    function restore_selection(selected_values){
-      $('select#select-course').one('options_updated', function() {
-        set_select_value('select#select-course', selected_values.course_id);
-      });
-
-      $('select#select-project').one('options_updated', function() {
-        set_select_value('select#select-project', selected_values.project_id);
-      });
-
-      set_select_value('select#select-program', selected_values.program_id);
-    }
-
-    $(document).ready(function(){
-      chain_selects('select#select-program', 'select#select-course');
-      chain_selects('select#select-course', 'select#select-project');
-
-      $("select#select-program, select#select-course, select#select-project").on('change', function() {
-        var outline_component_selector = ".dashboard_outline."+$(this).data('outline-component');
-        var selected_option = $(this).find('option:selected');
-        var value = selected_option.val();
-        var outline_text = (value) ? selected_option.text() : 'None';
-
-        $(outline_component_selector).html(outline_text);
-      });
-
-      $("select#select-course").on('change', function(){
-        var value = $(this).find('option:selected').val();
-        toggle_run_report(value);
-      });
-
-      $("select#select-project").on('change', function() {
-        var project_id = $("select#select-project").val();
-        var course_id = $("select#select-course").val();
-        make_report(course_id, project_id);
-      });
-
-      if (selected_values.project_id) {
-        restore_selection(selected_values);
-      }
-    });

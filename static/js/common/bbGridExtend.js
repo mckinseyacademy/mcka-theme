@@ -56,16 +56,22 @@ _.extend(bbGrid.TheadView.prototype, {
 
 _.extend(bbGrid.View.prototype, {
   _sortBy: function (models, attributes) {
+    console.log('sorting');
     var attr, self = this, sortOrder;
     if (attributes.length === 1) {
       attr = attributes[0].name;
       sortOrder = attributes[0].sortOrder;
-      models = _.sortBy(models, function (model) {
-        var value = model.get(attr)
-        if (typeof value == 'string'){
-          return value.toLowerCase();
+      models = models.sort(function (modelA, modelB) {
+        var valueA = modelA.get(attr);
+        var valueB = modelB.get(attr);
+        if (typeof valueA == 'string'){
+          valueA = valueA.toLowerCase();
         }
-        return value;
+        if (typeof valueB == 'string'){
+          valueB = valueB.toLowerCase();
+        }
+        if (typeof valueB == 'string' && typeof valueA == 'string')
+          return valueA.localeCompare(valueB);
       });
       if (sortOrder === 'desc') {
         models.reverse();

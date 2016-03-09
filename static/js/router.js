@@ -18,6 +18,7 @@ var Router = Backbone.Router.extend({
     'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
     'admin/course-meta-content/items/*course_id': 'admin_course_meta',
     'admin/participants': 'participants_list',
+    'admin/participants/*id': 'initialize_participant_details',
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/': 'admin_course_details_participants'
   },
@@ -117,7 +118,11 @@ var Router = Backbone.Router.extend({
     var participant_list_view = new Apros.views.ParticipantsInfo({collection: collection, el: '#participantsListViewGridBlock'});
     participant_list_view.render();
   },
-
+  initialize_participant_details: function()
+  {
+    var view = new Apros.views.ParticipantEditDetailsView();
+    view.render();
+  },
   participant_details_active_courses: function(){
     var url = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/active_courses';
     var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: url});

@@ -64,8 +64,8 @@
     fetchPages: function(){
       if  (($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20) && coursesListDetailsViewGrid.partial_collection.hasNextPage()){
         _collection = coursesListDetailsViewGrid.partial_collection;
-        coursesListDetailsViewGrid.partial_collection.saveCurrentPageSlowState(_collection['slowFieldsFetchIdentifier'],_collection['slowFieldsCollectionFieldIdentifier']);
-        coursesListDetailsViewGrid.partial_collection.getNextPage({success:function(collection, response, options){
+        _collection.saveCurrentPageSlowState();
+        _collection.getNextPage({success:function(collection, response, options){
           if (!_collection.getSlowFetchedStatus)
           {
             _collection.getSlowFetchedStatus = true;

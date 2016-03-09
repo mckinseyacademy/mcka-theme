@@ -253,13 +253,12 @@ def login(request):
         else:
             # SSO login
             sso_login_form = SSOLoginForm(request.POST)
-            login_mode = 'sso'
             if sso_login_form.is_valid():
                 provider = get_sso_provider(sso_login_form.cleaned_data['email'])
                 if provider:
                     redirect_url = _build_sso_redirect_url(provider, reverse('login'))
                     response = HttpResponseRedirect(redirect_url)
-                    _append_login_mode_cookie(response, login_mode)
+                    _append_login_mode_cookie(response, 'sso')
                     return response
                 else:
                     error = _(u"This email is not associated with any identity provider")

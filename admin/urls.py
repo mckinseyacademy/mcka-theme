@@ -76,7 +76,10 @@ urlpatterns = patterns(
     url(r'^programs', views.program_list, name='program_list'),
 
     url(r'^workgroup/dashboard$', views.groupwork_dashboard, name='groupwork_dashboard'),
+    url(r'^workgroup/dashboard/my_links/(?:(?P<link_id>\d+)/)?$', views.QuickLinkView.as_view(),
+        name='groupwork_dashboard_links'),
     url(r'^workgroup/dashboard/programs/(?P<program_id>.*)/courses$', views.groupwork_dashboard_courses, name='groupwork_dashboard_courses'),
+    url(r'^workgroup/dashboard/programs/(?P<program_id>.*)/companies$', views.groupwork_dashboard_companies, name='groupwork_dashboard_companies'),
     url(r'^workgroup/dashboard/courses/(?P<course_id>.*)/projects$', views.groupwork_dashboard_projects, name='groupwork_dashboard_projects'),
     url(r'^workgroup/dashboard/programs/(?P<program_id>.*)/courses/(?P<course_id>.*)/projects/(?P<project_id>.*)/details$', views.groupwork_dashboard_details, name='groupwork_dashboard_details'),
     url(r'^workgroup/course/(?P<course_id>.*)/download_group_list', views.download_group_list, name='download_group_list'),
@@ -97,7 +100,7 @@ urlpatterns = patterns(
     url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses$', views.participant_details_active_courses_api.as_view(), name='participant_details_active_courses_api'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history$', views.participant_details_course_history_api.as_view(), name='participant_details_course_history_api'),
     url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
-    url(r'^participants/(?P<user_id>[0-9]+)', views.participants_details, name='participants_details'),
+    url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),
 
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),

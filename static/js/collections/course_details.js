@@ -66,21 +66,24 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     }
     backup_page = this.state['currentPage'];
     this.state['currentPage'] = 1;
-    this.fetch({remove:false, success:function(collection, response, options){
+    this.fetch({update: true, remove:false, success:function(collection, response, options){
       data = response.results;
       for (var user in data)
       {
         userData = data[user];
-        for (var model in collection.fullCollection.models)
-        {
-          modelData = collection.fullCollection.models[model]
-          if (modelData.attributes.id == userData.id)
-          {
-            modelData.set({progress: userData.progress})
-            modelData.set({proficiency: userData.proficiency})
-            break;
-          }
-        } 
+        modelData = collection.fullCollection.models.filter(function(el){return el.attributes.id == userData.id})
+        if (modelData.length > 0)
+          modelData[0].set({progress: userData.progress, proficiency: userData.proficiency});
+        //
+        // for (var model in collection.fullCollection.models)
+        // {
+        //   modelData = collection.fullCollection.models[model]
+        //   if (modelData.attributes.id == userData.id)
+        //   {
+        //     modelData.set({progress: userData.progress, proficiency: userData.proficiency});
+        //     break;
+        //   }
+        // } 
       }
       collection.slowFieldsSuccess(collection, response, options)
     }});
@@ -89,9 +92,10 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
   },
   saveCurrentPageSlowState: function(idFieldName, slowAttributeName){
     listOfIds = [];
+    _this = this;
     this.fullCollection.each(function(model){       
-        if (model.get(slowAttributeName) == '.'){
-          listOfIds.push(model.get(idFieldName));
+        if (model.get(_this.slowFieldsCollectionFieldIdentifier) == '.'){
+          listOfIds.push(model.get(_this.slowFieldsFetchIdentifier));
         }
       });
     this.pageAndIdConnector = listOfIds;
@@ -107,7 +111,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
           {
             collection.pageAndIdConnector = collection.pageAndIdConnector.slice(collection.slowFieldsFetchCount, collection.pageAndIdConnector.length);
           }  
-          collection.saveCurrentPageSlowState(collection.slowFieldsFetchIdentifier,collection.slowFieldsCollectionFieldIdentifier);
+          collection.saveCurrentPageSlowState();
           collection.fetchSlowFields(collection.slowFieldsFetchCount);
       }
     },
