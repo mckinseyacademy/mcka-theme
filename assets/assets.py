@@ -37,6 +37,7 @@ js_ie8_files.extend([
     'js/vendor/jquery.dataTables.rowGrouping.js',
     'js/vendor/bbGrid.js',
     'js/vendor/jquery-ui.min.js', 
+    'js/vendor/jquery.clearsearch.js',
     'js/application.js',
     'js/router.js',
 ])
@@ -70,6 +71,7 @@ js_files.extend([
     'js/vendor/moment-with-locales.min.js',
     'js/vendor/bbGrid.js',
     'js/vendor/jquery-ui.min.js',
+    'js/vendor/jquery.clearsearch.js',
     'js/application.js',
     'js/router.js',
 ])

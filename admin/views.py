@@ -765,9 +765,11 @@ class courses_list_api(APIView):
             course['type'] = None
             course['configuration'] = None
             if course['start'] is not None:
-                course['start'] = parsedate(course['start']).strftime("%Y/%m/%d")
+                start = parsedate(course['start'])
+                course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
             if course['end'] is not None:
-                course['end'] = parsedate(course['end']).strftime("%Y/%m/%d")  
+                end = parsedate(course['end'])
+                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
             for data in course:
                 if course.get(data) is None:
                     course[data] = "-"        

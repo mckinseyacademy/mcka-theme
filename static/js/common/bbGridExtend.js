@@ -54,7 +54,76 @@ _.extend(bbGrid.TheadView.prototype, {
   })
 });
 
+
+_.extend(bbGrid.SearchView.prototype, {
+  tagName: 'div',
+    className: 'bbGrid-search-bar',
+    template: _.template(
+        '<div class="input-group">\
+            <input name="search" class="bbGrid-pager col-md-2 form-control clearable" type="text" placeholder="Keyword Search">\
+        </div>', null, {
+          evaluate: /<%([\s\S]+?)%>/g,
+          interpolate: /<%=([\s\S]+?)%>/g,
+          escape: /<%-([\s\S]+?)%>/g
+        }
+  ),
+  onSearch: function (event) {
+    $(document).trigger('onSearchEvent');
+    var self = this,
+        $el = $(event.target);
+    this.searchText = $el.val().trim();
+    this.view.collection = this.view._collection;
+    if (this.searchText && !this.view.loadDynamic) {
+        this.view.setCollection(new this.view._collection.constructor(
+            this.view.collection.filter(function (data) {
+                var value = null
+                for (index = 0; index < self.view.colModel.length; index++)
+                {
+                  value += " " + data.get(self.view.colModel[index].name);
+                }
+                return (" " + value).toLowerCase().indexOf(self.searchText.toLowerCase()) >= 0;
+            })
+        ));
+    }
+    this.view.collection.trigger('reset');
+  }
+});
+
 _.extend(bbGrid.View.prototype, {
+  render: function () {
+      if (this.width) {
+          this.$el.css('width', this.width);
+      }
+      if (!this.$grid) {
+          this.$grid = $('<table class="bbGrid-grid table table-curved table-condensed" />');
+          if (this.caption) {
+              this.$grid.append('<caption>' + this.caption + '</caption>');
+          }
+          this.$grid.appendTo(this.el);
+      }
+      if (!this.$thead) {
+          this.thead = new this.entities.TheadView({view: this});
+          this.$thead = this.thead.render();
+          this.$grid.append(this.$thead);
+      }
+      if (!this.$navBar) {
+          this.navBar = new this.entities.NavView({view: this});
+          this.$navBar = this.navBar.render();
+          this.$grid.after(this.$navBar);
+          this.$loading = $('<div class="bbGrid-loading progress"><div class="bar bbGrid-loading-progress progress-bar progress-bar-striped active">' + this.dict.loading + '</div></div>');
+          this.$navBar.prepend(this.$loading);
+      }
+      if (!this.$searchBar && this.enableSearch) {
+          this.searchBar = new this.entities.SearchView({view: this});
+          this.$searchBar = this.searchBar.render();
+          $(this.container.parent()).prepend(this.$searchBar);
+      }
+      $(this.container).append(this.$el);
+      if (!this.autofetch) {
+          this.renderPage();
+      }
+      return this;
+  },
   _sortBy: function (models, attributes) {
     console.log('sorting');
     var attr, self = this, sortOrder;
