@@ -1,6 +1,7 @@
   Apros.views.CoursesListView = Backbone.View.extend({
     initialize: function(){
       this.collection.fetch();
+      _this = this;
     },
     render: function(){
       coursesListViewGrid = new bbGrid.View({
@@ -42,6 +43,8 @@
       coursesListViewGrid['partial_collection'] = this.collection;
       this.$el.scroll(this.fetchPages);
       $(document).on('onSearchEvent', this.onSearchEvent);
+      $(document).on('onClearSearchEvent', this.onClearSearchEvent);
+
     },
     fetchPages: function(){
         if  ($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20)
@@ -65,5 +68,8 @@
           if (!coursesListViewGrid.partial_collection.hasNextPage())
             clearInterval(_intervalId);
         }, 500);
+      },
+      onClearSearchEvent: function(){
+        coursesListViewGrid.searchBar.onSearch({target: '#mainCoursesListBlockContainer .bbGrid-pager'});
       }
   });

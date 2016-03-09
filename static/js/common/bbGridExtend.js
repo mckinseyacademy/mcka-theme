@@ -60,7 +60,7 @@ _.extend(bbGrid.SearchView.prototype, {
     className: 'bbGrid-search-bar',
     template: _.template(
         '<div class="input-group">\
-            <input name="search" class="bbGrid-pager col-md-2 form-control" type="text" placeholder="Keyword Search">\
+            <input name="search" class="bbGrid-pager col-md-2 form-control clearable" type="text" placeholder="Keyword Search">\
         </div>', null, {
           evaluate: /<%([\s\S]+?)%>/g,
           interpolate: /<%=([\s\S]+?)%>/g,
@@ -79,9 +79,9 @@ _.extend(bbGrid.SearchView.prototype, {
                 var value = null
                 for (index = 0; index < self.view.colModel.length; index++)
                 {
-                  value += data.get(self.view.colModel[index].name);
+                  value += " " + data.get(self.view.colModel[index].name);
                 }
-                return ("" + value).toLowerCase().indexOf(self.searchText.toLowerCase()) >= 0;
+                return (" " + value).toLowerCase().indexOf(self.searchText.toLowerCase()) >= 0;
             })
         ));
     }
