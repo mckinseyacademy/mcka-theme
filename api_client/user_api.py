@@ -137,6 +137,20 @@ def get_users(fields=[], *args, **kwargs):
     return JP.from_json(response.read(), user_models.UserResponse)
 
 @api_error_protect
+def get_filtered_users(getParameters):
+    ''' get all users that meet filter criteria'''
+    '''TODO enable user api without any required queryset '''
+
+    response = GET(
+        '{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            urlencode(getParameters)
+        )
+    )
+    return json.loads(response.read())
+
+@api_error_protect
 def delete_session(session_key):
     ''' delete associated openedx session '''
     DELETE(
@@ -544,3 +558,15 @@ USER_ERROR_CODE_MESSAGES = {
     },
 }
 ERROR_CODE_MESSAGES.update(USER_ERROR_CODE_MESSAGES)
+
+
+@api_error_protect
+def get_courses_from_user(user_id):
+
+    response = GET('{}/{}/{}/courses'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id)
+    )
+
+    return json.loads(response.read())

@@ -1,0 +1,101 @@
+#mainParticipantsWrapper, #mainParticipantsDetailsWrapper{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+}
+#participantsAddWrapper, .participantDetailsNavigationButton{
+	margin-bottom: 10px;
+}
+#participantsListViewGridBlock{
+	height: 120em;
+	overflow-y: scroll;
+}
+#mainParticipantsWrapper .menuButton{
+	display:inline-block;
+}
+
+#participantsDetailsDataWrapper{
+	margin-top: 50px;
+}
+#participantsTopDetailsContainer{
+	margin-bottom: 50px;
+}
+#participantsTopDetailsContainer .row{
+	height: 100px;
+}
+#participantsTopDetailsContainer .row .columns{
+	height: 100%;
+}
+#participantsTopDetailsContainer .row .participantEnrollInCourse{
+	margin-top: 20px;
+}
+#participantsTopDetailsContainer .row .participantImage{
+	height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+#participantsTopDetailsContainer .row .participantNameAndLogin{
+	margin-top: 10px;
+}
+#participantsTopDetailsContainer .row .participantNameAndLogin .participantFullName{
+	font-size: x-large;
+	margin-bottom: 10px;
+}
+#participantDetailsWrapper .participantDetailsContent{
+	min-height:500px;
+	border:1px solid black;
+	background-color: white;
+	padding: 20px;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#participantDetailsWrapper .participantDetailsContent .row{
+	margin-bottom: 20px;
+}
+#participantDetailsWrapper .participantDetailsContent .participantDetailsEditText{
+	font-size: x-large;
+}
+#participantDetailsWrapper .participantDetailsContent 
+.labelUniversal{
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+#participantDetailsActiveCoursesViewGrid
+{
+	height: 25em;
+	overflow-y: scroll;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+}
+#participantDetailsActiveCoursesViewGrid .bbGrid-grid.table
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+#participantDetailsCourseHistoryViewGrid
+{
+	height: 25em;
+	overflow-y: scroll;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+}
+#participantDetailsCourseHistoryViewGrid .bbGrid-grid.table, #participantDetailsCourseHistoryViewGrid .bbGrid-grid-nav 
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+#participantDetailsWrapper .participantDetailsContent 
+.participantEmailLabel{
+	display: inline-block;
+}
+#participantDetailsWrapper .participantDetailsContent 
+.participantEmailReset{
+	float: right;
+}

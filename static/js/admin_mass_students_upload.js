@@ -28,6 +28,7 @@ $(function(){
     var form = $(this).parent('form');
     var modal = form.parent();
     modal.find('.error').html('');
+    $(this).attr('disabled', 'disabled');
 
     var options = {
                 url     : form.attr('action'),
@@ -49,6 +50,7 @@ $(function(){
                         }).done(function(data){
                           if(data.done == 'done'){
                             clearInterval(poolingInterval);
+                            $('input[type=submit]').removeAttr('disabled');
                             $('#enroll-error-list').html(_.template(errorsBlockTemplate, {'data': data.message}));
                             if(data.error.length > 0){
                               $('#enroll-error-list').find('#user-reg-errors').html(_.template(errorsTemplate, {'data': data}));
@@ -57,6 +59,7 @@ $(function(){
                           }
                           else if(data.done == 'failed'){
                             clearInterval(poolingInterval);
+                            $('input[type=submit]').removeAttr('disabled');
                           }
                           else{
                             $('#attempted').text(data.attempted);
@@ -69,6 +72,7 @@ $(function(){
                 error: function( data ){
                       data = $.parseJSON(data);
                       modal.find('.error').append('<p class="warning">Please select file first.</p>');
+                      $('input[type=submit]').removeAttr('disabled');
                     }
                 }
 
