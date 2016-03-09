@@ -9,7 +9,7 @@
         colModel:[
         { title: ' ', index: false, name: 'name'},
         { title: '# of people', index: false, name: 'people' },
-        { title: '% invited', index: false, name: 'invited' }, 
+        { title: '% total cohort', index: false, name: 'invited' }, 
         { title: 'Avg Progress', index: false, name: 'progress' },
         { title: '', index: false, name: '' }
         ]
