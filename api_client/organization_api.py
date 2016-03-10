@@ -1,4 +1,5 @@
 ''' API calls with respect to organizations '''
+import json
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from urllib import urlencode
@@ -44,6 +45,35 @@ def fetch_organization(organization_id, organization_object=JsonObjectWithImage)
     )
 
     return JP.from_json(response.read(), organization_object)
+
+
+@api_error_protect
+def fetch_organization_user_ids(organization_id):
+    """ fetch organization user ids """
+    response = GET(
+        '{}/{}/{}/users?view=ids'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def fetch_organization_group_ids(organization_id):
+    """ fetch organization group ids """
+    response = GET(
+        '{}/{}/{}/groups?view=ids'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+        )
+    )
+
+    return json.loads(response.read())
+
 
 @api_error_protect
 def get_users_by_enrolled(organization_id, user_object=JsonObjectWithImage, *args, **kwargs):
