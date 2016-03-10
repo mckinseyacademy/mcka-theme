@@ -806,7 +806,10 @@ def course_details(request, course_id):
     course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
     for completed_metric in course_metrics.users_completed:
         course_completed_users += completed_metric[1]
-    course['completed'] = round_to_int_bump_zero(100 * course_completed_users / len(users_enrolled))
+    try:
+        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / len(users_enrolled))
+    except ZeroDivisionError:
+        course['completed'] = 0
 
     course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
     course['passed'] = course_pass.pass_rate_display(users_enrolled)
@@ -908,10 +911,17 @@ class course_details_stats_api(APIView):
             number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data['num_comments']
             number_of_posts += number_of_posts_per_participant
 
+        if number_of_users:
+            participants_posting = str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'
+            avg_posts = round(float(number_of_posts)/number_of_users, 1)
+        else:
+            participants_posting = 0
+            avg_posts = 0
+
         course_stats = [
             { 'name': '# of posts', 'value': number_of_posts},
-            { 'name': '% participants posting', 'value': str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'},
-            { 'name': 'Avg posts per participant', 'value': round(float(number_of_posts)/number_of_users, 1)}
+            { 'name': '% participants posting', 'value': participants_posting},
+            { 'name': 'Avg posts per participant', 'value': avg_posts}
         ]
         return Response(course_stats)
 
