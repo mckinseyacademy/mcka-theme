@@ -95,7 +95,11 @@
 .participantEmailLabel{
 	display: inline-block;
 }
-#participantDetailsWrapper .participantDetailsContent 
-.participantEmailReset{
+#participantDetailsWrapper .participantDetailsContent .participantEmailReset{
 	float: right;
+}
+
+#participantDetailsWrapper .participantDetailsEditForm .cancelParticipantEdit{
+	margin-left: 15px;
+    text-decoration: underline;
 }
