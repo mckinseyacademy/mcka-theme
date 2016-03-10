@@ -48,6 +48,7 @@
           .columns.large-12.group_project_placeholder
 
 - block js_snippets
+  %script{src: "{% static 'js/views/admin/group_work_dashboard_common.js' %}"}
   %script{src: "{% static 'js/views/admin/group_work_dashboard_details.js' %}"}
   :javascript
     var dashboard_configuration = {

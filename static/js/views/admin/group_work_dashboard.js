@@ -5,67 +5,10 @@ function group_work_dashboard(dashboard_configuration) {
     var lesson_data_base = dashboard_configuration['lesson_data_base'];
     var quick_links_endpoint = dashboard_configuration['quick_links_endpoint'];
     var csrf_token = dashboard_configuration['csrf_token'];
-
-    // Value of one of select boxes when no choice is possible due to choices
-    // in previous boxes.
-    var NONE_DATA_VALUE = "N_A";
-    var QUERY_MODES = {
-        path: 'path',
-        data: 'data'
-    };
+    var common = new DashboardCommon();
 
     // Stores mapping from quick_link_id to quick-link object
     var quick_links = {};
-
-    function clear_select_options(target_selector) {
-        var options = $(target_selector).find('option:not([data-static])');
-        options.remove();
-    }
-
-    function make_option(value, text) {
-        var option = $("<option>");
-        option.val(value);
-        option.html(text);
-        return option;
-    }
-
-    function parse_response_as_options($select, data) {
-        var real_options_count = 0,
-            force_disable = false,
-            option, last_val;
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            if (item.disabled) {
-                continue;
-            }
-            option = make_option(item.value, item.display_name);
-            $select.append(option);
-            real_options_count += 1;
-            last_val = item.value;
-        }
-
-        if (real_options_count == 0) {
-            option = make_option(NONE_DATA_VALUE, "None available");
-            $select.append(option);
-            $select.val(option.val());
-        }
-        if (real_options_count == 1 && $select.data('autoselect-only-option')) {
-            $select.val(last_val);  // last_val is the only actual value in this case
-            force_disable = true;
-        }
-        update_select_status($select, force_disable);
-    }
-
-    function update_select_status($select, force_disable) {
-        $select.removeAttr('disabled');
-        if (force_disable || $select.children("option[value='" + NONE_DATA_VALUE + "']").length != 0) {
-            $select.attr('disabled', true);
-        }
-    }
-
-    function generic_error_hander(xhr, status, error) {
-         alert(error);
-    }
 
     /**
      * Asks target select to update itself  based on a value from
@@ -76,45 +19,9 @@ function group_work_dashboard(dashboard_configuration) {
      */
     function update_select_options(target_select, value) {
         var $target_select = $(target_select);
-        clear_select_options(target_select);
-        $target_select.trigger('change');
-
-        if (!value && !$target_select.data('allow-empty-value')) {
-            return;
-        }
-
-        var request_params = get_url_and_data_for_select($target_select, value);
-        request_params['method'] = 'GET';
-
-        return $.ajax(request_params).done(
-            function (data) {
-                parse_response_as_options($target_select, data);
-                $(target_select).trigger('options_updated');
-                update_display_strip_item($target_select);
-            }
-        ).error(generic_error_hander);
-    }
-
-    function get_url_and_data_for_select($target_select, value) {
-        var result = {
-                url: $target_select.data('chained-filter-endpoint'),
-                data: {}
-            },
-            query_mode = $target_select.data('query-mode') || QUERY_MODES.path;
-
-        switch (query_mode) {
-            default:  // intentionally falling through to QUERY_MODES.path - this is the default
-            case QUERY_MODES.path:
-                result.url = result.url.replace('$value$', value);
-                break;
-            case QUERY_MODES.data:
-                if (value) {
-                    result.data[$target_select.data('value-parameter')] = value;
-                }
-                break;
-        }
-
-        return result;
+        return common.update_select_options($target_select, value).done(function() {
+            update_display_strip_item($target_select);
+        });
     }
 
     function chain_selects(source_select, target_select) {
@@ -278,7 +185,7 @@ function group_work_dashboard(dashboard_configuration) {
 
     function save_quick_filter() {
         function filter_value(value) {
-            return value != NONE_DATA_VALUE ? value: '';
+            return value != common.NONE_DATA_VALUE ? value: '';
         }
 
         var post_dict = {
@@ -290,7 +197,7 @@ function group_work_dashboard(dashboard_configuration) {
 
        send_quick_filters_request('POST', post_dict)
            .done(add_quick_filter_row)
-           .error(generic_error_hander);
+           .error(common.generic_error_handler);
     }
 
 
@@ -310,7 +217,7 @@ function group_work_dashboard(dashboard_configuration) {
             function() {
                 remove_quick_filter_row(link_id);
             }
-        ).error(generic_error_hander)
+        ).error(common.generic_error_handler)
     }
 
 
@@ -332,7 +239,7 @@ function group_work_dashboard(dashboard_configuration) {
        var $filters = $("select#select-program, select#select-course, select#select-project, select#select-company");
 
         $.each($filters, function(idx, filter) {
-            update_select_status($(filter));
+            common.update_select_status($(filter));
         });
 
         $("#quick-links td a").removeClass('disabled');
@@ -388,8 +295,8 @@ function group_work_dashboard(dashboard_configuration) {
         } else {
             value = value.id;
         }
-        if ($select.children("option[value='" + NONE_DATA_VALUE + "']").length > 0){
-            value = NONE_DATA_VALUE;
+        if ($select.children("option[value='" + common.NONE_DATA_VALUE + "']").length > 0){
+            value = common.NONE_DATA_VALUE;
             $select.prop('disabled', true);
         }
         $select.val(value);
@@ -462,9 +369,7 @@ function group_work_dashboard(dashboard_configuration) {
         if (project_id && course_id) {
             return make_group_project_element(course_id, project_id, company_id);
         } else {
-            var def = $.Deferred();
-            def.resolve();
-            return def;
+            return common.make_resolved_deferred();
         }
     }
 
@@ -472,7 +377,7 @@ function group_work_dashboard(dashboard_configuration) {
         load_quick_filters();
 
         activate_ui();
-        update_select_options($('select#select-company')); // populating company filter with all companies
+        update_select_options('select#select-company'); // populating company filter with all companies
 
         $("#save-filter").click(save_quick_filter);
         $("#quick-links").on('click', 'td.delete-filter a', delete_quick_filter);
