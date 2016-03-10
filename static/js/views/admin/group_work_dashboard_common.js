@@ -1,11 +1,13 @@
 function DashboardCommon(){
-     // Value of one of select boxes when no choice is possible due to choices
+    // Value of one of select boxes when no choice is possible due to choices
     // in previous boxes.
+    var spinner_identificator_class = "loading-spinner";
     var NONE_DATA_VALUE = "N_A";
     var QUERY_MODES = {
         path: 'path',
         data: 'data'
     };
+
 
     function make_option(value, text) {
         var option = $("<option>");
@@ -42,9 +44,9 @@ function DashboardCommon(){
     }
 
     function update_select_status($select, force_disable) {
-        $select.removeAttr('disabled');
+        $select.prop('disabled', false);
         if (force_disable || $select.children("option[value='" + NONE_DATA_VALUE + "']").length != 0) {
-            $select.attr('disabled', true);
+            $select.prop('disabled', true);
         }
     }
 
@@ -75,6 +77,15 @@ function DashboardCommon(){
         update_select_status($select, force_disable);
     }
 
+    function show_spinner($target_select) {
+        var spinner = $("<i></i>").addClass(spinner_identificator_class).addClass("fa fa-spin fa-spinner");
+        spinner.prependTo($target_select.parent());
+    }
+
+    function hide_spinner($target_select) {
+        $target_select.parent().children("."+spinner_identificator_class).remove();
+    }
+
     return {
         NONE_DATA_VALUE: NONE_DATA_VALUE,
 
@@ -88,22 +99,27 @@ function DashboardCommon(){
          * @param value value selected in previous select
          */
         update_select_options: function ($target_select, value) {
+            $target_select.prop('disabled', true);
+            show_spinner($target_select);
+
             clear_select_options($target_select);
             $target_select.trigger('change');
 
             if (!value && !$target_select.data('allow-empty-value')) {
+                $target_select.prop('disabled', false);
+                hide_spinner($target_select);
                 return this.make_resolved_deferred();
             }
 
             var request_params = get_url_and_data_for_select($target_select, value);
             request_params['method'] = 'GET';
 
-            return $.ajax(request_params).done(
-                function (data) {
+            return $.ajax(request_params).done(function (data) {
                     parse_response_as_options($target_select, data);
                     $target_select.trigger('options_updated');
-                }
-            ).error(this.generic_error_handler);
+                })
+                .error(this.generic_error_handler)
+                .always(function() { hide_spinner($target_select); });
         },
 
         generic_error_handler: function(xhr, status, error) {
