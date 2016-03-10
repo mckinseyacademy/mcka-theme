@@ -151,3 +151,9 @@
 	width: 100%;
 	height:120em;
 }
+
+#courseDetailsMainContainer .bbGrid-search-bar
+{
+	float: none!important;
+	display: inline-block;
+}

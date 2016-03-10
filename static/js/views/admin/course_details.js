@@ -12,6 +12,7 @@
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
         multiselect: true,
+        enableSearch: true,
         collection: this.collection.fullCollection,
         colModel:[
         { title: 'Name', index: true, name: 'username', 
@@ -70,6 +71,8 @@
       });
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       this.$el.scroll(this.fetchPages);
+      $(document).on('onSearchEvent', this.onSearchEvent);
+      $(document).on('onClearSearchEvent', this.onClearSearchEvent);
     },
     fetchPages: function(){
       if  (($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20) && coursesListDetailsViewGrid.partial_collection.hasNextPage()){
@@ -83,5 +86,31 @@
           }
         }});
       }
+    },
+    onSearchEvent: function(){
+    if (typeof waitForLastSuccess == 'undefined')
+      waitForLastSuccess = true;
+      _intervalId = setInterval(function()
+      {
+        if ($('#courseDetailsMainContainer .bbGrid-pager').val().trim() === '')
+          clearInterval(_intervalId)
+        waitForLastSuccess = false;
+        _collection = coursesListDetailsViewGrid.partial_collection;
+        _collection.saveCurrentPageSlowState();
+        _collection.getNextPage({success:function(collection, response, options){
+          if (!_collection.getSlowFetchedStatus)
+          {
+            _collection.getSlowFetchedStatus = true;
+            _collection.slowFieldsSuccess(_collection, response, options);
+          }
+          coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
+          waitForLastSuccess = true;
+        }});
+        if (!coursesListDetailsViewGrid.partial_collection.hasNextPage())
+          clearInterval(_intervalId);
+      }, 500);
+    },
+    onClearSearchEvent: function(){
+      coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
     }
   });
