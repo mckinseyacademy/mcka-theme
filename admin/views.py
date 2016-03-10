@@ -952,8 +952,8 @@ class course_details_engagement_api(APIView):
                 engaged_users += 1
 
         course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users_simple)) if len(course_users_simple) > 0 else 0
-        activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if course_users > 0 else 0
-        engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if course_users > 0 else 0
+        activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
+        engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
         active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
         engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum)/engaged_users) if engaged_users > 0 else 0
 
@@ -1011,8 +1011,8 @@ class course_details_performance_api(APIView):
             if course_user.id in course_leaders_ids:
                 engaged_users += 1
 
-        activated = round_to_int(active_users/len(course_users)) if course_users > 0 else 0
-        engaged = round_to_int(engaged_users/len(course_users)) if course_users > 0 else 0
+        activated = round_to_int(active_users/len(course_users)) if len(course_users) > 0 else 0
+        engaged = round_to_int(engaged_users/len(course_users)) if len(course_users) > 0 else 0
         active_progress = round_to_int(engaged_progress_sum/active_users) if active_users > 0 else 0
         engaged_progress = round_to_int(engaged_progress_sum/engaged_users) if engaged_users > 0 else 0
 
