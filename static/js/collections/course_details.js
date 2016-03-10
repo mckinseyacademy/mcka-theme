@@ -73,17 +73,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
         userData = data[user];
         modelData = collection.fullCollection.models.filter(function(el){return el.attributes.id == userData.id})
         if (modelData.length > 0)
-          modelData[0].set({progress: userData.progress, proficiency: userData.proficiency});
-        //
-        // for (var model in collection.fullCollection.models)
-        // {
-        //   modelData = collection.fullCollection.models[model]
-        //   if (modelData.attributes.id == userData.id)
-        //   {
-        //     modelData.set({progress: userData.progress, proficiency: userData.proficiency});
-        //     break;
-        //   }
-        // } 
+          modelData[0].set({progress: userData.progress});
       }
       collection.slowFieldsSuccess(collection, response, options)
     }});

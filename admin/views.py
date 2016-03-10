@@ -1047,6 +1047,7 @@ class course_details_api(APIView):
             current_page = 0
             if request.GET['include_slow_fields'] == 'true':
                 allCourseParticipantsUsers = user_api.get_filtered_users(request.GET)
+                users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
             else:
                 allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
                 for course_participant in allCourseParticipants:
@@ -1074,37 +1075,36 @@ class course_details_api(APIView):
                 requestParams.update(userData)
                 requestParams['page'] = 1
                 allCourseParticipantsUsers = user_api.get_filtered_users(requestParams)
+
+                course_all_users = course_api.get_course_details_users(course_id)
+                count = len(course_all_users['enrollments'])
+                course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+
             allCourseParticipantsUsers['full_length'] = len_of_all_users
             allCourseParticipantsUsers['current_page'] = current_page+1
-
-            course_all_users = course_api.get_course_details_users(course_id)
-            count = len(course_all_users['enrollments'])
-            users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
-            course_grades = course_api.get_course_details_metrics_grades(course_id, count)
 
             for course_participant in allCourseParticipantsUsers['results']:
                 course_participant['user_status'] = []
                 if request.GET['include_slow_fields'] == 'true':  
                     course_participant['progress'] = int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0])
-                    course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
-                    if not course_participant['proficiency']:
-                        course_participant['proficiency'] = 0;
-                    else:
-                        course_participant['proficiency'] = int(course_participant['proficiency'][0])
                     if course_participant['progress'] <= 9:
                         course_participant['progress'] = '00' + str(course_participant['progress'])
                     elif course_participant['progress'] <= 99:
                         course_participant['progress'] = '0' + str(course_participant['progress'])
                     elif course_participant['progress'] == 100:
                         course_participant['progress'] = str(course_participant['progress'])
+                else:
+                    course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
+                    if not course_participant['proficiency']:
+                        course_participant['proficiency'] = 0;
+                    else:
+                        course_participant['proficiency'] = int(course_participant['proficiency'][0])
                     if course_participant['proficiency'] <= 9:
                         course_participant['proficiency'] = '00' + str(course_participant['proficiency'])
                     elif course_participant['proficiency'] <= 99:
                         course_participant['proficiency'] = '0' + str(course_participant['proficiency'])
                     elif course_participant['proficiency'] == 100:
                         course_participant['proficiency'] = str(course_participant['proficiency'])
-
-                else:
                     for role in list_of_user_roles['data']:
                         if role['id'] == course_participant['id']:
                             course_participant['user_status'].append(permissonsMap[role['role']])
@@ -1116,7 +1116,6 @@ class course_details_api(APIView):
                     else:
                         course_participant['custom_user_status']='Participant'   
                     course_participant['progress'] = '.'
-                    course_participant['proficiency'] = '.'
                     if len(course_participant['organizations'] ) == 0:
                         course_participant['organizations'] = [{'display_name': 'No company'}]
                         course_participant['organizations_display_name'] = 'No company'
