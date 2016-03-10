@@ -2158,17 +2158,6 @@ def groupwork_dashboard_details(
     program = Program.fetch(program_id)
     course = load_course(course_id)
 
-    client_filter_options = [
-        {"id":client.id, "name":client.display_name}
-        for client in AccessChecker.get_clients_user_has_access_to(request.user)
-        if program_id in client.groups
-    ]
-
-    # If there is only a single client we will show it by default and disable the filter
-    # if there is more we also add "All companies" option.
-    if len(client_filter_options) > 1:
-        client_filter_options.insert(0, {'id':'', 'name':"All companies"})
-
     projects = [gp for gp in course.group_projects if gp.is_v2 and gp.id == project_id]
     if not projects:
         raise Http404()
@@ -2188,7 +2177,6 @@ def groupwork_dashboard_details(
         'project': {'id': project.id, 'name': project.name},
         'return_url': return_url,
         'use_current_host': getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
-        'client_filter_options': client_filter_options
     }
 
     return render(request, template, data)

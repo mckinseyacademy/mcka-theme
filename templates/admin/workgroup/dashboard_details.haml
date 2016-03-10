@@ -25,10 +25,10 @@
               -#    %option{value: 'started'}= _("Started")
               -#    %option{value: 'complete'}= _("Complete")
               .small-4.columns
-                %select#company_filter{'{% if client_filter_options|length == 1 %}disabled{%endif%}': None}
-                  - for client in client_filter_options
-                    %option{'value': '{{client.id}}'}
-                      = client.name
+                %select#company_filter{'data-chained-filter-endpoint': '/admin/workgroup/dashboard/companies', 'data-outline-component': 'company', 'data-query-mode': 'data', 'data-value-parameter': 'program_id', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("All companies")
+
 
 
               .small-8.columns
@@ -52,6 +52,11 @@
   %script{src: "{% static 'js/views/admin/group_work_dashboard_details.js' %}"}
   :javascript
     var dashboard_configuration = {
+      selected_values: {
+        programId: '{{ program.id }}',
+        courseId: '{{ course.id }}',
+        projectId: '{{ project.id }}',
+      },
       lesson_data_base: {
         courseId: '{{course.id}}',
         usageId: '{{project.id}}',

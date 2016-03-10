@@ -1,6 +1,7 @@
 function group_project_dashboard_details(dashboard_configuration) {
     var gp_placeholder = dashboard_configuration['gp_placeholder'];
     var lesson_data_base = dashboard_configuration['lesson_data_base'];
+    var common = new DashboardCommon();
     var user_search_parameters = {
         timeout: 1000, // ms
         timeout_handle: null
@@ -28,6 +29,8 @@ function group_project_dashboard_details(dashboard_configuration) {
     make_group_project_element('{{course.id}}', '{{project.id}}');
 
     $(document).ready(function () {
+        common.update_select_options($("select#company_filter"), dashboard_configuration.selected_values.programId);
+
         $('#company_filter').on('change', function () {
             $('.group_project_placeholder').empty();
 
