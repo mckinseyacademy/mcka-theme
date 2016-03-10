@@ -76,14 +76,14 @@ function group_work_dashboard(dashboard_configuration) {
 
     function restore_selection(selected_values) {
         $('select#select-course').one('options_updated', function () {
-            set_select_value('select#select-course', selected_values.course_id);
+            set_select_value('select#select-course', selected_values.courseId);
         });
 
         $('select#select-project').one('options_updated', function () {
-            set_select_value('select#select-project', selected_values.project_id);
+            set_select_value('select#select-project', selected_values.projectId);
         });
 
-        set_select_value('select#select-program', selected_values.program_id);
+        set_select_value('select#select-program', selected_values.programId);
     }
 
     function update_display_strip_item($source_select) {
@@ -382,7 +382,7 @@ function group_work_dashboard(dashboard_configuration) {
         $("#save-filter").click(save_quick_filter);
         $("#quick-links").on('click', 'td.delete-filter a', delete_quick_filter);
 
-        if (selected_values.project_id) {
+        if (selected_values.projectId) {
             restore_selection(selected_values);
         }
     });

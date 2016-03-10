@@ -21,7 +21,7 @@ function DashboardCommon(){
 
     function get_url_and_data_for_select($target_select, value) {
         var result = {
-                url: $target_select.data('chained-filter-endpoint'),
+                url: $target_select.data('filter-endpoint'),
                 data: {}
             },
             query_mode = $target_select.data('query-mode') || QUERY_MODES.path;
