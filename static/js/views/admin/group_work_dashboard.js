@@ -5,7 +5,7 @@ function group_work_dashboard(dashboard_configuration) {
     var lesson_data_base = dashboard_configuration['lesson_data_base'];
     var quick_links_endpoint = dashboard_configuration['quick_links_endpoint'];
     var csrf_token = dashboard_configuration['csrf_token'];
-    var common = new DashboardCommon();
+    var common = new DashboardCommon(gp_placeholder, lesson_data_base);
 
     // Stores mapping from quick_link_id to quick-link object
     var quick_links = {};
@@ -51,22 +51,6 @@ function group_work_dashboard(dashboard_configuration) {
         } else {
             outline.html("None");
         }
-    }
-
-    function make_group_project_element(course_id, project_id, company_id) {
-        var lesson_data = $.extend({}, lesson_data_base);
-        lesson_data.courseId = course_id;
-        lesson_data.usageId = project_id;
-        lesson_data.data = {client_filter_id: company_id};
-        // This is a hack
-        // jquery.xblock doesn't allow to wait until xblock gets fully rendered
-        // so we'll just insert an internal div to gp_placeholder
-        // so each new xblock will be rendering inside a new div element
-        // this element will get detached from DOM, and xblock will not
-        // end up showing on webpage.
-        var internal_div = $("<div/>");
-        gp_placeholder.append(internal_div);
-        return internal_div.xblock(lesson_data);
     }
 
     function set_select_value(select_selector, value) {
@@ -367,7 +351,7 @@ function group_work_dashboard(dashboard_configuration) {
         var company_id = $("select#select-company").val();
         gp_placeholder.empty();
         if (project_id && course_id) {
-            return make_group_project_element(course_id, project_id, company_id);
+            return common.make_group_project_element(course_id, project_id, company_id);
         } else {
             return common.make_resolved_deferred();
         }

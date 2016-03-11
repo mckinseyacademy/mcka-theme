@@ -1,4 +1,4 @@
-function DashboardCommon(){
+function DashboardCommon(gp_placeholder, lesson_data_base){
     // Value of one of select boxes when no choice is possible due to choices
     // in previous boxes.
     var spinner_identificator_class = "loading-spinner";
@@ -124,6 +124,31 @@ function DashboardCommon(){
 
         generic_error_handler: function(xhr, status, error) {
              alert(error);
+        },
+
+        make_group_project_element: function(course_id, project_id, company_id) {
+            var lesson_data = $.extend({}, lesson_data_base);
+            if (!lesson_data.data) {
+                lesson_data.data = {};
+            }
+
+            lesson_data.courseId = course_id;
+            lesson_data.usageId = project_id;
+            if (company_id != NONE_DATA_VALUE) {
+                lesson_data.data.client_filter_id = company_id;
+            }
+            else{
+                delete lesson_data.data.client_filter_id;
+            }
+            // This is a hack
+            // jquery.xblock doesn't allow to wait until xblock gets fully rendered
+            // so we'll just insert an internal div to gp_placeholder
+            // so each new xblock will be rendering inside a new div element
+            // this element will get detached from DOM, and xblock will not
+            // end up showing on webpage.
+            var internal_div = $("<div/>");
+            gp_placeholder.append(internal_div);
+            return internal_div.xblock(lesson_data);
         },
 
         make_resolved_deferred: function() {
