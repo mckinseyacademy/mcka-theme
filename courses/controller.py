@@ -89,7 +89,11 @@ class Proficiency(JsonObject):
             if user_grade.id in users_ids:
                 if user_grade.user_grade_value >= 0.7:
                     pass_users += 1
-        return round_to_int_bump_zero(100 * float(pass_users) / len(users))
+        try:
+            pass_rate = round_to_int_bump_zero(100 * float(pass_users) / len(users))
+        except ZeroDivisionError:
+            pass_rate = 0
+        return pass_rate
 
 class UserProgress(JsonObject):
     @property
