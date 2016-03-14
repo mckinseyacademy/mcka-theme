@@ -570,3 +570,17 @@ def get_courses_from_user(user_id):
     )
 
     return json.loads(response.read())
+
+@api_error_protect
+def get_user_full_gradebook(user_id, course_id):
+    ''' get grades for the user for this course'''
+    response = GET(
+        '{}/{}/{}/courses/{}/grades'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+            course_id
+        )
+    )
+
+    return json.loads(response.read())
