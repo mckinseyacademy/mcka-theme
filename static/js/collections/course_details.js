@@ -8,7 +8,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
   mode: "infinite",
   state: {
     firstPage:1,
-    pageSize: 50
+    pageSize: 250
   },
   queryParams: {
     currentPage: "page",
@@ -16,12 +16,15 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     totalRecords: null,
     include_slow_fields: false,
     ids: false,
-    page_size: 50,
+    page_size: 250,
   },
   parseLinks: function (resp, options) {
     returnObject = {};
     num_of_pages = Math.ceil(resp.full_length/this.state.pageSize)
     current_page = resp.current_page
+    var date = new Date();
+    var printdate = '' + current_page + '===' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+    console.log(printdate);
     if (parseInt(current_page) < parseInt(num_of_pages)){
       queryParameters = this.state.currentPage + '=' + (parseInt(current_page++)) ;
       returnObject['next'] = this.url + '?' + queryParameters;
@@ -107,7 +110,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     },
   getSlowFetchedStatus: false,
   pageAndIdConnector: [],
-  slowFieldsFetchCount: 5,
+  slowFieldsFetchCount: 10,
   slowFieldsFetchIdentifier:'id',
   slowFieldsCollectionFieldIdentifier:'progress',
 });
