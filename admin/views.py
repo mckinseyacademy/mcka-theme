@@ -1049,16 +1049,19 @@ class course_details_api(APIView):
             'observer':'Observer'
             }
             permissionsFilter = ['observer','assistant']
-            allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
-            list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
             allCoursesParticipantList = []
-            len_of_all_users = len(allCourseParticipants)
+            len_of_all_users = 0
             userData = {'ids':[]}
             current_page = 0
             if request.GET['include_slow_fields'] == 'true':
                 allCourseParticipantsUsers = user_api.get_filtered_users(request.GET)
                 users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
+                len_of_all_users = len(allCourseParticipantsUsers['results'])
+                allCourseParticipants = allCourseParticipantsUsers['results']
             else:
+                allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
+                list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
+                len_of_all_users = len(allCourseParticipants)
                 allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
                 for course_participant in allCourseParticipants:
                     userData['ids'].append(str(course_participant['id']))
@@ -1092,29 +1095,47 @@ class course_details_api(APIView):
 
             allCourseParticipantsUsers['full_length'] = len_of_all_users
             allCourseParticipantsUsers['current_page'] = current_page+1
-
+            
+            number_of_assessments = 0
+            number_of_groupworks = 0
+            if len_of_all_users > 0:
+                user_grades = user_api.get_user_full_gradebook(allCourseParticipants[0]['id'], course_id)['grade_summary']['section_breakdown']
+                for user_grade in user_grades:
+                    if 'Assessment' in user_grade['category']:
+                        number_of_assessments += 1
+                    if 'GROUP_PROJECT' in user_grade['category']:
+                        number_of_groupworks += 1
             for course_participant in allCourseParticipantsUsers['results']:
                 course_participant['user_status'] = []
                 if request.GET['include_slow_fields'] == 'true':  
-                    course_participant['progress'] = int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0])
-                    if course_participant['progress'] <= 9:
-                        course_participant['progress'] = '00' + str(course_participant['progress'])
-                    elif course_participant['progress'] <= 99:
-                        course_participant['progress'] = '0' + str(course_participant['progress'])
-                    elif course_participant['progress'] == 100:
-                        course_participant['progress'] = str(course_participant['progress'])
+                    course_participant['progress'] = '{:03d}'.format(int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
+                    course_participant['group_work'] = '-'
+                    course_participant['assessment_midterm'] = '-'
+                    course_participant['assessment_final'] = '-'
+                    user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
+                    for user_grade in user_grades:
+                        if 'GROUP_PROJECT' in user_grade['category']:
+                            course_participant['group_work'] = '{:03d}'.format(int(float(user_grade['percent'])*100))
+                        elif 'Assessment' in user_grade['category']:
+                            if (number_of_assessments <= 1):
+                                course_participant['assessment_final'] = '{:03d}'.format(int(float(user_grade['percent'])*100))
+                            else:
+                                if ('Final' in user_grade['category']) or (number_of_assessments <= 1):
+                                    course_participant['assessment_final'] = '{:03d}'.format(int(float(user_grade['percent'])*100))
+                                else:
+                                    course_participant['assessment_midterm'] = '{:03d}'.format(int(float(user_grade['percent'])*100))
                 else:
+                    course_participant['number_of_assessments'] = number_of_assessments
+                    course_participant['number_of_groupworks'] = number_of_groupworks
+                    course_participant['progress'] = '.'
+                    course_participant['group_work'] = '.'
+                    course_participant['assessment_midterm'] = '.'
+                    course_participant['assessment_final'] = '.'
                     course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
                     if not course_participant['proficiency']:
-                        course_participant['proficiency'] = 0;
+                        course_participant['proficiency'] = "000";
                     else:
-                        course_participant['proficiency'] = int(course_participant['proficiency'][0])
-                    if course_participant['proficiency'] <= 9:
-                        course_participant['proficiency'] = '00' + str(course_participant['proficiency'])
-                    elif course_participant['proficiency'] <= 99:
-                        course_participant['proficiency'] = '0' + str(course_participant['proficiency'])
-                    elif course_participant['proficiency'] == 100:
-                        course_participant['proficiency'] = str(course_participant['proficiency'])
+                        course_participant['proficiency'] = '{:03d}'.format(int(course_participant['proficiency'][0]))
                     for role in list_of_user_roles['data']:
                         if role['id'] == course_participant['id']:
                             course_participant['user_status'].append(permissonsMap[role['role']])
@@ -3141,21 +3162,9 @@ class participant_details_active_courses_api(APIView):
                 course_data = None
                 course_data = load_course(user_course['id'], request=request)
                 load_course_progress(course_data, user_id)
-                user_course['progress'] = course_data.user_progress
-                if user_course['progress'] <= 9:
-                    user_course['progress'] = '00' + str(user_course['progress'])
-                elif user_course['progress'] <= 99:
-                    user_course['progress'] = '0' + str(user_course['progress'])
-                elif user_course['progress'] == 100:
-                    user_course['progress'] = str(user_course['progress'])
+                user_course['progress'] = '{:03d}'.format(int(course_data.user_progress))
                 proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
-                user_course['proficiency'] = round_to_int(proficiency.user_grade_value * 100)
-                if user_course['proficiency'] <= 9:
-                    user_course['proficiency'] = '00' + str(user_course['proficiency'])
-                elif user_course['proficiency'] <= 99:
-                    user_course['proficiency'] = '0' + str(user_course['proficiency'])
-                elif user_course['proficiency'] == 100:
-                    user_course['proficiency'] = str(user_course['proficiency'])
+                user_course['proficiency'] = '{:03d}'.format(round_to_int(proficiency.user_grade_value * 100))
                 fetch_courses.append(user_course)   
             return Response(fetch_courses) 
 

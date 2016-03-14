@@ -9,7 +9,7 @@
 	margin-bottom: 10px;
 }
 #participantsListViewGridBlock{
-	height: 120em;
+	max-height: 120em;
 	overflow-y: scroll;
 }
 #mainParticipantsWrapper .menuButton{
@@ -67,7 +67,7 @@
 }
 #participantDetailsActiveCoursesViewGrid
 {
-	height: 25em;
+	max-height: 25em;
 	overflow-y: scroll;
 	margin-left: auto;
 	margin-right: auto;
@@ -80,7 +80,7 @@
 }
 #participantDetailsCourseHistoryViewGrid
 {
-	height: 25em;
+	max-height: 25em;
 	overflow-y: scroll;
 	margin-left: auto;
 	margin-right: auto;

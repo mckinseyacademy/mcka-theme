@@ -26,7 +26,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 100px;
-	height: 25em;
+	max-height: 25em;
 	overflow-y: scroll;
 }
 
@@ -149,7 +149,7 @@
 {
 	overflow: auto;
 	width: 100%;
-	height:120em;
+	max-height:120em;
 }
 
 #courseDetailsMainContainer .bbGrid-search-bar
