@@ -22,9 +22,6 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     returnObject = {};
     num_of_pages = Math.ceil(resp.full_length/this.state.pageSize)
     current_page = resp.current_page
-    var date = new Date();
-    var printdate = '' + current_page + '===' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
-    console.log(printdate);
     if (parseInt(current_page) < parseInt(num_of_pages)){
       queryParameters = this.state.currentPage + '=' + (parseInt(current_page++)) ;
       returnObject['next'] = this.url + '?' + queryParameters;
