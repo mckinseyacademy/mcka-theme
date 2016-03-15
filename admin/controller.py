@@ -1077,3 +1077,90 @@ def serialize_quick_link(quick_link):
         }
 
     return serialized
+
+
+def round_to_int(value):
+    return int(round(value))
+
+
+def round_to_int_bump_zero(value):
+    rounded_value = round_to_int(value)
+    if rounded_value < 1 and value > 0:
+        rounded_value = 1
+    return rounded_value
+
+
+def get_course_social_engagement(course_id):
+
+    course_groups = course_api.get_course_details_groups(course_id) 
+    groups_ids_list = []
+    for group in course_groups:
+        groups_ids_list.append(str(group['id']))
+    groups_ids = ','.join(group_id for group_id in groups_ids_list)
+    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+
+    number_of_posts = 0
+    number_of_participants_posting = 0
+    course_metrics_social = course_api.get_course_details_metrics_social(course_id)
+
+    number_of_users = len([dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])])
+
+    for user in course_metrics_social['users']:
+        user_data = course_metrics_social['users'][str(user)]
+        number_of_participants_posting += 1
+        number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data['num_comments']
+        number_of_posts += number_of_posts_per_participant
+
+    if number_of_users:
+        participants_posting = str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'
+        avg_posts = round(float(number_of_posts)/number_of_users, 1)
+    else:
+        participants_posting = 0
+        avg_posts = 0
+
+    course_stats = [
+        { 'name': '# of posts', 'value': number_of_posts},
+        { 'name': '% participants posting', 'value': participants_posting},
+        { 'name': 'Avg posts per participant', 'value': avg_posts}
+    ]
+
+    return course_stats
+
+
+def get_course_engagement_summary(course_id):
+
+    course_users_simple = course_api.get_user_list(course_id)
+    course_users_ids = [str(user.id) for user in course_users_simple]
+    roles = course_api.get_users_filtered_by_role(course_id)
+    roles_ids = [str(user.id) for user in roles]
+    for role_id in roles_ids:
+        if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+    additional_fields = ["is_active"]
+    course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
+    course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
+    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+    active_users = 0
+    engaged_users = 0
+    engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+    for course_user in course_users:
+        if course_user.is_active is True:
+            active_users += 1
+        if course_user.id in course_leaders_ids:
+            engaged_users += 1
+
+    course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users_simple)) if len(course_users_simple) > 0 else 0
+    activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
+    engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
+    active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
+    engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum)/engaged_users) if engaged_users > 0 else 0
+
+    course_stats = [
+         { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
+         { 'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
+         { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
+         { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
+    ]
+
+    return course_stats
