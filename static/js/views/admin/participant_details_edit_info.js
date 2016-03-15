@@ -50,7 +50,7 @@
                   $('#participantDetailsMainModal').find('.mainText').text(message);
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
                 }
-                else if (data['type'] == 'user_exist')
+                else
                 {
                   $('#participantDetailsMainModal').find('.mainText').text(data['message']);
                   $('#participantDetailsMainModal').foundation('reveal', 'open');

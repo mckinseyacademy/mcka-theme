@@ -3140,7 +3140,10 @@ class participant_details_api(APIView):
                 return Response({'status':'error', 'type': 'user_exist', 'message':'User with that username or email already exists!'})
             else:
                 data = form.cleaned_data
-                response = user_api.update_user_information(user_id,data)
+                try:
+                    response = user_api.update_user_information(user_id,data)
+                except ApiError, e:
+                    return Response({'status':'error','type': 'api_error', 'message':e.message})
                 return Response({'status':'ok', 'message':vars(response)})
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})

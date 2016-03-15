@@ -89,7 +89,10 @@
               Admin Permissions
             .participantPermissionsValue
               - for mcka_permission in mcka_permissions
-                #{mcka_permission}
+                - if mcka_permission == '-'
+                  &#8212;
+                - else
+                  #{mcka_permission}
         .row
           .large-12.columns.participantBottomArchiveEdit
             %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
@@ -142,7 +145,7 @@
         .row
           .large-6.columns.participantCountry
             .participantCountryLabel.labelUniversal
-              Country Abbreviation (ISO-A2)
+              Country Abbreviation
             .participantCountryValue
               %input{:type => "text", :value => '#{country}', :name => "country"}
           .large-6.columns.participantCity
