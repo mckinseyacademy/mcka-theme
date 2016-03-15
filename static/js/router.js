@@ -144,6 +144,11 @@ var Router = Backbone.Router.extend({
   },
 
   admin_course_details_stats: function(course_id){
+    $('#courseDetailsMainContainer').find('.courseDetailsTopic').each(function(index, value){
+      val = $(value);
+      val.show();
+    });
+    $('#coursesDownloadStatsButton').show();
     var courseId = $('#courseDetailsDataWrapper').attr('data-id');
     ApiUrls.course_details_stats = ApiUrls.course_details+'/'+courseId+'/stats/';
     ApiUrls.course_details_engagement = ApiUrls.course_details+'/'+courseId+'/engagement/';

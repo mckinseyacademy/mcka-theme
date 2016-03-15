@@ -157,3 +157,20 @@
 	float: none!important;
 	display: inline-block;
 }
+
+.courseDetailsTopic
+{
+	float: left;
+	display: none;
+}
+
+#coursesDownloadStatsButton
+{
+	float: right;
+	display: none;
+}
+
+#coursesDownloadStatsButton .button
+{
+	background-color: #868685!important;
+}
