@@ -1086,13 +1086,13 @@ class course_details_api(APIView):
             for course_participant in allCourseParticipantsUsers['results']:
                 course_participant['user_status'] = []
                 if request.GET['include_slow_fields'] == 'true':  
-                    course_participant['progress'] = '{:03d}'.format(int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
+                    course_participant['progress'] = '{:03d}'.format(round_to_int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
                     user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
                     course_participant['groupworks'] = []
                     course_participant['assessments'] = []
                     for user_grade in user_grades:
                         data = user_grade
-                        data['percent'] = '{:03d}'.format(int(float(user_grade['percent'])*100))
+                        data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
                         if 'GROUP_PROJECT' in user_grade['category']:
                             course_participant['groupworks'].append(data)
                         elif 'assessment' in user_grade['category'].lower():

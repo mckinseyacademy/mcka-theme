@@ -89,7 +89,11 @@
       details.find('.participantUsernameValue').text(edit.find('.participantUsernameValue input').val());
       details.find('.participantEmailValue').text(edit.find('.participantEmailValue input').val());
       details.find('.participantCompanyValue').text(edit.find('.participantCompanyValue input').val());
-      details.find('.participantGenderValue').text(edit.find('.participantGenderValue select').val());
+      var genderAbbreviation = edit.find('.participantGenderValue select').val();
+      if (genderAbbreviation == 'M')
+        details.find('.participantGenderValue').text('Male');
+      if (genderAbbreviation == 'F')
+        details.find('.participantGenderValue').text('Female');
       var city = edit.find('.participantCityValue input').val().trim();
       var country = edit.find('.participantCountryValue input').val().trim();
       combinedLocation = edit.find('.participantCityValue input').val().trim() + ', ' + edit.find('.participantCountryValue input').val().trim();
@@ -113,7 +117,11 @@
       edit.find('.participantUsernameValue input').val(details.find('.participantUsernameValue').text().trim());
       edit.find('.participantEmailValue input').val(details.find('.participantEmailValue').text().trim());
       edit.find('.participantCompanyValue input').val(details.find('.participantCompanyValue').text().trim());
-      edit.find('.participantGenderValue select').val(details.find('.participantGenderValue').text().trim());
+      var fullGender = details.find('.participantGenderValue').text().trim();
+      if (fullGender == 'Female')
+        edit.find('.participantGenderValue select').val('F');
+      if (fullGender == 'Male')
+        edit.find('.participantGenderValue select').val('M');
       var locationText = details.find('.participantLocationValue').text();
       if (locationText.indexOf(',') > -1)
       {

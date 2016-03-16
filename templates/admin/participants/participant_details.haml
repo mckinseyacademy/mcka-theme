@@ -76,7 +76,10 @@
             .participantGenderLabel.labelUniversal
               Gender
             .participantGenderValue
-              ={gender}
+              - if gender == 'M'
+                Male
+              - if gender == 'F'
+                Female
         %hr
         .row
           .large-6.columns.participantLocation
@@ -136,12 +139,12 @@
               Gender
             .participantGenderValue
               %select{:name => "gender"}
-                - if gender == 'Male' 
-                  %option{:value => "Male", :selected => 'True'} Male
-                  %option{:value => "Female"} Female
-                -else
-                  %option{:value => "Male"} Male
-                  %option{:value => "Female", :selected => 'True'} Female
+                - if gender == 'M' 
+                  %option{:value => "M", :selected => 'True'} Male
+                  %option{:value => "F"} Female
+                - else
+                  %option{:value => "M"} Male
+                  %option{:value => "F", :selected => 'True'} Female
         .row
           .large-6.columns.participantCountry
             .participantCountryLabel.labelUniversal
