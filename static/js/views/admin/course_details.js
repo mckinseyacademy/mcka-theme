@@ -137,7 +137,7 @@
           groupwork = _.clone(assessment_template);
           groupwork.title = 'Group Work: ' + groupworkData.label;
           groupwork.name = 'groupworks.' + groupworkIndex + '.percent';
-          groupwork.actions = function(id, attributes) 
+          groupwork.actions = (function(groupworkIndex){ return function(id, attributes) 
           { 
             var value = attributes.groupworks[groupworkIndex].percent
             if (value == '.')
@@ -147,7 +147,7 @@
             if (value == '-')
               return value;
             return '' + parseInt(value) + '%'; 
-          };
+          }})(groupworkIndex);
           coursesListDetailsViewGrid.colModel.push(groupwork); 
         }
         var assessmentData;
@@ -157,7 +157,7 @@
           assessment = _.clone(assessment_template);
           assessment.title = 'Assessment: ' + assessmentData.label;
           assessment.name = 'assessments.' + assessmentIndex + '.percent';
-          assessment.actions = function(id, attributes) 
+          assessment.actions = (function(assessmentIndex){ return function(id, attributes) 
           { 
             var value = attributes.assessments[assessmentIndex].percent
             if (value == '.')
@@ -167,7 +167,7 @@
             if (value == '-')
               return value;
             return '' + parseInt(value) + '%'; 
-          };
+          }})(assessmentIndex);
           coursesListDetailsViewGrid.colModel.push(assessment); 
         }
       }
