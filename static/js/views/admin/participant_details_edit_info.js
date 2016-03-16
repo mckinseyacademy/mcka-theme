@@ -5,64 +5,76 @@
       $('#participantDetailsWrapper').find('.participantEditDetails').on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').hide();
+        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').show();
+
       });
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').off();
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').hide();
+        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').show();
+        
         _this.update_edit_field_data();
       });
-      $('#participantDetailsWrapper').find('.participantDetailsSave').on("click", function()
+      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').off('focus');
+      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').on("focus", function()
       {
-        var id = $('#participantsDetailsDataWrapper').attr('data-id');
-        var data = {}
-        $.each($("form").find(':input'), function(i, v){
-              var input = $(v);
+        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
+      });
+      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').on("click", function()
+      {
+        if (!$(this).hasClass('disabled'))
+        {
+          var id = $('#participantsDetailsDataWrapper').attr('data-id');
+          var data = {}
+          $.each($("form").find(':input'), function(i, v){
+            var input = $(v);
             data[input.attr("name")] = input.val().trim();   
-        });
-        delete data["undefined"];
-        var xcsrf = data['csrfmiddlewaretoken'];
-        delete data['csrfmiddlewaretoken'];
-        $.ajax({
-          type: 'POST',
-          url: '/admin/participants/'+id,
-          headers: { 'X-CSRFToken': xcsrf },
-          data: data,
-          dataType: "json",
-          cache: false,
-          success: function (data, status) {
-              if (data['status'] == "ok") {
-                _this.update_participant_field_data();
-                $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
-                $('#participantDetailsMainModal').foundation('reveal', 'open');
-                $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
-              }
-              else {
-                if (data['type'] == 'validation_failed')
-                {
-                  var message = '';
-                  for (key in data['message'])
+          });
+          delete data["undefined"];
+          var xcsrf = data['csrfmiddlewaretoken'];
+          delete data['csrfmiddlewaretoken'];
+          $.ajax({
+            type: 'POST',
+            url: '/admin/participants/'+id,
+            headers: { 'X-CSRFToken': xcsrf },
+            data: data,
+            dataType: "json",
+            cache: false,
+            success: function (data, status) {
+                if (data['status'] == "ok") {
+                  _this.update_participant_field_data();
+                  $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
+                  $('#participantDetailsMainModal').foundation('reveal', 'open');
+                  $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
+                }
+                else {
+                  if (data['type'] == 'validation_failed')
                   {
-                    message += key + ' - ' + data['message'][key] + '\n';
+                    var message = '';
+                    for (key in data['message'])
+                    {
+                      message += key + ' - ' + data['message'][key] + '\n';
+                    }
+                    $('#participantDetailsMainModal').find('.mainText').text(message);
+                    $('#participantDetailsMainModal').foundation('reveal', 'open');
                   }
-                  $('#participantDetailsMainModal').find('.mainText').text(message);
-                  $('#participantDetailsMainModal').foundation('reveal', 'open');
+                  else
+                  {
+                    $('#participantDetailsMainModal').find('.mainText').text(data['message']);
+                    $('#participantDetailsMainModal').foundation('reveal', 'open');
+                  }
                 }
-                else
-                {
-                  $('#participantDetailsMainModal').find('.mainText').text(data['message']);
-                  $('#participantDetailsMainModal').foundation('reveal', 'open');
-                }
+              },
+              error: function(data, status)
+              {
+                $('#participantDetailsMainModal').find('.mainText').text(data['responseText']);
+                $('#participantDetailsMainModal').foundation('reveal', 'open');
               }
-            },
-            error: function(data, status)
-            {
-              $('#participantDetailsMainModal').find('.mainText').text(data['responseText']);
-              $('#participantDetailsMainModal').foundation('reveal', 'open');
-            }
-        });
+          });
+        }
       });
     },
     render: function(){
