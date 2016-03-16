@@ -34,10 +34,18 @@
       border-color: $mckinsey-academy-alt-blue;
       color: $mckinsey-academy-alt-blue;
       font-weight: 600;
+      padding-left: rem-calc(12);
 
       &:disabled{
         color: $mckinsey-dark-grey;
       }
+    }
+
+    .loading-spinner {
+      position: absolute;
+      color: $mckinsey-academy-alt-blue;
+      top: rem-calc(12);
+      left: rem-calc(4);
     }
   }
 

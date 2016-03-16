@@ -35,23 +35,19 @@
                       )
 
               .small-3.columns
-                %select#select-course{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/courses", 'data-outline-component': 'course'}
+                %select#select-course{'data-filter-endpoint': '/admin/workgroup/dashboard/programs/$value$/courses', 'data-outline-component': 'course'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Course")
 
               .small-2.columns
-                %select#select-project{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/courses/$value$/projects", 'data-outline-component': 'project'}
+                %select#select-project{'data-filter-endpoint': '/admin/workgroup/dashboard/courses/$value$/projects', 'data-outline-component': 'project'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("Project")
 
               .small-2.columns
-                %select#select-company{'data-chained-filter-endpoint': "/admin/workgroup/dashboard/programs/$value$/companies", 'data-outline-component': 'company'}
-                  - if clients_for_user|length > 1
-                    %option{'data-static': 'true', 'value': ''}
-                      = _("All companies")
-                  - for client in clients_for_user
-                    %option{'value': '#{client.id}'}
-                      = client.display_name
+                %select#select-company{'data-filter-endpoint': '/admin/workgroup/dashboard/companies', 'data-outline-component': 'company', 'data-query-mode': 'data', 'data-value-parameter': 'program_id', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("All companies")
               .small-2.columns
                 %a#save-filter.button.radius.small.disabled
                   Save filter
@@ -82,14 +78,15 @@
           .columns.large-12.group_project_placeholder
 
 - block js_snippets
+  %script{src: "{% static 'js/views/admin/group_work_dashboard_common.js' %}"}
   %script{src: "{% static 'js/views/admin/group_work_dashboard.js' %}"}
   :javascript
 
     var dashboard_configuration = {
       selected_values: {
-        program_id: '{{ selected_program_id }}',
-        course_id: '{{ selected_course_id }}',
-        project_id: '{{ selected_project_id }}',
+        programId: '{{ selected_program_id }}',
+        courseId: '{{ selected_course_id }}',
+        projectId: '{{ selected_project_id }}',
       },
       lesson_data_base: {
         sessionId: '{{ remote_session_key }}',

@@ -5,56 +5,10 @@ function group_work_dashboard(dashboard_configuration) {
     var lesson_data_base = dashboard_configuration['lesson_data_base'];
     var quick_links_endpoint = dashboard_configuration['quick_links_endpoint'];
     var csrf_token = dashboard_configuration['csrf_token'];
-
-    // Value of one of select boxes when no choice is possible due to choices
-    // in previous boxes.
-    var NONE_DATA_VALUE = "N_A";
+    var common = new DashboardCommon(gp_placeholder, lesson_data_base);
 
     // Stores mapping from quick_link_id to quick-link object
     var quick_links = {};
-
-    function clear_select_options(target_selector) {
-        var options = $(target_selector).find('option:not([data-static])');
-        options.remove();
-    }
-
-    function make_option(value, text) {
-        var option = $("<option>");
-        option.val(value);
-        option.html(text);
-        return option;
-    }
-
-    function parse_response_as_options($select, data) {
-        var have_real_options = false;
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            if (item.disabled) {
-                continue;
-            }
-            var option = make_option(item.value, item.display_name);
-            $select.append(option);
-            have_real_options = true;
-        }
-
-        if (!have_real_options) {
-            var option = make_option(NONE_DATA_VALUE, "None available");
-            $select.append(option);
-            $select.val(option.val());
-        }
-        update_select_status($select);
-    }
-
-    function update_select_status($select) {
-        $select.removeAttr('disabled');
-        if ($select.children("option[value='" + NONE_DATA_VALUE + "']").length != 0) {
-            $select.attr('disabled', true);
-        }
-    }
-
-    function generic_error_hander(xhr, status, error) {
-         alert(error);
-    }
 
     /**
      * Asks target select to update itself  based on a value from
@@ -63,32 +17,18 @@ function group_work_dashboard(dashboard_configuration) {
      * @param target_select a selector
      * @param value value selected in previous select
      */
-    function fire_chained_select(target_select, value) {
-        clear_select_options(target_select);
-
+    function update_select_options(target_select, value) {
         var $target_select = $(target_select);
-        $target_select.trigger('change');
-        var url = $target_select.data('chained-filter-endpoint').replace('$value$', value);
-        return $.ajax({
-            method: 'GET',
-            url: url
-        }).done(
-            function (data) {
-                parse_response_as_options($target_select, data);
-                $(target_select).trigger('options_updated');
-                update_display_strip_item($target_select);
-            }
-        ).error(generic_error_hander);
+        return common.update_select_options($target_select, value).done(function() {
+            update_display_strip_item($target_select);
+        });
     }
 
     function chain_selects(source_select, target_select) {
         // when source_select is updated, it sends ajax requests and populates target_select with values
         $(source_select).on('change', function () {
             var value = $(this).find('option:selected').val();
-            if (!value) {
-                return;
-            }
-            fire_chained_select(target_select, value);
+            update_select_options(target_select, value);
         });
     }
 
@@ -113,22 +53,6 @@ function group_work_dashboard(dashboard_configuration) {
         }
     }
 
-    function make_group_project_element(course_id, project_id, company_id) {
-        var lesson_data = $.extend({}, lesson_data_base);
-        lesson_data.courseId = course_id;
-        lesson_data.usageId = project_id;
-        lesson_data.data = {client_filter_id: company_id};
-        // This is a hack
-        // jquery.xblock doesn't allow to wait until xblock gets fully rendered
-        // so we'll just insert an internal div to gp_placeholder
-        // so each new xblock will be rendering inside a new div element
-        // this element will get detached from DOM, and xblock will not
-        // end up showing on webpage.
-        var internal_div = $("<div/>");
-        gp_placeholder.append(internal_div);
-        return internal_div.xblock(lesson_data);
-    }
-
     function set_select_value(select_selector, value) {
         $(select_selector).val(value);
         $(select_selector).trigger('change');
@@ -136,14 +60,14 @@ function group_work_dashboard(dashboard_configuration) {
 
     function restore_selection(selected_values) {
         $('select#select-course').one('options_updated', function () {
-            set_select_value('select#select-course', selected_values.course_id);
+            set_select_value('select#select-course', selected_values.courseId);
         });
 
         $('select#select-project').one('options_updated', function () {
-            set_select_value('select#select-project', selected_values.project_id);
+            set_select_value('select#select-project', selected_values.projectId);
         });
 
-        set_select_value('select#select-program', selected_values.program_id);
+        set_select_value('select#select-program', selected_values.programId);
     }
 
     function update_display_strip_item($source_select) {
@@ -245,7 +169,7 @@ function group_work_dashboard(dashboard_configuration) {
 
     function save_quick_filter() {
         function filter_value(value) {
-            return value != NONE_DATA_VALUE ? value: '';
+            return value != common.NONE_DATA_VALUE ? value: '';
         }
 
         var post_dict = {
@@ -257,7 +181,7 @@ function group_work_dashboard(dashboard_configuration) {
 
        send_quick_filters_request('POST', post_dict)
            .done(add_quick_filter_row)
-           .error(generic_error_hander);
+           .error(common.generic_error_handler);
     }
 
 
@@ -277,7 +201,7 @@ function group_work_dashboard(dashboard_configuration) {
             function() {
                 remove_quick_filter_row(link_id);
             }
-        ).error(generic_error_hander)
+        ).error(common.generic_error_handler)
     }
 
 
@@ -299,7 +223,7 @@ function group_work_dashboard(dashboard_configuration) {
        var $filters = $("select#select-program, select#select-course, select#select-project, select#select-company");
 
         $.each($filters, function(idx, filter) {
-            update_select_status($(filter));
+            common.update_select_status($(filter));
         });
 
         $("#quick-links td a").removeClass('disabled');
@@ -346,7 +270,7 @@ function group_work_dashboard(dashboard_configuration) {
      * @param selector selector for a select
      * @param value if of option to select
      */
-    function update_select(selector, value) {
+    function update_select_from_quick_link(selector, value) {
         var $select = $(selector);
         $select.prop('disabled', false);
         $select.children('option').removeProp('selected');
@@ -355,8 +279,8 @@ function group_work_dashboard(dashboard_configuration) {
         } else {
             value = value.id;
         }
-        if ($select.children("option[value='" + NONE_DATA_VALUE + "']").length > 0){
-            value = NONE_DATA_VALUE;
+        if ($select.children("option[value='" + common.NONE_DATA_VALUE + "']").length > 0){
+            value = common.NONE_DATA_VALUE;
             $select.prop('disabled', true);
         }
         $select.val(value);
@@ -367,11 +291,11 @@ function group_work_dashboard(dashboard_configuration) {
      * Updates all selects using a quick link values.
      * @param quick_link
      */
-    function update_selects(quick_link) {
-        update_select('select#select-program', quick_link.program);
-        update_select('select#select-course', quick_link.course);
-        update_select('select#select-project', quick_link.group_work);
-        update_select('select#select-company', quick_link.client);
+    function set_quick_link_values(quick_link) {
+        update_select_from_quick_link('select#select-program', quick_link.program);
+        update_select_from_quick_link('select#select-course', quick_link.course);
+        update_select_from_quick_link('select#select-project', quick_link.group_work);
+        update_select_from_quick_link('select#select-company', quick_link.client);
     }
 
 
@@ -401,17 +325,17 @@ function group_work_dashboard(dashboard_configuration) {
         deactivate_ui();
 
         var deferreds = [
-            fire_chained_select('select#select-course', quick_link.program.id),
-            fire_chained_select('select#select-company', quick_link.program.id)
+            update_select_options('select#select-course', quick_link.program.id),
+            update_select_options('select#select-company', quick_link.program.id)
         ];
 
         if (typeof quick_link.course !== 'undefined'){
-            deferreds.push(fire_chained_select('select#select-project', quick_link.course.id))
+            deferreds.push(update_select_options('select#select-project', quick_link.course.id))
         }
 
 
         $.when.apply($, deferreds).done(function () {
-            update_selects(quick_link);
+            set_quick_link_values(quick_link);
             var deferred = update_dashboard();
             $.when(deferred).done(function() {
                 activate_ui();
@@ -427,11 +351,9 @@ function group_work_dashboard(dashboard_configuration) {
         var company_id = $("select#select-company").val();
         gp_placeholder.empty();
         if (project_id && course_id) {
-            return make_group_project_element(course_id, project_id, company_id);
+            return common.make_group_project_element(course_id, project_id, company_id);
         } else {
-            var def = $.Deferred();
-            def.resolve();
-            return def;
+            return common.make_resolved_deferred();
         }
     }
 
@@ -439,11 +361,12 @@ function group_work_dashboard(dashboard_configuration) {
         load_quick_filters();
 
         activate_ui();
+        update_select_options('select#select-company'); // populating company filter with all companies
 
         $("#save-filter").click(save_quick_filter);
         $("#quick-links").on('click', 'td.delete-filter a', delete_quick_filter);
 
-        if (selected_values.project_id) {
+        if (selected_values.projectId) {
             restore_selection(selected_values);
         }
     });
