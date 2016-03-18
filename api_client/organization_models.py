@@ -11,6 +11,11 @@ from django.core.files.storage import default_storage
 class Organization(JsonObjectWithImage):
     #required_fields = ["display_name", "contact_name", "contact_phone", "contact_email", ]
 
+    def __init__(self, *args, **kwargs):
+        self._user_ids = []
+        self._group_ids = []
+        super(Organization, self).__init__(*args, **kwargs)
+
     ''' object representing a organization from api json response '''
     @classmethod
     def create(cls, name, organization_data):
@@ -44,10 +49,31 @@ class Organization(JsonObjectWithImage):
         groups = organization_api.get_organization_groups(organization_id, type="contact_group")
         return [group for group in groups if group.type == "contact_group"]
 
-    def add_user(self, user_id):
-        if user_id not in self.users:
-            self.users.append(user_id)
-            organization_api.add_user_to_organization(self.id, user_id)
+    @property
+    def users(self):
+        """
+        returns user ids in organization
+        """
+        if not self._user_ids:
+            self._user_ids = organization_api.fetch_organization_user_ids(self.id)
+        return self._user_ids
+
+    @users.setter
+    def users(self, value):
+        self._user_ids = value
+
+    @property
+    def groups(self):
+        """
+        returns group ids in organization
+        """
+        if not self._group_ids:
+            self._group_ids = organization_api.fetch_organization_group_ids(self.id)
+        return self._group_ids
+
+    @groups.setter
+    def groups(self, value):
+        self._group_ids = value
 
     def remove_user(self, user_id):
         if user_id in self.users:
