@@ -914,13 +914,13 @@ def download_course_stats(request, course_id):
     writer.writerow(['Engagement Summary', '# of people', '% total cohort', 'Avg Progress'])
     for stat in course_engagement_summary:
         writer.writerow([stat['name'], stat['people'], stat['invited'], stat['progress']])
-
+    writer.writerow([])
     writer.writerow(['Participant Performance', '% completion', 'Score'])
     writer.writerow(['Group work 1', '-', '-'])
     writer.writerow(['Group work 2', '-', '-'])
     writer.writerow(['Mid-course assessment', '-', '-'])
     writer.writerow(['Final assessment', '-', '-'])
-
+    writer.writerow([])
     writer.writerow(['Social Engagement', '#'])
     for stat in course_social_engagement:
         writer.writerow([stat['name'], stat['value']])
