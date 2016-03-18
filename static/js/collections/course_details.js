@@ -8,7 +8,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
   mode: "infinite",
   state: {
     firstPage:1,
-    pageSize: 250
+    pageSize: 100
   },
   queryParams: {
     currentPage: "page",
@@ -16,7 +16,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     totalRecords: null,
     include_slow_fields: false,
     ids: false,
-    page_size: 250,
+    page_size: 100,
   },
   parseLinks: function (resp, options) {
     returnObject = {};
