@@ -172,6 +172,19 @@ var Router = Backbone.Router.extend({
       else
         val.hide();
     });
+
+    Apros.Router.linked_views['courseParticipants']['drawn'] = true;
+    var courseId = $('#courseDetailsDataWrapper').attr('data-id');
+    var courseDetails = new Apros.collections.CourseDetails([],{ path : courseId});
+    var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
+    courses_details_view.render();
+
+    $(document).on('open.fndtn.reveal', '#courseDetailsMainModal', function () {
+      var modal = $(this);
+      modal.selectedParticipantIds = courses_details_view.coursesListDetailsViewGrid.selectedRows;
+    //  alert(modal.selectedParticipantIds);
+    });
+
     $('#courseBulkActionsMainContainer').on('click','.bulkChangeStatus',function()
     {
       $('#courseDetailsMainModal').find('.courseModalTitle').text('Change Status');
@@ -181,13 +194,13 @@ var Router = Backbone.Router.extend({
         '<input type="radio" name="status" value="Observer" id="observerCheckbox"><label for="observerCheckbox">Observer</label>'+
         '<input type="radio" name="status" value="TA" id="taCheckbox"><label for="taCheckbox">TA</label>'
       );
-      $('#courseDetailsMainModal').foundation('reveal', 'open');
+      if(courses_details_view.coursesListDetailsViewGrid.selectedRows.length === 0) {
+        alert("You need to select at least one participant to be able to apply bulk actions.")
+      }
+      else {
+        $('#courseDetailsMainModal').foundation('reveal', 'open');
+      }
     });
-    Apros.Router.linked_views['courseParticipants']['drawn'] = true;
-    var courseId = $('#courseDetailsDataWrapper').attr('data-id');
-    var courseDetails = new Apros.collections.CourseDetails([],{ path : courseId});
-    var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
-    courses_details_view.render();
   },
 });
 Apros.Router = new Router;

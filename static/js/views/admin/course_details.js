@@ -1,4 +1,7 @@
   Apros.views.CourseDetailsView = Backbone.View.extend({
+
+    coursesListDetailsViewGrid: {},
+
     initialize: function(){
       _this = this;
       this.collection.fetch({success:function(collection, response, options)
@@ -69,6 +72,7 @@
       });
       
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
+      this.coursesListDetailsViewGrid = coursesListDetailsViewGrid;
       this.$el.scroll(this.fetchPages);
       $(document).on('onSearchEvent', this.onSearchEvent);
       $(document).on('onClearSearchEvent', this.onClearSearchEvent);
