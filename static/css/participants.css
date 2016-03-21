@@ -15,6 +15,10 @@
 #mainParticipantsWrapper .menuButton{
 	display:inline-block;
 }
+#participantsListViewGridBlock .bbGrid-grid
+{
+	min-width: 100%;
+}
 
 #participantsDetailsDataWrapper{
 	margin-top: 50px;
