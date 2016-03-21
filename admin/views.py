@@ -1084,7 +1084,6 @@ class course_details_api(APIView):
                         number_of_groupworks += 1
                         test_groupwork.append(data)
             for course_participant in allCourseParticipantsUsers['results']:
-                course_participant['user_status'] = []
                 if request.GET['include_slow_fields'] == 'true':  
                     course_participant['progress'] = '{:03d}'.format(round_to_int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
                     user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
@@ -1098,6 +1097,7 @@ class course_details_api(APIView):
                         elif 'assessment' in user_grade['category'].lower():
                             course_participant['assessments'].append(data)
                 else:
+                    course_participant['user_status'] = []
                     course_participant['number_of_assessments'] = number_of_assessments
                     course_participant['number_of_groupworks'] = number_of_groupworks
                     course_participant['progress'] = '.'
@@ -1111,13 +1111,14 @@ class course_details_api(APIView):
                     for role in list_of_user_roles['data']:
                         if role['id'] == course_participant['id']:
                             course_participant['user_status'].append(permissonsMap[role['role']])
-                            del role
+                            del role['role']
                     if permissonsMap['assistant'] in course_participant['user_status']:
                         course_participant['custom_user_status'] = 'TA'
                     elif permissonsMap['observer'] in course_participant['user_status']:
                         course_participant['custom_user_status'] = 'Observer'
                     else:
-                        course_participant['custom_user_status']='Participant'   
+                        course_participant['custom_user_status']='Participant'
+                        course_participant['user_status'].append('participant')
                     course_participant['progress'] = '.'
                     if len(course_participant['organizations'] ) == 0:
                         course_participant['organizations'] = [{'display_name': 'No company'}]
@@ -1145,6 +1146,27 @@ class course_details_api(APIView):
             return Response(allCourseParticipantsUsers)
         else:
             return Response({})
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, course_id=None, format=None):
+        data = request.POST
+        permissonsMap = {
+            'assistant':'TA',
+            'observer':'Observer',
+            'TA':'assistant',
+            'Observer':'observer',
+            }
+        if (data['type'] == 'status_change'):
+            for status_item in data['list_of_items']:
+                for existing_role in status_item['existing_roles']:
+                    if existing_role != status_item['role'] and existing_role != 'participant':
+                        user_api.delete_user_role(status_item['id'], course_id, permissonsMap[existing_role])
+                if (status_item['role'] not in status_item['existing_roles']) and status_item['role'] != 'participant':
+                    user_api.add_user_role(status_item['id'], course_id, permissonsMap[status_item['role']])
+                if status_item['role'] != 'participant' and ('participant' in status_item['existing_roles']):
+                    user_api.unenroll_user_from_course(status_item['id'], course_id)
+            json_object = {'status':'ok', 'data':data}
+            return Response(json_object)
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter

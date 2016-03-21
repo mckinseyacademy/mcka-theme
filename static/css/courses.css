@@ -62,6 +62,14 @@
 	margin-top: 25px;
 	margin-left: 50px;
 }
+.courseModalControl .cancelChanges
+{
+	margin-left: 15px;
+}
+.courseModalContent
+{
+	padding: 10px;
+}
 
 .courseDetailsHeader
 {
@@ -173,4 +181,45 @@
 #coursesDownloadStatsButton .button
 {
 	background-color: #868685!important;
+}
+.bulkActionsButtonContainer
+{
+	float: right;
+	z-index: 1000;
+	position: relative;
+}
+#dropBulkCourse
+{
+	width: 100%;
+}
+.submenuButtons
+{
+	width: 100%;
+	border-top: 3px solid white!important;
+	text-align: left!important;
+}
+.bulkButtonWrapper
+{
+	position: relative;
+}
+.emailSelectedParticipants
+{
+	z-index: 3;
+	position: relative;
+}
+.hiddenButtonSplitModifier
+{
+	position: absolute;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+}
+.bulkDropdownIcon
+{
+	z-index: 1;
+	position: relative;
+}
+#courseDetailsMainModal .courseModalDescription
+{
+	margin-bottom 20px;
 }

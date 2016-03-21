@@ -39,6 +39,18 @@
             %hr
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
+                #courseBulkActionsMainContainer.bulkActionsButtonContainer
+                  .bulkButtonWrapper
+                    .hiddenButtonSplitModifier{:data-dropdown => "dropBulkCourse"}
+                    %a.emailSelectedParticipants.button.split{:href => "#"}
+                      Email Selected Participants
+                    %a.button.bulkDropdownIcon
+                      .fa.fa-chevron-down
+                  #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}
+                    %a.button.submenuButtons.bulkChangeStatus{:href => "#"} Change status
+                    %a.button..submenuButtons.bulkUnenrollFromCourse{:href => "#"} Unenroll from course
+                    %a.button.submenuButtons.bulkEnrollInNewCourse{:href => "#"} Enroll in new course
+                    %a.button.submenuButtons.bulkExportStats{:href => "#"} Export stats
                 #courseDetailsParticipantsGrid.large-12.columns
               .row.courseStats.contentNavigationContainer
                 #courseDetailsEngagementTopic.courseDetailsTopic
@@ -56,3 +68,14 @@
                   Cohort Timeline
                 #course-details-timeline-wrapper  
                   %svg#course-details-timeline
+  #courseDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2.courseModalTitle
+    %hr
+    .courseModalDescription
+    .courseModalContent
+    .courseModalControl
+      .button.saveChanges
+        Save Changes
+      %a.cancelChanges{:href => "#"} Cancel
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;

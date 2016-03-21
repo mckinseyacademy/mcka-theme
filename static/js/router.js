@@ -172,6 +172,17 @@ var Router = Backbone.Router.extend({
       else
         val.hide();
     });
+    $('#courseBulkActionsMainContainer').on('click','.bulkChangeStatus',function()
+    {
+      $('#courseDetailsMainModal').find('.courseModalTitle').text('Change Status');
+      $('#courseDetailsMainModal').find('.courseModalDescription').text('Change status of all selected participants to:')
+      $('#courseDetailsMainModal').find('.courseModalContent').html(
+        '<input type="radio" name="status" value="Participant" id="participantCheckbox"><label for="participantCheckbox">Active</label>'+
+        '<input type="radio" name="status" value="Observer" id="observerCheckbox"><label for="observerCheckbox">Observer</label>'+
+        '<input type="radio" name="status" value="TA" id="taCheckbox"><label for="taCheckbox">TA</label>'
+      );
+      $('#courseDetailsMainModal').foundation('reveal', 'open');
+    });
     Apros.Router.linked_views['courseParticipants']['drawn'] = true;
     var courseId = $('#courseDetailsDataWrapper').attr('data-id');
     var courseDetails = new Apros.collections.CourseDetails([],{ path : courseId});
