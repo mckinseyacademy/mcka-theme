@@ -914,13 +914,13 @@ def download_course_stats(request, course_id):
     writer.writerow(['Engagement Summary', '# of people', '% total cohort', 'Avg Progress'])
     for stat in course_engagement_summary:
         writer.writerow([stat['name'], stat['people'], stat['invited'], stat['progress']])
-
+    writer.writerow([])
     writer.writerow(['Participant Performance', '% completion', 'Score'])
     writer.writerow(['Group work 1', '-', '-'])
     writer.writerow(['Group work 2', '-', '-'])
     writer.writerow(['Mid-course assessment', '-', '-'])
     writer.writerow(['Final assessment', '-', '-'])
-
+    writer.writerow([])
     writer.writerow(['Social Engagement', '#'])
     for stat in course_social_engagement:
         writer.writerow([stat['name'], stat['value']])
@@ -3042,18 +3042,53 @@ class participants_list_api(APIView):
     """
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, format=None):
-        allParticipants = user_api.get_filtered_users(request.GET)
-        for participant in allParticipants["results"]:
-            if len(participant["organizations"]) > 0:
-                participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
-            else:
-                participant['organizations_custom_name'] = ""
-            participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
-            if participant["is_active"]:
-                participant["active_custom_text"]="Yes"
-            else:
-                participant["active_custom_text"]="No"
-        return Response(allParticipants)
+
+        company = request.QUERY_PARAMS.get('company', None)
+        name = request.QUERY_PARAMS.get('name', None)
+        email = request.QUERY_PARAMS.get('custom_email', None)
+
+        filters = []
+        if company:
+            filters.append({ 'name': 'organizations_custom_name', 'value': company.lower()})
+        if name:
+            filters.append({ 'name': 'full_name', 'value': name.lower()})
+        if email:
+            filters.append({ 'name': 'email', 'value': email.lower()})
+
+        if filters:
+            allParticipants = user_api.get_filtered_users(request.GET)
+            for participant in allParticipants["results"]:
+                if len(participant["organizations"]) > 0:
+                    participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+                else:
+                    participant['organizations_custom_name'] = ""
+                participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
+                if participant["is_active"]:
+                    participant["active_custom_text"]="Yes"
+                else:
+                    participant["active_custom_text"]="No"
+            response = {'results': []}   
+            for user in allParticipants['results']:
+                for item in filters:
+                    item['toAppend'] = False
+                    if item['value'] in (user[item['name']]).lower():
+                        item['toAppend'] = True
+                if all(item['toAppend'] for item in filters):
+                    response['results'].append(user)
+            return Response(response)
+        else: 
+            allParticipants = user_api.get_filtered_users(request.GET)
+            for participant in allParticipants["results"]:
+                if len(participant["organizations"]) > 0:
+                    participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+                else:
+                    participant['organizations_custom_name'] = ""
+                participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
+                if participant["is_active"]:
+                    participant["active_custom_text"]="Yes"
+                else:
+                    participant["active_custom_text"]="No"
+            return Response(allParticipants)
 
 class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

@@ -25,6 +25,32 @@ Apros.collections.Participants = Backbone.PageableCollection.extend({
   },
   parse: function(data) {
     participants = data.results;
+    var items = [
+      { 'name': 'organizations_custom_name', 'tag': 'company', 'value': participants[0]['organizations_custom_name']},
+      { 'name': 'full_name', 'tag': 'name', 'value': participants[0]['full_name']},
+      { 'name': 'email', 'tag': 'custom_email', 'value': participants[0]['email']}
+    ];
+
+    for (user in participants){
+      for (item in items){
+        if (items[item]['value'] != participants[user][items[item]['name']]){
+          items[item]['value'] = null
+        }
+      }
+    }
+
+    for (item in items){
+      if (items[item]['value']){
+        highlightSearchBar(items[item]);
+      }
+    }
+      
     return participants;
+  },
+  updateQuerryParams: function(options){
+    for (key in options)
+      this.queryParams[key] = options[key];
+    this.state['pageSize'] = 100;
+    this.queryParams['page_size'] = 100;
   }
 });
