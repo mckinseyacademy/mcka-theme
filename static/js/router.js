@@ -179,18 +179,14 @@ var Router = Backbone.Router.extend({
     var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
     courses_details_view.render();
 
-    $(document).on('open.fndtn.reveal', '#courseDetailsMainModal', function () {
-      var modal = $(this);
-      modal.selectedParticipantIds = courses_details_view.coursesListDetailsViewGrid.selectedRows;
-    //  alert(modal.selectedParticipantIds);
-    });
-
     $('#courseBulkActionsMainContainer').on('click','.bulkChangeStatus',function()
     {
+      var selectedRowsIdsLen = courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
       $('#courseDetailsMainModal').find('.courseModalTitle').text('Change Status');
-      $('#courseDetailsMainModal').find('.courseModalDescription').text('Change status of all selected participants to:')
+      $('#courseDetailsMainModal').find('.courseModalStatus').text('Selected: '+selectedRowsIdsLen+', Successful: 0, Failed: 0');
+      $('#courseDetailsMainModal').find('.courseModalDescription').text('Change status of all selected participants to:');
       $('#courseDetailsMainModal').find('.courseModalContent').html(
-        '<input type="radio" name="status" value="Participant" id="participantCheckbox"><label for="participantCheckbox">Active</label>'+
+        '<input type="radio" name="status" value="Active" id="participantCheckbox"><label for="participantCheckbox">Active</label>'+
         '<input type="radio" name="status" value="Observer" id="observerCheckbox"><label for="observerCheckbox">Observer</label>'+
         '<input type="radio" name="status" value="TA" id="taCheckbox"><label for="taCheckbox">TA</label>'
       );
@@ -198,9 +194,60 @@ var Router = Backbone.Router.extend({
         alert("You need to select at least one participant to be able to apply bulk actions.")
       }
       else {
+        $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges').off().on('click', function()
+        {
+          var selectedRowsIds = courses_details_view.coursesListDetailsViewGrid.selectedRows;
+          var selectedVal = "";
+          var selected = $("#courseDetailsMainModal input[type='radio']:checked");
+          if (selected.length > 0) {
+              selectedVal = selected.val();
+          }
+          else
+          {
+            alert('You need to select status!');
+            return;
+          }
+          var dictionaryToSend = {type:'status_change', new_status: selectedVal, list_of_items:[]};
+          for (selectedRowsIndex in selectedRowsIds)
+          {
+            var id = selectedRowsIds[selectedRowsIndex];
+            var selectedModel = courseDetails.fullCollection.get(id);
+            var item ={ id: id, existing_roles: selectedModel.attributes.user_status};
+            dictionaryToSend.list_of_items.push(item);
+          }
+          var url = ApiUrls.course_details+'/'+courseId;
+          var options = {
+            url: url,
+            data: JSON.stringify(dictionaryToSend),
+            processData: false,
+            type: "POST",
+            dataType: "json"
+          };
+
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+          $.ajax(options)
+          .done(function(data) {
+            console.log(data);
+            if (data['status'] == 'ok')
+            {
+              courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id']);
+              var new_status = data['data'].new_status
+              for (itemIndex in data['data'].list_of_items)
+              {
+                var itemData = data['data'].list_of_items[itemIndex]
+                var selectedModel = courseDetails.fullCollection.get(itemData.id);
+                selectedModel.set({})
+              }
+            }
+            })
+          .fail(function(data) {
+            console.log("Ajax failed to fetch data");
+            console.log(data);
+            })
+        });
         $('#courseDetailsMainModal').foundation('reveal', 'open');
       }
-    });
+    }); 
   },
 });
 Apros.Router = new Router;

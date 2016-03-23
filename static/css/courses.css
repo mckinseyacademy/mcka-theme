@@ -219,6 +219,15 @@
 	z-index: 1;
 	position: relative;
 }
+#courseDetailsMainModal .courseModalTitle
+{
+	float: left;
+}
+#courseDetailsMainModal .courseModalStatus
+{
+	float: right;
+	margin-top: 5px;
+}
 #courseDetailsMainModal .courseModalDescription
 {
 	margin-bottom 20px;

@@ -21,7 +21,7 @@ from api_client.user_api import USER_ROLES
 from license import controller as license_controller
 
 from .models import (
-    Client, WorkGroup, UserRegistrationError, WorkGroupActivityXBlock,
+    Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
     GROUP_PROJECT_V2_ACTIVITY_CATEGORY,
 )
@@ -1164,3 +1164,98 @@ def get_course_engagement_summary(course_id):
     ]
 
     return course_stats
+
+def course_bulk_actions(course_id, data, batch_status):
+    batch_status.clean_old()
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
+    course_bulk_action(course_id, data, batch_status)
+
+@postpone
+def course_bulk_action(course_id, data, batch_status):
+    if (data['type'] == 'status_change'):
+        if batch_status is not None:
+            batch_status.attempted = len(data['list_of_items'])
+            batch_status.save()
+        for status_item in data['list_of_items']:
+            status = _change_user_status(course_id, data['new_status'], status_item)
+            if (status['status']=='error'):
+                if batch_status is not None:
+                    batch_status.failed = batch_status.failed + 1
+                    batch_status.save()    
+                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+            elif (status['status']=='success'):
+                if batch_status is not None:
+                    batch_status.succeded = batch_status.succeded + 1
+                    batch_status.save() 
+        json_object = {'status':'ok', 'data':data}        
+
+def _change_user_status(course_id, new_status, status_item):
+    permissonsMap = {
+        'TA':'assistant',
+        'Observer':'observer',
+        'Active': 'participant'
+    }
+    if len(status_item['existing_roles']) == 0 and new_status != 'Active':
+        try:
+            user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
+        except ApiError as e:
+            return {'status':'error', 'message':e.message}
+        try:
+            user_api.unenroll_user_from_course(status_item['id'], course_id)
+        except ApiError as e:
+            return {'status':'error', 'message':e.message}
+    if len(status_item['existing_roles']) == 1:
+        if status_item['existing_roles'][0] == new_status:
+            return {'status':'success'}
+        if status_item['existing_roles'][0] == 'Active':
+            try:
+                user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
+            except ApiError as e:
+                return {'status':'error', 'message':e.message}
+            try:
+                user_api.unenroll_user_from_course(status_item['id'], course_id)
+            except ApiError as e:
+                return {'status':'error', 'message':e.message}
+        else:
+            if new_status == 'Active':
+                try:
+                    user_api.delete_user_role(status_item['id'], course_id, permissonsMap[status_item['existing_roles'][0]])
+                except ApiError as e:
+                    return {'status':'error', 'message':e.message}
+                try:
+                    user_api.enroll_user_in_course(status_item['id'], course_id)
+                except ApiError as e:
+                    return {'status':'error', 'message':e.message}
+            else:
+                try:
+                    user_api.delete_user_role(status_item['id'], course_id, permissonsMap[status_item['existing_roles'][0]])
+                except ApiError as e:
+                    return {'status':'error', 'message':e.message}
+                try:
+                    user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
+                except ApiError as e:
+                    return {'status':'error', 'message':e.message}
+    if len(status_item['existing_roles']) > 1:
+        for existing_role in status_item['existing_roles']:
+            if existing_role != 'Active':
+                try:
+                    user_api.delete_user_role(status_item['id'], course_id, permissonsMap[existing_role])
+                except ApiError as e:
+                    return {'status':'error', 'message':e.message}
+        if new_status == 'Active' and (new_status not in status_item['existing_roles']):
+            try:
+                user_api.enroll_user_in_course(status_item['id'], course_id)
+            except ApiError as e:
+                return {'status':'error', 'message':e.message}
+        else:
+            try:
+                user_api.unenroll_user_from_course(status_item['id'], course_id)
+            except ApiError as e:
+                return {'status':'error', 'message':e.message}
+            try:
+                user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
+            except ApiError as e:
+                return {'status':'error', 'message':e.message}
+    return {'status':'success'}

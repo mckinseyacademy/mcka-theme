@@ -52,7 +52,7 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -60,7 +60,7 @@ from .controller import (
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
-    get_course_engagement_summary, get_course_social_engagement
+    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -1001,13 +1001,16 @@ def GetCourseUsersRoles(course_id, permissions_filter_list):
     course_roles_users = course_api.get_users_filtered_by_role(course_id)
     user_roles_list = {'ids':[],'data':[]}
     for course_role in course_roles_users:
+        roleData = vars(course_role)
         if permissions_filter_list:
-            if vars(course_role)['role'] in permissions_filter_list:
-                user_roles_list['data'].append(vars(course_role))
-                user_roles_list['ids'].append(str(vars(course_role)['id']))
+            if roleData['role'] in permissions_filter_list:
+                user_roles_list['data'].append(roleData)
+                user_roles_list['ids'].append(str(roleData['id']))
         else:
-            user_roles_list['data'].append(vars(course_role))
-            user_roles_list['ids'].append(str(vars(course_role)['id']))
+            user_roles_list['data'].append(roleData)
+            user_roles_list['ids'].append(str(roleData['id']))
+    user_roles_list['ids'] = set(user_roles_list['ids'])
+    user_roles_list['ids'] = list(user_roles_list['ids'])
     return user_roles_list
 
 class course_details_api(APIView):
@@ -1033,13 +1036,15 @@ class course_details_api(APIView):
             else:
                 allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
                 list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
+                print list_of_user_roles
                 len_of_all_users = len(allCourseParticipants)
                 allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
+                for user_role_id in list_of_user_roles['ids']:          
+                    userData['ids'].append(str(user_role_id))
                 for course_participant in allCourseParticipants:
-                    userData['ids'].append(str(course_participant['id']))
-                for user_role_id in list_of_user_roles['ids']:
-                    if user_role_id not in userData['ids']:
-                        userData['ids'].append(user_role_id)
+                    if str(course_participant['id']) not in userData['ids']:
+                        userData['ids'].append(str(course_participant['id']))
+                print userData
                 requestParams = dict(request.GET)
                 if requestParams['page_size']:
                     len_of_pages = int(requestParams['page_size'][0])
@@ -1117,8 +1122,8 @@ class course_details_api(APIView):
                     elif permissonsMap['observer'] in course_participant['user_status']:
                         course_participant['custom_user_status'] = 'Observer'
                     else:
-                        course_participant['custom_user_status']='Participant'
-                        course_participant['user_status'].append('participant')
+                        course_participant['custom_user_status']='Active'
+                        course_participant['user_status'].append('Active')
                     course_participant['progress'] = '.'
                     if len(course_participant['organizations'] ) == 0:
                         course_participant['organizations'] = [{'display_name': 'No company'}]
@@ -1148,25 +1153,19 @@ class course_details_api(APIView):
             return Response({})
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request, course_id=None, format=None):
-        data = request.POST
-        permissonsMap = {
-            'assistant':'TA',
-            'observer':'Observer',
-            'TA':'assistant',
-            'Observer':'observer',
-            }
-        if (data['type'] == 'status_change'):
-            for status_item in data['list_of_items']:
-                for existing_role in status_item['existing_roles']:
-                    if existing_role != status_item['role'] and existing_role != 'participant':
-                        user_api.delete_user_role(status_item['id'], course_id, permissonsMap[existing_role])
-                if (status_item['role'] not in status_item['existing_roles']) and status_item['role'] != 'participant':
-                    user_api.add_user_role(status_item['id'], course_id, permissonsMap[status_item['role']])
-                if status_item['role'] != 'participant' and ('participant' in status_item['existing_roles']):
-                    user_api.unenroll_user_from_course(status_item['id'], course_id)
-            json_object = {'status':'ok', 'data':data}
-            return Response(json_object)
-
+        data = json.loads(request.body)
+        if (data['type'] == 'status_check'):
+            batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])
+            BatchOperationStatus.clean_old()
+            if len(batch_status) > 0:
+                batch_status = batch_status[0]
+                return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}})
+            return Response({'status':'error', 'message': 'No such task!'})
+        else:        
+            batch_status = BatchOperationStatus.create();
+            task_id = batch_status.task_key
+            course_bulk_actions(course_id, data, batch_status)
+            return Response({'status':'ok', 'data': data, 'task_id': task_id})
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter

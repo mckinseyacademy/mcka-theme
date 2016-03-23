@@ -6,13 +6,13 @@
       _this = this;
       this.collection.fetch({success:function(collection, response, options)
         {
-          _this.updateColumns();
+          _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
           collection.getSlowFetchedStatus = true;
           collection.slowFieldsSuccess(collection, response, options);
         }});
     },
     render: function(){
-      coursesListDetailsViewGrid = {}
+      var coursesListDetailsViewGrid = {}
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
@@ -73,13 +73,14 @@
       
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       this.coursesListDetailsViewGrid = coursesListDetailsViewGrid;
-      this.$el.scroll(this.fetchPages);
-      $(document).on('onSearchEvent', this.onSearchEvent);
-      $(document).on('onClearSearchEvent', this.onClearSearchEvent);
+      this.$el.on('scroll', { extra : this}, this.fetchPages);
+      $(document).on('onSearchEvent', { extra : this}, this.onSearchEvent);
+      $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
     },
-    fetchPages: function(){
-      if  (($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20) && coursesListDetailsViewGrid.partial_collection.hasNextPage()){
-        _collection = coursesListDetailsViewGrid.partial_collection;
+    fetchPages: function(event){
+      var _this = event.data.extra;
+      if  (($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20) && _this.coursesListDetailsViewGrid.partial_collection.hasNextPage()){
+        _collection = _this.coursesListDetailsViewGrid.partial_collection;
         _collection.saveCurrentPageSlowState();
         _collection.getNextPage({success:function(collection, response, options){
           if (!_collection.getSlowFetchedStatus)
@@ -90,7 +91,8 @@
         }});
       }
     },
-    onSearchEvent: function(){
+    onSearchEvent: function(event){
+    var _this = event.data.extra;
     if (typeof waitForLastSuccess == 'undefined')
       waitForLastSuccess = true;
       _intervalId = setInterval(function()
@@ -100,7 +102,7 @@
         if (waitForLastSuccess)
         {
           waitForLastSuccess = false;
-          _collection = coursesListDetailsViewGrid.partial_collection;
+          _collection = _this.coursesListDetailsViewGrid.partial_collection;
           _collection.saveCurrentPageSlowState();
           _collection.getNextPage({success:function(collection, response, options){
             if (!_collection.getSlowFetchedStatus)
@@ -108,18 +110,19 @@
               _collection.getSlowFetchedStatus = true;
               _collection.slowFieldsSuccess(_collection, response, options);
             }
-            coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
+            _this.coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
             waitForLastSuccess = true;
           }});
         }
-        if (!coursesListDetailsViewGrid.partial_collection.hasNextPage())
+        if (!_this.coursesListDetailsViewGrid.partial_collection.hasNextPage())
           clearInterval(_intervalId);
       }, 500);
     },
-    onClearSearchEvent: function(){
-      coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
+    onClearSearchEvent: function(event){
+      var _this = event.data.extra;
+      _this.coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
     },
-    updateColumns: function()
+    updateColumns: function(collection, coursesListDetailsViewGrid)
     {
       var assessment_template = { title: '', index: true, name: '', actions: function(id, attributes) 
         { 
@@ -132,7 +135,7 @@
             return value;
           return '' + parseInt(value) + '%'; 
         }};
-      var modelsList = this.collection.models;
+      var modelsList = collection.models;
       if (modelsList.length > 0)
       {
         for (groupworkIndex in modelsList[0].attributes.groupworks)
@@ -176,5 +179,32 @@
         }
       }
       coursesListDetailsViewGrid.render();
+    },
+    realtimeStatus: function(url, status_element, task_id)
+    {
+      var interval_id = setInterval(function(){
+        var options = {
+            url: url,
+            data: JSON.stringify({'type': 'status_check', 'task_id':task_id}),
+            processData: false,
+            type: "POST",
+            dataType: "json"
+          };
+        options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+        $.ajax(options)
+        .done(function(data) {
+          console.log(data);
+          if (data['status'] == 'ok')
+          {
+            $(status_element).text('Selected: '+data['values'].selected+', Successful: '+data['values'].successful+', Failed: '+data['values'].failed);
+            if (data['values'].successful + data['values'].failed >= data['values'].selected)
+              clearInterval(interval_id);
+          }
+        })
+        .fail(function(data) {
+          console.log("Ajax failed to fetch data");
+          console.log(data);
+          });
+      }, 500);
     }
   });
