@@ -27,6 +27,13 @@
 	margin-right: auto;
 	margin-bottom: 100px;
 	max-height: 25em;
+/*	overflow-y: scroll;*/
+	position: relative;
+}
+
+#coursesListViewGridBlock .bbGrid-container
+{
+	max-height: 25em;
 	overflow-y: scroll;
 }
 
