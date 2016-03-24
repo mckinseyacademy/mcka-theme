@@ -1,0 +1,26 @@
+- extends "admin/admin_layout.haml"
+- load staticfiles
+- block content
+  .admin-detail.row
+    .large-12.columns
+      - include 'admin/client-admin/course_header.haml'
+  .admin-detail.row
+    %form{action: "#{request.path}", method: "POST"}
+      .large-12.columns
+        - csrf_token
+        = form
+        - if error
+          .error
+            = error
+        .row
+          .large-3.columns
+            %label.right.inline Title <sup> * </sup>
+          .large-9.columns
+            %input{:type => "text", :value => '#{title}', :name => "title", :maxlength => "80"}
+        .row
+          .large-3.columns
+            %label.right.inline Description
+          .large-9.columns
+            %textarea.desc-text{:value => '#{description}', :name => "description", :maxlength => "500", :rows => 7}
+      .large-12.columns
+        %input.button.radius.small.right{type: "submit", value: "Submit"}
