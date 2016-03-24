@@ -41,7 +41,7 @@
               .row.courseParticipants.contentNavigationContainer
                 #courseBulkActionsMainContainer.bulkActionsButtonContainer
                   .bulkButtonWrapper
-                    .hiddenButtonSplitModifier{:data-dropdown => "dropBulkCourse"}
+                    .hiddenButtonSplitModifier
                     %a.emailSelectedParticipants.button.split{:href => "#"}
                       Email Selected Participants
                     %a.button.bulkDropdownIcon
@@ -70,6 +70,7 @@
                   %svg#course-details-timeline
   #courseDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
     %h2.courseModalTitle
+    %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
     .courseModalStatus
     %hr
     .courseModalDescription

@@ -1181,6 +1181,7 @@ def course_bulk_action(course_id, data, batch_status):
         for status_item in data['list_of_items']:
             status = _change_user_status(course_id, data['new_status'], status_item)
             if (status['status']=='error'):
+                print status
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()    
@@ -1188,8 +1189,7 @@ def course_bulk_action(course_id, data, batch_status):
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
-                    batch_status.save() 
-        json_object = {'status':'ok', 'data':data}        
+                    batch_status.save()      
 
 def _change_user_status(course_id, new_status, status_item):
     permissonsMap = {

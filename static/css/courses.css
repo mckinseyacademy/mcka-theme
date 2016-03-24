@@ -191,6 +191,7 @@
 #dropBulkCourse
 {
 	width: 100%;
+	position: absolute;
 }
 .submenuButtons
 {
@@ -231,4 +232,14 @@
 #courseDetailsMainModal .courseModalDescription
 {
 	margin-bottom 20px;
+}
+.loadingIcon.hidden
+{
+	display:none;
+}
+.loadingIcon
+{
+	float: right;
+    margin-top: 5px;
+    margin-left: 5px;
 }

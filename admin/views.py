@@ -1036,7 +1036,6 @@ class course_details_api(APIView):
             else:
                 allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
                 list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
-                print list_of_user_roles
                 len_of_all_users = len(allCourseParticipants)
                 allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
                 for user_role_id in list_of_user_roles['ids']:          
@@ -1044,7 +1043,6 @@ class course_details_api(APIView):
                 for course_participant in allCourseParticipants:
                     if str(course_participant['id']) not in userData['ids']:
                         userData['ids'].append(str(course_participant['id']))
-                print userData
                 requestParams = dict(request.GET)
                 if requestParams['page_size']:
                     len_of_pages = int(requestParams['page_size'][0])
@@ -1155,11 +1153,16 @@ class course_details_api(APIView):
     def post(self, request, course_id=None, format=None):
         data = json.loads(request.body)
         if (data['type'] == 'status_check'):
-            batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])
+            batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])      
             BatchOperationStatus.clean_old()
             if len(batch_status) > 0:
                 batch_status = batch_status[0]
-                return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}})
+                error_list = []
+                if batch_status.failed > 0:
+                    batch_errors = BatchOperationErrors.objects.filter(task_key=data['task_id'])
+                    for b_error in batch_errors:
+                        error_list.append({'id': b_error.user_id, 'message': b_error.error})
+                return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
             return Response({'status':'error', 'message': 'No such task!'})
         else:        
             batch_status = BatchOperationStatus.create();

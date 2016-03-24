@@ -182,6 +182,7 @@
     },
     realtimeStatus: function(url, status_element, task_id)
     {
+      $(status_element).parent().find('.loadingIcon').removeClass('hidden')
       var interval_id = setInterval(function(){
         var options = {
             url: url,
@@ -198,7 +199,14 @@
           {
             $(status_element).text('Selected: '+data['values'].selected+', Successful: '+data['values'].successful+', Failed: '+data['values'].failed);
             if (data['values'].successful + data['values'].failed >= data['values'].selected)
+            {
+              $(status_element).parent().find('.loadingIcon').addClass('hidden')
               clearInterval(interval_id);
+              if (data['values'].failed <= 0)
+              {
+                location.reload();
+              }
+            }
           }
         })
         .fail(function(data) {

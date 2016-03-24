@@ -172,13 +172,25 @@ var Router = Backbone.Router.extend({
       else
         val.hide();
     });
-
+    $('#courseBulkActionsMainContainer').on('click','.hiddenButtonSplitModifier',function()
+    {
+      if ($('#dropBulkCourse').hasClass('open'))
+      {
+        $('#dropBulkCourse').removeClass('open');
+        $('#dropBulkCourse').hide();
+      }
+      else
+      {
+        $('#dropBulkCourse').addClass('open');
+        $('#dropBulkCourse').show();
+      }
+    });
     Apros.Router.linked_views['courseParticipants']['drawn'] = true;
     var courseId = $('#courseDetailsDataWrapper').attr('data-id');
     var courseDetails = new Apros.collections.CourseDetails([],{ path : courseId});
     var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
     courses_details_view.render();
-
+    
     $('#courseBulkActionsMainContainer').on('click','.bulkChangeStatus',function()
     {
       var selectedRowsIdsLen = courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
@@ -190,6 +202,10 @@ var Router = Backbone.Router.extend({
         '<input type="radio" name="status" value="Observer" id="observerCheckbox"><label for="observerCheckbox">Observer</label>'+
         '<input type="radio" name="status" value="TA" id="taCheckbox"><label for="taCheckbox">TA</label>'
       );
+      $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges').off().on('click', function()
+      {
+        $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
+      });
       if(courses_details_view.coursesListDetailsViewGrid.selectedRows.length === 0) {
         alert("You need to select at least one participant to be able to apply bulk actions.")
       }
@@ -231,13 +247,6 @@ var Router = Backbone.Router.extend({
             if (data['status'] == 'ok')
             {
               courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id']);
-              var new_status = data['data'].new_status
-              for (itemIndex in data['data'].list_of_items)
-              {
-                var itemData = data['data'].list_of_items[itemIndex]
-                var selectedModel = courseDetails.fullCollection.get(itemData.id);
-                selectedModel.set({})
-              }
             }
             })
           .fail(function(data) {

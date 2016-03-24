@@ -274,8 +274,8 @@ class BatchOperationErrors(db_models.Model):
     user_id = db_models.IntegerField(default=0)
 
     @classmethod
-    def create(cls, error='', task_key=''):
-        reg_record = cls.objects.create(error=error, task_key= task_key)
+    def create(cls, error='', task_key='', user_id=0):
+        reg_record = cls.objects.create(error=error, task_key= task_key, user_id=user_id)
         reg_record.save()
 
         return reg_record
