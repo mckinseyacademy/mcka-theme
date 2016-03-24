@@ -18,4 +18,11 @@
       - else
         %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/analytics"}
           = _("Analytics")
+  - if user.is_client_admin or user.is_mcka_admin
+    %li
+      - if request.resolver_match.url_name == 'client_admin_course_branding'
+        %span.selected= _("Branding")
+      - else
+        %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
+          = _("Branding")
         

@@ -397,3 +397,69 @@ class DashboardAdminQuickFilter(db_models.Model):
         # (user_id, program_id, course_id, company_id, group_work_project_id)
         # see notes in the class docstring for details.
 
+class BrandingSettings(db_models.Model):
+
+    background_image = db_models.ImageField(upload_to="static/learners_dashboard/branding/backgrounds", blank=True)
+    logo_image = db_models.ImageField(upload_to="static/learners_dashboard/branding/logos/", blank=True)
+    navigation_colors = db_models.CharField(max_length=20, blank=True)
+    text_colors = db_models.CharField(max_length=20, blank=True)
+    background_tiled = db_models.BooleanField(blank=True)
+
+    client_id = db_models.IntegerField(blank=False, unique=True)
+
+class LearnersDashboard(db_models.Model):
+
+    title = db_models.CharField(blank=True, max_length=80)
+    description = db_models.CharField(blank=True, max_length=500)
+
+    client_id = db_models.IntegerField(blank=False, unique=True)
+    course_id = db_models.IntegerField(blank=False, unique=True)
+
+class LearnersDashboardTile(db_models.Model):
+
+    title = db_models.CharField(blank=True, max_length=20)
+    description = db_models.CharField(blank=True, max_length=40)
+    link = db_models.CharField(blank=True, max_length=80)
+    order = db_models.IntegerField(blank=False)
+    background_image = db_models.ImageField(upload_to="static/learners_dashboard/tile_backgrounds/", blank=True)
+
+    TYPES = (
+        (u'1', u'External link'),
+        (u'2', u'Course'),
+        (u'3', u'XBlock'),
+    )
+    tile_type = db_models.CharField(max_length=1, choices=TYPES)
+
+    learners_dashboard_id = db_models.ForeignKey(
+        'LearnersDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+class LearnersDashboardDiscovery(db_models.Model):
+
+    link = db_models.CharField(blank=True, max_length=80)
+    title = db_models.CharField(blank=True, max_length=20)
+    author = db_models.CharField(blank=True, max_length=20)
+
+    learners_dashboard_id = db_models.ForeignKey(
+        'LearnersDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+class LearnersDashboardResource(db_models.Model):
+
+    title = db_models.CharField(blank=True, max_length=20)
+    description = db_models.CharField(blank=True, max_length=40)
+    link = db_models.CharField(blank=True, max_length=80)
+    file = db_models.FileField(upload_to="static/learner_dashboard/resources/", blank=True)
+
+    learners_dashboard_id = db_models.ForeignKey(
+        'LearnersDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+
+
+
+
+

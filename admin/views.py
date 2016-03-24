@@ -52,7 +52,7 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -66,7 +66,7 @@ from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-    DashboardAdminQuickFilterForm
+    DashboardAdminQuickFilterForm, BrandingSettingsForm,
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -3457,3 +3457,30 @@ def generate_assignments(request, project_id, activity_id):
     response = HttpResponse(json.dumps({"message": error}), content_type="application/json")
     response.status_code = status_code
     return response
+
+def client_admin_branding_settings(request, client_id, course_id):
+
+    try:
+        instance = BrandingSettings.objects.get(client_id=client_id)
+    except:
+        instance = None
+
+    if request.method == 'POST':
+        form = BrandingSettingsForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            if int(client_id) != form.cleaned_data['client_id']:
+                return render(request, '403.haml')
+            form.save()
+
+            redirect_url = "/admin/client-admin/{}/courses/{}".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+    
+    else:
+        form = BrandingSettingsForm(instance=instance)
+
+    return render(request, 'admin/client-admin/branding_settings.haml', {
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        })
+

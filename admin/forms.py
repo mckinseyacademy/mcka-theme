@@ -7,11 +7,13 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from .models import Client, Program, AccessKey, DashboardAdminQuickFilter
+from .models import Client, Program, AccessKey, DashboardAdminQuickFilter, BrandingSettings
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonObjectWithImage
+
+from django.forms import CharField
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -205,3 +207,18 @@ class DashboardAdminQuickFilterForm(forms.ModelForm):
             course_id=data['course_id'], company_id=data.get('company_id'),
             group_work_project_id=data.get('group_work_project_id')
         )
+
+class BrandingSettingsForm(forms.ModelForm):
+
+    class Meta:
+        model = BrandingSettings
+        fields = [
+            'background_image', 'background_tiled', 'logo_image', 'navigation_colors', 'text_colors', 'client_id'
+        ]
+        widgets = {
+            'navigation_colors': forms.TextInput(attrs={'type': 'color'}),
+            'text_colors': forms.TextInput(attrs={'type': 'color'}),
+        }
+
+
+
