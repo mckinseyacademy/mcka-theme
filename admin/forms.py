@@ -180,6 +180,15 @@ class CreateAccessKeyForm(forms.ModelForm):
             'name': mark_safe('Name <span class="required-field"></span>')
         }
 
+class EditExistingUserForm(forms.Form):
+    first_name = forms.CharField(required=True, widget=forms.TextInput())
+    last_name = forms.CharField(required=True, widget=forms.TextInput())
+    username = forms.CharField(required=False, widget=forms.TextInput())
+    email = forms.EmailField(required=True, widget=forms.TextInput())
+    company = forms.CharField(required=True, widget=forms.TextInput())
+    gender = forms.CharField(required=False, widget=forms.TextInput())
+    country = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput())
 
 class DashboardAdminQuickFilterForm(forms.ModelForm):
 

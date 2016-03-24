@@ -65,6 +65,7 @@ LOCAL_APPS = (
     'license',
     'heartbeat',
     'public_api',
+    'rest_framework',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -169,6 +170,7 @@ SESSION_TIMEOUT_SECONDS = 300
 # LMS
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
 LMS_SUB_DOMAIN = 'lms'
+LMS_PORT = None
 LMS_SESSION_COOKIE_DOMAIN = None  # Default: use current/same domain
 # LMS_AUTH_URL: relative or absolute URL to the LMS's /auth/ urls, used for SSO.
 # Normally this is on the same domain as Apros and is forwarded to the LMS by an nginx reverse proxy rule

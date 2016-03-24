@@ -13,6 +13,8 @@ from .json_requests import GET, POST, DELETE
 from .group_models import GroupInfo
 from . import course_models
 
+import json
+
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
 
 OBJECT_CATEGORY_MAP = {
@@ -47,6 +49,7 @@ def get_course_list(ids=None):
         )
     )
     return CJP.from_json(response.read())
+
 
 @api_error_protect
 def get_course_overview(course_id):
@@ -132,6 +135,7 @@ def get_course(course_id, depth=3):
 
     return course
 
+
 @api_error_protect
 def get_courses(**kwargs):
     '''
@@ -211,6 +215,8 @@ def get_user_list_json(course_id, program_id = None):
 def get_user_list(course_id, program_id = None):
 
     return JP.from_json(get_user_list_json(course_id, program_id), course_models.CourseEnrollmentList).enrollments
+
+
 
 @api_error_protect
 def get_users_list_in_organizations(course_id, organizations):
@@ -500,3 +506,133 @@ def get_course_navigation(course_id, target_location_id):
     response = GET(url)
 
     return JP.from_json(response.read())
+
+
+@api_error_protect
+def get_courses_list(getParameters):
+    '''
+    Retrieves list of courses from openedx server
+    '''
+    response = GET('{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            urlencode(getParameters)
+        )
+    )
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details(course_id):
+
+    response = GET('{}/{}/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_users(course_id):
+
+    response = GET('{}/{}/{}/users'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_groups(course_id):
+
+    response = GET('{}/{}/{}/groups'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id)
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_users_groups(course_id, groups_ids):
+    ''' filter and get course users'''
+
+    response = GET(
+        '{}/{}/{}/users?groups={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            groups_ids
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_completions(course_id, count):
+
+    response = GET(
+        '{}/{}/{}/metrics/completions/leaders?count={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            count
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_grades(course_id, count):
+
+    response = GET(
+        '{}/{}/{}/metrics/grades/leaders?count={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            count
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_social(course_id):
+    ''' fetch social metrics for course '''
+
+    response = GET(
+        '{}/{}/{}/metrics/social'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id
+        )
+    )
+
+    return json.loads(response.read())
+
+@api_error_protect
+def get_user_list_dictionary(course_id, program_id = None):
+
+    return json.loads(get_user_list_json(course_id, program_id))
+
+
+@api_error_protect
+def get_completions_on_course(course_id):
+    ''' fetch course module completion list '''
+
+    url = '{}/{}/{}/completions/?page_size=0'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id
+    )
+    response = GET(url)
+
+    return json.loads(response.read())

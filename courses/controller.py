@@ -47,7 +47,21 @@ class AcademyGradebook(JsonObject):
         "grading_policy": AcademyGradePolicy,
     }
 
+class UserGrade(JsonObject):
+    @property
+    def user_grade_value(self):
+        return self.grade if hasattr(self, "grade") and self.grade is not None else 0
+
+    @property
+    def user_grade_display(self):
+        return round_to_int(self.user_grade_value)
+
 class Proficiency(JsonObject):
+
+    object_map = {
+        "leaders": UserGrade,
+    }
+
     @property
     def user_grade_value(self):
         return self.user_grade if hasattr(self, "user_grade") and self.user_grade is not None else 0
@@ -67,6 +81,19 @@ class Proficiency(JsonObject):
     @property
     def has_leaders(self):
         return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].grade > 0
+
+    def pass_rate_display(self, users):
+        pass_users = 0
+        users_ids = [user['id'] for user in users]
+        for user_grade in self.leaders: 
+            if user_grade.id in users_ids:
+                if user_grade.user_grade_value >= 0.7:
+                    pass_users += 1
+        try:
+            pass_rate = round_to_int_bump_zero(100 * float(pass_users) / len(users))
+        except ZeroDivisionError:
+            pass_rate = 0
+        return pass_rate
 
 class UserProgress(JsonObject):
     @property
@@ -93,6 +120,16 @@ class Progress(UserProgress):
     @property
     def has_leaders(self):
         return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].user_progress_value > 0
+
+    def completion_rate_display(self, users):
+        completed_users = 0
+        users_ids = [user['id'] for user in users]
+        for user_progress in self.leaders:
+            if user_progress.id in users_ids:
+                if user_progress.user_progress_value >= 100:
+                    completed_users += 1
+        return round_to_int_bump_zero(100 * completed_users / len(users))
+
 
 def build_page_info_for_course(
     request,
@@ -413,8 +450,8 @@ def is_number(s):
         return False
     return True
 
-def get_proficiency_leaders(course_id, user_id):
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
+def get_proficiency_leaders(course_id, user_id, count=3):
+    proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency, count=count)
     if hasattr(proficiency, "leaders"):
         tailor_leader_list(proficiency.leaders)
     return proficiency

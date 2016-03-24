@@ -16,7 +16,11 @@ var Router = Backbone.Router.extend({
     'admin/client-admin/*organization_id/courses/*course_id/analytics':   'client_admin_course_analytics',
     'admin/client-admin/*organization_id/courses/*course_id/participants':  '',
     'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
-    'admin/course-meta-content/items/*course_id': 'admin_course_meta'
+    'admin/course-meta-content/items/*course_id': 'admin_course_meta',
+    'admin/participants': 'participants_list',
+    'admin/participants/*id': 'initialize_participant_details',
+    'admin/courses/': 'admin_courses',
+    'admin/courses/*course_id/': 'admin_course_details_participants'
   },
 
   home: function() {
@@ -107,7 +111,114 @@ var Router = Backbone.Router.extend({
   admin_course_meta: function(courseId) {
     var el = $('#feature-flags');
     new Apros.views.AdminCourseMeta({el: el}).render();
-  }
-});
+  },
 
+  participants_list: function(){
+    var collection = new Apros.collections.Participants();
+    var participant_list_view = new Apros.views.ParticipantsInfo({collection: collection, el: '#participantsListViewGridBlock'});
+    participant_list_view.render();
+  },
+  initialize_participant_details: function()
+  {
+    var view = new Apros.views.ParticipantEditDetailsView();
+    view.render();
+  },
+  participant_details_active_courses: function(){
+    var url = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/active_courses';
+    var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: url});
+    var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid'});
+    participant_details_active_courses_view.render();
+  },
+
+  participant_details_course_history: function(){
+    var url = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/course_history';
+    var collection = new Apros.collections.ParticipantDetailsCourseHistory({url: url});
+    var participant_details_course_history_view = new Apros.views.ParticipantDetailsCourseHistoryView({collection: collection, el: '#participantDetailsCourseHistoryViewGrid'});
+    participant_details_course_history_view.render();
+  },
+
+  admin_courses: function(){
+    var courses = new Apros.collections.AdminCourses();
+    var courses_list_view = new Apros.views.CoursesListView({collection: courses, el: '#coursesListViewGridBlock'});
+    courses_list_view.render();
+  },
+
+  admin_course_details_stats: function(course_id){
+    $('#courseDetailsMainContainer').find('.courseDetailsTopic').each(function(index, value){
+      val = $(value);
+      val.show();
+    });
+    $('#coursesDownloadStatsButton').show();
+    var courseId = $('#courseDetailsDataWrapper').attr('data-id');
+    ApiUrls.course_details_stats = ApiUrls.course_details+'/'+courseId+'/stats/';
+    ApiUrls.course_details_engagement = ApiUrls.course_details+'/'+courseId+'/engagement/';
+    var courseDetailsEngagement = new Apros.collections.CourseDetailsEngagement({url: ApiUrls.course_details_engagement});
+    var course_details_engagement_view = new Apros.views.CourseDetailsEngagementView({collection: courseDetailsEngagement, el: '#courseDetailsEngagementViewGrid'});
+    var courseDetailsStats = new Apros.collections.CourseDetailsStats({url: ApiUrls.course_details_stats});
+    var course_details_stats_view = new Apros.views.CourseDetailsStatsView({collection: courseDetailsStats, el: '#courseDetailsStatsViewGrid'});
+    course_details_engagement_view.render();
+    course_details_stats_view.render();
+
+    var progressModel = new Apros.models.CourseDetailsTimelineChart();
+    new Apros.views.AdminCourseDetailsTimeline({model: progressModel,
+                                          el: $('#course-details-timeline'),
+                                          course_id: courseId});
+  },
+  admin_course_details_participants: function(course_id){
+    $('#courseDetailsMainContainer').find('.contentNavigationContainer').each(function(index, value){
+      val = $(value);
+      if (val.hasClass('courseParticipants'))
+        val.show();
+      else
+        val.hide();
+    });
+    Apros.Router.linked_views['courseParticipants']['drawn'] = true;
+    var courseId = $('#courseDetailsDataWrapper').attr('data-id');
+    var courseDetails = new Apros.collections.CourseDetails([],{ path : courseId});
+    var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
+    courses_details_view.render();
+  },
+});
 Apros.Router = new Router;
+Apros.Router.linked_views = {
+  'courseParticipants': {
+    'function':Apros.Router.admin_course_details_participants,
+    'drawn': false
+  },
+  'courseStats': {
+    'function':Apros.Router.admin_course_details_stats,
+    'drawn': false
+  },
+  'participantDetailsContent': {
+    'function': function(){},
+    'drawn': false
+  },
+  'participantDetailsActiveCourses': {
+    'function':Apros.Router.participant_details_active_courses,
+    'drawn': false
+  },
+  'participantDetailsCourseHistory': {
+    'function':Apros.Router.participant_details_course_history,
+    'drawn': false
+  }
+}
+
+Apros.Router.HashPageChanger = function(element) {
+  _selectedClass = $(element).attr('data-target');
+  _parentContainer = $($(element).attr('data-container'));
+  _parentContainer.find('.contentNavigationContainer').each(function(index, value){
+  val = $(value);
+  if (val.hasClass(_selectedClass))
+  {
+    val.show();
+    if (!Apros.Router.linked_views[_selectedClass]['drawn'])
+    {
+      Apros.Router.linked_views[_selectedClass]['drawn'] = true;
+      Apros.Router.linked_views[_selectedClass]['function']();
+    }
+  }
+  else
+    val.hide();
+  });
+}
+

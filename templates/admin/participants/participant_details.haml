@@ -1,0 +1,196 @@
+- extends "admin/admin_layout.haml"
+- block content
+  #mainParticipantsDetailsWrapper
+    .participantDetailsNavigationButton
+      %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
+    #participantsDetailsDataWrapper{:data-id => '#{id}'}
+      #participantsTopDetailsContainer
+        .row
+          .large-2.columns
+            .participantImage{ :style => 'background-image:url("={avatar_url}")'}
+          .large-5.columns
+            .participantNameAndLogin
+              .participantFullName
+                ={full_name}
+              .participantLastLogin
+                Last logged in: ={custom_last_login}
+          .large-2.columns
+          .large-3.columns
+            %input.button.small.radius.participantEnrollInCourse{:type => "button", :value => "Enroll in a Course"}
+      #participantsMainDetailsContainerView
+        .participantDetailsMenuButtons.row
+          .participantProfileButton.large-2.columns
+            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsContent', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PROFILE
+          .participantActiveCoursesButton.large-3.columns
+            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsActiveCourses', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> ACTIVE COURSES
+          .participantCourseHistoryButton.large-3.columns
+            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsCourseHistory', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COURSE HISTORY
+          .participantCertificatesButton.large-2.columns
+            %a{:href => '/admin/participants/#{id}', :target => '_self'}> CERTIFICATES
+          .large-2.columns
+        %hr
+  #participantDetailsWrapper
+    .contentNavigationContainer.participantDetailsContent
+      .participantDetailsWrapper
+        .row
+            .participantDetailsEditText.large-5.columns
+              Participant Details
+            .large-5.columns
+            .participantDetailsEditButton.large-2.columns
+              %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
+        .row
+          .large-6.columns.participantFirstName
+            .participantFirstNameLabel.labelUniversal
+              First Name
+            .participantFirstNameValue
+              ={first_name}
+          .large-6.columns.participantLastName
+            .participantLastNameLabel.labelUniversal
+              Last Name
+            .participantLastNameValue
+              ={last_name}
+        %hr
+        .row
+          .large-6.columns.participantUsername
+            .participantUsernameLabel.labelUniversal
+              Username
+            .participantUsernameValue
+              ={username}
+          .large-6.columns.participantEmail
+            .participantEmailLabelContainer.labelUniversal
+              .participantEmailLabel.inlineBlock
+                Email
+              .participantEmailReset.inlineBlock
+                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+            .participantEmailValue
+              ={email}
+        %hr
+        .row
+          .large-6.columns.participantCompany
+            .participantCompanyLabel.labelUniversal
+              Company
+            .participantCompanyValue
+              %a{:href => '/admin/clients/#{company_id}', :target => '_self'}> 
+                ={company_name}
+          .large-6.columns.participantGender
+            .participantGenderLabel.labelUniversal
+              Gender
+            .participantGenderValue
+              - if gender == 'M'
+                Male
+              - if gender == 'F'
+                Female
+        %hr
+        .row
+          .large-6.columns.participantLocation
+            .participantLocationLabel.labelUniversal
+              Location
+            .participantLocationValue
+              ={location}
+          .large-6.columns.participantPermissions
+            .participantPermissionsLabel.labelUniversal
+              Admin Permissions
+            .participantPermissionsValue
+              - for mcka_permission in mcka_permissions
+                - if mcka_permission == '-'
+                  &#8212;
+                - else
+                  #{mcka_permission}
+        .row
+          .large-12.columns.participantBottomArchiveEdit
+            %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
+            %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
+
+      %form.participantDetailsEditForm{:style => "display: none"}
+        - csrf_token
+        .row
+          .large-6.columns.participantFirstName
+            .participantFirstNameLabel.labelUniversal
+              First Name<sup>*</sup>
+            .participantFirstNameValue
+              %input{:type => "text", :value => '#{first_name}', :name => "first_name", :maxlength => "60"}
+          .large-6.columns.participantLastName
+            .participantLastNameLabel.labelUniversal
+              Last Name<sup>*</sup>
+            .participantLastNameValue
+              %input{:type => "text", :value => '#{last_name}', :name => "last_name", :maxlength => "60"}
+        .row
+          .large-6.columns.participantUsername
+            .participantUsernameLabel.labelUniversal
+              Username
+            .participantUsernameValue
+              %input{:type => "text", :value => '#{username}', :name => "username", :maxlength => "60"}
+          .large-6.columns.participantEmail
+            .participantEmailLabelContainer.labelUniversal
+              .participantEmailLabel.inlineBlock
+                Email<sup>*</sup>
+              .participantEmailReset.inlineBlock
+                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+            .participantEmailValue
+              %input{:type => "text", :value => '#{email}', :name => "email", :maxlength => "60"}
+        .row
+          .large-6.columns.participantCompany
+            .participantCompanyLabel.labelUniversal
+              Company<sup>*</sup>
+            .participantCompanyValue
+              %input{:type => "text", :value => '#{company_name}', :name => "company", :maxlength => "60"}
+          .large-6.columns.participantGender
+            .participantGenderLabel.labelUniversal
+              Gender
+            .participantGenderValue
+              %select{:name => "gender"}
+                - if gender == 'M' 
+                  %option{:value => "M", :selected => 'True'} Male
+                  %option{:value => "F"} Female
+                - else
+                  %option{:value => "M"} Male
+                  %option{:value => "F", :selected => 'True'} Female
+        .row
+          .large-6.columns.participantCountry
+            .participantCountryLabel.labelUniversal
+              Country Abbreviation
+            .participantCountryValue
+              %input{:type => "text", :value => '#{country}', :name => "country", :maxlength => "2"}
+          .large-6.columns.participantCity
+            .participantCityLabel.labelUniversal
+              City
+            .participantCityValue
+              %input{:type => "text", :value => '#{city}', :name => "city", :maxlength => "60"}
+        .row
+          .large-6.columns.participantPermissions
+            .participantPermissionsLabel.labelUniversal
+              Admin Permissions
+            .participantPermissionsValue
+              %select
+                %option{:value => "", :selected => '#{mcka_permission}' == ""} Uber admin
+                %option{:value => "", :selected => '#{mcka_permission}' == ""} Course ops admin
+                %option{:value => "", :selected => '#{mcka_permission}' == ""} Company admin
+                %option{:value => "", :selected => '#{mcka_permission}' == ""} Internal Admin
+          .large-6.columns.participantAdminCompany
+            .participantAdminCompanyLabel.labelUniversal
+              Admin Company
+            .participantAdminCompanyValue
+              %input{:type => "text", :value => '#{company_name}'}
+            .participantEmailReset.inlineBlock
+              %a{:href => '/admin/participants/#{id}', :target => '_self'}> + Add another company
+        .row
+          .large-12.columns.participantBottomSaveEdit
+            %input.button.small.radius.disabled.participantDetailsSave{:type => "button", :value => "Save Changes"}
+            %a.cancelParticipantEdit{:href => '#', :target => '_self'}> Cancel
+
+    .participantDetailsActiveCourses.contentNavigationContainer{:style => "display: none"}
+      #participantDetailsActiveCoursesViewGrid.large-12.columns
+
+    .participantDetailsCourseHistory.contentNavigationContainer{:style => "display: none"}
+      #participantDetailsCourseHistoryViewGrid.large-12.columns
+
+  #participantDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2#modalTitle
+    %p.lead
+    %p.mainText
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
+
+
+
+

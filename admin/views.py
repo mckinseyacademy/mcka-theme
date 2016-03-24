@@ -3,6 +3,7 @@ import functools
 import json
 import string
 import urlparse
+from dateutil.parser import parse as parsedate
 from datetime import datetime
 from urllib import quote as urlquote, urlencode
 from operator import attrgetter
@@ -30,7 +31,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
-from lib.authorization import permission_group_required
+from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
@@ -58,17 +59,25 @@ from .controller import (
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link
+    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
+    get_course_engagement_summary, get_course_social_engagement
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm,
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
     DashboardAdminQuickFilterForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from courses.user_courses import load_course_progress
+from django.utils import timezone
+import csv
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -738,6 +747,404 @@ def client_admin_contact(request, client_id):
         'admin/client-admin/contact.haml',
         data
     )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def courses_list(request):
+    return render(request, 'admin/courses/courses_list.haml')
+
+
+class courses_list_api(APIView):
+    '''
+    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
+    '''
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, format=None):
+        allCourses = course_api.get_courses_list(request.GET)
+        for course in allCourses['results']:
+            course['program'] = None
+            course['type'] = None
+            course['configuration'] = None
+            if course['start'] is not None:
+                start = parsedate(course['start'])
+                course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
+            if course['end'] is not None:
+                end = parsedate(course['end'])
+                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
+            for data in course:
+                if course.get(data) is None:
+                    course[data] = "-"        
+        return Response(allCourses)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def course_details(request, course_id):
+
+    course = course_api.get_course_details(course_id)
+    course_metrics_end = datetime.now().strftime("%m/%d/%Y")
+    if course['start'] is not None:
+        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+    if course['end'] is not None:
+        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y") 
+        course_metrics_end = course['end'] 
+    for data in course:
+        if course.get(data) is None:
+            course[data] = "-"  
+
+    course_all_users = course_api.get_course_details_users(course_id)
+    count = len(course_all_users['enrollments'])
+
+    course_groups = course_api.get_course_details_groups(course_id) 
+    groups_ids_list = []
+    for group in course_groups:
+        groups_ids_list.append(str(group['id']))
+    groups_ids = ','.join(group_id for group_id in groups_ids_list)
+    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+    users_enrolled = [dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])]
+    course['users_enrolled'] = len(users_enrolled)
+
+    course_completed_users = 0
+    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
+    for completed_metric in course_metrics.users_completed:
+        course_completed_users += completed_metric[1]
+    try:
+        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / len(users_enrolled))
+    except ZeroDivisionError:
+        course['completed'] = 0
+
+    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
+    course['passed'] = course_pass.pass_rate_display(users_enrolled)
+
+    course_progress = 0
+    course_proficiency = 0
+
+    users_progress = get_course_progress(course_id, users_enrolled, request)
+
+    for user in users_progress:
+        course_progress += user['progress']
+
+    course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+    for user in course_grades['leaders']:
+        if any(item['id'] == user['id'] for item in users_enrolled):
+            user_proficiency = float(user['grade'])*100
+            course_proficiency += user_proficiency
+
+    try:
+        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
+    except ZeroDivisionError:
+        course['average_progress'] = 0
+    try:
+        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])
+    except ZeroDivisionError:
+        course['proficiency'] = 0
+
+    return render(request, 'admin/courses/course_details.haml', course)
+
+
+def get_course_progress(course_id, users, request):
+    '''
+    Helper method for calculating user pogress on course. 
+    Returns dictionary of users with user_id and progress.
+    '''
+    course = None
+    course = load_course(course_id, request=request)
+
+    users_progress = []
+    user_completions = []
+    for user in users:
+        user_completion = {}
+        user_completion['user_id'] = user['id']
+        user_completion['results'] = []
+        user_completions.append(user_completion)
+
+    completions = course_api.get_completions_on_course(course.id)
+
+    for completion in completions:
+        for user_completion in user_completions:
+            if completion['user_id'] == user_completion['user_id']:
+                user_completion['results'].append(completion)
+
+    for user_completion in user_completions:
+        user_progress = {}
+        user_progress['user_id'] = user_completion['user_id']
+        completed_ids = [result['content_id'] for result in user_completion['results']]
+        component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+        for lesson in course.chapters:
+            lesson.progress = 0
+            lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                               settings.PROGRESS_IGNORE_COMPONENTS)
+            if len(lesson_component_ids) > 0:
+                matches = set(lesson_component_ids).intersection(completed_ids)
+                lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+        actual_completions = set(component_ids).intersection(completed_ids)
+        actual_completions_len = len(actual_completions)
+        component_ids_len = len(component_ids)
+        try:
+            user_progress['progress'] = round_to_int(float(100 * actual_completions_len)/component_ids_len)
+        except ZeroDivisionError:
+            user_progress['progress'] = 0
+        users_progress.append(user_progress)
+
+    return users_progress
+
+
+class course_details_stats_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_stats = get_course_social_engagement(course_id)
+        return Response(course_stats)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def download_course_stats(request, course_id):
+
+    course = course_api.get_course_details(course_id)
+    course_name = course['name'].replace(' ', '_')
+
+    course_social_engagement = get_course_social_engagement(course_id)
+    course_engagement_summary = get_course_engagement_summary(course_id)
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + course_name + '_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Engagement Summary', '# of people', '% total cohort', 'Avg Progress'])
+    for stat in course_engagement_summary:
+        writer.writerow([stat['name'], stat['people'], stat['invited'], stat['progress']])
+    writer.writerow([])
+    writer.writerow(['Participant Performance', '% completion', 'Score'])
+    writer.writerow(['Group work 1', '-', '-'])
+    writer.writerow(['Group work 2', '-', '-'])
+    writer.writerow(['Mid-course assessment', '-', '-'])
+    writer.writerow(['Final assessment', '-', '-'])
+    writer.writerow([])
+    writer.writerow(['Social Engagement', '#'])
+    for stat in course_social_engagement:
+        writer.writerow([stat['name'], stat['value']])
+    
+    return response
+
+
+class course_details_engagement_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_stats = get_course_engagement_summary(course_id)
+        
+        return Response(course_stats)
+
+
+class course_details_cohort_timeline_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id):
+        course = load_course(course_id)
+        course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+
+        users = course_api.get_user_list(course.id)
+
+        metricsJson = get_course_details_progress_data(course, course_modules, users)
+
+        jsonResult = [{"key": "% Progress", "values": metricsJson[0]},
+                        {"key": "% Progress (Engaged)", "values": metricsJson[1]}]
+        return HttpResponse(
+                    json.dumps(jsonResult),
+                    content_type='application/json'
+                )
+
+
+class course_details_performance_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_users_simple = course_api.get_user_list(course_id)
+        course_users_ids = [str(user.id) for user in course_users_simple]
+        roles = course_api.get_users_filtered_by_role(course_id)
+        roles_ids = [str(user.id) for user in roles]
+        for role_id in roles_ids:
+            if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+        additional_fields = ["is_active"]
+        course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
+        course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
+        course_progress = course_metrics.course_avg
+        course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+        active_users = 0
+        engaged_users = 0
+        engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+        for course_user in course_users:
+            if course_user.is_active is True:
+                active_users += 1
+            if course_user.id in course_leaders_ids:
+                engaged_users += 1
+
+        activated = round_to_int(active_users/len(course_users)) if len(course_users) > 0 else 0
+        engaged = round_to_int(engaged_users/len(course_users)) if len(course_users) > 0 else 0
+        active_progress = round_to_int(engaged_progress_sum/active_users) if active_users > 0 else 0
+        engaged_progress = round_to_int(engaged_progress_sum/engaged_users) if engaged_users > 0 else 0
+
+        course_stats = [
+             { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': course_progress},
+             { 'name': 'Activated', 'people': active_users, 'invited': str(activated * 100) + '%', 'progress': str(active_progress) + '%'},
+             { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged * 100) + '%', 'progress': str(engaged_progress) + '%'},
+             { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
+        ]
+        return Response(course_stats)
+
+
+def GetCourseUsersRoles(course_id, permissions_filter_list):
+    course_roles_users = course_api.get_users_filtered_by_role(course_id)
+    user_roles_list = {'ids':[],'data':[]}
+    for course_role in course_roles_users:
+        if permissions_filter_list:
+            if vars(course_role)['role'] in permissions_filter_list:
+                user_roles_list['data'].append(vars(course_role))
+                user_roles_list['ids'].append(str(vars(course_role)['id']))
+        else:
+            user_roles_list['data'].append(vars(course_role))
+            user_roles_list['ids'].append(str(vars(course_role)['id']))
+    return user_roles_list
+
+class course_details_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id=None, format=None):
+        if (course_id):
+            permissonsMap = {
+            'assistant':'TA',
+            'instructor': 'Instructor',
+            'staff':'Staff',
+            'observer':'Observer'
+            }
+            permissionsFilter = ['observer','assistant']
+            allCoursesParticipantList = []
+            len_of_all_users = 0
+            userData = {'ids':[]}
+            current_page = 0
+            if request.GET['include_slow_fields'] == 'true':
+                allCourseParticipantsUsers = user_api.get_filtered_users(request.GET)
+                users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
+                len_of_all_users = len(allCourseParticipantsUsers['results'])
+                allCourseParticipants = allCourseParticipantsUsers['results']
+            else:
+                allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
+                list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
+                len_of_all_users = len(allCourseParticipants)
+                allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
+                for course_participant in allCourseParticipants:
+                    userData['ids'].append(str(course_participant['id']))
+                for user_role_id in list_of_user_roles['ids']:
+                    if user_role_id not in userData['ids']:
+                        userData['ids'].append(user_role_id)
+                requestParams = dict(request.GET)
+                if requestParams['page_size']:
+                    len_of_pages = int(requestParams['page_size'][0])
+                else:
+                    len_of_pages = 50;
+                user_chunked_ids=[userData['ids'][x:x+len_of_pages] for x in xrange(0, len(userData['ids']), len_of_pages)]
+                if requestParams['page']:
+                    if int(requestParams['page'][0]) > 0:
+                        current_page = int(requestParams['page'][0])-1
+                    else:
+                        current_page = 0
+                else:
+                    current_page = 0;
+                del requestParams['include_slow_fields']       
+                userData['ids'] = ",".join(user_chunked_ids[current_page])
+                for key, value in requestParams.items():
+                    requestParams[key] = ",".join(value)
+                requestParams.update(userData)
+                requestParams['page'] = 1
+                allCourseParticipantsUsers = user_api.get_filtered_users(requestParams)
+
+                course_all_users = course_api.get_course_details_users(course_id)
+                count = len(course_all_users['enrollments'])
+                course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+
+            allCourseParticipantsUsers['full_length'] = len_of_all_users
+            allCourseParticipantsUsers['current_page'] = current_page+1
+            
+            number_of_assessments = 0
+            number_of_groupworks = 0
+            test_groupwork = []
+            test_assessment = []
+            if len_of_all_users > 0:
+                user_grades = user_api.get_user_full_gradebook(allCourseParticipants[0]['id'], course_id)['grade_summary']['section_breakdown']
+                for user_grade in user_grades:
+                    data = user_grade
+                    data['percent'] = '.'
+                    if 'assessment' in user_grade['category'].lower():
+                        number_of_assessments += 1
+                        test_assessment.append(data)
+                    if 'GROUP_PROJECT' in user_grade['category']:
+                        number_of_groupworks += 1
+                        test_groupwork.append(data)
+            for course_participant in allCourseParticipantsUsers['results']:
+                course_participant['user_status'] = []
+                if request.GET['include_slow_fields'] == 'true':  
+                    course_participant['progress'] = '{:03d}'.format(round_to_int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
+                    user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
+                    course_participant['groupworks'] = []
+                    course_participant['assessments'] = []
+                    for user_grade in user_grades:
+                        data = user_grade
+                        data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
+                        if 'GROUP_PROJECT' in user_grade['category']:
+                            course_participant['groupworks'].append(data)
+                        elif 'assessment' in user_grade['category'].lower():
+                            course_participant['assessments'].append(data)
+                else:
+                    course_participant['number_of_assessments'] = number_of_assessments
+                    course_participant['number_of_groupworks'] = number_of_groupworks
+                    course_participant['progress'] = '.'
+                    course_participant['groupworks'] = test_groupwork
+                    course_participant['assessments'] = test_assessment
+                    course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
+                    if not course_participant['proficiency']:
+                        course_participant['proficiency'] = "000";
+                    else:
+                        course_participant['proficiency'] = '{:03d}'.format(int(course_participant['proficiency'][0]))
+                    for role in list_of_user_roles['data']:
+                        if role['id'] == course_participant['id']:
+                            course_participant['user_status'].append(permissonsMap[role['role']])
+                            del role
+                    if permissonsMap['assistant'] in course_participant['user_status']:
+                        course_participant['custom_user_status'] = 'TA'
+                    elif permissonsMap['observer'] in course_participant['user_status']:
+                        course_participant['custom_user_status'] = 'Observer'
+                    else:
+                        course_participant['custom_user_status']='Participant'   
+                    course_participant['progress'] = '.'
+                    if len(course_participant['organizations'] ) == 0:
+                        course_participant['organizations'] = [{'display_name': 'No company'}]
+                        course_participant['organizations_display_name'] = 'No company'
+                    else:
+                        course_participant['organizations_display_name'] = course_participant['organizations'][0]['display_name']
+                    if course_participant['is_active']:
+                        course_participant['custom_activated'] = 'Yes'
+                    else:
+                        course_participant['custom_activated'] = 'No'
+                    if 'last_login' in course_participant:
+                        if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
+                            course_participant['custom_last_login'] = parsedate(course_participant['last_login']).strftime("%Y/%m/%d")
+                        else:
+                            course_participant['custom_last_login'] = '-'
+                    else:
+                        course_participant['custom_last_login'] = '-'
+                    if 'created' in course_participant:
+                        if (course_participant['created'] is not None) and (course_participant['created'] is not ''):
+                            course_participant['custom_created'] = parsedate(course_participant['created']).strftime("%Y/%m/%d")
+                        else:
+                            course_participant['custom_created'] = '-'
+                    else:
+                        course_participant['custom_created'] = '-'
+            return Response(allCourseParticipantsUsers)
+        else:
+            return Response({})
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -1979,6 +2386,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
         "remote_session_key": request.session.get("remote_session_key"),
         "lms_base_domain": settings.LMS_BASE_DOMAIN,
         "lms_sub_domain": settings.LMS_SUB_DOMAIN,
+        "lms_port": settings.LMS_PORT,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     }
 
@@ -2172,6 +2580,7 @@ def groupwork_dashboard_details(
         'remote_session_key': request.session.get('remote_session_key'),
         'lms_base_domain': settings.LMS_BASE_DOMAIN,
         'lms_sub_domain': settings.LMS_SUB_DOMAIN,
+        "lms_port": settings.LMS_PORT,
         'program': {'id': program.id, 'name': '{} ({})'.format(program.display_name, program.name)},
         'course': {'id': course.id, 'name': course.name},
         'project': {'id': project.id, 'name': project.name},
@@ -2601,6 +3010,257 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         'admin/workgroup/list.haml',
         data
     )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participants_list(request):
+    return render( request, 'admin/participants/participants_list.haml')
+
+class participants_list_api(APIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, format=None):
+
+        company = request.QUERY_PARAMS.get('company', None)
+        name = request.QUERY_PARAMS.get('name', None)
+        email = request.QUERY_PARAMS.get('custom_email', None)
+
+        filters = []
+        if company:
+            filters.append({ 'name': 'organizations_custom_name', 'value': company.lower()})
+        if name:
+            filters.append({ 'name': 'full_name', 'value': name.lower()})
+        if email:
+            filters.append({ 'name': 'email', 'value': email.lower()})
+
+        if filters:
+            allParticipants = user_api.get_filtered_users(request.GET)
+            for participant in allParticipants["results"]:
+                if len(participant["organizations"]) > 0:
+                    participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+                else:
+                    participant['organizations_custom_name'] = ""
+                participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
+                if participant["is_active"]:
+                    participant["active_custom_text"]="Yes"
+                else:
+                    participant["active_custom_text"]="No"
+            response = {'results': []}   
+            for user in allParticipants['results']:
+                for item in filters:
+                    item['toAppend'] = False
+                    if item['value'] in (user[item['name']]).lower():
+                        item['toAppend'] = True
+                if all(item['toAppend'] for item in filters):
+                    response['results'].append(user)
+            return Response(response)
+        else: 
+            allParticipants = user_api.get_filtered_users(request.GET)
+            for participant in allParticipants["results"]:
+                if len(participant["organizations"]) > 0:
+                    participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+                else:
+                    participant['organizations_custom_name'] = ""
+                participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
+                if participant["is_active"]:
+                    participant["active_custom_text"]="Yes"
+                else:
+                    participant["active_custom_text"]="No"
+            return Response(allParticipants)
+
+class participant_details_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id):
+        selectedUser = user_api.get_user(user_id)
+        userOrganizations = user_api.get_user_organizations(user_id)
+        userOrganizationsList =[]
+        for organization in userOrganizations:
+            userOrganizationsList.append(vars(organization))
+        if selectedUser is not None:
+            selectedUser = selectedUser.to_dict()
+            if 'last_login' in selectedUser:
+                if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
+                    selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+                else:
+                    selectedUser['custom_last_login'] = 'N/A'
+            else:
+                selectedUser['custom_last_login'] = 'N/A'
+            if len(userOrganizationsList):
+                selectedUser['company_name'] = userOrganizationsList[0]['display_name']
+                selectedUser['company_id'] = userOrganizationsList[0]['id']
+            else:
+                selectedUser['company_name'] = 'No company'
+                selectedUser['company_id'] = ''
+            if selectedUser['gender'] == '' or selectedUser['gender'] == None:
+                selectedUser['gender'] = 'N/A'
+            selectedUser['city'] = selectedUser['city'].strip()
+            selectedUser['country'] = selectedUser['country'].strip()
+            if selectedUser['city'] == '' and selectedUser['country'] == '':
+                selectedUser['location'] = 'N/A'
+            elif selectedUser['country'] == '':
+                selectedUser['location'] = selectedUser['city']
+            elif selectedUser['city'] == '':
+                selectedUser['location'] = selectedUser['country']
+            else:
+                selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
+            selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
+            if not len(selectedUser['mcka_permissions']):
+                selectedUser['mcka_permissions'] = ['-']
+            return render( request, 'admin/participants/participant_details.haml', selectedUser)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, user_id, format=None):
+        form = EditExistingUserForm(request.POST.copy())
+        if form.is_valid():
+            filterUsers = {}
+            existing_users_length = 0
+            if request.POST['username']:
+                filterUsers = {'username' : request.POST['username']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+                for user in existing_users['results']:
+                    if int(user['id']) == int(user_id):
+                        existing_users_length -= 1
+            if request.POST['email']:
+                filterUsers = {'email' : request.POST['email']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+                for user in existing_users['results']:
+                    if int(user['id']) == int(user_id):
+                        existing_users_length -= 1
+            if (existing_users_length > 0):
+                return Response({'status':'error', 'type': 'user_exist', 'message':'User with that username or email already exists!'})
+            else:
+                data = form.cleaned_data
+                try:
+                    response = user_api.update_user_information(user_id,data)
+                except ApiError, e:
+                    return Response({'status':'error','type': 'api_error', 'message':e.message})
+                return Response({'status':'ok', 'message':vars(response)})
+        else:
+            return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
+
+      
+class participant_details_active_courses_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, format=None):
+
+        if request.GET['include_slow_fields'] == 'false':
+            active_courses, course_history = get_user_courses_helper(user_id)
+            return Response(active_courses)
+        elif request.GET['include_slow_fields'] == 'true':  
+            fetch_courses =[]
+            for course_id in request.GET['ids'].split(','):
+                user_course = {}
+                user_course['id'] = course_id
+                course_data = None
+                course_data = load_course(user_course['id'], request=request)
+                load_course_progress(course_data, user_id)
+                user_course['progress'] = '{:03d}'.format(int(course_data.user_progress))
+                proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
+                user_course['proficiency'] = '{:03d}'.format(round_to_int(proficiency.user_grade_value * 100))
+                fetch_courses.append(user_course)   
+            return Response(fetch_courses) 
+
+        return Response({})
+
+
+class participant_details_course_history_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, format=None):
+
+        active_courses, course_history = get_user_courses_helper(user_id)
+
+        user_grades = user_api.get_user_grades(user_id)
+
+        for grade in user_grades:
+            for user_course in course_history:
+                if vars(grade)['course_id'] == user_course['id']:
+                    if vars(grade)['complete_status'] == 'true':
+                        user_course['completed'] ='Yes'
+                    else:
+                        user_course['completed'] = 'No'
+                    user_course['grade'] = round_to_int(vars(grade)['current_grade'] * 100)
+                else:
+                    if user_course['status'] == 'Active':
+                        user_course['completed'] = 'No'
+                        user_course['grade'] = 0
+
+                user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
+
+        return Response(course_history) 
+
+
+def get_user_courses_helper(user_id):
+
+    user_courses = []
+    allCourses = user_api.get_courses_from_user(user_id)
+    for course in allCourses:
+        user_course = {}
+        user_course['name'] = course['name']
+        user_course['id'] = course['id']
+        user_course['program'] = '-'
+        user_course['progress'] = "."
+        user_course['proficiency'] = "."
+        user_course['completed'] ='N/A'
+        user_course['grade'] ='N/A'
+        user_course['status'] = 'Active'
+        user_course['unenroll'] = 'Unenroll'
+        user_course['start'] = course['start']
+        if course['end'] is not None:
+            user_course['end'] = course['end']
+        else: 
+            user_course['end'] = '-'
+        user_courses.append(user_course)
+    user_roles = user_api.get_user_roles(user_id)
+    for role in user_roles:
+        if not any(item['id'] == vars(role)['course_id'] for item in user_courses):
+            course = course_api.get_course_details(vars(role)['course_id'])
+            user_course = {}
+            user_course['name'] = course['name']
+            user_course['id'] = course['id']
+            user_course['program'] = '-'
+            user_course['progress'] = "."
+            user_course['proficiency'] = "."
+            user_course['completed'] ='N/A'
+            user_course['grade'] ='N/A'
+            user_course['start'] = course['start']
+            if course['end'] is not None:
+                user_course['end'] = course['end']
+            else: 
+                user_course['end'] = '-'
+            if vars(role)['role'] == 'observer':
+                user_course['status'] = 'Observer'
+            if vars(role)['role'] == 'assistant':
+                user_course['status'] = 'TA'
+            user_course['unenroll'] = 'Unenroll'
+            user_courses.append(user_course)       
+        else:
+            user_course = (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id']).next()
+            if user_course['status'] != 'TA':
+                if vars(role)['role'] == 'observer':
+                    user_course['status'] = 'Observer'
+                if vars(role)['role'] == 'assistant':
+                    user_course['status'] = 'TA'
+
+    active_courses = []
+    course_history = []    
+    for user_course in user_courses:
+        if timezone.now() >= parsedate(user_course['start']):
+            if user_course['end'] == '-':
+                active_courses.append(user_course)
+            elif timezone.now() <= parsedate(user_course['end']):
+                active_courses.append(user_course)
+            else:
+                course_history.append(user_course)
+
+    return active_courses, course_history
+
+
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

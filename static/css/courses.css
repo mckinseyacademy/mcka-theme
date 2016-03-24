@@ -1,0 +1,176 @@
+#mainCoursesDetailContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 60%;
+}
+
+#coursesListTitle p
+{
+	font-size: xx-large;
+	margin-bottom: 20px;
+}
+
+#mainCoursesWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#coursesListViewGridBlock
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+	max-height: 25em;
+	overflow-y: scroll;
+}
+
+#coursesListViewGridBlock .bbGrid-grid.table
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#mainCoursesListBlockContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#mainCoursesListBlockContainer .bbGrid-search-bar
+{
+	float: none!important;
+	display: inline-block;
+}
+
+#mainCourseDetailsWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 900px;
+	max-width: 80%;
+}
+
+#courseDetailsDataWrapper
+{
+	margin-top: 25px;
+	margin-left: 50px;
+}
+
+.courseDetailsHeader
+{
+	margin-bottom: 20px!important;
+}
+
+.courseDetailsNameAndId
+{
+	color: #3384CA;
+	font-size: medium;
+	font-weight: bold;
+	float: left;
+}
+
+.courseDetailsTags
+{
+	float: right;
+}
+
+.courseDetailsLeftBlock
+{
+	padding-left: 0px!important; 
+}
+
+.courseDetailsCenterBlock
+{
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	padding-left: 80px!important;
+}
+
+.courseDetailsRightBlock
+{
+	padding-left: 80px!important;
+}
+
+#courseMainDetailsContainerView
+{
+	margin-top: 50px;
+}
+
+.courseParticipantsButton
+{
+	padding-left: 0px!important;
+}
+
+.courseDetailsTopic
+{
+	font-size: xx-large;
+	margin-bottom: 20px;
+}
+
+.courseDetailsViewGrid
+{
+	padding-left: 0px!important;
+}
+
+.courseDetailsViewGrid .bbGrid-grid
+{
+	width: 100%;
+}
+
+.courseDetailsTags
+{
+	float: right;
+}
+
+.courseDetailsLeftBlock
+{
+	padding-left: 0px!important; 
+}
+
+.courseDetailsCenterBlock
+{
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	padding-left: 80px!important;
+}
+
+.courseDetailsRightBlock
+{
+	padding-left: 80px!important;
+}
+#courseDetailsParticipantsGrid
+{
+	overflow: auto;
+	width: 100%;
+	max-height:120em;
+}
+
+#courseDetailsMainContainer .bbGrid-search-bar
+{
+	float: none!important;
+	display: inline-block;
+}
+
+.courseDetailsTopic
+{
+	float: left;
+	display: none;
+}
+
+#coursesDownloadStatsButton
+{
+	float: right;
+	display: none;
+}
+
+#coursesDownloadStatsButton .button
+{
+	background-color: #868685!important;
+}

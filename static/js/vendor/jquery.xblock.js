@@ -61,6 +61,7 @@
             baseDomain: null,    // Common part of the client & LMS domain names
                                  // (eg: `example.com`, defaults to current domain)
             lmsSubDomain: 'lms', // The subdomain part for the LMS (eg, `lms` for `lms.example.com`)
+            lmsPort: null,       // Port that LMS API is running on
             lmsSecureURL: false, // Is the LMS on HTTPS?
             useCurrentHost: false, // set to true to load xblock using the current location.hostnam
             disableGlobalOptions: false, // set to true to disable the global_options behavior.
@@ -271,7 +272,12 @@
 
         getLmsDomain: function(options) {
             if (options.useCurrentHost) {
-                return this.location.hostname + ':' + this.location.port;
+                if (options.lmsPort && options.lmsPort !== "None") {
+                    return this.location.hostname + ':' + options.lmsPort;
+                }
+                else {
+                    return this.location.hostname + ':' + this.location.port;
+                }
             }
             else {
                 return options.lmsSubDomain + '.' + options.baseDomain;
