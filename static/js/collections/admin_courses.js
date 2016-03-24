@@ -4,13 +4,13 @@
     mode: "infinite",
     state: {
       firstPage: 1,
-      pageSize: 100
+      pageSize: 10
     },
     queryParams: {
       currentPage: "page",
       totalPages: null,
       totalRecords: null,
-      page_size: 100,
+      page_size: 10,
     },
     parseLinks: function (resp, options){
       returnObject={};
