@@ -583,6 +583,14 @@
     color: $mckinsey-dark-grey;
   }
 
+  #download_csv_template {
+    a {
+      &.button.close-reveal-modal {
+        color: $pure-white;
+      }
+    }
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';
