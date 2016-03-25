@@ -34,7 +34,6 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
   },
   fetchSlowFields: function(fetchNumber){
     this.getSlowFetchedStatus = false;
-    this.queryParams['include_slow_fields'] = true;
     if (fetchNumber > 0)
     {
       listOfIds = [];
@@ -46,7 +45,6 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
       if (listOfIds.length == 0)
       {
         this.queryParams['ids'] = false;
-        this.queryParams['include_slow_fields'] = false;
         return;
       }
       else
@@ -60,25 +58,10 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
         {
           this.getSlowFetchedStatus = true;
           this.queryParams['ids'] = listOfIds.slice(0,fetchNumber).join();
-        }
-          
+        }      
       }
     }
-    backup_page = this.state['currentPage'];
-    this.state['currentPage'] = 1;
-    this.fetch({update: true, remove:false, success:function(collection, response, options){
-      data = response.results;
-      for (var user in data)
-      {
-        userData = data[user];
-        modelData = collection.fullCollection.models.filter(function(el){return el.attributes.id == userData.id})
-        if (modelData.length > 0)
-          modelData[0].set({progress: userData.progress});
-      }
-      collection.slowFieldsSuccess(collection, response, options)
-    }});
-    this.state['currentPage'] = backup_page;
-    this.queryParams['include_slow_fields'] = false;
+    this.fetchSlowFieldsAjax(this);
   },
   saveCurrentPageSlowState: function(idFieldName, slowAttributeName){
     listOfIds = [];
@@ -90,21 +73,49 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
       });
     this.pageAndIdConnector = listOfIds;
   },
-  slowFieldsSuccess: function(collection, response, options){
-      if (collection.getSlowFetchedStatus)
+  slowFieldsSuccess: function(collection){
+    if (collection.getSlowFetchedStatus)
+    {
+        if (collection.pageAndIdConnector.length < collection.slowFieldsFetchCount)
+        {
+          collection.pageAndIdConnector = [];
+        }
+        else
+        {
+          collection.pageAndIdConnector = collection.pageAndIdConnector.slice(collection.slowFieldsFetchCount, collection.pageAndIdConnector.length);
+        }  
+        collection.saveCurrentPageSlowState();
+        collection.fetchSlowFields(collection.slowFieldsFetchCount);
+    }
+  },
+  fetchSlowFieldsAjax: function(collection)
+  {
+    var optionsData = {ids:this.queryParams['ids'], include_slow_fields:true};
+    var options = {
+        url: this.url,
+        data: optionsData,
+        type: "GET",
+        dataType: "json"
+      };
+
+    options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+    $.ajax(options)
+    .done(function(data) {
+      data = data.results;
+      for (var user in data)
       {
-          if (collection.pageAndIdConnector.length < collection.slowFieldsFetchCount)
-          {
-            collection.pageAndIdConnector = [];
-          }
-          else
-          {
-            collection.pageAndIdConnector = collection.pageAndIdConnector.slice(collection.slowFieldsFetchCount, collection.pageAndIdConnector.length);
-          }  
-          collection.saveCurrentPageSlowState();
-          collection.fetchSlowFields(collection.slowFieldsFetchCount);
+        userData = data[user];
+        modelData = collection.fullCollection.models.filter(function(el){return el.attributes.id == userData.id})
+        if (modelData.length > 0)
+          modelData[0].set({progress: userData.progress, assessments: userData.assessments, groupworks: userData.groupworks});
       }
-    },
+      collection.slowFieldsSuccess(collection);
+    })
+    .fail(function(data) {
+      console.log("Ajax failed to fetch data");
+      console.log(data)
+    })
+  },
   getSlowFetchedStatus: false,
   pageAndIdConnector: [],
   slowFieldsFetchCount: 10,

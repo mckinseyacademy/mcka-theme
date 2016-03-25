@@ -268,6 +268,47 @@ class UserRegistrationBatch(db_models.Model):
             old_record.delete()
         return True
 
+class BatchOperationErrors(db_models.Model):
+    task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
+    error = db_models.TextField(default='')
+    user_id = db_models.IntegerField(default=0)
+
+    @classmethod
+    def create(cls, error='', task_key='', user_id=0):
+        reg_record = cls.objects.create(error=error, task_key= task_key, user_id=user_id)
+        reg_record.save()
+
+        return reg_record
+
+class BatchOperationStatus(db_models.Model):
+    task_key = db_models.CharField(max_length=40, unique=True, db_index=True)
+    attempted = db_models.IntegerField(default=0)
+    failed = db_models.IntegerField(default=0)
+    succeded = db_models.IntegerField(default=0)
+    time_requested = db_models.DateTimeField(default=timezone.now)
+
+    @staticmethod
+    def generate_task_key(time):
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+        return hashlib.sha1(salt+time).hexdigest()
+
+    @classmethod
+    def create(cls):
+        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0, task_key= cls.generate_task_key(str(timezone.now())))
+        reg_record.save()
+
+        return reg_record
+
+    @classmethod
+    def clean_old(cls, ErrorModels=BatchOperationErrors):
+        old_records = cls.objects.filter(time_requested__lte=(timezone.now() - timedelta(days=1)))
+        for old_record in old_records:
+            old_errors = ErrorModels.objects.filter(task_key=old_record.task_key)
+            for old_error in old_errors:
+                old_error.delete()
+            old_record.delete()
+        return True
+
 class ClientNavLinks(db_models.Model):
     class Meta:
         unique_together = ['client_id', 'link_name']

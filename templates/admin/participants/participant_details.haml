@@ -108,18 +108,18 @@
             .participantFirstNameLabel.labelUniversal
               First Name<sup>*</sup>
             .participantFirstNameValue
-              %input{:type => "text", :value => '#{first_name}', :name => "first_name", :maxlength => "60"}
+              %input{:type => "text", :value => '#{first_name}', :name => "first_name", :maxlength => "30"}
           .large-6.columns.participantLastName
             .participantLastNameLabel.labelUniversal
               Last Name<sup>*</sup>
             .participantLastNameValue
-              %input{:type => "text", :value => '#{last_name}', :name => "last_name", :maxlength => "60"}
+              %input{:type => "text", :value => '#{last_name}', :name => "last_name", :maxlength => "30"}
         .row
           .large-6.columns.participantUsername
             .participantUsernameLabel.labelUniversal
               Username
             .participantUsernameValue
-              %input{:type => "text", :value => '#{username}', :name => "username", :maxlength => "60"}
+              %input{:type => "text", :value => '#{username}', :name => "username", :maxlength => "30"}
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
@@ -175,7 +175,8 @@
               %a{:href => '/admin/participants/#{id}', :target => '_self'}> + Add another company
         .row
           .large-12.columns.participantBottomSaveEdit
-            %input.button.small.radius.disabled.participantDetailsSave{:type => "button", :value => "Save Changes"}
+            .button.small.radius.disabled.participantDetailsSave
+              Save Changes
             %a.cancelParticipantEdit{:href => '#', :target => '_self'}> Cancel
 
     .participantDetailsActiveCourses.contentNavigationContainer{:style => "display: none"}
@@ -185,7 +186,7 @@
       #participantDetailsCourseHistoryViewGrid.large-12.columns
 
   #participantDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
-    %h2#modalTitle
+    %h2.modalTitle
     %p.lead
     %p.mainText
     %a.close-reveal-modal{"aria-label" => "Close"}
