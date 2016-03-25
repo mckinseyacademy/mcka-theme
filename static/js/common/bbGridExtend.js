@@ -283,8 +283,10 @@ cloneHeader = function(parentContainer) {
   var clonedHeaderContainer = $('.clonedHeaderContainer');
   clonedHeaderContainer.append(clonedHeader);
   clonedHeaderContainer.css("height", parseFloat(height) + 15);
-  var containerWidth = window.getComputedStyle(clonedHeaderContainer[0]).width;
-  clonedHeaderContainer.css("width", parseFloat(containerWidth) - 15);
+  if(parentContainer != '#coursesListViewGridBlock'){
+    var containerWidth = window.getComputedStyle(clonedHeaderContainer[0]).width;
+    clonedHeaderContainer.css("width", parseFloat(containerWidth) - 15);
+  }
 
   clonedHeaderContainer.on('scroll', function(event){
     var left = $(this).scrollLeft();
