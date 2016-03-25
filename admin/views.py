@@ -3480,6 +3480,27 @@ def client_admin_branding_settings(request, client_id, course_id):
     except:
         instance = None
 
+    if instance is None:
+        instance = BrandingSettings(
+                background_image = settings.BACKGROUND_IMAGE,
+                logo_image = settings.LOGO_IMAGE,
+                navigation_colors = settings.NAVIGATION_COLORS,
+                text_colors = settings.TEXT_COLORS,
+                background_tiled = settings.BACKGROUND_TILED,
+            )
+    return render(request, 'admin/client-admin/course_branding_settings.haml', {
+        'branding': instance,
+        'client_id': client_id,
+        'course_id': course_id,
+        })
+
+def client_admin_branding_settings_edit(request, client_id, course_id):
+
+    try:
+        instance = BrandingSettings.objects.get(client_id=client_id)
+    except:
+        instance = None
+
     if request.method == 'POST':
         form = BrandingSettingsForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
@@ -3487,13 +3508,13 @@ def client_admin_branding_settings(request, client_id, course_id):
                 return render(request, '403.haml')
             form.save()
 
-            redirect_url = "/admin/client-admin/{}/courses/{}".format(client_id, course_id)
+            redirect_url = "/admin/client-admin/{}/courses/{}/branding".format(client_id, course_id)
             return HttpResponseRedirect(redirect_url)
     
     else:
         form = BrandingSettingsForm(instance=instance)
 
-    return render(request, 'admin/client-admin/branding_settings.haml', {
+    return render(request, 'admin/client-admin/course_branding_settings_edit.haml', {
         'form': form,
         'client_id': client_id,
         'course_id': course_id,

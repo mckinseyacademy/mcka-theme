@@ -8,20 +8,102 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'LearnersDashboard'
+        db.create_table(u'admin_learnersdashboard', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('client_id', self.gf('django.db.models.fields.IntegerField')(unique=True)),
+            ('course_id', self.gf('django.db.models.fields.IntegerField')(unique=True)),
+        ))
+        db.send_create_signal(u'admin', ['LearnersDashboard'])
+
+        # Adding model 'BatchOperationStatus'
+        db.create_table(u'admin_batchoperationstatus', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('task_key', self.gf('django.db.models.fields.CharField')(unique=True, max_length=40, db_index=True)),
+            ('attempted', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('failed', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('succeded', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('time_requested', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+        ))
+        db.send_create_signal(u'admin', ['BatchOperationStatus'])
+
+        # Adding model 'BatchOperationErrors'
+        db.create_table(u'admin_batchoperationerrors', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('task_key', self.gf('django.db.models.fields.CharField')(max_length=40, db_index=True)),
+            ('error', self.gf('django.db.models.fields.TextField')(default='')),
+            ('user_id', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal(u'admin', ['BatchOperationErrors'])
+
+        # Adding model 'LearnersDashboardTile'
+        db.create_table(u'admin_learnersdashboardtile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=40, blank=True)),
+            ('link', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
+            ('order', self.gf('django.db.models.fields.IntegerField')()),
+            ('background_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
+            ('tile_type', self.gf('django.db.models.fields.CharField')(max_length=1)),
+            ('learners_dashboard_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.LearnersDashboard'])),
+        ))
+        db.send_create_signal(u'admin', ['LearnersDashboardTile'])
+
+        # Adding model 'LearnersDashboardDiscovery'
+        db.create_table(u'admin_learnersdashboarddiscovery', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('link', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('author', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('learners_dashboard_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.LearnersDashboard'])),
+        ))
+        db.send_create_signal(u'admin', ['LearnersDashboardDiscovery'])
+
+        # Adding model 'LearnersDashboardResource'
+        db.create_table(u'admin_learnersdashboardresource', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=40, blank=True)),
+            ('link', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('learners_dashboard_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.LearnersDashboard'])),
+        ))
+        db.send_create_signal(u'admin', ['LearnersDashboardResource'])
+
         # Adding model 'BrandingSettings'
         db.create_table(u'admin_brandingsettings', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('background_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
-            ('background_tiled', self.gf('django.db.models.fields.BooleanField')()),
             ('logo_image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
             ('navigation_colors', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
             ('text_colors', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('background_tiled', self.gf('django.db.models.fields.BooleanField')()),
             ('client_id', self.gf('django.db.models.fields.IntegerField')(unique=True)),
         ))
         db.send_create_signal(u'admin', ['BrandingSettings'])
 
 
     def backwards(self, orm):
+        # Deleting model 'LearnersDashboard'
+        db.delete_table(u'admin_learnersdashboard')
+
+        # Deleting model 'BatchOperationStatus'
+        db.delete_table(u'admin_batchoperationstatus')
+
+        # Deleting model 'BatchOperationErrors'
+        db.delete_table(u'admin_batchoperationerrors')
+
+        # Deleting model 'LearnersDashboardTile'
+        db.delete_table(u'admin_learnersdashboardtile')
+
+        # Deleting model 'LearnersDashboardDiscovery'
+        db.delete_table(u'admin_learnersdashboarddiscovery')
+
+        # Deleting model 'LearnersDashboardResource'
+        db.delete_table(u'admin_learnersdashboardresource')
+
         # Deleting model 'BrandingSettings'
         db.delete_table(u'admin_brandingsettings')
 
@@ -55,6 +137,22 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'program_id': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'user_count': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'})
+        },
+        u'admin.batchoperationerrors': {
+            'Meta': {'object_name': 'BatchOperationErrors'},
+            'error': ('django.db.models.fields.TextField', [], {'default': "''"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'task_key': ('django.db.models.fields.CharField', [], {'max_length': '40', 'db_index': 'True'}),
+            'user_id': ('django.db.models.fields.IntegerField', [], {'default': '0'})
+        },
+        u'admin.batchoperationstatus': {
+            'Meta': {'object_name': 'BatchOperationStatus'},
+            'attempted': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'failed': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'succeded': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'task_key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '40', 'db_index': 'True'}),
+            'time_requested': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'})
         },
         u'admin.brandingsettings': {
             'Meta': {'object_name': 'BrandingSettings'},
@@ -101,6 +199,42 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'program_id': ('django.db.models.fields.IntegerField', [], {}),
             'user_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'})
+        },
+        u'admin.learnersdashboard': {
+            'Meta': {'object_name': 'LearnersDashboard'},
+            'client_id': ('django.db.models.fields.IntegerField', [], {'unique': 'True'}),
+            'course_id': ('django.db.models.fields.IntegerField', [], {'unique': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'})
+        },
+        u'admin.learnersdashboarddiscovery': {
+            'Meta': {'object_name': 'LearnersDashboardDiscovery'},
+            'author': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'learners_dashboard_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.LearnersDashboard']"}),
+            'link': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
+        },
+        u'admin.learnersdashboardresource': {
+            'Meta': {'object_name': 'LearnersDashboardResource'},
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '40', 'blank': 'True'}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'learners_dashboard_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.LearnersDashboard']"}),
+            'link': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
+        },
+        u'admin.learnersdashboardtile': {
+            'Meta': {'object_name': 'LearnersDashboardTile'},
+            'background_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '40', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'learners_dashboard_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.LearnersDashboard']"}),
+            'link': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
+            'order': ('django.db.models.fields.IntegerField', [], {}),
+            'tile_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
         },
         u'admin.logentry': {
             'Meta': {'ordering': "(u'-action_time',)", 'object_name': 'LogEntry', 'db_table': "u'django_admin_log'"},
