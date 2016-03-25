@@ -122,6 +122,7 @@ _.extend(bbGrid.View.prototype, {
       if (!this.autofetch) {
           this.renderPage();
       }
+      updateHeader();
       return this;
   },
   _sortBy: function (models, attributes) {
@@ -242,89 +243,26 @@ _.extend(bbGrid.View.prototype, {
   }
 });
 
-cloneHeader = function() {
-  console.log("usa u clone");
-  // var clonedHeader = $('#courseDetailsParticipantsGrid').find('.bbGrid-grid-head').clone(true);
-  var clonedHeader = $('#courseDetailsParticipantsGrid').find('.cloned-header');
-  console.log(jQuery.isEmptyObject(cloneHeader));
-  if((jQuery.isEmptyObject(cloneHeader))){
-    console.log("clonira");
-    clonedHeader = $('#courseDetailsParticipantsGrid').find('.bbGrid-grid-head').clone(true);
+cloneHeader = function(parentContainer) {
 
-    clonedHeader.addClass("cloned-header");
-  
-    var head = $('#courseDetailsParticipantsGrid').find('.bbGrid-grid-head');
-    // var head = $('.bbGrid-grid-head')[0];
-    var width = window.getComputedStyle(head[0]).width;
-    var height = window.getComputedStyle(head[0]).height;
-    clonedHeader.css({"width": width, "height": height});
-    head.css("height", parseFloat(height) + 15);
+  clonedHeader = $(parentContainer).find('.bbGrid-grid-head').clone(true);
+  clonedHeader.attr('data-parent-container', parentContainer);
+  clonedHeader.addClass("cloned-header");
 
-
-    var tr = $('#courseDetailsParticipantsGrid').find('.bbGrid-grid-head').find('tr')[0];
-    // var tr = $('.bbGrid-grid-head').find('tr')[0];
-    var trwidth = window.getComputedStyle(tr).width;
-    var trheight = window.getComputedStyle(tr).height;
-    clonedHeader.find('tr').css({"width": trwidth, "height": trheight});
-    
-    var thWidths = []
-    var thHeights = []
-    $('#courseDetailsParticipantsGrid').find('.bbGrid-grid-head').find('th').each(function(index, value){
-    // $('.bbGrid-grid-head').find('th').each(function(index, value){
-      var width = window.getComputedStyle(value).width;
-      var height = window.getComputedStyle(value).height;
-      thWidths.push(width);
-      thHeights.push(height);
-    });
-    var i = 0
-    clonedHeader.find('th').each(function(index, value){
-      $(value).css({"width": thWidths[i], "height": thHeights[i]});
-      i = i+1;
-    });
-
-    $('#courseDetailsParticipantsGrid').prepend('<div class="clonedHeaderContainer"></div>');
-    var clonedHeaderContainer = $('.clonedHeaderContainer');
-    clonedHeaderContainer.append(clonedHeader);
-    clonedHeaderContainer.css("height", parseFloat(height) + 15);
-    var containerWidth = window.getComputedStyle(clonedHeaderContainer[0]).width;
-    clonedHeaderContainer.css("width", parseFloat(containerWidth) - 15);
-
-    // $('.bbGrid-container').parent().prepend(clonedHeader);
-
-    clonedHeaderContainer.on('scroll', function(event){
-      var left = $(this).scrollLeft();
-      $('.bbGrid-container').scrollLeft(left);
-    });
-
-    $('.bbGrid-container').on('scroll', function(event){
-      var left = $(this).scrollLeft();
-      $('.clonedHeaderContainer').scrollLeft(left);
-    });
-
-  }
-}
-
-updateHeader = function() {
-  console.log("usa");
-  var clonedHeader = $('#courseDetailsParticipantsGrid').find('.cloned-header');
-  // var clonedHeader = $('.cloned-header');
-
-  var head = $('#courseDetailsParticipantsGrid').find('.bbGrid-grid').find('.bbGrid-grid-head');
-  // var head = $('.bbGrid-grid').find('.bbGrid-grid-head')[0];
+  var head = $(parentContainer).find('.bbGrid-grid-head');
   var width = window.getComputedStyle(head[0]).width;
   var height = window.getComputedStyle(head[0]).height;
   clonedHeader.css({"width": width, "height": height});
+  head.css("height", parseFloat(height) + 15);
 
-  var tr = $('#courseDetailsParticipantsGrid').find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
-  // var tr = $('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
+  var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
   var trwidth = window.getComputedStyle(tr).width;
   var trheight = window.getComputedStyle(tr).height;
   clonedHeader.find('tr').css({"width": trwidth, "height": trheight});
 
   var thWidths = []
   var thHeights = []
-  $('#courseDetailsParticipantsGrid').find('.bbGrid-grid').find('.bbGrid-grid-head').find('th').each(function(index, value){
-  // $('.bbGrid-grid').find('.bbGrid-grid-head').find('th').each(function(index, value){
+  $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('th').each(function(index, value){
     var width = window.getComputedStyle(value).width;
     var height = window.getComputedStyle(value).height;
     thWidths.push(width);
@@ -335,11 +273,65 @@ updateHeader = function() {
     $(value).css({"width": thWidths[i], "height": thHeights[i]});
     i = i+1;
   });
+
+  $(parentContainer).prepend('<div class="clonedHeaderContainer"></div>');
+  var clonedHeaderContainer = $('.clonedHeaderContainer');
+  clonedHeaderContainer.append(clonedHeader);
+  clonedHeaderContainer.css("height", parseFloat(height) + 15);
+  var containerWidth = window.getComputedStyle(clonedHeaderContainer[0]).width;
+  clonedHeaderContainer.css("width", parseFloat(containerWidth) - 15);
+
+  clonedHeaderContainer.on('scroll', function(event){
+    var left = $(this).scrollLeft();
+    $('.bbGrid-container').scrollLeft(left);
+  });
+
+  $('.bbGrid-container').on('scroll', function(event){
+    var left = $(this).scrollLeft();
+    $('.clonedHeaderContainer').scrollLeft(left);
+  });
+}
+
+updateHeader = function() {
+
+  var clonedHeader = $('.cloned-header');
+  if(clonedHeader.length == 0){
+    return;
+  }
+  if(!(jQuery.isEmptyObject(clonedHeader))){
+    var parentContainer = clonedHeader.attr('data-parent-container');
+    var head = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head')[0];
+    var width = window.getComputedStyle(head).width;
+    var height = window.getComputedStyle(head).height;
+    clonedHeader.css({"width": width, "height": height});
+
+    var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
+    var trwidth = window.getComputedStyle(tr).width;
+    var trheight = window.getComputedStyle(tr).height;
+    clonedHeader.find('tr').css({"width": trwidth, "height": trheight});
+
+    var thWidths = []
+    var thHeights = []
+    $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('th').each(function(index, value){
+      var width = window.getComputedStyle(value).width;
+      var height = window.getComputedStyle(value).height;
+      thWidths.push(width);
+      thHeights.push(height);
+    });
+    var i = 0
+    clonedHeader.find('th').each(function(index, value){
+      $(value).css({"width": thWidths[i], "height": thHeights[i]});
+      i = i+1;
+    });
+  }
 }
 
 updateHeaderOnSort = function(col) {
-  $('#courseDetailsParticipantsGrid').find('.cloned-header').find('th').each(function(index, value){
-  // $('.cloned-header').find('th').each(function(index, value){
+
+  var clonedHeader = $('.cloned-header');
+  var parentContainer = clonedHeader.attr('data-parent-container');
+  updateHeader();
+  $(parentContainer).find('.cloned-header').find('th').each(function(index, value){
     var text = $(value).text();
     var tag = $(value).find('i');
     if(text == col.title){

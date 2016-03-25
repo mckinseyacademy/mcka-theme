@@ -4,10 +4,9 @@
 
     initialize: function(){
       _this = this;
-      this.collection.fetch({success:function(collection, response, options)
-        {
+      this.collection.fetch({success:function(collection, response, options){
           _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
-          cloneHeader();
+          cloneHeader('#courseDetailsParticipantsGrid');
           collection.getSlowFetchedStatus = true;
           collection.slowFieldsSuccess(collection, response, options);
         }});
@@ -74,13 +73,13 @@
       
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       this.coursesListDetailsViewGrid = coursesListDetailsViewGrid;
-      this.$el.on('scroll', { extra : this}, this.fetchPages);
+      this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
       $(document).on('onSearchEvent', { extra : this}, this.onSearchEvent);
       $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
     },
     fetchPages: function(event){
       var _this = event.data.extra;
-      if  (($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20) && _this.coursesListDetailsViewGrid.partial_collection.hasNextPage()){
+      if  (($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20) && _this.coursesListDetailsViewGrid.partial_collection.hasNextPage()){
         _collection = _this.coursesListDetailsViewGrid.partial_collection;
         _collection.saveCurrentPageSlowState();
         _collection.getNextPage({success:function(collection, response, options){

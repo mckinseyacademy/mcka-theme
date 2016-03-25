@@ -7,7 +7,6 @@
 	border-collapse: separate;
 	border-spacing: 0;
 	table-layout: fixed;
-	z-index: 1;
 }
 
 .cloned-header tr
@@ -21,7 +20,7 @@
 	box-sizing: content-box;
 	overflow: hidden;
 	white-space: normal;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 0;
 	border-top: 1px solid #ccc;
 	border-left: 1px solid #ccc;
 	display: table-cell;
@@ -39,6 +38,7 @@
 	position: absolute;
 	width: 100%;
 	height: auto;
-	overflow-x: scroll;
+	overflow-x: auto;
 	overflow-y: hidden;
+	z-index: 1;
 }

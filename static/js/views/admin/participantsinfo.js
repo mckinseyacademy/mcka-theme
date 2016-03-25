@@ -1,6 +1,8 @@
 Apros.views.ParticipantsInfo = Backbone.View.extend({
 	initialize: function(){
-		this.collection.fetch();
+		this.collection.fetch({success: function() {
+      cloneHeader('#participantsListViewGridBlock');
+    }});
 	},
 	render: function(){
 		participantsListViewGrid = new bbGrid.View({
@@ -27,10 +29,10 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 				{ title: 'Activated', index: true, name: 'active_custom_text' }]
 			});
 		participantsListViewGrid['partial_collection']=this.collection;
-		this.$el.scroll(this.fetchPages);
+		this.$el.find('.bbGrid-container').scroll(this.fetchPages);
 	},
 	fetchPages: function(){
-		if  ($(this).find('.bbGrid-container').height() - $(this).height() - $(this).scrollTop() < 20)
+		if  ($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20)
 		{
 			participantsListViewGrid.partial_collection.getNextPage();
 		}

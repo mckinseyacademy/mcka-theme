@@ -1,6 +1,8 @@
   Apros.views.CoursesListView = Backbone.View.extend({
     initialize: function(){
-      this.collection.fetch();
+      this.collection.fetch({success: function(){
+        cloneHeader('#coursesListViewGridBlock');
+      }});
     },
     render: function(){
       coursesListViewGrid = new bbGrid.View({

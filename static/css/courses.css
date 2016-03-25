@@ -26,13 +26,13 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 100px;
-	max-height: 27.7em;
+	max-height: 28em;
 	position: relative;
 }
 
 #coursesListViewGridBlock .bbGrid-container
 {
-	max-height: 27.7em;
+	max-height: 28em;
 	overflow-y: scroll;
 }
 
@@ -161,15 +161,6 @@
 	padding-left: 80px!important;
 }
 
-/*#courseDetailsMainContainer
-{
-	margin-left: auto;
-	margin-right: auto;
-	display:table;
-	min-width: 760px;
-	max-width: 80%;
-}*/
-
 #courseDetailsParticipantsGridWrapper{
 	margin-left: auto;
 	margin-right: auto;
@@ -185,23 +176,18 @@
 	margin-bottom: 100px;
 	max-height: 120em;
 	position: relative;
-	/*overflow-x: hidden;*/
 	display: inherit;
 }
 
 #courseDetailsParticipantsGrid .bbGrid-container
 {
 	max-height: 120em;
-	overflow-y: scroll;
-	overflow-x: scroll;
-/*	max-width: 100%;*/
+	overflow: auto;
 }
 
 #courseDetailsParticipantsGrid .bbGrid-grid.table
 {
 	min-width: 760px;
-	margin-left: auto;
-	margin-right: auto;
 }
 
 #courseDetailsMainContainer .bbGrid-search-bar
