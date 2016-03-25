@@ -4,6 +4,7 @@
       this.collection.fetch({success:function(collection, response, options)
         {
           _this.updateColumns();
+          cloneHeader();
           collection.getSlowFetchedStatus = true;
           collection.slowFieldsSuccess(collection, response, options);
         }});

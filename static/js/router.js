@@ -220,5 +220,6 @@ Apros.Router.HashPageChanger = function(element) {
   else
     val.hide();
   });
+  updateHeader();
 }
 

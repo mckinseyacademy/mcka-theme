@@ -1,8 +1,6 @@
   Apros.views.CoursesListView = Backbone.View.extend({
     initialize: function(){
-      this.collection.fetch({success: function(){
-        cloneHeader();
-      }});
+      this.collection.fetch();
     },
     render: function(){
       coursesListViewGrid = new bbGrid.View({
@@ -50,9 +48,7 @@
     fetchPages: function(){
         if  ($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20)
         {
-          coursesListViewGrid.partial_collection.getNextPage({success: function(){
-            // cloneHeader();
-          }});
+          coursesListViewGrid.partial_collection.getNextPage();
         }  
     },
     onSearchEvent: function(){
