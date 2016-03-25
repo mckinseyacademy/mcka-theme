@@ -122,10 +122,10 @@ _.extend(bbGrid.View.prototype, {
       if (!this.autofetch) {
           this.renderPage();
       }
+      updateHeader();
       return this;
   },
   _sortBy: function (models, attributes) {
-    console.log('sorting');
     var attr, self = this, sortOrder;
     if (attributes.length === 1) {
       attr = attributes[0].name;
@@ -167,5 +167,181 @@ _.extend(bbGrid.View.prototype, {
       });
       return _.flatten(models);
     }
+  },
+  rsortBy: function (col) {
+    var isSort, sortType, boundComparator;
+    isSort = (this.sortName && this.sortName === col.name) ? false : true;
+    this.sortName = col.name;
+    sortType = col.sorttype || 'string';
+    this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc';
+    boundComparator = _.bind(this.stringComparator, this.collection);
+    switch (sortType) {
+    case 'string':
+        boundComparator = _.bind(this.stringComparator, this.collection);
+        break;
+    case 'number':
+        boundComparator = _.bind(this.numberComparator, this.collection);
+        break;
+    default:
+        break;
+    }
+    this.collection.models = isSort ? this.collection.sortBy(boundComparator) : this.collection.models.reverse();
+    updateHeaderOnSort(col);
+  },
+  renderPage: function (options) {
+    options = options || {silent: false};
+    var self = this, interval, data;
+    if (this.loadDynamic) {
+        options.interval = {s: 0, e: this.rows};
+        data = {
+            page: self.currPage,
+            rows: this.rows
+        };
+        if (this.enableSearch && this.searchBar.searchText) {
+            data.search = $.toJSON(this.searchBar.searchText);
+            data.searchOption = self.colModel[this.searchBar.searchOptionIndex].name;
+        }
+        if (!_.isEmpty(this.filterOptions)) {
+            data.filter = $.toJSON(this.filterOptions);
+        }
+        if (this.sortSequence && this.sortSequence.length) {
+            data.sort = $.toJSON(this.sortSequence);
+        }
+        if (!this.autofetch && !options.silent) {
+            this.collection.fetch({
+                type: 'POST',
+                data: data,
+                wait: true,
+                reset: true,
+                silent: true
+            });
+            return false;
+        }
+    }
+    this.selectedRows = [];
+    if (this.onBeforeRender) {
+        this.onBeforeRender();
+    }
+    if (!options.silent) {
+        this.thead.render();
+    }
+    if (this.rows && this.pager) {
+        this.pager.render();
+    }
+    interval = options.interval || this.getIntervalByPage(this.currPage);
+    this.showCollection(this.collection.models.slice(interval.s, interval.e));
+    if (!this.autofetch && this.collection.length >= 0) {
+        this.toggleLoading(false);
+    }
+    if (this.onReady && !this.autofetch) {
+        this.onReady();
+    }
+    if (this.filterBar && (!options.silent || this.loadDynamic)) {
+        this.filterBar.render();
+    }
+    updateHeader();
   }
 });
+
+cloneHeader = function(parentContainer) {
+
+  clonedHeader = $(parentContainer).find('.bbGrid-grid-head').clone(true);
+  clonedHeader.attr('data-parent-container', parentContainer);
+  clonedHeader.addClass("cloned-header");
+
+  var head = $(parentContainer).find('.bbGrid-grid-head');
+  var width = window.getComputedStyle(head[0]).width;
+  var height = window.getComputedStyle(head[0]).height;
+  clonedHeader.css({"width": width, "height": height});
+  head.css("height", parseFloat(height) + 15);
+
+  var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
+  var trwidth = window.getComputedStyle(tr).width;
+  var trheight = window.getComputedStyle(tr).height;
+  clonedHeader.find('tr').css({"width": trwidth, "height": trheight});
+
+  var thWidths = []
+  var thHeights = []
+  $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('th').each(function(index, value){
+    var width = window.getComputedStyle(value).width;
+    var height = window.getComputedStyle(value).height;
+    thWidths.push(width);
+    thHeights.push(height);
+  });
+  var i = 0
+  clonedHeader.find('th').each(function(index, value){
+    $(value).css({"width": thWidths[i], "height": thHeights[i]});
+    i = i+1;
+  });
+
+  $(parentContainer).prepend('<div class="clonedHeaderContainer"></div>');
+  var clonedHeaderContainer = $('.clonedHeaderContainer');
+  clonedHeaderContainer.append(clonedHeader);
+  clonedHeaderContainer.css("height", parseFloat(height) + 15);
+  var containerWidth = window.getComputedStyle(clonedHeaderContainer[0]).width;
+  clonedHeaderContainer.css("width", parseFloat(containerWidth) - 15);
+
+  clonedHeaderContainer.on('scroll', function(event){
+    var left = $(this).scrollLeft();
+    $('.bbGrid-container').scrollLeft(left);
+  });
+
+  $('.bbGrid-container').on('scroll', function(event){
+    var left = $(this).scrollLeft();
+    $('.clonedHeaderContainer').scrollLeft(left);
+  });
+}
+
+updateHeader = function() {
+
+  var clonedHeader = $('.cloned-header');
+  if(clonedHeader.length == 0){
+    return;
+  }
+  if(!(jQuery.isEmptyObject(clonedHeader))){
+    var parentContainer = clonedHeader.attr('data-parent-container');
+    var head = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head')[0];
+    var width = window.getComputedStyle(head).width;
+    var height = window.getComputedStyle(head).height;
+    clonedHeader.css({"width": width, "height": height});
+
+    var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
+    var trwidth = window.getComputedStyle(tr).width;
+    var trheight = window.getComputedStyle(tr).height;
+    clonedHeader.find('tr').css({"width": trwidth, "height": trheight});
+
+    var thWidths = []
+    var thHeights = []
+    $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('th').each(function(index, value){
+      var width = window.getComputedStyle(value).width;
+      var height = window.getComputedStyle(value).height;
+      thWidths.push(width);
+      thHeights.push(height);
+    });
+    var i = 0
+    clonedHeader.find('th').each(function(index, value){
+      $(value).css({"width": thWidths[i], "height": thHeights[i]});
+      i = i+1;
+    });
+  }
+}
+
+updateHeaderOnSort = function(col) {
+
+  var clonedHeader = $('.cloned-header');
+  var parentContainer = clonedHeader.attr('data-parent-container');
+  updateHeader();
+  $(parentContainer).find('.cloned-header').find('th').each(function(index, value){
+    var text = $(value).text();
+    var tag = $(value).find('i');
+    if(text == col.title){
+      if(col.sortOrder === "asc" ){
+        tag.addClass("fa fa-chevron-up");
+      } else if(col.sortOrder === "desc" ){
+        tag.addClass("fa fa-chevron-down");
+      }
+    } else {
+      tag.removeClass("fa fa-chevron-up fa-chevron-down");
+    }
+  });
+}
