@@ -324,6 +324,7 @@ def client_admin_course(request, client_id, course_id):
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
+    learner_dashboard = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
 
     data = {
         'client_id': client_id,
@@ -332,7 +333,8 @@ def client_admin_course(request, client_id, course_id):
         'course_start': course.start.strftime('%m/%d/%Y') if course.start else '',
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
-        'cutoffs': cutoffs
+        'cutoffs': cutoffs,
+        'learner_dashboard_flag': learner_dashboard
     }
     return render(
         request,
@@ -367,13 +369,15 @@ def client_admin_course_participants(request, client_id, course_id):
 
     else:
         students = []
-
+    learner_dashboard = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    
     data = {
         'client_id': client_id,
         'course_id': course_id,
         'target_course': course,
         'total_participants': len(students),
-        'students': students
+        'students': students,
+        'learner_dashboard': learner_dashboard
     }
     return render(
         request,
@@ -497,12 +501,23 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
+        'learner_dashboard_flag': features.learner_dashboard
     }
     return render(
         request,
         'admin/client-admin/course_analytics.haml',
         data,
     )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_learner_dashboard(request, client_id, course_id):
+    data = {
+    	'client_id': client_id,
+        'course_id': course_id,
+        'learner_dashboard_flag': True
+    }
+    return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access

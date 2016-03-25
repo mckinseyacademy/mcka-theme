@@ -772,7 +772,7 @@ $button-font-weight: 700;
 
 // Panels
 
-// $include-html-panel-classes: $include-html-classes;
+ $include-html-panel-classes: true;
 
 // We use these to control the background and border styles
 // $panel-bg: scale-color(#fff, $lightness: -5%);
