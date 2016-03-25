@@ -1,13 +1,20 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(){
       var _this=this;
+      $('#country_edit').countrySelect();
+
       $('#participantDetailsWrapper').find('.participantEditDetails').off();
       $('#participantDetailsWrapper').find('.participantEditDetails').on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').hide();
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').show();
-
+        var details = $('#participantDetailsWrapper').find('.participantDetailsWrapper');
+        var locationText = details.find('.participantLocationValue').text();
+        if (locationText.indexOf(',') > -1)
+        {
+          $("#country_edit").countrySelect("selectCountry", locationText.split(',')[1].trim().toLowerCase());
+        }
       });
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').off();
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').on("click", function()
@@ -95,12 +102,12 @@
       if (genderAbbreviation == 'F')
         details.find('.participantGenderValue').text('Female');
       var city = edit.find('.participantCityValue input').val().trim();
-      var country = edit.find('.participantCountryValue input').val().trim();
-      combinedLocation = edit.find('.participantCityValue input').val().trim() + ', ' + edit.find('.participantCountryValue input').val().trim();
+      var country = edit.find('#country_edit_code').val().trim().toUpperCase();
+      combinedLocation = city + ', ' + country;
       if (city === "" && country != "")
-        combinedLocation = edit.find('.participantCountryValue input').val().trim();
+        combinedLocation = country;
       else if (country === "" && city != "")
-        combinedLocation = edit.find('.participantCityValue input').val().trim();
+        combinedLocation = city;
       else if (city === "" && country === "")
         combinedLocation = "N/A";
       
@@ -126,7 +133,9 @@
       if (locationText.indexOf(',') > -1)
       {
         edit.find('.participantCityValue input').val(locationText.split(',')[0].trim())
-        edit.find('.participantCountryValue input').val(locationText.split(',')[1].trim())
+        edit.find('#country_edit_code').val(locationText.split(',')[1].trim().toLowerCase())
+        var selected_country = $("#country_edit_code").val();
+        $("#country_edit").countrySelect("selectCountry", selected_country);
       }
     }
   });

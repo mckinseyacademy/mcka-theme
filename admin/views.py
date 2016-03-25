@@ -3119,7 +3119,7 @@ class participant_details_api(APIView):
             if selectedUser['gender'] == '' or selectedUser['gender'] == None:
                 selectedUser['gender'] = 'N/A'
             selectedUser['city'] = selectedUser['city'].strip()
-            selectedUser['country'] = selectedUser['country'].strip()
+            selectedUser['country'] = selectedUser['country'].strip().upper()
             if selectedUser['city'] == '' and selectedUser['country'] == '':
                 selectedUser['location'] = 'N/A'
             elif selectedUser['country'] == '':

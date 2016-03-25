@@ -38,6 +38,7 @@ js_ie8_files.extend([
     'js/vendor/bbGrid.js',
     'js/vendor/jquery-ui.min.js', 
     'js/vendor/jquery.clearsearch.js',
+    'js/vendor/countrySelect.min.js',
     'js/application.js',
     'js/router.js',
 ])
@@ -72,6 +73,7 @@ js_files.extend([
     'js/vendor/bbGrid.js',
     'js/vendor/jquery-ui.min.js',
     'js/vendor/jquery.clearsearch.js',
+    'js/vendor/countrySelect.min.js',
     'js/application.js',
     'js/router.js',
 ])

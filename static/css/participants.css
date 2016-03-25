@@ -107,3 +107,9 @@
 	margin-left: 15px;
     text-decoration: underline;
 }
+#participantDetailsWrapper .participantDetailsEditForm .participantCountryValue > .country-select{
+	width: 100%;
+}
+#participantDetailsWrapper .participantDetailsEditForm #country_edit{
+	background-color: white!important;
+}
