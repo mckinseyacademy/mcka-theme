@@ -10,8 +10,15 @@
 }
 #participantsListViewGridBlock{
 	max-height: 120em;
+	position: relative;
+}
+
+#participantsListViewGridBlock .bbGrid-container
+{
+	max-height: 120em;
 	overflow-y: scroll;
 }
+
 #mainParticipantsWrapper .menuButton{
 	display:inline-block;
 }

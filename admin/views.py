@@ -3059,18 +3059,8 @@ class participants_list_api(APIView):
             filters.append({ 'name': 'email', 'value': email.lower()})
 
         if filters:
-            allParticipants = user_api.get_filtered_users(request.GET)
-            for participant in allParticipants["results"]:
-                if len(participant["organizations"]) > 0:
-                    participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
-                else:
-                    participant['organizations_custom_name'] = ""
-                participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
-                if participant["is_active"]:
-                    participant["active_custom_text"]="Yes"
-                else:
-                    participant["active_custom_text"]="No"
             response = {'results': []}   
+            allParticipants = {'results': getDummyData()} 
             for user in allParticipants['results']:
                 for item in filters:
                     item['toAppend'] = False
@@ -3457,3 +3447,668 @@ def generate_assignments(request, project_id, activity_id):
     response = HttpResponse(json.dumps({"message": error}), content_type="application/json")
     response.status_code = status_code
     return response
+
+
+def getDummyData():
+
+    return [
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "mcka_admin_user Tester", 
+            "email": "mcka_admin_user@mckinseyacademy.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user242", 
+            "email": "smmuser242@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user295", 
+            "email": "smmuser295@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user304", 
+            "email": "smmuser304@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user1000", 
+            "email": "smmuser1000@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "Furqan Ud Din", 
+            "email": "furqan@arbisoft.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "Khurram Shahzad", 
+            "email": "khurram.shahzad@arbisoft.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user999", 
+            "email": "smmuser999@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user998", 
+            "email": "smmuser998@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user997", 
+            "email": "smmuser997@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user996", 
+            "email": "smmuser996@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user995", 
+            "email": "smmuser995@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user994", 
+            "email": "smmuser994@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user993", 
+            "email": "smmuser993@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user992", 
+            "email": "smmuser992@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user991", 
+            "email": "smmuser991@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user990", 
+            "email": "smmuser990@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user989", 
+            "email": "smmuser989@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user988", 
+            "email": "smmuser988@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user987", 
+            "email": "smmuser987@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user986", 
+            "email": "smmuser986@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user900", 
+            "email": "smmuser900@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user865", 
+            "email": "smmuser865@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user864", 
+            "email": "smmuser864@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user863", 
+            "email": "smmuser863@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user862", 
+            "email": "smmuser862@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user861", 
+            "email": "smmuser861@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user790", 
+            "email": "smmuser790@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user860", 
+            "email": "smmuser860@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user789", 
+            "email": "smmuser789@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user788", 
+            "email": "smmuser788@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user787", 
+            "email": "smmuser787@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user786", 
+            "email": "smmuser786@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user785", 
+            "email": "smmuser785@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user784", 
+            "email": "smmuser784@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user783", 
+            "email": "smmuser783@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user782", 
+            "email": "smmuser782@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user781", 
+            "email": "smmuser781@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user780", 
+            "email": "smmuser780@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user590", 
+            "email": "smmuser590@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user591", 
+            "email": "smmuser591@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user592", 
+            "email": "smmuser592@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user593", 
+            "email": "smmuser593@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user594", 
+            "email": "smmuser594@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user595", 
+            "email": "smmuser595@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user596", 
+            "email": "smmuser596@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user597", 
+            "email": "smmuser597@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user598", 
+            "email": "smmuser598@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user599", 
+            "email": "smmuser599@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user600", 
+            "email": "smmuser600@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user500", 
+            "email": "smmuser500@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user501", 
+            "email": "smmuser501@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user502", 
+            "email": "smmuser502@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user503", 
+            "email": "smmuser503@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user504", 
+            "email": "smmuser504@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user505", 
+            "email": "smmuser505@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user506", 
+            "email": "smmuser506@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user507", 
+            "email": "smmuser507@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user508", 
+            "email": "smmuser508@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user509", 
+            "email": "smmuser509@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user510", 
+            "email": "smmuser510@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user511", 
+            "email": "smmuser511@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user512", 
+            "email": "smmuser512@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user400", 
+            "email": "smmuser400@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user401", 
+            "email": "smmuser401@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user402", 
+            "email": "smmuser402@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user403", 
+            "email": "smmuser403@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user404", 
+            "email": "smmuser404@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user405", 
+            "email": "smmuser405@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user406", 
+            "email": "smmuser406@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user407", 
+            "email": "smmuser407@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user408", 
+            "email": "smmuser408@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user409", 
+            "email": "smmuser409@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user410", 
+            "email": "smmuser410@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user351", 
+            "email": "smmuser351@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user352", 
+            "email": "smmuser352@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user353", 
+            "email": "smmuser353@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user354", 
+            "email": "smmuser354@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user355", 
+            "email": "smmuser355@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user356", 
+            "email": "smmuser356@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user357", 
+            "email": "smmuser357@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user358", 
+            "email": "smmuser358@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user359", 
+            "email": "smmuser359@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user360", 
+            "email": "smmuser360@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user361", 
+            "email": "smmuser361@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user362", 
+            "email": "smmuser362@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user363", 
+            "email": "smmuser363@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user364", 
+            "email": "smmuser364@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user365", 
+            "email": "smmuser365@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user366", 
+            "email": "smmuser366@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user367", 
+            "email": "smmuser367@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user368", 
+            "email": "smmuser368@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user369", 
+            "email": "smmuser369@yopmail.com"
+        }, 
+        {
+            "created_custom_date": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "active_custom_text": "-", 
+            "full_name": "sm user370", 
+            "email": "smmuser370@yopmail.com"
+        }
+    ]
+
