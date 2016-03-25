@@ -245,6 +245,11 @@ _.extend(bbGrid.View.prototype, {
 
 cloneHeader = function(parentContainer) {
 
+  var clonedHeader = $('.cloned-header');
+  if(clonedHeader.length != 0){
+    return;
+  }
+
   clonedHeader = $(parentContainer).find('.bbGrid-grid-head').clone(true);
   clonedHeader.attr('data-parent-container', parentContainer);
   clonedHeader.addClass("cloned-header");
@@ -330,7 +335,6 @@ updateHeaderOnSort = function(col) {
 
   var clonedHeader = $('.cloned-header');
   var parentContainer = clonedHeader.attr('data-parent-container');
-  updateHeader();
   $(parentContainer).find('.cloned-header').find('th').each(function(index, value){
     var text = $(value).text();
     var tag = $(value).find('i');
