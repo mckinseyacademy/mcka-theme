@@ -3155,6 +3155,23 @@ class participant_details_api(APIView):
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def validate_participant_email(request):
+
+    email = request.GET.get('email', None)
+    userId = request.GET.get('userId', None)
+
+    if email:
+        user = user_api.get_user_by_email(email)
+        if user['count'] == 0:
+            return HttpResponse(json.dumps({'status': 'notTakenEmail'}), content_type="application/json")
+        elif user['count'] >=1 and user['results'][0]['email'] == email:
+            if int(user['results'][0]['id']) == int(userId):
+                return HttpResponse(json.dumps({'status': 'hisEmail'}), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'status': 'takenEmail'}), content_type="application/json")
+            
       
 class participant_details_active_courses_api(APIView):
 

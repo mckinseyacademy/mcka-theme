@@ -100,6 +100,7 @@ urlpatterns = patterns(
 
     url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses$', views.participant_details_active_courses_api.as_view(), name='participant_details_active_courses_api'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history$', views.participant_details_course_history_api.as_view(), name='participant_details_course_history_api'),
+    url(r'^api/participants/validate_participant_email/$', views.validate_participant_email, name='validate_participant_email'),
     url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),
