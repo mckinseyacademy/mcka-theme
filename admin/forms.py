@@ -7,7 +7,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from .models import Client, Program, AccessKey, DashboardAdminQuickFilter, BrandingSettings
+from .models import Client, Program, AccessKey, DashboardAdminQuickFilter, BrandingSettings, LearnersDashboardTile
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
@@ -219,6 +219,13 @@ class BrandingSettingsForm(forms.ModelForm):
             'navigation_colors': forms.TextInput(attrs={'type': 'color'}),
             'text_colors': forms.TextInput(attrs={'type': 'color'}),
         }
+
+class LearnerDashboardTileForm(forms.ModelForm):
+		class Meta:
+				model = LearnersDashboardTile
+				fields = [
+						'title', 'description', 'link', 'order', 'tile_type', 'background_image', 'learners_dashboard_id'
+				]
 
 
 

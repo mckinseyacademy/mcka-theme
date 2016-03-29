@@ -1,11 +1,17 @@
-- extends "admin/admin_layout.haml"
+- extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
+  %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
+  %script
+    $(function() {
+      $( '#sortable' ).sortable();
+      $( '#sortable' ).disableSelection();
+    });
   .admin-detail.row
     .large-12.columns
       - include 'admin/client-admin/course_header.haml'
   .admin-detail.row
-    %form{action: "#{request.path}", method: "POST"}
+    %form{action: '#{request.path}', method: 'POST'}
       .large-12.columns
         - csrf_token
         = form
@@ -14,13 +20,33 @@
             = error
         .row
           .large-3.columns
-            %label.right.inline Title <sup> * </sup>
+            %label.right.inline Title
           .large-9.columns
-            %input{:type => "text", :value => '#{title}', :name => "title", :maxlength => "80"}
+            %input{:type => 'text', :value => '#{title}', :name => 'title', :maxlength => '80'}
         .row
           .large-3.columns
             %label.right.inline Description
           .large-9.columns
-            %textarea.desc-text{:value => '#{description}', :name => "description", :maxlength => "500", :rows => 7}
+            %textarea.desc-text{:value => '#{description}', :name => 'description', :maxlength => '500', :rows => 7}
+        .large-12.columns
+          .row
+            .large-3.columns
+              %label.right.inline Tiles
+            .large-9.columns
+              %ul#sortable
+                %li.ui-state-default 1
+                %li.ui-state-default 2
+                %li.ui-state-default 3
+                %li.ui-state-default 4
+                %li.ui-state-default 5
+                %li.ui-state-default 6
+                %li.ui-state-default 7
+                %li.ui-state-default 8
+                %li.ui-state-default 9
+                %li.ui-state-default 10
+                %li.ui-state-default 11
+                %li.ui-state-default
+                  %a{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{course_id}/tile/#{tile_id}', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} +
+                  #tileModal.reveal-modal.small{'data-reveal': None}
       .large-12.columns
-        %input.button.radius.small.right{type: "submit", value: "Submit"}
+        %input.button.radius.small.right{type: 'submit', value: 'Submit'}

@@ -1,0 +1,18 @@
+%h2 Tile
+%a.close-reveal-modal &#215;
+
+%form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/tile/#{tile_id}", method: "POST", enctype: "multipart/form-data"}
+  - csrf_token
+  .row
+    .small-3.columns
+    .small-9.columns= form.background_image.errors
+  .row
+    .small-3.columns= form.background_image.label_tag
+    .small-9.columns= form.background_image
+    
+  %input{'type': 'hidden', 'name': 'learners_dashboard_id', 'value': '#{learners_dashboard_id}'}
+  .error
+    - if error
+      = error
+  %div.submit-area
+    %input.button.radius.small{type: "submit", value: "Save"}
