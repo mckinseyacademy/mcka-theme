@@ -233,8 +233,8 @@ class DiscoveryContentCreateForm(forms.ModelForm):
 
 class LearnerDashboardTileForm(forms.ModelForm):
 
-	class Meta:
-		model = LearnerDashboardTile
-		fields = [
-				'title', 'description', 'link', 'position', 'tile_type', 'background_image', 'learner_dashboard'
-		]
+    class Meta:
+        model = LearnerDashboardTile
+        fields = [
+            'title', 'description', 'link', 'position', 'tile_type', 'background_image', 'learner_dashboard'
+       ]
