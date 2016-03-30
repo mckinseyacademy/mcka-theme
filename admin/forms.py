@@ -7,7 +7,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from .models import Client, Program, AccessKey, DashboardAdminQuickFilter, BrandingSettings, LearnerDashboardDiscovery
+from .models import Client, Program, AccessKey, DashboardAdminQuickFilter, BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
@@ -231,4 +231,10 @@ class DiscoveryContentCreateForm(forms.ModelForm):
             'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
         }
 
+class LearnerDashboardTileForm(forms.ModelForm):
 
+	class Meta:
+		model = LearnerDashboardTile
+		fields = [
+				'title', 'description', 'link', 'order', 'tile_type', 'background_image', 'learners_dashboard_id'
+		]

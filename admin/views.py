@@ -52,7 +52,7 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, LearnerDashboard, LearnerDashboardDiscovery
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -66,7 +66,11 @@ from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
+<<<<<<< HEAD
     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm
+=======
+    DashboardAdminQuickFilterForm, BrandingSettingsForm, LearnerDashboardTileForm
+>>>>>>> EE/krunomunitic
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -512,12 +516,54 @@ def client_admin_course_analytics(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
-    data = {
-    	'client_id': client_id,
-        'course_id': course_id,
-        'learner_dashboard_flag': True
-    }
-    return render(request, 'admin/client-admin/learner_dashboard.haml', data)
+
+		(learner_dashboard, created) = LearnersDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
+
+		if request.method == "POST":
+			learner_dashboard.Title = request.POST['title']
+			learner_dashboard.Description = request.POST['description']
+			learner_dashboard.save()
+			redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
+			return HttpResponseRedirect(redirect_url)
+
+		data = {
+			'client_id': client_id,
+		  'course_id': course_id,
+		  'learner_dashboard_id': learner_dashboard.id,
+		  'learner_dashboard_flag': True,
+		  'title': learner_dashboard.Title,
+		  'description': learner_dashboard.Description
+		}
+		return render(request, 'admin/client-admin/learner_dashboard.haml', data)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_learner_dashboard_tile(request, client_id, course_id, tile_id):
+
+  try:
+    instance = LearnersDashboardTile.objects.get(id=tile_id)
+  except:
+    instance = None
+
+  if request.method == 'POST':
+    form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
+    if form.is_valid():
+      if int(client_id) != form.cleaned_data['client_id']:
+        return render(request, '403.haml')
+      form.save()
+
+      redirect_url = "/admin/client-admin/{}/courses/{}".format(client_id, course_id)
+      return HttpResponseRedirect(redirect_url)
+  
+  else:
+    form = LearnerDashboardTileForm(instance=instance)
+
+  return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
+      'form': form,
+      'client_id': client_id,
+      'course_id': course_id,
+      'tile_id': tile_id,
+      })
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
