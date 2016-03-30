@@ -1036,7 +1036,6 @@ class course_details_api(APIView):
             else:
                 allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
                 list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
-                len_of_all_users = len(allCourseParticipants)
                 allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
                 for user_role_id in list_of_user_roles['ids']:          
                     userData['ids'].append(str(user_role_id))
@@ -1049,6 +1048,7 @@ class course_details_api(APIView):
                 else:
                     len_of_pages = 50;
                 user_chunked_ids=[userData['ids'][x:x+len_of_pages] for x in xrange(0, len(userData['ids']), len_of_pages)]
+                len_of_all_users = len(userData['ids'])
                 if requestParams['page']:
                     if int(requestParams['page'][0]) > 0:
                         current_page = int(requestParams['page'][0])-1
