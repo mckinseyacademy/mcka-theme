@@ -31,19 +31,19 @@ Apros.collections.Participants = Backbone.PageableCollection.extend({
       { 'name': 'email', 'tag': 'custom_email', 'value': participants[0]['email']}
     ];
 
-    for (user in participants){
-      for (item in items){
-        if (items[item]['value'] != participants[user][items[item]['name']]){
-          items[item]['value'] = null
+    $.each(participants, function(i, user){
+      $.each(items, function(j, item){
+        if(item['value'] != user[item['name']]){
+          items[j]['value'] = null
         }
-      }
-    }
+      });
+    });
 
-    for (item in items){
-      if (items[item]['value']){
-        highlightSearchBar(items[item]);
+    $.each(items, function(index, value){
+      if(value['value']){
+        highlightSearchBar(value);
       }
-    }
+    });
       
     return participants;
   },
