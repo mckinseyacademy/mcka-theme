@@ -118,8 +118,11 @@
           .large-6.columns.participantUsername
             .participantUsernameLabel.labelUniversal
               Username
+              .fa.fa-check-circle-o.checkMark
             .participantUsernameValue
-              %input{:type => "text", :value => '#{username}', :name => "username", :maxlength => "30"}
+              %input{:type => "text", :value => '#{username}', :name => "username", :maxlength => "30", :onkeyup => 'validateParticipantUsername()', :class => 'participantUsernameInput'}
+              .warningText
+                %p That username is already taken
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
@@ -129,8 +132,8 @@
                 %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
             .participantEmailValue
               %input{:type => "text", :value => '#{email}', :name => "email", :maxlength => "60", :onkeyup => 'validateParticipantEmail()', :class => 'participantEmailInput'}
-              .emailText
-                %p That username/email is already taken
+              .warningText
+                %p That email is already taken
         .row
           .large-6.columns.participantCompany
             .participantCompanyLabel.labelUniversal

@@ -66,38 +66,84 @@ validateParticipantEmail = function() {
 
   this.liveSearchTimer = setTimeout(function() {
     var userId = $('#participantsDetailsDataWrapper').attr('data-id');
-    var emailObject = $('.participantDetailsEditForm .participantEmailInput');
+    var validationObject = $('.participantDetailsEditForm .participantEmailInput');
+    var checkMark = $('.participantEmail .checkMark');
+    var warningText = $('.participantEmail .warningText');
     var options = {
         url: ApiUrls.validate_participant_email,
-        data: {'email': emailObject[0].value, 'userId': userId},
+        data: {'email': validationObject[0].value, 'userId': userId},
         type: "GET",
         dataType: "json"
       };
+    getValidation(options, checkMark, warningText, validationObject);
+  }, 1000)
+}
+
+
+validateParticipantUsername = function() {
+  if (this.liveSearchTimer) {
+    clearTimeout(this.liveSearchTimer);
+  }
+
+  this.liveSearchTimer = setTimeout(function() {
+    var userId = $('#participantsDetailsDataWrapper').attr('data-id');
+    var validationObject = $('.participantDetailsEditForm .participantUsernameInput');
+    var checkMark = $('.participantUsername .checkMark');
+    var warningText = $('.participantUsername .warningText');
+    var options = {
+      url: ApiUrls.validate_participant_username,
+      data: {'username': validationObject[0].value, 'userId': userId},
+      type: "GET",
+      dataType: "json"
+    };
+    getValidation(options, checkMark, warningText, validationObject);
+  }, 1000)
+}
+
+
+getValidation = function(options, checkMark, warningText, validationObject){
+    
     options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
     $.ajax(options)
     .done(function(data) {
-      var checkMark = $('.participantDetailsEditForm .checkMark');
-      var emailText = $('.participantDetailsEditForm .emailText');
       var saveChangeButton = $('.participantDetailsEditForm .participantDetailsSave'); 
-      emailText.hide();
+      warningText.hide();
       checkMark.hide();
-      if(data['status'] == 'notTakenEmail'){
+      if(data['status'] == 'notTaken'){
         checkMark.css('display', 'inline');
         checkMark.show();
-        saveChangeButton.removeClass('disabled');
+        validationObject.removeClass('validationError');
+        disableSaveChangeButton(saveChangeButton);
       }
-      else if(data['status'] == 'takenEmail'){
-        emailText.show();
+      else if(data['status'] == 'taken'){
+        warningText.show();
+        validationObject.addClass('validationError');
         saveChangeButton.addClass('disabled');
       }
-      else if(data['status'] == 'hisEmail'){
-        emailText.hide();
+      else if(data['status'] == 'his'){
+        warningText.hide();
         checkMark.hide();
-        saveChangeButton.removeClass('disabled');
+        validationObject.removeClass('validationError');
+        disableSaveChangeButton(saveChangeButton);
       }
     })
     .fail(function(data) {
       console.log("Ajax failed to fetch data");
     });
-  }, 1000)
+
+}
+
+
+disableSaveChangeButton = function(saveChangeButton){
+
+  var canSave = true
+  $.each($("form").find(':input'), function(i, v){
+      if ($(v).hasClass('validationError')){
+        canSave = false
+      }  
+    });
+  if (canSave){
+    saveChangeButton.removeClass('disabled');
+  }
+
 }

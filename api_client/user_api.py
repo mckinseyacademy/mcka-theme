@@ -596,3 +596,15 @@ def get_user_by_email(user_email):
     )
 
     return json.loads(response.read())
+
+
+@api_error_protect
+def get_user_by_username(user_username):
+
+    response = GET('{}/{}?username={}'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_username)
+    )
+
+    return json.loads(response.read())

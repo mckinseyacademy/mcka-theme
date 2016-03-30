@@ -26,8 +26,15 @@
         _this.update_edit_field_data(_this);
       });
       $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').off('focus').on("focus", function()
-      {
-        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
+      { 
+        var canSave = true
+        $.each($("form").find(':input'), function(i, v){
+            if ($(v).hasClass('validationError')){
+              canSave = false
+            }  
+          });
+        if (canSave)
+          $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
       });
       $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').off().on("click", function()
       {
