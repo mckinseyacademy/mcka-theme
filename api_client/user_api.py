@@ -584,3 +584,15 @@ def get_user_full_gradebook(user_id, course_id):
     )
 
     return json.loads(response.read())
+
+
+@api_error_protect
+def get_user_by_email(user_email):
+
+    response = GET('{}/{}?email={}'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_email)
+    )
+
+    return json.loads(response.read())

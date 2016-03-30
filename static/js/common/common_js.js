@@ -58,3 +58,46 @@ highlightSearchBar = function(item) {
       val.css("background-color", "#B1C2CC");
   });
 }
+
+validateParticipantEmail = function() {
+  if (this.liveSearchTimer) {
+    clearTimeout(this.liveSearchTimer);
+  }
+
+  this.liveSearchTimer = setTimeout(function() {
+    var userId = $('#participantsDetailsDataWrapper').attr('data-id');
+    var emailObject = $('.participantDetailsEditForm .participantEmailInput');
+    var options = {
+        url: ApiUrls.validate_participant_email,
+        data: {'email': emailObject[0].value, 'userId': userId},
+        type: "GET",
+        dataType: "json"
+      };
+    options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+    $.ajax(options)
+    .done(function(data) {
+      var checkMark = $('.participantDetailsEditForm .checkMark');
+      var emailText = $('.participantDetailsEditForm .emailText');
+      var saveChangeButton = $('.participantDetailsEditForm .participantDetailsSave'); 
+      emailText.hide();
+      checkMark.hide();
+      if(data['status'] == 'notTakenEmail'){
+        checkMark.css('display', 'inline');
+        checkMark.show();
+        saveChangeButton.removeClass('disabled');
+      }
+      else if(data['status'] == 'takenEmail'){
+        emailText.show();
+        saveChangeButton.addClass('disabled');
+      }
+      else if(data['status'] == 'hisEmail'){
+        emailText.hide();
+        checkMark.hide();
+        saveChangeButton.removeClass('disabled');
+      }
+    })
+    .fail(function(data) {
+      console.log("Ajax failed to fetch data");
+    });
+  }, 1000)
+}

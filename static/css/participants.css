@@ -120,3 +120,17 @@
 #participantDetailsWrapper .participantDetailsEditForm #country_edit{
 	background-color: white!important;
 }
+
+.participantDetailsEditForm .checkMark
+{
+	color: #629B2B;
+	display: none;
+}
+
+.participantDetailsEditForm .emailText
+{
+	color: #CD202C;
+	display: none;
+	position: absolute;
+	bottom: -10px;
+}
