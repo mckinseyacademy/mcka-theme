@@ -516,8 +516,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 	(learner_dashboard, created) = LearnerDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
 
 	if request.method == "POST":
-		learner_dashboard.Title = request.POST['title']
-		learner_dashboard.Description = request.POST['description']
+		learner_dashboard.title = request.POST['title']
+		learner_dashboard.description = request.POST['description']
 		learner_dashboard.save()
 		
 		redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
@@ -528,8 +528,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 		'course_id': course_id,
 		'learner_dashboard_id': learner_dashboard.id,
 		'learner_dashboard_flag': True,
-		'title': learner_dashboard.Title,
-		'description': learner_dashboard.Description
+		'title': learner_dashboard.title,
+		'description': learner_dashboard.description
 	}
 	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
