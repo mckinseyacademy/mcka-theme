@@ -1,10 +1,9 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(){
       var _this=this;
-      $('#country_edit').countrySelect();
-
-      $('#participantDetailsWrapper').find('.participantEditDetails').off();
-      $('#participantDetailsWrapper').find('.participantEditDetails').on("click", function()
+      $('#country_edit').countrySelect();     
+      _this.initialize_user_organizations();
+      $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').hide();
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
@@ -13,24 +12,24 @@
         var locationText = details.find('.participantLocationValue').text();
         if (locationText.indexOf(',') > -1)
         {
-          $("#country_edit").countrySelect("selectCountry", locationText.split(',')[1].trim().toLowerCase());
+          var country = locationText.split(',')[1].trim().toLowerCase();
+          if (_this.check_if_country_exist(country))
+            $("#country_edit").countrySelect("selectCountry", country);
         }
       });
-      $('#participantDetailsWrapper').find('.cancelParticipantEdit').off();
-      $('#participantDetailsWrapper').find('.cancelParticipantEdit').on("click", function()
+      $('#participantDetailsWrapper').find('.cancelParticipantEdit').off().on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').hide();
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').show();
         
-        _this.update_edit_field_data();
+        _this.update_edit_field_data(_this);
       });
-      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').off('focus');
-      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').on("focus", function()
+      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').off('focus').on("focus", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
       });
-      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').on("click", function()
+      $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').off().on("click", function()
       {
         if (!$(this).hasClass('disabled'))
         {
@@ -115,7 +114,7 @@
       $('#participantsTopDetailsContainer').find('.participantFullName').text(edit.find('.participantFirstNameValue input').val() + ' ' + edit.find('.participantLastNameValue input').val());
     },
 
-    update_edit_field_data: function()
+    update_edit_field_data: function(_this)
     {
       var details = $('#participantDetailsWrapper').find('.participantDetailsWrapper');
       var edit = $('#participantDetailsWrapper').find('.participantDetailsEditForm');
@@ -135,7 +134,61 @@
         edit.find('.participantCityValue input').val(locationText.split(',')[0].trim())
         edit.find('#country_edit_code').val(locationText.split(',')[1].trim().toLowerCase())
         var selected_country = $("#country_edit_code").val();
-        $("#country_edit").countrySelect("selectCountry", selected_country);
+        if(_this.check_if_country_exist(selected_country))
+          $("#country_edit").countrySelect("selectCountry", selected_country);
       }
-    }
+    },
+    initialize_user_organizations: function()
+    {
+      var projects = [
+        {
+          value: "jquery",
+          label: "jQuery",
+          desc: "the write less, do more, JavaScript library",
+          icon: "jquery_32x32.png"
+        },
+        {
+          value: "jquery-ui",
+          label: "jQuery UI",
+          desc: "the official user interface library for jQuery",
+          icon: "jqueryui_32x32.png"
+        },
+        {
+          value: "sizzlejs",
+          label: "Sizzle JS",
+          desc: "a pure-JavaScript CSS selector engine",
+          icon: "sizzlejs_32x32.png"
+        }
+      ];
+   
+    $( "#project" ).autocomplete({
+      minLength: 2,
+      source: function()
+      {
+        
+      },
+      focus: function( event, ui ) {
+        $( "#project" ).val( ui.item.label );
+        return false;
+      },
+      select: function( event, ui ) {
+          $( "#project" ).val( ui.item.label );
+          $( "#project-id" ).val( ui.item.value );
+          $( "#project-description" ).html( ui.item.desc );
+          $( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
+   
+          return false;
+        }
+      });
+    },
+    check_if_country_exist: function(name)
+    {
+      var selectableCountries = $.fn['countrySelect'].getCountryData();
+      for (var i = 0; i<selectableCountries.length;i++)
+      {
+        if (selectableCountries[i].iso2 == name)
+          return true;
+      }
+      return false;
+    } 
   });

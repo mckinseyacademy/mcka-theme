@@ -3155,6 +3155,22 @@ class participant_details_api(APIView):
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
+class manage_user_company_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id):
+        selectedUser = user_api.get_user(user_id)
+        if selectedUser is not None:
+            selectedUser = selectedUser.to_dict()
+        userOrganizations = user_api.get_user_organizations(user_id)
+        userOrganizationsList =[]
+        for organization in userOrganizations:
+            userOrganizationsList.append(vars(organization))
+        organization_list = organization_api.get_organizations()
+        allOrganizationsList =[]
+        for organization in organization_list:
+            allOrganizationsList.append(vars(organization))
+        return Response({'status':'ok', 'user_organizations': userOrganizationsList, 'all_organizations':allOrganizationsList})
+
       
 class participant_details_active_courses_api(APIView):
 
