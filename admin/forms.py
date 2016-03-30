@@ -221,11 +221,12 @@ class BrandingSettingsForm(forms.ModelForm):
         }
 
 class LearnerDashboardTileForm(forms.ModelForm):
-		class Meta:
-				model = LearnersDashboardTile
-				fields = [
-						'title', 'description', 'link', 'order', 'tile_type', 'background_image', 'learners_dashboard_id'
-				]
+	
+	class Meta:
+		model = LearnersDashboardTile
+		fields = [
+				'title', 'description', 'link', 'order', 'tile_type', 'background_image', 'learners_dashboard_id'
+		]
 
 
 
