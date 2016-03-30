@@ -236,5 +236,5 @@ class LearnerDashboardTileForm(forms.ModelForm):
 	class Meta:
 		model = LearnerDashboardTile
 		fields = [
-				'title', 'description', 'link', 'order', 'tile_type', 'background_image', 'learners_dashboard_id'
+				'title', 'description', 'link', 'position', 'tile_type', 'background_image', 'learner_dashboard'
 		]

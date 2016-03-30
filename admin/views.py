@@ -66,11 +66,7 @@ from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-<<<<<<< HEAD
-    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm
-=======
-    DashboardAdminQuickFilterForm, BrandingSettingsForm, LearnerDashboardTileForm
->>>>>>> EE/krunomunitic
+    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
