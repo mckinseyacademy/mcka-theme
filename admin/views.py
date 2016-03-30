@@ -52,8 +52,7 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings,
-    LearnersDashboard, LearnersDashboardTile
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -67,7 +66,7 @@ from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-    DashboardAdminQuickFilterForm, BrandingSettingsForm, LearnerDashboardTileForm
+    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -514,7 +513,7 @@ def client_admin_course_analytics(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
 
-	(learner_dashboard, created) = LearnersDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
+	(learner_dashboard, created) = LearnerDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
 
 	if request.method == "POST":
 		learner_dashboard.Title = request.POST['title']
@@ -539,7 +538,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 def client_admin_course_learner_dashboard_tile(request, client_id, course_id, tile_id):
 
 	try:
-		instance = LearnersDashboardTile.objects.get(id=tile_id)
+		instance = LearnerDashboardTile.objects.get(id=tile_id)
 	except:
 		instance = None
 
@@ -3524,6 +3523,27 @@ def client_admin_branding_settings(request, client_id, course_id):
     except:
         instance = None
 
+    if instance is None:
+        instance = BrandingSettings(
+                background_image = settings.BACKGROUND_IMAGE,
+                logo_image = settings.LOGO_IMAGE,
+                navigation_colors = settings.NAVIGATION_COLORS,
+                text_colors = settings.TEXT_COLORS,
+                background_tiled = settings.BACKGROUND_TILED,
+            )
+    return render(request, 'admin/client-admin/course_branding_settings.haml', {
+        'branding': instance,
+        'client_id': client_id,
+        'course_id': course_id,
+        })
+
+def client_admin_branding_settings_edit(request, client_id, course_id):
+
+    try:
+        instance = BrandingSettings.objects.get(client_id=client_id)
+    except:
+        instance = None
+
     if request.method == 'POST':
         form = BrandingSettingsForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
@@ -3531,15 +3551,109 @@ def client_admin_branding_settings(request, client_id, course_id):
                 return render(request, '403.haml')
             form.save()
 
-            redirect_url = "/admin/client-admin/{}/courses/{}".format(client_id, course_id)
+            redirect_url = "/admin/client-admin/{}/courses/{}/branding".format(client_id, course_id)
             return HttpResponseRedirect(redirect_url)
     
     else:
         form = BrandingSettingsForm(instance=instance)
 
-    return render(request, 'admin/client-admin/branding_settings.haml', {
+    return render(request, 'admin/client-admin/course_branding_settings_edit.haml', {
         'form': form,
         'client_id': client_id,
         'course_id': course_id,
         })
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_create(request, client_id, course_id):
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    except: 
+        #learner dashboard not found
+        return render(request, '403.haml')
+
+    if request.method == 'POST':
+        form = DiscoveryContentCreateForm (request.POST)
+        if form.is_valid():
+            form.save()
+
+            redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = DiscoveryContentCreateForm()
+
+    return render(request, 'admin/client-admin/learner_dashboard_discovery_create.haml', {
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'learner_dashboard': learner_dashboard.id,
+        })
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_list(request, client_id, course_id):
+
+    learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    discovery = LearnerDashboardDiscovery.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('position')
+
+    return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
+        'client_id': client_id,
+        'course_id': course_id,
+        'discovery': discovery,
+        })
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_edit(request, client_id, course_id, discovery_id):
+
+    try:
+        discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+    except:
+        return render(request, '404.haml')
+
+    if request.method == 'POST':
+        form = DiscoveryContentCreateForm (request.POST, instance=discovery)
+        if form.is_valid():
+
+            form.save()
+
+            redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = DiscoveryContentCreateForm(instance=discovery)
+
+    return render(request, 'admin/client-admin/learner_dashboard_discovery_edit.haml', {
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'discovery_id': discovery_id,
+        'learner_dashboard': discovery.learner_dashboard.id,
+        })
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_delete(request, client_id, course_id, discovery_id):
+
+    try:
+        discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+    except:
+        return render(request, '404.haml')
+
+    discovery.delete()
+
+    redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
+    return HttpResponseRedirect(redirect_url)
+
+def client_admin_course_learner_dashboard_discover_reorder(request, course_id, client_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        myDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(myDict['position[]']):
+            discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
+
 

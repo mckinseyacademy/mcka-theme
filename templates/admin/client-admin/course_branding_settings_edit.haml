@@ -3,14 +3,11 @@
 - block content
   .admin-detail.row
     .large-12.large.columns
-      - include 'admin/client-admin/course_header.haml'
-  .admin-detail.row
-    .large-12.large.columns
       - block admin_detail
         %h1
-          %span= _("Learner dashboard branding: ")
+          %span= _("Edit Learner dashboard branding: ")
     %hr
-    %form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding", method: "POST", enctype: "multipart/form-data"}
+    %form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/edit", method: "POST", enctype: "multipart/form-data"}
       - csrf_token
       .row
         .small-3.columns
@@ -46,7 +43,6 @@
       .row
         .small-3.columns= form.background_tiled.label_tag
         .small-9.columns= form.background_tiled
-    %hr
       %input{'type': 'hidden', 'name': 'client_id', 'value': '#{client_id}'}
       .error
         - if error
