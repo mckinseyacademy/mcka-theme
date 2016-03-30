@@ -535,7 +535,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
-def client_admin_course_learner_dashboard_tile(request, client_id, course_id, tile_id):
+def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
 
 	try:
 		instance = LearnerDashboardTile.objects.get(id=tile_id)
@@ -559,6 +559,7 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, ti
 		'form': form,
 		'client_id': client_id,
 		'course_id': course_id,
+		'learner_dashboard_id': learner_dashboard_id,
 		'tile_id': tile_id,
 	})
 
