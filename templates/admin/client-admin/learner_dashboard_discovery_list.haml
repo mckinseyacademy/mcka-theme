@@ -23,8 +23,17 @@
               url: url
           });
       });
-
       $('tbody').disableSelection();
+
+      $('tbody').mousedown(function() {
+        $("#saveSort").css("display", "inline");
+        $("#savedSort").css("display", "none");
+      });
+
+      $('#saveSort').click(function() {
+        $("#saveSort").css("display", "none");
+        $("#savedSort").css("display", "inline");
+      });
     });
   .admin-detail.row
     %section
@@ -63,7 +72,11 @@
     -else
       This learner dashboard has no discovery content!
 
-    %a{id: "saveSort", class: "button radius small"}
+    %a{id: "saveSort", class: "button radius small", style: "display:none"}
         Save list order
         %i{'class': "fa fa-save"}
+
+    %div{id: "savedSort", class: "button radius small disabled", style: "display:none"}
+      Saved
+        %i{'class': "fa fa-check", style: "color:green"}
 
