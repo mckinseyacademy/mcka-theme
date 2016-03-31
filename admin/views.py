@@ -3180,12 +3180,30 @@ def validate_participant_email(request):
     if email:
         user = user_api.get_user_by_email(email)
         if user['count'] == 0:
-            return HttpResponse(json.dumps({'status': 'notTakenEmail'}), content_type="application/json")
+            return HttpResponse(json.dumps({'status': 'notTaken'}), content_type="application/json")
         elif user['count'] >=1 and user['results'][0]['email'] == email:
             if int(user['results'][0]['id']) == int(userId):
-                return HttpResponse(json.dumps({'status': 'hisEmail'}), content_type="application/json")
+                return HttpResponse(json.dumps({'status': 'his'}), content_type="application/json")
             else:
-                return HttpResponse(json.dumps({'status': 'takenEmail'}), content_type="application/json")
+                return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def validate_participant_username(request):
+
+    username = request.GET.get('username', None)
+    userId = request.GET.get('userId', None)
+
+    if username:
+        user = user_api.get_user_by_username(username)
+        if user['count'] == 0:
+            return HttpResponse(json.dumps({'status': 'notTaken'}), content_type="application/json")
+        elif user['count'] >=1 and user['results'][0]['username'] == username:
+            if int(user['results'][0]['id']) == int(userId):
+                return HttpResponse(json.dumps({'status': 'his'}), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
+
       
 class participant_details_active_courses_api(APIView):
 
