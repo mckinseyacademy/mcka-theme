@@ -34,6 +34,9 @@
       $('#saveSort').click(function() {
         $("#saveSort").css("display", "none");
         $("#savedSort").css("display", "inline");
+        setTimeout(function(){
+          $("#savedSort").fadeOut("slow");
+        },1000)
       });
     });
   .admin-detail.row
