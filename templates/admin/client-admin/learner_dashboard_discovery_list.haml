@@ -7,7 +7,8 @@
       var url = window.location.pathname + "/reorder";
       var csrftoken = $.cookie('apros_csrftoken');
 
-      $('tbody').sortable({
+      $('tbody').sortable({ 
+        cursorAt: { top: 110, left: 0 },
         axis: 'y'
       });
 
