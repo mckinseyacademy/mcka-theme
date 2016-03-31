@@ -3517,6 +3517,7 @@ def generate_assignments(request, project_id, activity_id):
     response.status_code = status_code
     return response
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_branding_settings(request, client_id, course_id):
 
     try:
@@ -3538,6 +3539,7 @@ def client_admin_branding_settings(request, client_id, course_id):
         'course_id': course_id,
         })
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_branding_settings_edit(request, client_id, course_id):
 
     try:
