@@ -437,10 +437,10 @@ class LearnerDashboardTile(db_models.Model):
 
 class LearnerDashboardDiscovery(db_models.Model):
 
-    link = db_models.CharField(blank=True, max_length=80)
-    title = db_models.CharField(blank=True, max_length=20)
+    link = db_models.CharField(max_length=80)
+    title = db_models.CharField(max_length=20)
     author = db_models.CharField(blank=True, max_length=20)
-    position = db_models.IntegerField(blank=False, default=1)
+    position = db_models.IntegerField(default=1)
 
     learner_dashboard = db_models.ForeignKey(
         'LearnerDashboard',
