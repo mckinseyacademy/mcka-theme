@@ -229,6 +229,7 @@ class DiscoveryContentCreateForm(forms.ModelForm):
         ]
         widgets = {
             'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
+            'link': forms.TextInput(attrs={'type': 'url'}),
         }
 
 class LearnerDashboardTileForm(forms.ModelForm):
