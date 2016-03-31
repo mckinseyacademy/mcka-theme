@@ -41,6 +41,20 @@ class Permissions(object):
         })
         self.save(copy.copy(self.current_permissions), per_course_roles)
 
+    def remove_all_course_roles(self, course_id):
+        per_course_roles = [{"course_id": p.course_id, "role": p.role}
+                            for p in self.user_roles if p.course_id != course_id]
+        self.save([], per_course_roles)
+
+    def update_course_role(self, course_id, role):
+        per_course_roles = [{"course_id": p.course_id, "role": p.role}
+                            for p in self.user_roles if p.course_id != course_id]
+        per_course_roles.append({
+            "course_id": course_id,
+            "role": role,
+        })
+        self.save([], per_course_roles)
+
     def save(self, new_permissions, per_course_roles):
         try:
             # update user roles

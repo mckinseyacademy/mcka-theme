@@ -28,6 +28,9 @@ from .models import (
 
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 
+from api_client.user_api import USER_ROLES
+from .permissions import Permissions
+
 import threading
 import Queue
 import atexit
@@ -1193,69 +1196,16 @@ def course_bulk_action(course_id, data, batch_status):
 
 def _change_user_status(course_id, new_status, status_item):
     permissonsMap = {
-        'TA':'assistant',
-        'Observer':'observer',
-        'Active': 'participant'
+        'TA': USER_ROLES.TA,
+        'Observer': USER_ROLES.OBSERVER
     }
-    if len(status_item['existing_roles']) == 0 and new_status != 'Active':
+    if new_status not in status_item['existing_roles']:
         try:
-            user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
-        except ApiError as e:
-            return {'status':'error', 'message':e.message}
-        try:
-            user_api.unenroll_user_from_course(status_item['id'], course_id)
-        except ApiError as e:
-            return {'status':'error', 'message':e.message}
-    if len(status_item['existing_roles']) == 1:
-        if status_item['existing_roles'][0] == new_status:
-            return {'status':'success'}
-        if status_item['existing_roles'][0] == 'Active':
-            try:
-                user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
-            except ApiError as e:
-                return {'status':'error', 'message':e.message}
-            try:
-                user_api.unenroll_user_from_course(status_item['id'], course_id)
-            except ApiError as e:
-                return {'status':'error', 'message':e.message}
-        else:
-            if new_status == 'Active':
-                try:
-                    user_api.delete_user_role(status_item['id'], course_id, permissonsMap[status_item['existing_roles'][0]])
-                except ApiError as e:
-                    return {'status':'error', 'message':e.message}
-                try:
-                    user_api.enroll_user_in_course(status_item['id'], course_id)
-                except ApiError as e:
-                    return {'status':'error', 'message':e.message}
+            permissions = Permissions(status_item['id'])
+            if new_status != 'Active' :
+                permissions.update_course_role(course_id,permissonsMap[new_status])
             else:
-                try:
-                    user_api.delete_user_role(status_item['id'], course_id, permissonsMap[status_item['existing_roles'][0]])
-                except ApiError as e:
-                    return {'status':'error', 'message':e.message}
-                try:
-                    user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
-                except ApiError as e:
-                    return {'status':'error', 'message':e.message}
-    if len(status_item['existing_roles']) > 1:
-        for existing_role in status_item['existing_roles']:
-            if existing_role != 'Active':
-                try:
-                    user_api.delete_user_role(status_item['id'], course_id, permissonsMap[existing_role])
-                except ApiError as e:
-                    return {'status':'error', 'message':e.message}
-        if new_status == 'Active' and (new_status not in status_item['existing_roles']):
-            try:
-                user_api.enroll_user_in_course(status_item['id'], course_id)
-            except ApiError as e:
-                return {'status':'error', 'message':e.message}
-        else:
-            try:
-                user_api.unenroll_user_from_course(status_item['id'], course_id)
-            except ApiError as e:
-                return {'status':'error', 'message':e.message}
-            try:
-                user_api.add_user_role(status_item['id'], course_id, permissonsMap[new_status])
-            except ApiError as e:
-                return {'status':'error', 'message':e.message}
+                permissions.remove_all_course_roles(course_id)
+        except ApiError as e:
+            return {'status':'error', 'message':e.message}
     return {'status':'success'}

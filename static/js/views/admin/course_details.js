@@ -138,7 +138,7 @@
       var modelsList = collection.models;
       if (modelsList.length > 0)
       {
-        for (groupworkIndex in modelsList[0].attributes.groupworks)
+        for (var groupworkIndex = 0; groupworkIndex < modelsList[0].attributes.groupworks.length; groupworkIndex++)
         {
           groupworkData = modelsList[0].attributes.groupworks[groupworkIndex];
           groupwork = _.clone(assessment_template);
@@ -162,7 +162,7 @@
           coursesListDetailsViewGrid.colModel.push(groupwork); 
         }
         var assessmentData;
-        for (assessmentIndex in modelsList[0].attributes.assessments)
+        for (var assessmentIndex = 0; assessmentIndex < modelsList[0].attributes.assessments.length; assessmentIndex++)
         {
           assessmentData = modelsList[0].attributes.assessments[assessmentIndex];
           assessment = _.clone(assessment_template);
@@ -208,7 +208,7 @@
             $(status_element).text('Selected: '+data['values'].selected+', Successful: '+data['values'].successful+', Failed: '+data['values'].failed);
             if (data['values'].successful + data['values'].failed >= data['values'].selected)
             {
-              $(status_element).parent().find('.loadingIcon').addClass('hidden')
+              $(status_element).parent().find('.loadingIcon').addClass('hidden');
               clearInterval(interval_id);
               if (data['values'].failed <= 0)
               {
@@ -222,5 +222,6 @@
           console.log(data);
           });
       }, 500);
+      return interval_id;
     }
   });

@@ -191,6 +191,7 @@ var Router = Backbone.Router.extend({
     var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
     courses_details_view.render();
     
+    var statusUpdaterIntervalId = null;
     $('#courseBulkActionsMainContainer').on('click','.bulkChangeStatus',function()
     {
       var selectedRowsIdsLen = courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
@@ -204,6 +205,12 @@ var Router = Backbone.Router.extend({
       );
       $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges').off().on('click', function()
       {
+        if (statusUpdaterIntervalId !== null)
+        {
+          $('#courseDetailsMainModal .courseModalStatus').parent().find('.loadingIcon').addClass('hidden');
+          clearInterval(statusUpdaterIntervalId);
+          statusUpdaterIntervalId = null;
+        }
         $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
       });
       if(courses_details_view.coursesListDetailsViewGrid.selectedRows.length === 0) {
@@ -246,7 +253,7 @@ var Router = Backbone.Router.extend({
             console.log(data);
             if (data['status'] == 'ok')
             {
-              courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id']);
+              statusUpdaterIntervalId = courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id']);
             }
             })
           .fail(function(data) {

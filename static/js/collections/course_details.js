@@ -19,6 +19,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     page_size: 100,
   },
   parseLinks: function (resp, options) {
+    console.log()
     returnObject = {};
     num_of_pages = Math.ceil(resp.full_length/this.state.pageSize)
     current_page = resp.current_page
