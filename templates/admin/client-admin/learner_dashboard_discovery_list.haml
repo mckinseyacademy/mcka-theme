@@ -40,6 +40,7 @@
       });
     });
   .admin-detail.row
+    #editModal.reveal-modal.small{'data-reveal': None}
     %section
       %h1 Course Discovery List
     %section
@@ -68,7 +69,7 @@
               %td= content.link
               %td= content.author
               %td
-                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/edit/#{content.id}"}
+                %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/edit/#{content.id}", :data-reveal-id => 'editModal', :data-reveal-ajax =>'true'}
                   %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
               %td
                 %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/delete/#{content.id}"}
@@ -83,4 +84,9 @@
     %div{id: "savedSort", class: "button radius small disabled", style: "display:none"}
       Saved
         %i{'class': "fa fa-check", style: "color:green"}
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form('#editModal', 'form');
 
