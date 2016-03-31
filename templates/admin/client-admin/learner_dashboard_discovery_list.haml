@@ -38,6 +38,11 @@
           $("#savedSort").fadeOut("slow");
         },1000)
       });
+
+      $('.confirm').click(function() {
+        return window.confirm("Are you sure?");
+      });
+      
     });
   .admin-detail.row
     #contentModal.reveal-modal.small{'data-reveal': None}
@@ -73,7 +78,7 @@
                 %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/edit/#{content.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
                   %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
               %td
-                %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/delete/#{content.id}"}
+                %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/delete/#{content.id}"}
                   %i{'style': "color:red", 'class': "fa fa-times"}
     -else
       This learner dashboard has no discovery content!
