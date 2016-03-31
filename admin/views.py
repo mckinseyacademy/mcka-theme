@@ -108,9 +108,7 @@ class AccessChecker(object):
     def get_clients_user_has_access_to(user):
         if user.is_mcka_admin:
             return Client.list()
-        if user.is_client_admin or user.is_internal_admin:
-            return user_api.get_user_organizations(user.id, organization_object=Client)
-        return []
+        return user_api.get_user_organizations(user.id, organization_object=Client)
 
     @staticmethod
     def get_courses_for_organization(org):
