@@ -13,22 +13,30 @@
       });
 
       $("#saveSort").click( "sortupdate", function(event, ui) {
-          var positionList = $('tbody').sortable('toArray');
-          $.ajax({
-              dataType: 'json',
-              data: {
-                position: positionList,
-                csrfmiddlewaretoken: csrftoken
-              },
-              type: 'POST',
-              url: url
-          });
+        var positionList = $('tbody').sortable('toArray');
+        $.ajax({
+          dataType: 'json',
+          data: {
+            position: positionList,
+            csrfmiddlewaretoken: csrftoken
+          },
+          type: 'POST',
+          url: url
+        });
       });
       $('tbody').disableSelection();
 
-      $('tbody').mousedown(function() {
-        $("#saveSort").css("display", "inline");
-        $("#savedSort").css("display", "none");
+      $("tbody").mousedown(function() {
+        isDragging = false;
+      }).mousemove(function() {
+        isDragging = true;
+      }).mouseup(function() {
+        var wasDragging = isDragging;
+        isDragging = false;
+        if (wasDragging) {
+          $("#saveSort").css("display", "inline");
+          $("#savedSort").css("display", "none");
+        }
       });
 
       $('#saveSort').click(function() {
