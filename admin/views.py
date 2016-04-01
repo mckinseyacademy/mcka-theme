@@ -3579,8 +3579,11 @@ def client_admin_branding_settings_edit(request, client_id, course_id):
         'course_id': course_id,
         })
 
+@ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_create(request, client_id, course_id):
+
+    error = None
 
     try:
         learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
@@ -3599,12 +3602,19 @@ def client_admin_course_learner_dashboard_discover_create(request, client_id, co
     else:
         form = DiscoveryContentCreateForm()
 
-    return render(request, 'admin/client-admin/learner_dashboard_discovery_create.haml', {
+    data = {
+        'error': error,
         'form': form,
         'client_id': client_id,
         'course_id': course_id,
         'learner_dashboard': learner_dashboard.id,
-        })
+        }
+
+    return render(
+        request,
+        'admin/client-admin/learner_dashboard_discovery_create.haml',
+        data
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_list(request, client_id, course_id):
@@ -3618,9 +3628,12 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
         'discovery': discovery,
         })
 
+@ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_edit(request, client_id, course_id, discovery_id):
 
+    error = None
+    
     try:
         discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
     except:
@@ -3638,13 +3651,20 @@ def client_admin_course_learner_dashboard_discover_edit(request, client_id, cour
     else:
         form = DiscoveryContentCreateForm(instance=discovery)
 
-    return render(request, 'admin/client-admin/learner_dashboard_discovery_edit.haml', {
+    data = {
         'form': form,
+        'error': error,
         'client_id': client_id,
         'course_id': course_id,
         'discovery_id': discovery_id,
         'learner_dashboard': discovery.learner_dashboard.id,
-        })
+        }
+
+    return render(
+        request,
+        'admin/client-admin/learner_dashboard_discovery_edit.haml',
+        data
+    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_delete(request, client_id, course_id, discovery_id):
