@@ -11,6 +11,10 @@
     .large-12.columns
       - include 'admin/client-admin/course_header.haml'
   .admin-detail.row
+    .large-12.columns
+      %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"}
+          %i{'class': "fa fa-plus"}
+          Discovery Content
     %form{action: '#{request.path}', method: 'POST'}
       .large-12.columns
         - csrf_token
@@ -50,3 +54,4 @@
                   #tileModal.reveal-modal.small{'data-reveal': None}
       .large-12.columns
         %input.button.radius.small.right{type: 'submit', value: 'Submit'}
+

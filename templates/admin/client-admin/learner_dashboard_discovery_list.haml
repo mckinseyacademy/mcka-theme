@@ -45,6 +45,9 @@
       
     });
   .admin-detail.row
+    .large-12.columns
+      - include 'admin/client-admin/course_header.haml'
+  .admin-detail.row
     #contentModal.reveal-modal.small{'data-reveal': None}
     %section
       %h1 Course Discovery List
@@ -54,7 +57,7 @@
     %br
     %div.submit-area
       %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
-        New
+        New item
         %i{'class': "fa fa-plus"}
 
     %hr
