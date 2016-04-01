@@ -324,7 +324,11 @@ def client_admin_course(request, client_id, course_id):
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
-    learner_dashboard = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+
+    try:
+    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except FeatureFlags.learner_dashboard.DoesNotExist:
+		learner_dashboard_flag = False
 
     data = {
         'client_id': client_id,
@@ -334,7 +338,7 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': learner_dashboard
+        'learner_dashboard_flag': learner_dashboard_flag
     }
     return render(
         request,
@@ -369,15 +373,19 @@ def client_admin_course_participants(request, client_id, course_id):
 
     else:
         students = []
-    learner_dashboard = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    
+
+    try:
+    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except FeatureFlags.learner_dashboard.DoesNotExist:
+		learner_dashboard_flag = False
+
     data = {
         'client_id': client_id,
         'course_id': course_id,
         'target_course': course,
         'total_participants': len(students),
         'students': students,
-        'learner_dashboard': learner_dashboard
+        'learner_dashboard_flag': learner_dashboard_flag
     }
     return render(
         request,
@@ -469,6 +477,10 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
+    if(features.learner_dashboard):	
+    	learner_dashboard_flag = features.learner_dashboard
+    else:
+ 		features.learner_dashboard = False
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -512,7 +524,7 @@ def client_admin_course_analytics(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
-
+	print "sadassds as ddas das dsaasd as sdadsads adsa dsa  dsadsa asd"
 	(learner_dashboard, created) = LearnerDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
 
 	if request.method == "POST":
@@ -523,13 +535,15 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 		redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
 		return HttpResponseRedirect(redirect_url)
 
+	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id)
 	data = {
 		'client_id': client_id,
 		'course_id': course_id,
 		'learner_dashboard_id': learner_dashboard.id,
 		'learner_dashboard_flag': True,
 		'title': learner_dashboard.title,
-		'description': learner_dashboard.description
+		'description': learner_dashboard.description,
+		'learner_dashboard_tiles': learner_dashboard_tiles
 	}
 	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
@@ -545,11 +559,10 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
 	if request.method == 'POST':
 		form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
 		if form.is_valid():
-			if int(client_id) != form.cleaned_data['client_id']:
-				return render(request, '403.haml')
+			print ('aaaa')
 			form.save()
 
-		redirect_url = "/admin/client-admin/{}/courses/{}".format(client_id, course_id)
+		redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
 		return HttpResponseRedirect(redirect_url)
 
 	else:
