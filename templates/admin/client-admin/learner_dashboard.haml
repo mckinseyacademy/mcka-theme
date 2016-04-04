@@ -64,3 +64,8 @@
           %input#saveLearnerDashboard.button.radius.small.left.bottom-buttons{type: 'button', value: 'Save'}
           %a.button.radius.small.left.bottom-buttons{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discovery Content
           %a.button.radius.small.left.bottom-buttons{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} Add Tile
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form('#tileModal', 'form');
