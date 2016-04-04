@@ -1,6 +1,12 @@
 - extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
+  %script
+    $(function() {
+      $('.confirm').click(function() {
+        return window.confirm("Are you sure?");
+      })
+    });
   .admin-detail.row
     .large-12.large.columns
       - include 'admin/client-admin/course_header.haml'
@@ -41,5 +47,9 @@
         %div
           %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/edit", target: "_blank"}
               Edit
+          -if is_empty_instance = False
+            %a.button.radius.small{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/reset"}
+                Reset to default settings
+
 
   

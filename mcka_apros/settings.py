@@ -425,8 +425,8 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.app_directories.Loader',
 )
 
-BACKGROUND_IMAGE = "static/image/experience/feature_adaptivelearning@2x.png"
-LOGO_IMAGE = "static/image/favicon.ico"
-NAVIGATION_COLORS = "#002960"
-TEXT_COLORS = "#e5ebee"
-BACKGROUND_TILED = False
+BACKGROUND_IMAGE = None
+LOGO_IMAGE = None
+NAVIGATION_COLORS = None
+TEXT_COLORS = None
+BACKGROUND_TILED = None

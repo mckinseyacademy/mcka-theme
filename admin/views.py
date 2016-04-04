@@ -3552,8 +3552,10 @@ def client_admin_branding_settings(request, client_id, course_id):
 
     try:
         instance = BrandingSettings.objects.get(client_id=client_id)
+        is_empty_instance = False
     except:
         instance = None
+        is_empty_instance = True
 
     if instance is None:
         instance = BrandingSettings(
@@ -3574,6 +3576,7 @@ def client_admin_branding_settings(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         'learner_dashboard_flag': learner_dashboard_flag
+        'is_empty_instance': is_empty_instance
         })
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -3581,6 +3584,7 @@ def client_admin_branding_settings_edit(request, client_id, course_id):
 
     try:
         instance = BrandingSettings.objects.get(client_id=client_id)
+        
     except:
         instance = None
 
@@ -3602,6 +3606,23 @@ def client_admin_branding_settings_edit(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         })
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_branding_settings_reset(request, client_id, course_id):
+
+    url = reverse('client_admin_branding_settings', kwargs={
+        'client_id': client_id,
+        'course_id': course_id,
+        })
+
+    try:
+        instance = BrandingSettings.objects.get(client_id=client_id)
+    except:
+        return HttpResponseRedirect(url)
+
+    instance.delete()
+
+    return HttpResponseRedirect(url)
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
