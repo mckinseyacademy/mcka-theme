@@ -3575,7 +3575,7 @@ def client_admin_branding_settings(request, client_id, course_id):
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'is_empty_instance': is_empty_instance
+        'is_empty_instance': is_empty_instance,
         'learner_dashboard_flag': learner_dashboard_flag
         })
 
