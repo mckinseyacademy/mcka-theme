@@ -6,25 +6,27 @@
       $(function() {
           var csrftoken = $.cookie('apros_csrftoken');
           var url = window.location.pathname + "/reorder";
-          
+          $('#sortable').sortable();
+
           $('#saveLearnerDashboard').click(function(){
-              var positionList = $('#sortable').sortable('toArray');
               var data = {
                   title: $("input[name=title]").val(),
                   description: $("textarea[name=description]").val(),
-                  position: positionList,
+                  positions: $('#sortable').sortable('toArray'),
                   csrfmiddlewaretoken: csrftoken
               }
               $.ajax({
-                  dataType: 'json',
                   data: data,
                   type: 'POST',
                   url: window.location.pathname
               });
           });
 
-          $('#sortable').sortable();
-    });
+          $('.confirm').click(function() {
+              return window.confirm("Are you sure?");
+          });
+      });
+
   #tileModal.reveal-modal.small{'data-reveal': None}
   .admin-detail.row
     .large-12.columns
@@ -51,14 +53,14 @@
           %label.inline Tiles
         .large-10.columns
           %ul#sortable
-            %li.ui-state-default
-              %a{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} +
             -for tile in learner_dashboard_tiles
-              %li.ui-state-default
-                %h4= tile.title 
-                %p= tile.position
-    .large-12.columns
-      %input#saveLearnerDashboard.button.radius.small.right{type: 'submit', value: 'Save'}
-      %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"}
-          %i{'class': "fa fa-plus"}
-          Discovery Content
+              %li.ui-state-default{id: "#{tile.id}"}
+                %h4= tile.title
+                  %a.fa.fa-times.right.confirm{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/delete_tile/#{tile.id}"}
+                  %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                    %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+      .row
+        .large-10.large-offset-2.columns
+          %input#saveLearnerDashboard.button.radius.small.left.bottom-buttons{type: 'button', value: 'Save'}
+          %a.button.radius.small.left.bottom-buttons{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discovery Content
+          %a.button.radius.small.left.bottom-buttons{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} Add Tile
