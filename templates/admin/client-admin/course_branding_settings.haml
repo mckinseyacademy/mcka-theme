@@ -2,8 +2,10 @@
 - load staticfiles
 - block content
   %script
-    $('.confirm').click(function() {
-      return window.confirm("Are you sure?");
+    $(function() {
+      $('.confirm').click(function() {
+        return window.confirm("Are you sure?");
+      })
     });
   .admin-detail.row
     .large-12.large.columns
