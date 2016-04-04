@@ -3,7 +3,7 @@
     coursesListDetailsViewGrid: {},
 
     initialize: function(){
-      _this = this;
+      var _this = this;
       this.collection.fetch({success:function(collection, response, options){
           _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
           cloneHeader('#courseDetailsParticipantsGrid');
@@ -19,6 +19,37 @@
         multiselect: true,
         enableSearch: true,
         collection: this.collection.fullCollection,
+        onRowClick: function()
+        {
+          console.log('clicked row');
+          if (this.selectedRows.length > 0)
+          {   
+            if ($('#courseBulkActionsMainContainer').hasClass('disabled'))
+            {
+              $('#courseBulkActionsMainContainer').removeClass('disabled');
+              $('#courseBulkActionsMainContainer').find('.bulkButton').each(function()
+              {
+                $(this).removeClass('disabled');
+              });
+            }
+          }
+          else
+          {
+            if (!$('#courseBulkActionsMainContainer').hasClass('disabled'))
+            {
+              $('#courseBulkActionsMainContainer').addClass('disabled');
+              $('#courseBulkActionsMainContainer').find('.bulkButton').each(function()
+              {
+                $(this).addClass('disabled');
+              });
+            }
+            if ($('#dropBulkCourse').hasClass('open'))
+            {
+              $('#dropBulkCourse').removeClass('open');
+              $('#dropBulkCourse').hide();
+            }
+          }
+        },
         colModel:[
         { title: 'Name', index: true, name: 'username', 
         actions: function(id, attributes) 
@@ -202,7 +233,6 @@
         options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
         $.ajax(options)
         .done(function(data) {
-          console.log(data);
           if (data['status'] == 'ok')
           {
             $(status_element).text('Selected: '+data['values'].selected+', Successful: '+data['values'].successful+', Failed: '+data['values'].failed);
