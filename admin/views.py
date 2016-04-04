@@ -524,7 +524,7 @@ def client_admin_course_analytics(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
-	print "sadassds as ddas das dsaasd as sdadsads adsa dsa  dsadsa asd"
+
 	(learner_dashboard, created) = LearnerDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
 
 	if request.method == "POST":
@@ -532,10 +532,13 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 		learner_dashboard.description = request.POST['description']
 		learner_dashboard.save()
 		
-		redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
-		return HttpResponseRedirect(redirect_url)
+		myDict = dict(request.POST.iterlists())
+		for index, item_id in enumerate(myDict['positions[]']):
+			tileItem = LearnerDashboardTile.objects.get(id=item_id)
+			tileItem.position = index
+			tileItem.save()
 
-	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id)
+	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 	data = {
 		'client_id': client_id,
 		'course_id': course_id,
@@ -547,34 +550,48 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 	}
 	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
+@ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-@client_admin_access
-def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
+def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id=None):
 
+	error = None
 	try:
 		instance = LearnerDashboardTile.objects.get(id=tile_id)
 	except:
 		instance = None
 
 	if request.method == 'POST':
-		form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
+		form = LearnerDashboardTileForm(request.POST)
 		if form.is_valid():
-			print ('aaaa')
 			form.save()
-
-		redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
-		return HttpResponseRedirect(redirect_url)
+			redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
+			return HttpResponseRedirect(redirect_url)
 
 	else:
 		form = LearnerDashboardTileForm(instance=instance)
 
 	return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
+		'error': error,
 		'form': form,
 		'client_id': client_id,
 		'course_id': course_id,
 		'learner_dashboard_id': learner_dashboard_id,
 		'tile_id': tile_id,
 	})
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_learner_dashboard_tile_delete(request, client_id, course_id, learner_dashboard_id, tile_id):
+
+    try:
+        tile = LearnerDashboardTile.objects.get(id=tile_id)
+    except:
+        return render(request, '404.haml')
+
+    tile.delete()
+
+    redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
+    return HttpResponseRedirect(redirect_url)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access

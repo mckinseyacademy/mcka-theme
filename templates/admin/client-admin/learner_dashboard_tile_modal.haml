@@ -1,4 +1,5 @@
-%a.close-reveal-modal &#215;
+.close-reveal-modal
+  %i.fa.fa-times-circle
 
 %form{action: '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
   - csrf_token
@@ -33,8 +34,8 @@
     .small-3.columns= form.background_image.label_tag
     .small-9.columns= form.background_image
     
-  %input{'type': 'hidden', 'name': 'position', 'value': 1}
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
+  %input{'type': 'hidden', 'name': 'position', 'value': 100}
   .error
     - if error
       = error
