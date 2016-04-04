@@ -236,7 +236,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
 	class Meta:
 		model = LearnerDashboardTile
 		fields = [
-            'title', 'description', 'link', 'tile_type', 'position', 'background_image', 'learner_dashboard'
+            'title', 'description', 'link', 'tile_type', 'background_image', 'learner_dashboard'
        	]
        	widgets = {
        		'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),

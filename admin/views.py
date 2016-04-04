@@ -552,7 +552,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id=None):
+def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
 
 	error = None
 	try:
@@ -561,7 +561,7 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
 		instance = None
 
 	if request.method == 'POST':
-		form = LearnerDashboardTileForm(request.POST)
+		form = LearnerDashboardTileForm(request.POST, instance=instance)
 		if form.is_valid():
 			form.save()
 			redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
@@ -3563,10 +3563,17 @@ def client_admin_branding_settings(request, client_id, course_id):
                 text_colors = settings.TEXT_COLORS,
                 background_tiled = settings.BACKGROUND_TILED,
             )
+
+    try:
+    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except FeatureFlags.learner_dashboard.DoesNotExist:
+		learner_dashboard_flag = False
+
     return render(request, 'admin/client-admin/course_branding_settings.haml', {
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
+        'learner_dashboard_flag': learner_dashboard_flag
         })
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -3639,10 +3646,16 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
     learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
     discovery = LearnerDashboardDiscovery.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('position')
 
+    try:
+    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except FeatureFlags.learner_dashboard.DoesNotExist:
+		learner_dashboard_flag = False
+
     return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
         'client_id': client_id,
         'course_id': course_id,
         'discovery': discovery,
+        'learner_dashboard_flag': learner_dashboard_flag
         })
 
 @ajaxify_http_redirects

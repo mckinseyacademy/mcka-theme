@@ -420,7 +420,7 @@ class LearnerDashboardTile(db_models.Model):
     title = db_models.CharField(max_length=20)
     description = db_models.CharField(blank=True, max_length=40)
     link = db_models.CharField(max_length=80)
-    position = db_models.IntegerField(blank=False, default=1)
+    position = db_models.IntegerField(blank=False, default=100)
     background_image = db_models.ImageField(upload_to="static/image/learner_dashboard/tile_backgrounds/", blank=True)
 
     TYPES = (
