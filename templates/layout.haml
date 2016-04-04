@@ -201,6 +201,9 @@
     - block ooyala_player
       %script{src: '//player.ooyala.com/v3/508480711cac43cfbc1931fe461c4d35?platform=html5-prority'}
 
+    - block jquery_ui
+  		%script{src: "{% static 'js/vendor/jquery-ui.min.js' %}"}
+  		
     -# Custom JS
     - block body_js
       - if request.is_IE8

@@ -424,3 +424,9 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
+
+BACKGROUND_IMAGE = None
+LOGO_IMAGE = None
+NAVIGATION_COLORS = None
+TEXT_COLORS = None
+BACKGROUND_TILED = None

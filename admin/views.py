@@ -52,7 +52,7 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -66,7 +66,7 @@ from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-    DashboardAdminQuickFilterForm
+    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -323,6 +323,11 @@ def client_admin_course(request, client_id, course_id):
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
 
+    try:
+    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except FeatureFlags.learner_dashboard.DoesNotExist:
+		learner_dashboard_flag = False
+
     data = {
         'client_id': client_id,
         'course_id': course_id,
@@ -330,7 +335,8 @@ def client_admin_course(request, client_id, course_id):
         'course_start': course.start.strftime('%m/%d/%Y') if course.start else '',
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
-        'cutoffs': cutoffs
+        'cutoffs': cutoffs,
+        'learner_dashboard_flag': learner_dashboard_flag
     }
     return render(
         request,
@@ -366,12 +372,18 @@ def client_admin_course_participants(request, client_id, course_id):
     else:
         students = []
 
+    try:
+    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except FeatureFlags.learner_dashboard.DoesNotExist:
+		learner_dashboard_flag = False
+
     data = {
         'client_id': client_id,
         'course_id': course_id,
         'target_course': course,
         'total_participants': len(students),
-        'students': students
+        'students': students,
+        'learner_dashboard_flag': learner_dashboard_flag
     }
     return render(
         request,
@@ -463,6 +475,10 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
+    if(features.learner_dashboard):	
+    	learner_dashboard_flag = features.learner_dashboard
+    else:
+ 		features.learner_dashboard = False
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -495,12 +511,85 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
+        'learner_dashboard_flag': features.learner_dashboard
     }
     return render(
         request,
         'admin/client-admin/course_analytics.haml',
         data,
     )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_learner_dashboard(request, client_id, course_id):
+
+	(learner_dashboard, created) = LearnerDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
+
+	if request.method == "POST":
+		learner_dashboard.title = request.POST['title']
+		learner_dashboard.description = request.POST['description']
+		learner_dashboard.save()
+		
+		myDict = dict(request.POST.iterlists())
+		for index, item_id in enumerate(myDict['positions[]']):
+			tileItem = LearnerDashboardTile.objects.get(id=item_id)
+			tileItem.position = index
+			tileItem.save()
+
+	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+	data = {
+		'client_id': client_id,
+		'course_id': course_id,
+		'learner_dashboard_id': learner_dashboard.id,
+		'learner_dashboard_flag': True,
+		'title': learner_dashboard.title,
+		'description': learner_dashboard.description,
+		'learner_dashboard_tiles': learner_dashboard_tiles
+	}
+	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id=None):
+
+	error = None
+	try:
+		instance = LearnerDashboardTile.objects.get(id=tile_id)
+	except:
+		instance = None
+
+	if request.method == 'POST':
+		form = LearnerDashboardTileForm(request.POST)
+		if form.is_valid():
+			form.save()
+			redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
+			return HttpResponseRedirect(redirect_url)
+
+	else:
+		form = LearnerDashboardTileForm(instance=instance)
+
+	return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
+		'error': error,
+		'form': form,
+		'client_id': client_id,
+		'course_id': course_id,
+		'learner_dashboard_id': learner_dashboard_id,
+		'tile_id': tile_id,
+	})
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_learner_dashboard_tile_delete(request, client_id, course_id, learner_dashboard_id, tile_id):
+
+    try:
+        tile = LearnerDashboardTile.objects.get(id=tile_id)
+    except:
+        return render(request, '404.haml')
+
+    tile.delete()
+
+    redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
+    return HttpResponseRedirect(redirect_url)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
@@ -3499,7 +3588,6 @@ def generate_assignments(request, project_id, activity_id):
     response.status_code = status_code
     return response
 
-
 def getDummyData():
 
     return [
@@ -4256,4 +4344,188 @@ def getDummyData():
             "id": 481
         }
     ]
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_branding_settings(request, client_id, course_id):
+
+    try:
+        instance = BrandingSettings.objects.get(client_id=client_id)
+        is_empty_instance = False
+    except:
+        instance = None
+        is_empty_instance = True
+
+    if instance is None:
+        instance = BrandingSettings(
+                background_image = settings.BACKGROUND_IMAGE,
+                logo_image = settings.LOGO_IMAGE,
+                navigation_colors = settings.NAVIGATION_COLORS,
+                text_colors = settings.TEXT_COLORS,
+                background_tiled = settings.BACKGROUND_TILED,
+            )
+    return render(request, 'admin/client-admin/course_branding_settings.haml', {
+        'branding': instance,
+        'client_id': client_id,
+        'course_id': course_id,
+        'is_empty_instance': is_empty_instance
+        })
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_branding_settings_edit(request, client_id, course_id):
+
+    try:
+        instance = BrandingSettings.objects.get(client_id=client_id)
+        
+    except:
+        instance = None
+
+    if request.method == 'POST':
+        form = BrandingSettingsForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            if int(client_id) != form.cleaned_data['client_id']:
+                return render(request, '403.haml')
+            form.save()
+
+            redirect_url = "/admin/client-admin/{}/courses/{}/branding".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+    
+    else:
+        form = BrandingSettingsForm(instance=instance)
+
+    return render(request, 'admin/client-admin/course_branding_settings_edit.haml', {
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        })
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_branding_settings_reset(request, client_id, course_id):
+
+    url = reverse('client_admin_branding_settings', kwargs={
+        'client_id': client_id,
+        'course_id': course_id,
+        })
+
+    try:
+        instance = BrandingSettings.objects.get(client_id=client_id)
+    except:
+        return HttpResponseRedirect(url)
+
+    instance.delete()
+
+    return HttpResponseRedirect(url)
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_create(request, client_id, course_id):
+
+    error = None
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    except: 
+        #learner dashboard not found
+        return render(request, '403.haml')
+
+    if request.method == 'POST':
+        form = DiscoveryContentCreateForm (request.POST)
+        if form.is_valid():
+            form.save()
+
+            redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = DiscoveryContentCreateForm()
+
+    data = {
+        'error': error,
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'learner_dashboard': learner_dashboard.id,
+        }
+
+    return render(
+        request,
+        'admin/client-admin/learner_dashboard_discovery_create.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_list(request, client_id, course_id):
+
+    learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    discovery = LearnerDashboardDiscovery.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('position')
+
+    return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
+        'client_id': client_id,
+        'course_id': course_id,
+        'discovery': discovery,
+        })
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_edit(request, client_id, course_id, discovery_id):
+
+    error = None
+    
+    try:
+        discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+    except:
+        return render(request, '404.haml')
+
+    if request.method == 'POST':
+        form = DiscoveryContentCreateForm (request.POST, instance=discovery)
+        if form.is_valid():
+
+            form.save()
+
+            redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
+            return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = DiscoveryContentCreateForm(instance=discovery)
+
+    data = {
+        'form': form,
+        'error': error,
+        'client_id': client_id,
+        'course_id': course_id,
+        'discovery_id': discovery_id,
+        'learner_dashboard': discovery.learner_dashboard.id,
+        }
+
+    return render(
+        request,
+        'admin/client-admin/learner_dashboard_discovery_edit.haml',
+        data
+    )
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def client_admin_course_learner_dashboard_discover_delete(request, client_id, course_id, discovery_id):
+
+    try:
+        discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+    except:
+        return render(request, '404.haml')
+
+    discovery.delete()
+
+    redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
+    return HttpResponseRedirect(redirect_url)
+
+def client_admin_course_learner_dashboard_discover_reorder(request, course_id, client_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        myDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(myDict['position[]']):
+            discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
+
 

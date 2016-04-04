@@ -1,0 +1,32 @@
+textarea{
+	resize: none;
+}
+
+.ui-state-default{
+	border: 1px solid #d3d3d3;
+	background: #e6e6e6;
+}
+
+#sortable { 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0;
+	width: 600px;
+	height: 450px;
+	overflow: auto;
+	li { 
+		margin: 0px 10px 10px 0; 
+		padding: 0px 5px; 
+		float: left; 
+		width: 180px; 
+		height: 140px; 
+		font-size: 4em; 
+		text-align: center; 
+	}
+}
+
+.bottom-buttons{
+	padding: 10px;
+    line-height: 16px;
+    margin: 20px 10px 0 0;
+}

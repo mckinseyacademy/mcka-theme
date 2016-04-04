@@ -24,6 +24,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+from courses.models import FeatureFlags
 from api_client import user_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
@@ -143,6 +144,10 @@ def _get_redirect_to_current_course(request):
             future_start_date = is_future_start(program.start_date)
 
     if course_id and not future_start_date:
+        features = FeatureFlags.objects.get(course_id=course_id)
+        if hasattr(features, 'learner_dashboard'): 
+            if features.learner_dashboard is True:
+                return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
     return reverse('protected_home')
 
