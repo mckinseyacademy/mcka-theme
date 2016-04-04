@@ -3,6 +3,7 @@ import functools
 import json
 import string
 import urlparse
+from dateutil.parser import parse as parsedate
 from datetime import datetime
 from urllib import quote as urlquote, urlencode
 from operator import attrgetter
@@ -30,7 +31,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
-from lib.authorization import permission_group_required
+from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image
@@ -51,24 +52,32 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link
+    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
+    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm,
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
     DashboardAdminQuickFilterForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from courses.user_courses import load_course_progress
+from django.utils import timezone
+import csv
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
@@ -736,6 +745,428 @@ def client_admin_contact(request, client_id):
         'admin/client-admin/contact.haml',
         data
     )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def courses_list(request):
+    return render(request, 'admin/courses/courses_list.haml')
+
+
+class courses_list_api(APIView):
+    '''
+    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
+    '''
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, format=None):
+        allCourses = course_api.get_courses_list(request.GET)
+        for course in allCourses['results']:
+            course['program'] = None
+            course['type'] = None
+            course['configuration'] = None
+            if course['start'] is not None:
+                start = parsedate(course['start'])
+                course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
+            if course['end'] is not None:
+                end = parsedate(course['end'])
+                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
+            for data in course:
+                if course.get(data) is None:
+                    course[data] = "-"        
+        return Response(allCourses)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def course_details(request, course_id):
+
+    course = course_api.get_course_details(course_id)
+    course_metrics_end = datetime.now().strftime("%m/%d/%Y")
+    if course['start'] is not None:
+        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+    if course['end'] is not None:
+        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y") 
+        course_metrics_end = course['end'] 
+    for data in course:
+        if course.get(data) is None:
+            course[data] = "-"  
+
+    course_all_users = course_api.get_course_details_users(course_id)
+    count = len(course_all_users['enrollments'])
+
+    course_groups = course_api.get_course_details_groups(course_id) 
+    groups_ids_list = []
+    for group in course_groups:
+        groups_ids_list.append(str(group['id']))
+    groups_ids = ','.join(group_id for group_id in groups_ids_list)
+    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+    users_enrolled = [dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])]
+    course['users_enrolled'] = len(users_enrolled)
+
+    course_completed_users = 0
+    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
+    for completed_metric in course_metrics.users_completed:
+        course_completed_users += completed_metric[1]
+    try:
+        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / len(users_enrolled))
+    except ZeroDivisionError:
+        course['completed'] = 0
+
+    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
+    course['passed'] = course_pass.pass_rate_display(users_enrolled)
+
+    course_progress = 0
+    course_proficiency = 0
+
+    users_progress = get_course_progress(course_id, users_enrolled, request)
+
+    for user in users_progress:
+        course_progress += user['progress']
+
+    course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+    for user in course_grades['leaders']:
+        if any(item['id'] == user['id'] for item in users_enrolled):
+            user_proficiency = float(user['grade'])*100
+            course_proficiency += user_proficiency
+
+    try:
+        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
+    except ZeroDivisionError:
+        course['average_progress'] = 0
+    try:
+        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])
+    except ZeroDivisionError:
+        course['proficiency'] = 0
+
+    return render(request, 'admin/courses/course_details.haml', course)
+
+
+def get_course_progress(course_id, users, request):
+    '''
+    Helper method for calculating user pogress on course. 
+    Returns dictionary of users with user_id and progress.
+    '''
+    course = None
+    course = load_course(course_id, request=request)
+
+    users_progress = []
+    user_completions = []
+    for user in users:
+        user_completion = {}
+        user_completion['user_id'] = user['id']
+        user_completion['results'] = []
+        user_completions.append(user_completion)
+
+    completions = course_api.get_completions_on_course(course.id)
+
+    for completion in completions:
+        for user_completion in user_completions:
+            if completion['user_id'] == user_completion['user_id']:
+                user_completion['results'].append(completion)
+
+    for user_completion in user_completions:
+        user_progress = {}
+        user_progress['user_id'] = user_completion['user_id']
+        completed_ids = [result['content_id'] for result in user_completion['results']]
+        component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+        for lesson in course.chapters:
+            lesson.progress = 0
+            lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                               settings.PROGRESS_IGNORE_COMPONENTS)
+            if len(lesson_component_ids) > 0:
+                matches = set(lesson_component_ids).intersection(completed_ids)
+                lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+        actual_completions = set(component_ids).intersection(completed_ids)
+        actual_completions_len = len(actual_completions)
+        component_ids_len = len(component_ids)
+        try:
+            user_progress['progress'] = round_to_int(float(100 * actual_completions_len)/component_ids_len)
+        except ZeroDivisionError:
+            user_progress['progress'] = 0
+        users_progress.append(user_progress)
+
+    return users_progress
+
+
+class course_details_stats_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_stats = get_course_social_engagement(course_id)
+        return Response(course_stats)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def download_course_stats(request, course_id):
+
+    course = course_api.get_course_details(course_id)
+    course_name = course['name'].replace(' ', '_')
+
+    course_social_engagement = get_course_social_engagement(course_id)
+    course_engagement_summary = get_course_engagement_summary(course_id)
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + course_name + '_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Engagement Summary', '# of people', '% total cohort', 'Avg Progress'])
+    for stat in course_engagement_summary:
+        writer.writerow([stat['name'], stat['people'], stat['invited'], stat['progress']])
+    writer.writerow([])
+    writer.writerow(['Participant Performance', '% completion', 'Score'])
+    writer.writerow(['Group work 1', '-', '-'])
+    writer.writerow(['Group work 2', '-', '-'])
+    writer.writerow(['Mid-course assessment', '-', '-'])
+    writer.writerow(['Final assessment', '-', '-'])
+    writer.writerow([])
+    writer.writerow(['Social Engagement', '#'])
+    for stat in course_social_engagement:
+        writer.writerow([stat['name'], stat['value']])
+    
+    return response
+
+
+class course_details_engagement_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_stats = get_course_engagement_summary(course_id)
+        
+        return Response(course_stats)
+
+
+class course_details_cohort_timeline_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id):
+        course = load_course(course_id)
+        course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+
+        users = course_api.get_user_list(course.id)
+
+        metricsJson = get_course_details_progress_data(course, course_modules, users)
+
+        jsonResult = [{"key": "% Progress", "values": metricsJson[0]},
+                        {"key": "% Progress (Engaged)", "values": metricsJson[1]}]
+        return HttpResponse(
+                    json.dumps(jsonResult),
+                    content_type='application/json'
+                )
+
+
+class course_details_performance_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id, format=None):
+        
+        course_users_simple = course_api.get_user_list(course_id)
+        course_users_ids = [str(user.id) for user in course_users_simple]
+        roles = course_api.get_users_filtered_by_role(course_id)
+        roles_ids = [str(user.id) for user in roles]
+        for role_id in roles_ids:
+            if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+        additional_fields = ["is_active"]
+        course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
+        course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
+        course_progress = course_metrics.course_avg
+        course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+        active_users = 0
+        engaged_users = 0
+        engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+        for course_user in course_users:
+            if course_user.is_active is True:
+                active_users += 1
+            if course_user.id in course_leaders_ids:
+                engaged_users += 1
+
+        activated = round_to_int(active_users/len(course_users)) if len(course_users) > 0 else 0
+        engaged = round_to_int(engaged_users/len(course_users)) if len(course_users) > 0 else 0
+        active_progress = round_to_int(engaged_progress_sum/active_users) if active_users > 0 else 0
+        engaged_progress = round_to_int(engaged_progress_sum/engaged_users) if engaged_users > 0 else 0
+
+        course_stats = [
+             { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': course_progress},
+             { 'name': 'Activated', 'people': active_users, 'invited': str(activated * 100) + '%', 'progress': str(active_progress) + '%'},
+             { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged * 100) + '%', 'progress': str(engaged_progress) + '%'},
+             { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
+        ]
+        return Response(course_stats)
+
+
+def GetCourseUsersRoles(course_id, permissions_filter_list):
+    course_roles_users = course_api.get_users_filtered_by_role(course_id)
+    user_roles_list = {'ids':[],'data':[]}
+    for course_role in course_roles_users:
+        roleData = vars(course_role)
+        if permissions_filter_list:
+            if roleData['role'] in permissions_filter_list:
+                user_roles_list['data'].append(roleData)
+                user_roles_list['ids'].append(str(roleData['id']))
+        else:
+            user_roles_list['data'].append(roleData)
+            user_roles_list['ids'].append(str(roleData['id']))
+    user_roles_list['ids'] = set(user_roles_list['ids'])
+    user_roles_list['ids'] = list(user_roles_list['ids'])
+    return user_roles_list
+
+class course_details_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, course_id=None, format=None):
+        if (course_id):
+            permissonsMap = {
+            'assistant':'TA',
+            'instructor': 'Instructor',
+            'staff':'Staff',
+            'observer':'Observer'
+            }
+            permissionsFilter = ['observer','assistant']
+            allCoursesParticipantList = []
+            len_of_all_users = 0
+            userData = {'ids':[]}
+            current_page = 0
+            if request.GET['include_slow_fields'] == 'true':
+                allCourseParticipantsUsers = user_api.get_filtered_users(request.GET)
+                users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
+                len_of_all_users = len(allCourseParticipantsUsers['results'])
+                allCourseParticipants = allCourseParticipantsUsers['results']
+            else:
+                allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
+                list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
+                allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
+                for user_role_id in list_of_user_roles['ids']:          
+                    userData['ids'].append(str(user_role_id))
+                for course_participant in allCourseParticipants:
+                    if str(course_participant['id']) not in userData['ids']:
+                        userData['ids'].append(str(course_participant['id']))
+                requestParams = dict(request.GET)
+                if requestParams['page_size']:
+                    len_of_pages = int(requestParams['page_size'][0])
+                else:
+                    len_of_pages = 50;
+                user_chunked_ids=[userData['ids'][x:x+len_of_pages] for x in xrange(0, len(userData['ids']), len_of_pages)]
+                len_of_all_users = len(userData['ids'])
+                if requestParams['page']:
+                    if int(requestParams['page'][0]) > 0:
+                        current_page = int(requestParams['page'][0])-1
+                    else:
+                        current_page = 0
+                else:
+                    current_page = 0;
+                del requestParams['include_slow_fields']       
+                userData['ids'] = ",".join(user_chunked_ids[current_page])
+                for key, value in requestParams.items():
+                    requestParams[key] = ",".join(value)
+                requestParams.update(userData)
+                requestParams['page'] = 1
+                allCourseParticipantsUsers = user_api.get_filtered_users(requestParams)
+
+                course_all_users = course_api.get_course_details_users(course_id)
+                count = len(course_all_users['enrollments'])
+                course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+
+            allCourseParticipantsUsers['full_length'] = len_of_all_users
+            allCourseParticipantsUsers['current_page'] = current_page+1
+            
+            number_of_assessments = 0
+            number_of_groupworks = 0
+            test_groupwork = []
+            test_assessment = []
+            if len_of_all_users > 0:
+                user_grades = user_api.get_user_full_gradebook(allCourseParticipants[0]['id'], course_id)['grade_summary']['section_breakdown']
+                for user_grade in user_grades:
+                    data = user_grade
+                    data['percent'] = '.'
+                    if 'assessment' in user_grade['category'].lower():
+                        number_of_assessments += 1
+                        test_assessment.append(data)
+                    if 'GROUP_PROJECT' in user_grade['category']:
+                        number_of_groupworks += 1
+                        test_groupwork.append(data)
+            for course_participant in allCourseParticipantsUsers['results']:
+                if request.GET['include_slow_fields'] == 'true':  
+                    course_participant['progress'] = '{:03d}'.format(round_to_int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
+                    user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
+                    course_participant['groupworks'] = []
+                    course_participant['assessments'] = []
+                    for user_grade in user_grades:
+                        data = user_grade
+                        data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
+                        if 'GROUP_PROJECT' in user_grade['category']:
+                            course_participant['groupworks'].append(data)
+                        elif 'assessment' in user_grade['category'].lower():
+                            course_participant['assessments'].append(data)
+                else:
+                    course_participant['user_status'] = []
+                    course_participant['number_of_assessments'] = number_of_assessments
+                    course_participant['number_of_groupworks'] = number_of_groupworks
+                    course_participant['progress'] = '.'
+                    course_participant['groupworks'] = test_groupwork
+                    course_participant['assessments'] = test_assessment
+                    course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
+                    if not course_participant['proficiency']:
+                        course_participant['proficiency'] = "000";
+                    else:
+                        course_participant['proficiency'] = '{:03d}'.format(int(course_participant['proficiency'][0]))
+                    for role in list_of_user_roles['data']:
+                        if role['id'] == course_participant['id']:
+                            course_participant['user_status'].append(permissonsMap[role['role']])
+                            del role['role']
+                    if permissonsMap['assistant'] in course_participant['user_status']:
+                        course_participant['custom_user_status'] = 'TA'
+                    elif permissonsMap['observer'] in course_participant['user_status']:
+                        course_participant['custom_user_status'] = 'Observer'
+                    else:
+                        course_participant['custom_user_status']='Active'
+                        course_participant['user_status'].append('Active')
+                    course_participant['progress'] = '.'
+                    if len(course_participant['organizations'] ) == 0:
+                        course_participant['organizations'] = [{'display_name': 'No company'}]
+                        course_participant['organizations_display_name'] = 'No company'
+                    else:
+                        course_participant['organizations_display_name'] = course_participant['organizations'][0]['display_name']
+                    if course_participant['is_active']:
+                        course_participant['custom_activated'] = 'Yes'
+                    else:
+                        course_participant['custom_activated'] = 'No'
+                    if 'last_login' in course_participant:
+                        if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
+                            course_participant['custom_last_login'] = parsedate(course_participant['last_login']).strftime("%Y/%m/%d")
+                        else:
+                            course_participant['custom_last_login'] = '-'
+                    else:
+                        course_participant['custom_last_login'] = '-'
+                    if 'created' in course_participant:
+                        if (course_participant['created'] is not None) and (course_participant['created'] is not ''):
+                            course_participant['custom_created'] = parsedate(course_participant['created']).strftime("%Y/%m/%d")
+                        else:
+                            course_participant['custom_created'] = '-'
+                    else:
+                        course_participant['custom_created'] = '-'
+            return Response(allCourseParticipantsUsers)
+        else:
+            return Response({})
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, course_id=None, format=None):
+        data = json.loads(request.body)
+        if (data['type'] == 'status_check'):
+            batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])      
+            BatchOperationStatus.clean_old()
+            if len(batch_status) > 0:
+                batch_status = batch_status[0]
+                error_list = []
+                if batch_status.failed > 0:
+                    batch_errors = BatchOperationErrors.objects.filter(task_key=data['task_id'])
+                    for b_error in batch_errors:
+                        error_list.append({'id': b_error.user_id, 'message': b_error.error})
+                return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
+            return Response({'status':'error', 'message': 'No such task!'})
+        else:        
+            batch_status = BatchOperationStatus.create();
+            task_id = batch_status.task_key
+            course_bulk_actions(course_id, data, batch_status)
+            return Response({'status':'ok', 'data': data, 'task_id': task_id})
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -1977,6 +2408,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
         "remote_session_key": request.session.get("remote_session_key"),
         "lms_base_domain": settings.LMS_BASE_DOMAIN,
         "lms_sub_domain": settings.LMS_SUB_DOMAIN,
+        "lms_port": settings.LMS_PORT,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     }
 
@@ -2170,6 +2602,7 @@ def groupwork_dashboard_details(
         'remote_session_key': request.session.get('remote_session_key'),
         'lms_base_domain': settings.LMS_BASE_DOMAIN,
         'lms_sub_domain': settings.LMS_SUB_DOMAIN,
+        "lms_port": settings.LMS_PORT,
         'program': {'id': program.id, 'name': '{} ({})'.format(program.display_name, program.name)},
         'course': {'id': course.id, 'name': course.name},
         'project': {'id': project.id, 'name': project.name},
@@ -2600,6 +3033,300 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         data
     )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participants_list(request):
+    return render( request, 'admin/participants/participants_list.haml')
+
+class participants_list_api(APIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, format=None):
+
+        company = request.QUERY_PARAMS.get('company', None)
+        name = request.QUERY_PARAMS.get('name', None)
+        email = request.QUERY_PARAMS.get('custom_email', None)
+
+        filters = []
+        if company:
+            filters.append({ 'name': 'organizations_custom_name', 'value': company.lower()})
+        if name:
+            filters.append({ 'name': 'full_name', 'value': name.lower()})
+        if email:
+            filters.append({ 'name': 'email', 'value': email.lower()})
+
+        if filters:
+            response = {'results': []}   
+            allParticipants = {'results': getDummyData()} 
+            for user in allParticipants['results']:
+                for item in filters:
+                    item['toAppend'] = False
+                    if item['value'] in (user[item['name']]).lower():
+                        item['toAppend'] = True
+                if all(item['toAppend'] for item in filters):
+                    response['results'].append(user)
+            return Response(response)
+        else: 
+            allParticipants = user_api.get_filtered_users(request.GET)
+            for participant in allParticipants["results"]:
+                if len(participant["organizations"]) > 0:
+                    participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+                else:
+                    participant['organizations_custom_name'] = ""
+                participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
+                if participant["is_active"]:
+                    participant["active_custom_text"]="Yes"
+                else:
+                    participant["active_custom_text"]="No"
+            return Response(allParticipants)
+
+class participant_details_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id):
+        selectedUser = user_api.get_user(user_id)
+        userOrganizations = user_api.get_user_organizations(user_id)
+        userOrganizationsList =[]
+        for organization in userOrganizations:
+            userOrganizationsList.append(vars(organization))
+        if selectedUser is not None:
+            selectedUser = selectedUser.to_dict()
+            if 'last_login' in selectedUser:
+                if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
+                    selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+                else:
+                    selectedUser['custom_last_login'] = 'N/A'
+            else:
+                selectedUser['custom_last_login'] = 'N/A'
+            if len(userOrganizationsList):
+                selectedUser['company_name'] = userOrganizationsList[0]['display_name']
+                selectedUser['company_id'] = userOrganizationsList[0]['id']
+            else:
+                selectedUser['company_name'] = 'No company'
+                selectedUser['company_id'] = ''
+            if selectedUser['gender'] == '' or selectedUser['gender'] == None:
+                selectedUser['gender'] = 'N/A'
+            selectedUser['city'] = selectedUser['city'].strip()
+            selectedUser['country'] = selectedUser['country'].strip().upper()
+            if selectedUser['city'] == '' and selectedUser['country'] == '':
+                selectedUser['location'] = 'N/A'
+            elif selectedUser['country'] == '':
+                selectedUser['location'] = selectedUser['city']
+            elif selectedUser['city'] == '':
+                selectedUser['location'] = selectedUser['country']
+            else:
+                selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
+            selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
+            if not len(selectedUser['mcka_permissions']):
+                selectedUser['mcka_permissions'] = ['-']
+            return render( request, 'admin/participants/participant_details.haml', selectedUser)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, user_id, format=None):
+        form = EditExistingUserForm(request.POST.copy())
+        if form.is_valid():
+            filterUsers = {}
+            existing_users_length = 0
+            if request.POST['username']:
+                filterUsers = {'username' : request.POST['username']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+                for user in existing_users['results']:
+                    if int(user['id']) == int(user_id):
+                        existing_users_length -= 1
+            if request.POST['email']:
+                filterUsers = {'email' : request.POST['email']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+                for user in existing_users['results']:
+                    if int(user['id']) == int(user_id):
+                        existing_users_length -= 1
+            if (existing_users_length > 0):
+                return Response({'status':'error', 'type': 'user_exist', 'message':'User with that username or email already exists!'})
+            else:
+                data = form.cleaned_data
+                try:
+                    response = user_api.update_user_information(user_id,data)
+                except ApiError, e:
+                    return Response({'status':'error','type': 'api_error', 'message':e.message})
+                return Response({'status':'ok', 'message':vars(response)})
+        else:
+            return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
+
+class manage_user_company_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id):
+        selectedUser = user_api.get_user(user_id)
+        if selectedUser is not None:
+            selectedUser = selectedUser.to_dict()
+        else:
+            return Response({'status':'ok', 'message':"Can't find user in database"}) 
+        userOrganizations = user_api.get_user_organizations(user_id)
+        userOrganizationsList =[]
+        for organization in userOrganizations:
+            organizationData = vars(organization)
+            userOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
+        organization_list = organization_api.get_organizations()
+        allOrganizationsList =[]
+        for organization in organization_list:
+            organizationData = vars(organization)
+            allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
+        return Response({'status':'ok', 'user_organizations': userOrganizationsList, 'all_organizations':allOrganizationsList})
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def validate_participant_email(request):
+
+    email = request.GET.get('email', None)
+    userId = request.GET.get('userId', None)
+
+    if email:
+        user = user_api.get_user_by_email(email)
+        if user['count'] == 0:
+            return HttpResponse(json.dumps({'status': 'notTaken'}), content_type="application/json")
+        elif user['count'] >=1 and user['results'][0]['email'] == email:
+            if int(user['results'][0]['id']) == int(userId):
+                return HttpResponse(json.dumps({'status': 'his'}), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def validate_participant_username(request):
+
+    username = request.GET.get('username', None)
+    userId = request.GET.get('userId', None)
+
+    if username:
+        user = user_api.get_user_by_username(username)
+        if user['count'] == 0:
+            return HttpResponse(json.dumps({'status': 'notTaken'}), content_type="application/json")
+        elif user['count'] >=1 and user['results'][0]['username'] == username:
+            if int(user['results'][0]['id']) == int(userId):
+                return HttpResponse(json.dumps({'status': 'his'}), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
+
+      
+class participant_details_active_courses_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, format=None):
+
+        if request.GET['include_slow_fields'] == 'false':
+            active_courses, course_history = get_user_courses_helper(user_id)
+            return Response(active_courses)
+        elif request.GET['include_slow_fields'] == 'true':  
+            fetch_courses =[]
+            for course_id in request.GET['ids'].split(','):
+                user_course = {}
+                user_course['id'] = course_id
+                course_data = None
+                course_data = load_course(user_course['id'], request=request)
+                load_course_progress(course_data, user_id)
+                user_course['progress'] = '{:03d}'.format(int(course_data.user_progress))
+                proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
+                user_course['proficiency'] = '{:03d}'.format(round_to_int(proficiency.user_grade_value * 100))
+                fetch_courses.append(user_course)   
+            return Response(fetch_courses) 
+
+        return Response({})
+
+
+class participant_details_course_history_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, format=None):
+
+        active_courses, course_history = get_user_courses_helper(user_id)
+
+        user_grades = user_api.get_user_grades(user_id)
+
+        for grade in user_grades:
+            for user_course in course_history:
+                if vars(grade)['course_id'] == user_course['id']:
+                    if vars(grade)['complete_status'] == 'true':
+                        user_course['completed'] ='Yes'
+                    else:
+                        user_course['completed'] = 'No'
+                    user_course['grade'] = round_to_int(vars(grade)['current_grade'] * 100)
+                else:
+                    if user_course['status'] == 'Active':
+                        user_course['completed'] = 'No'
+                        user_course['grade'] = 0
+
+                user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
+
+        return Response(course_history) 
+
+
+def get_user_courses_helper(user_id):
+
+    user_courses = []
+    allCourses = user_api.get_courses_from_user(user_id)
+    for course in allCourses:
+        user_course = {}
+        user_course['name'] = course['name']
+        user_course['id'] = course['id']
+        user_course['program'] = '-'
+        user_course['progress'] = "."
+        user_course['proficiency'] = "."
+        user_course['completed'] ='N/A'
+        user_course['grade'] ='N/A'
+        user_course['status'] = 'Active'
+        user_course['unenroll'] = 'Unenroll'
+        user_course['start'] = course['start']
+        if course['end'] is not None:
+            user_course['end'] = course['end']
+        else: 
+            user_course['end'] = '-'
+        user_courses.append(user_course)
+    user_roles = user_api.get_user_roles(user_id)
+    for role in user_roles:
+        if not any(item['id'] == vars(role)['course_id'] for item in user_courses):
+            course = course_api.get_course_details(vars(role)['course_id'])
+            user_course = {}
+            user_course['name'] = course['name']
+            user_course['id'] = course['id']
+            user_course['program'] = '-'
+            user_course['progress'] = "."
+            user_course['proficiency'] = "."
+            user_course['completed'] ='N/A'
+            user_course['grade'] ='N/A'
+            user_course['start'] = course['start']
+            if course['end'] is not None:
+                user_course['end'] = course['end']
+            else: 
+                user_course['end'] = '-'
+            if vars(role)['role'] == 'observer':
+                user_course['status'] = 'Observer'
+            if vars(role)['role'] == 'assistant':
+                user_course['status'] = 'TA'
+            user_course['unenroll'] = 'Unenroll'
+            user_courses.append(user_course)       
+        else:
+            user_course = (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id']).next()
+            if user_course['status'] != 'TA':
+                if vars(role)['role'] == 'observer':
+                    user_course['status'] = 'Observer'
+                if vars(role)['role'] == 'assistant':
+                    user_course['status'] = 'TA'
+
+    active_courses = []
+    course_history = []    
+    for user_course in user_courses:
+        if timezone.now() >= parsedate(user_course['start']):
+            if user_course['end'] == '-':
+                active_courses.append(user_course)
+            elif timezone.now() <= parsedate(user_course['end']):
+                active_courses.append(user_course)
+            else:
+                course_history.append(user_course)
+
+    return active_courses, course_history
+
+
+
+
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
@@ -2771,3 +3498,762 @@ def generate_assignments(request, project_id, activity_id):
     response = HttpResponse(json.dumps({"message": error}), content_type="application/json")
     response.status_code = status_code
     return response
+
+
+def getDummyData():
+
+    return [
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "mcka_admin_user@mckinseyacademy.com", 
+            "full_name": "mcka_admin_user Tester", 
+            "id": 5
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser242@yopmail.com", 
+            "full_name": "sm user242", 
+            "id": 353
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser295@yopmail.com", 
+            "full_name": "sm user295", 
+            "id": 406
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser304@yopmail.com", 
+            "full_name": "sm user304", 
+            "id": 415
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser1000@yopmail.com", 
+            "full_name": "sm user1000", 
+            "id": 1111
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "furqan@arbisoft.com", 
+            "full_name": "Furqan Ud Din", 
+            "id": 1113
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "khurram.shahzad@arbisoft.com", 
+            "full_name": "Khurram Shahzad", 
+            "id": 1112
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser999@yopmail.com", 
+            "full_name": "sm user999", 
+            "id": 1110
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser998@yopmail.com", 
+            "full_name": "sm user998", 
+            "id": 1109
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser997@yopmail.com", 
+            "full_name": "sm user997", 
+            "id": 1108
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser996@yopmail.com", 
+            "full_name": "sm user996", 
+            "id": 1107
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser995@yopmail.com", 
+            "full_name": "sm user995", 
+            "id": 1106
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser994@yopmail.com", 
+            "full_name": "sm user994", 
+            "id": 1105
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser993@yopmail.com", 
+            "full_name": "sm user993", 
+            "id": 1104
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser992@yopmail.com", 
+            "full_name": "sm user992", 
+            "id": 1103
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser991@yopmail.com", 
+            "full_name": "sm user991", 
+            "id": 1102
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser990@yopmail.com", 
+            "full_name": "sm user990", 
+            "id": 1101
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser989@yopmail.com", 
+            "full_name": "sm user989", 
+            "id": 1100
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser988@yopmail.com", 
+            "full_name": "sm user988", 
+            "id": 1099
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser987@yopmail.com", 
+            "full_name": "sm user987", 
+            "id": 1098
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser986@yopmail.com", 
+            "full_name": "sm user986", 
+            "id": 1097
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser900@yopmail.com", 
+            "full_name": "sm user900", 
+            "id": 1011
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser865@yopmail.com", 
+            "full_name": "sm user865", 
+            "id": 976
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser864@yopmail.com", 
+            "full_name": "sm user864", 
+            "id": 975
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser863@yopmail.com", 
+            "full_name": "sm user863", 
+            "id": 974
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser862@yopmail.com", 
+            "full_name": "sm user862", 
+            "id": 973
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser861@yopmail.com", 
+            "full_name": "sm user861", 
+            "id": 972
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser790@yopmail.com", 
+            "full_name": "sm user790", 
+            "id": 901
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser860@yopmail.com", 
+            "full_name": "sm user860", 
+            "id": 971
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser789@yopmail.com", 
+            "full_name": "sm user789", 
+            "id": 900
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser788@yopmail.com", 
+            "full_name": "sm user788", 
+            "id": 899
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser787@yopmail.com", 
+            "full_name": "sm user787", 
+            "id": 898
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser786@yopmail.com", 
+            "full_name": "sm user786", 
+            "id": 897
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser785@yopmail.com", 
+            "full_name": "sm user785", 
+            "id": 896
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser784@yopmail.com", 
+            "full_name": "sm user784", 
+            "id": 895
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser783@yopmail.com", 
+            "full_name": "sm user783", 
+            "id": 894
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser782@yopmail.com", 
+            "full_name": "sm user782", 
+            "id": 893
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser781@yopmail.com", 
+            "full_name": "sm user781", 
+            "id": 892
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser780@yopmail.com", 
+            "full_name": "sm user780", 
+            "id": 891
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser590@yopmail.com", 
+            "full_name": "sm user590", 
+            "id": 701
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser591@yopmail.com", 
+            "full_name": "sm user591", 
+            "id": 702
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser592@yopmail.com", 
+            "full_name": "sm user592", 
+            "id": 703
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser593@yopmail.com", 
+            "full_name": "sm user593", 
+            "id": 704
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser594@yopmail.com", 
+            "full_name": "sm user594", 
+            "id": 705
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser595@yopmail.com", 
+            "full_name": "sm user595", 
+            "id": 706
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser596@yopmail.com", 
+            "full_name": "sm user596", 
+            "id": 707
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser597@yopmail.com", 
+            "full_name": "sm user597", 
+            "id": 708
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser598@yopmail.com", 
+            "full_name": "sm user598", 
+            "id": 709
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser599@yopmail.com", 
+            "full_name": "sm user599", 
+            "id": 710
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser600@yopmail.com", 
+            "full_name": "sm user600", 
+            "id": 711
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser500@yopmail.com", 
+            "full_name": "sm user500", 
+            "id": 611
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser501@yopmail.com", 
+            "full_name": "sm user501", 
+            "id": 612
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser502@yopmail.com", 
+            "full_name": "sm user502", 
+            "id": 613
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser503@yopmail.com", 
+            "full_name": "sm user503", 
+            "id": 614
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser504@yopmail.com", 
+            "full_name": "sm user504", 
+            "id": 615
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser505@yopmail.com", 
+            "full_name": "sm user505", 
+            "id": 616
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser506@yopmail.com", 
+            "full_name": "sm user506", 
+            "id": 617
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser507@yopmail.com", 
+            "full_name": "sm user507", 
+            "id": 618
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser508@yopmail.com", 
+            "full_name": "sm user508", 
+            "id": 619
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser509@yopmail.com", 
+            "full_name": "sm user509", 
+            "id": 620
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser510@yopmail.com", 
+            "full_name": "sm user510", 
+            "id": 621
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser511@yopmail.com", 
+            "full_name": "sm user511", 
+            "id": 622
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser512@yopmail.com", 
+            "full_name": "sm user512", 
+            "id": 623
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser400@yopmail.com", 
+            "full_name": "sm user400", 
+            "id": 511
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser401@yopmail.com", 
+            "full_name": "sm user401", 
+            "id": 512
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser402@yopmail.com", 
+            "full_name": "sm user402", 
+            "id": 513
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser403@yopmail.com", 
+            "full_name": "sm user403", 
+            "id": 514
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser404@yopmail.com", 
+            "full_name": "sm user404", 
+            "id": 515
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser405@yopmail.com", 
+            "full_name": "sm user405", 
+            "id": 516
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser406@yopmail.com", 
+            "full_name": "sm user406", 
+            "id": 517
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser407@yopmail.com", 
+            "full_name": "sm user407", 
+            "id": 518
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser408@yopmail.com", 
+            "full_name": "sm user408", 
+            "id": 519
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser409@yopmail.com", 
+            "full_name": "sm user409", 
+            "id": 520
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser410@yopmail.com", 
+            "full_name": "sm user410", 
+            "id": 521
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser351@yopmail.com", 
+            "full_name": "sm user351", 
+            "id": 462
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser352@yopmail.com", 
+            "full_name": "sm user352", 
+            "id": 463
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser353@yopmail.com", 
+            "full_name": "sm user353", 
+            "id": 464
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser354@yopmail.com", 
+            "full_name": "sm user354", 
+            "id": 465
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser355@yopmail.com", 
+            "full_name": "sm user355", 
+            "id": 466
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser356@yopmail.com", 
+            "full_name": "sm user356", 
+            "id": 467
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser357@yopmail.com", 
+            "full_name": "sm user357", 
+            "id": 468
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser358@yopmail.com", 
+            "full_name": "sm user358", 
+            "id": 469
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser359@yopmail.com", 
+            "full_name": "sm user359", 
+            "id": 470
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser360@yopmail.com", 
+            "full_name": "sm user360", 
+            "id": 471
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser361@yopmail.com", 
+            "full_name": "sm user361", 
+            "id": 472
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser362@yopmail.com", 
+            "full_name": "sm user362", 
+            "id": 473
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser363@yopmail.com", 
+            "full_name": "sm user363", 
+            "id": 474
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser364@yopmail.com", 
+            "full_name": "sm user364", 
+            "id": 475
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser365@yopmail.com", 
+            "full_name": "sm user365", 
+            "id": 476
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser366@yopmail.com", 
+            "full_name": "sm user366", 
+            "id": 477
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser367@yopmail.com", 
+            "full_name": "sm user367", 
+            "id": 478
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser368@yopmail.com", 
+            "full_name": "sm user368", 
+            "id": 479
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser369@yopmail.com", 
+            "full_name": "sm user369", 
+            "id": 480
+        }, 
+        {
+            "created_custom_date": "-", 
+            "active_custom_text": "-", 
+            "organizations_custom_name": "McKinsey and Company", 
+            "email": "smmuser370@yopmail.com", 
+            "full_name": "sm user370", 
+            "id": 481
+        }
+    ]
+
