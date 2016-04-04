@@ -145,8 +145,9 @@ def _get_redirect_to_current_course(request):
 
     if course_id and not future_start_date:
         features = FeatureFlags.objects.get(course_id=course_id)
-        if features.learner_dashboard: 
-            return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
+        if hasattr(features, 'learner_dashboard'): 
+            if features.learner_dashboard is True:
+                return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
     return reverse('protected_home')
 
