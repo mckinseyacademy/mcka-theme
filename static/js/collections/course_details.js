@@ -103,9 +103,9 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     $.ajax(options)
     .done(function(data) {
       data = data.results;
-      for (var user in data)
+      for (var userIndex = 0;userIndex < data.length;userIndex++)
       {
-        userData = data[user];
+        userData = data[userIndex];
         modelData = collection.fullCollection.models.filter(function(el){return el.attributes.id == userData.id})
         if (modelData.length > 0)
           modelData[0].set({progress: userData.progress, assessments: userData.assessments, groupworks: userData.groupworks});

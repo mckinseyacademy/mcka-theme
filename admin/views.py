@@ -3161,14 +3161,18 @@ class manage_user_company_api(APIView):
         selectedUser = user_api.get_user(user_id)
         if selectedUser is not None:
             selectedUser = selectedUser.to_dict()
+        else:
+            return Response({'status':'ok', 'message':"Can't find user in database"}) 
         userOrganizations = user_api.get_user_organizations(user_id)
         userOrganizationsList =[]
         for organization in userOrganizations:
-            userOrganizationsList.append(vars(organization))
+            organizationData = vars(organization)
+            userOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
         organization_list = organization_api.get_organizations()
         allOrganizationsList =[]
         for organization in organization_list:
-            allOrganizationsList.append(vars(organization))
+            organizationData = vars(organization)
+            allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
         return Response({'status':'ok', 'user_organizations': userOrganizationsList, 'all_organizations':allOrganizationsList})
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

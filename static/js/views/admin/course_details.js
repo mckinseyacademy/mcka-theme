@@ -210,10 +210,14 @@
             {
               $(status_element).parent().find('.loadingIcon').addClass('hidden');
               clearInterval(interval_id);
-              if (data['values'].failed <= 0)
+              if ((data['values'].failed <= 0) && (data['values'].selected > 0) && (data['values'].selected === data['values'].successful))
               {
                 location.reload();
               }
+            }
+            if (data['error_list'].length > 0)
+            {
+              console.log(data['error_list']);
             }
           }
         })

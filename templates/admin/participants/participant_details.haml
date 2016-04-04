@@ -70,7 +70,7 @@
             .participantCompanyLabel.labelUniversal
               Company
             .participantCompanyValue
-              %a{:href => '/admin/clients/#{company_id}', :target => '_self'}> 
+              %a{:href => '/admin/clients/#{company_id}', :target => '_self', :data-id => '#{company_id}'}> 
                 ={company_name}
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal

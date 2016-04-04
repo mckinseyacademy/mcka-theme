@@ -118,9 +118,9 @@ var Router = Backbone.Router.extend({
     var participant_list_view = new Apros.views.ParticipantsInfo({collection: collection, el: '#participantsListViewGridBlock'});
     participant_list_view.render();
   },
-  initialize_participant_details: function()
+  initialize_participant_details: function(user_id)
   {
-    var view = new Apros.views.ParticipantEditDetailsView();
+    var view = new Apros.views.ParticipantEditDetailsView({url:  ApiUrls.participant_organization_get_api(user_id)});
     view.render();
   },
   participant_details_active_courses: function(){

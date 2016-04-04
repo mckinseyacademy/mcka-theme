@@ -1,8 +1,8 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
-    initialize: function(){
+    initialize: function(options){
       var _this=this;
-      $('#country_edit').countrySelect();     
-      _this.initialize_user_organizations();
+      $('#country_edit').countrySelect();   
+      _this.initialize_user_organizations(options.url);
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').hide();
@@ -101,7 +101,12 @@
       details.find('.participantLastNameValue').text(edit.find('.participantLastNameValue input').val());
       details.find('.participantUsernameValue').text(edit.find('.participantUsernameValue input').val());
       details.find('.participantEmailValue').text(edit.find('.participantEmailValue input').val());
-      details.find('.participantCompanyValue').text(edit.find('.participantCompanyValue input').val());
+      details.find('.participantCompanyValue a').text(edit.find('.participantCompanyValue input').val());
+      var company_data_id = edit.find('.participantCompanyValue input').attr('data-id');
+      details.find('.participantCompanyValue a').attr('data-id',company_data_id);
+      var company_href = details.find('.participantCompanyValue a').attr('href')
+      company_href = company_href.substring(0, company_href.lastIndexOf('/')) + '/';
+      details.find('.participantCompanyValue a').attr('href',company_href + company_data_id);
       var genderAbbreviation = edit.find('.participantGenderValue select').val();
       if (genderAbbreviation == 'M')
         details.find('.participantGenderValue').text('Male');
@@ -129,7 +134,8 @@
       edit.find('.participantLastNameValue input').val(details.find('.participantLastNameValue').text().trim());
       edit.find('.participantUsernameValue input').val(details.find('.participantUsernameValue').text().trim());
       edit.find('.participantEmailValue input').val(details.find('.participantEmailValue').text().trim());
-      edit.find('.participantCompanyValue input').val(details.find('.participantCompanyValue').text().trim());
+      edit.find('.participantCompanyValue input').val(details.find('.participantCompanyValue a').text().trim());
+      edit.find('.participantCompanyValue input').attr('data-id',details.find('.participantCompanyValue a').attr('data-id'));
       var fullGender = details.find('.participantGenderValue').text().trim();
       if (fullGender == 'Female')
         edit.find('.participantGenderValue select').val('F');
@@ -145,47 +151,41 @@
           $("#country_edit").countrySelect("selectCountry", selected_country);
       }
     },
-    initialize_user_organizations: function()
+    initialize_user_organizations: function(url)
     {
-      var projects = [
+      var options = {
+          url: url,
+          type: "GET",
+          dataType: "json"
+        };
+
+      options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+      $.ajax(options)
+      .done(function(data) {
+        var selectableList = data.all_organizations;
+        var selectFillList = [] 
+        for (var organizationIndex=0;organizationIndex < selectableList.length; organizationIndex++)
         {
-          value: "jquery",
-          label: "jQuery",
-          desc: "the write less, do more, JavaScript library",
-          icon: "jquery_32x32.png"
-        },
-        {
-          value: "jquery-ui",
-          label: "jQuery UI",
-          desc: "the official user interface library for jQuery",
-          icon: "jqueryui_32x32.png"
-        },
-        {
-          value: "sizzlejs",
-          label: "Sizzle JS",
-          desc: "a pure-JavaScript CSS selector engine",
-          icon: "sizzlejs_32x32.png"
+          selectFillList.push({value:selectableList[organizationIndex].id, label:selectableList[organizationIndex].display_name});
         }
-      ];
-   
-    $( "#project" ).autocomplete({
-      minLength: 2,
-      source: function()
-      {
-        
-      },
-      focus: function( event, ui ) {
-        $( "#project" ).val( ui.item.label );
-        return false;
-      },
-      select: function( event, ui ) {
-          $( "#project" ).val( ui.item.label );
-          $( "#project-id" ).val( ui.item.value );
-          $( "#project-description" ).html( ui.item.desc );
-          $( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
-   
-          return false;
-        }
+        $('form.participantDetailsEditForm .participantCompanyValue input').autocomplete({
+          minLength: 0,
+          source: selectFillList,
+          focus: function( event, ui ) {
+            $('form.participantDetailsEditForm .participantCompanyValue input').val( ui.item.label );
+            $('form.participantDetailsEditForm .participantCompanyValue input').attr('data-id',ui.item.value);
+            return false;
+          },
+          select: function( event, ui ) {
+              $('form.participantDetailsEditForm .participantCompanyValue input').val( ui.item.label );
+              $('form.participantDetailsEditForm .participantCompanyValue input').attr('data-id',ui.item.value);
+              return false;
+            }
+          });
+      })
+      .fail(function(data) {
+        console.log("Ajax failed to fetch data");
+        console.log(data)
       });
     },
     check_if_country_exist: function(name)
