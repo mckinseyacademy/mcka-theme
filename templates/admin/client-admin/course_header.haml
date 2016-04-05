@@ -11,7 +11,7 @@
     - else
       %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/participants"}
         = _("Participants")
-  - if learner_dashboard_flag
+  - if learner_dashboard_flag and user.is_mcka_admin
   	%li
   	  - if request.resolver_match.url_name == 'client_admin_course_learner_dashboard'
   	    %span.selected= _("Learner Dashboard")
@@ -25,7 +25,7 @@
       - else
         %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/analytics"}
           = _("Analytics")
-  - if user.is_client_admin or user.is_mcka_admin
+  - if user.is_mcka_admin
     %li
       - if request.resolver_match.url_name == 'client_admin_branding_settings'
         %span.selected= _("Branding")
