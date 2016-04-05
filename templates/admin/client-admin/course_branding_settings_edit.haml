@@ -1,14 +1,7 @@
 - extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
-  %script
-    $(function() {
-      $('form').each(function(){
-          $(this).data('serialized', $(this).serialize())
-      }).on('change input', function(){
-          $(this).find('input:submit, button:submit').prop('disabled', $(this).serialize() == $(this).data('serialized'));
-       }).find('input:submit, button:submit').prop('disabled', true);
-    });
+  %script{src: "/static/js/form_changed_check.js"}
   .admin-detail.row
     .large-12.large.columns
       - block admin_detail
