@@ -425,6 +425,7 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.app_directories.Loader',
 )
 
+# Default settings for Learner Dashboard Client Branding
 BACKGROUND_IMAGE = None
 LOGO_IMAGE = None
 NAVIGATION_COLORS = None
