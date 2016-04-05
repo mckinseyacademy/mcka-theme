@@ -6,14 +6,19 @@
     $(function() {
       var url = window.location.pathname + "/reorder";
       var csrftoken = $.cookie('apros_csrftoken');
+      var saveSort = $("#saveSort");
+      var savedSort = $("#savedSort");
+      var tbody = $('tbody');
+      var isDragging;
+      var wasDragging;
 
-      $('tbody').sortable({ 
+      tbody.sortable({ 
         cursorAt: { top: 110, left: 0 },
         axis: 'y'
       });
 
-      $("#saveSort").click( "sortupdate", function(event, ui) {
-        var positionList = $('tbody').sortable('toArray');
+      saveSort.click( "sortupdate", function(event, ui) {
+        var positionList = tbody.sortable('toArray');
         $.ajax({
           dataType: 'json',
           data: {
@@ -24,26 +29,26 @@
           url: url
         });
       });
-      $('tbody').disableSelection();
+      tbody.disableSelection();
 
-      $("tbody").mousedown(function() {
+      tbody.mousedown(function() {
         isDragging = false;
       }).mousemove(function() {
         isDragging = true;
       }).mouseup(function() {
-        var wasDragging = isDragging;
+        wasDragging = isDragging;
         isDragging = false;
         if (wasDragging) {
-          $("#saveSort").css("display", "inline");
-          $("#savedSort").css("display", "none");
+          saveSort.css("display", "inline");
+          savedSort.css("display", "none");
         }
       });
 
-      $('#saveSort').click(function() {
-        $("#saveSort").css("display", "none");
-        $("#savedSort").css("display", "inline");
+      saveSort.click(function() {
+        saveSort.css("display", "none");
+        savedSort.css("display", "inline");
         setTimeout(function(){
-          $("#savedSort").fadeOut("slow");
+          savedSort.fadeOut("slow");
         },1000)
       });
 
