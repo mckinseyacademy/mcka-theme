@@ -49,7 +49,7 @@
         - if error
           = error
       %div.submit-area
-        %input.button.radius.small{type: "submit", value: "Save"}
+        %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
         %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
           Cancel
     
