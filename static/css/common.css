@@ -1,0 +1,20 @@
+.modalLinks
+{
+	text-decoration: underline!important;
+	color: black!important;
+}
+
+.leftPadding 
+{
+	padding-left: 20px;
+}
+
+.topPadding
+{
+	padding-top: 50px;
+}
+
+.bottomPadding
+{
+	padding-bottom: 20px;
+}

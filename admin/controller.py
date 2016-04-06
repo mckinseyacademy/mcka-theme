@@ -453,7 +453,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     if not user.is_active:
                         activation_record = UserActivation.user_activation(user)
                     client.add_user(user.id)
-                except ApiError, e:
+                except ApiError as e:
                     failure = {
                         "reason": e.message,
                         "activity": _("User not associated with client")
@@ -1209,3 +1209,155 @@ def _change_user_status(course_id, new_status, status_item):
         except ApiError as e:
             return {'status':'error', 'message':e.message}
     return {'status':'success'}
+
+
+def import_participants_threaded(student_list, request, req_status):
+    # _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    # _thread.daemon = True # so we can exit
+    # _thread.start()
+    process_import_participants_list(student_list, request, req_status)  
+
+
+# @postpone
+def process_import_participants_list(file_stream, request, reg_status=None):
+    # 1) Build user list
+    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_participants_csv)
+    if reg_status is not None:
+        reg_status.attempted = len(user_list)
+        reg_status.save()
+    for user_info in user_list:
+        if "error" in user_info:
+            UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+    user_list = [user_info for user_info in user_list if "error" not in user_info]
+    # 2) Register the users, and associate them with client
+    _enroll_participants_from_csv(user_list, request, reg_status)
+
+
+def _process_line_participants_csv(user_line):
+    try:
+        fields = user_line.strip().split(',')
+        # format is FirstName, LastName, Email, Company, CourseID, Status
+
+        # temporarily set the user name to the first 30 characters of the allowed characters within the email
+        username = re.sub(r'\W', '', fields[2])
+        if len(username) > 30:
+            username = username[:29]
+
+        user_info = {
+            "first_name": fields[0],
+            "last_name": fields[1],
+            "email": fields[2],
+            "company": fields[3],
+            "course": fields[4],
+            "status": fields[5],
+            "username": username,
+            "is_active": False,
+            "password": settings.INITIAL_PASSWORD,
+        }
+
+    except Exception as e:
+        user_info = {
+            "error": _("Could not parse user info from {}").format(user_line)
+        }
+
+    return user_info
+
+
+def _enroll_participants_from_csv(students, request, reg_status):
+
+    permissonsMap = {
+        'TA': USER_ROLES.TA,
+        'Observer': USER_ROLES.OBSERVER
+    }
+
+    for user_dict in students:
+
+        client_id = user_dict['company']
+        client = Client.fetch(client_id)
+        course_id = user_dict['course']
+        status = user_dict['status']
+
+        failure = None
+        user_error = []
+        try:
+            user = None
+            activation_record = None
+
+            try:
+                user = user_api.register_user(user_dict)
+            except ApiError as e:
+                user = None
+                failure = {
+                    "reason": e.message,
+                    "activity": _("Unable to register user")
+                }
+
+            if user:
+                try:
+                    if not user.is_active:
+                        activation_record = UserActivation.user_activation(user)
+                    client.add_user(user.id)
+                except ApiError as e:
+                    failure = {
+                        "reason": e.message,
+                        "activity": _("User not associated with client")
+                    }
+
+            if failure:
+                user_error.append(_("{}: {} - {}").format(
+                    failure["activity"],
+                    failure["reason"],
+                    user_dict["email"],
+                ))
+            try: 
+                # Add User to course
+                if not user: 
+                    user = user_api.get_users(email=user_dict["email"])[0]
+
+                try:
+                    enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
+                    if user.id not in enrolled_users:
+                        enroll_user_in_course(user.id, course_id)
+                except Exception as e: 
+                    user_error.append(_("{}: {} - {}").format(
+                        "User course enrollment",
+                        e.message,
+                        user_dict["email"],
+                    ))
+
+                try:
+                    permissions = Permissions(user.id)
+                    if status != 'Active' :
+                        permissions.update_course_role(course_id,permissonsMap[status])
+                except ApiError as e:
+                    user_error.append(_("{}: {} - {}").format(
+                        "User course status",
+                        e.message,
+                        user_dict["email"],
+                    ))
+                    
+            except Exception as e: 
+                reason = e.message if e.message else _("Enrolling student error")
+                user_error.append(_("Error enrolling student: {} - {}").format(
+                    reason,
+                    user_dict["email"]
+                ))
+
+        except Exception as e:
+            user = None
+            reason = e.message if e.message else _("Data processing error")
+            user_error.append(_("Error processing data: {} - {}").format(
+                reason,
+                user_dict["email"]
+            ))
+
+        if user_error:
+            for user_e in user_error:
+                error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
+            reg_status.failed = reg_status.failed + 1
+            reg_status.save()
+        else:
+            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
+            reg_status.succeded = reg_status.succeded + 1
+            reg_status.save() 
+    

@@ -103,6 +103,7 @@ urlpatterns = patterns(
     url(r'^api/participants/(?P<user_id>[0-9]+)/organizations$', views.manage_user_company_api.as_view(), name='manage_user_company_api'),
     url(r'^api/participants/validate_participant_email/$', views.validate_participant_email, name='validate_participant_email'),
     url(r'^api/participants/validate_participant_username/$', views.validate_participant_username, name='validate_participant_username'),
+    url(r'^api/participants/import_participants$', views.import_participants, name='import_participants'),
     url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),

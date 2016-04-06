@@ -60,7 +60,7 @@ from .controller import (
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
-    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions
+    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, import_participants_threaded
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -1983,6 +1983,38 @@ def download_student_list(request, client_id):
 
     return response
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def import_participants(request):
+
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = MassStudentListForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+            reg_status = UserRegistrationBatch.create();
+            import_participants_threaded(
+                request.FILES['student_list'],
+                request, 
+                reg_status
+            )
+            return HttpResponse(
+                json.dumps({"task_key": _(reg_status.task_key)}),
+                content_type='text/plain'
+            )
+    elif request.method == 'GET':
+        batch_status = BatchOperationStatus.objects.filter(task_key=data['task_key'])      
+        BatchOperationStatus.clean_old()
+        if len(batch_status) > 0:
+            batch_status = batch_status[0]
+            error_list = []
+            if batch_status.failed > 0:
+                batch_errors = BatchOperationErrors.objects.filter(task_key=data['task_key'])
+                for b_error in batch_errors:
+                    error_list.append({'error': b_error.error})
+            return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
+        return Response({'status':'error', 'message': 'No such task!'})
+    
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def mass_student_enroll(request, client_id):
@@ -3037,7 +3069,8 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def participants_list(request):
-    return render( request, 'admin/participants/participants_list.haml')
+    form = MassStudentListForm()
+    return render( request, 'admin/participants/participants_list.haml', {"form": form})
 
 class participants_list_api(APIView):
     """
@@ -3082,6 +3115,7 @@ class participants_list_api(APIView):
                 else:
                     participant["active_custom_text"]="No"
             return Response(allParticipants)
+
 
 class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

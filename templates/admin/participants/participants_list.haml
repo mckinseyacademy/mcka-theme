@@ -4,7 +4,7 @@
   #mainParticipantsWrapper
     #participantsAddWrapper
       %input.button.small.radius.menuButton{:type => "button", :value => "Add New Participant"}
-      %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV"}
+      %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
       %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
     %hr
     #participantsSearchWrapper
@@ -29,3 +29,21 @@
           Download Template
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           Cancel
+
+    #import_from_csv.reveal-modal.big{'data-reveal': None}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %h2 Import Participants from CSV
+      %hr
+      .bottomPadding
+        %p Optional explanatory text. Lorem ipsum dolor sit amet, consectetur adipis. 
+          %a.modalLinks{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
+      %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :id => 'participantsCsvForm'}
+        - csrf_token
+        = form
+
+      %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
+      
+      .button-wrapper.topPadding
+        %input.button.radius.small.disabled{:type => "submit", :value => "Add Participants", :id => 'participantsCsvSubmitButton'}
+        %a.modalLinks.leftPadding.close-reveal-modal.close-modal-inline{:href => '#'} Cancel
