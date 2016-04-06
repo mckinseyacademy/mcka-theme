@@ -3595,8 +3595,11 @@ def client_admin_branding_settings_edit(request, client_id, course_id):
                 return render(request, '403.haml')
             form.save()
 
-            redirect_url = "/admin/client-admin/{}/courses/{}/branding".format(client_id, course_id)
-            return HttpResponseRedirect(redirect_url)
+            url = reverse('client_admin_branding_settings', kwargs={
+                'client_id': client_id,
+                'course_id': course_id,
+            })
+            return HttpResponseRedirect(url)
     
     else:
         form = BrandingSettingsForm(instance=instance)
@@ -3659,7 +3662,7 @@ def client_admin_course_learner_dashboard_discover_create_edit(request, client_i
             url_list = reverse('client_admin_course_learner_dashboard_discover_list', kwargs={
                 'client_id': client_id,
                 'course_id': course_id,
-                })
+            })
 
             return HttpResponseRedirect(url_list)
 
@@ -3710,17 +3713,21 @@ def client_admin_course_learner_dashboard_discover_delete(request, client_id, co
 
     discovery.delete()
 
-    redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
-    return HttpResponseRedirect(redirect_url)
+    url = reverse('client_admin_course_learner_dashboard_discover_list', kwargs={
+        'client_id': client_id,
+        'course_id': course_id,
+    })
+
+    return HttpResponseRedirect(url)
 
 def client_admin_course_learner_dashboard_discover_reorder(request, course_id, client_id):
 
     if request.method == 'POST':
 
         data = request.POST
-        myDict = dict(data.iterlists())
+        dataDict = dict(data.iterlists())
 
-        for index, item_id in enumerate(myDict['position[]']):
+        for index, item_id in enumerate(dataDict['position[]']):
             discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
             discoveryItem.position = index
             discoveryItem.save()
