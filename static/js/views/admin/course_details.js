@@ -254,7 +254,7 @@
           console.log("Ajax failed to fetch data");
           console.log(data);
           });
-      }, 500);
+      }, 3000);
       return interval_id;
     }
   });

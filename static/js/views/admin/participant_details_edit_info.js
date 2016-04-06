@@ -15,6 +15,8 @@
           var country = locationText.split(',')[1].trim().toLowerCase();
           if (_this.check_if_country_exist(country))
             $("#country_edit").countrySelect("selectCountry", country);
+          else
+            $("#country_edit").countrySelect("selectCountry", 'us');
         }
       });
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').off().on("click", function()
@@ -149,6 +151,8 @@
         var selected_country = $("#country_edit_code").val();
         if(_this.check_if_country_exist(selected_country))
           $("#country_edit").countrySelect("selectCountry", selected_country);
+        else
+          $("#country_edit").countrySelect("selectCountry", 'us');
       }
     },
     initialize_user_organizations: function(url)
