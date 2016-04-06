@@ -328,7 +328,7 @@ def client_admin_course(request, client_id, course_id):
     try:
     	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
     except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+    	learner_dashboard_flag = False
 
     data = {
         'client_id': client_id,
@@ -374,12 +374,12 @@ def client_admin_course_participants(request, client_id, course_id):
     else:
         students = []
 
-    try:
-    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except FeatureFlags.learner_dashboard.DoesNotExist:
+	try:
+		learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+	except FeatureFlags.learner_dashboard.DoesNotExist:
 		learner_dashboard_flag = False
 
-    data = {
+	data = {
         'client_id': client_id,
         'course_id': course_id,
         'target_course': course,
@@ -477,10 +477,10 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-    if(features.learner_dashboard):	
+    if(features.learner_dashboard):
     	learner_dashboard_flag = features.learner_dashboard
     else:
- 		features.learner_dashboard = False
+    	learner_dashboard_flag = False
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -513,7 +513,7 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
-        'learner_dashboard_flag': features.learner_dashboard
+        'learner_dashboard_flag': learner_dashboard_flag
     }
     return render(
         request,
@@ -525,29 +525,49 @@ def client_admin_course_analytics(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
 
-	(learner_dashboard, created) = LearnerDashboard.objects.get_or_create(client_id=client_id, course_id=course_id)
+	try:
+		instance = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+	except:
+		instance = None
 
 	if request.method == "POST":
-		learner_dashboard.title = request.POST['title']
-		learner_dashboard.description = request.POST['description']
-		learner_dashboard.save()
+		if instance == None:
+			instance = LearnerDashboard(
+				title = request.POST['title'],
+				description = request.POST['description'],
+				client_id = client_id, 
+				course_id = course_id
+			)
+			instance.save()
+		else:
+			instance.title = request.POST['title']
+			instance.description = request.POST['description']
+			instance.save()
 		
-		myDict = dict(request.POST.iterlists())
-		for index, item_id in enumerate(myDict['positions[]']):
-			tileItem = LearnerDashboardTile.objects.get(id=item_id)
-			tileItem.position = index
-			tileItem.save()
+			myDict = dict(request.POST.iterlists())
+			for index, item_id in enumerate(myDict['positions[]']):
+				tileItem = LearnerDashboardTile.objects.get(id=item_id)
+				tileItem.position = index
+				tileItem.save()
 
-	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
-	data = {
-		'client_id': client_id,
-		'course_id': course_id,
-		'learner_dashboard_id': learner_dashboard.id,
-		'learner_dashboard_flag': True,
-		'title': learner_dashboard.title,
-		'description': learner_dashboard.description,
-		'learner_dashboard_tiles': learner_dashboard_tiles
-	}
+	if instance:
+		learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
+		data = {
+			'client_id': client_id,
+			'course_id': course_id,
+			'learner_dashboard_id': instance.id,
+			'learner_dashboard_flag': True,
+			'title': instance.title,
+			'description': instance.description,
+			'learner_dashboard_tiles': learner_dashboard_tiles
+		}
+	else:
+		data = {
+			'client_id': client_id,
+			'course_id': course_id,
+			'learner_dashboard_id': None,
+			'learner_dashboard_flag': True,
+		}
 	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
 @ajaxify_http_redirects
@@ -564,9 +584,12 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
 		form = LearnerDashboardTileForm(request.POST, instance=instance)
 		if form.is_valid():
 			form.save()
-			redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
+			redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
 			return HttpResponseRedirect(redirect_url)
-
+	elif request.method == 'DELETE':
+		instance.delete()
+		redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
+		return HttpResponseRedirect(redirect_url)
 	else:
 		form = LearnerDashboardTileForm(instance=instance)
 
@@ -578,20 +601,6 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
 		'learner_dashboard_id': learner_dashboard_id,
 		'tile_id': tile_id,
 	})
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
-@client_admin_access
-def client_admin_course_learner_dashboard_tile_delete(request, client_id, course_id, learner_dashboard_id, tile_id):
-
-    try:
-        tile = LearnerDashboardTile.objects.get(id=tile_id)
-    except:
-        return render(request, '404.haml')
-
-    tile.delete()
-
-    redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard".format(client_id, course_id)
-    return HttpResponseRedirect(redirect_url)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
@@ -3569,7 +3578,7 @@ def client_admin_branding_settings(request, client_id, course_id):
     try:
     	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
     except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+    	learner_dashboard_flag = False
 
     return render(request, 'admin/client-admin/course_branding_settings.haml', {
         'branding': instance,
@@ -3670,7 +3679,7 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
     try:
     	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
     except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+    	learner_dashboard_flag = False
 
     return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
         'client_id': client_id,
