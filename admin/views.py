@@ -3626,7 +3626,7 @@ def client_admin_branding_settings_reset(request, client_id, course_id):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def client_admin_course_learner_dashboard_discover_create(request, client_id, course_id):
+def client_admin_course_learner_dashboard_discover_create_edit(request, client_id, course_id, discovery_id=None):
 
     error = None
 
@@ -3635,28 +3635,51 @@ def client_admin_course_learner_dashboard_discover_create(request, client_id, co
     except: 
         return render(request, '404.haml')
 
+    if discovery_id:
+        discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+    else:
+        discovery = None
+
     if request.method == 'POST':
-        form = DiscoveryContentCreateForm (request.POST)
+        form = DiscoveryContentCreateForm (request.POST, instance=discovery)
         if form.is_valid():
             form.save()
 
-            redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
-            return HttpResponseRedirect(redirect_url)
+            url = reverse('client_admin_course_learner_dashboard_discover_list', kwargs={
+                'client_id': client_id,
+                'course_id': course_id,
+                })
+
+            return HttpResponseRedirect(url)
 
     else:
-        form = DiscoveryContentCreateForm()
+        form = DiscoveryContentCreateForm(instance=discovery)
+
+    if discovery:
+        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
+            'client_id': client_id,
+            'course_id': course_id,
+            'discovery_id': discovery.id,
+            })
+    else: 
+        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
+            'client_id': client_id,
+            'course_id': course_id,
+            })
 
     data = {
+        'url': url,
         'error': error,
         'form': form,
         'client_id': client_id,
         'course_id': course_id,
+        'discovery_id': discovery_id,
         'learner_dashboard': learner_dashboard.id,
         }
 
     return render(
         request,
-        'admin/client-admin/learner_dashboard_discovery_create.haml',
+        'admin/client-admin/learner_dashboard_discovery_create_edit.haml',
         data
     )
 
@@ -3667,9 +3690,9 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
     discovery = LearnerDashboardDiscovery.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('position')
 
     try:
-    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
     except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+        learner_dashboard_flag = False
 
     return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
         'client_id': client_id,
@@ -3677,44 +3700,6 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
         'discovery': discovery,
         'learner_dashboard_flag': learner_dashboard_flag
         })
-
-@ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def client_admin_course_learner_dashboard_discover_edit(request, client_id, course_id, discovery_id):
-
-    error = None
-    
-    try:
-        discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
-    except:
-        return render(request, '404.haml')
-
-    if request.method == 'POST':
-        form = DiscoveryContentCreateForm (request.POST, instance=discovery)
-        if form.is_valid():
-
-            form.save()
-
-            redirect_url = "/admin/client-admin/{}/courses/{}/learner_dashboard/discover/list".format(client_id, course_id)
-            return HttpResponseRedirect(redirect_url)
-
-    else:
-        form = DiscoveryContentCreateForm(instance=discovery)
-
-    data = {
-        'form': form,
-        'error': error,
-        'client_id': client_id,
-        'course_id': course_id,
-        'discovery_id': discovery_id,
-        'learner_dashboard': discovery.learner_dashboard.id,
-        }
-
-    return render(
-        request,
-        'admin/client-admin/learner_dashboard_discovery_edit.haml',
-        data
-    )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_delete(request, client_id, course_id, discovery_id):
@@ -3743,4 +3728,3 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
         return HttpResponse('200')
 
 
-                                     
