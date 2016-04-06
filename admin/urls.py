@@ -14,8 +14,8 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding$', views.client_admin_branding_settings, name='client_admin_branding_settings'),
     #LD DiscoverContent
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.client_admin_course_learner_dashboard_discover_list, name='client_admin_course_learner_dashboard_discover_list'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.client_admin_course_learner_dashboard_discover_create, name='client_admin_course_learner_dashboard_discover_create'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_edit, name='client_admin_course_learner_dashboard_discover_edit'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_delete, name='client_admin_course_learner_dashboard_discover_delete'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.client_admin_course_learner_dashboard_discover_reorder, name='client_admin_course_learner_dashboard_discover_reorder'),
     #LD DiscoverContent

@@ -1,10 +1,14 @@
-%section
-  %h1 Create Discovery Item
+%script{src: "/static/js/form_changed_check.js"}
+- if discovery_id
+  %section
+    %h1 Edit Discovery Item
+- else 
+  %section
+    %h1 Create Discovery Item
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-
-%form.admin-form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/create", method: "POST"}
+%form.admin-form{action: "#{url}", method: "POST"}
   - csrf_token
   .row
     .small-3.columns
@@ -28,5 +32,5 @@
   .error
     - if error
       = error
-  %input.button.radius.small{type: "submit", value: "Save"}
+  %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
 
