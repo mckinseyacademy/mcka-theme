@@ -9,9 +9,9 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/email_not_started$', views.client_admin_email_not_started, name='client_admin_email_not_started'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/download_course_report$', views.client_admin_download_course_report, name='download_course_report'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants$', views.client_admin_course_participants, name='client_admin_course_participants'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/edit$', views.client_admin_branding_settings_edit, name='client_admin_branding_settings_edit'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/reset$', views.client_admin_branding_settings_reset, name='client_admin_branding_settings_reset'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding$', views.client_admin_branding_settings, name='client_admin_branding_settings'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/create_edit$', views.client_admin_branding_settings_create_edit, name='client_admin_branding_settings_create_edit'),
     #LD DiscoverContent
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.client_admin_course_learner_dashboard_discover_list, name='client_admin_course_learner_dashboard_discover_list'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),

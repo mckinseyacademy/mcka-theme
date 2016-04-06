@@ -6,9 +6,12 @@
     .large-12.large.columns
       - block admin_detail
         %h1
-          %span= _("Edit Learner dashboard branding: ")
+          - if instance
+            %span= _("Edit Learner dashboard branding: ")
+          - else
+            %span= _("Create Learner dashboard branding: ")
     %hr
-    %form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/edit", method: "POST", enctype: "multipart/form-data"}
+    %form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/create_edit", method: "POST", enctype: "multipart/form-data"}
       - csrf_token
       .row
         .small-3.columns
@@ -52,4 +55,3 @@
         %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
         %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
           Cancel
-    
