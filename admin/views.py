@@ -3559,12 +3559,12 @@ def client_admin_branding_settings(request, client_id, course_id):
 
     if instance is None:
         instance = BrandingSettings(
-                background_image = settings.BACKGROUND_IMAGE,
-                logo_image = settings.LOGO_IMAGE,
-                navigation_colors = settings.NAVIGATION_COLORS,
-                text_colors = settings.TEXT_COLORS,
-                background_tiled = settings.BACKGROUND_TILED,
-            )
+            background_image = settings.BACKGROUND_IMAGE,
+            logo_image = settings.LOGO_IMAGE,
+            navigation_colors = settings.NAVIGATION_COLORS,
+            text_colors = settings.TEXT_COLORS,
+            background_tiled = settings.BACKGROUND_TILED,
+        )
 
     try:
     	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
@@ -3633,8 +3633,7 @@ def client_admin_course_learner_dashboard_discover_create(request, client_id, co
     try:
         learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
     except: 
-        #learner dashboard not found
-        return render(request, '403.haml')
+        return render(request, '404.haml')
 
     if request.method == 'POST':
         form = DiscoveryContentCreateForm (request.POST)
@@ -3744,3 +3743,4 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
         return HttpResponse('200')
 
 
+                                     
