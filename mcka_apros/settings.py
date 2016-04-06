@@ -425,6 +425,11 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.app_directories.Loader',
 )
 
+#File upload paths for Learner Dashboard
+LOGO = "static/image/learner_dashboard/branding/logos/"
+BACKGROUND = "static/image/learner_dashboard/branding/backgrounds/"
+TILE_BACKGROUND = "static/image/learner_dashboard/tile_backgrounds/"
+RESOURCES = "static/image/learner_dashboard/resources/"
 # Default settings for Learner Dashboard Client Branding
 BACKGROUND_IMAGE = None
 LOGO_IMAGE = None

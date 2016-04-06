@@ -399,8 +399,8 @@ class DashboardAdminQuickFilter(db_models.Model):
 
 class BrandingSettings(db_models.Model):
 
-    background_image = db_models.ImageField(upload_to="static/image/learner_dashboard/branding/backgrounds", blank=True)
-    logo_image = db_models.ImageField(upload_to="static/image/learner_dashboard/branding/logos/", blank=True)
+    background_image = db_models.ImageField(upload_to=settings.BACKGROUND, blank=True)
+    logo_image = db_models.ImageField(upload_to=settings.LOGO, blank=True)
     navigation_colors = db_models.CharField(max_length=20, blank=True)
     text_colors = db_models.CharField(max_length=20, blank=True)
     background_tiled = db_models.BooleanField(blank=True)
@@ -421,7 +421,7 @@ class LearnerDashboardTile(db_models.Model):
     description = db_models.CharField(blank=True, max_length=40)
     link = db_models.URLField()
     position = db_models.IntegerField(blank=False, default=100)
-    background_image = db_models.ImageField(upload_to="static/image/learner_dashboard/tile_backgrounds/", blank=True)
+    background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND, blank=True)
 
     TYPES = (
         (u'1', u'External link'),
@@ -452,7 +452,7 @@ class LearnerDashboardResource(db_models.Model):
     title = db_models.CharField(blank=True, max_length=20)
     description = db_models.CharField(blank=True, max_length=40)
     link = db_models.CharField(blank=True, max_length=500)
-    file = db_models.FileField(upload_to="static/image/learner_dashboard/resources/", blank=True)
+    file = db_models.FileField(upload_to=settings.RESOURCES, blank=True)
 
     learner_dashboard = db_models.ForeignKey(
         'LearnerDashboard',
