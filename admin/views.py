@@ -1028,7 +1028,7 @@ class course_details_api(APIView):
             len_of_all_users = 0
             userData = {'ids':[]}
             current_page = 0
-            if request.GET['include_slow_fields'] == 'true':
+            if request.GET.get('include_slow_fields', 'false') == 'true':
                 allCourseParticipantsUsers = user_api.get_filtered_users(request.GET)
                 users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
                 len_of_all_users = len(allCourseParticipantsUsers['results'])
@@ -1087,7 +1087,7 @@ class course_details_api(APIView):
                         number_of_groupworks += 1
                         test_groupwork.append(data)
             for course_participant in allCourseParticipantsUsers['results']:
-                if request.GET['include_slow_fields'] == 'true':  
+                if request.GET.get('include_slow_fields', 'false') == 'true':  
                     course_participant['progress'] = '{:03d}'.format(round_to_int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
                     user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
                     course_participant['groupworks'] = []
@@ -3214,10 +3214,12 @@ class participant_details_active_courses_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, user_id, format=None):
 
-        if request.GET['include_slow_fields'] == 'false':
+        include_slow_fields = request.GET.get('include_slow_fields', 'false')
+
+        if include_slow_fields == 'false':
             active_courses, course_history = get_user_courses_helper(user_id)
             return Response(active_courses)
-        elif request.GET['include_slow_fields'] == 'true':  
+        elif include_slow_fields == 'true':  
             fetch_courses =[]
             for course_id in request.GET['ids'].split(','):
                 user_course = {}

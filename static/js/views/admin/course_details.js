@@ -21,7 +21,6 @@
         collection: this.collection.fullCollection,
         onRowClick: function()
         {
-          console.log('clicked row');
           if (this.selectedRows.length > 0)
           {   
             if ($('#courseBulkActionsMainContainer').hasClass('disabled'))

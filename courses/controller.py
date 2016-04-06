@@ -294,11 +294,13 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
     Returns correct group and project information for the user for this course
     '''
     # Find the user_group(s) with which this user is associated
-    user_workgroups = user_api.get_user_workgroups(user_id, course.id)
+    
     if workgroup_id:
         workgroup = workgroup_api.get_workgroup(workgroup_id, workgroup_models.Workgroup)
         workgroup.project = project_api.get_project_url_by_id(workgroup.project)
         user_workgroups = [workgroup]
+    else:
+        user_workgroups = user_api.get_user_workgroups(user_id, course.id) 
 
     if len(user_workgroups) < 1:
         return None, None
@@ -313,7 +315,7 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
     gp_candidates = [proj for proj in course.group_projects if proj.id == the_user_project.content_id]
     if gp_candidates:
         group_project = gp_candidates[0]
-
+    print vars(vars(group_project)['_activities'][1])
     return project_group, group_project
 
 def get_group_project_for_workgroup_course(workgroup_id, course):
