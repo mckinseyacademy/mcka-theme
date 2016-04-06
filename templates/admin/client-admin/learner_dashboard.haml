@@ -22,7 +22,10 @@
                   headers: headers,
                   data: data,
                   type: 'POST',
-                  url: window.location.pathname
+                  url: window.location.pathname,
+                  success : function() {
+                      location.reload();
+                  }
               });
           });
       });

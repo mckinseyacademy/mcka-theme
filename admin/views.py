@@ -324,11 +324,11 @@ def client_admin_course(request, client_id, course_id):
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
-
+	
     try:
-    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except FeatureFlags.learner_dashboard.DoesNotExist:
-    	learner_dashboard_flag = False
+        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except: 
+        learner_dashboard_flag = False
 
     data = {
         'client_id': client_id,
@@ -374,10 +374,10 @@ def client_admin_course_participants(request, client_id, course_id):
     else:
         students = []
 
-	try:
-		learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-	except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+    try:
+        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except: 
+        learner_dashboard_flag = False
 
 	data = {
         'client_id': client_id,
@@ -568,6 +568,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 			'learner_dashboard_id': None,
 			'learner_dashboard_flag': True,
 		}
+
 	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
 @ajaxify_http_redirects
@@ -3566,8 +3567,8 @@ def client_admin_branding_settings(request, client_id, course_id):
 
     try:
         learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+    except: 
+        learner_dashboard_flag = False
 
     return render(request, 'admin/client-admin/course_branding_settings.haml', {
         'branding': instance,
@@ -3690,8 +3691,8 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
 
     try:
         learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+    except: 
+        learner_dashboard_flag = False
 
     return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
         'client_id': client_id,
