@@ -3637,35 +3637,34 @@ def client_admin_course_learner_dashboard_discover_create_edit(request, client_i
 
     if discovery_id:
         discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+
+        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
+            'client_id': client_id,
+            'course_id': course_id,
+            'discovery_id': discovery.id,
+            })
     else:
         discovery = None
+
+        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
+            'client_id': client_id,
+            'course_id': course_id,
+            })
 
     if request.method == 'POST':
         form = DiscoveryContentCreateForm (request.POST, instance=discovery)
         if form.is_valid():
             form.save()
 
-            url = reverse('client_admin_course_learner_dashboard_discover_list', kwargs={
+            url_list = reverse('client_admin_course_learner_dashboard_discover_list', kwargs={
                 'client_id': client_id,
                 'course_id': course_id,
                 })
 
-            return HttpResponseRedirect(url)
+            return HttpResponseRedirect(url_list)
 
     else:
-        form = DiscoveryContentCreateForm(instance=discovery)
-
-    if discovery:
-        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
-            'client_id': client_id,
-            'course_id': course_id,
-            'discovery_id': discovery.id,
-            })
-    else: 
-        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
-            'client_id': client_id,
-            'course_id': course_id,
-            })
+        form = DiscoveryContentCreateForm(instance=discovery)        
 
     data = {
         'url': url,
