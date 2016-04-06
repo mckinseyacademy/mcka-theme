@@ -3552,39 +3552,26 @@ def client_admin_branding_settings(request, client_id, course_id):
 
     try:
         instance = BrandingSettings.objects.get(client_id=client_id)
-        is_empty_instance = False
     except:
         instance = None
-        is_empty_instance = True
-
-    if instance is None:
-        instance = BrandingSettings(
-            background_image = settings.BACKGROUND_IMAGE,
-            logo_image = settings.LOGO_IMAGE,
-            navigation_colors = settings.NAVIGATION_COLORS,
-            text_colors = settings.TEXT_COLORS,
-            background_tiled = settings.BACKGROUND_TILED,
-        )
 
     try:
-    	learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
     except FeatureFlags.learner_dashboard.DoesNotExist:
-		learner_dashboard_flag = False
+        learner_dashboard_flag = False
 
     return render(request, 'admin/client-admin/course_branding_settings.haml', {
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'is_empty_instance': is_empty_instance,
         'learner_dashboard_flag': learner_dashboard_flag
         })
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-def client_admin_branding_settings_edit(request, client_id, course_id):
+def client_admin_branding_settings_create_edit(request, client_id, course_id):
 
     try:
         instance = BrandingSettings.objects.get(client_id=client_id)
-        
     except:
         instance = None
 
@@ -3604,8 +3591,9 @@ def client_admin_branding_settings_edit(request, client_id, course_id):
     else:
         form = BrandingSettingsForm(instance=instance)
 
-    return render(request, 'admin/client-admin/course_branding_settings_edit.haml', {
+    return render(request, 'admin/client-admin/course_branding_settings_create_edit.haml', {
         'form': form,
+        'instance': instance,
         'client_id': client_id,
         'course_id': course_id,
         })
