@@ -64,7 +64,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     }
     this.fetchSlowFieldsAjax(this);
   },
-  saveCurrentPageSlowState: function(idFieldName, slowAttributeName){
+  saveCurrentPageSlowState: function(){
     listOfIds = [];
     _this = this;
     this.fullCollection.each(function(model){       
@@ -115,7 +115,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     .fail(function(data) {
       console.log("Ajax failed to fetch data");
       console.log(data)
-    })
+    });
   },
   getSlowFetchedStatus: false,
   pageAndIdConnector: [],

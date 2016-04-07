@@ -60,7 +60,7 @@ from .controller import (
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
-    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions
+    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -996,23 +996,6 @@ class course_details_performance_api(APIView):
         ]
         return Response(course_stats)
 
-
-def GetCourseUsersRoles(course_id, permissions_filter_list):
-    course_roles_users = course_api.get_users_filtered_by_role(course_id)
-    user_roles_list = {'ids':[],'data':[]}
-    for course_role in course_roles_users:
-        roleData = vars(course_role)
-        if permissions_filter_list:
-            if roleData['role'] in permissions_filter_list:
-                user_roles_list['data'].append(roleData)
-                user_roles_list['ids'].append(str(roleData['id']))
-        else:
-            user_roles_list['data'].append(roleData)
-            user_roles_list['ids'].append(str(roleData['id']))
-    user_roles_list['ids'] = set(user_roles_list['ids'])
-    user_roles_list['ids'] = list(user_roles_list['ids'])
-    return user_roles_list
-
 class course_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, course_id=None, format=None):
@@ -1035,7 +1018,7 @@ class course_details_api(APIView):
                 allCourseParticipants = allCourseParticipantsUsers['results']
             else:
                 allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
-                list_of_user_roles = GetCourseUsersRoles(course_id, permissionsFilter)
+                list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
                 allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
                 for user_role_id in list_of_user_roles['ids']:          
                     userData['ids'].append(str(user_role_id))

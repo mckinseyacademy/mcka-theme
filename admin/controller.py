@@ -1209,3 +1209,19 @@ def _change_user_status(course_id, new_status, status_item):
         except ApiError as e:
             return {'status':'error', 'message':e.message}
     return {'status':'success'}
+
+def get_course_users_roles(course_id, permissions_filter_list):
+    course_roles_users = course_api.get_users_filtered_by_role(course_id)
+    user_roles_list = {'ids':[],'data':[]}
+    for course_role in course_roles_users:
+        roleData = vars(course_role)
+        if permissions_filter_list:
+            if roleData['role'] in permissions_filter_list:
+                user_roles_list['data'].append(roleData)
+                user_roles_list['ids'].append(str(roleData['id']))
+        else:
+            user_roles_list['data'].append(roleData)
+            user_roles_list['ids'].append(str(roleData['id']))
+    user_roles_list['ids'] = set(user_roles_list['ids'])
+    user_roles_list['ids'] = list(user_roles_list['ids'])
+    return user_roles_list
