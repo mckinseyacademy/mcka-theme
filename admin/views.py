@@ -60,7 +60,7 @@ from .controller import (
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
-    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles
+    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, get_user_courses_helper
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -76,7 +76,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from courses.user_courses import load_course_progress
-from django.utils import timezone
 import csv
 
 def ajaxify_http_redirects(func):
@@ -3244,75 +3243,6 @@ class participant_details_course_history_api(APIView):
                 user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
 
         return Response(course_history) 
-
-
-def get_user_courses_helper(user_id):
-
-    user_courses = []
-    allCourses = user_api.get_courses_from_user(user_id)
-    for course in allCourses:
-        user_course = {}
-        user_course['name'] = course['name']
-        user_course['id'] = course['id']
-        user_course['program'] = '-'
-        user_course['progress'] = "."
-        user_course['proficiency'] = "."
-        user_course['completed'] ='N/A'
-        user_course['grade'] ='N/A'
-        user_course['status'] = 'Active'
-        user_course['unenroll'] = 'Unenroll'
-        user_course['start'] = course['start']
-        if course['end'] is not None:
-            user_course['end'] = course['end']
-        else: 
-            user_course['end'] = '-'
-        user_courses.append(user_course)
-    user_roles = user_api.get_user_roles(user_id)
-    for role in user_roles:
-        if not any(item['id'] == vars(role)['course_id'] for item in user_courses):
-            course = course_api.get_course_details(vars(role)['course_id'])
-            user_course = {}
-            user_course['name'] = course['name']
-            user_course['id'] = course['id']
-            user_course['program'] = '-'
-            user_course['progress'] = "."
-            user_course['proficiency'] = "."
-            user_course['completed'] ='N/A'
-            user_course['grade'] ='N/A'
-            user_course['start'] = course['start']
-            if course['end'] is not None:
-                user_course['end'] = course['end']
-            else: 
-                user_course['end'] = '-'
-            if vars(role)['role'] == 'observer':
-                user_course['status'] = 'Observer'
-            if vars(role)['role'] == 'assistant':
-                user_course['status'] = 'TA'
-            user_course['unenroll'] = 'Unenroll'
-            user_courses.append(user_course)       
-        else:
-            user_course = (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id']).next()
-            if user_course['status'] != 'TA':
-                if vars(role)['role'] == 'observer':
-                    user_course['status'] = 'Observer'
-                if vars(role)['role'] == 'assistant':
-                    user_course['status'] = 'TA'
-
-    active_courses = []
-    course_history = []    
-    for user_course in user_courses:
-        if timezone.now() >= parsedate(user_course['start']):
-            if user_course['end'] == '-':
-                active_courses.append(user_course)
-            elif timezone.now() <= parsedate(user_course['end']):
-                active_courses.append(user_course)
-            else:
-                course_history.append(user_course)
-
-    return active_courses, course_history
-
-
-
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
