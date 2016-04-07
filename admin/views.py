@@ -350,7 +350,8 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
         request,
@@ -397,7 +398,8 @@ def client_admin_course_participants(request, client_id, course_id):
         'target_course': course,
         'total_participants': len(students),
         'students': students,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
         request,
@@ -525,7 +527,8 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
         request,
@@ -572,7 +575,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 			'learner_dashboard_flag': True,
 			'title': instance.title,
 			'description': instance.description,
-			'learner_dashboard_tiles': learner_dashboard_tiles
+			'learner_dashboard_tiles': learner_dashboard_tiles,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
 		}
 	else:
 		data = {
@@ -580,6 +584,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 			'course_id': course_id,
 			'learner_dashboard_id': None,
 			'learner_dashboard_flag': True,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
 		}
 
 	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
@@ -3589,7 +3594,8 @@ def client_admin_branding_settings(request, client_id, course_id):
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
 @check_learner_dashboard_flag
@@ -3717,7 +3723,8 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
         'client_id': client_id,
         'course_id': course_id,
         'discovery': discovery,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
 @check_learner_dashboard_flag
