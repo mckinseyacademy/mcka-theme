@@ -410,7 +410,7 @@ class BrandingSettings(db_models.Model):
 class LearnerDashboard(db_models.Model):
 
     title = db_models.CharField(blank=True, max_length=80)
-    description = db_models.CharField(blank=True, max_length=500)
+    description = db_models.CharField(blank=True, max_length=5000)
 
     client_id = db_models.IntegerField(blank=False, unique=True)
     course_id = db_models.CharField(blank=False, max_length=500)
