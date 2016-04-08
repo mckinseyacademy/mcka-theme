@@ -3,6 +3,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		this.collection.fetch({success: function() {
       cloneHeader('#participantsListViewGridBlock');
     }});
+    massParticipantsInit();
 	},
 	render: function(){
 		participantsListViewGrid = new bbGrid.View({

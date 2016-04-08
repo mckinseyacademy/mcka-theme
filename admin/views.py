@@ -61,7 +61,7 @@ from .controller import (
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
-    get_user_courses_helper, get_course_progress
+    get_user_courses_helper, get_course_progress, import_participants_threaded
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -1918,6 +1918,86 @@ def download_student_list(request, client_id):
 
     return response
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def import_participants(request):
+
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = MassStudentListForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+            reg_status = UserRegistrationBatch.create();
+            import_participants_threaded(
+                request.FILES['student_list'],
+                request, 
+                reg_status
+            )
+            return HttpResponse(
+                json.dumps({"task_key": _(reg_status.task_key)}),
+                content_type='text/plain'
+            )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def import_participants_check(request, task_key):
+
+    if request.method == 'GET':
+        reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
+        UserRegistrationBatch.clean_old()
+        if len(reg_status) > 0:
+            reg_status = reg_status[0]
+            if reg_status.attempted == (reg_status.failed + reg_status.succeded):
+                errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
+                errors_as_json = serializers.serialize('json', errors)
+                status = _format_upload_results(reg_status)
+                for error in errors:
+                    error.delete()
+                reg_status.delete()
+                return HttpResponse(
+                    '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                    content_type='application/json'
+                )
+            else:
+                return HttpResponse(
+                            json.dumps({'done': 'progress',
+                                        'attempted': reg_status.attempted,
+                                        'failed': reg_status.failed,
+                                        'succeded': reg_status.succeded}),
+                            content_type='application/json'
+                        )
+        return HttpResponse(
+                json.dumps({'done': 'failed',
+                            'attempted': '0',
+                            'failed': '0',
+                            'succeded': '0'}),
+                content_type='application/json'
+            )
+
+    
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def download_activation_links_by_task_key(request):
+
+    task_key = request.GET.get('task_key')
+
+    file_name = "download-activation-links-output"
+
+    uri_head = request.build_absolute_uri('/accounts/activate')
+
+    activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Email', 'First name', 'Last name', 'Company', 'Activation Link'])
+    for record in activation_records:
+        user = vars(record)
+        activation_full = "{}/{}".format(uri_head, user['activation_key'])
+        writer.writerow([user['email'], user['first_name'], user['last_name'], user['company_id'], activation_full])
+
+    return response
+    
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @client_admin_access
 def mass_student_enroll(request, client_id):
@@ -2973,7 +3053,8 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def participants_list(request):
-    return render( request, 'admin/participants/participants_list.haml')
+    form = MassStudentListForm()
+    return render( request, 'admin/participants/participants_list.haml', {"form": form})
 
 
 class participants_list_api(APIView):
@@ -3019,6 +3100,7 @@ class participants_list_api(APIView):
             return Response(response)
 
         return Response(allParticipants)
+
 
 
 class participant_details_api(APIView):
