@@ -379,7 +379,7 @@ def client_admin_course_participants(request, client_id, course_id):
     except: 
         learner_dashboard_flag = False
 
-	data = {
+    data = {
         'client_id': client_id,
         'course_id': course_id,
         'target_course': course,
