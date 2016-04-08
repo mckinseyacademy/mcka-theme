@@ -2001,18 +2001,66 @@ def import_participants(request):
                 json.dumps({"task_key": _(reg_status.task_key)}),
                 content_type='text/plain'
             )
-    elif request.method == 'GET':
-        batch_status = BatchOperationStatus.objects.filter(task_key=data['task_key'])      
-        BatchOperationStatus.clean_old()
-        if len(batch_status) > 0:
-            batch_status = batch_status[0]
-            error_list = []
-            if batch_status.failed > 0:
-                batch_errors = BatchOperationErrors.objects.filter(task_key=data['task_key'])
-                for b_error in batch_errors:
-                    error_list.append({'error': b_error.error})
-            return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
-        return Response({'status':'error', 'message': 'No such task!'})
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def import_participants_check(request, task_key):
+
+    if request.method == 'GET':
+        reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
+        UserRegistrationBatch.clean_old()
+        if len(reg_status) > 0:
+            reg_status = reg_status[0]
+            if reg_status.attempted == (reg_status.failed + reg_status.succeded):
+                errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
+                errors_as_json = serializers.serialize('json', errors)
+                status = _format_upload_results(reg_status)
+                for error in errors:
+                    error.delete()
+                reg_status.delete()
+                return HttpResponse(
+                    '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                    content_type='application/json'
+                )
+            else:
+                return HttpResponse(
+                            json.dumps({'done': 'progress',
+                                        'attempted': reg_status.attempted,
+                                        'failed': reg_status.failed,
+                                        'succeded': reg_status.succeded}),
+                            content_type='application/json'
+                        )
+        return HttpResponse(
+                json.dumps({'done': 'failed',
+                            'attempted': '0',
+                            'failed': '0',
+                            'succeded': '0'}),
+                content_type='application/json'
+            )
+
+    
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def download_activation_links_by_task_key(request):
+
+    task_key = request.GET.get('task_key')
+
+    file_name = "download-activation-links-output"
+
+    uri_head = request.build_absolute_uri('/accounts/activate')
+
+    activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Email', 'First name', 'Last name', 'Company', 'Activation Link'])
+    for record in activation_records:
+        user = vars(record)
+        activation_full = "{}/{}".format(uri_head, user['activation_key'])
+        writer.writerow([user['email'], user['first_name'], user['last_name'], user['company_id'], activation_full])
+
+    return response
     
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

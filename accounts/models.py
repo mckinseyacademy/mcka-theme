@@ -109,6 +109,11 @@ class RemoteUser(AbstractUser):
 class UserActivation(db_models.Model):
     user_id = db_models.IntegerField(unique=True)
     activation_key = db_models.CharField(max_length=40, unique=True, db_index=True)
+    task_key = db_models.CharField(max_length=40, db_index=True, default='')
+    first_name = db_models.CharField(max_length=40, default='N/A')
+    last_name = db_models.CharField(max_length=40, default='N/A')
+    email = db_models.EmailField(default='N/A')
+    company_id = db_models.IntegerField(default=0)
 
     @staticmethod
     def generate_activation_key(email):
@@ -130,6 +135,18 @@ class UserActivation(db_models.Model):
             return activation_records[0]
 
         return None
+
+    @classmethod
+    def user_activation_by_task_key(cls, user, task_key, company_id):
+        activation_record = cls.objects.create(user_id=user.id, activation_key=cls.generate_activation_key(user.email), task_key=task_key, 
+            first_name=user.first_name, last_name=user.last_name, email=user.email, company_id=company_id)
+        activation_record.save()
+        return activation_record
+
+    @classmethod
+    def get_activations_by_task_key(cls, task_key):
+        activation_records = cls.objects.filter(task_key=task_key)
+        return activation_records
 
 
 class UserPasswordReset(db_models.Model):

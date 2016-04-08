@@ -38,12 +38,35 @@
       .bottomPadding
         %p Optional explanatory text. Lorem ipsum dolor sit amet, consectetur adipis. 
           %a.modalLinks{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
-      %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :id => 'participantsCsvForm'}
-        - csrf_token
-        = form
+      .admin-form
 
-      %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
-      
+        %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
+
+        %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data"}
+          - csrf_token
+          = form
+
+          .error
+            - if error
+              = error
+
+          .upload_stats
+          #enroll-error-list
+          
+          .button-wrapper.topPadding
+            %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: ''}
+            %a.modalLinks.leftPadding.close-reveal-modal.close-modal-inline{:href => '#'} Cancel
+
+    #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %h2.upload_message
+      %hr
+
+      %p You can download the activation links now, or from the participant profiles at any time.
+      %br
+      %a.download_activation{:href => '/admin/api/participants/import_participants/download_activation_links/?task_key=', :target => '_self'}> Download Activation Links
+
       .button-wrapper.topPadding
-        %input.button.radius.small.disabled{:type => "submit", :value => "Add Participants", :id => 'participantsCsvSubmitButton'}
-        %a.modalLinks.leftPadding.close-reveal-modal.close-modal-inline{:href => '#'} Cancel
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"} 
+          I'm Done

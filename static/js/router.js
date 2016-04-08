@@ -20,7 +20,8 @@ var Router = Backbone.Router.extend({
     'admin/participants': 'participants_list',
     'admin/participants/*id': 'initialize_participant_details',
     'admin/courses/': 'admin_courses',
-    'admin/courses/*course_id/': 'admin_course_details_participants'
+    'admin/courses/*course_id/': 'admin_course_details_participants',
+    'admin/clients/*client_id/mass_student_enroll': 'mass_student_enroll'
   },
 
   home: function() {
@@ -180,6 +181,9 @@ var Router = Backbone.Router.extend({
     var bulkActions = new Apros.views.CourseDetailsBulkActions({'courseId':courseId,'courses_details_view':courses_details_view, 'courseDetails':courseDetails});
     bulkActions.render(); 
   },
+  mass_student_enroll: function(client_id){
+    massParticipantsInit();
+  }
 });
 Apros.Router = new Router;
 Apros.Router.linked_views = {

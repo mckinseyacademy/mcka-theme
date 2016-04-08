@@ -35,6 +35,8 @@ import threading
 import Queue
 import atexit
 
+import csv
+
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
 MINIMAL_COURSE_DEPTH = 5
 # need to load one level more deep to get Group Project V2 stages as their close dates are needed for report
@@ -1212,13 +1214,13 @@ def _change_user_status(course_id, new_status, status_item):
 
 
 def import_participants_threaded(student_list, request, req_status):
-    # _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-    # _thread.daemon = True # so we can exit
-    # _thread.start()
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
     process_import_participants_list(student_list, request, req_status)  
 
 
-# @postpone
+@postpone
 def process_import_participants_list(file_stream, request, reg_status=None):
     # 1) Build user list
     user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_participants_csv)
@@ -1295,7 +1297,7 @@ def _enroll_participants_from_csv(students, request, reg_status):
             if user:
                 try:
                     if not user.is_active:
-                        activation_record = UserActivation.user_activation(user)
+                        activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
                     client.add_user(user.id)
                 except ApiError as e:
                     failure = {
