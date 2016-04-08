@@ -795,13 +795,10 @@ def course_article(request, course_id):
 
 @login_required
 @check_user_course_access
-def course_learner_dashboard(request, course_id, learner_dashboard_id=None):
+def course_learner_dashboard(request, course_id):
 
-    if not learner_dashboard_id:
-    	organization = user_api.get_user_organizations(request.user.id)[0]
-    	learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
-    else:
-        learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
+	organization = user_api.get_user_organizations(request.user.id)[0]
+	learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
 	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
 	data ={
