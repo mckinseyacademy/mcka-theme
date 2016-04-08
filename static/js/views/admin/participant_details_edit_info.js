@@ -1,7 +1,8 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
       var _this=this;
-      $('#country_edit').countrySelect();   
+      $('#country_edit').countrySelect();
+      _this.setLocationTooltip();   
       _this.initialize_user_organizations(options.url);
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
@@ -24,7 +25,7 @@
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').hide();
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').show();
-        
+        _this.setLocationTooltip(); 
         _this.update_edit_field_data(_this);
       });
       $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').off('focus').on("focus", function()
@@ -60,6 +61,7 @@
             cache: false,
             success: function (data, status) {
                 if (data['status'] == "ok") {
+                  _this.setLocationTooltip(); 
                   _this.update_participant_field_data();
                   $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
@@ -191,6 +193,35 @@
         console.log("Ajax failed to fetch data");
         console.log(data)
       });
+    },
+    setLocationTooltip: function()
+    {
+      var details = $('#participantDetailsWrapper').find('.participantDetailsWrapper');
+      var locationText = details.find('.participantLocationValue').text().trim();
+      if ((locationText.indexOf(',') > -1) || (locationText.length == 2))
+      {
+        var tooltipText = '';
+        var name = '';
+        if (locationText.length == 2)
+        {
+          name = locationText;
+        }
+        else
+        {
+          tooltipText = locationText.split(',')[0].trim();
+          name = locationText.split(',')[1].trim().toLowerCase();
+        }
+        var selectableCountries = $.fn['countrySelect'].getCountryData();
+        for (var i = 0; i<selectableCountries.length;i++)
+        {
+          if (selectableCountries[i].iso2 == name)
+          {
+            tooltipText += ', ' + selectableCountries[i].name;
+            break
+          }  
+        }
+        $('#participantDetailsWrapper').find('.participantDetailsWrapper .participantLocationValue').attr('title', tooltipText);
+      }
     },
     check_if_country_exist: function(name)
     {
