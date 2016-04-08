@@ -150,7 +150,7 @@ def _get_redirect_to_current_course(request):
                 organization = user_api.get_user_organizations(request.user.id)[0]
                 try:
                     learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
-                    return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id, learner_dashboard_id=learner_dashboard.id))
+                    return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
                 except (LearnerDashboard.DoesNotExist):
                     return reverse('course_landing_page', kwargs=dict(course_id=course_id))
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
