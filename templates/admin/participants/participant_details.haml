@@ -188,9 +188,13 @@
 
     .participantDetailsActiveCourses.contentNavigationContainer{:style => "display: none"}
       #participantDetailsActiveCoursesViewGrid.large-12.columns
+      #activeCoursesExportStatsButton
+        %a.button.radius.small{:href => '/admin/api/participants/#{id}/active_courses/export_stats', :download => 'active_courses_stats'}> Export Stats
 
     .participantDetailsCourseHistory.contentNavigationContainer{:style => "display: none"}
       #participantDetailsCourseHistoryViewGrid.large-12.columns
+      #courseHistoryExportStatsButton
+        %a.button.radius.small{:href => '/admin/api/participants/#{id}/course_history/export_stats', :target => '_self'}> Export Stats
 
   #participantDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
     %h2.modalTitle

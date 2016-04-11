@@ -3175,6 +3175,7 @@ class participant_details_api(APIView):
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
+
 class manage_user_company_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, user_id):
@@ -3194,6 +3195,7 @@ class manage_user_company_api(APIView):
             organizationData = vars(organization)
             allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
         return Response({'status':'ok', 'user_organizations': userOrganizationsList, 'all_organizations':allOrganizationsList})
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def validate_participant_email(request):
@@ -3256,6 +3258,28 @@ class participant_details_active_courses_api(APIView):
         return Response({})
 
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def download_active_courses_stats(request, user_id):
+
+    active_courses, course_history = get_user_courses_helper(user_id)
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="active_courses_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Course', 'Course ID', 'Program', 'Progress', 'Proficiency', 'Status'])
+    for course in active_courses:
+        course_data = None
+        course_data = load_course(course['id'], request=request)
+        load_course_progress(course_data, user_id)
+        course['progress'] = '{:d}%'.format(int(course_data.user_progress))
+        proficiency = course_api.get_course_metrics_grades(course['id'], user_id=user_id, grade_object_type=Proficiency)
+        course['proficiency'] = '{:d}%'.format(round_to_int(proficiency.user_grade_value * 100))
+        writer.writerow([course['name'], course['id'], course['program'], course['progress'], course['proficiency'], course['status']])
+    
+    return response
+
+
 class participant_details_course_history_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -3281,6 +3305,37 @@ class participant_details_course_history_api(APIView):
                 user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
 
         return Response(course_history) 
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def download_course_history_stats(request, user_id):
+
+    active_courses, course_history = get_user_courses_helper(user_id)
+    user_grades = user_api.get_user_grades(user_id)
+    for grade in user_grades:
+        for user_course in course_history:
+            if vars(grade)['course_id'] == user_course['id']:
+                if vars(grade)['complete_status'] == 'true':
+                    user_course['completed'] ='Yes'
+                else:
+                    user_course['completed'] = 'No'
+                user_course['grade'] = round_to_int(vars(grade)['current_grade'] * 100)
+            else:
+                if user_course['status'] == 'Active':
+                    user_course['completed'] = 'No'
+                    user_course['grade'] = 0
+            user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="course_history_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Course', 'Course ID', 'Program', 'Completed', 'Grade', 'Status', 'End Date'])
+    for course in course_history:
+        writer.writerow([course['name'], course['id'], course['program'], course['completed'], course['grade'], course['status'], course['end']])
+    
+    return response
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
