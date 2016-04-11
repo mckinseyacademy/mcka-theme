@@ -63,10 +63,10 @@
   .admin-detail.row
     #contentModal.reveal-modal.small{'data-reveal': None}
     %section
-      %h1 Course Discovery List
+      %h1 Course Discover List
     %section
       %p
-        You can manage the course discovery content for this learner dashboard
+        You can manage the course discover content for this learner dashboard
     %br
     %div.submit-area
       %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
@@ -97,7 +97,7 @@
                 %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/delete/#{content.id}"}
                   %i{'style': "color:red", 'class': "fa fa-times"}
     -else
-      This learner dashboard has no discovery content!
+      This learner dashboard has no discover content!
 
     %a{id: "saveSort", class: "button radius small", style: "display:none"}
         Save list order

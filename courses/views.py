@@ -797,8 +797,13 @@ def course_article(request, course_id):
 @check_user_course_access
 def course_learner_dashboard(request, course_id):
 
-	organization = user_api.get_user_organizations(request.user.id)[0]
-	learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+    organization = user_api.get_user_organizations(request.user.id)[0]
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+    except:
+        return render(request, '404.haml')
+
 	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
 	data ={

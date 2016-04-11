@@ -79,6 +79,18 @@ from courses.user_courses import load_course_progress
 from django.utils import timezone
 import csv
 
+def check_learner_dashboard_flag(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        obj = func(*args, **kwargs)
+        request = args[0]
+        if settings.LEARNER_DASHBOARD_ENABLED is False:
+            return render(request, '403.haml')
+        else:
+            return obj
+
+    return wrapper
+
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -338,7 +350,8 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
         request,
@@ -385,7 +398,8 @@ def client_admin_course_participants(request, client_id, course_id):
         'target_course': course,
         'total_participants': len(students),
         'students': students,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
         request,
@@ -513,7 +527,8 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
         request,
@@ -521,6 +536,7 @@ def client_admin_course_analytics(request, client_id, course_id):
         data,
     )
 
+@check_learner_dashboard_flag
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
@@ -559,7 +575,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 			'learner_dashboard_flag': True,
 			'title': instance.title,
 			'description': instance.description,
-			'learner_dashboard_tiles': learner_dashboard_tiles
+			'learner_dashboard_tiles': learner_dashboard_tiles,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
 		}
 	else:
 		data = {
@@ -567,10 +584,12 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 			'course_id': course_id,
 			'learner_dashboard_id': None,
 			'learner_dashboard_flag': True,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
 		}
 
 	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
+@check_learner_dashboard_flag
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
@@ -3557,6 +3576,7 @@ def generate_assignments(request, project_id, activity_id):
     response.status_code = status_code
     return response
 
+@check_learner_dashboard_flag
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_branding_settings(request, client_id, course_id):
 
@@ -3574,9 +3594,11 @@ def client_admin_branding_settings(request, client_id, course_id):
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
+@check_learner_dashboard_flag
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_branding_settings_create_edit(request, client_id, course_id):
 
@@ -3608,6 +3630,7 @@ def client_admin_branding_settings_create_edit(request, client_id, course_id):
         'course_id': course_id,
         })
 
+@check_learner_dashboard_flag
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_branding_settings_reset(request, client_id, course_id):
 
@@ -3625,6 +3648,7 @@ def client_admin_branding_settings_reset(request, client_id, course_id):
 
     return HttpResponseRedirect(url)
 
+@check_learner_dashboard_flag
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_create_edit(request, client_id, course_id, discovery_id=None):
@@ -3683,6 +3707,7 @@ def client_admin_course_learner_dashboard_discover_create_edit(request, client_i
         data
     )
 
+@check_learner_dashboard_flag
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_list(request, client_id, course_id):
 
@@ -3698,9 +3723,11 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
         'client_id': client_id,
         'course_id': course_id,
         'discovery': discovery,
-        'learner_dashboard_flag': learner_dashboard_flag
+        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
+@check_learner_dashboard_flag
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_course_learner_dashboard_discover_delete(request, client_id, course_id, discovery_id):
 
@@ -3718,6 +3745,7 @@ def client_admin_course_learner_dashboard_discover_delete(request, client_id, co
 
     return HttpResponseRedirect(url)
 
+@check_learner_dashboard_flag
 def client_admin_course_learner_dashboard_discover_reorder(request, course_id, client_id):
 
     if request.method == 'POST':
