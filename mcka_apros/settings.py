@@ -425,7 +425,7 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.app_directories.Loader',
 )
 
-LEARNER_DASHBOARD_ENABLED = False
+LEARNER_DASHBOARD_ENABLED = True
 
 #File upload paths for Learner Dashboard
 LOGO = "static/image/learner_dashboard/branding/logos/"

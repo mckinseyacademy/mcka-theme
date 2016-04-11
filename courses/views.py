@@ -804,13 +804,13 @@ def course_learner_dashboard(request, course_id):
     except:
         return render(request, '404.haml')
 
-	learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
-	data ={
-		'learner_dashboard': learner_dashboard,
-		'learner_dashboard_tiles': learner_dashboard_tiles
-	}
-	return render(request, 'courses/course_learner_dashboard.haml', data)
+    data ={
+        'learner_dashboard': learner_dashboard,
+        'learner_dashboard_tiles': learner_dashboard_tiles
+    }
+    return render(request, 'courses/course_learner_dashboard.haml', data)
 
 @require_POST
 @login_required
