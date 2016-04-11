@@ -81,7 +81,7 @@
         .large-10.large-offset-2.columns
           %input#saveLearnerDashboard.button.radius.small.left.bottom-buttons{type: 'button', value: 'Save'}
           - if learner_dashboard_id
-            %a.button.radius.small.left.bottom-buttons{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discovery Content
+            %a.button.radius.small.left.bottom-buttons{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
             %a.button.radius.small.left.bottom-buttons{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} Add Tile
 
 - block js_snippets
