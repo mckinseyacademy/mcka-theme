@@ -4,8 +4,32 @@
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
   %script
       $(function() {
-          if ('{{learner_dashboard_id}}' != 'None')
+          if ('{{learner_dashboard_id}}' != 'None') {
               $('#sortable').sortable();
+
+              var isDragging;
+              var wasDragging;
+
+              $('#sortable').mousedown(function() {
+                  isDragging = false;
+              }).mousemove(function() {
+                  isDragging = true;
+              }).mouseup(function() {
+                  wasDragging = isDragging;
+                  isDragging = false;
+                  if (wasDragging) {
+                      $('#saveLearnerDashboard').css("display", "inline");
+                }
+              });
+          }
+
+          $('#title').on('input', function() { 
+              $('#saveLearnerDashboard').css("display", "inline");
+          });
+
+          $('#description').on('input', function() { 
+              $('#saveLearnerDashboard').css("display", "inline");
+          });
 
           $('#saveLearnerDashboard').click(function(){
               var headers = {
@@ -59,12 +83,12 @@
         .large-2.columns
           %label.inline Title
         .large-10.columns
-          %input{:type => 'text', :value => '#{title}', :name => 'title', :maxlength => '80'}
+          %input#title{:type => 'text', :value => '#{title}', :name => 'title', :maxlength => '80'}
       .row
         .large-2.columns
           %label.inline Description
         .large-10.columns
-          %textarea{:value => '#{description}', :name => 'description', :maxlength => '500', :rows => 7}= description
+          %textarea#description{:value => '#{description}', :name => 'description', :maxlength => '5000', :rows => 7}= description
       - if learner_dashboard_id
         .row
           .large-2.columns
@@ -76,7 +100,7 @@
                   %h4= tile.title
                     %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
                     %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
-                      %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+                      %i.fa.fa-pencil-square-o{'style': "color:green"}
       .row
         .large-10.large-offset-2.columns
           %input#saveLearnerDashboard.button.radius.small.left.bottom-buttons{type: 'button', value: 'Save'}
