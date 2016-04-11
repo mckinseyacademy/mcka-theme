@@ -32,6 +32,66 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         }
       });
       var statusUpdaterIntervalId = null;
+      $('#courseBulkActionsMainContainer').on('click','.bulkUnenrollFromCourse',function()
+      {
+        if ($(this).hasClass('disabled'))
+          return;
+        var selectedRowsIdsLen = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
+        $('#courseDetailsMainModal').find('.courseModalTitle').text('Unenroll Participants');
+        $('#courseDetailsMainModal').find('.courseModalStatus').text('Selected: '+selectedRowsIdsLen+', Successful: 0, Failed: 0');
+        $('#courseDetailsMainModal').find('.courseModalDescription').text('Unenroll all selected participants from this course?');
+        $('#courseDetailsMainModal').find('.courseModalContent').empty();
+        $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges').off().on('click', function()
+        {
+          if (statusUpdaterIntervalId !== null)
+          {
+            $('#courseDetailsMainModal .courseModalStatus').parent().find('.loadingIcon').addClass('hidden');
+            clearInterval(statusUpdaterIntervalId);
+            statusUpdaterIntervalId = null;
+          }
+          $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
+        });
+        if(_this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length === 0) {
+          alert("You need to select at least one participant to be able to apply bulk actions.")
+        }
+        else {
+          var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
+          saveButton.text('Unenroll');
+          saveButton.off().on('click', function()
+          {
+            var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
+            var dictionaryToSend = {type:'unenroll_participants', list_of_items:[]};
+            for (selectedRowsIndex in selectedRowsIds)
+            {
+              var id = selectedRowsIds[selectedRowsIndex];
+              dictionaryToSend.list_of_items.push(id);
+            }
+            var url = ApiUrls.course_details+'/'+_this.courseId;
+            var options = {
+              url: url,
+              data: JSON.stringify(dictionaryToSend),
+              processData: false,
+              type: "POST",
+              dataType: "json"
+            };
+
+            options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+            $.ajax(options)
+            .done(function(data) {
+              console.log(data);
+              if (data['status'] == 'ok')
+              {
+                statusUpdaterIntervalId = _this.courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id']);
+              }
+              })
+            .fail(function(data) {
+              console.log("Ajax failed to fetch data");
+              console.log(data);
+              })
+          });
+          $('#courseDetailsMainModal').foundation('reveal', 'open');
+        }
+      });
       $('#courseBulkActionsMainContainer').on('click','.bulkChangeStatus',function()
       {
         if ($(this).hasClass('disabled'))
@@ -59,7 +119,9 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           alert("You need to select at least one participant to be able to apply bulk actions.")
         }
         else {
-          $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges').off().on('click', function()
+          var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
+          saveButton.text('Save Changes');
+          saveButton.off().on('click', function()
           {
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
             var selectedVal = "";

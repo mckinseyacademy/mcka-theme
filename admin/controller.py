@@ -14,7 +14,7 @@ from django.conf import settings
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from admin.models import Program
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, organization_api, project_api, user_models
+from api_client import user_api, group_api, course_api, organization_api, project_api, user_models, workgroup_api
 from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
@@ -1197,8 +1197,34 @@ def course_bulk_action(course_id, data, batch_status):
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
-                    batch_status.save()      
-
+                    batch_status.save()
+    elif (data['type'] == 'unenroll_participants'):
+        if batch_status is not None:
+            batch_status.attempted = len(data['list_of_items'])
+            batch_status.save()
+        for status_item in data['list_of_items']:
+            status = _unenroll_participant(course_id, status_item)
+            if (status['status']=='error'):
+                print status
+                if batch_status is not None:
+                    batch_status.failed = batch_status.failed + 1
+                    batch_status.save()    
+                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+            elif (status['status']=='success'):
+                if batch_status is not None:
+                    batch_status.succeded = batch_status.succeded + 1
+                    batch_status.save()          
+def _unenroll_participant(course_id, user_id):
+    try:
+        permissions = Permissions(user_id)
+        permissions.remove_all_course_roles(course_id)
+        user_groups = user_api.get_user_workgroups(user_id,course_id)
+        for group in user_groups:
+            workgroup_api.remove_user_from_workgroup(vars(group)['id'], user_id)
+        user_api.unenroll_user_from_course(user_id, course_id)
+    except ApiError as e:
+        return {'status':'error', 'message':e.message}
+    return {'status':'success'}
 def _change_user_status(course_id, new_status, status_item):
     permissonsMap = {
         'TA': USER_ROLES.TA,
