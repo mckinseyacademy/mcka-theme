@@ -12,8 +12,10 @@ textarea{
 	margin: 0; 
 	padding: 0;
 	width: 600px;
-	height: 450px;
+	height: 455px;
 	overflow: auto;
+	background: white;
+    border: 1px solid #ccc;
 	li { 
 		margin: 0px 10px 10px 0; 
 		padding: 0px 5px; 
@@ -23,6 +25,10 @@ textarea{
 		font-size: 4em; 
 		text-align: center; 
 	}
+}
+
+#saveLearnerDashboard, #saveTile{
+	display:none;
 }
 
 .bottom-buttons{

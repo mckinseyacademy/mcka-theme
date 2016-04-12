@@ -9,19 +9,20 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/email_not_started$', views.client_admin_email_not_started, name='client_admin_email_not_started'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/download_course_report$', views.client_admin_download_course_report, name='download_course_report'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants$', views.client_admin_course_participants, name='client_admin_course_participants'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/edit$', views.client_admin_branding_settings_edit, name='client_admin_branding_settings_edit'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/reset$', views.client_admin_branding_settings_reset, name='client_admin_branding_settings_reset'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding$', views.client_admin_branding_settings, name='client_admin_branding_settings'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard$', views.client_admin_course_learner_dashboard, name='client_admin_course_learner_dashboard'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.client_admin_course_learner_dashboard_tile, name='client_admin_course_learner_dashboard_tile'),    
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/delete_tile/(?P<tile_id>.*)$', views.client_admin_course_learner_dashboard_tile_delete, name='client_admin_course_learner_dashboard_tile_delete'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/create_edit$', views.client_admin_branding_settings_create_edit, name='client_admin_branding_settings_create_edit'),
     #LD DiscoverContent
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.client_admin_course_learner_dashboard_discover_list, name='client_admin_course_learner_dashboard_discover_list'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.client_admin_course_learner_dashboard_discover_create, name='client_admin_course_learner_dashboard_discover_create'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_edit, name='client_admin_course_learner_dashboard_discover_edit'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_delete, name='client_admin_course_learner_dashboard_discover_delete'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.client_admin_course_learner_dashboard_discover_reorder, name='client_admin_course_learner_dashboard_discover_reorder'),
     #LD DiscoverContent
+    #Learner Dashboard, Tile 
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.client_admin_course_learner_dashboard_tile, name='client_admin_course_learner_dashboard_tile'),    
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard$', views.client_admin_course_learner_dashboard, name='client_admin_course_learner_dashboard'),
+    #Learner Dashboard, Tile 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/participant$', views.client_admin_course_analytics_participants, name='client_admin_course_analytics_participants'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/progress$', views.client_admin_course_analytics_progress, name='client_admin_course_analytics_progress'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics$', views.client_admin_course_analytics, name='client_admin_course_analytics'),

@@ -4,28 +4,69 @@
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
   %script
       $(function() {
-          var csrftoken = $.cookie('apros_csrftoken');
-          var url = window.location.pathname + "/reorder";
-          $('#sortable').sortable();
+          if ('{{learner_dashboard_id}}' != 'None') {
+              $('#sortable').sortable();
+
+              var isDragging;
+              var wasDragging;
+
+              $('#sortable').mousedown(function() {
+                  isDragging = false;
+              }).mousemove(function() {
+                  isDragging = true;
+              }).mouseup(function() {
+                  wasDragging = isDragging;
+                  isDragging = false;
+                  if (wasDragging) {
+                      $('#saveLearnerDashboard').css("display", "inline");
+                }
+              });
+          }
+
+          $('#title').on('input', function() { 
+              $('#saveLearnerDashboard').css("display", "inline");
+          });
+
+          $('#description').on('input', function() { 
+              $('#saveLearnerDashboard').css("display", "inline");
+          });
 
           $('#saveLearnerDashboard').click(function(){
+              var headers = {
+                  'X-CSRFToken': $.cookie('apros_csrftoken')
+              }
               var data = {
                   title: $("input[name=title]").val(),
-                  description: $("textarea[name=description]").val(),
-                  positions: $('#sortable').sortable('toArray'),
-                  csrfmiddlewaretoken: csrftoken
+                  description: $("textarea[name=description]").val()
               }
+              if ('{{learner_dashboard_id}}' != 'None')
+                data.positions = $('#sortable').sortable('toArray');
+              
               $.ajax({
+                  headers: headers,
                   data: data,
                   type: 'POST',
-                  url: window.location.pathname
+                  url: window.location.pathname,
+                  success : function() {
+                      location.reload();
+                  }
               });
           });
-
-          $('.confirm').click(function() {
-              return window.confirm("Are you sure?");
-          });
       });
+
+      function deleteTile(tileId, learnerDashboardId){
+          if (window.confirm("Are you sure?")) {
+              var url = window.location.pathname + '/' + learnerDashboardId + "/tile/" + tileId;
+              $.ajax({
+                  headers: {
+                      'X-CSRFToken': $.cookie('apros_csrftoken')
+                  },
+                  type: 'DELETE',
+                  url: url
+              });
+              $('#' + tileId).remove();
+          }
+      }
 
   #tileModal.reveal-modal.small{'data-reveal': None}
   .admin-detail.row
@@ -42,25 +83,32 @@
         .large-2.columns
           %label.inline Title
         .large-10.columns
-          %input{:type => 'text', :value => '#{title}', :name => 'title', :maxlength => '80'}
+          %input#title{:type => 'text', :value => '#{title}', :name => 'title', :maxlength => '80'}
       .row
         .large-2.columns
           %label.inline Description
         .large-10.columns
-          %textarea{:value => '#{description}', :name => 'description', :maxlength => '500', :rows => 7}= description
-      .row
-        .large-2.columns
-          %label.inline Tiles
-        .large-10.columns
-          %ul#sortable
-            -for tile in learner_dashboard_tiles
-              %li.ui-state-default{id: "#{tile.id}"}
-                %h4= tile.title
-                  %a.fa.fa-times.right.confirm{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/delete_tile/#{tile.id}"}
-                  %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
-                    %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+          %textarea#description{:value => '#{description}', :name => 'description', :maxlength => '5000', :rows => 7}= description
+      - if learner_dashboard_id
+        .row
+          .large-2.columns
+            %label.inline Tiles
+          .large-10.columns
+            %ul#sortable
+              -for tile in learner_dashboard_tiles
+                %li.ui-state-default{id: "#{tile.id}"}
+                  %h4= tile.title
+                    %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
+                    %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                      %i.fa.fa-pencil-square-o{'style': "color:green"}
       .row
         .large-10.large-offset-2.columns
           %input#saveLearnerDashboard.button.radius.small.left.bottom-buttons{type: 'button', value: 'Save'}
-          %a.button.radius.small.left.bottom-buttons{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discovery Content
-          %a.button.radius.small.left.bottom-buttons{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} Add Tile
+          - if learner_dashboard_id
+            %a.button.radius.small.left.bottom-buttons{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
+            %a.button.radius.small.left.bottom-buttons{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} Add Tile
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form('#tileModal', 'form');

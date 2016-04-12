@@ -6,14 +6,19 @@
     $(function() {
       var url = window.location.pathname + "/reorder";
       var csrftoken = $.cookie('apros_csrftoken');
+      var saveSort = $("#saveSort");
+      var savedSort = $("#savedSort");
+      var tbody = $('tbody');
+      var isDragging;
+      var wasDragging;
 
-      $('tbody').sortable({ 
+      tbody.sortable({ 
         cursorAt: { top: 110, left: 0 },
         axis: 'y'
       });
 
-      $("#saveSort").click( "sortupdate", function(event, ui) {
-        var positionList = $('tbody').sortable('toArray');
+      saveSort.click( "sortupdate", function(event, ui) {
+        var positionList = tbody.sortable('toArray');
         $.ajax({
           dataType: 'json',
           data: {
@@ -24,26 +29,26 @@
           url: url
         });
       });
-      $('tbody').disableSelection();
+      tbody.disableSelection();
 
-      $("tbody").mousedown(function() {
+      tbody.mousedown(function() {
         isDragging = false;
       }).mousemove(function() {
         isDragging = true;
       }).mouseup(function() {
-        var wasDragging = isDragging;
+        wasDragging = isDragging;
         isDragging = false;
         if (wasDragging) {
-          $("#saveSort").css("display", "inline");
-          $("#savedSort").css("display", "none");
+          saveSort.css("display", "inline");
+          savedSort.css("display", "none");
         }
       });
 
-      $('#saveSort').click(function() {
-        $("#saveSort").css("display", "none");
-        $("#savedSort").css("display", "inline");
+      saveSort.click(function() {
+        saveSort.css("display", "none");
+        savedSort.css("display", "inline");
         setTimeout(function(){
-          $("#savedSort").fadeOut("slow");
+          savedSort.fadeOut("slow");
         },1000)
       });
 
@@ -58,10 +63,10 @@
   .admin-detail.row
     #contentModal.reveal-modal.small{'data-reveal': None}
     %section
-      %h1 Course Discovery List
+      %h1 Course Discover List
     %section
       %p
-        You can manage the course discovery content for this learner dashboard
+        You can manage the course discover content for this learner dashboard
     %br
     %div.submit-area
       %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
@@ -92,7 +97,7 @@
                 %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/delete/#{content.id}"}
                   %i{'style': "color:red", 'class': "fa fa-times"}
     -else
-      This learner dashboard has no discovery content!
+      This learner dashboard has no discover content!
 
     %a{id: "saveSort", class: "button radius small", style: "display:none"}
         Save list order

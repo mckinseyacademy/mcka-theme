@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from admin.controller import load_course
-from admin.models import WorkGroup
+from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
@@ -796,11 +796,30 @@ def course_article(request, course_id):
 @login_required
 @check_user_course_access
 def course_learner_dashboard(request, course_id):
-    data = {
-        'id': course_id
+
+    organization = user_api.get_user_organizations(request.user.id)[0]
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+    except:
+        return render(request, '404.haml')
+
+    try:
+        branding = BrandingSettings.objects.get(client_id=organization.id)
+    except:
+        branding = None
+
+    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+
+    data ={
+        'learner_dashboard': learner_dashboard,
+        'learner_dashboard_tiles': learner_dashboard_tiles,
+        'discovery_items': discovery_items,
+        'branding': branding,
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
-
 
 @require_POST
 @login_required

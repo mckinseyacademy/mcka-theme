@@ -1,6 +1,27 @@
 .close-reveal-modal
   %i.fa.fa-times-circle
+%script
+      $(function() {
+        	$('#id_title').on('input', function() { 
+              $('#saveTile').css("display", "inline");
+          });
 
+          $('#id_description').on('input', function() { 
+              $('#saveTile').css("display", "inline");
+          });
+
+          $('#id_link').on('input', function() { 
+              $('#saveTile').css("display", "inline");
+          });
+
+          $('#id_tile_type').on('input', function() { 
+              $('#saveTile').css("display", "inline");
+          });
+
+          $('#id_background_image').change(function() { 
+              $('#saveTile').css("display", "inline");
+          });
+      });
 %form{action: '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
   - csrf_token
   .row
@@ -35,8 +56,7 @@
     .small-9.columns= form.background_image
     
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
-  %input{'type': 'hidden', 'name': 'position', 'value': 100}
   .error
     - if error
       = error
-  %input.button.right.radius.small{type: 'submit', value: 'Save'}
+  %input#saveTile.button.right.radius.small{type: 'submit', value: 'Save'}
