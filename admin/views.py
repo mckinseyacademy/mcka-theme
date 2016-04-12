@@ -3319,7 +3319,6 @@ class manage_user_company_api(APIView):
             allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
         response_obj['all_organizations'] = allOrganizationsList
         response_obj['status'] = 'ok'
-        print response_obj
         return Response(response_obj)
 
 

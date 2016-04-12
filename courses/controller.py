@@ -315,7 +315,6 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
     gp_candidates = [proj for proj in course.group_projects if proj.id == the_user_project.content_id]
     if gp_candidates:
         group_project = gp_candidates[0]
-    print vars(vars(group_project)['_activities'][1])
     return project_group, group_project
 
 def get_group_project_for_workgroup_course(workgroup_id, course):
