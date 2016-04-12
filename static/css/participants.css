@@ -82,26 +82,46 @@
 	overflow-y: scroll;
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 100px;
+	margin-bottom: 25px;
 }
 #participantDetailsActiveCoursesViewGrid .bbGrid-grid.table
 {
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.participantDetailsActiveCourses #activeCoursesExportStatsButton
+{
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 #participantDetailsCourseHistoryViewGrid
 {
 	max-height: 25em;
 	overflow-y: scroll;
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 100px;
+	margin-bottom: 25px;
 }
 #participantDetailsCourseHistoryViewGrid .bbGrid-grid.table, #participantDetailsCourseHistoryViewGrid .bbGrid-grid-nav 
 {
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.participantDetailsCourseHistory #courseHistoryExportStatsButton
+{
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 #participantDetailsWrapper .participantDetailsContent 
 .participantEmailLabel{
 	display: inline-block;

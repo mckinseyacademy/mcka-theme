@@ -3,6 +3,8 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		this.collection.fetch({success: function() {
       cloneHeader('#participantsListViewGridBlock');
     }});
+    massParticipantsInit();
+    this.renderAddSingleUser();
 	},
 	render: function(){
 		participantsListViewGrid = new bbGrid.View({
@@ -36,5 +38,15 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		{
 			participantsListViewGrid.partial_collection.getNextPage();
 		}
+	},
+	renderAddSingleUser: function()
+	{
+		$('#country_edit').countrySelect();
+		InitializeAutocompleteInput(ApiUrls.participant_organization_get_api(), 'form.participantDetailsEditForm .participantCompanyValue input');
+		$('#participantsAddWrapper').find('.participantAddButton').on('click',function()
+		{
+			$('#add_a_paricipant').foundation('reveal', 'open');
+			$("#country_edit").countrySelect("selectCountry", 'us');
+		});
 	}
 });

@@ -3,9 +3,9 @@ var ApiUrls = {
   participants_list: '/admin/api/participants',
   validate_participant_email: '/admin/api/participants/validate_participant_email',
   validate_participant_username: '/admin/api/participants/validate_participant_username',
-  participant_organization_get_api: function(user_id)
+  participant_organization_get_api: function()
   {
-  	return this.participants_list+'/'+user_id+'/organizations';
+  	return this.participants_list+'/organizations';
   },
   course_details: '/admin/api/courses'
 }

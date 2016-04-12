@@ -39,18 +39,18 @@
             %hr
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
-                #courseBulkActionsMainContainer.bulkActionsButtonContainer
+                #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                   .bulkButtonWrapper
-                    .hiddenButtonSplitModifier
-                    %a.emailSelectedParticipants.button.split{:href => "#"}
+                    .hiddenButtonSplitModifier.bulkButton.disabled
+                    %a.emailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
                       Email Selected Participants
-                    %a.button.bulkDropdownIcon
+                    %a.button.bulkDropdownIcon.bulkButton.disabled
                       .fa.fa-chevron-down
                   #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}
-                    %a.button.submenuButtons.bulkChangeStatus{:href => "#"} Change status
-                    %a.button..submenuButtons.bulkUnenrollFromCourse{:href => "#"} Unenroll from course
-                    %a.button.submenuButtons.bulkEnrollInNewCourse{:href => "#"} Enroll in new course
-                    %a.button.submenuButtons.bulkExportStats{:href => "#"} Export stats
+                    %a.button.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"} Change status
+                    %a.button..submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"} Unenroll from course
+                    %a.button.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"} Enroll in new course
+                    %a.button.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"} Export stats
                 #courseDetailsParticipantsGridWrapper
                   #courseDetailsParticipantsGrid.large-12.columns
               .row.courseStats.contentNavigationContainer

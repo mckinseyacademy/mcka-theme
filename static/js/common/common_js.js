@@ -147,3 +147,37 @@ disableSaveChangeButton = function(saveChangeButton){
   }
 
 }
+
+InitializeAutocompleteInput = function(url, inputFieldIdentifier)
+{
+  var options = {
+      url: url,
+      type: "GET",
+      dataType: "json"
+    };
+
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    var selectableList = data.all_organizations;
+    var selectFillList = [] 
+    for (var itemIndex=0;itemIndex < selectableList.length; itemIndex++)
+    {
+      selectFillList.push({value:selectableList[itemIndex].id, label:selectableList[itemIndex].display_name});
+    }
+    var inputField = $(inputFieldIdentifier);
+    inputField.autocomplete({
+      minLength: 0,
+      source: selectFillList,
+      select: function( event, ui ) {
+          inputField.val( ui.item.label );
+          inputField.attr('data-id',ui.item.value);
+          return false;
+        }
+      });
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}

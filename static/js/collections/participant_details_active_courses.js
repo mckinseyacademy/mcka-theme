@@ -5,7 +5,6 @@ Apros.collections.ParticipantDetailsActiveCourses = Backbone.Collection.extend({
   model: Apros.models.AdminCourse,
   fetchSlowFields: function(fetchNumber){
     this.getSlowFetchedStatus = false;
-    this.queryParams['include_slow_fields'] = true;
     if (fetchNumber > 0)
     {
       listOfIds = [];
@@ -17,7 +16,6 @@ Apros.collections.ParticipantDetailsActiveCourses = Backbone.Collection.extend({
       if (listOfIds.length == 0)
       {
         this.queryParams['ids'] = false;
-        this.queryParams['include_slow_fields'] = false;
         return;
       }
       else
@@ -31,40 +29,22 @@ Apros.collections.ParticipantDetailsActiveCourses = Backbone.Collection.extend({
         {
           this.getSlowFetchedStatus = true;
           this.queryParams['ids'] = listOfIds.slice(0,fetchNumber).join();
-        }
-          
+        }      
       }
     }
-    this.fetchExtended({update:true,remove:false, success:function(collection, response, options){
-      data = response;
-      for (var user in data)
-      {
-        userData = data[user];
-        for (var model in collection.models)
-        {
-          modelData = collection.models[model]
-          if (modelData.attributes.id == userData.id)
-          {
-            modelData.set({progress: userData.progress})
-            modelData.set({proficiency: userData.proficiency})
-            break;
-          }
-        } 
-      }
-      collection.slowFieldsSuccess(collection, response, options)
-    }});
-    this.queryParams['include_slow_fields'] = false;
+    this.fetchSlowFieldsAjax(this);
   },
-  saveCurrentPageSlowState: function(idFieldName, slowAttributeName){
+  saveCurrentPageSlowState: function(){
     listOfIds = [];
+    _this = this;
     this.each(function(model){       
-        if (model.get(slowAttributeName) == '.'){
-          listOfIds.push(model.get(idFieldName));
+        if (model.get(_this.slowFieldsCollectionFieldIdentifier) == '.'){
+          listOfIds.push(model.get(_this.slowFieldsFetchIdentifier));
         }
       });
     this.pageAndIdConnector = listOfIds;
   },
-  slowFieldsSuccess: function(collection, response, options){
+  slowFieldsSuccess: function(collection){
     if (collection.getSlowFetchedStatus)
     {
         if (collection.pageAndIdConnector.length < collection.slowFieldsFetchCount)
@@ -75,19 +55,39 @@ Apros.collections.ParticipantDetailsActiveCourses = Backbone.Collection.extend({
         {
           collection.pageAndIdConnector = collection.pageAndIdConnector.slice(collection.slowFieldsFetchCount, collection.pageAndIdConnector.length);
         }  
-        collection.saveCurrentPageSlowState(collection.slowFieldsFetchIdentifier,collection.slowFieldsCollectionFieldIdentifier);
+        collection.saveCurrentPageSlowState();
         collection.fetchSlowFields(collection.slowFieldsFetchCount);
     }
   },
-  fetchExtended: function(options) {
-    if (typeof options == 'undefined')
-      options = {}
-    options['data'] = $.param(this.queryParams);
-    this.fetch(options);
+  fetchSlowFieldsAjax: function(collection)
+  {
+    var optionsData = {ids:this.queryParams['ids'], include_slow_fields:true};
+    var options = {
+        url: this.url,
+        data: optionsData,
+        type: "GET",
+        dataType: "json"
+      };
+
+    options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+    $.ajax(options)
+    .done(function(data) {
+      for (var userIndex = 0;userIndex < data.length;userIndex++)
+      {
+        userData = data[userIndex];
+        modelData = collection.models.filter(function(el){return el.attributes.id == userData.id})
+        if (modelData.length > 0)
+          modelData[0].set({progress: userData.progress, proficiency: userData.proficiency});
+      }
+      collection.slowFieldsSuccess(collection);
+    })
+    .fail(function(data) {
+      console.log("Ajax failed to fetch data");
+      console.log(data)
+    });
   },
   queryParams: {
-    include_slow_fields: false,
-    ids: false
+    include_slow_fields: false
   },
   getSlowFetchedStatus: false,
   pageAndIdConnector: [],

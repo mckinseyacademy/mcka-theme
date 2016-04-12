@@ -1,9 +1,9 @@
 Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
   path:'',
   initialize: function (models, options) {
-        this.path = options.path;
-        this.url = ApiUrls.courses_list + '/' + this.path;
-    },
+    this.path = options.path;
+    this.url = ApiUrls.courses_list + '/' + this.path;
+  },
   model: Apros.models.Course_Details,
   mode: "infinite",
   state: {
@@ -64,7 +64,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     }
     this.fetchSlowFieldsAjax(this);
   },
-  saveCurrentPageSlowState: function(idFieldName, slowAttributeName){
+  saveCurrentPageSlowState: function(){
     listOfIds = [];
     _this = this;
     this.fullCollection.each(function(model){       
@@ -115,7 +115,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     .fail(function(data) {
       console.log("Ajax failed to fetch data");
       console.log(data)
-    })
+    });
   },
   getSlowFetchedStatus: false,
   pageAndIdConnector: [],

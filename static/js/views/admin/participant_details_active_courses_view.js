@@ -1,6 +1,6 @@
   Apros.views.ParticipantDetailsActiveCoursesView = Backbone.View.extend({
     initialize: function(){
-      this.collection.fetchExtended({success:function(collection, response, options)
+      this.collection.fetch({success:function(collection, response, options)
         {
           collection.getSlowFetchedStatus = true;
           collection.slowFieldsSuccess(collection, response, options);

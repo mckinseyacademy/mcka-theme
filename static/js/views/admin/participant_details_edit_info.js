@@ -1,8 +1,9 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
       var _this=this;
-      $('#country_edit').countrySelect();   
-      _this.initialize_user_organizations(options.url);
+      $('#country_edit').countrySelect();
+      _this.setLocationTooltip();   
+      InitializeAutocompleteInput(options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').hide();
@@ -15,6 +16,8 @@
           var country = locationText.split(',')[1].trim().toLowerCase();
           if (_this.check_if_country_exist(country))
             $("#country_edit").countrySelect("selectCountry", country);
+          else
+            $("#country_edit").countrySelect("selectCountry", 'us');
         }
       });
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').off().on("click", function()
@@ -22,7 +25,7 @@
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').hide();
         $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').show();
-        
+        _this.setLocationTooltip(); 
         _this.update_edit_field_data(_this);
       });
       $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').off('focus').on("focus", function()
@@ -58,6 +61,7 @@
             cache: false,
             success: function (data, status) {
                 if (data['status'] == "ok") {
+                  _this.setLocationTooltip(); 
                   _this.update_participant_field_data();
                   $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
@@ -149,44 +153,38 @@
         var selected_country = $("#country_edit_code").val();
         if(_this.check_if_country_exist(selected_country))
           $("#country_edit").countrySelect("selectCountry", selected_country);
+        else
+          $("#country_edit").countrySelect("selectCountry", 'us');
       }
     },
-    initialize_user_organizations: function(url)
+    setLocationTooltip: function()
     {
-      var options = {
-          url: url,
-          type: "GET",
-          dataType: "json"
-        };
-
-      options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
-      $.ajax(options)
-      .done(function(data) {
-        var selectableList = data.all_organizations;
-        var selectFillList = [] 
-        for (var organizationIndex=0;organizationIndex < selectableList.length; organizationIndex++)
+      var details = $('#participantDetailsWrapper').find('.participantDetailsWrapper');
+      var locationText = details.find('.participantLocationValue').text().trim();
+      if ((locationText.indexOf(',') > -1) || (locationText.length == 2))
+      {
+        var tooltipText = '';
+        var name = '';
+        if (locationText.length == 2)
         {
-          selectFillList.push({value:selectableList[organizationIndex].id, label:selectableList[organizationIndex].display_name});
+          name = locationText;
         }
-        $('form.participantDetailsEditForm .participantCompanyValue input').autocomplete({
-          minLength: 0,
-          source: selectFillList,
-          focus: function( event, ui ) {
-            $('form.participantDetailsEditForm .participantCompanyValue input').val( ui.item.label );
-            $('form.participantDetailsEditForm .participantCompanyValue input').attr('data-id',ui.item.value);
-            return false;
-          },
-          select: function( event, ui ) {
-              $('form.participantDetailsEditForm .participantCompanyValue input').val( ui.item.label );
-              $('form.participantDetailsEditForm .participantCompanyValue input').attr('data-id',ui.item.value);
-              return false;
-            }
-          });
-      })
-      .fail(function(data) {
-        console.log("Ajax failed to fetch data");
-        console.log(data)
-      });
+        else
+        {
+          tooltipText = locationText.split(',')[0].trim();
+          name = locationText.split(',')[1].trim().toLowerCase();
+        }
+        var selectableCountries = $.fn['countrySelect'].getCountryData();
+        for (var i = 0; i<selectableCountries.length;i++)
+        {
+          if (selectableCountries[i].iso2 == name)
+          {
+            tooltipText += ', ' + selectableCountries[i].name;
+            break
+          }  
+        }
+        $('#participantDetailsWrapper').find('.participantDetailsWrapper .participantLocationValue').attr('title', tooltipText);
+      }
     },
     check_if_country_exist: function(name)
     {
