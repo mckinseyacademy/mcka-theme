@@ -234,7 +234,7 @@ ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
 
 # EMAIL BACKEND
-EMAIL_BACKEND = "django_ses.SESBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
 # Date formatting rules
@@ -413,6 +413,15 @@ DAILY_EMAIL_REPORTS_CONFIG = {
     "apros_db_name":"default",
     "file_format":".xlsx",
 }
+
+######### temp mail sender #############
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mckatestingacc@gmail.com'
+EMAIL_HOST_PASSWORD = '1m2c3k4a'
+DEFAULT_FROM_EMAIL = 'danko@extensionengine.com'
+DEFAULT_TO_EMAIL = 'lala@gmail.com'
 
 ################################### EDX-NOTIFICATIONS SUBSYSTEM ######################################
 
