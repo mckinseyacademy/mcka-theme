@@ -121,7 +121,7 @@ var Router = Backbone.Router.extend({
   },
   initialize_participant_details: function(user_id)
   {
-    var view = new Apros.views.ParticipantEditDetailsView({url:  ApiUrls.participant_organization_get_api(user_id)});
+    var view = new Apros.views.ParticipantEditDetailsView({url:  ApiUrls.participant_organization_get_api()});
     view.render();
   },
   participant_details_active_courses: function(){

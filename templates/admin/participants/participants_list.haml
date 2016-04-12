@@ -3,7 +3,7 @@
 - block content
   #mainParticipantsWrapper
     #participantsAddWrapper
-      %input.button.small.radius.menuButton{:type => "button", :value => "Add New Participant"}
+      %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
       %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
       %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
     %hr
@@ -17,6 +17,94 @@
           %input{:placeholder => 'Email', :type => 'text', :name => 'custom_email', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
     #participantsListViewGridBlock
 
+    #add_a_paricipant.reveal-modal.small{'data-reveal': None}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %h2 Add a Participant
+      %p
+        Want to add more than one participant at a time?
+        %a
+          Import a list
+      %form.participantDetailsEditForm
+        - csrf_token
+        .row
+          .large-6.columns.participantFirstName
+            .participantFirstNameLabel.labelUniversal
+              First Name<sup>*</sup>
+            .participantFirstNameValue
+              %input{:type => "text",  :name => "first_name", :maxlength => "30"}
+          .large-6.columns.participantLastName
+            .participantLastNameLabel.labelUniversal
+              Last Name<sup>*</sup>
+            .participantLastNameValue
+              %input{:type => "text",  :name => "last_name", :maxlength => "30"}
+        .row
+          .large-6.columns.participantUsername
+            .participantUsernameLabel.labelUniversal
+              Username
+              .fa.fa-check-circle-o.checkMark
+            .participantUsernameValue
+              %input{:type => "text", :name => "username", :maxlength => "30", :class => 'participantUsernameInput'}
+              .warningText
+                %p That username is already taken
+          .large-6.columns.participantEmail
+            .participantEmailLabelContainer.labelUniversal
+              .participantEmailLabel.inlineBlock
+                Email<sup>*</sup>
+              .fa.fa-check-circle-o.checkMark
+            .participantEmailValue
+              %input{:type => "text", :name => "email", :maxlength => "60", :class => 'participantEmailInput'}
+              .warningText
+                %p That email is already taken
+        .row
+          .large-6.columns.participantCompany
+            .participantCompanyLabel.labelUniversal
+              Company<sup>*</sup>
+            .participantCompanyValue
+              %input{:type => "text", :name => "company", :maxlength => "60"}
+          .large-6.columns.participantGender
+            .participantGenderLabel.labelUniversal
+              Gender
+            .participantGenderValue
+              %select{:name => "gender"}
+                  %option{:value => "M"} Male
+                  %option{:value => "F"} Female
+                  %option{:value => "N/A"} N/A
+        .row
+          .large-6.columns.participantCountry
+            .participantCountryLabel.labelUniversal
+              Country Abbreviation
+            .participantCountryValue
+              %input{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2"}
+              %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
+          .large-6.columns.participantCity
+            .participantCityLabel.labelUniversal
+              City
+            .participantCityValue
+              %input{:type => "text", :name => "city", :maxlength => "60"}
+        .row
+          .large-6.columns.participantPermissions
+            .participantPermissionsLabel.labelUniversal
+              Admin Permissions
+            .participantPermissionsValue
+              %select
+                %option{:value => "uber_admin"} Uber admin
+                %option{:value => "course_ops_admin"} Course ops admin
+                %option{:value => "company_admin"} Company admin
+                %option{:value => "internal_admin"} Internal Admin
+          .large-6.columns.participantAdminCompany
+            .participantAdminCompanyLabel.labelUniversal
+              Admin Company
+            .participantAdminCompanyValue
+              %input{:type => "text"}
+            .participantEmailReset.inlineBlock
+              + Add another company
+      .button-wrapper
+        %a.button.small.radius.menuButton{:type => "button", :value => "Add Participant"}
+          Add Participant 
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+          Cancel
+    
     #download_csv_template.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle

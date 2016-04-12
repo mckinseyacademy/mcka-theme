@@ -3177,23 +3177,30 @@ class participant_details_api(APIView):
 
 class manage_user_company_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-    def get(self, request, user_id):
-        selectedUser = user_api.get_user(user_id)
-        if selectedUser is not None:
-            selectedUser = selectedUser.to_dict()
-        else:
-            return Response({'status':'ok', 'message':"Can't find user in database"}) 
-        userOrganizations = user_api.get_user_organizations(user_id)
-        userOrganizationsList =[]
-        for organization in userOrganizations:
-            organizationData = vars(organization)
-            userOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
+    def get(self, request):
+        user_id = request.GET.get('user_id','');
+        response_obj = {}
+        if user_id != '':
+            selectedUser = user_api.get_user(user_id)
+            if selectedUser is not None:
+                selectedUser = selectedUser.to_dict()
+            else:
+                return Response({'status':'ok', 'message':"Can't find user in database"}) 
+            userOrganizations = user_api.get_user_organizations(user_id)
+            userOrganizationsList =[]
+            for organization in userOrganizations:
+                organizationData = vars(organization)
+                userOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
+            response_obj['user_organizations'] = userOrganizationsList
         organization_list = organization_api.get_organizations()
         allOrganizationsList =[]
         for organization in organization_list:
             organizationData = vars(organization)
             allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
-        return Response({'status':'ok', 'user_organizations': userOrganizationsList, 'all_organizations':allOrganizationsList})
+        response_obj['all_organizations'] = allOrganizationsList
+        response_obj['status'] = 'ok'
+        print response_obj
+        return Response(response_obj)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def validate_participant_email(request):

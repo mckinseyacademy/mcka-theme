@@ -3,7 +3,7 @@
       var _this=this;
       $('#country_edit').countrySelect();
       _this.setLocationTooltip();   
-      _this.initialize_user_organizations(options.url);
+      InitializeAutocompleteInput(options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
         $('#participantDetailsWrapper').find('.participantDetailsWrapper').hide();
@@ -156,43 +156,6 @@
         else
           $("#country_edit").countrySelect("selectCountry", 'us');
       }
-    },
-    initialize_user_organizations: function(url)
-    {
-      var options = {
-          url: url,
-          type: "GET",
-          dataType: "json"
-        };
-
-      options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
-      $.ajax(options)
-      .done(function(data) {
-        var selectableList = data.all_organizations;
-        var selectFillList = [] 
-        for (var organizationIndex=0;organizationIndex < selectableList.length; organizationIndex++)
-        {
-          selectFillList.push({value:selectableList[organizationIndex].id, label:selectableList[organizationIndex].display_name});
-        }
-        $('form.participantDetailsEditForm .participantCompanyValue input').autocomplete({
-          minLength: 0,
-          source: selectFillList,
-          focus: function( event, ui ) {
-            $('form.participantDetailsEditForm .participantCompanyValue input').val( ui.item.label );
-            $('form.participantDetailsEditForm .participantCompanyValue input').attr('data-id',ui.item.value);
-            return false;
-          },
-          select: function( event, ui ) {
-              $('form.participantDetailsEditForm .participantCompanyValue input').val( ui.item.label );
-              $('form.participantDetailsEditForm .participantCompanyValue input').attr('data-id',ui.item.value);
-              return false;
-            }
-          });
-      })
-      .fail(function(data) {
-        console.log("Ajax failed to fetch data");
-        console.log(data)
-      });
     },
     setLocationTooltip: function()
     {
