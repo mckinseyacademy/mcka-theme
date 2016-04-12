@@ -1189,7 +1189,6 @@ def course_bulk_action(course_id, data, batch_status):
         for status_item in data['list_of_items']:
             status = _change_user_status(course_id, data['new_status'], status_item)
             if (status['status']=='error'):
-                print status
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()    
@@ -1205,7 +1204,6 @@ def course_bulk_action(course_id, data, batch_status):
         for status_item in data['list_of_items']:
             status = _unenroll_participant(course_id, status_item)
             if (status['status']=='error'):
-                print status
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()    

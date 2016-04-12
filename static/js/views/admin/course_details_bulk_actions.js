@@ -78,7 +78,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
             $.ajax(options)
             .done(function(data) {
-              console.log(data);
               if (data['status'] == 'ok')
               {
                 statusUpdaterIntervalId = _this.courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id']);
@@ -154,7 +153,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
             $.ajax(options)
             .done(function(data) {
-              console.log(data);
               if (data['status'] == 'ok')
               {
                 statusUpdaterIntervalId = _this.courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id']);
