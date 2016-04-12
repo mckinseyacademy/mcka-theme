@@ -349,7 +349,14 @@ TEMP_IMAGE_FOLDER = "profile_temp_images/"
 
 FEATURES = {
     'notes': False,
+    #ADMIN COURSES SECTION 
+    'ADMIN_COURSES_TAB': False,
+    #ADMIN PARTICIPANTS SECTION
+    'ADMIN_PARTICIPANTS_TAB': False,
 }
+
+#LEARNER DASHBOARD FEATURE ON/OFF SETTING
+LEARNER_DASHBOARD_ENABLED = False
 
 try:
     from local_settings import *
@@ -433,8 +440,6 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
-
-LEARNER_DASHBOARD_ENABLED = True
 
 #File upload paths for Learner Dashboard
 LOGO = "static/image/learner_dashboard/branding/logos/"
