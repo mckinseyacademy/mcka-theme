@@ -1,11 +1,9 @@
 - extends "layout.haml"
 - load staticfiles
-
 - block page_title
   %title
     = program.display_name
     = _(" | Courses | McKinsey Academy")
-
 - block content
   #home-courses
     .row
@@ -28,5 +26,22 @@
               %p= item.title
             %h5
               %span= item.author
-            %hr
+    %a{:class => "button radius small", :data-reveal-id => 'contact-ta', :data-reveal-ajax =>'true'}
+      Contact TA
+  #contact-ta.reveal-modal.small{"data-reveal": "false"}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2= _("Message your TA")
+    %hr
+    %div= _("Send any questions or messages to your TA , and they'll get back to you promptly.")
+    %form#contact-ta-form{action: "/courses/#{course.id}/teaching_assistant", method: "POST"}
+      .error
+        - if error
+          = error
+      - csrf_token
+      %textarea{placeholder: "Enter your message for the TA here", name: "ta_message"}
+      %input#contact-from{'type': 'hidden', 'name': 'contact-from', 'value': '#{contact_from}'}
+      %input.button.radius.small{type: "submit", value: "Submit", disabled: "Disabled"}
 
+- block js_snippets
+  %script{src: "{% static 'js/course_contact_modal.js' %}"}
