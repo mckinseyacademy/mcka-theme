@@ -14,9 +14,11 @@
 	}
 
 	p {
-		width: 565px;
+		width: 585px;
 		font-size: 14px;
-		height: 100px
+		height: 100px;
+		overflow: overlay;
+		margin-bottom: 10px;
 	}
 
 	.row{

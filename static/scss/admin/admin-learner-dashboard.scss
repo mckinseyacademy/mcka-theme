@@ -12,10 +12,10 @@ textarea{
 	margin: 0; 
 	padding: 0;
 	width: 600px;
-	height: 455px;
+	height: 450px;
 	overflow: auto;
 	background: white;
-    border: 1px solid #ccc;
+	border: 1px solid #ccc;
 	li { 
 		margin: 0px 10px 10px 0; 
 		padding: 0px 5px; 
@@ -25,6 +25,14 @@ textarea{
 		font-size: 4em; 
 		text-align: center; 
 	}
+	.add-tile{
+		border-width: 2px;
+		border-style: dotted;
+		.font-plus{
+			font-size: 4em;
+	    	padding: 41px;
+		}
+	}
 }
 
 #saveLearnerDashboard, #saveTile{
@@ -33,6 +41,6 @@ textarea{
 
 .bottom-buttons{
 	padding: 10px;
-    line-height: 16px;
-    margin: 20px 10px 0 0;
+	line-height: 16px;
+	margin: 20px 10px 0 0;
 }

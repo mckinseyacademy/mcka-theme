@@ -5,7 +5,10 @@
   %script
       $(function() {
           if ('{{learner_dashboard_id}}' != 'None') {
-              $('#sortable').sortable();
+              $('#sortable').sortable({
+                  items: '.item:not(.fixed)'
+              });
+              $('#sortable').disableSelection();
 
               var isDragging;
               var wasDragging;
@@ -18,16 +21,19 @@
                   wasDragging = isDragging;
                   isDragging = false;
                   if (wasDragging) {
+                      $('#unchangedLearnerDashboard').css("display", "none");
                       $('#saveLearnerDashboard').css("display", "inline");
                 }
               });
           }
 
-          $('#title').on('input', function() { 
+          $('#title').on('input', function() {
+              $('#unchangedLearnerDashboard').css("display", "none");
               $('#saveLearnerDashboard').css("display", "inline");
           });
 
-          $('#description').on('input', function() { 
+          $('#description').on('input', function() {
+              $('#unchangedLearnerDashboard').css("display", "none");
               $('#saveLearnerDashboard').css("display", "inline");
           });
 
@@ -96,18 +102,24 @@
           .large-10.columns
             %ul#sortable
               -for tile in learner_dashboard_tiles
-                %li.ui-state-default{id: "#{tile.id}"}
+                %li.item.ui-state-default{id: "#{tile.id}"}
                   %h4= tile.title
                     %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
                     %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
                       %i.fa.fa-pencil-square-o{'style': "color:green"}
+              %li.item.fixed.ui-state-default.add-tile 
+                %a{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                  .fa.fa-plus.font-plus
       .row
         .large-10.large-offset-2.columns
-          %input#saveLearnerDashboard.button.radius.small.left.bottom-buttons{type: 'button', value: 'Save'}
-          - if learner_dashboard_id
-            %a.button.radius.small.left.bottom-buttons{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
-            %a.button.radius.small.left.bottom-buttons{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'} Add Tile
-
+          %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save'}
+          %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Save'}
+      - if learner_dashboard_id
+        %hr
+        .row
+          .large-12.columns
+            %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
+        
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   :javascript
