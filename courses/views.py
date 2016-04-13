@@ -525,6 +525,15 @@ def course_resources(request, course_id):
 
 @login_required
 @check_user_course_access
+def course_resources_learner_dashboard(request, course_id):
+    static_tabs = load_static_tabs(course_id)
+    data = {
+        "resources": static_tabs.get("resources", None)
+    }
+    return render(request, 'courses/course_resources_learner_dashboard.haml', data)
+
+@login_required
+@check_user_course_access
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
 
     ''' go to given page within given chapter within given course '''
