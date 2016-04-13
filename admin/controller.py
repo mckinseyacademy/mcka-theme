@@ -402,7 +402,6 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             )
 
         if user_error:
-            print user_error
             error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
@@ -510,7 +509,6 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
             ))
 
         if user_error:
-            print user_error
             for user_e in user_error:
                 error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
