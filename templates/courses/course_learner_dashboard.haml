@@ -6,6 +6,12 @@
     = _(" | Courses | McKinsey Academy")
 - block content
   #home-courses{style: "{% if branding and branding.background_image %} background-image: url(#{branding.background_image});{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
+  %div.right
+    %a{:href => "/courses/#{course.id}/resources_learner_dashboard", :class => "button radius small", :data-reveal-id => 'resources', :data-reveal-ajax =>'true'}
+      %i.fa.fa-file-text-o
+    %a{:class => "button radius small", :data-reveal-id => 'contact-ta', :data-reveal-ajax =>'true'}
+      TA
+  #home-courses
     .row
       .large-8.columns.dash-programs
         -if branding
@@ -26,8 +32,7 @@
               %p= item.title
             %h5
               %span= item.author
-    %a{:class => "button radius small", :data-reveal-id => 'contact-ta', :data-reveal-ajax =>'true'}
-      Contact TA
+  #resources.reveal-modal.full{"data-reveal": "true"}
   #contact-ta.reveal-modal.small{"data-reveal": "false"}
     .close-reveal-modal
       %i.fa.fa-times-circle
