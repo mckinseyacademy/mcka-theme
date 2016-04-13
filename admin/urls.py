@@ -124,6 +124,8 @@ urlpatterns = patterns(
     url(r'^api/participants/import_participants/download_activation_links/$', views.download_activation_links_by_task_key, name='download_activation_links_by_task_key'),
     url(r'^api/participants/import_participants$', views.import_participants, name='import_participants'),
     url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
+    url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/unenroll$', views.participant_details_courses_unenroll_api.as_view(), name='participant_details_courses_unenroll_api'),
+    url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/edit_status$', views.participant_details_course_edit_status_api.as_view(), name='participant_details_course_edit_status_api'),
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),
 

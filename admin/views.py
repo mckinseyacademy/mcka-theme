@@ -17,7 +17,7 @@ from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.template import loader, RequestContext
 from django.utils.dateformat import format
@@ -61,7 +61,7 @@ from .controller import (
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
-    get_user_courses_helper, get_course_progress, import_participants_threaded
+    get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -696,6 +696,26 @@ def _remove_student_from_course(student_id, course_id):
     permissions = Permissions(student_id)
     permissions.add_course_role(course_id, USER_ROLES.OBSERVER)
     user_api.unenroll_user_from_course(student_id, course_id)
+
+class participant_details_courses_unenroll_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, course_id, format=None):
+        
+        try:
+            # TO-DO: Change with actual enroll once provided by EDX. 
+            # Sets to Observer for now.
+            response = unenroll_participant(course_id, user_id)
+            return HttpResponse(
+                    json.dumps(response),
+                    content_type='application/json'
+                )
+        except ApiError as err:
+            error = err.message
+            return HttpResponseServerError(
+                {'status': 'error', 'message': error}, 
+                content_type='application/json'
+            )
 
 @ajaxify_http_redirects
 @permission_group_required(
@@ -3418,6 +3438,30 @@ def download_active_courses_stats(request, user_id):
         writer.writerow([course['name'], course['id'], course['program'], course['progress'], course['proficiency'], course['status']])
     
     return response
+
+
+class participant_details_course_edit_status_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, course_id, format=None):
+        params = urlparse.parse_qs(request.GET.urlencode())
+        current_roles = ''
+        if params['currentRoles']:
+            current_roles = str(params['currentRoles'][0])
+        data = {
+            'user_id': user_id, 
+            'course_id': course_id, 
+            'current_roles': current_roles, 
+            'status': ''
+        }
+        return HttpResponse(render(request, 'admin/participants/participant_edit_status.haml', data))
+
+    def post(self, request, user_id, course_id, format=None):
+        new_status = request.POST.get('role-group', None)
+        current_roles = request.POST.get('current-roles', '')
+        change_user_status(course_id, new_status, {'id': user_id, 'existing_roles': current_roles})
+        data = {'user_id': user_id, 'course_id': course_id, 'current_roles': new_status, 'status': 'Success.'}
+        return HttpResponse(render(request, 'admin/participants/participant_edit_status.haml', data))
 
 
 class participant_details_course_history_api(APIView):

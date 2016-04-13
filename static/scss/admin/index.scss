@@ -591,6 +591,12 @@
     }
   }
 
+  .cancelbutton {
+    color: $pure-white;
+    line-height: 1rem;
+    margin-left: 10px;
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';
