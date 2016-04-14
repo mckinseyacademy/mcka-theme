@@ -1105,6 +1105,7 @@ class course_details_api(APIView):
             course_bulk_actions(course_id, data, batch_status)
             return Response({'status':'ok', 'data': data, 'task_id': task_id})
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_list(request, restrict_to_courses_ids=None):
@@ -3198,9 +3199,22 @@ class manage_user_company_api(APIView):
         for organization in organization_list:
             organizationData = vars(organization)
             allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
-        response_obj['all_organizations'] = allOrganizationsList
+        response_obj['all_items'] = allOrganizationsList
         response_obj['status'] = 'ok'
-        print response_obj
+        return Response(response_obj)
+
+
+class manage_user_courses_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request):
+        response_obj = {}
+        courses_list = course_api.get_course_list()
+        allCoursesList =[]
+        for course in courses_list:
+            courseData = vars(course)
+            allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+        response_obj['all_items'] = allCoursesList
+        response_obj['status'] = 'ok'
         return Response(response_obj)
 
 

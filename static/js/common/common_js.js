@@ -159,7 +159,7 @@ InitializeAutocompleteInput = function(url, inputFieldIdentifier)
   options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
   $.ajax(options)
   .done(function(data) {
-    var selectableList = data.all_organizations;
+    var selectableList = data.all_items;
     var selectFillList = [] 
     for (var itemIndex=0;itemIndex < selectableList.length; itemIndex++)
     {
@@ -169,11 +169,26 @@ InitializeAutocompleteInput = function(url, inputFieldIdentifier)
     inputField.autocomplete({
       minLength: 0,
       source: selectFillList,
+      delay: 0,
       select: function( event, ui ) {
-          inputField.val( ui.item.label );
-          inputField.attr('data-id',ui.item.value);
-          return false;
+        inputField.val( ui.item.label );
+        inputField.attr('data-id',ui.item.value);
+        return false;
+      },
+      search: function( event, ui ) {
+        var input = $(event.target);
+        var source = $(input).autocomplete( "option", "source" );
+        var foundMatch = false;
+        for (var i=0; i<source.length; i++) {
+          if (input.val().trim().toLowerCase() == source[i].label.trim().toLowerCase()){
+            foundMatch = true;
+            input.attr('data-id', source[i].value);
+          }
         }
+        if(!foundMatch) {
+          input.attr('data-id', '');
+        }
+      }
       });
   })
   .fail(function(data) {
