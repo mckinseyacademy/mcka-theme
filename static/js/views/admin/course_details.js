@@ -218,7 +218,7 @@
       }
       coursesListDetailsViewGrid.render();
     },
-    realtimeStatus: function(url, status_element, task_id)
+    realtimeStatus: function(url, status_element, task_id, _this, _data)
     {
       $(status_element).parent().find('.loadingIcon').removeClass('hidden')
       var interval_id = setInterval(function(){
@@ -241,7 +241,12 @@
               clearInterval(interval_id);
               if ((data['values'].failed <= 0) && (data['values'].selected > 0) && (data['values'].selected === data['values'].successful))
               {
-                location.reload();
+                if(_data){
+                  _this.createConfirmationScreenOnCourseDetails(_this, _data);
+                }
+                else {
+                  location.reload();
+                }
               }
             }
             if (data['error_list'].length > 0)

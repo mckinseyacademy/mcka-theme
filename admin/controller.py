@@ -402,7 +402,6 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             )
 
         if user_error:
-            print user_error
             error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
@@ -510,7 +509,6 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
             ))
 
         if user_error:
-            print user_error
             for user_e in user_error:
                 error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
@@ -1173,12 +1171,14 @@ def get_course_engagement_summary(course_id):
 
     return course_stats
 
+
 def course_bulk_actions(course_id, data, batch_status):
     batch_status.clean_old()
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
     course_bulk_action(course_id, data, batch_status)
+
 
 @postpone
 def course_bulk_action(course_id, data, batch_status):
@@ -1192,7 +1192,7 @@ def course_bulk_action(course_id, data, batch_status):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()    
-                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
@@ -1207,11 +1207,58 @@ def course_bulk_action(course_id, data, batch_status):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()    
-                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
-                    batch_status.save()          
+                    batch_status.save()    
+    elif (data['type'] == 'enroll_participants'):
+        if batch_status is not None:
+            batch_status.attempted = len(data['list_of_items'])
+            batch_status.save()
+        for status_item in data['list_of_items']:
+            status = _enroll_participant_with_status(data['course_id'], status_item['id'], data['new_status'])
+            if (status['status']=='error'):
+                if batch_status is not None:
+                    batch_status.failed = batch_status.failed + 1
+                    batch_status.save()    
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
+            elif (status['status']=='success'):
+                if batch_status is not None:
+                    batch_status.succeded = batch_status.succeded + 1
+                    batch_status.save()    
+
+
+def _enroll_participant_with_status(course_id, user_id, status):
+    permissonsMap = {
+        'TA': USER_ROLES.TA,
+        'Observer': USER_ROLES.OBSERVER
+    }
+    failure = None
+    try:
+        user_api.enroll_user_in_course(user_id, course_id)
+    except ApiError as e: 
+        failure = {
+            "status": 'error',
+            "message": e.message
+        }
+    if failure:
+        return {'status':'error', 'message':e.message}
+    try:
+        permissions = Permissions(user_id)
+        if status != 'Active' :
+            permissions.update_course_role(course_id,permissonsMap[status])
+    except ApiError as e:
+        failure = {
+            "status": 'error',
+            "message": e.message
+        }
+    if failure:
+        return {'status':'error', 'message':e.message}
+
+    return {'status':'success'}
+
+
 def _unenroll_participant(course_id, user_id):
     try:
         permissions = Permissions(user_id)
@@ -1223,6 +1270,8 @@ def _unenroll_participant(course_id, user_id):
     except ApiError as e:
         return {'status':'error', 'message':e.message}
     return {'status':'success'}
+
+
 def _change_user_status(course_id, new_status, status_item):
     permissonsMap = {
         'TA': USER_ROLES.TA,
