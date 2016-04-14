@@ -1045,7 +1045,7 @@ class course_details_api(APIView):
                     if not course_participant['proficiency']:
                         course_participant['proficiency'] = "000";
                     else:
-                        course_participant['proficiency'] = '{:03d}'.format(int(course_participant['proficiency'][0]))
+                        course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency'][0]))
                     for role in list_of_user_roles['data']:
                         if role['id'] == course_participant['id']:
                             course_participant['user_status'].append(permissonsMap[role['role']])
@@ -3198,7 +3198,7 @@ class manage_user_company_api(APIView):
         for organization in organization_list:
             organizationData = vars(organization)
             allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
-        response_obj['all_organizations'] = allOrganizationsList
+        response_obj['all_items'] = allOrganizationsList
         response_obj['status'] = 'ok'
         return Response(response_obj)
 
