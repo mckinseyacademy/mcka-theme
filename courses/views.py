@@ -813,20 +813,13 @@ def course_learner_dashboard(request, course_id):
     except:
         return render(request, '404.haml')
 
-    try:
-        branding = BrandingSettings.objects.get(client_id=organization.id)
-    except:
-        branding = None
-
-    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     data ={
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
-        'discovery_items': discovery_items,
-        'branding': branding,
+        'discovery_items': discovery_items
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
