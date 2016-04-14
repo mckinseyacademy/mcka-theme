@@ -1472,8 +1472,8 @@ def _process_line_participants_csv(user_line):
 def _enroll_participants_from_csv(students, request, reg_status):
 
     permissonsMap = {
-        'TA': USER_ROLES.TA,
-        'Observer': USER_ROLES.OBSERVER
+        'ta': USER_ROLES.TA,
+        'observer': USER_ROLES.OBSERVER
     }
 
     for user_dict in students:
@@ -1481,7 +1481,7 @@ def _enroll_participants_from_csv(students, request, reg_status):
         client_id = user_dict['company']
         client = Client.fetch(client_id)
         course_id = user_dict['course']
-        status = user_dict['status']
+        status = user_dict['status'].lower()
 
         failure = None
         user_error = []
@@ -1533,7 +1533,7 @@ def _enroll_participants_from_csv(students, request, reg_status):
 
                 try:
                     permissions = Permissions(user.id)
-                    if status != 'Active' :
+                    if status != 'active' :
                         permissions.update_course_role(course_id,permissonsMap[status])
                 except ApiError as e:
                     user_error.append(_("{}: {} - {}").format(
