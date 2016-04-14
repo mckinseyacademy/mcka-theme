@@ -4,14 +4,17 @@ import collections
 import re
 import uuid
 
+from dateutil.parser import parse as parsedate
+
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from django.conf import settings
 
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from admin.models import Program
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, organization_api, project_api, user_models
+from api_client import user_api, group_api, course_api, organization_api, project_api, user_models, workgroup_api
 from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
@@ -21,16 +24,21 @@ from api_client.user_api import USER_ROLES
 from license import controller as license_controller
 
 from .models import (
-    Client, WorkGroup, UserRegistrationError, WorkGroupActivityXBlock,
+    Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
     GROUP_PROJECT_V2_ACTIVITY_CATEGORY,
 )
 
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 
+from api_client.user_api import USER_ROLES
+from .permissions import Permissions
+
 import threading
 import Queue
 import atexit
+
+import csv
 
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
 MINIMAL_COURSE_DEPTH = 5
@@ -394,7 +402,6 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             )
 
         if user_error:
-            print user_error
             error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
@@ -450,7 +457,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     if not user.is_active:
                         activation_record = UserActivation.user_activation(user)
                     client.add_user(user.id)
-                except ApiError, e:
+                except ApiError as e:
                     failure = {
                         "reason": e.message,
                         "activity": _("User not associated with client")
@@ -502,7 +509,6 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
             ))
 
         if user_error:
-            print user_error
             for user_e in user_error:
                 error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
@@ -802,6 +808,46 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
 
     return metricsJson
 
+def get_course_details_progress_data(course, course_modules, users):
+
+    start_date = course.start
+    end_date = datetime.now()
+    if course.end is not None:
+        if end_date > course.end:
+            end_date = course.end
+    delta = end_date - start_date
+    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
+
+    total = len(users) * len(course_modules)
+    engaged_total = 0
+
+    course_metrics = course_api.get_course_metrics_completions(course.id, count=total)
+    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+    for course_user in users:
+        if course_user.id in course_leaders_ids:
+            engaged_total += 1
+
+    engaged_total = engaged_total * len(course_modules)
+
+    metricsJsonAll = [[0,0]]
+    metricsJsonEng = [[0,0]]
+
+    day = 1
+    mod_completed = 0
+    for i, metric in enumerate(metrics.modules_completed):
+        mod_completed += metrics.modules_completed[i][1]
+        if total:
+            metricsJsonAll.append([day, round((float(mod_completed) * 100 / total), 2)])
+        else:
+            metricsJsonAll.append([day, 0])
+        if engaged_total:
+            metricsJsonEng.append([day, round((float(mod_completed) * 100 / engaged_total), 2)])
+        else:
+            metricsJsonEng.append([day, 0])
+        day += 1
+
+    return metricsJsonAll, metricsJsonEng
+
 def get_contacts_for_client(client_id):
     groups = Client.fetch_contact_groups(client_id)
 
@@ -1037,3 +1083,436 @@ def serialize_quick_link(quick_link):
         }
 
     return serialized
+
+
+def round_to_int(value):
+    return int(round(value))
+
+
+def round_to_int_bump_zero(value):
+    rounded_value = round_to_int(value)
+    if rounded_value < 1 and value > 0:
+        rounded_value = 1
+    return rounded_value
+
+
+def get_course_social_engagement(course_id):
+
+    course_groups = course_api.get_course_details_groups(course_id) 
+    groups_ids_list = []
+    for group in course_groups:
+        groups_ids_list.append(str(group['id']))
+    groups_ids = ','.join(group_id for group_id in groups_ids_list)
+    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+
+    number_of_posts = 0
+    number_of_participants_posting = 0
+    course_metrics_social = course_api.get_course_details_metrics_social(course_id)
+
+    number_of_users = len([dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])])
+
+    for user in course_metrics_social['users']:
+        user_data = course_metrics_social['users'][str(user)]
+        number_of_participants_posting += 1
+        number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data['num_comments']
+        number_of_posts += number_of_posts_per_participant
+
+    if number_of_users:
+        participants_posting = str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'
+        avg_posts = round(float(number_of_posts)/number_of_users, 1)
+    else:
+        participants_posting = 0
+        avg_posts = 0
+
+    course_stats = [
+        { 'name': '# of posts', 'value': number_of_posts},
+        { 'name': '% participants posting', 'value': participants_posting},
+        { 'name': 'Avg posts per participant', 'value': avg_posts}
+    ]
+
+    return course_stats
+
+
+def get_course_engagement_summary(course_id):
+
+    course_users_simple = course_api.get_user_list(course_id)
+    course_users_ids = [str(user.id) for user in course_users_simple]
+    roles = course_api.get_users_filtered_by_role(course_id)
+    roles_ids = [str(user.id) for user in roles]
+    for role_id in roles_ids:
+        if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+    additional_fields = ["is_active"]
+    course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
+    course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
+    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+    active_users = 0
+    engaged_users = 0
+    engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+    for course_user in course_users:
+        if course_user.is_active is True:
+            active_users += 1
+        if course_user.id in course_leaders_ids:
+            engaged_users += 1
+
+    course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users_simple)) if len(course_users_simple) > 0 else 0
+    activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
+    engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
+    active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
+    engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum)/engaged_users) if engaged_users > 0 else 0
+
+    course_stats = [
+         { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
+         { 'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
+         { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
+         { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
+    ]
+
+    return course_stats
+
+def course_bulk_actions(course_id, data, batch_status):
+    batch_status.clean_old()
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
+    course_bulk_action(course_id, data, batch_status)
+
+@postpone
+def course_bulk_action(course_id, data, batch_status):
+    if (data['type'] == 'status_change'):
+        if batch_status is not None:
+            batch_status.attempted = len(data['list_of_items'])
+            batch_status.save()
+        for status_item in data['list_of_items']:
+            status = _change_user_status(course_id, data['new_status'], status_item)
+            if (status['status']=='error'):
+                if batch_status is not None:
+                    batch_status.failed = batch_status.failed + 1
+                    batch_status.save()    
+                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+            elif (status['status']=='success'):
+                if batch_status is not None:
+                    batch_status.succeded = batch_status.succeded + 1
+                    batch_status.save()
+    elif (data['type'] == 'unenroll_participants'):
+        if batch_status is not None:
+            batch_status.attempted = len(data['list_of_items'])
+            batch_status.save()
+        for status_item in data['list_of_items']:
+            status = _unenroll_participant(course_id, status_item)
+            if (status['status']=='error'):
+                if batch_status is not None:
+                    batch_status.failed = batch_status.failed + 1
+                    batch_status.save()    
+                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+            elif (status['status']=='success'):
+                if batch_status is not None:
+                    batch_status.succeded = batch_status.succeded + 1
+                    batch_status.save()          
+def _unenroll_participant(course_id, user_id):
+    try:
+        permissions = Permissions(user_id)
+        permissions.remove_all_course_roles(course_id)
+        user_groups = user_api.get_user_workgroups(user_id,course_id)
+        for group in user_groups:
+            workgroup_api.remove_user_from_workgroup(vars(group)['id'], user_id)
+        user_api.unenroll_user_from_course(user_id, course_id)
+    except ApiError as e:
+        return {'status':'error', 'message':e.message}
+    return {'status':'success'}
+def _change_user_status(course_id, new_status, status_item):
+    permissonsMap = {
+        'TA': USER_ROLES.TA,
+        'Observer': USER_ROLES.OBSERVER
+    }
+    if new_status not in status_item['existing_roles']:
+        try:
+            permissions = Permissions(status_item['id'])
+            if new_status != 'Active' :
+                permissions.update_course_role(course_id,permissonsMap[new_status])
+            else:
+                permissions.remove_all_course_roles(course_id)
+        except ApiError as e:
+            return {'status':'error', 'message':e.message}
+    return {'status':'success'}
+
+
+def get_course_users_roles(course_id, permissions_filter_list):
+    course_roles_users = course_api.get_users_filtered_by_role(course_id)
+    user_roles_list = {'ids':[],'data':[]}
+    for course_role in course_roles_users:
+        roleData = vars(course_role)
+        if permissions_filter_list:
+            if roleData['role'] in permissions_filter_list:
+                user_roles_list['data'].append(roleData)
+                user_roles_list['ids'].append(str(roleData['id']))
+        else:
+            user_roles_list['data'].append(roleData)
+            user_roles_list['ids'].append(str(roleData['id']))
+    user_roles_list['ids'] = set(user_roles_list['ids'])
+    user_roles_list['ids'] = list(user_roles_list['ids'])
+    return user_roles_list
+
+def get_user_courses_helper(user_id):
+
+    user_courses = []
+    allCourses = user_api.get_courses_from_user(user_id)
+    for course in allCourses:
+        user_course = {}
+        user_course['name'] = course['name']
+        user_course['id'] = course['id']
+        user_course['program'] = '-'
+        user_course['progress'] = "."
+        user_course['proficiency'] = "."
+        user_course['completed'] ='N/A'
+        user_course['grade'] ='N/A'
+        user_course['status'] = 'Active'
+        user_course['unenroll'] = 'Unenroll'
+        user_course['start'] = course['start']
+        if course['end'] is not None:
+            user_course['end'] = course['end']
+        else: 
+            user_course['end'] = '-'
+        user_courses.append(user_course)
+    user_roles = user_api.get_user_roles(user_id)
+    for role in user_roles:
+        if not any(item['id'] == vars(role)['course_id'] for item in user_courses):
+            course = course_api.get_course_details(vars(role)['course_id'])
+            user_course = {}
+            user_course['name'] = course['name']
+            user_course['id'] = course['id']
+            user_course['program'] = '-'
+            user_course['progress'] = "."
+            user_course['proficiency'] = "."
+            user_course['completed'] ='N/A'
+            user_course['grade'] ='N/A'
+            user_course['start'] = course['start']
+            if course['end'] is not None:
+                user_course['end'] = course['end']
+            else: 
+                user_course['end'] = '-'
+            if vars(role)['role'] == 'observer':
+                user_course['status'] = 'Observer'
+            if vars(role)['role'] == 'assistant':
+                user_course['status'] = 'TA'
+            user_course['unenroll'] = 'Unenroll'
+            user_courses.append(user_course)       
+        else:
+            user_course = (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id']).next()
+            if user_course['status'] != 'TA':
+                if vars(role)['role'] == 'observer':
+                    user_course['status'] = 'Observer'
+                if vars(role)['role'] == 'assistant':
+                    user_course['status'] = 'TA'
+
+    active_courses = []
+    course_history = []    
+    for user_course in user_courses:
+        if timezone.now() >= parsedate(user_course['start']):
+            if user_course['end'] == '-':
+                active_courses.append(user_course)
+            elif timezone.now() <= parsedate(user_course['end']):
+                active_courses.append(user_course)
+            else:
+                course_history.append(user_course)
+
+    return active_courses, course_history
+    
+def get_course_progress(course_id, users, request):
+    '''
+    Helper method for calculating user pogress on course. 
+    Returns dictionary of users with user_id and progress.
+    '''
+    course = None
+    course = load_course(course_id, request=request)
+
+    users_progress = []
+    user_completions = []
+    for user in users:
+        user_completion = {}
+        user_completion['user_id'] = user['id']
+        user_completion['results'] = []
+        user_completions.append(user_completion)
+
+    completions = course_api.get_completions_on_course(course.id)
+
+    for completion in completions:
+        for user_completion in user_completions:
+            if completion['user_id'] == user_completion['user_id']:
+                user_completion['results'].append(completion)
+
+    for user_completion in user_completions:
+        user_progress = {}
+        user_progress['user_id'] = user_completion['user_id']
+        completed_ids = [result['content_id'] for result in user_completion['results']]
+        component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+        for lesson in course.chapters:
+            lesson.progress = 0
+            lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                               settings.PROGRESS_IGNORE_COMPONENTS)
+            if len(lesson_component_ids) > 0:
+                matches = set(lesson_component_ids).intersection(completed_ids)
+                lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+        actual_completions = set(component_ids).intersection(completed_ids)
+        actual_completions_len = len(actual_completions)
+        component_ids_len = len(component_ids)
+        try:
+            user_progress['progress'] = round_to_int(float(100 * actual_completions_len)/component_ids_len)
+        except ZeroDivisionError:
+            user_progress['progress'] = 0
+        users_progress.append(user_progress)
+
+    return users_progress
+
+
+def import_participants_threaded(student_list, request, req_status):
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
+    process_import_participants_list(student_list, request, req_status)  
+
+
+@postpone
+def process_import_participants_list(file_stream, request, reg_status=None):
+    # 1) Build user list
+    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_participants_csv)
+    if reg_status is not None:
+        reg_status.attempted = len(user_list)
+        reg_status.save()
+    for user_info in user_list:
+        if "error" in user_info:
+            UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+    user_list = [user_info for user_info in user_list if "error" not in user_info]
+    # 2) Register the users, and associate them with client
+    _enroll_participants_from_csv(user_list, request, reg_status)
+
+
+def _process_line_participants_csv(user_line):
+    try:
+        fields = user_line.strip().split(',')
+        # format is FirstName, LastName, Email, Company, CourseID, Status
+
+        # temporarily set the user name to the first 30 characters of the allowed characters within the email
+        username = re.sub(r'\W', '', fields[2])
+        if len(username) > 30:
+            username = username[:29]
+
+        user_info = {
+            "first_name": fields[0],
+            "last_name": fields[1],
+            "email": fields[2],
+            "company": fields[3],
+            "course": fields[4],
+            "status": fields[5],
+            "username": username,
+            "is_active": False,
+            "password": settings.INITIAL_PASSWORD,
+        }
+
+    except Exception as e:
+        user_info = {
+            "error": _("Could not parse user info from {}").format(user_line)
+        }
+
+    return user_info
+
+
+def _enroll_participants_from_csv(students, request, reg_status):
+
+    permissonsMap = {
+        'TA': USER_ROLES.TA,
+        'Observer': USER_ROLES.OBSERVER
+    }
+
+    for user_dict in students:
+
+        client_id = user_dict['company']
+        client = Client.fetch(client_id)
+        course_id = user_dict['course']
+        status = user_dict['status']
+
+        failure = None
+        user_error = []
+        try:
+            user = None
+            activation_record = None
+
+            try:
+                user = user_api.register_user(user_dict)
+            except ApiError as e:
+                user = None
+                failure = {
+                    "reason": e.message,
+                    "activity": _("Unable to register user")
+                }
+
+            if user:
+                try:
+                    if not user.is_active:
+                        activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
+                    client.add_user(user.id)
+                except ApiError as e:
+                    failure = {
+                        "reason": e.message,
+                        "activity": _("User not associated with client")
+                    }
+
+            if failure:
+                user_error.append(_("{}: {} - {}").format(
+                    failure["activity"],
+                    failure["reason"],
+                    user_dict["email"],
+                ))
+            try: 
+                # Add User to course
+                if not user: 
+                    user = user_api.get_users(email=user_dict["email"])[0]
+
+                try:
+                    enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
+                    if user.id not in enrolled_users:
+                        enroll_user_in_course(user.id, course_id)
+                except Exception as e: 
+                    user_error.append(_("{}: {} - {}").format(
+                        "User course enrollment",
+                        e.message,
+                        user_dict["email"],
+                    ))
+
+                try:
+                    permissions = Permissions(user.id)
+                    if status != 'Active' :
+                        permissions.update_course_role(course_id,permissonsMap[status])
+                except ApiError as e:
+                    user_error.append(_("{}: {} - {}").format(
+                        "User course status",
+                        e.message,
+                        user_dict["email"],
+                    ))
+                    
+            except Exception as e: 
+                reason = e.message if e.message else _("Enrolling student error")
+                user_error.append(_("Error enrolling student: {} - {}").format(
+                    reason,
+                    user_dict["email"]
+                ))
+
+        except Exception as e:
+            user = None
+            reason = e.message if e.message else _("Data processing error")
+            user_error.append(_("Error processing data: {} - {}").format(
+                reason,
+                user_dict["email"]
+            ))
+
+        if user_error:
+            for user_e in user_error:
+                error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
+            reg_status.failed = reg_status.failed + 1
+            reg_status.save()
+        else:
+            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
+            reg_status.succeded = reg_status.succeded + 1
+            reg_status.save() 
+    

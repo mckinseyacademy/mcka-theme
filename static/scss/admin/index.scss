@@ -430,12 +430,12 @@
     }
   }
 
-  .admin-analytics-progress-wrapper{
+  .admin-analytics-progress-wrapper, #course-details-timeline-wrapper{
     height:360px;
     width:775px;
     float: left;
 
-    #admin-analytics-progress{
+    #admin-analytics-progress, #course-details-timeline{
       overflow: visible;
       padding-left: 10px;
 
@@ -583,6 +583,14 @@
     color: $mckinsey-dark-grey;
   }
 
+  #download_csv_template {
+    a {
+      &.button.close-reveal-modal {
+        color: $pure-white;
+      }
+    }
+  }
+
   @import './admin-list';
   @import './principal-overlay';
   @import './workgroup-detail';
@@ -592,4 +600,5 @@
   @import './feature-flags';
   @import './nav-links';
   @import './workgroup-dashboard';
+  @import './admin-learner-dashboard';
 }

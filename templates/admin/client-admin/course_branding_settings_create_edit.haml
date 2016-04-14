@@ -1,0 +1,57 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  %script{src: "/static/js/form_changed_check.js"}
+  .admin-detail.row
+    .large-12.large.columns
+      - block admin_detail
+        %h1
+          - if instance
+            %span= _("Edit Learner dashboard branding: ")
+          - else
+            %span= _("Create Learner dashboard branding: ")
+    %hr
+    %form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/create_edit", method: "POST", enctype: "multipart/form-data"}
+      - csrf_token
+      .row
+        .small-3.columns
+        .small-9.columns= form.background_image.errors
+      .row
+        .small-3.columns= form.background_image.label_tag
+        .small-9.columns= form.background_image
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.logo_image.errors
+      .row
+        .small-3.columns= form.logo_image.label_tag
+        .small-9.columns= form.logo_image
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.navigation_colors.errors
+      .row
+        .small-3.columns= form.navigation_colors.label_tag
+        .small-9.columns= form.navigation_colors
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.text_colors.errors
+      .row
+        .small-3.columns= form.text_colors.label_tag
+        .small-9.columns= form.text_colors
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.background_tiled.errors
+      .row
+        .small-3.columns= form.background_tiled.label_tag
+        .small-9.columns= form.background_tiled
+      %input{'type': 'hidden', 'name': 'client_id', 'value': '#{client_id}'}
+      .error
+        - if error
+          = error
+      %div.submit-area
+        %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
+        %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
+          Cancel

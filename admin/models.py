@@ -268,6 +268,47 @@ class UserRegistrationBatch(db_models.Model):
             old_record.delete()
         return True
 
+class BatchOperationErrors(db_models.Model):
+    task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
+    error = db_models.TextField(default='')
+    user_id = db_models.IntegerField(default=0)
+
+    @classmethod
+    def create(cls, error='', task_key='', user_id=0):
+        reg_record = cls.objects.create(error=error, task_key= task_key, user_id=user_id)
+        reg_record.save()
+
+        return reg_record
+
+class BatchOperationStatus(db_models.Model):
+    task_key = db_models.CharField(max_length=40, unique=True, db_index=True)
+    attempted = db_models.IntegerField(default=0)
+    failed = db_models.IntegerField(default=0)
+    succeded = db_models.IntegerField(default=0)
+    time_requested = db_models.DateTimeField(default=timezone.now)
+
+    @staticmethod
+    def generate_task_key(time):
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+        return hashlib.sha1(salt+time).hexdigest()
+
+    @classmethod
+    def create(cls):
+        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0, task_key= cls.generate_task_key(str(timezone.now())))
+        reg_record.save()
+
+        return reg_record
+
+    @classmethod
+    def clean_old(cls, ErrorModels=BatchOperationErrors):
+        old_records = cls.objects.filter(time_requested__lte=(timezone.now() - timedelta(days=1)))
+        for old_record in old_records:
+            old_errors = ErrorModels.objects.filter(task_key=old_record.task_key)
+            for old_error in old_errors:
+                old_error.delete()
+            old_record.delete()
+        return True
+
 class ClientNavLinks(db_models.Model):
     class Meta:
         unique_together = ['client_id', 'link_name']
@@ -355,4 +396,71 @@ class DashboardAdminQuickFilter(db_models.Model):
         # Following columns should be considered unique together:
         # (user_id, program_id, course_id, company_id, group_work_project_id)
         # see notes in the class docstring for details.
+
+class BrandingSettings(db_models.Model):
+
+    background_image = db_models.ImageField(upload_to=settings.BACKGROUND, blank=True)
+    logo_image = db_models.ImageField(upload_to=settings.LOGO, blank=True)
+    navigation_colors = db_models.CharField(max_length=20, blank=True)
+    text_colors = db_models.CharField(max_length=20, blank=True)
+    background_tiled = db_models.BooleanField(blank=True)
+
+    client_id = db_models.IntegerField(blank=False, unique=True)
+
+class LearnerDashboard(db_models.Model):
+
+    title = db_models.CharField(blank=True, max_length=80)
+    description = db_models.CharField(blank=True, max_length=5000)
+
+    client_id = db_models.IntegerField(blank=False, unique=True)
+    course_id = db_models.CharField(blank=False, max_length=500)
+
+class LearnerDashboardTile(db_models.Model):
+
+    title = db_models.CharField(max_length=20)
+    description = db_models.CharField(blank=True, max_length=40)
+    link = db_models.URLField()
+    position = db_models.IntegerField(blank=False, default=100)
+    background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND, blank=True)
+
+    TYPES = (
+        (u'1', u'External link'),
+        (u'2', u'Course'),
+        (u'3', u'XBlock'),
+    )
+    tile_type = db_models.CharField(max_length=1, choices=TYPES)
+
+    learner_dashboard = db_models.ForeignKey(
+        'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+class LearnerDashboardDiscovery(db_models.Model):
+
+    link = db_models.URLField()
+    title = db_models.CharField(max_length=20)
+    author = db_models.CharField(blank=True, max_length=20)
+    position = db_models.IntegerField(default=100)
+
+    learner_dashboard = db_models.ForeignKey(
+        'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+class LearnerDashboardResource(db_models.Model):
+
+    title = db_models.CharField(blank=True, max_length=20)
+    description = db_models.CharField(blank=True, max_length=40)
+    link = db_models.CharField(blank=True, max_length=500)
+    file = db_models.FileField(upload_to=settings.RESOURCES, blank=True)
+
+    learner_dashboard = db_models.ForeignKey(
+        'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+
+
+
+
 

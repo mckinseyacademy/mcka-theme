@@ -10,3 +10,5 @@ tracking.log
 /static/scss/static/gen/
 /util/djtemp/*
 /static_cache
+
+/static/image/learners_dashboard/

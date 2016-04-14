@@ -9,6 +9,20 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/email_not_started$', views.client_admin_email_not_started, name='client_admin_email_not_started'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/download_course_report$', views.client_admin_download_course_report, name='download_course_report'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants$', views.client_admin_course_participants, name='client_admin_course_participants'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/reset$', views.client_admin_branding_settings_reset, name='client_admin_branding_settings_reset'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding$', views.client_admin_branding_settings, name='client_admin_branding_settings'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/create_edit$', views.client_admin_branding_settings_create_edit, name='client_admin_branding_settings_create_edit'),
+    #LD DiscoverContent
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.client_admin_course_learner_dashboard_discover_list, name='client_admin_course_learner_dashboard_discover_list'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_delete, name='client_admin_course_learner_dashboard_discover_delete'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.client_admin_course_learner_dashboard_discover_reorder, name='client_admin_course_learner_dashboard_discover_reorder'),
+    #LD DiscoverContent
+    #Learner Dashboard, Tile 
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.client_admin_course_learner_dashboard_tile, name='client_admin_course_learner_dashboard_tile'),    
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard$', views.client_admin_course_learner_dashboard, name='client_admin_course_learner_dashboard'),
+    #Learner Dashboard, Tile 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/participant$', views.client_admin_course_analytics_participants, name='client_admin_course_analytics_participants'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/progress$', views.client_admin_course_analytics_progress, name='client_admin_course_analytics_progress'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics$', views.client_admin_course_analytics, name='client_admin_course_analytics'),
@@ -19,6 +33,16 @@ urlpatterns = patterns(
     url(r'^client-admin/programs', views.client_admin_program_detail, name='client_admin_program_detail'),
     url(r'^client-admin/contact', views.client_admin_contact, name='client_admin_contact'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
+    
+    url(r'^api/courses/(?P<course_id>.*)/stats/$', views.course_details_stats_api.as_view(), name='course_details_stats_api'),
+    url(r'^api/courses/(?P<course_id>.*)/engagement/$', views.course_details_engagement_api.as_view(), name='course_details_engagement_api'),
+    url(r'^api/courses/(?P<course_id>.*)/performance/$', views.course_details_performance_api.as_view(), name='course_details_performance_api'),
+    url(r'^api/courses/(?P<course_id>.*)/timeline/$', views.course_details_cohort_timeline_api.as_view(), name='course_details_cohort_timeline_api'),
+    url(r'^api/courses/(?P<course_id>.+)$', views.course_details_api.as_view(), name='course_details_api'),
+    url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
+    url(r'^courses/(?P<course_id>.*)/download_course_stats/$', views.download_course_stats, name='download_course_stats'),
+    url(r'^courses/(?P<course_id>.*)/$', views.course_details, name='course_details'),
+    url(r'^courses/$', views.courses_list, name='courses_list'),
 
     url(r'^course-meta-content$', views.course_meta_content_course_list, name='course_meta_content_course_list'),
     url(r'^course-meta-content/items/(?P<course_id>.+)$', views.course_meta_content_course_items, name='course_meta_content_course_items'),
@@ -87,6 +111,20 @@ urlpatterns = patterns(
     url(r'^workgroup/project/create/(?P<course_id>.*)', views.workgroup_project_create, name='workgroup_project_create'),
     url(r'^workgroup/project/(?P<project_id>[0-9]+)/delete', views.workgroup_remove_project, name='workgroup_remove_project'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
+
+    url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses/export_stats$', views.download_active_courses_stats, name='download_active_courses_stats'),
+    url(r'^api/participants/(?P<user_id>[0-9]+)/course_history/export_stats$', views.download_course_history_stats, name='download_course_history_stats'),
+    url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses$', views.participant_details_active_courses_api.as_view(), name='participant_details_active_courses_api'),
+    url(r'^api/participants/(?P<user_id>[0-9]+)/course_history$', views.participant_details_course_history_api.as_view(), name='participant_details_course_history_api'),
+    url(r'^api/participants/organizations$', views.manage_user_company_api.as_view(), name='manage_user_company_api'),
+    url(r'^api/participants/validate_participant_email/$', views.validate_participant_email, name='validate_participant_email'),
+    url(r'^api/participants/validate_participant_username/$', views.validate_participant_username, name='validate_participant_username'),
+    url(r'^api/participants/import_participants/check/(?P<task_key>.*)$', views.import_participants_check, name='import_participants_check'),
+    url(r'^api/participants/import_participants/download_activation_links/$', views.download_activation_links_by_task_key, name='download_activation_links_by_task_key'),
+    url(r'^api/participants/import_participants$', views.import_participants, name='import_participants'),
+    url(r'^api/participants$', views.participants_list_api.as_view(), name='participants_list_api'),
+    url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
+    url(r'^participants$', views.participants_list, name='participants_list'),
 
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),
