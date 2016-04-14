@@ -282,7 +282,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       $('#courseDetailsMainModal').on('click', '.enrollThisUsersInNewCourse', function(){
         $('#courseBulkActionsMainContainer').find('.bulkEnrollInNewCourse').trigger('click');
       });
-      $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges').empty();
       if(selectedRowsIdsLen == 0) {
         alert("You need to select at least one participant to be able to apply bulk actions.")
       }
