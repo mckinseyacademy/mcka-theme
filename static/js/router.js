@@ -125,9 +125,10 @@ var Router = Backbone.Router.extend({
     view.render();
   },
   participant_details_active_courses: function(){
-    var url = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/active_courses';
+    var user_id = $('#participantsDetailsDataWrapper').attr('data-id');
+    var url = ApiUrls.participants_list+'/'+user_id+'/active_courses';
     var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: url});
-    var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid'});
+    var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid', user_id: user_id});
     participant_details_active_courses_view.render();
   },
 

@@ -1187,7 +1187,7 @@ def course_bulk_action(course_id, data, batch_status):
             batch_status.attempted = len(data['list_of_items'])
             batch_status.save()
         for status_item in data['list_of_items']:
-            status = _change_user_status(course_id, data['new_status'], status_item)
+            status = change_user_status(course_id, data['new_status'], status_item)
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
@@ -1202,7 +1202,7 @@ def course_bulk_action(course_id, data, batch_status):
             batch_status.attempted = len(data['list_of_items'])
             batch_status.save()
         for status_item in data['list_of_items']:
-            status = _unenroll_participant(course_id, status_item)
+            status = unenroll_participant(course_id, status_item)
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
@@ -1258,8 +1258,8 @@ def _enroll_participant_with_status(course_id, user_id, status):
 
     return {'status':'success'}
 
-
-def _unenroll_participant(course_id, user_id):
+         
+def unenroll_participant(course_id, user_id):
     try:
         permissions = Permissions(user_id)
         permissions.remove_all_course_roles(course_id)
@@ -1272,7 +1272,7 @@ def _unenroll_participant(course_id, user_id):
     return {'status':'success'}
 
 
-def _change_user_status(course_id, new_status, status_item):
+def change_user_status(course_id, new_status, status_item):
     permissonsMap = {
         'TA': USER_ROLES.TA,
         'Observer': USER_ROLES.OBSERVER

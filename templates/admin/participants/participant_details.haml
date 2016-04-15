@@ -1,4 +1,8 @@
 - extends "admin/admin_layout.haml"
+- load staticfiles
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+
 - block content
   #mainParticipantsDetailsWrapper
     .participantDetailsNavigationButton
@@ -203,6 +207,17 @@
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
 
+  #edit-status-modal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "true", :role => "dialog"}
 
-
-
+  #unenroll-user-modal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2.modalTitle
+    Are you sure you want to unenroll this user?
+    %p.lead
+    %p.mainText
+      %br
+      %button.okbutton.button.radius.small{:value => 'ok'}> Ok
+      %button.cancelbutton.button.radius.small.close-reveal-modal.close-modal-inline{:value => 'cancel'}> Cancel
+    %p
+      .error
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
