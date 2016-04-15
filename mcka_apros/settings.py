@@ -224,7 +224,7 @@ USE_SESSION_COURSEWARE_CACHING = False
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-TA_EMAIL_GROUP = 'danko@extensionengine.com'
+TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
 INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from
@@ -234,7 +234,7 @@ ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
 
 # EMAIL BACKEND
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django_ses.SESBackend"
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
 # Date formatting rules
@@ -413,15 +413,6 @@ DAILY_EMAIL_REPORTS_CONFIG = {
     "apros_db_name":"default",
     "file_format":".xlsx",
 }
-
-######### temp mail sender #############
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mckatestingacc@gmail.com'
-EMAIL_HOST_PASSWORD = '1m2c3k4a'
-DEFAULT_FROM_EMAIL = 'danko@extensionengine.com'
-DEFAULT_TO_EMAIL = 'lala@gmail.com'
 
 ################################### EDX-NOTIFICATIONS SUBSYSTEM ######################################
 
