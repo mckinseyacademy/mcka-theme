@@ -24,7 +24,7 @@
         %h5 FOR DISCOVERY
         -for item in discovery_items
           .learner-info
-            %a{href:"#{item.link}"}
+            %a{href:"#{item.link}", target: "_blank"}
               %p= item.title
             %h5
               %span= item.author
