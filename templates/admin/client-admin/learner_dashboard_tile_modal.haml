@@ -2,23 +2,28 @@
   %i.fa.fa-times-circle
 %script
       $(function() {
-        	$('#id_title').on('input', function() { 
+          $('#id_title').on('input', function() {
+              $('#unchangedTile').css("display", "none");
               $('#saveTile').css("display", "inline");
           });
 
-          $('#id_description').on('input', function() { 
+          $('#id_description').on('input', function() {
+              $('#unchangedTile').css("display", "none");
               $('#saveTile').css("display", "inline");
           });
 
-          $('#id_link').on('input', function() { 
+          $('#id_link').on('input', function() {
+              $('#unchangedTile').css("display", "none");
               $('#saveTile').css("display", "inline");
           });
 
-          $('#id_tile_type').on('input', function() { 
+          $('#id_tile_type').on('input', function() {
+              $('#unchangedTile').css("display", "none");
               $('#saveTile').css("display", "inline");
           });
 
-          $('#id_background_image').change(function() { 
+          $('#id_background_image').change(function() {
+              $('#unchangedTile').css("display", "none");
               $('#saveTile').css("display", "inline");
           });
       });
@@ -60,3 +65,4 @@
     - if error
       = error
   %input#saveTile.button.right.radius.small{type: 'submit', value: 'Save'}
+  %input#unchangedTile.button.right.radius.small.disabled{type: 'button', value: 'Save'}
