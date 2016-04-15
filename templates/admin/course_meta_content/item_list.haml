@@ -61,3 +61,10 @@
           - else
             %input#cohort_map{type: 'checkbox', name: 'proficiency'}
           %label{for: 'proficiency'} Proficiency
+
+        %li
+          - if feature_flags.learner_dashboard
+            %input#cohort_map{type: 'checkbox', name: 'learner_dashboard', checked: None}
+          - else
+            %input#cohort_map{type: 'checkbox', name: 'learner_dashboard'}
+          %label{for: 'learner_dashboard'} Learner Dashboard

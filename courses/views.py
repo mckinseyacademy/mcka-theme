@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from admin.controller import load_course
-from admin.models import WorkGroup
+from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
@@ -793,6 +793,34 @@ def course_article(request, course_id):
     }
     return render(request, 'courses/course_article.haml', data)
 
+@login_required
+@check_user_course_access
+def course_learner_dashboard(request, course_id):
+
+    organization = user_api.get_user_organizations(request.user.id)[0]
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+    except:
+        return render(request, '404.haml')
+
+    try:
+        branding = BrandingSettings.objects.get(client_id=organization.id)
+    except:
+        branding = None
+
+    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+
+    data ={
+        'learner_dashboard': learner_dashboard,
+        'learner_dashboard_tiles': learner_dashboard_tiles,
+        'discovery_items': discovery_items,
+        'branding': branding,
+    }
+    return render(request, 'courses/course_learner_dashboard.haml', data)
+
 @require_POST
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -804,6 +832,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'
     feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
     feature_flags.proficiency = request.POST.get('proficiency', None) == 'on'
+    feature_flags.learner_dashboard = request.POST.get('learner_dashboard', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(

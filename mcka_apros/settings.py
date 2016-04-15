@@ -224,7 +224,7 @@ USE_SESSION_COURSEWARE_CACHING = False
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
+TA_EMAIL_GROUP = 'danko@extensionengine.com'
 INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from
@@ -234,7 +234,7 @@ ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
 
 # EMAIL BACKEND
-EMAIL_BACKEND = "django_ses.SESBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
 # Date formatting rules
@@ -349,7 +349,14 @@ TEMP_IMAGE_FOLDER = "profile_temp_images/"
 
 FEATURES = {
     'notes': False,
+    #ADMIN COURSES SECTION 
+    'ADMIN_COURSES_TAB': False,
+    #ADMIN PARTICIPANTS SECTION
+    'ADMIN_PARTICIPANTS_TAB': False,
 }
+
+#LEARNER DASHBOARD FEATURE ON/OFF SETTING
+LEARNER_DASHBOARD_ENABLED = False
 
 try:
     from local_settings import *
@@ -414,6 +421,15 @@ DAILY_EMAIL_REPORTS_CONFIG = {
     "file_format":".xlsx",
 }
 
+######### temp mail sender #############
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mckatestingacc@gmail.com'
+EMAIL_HOST_PASSWORD = '1m2c3k4a'
+DEFAULT_FROM_EMAIL = 'danko@extensionengine.com'
+DEFAULT_TO_EMAIL = 'lala@gmail.com'
+
 ################################### EDX-NOTIFICATIONS SUBSYSTEM ######################################
 
 INSTALLED_APPS += (
@@ -424,3 +440,15 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
+
+#File upload paths for Learner Dashboard
+LOGO = "static/image/learner_dashboard/branding/logos/"
+BACKGROUND = "static/image/learner_dashboard/branding/backgrounds/"
+TILE_BACKGROUND = "static/image/learner_dashboard/tile_backgrounds/"
+RESOURCES = "static/image/learner_dashboard/resources/"
+# Default settings for Learner Dashboard Client Branding
+BACKGROUND_IMAGE = None
+LOGO_IMAGE = None
+NAVIGATION_COLORS = None
+TEXT_COLORS = None
+BACKGROUND_TILED = None
