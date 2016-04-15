@@ -4,14 +4,10 @@
   %title
     = program.display_name
     = _(" | Courses | McKinsey Academy")
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
 - block content
   #home-courses{style: "{% if branding and branding.background_image %} background-image: url(#{branding.background_image});{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
-  %div.right
-    %a{:href => "/courses/#{course.id}/resources_learner_dashboard", :class => "button radius small", :data-reveal-id => 'resources', :data-reveal-ajax =>'true'}
-      %i.fa.fa-file-text-o
-    %a{:class => "button radius small", :data-reveal-id => 'contact-ta', :data-reveal-ajax =>'true'}
-      TA
-  #home-courses
     .row
       .large-8.columns.dash-programs
         -if branding

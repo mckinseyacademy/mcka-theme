@@ -1,3 +1,28 @@
+#learner-dashboard-header{
+	height: 96px;
+	background-color: white;
+	.main-nav {
+		background-color: white;
+		background-image: none;
+		.header-row{
+			height: 91px;
+			.header-logo {
+				margin-top: 22px;
+			}
+			.header-padding{
+				padding-right: 0px;
+				.header-path {
+					padding: 12px 10px;
+					.header-link {
+						font-size: 20px;
+						margin-left: 15px;
+					}
+				}
+			}
+		}
+	}
+}
+
 .dash-programs{
 	background: white;
 	height: 610px;
@@ -17,7 +42,7 @@
 		width: 585px;
 		font-size: 14px;
 		height: 100px;
-		overflow: overlay;
+		overflow: auto;
 		margin-bottom: 10px;
 	}
 
@@ -67,6 +92,3 @@
 		}
 	}
 }
-
-
-
