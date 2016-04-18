@@ -338,10 +338,7 @@ def client_admin_course(request, client_id, course_id):
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
 	
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
+    (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
     data = {
         'client_id': client_id,
@@ -351,7 +348,7 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': features.learner_dashboard,
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
