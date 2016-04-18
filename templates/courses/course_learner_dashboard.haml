@@ -15,9 +15,10 @@
         %p= learner_dashboard.description
         .row
           -for tile in learner_dashboard_tiles
-            .learner-program
-              .panel.panel-program 
-                %h4= tile.title
+            %a{href: "#{tile.link}", target:"_blank"}
+              .learner-program
+                .panel.panel-program 
+                  %h4= tile.title
       .large-4.columns.dash-widget
         %h5 FOR DISCOVERY
         -for item in discovery_items
