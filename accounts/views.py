@@ -144,15 +144,19 @@ def _get_redirect_to_current_course(request):
             future_start_date = is_future_start(program.start_date)
 
     if course_id and not future_start_date:
-        features = FeatureFlags.objects.get(course_id=course_id)
-        if hasattr(features, 'learner_dashboard'): 
-            if features.learner_dashboard is True:
-                organization = user_api.get_user_organizations(request.user.id)[0]
-                try:
-                    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
-                    return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
-                except (LearnerDashboard.DoesNotExist):
-                    return reverse('course_landing_page', kwargs=dict(course_id=course_id))
+        if settings.LEARNER_DASHBOARD_ENABLED:
+            try:
+                features = FeatureFlags.objects.get(course_id=course_id)
+            except (DoesNotExist):
+                features = []
+            if hasattr(features, 'learner_dashboard'): 
+                if features.learner_dashboard is True:
+                    organization = user_api.get_user_organizations(request.user.id)[0]
+                    try:
+                        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+                        return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
+                    except (LearnerDashboard.DoesNotExist):
+                        return reverse('course_landing_page', kwargs=dict(course_id=course_id))
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
     return reverse('protected_home')
 
