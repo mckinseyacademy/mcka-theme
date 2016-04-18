@@ -802,7 +802,8 @@ def course_learner_dashboard(request, course_id):
     try:
         learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
     except:
-        return render(request, '404.haml')
+        redirect_url = '/courses/{}/'.format(course_id)
+        return HttpResponseRedirect(redirect_url)
 
     try:
         branding = BrandingSettings.objects.get(client_id=organization.id)
