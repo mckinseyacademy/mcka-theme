@@ -2,6 +2,7 @@
 import json
 import csv
 from datetime import datetime, timedelta
+import re
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -814,6 +815,15 @@ def course_learner_dashboard(request, course_id):
         return render(request, '404.haml')
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+
+    for tile in learner_dashboard_tiles:
+        try:
+            chapter_id = re.findall ( 'lessons/(.*?)/module', tile.link, re.DOTALL)
+            page_id = re.findall ( 'module/(.*?)$', tile.link, re.DOTALL)
+            tile.link  = course_id + "/lessons/" + chapter_id + "/module/" + page_id
+        except:
+            print "No strings"
+
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     data ={
