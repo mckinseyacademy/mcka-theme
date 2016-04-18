@@ -147,7 +147,7 @@ def _get_redirect_to_current_course(request):
         if settings.LEARNER_DASHBOARD_ENABLED:
             try:
                 features = FeatureFlags.objects.get(course_id=course_id)
-            except (DoesNotExist):
+            except:
                 features = []
             if hasattr(features, 'learner_dashboard'): 
                 if features.learner_dashboard is True:
