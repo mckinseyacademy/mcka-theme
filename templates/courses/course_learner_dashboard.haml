@@ -4,8 +4,10 @@
   %title
     = program.display_name
     = _(" | Courses | McKinsey Academy")
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
 - block content
-  #home-courses
+  #home-courses{style: "{% if branding and branding.background_image %} background-image: url(#{branding.background_image});{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
     .row
       .large-8.columns.dash-programs
         -if branding
@@ -23,12 +25,11 @@
         %h5 FOR DISCOVERY
         -for item in discovery_items
           .learner-info
-            %a{href:"#{item.link}"}
+            %a{href:"#{item.link}", target: "_blank"}
               %p= item.title
             %h5
               %span= item.author
-    %a{:class => "button radius small", :data-reveal-id => 'contact-ta', :data-reveal-ajax =>'true'}
-      Contact TA
+  #resources.reveal-modal.large{"data-reveal": "true"}
   #contact-ta.reveal-modal.small{"data-reveal": "false"}
     .close-reveal-modal
       %i.fa.fa-times-circle
