@@ -535,7 +535,7 @@ def course_resources_learner_dashboard(request, course_id):
 
 @login_required
 @check_user_course_access
-def navigate_to_lesson_module(request, course_id, chapter_id, page_id, learner_dashboard=None):
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None):
 
     ''' go to given page within given chapter within given course '''
     course = load_course(course_id, request=request)
@@ -550,7 +550,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, learner_d
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
         "legacy_course_id": course_id,
-        "learner_dashboard": learner_dashboard,
+        "tile_type": tile_type,
     }
 
     if not current_sequential.is_started:
@@ -579,7 +579,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, learner_d
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
-    if learner_dashboard:
+    if tile_type:
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
         return render(request, 'courses/course_lessons.haml', data)
@@ -827,9 +827,9 @@ def course_learner_dashboard(request, course_id):
                     chapter_id = re.findall ( 'lessons/(.*?)/module', tile.link, re.DOTALL)
                     page_id = re.findall ( 'module/(.*?)$', tile.link, re.DOTALL)
                     if tile.tile_type == '2':
-                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/ldl"
+                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/lesson"
                     if tile.tile_type == '3':
-                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/ldm"
+                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/module"
                     tile.save()
                 except:
                     pass

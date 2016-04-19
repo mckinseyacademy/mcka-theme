@@ -5,7 +5,7 @@
       - include 'courses/lesson_notes.haml'
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
-    -if learner_dashboard != 'ldm'
+    -if tile_type != 'module'
       .lesson-title
         %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
         %span.label-3.lesson-name= course.current_lesson.name
@@ -17,7 +17,7 @@
     - block lesson_content
       .lesson-content
       .lesson-discussion
-    -if learner_dashboard != 'ldm'
+    -if tile_type != 'module'
       - include "courses/content_page/lesson_pager_ld.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
     %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
