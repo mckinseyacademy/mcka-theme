@@ -835,8 +835,9 @@ def course_learner_dashboard(request, course_id):
                 except:
                     pass
         if tile.tile_type == '4':
-            tile.link = "/courses/" + tile.link
-            tile.save()
+            if not "/courses/" in tile.link:
+                tile.link = "/courses/" + tile.link
+                tile.save()
 
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
