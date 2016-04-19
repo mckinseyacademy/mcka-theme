@@ -535,7 +535,7 @@ def course_resources_learner_dashboard(request, course_id):
 
 @login_required
 @check_user_course_access
-def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id, learner_dashboard=None):
 
     ''' go to given page within given chapter within given course '''
     course = load_course(course_id, request=request)
@@ -550,6 +550,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
         "legacy_course_id": course_id,
+        "learner_dashboard": learner_dashboard,
     }
 
     if not current_sequential.is_started:
@@ -578,7 +579,10 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
-    return render(request, 'courses/course_lessons.haml', data)
+    if learner_dashboard:
+        return render(request, 'courses/course_lessons_ld.haml', data)
+    else:
+        return render(request, 'courses/course_lessons.haml', data)
 
 def course_notready(request, course_id):
     course = load_course(course_id, request=request)
@@ -817,12 +821,18 @@ def course_learner_dashboard(request, course_id):
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     for tile in learner_dashboard_tiles:
-        try:
-            chapter_id = re.findall ( 'lessons/(.*?)/module', tile.link, re.DOTALL)
-            page_id = re.findall ( 'module/(.*?)$', tile.link, re.DOTALL)
-            tile.link  = course_id + "/lessons/" + chapter_id + "/module/" + page_id
-        except:
-            print "No strings"
+        if tile.tile_type == '2' or tile.tile_type == '3':
+            if not "/learner_dashboard/" in tile.link:
+                try:
+                    chapter_id = re.findall ( 'lessons/(.*?)/module', tile.link, re.DOTALL)
+                    page_id = re.findall ( 'module/(.*?)$', tile.link, re.DOTALL)
+                    if tile.tile_type == '2':
+                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/ldl"
+                    if tile.tile_type == '3':
+                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/ldm"
+                    tile.save()
+                except:
+                    pass
 
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
