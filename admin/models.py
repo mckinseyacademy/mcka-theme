@@ -425,8 +425,9 @@ class LearnerDashboardTile(db_models.Model):
 
     TYPES = (
         (u'1', u'External link'),
-        (u'2', u'Course'),
-        (u'3', u'XBlock'),
+        (u'2', u'Lesson'),
+        (u'3', u'Module'),
+        (u'4', u'Course'),
     )
     tile_type = db_models.CharField(max_length=1, choices=TYPES)
 
