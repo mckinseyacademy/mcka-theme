@@ -822,18 +822,12 @@ def course_learner_dashboard(request, course_id):
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     for tile in learner_dashboard_tiles:
-        if tile.tile_type == '2' or tile.tile_type == '3':
-            if not "/learner_dashboard/" in tile.link:
-                try:
-                    chapter_id = re.findall ( 'lessons/(.*?)/module', tile.link, re.DOTALL)
-                    page_id = re.findall ( 'module/(.*?)$', tile.link, re.DOTALL)
-                    if tile.tile_type == '2':
-                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/lesson"
-                    if tile.tile_type == '3':
-                        tile.link = "/courses/" + str(course_id) + "/lessons/" + str(chapter_id[0]) + "/module/" + str(page_id[0]) + "/learner_dashboard/module"
-                    tile.save()
-                except:
-                    pass
+        if not "/learner_dashboard/" in tile.link:
+            if tile.tile_type == '2':
+                tile.link = tile.link + "/learner_dashboard/lesson"
+            if tile.tile_type == '3':
+                tile.link = tile.link + "/learner_dashboard/module"
+            tile.save()
         if tile.tile_type == '4':
             if not "/courses/" in tile.link:
                 tile.link = "/courses/" + tile.link
