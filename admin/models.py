@@ -404,6 +404,7 @@ class BrandingSettings(db_models.Model):
     navigation_colors = db_models.CharField(max_length=20, blank=True)
     text_colors = db_models.CharField(max_length=20, blank=True)
     background_tiled = db_models.BooleanField(blank=True)
+    discover_text_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TEXT_COLOR)
 
     client_id = db_models.IntegerField(blank=False, unique=True)
 
@@ -422,6 +423,12 @@ class LearnerDashboardTile(db_models.Model):
     link = db_models.CharField(blank=False, max_length=500)
     position = db_models.IntegerField(blank=False, default=100)
     background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND, blank=True)
+    sub_label = db_models.CharField(blank=True, default=settings.DISCOVER_TEXT_COLOR, max_length=40)
+
+    title_color = db_models.CharField(max_length=20, default=settings.TITLE_COLOR, blank=True)
+    description_color = db_models.CharField(max_length=20, default=settings.DESCRIPTION_COLOR, blank=True)
+    sub_label_color = db_models.CharField(max_length=20, default=settings.SUB_LABEL_COLOR, blank=True)
+    tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
         (u'1', u'External link'),

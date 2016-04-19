@@ -1,32 +1,6 @@
+%script{src: "/static/js/form_changed_check.js"}
 .close-reveal-modal
   %i.fa.fa-times-circle
-%script
-      $(function() {
-          $('#id_title').on('input', function() {
-              $('#unchangedTile').css("display", "none");
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_description').on('input', function() {
-              $('#unchangedTile').css("display", "none");
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_link').on('input', function() {
-              $('#unchangedTile').css("display", "none");
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_tile_type').on('input', function() {
-              $('#unchangedTile').css("display", "none");
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_background_image').change(function() {
-              $('#unchangedTile').css("display", "none");
-              $('#saveTile').css("display", "inline");
-          });
-      });
 %form{action: '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
   - csrf_token
   .row
@@ -41,6 +15,12 @@
   .row
     .small-3.columns= form.description.label_tag
     .small-9.columns= form.description
+  .row
+    .small-3.columns
+    .small-9.columns= form.sub_label.errors
+  .row
+    .small-3.columns= form.sub_label.label_tag
+    .small-9.columns= form.sub_label
   .row
     .small-3.columns
     .small-9.columns= form.link.errors
@@ -59,10 +39,33 @@
   .row
     .small-3.columns= form.background_image.label_tag
     .small-9.columns= form.background_image
-    
+  .row
+    .small-3.columns
+    .small-9.columns= form.title_color.errors
+  .row
+    .small-3.columns= form.title_color.label_tag
+    .small-9.columns= form.title_color
+  .row
+    .small-3.columns
+    .small-9.columns= form.description_color.errors
+  .row
+    .small-3.columns= form.description_color.label_tag
+    .small-9.columns= form.description_color
+  .row
+    .small-3.columns
+    .small-9.columns= form.sub_label_color.errors
+  .row
+    .small-3.columns= form.sub_label_color.label_tag
+    .small-9.columns= form.sub_label_color
+  .row
+    .small-3.columns
+    .small-9.columns= form.tile_background_color.errors
+  .row
+    .small-3.columns= form.tile_background_color.label_tag
+    .small-9.columns= form.tile_background_color
+
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
   .error
     - if error
       = error
-  %input#saveTile.button.right.radius.small{type: 'submit', value: 'Save'}
-  %input#unchangedTile.button.right.radius.small.disabled{type: 'button', value: 'Save'}
+  %input.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
