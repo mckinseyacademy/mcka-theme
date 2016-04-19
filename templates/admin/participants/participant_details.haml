@@ -65,7 +65,7 @@
               .participantEmailLabel.inlineBlock
                 Email
               .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               ={email}
         %hr
@@ -133,7 +133,7 @@
                 Email<sup>*</sup>
               .fa.fa-check-circle-o.checkMark
               .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               %input{:type => "text", :value => '#{email}', :name => "email", :maxlength => "60", :onkeyup => 'validateParticipantEmail()', :class => 'participantEmailInput'}
               .warningText
