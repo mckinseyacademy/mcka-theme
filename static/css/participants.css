@@ -65,6 +65,10 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+#participantDetailsWrapper .participantActivation
+{
+	float: right;
+}
 #participantDetailsWrapper .participantDetailsContent .row{
 	margin-bottom: 20px;
 }

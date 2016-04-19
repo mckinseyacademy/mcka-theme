@@ -8,16 +8,13 @@ from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 
 from api_client import user_api
-from django.template import loader
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.utils.html import format_html
 from django.forms.util import flatatt
 from django.utils.encoding import force_text
 from django.core.urlresolvers import reverse
 from api_client.api_error import ApiError
 
-from .models import UserPasswordReset
+from .controller import send_password_reset_email
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -393,7 +390,6 @@ class FpasswordForm(forms.Form):
         Generates a one-use only link for resetting password and sends to the
         user.
         """
-        from django.core.mail import EmailMessage
 
         email = self.cleaned_data["email"]
 
@@ -402,26 +398,14 @@ class FpasswordForm(forms.Form):
             post_reset_redirect = '/accounts/login?reset=failed'
         else:
             user = users[0]
-
-            uid = urlsafe_base64_encode(force_bytes(user.id))
-
-            reset_record = UserPasswordReset.create_record(user)
-
-            url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': reset_record.validation_key})
-
-            c = {
-                'email': user.email,
-                'domain': request.META.get('HTTP_HOST'),
-                'url': url,
-                'user': user,
-                'protocol': 'https' if use_https else 'http',
-            }
-            subject = loader.render_to_string(subject_template_name, c)
-            # Email subject *must not* contain newlines
-            subject = ''.join(subject.splitlines())
-            email = loader.render_to_string(email_template_name, c)
-            email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
-            email.send(fail_silently=False)
+            send_password_reset_email(
+                request.META.get('HTTP_HOST'), 
+                user, 
+                use_https, 
+                subject_template_name=subject_template_name,
+                email_template_name=email_template_name,
+                from_email=from_email
+            )
 
 class SetNewPasswordForm(forms.Form):
     """

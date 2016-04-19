@@ -184,7 +184,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		        	//var mainContainer = $('#add_a_participant');
 							//mainContainer.foundation('reveal', 'close');
 							var confirmationScreen = $('#confirmation_screen_single_participant');
-							confirmationScreen.find('.download_activation').attr('href', confirmationScreen.find('.download_activation').attr('data-url') + data['user_id']);
+							confirmationScreen.find('.download_user_activation').attr('href', confirmationScreen.find('.download_user_activation').attr('data-url') + data['user_id']);
 							confirmationScreen.find('.go_to_user_profile').attr('href', confirmationScreen.find('.go_to_user_profile').attr('data-url') + data['user_id']);
 							confirmationScreen.foundation('reveal', 'open');
 		        }

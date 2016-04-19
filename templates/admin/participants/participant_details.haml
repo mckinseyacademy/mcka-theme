@@ -65,7 +65,7 @@
               .participantEmailLabel.inlineBlock
                 Email
               .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               ={email}
         %hr
@@ -104,6 +104,8 @@
           .large-12.columns.participantBottomArchiveEdit
             %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
             %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
+            - if has_activation_record
+              %a.button.small.radius.participantActivation{:href => '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}', :target => '_self'}> Download Activation Link
 
       %form.participantDetailsEditForm{:style => "display: none"}
         - csrf_token
@@ -133,7 +135,7 @@
                 Email<sup>*</sup>
               .fa.fa-check-circle-o.checkMark
               .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               %input{:type => "text", :value => '#{email}', :name => "email", :maxlength => "60", :onkeyup => 'validateParticipantEmail()', :class => 'participantEmailInput'}
               .warningText
