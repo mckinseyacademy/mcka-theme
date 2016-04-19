@@ -3,6 +3,7 @@ import functools
 import json
 import string
 import urlparse
+import re
 from dateutil.parser import parse as parsedate
 from datetime import datetime
 from urllib import quote as urlquote, urlencode
@@ -61,13 +62,15 @@ from .controller import (
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
-    get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant
+    get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
+    _send_activation_email_to_single_new_user
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm
+    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
+    CreateNewParticipant
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -2113,13 +2116,21 @@ def import_participants_check(request, task_key):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def download_activation_links_by_task_key(request):
 
-    task_key = request.GET.get('task_key')
+    task_key = request.GET.get('task_key', None)
+    user_id = request.GET.get('user_id', None)
 
     file_name = "download-activation-links-output"
+    company_id = 'N/A'
 
-    uri_head = request.build_absolute_uri('/accounts/activate')
+    if task_key:
+        uri_head = request.build_absolute_uri('/accounts/activate')
+        activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
 
-    activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
+    if user_id:
+        uri_head = request.build_absolute_uri('/accounts/activateV2')
+        user_data = user_api.get_user(user_id=user_id)
+        company_id = vars(user_api.get_user_organizations(user_id)[0])['id']
+        activation_records = [UserActivation.get_user_activation(user=user_data)]
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
@@ -2129,7 +2140,9 @@ def download_activation_links_by_task_key(request):
     for record in activation_records:
         user = vars(record)
         activation_full = "{}/{}".format(uri_head, user['activation_key'])
-        writer.writerow([user['email'], user['first_name'], user['last_name'], user['company_id'], activation_full])
+        if user_id:
+            user = vars(user_data)
+        writer.writerow([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])
 
     return response
     
@@ -3237,7 +3250,75 @@ class participants_list_api(APIView):
 
         return Response(allParticipants)
 
-
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request):
+        post_data = json.loads(request.body)
+        print post_data
+        form = CreateNewParticipant(post_data.copy())
+        if form.is_valid():
+            filterUsers = {}
+            existing_users_length = 0
+            if post_data['email']:
+                filterUsers = {'email' : post_data['email']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+            if (existing_users_length > 0):
+                return Response({'status':'error', 'type': 'user_exist', 'message':'User with that email already exists!'})
+            else:
+                data = post_data
+                try:
+                    if len(data['email']) > 30:
+                        data['username'] = data['email'][:29]
+                    else:
+                        data['username'] = data['email']
+                    data['username'] = re.sub(r'\W', '', data['username'])
+                    data['password'] = settings.INITIAL_PASSWORD
+                    data['is_active'] = False
+                    user = user_api.register_user(data)
+                    user_data = vars(user)
+                    roles = {
+                        'assistant' : USER_ROLES.TA,
+                        'observer' : USER_ROLES.OBSERVER
+                    }
+                    permissions_groups = {
+                        'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+                        'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+                        'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+                    }
+                    if user:
+                        client = Client.fetch(data['company'])
+                        try:
+                            if not user.is_active:
+                                activation_record = UserActivation.user_activation(user)
+                                if data['send_activation_email']:
+                                    email_head = request.build_absolute_uri('/accounts/activateV2') #change if we want old registration form
+                                    _send_activation_email_to_single_new_user(activation_record, user, email_head)
+                            client.add_user(user.id)
+                        except ApiError, e:
+                            return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't add user to company!"})
+                    courses_permissions_list = []
+                    for course_permission in data['course_permissions_list']:
+                        try:
+                            user_api.enroll_user_in_course(user_data['id'], course_permission['course_id'])
+                        except ApiError as e:
+                            # Ignore 409 errors, because they indicate a user already added
+                            if e.code != 409:
+                                return Response({'status':'error', 'type': 'api_error', 'message':e.message})
+                        if course_permission['role'] != 'active':
+                            course_permission['role'] = roles[course_permission['role']]
+                            courses_permissions_list.append(course_permission)
+                    if len(courses_permissions_list) > 0 or data['company_permissions'] != 'none':
+                        permissions = Permissions(user_data['id'])
+                    if len(courses_permissions_list) > 0:
+                        permissions.update_courses_roles_list(courses_permissions_list)
+                    if data['company_permissions'] != 'none':
+                        if data['company_permissions'] in permissions_groups:
+                            permissions.add_permission(permissions_groups[data['company_permissions']])
+                except ApiError, e:
+                    return Response({'status':'error','type': 'api_error', 'message':e.message})
+                return Response({'status':'ok', 'message':'Successfully added new user!', 'user_id': user_data['id']})
+        else:
+            return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
 class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -3311,7 +3392,6 @@ class participant_details_api(APIView):
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
-
 class manage_user_company_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
@@ -3338,7 +3418,6 @@ class manage_user_company_api(APIView):
         response_obj['status'] = 'ok'
         return Response(response_obj)
 
-
 class manage_user_courses_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
@@ -3351,7 +3430,6 @@ class manage_user_courses_api(APIView):
         response_obj['all_items'] = allCoursesList
         response_obj['status'] = 'ok'
         return Response(response_obj)
-
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def validate_participant_email(request):

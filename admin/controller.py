@@ -29,7 +29,7 @@ from .models import (
     GROUP_PROJECT_V2_ACTIVITY_CATEGORY,
 )
 
-from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student, email_add_single_new_user
 
 from api_client.user_api import USER_ROLES
 from .permissions import Permissions
@@ -1566,4 +1566,8 @@ def _enroll_participants_from_csv(students, request, reg_status):
             #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save() 
-    
+
+def _send_activation_email_to_single_new_user(activation_record, user, absolute_uri):
+    msg = [email_add_single_new_user(absolute_uri, user, activation_record)]
+    result = sendMultipleEmails(msg)
+    print result

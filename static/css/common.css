@@ -19,9 +19,15 @@
 	padding-bottom: 20px;
 }
 
-.labelUniversal{
+.labelUniversal
+{
 	margin-bottom: 20px;
 	font-weight: bold;
+}
+
+.inlineBlock
+{
+	display:inline-block;
 }
 
 .ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content
@@ -30,4 +36,14 @@
 	max-height: 300px;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+
+.correctInput
+{
+	display: none;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translate(-100%,-50%);
+    color:green;
 }

@@ -145,7 +145,6 @@ disableSaveChangeButton = function(saveChangeButton){
   if (canSave){
     saveChangeButton.removeClass('disabled');
   }
-
 }
 
 InitializeAutocompleteInput = function(url, inputFieldIdentifier)
@@ -165,17 +164,50 @@ InitializeAutocompleteInput = function(url, inputFieldIdentifier)
     {
       selectFillList.push({value:selectableList[itemIndex].id, label:selectableList[itemIndex].display_name});
     }
-    var inputField = $(inputFieldIdentifier);
-    inputField.autocomplete({
-      minLength: 0,
-      source: selectFillList,
-      delay: 0,
-      select: function( event, ui ) {
+    GenerateAutocompleteInput(selectFillList, inputFieldIdentifier);
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+
+GetAutocompleteSource = function(url, thisToAppend, sourceName){
+  var options = {
+      url: url,
+      type: "GET",
+      dataType: "json"
+    };
+
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    var selectableList = data.all_items;
+    var selectFillList = [] 
+    for (var itemIndex=0;itemIndex < selectableList.length; itemIndex++)
+    {
+      selectFillList.push({value:selectableList[itemIndex].id, label:selectableList[itemIndex].display_name});
+    }
+    thisToAppend[sourceName] = selectFillList;
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+GenerateAutocompleteInput = function(source, input)
+{
+  var inputField = $(input);
+  inputField.autocomplete({
+    minLength: 0,
+    source: source,
+    select: function( event, ui ) {
         inputField.val( ui.item.label );
         inputField.attr('data-id',ui.item.value);
+        inputField.parent().find('.correctInput').show();
         return false;
       },
-      search: function( event, ui ) {
+    search: function( event, ui ) {
         var input = $(event.target);
         var source = $(input).autocomplete( "option", "source" );
         var foundMatch = false;
@@ -183,16 +215,32 @@ InitializeAutocompleteInput = function(url, inputFieldIdentifier)
           if (input.val().trim().toLowerCase() == source[i].label.trim().toLowerCase()){
             foundMatch = true;
             input.attr('data-id', source[i].value);
+            input.parent().find('.correctInput').show();
           }
         }
         if(!foundMatch) {
           input.attr('data-id', '');
+          input.parent().find('.correctInput').hide();
         }
       }
-      });
-  })
-  .fail(function(data) {
-    console.log("Ajax failed to fetch data");
-    console.log(data)
+    });
+  inputField.on( "focus", function( event, ui ) {
+    $(event.target).trigger('keydown');
   });
+  return inputField;
+}
+
+function RecursiveJsonToHtml( data ) {
+  var htmlRetStr = "<ul class='recurseObj' >";
+  for (var key in data) {
+        if (typeof(data[key])== 'object' && data[key] != null) {
+            htmlRetStr += "<li class='keyObj' ><strong>" + key + ":</strong><ul class='recurseSubObj' >";
+            htmlRetStr += RecursiveJsonToHtml( data[key] );
+            htmlRetStr += '</ul  ></li   >';
+        } else {
+            htmlRetStr += ("<li class='keyStr' ><strong>" + key + ': </strong>&quot;' + data[key] + '&quot;</li  >' );
+        }
+  };
+  htmlRetStr += '</ul >';    
+  return( htmlRetStr );
 }

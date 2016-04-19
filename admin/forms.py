@@ -192,6 +192,15 @@ class EditExistingUserForm(forms.Form):
     country = forms.CharField(required=False, widget=forms.TextInput())
     city = forms.CharField(required=False, widget=forms.TextInput())
 
+class CreateNewParticipant(forms.Form):
+    first_name = forms.CharField(required=True, widget=forms.TextInput())
+    last_name = forms.CharField(required=True, widget=forms.TextInput())
+    email = forms.EmailField(required=True, widget=forms.TextInput())
+    company = forms.CharField(required=True, widget=forms.TextInput())
+    gender = forms.CharField(required=False, widget=forms.TextInput())
+    country = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput())
+
 class DashboardAdminQuickFilterForm(forms.ModelForm):
 
     class Meta:
