@@ -17,6 +17,7 @@ from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.template import loader, RequestContext
@@ -34,7 +35,7 @@ from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation
-from accounts.controller import is_future_start, save_new_client_image
+from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email
 from api_client import user_models
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api
 from api_client.api_error import ApiError
@@ -3195,6 +3196,18 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 def participants_list(request):
     form = MassStudentListForm()
     return render( request, 'admin/participants/participants_list.haml', {"form": form})
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participant_password_reset(request, user_id):
+    try: 
+        user = user_api.get_user(user_id)
+        send_password_reset_email(request.META.get('HTTP_HOST'), user, request.is_secure())
+        status = 'Password Reset Email successfully sent.'
+        messages.success(request, status)
+    except Exception as e:
+        status = e.message
+        messages.error(request, status)
+    return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
 
 class participants_list_api(APIView):
