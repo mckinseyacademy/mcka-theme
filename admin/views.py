@@ -930,14 +930,13 @@ def course_details(request, course_id):
 
     course_all_users = course_api.get_course_details_users(course_id)
     count = len(course_all_users['enrollments'])
+    users_enrolled = []
+    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
+    list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
+    for user in course_all_users['enrollments']:
+        if str(user['id']) not in list_of_user_roles['ids']:
+            users_enrolled.append(user)
 
-    course_groups = course_api.get_course_details_groups(course_id) 
-    groups_ids_list = []
-    for group in course_groups:
-        groups_ids_list.append(str(group['id']))
-    groups_ids = ','.join(group_id for group_id in groups_ids_list)
-    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
-    users_enrolled = [dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])]
     course['users_enrolled'] = len(users_enrolled)
 
     course_completed_users = 0

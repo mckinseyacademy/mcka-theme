@@ -1098,18 +1098,18 @@ def round_to_int_bump_zero(value):
 
 def get_course_social_engagement(course_id):
 
-    course_groups = course_api.get_course_details_groups(course_id) 
-    groups_ids_list = []
-    for group in course_groups:
-        groups_ids_list.append(str(group['id']))
-    groups_ids = ','.join(group_id for group_id in groups_ids_list)
-    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+    course_users_simple = course_api.get_user_list(course_id)
+    course_users_ids = [str(user.id) for user in course_users_simple]
+    roles = course_api.get_users_filtered_by_role(course_id)
+    roles_ids = [str(user.id) for user in roles]
+    for role_id in roles_ids:
+        if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+    number_of_users = len(course_users_ids)
 
     number_of_posts = 0
     number_of_participants_posting = 0
     course_metrics_social = course_api.get_course_details_metrics_social(course_id)
-
-    number_of_users = len([dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])])
 
     for user in course_metrics_social['users']:
         user_data = course_metrics_social['users'][str(user)]
