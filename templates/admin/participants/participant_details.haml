@@ -2,6 +2,21 @@
 - load staticfiles
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
+  :javascript
+    ZeroClipboard.config({swfPath: 'static/js/vendor/ZeroClipboard.swf'});
+    $(document).on('opened.fndtn', '#activation-link-modal', enableCopyButton);
+    function enableCopyButton() {
+      var copyBtn = $('.copy-access-key');
+      var client = new ZeroClipboard(copyBtn.get(0));
+      var tooltip = copyBtn.siblings('.tooltip');
+      client.on('aftercopy', function (event) {
+        tooltip.show();
+      });
+      copyBtn.on('mouseout', function (event) {
+        tooltip.fadeOut();
+      });
+    }
 
 - block content
   #mainParticipantsDetailsWrapper
@@ -42,6 +57,14 @@
             .large-5.columns
             .participantDetailsEditButton.large-2.columns
               %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
+        - if has_activation_record
+          - if not is_active
+            .row
+              .large-12.columns.participantBottomArchiveEdit
+                %p.error
+                  &ast; This user has not yet activated their account.
+                %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}> Get Activation Link
+                %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}> Resend Activation Link
         .row
           .large-6.columns.participantFirstName
             .participantFirstNameLabel.labelUniversal
@@ -59,7 +82,10 @@
             .participantUsernameLabel.labelUniversal
               Username
             .participantUsernameValue
-              ={username}
+              - if is_active
+                ={username}
+              - else
+                &#8212;
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
@@ -80,17 +106,23 @@
             .participantGenderLabel.labelUniversal
               Gender
             .participantGenderValue
-              - if gender == 'M'
-                Male
-              - if gender == 'F'
-                Female
+              - if is_active
+                - if gender == 'M'
+                  Male
+                - if gender == 'F'
+                  Female
+              - else
+                &#8212;
         %hr
         .row
           .large-6.columns.participantLocation
             .participantLocationLabel.labelUniversal
               Location
             .participantLocationValue{:title => '#{location}'}
-              ={location}
+              - if is_active
+                ={location}
+              - else
+                &#8212;
           .large-6.columns.participantPermissions
             .participantPermissionsLabel.labelUniversal
               Admin Permissions
@@ -104,8 +136,6 @@
           .large-12.columns.participantBottomArchiveEdit
             %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
             %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
-            - if has_activation_record
-              %a.button.small.radius.participantActivation{:href => '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}', :target => '_self'}> Download Activation Link
 
       %form.participantDetailsEditForm{:style => "display: none"}
         - csrf_token
@@ -223,3 +253,6 @@
       .error
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
+
+  #activation-link-modal.reveal-modal.large{"data-reveal": "true"}
+
