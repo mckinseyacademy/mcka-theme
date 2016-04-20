@@ -254,6 +254,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
 		fields = [
             'title',
             'description',
+            'sub_label',
             'link',
             'tile_type',
             'background_image',
