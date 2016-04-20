@@ -249,6 +249,7 @@ class DiscoveryContentCreateForm(forms.ModelForm):
         }
 
 class LearnerDashboardTileForm(forms.ModelForm):
+    
 	class Meta:
 		model = LearnerDashboardTile
 		fields = [

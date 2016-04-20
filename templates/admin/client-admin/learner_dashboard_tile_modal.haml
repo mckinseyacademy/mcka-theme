@@ -1,4 +1,11 @@
 %script{src: "/static/js/form_changed_check.js"}
+- if tile_id
+  %section
+    %h1 Edit Tile
+- else 
+  %section
+    %h1 Create Tile
+%hr
 .close-reveal-modal
   %i.fa.fa-times-circle
 %form{action: '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
