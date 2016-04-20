@@ -48,5 +48,7 @@
       %input#contact-from{'type': 'hidden', 'name': 'contact-from', 'value': '#{contact_from}'}
       %input.button.radius.small{type: "submit", value: "Submit", disabled: "Disabled"}
 
+- block footer
+
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}

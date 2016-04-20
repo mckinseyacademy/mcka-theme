@@ -1479,7 +1479,7 @@ def _enroll_participants_from_csv(students, request, reg_status):
     for user_dict in students:
 
         client_id = user_dict['company']
-        client = Client.fetch(client_id)
+        client = None
         course_id = user_dict['course']
         status = user_dict['status'].lower()
 
@@ -1499,10 +1499,18 @@ def _enroll_participants_from_csv(students, request, reg_status):
                 }
 
             if user:
+                try: 
+                    client = Client.fetch(client_id)
+                except ApiError as e:
+                    failure = {
+                        "reason": e.message,
+                        "activity": _("Non existing Client")
+                    }
                 try:
                     if not user.is_active:
                         activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
-                    client.add_user(user.id)
+                    if client:
+                        client.add_user(user.id)
                 except ApiError as e:
                     failure = {
                         "reason": e.message,

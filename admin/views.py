@@ -2101,12 +2101,17 @@ def import_participants_check(request, task_key):
             if reg_status.attempted == (reg_status.failed + reg_status.succeded):
                 errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
                 errors_as_json = serializers.serialize('json', errors)
-                status = _format_upload_results(reg_status)
+                message = _("Successfully Added {} Participants").format(
+                    reg_status.attempted - reg_status.failed
+                )
                 for error in errors:
                     error.delete()
+                attempted = str(reg_status.attempted)
+                failed = str(reg_status.failed)
+                succeded = str(reg_status.succeded)
                 reg_status.delete()
                 return HttpResponse(
-                    '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                    '{"done":"done","error":' + errors_as_json + ', "message": "' + message + '","attempted":"'+attempted+'","failed":"'+failed+'","succeded":"'+succeded+'"}',
                     content_type='application/json'
                 )
             else:
@@ -2131,6 +2136,7 @@ def download_activation_links_by_task_key(request):
 
     task_key = request.GET.get('task_key', None)
     user_id = request.GET.get('user_id', None)
+    res_type = request.GET.get('res_type', 'csv')
 
     file_name = "download-activation-links-output"
     company_id = 'N/A'
@@ -2145,17 +2151,37 @@ def download_activation_links_by_task_key(request):
         company_id = vars(user_api.get_user_organizations(user_id)[0])['id']
         activation_records = [UserActivation.get_user_activation(user=user_data)]
     
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
+    if res_type == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
 
-    writer = csv.writer(response)
-    writer.writerow(['Email', 'First name', 'Last name', 'Company', 'Activation Link'])
-    for record in activation_records:
-        user = vars(record)
-        activation_full = "{}/{}".format(uri_head, user['activation_key'])
-        if user_id:
-            user = vars(user_data)
-        writer.writerow([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])
+        writer = csv.writer(response)
+        writer.writerow(['Email', 'First name', 'Last name', 'Company', 'Activation Link'])
+        for record in activation_records:
+            user = vars(record)
+            activation_full = "{}/{}".format(uri_head, user['activation_key'])
+            if user_id:
+                user = vars(user_data)
+            writer.writerow([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])
+
+    if res_type is not 'csv':
+        activation_records_data = []
+        for record in activation_records:
+            user = vars(record)
+            activation_full = "{}/{}".format(uri_head, user['activation_key'])
+            if user_id:
+                user = vars(user_data)
+            activation_records_data.append([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])      
+
+            if res_type == 'json': 
+                response = HttpResponse(
+                    json.dumps({"records": activation_records_data}), 
+                    content_type='application/json'
+                )
+            if res_type == 'html':
+                response = render(request,
+                    'admin/participants/activation_link_modal.haml',
+                    {'records': activation_records_data})
 
     return response
     
@@ -3223,13 +3249,24 @@ def participant_password_reset(request, user_id):
     try: 
         user = user_api.get_user(user_id)
         send_password_reset_email(request.META.get('HTTP_HOST'), user, request.is_secure())
-        status = 'Password Reset Email successfully sent.'
-        messages.success(request, status)
+        messages.success(request, 'Password Reset Email successfully sent.')
     except Exception as e:
-        status = e.message
-        messages.error(request, status)
+        messages.error(request, e.message)
     return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
+def participant_mail_activation_link(request, user_id):
+
+    user = user_api.get_user(user_id)
+    if user:
+        try:
+            if not user.is_active:
+                activation_record = UserActivation.get_user_activation(user)
+                email_head = request.build_absolute_uri('/accounts/activateV2') #change if we want old registration form
+                _send_activation_email_to_single_new_user(activation_record, user, email_head)
+                messages.info(request, "Activation email sent.")
+        except Exception as e:
+            messages.error(request, e.message)
+    return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
 class participants_list_api(APIView):
     """

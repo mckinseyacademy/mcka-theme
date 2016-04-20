@@ -32,6 +32,9 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 			});
 		participantsListViewGrid['partial_collection']=this.collection;
 		this.$el.find('.bbGrid-container').scroll(this.fetchPages);
+    $(document).on('closed.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
+      $('.upload_stats').empty();
+    });
 	},
 	fetchPages: function(){
 		if  ($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20)
@@ -181,8 +184,6 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 			    {
             data = JSON.parse(data)
 		        if (data['status'] == "ok") {
-		        	//var mainContainer = $('#add_a_participant');
-							//mainContainer.foundation('reveal', 'close');
 							var confirmationScreen = $('#confirmation_screen_single_participant');
 							confirmationScreen.find('.download_user_activation').attr('href', confirmationScreen.find('.download_user_activation').attr('data-url') + data['user_id']);
 							confirmationScreen.find('.go_to_user_profile').attr('href', confirmationScreen.find('.go_to_user_profile').attr('data-url') + data['user_id']);
