@@ -201,7 +201,17 @@ GenerateAutocompleteInput = function(source, input)
   var inputField = $(input);
   inputField.autocomplete({
     minLength: 0,
-    source: source,
+    source: function(request, response) {
+      var returnArray = [];
+      var searchTerm = request.term.toString().trim().toLowerCase();
+      $(source).each(function(i,v){
+        if ((v.label.toString().trim().toLowerCase().lastIndexOf(searchTerm) > -1) || (v.value.toString().trim().toLowerCase().lastIndexOf(searchTerm) > -1))
+        {
+          returnArray.push(v);
+        }
+      });
+      response(returnArray);
+    },
     select: function( event, ui ) {
         inputField.val( ui.item.label );
         inputField.attr('data-id',ui.item.value);
@@ -210,10 +220,10 @@ GenerateAutocompleteInput = function(source, input)
       },
     search: function( event, ui ) {
         var input = $(event.target);
-        var source = $(input).autocomplete( "option", "source" );
+        var inputVal = input.val().trim().toLowerCase();
         var foundMatch = false;
         for (var i=0; i<source.length; i++) {
-          if (input.val().trim().toLowerCase() == source[i].label.trim().toLowerCase()){
+          if ((inputVal == source[i].label.trim().toLowerCase()) || (inputVal == source[i].value.toString().trim().toLowerCase())){
             foundMatch = true;
             input.attr('data-id', source[i].value);
             input.parent().find('.correctInput').show();
