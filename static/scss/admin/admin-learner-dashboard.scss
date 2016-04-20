@@ -15,8 +15,9 @@ textarea{
     height: 450px;
     overflow: auto;
     background: white;
-    border: 1px solid #ccc;
+    border: 1px solid $mckinsey-grey;
     li { 
+        border: 1px solid $mckinsey-academy-bright-gray;
         margin: 0px 10px 10px 0; 
         padding: 10px; 
         float: left; 
@@ -34,7 +35,8 @@ textarea{
         }
     }
     .add-tile{
-        border-width: 2px;
+        border: 2px solid $mckinsey-academy-bright-gray;
+        background-color: white;
         border-style: dotted;
         .font-plus{
             font-size: 4em;

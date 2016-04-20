@@ -36,7 +36,7 @@
         padding-top: 10px;
         font-weight: bold;
         font-size: 24px;
-        border-bottom: 1px solid #e5ebee;
+        border-bottom: 1px solid $mckinsey-academy-bright-gray;
     }
 
     p {
@@ -63,8 +63,8 @@
             float: left;
 
             .panel-program{
+                border: 1px solid $mckinsey-academy-bright-gray;
                 padding: 10px;
-                border: none;
                 height: 140px;
                 margin-bottom: 0px;
 
@@ -83,11 +83,12 @@
 }
 
 .dash-widget{
-    height: 535px;
+    max-height: 535px;
     width: 300px;
     margin-top: 46px;
-    border-top: 1px solid black;
-    padding-left: 0px;
+    border-top: 1px solid $mckinsey-academy-bright-gray;
+    border-bottom: 1px solid $mckinsey-academy-bright-gray;
+    padding: 10px 0px;
 
     .learner-info{
         margin: 15px 0;
