@@ -603,7 +603,7 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         instance = None
 
     if request.method == 'POST':
-        form = LearnerDashboardTileForm(request.POST, instance=instance)
+        form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             tile = form.save()
 
