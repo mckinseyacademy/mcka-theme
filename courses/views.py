@@ -821,18 +821,6 @@ def course_learner_dashboard(request, course_id):
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
-    for tile in learner_dashboard_tiles:
-        if not "/learner_dashboard/" in tile.link:
-            if tile.tile_type == '2':
-                tile.link = tile.link + "/learner_dashboard/lesson"
-            if tile.tile_type == '3':
-                tile.link = tile.link + "/learner_dashboard/module"
-            tile.save()
-        if tile.tile_type == '4':
-            if not "/courses/" in tile.link:
-                tile.link = "/courses/" + tile.link
-                tile.save()
-
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     data ={

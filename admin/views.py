@@ -341,7 +341,7 @@ def client_admin_course(request, client_id, course_id):
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
-	
+    
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
     data = {
@@ -494,9 +494,9 @@ def client_admin_course_analytics(request, client_id, course_id):
     course = load_course(course_id)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
     if(features.learner_dashboard):
-    	learner_dashboard_flag = features.learner_dashboard
+        learner_dashboard_flag = features.learner_dashboard
     else:
-    	learner_dashboard_flag = False
+        learner_dashboard_flag = False
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -543,86 +543,98 @@ def client_admin_course_analytics(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
 
-	try:
-		instance = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
-	except:
-		instance = None
+    try:
+        instance = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    except:
+        instance = None
 
-	if request.method == "POST":
-		if instance == None:
-			instance = LearnerDashboard(
-				title = request.POST['title'],
-				description = request.POST['description'],
-				client_id = client_id, 
-				course_id = course_id
-			)
-			instance.save()
-		else:
-			instance.title = request.POST['title']
-			instance.description = request.POST['description']
-			instance.save()
-		
-			myDict = dict(request.POST.iterlists())
-			for index, item_id in enumerate(myDict['positions[]']):
-				tileItem = LearnerDashboardTile.objects.get(id=item_id)
-				tileItem.position = index
-				tileItem.save()
+    if request.method == "POST":
+        if instance == None:
+            instance = LearnerDashboard(
+                title = request.POST['title'],
+                description = request.POST['description'],
+                client_id = client_id, 
+                course_id = course_id
+            )
+            instance.save()
+        else:
+            instance.title = request.POST['title']
+            instance.description = request.POST['description']
+            instance.save()
+        
+            myDict = dict(request.POST.iterlists())
+            for index, item_id in enumerate(myDict['positions[]']):
+                tileItem = LearnerDashboardTile.objects.get(id=item_id)
+                tileItem.position = index
+                tileItem.save()
 
-	if instance:
-		learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
-		data = {
-			'client_id': client_id,
-			'course_id': course_id,
-			'learner_dashboard_id': instance.id,
-			'learner_dashboard_flag': True,
-			'title': instance.title,
-			'description': instance.description,
-			'learner_dashboard_tiles': learner_dashboard_tiles,
+    if instance:
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
+        data = {
+            'client_id': client_id,
+            'course_id': course_id,
+            'learner_dashboard_id': instance.id,
+            'learner_dashboard_flag': True,
+            'title': instance.title,
+            'description': instance.description,
+            'learner_dashboard_tiles': learner_dashboard_tiles,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
-		}
-	else:
-		data = {
-			'client_id': client_id,
-			'course_id': course_id,
-			'learner_dashboard_id': None,
-			'learner_dashboard_flag': True,
+        }
+    else:
+        data = {
+            'client_id': client_id,
+            'course_id': course_id,
+            'learner_dashboard_id': None,
+            'learner_dashboard_flag': True,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
-		}
+        }
 
-	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
+    return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
 
-	error = None
-	try:
-		instance = LearnerDashboardTile.objects.get(id=tile_id)
-	except:
-		instance = None
+    error = None
+    try:
+        instance = LearnerDashboardTile.objects.get(id=tile_id)
+    except:
+        instance = None
 
-	if request.method == 'POST':
-		form = LearnerDashboardTileForm(request.POST, instance=instance)
-		if form.is_valid():
-			form.save()
-			redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
-			return HttpResponseRedirect(redirect_url)
-	elif request.method == 'DELETE':
-		instance.delete()
-		redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
-		return HttpResponseRedirect(redirect_url)
-	else:
-		form = LearnerDashboardTileForm(instance=instance)
+    if request.method == 'POST':
+        form = LearnerDashboardTileForm(request.POST, instance=instance)
+        if form.is_valid():
+            tile = form.save()
 
-	return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
-		'error': error,
-		'form': form,
-		'client_id': client_id,
-		'course_id': course_id,
-		'learner_dashboard_id': learner_dashboard_id,
-		'tile_id': tile_id,
-	})
+            if not "/learner_dashboard/" in tile.link:
+                if tile.get_tile_type_display() == 'Lesson':
+                    tile.link = tile.link + "/learner_dashboard/lesson"
+                if tile.get_tile_type_display() == 'Module':
+                    tile.link = tile.link + "/learner_dashboard/module"
+                tile.save()
+            if tile.get_tile_type_display() == 'Course':
+                if not "/courses/" in tile.link:
+                    tile.link = "/courses/" + tile.link
+                    tile.save()
+
+            redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
+            return HttpResponseRedirect(redirect_url)
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
+        return HttpResponseRedirect(redirect_url)
+    else:
+        form = LearnerDashboardTileForm(instance=instance)
+
+    return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
+        'error': error,
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'learner_dashboard_id': learner_dashboard_id,
+        'tile_id': tile_id,
+    })
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
