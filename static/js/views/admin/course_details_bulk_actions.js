@@ -275,9 +275,9 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       $('#courseDetailsMainModal').find('.courseModalStatus').empty();
       $('#courseDetailsMainModal').find('.courseModalDescription').text('What would you like to do now?');
       $('#courseDetailsMainModal').find('.courseModalContent').html(
-        '<a href="#" target="_blank">Send Course Intro Email</a><br>' + 
-        '<a href="/admin/courses/'+course_id+'" target="_blank">Go to '+course_id+' Course</a><br>' +
-        '<a href="#" class="enrollThisUsersInNewCourse">Enroll this list in another course</a><br>'
+        '<a href="#" target="_blank">Send Course Intro Email</a><br><br>' + 
+        '<a href="/admin/courses/'+course_id+'" target="_blank">Go to '+course_id+' Course</a><br><br>' +
+        '<a href="#" class="enrollThisUsersInNewCourse">Enroll this list in another course</a><br><br>'
       );
       $('#courseDetailsMainModal').on('click', '.enrollThisUsersInNewCourse', function(){
         $('#courseBulkActionsMainContainer').find('.bulkEnrollInNewCourse').trigger('click');

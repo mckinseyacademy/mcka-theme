@@ -2101,12 +2101,14 @@ def import_participants_check(request, task_key):
             if reg_status.attempted == (reg_status.failed + reg_status.succeded):
                 errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
                 errors_as_json = serializers.serialize('json', errors)
-                status = _format_upload_results(reg_status)
+                message = _("Successfully Added {} Participants").format(
+                    reg_status.attempted - reg_status.failed
+                )
                 for error in errors:
                     error.delete()
                 reg_status.delete()
                 return HttpResponse(
-                    '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                    '{"done":"done","error":' + errors_as_json + ', "message": "' + message + '"}',
                     content_type='application/json'
                 )
             else:
