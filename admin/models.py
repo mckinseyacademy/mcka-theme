@@ -418,7 +418,7 @@ class LearnerDashboard(db_models.Model):
 
 class LearnerDashboardTile(db_models.Model):
 
-    title = db_models.CharField(max_length=20)
+    title = db_models.CharField(max_length=20, blank=True)
     description = db_models.CharField(blank=True, max_length=40)
     link = db_models.CharField(blank=False, max_length=500)
     position = db_models.IntegerField(blank=False, default=100)
