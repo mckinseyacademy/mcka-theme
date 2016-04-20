@@ -67,7 +67,7 @@
 }
 #participantDetailsWrapper .participantActivation
 {
-	float: right;
+	float: left;
 }
 #participantDetailsWrapper .participantDetailsContent .row{
 	margin-bottom: 20px;
