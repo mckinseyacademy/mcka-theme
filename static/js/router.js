@@ -211,21 +211,24 @@ Apros.Router.linked_views = {
 }
 
 Apros.Router.HashPageChanger = function(element) {
-  _selectedClass = $(element).attr('data-target');
-  _parentContainer = $($(element).attr('data-container'));
+  var el = $(element);
+  var _selectedClass = el.attr('data-target');
+  var _parentContainer = $(el.attr('data-container'));
+  el.parent().parent().find('.hashPageButton').css('font-weight','');
+  el.css('font-weight','bold');
   _parentContainer.find('.contentNavigationContainer').each(function(index, value){
-  val = $(value);
-  if (val.hasClass(_selectedClass))
-  {
-    val.show();
-    if (!Apros.Router.linked_views[_selectedClass]['drawn'])
+    val = $(value);
+    if (val.hasClass(_selectedClass))
     {
-      Apros.Router.linked_views[_selectedClass]['drawn'] = true;
-      Apros.Router.linked_views[_selectedClass]['function']();
+      val.show();
+      if (!Apros.Router.linked_views[_selectedClass]['drawn'])
+      {
+        Apros.Router.linked_views[_selectedClass]['drawn'] = true;
+        Apros.Router.linked_views[_selectedClass]['function']();
+      }
     }
-  }
-  else
-    val.hide();
+    else
+      val.hide();
   });
   updateHeader();
 }

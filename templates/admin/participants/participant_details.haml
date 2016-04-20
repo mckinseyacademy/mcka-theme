@@ -24,13 +24,13 @@
       #participantsMainDetailsContainerView
         .participantDetailsMenuButtons.row
           .participantProfileButton.large-2.columns
-            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsContent', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PROFILE
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsContent', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}>  PROFILE
           .participantActiveCoursesButton.large-3.columns
-            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsActiveCourses', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> ACTIVE COURSES
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsActiveCourses', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> ACTIVE COURSES
           .participantCourseHistoryButton.large-3.columns
-            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsCourseHistory', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COURSE HISTORY
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsCourseHistory', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COURSE HISTORY
           .participantCertificatesButton.large-2.columns
-            %a{:href => '/admin/participants/#{id}', :target => '_self'}> CERTIFICATES
+            %a.hashPageButton{:href => '/admin/participants/#{id}', :target => '_self'}> CERTIFICATES
           .large-2.columns
         %hr
   #participantDetailsWrapper
