@@ -1,5 +1,4 @@
 #learner-dashboard-header{
-    height: 96px;
     background-color: white;
     .main-nav {
         background-color: white;
@@ -73,6 +72,7 @@
                 }
 
                 blockquote{
+                    word-wrap: break-word;
                     overflow: auto;
                     height: 75px;
                     margin: 15px 0px 0px;
