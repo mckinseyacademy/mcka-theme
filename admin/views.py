@@ -2106,9 +2106,12 @@ def import_participants_check(request, task_key):
                 )
                 for error in errors:
                     error.delete()
+                attempted = str(reg_status.attempted)
+                failed = str(reg_status.failed)
+                succeded = str(reg_status.succeded)
                 reg_status.delete()
                 return HttpResponse(
-                    '{"done":"done","error":' + errors_as_json + ', "message": "' + message + '"}',
+                    '{"done":"done","error":' + errors_as_json + ', "message": "' + message + '","attempted":"'+attempted+'","failed":"'+failed+'","succeded":"'+succeded+'"}',
                     content_type='application/json'
                 )
             else:
