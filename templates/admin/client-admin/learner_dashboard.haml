@@ -108,7 +108,7 @@
                     %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
                     %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
                       %i.fa.fa-pencil-square-o{'style': "color:green"}
-                  %a{href: "#{tile.link}", target:"_blank"}
+                  %a{href: "#{tile.link}"}
                     %blockquote.user-quote{style: "color: #{tile.description_color};"}= tile.description
                   .label-3{style: "color: #{tile.sub_label_color};"}= tile.sub_label
               %li.item.fixed.ui-state-default.add-tile 
