@@ -5,7 +5,10 @@
       - include 'courses/lesson_notes.haml'
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
-    -if tile_type != 'module'
+    -if tile_type = 'module'
+      .lesson-title
+        %h1= course.current_module.name
+    -else
       .lesson-title
         %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
         %span.label-3.lesson-name= course.current_lesson.name
