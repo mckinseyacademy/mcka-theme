@@ -30,7 +30,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic.base import View
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
-    load_group_projects_info_for_course
+    load_group_projects_info_for_course, get_learner_dashboard_flag
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
@@ -97,15 +97,6 @@ def check_learner_dashboard_flag(func):
             return obj
 
     return wrapper
-
-def get_learner_dashboard_flag(course_id):
-
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
-
-    return learner_dashboard_flag
 
 def ajaxify_http_redirects(func):
     @functools.wraps(func)

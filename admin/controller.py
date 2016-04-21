@@ -1579,3 +1579,11 @@ def _send_activation_email_to_single_new_user(activation_record, user, absolute_
     msg = [email_add_single_new_user(absolute_uri, user, activation_record)]
     result = sendMultipleEmails(msg)
     print result
+
+def get_learner_dashboard_flag(course_id):
+    try:
+        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except:
+        learner_dashboard_flag = False
+
+    return learner_dashboard_flag
