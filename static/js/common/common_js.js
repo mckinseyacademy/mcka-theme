@@ -258,11 +258,12 @@ function RecursiveJsonToHtml( data ) {
 InitializeTooltipOnPage = function()
 {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
-    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20;
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('margin-top'));
     $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
     var _show_value = "";
     showAt = function (e) {
-        var ntop = e.clientY + OFFSET_Y, nleft = e.clientX + OFFSET_X;
+      console.log(e);
+        var ntop = e.pageY + OFFSET_Y, nleft = e.pageX + OFFSET_X;
         $("#" + ID).text(_show_value).css({
             position: "absolute", top: ntop, left: nleft
         }).show();
