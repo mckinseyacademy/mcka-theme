@@ -20,6 +20,9 @@
             .learner-program
               .panel.panel-program{style: "{% if tile.background_image %} background-image: url(#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
                 .sub-1{style: "color: #{tile.title_color};"} 
+                -if tile.title
+                  #{tile.title}:
+                -else
                   #{tile.get_tile_type_display}:
                 %a{href: "#{tile.link}"}
                   %blockquote.user-quote{style: "color: #{tile.description_color};"}= tile.description
