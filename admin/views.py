@@ -98,6 +98,15 @@ def check_learner_dashboard_flag(func):
 
     return wrapper
 
+def get_learner_dashboard_flag(course_id):
+
+    try:
+        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except: 
+        learner_dashboard_flag = False
+
+    return learner_dashboard_flag
+
 def ajaxify_http_redirects(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -352,7 +361,7 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': features.learner_dashboard,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -389,18 +398,13 @@ def client_admin_course_participants(request, client_id, course_id):
     else:
         students = []
 
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
-
     data = {
         'client_id': client_id,
         'course_id': course_id,
         'target_course': course,
         'total_participants': len(students),
         'students': students,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -493,10 +497,6 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-    if(features.learner_dashboard):
-        learner_dashboard_flag = features.learner_dashboard
-    else:
-        learner_dashboard_flag = False
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -529,9 +529,10 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
+    raise Exception(data)
     return render(
         request,
         'admin/client-admin/course_analytics.haml',
@@ -3842,16 +3843,11 @@ def client_admin_branding_settings(request, client_id, course_id):
     except:
         instance = None
 
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
-
     return render(request, 'admin/client-admin/course_branding_settings.haml', {
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
@@ -3971,16 +3967,11 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
     learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
     discovery = LearnerDashboardDiscovery.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('position')
 
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
-
     return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
         'client_id': client_id,
         'course_id': course_id,
         'discovery': discovery,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
