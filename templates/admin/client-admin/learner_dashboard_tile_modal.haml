@@ -46,30 +46,38 @@
   .row
     .small-3.columns= form.background_image.label_tag
     .small-9.columns= form.background_image
+
   .row
     .small-3.columns
     .small-9.columns= form.title_color.errors
   .row
     .small-3.columns= form.title_color.label_tag
-    .small-9.columns= form.title_color
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}"}
+
   .row
     .small-3.columns
     .small-9.columns= form.description_color.errors
   .row
     .small-3.columns= form.description_color.label_tag
-    .small-9.columns= form.description_color
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_description_color', 'name': 'description_color', 'value': "#{form.description_color.value}"}
+
   .row
     .small-3.columns
     .small-9.columns= form.sub_label_color.errors
   .row
     .small-3.columns= form.sub_label_color.label_tag
-    .small-9.columns= form.sub_label_color
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_sub_label_color', 'name': 'sub_label_color', 'value': "#{form.sub_label_color.value}"}
+
   .row
     .small-3.columns
     .small-9.columns= form.tile_background_color.errors
   .row
     .small-3.columns= form.tile_background_color.label_tag
-    .small-9.columns= form.tile_background_color
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}"}
 
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
   .error
