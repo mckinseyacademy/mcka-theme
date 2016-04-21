@@ -51,7 +51,7 @@
           }
         },
         colModel:[
-        { title: 'Name', index: true, name: 'username', titleAttribute: 'username',
+        { title: 'Name', index: true, name: 'username', titleAttribute: 'full_name',
         actions: function(id, attributes) 
         { 
           return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';

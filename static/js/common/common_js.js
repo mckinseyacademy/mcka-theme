@@ -262,7 +262,6 @@ InitializeTooltipOnPage = function()
     $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
     var _show_value = "";
     showAt = function (e) {
-      console.log(e);
         var ntop = e.pageY + OFFSET_Y, nleft = e.pageX + OFFSET_X;
         $("#" + ID).text(_show_value).css({
             position: "absolute", top: ntop, left: nleft
