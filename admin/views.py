@@ -532,7 +532,6 @@ def client_admin_course_analytics(request, client_id, course_id):
         'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
-    raise Exception(data)
     return render(
         request,
         'admin/client-admin/course_analytics.haml',
