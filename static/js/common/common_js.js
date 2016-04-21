@@ -255,3 +255,27 @@ function RecursiveJsonToHtml( data ) {
   htmlRetStr += '</ul >';    
   return( htmlRetStr );
 }
+InitializeTooltipOnPage = function()
+{
+    var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20;
+    $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
+    var _show_value = "";
+    showAt = function (e) {
+        var ntop = e.clientY + OFFSET_Y, nleft = e.clientX + OFFSET_X;
+        $("#" + ID).text(_show_value).css({
+            position: "absolute", top: ntop, left: nleft
+        }).show();
+    };
+    $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) {
+        _show_value = $(this).attr("data-title");
+        $(this).addClass(CLS_ON);
+        showAt(e);
+    });
+    $(document).on("mouseleave", "." + CLS_ON, function (e) {
+        _show_value = ''
+        $(this).removeClass(CLS_ON);
+        $("#" + ID).hide();
+    });
+    if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+}
