@@ -196,3 +196,25 @@
 	max-height: 300px;
 	overflow: auto;
 }
+
+#import_from_csv .admin-form
+{
+	position: relative;
+	padding-bottom: 75px;
+}
+
+#import_from_csv .button-wrapper
+{
+	position: absolute;
+	bottom: 0;
+}
+
+#import_from_csv .modalLinks
+{
+	bottom: 15%;
+}
+
+#import_from_csv label, .helptext
+{
+	display: none;
+}
