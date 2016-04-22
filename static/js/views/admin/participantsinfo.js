@@ -152,85 +152,83 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 			{
 				var mainContainer = $('#add_a_participant');
 				var data = {}
+        $.each($("#add_a_participant form").find(':input'), function(i, v){
+            var input = $(v);
+            if (input.val())
+                data[input.attr("name")] = input.val().trim();
+            if (input.attr("name") == 'company')
+                data[input.attr("name")] = input.attr('data-id');
+        });
 
-				$.each($("#add_a_participant form").find(':input'), function(i, v){
-					var input = $(v);
-					if (input.val())
-						data[input.attr("name")] = input.val().trim();
-					if (input.attr("name") == 'company')
-						data[input.attr("name")] = input.attr('data-id');
-				});
+        $.each($("#add_a_participant form").find('select'), function(i, v){
+            var input = $(v);
+            if (input.val())
+                data[input.attr("name")] = input.val().trim();   
+        });
 
-				$.each($("#add_a_participant form").find('select'), function(i, v){
-					var input = $(v);
-					if (input.val())
-						data[input.attr("name")] = input.val().trim();   
-				});
+        delete data["undefined"];
+        data['course_permissions_list'] = _this.getAllCourses();
+        data['send_activation_email'] = mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').is(":checked");
 
-			  delete data["undefined"];
-			  data['course_permissions_list'] = _this.getAllCourses();
-			  data['send_activation_email'] = mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').is(":checked");
-			  console.log(data);
-
-				$.ajax({
-			    type: 'POST',
-			    url: '/admin/api/participants',
-			    headers: { 'X-CSRFToken': $.cookie('apros_csrftoken')},
-			    contentType: 'application/json; charset=utf-8',
-			    data: JSON.stringify(data),
-			    dataType: 'text',
-			    cache: false,
-			    success: function (data, status) 
-			    {
-            data = JSON.parse(data)
-		        if (data['status'] == "ok") {
-							var confirmationScreen = $('#confirmation_screen_single_participant');
-							confirmationScreen.find('.download_user_activation').attr('href', confirmationScreen.find('.download_user_activation').attr('data-url') + data['user_id']);
-							confirmationScreen.find('.go_to_user_profile').attr('href', confirmationScreen.find('.go_to_user_profile').attr('data-url') + data['user_id']);
-							confirmationScreen.foundation('reveal', 'open');
-		        }
-		        else 
-		        {
-		          if (data['type'] == 'validation_failed')
-		          {
-		            var message = '';
-		            for (key in data['message'])
-		            {
-		              message += key + ' - ' + data['message'][key] + '<br>';
-		            }
-		            $('#add_a_participant').find('.errorContainer').html(message);
-		          }
-		          else
-		          {
-                $('#add_a_participant').find('.errorContainer').text(data['message']);
-		          }
-		        }
-		      },
-		      error: function(data, status)
-		      {
-		        $('#add_a_participant').find('.errorContainer').text(data['responseText']);
-		      }
-			  });
-			}
-		});
-		
-	},
-	getAllCourses: function()
-	{
-		var courseContainer = $('#add_a_participant').find('.adminCourseAllWrapper');
-		var courseArray = [];
-		courseContainer.find('.row').each(function()
-		{
-			var course = $(this);
-			var courseObject = {};
-			var courseId = course.find('input').attr('data-id');
-			if (courseId != '')
-			{
-				courseObject['course_id'] = courseId;
-				courseObject['role'] = course.find('select').val();
-				courseArray.push(courseObject);
-			}
-		});
-		return courseArray;
-	}
+        $.ajax({
+        type: 'POST',
+        url: '/admin/api/participants',
+        headers: { 'X-CSRFToken': $.cookie('apros_csrftoken')},
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(data),
+        dataType: 'text',
+        cache: false,
+        success: function (data, status) 
+        {
+          data = JSON.parse(data)
+	        if (data['status'] == "ok") {
+						var confirmationScreen = $('#confirmation_screen_single_participant');
+						confirmationScreen.find('.download_user_activation').attr('href', confirmationScreen.find('.download_user_activation').attr('data-url') + data['user_id']);
+						confirmationScreen.find('.go_to_user_profile').attr('href', confirmationScreen.find('.go_to_user_profile').attr('data-url') + data['user_id']);
+						confirmationScreen.foundation('reveal', 'open');
+	        }
+	        else 
+	        {
+	          if (data['type'] == 'validation_failed')
+	          {
+	            var message = '';
+	            for (key in data['message'])
+	            {
+	              message += key + ' - ' + data['message'][key] + '<br>';
+	            }
+	            $('#add_a_participant').find('.errorContainer').html(message);
+	          }
+	          else
+	          {
+              $('#add_a_participant').find('.errorContainer').text(data['message']);
+            }
+          }
+        },
+        error: function(data, status)
+        {
+          $('#add_a_participant').find('.errorContainer').text(data['responseText']);
+        }
+        });
+        }
+      }); 
+        
+    },
+    getAllCourses: function()
+    {
+      var courseContainer = $('#add_a_participant').find('.adminCourseAllWrapper');
+      var courseArray = [];
+      courseContainer.find('.row').each(function()
+      {
+        var course = $(this);
+        var courseObject = {};
+        var courseId = course.find('input').attr('data-id');
+        if (courseId != '')
+        {
+          courseObject['course_id'] = courseId;
+          courseObject['role'] = course.find('select').val();
+          courseArray.push(courseObject);
+        }
+      });
+      return courseArray;
+    }
 });
