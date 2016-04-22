@@ -305,10 +305,11 @@ cloneHeader = function(parentContainer) {
   clonedHeader.css({"width": width, "height": height});
   head.css("height", parseFloat(height) + 15);
 
-  var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
-  var trwidth = window.getComputedStyle(tr).width;
-  var trheight = window.getComputedStyle(tr).height;
+  var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr');
+  var trwidth = window.getComputedStyle(tr[0]).width;
+  var trheight = window.getComputedStyle(tr[0]).height;
   clonedHeader.find('tr').css({"width": trwidth, "height": trheight});
+  tr.css("height", 'inherit');
 
   var thWidths = []
   var thHeights = []
