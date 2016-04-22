@@ -1,27 +1,13 @@
+%script{src: "/static/js/form_changed_check.js"}
+- if tile_id
+  %section
+    %h1 Edit Tile
+- else 
+  %section
+    %h1 Create Tile
+%hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-%script
-      $(function() {
-        	$('#id_title').on('input', function() { 
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_description').on('input', function() { 
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_link').on('input', function() { 
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_tile_type').on('input', function() { 
-              $('#saveTile').css("display", "inline");
-          });
-
-          $('#id_background_image').change(function() { 
-              $('#saveTile').css("display", "inline");
-          });
-      });
 %form{action: '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
   - csrf_token
   .row
@@ -36,6 +22,12 @@
   .row
     .small-3.columns= form.description.label_tag
     .small-9.columns= form.description
+  .row
+    .small-3.columns
+    .small-9.columns= form.sub_label.errors
+  .row
+    .small-3.columns= form.sub_label.label_tag
+    .small-9.columns= form.sub_label
   .row
     .small-3.columns
     .small-9.columns= form.link.errors
@@ -54,9 +46,41 @@
   .row
     .small-3.columns= form.background_image.label_tag
     .small-9.columns= form.background_image
-    
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.title_color.errors
+  .row
+    .small-3.columns= form.title_color.label_tag
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}"}
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.description_color.errors
+  .row
+    .small-3.columns= form.description_color.label_tag
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_description_color', 'name': 'description_color', 'value': "#{form.description_color.value}"}
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.sub_label_color.errors
+  .row
+    .small-3.columns= form.sub_label_color.label_tag
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_sub_label_color', 'name': 'sub_label_color', 'value': "#{form.sub_label_color.value}"}
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.tile_background_color.errors
+  .row
+    .small-3.columns= form.tile_background_color.label_tag
+    .small-9.columns
+      %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}"}
+
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
   .error
     - if error
       = error
-  %input#saveTile.button.right.radius.small{type: 'submit', value: 'Save'}
+  %input.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}

@@ -7,5 +7,9 @@ var ApiUrls = {
   {
   	return this.participants_list+'/organizations';
   },
+  participant_courses_get_api: function()
+  {
+    return this.participants_list+'/courses';
+  },
   course_details: '/admin/api/courses'
 }

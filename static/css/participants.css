@@ -12,7 +12,6 @@
 	max-height: 120em;
 	position: relative;
 }
-
 #participantsListViewGridBlock .bbGrid-container
 {
 	max-height: 120em;
@@ -27,6 +26,17 @@
 	min-width: 100%;
 }
 
+#participantDetailsWrapper div[title]:hover:after {
+  	content: attr(title);
+    position: absolute;
+    right: 100%;
+    bottom: 0px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px;
+    white-space: nowrap;
+    background: white;
+}
 #participantsDetailsDataWrapper{
 	margin-top: 50px;
 }
@@ -64,6 +74,10 @@
 	max-width: 700px;
 	margin-left: auto;
 	margin-right: auto;
+}
+#participantDetailsWrapper .participantActivation
+{
+	float: left;
 }
 #participantDetailsWrapper .participantDetailsContent .row{
 	margin-bottom: 20px;
@@ -153,4 +167,54 @@
 	display: none;
 	position: absolute;
 	bottom: -10px;
+}
+
+#add_a_participant .participantCountryValue > .country-select{
+	width: 100%;
+}
+#add_a_participant .addAnotherCompanyWrapper, #add_a_participant .addAnotherCourseWrapper{
+	text-align: left;
+}
+#add_a_participant .adminAnotherCompanyAllWrapper{
+	width: 100%;
+}
+#add_a_participant .removeItem{
+	text-align: center;
+}
+#add_a_participant .permissionSelect, #add_a_participant .emailActivationCheckbox, #add_a_participant .emailActivation{
+	display: inline-block;
+}
+#add_a_participant .participantCourseValue, #add_a_participant .participantAdminCompanyValue, #add_a_participant .participantCompanyValue, #add_a_participant .participantEmailValue
+{
+	position:relative;
+}
+#add_a_participant .errorContainer
+{
+	color:red;
+	text-align: center;
+	padding-bottom:10px;
+	max-height: 300px;
+	overflow: auto;
+}
+
+#import_from_csv .admin-form
+{
+	position: relative;
+	padding-bottom: 75px;
+}
+
+#import_from_csv .button-wrapper
+{
+	position: absolute;
+	bottom: 0;
+}
+
+#import_from_csv .modalLinks
+{
+	bottom: 15%;
+}
+
+#import_from_csv label, .helptext
+{
+	display: none;
 }

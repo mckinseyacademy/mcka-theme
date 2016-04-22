@@ -404,6 +404,7 @@ class BrandingSettings(db_models.Model):
     navigation_colors = db_models.CharField(max_length=20, blank=True)
     text_colors = db_models.CharField(max_length=20, blank=True)
     background_tiled = db_models.BooleanField(blank=True)
+    discover_text_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TEXT_COLOR)
 
     client_id = db_models.IntegerField(blank=False, unique=True)
 
@@ -417,16 +418,23 @@ class LearnerDashboard(db_models.Model):
 
 class LearnerDashboardTile(db_models.Model):
 
-    title = db_models.CharField(max_length=20)
+    title = db_models.CharField(max_length=20, blank=True)
     description = db_models.CharField(blank=True, max_length=40)
-    link = db_models.URLField()
+    link = db_models.CharField(blank=False, max_length=500)
     position = db_models.IntegerField(blank=False, default=100)
     background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND, blank=True)
+    sub_label = db_models.CharField(blank=True, max_length=40)
+
+    title_color = db_models.CharField(max_length=20, default=settings.TITLE_COLOR, blank=True)
+    description_color = db_models.CharField(max_length=20, default=settings.DESCRIPTION_COLOR, blank=True)
+    sub_label_color = db_models.CharField(max_length=20, default=settings.SUB_LABEL_COLOR, blank=True)
+    tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
         (u'1', u'External link'),
-        (u'2', u'Course'),
-        (u'3', u'XBlock'),
+        (u'2', u'Lesson'),
+        (u'3', u'Module'),
+        (u'4', u'Course'),
     )
     tile_type = db_models.CharField(max_length=1, choices=TYPES)
 

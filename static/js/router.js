@@ -125,9 +125,10 @@ var Router = Backbone.Router.extend({
     view.render();
   },
   participant_details_active_courses: function(){
-    var url = ApiUrls.participants_list+'/'+$('#participantsDetailsDataWrapper').attr('data-id')+'/active_courses';
+    var user_id = $('#participantsDetailsDataWrapper').attr('data-id');
+    var url = ApiUrls.participants_list+'/'+user_id+'/active_courses';
     var collection = new Apros.collections.ParticipantDetailsActiveCourses({url: url});
-    var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid'});
+    var participant_details_active_courses_view = new Apros.views.ParticipantDetailsActiveCoursesView({collection: collection, el: '#participantDetailsActiveCoursesViewGrid', user_id: user_id});
     participant_details_active_courses_view.render();
   },
 
@@ -210,21 +211,24 @@ Apros.Router.linked_views = {
 }
 
 Apros.Router.HashPageChanger = function(element) {
-  _selectedClass = $(element).attr('data-target');
-  _parentContainer = $($(element).attr('data-container'));
+  var el = $(element);
+  var _selectedClass = el.attr('data-target');
+  var _parentContainer = $(el.attr('data-container'));
+  el.parent().parent().find('.hashPageButton').css('font-weight','');
+  el.css('font-weight','bold');
   _parentContainer.find('.contentNavigationContainer').each(function(index, value){
-  val = $(value);
-  if (val.hasClass(_selectedClass))
-  {
-    val.show();
-    if (!Apros.Router.linked_views[_selectedClass]['drawn'])
+    val = $(value);
+    if (val.hasClass(_selectedClass))
     {
-      Apros.Router.linked_views[_selectedClass]['drawn'] = true;
-      Apros.Router.linked_views[_selectedClass]['function']();
+      val.show();
+      if (!Apros.Router.linked_views[_selectedClass]['drawn'])
+      {
+        Apros.Router.linked_views[_selectedClass]['drawn'] = true;
+        Apros.Router.linked_views[_selectedClass]['function']();
+      }
     }
-  }
-  else
-    val.hide();
+    else
+      val.hide();
   });
   updateHeader();
 }

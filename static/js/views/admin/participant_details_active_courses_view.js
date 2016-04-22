@@ -1,5 +1,46 @@
   Apros.views.ParticipantDetailsActiveCoursesView = Backbone.View.extend({
-    initialize: function(){
+    user_id: null,
+    selected_course_id: null,
+    participantDetailsActiveCoursesViewGrid: null,
+
+    events: {
+      'click .edit-status' : 'editStatus', 
+      'click .unenroll-user' : 'unenrollUser', 
+      'editStatusDone': 'editStatusHandler'
+      }, 
+
+    initialize: function(options){
+      if (typeof options['user_id'] !== "undefined") {
+        this.user_id = options['user_id'];
+      }
+      this.refreshCollection();
+
+      var _this = this;
+
+      ajaxify_overlay_form('#edit-status-modal', 'form', 
+        function() {
+          _this.$el.trigger('editStatusDone');
+        }
+      );
+
+      $('#unenroll-user-modal .okbutton').on('click', function (e) {
+        var url = '/admin/participants/' + _this.user_id + '/courses/' + _this.selected_course_id + '/unenroll';
+        $.ajax({
+          method: 'GET',
+          url: url,
+          data: {}
+        })
+        .done(function(data, status, xhr) { 
+          if(data.status == 'success') {
+            _this.editStatusHandler();
+          }
+          else {
+            $('#unenroll-user-modal').find('.error').text(data.message);
+          }
+        });
+      });
+    },
+    refreshCollection: function() {
       this.collection.fetch({success:function(collection, response, options)
         {
           collection.getSlowFetchedStatus = true;
@@ -7,16 +48,23 @@
         }});
     },
     render: function(){
-      participantDetailsActiveCoursesViewGrid = new bbGrid.View({
+      var _this = this;
+      this.delegateEvents();
+      if(this.participantDetailsActiveCoursesViewGrid) {
+        this.participantDetailsActiveCoursesViewGrid.undelegateEvents();
+        this.$el.html('');
+      }
+      this.participantDetailsActiveCoursesViewGrid = new bbGrid.View({
         container: this.$el,
         collection: this.collection,
         colModel:[
         { title: 'Course Name', index: true, name: 'name', sorttype: 'string',
           actions: function(id, attributes){ 
-            var thisId = attributes['id']
-            var name = attributes['name']
-            if (name)
+            var thisId = attributes['id'];
+            var name = attributes['name'];
+            if (name) {
               return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+            }
           } 
         },
         { title: 'Course ID', index: true, name: 'id' },
@@ -51,9 +99,38 @@
             }
           } 
         },
-        { title: 'Status', index: true, name: 'status' },
-        { title: 'Unenroll', index: false, name: 'unenroll'}
+        { title: 'Status', index: true, name: 'status', 
+        actions: function(id, attributes) {
+            var status = attributes['status'];
+            return status + ' <a class="edit-status fa fa-pencil" data-revealhref="/admin/participants/' + 
+            _this.user_id + '/courses/' + id + 
+            '/edit_status"></a>';
+          }
+        },
+        { title: 'Unenroll', index: false, name: 'unenroll',
+          actions: function(id, attributes){ 
+            return '<a href="#" data-courseid="' + id + '" class="unenroll-user">Unenroll</a>'; 
+          } }
         ]
       });
+    }, 
+    editStatus: function(e) {
+      var target = $(e.target);
+      var currentRoles = target.parent().text().trim();
+      $('#edit-status-modal').foundation('reveal', 'open', {
+        url: $(e.target).data('revealhref'),
+        data: {currentRoles: currentRoles}
+    });
+    },
+    editStatusHandler: function(e) {
+      setTimeout(function(){$('#edit-status-modal').foundation('reveal', 'close')}, 1000);
+      this.undelegateEvents();
+      this.refreshCollection();
+      this.render();
+    }, 
+    unenrollUser: function(e) {
+      var target = $(e.target);
+      this.selected_course_id = target.data('courseid');
+      $('#unenroll-user-modal').foundation('reveal', 'open');
     }
   });

@@ -18,3 +18,40 @@
 {
 	padding-bottom: 20px;
 }
+
+.labelUniversal
+{
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+.inlineBlock
+{
+	display:inline-block;
+}
+
+.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content
+{
+	z-index:9999999999;
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.correctInput
+{
+	display: none;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translate(-100%,-50%);
+    color:green;
+}
+
+#tooltip {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px;
+    white-space: nowrap;
+    background: white;
+}

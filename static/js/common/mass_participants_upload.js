@@ -115,7 +115,7 @@ checkForStatus = function(data, form) {
     "</ul>";
 
   var uploadStatsTemplate =
-    "<hr/>" +
+    "<br/>" +
     "<span>Total:</span>" +
     "<span id='attempted'>0</span><br/>" +
     "<span>Succeded:</span>" +
@@ -139,11 +139,14 @@ checkForStatus = function(data, form) {
         clearInterval(poolingInterval);
         $('input[type=submit]').removeAttr('disabled');
         if ($('#participantsCsvUpload').length) {
-          $('.upload_stats').html(_.template(uploadStatsTemplate));
+          $('.upload_stats').html(_.template(uploadStatsTemplate, {'data': data}));
         }
         $('#enroll-error-list').html(_.template(errorsBlockTemplate, {'data': data.message}));
         if(data.error.length > 0){
           if ($('#participantsCsvUpload').length) {
+            $('#attempted').text(data.attempted);
+            $('#succeded').text(data.succeded);
+            $('#failed').text(data.failed);
             $('#enroll-error-list').find('#user-reg-errors').html(_.template(errorsTemplateNotModal, {'data': data}));
           }
           else {

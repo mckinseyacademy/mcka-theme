@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core import mail
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.utils.translation import ugettext as _
 
 def sendMultipleEmails(messages):
@@ -43,4 +43,16 @@ def email_add_inactive_student(request, program, student):
         subject, html_content, from_email, [to])
     msg.content_subtype = "html"
     msg.attach_alternative(text_content, "text/plain")
+    return msg
+
+def email_add_single_new_user(absolute_activation_uri, student, activation_record):
+    subject, from_email, to = 'Mckinsey academy activation mail!', settings.ENROLL_STUDENT_EMAIL, student.email
+    url = '{}'.format(activation_record.activation_key)
+    text_content = "Welcome to the Mckinsey academy! An administrator has created an account on McKinsey Academy for your use. To activate your account, please copy and paste this address into your web browser's address bar: {}/{}".format(absolute_activation_uri, url)
+    html_content = "<h2>Welcome to the Mckinsey academy!</h2><p> An administrator has created an account on McKinsey Academy for your use. To activate your account, please <a href='{}/{}'>Click here</a> to register a user account and get started.</p>".format(absolute_activation_uri, url)
+    msg = EmailMultiAlternatives(
+        subject, html_content, from_email, [to])
+    msg.content_subtype = "html"
+    msg.attach_alternative(text_content, "text/plain")
+    print vars(msg)
     return msg

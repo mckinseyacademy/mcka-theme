@@ -192,6 +192,15 @@ class EditExistingUserForm(forms.Form):
     country = forms.CharField(required=False, widget=forms.TextInput())
     city = forms.CharField(required=False, widget=forms.TextInput())
 
+class CreateNewParticipant(forms.Form):
+    first_name = forms.CharField(required=True, widget=forms.TextInput())
+    last_name = forms.CharField(required=True, widget=forms.TextInput())
+    email = forms.EmailField(required=True, widget=forms.TextInput())
+    company = forms.CharField(required=True, widget=forms.TextInput())
+    gender = forms.CharField(required=False, widget=forms.TextInput())
+    country = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput())
+
 class DashboardAdminQuickFilterForm(forms.ModelForm):
 
     class Meta:
@@ -213,11 +222,18 @@ class BrandingSettingsForm(forms.ModelForm):
     class Meta:
         model = BrandingSettings
         fields = [
-            'background_image', 'background_tiled', 'logo_image', 'navigation_colors', 'text_colors', 'client_id'
+            'background_image',
+            'background_tiled',
+            'logo_image',
+            'navigation_colors',
+            'text_colors',
+            'client_id',
+            'discover_text_color',
         ]
         widgets = {
             'navigation_colors': forms.TextInput(attrs={'type': 'color'}),
             'text_colors': forms.TextInput(attrs={'type': 'color'}),
+            'discover_text_color': forms.TextInput(attrs={'type': 'color'}),
         }
 
 class DiscoveryContentCreateForm(forms.ModelForm):
@@ -233,12 +249,27 @@ class DiscoveryContentCreateForm(forms.ModelForm):
         }
 
 class LearnerDashboardTileForm(forms.ModelForm):
+    
 	class Meta:
 		model = LearnerDashboardTile
 		fields = [
-            'title', 'description', 'link', 'tile_type', 'background_image', 'learner_dashboard'
+            'title',
+            'description',
+            'sub_label',
+            'link',
+            'tile_type',
+            'background_image',
+            'learner_dashboard',
+            'title_color',
+            'description_color',
+            'sub_label_color',
+            'tile_background_color',
        	]
        	widgets = {
        		'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
 			'link': forms.TextInput(attrs={'type': 'url'}),
+            'title_color': forms.TextInput(attrs={'type': 'color'}),
+            'description_color': forms.TextInput(attrs={'type': 'color'}),
+            'sub_label_color': forms.TextInput(attrs={'type': 'color'}),
+            'tile_background_color': forms.TextInput(attrs={'type': 'color'}),
         }

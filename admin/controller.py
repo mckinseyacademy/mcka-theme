@@ -30,7 +30,7 @@ from .models import (
     GROUP_PROJECT_V2_ACTIVITY_CATEGORY,
 )
 
-from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student, email_add_single_new_user
 
 from api_client.user_api import USER_ROLES
 from .permissions import Permissions
@@ -1099,18 +1099,18 @@ def round_to_int_bump_zero(value):
 
 def get_course_social_engagement(course_id):
 
-    course_groups = course_api.get_course_details_groups(course_id) 
-    groups_ids_list = []
-    for group in course_groups:
-        groups_ids_list.append(str(group['id']))
-    groups_ids = ','.join(group_id for group_id in groups_ids_list)
-    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
+    course_users_simple = course_api.get_user_list(course_id)
+    course_users_ids = [str(user.id) for user in course_users_simple]
+    roles = course_api.get_users_filtered_by_role(course_id)
+    roles_ids = [str(user.id) for user in roles]
+    for role_id in roles_ids:
+        if role_id in course_users_ids: course_users_ids.remove(role_id)
+
+    number_of_users = len(course_users_ids)
 
     number_of_posts = 0
     number_of_participants_posting = 0
     course_metrics_social = course_api.get_course_details_metrics_social(course_id)
-
-    number_of_users = len([dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])])
 
     for user in course_metrics_social['users']:
         user_data = course_metrics_social['users'][str(user)]
@@ -1172,12 +1172,14 @@ def get_course_engagement_summary(course_id):
 
     return course_stats
 
+
 def course_bulk_actions(course_id, data, batch_status):
     batch_status.clean_old()
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
     course_bulk_action(course_id, data, batch_status)
+
 
 @postpone
 def course_bulk_action(course_id, data, batch_status):
@@ -1186,12 +1188,12 @@ def course_bulk_action(course_id, data, batch_status):
             batch_status.attempted = len(data['list_of_items'])
             batch_status.save()
         for status_item in data['list_of_items']:
-            status = _change_user_status(course_id, data['new_status'], status_item)
+            status = change_user_status(course_id, data['new_status'], status_item)
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()    
-                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
@@ -1201,17 +1203,64 @@ def course_bulk_action(course_id, data, batch_status):
             batch_status.attempted = len(data['list_of_items'])
             batch_status.save()
         for status_item in data['list_of_items']:
-            status = _unenroll_participant(course_id, status_item)
+            status = unenroll_participant(course_id, status_item)
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()    
-                    BatchOperationErrors.create(error=status["message"], task_key=reg_status.task_key, user_id=int(status_item['id']))
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
-                    batch_status.save()          
-def _unenroll_participant(course_id, user_id):
+                    batch_status.save()    
+    elif (data['type'] == 'enroll_participants'):
+        if batch_status is not None:
+            batch_status.attempted = len(data['list_of_items'])
+            batch_status.save()
+        for status_item in data['list_of_items']:
+            status = _enroll_participant_with_status(data['course_id'], status_item['id'], data['new_status'])
+            if (status['status']=='error'):
+                if batch_status is not None:
+                    batch_status.failed = batch_status.failed + 1
+                    batch_status.save()    
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
+            elif (status['status']=='success'):
+                if batch_status is not None:
+                    batch_status.succeded = batch_status.succeded + 1
+                    batch_status.save()    
+
+
+def _enroll_participant_with_status(course_id, user_id, status):
+    permissonsMap = {
+        'TA': USER_ROLES.TA,
+        'Observer': USER_ROLES.OBSERVER
+    }
+    failure = None
+    try:
+        user_api.enroll_user_in_course(user_id, course_id)
+    except ApiError as e: 
+        failure = {
+            "status": 'error',
+            "message": e.message
+        }
+    if failure:
+        return {'status':'error', 'message':e.message}
+    try:
+        permissions = Permissions(user_id)
+        if status != 'Active' :
+            permissions.update_course_role(course_id,permissonsMap[status])
+    except ApiError as e:
+        failure = {
+            "status": 'error',
+            "message": e.message
+        }
+    if failure:
+        return {'status':'error', 'message':e.message}
+
+    return {'status':'success'}
+
+         
+def unenroll_participant(course_id, user_id):
     try:
         permissions = Permissions(user_id)
         permissions.remove_all_course_roles(course_id)
@@ -1222,7 +1271,9 @@ def _unenroll_participant(course_id, user_id):
     except ApiError as e:
         return {'status':'error', 'message':e.message}
     return {'status':'success'}
-def _change_user_status(course_id, new_status, status_item):
+
+
+def change_user_status(course_id, new_status, status_item):
     permissonsMap = {
         'TA': USER_ROLES.TA,
         'Observer': USER_ROLES.OBSERVER
@@ -1422,16 +1473,16 @@ def _process_line_participants_csv(user_line):
 def _enroll_participants_from_csv(students, request, reg_status):
 
     permissonsMap = {
-        'TA': USER_ROLES.TA,
-        'Observer': USER_ROLES.OBSERVER
+        'ta': USER_ROLES.TA,
+        'observer': USER_ROLES.OBSERVER
     }
 
     for user_dict in students:
 
         client_id = user_dict['company']
-        client = Client.fetch(client_id)
+        client = None
         course_id = user_dict['course']
-        status = user_dict['status']
+        status = user_dict['status'].lower()
 
         failure = None
         user_error = []
@@ -1449,10 +1500,18 @@ def _enroll_participants_from_csv(students, request, reg_status):
                 }
 
             if user:
+                try: 
+                    client = Client.fetch(client_id)
+                except ApiError as e:
+                    failure = {
+                        "reason": e.message,
+                        "activity": _("Non existing Client")
+                    }
                 try:
                     if not user.is_active:
                         activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
-                    client.add_user(user.id)
+                    if client:
+                        client.add_user(user.id)
                 except ApiError as e:
                     failure = {
                         "reason": e.message,
@@ -1483,7 +1542,7 @@ def _enroll_participants_from_csv(students, request, reg_status):
 
                 try:
                     permissions = Permissions(user.id)
-                    if status != 'Active' :
+                    if status != 'active' :
                         permissions.update_course_role(course_id,permissonsMap[status])
                 except ApiError as e:
                     user_error.append(_("{}: {} - {}").format(
@@ -1516,4 +1575,16 @@ def _enroll_participants_from_csv(students, request, reg_status):
             #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save() 
-    
+
+def _send_activation_email_to_single_new_user(activation_record, user, absolute_uri):
+    msg = [email_add_single_new_user(absolute_uri, user, activation_record)]
+    result = sendMultipleEmails(msg)
+    print result
+
+def get_learner_dashboard_flag(course_id):
+    try:
+        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+    except:
+        learner_dashboard_flag = False
+
+    return learner_dashboard_flag

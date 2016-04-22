@@ -17,7 +17,7 @@
           %input{:placeholder => 'Email', :type => 'text', :name => 'custom_email', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
     #participantsListViewGridBlock
 
-    #add_a_paricipant.reveal-modal.small{'data-reveal': None}
+    #add_a_participant.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 Add a Participant
@@ -25,6 +25,8 @@
         Want to add more than one participant at a time?
         %a
           Import a list
+      %hr
+      .errorContainer
       %form.participantDetailsEditForm
         - csrf_token
         .row
@@ -32,44 +34,26 @@
             .participantFirstNameLabel.labelUniversal
               First Name<sup>*</sup>
             .participantFirstNameValue
-              %input{:type => "text",  :name => "first_name", :maxlength => "30"}
+              %input.cleanable{:type => "text",  :name => "first_name", :maxlength => "30"}
           .large-6.columns.participantLastName
             .participantLastNameLabel.labelUniversal
               Last Name<sup>*</sup>
             .participantLastNameValue
-              %input{:type => "text",  :name => "last_name", :maxlength => "30"}
+              %input.cleanable{:type => "text",  :name => "last_name", :maxlength => "30"}
         .row
-          .large-6.columns.participantUsername
-            .participantUsernameLabel.labelUniversal
-              Username
-              .fa.fa-check-circle-o.checkMark
-            .participantUsernameValue
-              %input{:type => "text", :name => "username", :maxlength => "30", :class => 'participantUsernameInput'}
-              .warningText
-                %p That username is already taken
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
                 Email<sup>*</sup>
-              .fa.fa-check-circle-o.checkMark
             .participantEmailValue
-              %input{:type => "text", :name => "email", :maxlength => "60", :class => 'participantEmailInput'}
-              .warningText
-                %p That email is already taken
-        .row
+              %input.cleanable{:type => "email", :name => "email", :maxlength => "60", :onkeyup => 'validateParticipantEmail()', :class => 'participantEmailInput', :required => 'true'}
+              %i.fa.fa-check-circle-o.correctInput.checkMark
           .large-6.columns.participantCompany
             .participantCompanyLabel.labelUniversal
               Company<sup>*</sup>
             .participantCompanyValue
-              %input{:type => "text", :name => "company", :maxlength => "60"}
-          .large-6.columns.participantGender
-            .participantGenderLabel.labelUniversal
-              Gender
-            .participantGenderValue
-              %select{:name => "gender"}
-                  %option{:value => "M"} Male
-                  %option{:value => "F"} Female
-                  %option{:value => "N/A"} N/A
+              %input.cleanable{:type => "text", :name => "company", :maxlength => "60"}
+              %i.fa.fa-check-circle-o.correctInput
         .row
           .large-6.columns.participantCountry
             .participantCountryLabel.labelUniversal
@@ -81,26 +65,45 @@
             .participantCityLabel.labelUniversal
               City
             .participantCityValue
-              %input{:type => "text", :name => "city", :maxlength => "60"}
-        .row
+              %input.cleanable{:type => "text", :name => "city", :maxlength => "60"}
+        .row        
+          .large-6.columns.participantGender
+            .participantGenderLabel.labelUniversal
+              Gender
+            .participantGenderValue
+              %select{:name => "gender"}
+                  %option{:value => "N/A"} N/A
+                  %option{:value => "M"} Male
+                  %option{:value => "F"} Female
           .large-6.columns.participantPermissions
             .participantPermissionsLabel.labelUniversal
-              Admin Permissions
+              Permissions
             .participantPermissionsValue
-              %select
+              %select{:name => "company_permissions"}
+                %option{:value => "none"} None
                 %option{:value => "uber_admin"} Uber admin
                 %option{:value => "course_ops_admin"} Course ops admin
                 %option{:value => "company_admin"} Company admin
                 %option{:value => "internal_admin"} Internal Admin
-          .large-6.columns.participantAdminCompany
-            .participantAdminCompanyLabel.labelUniversal
-              Admin Company
-            .participantAdminCompanyValue
-              %input{:type => "text"}
-            .participantEmailReset.inlineBlock
-              + Add another company
+        %hr
+        .adminAnotherCompanyAllWrapper
+        .addAnotherCompanyWrapper.row
+          %a.large-12.columns
+            + Add another company to administer
+        %hr
+        .adminCourseAllWrapper
+        .addAnotherCourseWrapper.row
+          %a.large-12.columns
+            + Add another course
+        %hr
+        .emailActivationWrapper.row
+          .large-12.columns
+            .emailActivationLinkCheckboxWrapper
+              %input.emailActivationCheckbox{:type => 'checkbox'}
+              .emailActivation
+                Email activation link now
       .button-wrapper
-        %a.button.small.radius.menuButton{:type => "button", :value => "Add Participant"}
+        %a.button.small.radius.menuButton.addSingleParticipantButton{:type => "button", :value => "Add Participant"}
           Add Participant 
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           Cancel
@@ -109,14 +112,17 @@
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 CSV Template and Formatting
-      %p Download the CSV template below to import users. All fields in the template are required. Note that you must add users to preexisting companies and courses.
+      %p 
+        Download the CSV template below to import users. 
+        %strong All fields in the template are required. 
+        Note that you must add users to preexisting companies and courses.
       .button-wrapper
         %a.button.small.radius.menuButton{:type => "button", :value => "Download Template", :href => '/static/docs/participant-onboarding-template.csv', :target => '_blank'}
           Download Template
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           Cancel
 
-    #import_from_csv.reveal-modal.big{'data-reveal': None}
+    #import_from_csv.reveal-modal.medium{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 Import Participants from CSV
@@ -126,22 +132,18 @@
           %a.modalLinks{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
       .admin-form
 
-        %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
-
         %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data"}
           - csrf_token
           = form
-
-          .error
-            - if error
-              = error
-
-          .upload_stats
-          #enroll-error-list
           
           .button-wrapper.topPadding
             %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: ''}
             %a.modalLinks.leftPadding.close-reveal-modal.close-modal-inline{:href => '#'} Cancel
+
+        %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
+
+        .upload_stats
+        #enroll-error-list
 
     #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   
       .close-reveal-modal
@@ -152,6 +154,24 @@
       %p You can download the activation links now, or from the participant profiles at any time.
       %br
       %a.download_activation{:href => '/admin/api/participants/import_participants/download_activation_links/?task_key=', :target => '_self'}> Download Activation Links
+
+      .button-wrapper.topPadding
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"} 
+          I'm Done
+
+    #confirmation_screen_single_participant.reveal-modal.big{'data-reveal': None}   
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %h2.upload_message
+        Successfully added new user!
+      %hr
+
+      %p You can download the activation link now, or from the participant profiles at any time.
+      %br
+      %br
+      %a.download_user_activation{:data-url => '/admin/api/participants/import_participants/download_activation_links/?user_id=', :target => '_self'}> Download Activation Link
+      %br
+      %a.go_to_user_profile{:data-url => '/admin/participants/', :target => '_self'}> Go To User Profile
 
       .button-wrapper.topPadding
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"} 

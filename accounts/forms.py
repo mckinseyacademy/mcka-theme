@@ -8,16 +8,13 @@ from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 
 from api_client import user_api
-from django.template import loader
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.utils.html import format_html
 from django.forms.util import flatatt
 from django.utils.encoding import force_text
 from django.core.urlresolvers import reverse
 from api_client.api_error import ApiError
 
-from .models import UserPasswordReset
+from .controller import send_password_reset_email
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -393,7 +390,6 @@ class FpasswordForm(forms.Form):
         Generates a one-use only link for resetting password and sends to the
         user.
         """
-        from django.core.mail import EmailMessage
 
         email = self.cleaned_data["email"]
 
@@ -402,26 +398,14 @@ class FpasswordForm(forms.Form):
             post_reset_redirect = '/accounts/login?reset=failed'
         else:
             user = users[0]
-
-            uid = urlsafe_base64_encode(force_bytes(user.id))
-
-            reset_record = UserPasswordReset.create_record(user)
-
-            url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': reset_record.validation_key})
-
-            c = {
-                'email': user.email,
-                'domain': request.META.get('HTTP_HOST'),
-                'url': url,
-                'user': user,
-                'protocol': 'https' if use_https else 'http',
-            }
-            subject = loader.render_to_string(subject_template_name, c)
-            # Email subject *must not* contain newlines
-            subject = ''.join(subject.splitlines())
-            email = loader.render_to_string(email_template_name, c)
-            email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
-            email.send(fail_silently=False)
+            send_password_reset_email(
+                request.META.get('HTTP_HOST'), 
+                user, 
+                use_https, 
+                subject_template_name=subject_template_name,
+                email_template_name=email_template_name,
+                from_email=from_email
+            )
 
 class SetNewPasswordForm(forms.Form):
     """
@@ -474,3 +458,25 @@ class EditTitleForm(forms.Form):
     ''' edit user title '''
     title = forms.CharField(max_length=255, label='', required=False)
 
+class BaseRegistrationFormV2(NoSuffixLabelForm):
+    ''' base for ActivationForm and FinalizeRegistrationForm '''
+    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
+    username = forms.CharField(max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
+    password = forms.CharField(widget=forms.PasswordInput(),
+        label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
+    title = forms.CharField(max_length=255, required=False)
+    level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES, required=False)
+    year_of_birth = forms.ChoiceField(choices=YEAR_CHOICES, required=False, initial=("", "---"))
+    accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
+
+    def clean_accept_terms(self):
+        value = self.cleaned_data['accept_terms']
+        if not value:
+            raise forms.ValidationError(_("You must accept terms of service in order to continue"))
+        return value
+
+class ActivationFormV2(BaseRegistrationFormV2):
+    ''' activation form for system '''
+    def __init__(self, *args, **kwargs):
+        super(ActivationFormV2, self).__init__(*args, **kwargs)
+        self.fields['username'].widget = UserNameInput(attrs={'required': True})  # Custom widget with no default value

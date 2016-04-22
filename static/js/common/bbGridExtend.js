@@ -53,8 +53,53 @@ _.extend(bbGrid.TheadView.prototype, {
     escape: /<%-([\s\S]+?)%>/g
   })
 });
-
-
+_.extend(bbGrid.RowView.prototype, {
+    render: function () {
+        var self = this, isChecked, isDisabled, html,
+            cols = _.filter(this.view.colModel, function (col) {return !col.hidden; });
+        isChecked = ($.inArray(this.model.id, this.view.selectedRows) >= 0);
+        isDisabled = this.model.get('cb_disabled') || false;
+        var _title = ''
+        html = this.template({
+            isMultiselect: this.view.multiselect,
+            isContainSubgrid: this.view.subgrid && this.view.subgridControl,
+            isSelected: this.selected || false,
+            isChecked: isChecked,
+            isDisabled: isDisabled,
+            isEscaped: this.view.escape,
+            values: _.map(cols, function (col) {
+                if (col.actions) {
+                    col.name = 'bbGrid-actions-cell';
+                    col.className = col.name;
+                    if (_.isFunction(col.actions)) {
+                        col.value = col.actions.call(self, self.model.id, self.model.attributes, self.view);
+                    } else {
+                        col.value = self.view.actions[col.actions].call(self, self.model.id, self.model.attributes, self.view);
+                    }
+                } else {
+                    col.attributes = _.omit(col, 'name', 'value', 'className', 'title', 'editable', 'width', 'index', 'escape',
+                        'hidden', 'sorttype', 'filter', 'filterType', 'sortOrder', 'filterColName', 'resizable', 'attributes', 'tooltip');
+                    col.value = self.getPropByStr(self.model.attributes, col.name);
+                }
+                if (col.titleAttribute)
+                {
+                    _title = self.getPropByStr(self.model.attributes, col.titleAttribute);
+                }
+                return col;
+            })
+        });
+        if (isChecked) {
+            this.selected = true;
+            this.$el.addClass('warning');
+        }
+        this.$el.html(html).attr('data-cid', this.model.cid);
+        if (_title != '')
+        {
+          this.$el.attr('data-title', _title);
+        }
+        return this;
+    }
+});
 _.extend(bbGrid.SearchView.prototype, {
   tagName: 'div',
     className: 'bbGrid-search-bar',
@@ -260,10 +305,11 @@ cloneHeader = function(parentContainer) {
   clonedHeader.css({"width": width, "height": height});
   head.css("height", parseFloat(height) + 15);
 
-  var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
-  var trwidth = window.getComputedStyle(tr).width;
-  var trheight = window.getComputedStyle(tr).height;
+  var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr');
+  var trwidth = window.getComputedStyle(tr[0]).width;
+  var trheight = window.getComputedStyle(tr[0]).height;
   clonedHeader.find('tr').css({"width": trwidth, "height": trheight});
+  tr.css("height", 'inherit');
 
   var thWidths = []
   var thHeights = []

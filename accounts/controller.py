@@ -4,7 +4,12 @@ from django.contrib import messages
 import os
 
 from django.conf import settings
+from django.utils.encoding import force_bytes
 from django.utils.translation import ugettext as _
+from django.utils.http import urlsafe_base64_encode
+from django.core.urlresolvers import reverse
+from django.template import loader
+from django.core.mail import EmailMessage
 
 from admin.models import Program
 
@@ -12,6 +17,7 @@ from api_client import user_api, third_party_auth_api
 from api_client.api_error import ApiError
 
 from license import controller as license_controller
+from .models import UserPasswordReset
 
 
 class ActivationError(Exception):
@@ -204,3 +210,28 @@ def enroll_student_in_course(user, program, course_id):
             _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
         )
     return EnrollStudentInCourseResult(course_id, enrolled, new_enrollment, message)
+
+def send_password_reset_email(domain, user, use_https, 
+                            subject_template_name='registration/password_reset_subject.txt',
+                            email_template_name='registration/password_reset_email.html', 
+                            from_email=settings.APROS_EMAIL_SENDER):
+
+    uid = urlsafe_base64_encode(force_bytes(user.id))
+
+    reset_record = UserPasswordReset.create_record(user)
+
+    url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': reset_record.validation_key})
+
+    c = {
+        'email': user.email,
+        'domain': domain,
+        'url': url,
+        'user': user,
+        'protocol': 'https' if use_https else 'http',
+    }
+    subject = loader.render_to_string(subject_template_name, c)
+    # Email subject *must not* contain newlines
+    subject = ''.join(subject.splitlines())
+    email = loader.render_to_string(email_template_name, c)
+    email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
+    email.send(fail_silently=False)

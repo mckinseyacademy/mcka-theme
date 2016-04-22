@@ -2,6 +2,7 @@
 import json
 import csv
 from datetime import datetime, timedelta
+import re
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -525,7 +526,16 @@ def course_resources(request, course_id):
 
 @login_required
 @check_user_course_access
-def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
+def course_resources_learner_dashboard(request, course_id):
+    static_tabs = load_static_tabs(course_id)
+    data = {
+        "resources": static_tabs.get("resources", None)
+    }
+    return render(request, 'courses/course_resources_learner_dashboard.haml', data)
+
+@login_required
+@check_user_course_access
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None):
 
     ''' go to given page within given chapter within given course '''
     course = load_course(course_id, request=request)
@@ -540,6 +550,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
         "legacy_course_id": course_id,
+        "tile_type": tile_type,
     }
 
     if not current_sequential.is_started:
@@ -568,7 +579,10 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
-    return render(request, 'courses/course_lessons.haml', data)
+    if tile_type:
+        return render(request, 'courses/course_lessons_ld.haml', data)
+    else:
+        return render(request, 'courses/course_lessons.haml', data)
 
 def course_notready(request, course_id):
     course = load_course(course_id, request=request)
@@ -805,20 +819,14 @@ def course_learner_dashboard(request, course_id):
         redirect_url = '/courses/{}/'.format(course_id)
         return HttpResponseRedirect(redirect_url)
 
-    try:
-        branding = BrandingSettings.objects.get(client_id=organization.id)
-    except:
-        branding = None
-
-    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     data ={
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
-        'discovery_items': discovery_items,
-        'branding': branding,
+        'discovery_items': discovery_items
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 

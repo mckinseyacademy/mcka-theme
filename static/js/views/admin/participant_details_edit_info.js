@@ -1,14 +1,15 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
       var _this=this;
+      _this.setLocationTooltip(); 
       $('#country_edit').countrySelect();
-      _this.setLocationTooltip();   
       InitializeAutocompleteInput(options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
-        $('#participantDetailsWrapper').find('.participantDetailsWrapper').hide();
-        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
-        $('#participantDetailsWrapper').find('.participantDetailsEditForm').show();
+        var cont = $('#participantDetailsWrapper');
+        cont.find('.participantDetailsWrapper').hide();
+        cont.find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
+        cont.find('.participantDetailsEditForm').show();
         var details = $('#participantDetailsWrapper').find('.participantDetailsWrapper');
         var locationText = details.find('.participantLocationValue').text();
         if (locationText.indexOf(',') > -1)
@@ -22,9 +23,10 @@
       });
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').off().on("click", function()
       {
-        $('#participantDetailsWrapper').find('.participantDetailsEditForm').hide();
-        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
-        $('#participantDetailsWrapper').find('.participantDetailsWrapper').show();
+        var cont = $('#participantDetailsWrapper');
+        cont.find('.participantDetailsEditForm').hide();
+        cont.find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
+        cont.find('.participantDetailsWrapper').show();
         _this.setLocationTooltip(); 
         _this.update_edit_field_data(_this);
       });
@@ -167,7 +169,7 @@
         var name = '';
         if (locationText.length == 2)
         {
-          name = locationText;
+          name = locationText.toLowerCase();
         }
         else
         {
@@ -176,11 +178,11 @@
         }
         var selectableCountries = $.fn['countrySelect'].getCountryData();
         for (var i = 0; i<selectableCountries.length;i++)
-        {
+        { 
           if (selectableCountries[i].iso2 == name)
           {
             tooltipText += ', ' + selectableCountries[i].name;
-            break
+            break;
           }  
         }
         $('#participantDetailsWrapper').find('.participantDetailsWrapper .participantLocationValue').attr('title', tooltipText);

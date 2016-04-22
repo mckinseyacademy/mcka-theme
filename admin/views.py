@@ -3,6 +3,7 @@ import functools
 import json
 import string
 import urlparse
+import re
 from dateutil.parser import parse as parsedate
 from datetime import datetime
 from urllib import quote as urlquote, urlencode
@@ -17,7 +18,8 @@ from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404
+from django.contrib import messages
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.template import loader, RequestContext
 from django.utils.dateformat import format
@@ -28,13 +30,13 @@ from django.views.decorators.http import require_POST
 from django.views.generic.base import View
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
-    load_group_projects_info_for_course
+    load_group_projects_info_for_course, get_learner_dashboard_flag
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation
-from accounts.controller import is_future_start, save_new_client_image
+from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email
 from api_client import user_models
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api
 from api_client.api_error import ApiError
@@ -61,13 +63,15 @@ from .controller import (
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
-    get_user_courses_helper, get_course_progress, import_participants_threaded
+    get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
+    _send_activation_email_to_single_new_user
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm
+    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
+    CreateNewParticipant
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -337,11 +341,8 @@ def client_admin_course(request, client_id, course_id):
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
-	
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
+    
+    (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
     data = {
         'client_id': client_id,
@@ -351,7 +352,7 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -388,18 +389,13 @@ def client_admin_course_participants(request, client_id, course_id):
     else:
         students = []
 
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
-
     data = {
         'client_id': client_id,
         'course_id': course_id,
         'target_course': course,
         'total_participants': len(students),
         'students': students,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -492,10 +488,6 @@ def client_admin_course_analytics(request, client_id, course_id):
 
     course = load_course(course_id)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-    if(features.learner_dashboard):
-    	learner_dashboard_flag = features.learner_dashboard
-    else:
-    	learner_dashboard_flag = False
 
     # progress
     cohort_metrics = course_api.get_course_metrics_completions(course.id, skipleaders=True, completions_object_type=Progress)
@@ -528,7 +520,7 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -542,86 +534,98 @@ def client_admin_course_analytics(request, client_id, course_id):
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
 
-	try:
-		instance = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
-	except:
-		instance = None
+    try:
+        instance = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    except:
+        instance = None
 
-	if request.method == "POST":
-		if instance == None:
-			instance = LearnerDashboard(
-				title = request.POST['title'],
-				description = request.POST['description'],
-				client_id = client_id, 
-				course_id = course_id
-			)
-			instance.save()
-		else:
-			instance.title = request.POST['title']
-			instance.description = request.POST['description']
-			instance.save()
-		
-			myDict = dict(request.POST.iterlists())
-			for index, item_id in enumerate(myDict['positions[]']):
-				tileItem = LearnerDashboardTile.objects.get(id=item_id)
-				tileItem.position = index
-				tileItem.save()
+    if request.method == "POST":
+        if instance == None:
+            instance = LearnerDashboard(
+                title = request.POST['title'],
+                description = request.POST['description'],
+                client_id = client_id, 
+                course_id = course_id
+            )
+            instance.save()
+        else:
+            instance.title = request.POST['title']
+            instance.description = request.POST['description']
+            instance.save()
+        
+            myDict = dict(request.POST.iterlists())
+            for index, item_id in enumerate(myDict['positions[]']):
+                tileItem = LearnerDashboardTile.objects.get(id=item_id)
+                tileItem.position = index
+                tileItem.save()
 
-	if instance:
-		learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
-		data = {
-			'client_id': client_id,
-			'course_id': course_id,
-			'learner_dashboard_id': instance.id,
-			'learner_dashboard_flag': True,
-			'title': instance.title,
-			'description': instance.description,
-			'learner_dashboard_tiles': learner_dashboard_tiles,
+    if instance:
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
+        data = {
+            'client_id': client_id,
+            'course_id': course_id,
+            'learner_dashboard_id': instance.id,
+            'learner_dashboard_flag': True,
+            'title': instance.title,
+            'description': instance.description,
+            'learner_dashboard_tiles': learner_dashboard_tiles,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
-		}
-	else:
-		data = {
-			'client_id': client_id,
-			'course_id': course_id,
-			'learner_dashboard_id': None,
-			'learner_dashboard_flag': True,
+        }
+    else:
+        data = {
+            'client_id': client_id,
+            'course_id': course_id,
+            'learner_dashboard_id': None,
+            'learner_dashboard_flag': True,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
-		}
+        }
 
-	return render(request, 'admin/client-admin/learner_dashboard.haml', data)
+    return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
 
-	error = None
-	try:
-		instance = LearnerDashboardTile.objects.get(id=tile_id)
-	except:
-		instance = None
+    error = None
+    try:
+        instance = LearnerDashboardTile.objects.get(id=tile_id)
+    except:
+        instance = None
 
-	if request.method == 'POST':
-		form = LearnerDashboardTileForm(request.POST, instance=instance)
-		if form.is_valid():
-			form.save()
-			redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
-			return HttpResponseRedirect(redirect_url)
-	elif request.method == 'DELETE':
-		instance.delete()
-		redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
-		return HttpResponseRedirect(redirect_url)
-	else:
-		form = LearnerDashboardTileForm(instance=instance)
+    if request.method == 'POST':
+        form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            tile = form.save()
 
-	return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
-		'error': error,
-		'form': form,
-		'client_id': client_id,
-		'course_id': course_id,
-		'learner_dashboard_id': learner_dashboard_id,
-		'tile_id': tile_id,
-	})
+            if not "/learner_dashboard/" in tile.link:
+                if tile.get_tile_type_display() == 'Lesson':
+                    tile.link = tile.link + "/learner_dashboard/lesson"
+                if tile.get_tile_type_display() == 'Module':
+                    tile.link = tile.link + "/learner_dashboard/module"
+                tile.save()
+            if tile.get_tile_type_display() == 'Course':
+                if not "/courses/" in tile.link:
+                    tile.link = "/courses/" + tile.link
+                    tile.save()
+
+            redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
+            return HttpResponseRedirect(redirect_url)
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
+        return HttpResponseRedirect(redirect_url)
+    else:
+        form = LearnerDashboardTileForm(instance=instance)
+
+    return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
+        'error': error,
+        'form': form,
+        'client_id': client_id,
+        'course_id': course_id,
+        'learner_dashboard_id': learner_dashboard_id,
+        'tile_id': tile_id,
+    })
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
@@ -696,6 +700,26 @@ def _remove_student_from_course(student_id, course_id):
     permissions = Permissions(student_id)
     permissions.add_course_role(course_id, USER_ROLES.OBSERVER)
     user_api.unenroll_user_from_course(student_id, course_id)
+
+class participant_details_courses_unenroll_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, course_id, format=None):
+        
+        try:
+            # TO-DO: Change with actual enroll once provided by EDX. 
+            # Sets to Observer for now.
+            response = unenroll_participant(course_id, user_id)
+            return HttpResponse(
+                    json.dumps(response),
+                    content_type='application/json'
+                )
+        except ApiError as err:
+            error = err.message
+            return HttpResponseServerError(
+                {'status': 'error', 'message': error}, 
+                content_type='application/json'
+            )
 
 @ajaxify_http_redirects
 @permission_group_required(
@@ -913,14 +937,13 @@ def course_details(request, course_id):
 
     course_all_users = course_api.get_course_details_users(course_id)
     count = len(course_all_users['enrollments'])
+    users_enrolled = []
+    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
+    list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
+    for user in course_all_users['enrollments']:
+        if str(user['id']) not in list_of_user_roles['ids']:
+            users_enrolled.append(user)
 
-    course_groups = course_api.get_course_details_groups(course_id) 
-    groups_ids_list = []
-    for group in course_groups:
-        groups_ids_list.append(str(group['id']))
-    groups_ids = ','.join(group_id for group_id in groups_ids_list)
-    course_users = course_api.get_course_details_users_groups(course_id, groups_ids)
-    users_enrolled = [dict(user) for user in set(tuple(item.items()) for item in course_users['enrollments'])]
     course['users_enrolled'] = len(users_enrolled)
 
     course_completed_users = 0
@@ -1164,7 +1187,7 @@ class course_details_api(APIView):
                     if not course_participant['proficiency']:
                         course_participant['proficiency'] = "000";
                     else:
-                        course_participant['proficiency'] = '{:03d}'.format(int(course_participant['proficiency'][0]))
+                        course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency'][0]))
                     for role in list_of_user_roles['data']:
                         if role['id'] == course_participant['id']:
                             course_participant['user_status'].append(permissonsMap[role['role']])
@@ -1223,6 +1246,7 @@ class course_details_api(APIView):
             task_id = batch_status.task_key
             course_bulk_actions(course_id, data, batch_status)
             return Response({'status':'ok', 'data': data, 'task_id': task_id})
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2068,12 +2092,17 @@ def import_participants_check(request, task_key):
             if reg_status.attempted == (reg_status.failed + reg_status.succeded):
                 errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
                 errors_as_json = serializers.serialize('json', errors)
-                status = _format_upload_results(reg_status)
+                message = _("Successfully Added {} Participants").format(
+                    reg_status.attempted - reg_status.failed
+                )
                 for error in errors:
                     error.delete()
+                attempted = str(reg_status.attempted)
+                failed = str(reg_status.failed)
+                succeded = str(reg_status.succeded)
                 reg_status.delete()
                 return HttpResponse(
-                    '{"done":"done","error":' + errors_as_json + ', "message": "' + status.message + '"}',
+                    '{"done":"done","error":' + errors_as_json + ', "message": "' + message + '","attempted":"'+attempted+'","failed":"'+failed+'","succeded":"'+succeded+'"}',
                     content_type='application/json'
                 )
             else:
@@ -2096,23 +2125,54 @@ def import_participants_check(request, task_key):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def download_activation_links_by_task_key(request):
 
-    task_key = request.GET.get('task_key')
+    task_key = request.GET.get('task_key', None)
+    user_id = request.GET.get('user_id', None)
+    res_type = request.GET.get('res_type', 'csv')
 
     file_name = "download-activation-links-output"
+    company_id = 'N/A'
 
-    uri_head = request.build_absolute_uri('/accounts/activate')
+    if task_key:
+        uri_head = request.build_absolute_uri('/accounts/activate')
+        activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
 
-    activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
+    if user_id:
+        uri_head = request.build_absolute_uri('/accounts/activateV2')
+        user_data = user_api.get_user(user_id=user_id)
+        company_id = vars(user_api.get_user_organizations(user_id)[0])['id']
+        activation_records = [UserActivation.get_user_activation(user=user_data)]
     
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
+    if res_type == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
 
-    writer = csv.writer(response)
-    writer.writerow(['Email', 'First name', 'Last name', 'Company', 'Activation Link'])
-    for record in activation_records:
-        user = vars(record)
-        activation_full = "{}/{}".format(uri_head, user['activation_key'])
-        writer.writerow([user['email'], user['first_name'], user['last_name'], user['company_id'], activation_full])
+        writer = csv.writer(response)
+        writer.writerow(['Email', 'First name', 'Last name', 'Company', 'Activation Link'])
+        for record in activation_records:
+            user = vars(record)
+            activation_full = "{}/{}".format(uri_head, user['activation_key'])
+            if user_id:
+                user = vars(user_data)
+            writer.writerow([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])
+
+    if res_type is not 'csv':
+        activation_records_data = []
+        for record in activation_records:
+            user = vars(record)
+            activation_full = "{}/{}".format(uri_head, user['activation_key'])
+            if user_id:
+                user = vars(user_data)
+            activation_records_data.append([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])      
+
+            if res_type == 'json': 
+                response = HttpResponse(
+                    json.dumps({"records": activation_records_data}), 
+                    content_type='application/json'
+                )
+            if res_type == 'html':
+                response = render(request,
+                    'admin/participants/activation_link_modal.haml',
+                    {'records': activation_records_data})
 
     return response
     
@@ -3175,6 +3235,29 @@ def participants_list(request):
     form = MassStudentListForm()
     return render( request, 'admin/participants/participants_list.haml', {"form": form})
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def participant_password_reset(request, user_id):
+    try: 
+        user = user_api.get_user(user_id)
+        send_password_reset_email(request.META.get('HTTP_HOST'), user, request.is_secure())
+        messages.success(request, 'Password Reset Email successfully sent.')
+    except Exception as e:
+        messages.error(request, e.message)
+    return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
+
+def participant_mail_activation_link(request, user_id):
+
+    user = user_api.get_user(user_id)
+    if user:
+        try:
+            if not user.is_active:
+                activation_record = UserActivation.get_user_activation(user)
+                email_head = request.build_absolute_uri('/accounts/activateV2') #change if we want old registration form
+                _send_activation_email_to_single_new_user(activation_record, user, email_head)
+                messages.info(request, "Activation email sent.")
+        except Exception as e:
+            messages.error(request, e.message)
+    return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
 class participants_list_api(APIView):
     """
@@ -3220,18 +3303,86 @@ class participants_list_api(APIView):
 
         return Response(allParticipants)
 
-
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request):
+        post_data = json.loads(request.body)
+        print post_data
+        form = CreateNewParticipant(post_data.copy())
+        if form.is_valid():
+            filterUsers = {}
+            existing_users_length = 0
+            if post_data['email']:
+                filterUsers = {'email' : post_data['email']}
+                existing_users = user_api.get_filtered_users(filterUsers)
+                existing_users_length += int(existing_users['count'])
+            if (existing_users_length > 0):
+                return Response({'status':'error', 'type': 'user_exist', 'message':'User with that email already exists!'})
+            else:
+                data = post_data
+                try:
+                    if len(data['email']) > 30:
+                        data['username'] = data['email'][:29]
+                    else:
+                        data['username'] = data['email']
+                    data['username'] = re.sub(r'\W', '', data['username'])
+                    data['password'] = settings.INITIAL_PASSWORD
+                    data['is_active'] = False
+                    user = user_api.register_user(data)
+                    user_data = vars(user)
+                    roles = {
+                        'assistant' : USER_ROLES.TA,
+                        'observer' : USER_ROLES.OBSERVER
+                    }
+                    permissions_groups = {
+                        'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+                        'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+                        'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+                    }
+                    if user:
+                        client = Client.fetch(data['company'])
+                        try:
+                            if not user.is_active:
+                                activation_record = UserActivation.user_activation(user)
+                                if data['send_activation_email']:
+                                    email_head = request.build_absolute_uri('/accounts/activateV2') #change if we want old registration form
+                                    _send_activation_email_to_single_new_user(activation_record, user, email_head)
+                            client.add_user(user.id)
+                        except ApiError, e:
+                            return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't add user to company!"})
+                    courses_permissions_list = []
+                    for course_permission in data['course_permissions_list']:
+                        try:
+                            user_api.enroll_user_in_course(user_data['id'], course_permission['course_id'])
+                        except ApiError as e:
+                            # Ignore 409 errors, because they indicate a user already added
+                            if e.code != 409:
+                                return Response({'status':'error', 'type': 'api_error', 'message':e.message})
+                        if course_permission['role'] != 'active':
+                            course_permission['role'] = roles[course_permission['role']]
+                            courses_permissions_list.append(course_permission)
+                    if len(courses_permissions_list) > 0 or data['company_permissions'] != 'none':
+                        permissions = Permissions(user_data['id'])
+                    if len(courses_permissions_list) > 0:
+                        permissions.update_courses_roles_list(courses_permissions_list)
+                    if data['company_permissions'] != 'none':
+                        if data['company_permissions'] in permissions_groups:
+                            permissions.add_permission(permissions_groups[data['company_permissions']])
+                except ApiError, e:
+                    return Response({'status':'error','type': 'api_error', 'message':e.message})
+                return Response({'status':'ok', 'message':'Successfully added new user!', 'user_id': user_data['id']})
+        else:
+            return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
 class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, user_id):
-        selectedUser = user_api.get_user(user_id)
+        selectedUserResponse = user_api.get_user(user_id)
         userOrganizations = user_api.get_user_organizations(user_id)
         userOrganizationsList =[]
         for organization in userOrganizations:
             userOrganizationsList.append(vars(organization))
-        if selectedUser is not None:
-            selectedUser = selectedUser.to_dict()
+        if selectedUserResponse is not None:
+            selectedUser = selectedUserResponse.to_dict()
             if 'last_login' in selectedUser:
                 if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
                     selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
@@ -3260,6 +3411,10 @@ class participant_details_api(APIView):
             selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
             if not len(selectedUser['mcka_permissions']):
                 selectedUser['mcka_permissions'] = ['-']
+            if UserActivation.get_user_activation(user=selectedUserResponse):
+                selectedUser['has_activation_record'] = True
+            else:
+                selectedUser['has_activation_record'] = False
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -3294,7 +3449,6 @@ class participant_details_api(APIView):
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
-
 class manage_user_company_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
@@ -3317,10 +3471,22 @@ class manage_user_company_api(APIView):
         for organization in organization_list:
             organizationData = vars(organization)
             allOrganizationsList.append({'display_name':organizationData['display_name'], 'id': organizationData['id']})
-        response_obj['all_organizations'] = allOrganizationsList
+        response_obj['all_items'] = allOrganizationsList
         response_obj['status'] = 'ok'
         return Response(response_obj)
 
+class manage_user_courses_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request):
+        response_obj = {}
+        courses_list = course_api.get_course_list()
+        allCoursesList =[]
+        for course in courses_list:
+            courseData = vars(course)
+            allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+        response_obj['all_items'] = allCoursesList
+        response_obj['status'] = 'ok'
+        return Response(response_obj)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def validate_participant_email(request):
@@ -3403,6 +3569,30 @@ def download_active_courses_stats(request, user_id):
         writer.writerow([course['name'], course['id'], course['program'], course['progress'], course['proficiency'], course['status']])
     
     return response
+
+
+class participant_details_course_edit_status_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, user_id, course_id, format=None):
+        params = urlparse.parse_qs(request.GET.urlencode())
+        current_roles = ''
+        if params['currentRoles']:
+            current_roles = str(params['currentRoles'][0])
+        data = {
+            'user_id': user_id, 
+            'course_id': course_id, 
+            'current_roles': current_roles, 
+            'status': ''
+        }
+        return HttpResponse(render(request, 'admin/participants/participant_edit_status.haml', data))
+
+    def post(self, request, user_id, course_id, format=None):
+        new_status = request.POST.get('role-group', None)
+        current_roles = request.POST.get('current-roles', '')
+        change_user_status(course_id, new_status, {'id': user_id, 'existing_roles': current_roles})
+        data = {'user_id': user_id, 'course_id': course_id, 'current_roles': new_status, 'status': 'Success.'}
+        return HttpResponse(render(request, 'admin/participants/participant_edit_status.haml', data))
 
 
 class participant_details_course_history_api(APIView):
@@ -3643,16 +3833,11 @@ def client_admin_branding_settings(request, client_id, course_id):
     except:
         instance = None
 
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
-
     return render(request, 'admin/client-admin/course_branding_settings.haml', {
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
@@ -3772,16 +3957,11 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
     learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
     discovery = LearnerDashboardDiscovery.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('position')
 
-    try:
-        learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-    except: 
-        learner_dashboard_flag = False
-
     return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
         'client_id': client_id,
         'course_id': course_id,
         'discovery': discovery,
-        'learner_dashboard_flag': learner_dashboard_flag,
+        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 

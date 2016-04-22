@@ -1,4 +1,23 @@
 - extends "admin/admin_layout.haml"
+- load staticfiles
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
+  :javascript
+    ZeroClipboard.config({swfPath: 'static/js/vendor/ZeroClipboard.swf'});
+    $(document).on('opened.fndtn', '#activation-link-modal', enableCopyButton);
+    function enableCopyButton() {
+      var copyBtn = $('.copy-access-key');
+      var client = new ZeroClipboard(copyBtn.get(0));
+      var tooltip = copyBtn.siblings('.tooltip');
+      client.on('aftercopy', function (event) {
+        tooltip.show();
+      });
+      copyBtn.on('mouseout', function (event) {
+        tooltip.fadeOut();
+      });
+    }
+
 - block content
   #mainParticipantsDetailsWrapper
     .participantDetailsNavigationButton
@@ -20,13 +39,13 @@
       #participantsMainDetailsContainerView
         .participantDetailsMenuButtons.row
           .participantProfileButton.large-2.columns
-            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsContent', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PROFILE
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsContent', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}>  PROFILE
           .participantActiveCoursesButton.large-3.columns
-            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsActiveCourses', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> ACTIVE COURSES
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsActiveCourses', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> ACTIVE COURSES
           .participantCourseHistoryButton.large-3.columns
-            %a{:href => '#', :target => '_self', :data-target => 'participantDetailsCourseHistory', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COURSE HISTORY
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsCourseHistory', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COURSE HISTORY
           .participantCertificatesButton.large-2.columns
-            %a{:href => '/admin/participants/#{id}', :target => '_self'}> CERTIFICATES
+            %a.hashPageButton{:href => '/admin/participants/#{id}', :target => '_self'}> CERTIFICATES
           .large-2.columns
         %hr
   #participantDetailsWrapper
@@ -38,6 +57,14 @@
             .large-5.columns
             .participantDetailsEditButton.large-2.columns
               %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
+        - if has_activation_record
+          - if not is_active
+            .row
+              .large-12.columns.participantBottomArchiveEdit
+                %p.error
+                  &ast; This user has not yet activated their account.
+                %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}> Get Activation Link
+                %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}> Resend Activation Link
         .row
           .large-6.columns.participantFirstName
             .participantFirstNameLabel.labelUniversal
@@ -55,13 +82,16 @@
             .participantUsernameLabel.labelUniversal
               Username
             .participantUsernameValue
-              ={username}
+              - if is_active
+                ={username}
+              - else
+                &#8212;
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
                 Email
               .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               ={email}
         %hr
@@ -76,17 +106,23 @@
             .participantGenderLabel.labelUniversal
               Gender
             .participantGenderValue
-              - if gender == 'M'
-                Male
-              - if gender == 'F'
-                Female
+              - if is_active
+                - if gender == 'M'
+                  Male
+                - if gender == 'F'
+                  Female
+              - else
+                &#8212;
         %hr
         .row
           .large-6.columns.participantLocation
             .participantLocationLabel.labelUniversal
               Location
             .participantLocationValue{:title => '#{location}'}
-              ={location}
+              - if is_active
+                ={location}
+              - else
+                &#8212;
           .large-6.columns.participantPermissions
             .participantPermissionsLabel.labelUniversal
               Admin Permissions
@@ -129,7 +165,7 @@
                 Email<sup>*</sup>
               .fa.fa-check-circle-o.checkMark
               .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}', :target => '_self'}> Send reset password email
+                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               %input{:type => "text", :value => '#{email}', :name => "email", :maxlength => "60", :onkeyup => 'validateParticipantEmail()', :class => 'participantEmailInput'}
               .warningText
@@ -203,6 +239,20 @@
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
 
+  #edit-status-modal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "true", :role => "dialog"}
 
+  #unenroll-user-modal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2.modalTitle
+    Are you sure you want to unenroll this user?
+    %p.lead
+    %p.mainText
+      %br
+      %button.okbutton.button.radius.small{:value => 'ok'}> Ok
+      %button.cancelbutton.button.radius.small.close-reveal-modal.close-modal-inline{:value => 'cancel'}> Cancel
+    %p
+      .error
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
 
+  #activation-link-modal.reveal-modal.large{"data-reveal": "true"}
 
