@@ -13,6 +13,7 @@ from django.conf import settings
 
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from admin.models import Program
+from courses.models import FeatureFlags
 from api_client.api_error import ApiError
 from api_client import user_api, group_api, course_api, organization_api, project_api, user_models, workgroup_api
 from accounts.models import UserActivation
