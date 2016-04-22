@@ -47,3 +47,11 @@
     transform: translate(-100%,-50%);
     color:green;
 }
+
+#tooltip {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px;
+    white-space: nowrap;
+    background: white;
+}

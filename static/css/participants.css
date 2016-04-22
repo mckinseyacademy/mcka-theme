@@ -12,7 +12,6 @@
 	max-height: 120em;
 	position: relative;
 }
-
 #participantsListViewGridBlock .bbGrid-container
 {
 	max-height: 120em;
@@ -27,6 +26,17 @@
 	min-width: 100%;
 }
 
+#participantDetailsWrapper div[title]:hover:after {
+  	content: attr(title);
+    position: absolute;
+    right: 100%;
+    bottom: 0px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px;
+    white-space: nowrap;
+    background: white;
+}
 #participantsDetailsDataWrapper{
 	margin-top: 50px;
 }
@@ -187,6 +197,24 @@
 	overflow: auto;
 }
 
+#import_from_csv .admin-form
+{
+	position: relative;
+	padding-bottom: 75px;
+}
 
+#import_from_csv .button-wrapper
+{
+	position: absolute;
+	bottom: 0;
+}
 
+#import_from_csv .modalLinks
+{
+	bottom: 15%;
+}
 
+#import_from_csv label, .helptext
+{
+	display: none;
+}

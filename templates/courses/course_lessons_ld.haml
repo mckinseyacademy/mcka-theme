@@ -1,11 +1,16 @@
 - extends "courses/course_navigation.haml"
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
 - block current_content
   #course-lessons
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
-    -if tile_type != 'module'
+    -if tile_type = 'module'
+      .lesson-title
+        %h1= course.current_module.name
+    -else
       .lesson-title
         %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
         %span.label-3.lesson-name= course.current_lesson.name
@@ -26,7 +31,7 @@
         %li.lesson-row-item
           %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
-            %a{href: "#{module.navigation_url}/learner_dashboard/ldl", class: "{% if module.is_current %}current{% endif %}"}
+            %a{href: "#{module.navigation_url}/learner_dashboard/lesson", class: "{% if module.is_current %}current{% endif %}"}
               Module ={module.index}:
             %span= module.name
     .close-reveal-modal

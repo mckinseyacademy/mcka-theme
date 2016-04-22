@@ -122,7 +122,7 @@
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           Cancel
 
-    #import_from_csv.reveal-modal.big{'data-reveal': None}
+    #import_from_csv.reveal-modal.medium{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 Import Participants from CSV
@@ -132,22 +132,18 @@
           %a.modalLinks{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
       .admin-form
 
-        %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
-
         %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data"}
           - csrf_token
           = form
-
-          .error
-            - if error
-              = error
-
-          .upload_stats
-          #enroll-error-list
           
           .button-wrapper.topPadding
             %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: ''}
             %a.modalLinks.leftPadding.close-reveal-modal.close-modal-inline{:href => '#'} Cancel
+
+        %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
+
+        .upload_stats
+        #enroll-error-list
 
     #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   
       .close-reveal-modal

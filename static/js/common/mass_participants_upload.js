@@ -115,7 +115,7 @@ checkForStatus = function(data, form) {
     "</ul>";
 
   var uploadStatsTemplate =
-    "<hr/>" +
+    "<br/>" +
     "<span>Total:</span>" +
     "<span id='attempted'>0</span><br/>" +
     "<span>Succeded:</span>" +
