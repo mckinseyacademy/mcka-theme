@@ -618,6 +618,13 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
     else:
         form = LearnerDashboardTileForm(instance=instance)
 
+    default_colors = {
+        'title': settings.TITLE_COLOR,
+        'sub_label': settings.SUB_LABEL_COLOR,
+        'description': settings.DESCRIPTION_COLOR,
+        'background': settings.TILE_BACKGROUND_COLOR,
+    }
+
     return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
         'error': error,
         'form': form,
@@ -625,7 +632,9 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         'course_id': course_id,
         'learner_dashboard_id': learner_dashboard_id,
         'tile_id': tile_id,
+        'default_colors': default_colors,
     })
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
