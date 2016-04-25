@@ -40,6 +40,7 @@ import Queue
 import atexit
 
 import csv
+from django.core.validators import validate_email, ValidationError
 
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
 MINIMAL_COURSE_DEPTH = 5
@@ -104,11 +105,11 @@ def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_stat
     _thread.start()
     process_uploaded_student_list(student_list, client_id, absolute_uri, reg_status)
 
-def mass_student_enroll_threaded(student_list, client_id, program_id, course_id, request, req_status):
+def mass_student_enroll_threaded(student_list, client_id, program_id, course_id, request, reg_status):
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
-    process_mass_student_enroll_list(student_list, client_id, program_id, course_id, request, req_status)  
+    process_mass_student_enroll_list(student_list, client_id, program_id, course_id, request, reg_status)  
 
 def _find_group_project_v2_blocks_in_chapter(chapter):
     return (
@@ -1418,11 +1419,11 @@ def get_course_progress(course_id, users, request):
     return users_progress
 
 
-def import_participants_threaded(student_list, request, req_status):
+def import_participants_threaded(student_list, request, reg_status):
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
-    process_import_participants_list(student_list, request, req_status)  
+    process_import_participants_list(student_list, request, reg_status)  
 
 
 @postpone
@@ -1434,10 +1435,12 @@ def process_import_participants_list(file_stream, request, reg_status=None):
         reg_status.save()
     for user_info in user_list:
         if "error" in user_info:
-            UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+            error = UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+            reg_status.failed = reg_status.failed + 1
+            reg_status.save()
     user_list = [user_info for user_info in user_list if "error" not in user_info]
     # 2) Register the users, and associate them with client
-    _enroll_participants_from_csv(user_list, request, reg_status)
+    _enroll_participants(user_list, request, reg_status)
 
 
 def _process_line_participants_csv(user_line):
@@ -1470,97 +1473,103 @@ def _process_line_participants_csv(user_line):
     return user_info
 
 
-def _enroll_participants_from_csv(students, request, reg_status):
+def _enroll_participants(participants, request, reg_status):
 
     permissonsMap = {
         'ta': USER_ROLES.TA,
         'observer': USER_ROLES.OBSERVER
     }
 
-    for user_dict in students:
+    for user_dict in participants:
 
-        client_id = user_dict['company']
-        client = None
-        course_id = user_dict['course']
-        status = user_dict['status'].lower()
-
-        failure = None
-        user_error = []
         try:
             user = None
-            activation_record = None
-
+            client = None
+            course = None
+            user_email = user_dict['email']
+            username = user_dict['username']
+            client_id = user_dict['company']
+            course_id = user_dict['course']
+            status = user_dict['status'].lower()
+            status_check = ['active', 'observer', 'ta']
+            user_error = []
+        
+            #Check for empty fields
+            for key,value in user_dict.items():
+                if str(value).strip() == '':
+                    raise ValueError('Empty field: {}'.format(key), 'Processing Participant') 
+            #Check if email is valid
+            try:
+                validate_email(user_email)
+            except ValidationError:
+                raise ValueError('Valid e-mail is required', 'Registering Participant') 
+            #Check if email already exist
+            check_user_email = user_api.get_user_by_email(user_email)
+            if check_user_email['count'] != 0:
+                raise ValueError('Email already exist', 'Registering Participant') 
+            #Check if username already exist
+            check_user_username = user_api.get_user_by_username(username)
+            if check_user_username['count'] != 0:
+                raise ValueError('Username already exist', 'Registering Participant') 
+            #Check if client exist
+            try: 
+                client = Client.fetch(client_id)
+            except ApiError as e:
+                if e.message == 'NOT FOUND':
+                    raise ValueError("Client doesn't exist", 'Enrolling Participant in Client')
+                else: 
+                    raise ValueError('{}'.format(e.message), 'Enrolling Participant in Client')
+            #Check if course exist
+            try:
+                course = course_api.get_course_details(course_id)
+            except ApiError as e:
+                if e.message == 'NOT FOUND':
+                    raise ValueError("Course doesn't exist", 'Enrolling Participant in Course')
+                else: 
+                    raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
+            #Check if status exist
+            if status not in status_check:
+                raise ValueError("Status doesn't exist", 'Enrolling Participant in Course')
+            #Register Participant
             try:
                 user = user_api.register_user(user_dict)
             except ApiError as e:
-                user = None
-                failure = {
-                    "reason": e.message,
-                    "activity": _("Unable to register user")
-                }
-
-            if user:
-                try: 
-                    client = Client.fetch(client_id)
-                except ApiError as e:
-                    failure = {
-                        "reason": e.message,
-                        "activity": _("Non existing Client")
-                    }
-                try:
-                    if not user.is_active:
-                        activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
-                    if client:
-                        client.add_user(user.id)
-                except ApiError as e:
-                    failure = {
-                        "reason": e.message,
-                        "activity": _("User not associated with client")
-                    }
-
-            if failure:
-                user_error.append(_("{}: {} - {}").format(
-                    failure["activity"],
-                    failure["reason"],
-                    user_dict["email"],
-                ))
-            try: 
-                # Add User to course
-                if not user: 
-                    user = user_api.get_users(email=user_dict["email"])[0]
-
-                try:
-                    enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
-                    if user.id not in enrolled_users:
-                        enroll_user_in_course(user.id, course_id)
-                except Exception as e: 
-                    user_error.append(_("{}: {} - {}").format(
-                        "User course enrollment",
-                        e.message,
-                        user_dict["email"],
-                    ))
-
-                try:
-                    permissions = Permissions(user.id)
-                    if status != 'active' :
-                        permissions.update_course_role(course_id,permissonsMap[status])
-                except ApiError as e:
-                    user_error.append(_("{}: {} - {}").format(
-                        "User course status",
-                        e.message,
-                        user_dict["email"],
-                    ))
-                    
-            except Exception as e: 
-                reason = e.message if e.message else _("Enrolling student error")
-                user_error.append(_("Error enrolling student: {} - {}").format(
-                    reason,
-                    user_dict["email"]
-                ))
-
+                raise ValueError('{}'.format(e.message), 'Registering Participant')
+            #Enroll Participant in Client
+            try:
+                client.add_user(user.id)
+            except ApiError as e:
+                raise ValueError('{}'.format(e.message), 'Enrolling Participant in Client')
+            #Create Activation Record for Participant
+            if not user.is_active:
+                activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
+            if not activation_record:
+                raise ValueError('Activation record error', 'Registering Participant')
+            #Enroll Participant in Course
+            try:
+                enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in participants}
+                if user.id not in enrolled_users:
+                    user_api.enroll_user_in_course(user.id, course_id)
+            except ApiError as e: 
+                raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
+            #Set Participant Status on Course
+            try:
+                permissions = Permissions(user.id)
+                if status != 'active' :
+                    permissions.update_course_role(course_id,permissonsMap[status])
+            except ApiError as e:
+                raise ValueError('{}'.format(e.message), "Setting Participant's Status")
+        except ValueError as e: 
+            email = user_dict.get('email', '')
+            if  str(email).strip() == '':
+                email = 'No email'
+            user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
+                e.args[0],
+                e.args[1],
+                email
+            ))
         except Exception as e:
-            user = None
-            reason = e.message if e.message else _("Data processing error")
+            reason = e.message if e.message else _("Processing Data Error")
             user_error.append(_("Error processing data: {} - {}").format(
                 reason,
                 user_dict["email"]
@@ -1572,14 +1581,14 @@ def _enroll_participants_from_csv(students, request, reg_status):
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
-            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save() 
+
 
 def _send_activation_email_to_single_new_user(activation_record, user, absolute_uri):
     msg = [email_add_single_new_user(absolute_uri, user, activation_record)]
     result = sendMultipleEmails(msg)
-    print result
+
 
 def get_learner_dashboard_flag(course_id):
     try:

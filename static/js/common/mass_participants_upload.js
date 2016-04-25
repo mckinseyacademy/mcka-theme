@@ -36,11 +36,15 @@ massParticipantsInit = function(){
           checkForStatus(response, form);
         });
         _this.on("addedfile", function(file) { 
+          $('.upload_stats').empty();
+          $('#enroll-error-list').empty();
           $('input[type=submit]').removeAttr('disabled');
         });
         _this.on("removedfile", function(file) { 
           if (document.getElementById("id_student_list").files.length == 0) {
             $('input[type=submit]').attr('disabled', 'disabled');
+            $('.upload_stats').empty();
+            $('#enroll-error-list').empty();
           }
         });
       }
@@ -53,6 +57,11 @@ massParticipantsInit = function(){
     if(program != 'select' && course != 'select' && $('#id_student_list').val() != '') {
       $('input[type=submit]').removeAttr('disabled');
     }
+  });
+
+  $('#id_student_list').on("change", function(){
+    $('.upload_stats').empty();
+    $('#enroll-error-list').empty();
   });
 
   $('.admin-form form').on('click', 'input[type=submit]', function(e){
