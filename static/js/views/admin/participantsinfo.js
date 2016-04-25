@@ -34,6 +34,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		this.$el.find('.bbGrid-container').scroll(this.fetchPages);
     $(document).on('closed.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
       $('.upload_stats').empty();
+      $('#enroll-error-list').empty();
     });
 	},
 	fetchPages: function(){

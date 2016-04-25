@@ -3308,7 +3308,6 @@ class participants_list_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request):
         post_data = json.loads(request.body)
-        print post_data
         form = CreateNewParticipant(post_data.copy())
         if form.is_valid():
             filterUsers = {}
