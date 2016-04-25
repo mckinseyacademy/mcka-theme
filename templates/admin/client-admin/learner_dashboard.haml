@@ -102,7 +102,7 @@
           .large-10.columns
             %ul#sortable
               -for tile in learner_dashboard_tiles
-                %li.item.ui-state-default{id: "#{tile.id}", style: "{% if tile.background_image %} background-image: url(#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+                %li.item.ui-state-default{id: "#{tile.id}", style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
                   .sub-1{style: "color: #{tile.title_color};"} 
                     -if tile.title
                       #{tile.title}:

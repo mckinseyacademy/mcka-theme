@@ -5,6 +5,7 @@ from django.conf.urls import handler500
 from django.conf import settings
 from main import views
 from sitemap import *
+from admin import views as adminviews
 
 urlpatterns = patterns(
     '',
@@ -42,6 +43,11 @@ urlpatterns += patterns('',
 urlpatterns += patterns(
     '',
     url(r'^', include('marketing.urls'), name='marketing'),
+)
+
+urlpatterns += patterns(
+    '',
+    url(r'^company_images/(?P<image_url>.*)$', adminviews.load_background_image, name='load_background_image'),
 )
 
 handler404 = views.error_404
