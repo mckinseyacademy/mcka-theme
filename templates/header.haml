@@ -66,8 +66,12 @@
         .row.collapse
           .medium-5.columns
             .program-menu
-              %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"}
-                .fa.fa-map-marker
+              - if learner_dashboard_flag
+                %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"}
+                  .fa.fa-map-marker
+              - else
+                %a{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
+                  %i.fa.fa-th-large{style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
               #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
                 - include "courses/content_page/program_menu.haml"
             .label-4.program-name{style: "{% if client_customization and client_customization.hex_program_name %}color:#{client_customization.hex_program_name};{% endif %}"}<

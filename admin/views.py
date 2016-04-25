@@ -30,7 +30,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic.base import View
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
-    load_group_projects_info_for_course, get_learner_dashboard_flag
+    load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
@@ -342,8 +342,6 @@ def client_admin_course(request, client_id, course_id):
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
     
-    (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-
     data = {
         'client_id': client_id,
         'course_id': course_id,
@@ -352,7 +350,6 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -395,7 +392,6 @@ def client_admin_course_participants(request, client_id, course_id):
         'target_course': course,
         'total_participants': len(students),
         'students': students,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -520,7 +516,6 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -565,7 +560,6 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'client_id': client_id,
             'course_id': course_id,
             'learner_dashboard_id': instance.id,
-            'learner_dashboard_flag': True,
             'title': instance.title,
             'description': instance.description,
             'learner_dashboard_tiles': learner_dashboard_tiles,
@@ -576,7 +570,6 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'client_id': client_id,
             'course_id': course_id,
             'learner_dashboard_id': None,
-            'learner_dashboard_flag': True,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         }
 
@@ -3846,7 +3839,6 @@ def client_admin_branding_settings(request, client_id, course_id):
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
@@ -3970,7 +3962,6 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
         'client_id': client_id,
         'course_id': course_id,
         'discovery': discovery,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 
