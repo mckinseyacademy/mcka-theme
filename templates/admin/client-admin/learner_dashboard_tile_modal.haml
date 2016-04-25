@@ -79,13 +79,13 @@
     .small-9.columns
       %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}", 'data-default-value': "#{default_colors.background}"}
 
-  %button.radius.small{id: "resetColors"}
-    Reset tile colors to default
-
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
   .error
     - if error
       = error
+
+  %button.radius.small.left{id: "resetColors"}
+    Reset tile colors
   %input.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
 
 - block js_snippets
