@@ -3851,6 +3851,21 @@ def client_admin_branding_settings(request, client_id, course_id):
         })
 
 
+def load_background_image(request, image_url):
+    from django.core.files.storage import default_storage
+    if default_storage.exists(image_url):
+        image = default_storage.open(image_url).read()
+        print image
+        from mimetypes import MimeTypes
+        import urllib
+        mime = MimeTypes()
+        url = urllib.pathname2url(image_url)
+        mime_type = mime.guess_type(url)
+        return HttpResponse(
+                image, content_type=mime_type[0]
+            )
+
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def client_admin_branding_settings_create_edit(request, client_id, course_id):
 
