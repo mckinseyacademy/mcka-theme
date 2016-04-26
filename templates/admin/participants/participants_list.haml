@@ -23,8 +23,8 @@
       %h2 Add a Participant
       %p
         Want to add more than one participant at a time?
-        %a
-          Import a list
+        %a{:href => "#", 'data-reveal-id': 'import_from_csv'} Import a list      
+
       %hr
       .errorContainer
       %form.participantDetailsEditForm
@@ -129,7 +129,7 @@
       %hr
       .bottomPadding
         %p Optional explanatory text. Lorem ipsum dolor sit amet, consectetur adipis. 
-          %a.modalLinks{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
+          %a{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
       .admin-form
 
         %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data"}
@@ -138,7 +138,8 @@
           
           .button-wrapper.topPadding
             %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: ''}
-            %a.modalLinks.leftPadding.close-reveal-modal.close-modal-inline{:href => '#'} Cancel
+            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+              Cancel
 
         %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
 
