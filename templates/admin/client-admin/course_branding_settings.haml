@@ -23,7 +23,7 @@
             .large-6.columns 
               .sub-1 Background Image:
               -if branding.background_image
-                %img{src: "#{branding.background_image}", width: 150, height:150}
+                %img{src: "/company_images/#{branding.background_image}", width: 150, height:150}
               -else
                 None
               %br
@@ -45,7 +45,7 @@
             .large-6.columns 
               .sub-1 Logo Image:
               -if branding.logo_image
-                %img{src: "#{branding.logo_image}", width: 150, height:150}
+                %img{src: "/company_images/#{branding.logo_image}", width: 150, height:150}
               -else
                 None
           %div

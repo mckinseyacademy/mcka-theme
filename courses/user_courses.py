@@ -8,6 +8,7 @@ from admin.controller import load_course
 from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings
 from api_client import user_api, course_api
 from license import controller as license_controller
+from courses.models import FeatureFlags
 
 from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time, round_to_int
 
@@ -247,6 +248,7 @@ def standard_data(request):
     client_nav_links = None
     client_customization = None
     branding = None
+    learner_dashboard_flag = False
 
     # have we already fetched this before and attached it to the current request?
     if hasattr(request, 'user_program_data'):
@@ -269,6 +271,11 @@ def standard_data(request):
 
         program = get_current_program_for_user(request)
         if course_id:
+            try:
+                learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
+            except:
+                learner_dashboard_flag = False
+
             lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             module_id = request.resolver_match.kwargs.get('page_id', None)
             if module_id is None or lesson_id is None:
@@ -308,7 +315,8 @@ def standard_data(request):
         "upcoming_course": upcoming_course,
         "client_customization": client_customization,
         "client_nav_links": client_nav_links,
-        "branding": branding
+        "branding": branding,
+        "learner_dashboard_flag": learner_dashboard_flag
     }
 
     # point to this data from the request object, just in case we re-enter this method somewhere

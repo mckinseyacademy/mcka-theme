@@ -53,7 +53,7 @@
   .row
     .small-3.columns= form.title_color.label_tag
     .small-9.columns
-      %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}"}
+      %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}", 'data-default-value': "#{default_colors.title}"}
 
   .row
     .small-3.columns
@@ -61,7 +61,7 @@
   .row
     .small-3.columns= form.description_color.label_tag
     .small-9.columns
-      %input{'type': 'color', 'id': 'id_description_color', 'name': 'description_color', 'value': "#{form.description_color.value}"}
+      %input{'type': 'color', 'id': 'id_description_color', 'name': 'description_color', 'value': "#{form.description_color.value}", 'data-default-value': "#{default_colors.description}"}
 
   .row
     .small-3.columns
@@ -69,7 +69,7 @@
   .row
     .small-3.columns= form.sub_label_color.label_tag
     .small-9.columns
-      %input{'type': 'color', 'id': 'id_sub_label_color', 'name': 'sub_label_color', 'value': "#{form.sub_label_color.value}"}
+      %input{'type': 'color', 'id': 'id_sub_label_color', 'name': 'sub_label_color', 'value': "#{form.sub_label_color.value}", 'data-default-value': "#{default_colors.sub_label}"}
 
   .row
     .small-3.columns
@@ -77,10 +77,29 @@
   .row
     .small-3.columns= form.tile_background_color.label_tag
     .small-9.columns
-      %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}"}
+      %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}", 'data-default-value': "#{default_colors.background}"}
 
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
   .error
     - if error
       = error
+
+  %button.radius.small.left{id: "resetColors"}
+    Reset tile colors
   %input.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
+
+- block js_snippets
+  :javascript
+    var background = $('#id_tile_background_color');
+    var title = $('#id_title_color');
+    var sub_label = $('#id_sub_label_color');
+    var description = $('#id_description_color');
+
+    $('#resetColors').on('click', function(event){
+      event.preventDefault();
+      background.val(background.data('default-value'));
+      title.val(title.data('default-value'));
+      sub_label.val(sub_label.data('default-value'));
+      description.val(description.data('default-value'));
+      $('#formSubmit').attr('disabled',false);
+    });

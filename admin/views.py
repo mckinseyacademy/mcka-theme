@@ -30,7 +30,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic.base import View
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
-    load_group_projects_info_for_course, get_learner_dashboard_flag
+    load_group_projects_info_for_course
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
@@ -342,8 +342,6 @@ def client_admin_course(request, client_id, course_id):
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
     
-    (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-
     data = {
         'client_id': client_id,
         'course_id': course_id,
@@ -352,7 +350,6 @@ def client_admin_course(request, client_id, course_id):
         'course_end': course.end.strftime('%m/%d/%Y') if course.end else '',
         'metrics': metrics,
         'cutoffs': cutoffs,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -395,7 +392,6 @@ def client_admin_course_participants(request, client_id, course_id):
         'target_course': course,
         'total_participants': len(students),
         'students': students,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -520,7 +516,6 @@ def client_admin_course_analytics(request, client_id, course_id):
         'client_id': client_id,
         'course_id': course_id,
         "feature_flags": features,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
     }
     return render(
@@ -565,7 +560,6 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'client_id': client_id,
             'course_id': course_id,
             'learner_dashboard_id': instance.id,
-            'learner_dashboard_flag': True,
             'title': instance.title,
             'description': instance.description,
             'learner_dashboard_tiles': learner_dashboard_tiles,
@@ -576,7 +570,6 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'client_id': client_id,
             'course_id': course_id,
             'learner_dashboard_id': None,
-            'learner_dashboard_flag': True,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         }
 
@@ -618,6 +611,13 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
     else:
         form = LearnerDashboardTileForm(instance=instance)
 
+    default_colors = {
+        'title': settings.TITLE_COLOR,
+        'sub_label': settings.SUB_LABEL_COLOR,
+        'description': settings.DESCRIPTION_COLOR,
+        'background': settings.TILE_BACKGROUND_COLOR,
+    }
+
     return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
         'error': error,
         'form': form,
@@ -625,7 +625,9 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         'course_id': course_id,
         'learner_dashboard_id': learner_dashboard_id,
         'tile_id': tile_id,
+        'default_colors': default_colors,
     })
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
@@ -3306,7 +3308,6 @@ class participants_list_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request):
         post_data = json.loads(request.body)
-        print post_data
         form = CreateNewParticipant(post_data.copy())
         if form.is_valid():
             filterUsers = {}
@@ -3837,9 +3838,23 @@ def client_admin_branding_settings(request, client_id, course_id):
         'branding': instance,
         'client_id': client_id,
         'course_id': course_id,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
+
+
+def load_background_image(request, image_url):
+    from django.core.files.storage import default_storage
+    if default_storage.exists(image_url):
+        image = default_storage.open(image_url).read()
+        print image
+        from mimetypes import MimeTypes
+        import urllib
+        mime = MimeTypes()
+        url = urllib.pathname2url(image_url)
+        mime_type = mime.guess_type(url)
+        return HttpResponse(
+                image, content_type=mime_type[0]
+            )
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -3961,7 +3976,6 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
         'client_id': client_id,
         'course_id': course_id,
         'discovery': discovery,
-        'learner_dashboard_flag': get_learner_dashboard_flag(course_id),
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         })
 

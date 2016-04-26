@@ -7,7 +7,7 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content
-  #home-courses{style: "{% if branding and branding.background_image %} background-image: url(#{branding.background_image});{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
+  #home-courses{style: "{% if branding and branding.background_image %} background-image: url(/company_images/#{branding.background_image});{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
     .row
       .large-8.columns.dash-programs
         -if branding
@@ -18,7 +18,7 @@
         .row
           -for tile in learner_dashboard_tiles
             .learner-program
-              .panel.panel-program{style: "{% if tile.background_image %} background-image: url(#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+              .panel.panel-program{style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
                 .sub-1{style: "color: #{tile.title_color};"} 
                 -if tile.title
                   #{tile.title}:

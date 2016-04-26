@@ -66,8 +66,12 @@
         .row.collapse
           .medium-5.columns
             .program-menu
-              %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"}
-                .fa.fa-map-marker
+              - if learner_dashboard_flag
+                %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"}
+                  .fa.fa-map-marker
+              - else
+                %a{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
+                  %i.fa.fa-th-large{style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
               #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
                 - include "courses/content_page/program_menu.haml"
             .label-4.program-name{style: "{% if client_customization and client_customization.hex_program_name %}color:#{client_customization.hex_program_name};{% endif %}"}<
@@ -75,7 +79,10 @@
             %h4.course-name
               - if course.ended
                 %span= _("COURSE CLOSED")
-              %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
+              - if learner_dashboard_flag
+                %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
+              - else
+                %a{href: "#{course.nav_url}", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
           .medium-2.columns
             -if branding and branding.logo_image
               %img.program-logo-img{src: "#{branding.logo_image}"}
@@ -92,4 +99,4 @@
               %span.start-time - course begins in ={upcoming_course.days_till_start} days
           .medium-2.columns
             -if branding and branding.logo_image
-              %img.header-logo-img{src: "#{branding.logo_image}"}
+              %img.header-logo-img{src: "/company_images/#{branding.logo_image}"}
