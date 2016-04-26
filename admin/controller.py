@@ -27,10 +27,13 @@ from license import controller as license_controller
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
-    GROUP_PROJECT_V2_ACTIVITY_CATEGORY,
+    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate
 )
 
-from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student, email_add_single_new_user
+from lib.mail import (
+    sendMultipleEmails, email_add_active_student, email_add_inactive_student, 
+    email_add_single_new_user, create_multiple_emails
+    )
 
 from api_client.user_api import USER_ROLES
 from .permissions import Permissions
@@ -1587,5 +1590,15 @@ def _enroll_participants(participants, request, reg_status):
 
 def _send_activation_email_to_single_new_user(activation_record, user, absolute_uri):
     msg = [email_add_single_new_user(absolute_uri, user, activation_record)]
+    result = sendMultipleEmails(msg)
+
+
+def _send_multiple_emails(from_email = None, to_email_list = None, subject = None, email_body = None, template_id = None):
+    if template_id:
+        template = EmailTemplate.objects.get(pk = template_id)
+        subject = template.subject
+        email_body = template.body
+
+    msg = create_multiple_emails(from_email, to_email_list, subject, email_body)
     result = sendMultipleEmails(msg)
 

@@ -467,6 +467,15 @@ class LearnerDashboardResource(db_models.Model):
         on_delete=db_models.CASCADE,
     )
 
+class EmailTemplate(db_models.Model):
+    title = db_models.CharField(blank=False, null=False, max_length=20)
+    subject = db_models.CharField(blank=False, null=False, max_length=256)
+    body = db_models.TextField(blank=False, null=False,)
+
+    @classmethod
+    def create(cls, title, subject, body):
+        email_template = cls(title=title, subject=subject, body=body)
+        return email_template
 
 
 

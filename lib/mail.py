@@ -54,5 +54,14 @@ def email_add_single_new_user(absolute_activation_uri, student, activation_recor
         subject, html_content, from_email, [to])
     msg.content_subtype = "html"
     msg.attach_alternative(text_content, "text/plain")
-    print vars(msg)
     return msg
+
+def create_multiple_emails(from_email, to_email_list, subject, email_body):
+    subject, from_email = subject, from_email
+    text_content = email_body
+    html_content = "<p>"+email_body+"</p>"
+    msg = EmailMultiAlternatives(
+        subject, html_content, from_email, to_email_list)
+    msg.content_subtype = "html"
+    msg.attach_alternative(text_content, "text/plain")
+    return [msg]

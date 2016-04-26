@@ -82,3 +82,32 @@
       %a.cancelChanges{:href => "#"} Cancel
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
+  #courseDetailsBulkEmail.reveal-modal.small{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
+    %h2.courseModalTitle
+    %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
+    .courseModalStatus
+    %hr
+    .courseModalDescription
+      Email selected participants
+    .courseModalContent
+      .row
+        .large-6.columns.participantFirstName
+          .fromEmailLabel.labelUniversal
+            From
+          .fromEmailValue
+            %input{:type => "text", :value => '', :name => "from_email", :maxlength => "128"}
+        .large-6.columns.participantLastName
+          .templateNameLabel.labelUniversal
+            Template
+          .templateNameValue
+            %select{:name => 'template_id'}
+              %option{:value => "none"} None 
+              - for template in template_list
+                %option{:value => "#{template.pk}"} 
+                  =template.title
+    .courseModalControl
+      .button.sendEmail
+        Send Email
+      %a.scheduleForLater{:href => "#"} Schedule for Later
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
