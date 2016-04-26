@@ -7,7 +7,7 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content
-  #home-courses{style: "{% if branding and branding.background_image %} background-image: url(/company_images/#{branding.background_image});{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
+  #home-courses{style: "{% if branding %} {% if branding.background_image %} background-image: url(/company_images/#{branding.background_image});{% elif branding.background_color %} background-color: #{branding.background_color};{% endif %}{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
     .row
       .large-8.columns.dash-programs
         -if branding
@@ -23,7 +23,7 @@
                 -if tile.label
                   #{tile.label}
                 -else
-                  #{tile.get_tile_type_display}:
+                  #{tile.get_tile_type_display}
                 %a{href: "#{tile.link}"}
                   %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
                 .label-3{style: "color: #{tile.note_color};"}= tile.note

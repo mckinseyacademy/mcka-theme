@@ -52,7 +52,7 @@
     .small-9.columns= form.label_color.errors
   .row
     .small-3.columns= form.label_color.label_tag
-    .small-9.columns
+    .small-9.columns.tile-input
       %input{'type': 'color', 'id': 'id_label_color', 'name': 'label_color', 'value': "#{form.label_color.value}", 'data-default-value': "#{default_colors.label}"}
 
   .row
@@ -60,7 +60,7 @@
     .small-9.columns= form.title_color.errors
   .row
     .small-3.columns= form.title_color.label_tag
-    .small-9.columns
+    .small-9.columns.tile-input
       %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}", 'data-default-value': "#{default_colors.title}"}
 
   .row
@@ -68,7 +68,7 @@
     .small-9.columns= form.note_color.errors
   .row
     .small-3.columns= form.note_color.label_tag
-    .small-9.columns
+    .small-9.columns.tile-input
       %input{'type': 'color', 'id': 'id_note_color', 'name': 'note_color', 'value': "#{form.note_color.value}", 'data-default-value': "#{default_colors.note}"}
 
   .row
@@ -76,7 +76,7 @@
     .small-9.columns= form.tile_background_color.errors
   .row
     .small-3.columns= form.tile_background_color.label_tag
-    .small-9.columns
+    .small-9.columns.tile-input
       %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}", 'data-default-value': "#{default_colors.background}"}
 
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
