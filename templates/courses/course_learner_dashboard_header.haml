@@ -1,4 +1,4 @@
-%header#learner-dashboard-header.background-blue{role: 'banner', style: "{% if branding and branding.text_colors %} border-bottom: 5px solid #{branding.text_colors};{% endif %}"}
+%header#learner-dashboard-header.background-blue{role: 'banner', style: "{% if branding and branding.navigation_color %} border-bottom: 5px solid #{branding.navigation_color};{% endif %}"}
   .row.collapse.main-nav
     .large-6.columns.header-row
       -if branding and branding.logo_image
@@ -22,6 +22,5 @@
       .row
         .large-12.columns.header-padding
           %div.right.header-path
-            %a.header-link{:href => "/courses/#{course.id}/resources_learner_dashboard", :data-reveal-id => 'resources', :data-reveal-ajax =>'true', style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"}
+            %a.header-link{:href => "/courses/#{course.id}/resources_learner_dashboard", :data-reveal-id => 'resources', :data-reveal-ajax =>'true', style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
               %i.fa.fa-file-text-o.header-link
-            %a.header-link{:data-reveal-id => 'contact-ta', :data-reveal-ajax =>'true', style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"} TA
