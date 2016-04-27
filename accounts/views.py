@@ -30,6 +30,7 @@ from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program, LearnerDashboard
 from admin.controller import load_course
+from accounts.controller import set_learner_dashboard_in_session
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
     CURRENT_PROGRAM, set_current_course_for_user
@@ -145,18 +146,14 @@ def _get_redirect_to_current_course(request):
 
     if course_id and not future_start_date:
         if settings.LEARNER_DASHBOARD_ENABLED:
-            try:
-                features = FeatureFlags.objects.get(course_id=course_id)
-            except:
-                features = []
-            if hasattr(features, 'learner_dashboard'): 
-                if features.learner_dashboard is True:
-                    organization = user_api.get_user_organizations(request.user.id)[0]
-                    try:
-                        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
-                        return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
-                    except (LearnerDashboard.DoesNotExist):
-                        return reverse('course_landing_page', kwargs=dict(course_id=course_id))
+            if 'learner_dashboard_id' not in request.session:
+                set_learner_dashboard_in_session(request)
+            learner_dashboard_id = request.session['learner_dashboard_id']
+            if learner_dashboard_id is not None:
+                learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
+                return reverse('course_learner_dashboard')
+            else:
+                return reverse('course_landing_page', kwargs=dict(course_id=course_id))
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
     return reverse('protected_home')
 

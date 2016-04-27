@@ -808,15 +808,18 @@ def course_article(request, course_id):
     return render(request, 'courses/course_article.haml', data)
 
 @login_required
-@check_user_course_access
-def course_learner_dashboard(request, course_id):
+def course_learner_dashboard(request):
 
-    organization = user_api.get_user_organizations(request.user.id)[0]
+    course_id = request.session['course_id']
+    learner_dashboard_id = request.session['learner_dashboard_id']
 
-    try:
-        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
-    except:
+    if learner_dashboard_id is not None:
+        learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
+    elif course_id and not learner_dashboard_id:
         redirect_url = '/courses/{}/'.format(course_id)
+        return HttpResponseRedirect(redirect_url)
+    else:
+        redirect_url = '/'
         return HttpResponseRedirect(redirect_url)
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')

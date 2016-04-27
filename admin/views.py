@@ -592,11 +592,11 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         if form.is_valid():
             tile = form.save()
 
-            if not "/learner_dashboard/" in tile.link:
+            if not "/learnerdashboard/" in tile.link:
                 if tile.get_tile_type_display() == 'Lesson':
-                    tile.link = tile.link + "/learner_dashboard/lesson"
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
                 if tile.get_tile_type_display() == 'Module':
-                    tile.link = tile.link + "/learner_dashboard/module"
+                    tile.link = "/learnerdashboard" + tile.link + "/module"
                 tile.save()
             if tile.get_tile_type_display() == 'Course':
                 if not "/courses/" in tile.link:

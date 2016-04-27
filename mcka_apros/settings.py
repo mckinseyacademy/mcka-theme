@@ -85,6 +85,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.session_timeout.SessionTimeout',
+    'accounts.middleware.learner_dashboard_check.LearnerDashboardCheck',
     'accounts.middleware.thread_local.ThreadLocal',
     'debug_toolbar.middleware.DebugToolbarMiddleware',      # explicitly add this, otherwise this doesn't seem to appear on AWS environments
     'accounts.middleware.ajax_redirect.AjaxRedirect',

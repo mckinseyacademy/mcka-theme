@@ -3,7 +3,6 @@ from django.conf.urls import patterns, url
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)/learner_dashboard/(?P<tile_type>.*)$', views.navigate_to_lesson_module, name='navigate_to_lesson_module'),
     url(r'^(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)$', views.navigate_to_lesson_module, name='navigate_to_lesson_module'),
     url(r'^(?P<course_id>.*)/overview$', views.course_overview, name='course_overview'),
     url(r'^(?P<course_id>.*)/announcements$', views.course_news, name='course_news'),
@@ -31,9 +30,7 @@ urlpatterns = patterns('',
     url(r'^(?P<course_id>.*)/feature_flag/?$', views.course_feature_flag, name='course_feature_flag'),
     url(r'^(?P<course_id>.*)/group_member_email/(?P<group_id>.*)$', views.contact_member, name='contact_member'),
     url(r'^(?P<course_id>.*)/group_email/(?P<group_id>.*)$', views.contact_group, name='contact_group'),
-    url(r'^(?P<course_id>.*)/learner_dashboard$', views.course_learner_dashboard, name='course_learner_dashboard'),
     url(r'^(?P<course_id>.*)/$', views.course_landing_page, name='course_landing_page'),
     url(r'^(?P<course_id>.*)$', views.course_landing_page, name='course_landing_page'),
     url(r'^$', views.infer_default_navigation, name='infer_default_navigation'),
 )
-
