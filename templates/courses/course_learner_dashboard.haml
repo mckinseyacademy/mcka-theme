@@ -7,7 +7,22 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content
-  #home-courses{style: "{% if branding %} {% if branding.background_image %} background-image: url(/company_images/#{branding.background_image});{% elif branding.background_color %} background-color: #{branding.background_color};{% endif %}{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
+  - if branding
+    - if branding.background_image
+      - if branding.background_tiled == False
+        %script
+          $('body').css('background-repeat', 'no-repeat');
+          $('body').css('background-size', '100% 100%');
+      %script
+        $('body').css('background-image', 'url(/company_images/#{branding.background_image})');
+    - else
+      - if branding.background_color
+        %script
+          $('body').css('background-color', '#{branding.background_color}');
+    %script
+      $('body.with-program').css('padding-top', '96px');
+      $('body.with-program').css('margin-top', '0');
+  #home-courses
     .row
       .large-8.columns.dash-programs
         -if branding

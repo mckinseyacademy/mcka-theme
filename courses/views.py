@@ -820,12 +820,17 @@ def course_learner_dashboard(request, course_id):
         return HttpResponseRedirect(redirect_url)
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
-
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    
+    try:
+         feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    except:
+         feature_flags = []
 
     data ={
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
+        'feature_flags': feature_flags,
         'discovery_items': discovery_items
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)

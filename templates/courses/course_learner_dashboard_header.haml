@@ -22,5 +22,11 @@
       .row
         .large-12.columns.header-padding
           %div.right.header-path
-            %a.header-link{:href => "/courses/#{course.id}/resources_learner_dashboard", :data-reveal-id => 'resources', :data-reveal-ajax =>'true', style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+            %a.header-link{:href => "/courses/#{course.id}/resources_learner_dashboard", :data-tooltip => "Resources", :data-reveal-id => 'resources', :data-reveal-ajax =>'true', style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
               %i.fa.fa-file-text-o.header-link
+            - if feature_flags.group_work
+              %a.header-link{:href =>  "/courses/#{course.id}/group_work", :data-tooltip => "Group Work", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %i.mk-icon-groupworknav.header-link
+             - if feature_flags.discussions
+              %a.header-link{:href => "/courses/#{course.id}/discussion", :data-tooltip => "Discussion", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %i.fa.fa-comments-o.header-link
