@@ -1602,3 +1602,10 @@ def _send_multiple_emails(from_email = None, to_email_list = None, subject = Non
     msg = create_multiple_emails(from_email, to_email_list, subject, email_body)
     result = sendMultipleEmails(msg)
 
+
+def send_activation_emails_by_task_key(request, task_key):
+    absolute_uri = request.build_absolute_uri('/accounts/activate')
+    activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
+
+    for record in activation_records:
+        _send_activation_email_to_single_new_user(record, record, absolute_uri)

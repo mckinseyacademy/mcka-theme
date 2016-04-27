@@ -65,7 +65,7 @@ from .controller import (
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
-    _send_activation_email_to_single_new_user, _send_multiple_emails
+    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -2111,8 +2111,11 @@ def import_participants_check(request, task_key):
                 failed = str(reg_status.failed)
                 succeded = str(reg_status.succeded)
                 reg_status.delete()
+                emails = request.GET.get('emails', None)
+                if int(failed) == 0 and emails == 'true':
+                    send_activation_emails_by_task_key(request, task_key)
                 return HttpResponse(
-                    '{"done":"done","error":' + errors_as_json + ', "message": "' + message + '","attempted":"'+attempted+'","failed":"'+failed+'","succeded":"'+succeded+'"}',
+                    '{"done":"done","error":'+errors_as_json+',"message":"'+message+'","attempted":"'+attempted+'","failed":"'+failed+'","succeded":"'+succeded+'","emails":"'+emails+'"}',
                     content_type='application/json'
                 )
             else:
@@ -4044,6 +4047,19 @@ class email_templates_get_and_post_api(APIView):
 
 
 class email_templates_put_and_delete_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, pk, format=None):
+        if pk:
+            email_template = EmailTemplate.objects.filter(pk=pk)
+            if len(email_template) > 0:
+                email_template = email_template[0]
+                return Response({'status':'ok', 'message':'Successfully got email template!', 'data': \
+                    {'pk':email_template.pk, 'title':email_template.title, 'subject':email_template.subject, 'body': email_template.body}})
+            else:
+                return Response({'status':'error', 'message':"Can't find email template key!"})
+        else:
+            return Response({'status':'error', 'message':'Missing email template key!'}) 
+
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def delete(self, request, pk, format=None):
         if pk:

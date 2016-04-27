@@ -35,6 +35,12 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
     $(document).on('closed.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
       $('.upload_stats').empty();
       $('#enroll-error-list').empty();
+      $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
+      $('#import_from_csv input[type=checkbox]').attr('checked', false);
+    });
+    $(document).on('open.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
+      $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
+      $('#import_from_csv input[type=checkbox]').attr('checked', false);
     });
 	},
 	fetchPages: function(){
@@ -51,7 +57,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		      'Admin Company'+
 		    '</div>'+
 		    '<div class="participantAdminCompanyValue">'+
-		      '<input type="text"/ data-id>'+
+		      '<input type="text" data-id/>'+
 		      '<i class="fa fa-check-circle-o correctInput" aria-hidden="true"></i>'+
 		    '</div>'+
 		  '</div>'+
@@ -60,12 +66,13 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		      'Admin Permissions'+
 		    '</div>'+
 		    '<div class="participantPermissionsValue permissionSelect large-10">'+
-		      '<select>'+
-		        '<option value="uber_admin">Uber admin</option>'+
-		        '<option value="course_ops_admin">Course ops admin</option>'+
-		        '<option value="company_admin">Company admin</option>'+
-		        '<option value="internal_admin">Internal Admin</option>'+
-		      '</select>'+
+		      // '<select>'+
+		      //   '<option value="uber_admin">Uber admin</option>'+
+		      //   '<option value="course_ops_admin">Course ops admin</option>'+
+		      //   '<option value="company_admin">Company admin</option>'+
+		      //   '<option value="internal_admin">Internal Admin</option>'+
+		      // '</select>'+
+		      '<input type="text" value="Company Admin" disabled data-id="company_admin"/>'+
 		    '</div>'+
 		    '<i class="fa fa-times removeItem large-2" aria-hidden="true"></i>'+
 		  '</div>'+
@@ -76,7 +83,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		      'Course'+
 		    '</div>'+
 		    '<div class="participantCourseValue">'+
-		      '<input type="text"/ data-id>'+
+		      '<input type="text" data-id/>'+
 		      '<i class="fa fa-check-circle-o correctInput" aria-hidden="true"></i>'+
 		    '</div>'+
 		  '</div>'+
@@ -109,17 +116,17 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 			$("#country_edit").countrySelect("selectCountry", 'us');
 			mainContainer.find('.adminAnotherCompanyAllWrapper').empty();
 			mainContainer.find('.adminCourseAllWrapper').empty();
-  		mainContainer.find('.errorContainer').empty();
-  		mainContainer.find('.cleanable').each(function(i,v){
-  			$(v).val('');
-  			$(v).attr('data-id','');
-  		});
-  		mainContainer.find('.participantEmail .checkMark').hide();
-  		mainContainer.find('.correctInput').hide();
-  		mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').attr('checked', false);
-  		mainContainer.find('select').each(function(i,v){
-  			$(v).find('option:eq(0)').prop('selected', true);
-  		});
+	  		mainContainer.find('.errorContainer').empty();
+	  		mainContainer.find('.cleanable').each(function(i,v){
+	  			$(v).val('');
+	  			$(v).attr('data-id','');
+	  		});
+	  		mainContainer.find('.participantEmail .checkMark').hide();
+	  		mainContainer.find('.correctInput').hide();
+	  		mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').attr('checked', false);
+	  		mainContainer.find('select').each(function(i,v){
+	  			$(v).find('option:eq(0)').prop('selected', true);
+	  		});
 		});
 		$('#add_a_participant').find('.addAnotherCompanyWrapper a').on('click', function(event)
 		{
@@ -153,65 +160,66 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 			{
 				var mainContainer = $('#add_a_participant');
 				var data = {}
-        $.each($("#add_a_participant form").find(':input'), function(i, v){
-            var input = $(v);
-            if (input.val())
-                data[input.attr("name")] = input.val().trim();
-            if (input.attr("name") == 'company')
-                data[input.attr("name")] = input.attr('data-id');
-        });
+		        $.each($("#add_a_participant form").find(':input'), function(i, v){
+		            var input = $(v);
+		            if (input.val())
+		                data[input.attr("name")] = input.val().trim();
+		            if (input.attr("name") == 'company')
+		                data[input.attr("name")] = input.attr('data-id');
+		        });
 
-        $.each($("#add_a_participant form").find('select'), function(i, v){
-            var input = $(v);
-            if (input.val())
-                data[input.attr("name")] = input.val().trim();   
-        });
+		        $.each($("#add_a_participant form").find('select'), function(i, v){
+		            var input = $(v);
+		            if (input.val())
+		                data[input.attr("name")] = input.val().trim();   
+		        });
 
-        delete data["undefined"];
-        data['course_permissions_list'] = _this.getAllCourses();
-        data['send_activation_email'] = mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').is(":checked");
+		        delete data["undefined"];
+		        data['course_permissions_list'] = _this.getAllCourses();
+		        data['send_activation_email'] = mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').is(":checked");
 
-        $.ajax({
-        type: 'POST',
-        url: '/admin/api/participants',
-        headers: { 'X-CSRFToken': $.cookie('apros_csrftoken')},
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(data),
-        dataType: 'text',
-        cache: false,
-        success: function (data, status) 
-        {
-          data = JSON.parse(data)
-	        if (data['status'] == "ok") {
+		        $.ajax({
+		        type: 'POST',
+		        url: '/admin/api/participants',
+		        headers: { 'X-CSRFToken': $.cookie('apros_csrftoken')},
+		        contentType: 'application/json; charset=utf-8',
+		        data: JSON.stringify(data),
+		        dataType: 'text',
+		        cache: false,
+		        success: function (data, status) 
+		        {
+					data = JSON.parse(data)
+			        if (data['status'] == "ok") 
+			        {
 						var confirmationScreen = $('#confirmation_screen_single_participant');
 						confirmationScreen.find('.download_user_activation').attr('href', confirmationScreen.find('.download_user_activation').attr('data-url') + data['user_id']);
 						confirmationScreen.find('.go_to_user_profile').attr('href', confirmationScreen.find('.go_to_user_profile').attr('data-url') + data['user_id']);
 						confirmationScreen.foundation('reveal', 'open');
-	        }
-	        else 
-	        {
-	          if (data['type'] == 'validation_failed')
-	          {
-	            var message = '';
-	            for (key in data['message'])
-	            {
-	              message += key + ' - ' + data['message'][key] + '<br>';
-	            }
-	            $('#add_a_participant').find('.errorContainer').html(message);
-	          }
-	          else
-	          {
-              $('#add_a_participant').find('.errorContainer').text(data['message']);
-            }
-          }
-        },
-        error: function(data, status)
-        {
-          $('#add_a_participant').find('.errorContainer').text(data['responseText']);
-        }
-        });
-        }
-      }); 
+			        }
+			        else 
+			        {
+						if (data['type'] == 'validation_failed')
+						{
+							var message = '';
+							for (key in data['message'])
+							{
+								message += key + ' - ' + data['message'][key] + '<br>';
+							}
+							$('#add_a_participant').find('.errorContainer').html(message);
+						}
+						else
+						{
+							$('#add_a_participant').find('.errorContainer').text(data['message']);
+						}
+					}
+		        },
+		        error: function(data, status)
+		        {
+		          $('#add_a_participant').find('.errorContainer').text(data['responseText']);
+		        }
+		        });
+        	}
+      	}); 
         
     },
     getAllCourses: function()

@@ -219,3 +219,12 @@
 {
 	display: none;
 }
+
+#import_from_csv .emailActivationWrapper
+{
+	padding-top: 20px;
+}
+#import_from_csv .emailActivation
+{
+	display: inline-block;
+}

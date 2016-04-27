@@ -83,13 +83,13 @@
                 %option{:value => "none"} None
                 %option{:value => "uber_admin"} Uber admin
                 %option{:value => "course_ops_admin"} Course ops admin
-                %option{:value => "company_admin"} Company admin
+                -#%option{:value => "company_admin"} Company admin
                 %option{:value => "internal_admin"} Internal Admin
         %hr
         .adminAnotherCompanyAllWrapper
         .addAnotherCompanyWrapper.row
           %a.large-12.columns
-            + Add another company to administer
+            + Add company admin privileges
         %hr
         .adminCourseAllWrapper
         .addAnotherCourseWrapper.row
@@ -146,15 +146,25 @@
         .upload_stats
         #enroll-error-list
 
+        .emailActivationWrapper
+            .emailActivationLinkCheckboxWrapper
+              %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled'} 
+              .emailActivation
+                Email activation links now
+
     #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2.upload_message
       %hr
 
-      %p You can download the activation links now, or from the participant profiles at any time.
-      %br
-      %a.download_activation{:href => '/admin/api/participants/import_participants/download_activation_links/?task_key=', :target => '_self'}> Download Activation Links
+      .downloadActivationLinksConfirmationScreen
+        %p You can download the activation links now, or from the participant profiles at any time.
+        %br
+        %a.download_activation{:href => '/admin/api/participants/import_participants/download_activation_links/?task_key=', :target => '_self'}> Download Activation Links
+
+      .sendActivationLinksConfirmationScreen
+        %p An activation link has been emailed to each student.
 
       .button-wrapper.topPadding
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"} 
