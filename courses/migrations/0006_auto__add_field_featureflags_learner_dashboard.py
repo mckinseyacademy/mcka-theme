@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'FeatureFlags.learner_dashboard'
         db.add_column(u'courses_featureflags', 'learner_dashboard',
-                      self.gf('django.db.models.fields.BooleanField')(default=True),
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
                       keep_default=False)
 
 
