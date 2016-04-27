@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'FeatureFlags.learner_dashboard'
         db.add_column(u'courses_featureflags', 'learner_dashboard',
-                      self.gf('django.db.models.fields.BooleanField')(default=True),
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
                       keep_default=False)
 
 
@@ -27,7 +27,7 @@ class Migration(SchemaMigration):
             'discussions': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'group_work': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'learner_dashboard': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'learner_dashboard': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'proficiency': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
         u'courses.lessonnotesitem': {
