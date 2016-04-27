@@ -4045,6 +4045,19 @@ class email_templates_get_and_post_api(APIView):
 
 class email_templates_put_and_delete_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, pk, format=None):
+        if pk:
+            email_template = EmailTemplate.objects.filter(pk=pk)
+            if len(email_template) > 0:
+                email_template = email_template[0]
+                return Response({'status':'ok', 'message':'Successfully got email template!', 'data': \
+                    {'pk':email_template.pk, 'title':email_template.title, 'subject':email_template.subject, 'body': email_template.body}})
+            else:
+                return Response({'status':'error', 'message':"Can't find email template key!"})
+        else:
+            return Response({'status':'error', 'message':'Missing email template key!'}) 
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def delete(self, request, pk, format=None):
         if pk:
             selected_template = EmailTemplate.objects.filter(pk=pk)

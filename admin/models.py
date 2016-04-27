@@ -468,7 +468,7 @@ class LearnerDashboardResource(db_models.Model):
     )
 
 class EmailTemplate(db_models.Model):
-    title = db_models.CharField(blank=False, null=False, max_length=20)
+    title = db_models.CharField(blank=False, null=False, max_length=64)
     subject = db_models.CharField(blank=False, null=False, max_length=256)
     body = db_models.TextField(blank=False, null=False,)
 

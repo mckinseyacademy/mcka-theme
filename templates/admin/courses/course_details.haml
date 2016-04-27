@@ -1,5 +1,4 @@
 - extends "admin/admin_layout.haml"
-
 - block content 
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
@@ -42,7 +41,7 @@
                 #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                   .bulkButtonWrapper
                     .hiddenButtonSplitModifier.bulkButton.disabled
-                    %a.emailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
+                    %a.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
                       Email Selected Participants
                     %a.button.bulkDropdownIcon.bulkButton.disabled
                       .fa.fa-chevron-down
@@ -105,6 +104,18 @@
               - for template in template_list
                 %option{:value => "#{template.pk}"} 
                   =template.title
+      .row
+        .large-12.columns.emailSubject
+          .emailSubjectLabel.labelUniversal
+            Subject
+          .emailSubjectValue
+            %input{:type => "text", :value => '', :name => "subject", :maxlength => "256"}
+      .row
+        .large-12.columns.emailBody
+          .emailBodyLabel.labelUniversal
+            Subject
+          .emailBodyTextarea
+            %textarea
     .courseModalControl
       .button.sendEmail
         Send Email
