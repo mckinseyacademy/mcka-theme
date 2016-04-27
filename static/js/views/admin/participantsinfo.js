@@ -35,6 +35,12 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
     $(document).on('closed.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
       $('.upload_stats').empty();
       $('#enroll-error-list').empty();
+      $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
+      $('#import_from_csv input[type=checkbox]').attr('checked', false);
+    });
+    $(document).on('open.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
+      $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
+      $('#import_from_csv input[type=checkbox]').attr('checked', false);
     });
 	},
 	fetchPages: function(){
