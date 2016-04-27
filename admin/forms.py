@@ -224,15 +224,19 @@ class BrandingSettingsForm(forms.ModelForm):
         fields = [
             'background_image',
             'background_tiled',
+            'background_color',
+            'icon_color',
             'logo_image',
-            'navigation_colors',
-            'text_colors',
+            'navigation_color',
+            'title_color',
             'client_id',
             'discover_text_color',
         ]
         widgets = {
-            'navigation_colors': forms.TextInput(attrs={'type': 'color'}),
-            'text_colors': forms.TextInput(attrs={'type': 'color'}),
+            'background_color': forms.TextInput(attrs={'type': 'color'}),
+            'icon_color': forms.TextInput(attrs={'type': 'color'}),
+            'navigation_color': forms.TextInput(attrs={'type': 'color'}),
+            'title_color': forms.TextInput(attrs={'type': 'color'}),
             'discover_text_color': forms.TextInput(attrs={'type': 'color'}),
         }
 
@@ -253,23 +257,23 @@ class LearnerDashboardTileForm(forms.ModelForm):
 	class Meta:
 		model = LearnerDashboardTile
 		fields = [
+            'label',
             'title',
-            'description',
-            'sub_label',
+            'note',
             'link',
             'tile_type',
             'background_image',
             'learner_dashboard',
+            'label_color',
             'title_color',
-            'description_color',
-            'sub_label_color',
+            'note_color',
             'tile_background_color',
        	]
        	widgets = {
        		'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
 			'link': forms.TextInput(attrs={'type': 'url'}),
+            'label_color': forms.TextInput(attrs={'type': 'color'}),
             'title_color': forms.TextInput(attrs={'type': 'color'}),
-            'description_color': forms.TextInput(attrs={'type': 'color'}),
-            'sub_label_color': forms.TextInput(attrs={'type': 'color'}),
+            'note_color': forms.TextInput(attrs={'type': 'color'}),
             'tile_background_color': forms.TextInput(attrs={'type': 'color'}),
         }

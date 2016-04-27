@@ -613,9 +613,9 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         form = LearnerDashboardTileForm(instance=instance)
 
     default_colors = {
+        'label': settings.LABEL_COLOR,
+        'note': settings.NOTE_COLOR,
         'title': settings.TITLE_COLOR,
-        'sub_label': settings.SUB_LABEL_COLOR,
-        'description': settings.DESCRIPTION_COLOR,
         'background': settings.TILE_BACKGROUND_COLOR,
     }
 

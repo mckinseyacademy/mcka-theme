@@ -29,17 +29,24 @@
 
       .row
         .small-3.columns
-        .small-9.columns= form.navigation_colors.errors
+        .small-9.columns= form.navigation_color.errors
       .row
-        .small-3.columns= form.navigation_colors.label_tag
-        .small-9.columns= form.navigation_colors
+        .small-3.columns= form.navigation_color.label_tag
+        .small-9.columns= form.navigation_color
 
       .row
         .small-3.columns
-        .small-9.columns= form.text_colors.errors
+        .small-9.columns= form.title_color.errors
       .row
-        .small-3.columns= form.text_colors.label_tag
-        .small-9.columns= form.text_colors
+        .small-3.columns= form.title_color.label_tag
+        .small-9.columns= form.title_color
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.icon_color.errors
+      .row
+        .small-3.columns= form.icon_color.label_tag
+        .small-9.columns= form.icon_color
 
       .row
         .small-3.columns
@@ -47,6 +54,13 @@
       .row
         .small-3.columns= form.discover_text_color.label_tag
         .small-9.columns= form.discover_text_color
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.background_color.errors
+      .row
+        .small-3.columns= form.background_color.label_tag
+        .small-9.columns= form.background_color  
 
       .row
         .small-3.columns

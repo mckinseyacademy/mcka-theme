@@ -12,22 +12,22 @@
   - csrf_token
   .row
     .small-3.columns
+    .small-9.columns= form.label.errors
+  .row
+    .small-3.columns= form.label.label_tag
+    .small-9.columns= form.label
+  .row
+    .small-3.columns
     .small-9.columns= form.title.errors
   .row
     .small-3.columns= form.title.label_tag
     .small-9.columns= form.title
   .row
     .small-3.columns
-    .small-9.columns= form.description.errors
+    .small-9.columns= form.note.errors
   .row
-    .small-3.columns= form.description.label_tag
-    .small-9.columns= form.description
-  .row
-    .small-3.columns
-    .small-9.columns= form.sub_label.errors
-  .row
-    .small-3.columns= form.sub_label.label_tag
-    .small-9.columns= form.sub_label
+    .small-3.columns= form.note.label_tag
+    .small-9.columns= form.note
   .row
     .small-3.columns
     .small-9.columns= form.link.errors
@@ -49,34 +49,34 @@
 
   .row
     .small-3.columns
+    .small-9.columns= form.label_color.errors
+  .row
+    .small-3.columns= form.label_color.label_tag
+    .small-9.columns.tile-input
+      %input{'type': 'color', 'id': 'id_label_color', 'name': 'label_color', 'value': "#{form.label_color.value}", 'data-default-value': "#{default_colors.label}"}
+
+  .row
+    .small-3.columns
     .small-9.columns= form.title_color.errors
   .row
     .small-3.columns= form.title_color.label_tag
-    .small-9.columns
+    .small-9.columns.tile-input
       %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}", 'data-default-value': "#{default_colors.title}"}
 
   .row
     .small-3.columns
-    .small-9.columns= form.description_color.errors
+    .small-9.columns= form.note_color.errors
   .row
-    .small-3.columns= form.description_color.label_tag
-    .small-9.columns
-      %input{'type': 'color', 'id': 'id_description_color', 'name': 'description_color', 'value': "#{form.description_color.value}", 'data-default-value': "#{default_colors.description}"}
-
-  .row
-    .small-3.columns
-    .small-9.columns= form.sub_label_color.errors
-  .row
-    .small-3.columns= form.sub_label_color.label_tag
-    .small-9.columns
-      %input{'type': 'color', 'id': 'id_sub_label_color', 'name': 'sub_label_color', 'value': "#{form.sub_label_color.value}", 'data-default-value': "#{default_colors.sub_label}"}
+    .small-3.columns= form.note_color.label_tag
+    .small-9.columns.tile-input
+      %input{'type': 'color', 'id': 'id_note_color', 'name': 'note_color', 'value': "#{form.note_color.value}", 'data-default-value': "#{default_colors.note}"}
 
   .row
     .small-3.columns
     .small-9.columns= form.tile_background_color.errors
   .row
     .small-3.columns= form.tile_background_color.label_tag
-    .small-9.columns
+    .small-9.columns.tile-input
       %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}", 'data-default-value': "#{default_colors.background}"}
 
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
@@ -91,15 +91,15 @@
 - block js_snippets
   :javascript
     var background = $('#id_tile_background_color');
+    var label = $('#id_label_color');
+    var note = $('#id_note_color');
     var title = $('#id_title_color');
-    var sub_label = $('#id_sub_label_color');
-    var description = $('#id_description_color');
 
     $('#resetColors').on('click', function(event){
       event.preventDefault();
       background.val(background.data('default-value'));
+      label.val(label.data('default-value'));
+      note.val(note.data('default-value'));
       title.val(title.data('default-value'));
-      sub_label.val(sub_label.data('default-value'));
-      description.val(description.data('default-value'));
       $('#formSubmit').attr('disabled',false);
     });
