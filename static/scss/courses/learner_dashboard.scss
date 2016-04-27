@@ -15,7 +15,7 @@
                     padding: 12px 10px;
                     .header-link {
                         font-size: 20px;
-                        margin-left: 15px;
+                        margin-left: 5px;
                     }
                 }
             }
@@ -34,7 +34,7 @@
         width: 565px;
         padding-top: 10px;
         font-weight: bold;
-        font-size: 24px;
+        font-size: 22px;
         border-bottom: 1px solid $mckinsey-academy-bright-gray;
     }
 
@@ -104,4 +104,8 @@
             font-size: 18px;
         }
     }
+}
+
+.tile-input {
+    margin-bottom: 16px;
 }

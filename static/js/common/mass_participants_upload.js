@@ -38,14 +38,17 @@ massParticipantsInit = function(){
         _this.on("addedfile", function(file) { 
           $('.upload_stats').empty();
           $('#enroll-error-list').empty();
+          $('#import_from_csv input[type=checkbox]').removeAttr('disabled');
           $('input[type=submit]').removeAttr('disabled');
         });
         _this.on("removedfile", function(file) { 
           if (document.getElementById("id_student_list").files.length == 0) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            $('.upload_stats').empty();
-            $('#enroll-error-list').empty();
+            $('#import_from_csv input[type=checkbox]').attr('checked', false);
+            $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
           }
+          $('.upload_stats').empty();
+          $('#enroll-error-list').empty();
         });
       }
     };
@@ -62,6 +65,9 @@ massParticipantsInit = function(){
   $('#id_student_list').on("change", function(){
     $('.upload_stats').empty();
     $('#enroll-error-list').empty();
+    if (document.getElementById("id_student_list").files.length > 0) {
+      $('#import_from_csv input[type=checkbox]').removeAttr('disabled');
+    }
   });
 
   $('.admin-form form').on('click', 'input[type=submit]', function(e){
@@ -69,6 +75,7 @@ massParticipantsInit = function(){
     var form = $(this).parents('form');
     var modal = form.parent();
     modal.find('.error').html('');
+    $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
     $(this).attr('disabled', 'disabled');
 
     if (document.getElementById("id_student_list").files.length > 0){
@@ -85,6 +92,7 @@ massParticipantsInit = function(){
       error: function( data ){
             data = $.parseJSON(data);
             modal.find('.error').append('<p class="warning">Please select file first.</p>');
+            $('#import_from_csv input[type=checkbox]').removeAttr('disabled');
             $('input[type=submit]').removeAttr('disabled');
           }
       }
@@ -136,8 +144,13 @@ checkForStatus = function(data, form) {
   data = $.parseJSON(data);
   var task_key = data.task_key;
   var poolingInterval = setInterval(function(){
+    var url = form.attr('action') + '/check/' + data.task_key;
+    if ($('#participantsCsvUpload').length) {
+      var emails = $('#import_from_csv .emailActivationLinkCheckboxWrapper').find('input').is(":checked");
+      url = url + '?emails=' + emails;
+    }
     $.ajax({
-      url: form.attr('action') + '/check/' + data.task_key,
+      url: url,
       method: 'GET',
       dataType: 'json',
       processData: false,
@@ -146,6 +159,7 @@ checkForStatus = function(data, form) {
     }).done(function(data){
       if(data.done == 'done'){
         clearInterval(poolingInterval);
+        $('#import_from_csv input[type=checkbox]').removeAttr('disabled');
         $('input[type=submit]').removeAttr('disabled');
         if ($('#participantsCsvUpload').length) {
           $('.upload_stats').html(_.template(uploadStatsTemplate, {'data': data}));
@@ -164,13 +178,22 @@ checkForStatus = function(data, form) {
           }
         }
         else {
+          if (data.emails == 'true') {
+            $("#confirmation_screen .downloadActivationLinksConfirmationScreen" ).hide();
+            $("#confirmation_screen .sendActivationLinksConfirmationScreen" ).show();
+          }
+          else {
+            $("#confirmation_screen .sendActivationLinksConfirmationScreen" ).hide();
+            $('#confirmation_screen .upload_message').text(data.message);
+            $('#confirmation_screen .download_activation').attr('href', $('.download_activation').attr('href') + task_key);
+            $("#confirmation_screen .downloadActivationLinksConfirmationScreen" ).show();
+          }
           $('#confirmation_screen').foundation('reveal', 'open');
-          $('.upload_message').text(data.message);
-          $('.download_activation').attr('href', $('.download_activation').attr('href') + task_key);
         }
       }
       else if(data.done == 'failed'){
         clearInterval(poolingInterval);
+        $('#import_from_csv input[type=checkbox]').removeAttr('disabled');
         $('input[type=submit]').removeAttr('disabled');
       }
       else{

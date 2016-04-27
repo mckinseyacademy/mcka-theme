@@ -1,4 +1,5 @@
 Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
+    emailTemplates: null,
     initialize: function(options){
      this.courses_details_view = options.courses_details_view;
      this.courseDetails = options.courseDetails;
@@ -32,6 +33,35 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         }
       });
       var statusUpdaterIntervalId = null;
+      _this.populateEmailTemplates();
+      $('#courseBulkActionsMainContainer').on('click','.bulkEmailSelectedParticipants',function()
+      {
+        if ($(this).hasClass('disabled'))
+          return;
+        var modal = $('#courseDetailsBulkEmail');
+        modal.one('opened.fndtn.reveal', function(){
+          console.log('open');
+          var modalContainer = modal.parent();
+          modalContainer.find('.reveal-modal-bg').attr('style', function(i,s) { return s + 'z-index: 1001 !important;' });
+          modal.attr('style', function(i,s) { return s + 'z-index: 1002 !important;' });
+          modal.find('.emailBodyTextarea textarea').tinymce({
+            theme: 'modern',
+            height: 500,
+            plugins: [
+              'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+              'searchreplace wordcount visualblocks visualchars code fullscreen',
+              'insertdatetime media nonbreaking save table contextmenu directionality',
+              'paste textcolor colorpicker textpattern imagetools'
+            ],
+            toolbar1: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | link image'
+          });
+        });
+        modal.one('closed.fndtn.reveal', function(){
+          modal.find('.emailBodyTextarea textarea').tinymce().remove();
+        });
+        modal.foundation('reveal', 'open');
+
+      });
       $('#courseBulkActionsMainContainer').on('click','.bulkUnenrollFromCourse',function()
       {
         if ($(this).hasClass('disabled'))
@@ -294,5 +324,9 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         });
         $('#courseDetailsMainModal').foundation('reveal', 'open');
       }
+    },
+    populateEmailTemplates: function()
+    {
+
     }
 })
