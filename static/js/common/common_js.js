@@ -264,7 +264,7 @@ InitializeTooltipOnPage = function()
     showAt = function (e) {
         var ntop = e.pageY + OFFSET_Y, nleft = e.pageX + OFFSET_X;
         $("#" + ID).text(_show_value).css({
-            position: "absolute", top: ntop, left: nleft
+            position: "absolute", top: ntop, left: nleft, 'z-index':20000
         }).show();
     };
     $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) {
@@ -278,4 +278,49 @@ InitializeTooltipOnPage = function()
         $("#" + ID).hide();
     });
     if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+}
+
+EmailTemplatesManager = function(method, pk, title, subject, body)
+{
+  var options = {
+    url: ApiUrls.email_templates,
+    type: method,
+    dataType: "json",
+    timeout: 5000
+  };
+  if ((method == 'POST') || (method == 'PUT'))
+  {
+    options.data = {'subject': subject, 'title':title, 'body':body};
+    if (method == 'PUT')
+      options.data['pk'] = pk;     
+  }
+  if ((method == 'PUT') || (method == 'DELETE'))
+  {
+    options.url += '/' + pk;
+  }
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+    .done(function(data) {
+      if (method == 'GET')
+        $(document).trigger('email_templates_fetched', [{'data':data}]);
+      else if (data['status'] = 'ok')
+      {
+        if (method == 'DELETE')
+        {
+          $(document).trigger('email_template_deleted', [{'pk':pk}]);
+        }
+        else if (method == 'PUT')
+        {
+          $(document).trigger('email_template_updated', [{'data':data['data']}]);
+        }
+        else if (method == 'POST')
+        {
+          $(document).trigger('email_template_added', [{'data':data['data']}]);
+        }
+      }
+    })
+    .fail(function(data) {
+      console.log("Ajax failed to fetch data");
+      console.log(data)
+    });
 }

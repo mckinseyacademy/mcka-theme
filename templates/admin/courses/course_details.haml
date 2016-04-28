@@ -1,4 +1,9 @@
 - extends "admin/admin_layout.haml"
+
+- load staticfiles
+- block custom_js
+  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
+
 - block content 
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
@@ -82,13 +87,14 @@
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
   #courseDetailsBulkEmail.reveal-modal.small{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
-    %h2.courseModalTitle
+    %h2.emailModalTitle
     %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
-    .courseModalStatus
+    .emailModalStatus
     %hr
-    .courseModalDescription
-      Email selected participants
-    .courseModalContent
+    .row
+      .large-12.columns.courseModalDescription
+        Email selected participants
+    .emailModalContent
       .row
         .large-6.columns.participantFirstName
           .fromEmailLabel.labelUniversal
@@ -98,6 +104,10 @@
         .large-6.columns.participantLastName
           .templateNameLabel.labelUniversal
             Template
+          .templateControlButtons
+            %i.fa.fa-floppy-o.saveAsNewTemplate{:data-title => "Save as new template"}
+            %i.fa.fa-pencil-square-o.updateTemplate{:data-title => "Update selected template"}
+            %i.fa.fa-trash-o.removeTemplate{:data-title => "Remove selected template"}
           .templateNameValue
             %select{:name => 'template_id'}
               %option{:value => "none"} None 
@@ -113,12 +123,15 @@
       .row
         .large-12.columns.emailBody
           .emailBodyLabel.labelUniversal
-            Subject
+            Body
           .emailBodyTextarea
-            %textarea
-    .courseModalControl
+            %textarea#email_editor
+    .emailModalControl
       .button.sendEmail
         Send Email
-      %a.scheduleForLater{:href => "#"} Schedule for Later
+      .buttonBlock
+        %a.previewEmail{:href => "#"} Preview email
+        %a.scheduleForLater{:href => "#"} Schedule for Later
+
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;

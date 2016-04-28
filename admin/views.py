@@ -1250,7 +1250,8 @@ class course_details_api(APIView):
                 return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
             return Response({'status':'error', 'message': 'No such task!'})
         elif (data['type'] == 'send_email'):
-            _send_multiple_emails(from_email = data['from_email'], to_email_list = data['to_email_list'], subject = data['subject'], email_body = data['email_body'], template_id = data['template_id'])
+            _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), subject = data.get('subject', None), \
+                email_body = data.get('email_body', None), template_id = data.get('template_id', None))
         else:        
             batch_status = BatchOperationStatus.create();
             task_id = batch_status.task_key
@@ -4040,7 +4041,8 @@ class email_templates_get_and_post_api(APIView):
         if title and subject and body:
             email_template = EmailTemplate.create(title=title, subject=subject, body=body)   
             email_template.save()
-            return Response({'status':'ok', 'message':'Successfully added new email template!'})
+            return Response({'status':'ok', 'message':'Successfully added new email template!', 'data': \
+                {'pk':email_template.pk,'title':email_template.title, 'subject':email_template.subject, 'body':email_template.body}})
         else:
             return Response({'status':'error', 'message':'Missing fields in email template!'})
 

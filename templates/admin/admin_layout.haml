@@ -1,10 +1,5 @@
 - extends 'layout.haml'
 
-- load staticfiles
-- block custom_js
-  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
-  %script{src: "{% static 'js/vendor/tinymce/jquery.tinymce.min.js' %}"}
-
 - block header
   - include 'admin/admin_header.haml'
 - block content

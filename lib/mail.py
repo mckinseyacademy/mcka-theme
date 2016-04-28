@@ -57,11 +57,12 @@ def email_add_single_new_user(absolute_activation_uri, student, activation_recor
     return msg
 
 def create_multiple_emails(from_email, to_email_list, subject, email_body):
+    from django.utils.html import strip_tags
     subject, from_email = subject, from_email
-    text_content = email_body
+    text_content = strip_tags(email_body)
     html_content = email_body
     msg = EmailMultiAlternatives(
         subject, html_content, from_email, to_email_list)
     msg.content_subtype = "html"
     msg.attach_alternative(text_content, "text/plain")
-    return [msg]
+    return msg
