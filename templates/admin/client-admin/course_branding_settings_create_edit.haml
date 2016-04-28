@@ -83,3 +83,7 @@
         %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
         %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
           Cancel
+  %script
+    $('form select').change(function() {
+      $('#formSubmit').attr('disabled',false);
+    });
