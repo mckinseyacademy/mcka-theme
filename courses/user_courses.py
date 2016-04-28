@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
-from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings
+from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings, LearnerDashboard
 from api_client import user_api, course_api
 from license import controller as license_controller
 from courses.models import FeatureFlags
@@ -325,3 +325,27 @@ def standard_data(request):
 
     return data
 
+def get_current_learner_dashboard_course(user_id):
+
+    courses = user_api.get_user_courses(user_id)
+    courses = [c for c in courses if c.is_active and c.started]
+
+    if len(courses) > 0:
+
+        for course in courses:
+            try:
+                features = FeatureFlags.objects.get(course_id=course.id)
+            except:
+                features = []
+
+            if hasattr(features, 'learner_dashboard'):
+                if features.learner_dashboard is True:
+                    organization = user_api.get_user_organizations(user_id)[0]
+                    try:
+                        learner_dashboard = LearnerDashboard.objects.get(course_id=course.id, client_id=organization.id)
+                        return learner_dashboard
+                    except:
+                        pass
+        return None
+    else:
+        return None
