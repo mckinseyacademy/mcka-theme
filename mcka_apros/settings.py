@@ -442,7 +442,6 @@ BACKGROUND_IMAGE = None
 LOGO_IMAGE = None
 NAVIGATION_COLORS = None
 TEXT_COLORS = None
-BACKGROUND_TILED = None
 DISCOVER_TEXT_COLOR = "#FFFFFF"
 # Default settings for Learner dashboard tiles
 NOTE_COLOR = "#868685"

@@ -16,9 +16,10 @@
     %li
       %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_cohort' %}selected{% endifequal %}", href: "/courses/#{course.id}/cohort", "data-tooltip": "Cohort", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.fa.fa-globe
-  %li
-    %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/progress", "data-tooltip": "Progress", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
-      %i.old-fa-bar-chart
+  - if feature_flags.progress_page
+    %li
+      %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", href: "/courses/#{course.id}/progress", "data-tooltip": "Progress", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+        %i.old-fa-bar-chart
   %li
     %a{class: "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/announcements", "data-dropdown": "announcements-content", "data-tooltip": "Course Materials", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
       %i.fa.fa-file-text-o
@@ -26,10 +27,12 @@
       %a{class: "{% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", href: "/courses/#{course.id}/announcements"}= _("Announcements")
       %a{class: "{% ifequal request.resolver_match.url_name 'course_overview' %}selected{% endifequal %}", href: "/courses/#{course.id}/overview"}= _("Course Overview")
       %a{class: "{% ifequal request.resolver_match.url_name 'course_resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/resources"}= _("Resources")
-  %li
-    %a.xns-icon{class:"nav-1", "data-tooltip": "Notifications", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
-      %i.fa.fa.fa-exclamation-circle
-      %span.xns-counter{style: "{% if client_customization %}{% if client_customization.hex_notification %}background-color:#{client_customization.hex_notification};{% endif %}{% if client_customization.hex_notification_text %}color:#{client_customization.hex_notification_text};{% else %}color:#fff;{% endif %}{% endif %}"}
+  - if feature_flags.notifications
+    %li
+      %a.xns-icon{class:"nav-1", "data-tooltip": "Notifications", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+        %i.fa.fa.fa-exclamation-circle
+        %span.xns-counter{style: "{% if client_customization %}{% if client_customization.hex_notification %}background-color:#{client_customization.hex_notification};{% endif %}{% if client_customization.hex_notification_text %}color:#{client_customization.hex_notification_text};{% else %}color:#fff;{% endif %}{% endif %}"}
 
 %div.xns-pane
-- include "django/notifications_widget.html"
+- if feature_flags.notifications
+  - include "django/notifications_widget.html"

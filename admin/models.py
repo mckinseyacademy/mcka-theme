@@ -404,9 +404,16 @@ class BrandingSettings(db_models.Model):
     navigation_color = db_models.CharField(max_length=20, blank=True)
     title_color = db_models.CharField(max_length=20, blank=True)
     icon_color = db_models.CharField(max_length=20, blank=True)
-    background_tiled = db_models.BooleanField(blank=True)
     discover_text_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TEXT_COLOR)
+    discover_navigation_color = db_models.CharField(max_length=20, blank=True)
     background_color = db_models.CharField(max_length=20, blank=True)
+
+    TYPES = (
+        (u'1', u'normal'),
+        (u'2', u'tiled'),
+        (u'3', u'stretched')
+    )
+    background_style = db_models.CharField(max_length=1, choices=TYPES, blank=True)
 
     client_id = db_models.IntegerField(blank=False, unique=True)
 

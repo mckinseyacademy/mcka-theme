@@ -57,6 +57,13 @@
 
       .row
         .small-3.columns
+        .small-9.columns= form.discover_navigation_color.errors
+      .row
+        .small-3.columns= form.discover_navigation_color.label_tag
+        .small-9.columns= form.discover_navigation_color
+
+      .row
+        .small-3.columns
         .small-9.columns= form.background_color.errors
       .row
         .small-3.columns= form.background_color.label_tag
@@ -64,10 +71,10 @@
 
       .row
         .small-3.columns
-        .small-9.columns= form.background_tiled.errors
+        .small-9.columns= form.background_style.errors
       .row
-        .small-3.columns= form.background_tiled.label_tag
-        .small-9.columns= form.background_tiled
+        .small-3.columns= form.background_style.label_tag
+        .small-9.columns= form.background_style
       %input{'type': 'hidden', 'name': 'client_id', 'value': '#{client_id}'}
       .error
         - if error
