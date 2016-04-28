@@ -409,9 +409,9 @@ class BrandingSettings(db_models.Model):
     background_color = db_models.CharField(max_length=20, blank=True)
 
     TYPES = (
-        (u'1', u'normal'),
-        (u'2', u'tiled'),
-        (u'3', u'stretched')
+        (u'1', u'Normal'),
+        (u'2', u'Tiled'),
+        (u'3', u'Stretched')
     )
     background_style = db_models.CharField(max_length=1, choices=TYPES, blank=True)
 

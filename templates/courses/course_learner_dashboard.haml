@@ -9,10 +9,14 @@
 - block content
   - if branding
     - if branding.background_image
-      - if branding.background_style == '1'
+      - if branding.get_background_style_display == 'Stretched'
         %script
           $('body').css('background-repeat', 'no-repeat');
           $('body').css('background-size', '100% 100%');
+      - else
+        - if branding.get_background_style_display == 'Normal'
+          %script
+            $('body').css('background-repeat', 'no-repeat');
       %script
         $('body').css('background-image', 'url(/company_images/#{branding.background_image})');
     - else
