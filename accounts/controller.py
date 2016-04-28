@@ -258,6 +258,6 @@ def set_learner_dashboard_in_session(request):
                     learner_dashboard_id = learner_dashboard.id
                 except:
                     pass
-    else:
-        request.session['course_id'] = None
-        request.session['course_id'] = learner_dashboard_id
+
+    request.session['course_id'] = course_id
+    request.session['learner_dashboard_id'] = learner_dashboard_id

@@ -146,8 +146,7 @@ def _get_redirect_to_current_course(request):
 
     if course_id and not future_start_date:
         if settings.LEARNER_DASHBOARD_ENABLED:
-            if 'learner_dashboard_id' not in request.session:
-                set_learner_dashboard_in_session(request)
+            set_learner_dashboard_in_session(request)
             learner_dashboard_id = request.session['learner_dashboard_id']
             if learner_dashboard_id is not None:
                 learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
