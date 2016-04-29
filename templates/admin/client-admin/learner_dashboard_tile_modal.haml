@@ -90,6 +90,35 @@
 
 - block js_snippets
   :javascript
+    $("form").submit(function(event) {
+      var headers = {
+        'X-CSRFToken': $.cookie('apros_csrftoken')
+      }
+      event.preventDefault();
+      var form = $(this);
+      var formData = new FormData($('form')[0]);
+
+      $.ajax({
+        headers: headers,
+        method: 'POST',
+        processData: false,
+        contentType: false,
+        url: form.attr('action'),
+        data: formData
+      })
+      .done(function(data, status, xhr) {
+        var contentType = xhr.getResponseHeader('content-type') || '';
+        if (contentType.indexOf('json') > -1 && data.redirect) {
+          window.location.href = data.redirect;
+        }
+        else {
+          form.parent().html(data);
+          if (callback !== undefined) {
+            callback();
+          }
+        }
+      });
+    });
     var background = $('#id_tile_background_color');
     var label = $('#id_label_color');
     var note = $('#id_note_color');
