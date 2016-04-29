@@ -61,5 +61,10 @@ urlpatterns += patterns(
     url(r'^', include('marketing.urls'), name='marketing'),
 )
 
+urlpatterns += patterns(
+    '',
+    url(r'^company_images/(?P<image_url>.*)$', adminviews.load_background_image, name='load_background_image'),
+)
+
 handler404 = views.error_404
 handler500 = views.error_500
