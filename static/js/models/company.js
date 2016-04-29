@@ -1,0 +1,1 @@
+  Apros.models.Company = Backbone.Model.extend({});

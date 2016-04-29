@@ -1,0 +1,61 @@
+#mainCompaniesListDetailsContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 60%;
+}
+
+#companiesListTitle p
+{
+	font-size: xx-large;
+	margin-bottom: 20px;
+}
+
+#mainCompaniesListGridContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 60%;
+}
+
+#mainCompaniesListGridWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display: table;
+	width: 100%;
+}
+
+#companiesListViewGridBlock
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+	position: relative;
+}
+
+#companiesListViewGridBlock .bbGrid-container
+{
+	max-height: 28.8em;
+	overflow-y: scroll;
+}
+
+#companiesListViewGridBlock .bbGrid-grid.table
+{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+#companiesListViewGridBlock .bbGrid-grid.table td, .clonedHeaderContainer th
+{
+	text-align: center;
+}
+
+#mainCompaniesListGridWrapper .bbGrid-search-bar
+{
+	float: none!important;
+	display: inline-block;
+}

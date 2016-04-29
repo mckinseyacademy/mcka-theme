@@ -223,7 +223,7 @@ class BrandingSettingsForm(forms.ModelForm):
         model = BrandingSettings
         fields = [
             'background_image',
-            'background_tiled',
+            'background_style',
             'background_color',
             'icon_color',
             'logo_image',
@@ -231,6 +231,7 @@ class BrandingSettingsForm(forms.ModelForm):
             'title_color',
             'client_id',
             'discover_text_color',
+            'discover_navigation_color'
         ]
         widgets = {
             'background_color': forms.TextInput(attrs={'type': 'color'}),
@@ -238,6 +239,7 @@ class BrandingSettingsForm(forms.ModelForm):
             'navigation_color': forms.TextInput(attrs={'type': 'color'}),
             'title_color': forms.TextInput(attrs={'type': 'color'}),
             'discover_text_color': forms.TextInput(attrs={'type': 'color'}),
+            'discover_navigation_color': forms.TextInput(attrs={'type': 'color'})
         }
 
 class DiscoveryContentCreateForm(forms.ModelForm):

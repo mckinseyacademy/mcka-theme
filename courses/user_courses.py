@@ -248,6 +248,7 @@ def standard_data(request):
     client_nav_links = None
     client_customization = None
     branding = None
+    feature_flags = None
     learner_dashboard_flag = False
 
     # have we already fetched this before and attached it to the current request?
@@ -271,10 +272,12 @@ def standard_data(request):
 
         program = get_current_program_for_user(request)
         if course_id:
-            try:
-                learner_dashboard_flag = FeatureFlags.objects.get(course_id=course_id).learner_dashboard
-            except:
-                learner_dashboard_flag = False
+            if settings.LEARNER_DASHBOARD_ENABLED:
+                try:
+                    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+                    learner_dashboard_flag = feature_flags.learner_dashboard
+                except:
+                    learner_dashboard_flag = False
 
             lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             module_id = request.resolver_match.kwargs.get('page_id', None)
@@ -301,10 +304,14 @@ def standard_data(request):
             except ClientCustomization.DoesNotExist:
                 client_customization = None
 
-            try:
-                branding = BrandingSettings.objects.get(client_id=organization.id)
-            except:
-                branding = None	
+            if settings.LEARNER_DASHBOARD_ENABLED:
+                try:
+                    if feature_flags and feature_flags.branding:
+                        branding = BrandingSettings.objects.get(client_id=organization.id)
+                    else:
+                        branding = None
+                except:
+                    branding = None
 
             client_nav_links = ClientNavLinks.objects.filter(client_id=organization.id)
             client_nav_links = dict((link.link_name, link) for link in client_nav_links)

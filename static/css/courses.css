@@ -273,3 +273,52 @@
     margin-top: 5px;
     margin-left: 5px;
 }
+
+
+#courseDetailsBulkEmail .templateNameLabel
+{
+	display: inline-block;
+}
+
+#courseDetailsBulkEmail .templateControlButtons
+{
+	float: right;
+}
+
+#courseDetailsBulkEmail .templateControlButtons i
+{
+	font-size: 24px;
+    margin-right: 5px;
+}
+
+#courseDetailsBulkEmail .emailModalControl
+{
+	padding: 15px;
+}
+
+#courseDetailsBulkEmail .courseModalDescription
+{
+	margin-bottom: 15px;
+}
+
+.leftEmailButtonsContainer
+{
+	float: left;
+}
+
+.rightEmailButtonsContainer
+{
+	float: right;
+}
+
+.buttonBlock
+{
+	display:inline-block;
+	float: right;
+}
+
+.emailModalControl a
+{
+	display: block;
+	margin-top: 7px;
+}

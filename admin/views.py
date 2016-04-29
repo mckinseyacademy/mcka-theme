@@ -1250,7 +1250,8 @@ class course_details_api(APIView):
                 return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
             return Response({'status':'error', 'message': 'No such task!'})
         elif (data['type'] == 'send_email'):
-            _send_multiple_emails(from_email = data['from_email'], to_email_list = data['to_email_list'], subject = data['subject'], email_body = data['email_body'], template_id = data['template_id'])
+            _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), subject = data.get('subject', None), \
+                email_body = data.get('email_body', None), template_id = data.get('template_id', None))
         else:        
             batch_status = BatchOperationStatus.create();
             task_id = batch_status.task_key
@@ -4040,7 +4041,8 @@ class email_templates_get_and_post_api(APIView):
         if title and subject and body:
             email_template = EmailTemplate.create(title=title, subject=subject, body=body)   
             email_template.save()
-            return Response({'status':'ok', 'message':'Successfully added new email template!'})
+            return Response({'status':'ok', 'message':'Successfully added new email template!', 'data': \
+                {'pk':email_template.pk,'title':email_template.title, 'subject':email_template.subject, 'body':email_template.body}})
         else:
             return Response({'status':'error', 'message':'Missing fields in email template!'})
 
@@ -4095,4 +4097,42 @@ class email_templates_put_and_delete_api(APIView):
                 return Response({'status':'error', 'message':"Can't find email template key!"})
         else:
             return Response({'status':'error', 'message':'Missing email template key!'})
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def companies_list(request):
+    return render(request, 'admin/companies/companies_list.haml')
+
+
+class companies_list_api(APIView):
+    '''
+    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
+    '''
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request):
+        
+        include_slow_fields = request.GET.get('include_slow_fields', 'false')
+
+        companies = []
+        if include_slow_fields == 'false':
+            clients = Client.list()
+            for client in clients:
+                company = {}
+                company['name'] = vars(client)['display_name']
+                company['id'] = vars(client)['id']
+                company['numberParticipants'] = '.'
+                company['numberCourses'] = '-'
+                companies.append(company)
+        elif include_slow_fields == 'true':
+            for company_id in request.GET['ids'].split(','):
+                requestParams = {}
+                company = {}
+                requestParams['organizations'] = company_id
+                participants = user_api.get_filtered_users(requestParams)
+                company['id'] = company_id
+                company['numberParticipants'] = participants['count']
+                companies.append(company)
+
+        return Response(companies)
 

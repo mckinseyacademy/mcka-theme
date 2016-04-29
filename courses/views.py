@@ -297,6 +297,9 @@ def course_discussion_userprofile(request, course_id, user_id):
     return render(request, 'courses/course_discussion_userprofile.haml', data)
 
 def _course_progress_for_user(request, course_id, user_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.progress_page:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
@@ -414,6 +417,10 @@ def _course_progress_for_user(request, course_id, user_id):
     return render(request, 'courses/course_progress.haml', data)
 
 def _course_progress_for_user_v2(request, course_id, user_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.progress_page:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
+
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
     social = get_social_metrics(course_id, user_id)
@@ -850,6 +857,9 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
     feature_flags.proficiency = request.POST.get('proficiency', None) == 'on'
     feature_flags.learner_dashboard = request.POST.get('learner_dashboard', None) == 'on'
+    feature_flags.progress_page = request.POST.get('progress_page', None) == 'on'
+    feature_flags.notifications = request.POST.get('notifications', None) == 'on'
+    feature_flags.branding = request.POST.get('branding', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(

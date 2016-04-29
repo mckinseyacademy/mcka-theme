@@ -2,6 +2,7 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block current_content
+  - include 'courses/course_learner_dashboard_branding.haml'
   #course-lessons
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
@@ -12,7 +13,6 @@
         %h1= course.current_module.name
     -else
       .lesson-title
-        %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
         %span.label-3.lesson-name= course.current_lesson.name
         %span.label-3.page-desc= course.current_lesson.description
       %h1
@@ -25,7 +25,7 @@
     -if tile_type != 'module'
       - include "courses/content_page/lesson_pager_ld.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
-    %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
+    %p.style-2 You have completed ={course.current_lesson.progress}% of ={course.current_lesson.name}
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
@@ -36,6 +36,8 @@
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
+
+- block footer
 
 - block js_snippets
   :javascript
