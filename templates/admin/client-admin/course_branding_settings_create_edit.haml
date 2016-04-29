@@ -1,7 +1,6 @@
 - extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
-  %script{src: "/static/js/form_changed_check.js"}
   .admin-detail.row
     .large-12.large.columns
       - block admin_detail
@@ -83,7 +82,6 @@
         %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
         %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
           Cancel
-  %script
-    $('form select').change(function() {
-      $('#formSubmit').attr('disabled',false);
-    });
+
+- block js_snippets
+  %script{src: "{% static 'js/form_changed_check.js' %}"}
