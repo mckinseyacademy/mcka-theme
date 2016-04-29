@@ -11,7 +11,9 @@ from django.core.urlresolvers import reverse
 from django.template import loader
 from django.core.mail import EmailMessage
 
-from admin.models import Program
+from admin.models import Program, LearnerDashboard
+from courses.user_courses import get_current_course_for_user, get_current_learner_dashboard_course
+from courses.models import FeatureFlags
 
 from api_client import user_api, third_party_auth_api
 from api_client.api_error import ApiError
@@ -235,3 +237,15 @@ def send_password_reset_email(domain, user, use_https,
     email = loader.render_to_string(email_template_name, c)
     email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
     email.send(fail_silently=False)
+
+def set_learner_dashboard_in_session(request):
+
+    learner_dashboard = get_current_learner_dashboard_course(request.user.id)
+
+    if learner_dashboard:
+        request.session['learner_dashboard_id'] = learner_dashboard.id
+        request.session['course_id'] = learner_dashboard.course_id
+    else:
+        request.session['learner_dashboard_id'] = None
+        request.session['course_id'] = get_current_course_for_user(request)
+

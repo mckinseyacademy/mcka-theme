@@ -31,3 +31,4 @@ django-storages==1.1.8
 pytz==2014.4
 XlsxWriter==0.6.4
 -e git+https://github.com/edx/edx-notifications.git@484014cc87278a5c474e6cc1bca14c417fb35599#egg=edx-notifications
+djangorestframework==2.3.14

@@ -1,7 +1,5 @@
 $(document).ready(function() {
-  $('form input').on( 'input change', function() {
-    $('#formSubmit').attr('disabled',false);
-  }); 
+   $('form select, form input').change(function() {
+        $('#formSubmit').attr('disabled',false);
+   });
 });
-  
-

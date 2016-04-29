@@ -56,6 +56,7 @@
       %link{rel: "stylesheet", href: "{% static 'css/bbGridExtend.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/participants.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/courses.css' %}"}
+      %link{rel: "stylesheet", href: "{% static 'css/companies.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/common.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/dropzone.css' %}"}
 
@@ -115,6 +116,9 @@
       %script{src: "/static/js/vendor/underscore.js"}
       %script{src: "/static/js/vendor/backbone.js"}
       %script{src: "/static/js/vendor/date.js"}
+
+    -# custom js libs
+    - block custom_js
     
   %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"}
     - block help_context

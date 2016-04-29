@@ -258,13 +258,13 @@ function RecursiveJsonToHtml( data ) {
 InitializeTooltipOnPage = function()
 {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
-    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('margin-top'));
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('top'));
     $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
     var _show_value = "";
     showAt = function (e) {
         var ntop = e.pageY + OFFSET_Y, nleft = e.pageX + OFFSET_X;
         $("#" + ID).text(_show_value).css({
-            position: "absolute", top: ntop, left: nleft
+            position: "absolute", top: ntop, left: nleft, 'z-index':20000
         }).show();
     };
     $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) {
@@ -278,4 +278,77 @@ InitializeTooltipOnPage = function()
         $("#" + ID).hide();
     });
     if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+}
+
+EmailTemplatesManager = function(method, pk, title, subject, body)
+{
+  var options = {
+    url: ApiUrls.email_templates,
+    type: method,
+    dataType: "json",
+    timeout: 5000
+  };
+  if ((method == 'POST') || (method == 'PUT'))
+  {
+    options.data = {'subject': subject, 'title':title, 'body':body};
+    if (method == 'PUT')
+      options.data['pk'] = pk;     
+  }
+  if ((method == 'PUT') || (method == 'DELETE'))
+  {
+    options.url += '/' + pk;
+  }
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+    .done(function(data) {
+      if (method == 'GET')
+        $(document).trigger('email_templates_fetched', [{'data':data}]);
+      else if (data['status'] = 'ok')
+      {
+        if (method == 'DELETE')
+        {
+          $(document).trigger('email_template_deleted', [{'pk':pk}]);
+        }
+        else if (method == 'PUT')
+        {
+          $(document).trigger('email_template_updated', [{'data':data['data']}]);
+        }
+        else if (method == 'POST')
+        {
+          $(document).trigger('email_template_added', [{'data':data['data']}]);
+        }
+      }
+    })
+    .fail(function(data) {
+      console.log("Ajax failed to fetch data");
+      console.log(data)
+    });
+}
+SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail)
+{
+  var dictionaryToSend = {'subject':subject, 'from_email': sender, 'to_email_list': to_email_list, 'email_body': body}
+  if (template_id)
+    dictionaryToSend['template_id'] = template_id;
+  var options = {
+    url: ApiUrls.email,
+    data: JSON.stringify(dictionaryToSend),
+    processData: false,
+    type: "POST",
+    dataType: "json"
+  };
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    if (data['status'] == 'ok')
+    {
+      data['type']= 'email';
+      if (previewEmail)
+        data['type']='preview';
+      $(document).trigger('email_sent', [data]);
+    }
+    })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data);
+    })
 }

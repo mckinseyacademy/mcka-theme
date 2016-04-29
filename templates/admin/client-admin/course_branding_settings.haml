@@ -29,18 +29,30 @@
               %br
               .div
                 .sub-1 Navigation color:
-                .sub-2{style: "color:#{branding.navigation_colors}"}= branding.navigation_colors
+                .sub-2{style: "color:#{branding.navigation_color}"}= branding.navigation_color
               %br
               .div
                 .sub-1 Text color:
-                .sub-2{style: "color:#{branding.text_colors}"}= branding.text_colors
+                .sub-2{style: "color:#{branding.title_color}"}= branding.title_color
+              %br
+              .div
+                .sub-1 Icon color:
+                .sub-2{style: "color:#{branding.icon_color}"}= branding.icon_color
               %br
               .div
                 .sub-1 Discover text color:
                 .sub-2{style: "color:#{branding.discover_text_color}"}= branding.discover_text_color
+              %br
               .div
-                .sub-1 Background tiled:
-                .sub-2= branding.background_tiled
+                .sub-1 Discover navigation color:
+                .sub-2{style: "color:#{branding.discover_navigation_color}"}= branding.discover_navigation_color
+              %br
+              .div
+                .sub-1 Background color:
+                .sub-2{style: "color:#{branding.background_color}"}= branding.background_color
+              .div
+                .sub-1 Background style:
+                .sub-2= branding.get_background_style_display
               %br
             .large-6.columns 
               .sub-1 Logo Image:

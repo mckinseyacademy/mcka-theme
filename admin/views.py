@@ -54,7 +54,8 @@ from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
+    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -64,7 +65,7 @@ from .controller import (
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
-    _send_activation_email_to_single_new_user
+    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -591,11 +592,11 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         if form.is_valid():
             tile = form.save()
 
-            if not "/learner_dashboard/" in tile.link:
+            if not "/learnerdashboard/" in tile.link:
                 if tile.get_tile_type_display() == 'Lesson':
-                    tile.link = tile.link + "/learner_dashboard/lesson"
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
                 if tile.get_tile_type_display() == 'Module':
-                    tile.link = tile.link + "/learner_dashboard/module"
+                    tile.link = "/learnerdashboard" + tile.link + "/module"
                 tile.save()
             if tile.get_tile_type_display() == 'Course':
                 if not "/courses/" in tile.link:
@@ -611,6 +612,13 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
     else:
         form = LearnerDashboardTileForm(instance=instance)
 
+    default_colors = {
+        'label': settings.LABEL_COLOR,
+        'note': settings.NOTE_COLOR,
+        'title': settings.TITLE_COLOR,
+        'background': settings.TILE_BACKGROUND_COLOR,
+    }
+
     return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
         'error': error,
         'form': form,
@@ -618,7 +626,9 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         'course_id': course_id,
         'learner_dashboard_id': learner_dashboard_id,
         'tile_id': tile_id,
+        'default_colors': default_colors,
     })
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
@@ -974,6 +984,11 @@ def course_details(request, course_id):
     except ZeroDivisionError:
         course['proficiency'] = 0
 
+    list_of_email_templates = EmailTemplate.objects.all()
+    course['template_list'] = []
+    for email_template in list_of_email_templates:    
+        course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
+
     return render(request, 'admin/courses/course_details.haml', course)
 
 class course_details_stats_api(APIView):
@@ -1234,6 +1249,7 @@ class course_details_api(APIView):
                         error_list.append({'id': b_error.user_id, 'message': b_error.error})
                 return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
             return Response({'status':'error', 'message': 'No such task!'})
+        
         else:        
             batch_status = BatchOperationStatus.create();
             task_id = batch_status.task_key
@@ -2094,8 +2110,11 @@ def import_participants_check(request, task_key):
                 failed = str(reg_status.failed)
                 succeded = str(reg_status.succeded)
                 reg_status.delete()
+                emails = request.GET.get('emails', None)
+                if int(failed) == 0 and emails == 'true':
+                    send_activation_emails_by_task_key(request, task_key)
                 return HttpResponse(
-                    '{"done":"done","error":' + errors_as_json + ', "message": "' + message + '","attempted":"'+attempted+'","failed":"'+failed+'","succeded":"'+succeded+'"}',
+                    '{"done":"done","error":'+errors_as_json+',"message":"'+message+'","attempted":"'+attempted+'","failed":"'+failed+'","succeded":"'+succeded+'","emails":"'+emails+'"}',
                     content_type='application/json'
                 )
             else:
@@ -3299,7 +3318,6 @@ class participants_list_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request):
         post_data = json.loads(request.body)
-        print post_data
         form = CreateNewParticipant(post_data.copy())
         if form.is_valid():
             filterUsers = {}
@@ -4002,3 +4020,144 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
             discoveryItem.position = index
             discoveryItem.save()
         return HttpResponse('200')
+
+
+class email_templates_get_and_post_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, format=None):   
+        list_of_email_templates = EmailTemplate.objects.all().order_by('title')
+        templates = []
+        for email_template in list_of_email_templates:    
+            templates.append({'pk':email_template.pk, 'title':email_template.title, 'subject':email_template.subject, 'body': email_template.body})
+        return Response(templates)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, format=None):
+        title = request.DATA.get('title', None)
+        subject = request.DATA.get('subject', None)
+        body = request.DATA.get('body', None)
+        if title and subject and body:
+            email_template = EmailTemplate.create(title=title, subject=subject, body=body)   
+            email_template.save()
+            return Response({'status':'ok', 'message':'Successfully added new email template!', 'data': \
+                {'pk':email_template.pk,'title':email_template.title, 'subject':email_template.subject, 'body':email_template.body}})
+        else:
+            return Response({'status':'error', 'message':'Missing fields in email template!'})
+
+
+
+class email_templates_put_and_delete_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, pk, format=None):
+        if pk:
+            email_template = EmailTemplate.objects.filter(pk=pk)
+            if len(email_template) > 0:
+                email_template = email_template[0]
+                return Response({'status':'ok', 'message':'Successfully got email template!', 'data': \
+                    {'pk':email_template.pk, 'title':email_template.title, 'subject':email_template.subject, 'body': email_template.body}})
+            else:
+                return Response({'status':'error', 'message':"Can't find email template key!"})
+        else:
+            return Response({'status':'error', 'message':'Missing email template key!'}) 
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def delete(self, request, pk, format=None):
+        if pk:
+            selected_template = EmailTemplate.objects.filter(pk=pk)
+            if len(selected_template) > 0:
+                selected_template = selected_template[0]           
+                selected_template.delete()
+                return Response({'status':'ok', 'message':'Successfully deleted email template!', 'pk': pk})
+            else:
+                return Response({'status':'error', 'message':"Can't find email template key!"})
+        else:
+            return Response({'status':'error', 'message':'Missing email template key!'})
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def put(self, request, pk=None, format=None):
+        if pk:
+            selected_template = EmailTemplate.objects.filter(pk=pk)
+            if len(selected_template) > 0:
+                selected_template = selected_template[0]           
+                title = request.DATA.get('title', None)
+                subject = request.DATA.get('subject', None)
+                body = request.DATA.get('body', None)
+                if title:
+                    selected_template.title = title
+                if subject:
+                    selected_template.subject = subject
+                if body:
+                    selected_template.body = body
+                selected_template.save()
+                return Response({'status':'ok', 'message':'Successfully updated email template!', 'data': \
+                    {'pk':pk,'title':selected_template.title, 'subject':selected_template.subject, 'body':selected_template.body}})
+            else:
+                return Response({'status':'error', 'message':"Can't find email template key!"})
+        else:
+            return Response({'status':'error', 'message':'Missing email template key!'})
+
+
+class email_send_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, format=None):
+        data = json.loads(request.body)
+        result = _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), \
+            subject = data.get('subject', None), email_body = data.get('email_body', None), template_id = data.get('template_id', None))
+        if result == True:
+            response = {'status':'ok'}
+        else:
+            response = {'status':'error', 'data': result}
+        return Response(response)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def companies_list(request):
+    return render(request, 'admin/companies/companies_list.haml')
+
+
+class companies_list_api(APIView):
+    '''
+    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
+    '''
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request):
+        
+        include_slow_fields = request.GET.get('include_slow_fields', 'false')
+
+        companies = []
+        if include_slow_fields == 'false':
+            clients = Client.list()
+            for client in clients:
+                company = {}
+                company['name'] = vars(client)['display_name']
+                company['id'] = vars(client)['id']
+                company['numberParticipants'] = '.'
+                company['numberCourses'] = '-'
+                companies.append(company)
+        elif include_slow_fields == 'true':
+            for company_id in request.GET['ids'].split(','):
+                requestParams = {}
+                company = {}
+                requestParams['organizations'] = company_id
+                participants = user_api.get_filtered_users(requestParams)
+                company['id'] = company_id
+                company['numberParticipants'] = participants['count']
+                companies.append(company)
+
+        return Response(companies)
+
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_details(request, company_id):
+
+    client = Client.fetch(company_id)
+    company = {}
+    company['name'] = vars(client)['display_name']
+    requestParams = {}
+    requestParams['organizations'] = company_id
+    participants = user_api.get_filtered_users(requestParams)
+    company['numberParticipants'] = participants['count']
+
+    return render(request, 'admin/companies/company_details.haml', company)

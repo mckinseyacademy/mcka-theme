@@ -401,10 +401,19 @@ class BrandingSettings(db_models.Model):
 
     background_image = db_models.ImageField(upload_to=settings.BACKGROUND, blank=True)
     logo_image = db_models.ImageField(upload_to=settings.LOGO, blank=True)
-    navigation_colors = db_models.CharField(max_length=20, blank=True)
-    text_colors = db_models.CharField(max_length=20, blank=True)
-    background_tiled = db_models.BooleanField(blank=True)
+    navigation_color = db_models.CharField(max_length=20, blank=True)
+    title_color = db_models.CharField(max_length=20, blank=True)
+    icon_color = db_models.CharField(max_length=20, blank=True)
     discover_text_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TEXT_COLOR)
+    discover_navigation_color = db_models.CharField(max_length=20, blank=True)
+    background_color = db_models.CharField(max_length=20, blank=True)
+
+    TYPES = (
+        (u'1', u'Normal'),
+        (u'2', u'Tiled'),
+        (u'3', u'Stretched')
+    )
+    background_style = db_models.CharField(max_length=1, choices=TYPES, blank=True)
 
     client_id = db_models.IntegerField(blank=False, unique=True)
 
@@ -418,16 +427,16 @@ class LearnerDashboard(db_models.Model):
 
 class LearnerDashboardTile(db_models.Model):
 
-    title = db_models.CharField(max_length=20, blank=True)
-    description = db_models.CharField(blank=True, max_length=40)
+    label = db_models.CharField(max_length=20, blank=True)
+    title = db_models.CharField(blank=True, max_length=40)
     link = db_models.CharField(blank=False, max_length=500)
     position = db_models.IntegerField(blank=False, default=100)
     background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND, blank=True)
-    sub_label = db_models.CharField(blank=True, max_length=40)
+    note = db_models.CharField(blank=True, max_length=40)
 
+    label_color = db_models.CharField(max_length=20, default=settings.LABEL_COLOR, blank=True)
     title_color = db_models.CharField(max_length=20, default=settings.TITLE_COLOR, blank=True)
-    description_color = db_models.CharField(max_length=20, default=settings.DESCRIPTION_COLOR, blank=True)
-    sub_label_color = db_models.CharField(max_length=20, default=settings.SUB_LABEL_COLOR, blank=True)
+    note_color = db_models.CharField(max_length=20, default=settings.NOTE_COLOR, blank=True)
     tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
@@ -446,7 +455,7 @@ class LearnerDashboardTile(db_models.Model):
 class LearnerDashboardDiscovery(db_models.Model):
 
     link = db_models.URLField()
-    title = db_models.CharField(max_length=20)
+    title = db_models.CharField(max_length=5000)
     author = db_models.CharField(blank=True, max_length=20)
     position = db_models.IntegerField(default=100)
 
@@ -467,6 +476,15 @@ class LearnerDashboardResource(db_models.Model):
         on_delete=db_models.CASCADE,
     )
 
+class EmailTemplate(db_models.Model):
+    title = db_models.CharField(blank=False, null=False, max_length=64)
+    subject = db_models.CharField(blank=False, null=False, max_length=256)
+    body = db_models.TextField(blank=False, null=False,)
+
+    @classmethod
+    def create(cls, title, subject, body):
+        email_template = cls(title=title, subject=subject, body=body)
+        return email_template
 
 
 

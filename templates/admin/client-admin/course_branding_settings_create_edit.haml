@@ -1,7 +1,6 @@
 - extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
-  %script{src: "/static/js/form_changed_check.js"}
   .admin-detail.row
     .large-12.large.columns
       - block admin_detail
@@ -29,17 +28,24 @@
 
       .row
         .small-3.columns
-        .small-9.columns= form.navigation_colors.errors
+        .small-9.columns= form.navigation_color.errors
       .row
-        .small-3.columns= form.navigation_colors.label_tag
-        .small-9.columns= form.navigation_colors
+        .small-3.columns= form.navigation_color.label_tag
+        .small-9.columns= form.navigation_color
 
       .row
         .small-3.columns
-        .small-9.columns= form.text_colors.errors
+        .small-9.columns= form.title_color.errors
       .row
-        .small-3.columns= form.text_colors.label_tag
-        .small-9.columns= form.text_colors
+        .small-3.columns= form.title_color.label_tag
+        .small-9.columns= form.title_color
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.icon_color.errors
+      .row
+        .small-3.columns= form.icon_color.label_tag
+        .small-9.columns= form.icon_color
 
       .row
         .small-3.columns
@@ -50,10 +56,24 @@
 
       .row
         .small-3.columns
-        .small-9.columns= form.background_tiled.errors
+        .small-9.columns= form.discover_navigation_color.errors
       .row
-        .small-3.columns= form.background_tiled.label_tag
-        .small-9.columns= form.background_tiled
+        .small-3.columns= form.discover_navigation_color.label_tag
+        .small-9.columns= form.discover_navigation_color
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.background_color.errors
+      .row
+        .small-3.columns= form.background_color.label_tag
+        .small-9.columns= form.background_color  
+
+      .row
+        .small-3.columns
+        .small-9.columns= form.background_style.errors
+      .row
+        .small-3.columns= form.background_style.label_tag
+        .small-9.columns= form.background_style
       %input{'type': 'hidden', 'name': 'client_id', 'value': '#{client_id}'}
       .error
         - if error
@@ -62,3 +82,6 @@
         %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
         %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
           Cancel
+
+- block js_snippets
+  %script{src: "{% static 'js/form_changed_check.js' %}"}

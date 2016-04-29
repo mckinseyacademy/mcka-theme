@@ -1,4 +1,4 @@
-%header#learner-dashboard-header.background-blue{role: 'banner', style: "{% if branding and branding.text_colors %} border-bottom: 5px solid #{branding.text_colors};{% endif %}"}
+%header#learner-dashboard-header.background-blue{role: 'banner', style: "{% if branding and branding.navigation_color %} border-bottom: 5px solid #{branding.navigation_color};{% endif %}"}
   .row.collapse.main-nav
     .large-6.columns.header-row
       -if branding and branding.logo_image
@@ -22,6 +22,30 @@
       .row
         .large-12.columns.header-padding
           %div.right.header-path
-            %a.header-link{:href => "/courses/#{course.id}/resources_learner_dashboard", :data-reveal-id => 'resources', :data-reveal-ajax =>'true', style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"}
-              %i.fa.fa-file-text-o.header-link
-            %a.header-link{:data-reveal-id => 'contact-ta', :data-reveal-ajax =>'true', style: "{% if branding and branding.text_colors %} color: #{branding.text_colors};{% endif %}"} TA
+            - if request.resolver_match.url_name == 'course_resources_learner_dashboard'
+                %a.disabled.right{:href => "/learnerdashboard/courses/#{course.id}/resources", :data-tooltip => "Resources"}
+                  .fa.fa-file-text-o.header-link
+            - else
+              %a.right{:href => "/learnerdashboard/courses/#{course.id}/resources", :data-tooltip => "Resources", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                .fa.fa-file-text-o.header-link
+            - if feature_flags.group_work
+              - if request.resolver_match.url_name == 'user_course_group_work_learner_dashboard'
+                %a.disabled.right{:href => "/learnerdashboard/courses/#{course.id}/group_work", :data-tooltip => "Group Work"}
+                  .mk-icon-groupworknav.header-link
+              - else
+                %a.right{:href => "/learnerdashboard/courses/#{course.id}/group_work", :data-tooltip => "Group Work", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                  .mk-icon-groupworknav.header-link
+            - if feature_flags.discussions
+              - if request.resolver_match.url_name == 'course_discussion_learner_dashboard'
+                %a.disabled.right{:href => "/learnerdashboard/courses/#{course.id}/discussion", :data-tooltip => "Discussion"}
+                  .fa.fa-comments-o.header-link
+              - else
+                %a.right{:href => "/learnerdashboard/courses/#{course.id}/discussion", :data-tooltip => "Discussion", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                  .fa.fa-comments-o.header-link
+
+            - if request.resolver_match.url_name == 'course_learner_dashboard'
+              %a.disabled.right{:href => "learnerdashboard", :data-tooltip => "Learner Dashboard"}
+                .fa.fa-map-marker.header-link
+            - else
+              %a.right{:href => "/learnerdashboard", :data-tooltip => "Learner Dashboard", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+                .fa.fa-map-marker.header-link
