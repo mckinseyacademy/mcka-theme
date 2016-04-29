@@ -335,24 +335,18 @@ def standard_data(request):
 def get_current_learner_dashboard_course(user_id):
 
     courses = user_api.get_user_courses(user_id)
-    courses = [c for c in courses if c.is_active and c.started]
+    course_ids = [c.id for c in courses if c.is_active and c.started]
 
-    if len(courses) > 0:
+    organization = user_api.get_user_organizations(user_id)[0]
+    features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
 
-        for course in courses:
+    if len(features) > 0:
+        for feature in features:
             try:
-                features = FeatureFlags.objects.get(course_id=course.id)
+                learner_dashboard = LearnerDashboard.objects.get(course_id=feature.course_id, client_id=organization.id)
+                return learner_dashboard
             except:
-                features = []
-
-            if hasattr(features, 'learner_dashboard'):
-                if features.learner_dashboard is True:
-                    organization = user_api.get_user_organizations(user_id)[0]
-                    try:
-                        learner_dashboard = LearnerDashboard.objects.get(course_id=course.id, client_id=organization.id)
-                        return learner_dashboard
-                    except:
-                        pass
+                pass
         return None
     else:
         return None
