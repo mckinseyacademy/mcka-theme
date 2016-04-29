@@ -137,5 +137,6 @@ urlpatterns = patterns(
     url(r'^project/(?P<project_id>.*)/activity/(?P<activity_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments'),
 
     url(r'^api/email-templates$', views.email_templates_get_and_post_api.as_view(), name='email_templates_get_and_post_api'),
-    url(r'^api/email-templates/(?P<pk>[0-9]+)$', views.email_templates_put_and_delete_api.as_view(), name='email_templates_put_and_delete_api')
+    url(r'^api/email-templates/(?P<pk>[0-9]+)$', views.email_templates_put_and_delete_api.as_view(), name='email_templates_put_and_delete_api'),
+    url(r'^api/email', views.email_send_api.as_view(), name='email_send_api')
 )

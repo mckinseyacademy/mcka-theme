@@ -86,7 +86,7 @@
       %a.cancelChanges{:href => "#"} Cancel
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
-  #courseDetailsBulkEmail.reveal-modal.small{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
+  #courseDetailsBulkEmail.reveal-modal.medium{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
     %h2.emailModalTitle
     %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
     .emailModalStatus
@@ -126,12 +126,13 @@
             Body
           .emailBodyTextarea
             %textarea#email_editor
-    .emailModalControl
-      .button.sendEmail
-        Send Email
-      .buttonBlock
-        %a.previewEmail{:href => "#"} Preview email
-        %a.scheduleForLater{:href => "#"} Schedule for Later
+    .row
+      .large-12.columns.emailModalControl
+        .button.sendEmail
+          Send Email
+        .buttonBlock
+          %a.previewEmail{:href => "#"} Preview email
+          %a.scheduleForLater{:href => "#"} Schedule for Later
 
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;

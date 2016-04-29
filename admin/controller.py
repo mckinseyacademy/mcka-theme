@@ -1591,6 +1591,7 @@ def _enroll_participants(participants, request, reg_status):
 def _send_activation_email_to_single_new_user(activation_record, user, absolute_uri):
     msg = [email_add_single_new_user(absolute_uri, user, activation_record)]
     result = sendMultipleEmails(msg)
+    return result
 
 
 def _send_multiple_emails(from_email = None, to_email_list = None, subject = None, email_body = None, template_id = None):
@@ -1599,8 +1600,9 @@ def _send_multiple_emails(from_email = None, to_email_list = None, subject = Non
         subject = template.subject
         email_body = template.body
 
-    msg = create_multiple_emails(from_email, to_email_list, subject, email_body)
+    msg = [create_multiple_emails(from_email, to_email_list, subject, email_body)]
     result = sendMultipleEmails(msg)
+    return result
 
 
 def send_activation_emails_by_task_key(request, task_key):

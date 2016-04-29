@@ -57,10 +57,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             toolbar1: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | link image'
           });
         });
-        modal.one('closed.fndtn.reveal', function(){
-          tinymce.remove('#email_editor');
-        });
-        modal.foundation('reveal', 'open');
         modal.off('change', '.templateNameValue select').on('change', '.templateNameValue select', function()
         {
           var editor = tinymce.get('email_editor');
@@ -77,48 +73,10 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             }
           }
         });
-        var controlButtonContainer = modal.find('.emailModalControl');
-        var templateButtonContainer = modal.find('.templateControlButtons');
-        controlButtonContainer.on('click', '.sendEmail', function(e)
-        {
-          console.log('send email');
-        });
-        templateButtonContainer.on('click', '.saveAsNewTemplate', function(e)
-        {
-          var subject = modal.find('.emailSubjectValue input').val();
-          var title = prompt("Please enter new template name!", subject);
-          var body = tinymce.get('email_editor').getContent();
-          if (title != null) 
-          {
-            EmailTemplatesManager('POST', "", title, subject, body);
-          }
-        });
-        templateButtonContainer.on('click', '.updateTemplate', function(e)
-        {
-          var select = modal.find('.templateNameValue select');
-          var selected_pk = select.val();
-          if (selected_pk != 'none')
-          {
-            var subject = modal.find('.emailSubjectValue input').val();
-            var title = select.find('option[value="'+selected_pk+'"]').text().trim();
-            title = prompt("Please enter updated template name or leave the old one!", title);
-            var body = tinymce.get('email_editor').getContent();
-            if (title != null) 
-            {
-              EmailTemplatesManager('PUT', selected_pk, title, subject, body);
-            }
-          }
-        });
-        templateButtonContainer.on('click', '.removeTemplate', function(e)
-        {
-          var selected_pk = modal.find('.templateNameValue select').val();
-          if (selected_pk != 'none')
-          {
-            var r = confirm("You are about to delete email template. Are you sure?");
-            if (r == true)
-              EmailTemplatesManager('DELETE', selected_pk);
-          }
-        });
+        modal.find('.templateNameValue select option:eq(0)').prop('selected', true);
+        modal.find('.fromEmailValue input').val("");
+        modal.find('.emailSubjectValue input').val("");
+        modal.foundation('reveal', 'open');
       });
       $('#courseBulkActionsMainContainer').on('click','.bulkUnenrollFromCourse',function()
       {
@@ -339,7 +297,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
             $.ajax(options)
             .done(function(data) {
-              console.log(data);
               if (data['status'] == 'ok')
               {
                 statusUpdaterIntervalId = _this.courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id'], _this, course_id);
@@ -416,6 +373,94 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           }
         }
         alert('Successfully updated template!');
+      });
+      $(document).on('email_sent', function(e, data)
+      {
+        if (data['type'] == 'preview')
+          alert('Successfully sent preview email!');
+        else
+        {
+          alert('Successfully sent email!');
+          modal.foundation('reveal', 'close');
+        }
+          
+      });
+
+      modal.on('closed.fndtn.reveal', function(){
+          tinymce.get('email_editor').setContent("");
+          tinymce.remove('#email_editor');
+      });
+      var controlButtonContainer = modal.find('.emailModalControl');
+      var templateButtonContainer = modal.find('.templateControlButtons');
+      controlButtonContainer.on('click', '.sendEmail', function(e)
+      {
+        var sender = modal.find('.fromEmailValue input').val();
+        var body = tinymce.get('email_editor').getContent();
+        var subject = modal.find('.emailSubjectValue input').val();
+        var bbgrid_table = _this.courses_details_view.coursesListDetailsViewGrid;
+        var selectedRowsIds = bbgrid_table.selectedRows;
+        var to_email_list = [];
+        for (var i = 0; i<selectedRowsIds.length; i++ )
+        {
+          to_email_list.push(bbgrid_table.collection.get(selectedRowsIds[i]).attributes.email)
+        }
+        var  template_id = modal.find('.templateNameValue select').val();
+        if (template_id == 'none')
+          template_id = null;
+        SendEmailManager(sender, subject, to_email_list, body, template_id);
+      });
+      controlButtonContainer.on('click', '.previewEmail', function(e)
+      {
+        
+        var email = prompt("Please enter preview email!");
+        if (email != null) 
+        {
+          var sender = modal.find('.fromEmailValue input').val();
+          var body = tinymce.get('email_editor').getContent();
+          var subject = modal.find('.emailSubjectValue input').val();
+          var to_email_list = [];
+          to_email_list.push(email)
+          var  template_id = modal.find('.templateNameValue select').val();
+          if (template_id == 'none')
+            template_id = null;
+          SendEmailManager(sender, subject, to_email_list, body, template_id, true);
+        }
+      });
+      templateButtonContainer.on('click', '.saveAsNewTemplate', function(e)
+      {
+        var subject = modal.find('.emailSubjectValue input').val();
+        var title = prompt("Please enter new template name!", subject);
+        var body = tinymce.get('email_editor').getContent();
+        if (title != null) 
+        {
+          EmailTemplatesManager('POST', "", title, subject, body);
+        }
+      });
+      templateButtonContainer.on('click', '.updateTemplate', function(e)
+      {
+        var select = modal.find('.templateNameValue select');
+        var selected_pk = select.val();
+        if (selected_pk != 'none')
+        {
+          var subject = modal.find('.emailSubjectValue input').val();
+          var title = select.find('option[value="'+selected_pk+'"]').text().trim();
+          title = prompt("Please enter updated template name or leave the old one!", title);
+          var body = tinymce.get('email_editor').getContent();
+          if (title != null) 
+          {
+            EmailTemplatesManager('PUT', selected_pk, title, subject, body);
+          }
+        }
+      });
+      templateButtonContainer.on('click', '.removeTemplate', function(e)
+      {
+        var selected_pk = modal.find('.templateNameValue select').val();
+        if (selected_pk != 'none')
+        {
+          var r = confirm("You are about to delete email template. Are you sure?");
+          if (r == true)
+            EmailTemplatesManager('DELETE', selected_pk);
+        }
       });
     }
 })

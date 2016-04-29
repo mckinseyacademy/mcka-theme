@@ -1249,9 +1249,7 @@ class course_details_api(APIView):
                         error_list.append({'id': b_error.user_id, 'message': b_error.error})
                 return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
             return Response({'status':'error', 'message': 'No such task!'})
-        elif (data['type'] == 'send_email'):
-            _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), subject = data.get('subject', None), \
-                email_body = data.get('email_body', None), template_id = data.get('template_id', None))
+        
         else:        
             batch_status = BatchOperationStatus.create();
             task_id = batch_status.task_key
@@ -4097,4 +4095,19 @@ class email_templates_put_and_delete_api(APIView):
                 return Response({'status':'error', 'message':"Can't find email template key!"})
         else:
             return Response({'status':'error', 'message':'Missing email template key!'})
+
+
+class email_send_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, format=None):
+        data = json.loads(request.body)
+        result = _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), \
+            subject = data.get('subject', None), email_body = data.get('email_body', None), template_id = data.get('template_id', None))
+        if result == True:
+            response = {'status':'ok'}
+        else:
+            response = {'status':'error', 'data': result}
+        return Response(response)
+
+
 
