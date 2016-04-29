@@ -149,7 +149,6 @@ def _get_redirect_to_current_course(request):
             set_learner_dashboard_in_session(request)
             learner_dashboard_id = request.session['learner_dashboard_id']
             if learner_dashboard_id is not None:
-                learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
                 return reverse('course_learner_dashboard')
             else:
                 return reverse('course_landing_page', kwargs=dict(course_id=course_id))

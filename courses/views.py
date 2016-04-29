@@ -852,7 +852,7 @@ def course_learner_dashboard(request):
 
     if learner_dashboard_id is not None:
         learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
-    elif course_id and not learner_dashboard_id:
+    elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)
         return HttpResponseRedirect(redirect_url)
     else:
