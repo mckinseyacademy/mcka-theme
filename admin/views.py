@@ -4136,3 +4136,17 @@ class companies_list_api(APIView):
 
         return Response(companies)
 
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_details(request, company_id):
+
+    client = Client.fetch(company_id)
+    company = {}
+    company['name'] = vars(client)['display_name']
+    requestParams = {}
+    requestParams['organizations'] = company_id
+    participants = user_api.get_filtered_users(requestParams)
+    company['numberParticipants'] = participants['count']
+
+    return render(request, 'admin/companies/company_details.haml', company)

@@ -1,3 +1,4 @@
+/* Companies List*/
 #mainCompaniesListDetailsContainer
 {
 	margin-left: auto;
@@ -58,4 +59,54 @@
 {
 	float: none!important;
 	display: inline-block;
+}
+
+/*Company Details*/
+
+#mainCompanyDetailsContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#companyDetailsNavigation
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 90%;
+}
+
+#mainCompanyDetailsDataContainer
+{
+	padding-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#companyDetailsTopDataWrapper
+{
+	min-width: 760px;
+	max-width: 80%;
+}
+
+.companyDetailsCompanyName
+{
+	font-size: xx-large;
+	padding-bottom: 20px;
+}
+
+#companyDetailsTopDataWrapper
+{
+	padding-bottom: 30px;
+}
+
+#companyDetailsNavigationButtonsContainer
+{
+	min-width: 760px;
+	max-width: 80%;
 }
