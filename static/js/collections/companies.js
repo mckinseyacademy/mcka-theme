@@ -93,7 +93,7 @@
     },
     getSlowFetchedStatus: false,
     pageAndIdConnector: [],
-    slowFieldsFetchCount: 5,
+    slowFieldsFetchCount: 10,
     slowFieldsFetchIdentifier:'id',
     slowFieldsCollectionFieldIdentifier:'numberParticipants',
   });
