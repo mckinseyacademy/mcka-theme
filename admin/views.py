@@ -4099,7 +4099,7 @@ class email_templates_put_and_delete_api(APIView):
             return Response({'status':'error', 'message':'Missing email template key!'})
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
@@ -4109,7 +4109,7 @@ class companies_list_api(APIView):
     To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
     '''
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
         
         include_slow_fields = request.GET.get('include_slow_fields', 'false')

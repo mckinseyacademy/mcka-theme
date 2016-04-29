@@ -35,5 +35,11 @@
         { title: 'No. of Courses', index: true, name: 'numberCourses' }
         ]
       });
-    }
+      this.companiesListViewGrid = companiesListViewGrid;
+      $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
+    },
+    onClearSearchEvent: function(event){
+      var _this = event.data.extra;
+      _this.companiesListViewGrid.searchBar.onSearch({target: '#mainCompaniesListGridWrapper .bbGrid-pager'});
+    },
   });
