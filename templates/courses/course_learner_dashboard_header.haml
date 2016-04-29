@@ -25,11 +25,20 @@
             %a.right{:href => "/courses/#{course.id}/resources_learner_dashboard", :data-tooltip => "Resources", :data-reveal-id => 'resources', :data-reveal-ajax =>'true', style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
               .fa.fa-file-text-o.header-link
             - if feature_flags.group_work
-              %a.right{:href =>  "/courses/#{course.id}/group_work", :data-tooltip => "Group Work", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
-                .mk-icon-groupworknav.header-link
+              - if request.resolver_match.url_name == 'user_course_group_work_learner_dashboard'
+                %a.disabled.right{:href => "/courses/#{course.id}/learner_dashboard_group_work", :data-tooltip => "Group Work"}
+                  .mk-icon-groupworknav.header-link
+              - else
+                %a.right{:href =>  "/courses/#{course.id}/learner_dashboard_group_work", :data-tooltip => "Group Work", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                  .mk-icon-groupworknav.header-link
             - if feature_flags.discussions
-              %a.right{:href => "/courses/#{course.id}/discussion", :data-tooltip => "Discussion", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
-                .fa.fa-comments-o.header-link
+              - if request.resolver_match.url_name == 'course_discussion_learner_dashboard'
+                %a.disabled.right{:href => "/courses/#{course.id}/learner_dashboard_discussion", :data-tooltip => "Discussion"}
+                  .fa.fa-comments-o.header-link
+              - else
+                %a.right{:href => "/courses/#{course.id}/learner_dashboard_discussion", :data-tooltip => "Discussion", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                  .fa.fa-comments-o.header-link
+
             - if request.resolver_match.url_name == 'course_learner_dashboard'
               %a.disabled.right{:href => "/courses/#{course.id}/learner_dashboard", :data-tooltip => "Learner Dashboard"}
                 .fa.fa-map-marker.header-link

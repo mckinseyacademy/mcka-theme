@@ -181,7 +181,7 @@ def course_cohort(request, course_id):
     }
     return render(request, 'courses/course_cohort.haml', data)
 
-def _render_group_work(request, course, project_group, group_project):
+def _render_group_work(request, course, project_group, group_project, ld=False):
 
     seqid = request.GET.get("seqid", None)
     if seqid and " " in seqid:
@@ -219,7 +219,11 @@ def _render_group_work(request, course, project_group, group_project):
     }
     if select_stage:
         data['select_stage'] = select_stage
-    return render(request, 'courses/course_group_work.haml', data)
+
+    if ld:
+        return render(request, 'courses/course_group_work_ld.haml', data)
+    else:
+        return render(request, 'courses/course_group_work.haml', data)
 
 @login_required
 @check_user_course_access
@@ -238,6 +242,22 @@ def user_course_group_work(request, course_id):
     return _render_group_work(request, course, project_group, group_project)
 
 @login_required
+@check_user_course_access
+def user_course_group_work_learner_dashboard(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.group_work:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
+
+    # remove this in case we are a TA who is taking a course themselves
+    user_api.delete_user_preference(request.user.id, "TA_REVIEW_WORKGROUP")
+
+    course = load_course(course_id, request=request)
+    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+    set_current_course_for_user(request, course_id)
+
+    return _render_group_work(request, course, project_group, group_project, True)
+
+@login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_TA)
 def workgroup_course_group_work(request, course_id, workgroup_id):
 
@@ -249,9 +269,7 @@ def workgroup_course_group_work(request, course_id, workgroup_id):
 
     return _render_group_work(request, course, project_group, group_project)
 
-@login_required
-@check_user_course_access
-def course_discussion(request, course_id):
+def _course_discussion_data(request, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.discussions:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
@@ -274,7 +292,7 @@ def course_discussion(request, course_id):
 
     mcka_ta = choose_random_ta(course_id)
 
-    data = {
+    return {
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
@@ -286,6 +304,18 @@ def course_discussion(request, course_id):
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "mcka_ta": mcka_ta
     }
+
+@login_required
+@check_user_course_access
+def course_discussion_learner_dashboard(request, course_id):
+
+    data = _course_discussion_data(request, course_id)
+    return render(request, 'courses/course_discussion_ld.haml', data)
+
+@login_required
+@check_user_course_access
+def course_discussion(request, course_id):
+    data = _course_discussion_data(request, course_id)
     return render(request, 'courses/course_discussion.haml', data)
 
 @login_required
