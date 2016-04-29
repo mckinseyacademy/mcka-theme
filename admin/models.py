@@ -404,9 +404,16 @@ class BrandingSettings(db_models.Model):
     navigation_color = db_models.CharField(max_length=20, blank=True)
     title_color = db_models.CharField(max_length=20, blank=True)
     icon_color = db_models.CharField(max_length=20, blank=True)
-    background_tiled = db_models.BooleanField(blank=True)
     discover_text_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TEXT_COLOR)
+    discover_navigation_color = db_models.CharField(max_length=20, blank=True)
     background_color = db_models.CharField(max_length=20, blank=True)
+
+    TYPES = (
+        (u'1', u'Normal'),
+        (u'2', u'Tiled'),
+        (u'3', u'Stretched')
+    )
+    background_style = db_models.CharField(max_length=1, choices=TYPES, blank=True)
 
     client_id = db_models.IntegerField(blank=False, unique=True)
 
@@ -448,7 +455,7 @@ class LearnerDashboardTile(db_models.Model):
 class LearnerDashboardDiscovery(db_models.Model):
 
     link = db_models.URLField()
-    title = db_models.CharField(max_length=20)
+    title = db_models.CharField(max_length=5000)
     author = db_models.CharField(blank=True, max_length=20)
     position = db_models.IntegerField(default=100)
 

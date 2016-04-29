@@ -1,0 +1,23 @@
+- extends "admin/admin_layout.haml"
+
+- block content 
+  #mainCompanyDetailsContainer
+    #companyDetailsNavigation
+      %a{:href => '/admin/companies', :target => '_self'}> < Back to All Companies
+    #mainCompanyDetailsDataContainer
+      #companyDetailsTopDataWrapper
+        .row.companyDetailsCompanyName
+          ={name}
+        .row.companyDetailsNumberParticipants
+          %p Total Participants: ={numberParticipants}
+        .row.companyDetailsNumberActiveCourses
+          %p Active Courses: -
+      #companyDetailsNavigationButtonsContainer
+        .row
+          .companyDetailsCoursesButton.large-3.columns
+            %p COURSES
+          .companyDetailsCompanyInfoButton.large-3.columns
+            %p COMPANY INFO
+          .large-6.columns
+        %hr
+      #companyDetailsDataWrapper

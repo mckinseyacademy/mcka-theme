@@ -61,7 +61,24 @@
           - else
             %input#cohort_map{type: 'checkbox', name: 'proficiency'}
           %label{for: 'proficiency'} Proficiency
-
+        %li
+          - if feature_flags.progress_page
+            %input#cohort_map{type: 'checkbox', name: 'progress_page', checked: None}
+          - else
+            %input#cohort_map{type: 'checkbox', name: 'progress_page'}
+          %label{for: 'progress_page'} Progress Page
+        %li
+          - if feature_flags.notifications
+            %input#cohort_map{type: 'checkbox', name: 'notifications', checked: None}
+          - else
+            %input#cohort_map{type: 'checkbox', name: 'notifications'}
+          %label{for: 'notifications'} Notifications
+        %li
+          - if feature_flags.branding
+            %input#cohort_map{type: 'checkbox', name: 'branding', checked: None}
+          - else
+            %input#cohort_map{type: 'checkbox', name: 'branding'}
+          %label{for: 'learner_dashboard'} Branding
         %li
           - if feature_flags.learner_dashboard
             %input#cohort_map{type: 'checkbox', name: 'learner_dashboard', checked: None}

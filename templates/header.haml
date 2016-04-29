@@ -67,7 +67,7 @@
           .medium-5.columns
             .program-menu
               - if learner_dashboard_flag
-                %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if branding and branding.title_color %} color: #{branding.title_color};{% endif %}"}
+                %a{href: "/learnerdashboard", style: "{% if branding and branding.title_color %} color: #{branding.title_color};{% endif %}"}
                   .fa.fa-map-marker
               - else
                 %a{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
@@ -80,7 +80,7 @@
               - if course.ended
                 %span= _("COURSE CLOSED")
               - if learner_dashboard_flag
-                %a{href: "#{course.nav_url}/learner_dashboard", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
+                %a{href: "/learnerdashboard", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
               - else
                 %a{href: "#{course.nav_url}", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
           .medium-2.columns

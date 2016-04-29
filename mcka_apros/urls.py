@@ -6,6 +6,7 @@ from django.conf import settings
 from main import views
 from sitemap import *
 from admin import views as adminviews
+from courses import views as courseviews
 
 urlpatterns = patterns(
     '',
@@ -28,6 +29,21 @@ urlpatterns = patterns(
     url(r'^__debug__/', include(debug_toolbar.urls)),
 )
 
+urlpatterns += patterns(
+    '',
+    url(r'^learnerdashboard$', courseviews.course_learner_dashboard, name='course_learner_dashboard'),
+    url(r'^learnerdashboard/courses/(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)/(?P<tile_type>.*)/$', courseviews.navigate_to_lesson_module, name='navigate_to_lesson_module'),
+    url(r'^learnerdashboard/courses/(?P<course_id>.*)/resources$', courseviews.course_resources_learner_dashboard, name='course_resources_learner_dashboard'),
+    url(r'^learnerdashboard/courses/(?P<course_id>.*)/discussion$', courseviews.course_discussion_learner_dashboard, name='course_discussion_learner_dashboard'),
+    url(r'^learnerdashboard/courses/(?P<course_id>.*)/group_work$', courseviews.user_course_group_work_learner_dashboard, name='user_course_group_work_learner_dashboard')
+
+)
+
+urlpatterns += patterns(
+    '',
+    url(r'^company_images/(?P<image_url>.*)$', adminviews.load_background_image, name='load_background_image'),
+)
+
 if settings.RUN_LOCAL_MOCK_API:
     urlpatterns += patterns('', url(r'^mockapi/', include('mockapi.urls'), name='mockapi'),)
 
@@ -43,11 +59,6 @@ urlpatterns += patterns('',
 urlpatterns += patterns(
     '',
     url(r'^', include('marketing.urls'), name='marketing'),
-)
-
-urlpatterns += patterns(
-    '',
-    url(r'^company_images/(?P<image_url>.*)$', adminviews.load_background_image, name='load_background_image'),
 )
 
 handler404 = views.error_404

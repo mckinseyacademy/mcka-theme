@@ -55,16 +55,17 @@
                 - else
                   .rank your proficiency position <br> will be displayed here
 
-            %td
-              .header
-                .label-5 Progress:
-                .label-4 cohort average = ={completions.course_average_display}%
-                - if is_observer
-                 .rank As an Observer you will not appear on the progress leaderboard
-                - elif completions.position and completions.user_progress_value
-                  .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
-                - else
-                  .rank your progress position <br> will be displayed here
+            - if feature_flags.progress_page
+              %td
+                .header
+                  .label-5 Progress:
+                  .label-4 cohort average = ={completions.course_average_display}%
+                  - if is_observer
+                   .rank As an Observer you will not appear on the progress leaderboard
+                  - elif completions.position and completions.user_progress_value
+                    .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
+                  - else
+                    .rank your progress position <br> will be displayed here
 
             - if feature_flags.discussions
               %td

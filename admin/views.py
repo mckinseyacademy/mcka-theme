@@ -592,11 +592,11 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         if form.is_valid():
             tile = form.save()
 
-            if not "/learner_dashboard/" in tile.link:
+            if not "/learnerdashboard/" in tile.link:
                 if tile.get_tile_type_display() == 'Lesson':
-                    tile.link = tile.link + "/learner_dashboard/lesson"
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
                 if tile.get_tile_type_display() == 'Module':
-                    tile.link = tile.link + "/learner_dashboard/module"
+                    tile.link = "/learnerdashboard" + tile.link + "/module"
                 tile.save()
             if tile.get_tile_type_display() == 'Course':
                 if not "/courses/" in tile.link:
@@ -4110,4 +4110,54 @@ class email_send_api(APIView):
         return Response(response)
 
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def companies_list(request):
+    return render(request, 'admin/companies/companies_list.haml')
 
+
+class companies_list_api(APIView):
+    '''
+    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
+    '''
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request):
+        
+        include_slow_fields = request.GET.get('include_slow_fields', 'false')
+
+        companies = []
+        if include_slow_fields == 'false':
+            clients = Client.list()
+            for client in clients:
+                company = {}
+                company['name'] = vars(client)['display_name']
+                company['id'] = vars(client)['id']
+                company['numberParticipants'] = '.'
+                company['numberCourses'] = '-'
+                companies.append(company)
+        elif include_slow_fields == 'true':
+            for company_id in request.GET['ids'].split(','):
+                requestParams = {}
+                company = {}
+                requestParams['organizations'] = company_id
+                participants = user_api.get_filtered_users(requestParams)
+                company['id'] = company_id
+                company['numberParticipants'] = participants['count']
+                companies.append(company)
+
+        return Response(companies)
+
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_details(request, company_id):
+
+    client = Client.fetch(company_id)
+    company = {}
+    company['name'] = vars(client)['display_name']
+    requestParams = {}
+    requestParams['organizations'] = company_id
+    participants = user_api.get_filtered_users(requestParams)
+    company['numberParticipants'] = participants['count']
+
+    return render(request, 'admin/companies/company_details.haml', company)

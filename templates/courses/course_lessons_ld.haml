@@ -2,6 +2,7 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block current_content
+  - include 'courses/course_learner_dashboard_branding.haml'
   #course-lessons
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
@@ -35,6 +36,8 @@
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
+
+- block footer
 
 - block js_snippets
   :javascript
