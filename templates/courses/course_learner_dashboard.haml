@@ -3,7 +3,7 @@
 - block page_title
   %title
     = program.display_name
-    = _(" | Courses | McKinsey Academy")
+    = _(" | Learner Dashboard | McKinsey Academy")
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content
@@ -36,7 +36,6 @@
               %p{style: "{% if branding and branding.discover_text_color %} color: #{branding.discover_text_color};{% endif %}"}= item.title
             %h5
               %span{style: "{% if branding and branding.discover_text_color %} color: #{branding.discover_text_color};{% endif %}"}= item.author
-  #resources.reveal-modal.large{"data-reveal": "true"}
 
 - block footer
 
