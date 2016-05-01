@@ -440,7 +440,7 @@ class LearnerDashboardTile(db_models.Model):
     tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
-        (u'1', u'External link'),
+        (u'1', u'Article'),
         (u'2', u'Lesson'),
         (u'3', u'Module'),
         (u'4', u'Course'),
