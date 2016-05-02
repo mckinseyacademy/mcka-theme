@@ -1,0 +1,84 @@
+- extends "admin/admin_layout.haml"
+
+- block content 
+    #mainCourseDetailsWrapper
+        .courseDetailsNavigationButton
+            %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
+        #courseDetailsDataWrapper{:data-id => '#{id}'}
+            #courseDetailsTopContainer
+                .row.courseDetailsHeader
+                    .courseDetailsNameAndId
+                      ={name}  
+                      ={id}
+                    .courseDetailsTags
+                .row.courseDetailsBlocks
+                    .large-4.columns.courseDetailsLeftBlock
+                      - if start == '-' or end == '-'
+                        %p Evergreen
+                      - else
+                        %p ={start} - ={end}
+                      %p Participants: ={users_enrolled}
+                    .large-4.columns.courseDetailsCenterBlock
+                      %p Avg Progress: ={average_progress}%
+                      %p Avg Proficiency: ={proficiency}
+                    .large-4.columns.courseDetailsRightBlock
+                      %p Completed: ={completed}%
+                      %p Passed: ={passed}%
+            #courseMainDetailsContainerView
+              .courseDetailsMenuButtons.row
+                .courseParticipantsButton.large-2.columns
+                  %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PARTICIPANTS
+                .courseStatsButton.large-2.columns
+                  %a{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  STATS
+                .courseDiscoverContentButton.large-3.columns
+                  %p DISCOVER CONTENT
+                .courseFeatureFlaggingButton.large-3.columns
+                  %p FEATURE FLAGGING  
+                .courseCommunicationsButton.large-2.columns
+                  %p COMMUNICATIONS 
+            %hr
+            #courseDetailsMainContainer
+              .row.courseParticipants.contentNavigationContainer
+                #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
+                  .bulkButtonWrapper
+                    .hiddenButtonSplitModifier.bulkButton.disabled
+                    %a.emailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
+                      Email Selected Participants
+                    %a.button.bulkDropdownIcon.bulkButton.disabled
+                      .fa.fa-chevron-down
+                  #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}
+                    %a.button.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"} Change status
+                    %a.button.submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"} Unenroll from course
+                    %a.button.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"} Enroll in new course
+                    %a.button.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"} Export stats
+                #courseDetailsParticipantsGridWrapper
+                  #courseDetailsParticipantsGrid.large-12.columns
+              .row.courseStats.contentNavigationContainer
+                #courseDetailsEngagementTopic.courseDetailsTopic
+                  Engagement Summary
+                #coursesDownloadStatsButton
+                  %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}> Export Stats
+                #courseDetailsEngagementViewGrid.courseDetailsViewGrid.large-12.columns
+                #courseDetailsPerformanceTopic.courseDetailsTopic
+                  Participant Performance
+                #courseDetailsPerformanceViewGrid.courseDetailsViewGrid.large-12.columns
+                #courseDetailsStatsTopic.courseDetailsTopic
+                  Social Engagement
+                #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
+                #courseDetailsTimelineTopic.courseDetailsTopic
+                  Cohort Timeline
+                #course-details-timeline-wrapper  
+                  %svg#course-details-timeline
+  #courseDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2.courseModalTitle
+    %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
+    .courseModalStatus
+    %hr
+    .courseModalDescription
+    .courseModalContent
+    .courseModalControl
+      .button.saveChanges
+        Save Changes
+      %a.cancelChanges{:href => "#"} Cancel
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;

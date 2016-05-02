@@ -7,11 +7,13 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from .models import Client, Program, AccessKey, DashboardAdminQuickFilter
+from .models import Client, Program, AccessKey, DashboardAdminQuickFilter, BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonObjectWithImage
+
+from django.forms import CharField
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -180,6 +182,24 @@ class CreateAccessKeyForm(forms.ModelForm):
             'name': mark_safe('Name <span class="required-field"></span>')
         }
 
+class EditExistingUserForm(forms.Form):
+    first_name = forms.CharField(required=True, widget=forms.TextInput())
+    last_name = forms.CharField(required=True, widget=forms.TextInput())
+    username = forms.CharField(required=False, widget=forms.TextInput())
+    email = forms.EmailField(required=True, widget=forms.TextInput())
+    company = forms.CharField(required=True, widget=forms.TextInput())
+    gender = forms.CharField(required=False, widget=forms.TextInput())
+    country = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput())
+
+class CreateNewParticipant(forms.Form):
+    first_name = forms.CharField(required=True, widget=forms.TextInput())
+    last_name = forms.CharField(required=True, widget=forms.TextInput())
+    email = forms.EmailField(required=True, widget=forms.TextInput())
+    company = forms.CharField(required=True, widget=forms.TextInput())
+    gender = forms.CharField(required=False, widget=forms.TextInput())
+    country = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput())
 
 class DashboardAdminQuickFilterForm(forms.ModelForm):
 
@@ -196,3 +216,60 @@ class DashboardAdminQuickFilterForm(forms.ModelForm):
             course_id=data['course_id'], company_id=data.get('company_id'),
             group_work_project_id=data.get('group_work_project_id')
         )
+
+class BrandingSettingsForm(forms.ModelForm):
+
+    class Meta:
+        model = BrandingSettings
+        fields = [
+            'background_image',
+            'background_tiled',
+            'logo_image',
+            'navigation_colors',
+            'text_colors',
+            'client_id',
+            'discover_text_color',
+        ]
+        widgets = {
+            'navigation_colors': forms.TextInput(attrs={'type': 'color'}),
+            'text_colors': forms.TextInput(attrs={'type': 'color'}),
+            'discover_text_color': forms.TextInput(attrs={'type': 'color'}),
+        }
+
+class DiscoveryContentCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = LearnerDashboardDiscovery
+        fields = [
+            'link', 'title', 'author', 'learner_dashboard'
+        ]
+        widgets = {
+            'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
+            'link': forms.TextInput(attrs={'type': 'url'}),
+        }
+
+class LearnerDashboardTileForm(forms.ModelForm):
+    
+	class Meta:
+		model = LearnerDashboardTile
+		fields = [
+            'title',
+            'description',
+            'sub_label',
+            'link',
+            'tile_type',
+            'background_image',
+            'learner_dashboard',
+            'title_color',
+            'description_color',
+            'sub_label_color',
+            'tile_background_color',
+       	]
+       	widgets = {
+       		'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
+			'link': forms.TextInput(attrs={'type': 'url'}),
+            'title_color': forms.TextInput(attrs={'type': 'color'}),
+            'description_color': forms.TextInput(attrs={'type': 'color'}),
+            'sub_label_color': forms.TextInput(attrs={'type': 'color'}),
+            'tile_background_color': forms.TextInput(attrs={'type': 'color'}),
+        }

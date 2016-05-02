@@ -21,7 +21,13 @@
       - if user.is_mcka_admin or user.is_internal_admin
         %li
           %a{href: '/admin/course-meta-content'}= _("Course Content")
+        - if apros_features.ADMIN_COURSES_TAB
+          %li
+            %a{href: '/admin/courses/'}= _("COURSES")       
       - if user.is_mcka_admin or user.is_internal_admin
+        - if apros_features.ADMIN_PARTICIPANTS_TAB
+          %li
+            %a{href: '/admin/participants'}= _("Participants")
         %li
           %a{href: '/admin/permissions'}= _("Roles & Permissions")
       - if user.is_client_admin

@@ -1,0 +1,56 @@
+textarea{
+    resize: none;
+}
+
+.ui-state-default{
+    border: 1px solid #d3d3d3;
+    background: #e6e6e6;
+}
+
+#sortable { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0;
+    width: 600px;
+    height: 450px;
+    overflow: auto;
+    background: white;
+    border: 1px solid $mckinsey-grey;
+    li { 
+        border: 1px solid $mckinsey-academy-bright-gray;
+        margin: 0px 10px 10px 0; 
+        padding: 10px; 
+        float: left; 
+        width: 180px; 
+        height: 140px; 
+
+        .sub-1{
+            font-size: 12px;
+        }
+
+        blockquote{
+            overflow: auto;
+            height: 75px;
+            margin: 15px 0px 0px;
+        }
+    }
+    .add-tile{
+        border: 2px solid $mckinsey-academy-bright-gray;
+        background-color: white;
+        border-style: dotted;
+        .font-plus{
+            font-size: 4em;
+            padding: 30px 55px;
+        }
+    }
+}
+
+#saveLearnerDashboard, #saveTile{
+    display:none;
+}
+
+.bottom-buttons{
+    padding: 10px;
+    line-height: 16px;
+    margin: 20px 10px 0 0;
+}

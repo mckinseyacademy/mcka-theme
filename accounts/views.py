@@ -24,10 +24,11 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+from courses.models import FeatureFlags
 from api_client import user_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
-from admin.models import Client, Program
+from admin.models import Client, Program, LearnerDashboard
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
@@ -40,7 +41,7 @@ from .controller import (
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
-    EditFullNameForm, EditTitleForm, SSOLoginForm
+    EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2
 )
 from django.shortcuts import resolve_url
 from django.utils.http import urlsafe_base64_decode
@@ -143,6 +144,19 @@ def _get_redirect_to_current_course(request):
             future_start_date = is_future_start(program.start_date)
 
     if course_id and not future_start_date:
+        if settings.LEARNER_DASHBOARD_ENABLED:
+            try:
+                features = FeatureFlags.objects.get(course_id=course_id)
+            except:
+                features = []
+            if hasattr(features, 'learner_dashboard'): 
+                if features.learner_dashboard is True:
+                    organization = user_api.get_user_organizations(request.user.id)[0]
+                    try:
+                        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+                        return reverse('course_learner_dashboard', kwargs=dict(course_id=course_id))
+                    except (LearnerDashboard.DoesNotExist):
+                        return reverse('course_landing_page', kwargs=dict(course_id=course_id))
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
     return reverse('protected_home')
 
@@ -385,6 +399,69 @@ def activate(request, activation_code):
         }
     return render(request, 'accounts/activate.haml', data)
 
+def activate_v2(request, activation_code):
+    ''' handles requests for activation form and their submission '''
+    error = None
+    user = None
+    user_data = None
+    initial_data = {}
+    try:
+        activation_record = UserActivation.objects.get(activation_key=activation_code)
+        user = user_api.get_user(activation_record.user_id)
+        if user.is_active:
+            raise
+
+        for field_name in VALID_USER_FIELDS:
+            if field_name == "full_name":
+                initial_data[field_name] = user.formatted_name
+            elif hasattr(user, field_name):
+                initial_data[field_name] = getattr(user, field_name)
+
+        # See if we have a company for this user
+        companies = user_api.get_user_organizations(user.id)
+        if len(companies) > 0:
+            company = companies[0]
+            initial_data["company"] = company.display_name
+
+    except:
+        user_data = None
+        error = _("Invalid Activation Code")
+
+    if request.method == 'POST' and error is None:  # If the form has been submitted...
+        user_data = request.POST.copy()
+
+        # email should never be changed
+        user_data["email"] = user.email
+
+        form = ActivationFormV2(user_data)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            try:
+                user_activation_with_data(user.id, user_data, activation_record)
+
+                # Redirect after POST
+                return HttpResponseRedirect(
+                    '/accounts/login?username={}'.format(
+                        user_data["username"]
+                    )
+                )
+            except ActivationError as activation_error:
+                error = activation_error.value
+        elif not error:
+            error = _("Some required information was missing. Please check the fields below.")
+    else:
+        form = ActivationFormV2(user_data, initial=initial_data)
+
+        # set focus to username field
+        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+
+    data = {
+        "user": user,
+        "form": form,
+        "error": error,
+        "activation_code": activation_code,
+        "activate_label": _("Create my McKinsey Academy account"),
+        }
+    return render(request, 'accounts/activate.haml', data)
 
 @csrf_exempt
 @require_POST

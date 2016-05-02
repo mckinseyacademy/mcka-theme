@@ -1,0 +1,57 @@
+- extends "layout.haml"
+- load staticfiles
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Courses | McKinsey Academy")
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
+- block content
+  #home-courses{style: "{% if branding and branding.background_image %} background-image: url(/company_images/#{branding.background_image});{% if branding.background_tiled == False %}background-repeat:no-repeat;background-size:100% 100%;{% endif %}{% endif %}"}
+    .row
+      .large-8.columns.dash-programs
+        -if branding
+          %h3{style: "{% if branding %} color:#{branding.text_colors}{% endif %}"}= learner_dashboard.title
+        -else
+          %h3= learner_dashboard.title
+        %p= learner_dashboard.description
+        .row
+          -for tile in learner_dashboard_tiles
+            .learner-program
+              .panel.panel-program{style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+                .sub-1{style: "color: #{tile.title_color};"} 
+                -if tile.title
+                  #{tile.title}:
+                -else
+                  #{tile.get_tile_type_display}:
+                %a{href: "#{tile.link}"}
+                  %blockquote.user-quote{style: "color: #{tile.description_color};"}= tile.description
+                .label-3{style: "color: #{tile.sub_label_color};"}= tile.sub_label
+      .large-4.columns.dash-widget{style: "{% if branding %} border-color:#{branding.text_colors}{% endif %}"}
+        %h5.label-4{style: "{% if branding %} color: #{branding.discover_text_color};{% endif %}"} FOR DISCOVERY
+        -for item in discovery_items
+          .learner-info
+            %a{href:"#{item.link}", target: "_blank"}
+              %p{style: "{% if branding %} color: #{branding.discover_text_color};{% endif %}"}= item.title
+            %h5
+              %span{style: "{% if branding %} color: #{branding.discover_text_color};{% endif %}"}= item.author
+  #resources.reveal-modal.large{"data-reveal": "true"}
+  #contact-ta.reveal-modal.small{"data-reveal": "false"}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2= _("Message your TA")
+    %hr
+    %div= _("Send any questions or messages to your TA , and they'll get back to you promptly.")
+    %form#contact-ta-form{action: "/courses/#{course.id}/teaching_assistant", method: "POST"}
+      .error
+        - if error
+          = error
+      - csrf_token
+      %textarea{placeholder: "Enter your message for the TA here", name: "ta_message"}
+      %input#contact-from{'type': 'hidden', 'name': 'contact-from', 'value': '#{contact_from}'}
+      %input.button.radius.small{type: "submit", value: "Submit", disabled: "Disabled"}
+
+- block footer
+
+- block js_snippets
+  %script{src: "{% static 'js/course_contact_modal.js' %}"}

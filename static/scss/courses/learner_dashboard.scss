@@ -1,0 +1,107 @@
+#learner-dashboard-header{
+    background-color: white;
+    .main-nav {
+        background-color: white;
+        background-image: none;
+        .header-row{
+            height: 91px;
+            .header-logo {
+                margin-top: 22px;
+                height: 50px;
+            }
+            .header-padding{
+                padding-right: 0px;
+                .header-path {
+                    padding: 12px 10px;
+                    .header-link {
+                        font-size: 20px;
+                        margin-left: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.dash-programs{
+    background: white;
+    height: 610px;
+    width: 600px;
+    padding-left: 10px;
+    padding-right: 0;
+
+    h3 {
+        width: 565px;
+        padding-top: 10px;
+        font-weight: bold;
+        font-size: 24px;
+        border-bottom: 1px solid $mckinsey-academy-bright-gray;
+    }
+
+    p {
+        width: 585px;
+        font-size: 14px;
+        height: 100px;
+        overflow: auto;
+        margin-bottom: 10px;
+    }
+
+    .row{
+        height: 440px;
+        width: 585px;
+        margin: 0px;
+        overflow: auto;
+
+        .learner-program{
+            width: 180px;
+            height: 140px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            padding: 0px;
+            position: relative;
+            float: left;
+
+            .panel-program{
+                border: 1px solid $mckinsey-academy-bright-gray;
+                padding: 10px;
+                height: 140px;
+                margin-bottom: 0px;
+
+                .sub-1{
+                    font-size: 12px;
+                }
+
+                blockquote{
+                    word-wrap: break-word;
+                    overflow: auto;
+                    height: 75px;
+                    margin: 15px 0px 0px;
+                }
+            }
+        }
+    }
+}
+
+.dash-widget{
+    max-height: 535px;
+    width: 300px;
+    margin-top: 46px;
+    border-top: 1px solid $mckinsey-academy-bright-gray;
+    border-bottom: 1px solid $mckinsey-academy-bright-gray;
+    padding: 10px 0px;
+
+    .learner-info{
+        margin: 15px 0;
+        h5 {
+            font-weight: bold;
+            font-size: 10px;
+            margin: 5px 0px;
+            .reg {
+                font-weight: normal;
+            }
+        }
+        p{
+            font-size: 18px;
+        }
+    }
+}

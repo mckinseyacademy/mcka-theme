@@ -65,6 +65,7 @@ LOCAL_APPS = (
     'license',
     'heartbeat',
     'public_api',
+    'rest_framework',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -169,6 +170,7 @@ SESSION_TIMEOUT_SECONDS = 300
 # LMS
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
 LMS_SUB_DOMAIN = 'lms'
+LMS_PORT = None
 LMS_SESSION_COOKIE_DOMAIN = None  # Default: use current/same domain
 # LMS_AUTH_URL: relative or absolute URL to the LMS's /auth/ urls, used for SSO.
 # Normally this is on the same domain as Apros and is forwarded to the LMS by an nginx reverse proxy rule
@@ -347,7 +349,14 @@ TEMP_IMAGE_FOLDER = "profile_temp_images/"
 
 FEATURES = {
     'notes': False,
+    #ADMIN COURSES SECTION 
+    'ADMIN_COURSES_TAB': False,
+    #ADMIN PARTICIPANTS SECTION
+    'ADMIN_PARTICIPANTS_TAB': False,
 }
+
+#LEARNER DASHBOARD FEATURE ON/OFF SETTING
+LEARNER_DASHBOARD_ENABLED = False
 
 try:
     from local_settings import *
@@ -422,3 +431,22 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
+
+#File upload paths for Learner Dashboard
+LOGO = "images/learner_dashboard/branding/logos/"
+BACKGROUND = "images/learner_dashboard/branding/backgrounds/"
+TILE_BACKGROUND = "images/learner_dashboard/tile_backgrounds/"
+RESOURCES = "images/learner_dashboard/resources/"
+# Default settings for Learner Dashboard Client Branding
+BACKGROUND_IMAGE = None
+LOGO_IMAGE = None
+NAVIGATION_COLORS = None
+TEXT_COLORS = None
+BACKGROUND_TILED = None
+DISCOVER_TEXT_COLOR = "#FFFFFF"
+# Default settings for Learner dashboard tiles
+SUB_LABEL_COLOR = "#868685"
+TITLE_COLOR = "#000000"
+DESCRIPTION_COLOR = "#3384CA"
+TILE_BACKGROUND_COLOR = "#FFFFFF"
+

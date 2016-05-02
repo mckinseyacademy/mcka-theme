@@ -1,0 +1,62 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  %script
+    $(function() {
+      $('.confirm').click(function() {
+        return window.confirm("Are you sure?");
+      })
+    });
+  .admin-detail.row
+    .large-12.large.columns
+      - include 'admin/client-admin/course_header.haml'
+  .row.collapse
+      .large-11.large-centered.columns
+        %section
+          %h1 Company Branding
+        -if branding
+          %section
+            %p
+              You can change the branding settings for this client across learner dashboards for this client's participants.
+          %hr
+          .row
+            .large-6.columns 
+              .sub-1 Background Image:
+              -if branding.background_image
+                %img{src: "/company_images/#{branding.background_image}", width: 150, height:150}
+              -else
+                None
+              %br
+              .div
+                .sub-1 Navigation color:
+                .sub-2{style: "color:#{branding.navigation_colors}"}= branding.navigation_colors
+              %br
+              .div
+                .sub-1 Text color:
+                .sub-2{style: "color:#{branding.text_colors}"}= branding.text_colors
+              %br
+              .div
+                .sub-1 Discover text color:
+                .sub-2{style: "color:#{branding.discover_text_color}"}= branding.discover_text_color
+              .div
+                .sub-1 Background tiled:
+                .sub-2= branding.background_tiled
+              %br
+            .large-6.columns 
+              .sub-1 Logo Image:
+              -if branding.logo_image
+                %img{src: "/company_images/#{branding.logo_image}", width: 150, height:150}
+              -else
+                None
+          %div
+            %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/create_edit", target: "_blank"}
+                Edit
+            %a.button.radius.small{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/reset"}
+                Reset to default settings
+        - else 
+          %p
+            Branding settings are not defined for this client
+          %hr
+          %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/create_edit"}
+                Create Branding settings
+    

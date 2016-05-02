@@ -1,0 +1,68 @@
+- extends "courses/course_navigation.haml"
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
+- block current_content
+  #course-lessons
+    - if apros_features.notes
+      - include 'courses/lesson_notes.haml'
+    %a.global-help{'data-reveal-id': 'mckinsey_help'}
+      %i.fa.fa-question-circle
+    -if tile_type = 'module'
+      .lesson-title
+        %h1= course.current_module.name
+    -else
+      .lesson-title
+        %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
+        %span.label-3.lesson-name= course.current_lesson.name
+        %span.label-3.page-desc= course.current_lesson.description
+      %h1
+        %a{'data-reveal-id': 'module_list', "data-tooltip": "Lesson Modules"}
+          %i.fa.fa-list-ul
+        = course.current_module.name
+    - block lesson_content
+      .lesson-content
+      .lesson-discussion
+    -if tile_type != 'module'
+      - include "courses/content_page/lesson_pager_ld.haml"
+  #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
+    %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
+    %ul
+      - for module in course.current_lesson.modules
+        %li.lesson-row-item
+          %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+          .lesson-item-name
+            %a{href: "#{module.navigation_url}/learner_dashboard/lesson", class: "{% if module.is_current %}current{% endif %}"}
+              Module ={module.index}:
+            %span= module.name
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+
+- block js_snippets
+  :javascript
+    $(function(){
+      var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
+      var lesson_data = {
+        courseId: '{{ legacy_course_id }}',
+        usageId: '{{ course.current_module.vertical_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        lmsPort: '{{ lms_port }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        data: {
+            activate_block_id: Apros.getParameterByName('activate_block_id'),
+        },
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+      // Temporary hack to prevent xblock-ooyala from loading the ooyala player library.
+      // Ooyala player is always loaded in apros, so no need to load it again for the xblock.
+      // The hash corresponds to the ooyala player JS library script.
+      lesson_content.data('loaded_resource_hashes', ['207f215b40019e34c7c46cb5b46b140e']);
+      lesson_content.xblock(lesson_data);
+
+      $('#course-group-work .lesson-module-status').on('click', function(){
+        $('#' + $(this).data('activate')).click();
+      });
+    });

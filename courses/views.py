@@ -2,6 +2,7 @@
 import json
 import csv
 from datetime import datetime, timedelta
+import re
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -12,7 +13,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from admin.controller import load_course
-from admin.models import WorkGroup
+from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
@@ -196,6 +197,7 @@ def _render_group_work(request, course, project_group, group_project):
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
+    lms_port = settings.LMS_PORT
 
     ta_user = choose_random_ta(course.id)
 
@@ -207,6 +209,7 @@ def _render_group_work(request, course, project_group, group_project):
         "legacy_course_id": course.id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "project_group": project_group,
         "group_project": group_project,
@@ -267,6 +270,7 @@ def course_discussion(request, course_id):
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
+    lms_port = settings.LMS_PORT
 
     mcka_ta = choose_random_ta(course_id)
 
@@ -278,6 +282,7 @@ def course_discussion(request, course_id):
         "legacy_course_id": course_id,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "mcka_ta": mcka_ta
     }
@@ -521,7 +526,16 @@ def course_resources(request, course_id):
 
 @login_required
 @check_user_course_access
-def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
+def course_resources_learner_dashboard(request, course_id):
+    static_tabs = load_static_tabs(course_id)
+    data = {
+        "resources": static_tabs.get("resources", None)
+    }
+    return render(request, 'courses/course_resources_learner_dashboard.haml', data)
+
+@login_required
+@check_user_course_access
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None):
 
     ''' go to given page within given chapter within given course '''
     course = load_course(course_id, request=request)
@@ -536,6 +550,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
         "legacy_course_id": course_id,
+        "tile_type": tile_type,
     }
 
     if not current_sequential.is_started:
@@ -555,14 +570,19 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id):
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
     lms_sub_domain = settings.LMS_SUB_DOMAIN
+    lms_port = settings.LMS_PORT
 
     data.update({
         "remote_session_key": remote_session_key,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
+        "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
-    return render(request, 'courses/course_lessons.haml', data)
+    if tile_type:
+        return render(request, 'courses/course_lessons_ld.haml', data)
+    else:
+        return render(request, 'courses/course_lessons.haml', data)
 
 def course_notready(request, course_id):
     course = load_course(course_id, request=request)
@@ -787,6 +807,29 @@ def course_article(request, course_id):
     }
     return render(request, 'courses/course_article.haml', data)
 
+@login_required
+@check_user_course_access
+def course_learner_dashboard(request, course_id):
+
+    organization = user_api.get_user_organizations(request.user.id)[0]
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+    except:
+        redirect_url = '/courses/{}/'.format(course_id)
+        return HttpResponseRedirect(redirect_url)
+
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+
+    discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+
+    data ={
+        'learner_dashboard': learner_dashboard,
+        'learner_dashboard_tiles': learner_dashboard_tiles,
+        'discovery_items': discovery_items
+    }
+    return render(request, 'courses/course_learner_dashboard.haml', data)
+
 @require_POST
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -798,6 +841,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'
     feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
     feature_flags.proficiency = request.POST.get('proficiency', None) == 'on'
+    feature_flags.learner_dashboard = request.POST.get('learner_dashboard', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(
