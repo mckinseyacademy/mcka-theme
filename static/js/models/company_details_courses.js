@@ -1,0 +1,1 @@
+  Apros.models.CompanyDetailsCourses = Backbone.Model.extend({});
