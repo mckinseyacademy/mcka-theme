@@ -13,7 +13,7 @@
               var isDragging;
               var wasDragging;
 
-              $('#sortable').mousedown(function() {
+              $('.ui-sortable-handle').mousedown(function() {
                   isDragging = false;
               }).mousemove(function() {
                   isDragging = true;
@@ -42,12 +42,12 @@
                   'X-CSRFToken': $.cookie('apros_csrftoken')
               }
               var data = {
-                  title: $("input[name=title]").val(),
+                  title: $("input[name=title_ld]").val(),
                   description: $("textarea[name=description]").val()
               }
               if ('{{learner_dashboard_id}}' != 'None')
                 data.positions = $('#sortable').sortable('toArray');
-              
+              alert(data.title);
               $.ajax({
                   headers: headers,
                   data: data,
@@ -89,7 +89,7 @@
         .large-2.columns
           %label.inline Title
         .large-10.columns
-          %input#title{:type => 'text', :value => '#{title}', :name => 'title', :maxlength => '80'}
+          %input#title{:type => 'text', :value => '#{title}', :name => 'title_ld', :maxlength => '80'}
       .row
         .large-2.columns
           %label.inline Description
