@@ -664,7 +664,7 @@ def infer_page_navigation(request, course_id, page_id):
     chapter_id, vertical_id, final_target_id = get_chapter_and_target_by_location(request, course_id, page_id)
 
     if course_id and chapter_id and vertical_id:
-        if request.session['learner_dashboard_id'] and 'learnerdashboard' in request.META.get('HTTP_REFERER'):
+        if 'learner_dashboard_id' in request.session and 'learnerdashboard' in request.META.get('HTTP_REFERER'):
             redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
             if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
                 redirect_url = "learnerdashboard/courses/{}/group_work".format(course_id)
