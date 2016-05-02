@@ -260,7 +260,6 @@ def user_course_group_work_learner_dashboard(request, course_id):
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_TA)
 def workgroup_course_group_work(request, course_id, workgroup_id):
-
     # set this workgroup as the preference for reviewing
     user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
 
@@ -664,16 +663,23 @@ def infer_page_navigation(request, course_id, page_id):
     chapter_id, vertical_id, final_target_id = get_chapter_and_target_by_location(request, course_id, page_id)
 
     if course_id and chapter_id and vertical_id:
+        if request.session['learner_dashboard_id'] and 'learnerdashboard' in request.META.get('HTTP_REFERER'):
+            redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
+            if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
+                redirect_url = "learnerdashboard/courses/{}/group_work".format(course_id)
 
-        redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
-        if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
-            redirect_url = "/courses/{}/group_work".format(course_id)
+            if final_target_id not in (chapter_id, vertical_id):
+                redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
+        else:
+            redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
+            if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
+                redirect_url = "/courses/{}/group_work".format(course_id)
 
-            if ta_grading_group:
-                redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
+                if ta_grading_group:
+                    redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
 
-        if final_target_id not in (chapter_id, vertical_id):
-            redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
+            if final_target_id not in (chapter_id, vertical_id):
+                redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
     else:
         redirect_url = '/courses/{}/notready'.format(course_id)
 
