@@ -17,7 +17,7 @@
             var thisId = attributes['id']
             var name = attributes['name']
             if (name)
-              return '<a href="/admin/clients/' + thisId + '" target="_self">' + name + '</a>'; 
+              return '<a href="/admin/companies/' + thisId + '" target="_self">' + name + '</a>'; 
           } 
         },
         { title: 'Company ID', index: true, name: 'id', sorttype: 'number' },

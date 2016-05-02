@@ -258,7 +258,7 @@ function RecursiveJsonToHtml( data ) {
 InitializeTooltipOnPage = function()
 {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
-    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('margin-top'));
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('top'));
     $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
     var _show_value = "";
     showAt = function (e) {
@@ -323,4 +323,32 @@ EmailTemplatesManager = function(method, pk, title, subject, body)
       console.log("Ajax failed to fetch data");
       console.log(data)
     });
+}
+SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail)
+{
+  var dictionaryToSend = {'subject':subject, 'from_email': sender, 'to_email_list': to_email_list, 'email_body': body}
+  if (template_id)
+    dictionaryToSend['template_id'] = template_id;
+  var options = {
+    url: ApiUrls.email,
+    data: JSON.stringify(dictionaryToSend),
+    processData: false,
+    type: "POST",
+    dataType: "json"
+  };
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    if (data['status'] == 'ok')
+    {
+      data['type']= 'email';
+      if (previewEmail)
+        data['type']='preview';
+      $(document).trigger('email_sent', [data]);
+    }
+    })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data);
+    })
 }

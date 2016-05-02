@@ -13,5 +13,6 @@ var ApiUrls = {
     return this.participants_list+'/courses';
   },
   course_details: '/admin/api/courses',
-  email_templates: '/admin/api/email-templates'
+  email_templates: '/admin/api/email-templates',
+  email: '/admin/api/email'
 }

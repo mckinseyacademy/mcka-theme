@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
+from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
 from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings
 from admin.views import checked_course_access, AccessChecker
@@ -852,6 +853,9 @@ def course_article(request, course_id):
 
 @login_required
 def course_learner_dashboard(request):
+
+    if 'learner_dashboard_id' not in request.session:
+        set_learner_dashboard_in_session(request)
 
     course_id = request.session['course_id']
     learner_dashboard_id = request.session['learner_dashboard_id']
