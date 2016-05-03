@@ -1,5 +1,11 @@
 #admin-body {
+  
+  margin-top: 0px;
+  padding-top: $header-bar-height;
 
+  &.with-program {
+    padding-top: $header-bar-height + $program-bar-height;
+  }
   .admin-form {
     .required-field {
       color: $mckinsey-orange;

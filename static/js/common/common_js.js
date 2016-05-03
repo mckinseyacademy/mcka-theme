@@ -267,7 +267,7 @@ function RecursiveJsonToHtml( data ) {
 InitializeTooltipOnPage = function()
 {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
-    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('top'));
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20;
     $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
     var _show_value = "";
     showAt = function (e) {
