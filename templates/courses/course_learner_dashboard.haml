@@ -25,7 +25,7 @@
                     #{tile.label}
                   -else
                     #{tile.get_tile_type_display}
-                %a{href: "#{tile.link}"}
+                %a{href: "#{tile.link}", target:"{% if tile.get_tile_type_display == 'Article' %}_blank{% else %}_self{% endif %}"}
                   %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
                 .label-3{style: "color: #{tile.note_color};"}= tile.note
       .large-4.columns.dash-widget{style: "{% if branding and branding.discover_navigation_color %} border-color:#{branding.discover_navigation_color}{% endif %}"}
