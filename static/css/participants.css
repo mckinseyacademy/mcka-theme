@@ -228,3 +228,7 @@
 {
 	display: inline-block;
 }
+
+#activation-link-modal{
+	overflow-x: auto; 
+}
