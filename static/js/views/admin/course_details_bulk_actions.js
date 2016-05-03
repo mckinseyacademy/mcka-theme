@@ -253,17 +253,22 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
           saveButton.text('Enroll Participants');
           saveButton.attr('disabled', 'disabled');
+          saveButton.addClass('disabled');
           $(document).on('autocomplete_found', function(event, input){
             var course_id = $('.enrollParticipantsCourse input').attr('data-id');
             if (course_id){
               input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').removeAttr('disabled');
+              input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').removeClass('disabled');
             }
           });
           $(document).on('autocomplete_not_found', function(event, input){
             input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').attr('disabled', 'disabled');
+            input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').addClass('disabled');
           });
           saveButton.off().on('click', function()
           {
+            if ($(this).hasClass('disabled'))
+              return;
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
             var selectedVal = "";
             var selected = $('.enrollParticipantsStatus select');
@@ -306,6 +311,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
 
             options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
             saveButton.attr('disabled', 'disabled');
+            saveButton.addClass('disabled');
             $.ajax(options)
             .done(function(data) {
               if (data['status'] == 'ok')
@@ -344,6 +350,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       else {
         var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
         saveButton.removeAttr('disabled');
+        saveButton.removeClass('disabled');
         saveButton.text("I'm Done");
         saveButton.off().on('click', function()
         {
