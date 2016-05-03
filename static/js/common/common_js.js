@@ -183,7 +183,7 @@ GetAutocompleteSource = function(url, thisToAppend, sourceName){
       url: url,
       type: "GET",
       dataType: "json",
-      timeout: 5000
+      timeout: 10000
     };
 
   options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
