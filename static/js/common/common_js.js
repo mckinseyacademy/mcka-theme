@@ -63,20 +63,26 @@ validateParticipantEmail = function() {
   if (this.liveSearchTimer) {
     clearTimeout(this.liveSearchTimer);
   }
-
-  this.liveSearchTimer = setTimeout(function() {
-    var userId = $('#participantsDetailsDataWrapper').attr('data-id');
-    var validationObject = $('.participantDetailsEditForm .participantEmailInput');
-    var checkMark = $('.participantEmail .checkMark');
-    var warningText = $('.participantEmail .warningText');
-    var options = {
-        url: ApiUrls.validate_participant_email,
-        data: {'email': validationObject[0].value, 'userId': userId},
-        type: "GET",
-        dataType: "json"
-      };
-    getValidation(options, checkMark, warningText, validationObject);
-  }, 1000)
+  var validationObject = $('.participantDetailsEditForm .participantEmailInput');
+  var checkMark = $('.participantEmail .checkMark');
+  if (SimpleEmailClientValidation(validationObject[0].value))
+  {
+    this.liveSearchTimer = setTimeout(function() {
+      var userId = $('#participantsDetailsDataWrapper').attr('data-id');
+      var warningText = $('.participantEmail .warningText');
+      var options = {
+          url: ApiUrls.validate_participant_email,
+          data: {'email': validationObject[0].value, 'userId': userId},
+          type: "GET",
+          dataType: "json"
+        };
+      getValidation(options, checkMark, warningText, validationObject);
+    }, 1000)
+  }
+  else
+  {
+    checkMark.hide();
+  }
 }
 
 
@@ -216,6 +222,7 @@ GenerateAutocompleteInput = function(source, input)
         inputField.val( ui.item.label );
         inputField.attr('data-id',ui.item.value);
         inputField.parent().find('.correctInput').show();
+        $(document).trigger('autocomplete_found', [inputField])
         return false;
       },
     search: function( event, ui ) {
@@ -227,11 +234,13 @@ GenerateAutocompleteInput = function(source, input)
             foundMatch = true;
             input.attr('data-id', source[i].value);
             input.parent().find('.correctInput').show();
+            $(document).trigger('autocomplete_found', [input])
           }
         }
         if(!foundMatch) {
           input.attr('data-id', '');
           input.parent().find('.correctInput').hide();
+          $(document).trigger('autocomplete_not_found', [input])
         }
       }
     });
@@ -322,7 +331,11 @@ EmailTemplatesManager = function(method, pk, title, subject, body)
     .fail(function(data) {
       console.log("Ajax failed to fetch data");
       console.log(data)
-    });
+    })
+    .always(function(data)
+    {
+      $(document).trigger('email_template_finished', [data]);
+    })
 }
 SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail)
 {
@@ -351,4 +364,13 @@ SendEmailManager = function(sender, subject, to_email_list, body, template_id, p
     console.log("Ajax failed to fetch data");
     console.log(data);
     })
+  .always(function(data)
+  {
+    $(document).trigger('email_finished', [data]);
+  })
 }
+
+function SimpleEmailClientValidation(emailAddress) {
+    var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/i);
+    return pattern.test(emailAddress);
+};

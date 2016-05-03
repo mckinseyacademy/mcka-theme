@@ -92,7 +92,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		      'Status'+
 		    '</div>'+
 		    '<div class="participantCoursePermissionsValue permissionSelect large-10">'+
-		      '<select>'+
+		      '<select disabled>'+
 		        '<option value="active">Active</option>'+
 		        '<option value="assistant">TA</option>'+
 		        '<option value="observer">Observer</option>'+
@@ -105,14 +105,17 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		GetAutocompleteSource(ApiUrls.participant_organization_get_api(), this, 'organization_source');
 		GetAutocompleteSource(ApiUrls.participant_courses_get_api(), this, 'course_source');
 		var _this = this;
+		$('#add_a_participant').on('change', 'input', function()
+		{
+			$('#add_a_participant').find('.addSingleParticipantButton').removeClass('disabled');
+		})
 		$('#participantsAddWrapper').find('.participantAddButton').on('click',function()
 		{
 			if (_this.organization_source)
 				GenerateAutocompleteInput(_this.organization_source, '#add_a_participant .participantCompanyValue input');
 			else
 				InitializeAutocompleteInput(ApiUrls.participant_organization_get_api(), '#add_a_participant .participantCompanyValue input');
-			var mainContainer = $('#add_a_participant');
-			mainContainer.foundation('reveal', 'open');
+			var mainContainer = $('#add_a_participant');		
 			$("#country_edit").countrySelect("selectCountry", 'us');
 			mainContainer.find('.adminAnotherCompanyAllWrapper').empty();
 			mainContainer.find('.adminCourseAllWrapper').empty();
@@ -127,6 +130,9 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 	  		mainContainer.find('select').each(function(i,v){
 	  			$(v).find('option:eq(0)').prop('selected', true);
 	  		});
+	  		mainContainer.find('.addSingleParticipantButton').addClass('disabled');
+	  		mainContainer.foundation('reveal', 'open');
+
 		});
 		$('#add_a_participant').find('.addAnotherCompanyWrapper a').on('click', function(event)
 		{
@@ -150,10 +156,18 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 			else
 				InitializeAutocompleteInput(ApiUrls.participant_courses_get_api(), appendedChild);
 		});
+		$(document).on('autocomplete_found', function(event, input)
+		{
+			input.parents('.row').find('select').attr('disabled', false);
+		});
+		$(document).on('autocomplete_not_found', function(event, input)
+		{
+			input.parents('.row').find('select').attr('disabled', true);
+		});
 		$('#add_a_participant').on('click', '.removeItem', function()
 		{
 			$(this).parents('.row').remove();
-		})
+		});
 		$('#add_a_participant').find('.addSingleParticipantButton').on("click", function()
 		{
 			if (!$(this).hasClass('disabled'))

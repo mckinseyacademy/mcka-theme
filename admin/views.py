@@ -4154,6 +4154,7 @@ def company_details(request, company_id):
 
     client = Client.fetch(company_id)
     company = {}
+    company['id'] = company_id
     company['name'] = vars(client)['display_name']
     requestParams = {}
     requestParams['organizations'] = company_id
