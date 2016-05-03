@@ -252,6 +252,16 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
           saveButton.text('Enroll Participants');
+          saveButton.attr('disabled', 'disabled');
+          $(document).on('autocomplete_found', function(event, input){
+            var course_id = $('.enrollParticipantsCourse input').attr('data-id');
+            if (course_id){
+              input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').removeAttr('disabled');
+            }
+          });
+          $(document).on('autocomplete_not_found', function(event, input){
+            input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').attr('disabled', 'disabled');
+          });
           saveButton.off().on('click', function()
           {
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
@@ -295,6 +305,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             };
 
             options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+            saveButton.attr('disabled', 'disabled');
             $.ajax(options)
             .done(function(data) {
               if (data['status'] == 'ok')
@@ -332,6 +343,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       }
       else {
         var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
+        saveButton.removeAttr('disabled');
         saveButton.text("I'm Done");
         saveButton.off().on('click', function()
         {
