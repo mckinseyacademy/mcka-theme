@@ -166,8 +166,18 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
           saveButton.text('Save Changes');
+          saveButton.addClass('disabled');
+          saveButton.attr('disabled','disabled');
+          $("#courseDetailsMainModal input[type='radio']").on('change', function(){
+            saveButton.removeClass('disabled');
+            saveButton.removeAttr('disabled');
+          })
           saveButton.off().on('click', function()
           {
+            if ($(this).hasClass('disabled'))
+              return;
+            saveButton.addClass('disabled');
+            saveButton.attr('disabled','disabled');
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
             var selectedVal = "";
             var selected = $("#courseDetailsMainModal input[type='radio']:checked");

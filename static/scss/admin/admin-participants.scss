@@ -1,0 +1,266 @@
+#mainParticipantsWrapper, #mainParticipantsDetailsWrapper{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#participantsAddWrapper, .participantDetailsNavigationButton{
+	margin-bottom: 10px;
+}
+
+#participantsListViewGridBlock{
+	max-height: 120em;
+	position: relative;
+
+	.bbGrid-container
+	{
+		max-height: 120em;
+		overflow-y: scroll;
+	}
+}
+
+#mainParticipantsWrapper .menuButton{
+	display:inline-block;
+}
+
+#participantsListViewGridBlock .bbGrid-grid
+{
+	min-width: 100%;
+}
+
+#participantDetailsWrapper div[title]:hover:after {
+  	content: attr(title);
+    position: absolute;
+    right: 100%;
+    bottom: 0px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px;
+    white-space: nowrap;
+    background: white;
+}
+#participantsDetailsDataWrapper{
+	margin-top: 50px;
+}
+#participantsTopDetailsContainer{
+	margin-bottom: 50px;
+
+	.row{
+		height: 100px;
+
+		.columns{
+			height: 100%;
+		}
+
+		.participantEnrollInCourse{
+			margin-top: 20px;
+		}
+
+		.participantImage{
+			height: 100%;
+		    width: 100%;
+		    background-repeat: no-repeat;
+		    background-position: center;
+		    background-size: contain;
+		}
+
+		.participantNameAndLogin{
+			margin-top: 10px;
+		}
+
+		.participantNameAndLogin{
+
+			.participantFullName{
+				font-size: x-large;
+				margin-bottom: 10px;
+			}
+		}
+	}
+}
+#participantDetailsWrapper{
+
+	.participantDetailsContent{
+		min-height:500px;
+		border:1px solid black;
+		background-color: white;
+		padding: 20px;
+		max-width: 700px;
+		margin-left: auto;
+		margin-right: auto;
+
+		.row{
+			margin-bottom: 20px;
+		}
+
+		.participantDetailsEditText{
+			font-size: x-large;
+		}
+	}
+
+	.participantActivation{
+		float: left;
+	}
+}
+.labelUniversal{
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+#participantDetailsActiveCoursesViewGrid
+{
+	max-height: 25em;
+	overflow-y: scroll;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 25px;
+
+	.bbGrid-grid.table{
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.participantDetailsActiveCourses #activeCoursesExportStatsButton
+{
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#participantDetailsCourseHistoryViewGrid
+{
+	max-height: 25em;
+	overflow-y: scroll;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 25px;
+
+	.bbGrid-grid.table, .bbGrid-grid-nav{
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.participantDetailsCourseHistory #courseHistoryExportStatsButton
+{
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.participantEmailLabel{
+	display: inline-block;
+}
+
+#participantDetailsWrapper{
+
+	.participantDetailsContent .participantEmailReset{
+		float: right;
+	}
+
+	.participantDetailsEditForm{
+
+		.cancelParticipantEdit{
+			margin-left: 15px;
+		    text-decoration: underline;
+		}
+
+		.participantCountryValue > .country-select{
+			width: 100%;
+		}
+
+		#country_edit{
+			background-color: white!important;
+		}
+	}
+}
+
+.checkMark
+{
+	color: #629B2B;
+	display: none;
+}
+
+.participantDetailsEditForm .warningText
+{
+	color: #CD202C;
+	display: none;
+	position: absolute;
+	bottom: -10px;
+}
+
+#add_a_participant{
+
+	.participantCountryValue > .country-select{
+		width: 100%;
+	}
+
+	.addAnotherCompanyWrapper, .addAnotherCourseWrapper{
+		text-align: left;
+	}
+
+	.adminAnotherCompanyAllWrapper{
+		width: 100%;
+	}
+
+	.removeItem{
+		text-align: center;
+	}
+
+	.permissionSelect, .emailActivationCheckbox, .emailActivation{
+		display: inline-block;
+	}
+
+	.participantCourseValue, .participantAdminCompanyValue, .participantCompanyValue, .participantEmailValue{
+		position:relative;
+	}
+
+	.errorContainer
+	{
+		color:red;
+		text-align: center;
+		padding-bottom:10px;
+		max-height: 300px;
+		overflow: auto;
+	}
+}
+#import_from_csv{
+
+	.admin-form
+	{
+		position: relative;
+		padding-bottom: 75px;
+	}
+
+	.button-wrapper
+	{
+		position: absolute;
+		bottom: 0;
+
+		a
+		{
+			bottom: 15%;
+			position: relative!important;
+		}
+	}
+
+	label, .helptext
+	{
+		display: none;
+	}
+	
+	.emailActivationWrapper
+	{
+		padding-top: 20px;
+	}
+
+	.emailActivation
+	{
+		display: inline-block;
+	}
+}
