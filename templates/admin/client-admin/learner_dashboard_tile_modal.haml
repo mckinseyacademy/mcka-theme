@@ -102,29 +102,29 @@
         'X-CSRFToken': $.cookie('apros_csrftoken')
       }
       event.preventDefault();
-      var form = $(this);
-      var formData = new FormData($('form')[0]);
-
-      $.ajax({
+      
+      var form = $(this).first();
+      var options = {
         headers: headers,
         method: 'POST',
-        processData: false,
         contentType: false,
         url: form.attr('action'),
-        data: formData
-      })
-      .done(function(data, status, xhr) {
-        var contentType = xhr.getResponseHeader('content-type') || '';
-        if (contentType.indexOf('json') > -1 && data.redirect) {
-          window.location.href = data.redirect;
-        }
-        else {
-          form.parent().html(data);
-          if (callback !== undefined) {
-            callback();
+        success: function(data, status, xhr) {
+          var contentType = xhr.getResponseHeader('content-type') || '';
+          if (contentType.indexOf('json') > -1 && data.redirect) {
+            window.location.href = data.redirect;
+          }
+          else {
+            form.parent().html(data);
+            if (callback !== undefined) {
+              callback();
+            }
           }
         }
-      });
+      }
+
+      form.ajaxSubmit(options);
+
     });
     var background = $('#id_tile_background_color');
     var label = $('#id_label_color');
