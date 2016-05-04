@@ -30,6 +30,10 @@
 	min-width: 100%;
 }
 
+#activation-link-modal{
+	overflow-x: auto; 
+}
+
 #participantDetailsWrapper div[title]:hover:after {
   	content: attr(title);
     position: absolute;
