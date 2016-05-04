@@ -164,7 +164,7 @@
 	padding: 10px;
 }
 
-.contactTypeRow p, .fa
+.contactTypeRow p, .contactTypeRow .fa
 {
 	font-size: large!important;
 	float: left!important;
