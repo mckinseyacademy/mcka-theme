@@ -7,9 +7,9 @@
     #mainCompanyDetailsDataContainer{:data-id => '#{id}'}
       #companyDetailsTopDataWrapper
         .row.companyDetailsCompanyName
-          ={name}
+          ={company.name}
         .row.companyDetailsNumberParticipants
-          %p Total Participants: ={numberParticipants}
+          %p Total Participants: ={company.numberParticipants}
         .row.companyDetailsNumberActiveCourses
           %p Active Courses: -
       #companyDetailsNavigationButtonsContainer
@@ -21,10 +21,66 @@
           .large-6.columns
         %hr
       #companyDetailsDataWrapper
-        .row.companyCourses.contentNavigationContainer
+        .companyCourses.contentNavigationContainer
           #companyDetailsCoursesViewGridBlock
-        .row.companyCompanyInfo.contentNavigationContainer  
+        .companyCompanyInfo.contentNavigationContainer  
           #companyInfoInvoicingDetails.companyInfoTopic
-            %p Invoicing Details
+            .row
+              %p.companyInvoicingDetailsHead Invoicing Details
+              %input.button.small.radius.companyInvoicingDetailsEditButton{:type => "button", :value => "Edit"}
+            .row
+              .large-6.columns
+                .fullNameLabel
+                  %label Full Name
+                .fullNameInput
+                  %p ={invoicing.full_name}
+              .large-6.columns
+                .titleLabel
+                  %label Title
+                .titleInput
+                  %p ={invoicing.title}
+            .row
+              .large-6.columns
+                .invoicingAddressLabel
+                  %label Invoicing Address
+                .invoicingAddressInput
+                  %p ={invoicing.address1}, ={invoicing.address2}
+                  %p ={invoicing.city}, ={invoicing.state} ={invoicing.postal_code}
+                  %p ={invoicing.country}
+              .large-6.columns
+                .poLabel
+                  %label PO#
+                .poInput
+                  %p ={invoicing.po}
           #companyInfoContacts.companyInfoTopic
-            %p Contacts
+            .row
+              %p.companyContactsHead Contacts
+              %input.button.small.radius.companyContactsEditButton{:type => "button", :value => "Edit"}
+            - for contact in contacts
+              .row.contactTypeRow
+                %p ={contact.type}
+                .fa.fa-info-circle
+              .row
+                .large-6.columns
+                  .fullNameLabel
+                    %label Full Name
+                  .fullNameInput
+                    %p ={contact.full_name}
+                .large-6.columns
+                  .titleLabel
+                    %label Title
+                  .titleInput
+                    %p ={contact.title}
+              .row
+                .large-6.columns
+                  .emailLabel
+                    %label Email
+                  .emailInput
+                    %p ={contact.email}
+                .large-6.columns
+                  .phoneInput
+                    %label Phone
+                  .phoneLabel
+                    %p ={contact.phone}
+          #exportCompanyInfoButton.companyInfoTopic
+            %a.button.radius.small Export Company Info

@@ -84,6 +84,7 @@
 
 .dash-widget{
     max-height: 535px;
+    overflow: scroll;
     width: 300px;
     margin-top: 46px;
     border-top: 1px solid $mckinsey-academy-bright-gray;
@@ -92,6 +93,7 @@
 
     .learner-info{
         margin: 15px 0;
+        word-wrap: break-word;
         h5 {
             font-weight: bold;
             font-size: 10px;

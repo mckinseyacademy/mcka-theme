@@ -76,6 +76,12 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         modal.find('.templateNameValue select option:eq(0)').prop('selected', true);
         modal.find('.fromEmailValue input').val("");
         modal.find('.emailSubjectValue input').val("");
+        var controlButtonContainer = modal.find('.emailModalControl');
+        controlButtonContainer.find('.sendEmail').addClass('disabled');
+        modal.on('change', 'input', function()
+        {
+          controlButtonContainer.find('.sendEmail').removeClass('disabled');
+        })
         modal.foundation('reveal', 'open');
       });
       $('#courseBulkActionsMainContainer').on('click','.bulkUnenrollFromCourse',function()
@@ -166,8 +172,18 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
           saveButton.text('Save Changes');
+          saveButton.addClass('disabled');
+          saveButton.attr('disabled','disabled');
+          $("#courseDetailsMainModal input[type='radio']").on('change', function(){
+            saveButton.removeClass('disabled');
+            saveButton.removeAttr('disabled');
+          })
           saveButton.off().on('click', function()
           {
+            if ($(this).hasClass('disabled'))
+              return;
+            saveButton.addClass('disabled');
+            saveButton.attr('disabled','disabled');
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
             var selectedVal = "";
             var selected = $("#courseDetailsMainModal input[type='radio']:checked");
@@ -413,6 +429,8 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       var templateButtonContainer = modal.find('.templateControlButtons');
       controlButtonContainer.on('click', '.sendEmail', function(e)
       {
+        if($(this).hasClass('disabled'))
+          return;
         var sender = modal.find('.fromEmailValue input').val();
         var body = tinymce.get('email_editor').getContent();
         var subject = modal.find('.emailSubjectValue input').val();
