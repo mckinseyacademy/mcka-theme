@@ -1,0 +1,187 @@
+#mainCompaniesListDetailsContainer, #mainCompaniesListGridContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 60%;	
+}
+
+#companiesListTitle 
+{
+	p
+	{
+		font-size: xx-large;
+		margin-bottom: 20px;
+	}
+}
+
+#mainCompaniesListGridWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display: table;
+	width: 100%;	
+
+	.bbGrid-search-bar
+	{
+		float: none!important;
+		display: inline-block;
+	}
+}
+
+#companiesListViewGridBlock
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+	position: relative;
+
+	.bbGrid-container
+	{
+		max-height: 28.8em;
+		overflow-y: scroll;
+	}
+
+	.bbGrid-grid
+	{
+		&.table
+		{
+			width: 100%;
+			margin-left: auto;
+			margin-right: auto;	
+
+			td
+			{
+				text-align: center;
+			}
+		}
+	}
+
+	.clonedHeaderContainer
+	{
+		th
+		{
+			text-align: center;
+		}
+	}
+}
+
+#mainCompanyDetailsContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#companyDetailsNavigation
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 90%;
+}
+
+#mainCompanyDetailsDataContainer
+{
+	padding-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#companyDetailsTopDataWrapper
+{
+	min-width: 760px;
+	max-width: 80%;
+	padding-bottom: 30px;
+}
+
+.companyDetailsCompanyName
+{
+	font-size: xx-large;
+	padding-bottom: 20px;
+}
+
+#companyDetailsNavigationButtonsContainer
+{
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#companyDetailsDataWrapper
+{
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#companyCompanyInfo
+{
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#companyInfoInvoicingDetails, #companyInfoContacts
+{
+	min-width: 760px;
+	max-width: 100%;
+	padding: 50px 70px 30px 70px;
+	border: 1px solid #CCCCCC;
+	background-color: #F2F9FC;
+	margin-bottom: 10px;
+}
+
+.companyInvoicingDetailsHead, .companyContactsHead
+{
+	font-size: x-large;
+	float: left;
+}
+
+.companyInvoicingDetailsEditButton, .companyContactsEditButton
+{
+	float: right;
+}
+
+.companyCompanyInfo 
+{
+	.row 
+	{
+		margin-bottom: 20px!important;
+	}
+
+	label
+	{
+		margin-bottom: 5px!important;
+		color: grey!important;
+		cursor: none!important;
+	}
+}
+
+.contactTypeRow
+{
+	width: 100%;
+	background-color: #FFFFFF;
+	padding: 10px;
+
+	p, .fa
+	{
+		font-size: large!important;
+		float: left!important;
+		padding-left: 10px!important;
+	}
+}
+
+#companyInfoContacts 
+{
+	.columns
+	{
+		padding-left: 20px!important;
+	}
+}
+
+.companyInfoTopic
+{
+	margin-top: 20px!important;
+	display: none;
+}
