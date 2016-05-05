@@ -431,6 +431,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       {
         if($(this).hasClass('disabled'))
           return;
+        $(this).addClass('disabled');
         var sender = modal.find('.fromEmailValue input').val();
         var body = tinymce.get('email_editor').getContent();
         var subject = modal.find('.emailSubjectValue input').val();
