@@ -434,20 +434,23 @@ TEMPLATE_LOADERS += (
     'django.template.loaders.app_directories.Loader',
 )
 
-#File upload paths for Learner Dashboard
-LOGO = "images/learner_dashboard/branding/logos/"
-BACKGROUND = "images/learner_dashboard/branding/backgrounds/"
-TILE_BACKGROUND = "images/learner_dashboard/tile_backgrounds/"
-RESOURCES = "images/learner_dashboard/resources/"
-# Default settings for Learner Dashboard Client Branding
-BACKGROUND_IMAGE = None
-LOGO_IMAGE = None
-NAVIGATION_COLORS = None
-TEXT_COLORS = None
-DISCOVER_TEXT_COLOR = "#FFFFFF"
-# Default settings for Learner dashboard tiles
-NOTE_COLOR = "#868685"
-LABEL_COLOR = "#000000"
-TITLE_COLOR = "#3384CA"
-TILE_BACKGROUND_COLOR = "#FFFFFF"
+################################### CLIENT BRANDING DEFAULT SETTINGS ###################################
+LEARNER_DASHBOARD_BACKGROUND_IMAGE = "images/learner_dashboard/branding/backgrounds/"
+LEARNER_DASHBOARD_LOGO_IMAGE = "images/learner_dashboard/branding/logos/"
+LEARNER_DASHBOARD_RULE_COLOR = "#000000"
+LEARNER_DASHBOARD_ICON_COLOR = "#000000"
+DISCOVER_TITLE_COLOR = "#000000"
+DISCOVER_AUTHOR_COLOR = "#000000"
+DISCOVER_RULE_COLOR = "#000000"
+LEARNER_DASHBOARD_BACKGROUND_COLOR = "#D3D3D3"
 
+################################### LEARNER DASHBOARD DEFAULT SETTINGS ###################################
+LEARNER_DASHBOARD_TITLE_COLOR = "#FFFFFF"
+LEARNER_DASHBOARD_DESCRIPTION_COLOR = "#FFFFFF"
+
+################################### LEARNER DASHBOARD TILE DEFAULT SETTINGS ###################################
+TILE_BACKGROUND_IMAGE = "images/learner_dashboard/tile_backgrounds/"
+TILE_LABEL_COLOR = "#000000"
+TILE_TITLE_COLOR = "#3384CA"
+TILE_NOTE_COLOR = "#868685"
+TILE_BACKGROUND_COLOR = "#FFFFFF"
