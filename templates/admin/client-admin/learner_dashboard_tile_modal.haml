@@ -97,6 +97,9 @@
       $('#resetColors').attr('disabled',false);
     });
 
+    $("#id_link").prop('required',true);
+    $("#id_tile_type").prop('required',true);
+
     $("form").submit(function(event) {
       var headers = {
         'X-CSRFToken': $.cookie('apros_csrftoken')
