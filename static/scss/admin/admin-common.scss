@@ -31,9 +31,9 @@
 {
 	display: none;
     position: absolute;
-    right: 0px;
+    left: 100%;
     top: 50%;
-    transform: translate(-100%,-50%);
+    transform: translate(50%,-50%);
     color:green;
 }
 
