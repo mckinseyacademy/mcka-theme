@@ -17,6 +17,12 @@
                         font-size: 20px;
                         margin-left: 10px;
                     }
+                    .header-link:hover {
+                        color: #b1c2cc;
+                    }
+                    a:visited{
+                        color: #b1c2cc;
+                    }
                 }
             }
         }
@@ -78,6 +84,10 @@
                     margin: 15px 0px 0px;
                 }
             }
+            .panel-program:hover{
+                opacity: 0.8 ;
+                filter: alpha(opacity=80); 
+            }
         }
     }
 }
@@ -104,6 +114,9 @@
         }
         p{
             font-size: 18px;
+        }
+        p:hover{
+            color: #b1c2cc !important; 
         }
     }
 }
