@@ -94,7 +94,7 @@
         .adminCourseAllWrapper
         .addAnotherCourseWrapper.row
           %a.large-12.columns
-            + Add another course
+            + Add course
         %hr
         .emailActivationWrapper.row
           .large-12.columns
@@ -148,9 +148,8 @@
 
         .emailActivationWrapper
             .emailActivationLinkCheckboxWrapper
-              %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled'} 
-              .emailActivation
-                Email activation links now
+              %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled', :id => 'emailActivationCheckboxId'} 
+              %label.emailActivation{:for => 'emailActivationCheckboxId' } Email activation links now
 
     #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   
       .close-reveal-modal

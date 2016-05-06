@@ -63,20 +63,26 @@ validateParticipantEmail = function() {
   if (this.liveSearchTimer) {
     clearTimeout(this.liveSearchTimer);
   }
-
-  this.liveSearchTimer = setTimeout(function() {
-    var userId = $('#participantsDetailsDataWrapper').attr('data-id');
-    var validationObject = $('.participantDetailsEditForm .participantEmailInput');
-    var checkMark = $('.participantEmail .checkMark');
-    var warningText = $('.participantEmail .warningText');
-    var options = {
-        url: ApiUrls.validate_participant_email,
-        data: {'email': validationObject[0].value, 'userId': userId},
-        type: "GET",
-        dataType: "json"
-      };
-    getValidation(options, checkMark, warningText, validationObject);
-  }, 1000)
+  var validationObject = $('.participantDetailsEditForm .participantEmailInput');
+  var checkMark = $('.participantEmail .checkMark');
+  if (SimpleEmailClientValidation(validationObject[0].value))
+  {
+    this.liveSearchTimer = setTimeout(function() {
+      var userId = $('#participantsDetailsDataWrapper').attr('data-id');
+      var warningText = $('.participantEmail .warningText');
+      var options = {
+          url: ApiUrls.validate_participant_email,
+          data: {'email': validationObject[0].value, 'userId': userId},
+          type: "GET",
+          dataType: "json"
+        };
+      getValidation(options, checkMark, warningText, validationObject);
+    }, 1000)
+  }
+  else
+  {
+    checkMark.hide();
+  }
 }
 
 
@@ -177,7 +183,7 @@ GetAutocompleteSource = function(url, thisToAppend, sourceName){
       url: url,
       type: "GET",
       dataType: "json",
-      timeout: 5000
+      timeout: 10000
     };
 
   options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
@@ -216,6 +222,7 @@ GenerateAutocompleteInput = function(source, input)
         inputField.val( ui.item.label );
         inputField.attr('data-id',ui.item.value);
         inputField.parent().find('.correctInput').show();
+        $(document).trigger('autocomplete_found', [inputField])
         return false;
       },
     search: function( event, ui ) {
@@ -227,11 +234,13 @@ GenerateAutocompleteInput = function(source, input)
             foundMatch = true;
             input.attr('data-id', source[i].value);
             input.parent().find('.correctInput').show();
+            $(document).trigger('autocomplete_found', [input])
           }
         }
         if(!foundMatch) {
           input.attr('data-id', '');
           input.parent().find('.correctInput').hide();
+          $(document).trigger('autocomplete_not_found', [input])
         }
       }
     });
@@ -255,10 +264,10 @@ function RecursiveJsonToHtml( data ) {
   htmlRetStr += '</ul >';    
   return( htmlRetStr );
 }
-InitializeTooltipOnPage = function()
+InitializeTooltipOnPage = function(onClickEnable)
 {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
-    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('top'));
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20;
     $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
     var _show_value = "";
     showAt = function (e) {
@@ -267,17 +276,46 @@ InitializeTooltipOnPage = function()
             position: "absolute", top: ntop, left: nleft, 'z-index':20000
         }).show();
     };
-    $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) {
+    if(onClickEnable)
+    {
+      var current_element = null;
+      $(document).on("click", "*[data-title]:not([data-title=''])", function (e) {
+        e.stopPropagation();
+        if($(this).hasClass(CLS_ON))
+        {
+          _show_value = ''
+          $(this).removeClass(CLS_ON);
+          $("#" + ID).hide();
+        } 
+        else
+        {
+          current_element = e.target;
+          _show_value = $(this).attr("data-title");
+          $(this).addClass(CLS_ON);
+          showAt(e);
+        }
+      });
+      $(document).on('click', function (e)
+      {
+        _show_value = ''
+        $(current_element).removeClass(CLS_ON);
+        $("#" + ID).hide();
+      });
+    }
+    else
+    {
+      $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) { 
         _show_value = $(this).attr("data-title");
         $(this).addClass(CLS_ON);
         showAt(e);
-    });
-    $(document).on("mouseleave", "." + CLS_ON, function (e) {
-        _show_value = ''
-        $(this).removeClass(CLS_ON);
-        $("#" + ID).hide();
-    });
-    if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+      });
+      $(document).on("mouseleave", "." + CLS_ON, function (e) {
+          _show_value = ''
+          $(this).removeClass(CLS_ON);
+          $("#" + ID).hide();
+      });
+      if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+    }
 }
 
 EmailTemplatesManager = function(method, pk, title, subject, body)
@@ -322,7 +360,11 @@ EmailTemplatesManager = function(method, pk, title, subject, body)
     .fail(function(data) {
       console.log("Ajax failed to fetch data");
       console.log(data)
-    });
+    })
+    .always(function(data)
+    {
+      $(document).trigger('email_template_finished', [data]);
+    })
 }
 SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail)
 {
@@ -351,4 +393,13 @@ SendEmailManager = function(sender, subject, to_email_list, body, template_id, p
     console.log("Ajax failed to fetch data");
     console.log(data);
     })
+  .always(function(data)
+  {
+    $(document).trigger('email_finished', [data]);
+  })
 }
+
+function SimpleEmailClientValidation(emailAddress) {
+    var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/i);
+    return pattern.test(emailAddress);
+};

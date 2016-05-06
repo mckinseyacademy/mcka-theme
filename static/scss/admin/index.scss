@@ -1,5 +1,11 @@
 #admin-body {
+  
+  margin-top: 0px;
+  padding-top: $header-bar-height;
 
+  &.with-program {
+    padding-top: $header-bar-height + $program-bar-height;
+  }
   .admin-form {
     .required-field {
       color: $mckinsey-orange;
@@ -606,5 +612,9 @@
   @import './feature-flags';
   @import './nav-links';
   @import './workgroup-dashboard';
+  @import './admin-participants';
+  @import './admin-courses';
+  @import './admin-companies';
+  @import './admin-common';
   @import './admin-learner-dashboard';
 }

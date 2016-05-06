@@ -1,13 +1,12 @@
 body{
   color: $mckinsey-academy-black;
-  top: $header-bar-height;
+  margin-top: $header-bar-height;
   background-color: $background-tint;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  position: relative;
 
   &.with-program {
-    top: $header-bar-height + $program-bar-height;
+    margin-top: $header-bar-height + $program-bar-height;
   }
 }
 

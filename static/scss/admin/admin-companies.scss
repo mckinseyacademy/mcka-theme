@@ -1,24 +1,18 @@
-/* Companies List*/
-#mainCompaniesListDetailsContainer
+#mainCompaniesListDetailsContainer, #mainCompaniesListGridContainer
 {
 	margin-left: auto;
 	margin-right: auto;
 	min-width: 760px;
-	max-width: 60%;
+	max-width: 60%;	
 }
 
-#companiesListTitle p
+#companiesListTitle 
 {
-	font-size: xx-large;
-	margin-bottom: 20px;
-}
-
-#mainCompaniesListGridContainer
-{
-	margin-left: auto;
-	margin-right: auto;
-	min-width: 760px;
-	max-width: 60%;
+	p
+	{
+		font-size: xx-large;
+		margin-bottom: 20px;
+	}
 }
 
 #mainCompaniesListGridWrapper
@@ -26,7 +20,13 @@
 	margin-left: auto;
 	margin-right: auto;
 	display: table;
-	width: 100%;
+	width: 100%;	
+
+	.bbGrid-search-bar
+	{
+		float: none!important;
+		display: inline-block;
+	}
 }
 
 #companiesListViewGridBlock
@@ -35,33 +35,36 @@
 	margin-right: auto;
 	margin-bottom: 100px;
 	position: relative;
-}
 
-#companiesListViewGridBlock .bbGrid-container
-{
-	max-height: 28.8em;
-	overflow-y: scroll;
-}
+	.bbGrid-container
+	{
+		max-height: 28.8em;
+		overflow-y: scroll;
+	}
 
-#companiesListViewGridBlock .bbGrid-grid.table
-{
-	width: 100%;
-	margin-left: auto;
-	margin-right: auto;	
-}
+	.bbGrid-grid
+	{
+		&.table
+		{
+			width: 100%;
+			margin-left: auto;
+			margin-right: auto;	
 
-#companiesListViewGridBlock .bbGrid-grid.table td, .clonedHeaderContainer th
-{
-	text-align: center;
-}
+			td
+			{
+				text-align: center;
+			}
+		}
+	}
 
-#mainCompaniesListGridWrapper .bbGrid-search-bar
-{
-	float: none!important;
-	display: inline-block;
+	.clonedHeaderContainer
+	{
+		th
+		{
+			text-align: center;
+		}
+	}
 }
-
-/*Company Details*/
 
 #mainCompanyDetailsContainer
 {
@@ -92,6 +95,7 @@
 {
 	min-width: 760px;
 	max-width: 80%;
+	padding-bottom: 30px;
 }
 
 .companyDetailsCompanyName
@@ -100,25 +104,13 @@
 	padding-bottom: 20px;
 }
 
-#companyDetailsTopDataWrapper
-{
-	padding-bottom: 30px;
-}
-
 #companyDetailsNavigationButtonsContainer
 {
 	min-width: 760px;
 	max-width: 80%;
 }
 
-/*Company Info*/
 #companyDetailsDataWrapper
-{
-	min-width: 760px;
-	max-width: 80%;
-}
-
-#companyCompanyInfo
 {
 	min-width: 760px;
 	max-width: 80%;
@@ -140,21 +132,45 @@
 	float: left;
 }
 
+#companyInfoInvoicingDetailsEdit
+{
+	.country-select.inside
+	{
+		width: 100%;
+	}
+
+	#country_edit
+	{
+		background-color: white!important;
+	}
+}
+
 .companyInvoicingDetailsEditButton, .companyContactsEditButton
 {
 	float: right;
 }
 
-.companyCompanyInfo .row
+.companyCompanyInfo 
 {
-	margin-bottom: 20px!important;
-}
+	min-width: 760px;
+	max-width: 80%;
 
-.companyCompanyInfo label
-{
-	margin-bottom: 5px!important;
-	color: grey!important;
-	cursor: none!important;
+	.row 
+	{
+		margin-bottom: 20px!important;
+	}
+
+	label
+	{
+		margin-bottom: 5px!important;
+		color: grey!important;
+		cursor: none!important;
+	}
+
+	.invoicingDetailsCancelEdit, .contactsCancelEdit
+	{
+		padding-left: 20px!important;
+	}
 }
 
 .contactTypeRow
@@ -162,18 +178,21 @@
 	width: 100%;
 	background-color: #FFFFFF;
 	padding: 10px;
+
+	p, .fa
+	{
+		font-size: large!important;
+		float: left!important;
+		padding-left: 10px!important;
+	}
 }
 
-.contactTypeRow p, .contactTypeRow .fa
+#companyInfoContacts 
 {
-	font-size: large!important;
-	float: left!important;
-	padding-left: 10px!important;
-}
-
-#companyInfoContacts .columns
-{
-	padding-left: 20px!important;
+	.columns
+	{
+		padding-left: 20px!important;
+	}
 }
 
 .companyInfoTopic

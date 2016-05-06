@@ -350,8 +350,10 @@ updateHeaderOnSort = function(col) {
     var tag = $(value).find('i');
     if(text == col.title){
       if(col.sortOrder === "asc" ){
+        tag.removeClass("fa fa-chevron-down");
         tag.addClass("fa fa-chevron-up");
       } else if(col.sortOrder === "desc" ){
+        tag.removeClass("fa fa-chevron-up");
         tag.addClass("fa fa-chevron-down");
       }
     } else {

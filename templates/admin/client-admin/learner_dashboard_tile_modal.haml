@@ -45,51 +45,61 @@
   .row
     .small-3.columns= form.background_image.label_tag
     .small-9.columns= form.background_image
+  .div{id: "colorInputs"}
+    .row
+      .small-3.columns
+      .small-9.columns= form.label_color.errors
+    .row
+      .small-3.columns= form.label_color.label_tag
+      .small-9.columns.tile-input
+        %input{'type': 'color', 'id': 'id_label_color', 'name': 'label_color', 'value': "#{form.label_color.value}", 'data-default-value': "#{default_colors.label}"}
 
-  .row
-    .small-3.columns
-    .small-9.columns= form.label_color.errors
-  .row
-    .small-3.columns= form.label_color.label_tag
-    .small-9.columns.tile-input
-      %input{'type': 'color', 'id': 'id_label_color', 'name': 'label_color', 'value': "#{form.label_color.value}", 'data-default-value': "#{default_colors.label}"}
+    .row
+      .small-3.columns
+      .small-9.columns= form.title_color.errors
+    .row
+      .small-3.columns= form.title_color.label_tag
+      .small-9.columns.tile-input
+        %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}", 'data-default-value': "#{default_colors.title}"}
 
-  .row
-    .small-3.columns
-    .small-9.columns= form.title_color.errors
-  .row
-    .small-3.columns= form.title_color.label_tag
-    .small-9.columns.tile-input
-      %input{'type': 'color', 'id': 'id_title_color', 'name': 'title_color', 'value': "#{form.title_color.value}", 'data-default-value': "#{default_colors.title}"}
+    .row
+      .small-3.columns
+      .small-9.columns= form.note_color.errors
+    .row
+      .small-3.columns= form.note_color.label_tag
+      .small-9.columns.tile-input
+        %input{'type': 'color', 'id': 'id_note_color', 'name': 'note_color', 'value': "#{form.note_color.value}", 'data-default-value': "#{default_colors.note}"}
 
-  .row
-    .small-3.columns
-    .small-9.columns= form.note_color.errors
-  .row
-    .small-3.columns= form.note_color.label_tag
-    .small-9.columns.tile-input
-      %input{'type': 'color', 'id': 'id_note_color', 'name': 'note_color', 'value': "#{form.note_color.value}", 'data-default-value': "#{default_colors.note}"}
-
-  .row
-    .small-3.columns
-    .small-9.columns= form.tile_background_color.errors
-  .row
-    .small-3.columns= form.tile_background_color.label_tag
-    .small-9.columns.tile-input
-      %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}", 'data-default-value': "#{default_colors.background}"}
+    .row
+      .small-3.columns
+      .small-9.columns= form.tile_background_color.errors
+    .row
+      .small-3.columns= form.tile_background_color.label_tag
+      .small-9.columns.tile-input
+        %input{'type': 'color', 'id': 'id_tile_background_color', 'name': 'tile_background_color', 'value': "#{form.tile_background_color.value}", 'data-default-value': "#{default_colors.background}"}
 
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
   .error
     - if error
       = error
 
-  %button.radius.small.left{id: "resetColors"}
-    Reset tile colors
+  - if tile_id
+    %input.button.radius.small.left{id: "resetColors", type: "submit", value: "Reset tile colors"}
+  - else
+    %input.button.radius.small.left{id: "resetColors", type: "submit", value: "Reset tile colors", disabled: "True"}
   %input.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
 
 - block js_snippets
   %script{src: "/static/js/form_changed_check.js"}
+
   :javascript
+    $('#colorInputs :input').change(function() {
+      $('#resetColors').attr('disabled',false);
+    });
+
+    $("#id_link").prop('required',true);
+    $("#id_tile_type").prop('required',true);
+
     $("form").submit(function(event) {
       var headers = {
         'X-CSRFToken': $.cookie('apros_csrftoken')
@@ -131,4 +141,5 @@
       note.val(note.data('default-value'));
       title.val(title.data('default-value'));
       $('#formSubmit').attr('disabled',false);
+      $('#resetColors').attr('disabled',true);
     });

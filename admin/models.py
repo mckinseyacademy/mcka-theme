@@ -440,7 +440,7 @@ class LearnerDashboardTile(db_models.Model):
     tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
-        (u'1', u'External link'),
+        (u'1', u'Article'),
         (u'2', u'Lesson'),
         (u'3', u'Module'),
         (u'4', u'Course'),
@@ -456,7 +456,7 @@ class LearnerDashboardDiscovery(db_models.Model):
 
     link = db_models.URLField()
     title = db_models.CharField(max_length=5000)
-    author = db_models.CharField(blank=True, max_length=20)
+    author = db_models.CharField(blank=True, max_length=5000)
     position = db_models.IntegerField(default=100)
 
     learner_dashboard = db_models.ForeignKey(

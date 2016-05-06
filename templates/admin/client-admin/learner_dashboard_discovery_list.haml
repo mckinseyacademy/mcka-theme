@@ -76,7 +76,7 @@
     %hr
     .large-10.large.columns
     -if discovery
-      %table
+      %table{style:"table-layout: fixed; width: 100%"}
         %thead
           %tr
             %th= _("Title")
@@ -87,9 +87,9 @@
         %tbody
           - for content in discovery
             %tr{id: "#{content.id}"}
-              %td= content.title
-              %td= content.link
-              %td= content.author
+              %td{style: "word-wrap: break-word"}= content.title
+              %td{style: "word-wrap: break-word"}= content.link
+              %td{style: "word-wrap: break-word"}= content.author
               %td
                 %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/edit/#{content.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
                   %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}

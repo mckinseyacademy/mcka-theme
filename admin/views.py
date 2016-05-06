@@ -3453,6 +3453,12 @@ class participant_details_api(APIView):
             else:
                 data = form.cleaned_data
                 try:
+                    print data
+                    company = data.get('company', None)
+                    company_old = request.DATA.get('company_old', None)
+                    if data.get('company', None) != data.get('company_old', None):
+                        organization_api.remove_users_from_organization(company_old, user_id)
+                        organization_api.add_user_to_organization(company, user_id)
                     response = user_api.update_user_information(user_id,data)
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
@@ -4116,9 +4122,6 @@ def companies_list(request):
 
 
 class companies_list_api(APIView):
-    '''
-    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
-    '''
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
@@ -4154,10 +4157,95 @@ def company_details(request, company_id):
 
     client = Client.fetch(company_id)
     company = {}
+    company['id'] = company_id
     company['name'] = vars(client)['display_name']
     requestParams = {}
     requestParams['organizations'] = company_id
     participants = user_api.get_filtered_users(requestParams)
     company['numberParticipants'] = participants['count']
+    company['activeCourses'] = '-'
 
-    return render(request, 'admin/companies/company_details.haml', company)
+    contacts= []
+    types = [{"type":'Executive Sponsor', "type_info":"Senior executive sponsoring McKinsey Academy program within company"}, \
+    {"type":'IT Security Contact', "type_info":"IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)"}, \
+    {"type":'Senior HR/PD Professional', "type_info":"Overseeing/coordinating Academy program with broader people strategy"},\
+    {"type":'Day-to-Day Coordinator', "type_info":"Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)"}]
+    for contact_type in types:
+        contact = {}
+        contact['type'] = contact_type['type']
+        contact['type_info'] = contact_type['type_info']
+        contact['full_name'] = 'Jane Doe'
+        contact['title'] = 'XYZ Manager'
+        contact['email'] = 'janedoe@xyzcompany.com'
+        contact['phone'] = '123-456-7890'
+        contacts.append(contact)
+
+    invoicing = {}
+    invoicing['full_name'] = 'Jane Doe'
+    invoicing['title'] = '-'
+    invoicing['address1'] = '123 Main St.'
+    invoicing['address2'] = '-'
+    invoicing['city'] = 'New York'
+    invoicing['state'] = 'NY'
+    invoicing['postal_code'] = '10003'
+    invoicing['country'] = 'us'
+    invoicing['po'] = '-'
+
+    data = {
+        'company': company,
+        'contacts': contacts,
+        'invoicing': invoicing
+    }
+
+    return render(request, 'admin/companies/company_details.haml', data)
+
+
+class company_info_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, company_id):
+        
+        flag = request.GET.get('flag', None)
+        response = {}
+        if flag == 'contacts':
+            response['flag'] = 'contacts'
+            response['contacts'] = []
+            types = [{"type":'Executive Sponsor', "type_info":"Senior executive sponsoring McKinsey Academy program within company"}, \
+            {"type":'IT Security Contact', "type_info":"IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)"}, \
+            {"type":'Senior HR/PD Professional', "type_info":"Overseeing/coordinating Academy program with broader people strategy"},\
+            {"type":'Day-to-Day Coordinator', "type_info":"Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)"}]
+            for contact_type in types:
+                contact = {}
+                contact['type'] = contact_type['type']
+                contact['type_info'] = contact_type['type_info']
+                contact['full_name'] = 'John Doe'
+                contact['title'] = 'ABC Manager'
+                contact['email'] = 'johndoe@xyzcompany.com'
+                contact['phone'] = '123-456-7890'
+                response['contacts'].append(contact)
+        elif flag == 'invoicing':
+            response['flag'] = 'invoicing'
+            response['invoicing'] = {}
+            response['invoicing']['full_name'] = 'John Doe'
+            response['invoicing']['title'] = '-'
+            response['invoicing']['address1'] = '123 Main St.'
+            response['invoicing']['address2'] = '-'
+            response['invoicing']['city'] = 'New York'
+            response['invoicing']['state'] = 'NY'
+            response['invoicing']['postal_code'] = '10003'
+            response['invoicing']['country'] = 'us'
+            response['invoicing']['po'] = '-'
+        
+        return Response(response)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def put(self, request, company_id):
+
+        flag = request.GET.get('flag', None)
+        response = {}
+        if flag == 'contacts':
+            print(json.loads(request.body))
+        elif flag == 'invoicing':
+            print(json.loads(request.body))
+        response['flag'] = flag
+        return Response(response)
