@@ -1,7 +1,7 @@
   Apros.views.CompanyInfoView = Backbone.View.extend({
     initialize: function(){
       var _this = this;
-
+      InitializeTooltipOnPage(true);
       var invoicingDetailsContainer = $('#companyInfoInvoicingDetailsData');
       var contactsWrapper = $('#companyInfoContacts');
       var contactsContainers = contactsWrapper.find('.companyInfoContactsData');

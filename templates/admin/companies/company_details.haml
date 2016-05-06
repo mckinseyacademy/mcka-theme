@@ -95,7 +95,7 @@
                 .companyContactsRow
                   .row.contactTypeRow
                     %p.contactTypeText ={contact.type}
-                    .fa.fa-info-circle
+                    .fa.fa-info-circle{:data-title => '#{contact.type_info}'}
                   .companyInfoContactsData
                     .row
                       .large-6.columns

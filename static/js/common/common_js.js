@@ -264,7 +264,7 @@ function RecursiveJsonToHtml( data ) {
   htmlRetStr += '</ul >';    
   return( htmlRetStr );
 }
-InitializeTooltipOnPage = function()
+InitializeTooltipOnPage = function(onClickEnable)
 {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
     DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20;
@@ -276,17 +276,46 @@ InitializeTooltipOnPage = function()
             position: "absolute", top: ntop, left: nleft, 'z-index':20000
         }).show();
     };
-    $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) {
+    if(onClickEnable)
+    {
+      var current_element = null;
+      $(document).on("click", "*[data-title]:not([data-title=''])", function (e) {
+        e.stopPropagation();
+        if($(this).hasClass(CLS_ON))
+        {
+          _show_value = ''
+          $(this).removeClass(CLS_ON);
+          $("#" + ID).hide();
+        } 
+        else
+        {
+          current_element = e.target;
+          _show_value = $(this).attr("data-title");
+          $(this).addClass(CLS_ON);
+          showAt(e);
+        }
+      });
+      $(document).on('click', function (e)
+      {
+        _show_value = ''
+        $(current_element).removeClass(CLS_ON);
+        $("#" + ID).hide();
+      });
+    }
+    else
+    {
+      $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) { 
         _show_value = $(this).attr("data-title");
         $(this).addClass(CLS_ON);
         showAt(e);
-    });
-    $(document).on("mouseleave", "." + CLS_ON, function (e) {
-        _show_value = ''
-        $(this).removeClass(CLS_ON);
-        $("#" + ID).hide();
-    });
-    if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+      });
+      $(document).on("mouseleave", "." + CLS_ON, function (e) {
+          _show_value = ''
+          $(this).removeClass(CLS_ON);
+          $("#" + ID).hide();
+      });
+      if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+    }
 }
 
 EmailTemplatesManager = function(method, pk, title, subject, body)

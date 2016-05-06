@@ -4166,10 +4166,14 @@ def company_details(request, company_id):
     company['activeCourses'] = '-'
 
     contacts= []
-    types = ['Executive Sponsor', 'IT Security Contact', 'Senior HR/PD Professional', 'Day-to-Day Coordinator']
+    types = [{"type":'Executive Sponsor', "type_info":"Senior executive sponsoring McKinsey Academy program within company"}, \
+    {"type":'IT Security Contact', "type_info":"IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)"}, \
+    {"type":'Senior HR/PD Professional', "type_info":"Overseeing/coordinating Academy program with broader people strategy"},\
+    {"type":'Day-to-Day Coordinator', "type_info":"Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)"}]
     for contact_type in types:
         contact = {}
-        contact['type'] = contact_type
+        contact['type'] = contact_type['type']
+        contact['type_info'] = contact_type['type_info']
         contact['full_name'] = 'Jane Doe'
         contact['title'] = 'XYZ Manager'
         contact['email'] = 'janedoe@xyzcompany.com'
@@ -4206,10 +4210,14 @@ class company_info_api(APIView):
         if flag == 'contacts':
             response['flag'] = 'contacts'
             response['contacts'] = []
-            types = ['Executive Sponsor', 'IT Security Contact', 'Senior HR/PD Professional', 'Day-to-Day Coordinator']
+            types = [{"type":'Executive Sponsor', "type_info":"Senior executive sponsoring McKinsey Academy program within company"}, \
+            {"type":'IT Security Contact', "type_info":"IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)"}, \
+            {"type":'Senior HR/PD Professional', "type_info":"Overseeing/coordinating Academy program with broader people strategy"},\
+            {"type":'Day-to-Day Coordinator', "type_info":"Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)"}]
             for contact_type in types:
                 contact = {}
-                contact['type'] = contact_type
+                contact['type'] = contact_type['type']
+                contact['type_info'] = contact_type['type_info']
                 contact['full_name'] = 'John Doe'
                 contact['title'] = 'ABC Manager'
                 contact['email'] = 'johndoe@xyzcompany.com'
