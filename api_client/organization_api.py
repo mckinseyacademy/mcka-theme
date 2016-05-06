@@ -169,6 +169,22 @@ def add_user_to_organization(organization_id, user_id):
     return (response.code == 201)
 
 @api_error_protect
+def remove_users_from_organization(organization_id, user_ids):
+    qs_params = {}
+    if isinstance(user_ids, list):
+        qs_params['users'] = ",".join(user_ids)
+    else:
+        qs_params['users'] = user_ids
+    response = DELETE(
+        '{}/{}/{}/users/'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id),
+        qs_params
+    )
+    return (response.code == 201)
+
+@api_error_protect
 def get_grade_complete_count(organization_id, organization_object=JsonObject, *args, **kwargs):
     qs_params = {}
     for karg in kwargs:

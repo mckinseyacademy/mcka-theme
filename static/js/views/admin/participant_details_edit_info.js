@@ -49,7 +49,12 @@
           var data = {}
           $.each($("form").find(':input'), function(i, v){
             var input = $(v);
-            data[input.attr("name")] = input.val().trim();   
+            data[input.attr("name")] = input.val().trim();
+            if (input.attr("name") == 'company')
+            {
+              data['company'] = input.attr('data-id');  
+              data['company_old'] = input.attr('data-old-id');
+            }
           });
           delete data["undefined"];
           var xcsrf = data['csrfmiddlewaretoken'];
@@ -65,6 +70,8 @@
                 if (data['status'] == "ok") {
                   _this.setLocationTooltip(); 
                   _this.update_participant_field_data();
+                  var company = $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantCompanyValue input');
+                  company.attr('data-old-id',company.attr('data-id'));
                   $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
                   $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
