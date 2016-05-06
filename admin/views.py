@@ -4163,8 +4163,9 @@ def company_details(request, company_id):
     requestParams['organizations'] = company_id
     participants = user_api.get_filtered_users(requestParams)
     company['numberParticipants'] = participants['count']
+    company['activeCourses'] = '-'
 
-    contacts = []
+    contacts= []
     types = ['Executive Sponsor', 'IT Security Contact', 'Senior HR/PD Professional', 'Day-to-Day Coordinator']
     for contact_type in types:
         contact = {}
@@ -4183,7 +4184,7 @@ def company_details(request, company_id):
     invoicing['city'] = 'New York'
     invoicing['state'] = 'NY'
     invoicing['postal_code'] = '10003'
-    invoicing['country'] = 'U.S.'
+    invoicing['country'] = 'us'
     invoicing['po'] = '-'
 
     data = {
@@ -4193,3 +4194,50 @@ def company_details(request, company_id):
     }
 
     return render(request, 'admin/companies/company_details.haml', data)
+
+
+class company_info_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, company_id):
+        
+        flag = request.GET.get('flag', None)
+        response = {}
+        if flag == 'contacts':
+            response['flag'] = 'contacts'
+            response['contacts'] = []
+            types = ['Executive Sponsor', 'IT Security Contact', 'Senior HR/PD Professional', 'Day-to-Day Coordinator']
+            for contact_type in types:
+                contact = {}
+                contact['type'] = contact_type
+                contact['full_name'] = 'John Doe'
+                contact['title'] = 'ABC Manager'
+                contact['email'] = 'johndoe@xyzcompany.com'
+                contact['phone'] = '123-456-7890'
+                response['contacts'].append(contact)
+        elif flag == 'invoicing':
+            response['flag'] = 'invoicing'
+            response['invoicing'] = {}
+            response['invoicing']['full_name'] = 'John Doe'
+            response['invoicing']['title'] = '-'
+            response['invoicing']['address1'] = '123 Main St.'
+            response['invoicing']['address2'] = '-'
+            response['invoicing']['city'] = 'New York'
+            response['invoicing']['state'] = 'NY'
+            response['invoicing']['postal_code'] = '10003'
+            response['invoicing']['country'] = 'us'
+            response['invoicing']['po'] = '-'
+        
+        return Response(response)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def put(self, request, company_id):
+
+        flag = request.GET.get('flag', None)
+        response = {}
+        if flag == 'contacts':
+            print(json.loads(request.body))
+        elif flag == 'invoicing':
+            print(json.loads(request.body))
+        response['flag'] = flag
+        return Response(response)

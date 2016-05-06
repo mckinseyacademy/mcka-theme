@@ -210,7 +210,8 @@ var Router = Backbone.Router.extend({
       val = $(value);
       val.show();
     });
-    var companyId = $('#mainCompanyDetailsDataContainer').attr('data-id');
+    var company_info_view = new Apros.views.CompanyInfoView();
+    company_info_view.render();
   },
   mass_student_enroll: function(client_id){
     massParticipantsInit();

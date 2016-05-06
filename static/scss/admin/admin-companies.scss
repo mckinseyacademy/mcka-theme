@@ -116,12 +116,6 @@
 	max-width: 80%;
 }
 
-#companyCompanyInfo
-{
-	min-width: 760px;
-	max-width: 80%;
-}
-
 #companyInfoInvoicingDetails, #companyInfoContacts
 {
 	min-width: 760px;
@@ -138,6 +132,19 @@
 	float: left;
 }
 
+#companyInfoInvoicingDetailsEdit
+{
+	.country-select.inside
+	{
+		width: 100%;
+	}
+
+	#country_edit
+	{
+		background-color: white!important;
+	}
+}
+
 .companyInvoicingDetailsEditButton, .companyContactsEditButton
 {
 	float: right;
@@ -145,6 +152,9 @@
 
 .companyCompanyInfo 
 {
+	min-width: 760px;
+	max-width: 80%;
+
 	.row 
 	{
 		margin-bottom: 20px!important;
@@ -155,6 +165,11 @@
 		margin-bottom: 5px!important;
 		color: grey!important;
 		cursor: none!important;
+	}
+
+	.invoicingDetailsCancelEdit, .contactsCancelEdit
+	{
+		padding-left: 20px!important;
 	}
 }
 
