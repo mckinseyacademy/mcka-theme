@@ -17,6 +17,12 @@
                         font-size: 20px;
                         margin-left: 10px;
                     }
+                    .header-link:hover {
+                        color: #b1c2cc;
+                    }
+                    a:visited{
+                        color: #b1c2cc;
+                    }
                 }
             }
         }
@@ -39,7 +45,7 @@
     }
 
     p {
-        width: 585px;
+        width: 587px;
         font-size: 14px;
         height: 100px;
         overflow: auto;
@@ -48,7 +54,7 @@
 
     .row{
         height: 440px;
-        width: 585px;
+        width: 587px;
         margin: 0px;
         overflow: auto;
 
@@ -78,13 +84,17 @@
                     margin: 15px 0px 0px;
                 }
             }
+            .panel-program:hover{
+                opacity: 0.8 ;
+                filter: alpha(opacity=80); 
+            }
         }
     }
 }
 
 .dash-widget{
     max-height: 535px;
-    overflow: scroll;
+    overflow: auto;
     width: 300px;
     margin-top: 46px;
     border-top: 1px solid $mckinsey-academy-bright-gray;
@@ -104,6 +114,9 @@
         }
         p{
             font-size: 18px;
+        }
+        p:hover{
+            color: #b1c2cc !important; 
         }
     }
 }

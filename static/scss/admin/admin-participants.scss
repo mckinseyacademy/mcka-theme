@@ -181,6 +181,10 @@
 		#country_edit{
 			background-color: white!important;
 		}
+
+		.participantCourseValue, .participantAdminCompanyValue, .participantCompanyValue, .participantEmailValue{
+			position:relative;
+		}
 	}
 }
 

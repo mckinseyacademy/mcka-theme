@@ -4,14 +4,14 @@
   #mainCompanyDetailsContainer
     #companyDetailsNavigation
       %a{:href => '/admin/companies', :target => '_self'}> < Back to All Companies
-    #mainCompanyDetailsDataContainer{:data-id => '#{id}'}
+    #mainCompanyDetailsDataContainer{:data-id => '#{company.id}'}
       #companyDetailsTopDataWrapper
         .row.companyDetailsCompanyName
           ={company.name}
         .row.companyDetailsNumberParticipants
           %p Total Participants: ={company.numberParticipants}
         .row.companyDetailsNumberActiveCourses
-          %p Active Courses: -
+          %p Active Courses: ={company.activeCourses}
       #companyDetailsNavigationButtonsContainer
         .row
           .companyDetailsCoursesButton.large-3.columns
@@ -28,59 +28,107 @@
             .row
               %p.companyInvoicingDetailsHead Invoicing Details
               %input.button.small.radius.companyInvoicingDetailsEditButton{:type => "button", :value => "Edit"}
-            .row
-              .large-6.columns
-                .fullNameLabel
-                  %label Full Name
-                .fullNameInput
-                  %p ={invoicing.full_name}
-              .large-6.columns
-                .titleLabel
-                  %label Title
-                .titleInput
-                  %p ={invoicing.title}
-            .row
-              .large-6.columns
-                .invoicingAddressLabel
-                  %label Invoicing Address
-                .invoicingAddressInput
-                  %p ={invoicing.address1}, ={invoicing.address2}
-                  %p ={invoicing.city}, ={invoicing.state} ={invoicing.postal_code}
-                  %p ={invoicing.country}
-              .large-6.columns
-                .poLabel
-                  %label PO#
-                .poInput
-                  %p ={invoicing.po}
+            #companyInfoInvoicingDetailsData
+              .row
+                .large-6.columns
+                  %label.fullNameLabel Full Name
+                  %p.fullNameText ={invoicing.full_name}
+                .large-6.columns
+                  %label.titleLabel Title
+                  %p.titleText ={invoicing.title}
+              .row
+                .large-6.columns
+                  %label.addressLabel Invoicing Address
+                  %p.addressText ={invoicing.address1}, ={invoicing.address2}
+                  %p.cityStatePostalText ={invoicing.city}, ={invoicing.state} ={invoicing.postal_code}
+                  %p.countryText ={invoicing.country}
+                .large-6.columns
+                  %label.poLabel PO#
+                  %p.poText ={invoicing.po}
+            #companyInfoInvoicingDetailsEdit
+              %form.companyInfoInvoicingDetailsEditForm
+                .row 
+                  .large-6.columns
+                    %label.fullNameLabel Full Name
+                    %input.fullNameInput{:type => "text", :value => '#{invoicing.full_name}', :name => "full_name" }
+                  .large-6.columns
+                    %label.titleLabel Title
+                    %input.titleInput{:type => "text", :value => '#{invoicing.title}', :name => "title" }
+                .row
+                  .large-6.columns
+                    %label.address1Label Address 1
+                    %input.address1Input{:type => "text", :value => '#{invoicing.address1}', :name => "address1" }
+                  .large-6.columns
+                    %label.address2Label Address 2
+                    %input.address2Input{:type => "text", :value => '#{invoicing.address2}', :name => "address2" }
+                .row
+                  .large-6.columns
+                    %label.cityLabel City
+                    %input.cityInput{:type => "text", :value => '#{invoicing.city}', :name => "city" }
+                  .large-6.columns
+                    %label.stateLabel State/Province/Region
+                    %input.stateInput{:type => "text", :value => '#{invoicing.state}', :name => "state" }
+                .row
+                  .large-6.columns
+                    %label.postalCodeLabel Zip/Postal Code
+                    %input.postalCodeInput{:type => "text", :value => '#{invoicing.postal_code}', :name => "postal_code" }
+                  .large-6.columns
+                    %label.countryLabel Country
+                    %input.countryInput{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2", :data-country-short => '#{invoicing.country}' }
+                    %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
+                .row
+                  .large-6.columns
+                    %label.poLabel PO#(if applicable)
+                    %input.poInput{:type => "text", :value => '#{invoicing.po}', :name => "po" }
+                  .large-6.columns
+                .row 
+                  .large-12.columns
+                    .button.small.radius.disabled.invoicingDetailsSaveButton Save Changes
+                    %a.invoicingDetailsCancelEdit{:href => '#', :target => '_self'} Cancel
+
           #companyInfoContacts.companyInfoTopic
             .row
               %p.companyContactsHead Contacts
               %input.button.small.radius.companyContactsEditButton{:type => "button", :value => "Edit"}
-            - for contact in contacts
-              .row.contactTypeRow
-                %p ={contact.type}
-                .fa.fa-info-circle
-              .row
-                .large-6.columns
-                  .fullNameLabel
-                    %label Full Name
-                  .fullNameInput
-                    %p ={contact.full_name}
-                .large-6.columns
-                  .titleLabel
-                    %label Title
-                  .titleInput
-                    %p ={contact.title}
-              .row
-                .large-6.columns
-                  .emailLabel
-                    %label Email
-                  .emailInput
-                    %p ={contact.email}
-                .large-6.columns
-                  .phoneInput
-                    %label Phone
-                  .phoneLabel
-                    %p ={contact.phone}
+            %form.companyInfoContactsEditForm
+              -for contact in contacts
+                .companyContactsRow
+                  .row.contactTypeRow
+                    %p.contactTypeText ={contact.type}
+                    .fa.fa-info-circle{:data-title => '#{contact.type_info}'}
+                  .companyInfoContactsData
+                    .row
+                      .large-6.columns
+                        %label.fullNameLabel Full Name
+                        %p.fullNameText ={contact.full_name}
+                      .large-6.columns
+                        %label.titleLabel Title
+                        %p.titleText ={contact.title}
+                    .row
+                      .large-6.columns
+                        %label.emailLabel Email
+                        %p.emailText ={contact.email}
+                      .large-6.columns
+                        %label.phoneLabel Phone
+                        %p.phoneText ={contact.phone}
+                  .companyInfoContactsEdit
+                    .row
+                      .large-6.columns
+                        %label.fullNameLabel Full Name
+                        %input.fullNameInput{:type => "text", :value => '#{contact.full_name}', :name => "full_name" }
+                      .large-6.columns
+                        %label.titleLabel Title
+                        %input.titleInput{:type => "text", :value => '#{contact.title}', :name => "title" }
+                    .row
+                      .large-6.columns
+                        %label.emailLabel Email
+                        %input.emailInput{:type => "text", :value => '#{contact.email}', :name => "email" }
+                      .large-6.columns
+                        %label.phoneLabel Phone
+                        %input.phoneInput{:type => "text", :value => '#{contact.phone}', :name => "phone" }
+              .row.companyInfoContactsEdit
+                .large-12.columns
+                  .button.small.radius.disabled.contactsSaveButton Save Changes
+                  %a.contactsCancelEdit{:href => '#', :target => '_self'} Cancel
           #exportCompanyInfoButton.companyInfoTopic
             %a.button.radius.small Export Company Info

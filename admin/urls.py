@@ -131,7 +131,7 @@ urlpatterns = patterns(
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),
 
-
+    url(r'^api/companies/(?P<company_id>[0-9]+)/company_info$', views.company_info_api.as_view(), name='company_info_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
     url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
     url(r'^companies$', views.companies_list, name='companies_list'),
