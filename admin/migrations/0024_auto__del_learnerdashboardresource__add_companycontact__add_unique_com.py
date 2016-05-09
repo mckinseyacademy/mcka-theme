@@ -8,6 +8,50 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Deleting model 'LearnerDashboardResource'
+        db.delete_table(u'admin_learnerdashboardresource')
+
+        # Adding model 'CompanyContact'
+        db.create_table(u'admin_companycontact', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('company_id', self.gf('django.db.models.fields.IntegerField')(db_index=True)),
+            ('contact_type', self.gf('django.db.models.fields.CharField')(max_length=1)),
+            ('full_name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('email', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('phone', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+        ))
+        db.send_create_signal(u'admin', ['CompanyContact'])
+
+        # Adding unique constraint on 'CompanyContact', fields ['company_id', 'contact_type']
+        db.create_unique(u'admin_companycontact', ['company_id', 'contact_type'])
+
+        # Adding model 'CompanyInvoicingDetails'
+        db.create_table(u'admin_companyinvoicingdetails', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('company_id', self.gf('django.db.models.fields.IntegerField')(unique=True, db_index=True)),
+            ('full_name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('address1', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('address2', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('city', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('state', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('postal_code', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('country', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('po', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+        ))
+        db.send_create_signal(u'admin', ['CompanyInvoicingDetails'])
+
+        # Adding field 'LearnerDashboard.title_color'
+        db.add_column(u'admin_learnerdashboard', 'title_color',
+                      self.gf('django.db.models.fields.CharField')(default='#FFFFFF', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Adding field 'LearnerDashboard.description_color'
+        db.add_column(u'admin_learnerdashboard', 'description_color',
+                      self.gf('django.db.models.fields.CharField')(default='#FFFFFF', max_length=20, blank=True),
+                      keep_default=False)
+
 
         # Changing field 'LearnerDashboardDiscovery.title'
         db.alter_column(u'admin_learnerdashboarddiscovery', 'title', self.gf('django.db.models.fields.CharField')(max_length=5000, null=True))
@@ -17,8 +61,66 @@ class Migration(SchemaMigration):
 
         # Changing field 'LearnerDashboardDiscovery.link'
         db.alter_column(u'admin_learnerdashboarddiscovery', 'link', self.gf('django.db.models.fields.URLField')(max_length=200, null=True))
+        # Deleting field 'BrandingSettings.discover_navigation_color'
+        db.delete_column(u'admin_brandingsettings', 'discover_navigation_color')
+
+        # Deleting field 'BrandingSettings.navigation_color'
+        db.delete_column(u'admin_brandingsettings', 'navigation_color')
+
+        # Deleting field 'BrandingSettings.title_color'
+        db.delete_column(u'admin_brandingsettings', 'title_color')
+
+        # Deleting field 'BrandingSettings.discover_text_color'
+        db.delete_column(u'admin_brandingsettings', 'discover_text_color')
+
+        # Adding field 'BrandingSettings.rule_color'
+        db.add_column(u'admin_brandingsettings', 'rule_color',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Adding field 'BrandingSettings.discover_title_color'
+        db.add_column(u'admin_brandingsettings', 'discover_title_color',
+                      self.gf('django.db.models.fields.CharField')(default='#000000', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Adding field 'BrandingSettings.discover_author_color'
+        db.add_column(u'admin_brandingsettings', 'discover_author_color',
+                      self.gf('django.db.models.fields.CharField')(default='#000000', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Adding field 'BrandingSettings.discover_rule_color'
+        db.add_column(u'admin_brandingsettings', 'discover_rule_color',
+                      self.gf('django.db.models.fields.CharField')(default='#000000', max_length=20, blank=True),
+                      keep_default=False)
+
 
     def backwards(self, orm):
+        # Removing unique constraint on 'CompanyContact', fields ['company_id', 'contact_type']
+        db.delete_unique(u'admin_companycontact', ['company_id', 'contact_type'])
+
+        # Adding model 'LearnerDashboardResource'
+        db.create_table(u'admin_learnerdashboardresource', (
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=40, blank=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('learner_dashboard', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.LearnerDashboard'])),
+            ('link', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal(u'admin', ['LearnerDashboardResource'])
+
+        # Deleting model 'CompanyContact'
+        db.delete_table(u'admin_companycontact')
+
+        # Deleting model 'CompanyInvoicingDetails'
+        db.delete_table(u'admin_companyinvoicingdetails')
+
+        # Deleting field 'LearnerDashboard.title_color'
+        db.delete_column(u'admin_learnerdashboard', 'title_color')
+
+        # Deleting field 'LearnerDashboard.description_color'
+        db.delete_column(u'admin_learnerdashboard', 'description_color')
+
 
         # User chose to not deal with backwards NULL issues for 'LearnerDashboardDiscovery.title'
         raise RuntimeError("Cannot reverse this migration. 'LearnerDashboardDiscovery.title' and its values cannot be restored.")
@@ -36,6 +138,38 @@ class Migration(SchemaMigration):
         # The following code is provided here to aid in writing a correct migration
         # Changing field 'LearnerDashboardDiscovery.link'
         db.alter_column(u'admin_learnerdashboarddiscovery', 'link', self.gf('django.db.models.fields.URLField')(max_length=200))
+        # Adding field 'BrandingSettings.discover_navigation_color'
+        db.add_column(u'admin_brandingsettings', 'discover_navigation_color',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Adding field 'BrandingSettings.navigation_color'
+        db.add_column(u'admin_brandingsettings', 'navigation_color',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Adding field 'BrandingSettings.title_color'
+        db.add_column(u'admin_brandingsettings', 'title_color',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Adding field 'BrandingSettings.discover_text_color'
+        db.add_column(u'admin_brandingsettings', 'discover_text_color',
+                      self.gf('django.db.models.fields.CharField')(default='#FFFFFF', max_length=20, blank=True),
+                      keep_default=False)
+
+        # Deleting field 'BrandingSettings.rule_color'
+        db.delete_column(u'admin_brandingsettings', 'rule_color')
+
+        # Deleting field 'BrandingSettings.discover_title_color'
+        db.delete_column(u'admin_brandingsettings', 'discover_title_color')
+
+        # Deleting field 'BrandingSettings.discover_author_color'
+        db.delete_column(u'admin_brandingsettings', 'discover_author_color')
+
+        # Deleting field 'BrandingSettings.discover_rule_color'
+        db.delete_column(u'admin_brandingsettings', 'discover_rule_color')
+
 
     models = {
         u'accounts.remoteuser': {
@@ -122,6 +256,30 @@ class Migration(SchemaMigration):
             'link_name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'link_url': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+        },
+        u'admin.companycontact': {
+            'Meta': {'unique_together': "(['company_id', 'contact_type'],)", 'object_name': 'CompanyContact'},
+            'company_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
+            'contact_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'email': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'phone': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
+        },
+        u'admin.companyinvoicingdetails': {
+            'Meta': {'object_name': 'CompanyInvoicingDetails'},
+            'address1': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'address2': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'company_id': ('django.db.models.fields.IntegerField', [], {'unique': 'True', 'db_index': 'True'}),
+            'country': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'po': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'postal_code': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'state': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
         },
         u'admin.dashboardadminquickfilter': {
             'Meta': {'ordering': "('date_created',)", 'object_name': 'DashboardAdminQuickFilter'},
