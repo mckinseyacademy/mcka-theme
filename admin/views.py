@@ -55,7 +55,7 @@ from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
-    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate
+    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, CompanyContact
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -4171,31 +4171,62 @@ def company_details(request, company_id):
     company['numberParticipants'] = participants['count']
     company['activeCourses'] = '-'
 
-    contacts= []
-    types = [{"type":'Executive Sponsor', "type_info":"Senior executive sponsoring McKinsey Academy program within company"}, \
-    {"type":'IT Security Contact', "type_info":"IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)"}, \
-    {"type":'Senior HR/PD Professional', "type_info":"Overseeing/coordinating Academy program with broader people strategy"},\
-    {"type":'Day-to-Day Coordinator', "type_info":"Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)"}]
-    for contact_type in types:
-        contact = {}
-        contact['type'] = contact_type['type']
-        contact['type_info'] = contact_type['type_info']
-        contact['full_name'] = 'Jane Doe'
-        contact['title'] = 'XYZ Manager'
-        contact['email'] = 'janedoe@xyzcompany.com'
-        contact['phone'] = '123-456-7890'
-        contacts.append(contact)
-
     invoicing = {}
-    invoicing['full_name'] = 'Jane Doe'
-    invoicing['title'] = '-'
-    invoicing['address1'] = '123 Main St.'
-    invoicing['address2'] = '-'
-    invoicing['city'] = 'New York'
-    invoicing['state'] = 'NY'
-    invoicing['postal_code'] = '10003'
-    invoicing['country'] = 'us'
-    invoicing['po'] = '-'
+    invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
+    if len(invoicingDetails) > 0:
+        invoicing['full_name'] = invoicingDetails[0].full_name
+        invoicing['title'] = invoicingDetails[0].title
+        invoicing['address1'] = invoicingDetails[0].address1
+        invoicing['address2'] = invoicingDetails[0].address2
+        invoicing['city'] = invoicingDetails[0].city
+        invoicing['state'] = invoicingDetails[0].state
+        invoicing['postal_code'] = invoicingDetails[0].postal_code
+        invoicing['country'] = invoicingDetails[0].country
+        invoicing['po'] = invoicingDetails[0].po
+        for key,value in invoicing.items():
+            if invoicing[key].strip() == '':
+                invoicing[key] = '-'
+    else:
+        invoicing['full_name'] = '-'
+        invoicing['title'] = '-'
+        invoicing['address1'] = '-'
+        invoicing['address2'] = '-'
+        invoicing['city'] = '-'
+        invoicing['state'] = '-'
+        invoicing['postal_code'] = '-'
+        invoicing['country'] = '-'
+        invoicing['po'] = '-'
+
+    contacts= []
+    companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
+    if len(companyContacts) > 0:
+        for companyContact in companyContacts:
+            contact = {}
+            contact_type = companyContact.contact_type
+            contact['type'] = CompanyContact.get_contact_type(int(contact_type))
+            contact['type_id'] = contact_type
+            contact['type_info'] = CompanyContact.get_type_description(contact_type)
+            contact['full_name'] = companyContact.full_name
+            contact['title'] = companyContact.title
+            contact['email'] = companyContact.email
+            contact['phone'] = companyContact.phone
+            for key,value in contact.items():
+                if contact[key].strip() == '':
+                    contact[key] = '-'
+            contacts.append(contact)
+    else:
+        for i in range(4):
+            contact_type = CompanyContact.get_contact_type(i)
+            type_description = CompanyContact.get_type_description(str(i))
+            contact = {}
+            contact['type'] = contact_type
+            contact['type_id'] = i
+            contact['type_info'] = type_description
+            contact['full_name'] = '-'
+            contact['title'] = '-'
+            contact['email'] = '-'
+            contact['phone'] = '-'
+            contacts.append(contact)
 
     data = {
         'company': company,
@@ -4216,31 +4247,62 @@ class company_info_api(APIView):
         if flag == 'contacts':
             response['flag'] = 'contacts'
             response['contacts'] = []
-            types = [{"type":'Executive Sponsor', "type_info":"Senior executive sponsoring McKinsey Academy program within company"}, \
-            {"type":'IT Security Contact', "type_info":"IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)"}, \
-            {"type":'Senior HR/PD Professional', "type_info":"Overseeing/coordinating Academy program with broader people strategy"},\
-            {"type":'Day-to-Day Coordinator', "type_info":"Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)"}]
-            for contact_type in types:
-                contact = {}
-                contact['type'] = contact_type['type']
-                contact['type_info'] = contact_type['type_info']
-                contact['full_name'] = 'John Doe'
-                contact['title'] = 'ABC Manager'
-                contact['email'] = 'johndoe@xyzcompany.com'
-                contact['phone'] = '123-456-7890'
-                response['contacts'].append(contact)
+            companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
+            if len(companyContacts) > 0:
+                for companyContact in companyContacts:
+                    contact = {}
+                    contact_type = companyContact.contact_type
+                    contact['type'] = CompanyContact.get_contact_type(int(contact_type))
+                    contact['type_id'] = contact_type
+                    contact['type_info'] = CompanyContact.get_type_description(contact_type)
+                    contact['full_name'] = companyContact.full_name
+                    contact['title'] = companyContact.title
+                    contact['email'] = companyContact.email
+                    contact['phone'] = companyContact.phone
+                    for key,value in contact.items():
+                        if contact[key].strip() == '':
+                            contact[key] = '-'
+                    response['contacts'].append(contact)
+            else:
+                for i in range(4):
+                    contact_type = CompanyContact.get_contact_type(i)
+                    type_description = CompanyContact.get_type_description(contact_type[0])
+                    contact = {}
+                    contact['type'] = contact_type[1]
+                    contact['type_id'] = contact_type[0]
+                    contact['type_info'] = type_description
+                    contact['full_name'] = '-'
+                    contact['title'] = '-'
+                    contact['email'] = '-'
+                    contact['phone'] = '-'
+                    response['contacts'].append(contact)
         elif flag == 'invoicing':
             response['flag'] = 'invoicing'
             response['invoicing'] = {}
-            response['invoicing']['full_name'] = 'John Doe'
-            response['invoicing']['title'] = '-'
-            response['invoicing']['address1'] = '123 Main St.'
-            response['invoicing']['address2'] = '-'
-            response['invoicing']['city'] = 'New York'
-            response['invoicing']['state'] = 'NY'
-            response['invoicing']['postal_code'] = '10003'
-            response['invoicing']['country'] = 'us'
-            response['invoicing']['po'] = '-'
+            invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
+            if len(invoicingDetails) > 0:
+                response['invoicing']['full_name'] = invoicingDetails[0].full_name
+                response['invoicing']['title'] = invoicingDetails[0].title
+                response['invoicing']['address1'] = invoicingDetails[0].address1
+                response['invoicing']['address2'] = invoicingDetails[0].address2
+                response['invoicing']['city'] = invoicingDetails[0].city
+                response['invoicing']['state'] = invoicingDetails[0].state
+                response['invoicing']['postal_code'] = invoicingDetails[0].postal_code
+                response['invoicing']['country'] = invoicingDetails[0].country
+                response['invoicing']['po'] = invoicingDetails[0].po
+                for key,value in response['invoicing'].items():
+                    if response['invoicing'][key].strip() == '':
+                        response['invoicing'][key] = '-'
+            else:
+                response['invoicing']['full_name'] = '-'
+                response['invoicing']['title'] = '-'
+                response['invoicing']['address1'] = '-'
+                response['invoicing']['address2'] = '-'
+                response['invoicing']['city'] = '-'
+                response['invoicing']['state'] = '-'
+                response['invoicing']['postal_code'] = '-'
+                response['invoicing']['country'] = '-'
+                response['invoicing']['po'] = '-'
         
         return Response(response)
 
@@ -4249,9 +4311,56 @@ class company_info_api(APIView):
 
         flag = request.GET.get('flag', None)
         response = {}
+        data = json.loads(request.body)
+        print data
         if flag == 'contacts':
-            print(json.loads(request.body))
+            companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
+            if len(companyContacts) > 0:
+                for contact in data['contacts']:
+                    companyContact = CompanyContact.objects.filter(company_id=int(company_id), contact_type=contact['type_id'])
+                    companyContact = companyContact[0]
+                    companyContact.full_name = contact['full_name']
+                    companyContact.title = contact['title']
+                    companyContact.email = contact['email']
+                    companyContact.phone = contact['phone']
+                    companyContact.save()
+            else:
+                for contact in data['contacts']:
+                    companyContact = CompanyContact.objects.create(company_id=int(company_id), contact_type=contact['type_id'])
+                    companyContact.full_name = contact['full_name']
+                    companyContact.title = contact['title']
+                    companyContact.email = contact['email']
+                    companyContact.phone = contact['phone']
+                    companyContact.save()
+
         elif flag == 'invoicing':
-            print(json.loads(request.body))
+            invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
+            if len(invoicingDetails) > 0:
+                invoicingDetails = invoicingDetails[0]
+                invoicingDetails.full_name = data['invoicing'][0]['full_name'].strip()
+                invoicingDetails.title = data['invoicing'][0]['title'].strip()
+                invoicingDetails.address1 = data['invoicing'][0]['address1'].strip()
+                invoicingDetails.address2 = data['invoicing'][0]['address2'].strip()
+                invoicingDetails.city = data['invoicing'][0]['city'].strip()
+                invoicingDetails.state = data['invoicing'][0]['state'].strip()
+                invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
+                invoicingDetails.country = data['invoicing'][0]['country'].strip()
+                invoicingDetails.po = data['invoicing'][0]['po'].strip()
+                invoicingDetails.save()
+            else:
+                invoicingDetails = CompanyInvoicingDetails.objects.create(company_id=int(company_id))
+                invoicingDetails.full_name = data['invoicing'][0]['full_name'].strip()
+                invoicingDetails.title = data['invoicing'][0]['title'].strip()
+                invoicingDetails.address1 = data['invoicing'][0]['address1'].strip()
+                invoicingDetails.address2 = data['invoicing'][0]['address2'].strip()
+                invoicingDetails.city = data['invoicing'][0]['city'].strip()
+                invoicingDetails.state = data['invoicing'][0]['state'].strip()
+                invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
+                invoicingDetails.country = data['invoicing'][0]['country'].strip()
+                invoicingDetails.po = data['invoicing'][0]['po'].strip()
+                invoicingDetails.save()
         response['flag'] = flag
         return Response(response)
+
+
+

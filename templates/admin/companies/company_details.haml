@@ -50,28 +50,49 @@
                 .row 
                   .large-6.columns
                     %label.fullNameLabel Full Name
-                    %input.fullNameInput{:type => "text", :value => '#{invoicing.full_name}', :name => "full_name" }
+                    -if invoicing.full_name == '-'
+                      %input.fullNameInput{:type => "text", :name => "full_name" }
+                    -else
+                      %input.fullNameInput{:type => "text", :value => '#{invoicing.full_name}', :name => "full_name" }
                   .large-6.columns
                     %label.titleLabel Title
-                    %input.titleInput{:type => "text", :value => '#{invoicing.title}', :name => "title" }
+                    -if invoicing.title == '-'
+                      %input.titleInput{:type => "text", :name => "title" }
+                    -else
+                      %input.titleInput{:type => "text", :value => '#{invoicing.title}', :name => "title" }
                 .row
                   .large-6.columns
                     %label.address1Label Address 1
-                    %input.address1Input{:type => "text", :value => '#{invoicing.address1}', :name => "address1" }
+                    -if invoicing.address1 == '-'
+                      %input.address1Input{:type => "text", :name => "address1" }
+                    -else
+                      %input.address1Input{:type => "text", :value => '#{invoicing.address1}', :name => "address1" }
                   .large-6.columns
                     %label.address2Label Address 2
-                    %input.address2Input{:type => "text", :value => '#{invoicing.address2}', :name => "address2" }
+                    -if invoicing.address2 == '-'
+                      %input.address2Input{:type => "text", :name => "address2" }
+                    -else
+                      %input.address2Input{:type => "text", :value => '#{invoicing.address2}', :name => "address2" }
                 .row
                   .large-6.columns
                     %label.cityLabel City
-                    %input.cityInput{:type => "text", :value => '#{invoicing.city}', :name => "city" }
+                    -if invoicing.city == '-'
+                      %input.cityInput{:type => "text", :name => "city" }
+                    -else
+                      %input.cityInput{:type => "text", :value => '#{invoicing.city}', :name => "city" }
                   .large-6.columns
                     %label.stateLabel State/Province/Region
-                    %input.stateInput{:type => "text", :value => '#{invoicing.state}', :name => "state" }
+                    -if invoicing.state == '-'
+                      %input.stateInput{:type => "text",  :name => "state" }
+                    -else
+                      %input.stateInput{:type => "text", :value => '#{invoicing.state}', :name => "state" }
                 .row
                   .large-6.columns
                     %label.postalCodeLabel Zip/Postal Code
-                    %input.postalCodeInput{:type => "text", :value => '#{invoicing.postal_code}', :name => "postal_code" }
+                    -if invoicing.postal_code == '-'
+                      %input.postalCodeInput{:type => "text", :name => "postal_code" }
+                    -else
+                      %input.postalCodeInput{:type => "text", :value => '#{invoicing.postal_code}', :name => "postal_code" }
                   .large-6.columns
                     %label.countryLabel Country
                     %input.countryInput{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2", :data-country-short => '#{invoicing.country}' }
@@ -79,7 +100,10 @@
                 .row
                   .large-6.columns
                     %label.poLabel PO#(if applicable)
-                    %input.poInput{:type => "text", :value => '#{invoicing.po}', :name => "po" }
+                    -if invoicing.po == '-'
+                      %input.poInput{:type => "text", :name => "po" }
+                    -else
+                      %input.poInput{:type => "text", :value => '#{invoicing.po}', :name => "po" }
                   .large-6.columns
                 .row 
                   .large-12.columns
@@ -93,7 +117,7 @@
             %form.companyInfoContactsEditForm
               -for contact in contacts
                 .companyContactsRow
-                  .row.contactTypeRow
+                  .row.contactTypeRow{:data-id => '#{contact.type_id}'} 
                     %p.contactTypeText ={contact.type}
                     .fa.fa-info-circle{:data-title => '#{contact.type_info}'}
                   .companyInfoContactsData
@@ -115,17 +139,29 @@
                     .row
                       .large-6.columns
                         %label.fullNameLabel Full Name
-                        %input.fullNameInput{:type => "text", :value => '#{contact.full_name}', :name => "full_name" }
+                        -if contact.full_name == '-'
+                          %input.fullNameInput{:type => "text", :name => "full_name" }
+                        -else
+                          %input.fullNameInput{:type => "text", :value => '#{contact.full_name}', :name => "full_name" }
                       .large-6.columns
                         %label.titleLabel Title
-                        %input.titleInput{:type => "text", :value => '#{contact.title}', :name => "title" }
+                        -if contact.title == '-'
+                          %input.titleInput{:type => "text", :name => "title" }
+                        -else
+                          %input.titleInput{:type => "text", :value => '#{contact.title}', :name => "title" }
                     .row
                       .large-6.columns
                         %label.emailLabel Email
-                        %input.emailInput{:type => "text", :value => '#{contact.email}', :name => "email" }
+                        -if contact.email == '-'
+                          %input.emailInput{:type => "text", :name => "email" }
+                        -else
+                          %input.emailInput{:type => "text", :value => '#{contact.email}', :name => "email" }
                       .large-6.columns
                         %label.phoneLabel Phone
-                        %input.phoneInput{:type => "text", :value => '#{contact.phone}', :name => "phone" }
+                        -if contact.phone == '-'
+                          %input.phoneInput{:type => "text", :name => "phone" }
+                        -else
+                          %input.phoneInput{:type => "text", :value => '#{contact.phone}', :name => "phone" }
               .row.companyInfoContactsEdit
                 .large-12.columns
                   .button.small.radius.disabled.contactsSaveButton Save Changes

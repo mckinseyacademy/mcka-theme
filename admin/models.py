@@ -334,6 +334,52 @@ class ClientCustomization(db_models.Model):
     client_background = db_models.CharField(max_length=200)
     client_background_css = db_models.CharField(max_length=200)
 
+class CompanyInvoicingDetails(db_models.Model):
+    company_id = db_models.IntegerField(unique=True, db_index=True)
+    full_name = db_models.CharField(max_length=200, blank=True)
+    title = db_models.CharField(max_length=200, blank=True)
+    address1 = db_models.CharField(max_length=200, blank=True)
+    address2 = db_models.CharField(max_length=200, blank=True)
+    city = db_models.CharField(max_length=200, blank=True)
+    state = db_models.CharField(max_length=200, blank=True)
+    postal_code = db_models.CharField(max_length=200, blank=True)
+    country = db_models.CharField(max_length=200, blank=True)
+    po = db_models.CharField(max_length=200, blank=True)
+
+class CompanyContact(db_models.Model):
+    class Meta:
+        unique_together = ['company_id', 'contact_type']
+
+    COMPANY_CONTACT_TYPE_CHOICES = (
+        (u'0', u'Executive Sponsor'),
+        (u'1', u'IT Security Contact'),
+        (u'2', u'Senior HR/PD Professional'),
+        (u'3', u'Day-to-Day Coordinator'),
+    )
+
+    company_id = db_models.IntegerField(db_index=True)
+    contact_type = db_models.CharField(max_length=1, choices=COMPANY_CONTACT_TYPE_CHOICES)
+    full_name = db_models.CharField(max_length=200, blank=True)
+    title = db_models.CharField(max_length=200, blank=True)
+    email = db_models.CharField(max_length=200, blank=True)
+    phone = db_models.CharField(max_length=200, blank=True)
+
+    TYPE_DESCRIPTION = {
+        u'0': 'Senior executive sponsoring McKinsey Academy program within company',
+        u'1': 'IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)',
+        u'2': 'Overseeing/coordinating Academy program with broader people strategy',
+        u'3': 'Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)'
+    }
+
+    @classmethod
+    def get_type_description(cls, contact_type):
+        return cls.TYPE_DESCRIPTION[contact_type]
+
+    @classmethod
+    def get_contact_type(cls, contact_type):
+        return cls.COMPANY_CONTACT_TYPE_CHOICES[contact_type][1]
+
+
 ROLE_ACTIONS = DottableDict(
     GRANT='grant',
     REVOKE='revoke'
