@@ -399,14 +399,14 @@ class DashboardAdminQuickFilter(db_models.Model):
 
 class BrandingSettings(db_models.Model):
 
-    background_image = db_models.ImageField(upload_to=settings.BACKGROUND, blank=True)
-    logo_image = db_models.ImageField(upload_to=settings.LOGO, blank=True)
-    navigation_color = db_models.CharField(max_length=20, blank=True)
-    title_color = db_models.CharField(max_length=20, blank=True)
-    icon_color = db_models.CharField(max_length=20, blank=True)
-    discover_text_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TEXT_COLOR)
-    discover_navigation_color = db_models.CharField(max_length=20, blank=True)
-    background_color = db_models.CharField(max_length=20, blank=True)
+    background_image = db_models.ImageField(upload_to=settings.LEARNER_DASHBOARD_BACKGROUND_IMAGE, blank=True)
+    logo_image = db_models.ImageField(upload_to=settings.LEARNER_DASHBOARD_LOGO_IMAGE, blank=True)
+    rule_color = db_models.CharField(settings.LEARNER_DASHBOARD_RULE_COLOR, max_length=20, blank=True)
+    icon_color = db_models.CharField(settings.LEARNER_DASHBOARD_ICON_COLOR, max_length=20, blank=True)
+    discover_title_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TITLE_COLOR)
+    discover_author_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_AUTHOR_COLOR)
+    discover_rule_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_RULE_COLOR)
+    background_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
 
     TYPES = (
         (u'1', u'Normal'),
@@ -422,6 +422,9 @@ class LearnerDashboard(db_models.Model):
     title = db_models.CharField(blank=True, max_length=80)
     description = db_models.CharField(blank=True, max_length=5000)
 
+    title_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TITLE_COLOR)
+    description_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_DESCRIPTION_COLOR)
+
     client_id = db_models.IntegerField(blank=False, unique=True)
     course_id = db_models.CharField(blank=False, max_length=500)
 
@@ -431,12 +434,12 @@ class LearnerDashboardTile(db_models.Model):
     title = db_models.CharField(blank=True, max_length=40)
     link = db_models.CharField(blank=False, max_length=500)
     position = db_models.IntegerField(blank=False, default=100)
-    background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND, blank=True)
+    background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND_IMAGE, blank=True)
     note = db_models.CharField(blank=True, max_length=40)
 
-    label_color = db_models.CharField(max_length=20, default=settings.LABEL_COLOR, blank=True)
-    title_color = db_models.CharField(max_length=20, default=settings.TITLE_COLOR, blank=True)
-    note_color = db_models.CharField(max_length=20, default=settings.NOTE_COLOR, blank=True)
+    label_color = db_models.CharField(max_length=20, default=settings.TILE_LABEL_COLOR, blank=True)
+    title_color = db_models.CharField(max_length=20, default=settings.TILE_TITLE_COLOR, blank=True)
+    note_color = db_models.CharField(max_length=20, default=settings.TILE_NOTE_COLOR, blank=True)
     tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
@@ -458,18 +461,6 @@ class LearnerDashboardDiscovery(db_models.Model):
     title = db_models.CharField(max_length=5000)
     author = db_models.CharField(blank=True, max_length=5000)
     position = db_models.IntegerField(default=100)
-
-    learner_dashboard = db_models.ForeignKey(
-        'LearnerDashboard',
-        on_delete=db_models.CASCADE,
-    )
-
-class LearnerDashboardResource(db_models.Model):
-
-    title = db_models.CharField(blank=True, max_length=20)
-    description = db_models.CharField(blank=True, max_length=40)
-    link = db_models.CharField(blank=True, max_length=500)
-    file = db_models.FileField(upload_to=settings.RESOURCES, blank=True)
 
     learner_dashboard = db_models.ForeignKey(
         'LearnerDashboard',

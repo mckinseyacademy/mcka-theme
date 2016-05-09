@@ -12,10 +12,10 @@
     .row
       .large-8.columns.dash-programs
         -if branding
-          %h3{style: "{% if branding and branding.title_color %} color:#{branding.title_color}{% endif %}"}= learner_dashboard.title
+          %h3{style: "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
         -else
           %h3= learner_dashboard.title
-        %p= learner_dashboard.description
+        %p{style: "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
         .row
           -for tile in learner_dashboard_tiles
             .learner-program
@@ -28,14 +28,14 @@
                 %a{href: "#{tile.link}", target:"{% if tile.get_tile_type_display == 'Article' %}_blank{% else %}_self{% endif %}"}
                   %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
                 .label-3{style: "color: #{tile.note_color};"}= tile.note
-      .large-4.columns.dash-widget{style: "{% if branding and branding.discover_navigation_color %} border-color:#{branding.discover_navigation_color}{% endif %}"}
-        %h5.label-4{style: "{% if branding and branding.discover_text_color %} color: #{branding.discover_text_color};{% endif %}"} FOR DISCOVERY
+      .large-4.columns.dash-widget{style: "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
+        %h5.label-4{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} FOR DISCOVERY
         -for item in discovery_items
           .learner-info
             %a{href:"#{item.link}", target: "_blank"}
-              %p{style: "{% if branding and branding.discover_text_color %} color: #{branding.discover_text_color};{% endif %}"}= item.title
+              %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
             %h5
-              %span{style: "{% if branding and branding.discover_text_color %} color: #{branding.discover_text_color};{% endif %}"}= item.author
+              %span{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
 
 - block footer
 
