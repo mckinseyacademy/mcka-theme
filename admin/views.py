@@ -4344,7 +4344,7 @@ class company_info_api(APIView):
                 invoicingDetails.city = data['invoicing'][0]['city'].strip()
                 invoicingDetails.state = data['invoicing'][0]['state'].strip()
                 invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
-                invoicingDetails.country = data['invoicing'][0]['country'].strip()
+                invoicingDetails.country = data['invoicing'][0]['country_fullname'].strip()
                 invoicingDetails.po = data['invoicing'][0]['po'].strip()
                 invoicingDetails.save()
             else:
@@ -4356,11 +4356,102 @@ class company_info_api(APIView):
                 invoicingDetails.city = data['invoicing'][0]['city'].strip()
                 invoicingDetails.state = data['invoicing'][0]['state'].strip()
                 invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
-                invoicingDetails.country = data['invoicing'][0]['country'].strip()
+                invoicingDetails.country = data['invoicing'][0]['country_fullname'].strip()
                 invoicingDetails.po = data['invoicing'][0]['po'].strip()
                 invoicingDetails.save()
         response['flag'] = flag
         return Response(response)
 
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def download_company_info(request, company_id):
 
+    client = Client.fetch(company_id)
+    name = vars(client)['display_name']
+    requestParams = {}
+    requestParams['organizations'] = company_id
+    participants = user_api.get_filtered_users(requestParams)
+    numberParticipants = participants['count']
+    activeCourses = '-'
+    
+    invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
+    invoicing = {}
+    if len(invoicingDetails):
+        invoicing['full_name'] = invoicingDetails[0].full_name
+        invoicing['title'] = invoicingDetails[0].title
+        invoicing['address1'] = invoicingDetails[0].address1
+        invoicing['address2'] = invoicingDetails[0].address2
+        invoicing['city'] = invoicingDetails[0].city
+        invoicing['state'] = invoicingDetails[0].state
+        invoicing['postal_code'] = invoicingDetails[0].postal_code
+        invoicing['country'] = invoicingDetails[0].country
+        invoicing['po'] = invoicingDetails[0].po
+        for key,value in invoicing.items():
+            if invoicing[key].strip() == '':
+                invoicing[key] = '-'
+    else:
+        invoicing['full_name'] = '-'
+        invoicing['title'] = '-'
+        invoicing['address1'] = '-'
+        invoicing['address2'] = '-'
+        invoicing['city'] = '-'
+        invoicing['state'] = '-'
+        invoicing['postal_code'] = '-'
+        invoicing['country'] = '-'
+        invoicing['po'] = '-'
+
+    contacts= []
+    companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
+    if len(companyContacts) > 0:
+        for companyContact in companyContacts:
+            contact = {}
+            contact_type = companyContact.contact_type
+            contact['type'] = CompanyContact.get_contact_type(int(contact_type))
+            contact['type_id'] = contact_type
+            contact['type_info'] = CompanyContact.get_type_description(contact_type)
+            contact['full_name'] = companyContact.full_name
+            contact['title'] = companyContact.title
+            contact['email'] = companyContact.email
+            contact['phone'] = companyContact.phone
+            for key,value in contact.items():
+                if contact[key].strip() == '':
+                    contact[key] = '-'
+            contacts.append(contact)
+    else:
+        for i in range(4):
+            contact_type = CompanyContact.get_contact_type(i)
+            type_description = CompanyContact.get_type_description(str(i))
+            contact = {}
+            contact['type'] = contact_type
+            contact['type_id'] = i
+            contact['type_info'] = type_description
+            contact['full_name'] = '-'
+            contact['title'] = '-'
+            contact['email'] = '-'
+            contact['phone'] = '-'
+            contacts.append(contact)
+
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + name.replace(' ', '_') + '_info.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([name])
+    writer.writerow(['Total participants', numberParticipants])
+    writer.writerow(['Active courses', activeCourses])
+    writer.writerow([])
+    writer.writerow(['INVOICING DETAILS'])
+    writer.writerow(['Full name', invoicing['full_name']])
+    writer.writerow(['Title', invoicing['title']])
+    writer.writerow(['Invoicing address', invoicing['address1'], invoicing['address2'], invoicing['city'], invoicing['state'], invoicing['postal_code'], invoicing['country'].encode("utf-8")])
+    writer.writerow(['PO #', invoicing['po']])
+    writer.writerow([])
+    writer.writerow(['CONTACTS'])
+    for contact in contacts:
+        writer.writerow([contact['type'], contact['full_name']])
+        writer.writerow(['Title', contact['title']])
+        writer.writerow(['Email', contact['email']])
+        writer.writerow(['Phone', contact['phone']])
+        writer.writerow([])
+
+    return response

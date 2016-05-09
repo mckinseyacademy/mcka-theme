@@ -95,7 +95,7 @@
                       %input.postalCodeInput{:type => "text", :value => '#{invoicing.postal_code}', :name => "postal_code" }
                   .large-6.columns
                     %label.countryLabel Country
-                    %input.countryInput{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2", :data-country-short => '#{invoicing.country}' }
+                    %input.countryInput{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2", :data-country-long => '#{invoicing.country}' }
                     %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
                 .row
                   .large-6.columns
@@ -167,4 +167,4 @@
                   .button.small.radius.disabled.contactsSaveButton Save Changes
                   %a.contactsCancelEdit{:href => '#', :target => '_self'} Cancel
           #exportCompanyInfoButton.companyInfoTopic
-            %a.button.radius.small Export Company Info
+            %a.button.radius.small{:href => '/admin/api/companies/#{company.id}/export_info', :target => '_self'}> Export Company Info
