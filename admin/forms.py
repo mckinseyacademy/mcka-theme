@@ -227,19 +227,19 @@ class BrandingSettingsForm(forms.ModelForm):
             'background_color',
             'icon_color',
             'logo_image',
-            'navigation_color',
-            'title_color',
-            'client_id',
-            'discover_text_color',
-            'discover_navigation_color'
+            'rule_color',
+            'discover_title_color',
+            'discover_author_color',
+            'discover_rule_color',
+            'client_id'
         ]
         widgets = {
             'background_color': forms.TextInput(attrs={'type': 'color'}),
+            'rule_color': forms.TextInput(attrs={'type': 'color'}),
             'icon_color': forms.TextInput(attrs={'type': 'color'}),
-            'navigation_color': forms.TextInput(attrs={'type': 'color'}),
-            'title_color': forms.TextInput(attrs={'type': 'color'}),
-            'discover_text_color': forms.TextInput(attrs={'type': 'color'}),
-            'discover_navigation_color': forms.TextInput(attrs={'type': 'color'})
+            'discover_title_color': forms.TextInput(attrs={'type': 'color'}),
+            'discover_author_color': forms.TextInput(attrs={'type': 'color'}),
+            'discover_rule_color': forms.TextInput(attrs={'type': 'color'})
         }
 
 class DiscoveryContentCreateForm(forms.ModelForm):

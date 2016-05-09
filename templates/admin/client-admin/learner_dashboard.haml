@@ -27,23 +27,15 @@
               });
           }
 
-          $('#title').on('input', function() {
-              $('#unchangedLearnerDashboard').css("display", "none");
-              $('#saveLearnerDashboard').css("display", "inline");
-          });
-
-          $('#description').on('input', function() {
-              $('#unchangedLearnerDashboard').css("display", "none");
-              $('#saveLearnerDashboard').css("display", "inline");
-          });
-
           $('#saveLearnerDashboard').click(function(){
               var headers = {
                   'X-CSRFToken': $.cookie('apros_csrftoken')
               }
               var data = {
                   title: $("input[name=title_ld]").val(),
-                  description: $("textarea[name=description]").val()
+                  description: $("textarea[name=description]").val(),
+                  title_color: $("input[name=title_color]").val(),
+                  description_color: $("input[name=description_color]").val(),
               }
               if ('{{learner_dashboard_id}}' != 'None')
                 data.positions = $('#sortable').sortable('toArray');
@@ -91,9 +83,19 @@
           %input#title{:type => 'text', :value => '#{title}', :name => 'title_ld', :maxlength => '80'}
       .row
         .large-2.columns
+          %label.inline Title color
+        .large-10.columns
+          %input#text_color{:type => 'color', :value => '#{title_color}', :name => 'title_color'}
+      .row
+        .large-2.columns
           %label.inline Description
         .large-10.columns
           %textarea#description{:value => '#{description}', :name => 'description', :maxlength => '5000', :rows => 7}= description
+      .row
+        .large-2.columns
+          %label.inline Description color
+        .large-10.columns
+          %input#desc_color{:type => 'color', :value => '#{description_color}', :name => 'description_color'}
       - if learner_dashboard_id
         .row
           .large-2.columns
@@ -126,3 +128,11 @@
           .large-12.columns
             %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
 
+- block js_snippets
+  :javascript
+    $(document).ready(function() {
+     $('#title,#description,#text_color,#desc_color').change(function() {
+        $('#unchangedLearnerDashboard').css("display", "none");
+        $('#saveLearnerDashboard').css("display", "inline");
+     });
+    });

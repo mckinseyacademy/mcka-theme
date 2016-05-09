@@ -540,6 +540,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             instance = LearnerDashboard(
                 title = request.POST['title'],
                 description = request.POST['description'],
+                title_color = request.POST['title_color'],
+                description_color = request.POST['description_color'],
                 client_id = client_id, 
                 course_id = course_id
             )
@@ -547,6 +549,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
         else:
             instance.title = request.POST['title']
             instance.description = request.POST['description']
+            instance.title_color = request.POST['title_color']
+            instance.description_color = request.POST['description_color']
             instance.save()
         
             myDict = dict(request.POST.iterlists())
@@ -563,6 +567,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'learner_dashboard_id': instance.id,
             'title': instance.title,
             'description': instance.description,
+            'title_color': instance.title_color,
+            'description_color': instance.description_color,
             'learner_dashboard_tiles': learner_dashboard_tiles,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
         }
@@ -613,9 +619,9 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         form = LearnerDashboardTileForm(instance=instance)
 
     default_colors = {
-        'label': settings.LABEL_COLOR,
-        'note': settings.NOTE_COLOR,
-        'title': settings.TITLE_COLOR,
+        'label': settings.TILE_LABEL_COLOR,
+        'note': settings.TILE_NOTE_COLOR,
+        'title': settings.TILE_TITLE_COLOR,
         'background': settings.TILE_BACKGROUND_COLOR,
     }
 
