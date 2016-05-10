@@ -180,6 +180,7 @@ checkForStatus = function(data, form) {
         else {
           if (data.emails == 'true') {
             $("#confirmation_screen .downloadActivationLinksConfirmationScreen" ).hide();
+            $('#confirmation_screen .upload_message').text(data.message);
             $("#confirmation_screen .sendActivationLinksConfirmationScreen" ).show();
           }
           else {
