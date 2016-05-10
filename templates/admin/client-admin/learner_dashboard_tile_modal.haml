@@ -45,6 +45,12 @@
   .row
     .small-3.columns= form.background_image.label_tag
     .small-9.columns= form.background_image
+  .row
+    - if form.background_image.value
+      .small-3.columns Current image:
+      .small-9.columns
+        %img{src: "/company_images/#{form.background_image.value}", width:'100px'}
+  %br
   .div{id: "colorInputs"}
     .row
       .small-3.columns
