@@ -582,6 +582,33 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
 
     return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@client_admin_access
+def client_admin_course_learner_dashboard_preview(request, client_id, course_id):
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    except:
+        redirect_url = '/'
+        return HttpResponseRedirect(redirect_url)
+
+    try:
+        branding = BrandingSettings.objects.get(client_id=client_id)
+    except:
+        branding = None
+
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+
+    data ={
+        'client_id': client_id,
+        'course_id': course_id,
+        'learner_dashboard': learner_dashboard,
+        'learner_dashboard_tiles': learner_dashboard_tiles,
+        'discovery_items': discovery_items,
+        'branding': branding,
+        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+    }
+    return render(request, 'admin/client-admin/learner_dashboard_preview.haml', data)
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)

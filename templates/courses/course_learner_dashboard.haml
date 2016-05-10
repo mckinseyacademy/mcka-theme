@@ -11,10 +11,7 @@
   #home-courses
     .row
       .large-8.columns.dash-programs
-        -if branding
-          %h3{style: "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
-        -else
-          %h3= learner_dashboard.title
+        %h3{style: "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
         %p{style: "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
         .row
           -for tile in learner_dashboard_tiles
