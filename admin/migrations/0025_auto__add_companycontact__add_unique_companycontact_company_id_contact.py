@@ -8,6 +8,37 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'CompanyContact'
+        db.create_table(u'admin_companycontact', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('company_id', self.gf('django.db.models.fields.IntegerField')(db_index=True)),
+            ('contact_type', self.gf('django.db.models.fields.CharField')(max_length=1)),
+            ('full_name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('email', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('phone', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+        ))
+        db.send_create_signal(u'admin', ['CompanyContact'])
+
+        # Adding unique constraint on 'CompanyContact', fields ['company_id', 'contact_type']
+        db.create_unique(u'admin_companycontact', ['company_id', 'contact_type'])
+
+        # Adding model 'CompanyInvoicingDetails'
+        db.create_table(u'admin_companyinvoicingdetails', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('company_id', self.gf('django.db.models.fields.IntegerField')(unique=True, db_index=True)),
+            ('full_name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('address1', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('address2', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('city', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('state', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('postal_code', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('country', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('po', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+        ))
+        db.send_create_signal(u'admin', ['CompanyInvoicingDetails'])
+
 
         # Changing field 'LearnerDashboardDiscovery.title'
         db.alter_column(u'admin_learnerdashboarddiscovery', 'title', self.gf('django.db.models.fields.CharField')(max_length=5000, null=True))
@@ -19,23 +50,24 @@ class Migration(SchemaMigration):
         db.alter_column(u'admin_learnerdashboarddiscovery', 'link', self.gf('django.db.models.fields.URLField')(max_length=200, null=True))
 
     def backwards(self, orm):
+        # Removing unique constraint on 'CompanyContact', fields ['company_id', 'contact_type']
+        db.delete_unique(u'admin_companycontact', ['company_id', 'contact_type'])
 
-        # User chose to not deal with backwards NULL issues for 'LearnerDashboardDiscovery.title'
-        raise RuntimeError("Cannot reverse this migration. 'LearnerDashboardDiscovery.title' and its values cannot be restored.")
-        
-        # The following code is provided here to aid in writing a correct migration
+        # Deleting model 'CompanyContact'
+        db.delete_table(u'admin_companycontact')
+
+        # Deleting model 'CompanyInvoicingDetails'
+        db.delete_table(u'admin_companyinvoicingdetails')
+
+
         # Changing field 'LearnerDashboardDiscovery.title'
-        db.alter_column(u'admin_learnerdashboarddiscovery', 'title', self.gf('django.db.models.fields.CharField')(max_length=5000))
+        db.alter_column(u'admin_learnerdashboarddiscovery', 'title', self.gf('django.db.models.fields.CharField')(default='', max_length=5000))
 
         # Changing field 'LearnerDashboardDiscovery.author'
         db.alter_column(u'admin_learnerdashboarddiscovery', 'author', self.gf('django.db.models.fields.CharField')(default='', max_length=5000))
 
-        # User chose to not deal with backwards NULL issues for 'LearnerDashboardDiscovery.link'
-        raise RuntimeError("Cannot reverse this migration. 'LearnerDashboardDiscovery.link' and its values cannot be restored.")
-        
-        # The following code is provided here to aid in writing a correct migration
         # Changing field 'LearnerDashboardDiscovery.link'
-        db.alter_column(u'admin_learnerdashboarddiscovery', 'link', self.gf('django.db.models.fields.URLField')(max_length=200))
+        db.alter_column(u'admin_learnerdashboarddiscovery', 'link', self.gf('django.db.models.fields.URLField')(default='', max_length=200))
 
     models = {
         u'accounts.remoteuser': {
@@ -122,6 +154,30 @@ class Migration(SchemaMigration):
             'link_name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'link_url': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+        },
+        u'admin.companycontact': {
+            'Meta': {'unique_together': "(['company_id', 'contact_type'],)", 'object_name': 'CompanyContact'},
+            'company_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
+            'contact_type': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'email': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'phone': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
+        },
+        u'admin.companyinvoicingdetails': {
+            'Meta': {'object_name': 'CompanyInvoicingDetails'},
+            'address1': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'address2': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'company_id': ('django.db.models.fields.IntegerField', [], {'unique': 'True', 'db_index': 'True'}),
+            'country': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'po': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'postal_code': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'state': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
         },
         u'admin.dashboardadminquickfilter': {
             'Meta': {'ordering': "('date_created',)", 'object_name': 'DashboardAdminQuickFilter'},
