@@ -7,7 +7,12 @@
     #mainCompanyDetailsDataContainer{:data-id => '#{company.id}'}
       #companyDetailsTopDataWrapper
         .row.companyDetailsCompanyName
-          ={company.name}
+          .companyDetailsTextName
+            ={company.name}
+          %i.fa.fa-pencil.editCompanyNameIcon
+          .companyDetailsInputName{:style => 'display:none;'}
+            %input{:type => 'text', :value => '#{company.name}'}
+
         .row.companyDetailsNumberParticipants
           %p Total Participants: ={company.numberParticipants}
         .row.companyDetailsNumberActiveCourses

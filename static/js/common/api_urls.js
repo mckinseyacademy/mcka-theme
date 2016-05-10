@@ -14,5 +14,6 @@ var ApiUrls = {
   },
   course_details: '/admin/api/courses',
   email_templates: '/admin/api/email-templates',
-  email: '/admin/api/email'
+  email: '/admin/api/email',
+  company: '/admin/api/companies/'
 }

@@ -96,6 +96,14 @@
 	min-width: 760px;
 	max-width: 80%;
 	padding-bottom: 30px;
+
+	.companyDetailsTextName, .editCompanyNameIcon{
+		display: inline-block;
+	}
+
+	.companyDetailsInputName{
+		display: inline-block;
+	}
 }
 
 .companyDetailsCompanyName

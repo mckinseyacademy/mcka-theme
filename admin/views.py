@@ -4455,3 +4455,16 @@ def download_company_info(request, company_id):
         writer.writerow([])
 
     return response
+
+
+class company_edit_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, company_id):
+        try:
+            client = Client.update_and_fetch(company_id, request.DATA)
+        except ApiError as err:
+            error = err.message
+            return Response({"status":"error", "message": error})
+        return Response({"status":"ok", "message": "successfully changed company name!"})
+
