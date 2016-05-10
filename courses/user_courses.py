@@ -212,7 +212,7 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
 
     if static_tab_info:
         for idx, lesson in enumerate(course.chapters, start=1):
-            lesson_description = static_tab_info.get("lesson{}".format(idx), None)
+            lesson_description = load_static_tabs(course.id, "lesson{}".format(idx))
             if lesson_description:
                 lesson.description = lesson_description.content
 

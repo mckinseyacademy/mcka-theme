@@ -14,6 +14,7 @@ from api_client.group_api import get_users_in_group
 from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES, workgroup_models
+from api_client.api_error import ApiError
 from admin.models import WorkGroup
 from admin.controller import load_course, get_group_activity_xblock, is_group_activity, MINIMAL_COURSE_DEPTH
 from admin.models import ReviewAssignmentGroup
@@ -357,12 +358,28 @@ def group_project_location(group_project, sequential_id=None):
 
     return activity, usage_id
 
-def load_static_tabs(course_id):
-    static_tabs = get_static_tab_context()
-    if static_tabs is None:
-        static_tabs = course_api.get_course_tabs(course_id)
-        set_static_tab_context(static_tabs)
+def load_static_tabs(course_id, name=None):
+    if name: 
+        static_tabs = get_static_tab_context()
+        if static_tabs is None:
+            static_tabs = load_static_tabs_api(course_id, None)
+        static_tab = get_static_tab_context(name)
+        if getattr(static_tab, 'content', None) is None and getattr(static_tab, 'name', None):
+            try: 
+                static_tab = course_api.get_course_tab(course_id, name=static_tab.name)
+                set_static_tab_context(static_tab, static_tab.name.lower())
+            except ApiError as e:
+                pass
+        return static_tab
+    else:
+        static_tabs = get_static_tab_context()
+        if static_tabs is None:
+            static_tabs = load_static_tabs_api(course_id, True)
+        return static_tabs
 
+def load_static_tabs_api(course_id, details):
+    static_tabs = course_api.get_course_tabs(course_id, details=details)
+    set_static_tab_context(static_tabs)
     return static_tabs
 
 def round_to_int(value):
@@ -551,8 +568,7 @@ def choose_random_ta(course_id):
     return ta_user
 
 def load_lesson_estimated_time(course):
-    static_tabs = load_static_tabs(course.id)
-    estimated_time = static_tabs.get("estimated time", None)
+    estimated_time = load_static_tabs(course.id, name="estimated time")
 
     if estimated_time:
         estimates = [s.strip() for s in estimated_time.content.splitlines()]

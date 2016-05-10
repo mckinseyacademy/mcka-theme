@@ -92,9 +92,8 @@ def course_overview(request, course_id):
 @login_required
 @check_user_course_access
 def course_syllabus(request, course_id):
-    static_tabs = load_static_tabs(course_id)
     data = {
-        "syllabus": static_tabs.get("syllabus", None)
+        "syllabus": load_static_tabs(course_id, name="syllabus")
     }
     return render(request, 'courses/course_syllabus.haml', data)
 
@@ -457,9 +456,8 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     course.group_work_enabled = feature_flags.group_work
-    # static_tabs = load_static_tabs(course_id)
-    # course_run = static_tabs.get("course run", None)
-    course_run = None
+    course_run = load_static_tabs(course_id, name="course run")
+
     if course_run:
         try:
             course.course_run = json.loads(course_run.content)
@@ -555,18 +553,16 @@ def course_progress_v2(request, course_id):
 @login_required
 @check_user_course_access
 def course_resources(request, course_id):
-    static_tabs = load_static_tabs(course_id)
     data = {
-        "resources": static_tabs.get("resources", None)
+        "resources": load_static_tabs(course_id, name="resources")
     }
     return render(request, 'courses/course_resources.haml', data)
 
 @login_required
 @check_user_course_access
 def course_resources_learner_dashboard(request, course_id):
-    static_tabs = load_static_tabs(course_id)
     data = {
-        "resources": static_tabs.get("resources", None)
+        "resources": load_static_tabs(course_id, name="resources")
     }
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
 
@@ -845,9 +841,8 @@ def add_lesson_note(request, course_id, chapter_id):
 @login_required
 @check_user_course_access
 def course_article(request, course_id):
-    static_tabs = load_static_tabs(course_id)
     data = {
-        "article": static_tabs.get("article", None)
+        "article": load_static_tabs(course_id, name="article")
     }
     return render(request, 'courses/course_article.haml', data)
 

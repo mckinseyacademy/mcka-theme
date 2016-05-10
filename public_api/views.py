@@ -50,8 +50,7 @@ def user_course(request):
     overview = course_api.get_course_overview(course.id)
     proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
     social = get_social_metrics(course.id, request.user.id)
-    static_tabs = load_static_tabs(course.id)
-    article = static_tabs.get("article", None)
+    article = load_static_tabs(course.id, "article")
 
     data = {
         "name": course.name,
