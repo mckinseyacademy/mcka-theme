@@ -3930,11 +3930,21 @@ def client_admin_branding_settings_create_edit(request, client_id, course_id):
     else:
         form = BrandingSettingsForm(instance=instance)
 
+    default_colors = {
+        'rule_color':settings.LEARNER_DASHBOARD_RULE_COLOR,
+        'icon_color':settings.LEARNER_DASHBOARD_ICON_COLOR,
+        'discover_title_color':settings.DISCOVER_TITLE_COLOR,
+        'discover_author_color':settings.DISCOVER_AUTHOR_COLOR,
+        'discover_rule_color':settings.DISCOVER_RULE_COLOR,
+        'background_color':settings.LEARNER_DASHBOARD_BACKGROUND_COLOR,
+    }
+
     return render(request, 'admin/client-admin/course_branding_settings_create_edit.haml', {
         'form': form,
         'instance': instance,
         'client_id': client_id,
         'course_id': course_id,
+        'default_colors': default_colors,
         })
 
 
