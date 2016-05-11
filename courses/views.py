@@ -7,7 +7,8 @@ import re
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, EmailMultiAlternatives
-from django.http import HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
@@ -20,6 +21,7 @@ from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
+from api_client.workgroup_models import Submission
 from lib.authorization import permission_group_required
 from lib.util import DottableDict
 from main.models import CuratedContentItem
@@ -217,6 +219,7 @@ def _render_group_work(request, course, project_group, group_project, ld=False):
         "current_activity": activity,
         "ta_user": ta_user,
         "group_work_url": request.path_info,
+        "notify_group_on_submission_url": reverse('notify_group_on_submission', args=[course.id, project_group.id])
     }
     if select_stage:
         data['select_stage'] = select_stage
@@ -797,6 +800,43 @@ def contact_member(request, course_id, group_id):
             json.dumps({"message": _("Message not sent. Email is not valid")}), #replace with another message
             content_type='application/json'
         )
+
+@login_required
+@check_user_course_access
+def notify_group_on_submission(request, course_id, group_id):
+    user = user_api.get_user(request.user.id)
+    group = WorkGroup.fetch_with_members(group_id)
+    submission_map = workgroup_api.get_latest_workgroup_submissions_by_id(group.id, Submission)
+    submission_id = request.POST['submission_id']
+    submission = submission_map.get(submission_id)
+    if submission is None:
+        return HttpResponseNotFound(
+            json.dumps({"message": _("Submission not found.")}),
+            content_type='application/json'
+        )
+
+    email_from = settings.APROS_EMAIL_SENDER
+    email_to = [student.email for student in group.members]
+    email_subject = _("We've received your submission!")
+    email_content = _("Thank you for your group work submission. "
+                      "We received {file_name} uploaded by {user_full_name} on {submission_dt}. "
+                      "You may replace this file at any time before the group work deadline.").format(
+                          file_name=submission.document_filename,
+                          user_full_name=user.formatted_name,
+                          submission_dt=submission.modified.strftime('%B %d, %I:%m %p')
+                      )
+    try:
+        email = EmailMessage(email_subject, email_content, email_from, email_to)
+        email.send(fail_silently=False)
+    except:
+        return HttpResponseServerError(
+            json.dumps({"message": _("There was a problem; message not sent.")}),
+            content_type='application/json'
+        )
+    return HttpResponse(
+        json.dumps({"message": _("Message successfully sent.")}),
+        content_type='application/json'
+    )
 
 @login_required
 @check_user_course_access

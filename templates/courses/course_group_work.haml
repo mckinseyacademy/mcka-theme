@@ -132,6 +132,24 @@
         }
       });
 
+      // Notify group members about new file submission.
+      $(document).on('group_project_v2.submission.upload_complete', function(evt, xhr) {
+        var submissions = xhr.responseJSON.submissions;
+        for (submission_id in submissions) {
+          if (submissions.hasOwnProperty(submission_id)) {
+            $.ajax({
+              method: 'POST',
+              url: '{{ notify_group_on_submission_url }}',
+              dataType: 'json',
+              data: {
+                submission_id: submission_id,
+                csrfmiddlewaretoken: $.cookie('apros_csrftoken')
+              }
+            });
+          }
+        }
+      });
+
       $('#course-group-work').on('click', '.lesson-module-status', function(){
         $(document).trigger('select_stage', $(this).data('activate'));
       });
