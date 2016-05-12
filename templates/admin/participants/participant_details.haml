@@ -175,7 +175,8 @@
             .participantCompanyLabel.labelUniversal
               Company<sup>*</sup>
             .participantCompanyValue
-              %input{:type => "text", :value => '#{company_name}', :name => "company", :maxlength => "60"}
+              %input{:type => "text", :value => '#{company_name}', :data-id => '#{company_id}', :name => "company", :maxlength => "60", :data-old-id => '#{company_id}'}
+              %i.fa.fa-check-circle-o.correctInput
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               Gender

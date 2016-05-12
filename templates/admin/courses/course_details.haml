@@ -1,5 +1,9 @@
 - extends "admin/admin_layout.haml"
 
+- load staticfiles
+- block custom_js
+  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
+
 - block content 
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
@@ -42,7 +46,7 @@
                 #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                   .bulkButtonWrapper
                     .hiddenButtonSplitModifier.bulkButton.disabled
-                    %a.emailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
+                    %a.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
                       Email Selected Participants
                     %a.button.bulkDropdownIcon.bulkButton.disabled
                       .fa.fa-chevron-down
@@ -80,5 +84,55 @@
       .button.saveChanges
         Save Changes
       %a.cancelChanges{:href => "#"} Cancel
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
+  #courseDetailsBulkEmail.reveal-modal.medium{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
+    %h2.emailModalTitle
+    %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
+    .emailModalStatus
+    %hr
+    .row
+      .large-12.columns.courseModalDescription
+        Email selected participants
+    .emailModalContent
+      .row
+        .large-6.columns.participantFirstName
+          .fromEmailLabel.labelUniversal
+            From
+          .fromEmailValue
+            %input{:type => "text", :value => '', :name => "from_email", :maxlength => "128"}
+        .large-6.columns.participantLastName
+          .templateNameLabel.labelUniversal
+            Template
+          .templateControlButtons
+            %i.fa.fa-floppy-o.saveAsNewTemplate{:data-title => "Save as new template"}
+            %i.fa.fa-pencil-square-o.updateTemplate{:data-title => "Update selected template"}
+            %i.fa.fa-trash-o.removeTemplate{:data-title => "Remove selected template"}
+          .templateNameValue
+            %select{:name => 'template_id'}
+              %option{:value => "none"} None 
+              - for template in template_list
+                %option{:value => "#{template.pk}"} 
+                  =template.title
+      .row
+        .large-12.columns.emailSubject
+          .emailSubjectLabel.labelUniversal
+            Subject
+          .emailSubjectValue
+            %input{:type => "text", :value => '', :name => "subject", :maxlength => "256"}
+      .row
+        .large-12.columns.emailBody
+          .emailBodyLabel.labelUniversal
+            Body
+          .emailBodyTextarea
+            %textarea#email_editor
+    .row
+      .large-12.columns.emailModalControl
+        .button.sendEmail
+          Send Email
+        .buttonBlock
+          %a.previewEmail{:href => "#"} Preview email
+          %a.scheduleForLater{:href => "#"} Schedule for Later
+
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;

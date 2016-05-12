@@ -1,0 +1,91 @@
+.topPadding
+{
+	padding-top: 50px;
+}
+
+.bottomPadding
+{
+	padding-bottom: 20px;
+}
+
+.labelUniversal
+{
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+.inlineBlock
+{
+	display:inline-block;
+}
+
+.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content
+{
+	z-index:9999999999;
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.correctInput
+{
+	display: none;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translate(50%,-50%);
+    color:green;
+}
+
+#tooltip {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px;
+    white-space: nowrap;
+    background: white;
+}
+
+.cloned-header
+{
+	position: absolute;
+	font-size: 12px;
+	cursor: pointer;
+	background: whitesmoke;
+	border-collapse: separate;
+	border-spacing: 0;
+	table-layout: fixed;
+
+	tr
+	{
+		border-radius: 4px 0 0 0;
+	}
+
+	th
+	{
+		background-color: #f8f8f8;
+		box-sizing: content-box;
+		overflow: hidden;
+		white-space: normal;
+		border-bottom: 0;
+		border-top: 1px solid #ccc;
+		border-left: 1px solid #ccc;
+		display: table-cell;
+		line-height: 1.28571rem;
+		padding: .57143rem .71429rem .71429rem;
+		font-size: 1rem;
+		font-weight: bold;
+		color: #222;
+		text-align: left;
+		margin: 0;
+	}
+}
+
+.clonedHeaderContainer
+{
+	position: absolute;
+	width: 100%;
+	height: auto;
+	overflow-x: auto;
+	overflow-y: hidden;
+	z-index: 1;
+}

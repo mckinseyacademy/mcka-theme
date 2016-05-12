@@ -15,7 +15,13 @@
                     padding: 12px 10px;
                     .header-link {
                         font-size: 20px;
-                        margin-left: 15px;
+                        margin-left: 10px;
+                    }
+                    .header-link:hover {
+                        color: #b1c2cc;
+                    }
+                    a:visited{
+                        color: #b1c2cc;
                     }
                 }
             }
@@ -34,12 +40,12 @@
         width: 565px;
         padding-top: 10px;
         font-weight: bold;
-        font-size: 24px;
+        font-size: 22px;
         border-bottom: 1px solid $mckinsey-academy-bright-gray;
     }
 
     p {
-        width: 585px;
+        width: 587px;
         font-size: 14px;
         height: 100px;
         overflow: auto;
@@ -47,8 +53,8 @@
     }
 
     .row{
-        height: 440px;
-        width: 585px;
+        height: 450px;
+        width: 587px;
         margin: 0px;
         overflow: auto;
 
@@ -74,9 +80,13 @@
                 blockquote{
                     word-wrap: break-word;
                     overflow: auto;
-                    height: 75px;
+                    height: 70px;
                     margin: 15px 0px 0px;
                 }
+            }
+            .panel-program:hover{
+                opacity: 0.8 ;
+                filter: alpha(opacity=80); 
             }
         }
     }
@@ -84,6 +94,7 @@
 
 .dash-widget{
     max-height: 535px;
+    overflow: auto;
     width: 300px;
     margin-top: 46px;
     border-top: 1px solid $mckinsey-academy-bright-gray;
@@ -92,6 +103,7 @@
 
     .learner-info{
         margin: 15px 0;
+        word-wrap: break-word;
         h5 {
             font-weight: bold;
             font-size: 10px;
@@ -103,5 +115,12 @@
         p{
             font-size: 18px;
         }
+        p:hover{
+            color: #b1c2cc !important; 
+        }
     }
+}
+
+.tile-input {
+    margin-bottom: 16px;
 }

@@ -131,8 +131,17 @@ urlpatterns = patterns(
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),
 
+    url(r'^api/companies/(?P<company_id>[0-9]+)/company_info$', views.company_info_api.as_view(), name='company_info_api'),
+    url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
+    url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
+    url(r'^companies$', views.companies_list, name='companies_list'),
+
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),
 
-    url(r'^project/(?P<project_id>.*)/activity/(?P<activity_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments')
+    url(r'^project/(?P<project_id>.*)/activity/(?P<activity_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments'),
+
+    url(r'^api/email-templates$', views.email_templates_get_and_post_api.as_view(), name='email_templates_get_and_post_api'),
+    url(r'^api/email-templates/(?P<pk>[0-9]+)$', views.email_templates_put_and_delete_api.as_view(), name='email_templates_put_and_delete_api'),
+    url(r'^api/email', views.email_send_api.as_view(), name='email_send_api')
 )

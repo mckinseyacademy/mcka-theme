@@ -1,7 +1,17 @@
-- block current_content
-  .close-reveal-modal
-      %i.fa.fa-times-circle
+- extends "layout.haml"
+- load staticfiles
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Resources | McKinsey Academy")
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
+- block content
+  - include 'courses/course_learner_dashboard_branding.haml'
   #course-resources
-    %h1 Resources
-    - autoescape off
-      = resources.content
+    .row
+      .medium-10.medium-centered.columns.course-page
+        %h1 Resources
+        - autoescape off
+          = resources.content
+- block footer

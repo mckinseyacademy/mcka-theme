@@ -53,10 +53,11 @@
       %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/bbGrid.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/countrySelect.min.css' %}"}
-      %link{rel: "stylesheet", href: "{% static 'css/bbGridExtend.css' %}"}
-      %link{rel: "stylesheet", href: "{% static 'css/participants.css' %}"}
-      %link{rel: "stylesheet", href: "{% static 'css/courses.css' %}"}
-      %link{rel: "stylesheet", href: "{% static 'css/common.css' %}"}
+      -# %link{rel: "stylesheet", href: "{% static 'css/bbGridExtend.css' %}"}
+      -# %link{rel: "stylesheet", href: "{% static 'css/participants.css' %}"}
+      -# %link{rel: "stylesheet", href: "{% static 'css/courses.css' %}"}
+      -# %link{rel: "stylesheet", href: "{% static 'css/companies.css' %}"}
+      -# %link{rel: "stylesheet", href: "{% static 'css/common.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/dropzone.css' %}"}
 
     {% assets "css_core" %}
@@ -115,6 +116,9 @@
       %script{src: "/static/js/vendor/underscore.js"}
       %script{src: "/static/js/vendor/backbone.js"}
       %script{src: "/static/js/vendor/date.js"}
+
+    -# custom js libs
+    - block custom_js
     
   %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"}
     - block help_context
@@ -179,13 +183,14 @@
           %p We're sorry, McKinsey Academy is not compatible with your browser. Please update your browser to access course content. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
 
     - if request.user.is_authenticated
-      #intro_modal.reveal-modal.small{'data-reveal': None, 'data-options': "close_on_esc: false;"}
-        .close-reveal-modal
-          %i.fa.fa-times-circle
-        %h1 Welcome to McKinsey Academy
-        %p McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage. This video will walk you through our learner experience.
-        #mk-intro-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
-        %p.style-6 This product walkthrough can always be found in the page specific help <i class="fa fa-question-circle"></i>.
+      - ifequal request.session.learner_dashboard_id None
+        #intro_modal.reveal-modal.small{'data-reveal': None, 'data-options': "close_on_esc: false;"}
+          .close-reveal-modal
+            %i.fa.fa-times-circle
+          %h1 Welcome to McKinsey Academy
+          %p McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage. This video will walk you through our learner experience.
+          #mk-intro-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
+          %p.style-6 This product walkthrough can always be found in the page specific help <i class="fa fa-question-circle"></i>.
 
     -# jQuery-cookie
     - block jquery_cookie

@@ -1,0 +1,11 @@
+- extends "courses/course_main.haml"
+
+- block page_title
+  %title
+    = course.current_lesson.name
+    = _(" | Lessons | McKinsey Academy")
+
+- block content
+  %article.row
+    .medium-10.medium-centered.columns.course-page
+      - block current_content

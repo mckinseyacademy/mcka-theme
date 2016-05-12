@@ -209,12 +209,26 @@
 	bottom: 0;
 }
 
-#import_from_csv .modalLinks
+#import_from_csv .button-wrapper a
 {
 	bottom: 15%;
+	position: relative!important;
 }
 
 #import_from_csv label, .helptext
 {
 	display: none;
+}
+
+#import_from_csv .emailActivationWrapper
+{
+	padding-top: 20px;
+}
+#import_from_csv .emailActivation
+{
+	display: inline-block;
+}
+
+#activation-link-modal{
+	overflow-x: auto; 
 }

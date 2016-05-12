@@ -1,18 +1,16 @@
-- extends "courses/course_navigation.haml"
+- extends "courses/course_navigation_ld.haml"
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block current_content
+  - include 'courses/course_learner_dashboard_branding.haml'
   #course-lessons
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
-    %a.global-help{'data-reveal-id': 'mckinsey_help'}
-      %i.fa.fa-question-circle
     -if tile_type = 'module'
       .lesson-title
         %h1= course.current_module.name
     -else
       .lesson-title
-        %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
         %span.label-3.lesson-name= course.current_lesson.name
         %span.label-3.page-desc= course.current_lesson.description
       %h1
@@ -25,17 +23,19 @@
     -if tile_type != 'module'
       - include "courses/content_page/lesson_pager_ld.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
-    %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
+    %p.style-2 You have completed ={course.current_lesson.progress}% of ={course.current_lesson.name}
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
           %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
-            %a{href: "#{module.navigation_url}/learner_dashboard/lesson", class: "{% if module.is_current %}current{% endif %}"}
+            %a{href: "/learnerdashboard#{module.navigation_url}/lesson", class: "{% if module.is_current %}current{% endif %}"}
               Module ={module.index}:
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
+
+- block footer
 
 - block js_snippets
   :javascript

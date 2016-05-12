@@ -63,20 +63,26 @@ validateParticipantEmail = function() {
   if (this.liveSearchTimer) {
     clearTimeout(this.liveSearchTimer);
   }
-
-  this.liveSearchTimer = setTimeout(function() {
-    var userId = $('#participantsDetailsDataWrapper').attr('data-id');
-    var validationObject = $('.participantDetailsEditForm .participantEmailInput');
-    var checkMark = $('.participantEmail .checkMark');
-    var warningText = $('.participantEmail .warningText');
-    var options = {
-        url: ApiUrls.validate_participant_email,
-        data: {'email': validationObject[0].value, 'userId': userId},
-        type: "GET",
-        dataType: "json"
-      };
-    getValidation(options, checkMark, warningText, validationObject);
-  }, 1000)
+  var validationObject = $('.participantDetailsEditForm .participantEmailInput');
+  var checkMark = $('.participantEmail .checkMark');
+  if (SimpleEmailClientValidation(validationObject[0].value))
+  {
+    this.liveSearchTimer = setTimeout(function() {
+      var userId = $('#participantsDetailsDataWrapper').attr('data-id');
+      var warningText = $('.participantEmail .warningText');
+      var options = {
+          url: ApiUrls.validate_participant_email,
+          data: {'email': validationObject[0].value, 'userId': userId},
+          type: "GET",
+          dataType: "json"
+        };
+      getValidation(options, checkMark, warningText, validationObject);
+    }, 1000)
+  }
+  else
+  {
+    checkMark.hide();
+  }
 }
 
 
@@ -177,7 +183,7 @@ GetAutocompleteSource = function(url, thisToAppend, sourceName){
       url: url,
       type: "GET",
       dataType: "json",
-      timeout: 5000
+      timeout: 10000
     };
 
   options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
@@ -216,6 +222,7 @@ GenerateAutocompleteInput = function(source, input)
         inputField.val( ui.item.label );
         inputField.attr('data-id',ui.item.value);
         inputField.parent().find('.correctInput').show();
+        $(document).trigger('autocomplete_found', [inputField])
         return false;
       },
     search: function( event, ui ) {
@@ -227,11 +234,13 @@ GenerateAutocompleteInput = function(source, input)
             foundMatch = true;
             input.attr('data-id', source[i].value);
             input.parent().find('.correctInput').show();
+            $(document).trigger('autocomplete_found', [input])
           }
         }
         if(!foundMatch) {
           input.attr('data-id', '');
           input.parent().find('.correctInput').hide();
+          $(document).trigger('autocomplete_not_found', [input])
         }
       }
     });
@@ -255,27 +264,142 @@ function RecursiveJsonToHtml( data ) {
   htmlRetStr += '</ul >';    
   return( htmlRetStr );
 }
-InitializeTooltipOnPage = function()
+InitializeTooltipOnPage = function(onClickEnable)
 {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
-    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20 - parseInt($('body').css('margin-top'));
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 20;
     $("<div id='" + ID + "' style='display: none'/>").appendTo("body");
     var _show_value = "";
     showAt = function (e) {
         var ntop = e.pageY + OFFSET_Y, nleft = e.pageX + OFFSET_X;
         $("#" + ID).text(_show_value).css({
-            position: "absolute", top: ntop, left: nleft
+            position: "absolute", top: ntop, left: nleft, 'z-index':20000
         }).show();
     };
-    $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) {
+    if(onClickEnable)
+    {
+      var current_element = null;
+      $(document).on("click", "*[data-title]:not([data-title=''])", function (e) {
+        e.stopPropagation();
+        if($(this).hasClass(CLS_ON))
+        {
+          _show_value = ''
+          $(this).removeClass(CLS_ON);
+          $("#" + ID).hide();
+        } 
+        else
+        {
+          current_element = e.target;
+          _show_value = $(this).attr("data-title");
+          $(this).addClass(CLS_ON);
+          showAt(e);
+        }
+      });
+      $(document).on('click', function (e)
+      {
+        _show_value = ''
+        $(current_element).removeClass(CLS_ON);
+        $("#" + ID).hide();
+      });
+    }
+    else
+    {
+      $(document).on("mouseenter", "*[data-title]:not([data-title=''])", function (e) { 
         _show_value = $(this).attr("data-title");
         $(this).addClass(CLS_ON);
         showAt(e);
-    });
-    $(document).on("mouseleave", "." + CLS_ON, function (e) {
-        _show_value = ''
-        $(this).removeClass(CLS_ON);
-        $("#" + ID).hide();
-    });
-    if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+      });
+      $(document).on("mouseleave", "." + CLS_ON, function (e) {
+          _show_value = ''
+          $(this).removeClass(CLS_ON);
+          $("#" + ID).hide();
+      });
+      if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+    }
 }
+
+EmailTemplatesManager = function(method, pk, title, subject, body)
+{
+  var options = {
+    url: ApiUrls.email_templates,
+    type: method,
+    dataType: "json",
+    timeout: 5000
+  };
+  if ((method == 'POST') || (method == 'PUT'))
+  {
+    options.data = {'subject': subject, 'title':title, 'body':body};
+    if (method == 'PUT')
+      options.data['pk'] = pk;     
+  }
+  if ((method == 'PUT') || (method == 'DELETE'))
+  {
+    options.url += '/' + pk;
+  }
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+    .done(function(data) {
+      if (method == 'GET')
+        $(document).trigger('email_templates_fetched', [{'data':data}]);
+      else if (data['status'] = 'ok')
+      {
+        if (method == 'DELETE')
+        {
+          $(document).trigger('email_template_deleted', [{'pk':pk}]);
+        }
+        else if (method == 'PUT')
+        {
+          $(document).trigger('email_template_updated', [{'data':data['data']}]);
+        }
+        else if (method == 'POST')
+        {
+          $(document).trigger('email_template_added', [{'data':data['data']}]);
+        }
+      }
+    })
+    .fail(function(data) {
+      console.log("Ajax failed to fetch data");
+      console.log(data)
+    })
+    .always(function(data)
+    {
+      $(document).trigger('email_template_finished', [data]);
+    })
+}
+SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail)
+{
+  var dictionaryToSend = {'subject':subject, 'from_email': sender, 'to_email_list': to_email_list, 'email_body': body}
+  if (template_id)
+    dictionaryToSend['template_id'] = template_id;
+  var options = {
+    url: ApiUrls.email,
+    data: JSON.stringify(dictionaryToSend),
+    processData: false,
+    type: "POST",
+    dataType: "json"
+  };
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    if (data['status'] == 'ok')
+    {
+      data['type']= 'email';
+      if (previewEmail)
+        data['type']='preview';
+      $(document).trigger('email_sent', [data]);
+    }
+    })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data);
+    })
+  .always(function(data)
+  {
+    $(document).trigger('email_finished', [data]);
+  })
+}
+
+function SimpleEmailClientValidation(emailAddress) {
+    var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/i);
+    return pattern.test(emailAddress);
+};

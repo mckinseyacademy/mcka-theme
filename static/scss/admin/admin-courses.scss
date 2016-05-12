@@ -1,0 +1,299 @@
+#mainCoursesDetailContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+	max-width: 60%;
+}
+
+#coursesListTitle p
+{
+	font-size: xx-large;
+	margin-bottom: 20px;
+}
+
+#mainCoursesWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 760px;
+	max-width: 80%;
+}
+
+#coursesListViewGridBlock
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+	max-height: 28em;
+	position: relative;
+
+	.bbGrid-container
+	{
+		max-height: 28em;
+		overflow-y: scroll;
+	}
+
+	.bbGrid-grid.table
+	{
+		min-width: 760px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+#mainCoursesListBlockContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+
+	.bbGrid-search-bar
+	{
+		float: none!important;
+		display: inline-block;
+	}
+}
+
+#mainCourseDetailsWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+	display:table;
+	min-width: 900px;
+	max-width: 80%;
+
+	#courseDetailsDataWrapper
+	{
+		margin-top: 25px;
+		margin-left: 50px;
+
+		.courseDetailsHeader
+		{
+			margin-bottom: 20px!important;
+
+			.courseDetailsNameAndId{
+				color: #3384CA;
+				font-size: medium;
+				font-weight: bold;
+				float: left;
+			}
+
+			.courseDetailsTags{
+				float: right;
+			}
+		}
+		.courseDetailsBlocks{
+
+			.courseDetailsLeftBlock{
+				padding-left: 0px!important; 
+			}
+
+			.courseDetailsCenterBlock{
+				border-left: 1px solid #ccc;
+				border-right: 1px solid #ccc;
+				padding-left: 80px!important;
+			}
+
+			.courseDetailsRightBlock{
+				padding-left: 80px!important;
+			}
+		}
+	}
+}
+
+
+#courseMainDetailsContainerView
+{
+	margin-top: 50px;
+
+	.courseParticipantsButton
+	{
+		padding-left: 0px!important;
+	}
+}
+
+.courseDetailsViewGrid
+{
+	padding-left: 0px!important;
+
+	.bbGrid-grid
+	{
+		width: 100%;
+	}
+}
+
+#courseDetailsParticipantsGridWrapper{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 760px;
+
+	#courseDetailsParticipantsGrid{
+		margin: 0px;
+		padding: 0px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 100px;
+		max-height: 120em;
+		position: relative;
+		display: inherit;
+
+		.bbGrid-container
+		{
+			max-height: 120em;
+			overflow: auto;
+		}
+
+		.bbGrid-grid.table
+		{
+			min-width: 760px;
+		}
+	}
+}
+#courseDetailsMainContainer{
+
+	.bbGrid-search-bar{
+		float: none!important;
+		display: inline-block;
+	}
+
+	.courseDetailsTopic{
+		float: left;
+		display: none;
+		font-size: xx-large;
+		margin-bottom: 20px;
+	}
+}
+
+#coursesDownloadStatsButton
+{
+	float: right;
+	display: none;
+
+	.button{
+		background-color: #868685!important;
+	}
+}
+
+#courseBulkActionsMainContainer{
+
+	&.bulkActionsButtonContainer
+	{
+		float: right;
+		z-index: 1000;
+		position: relative;
+	}
+
+	.bulkButtonWrapper{
+		position: relative;
+
+		.bulkEmailSelectedParticipants{
+			z-index: 3;
+			position: relative;
+		}
+
+		.hiddenButtonSplitModifier{
+			position: absolute;
+			z-index: 2;
+			width: 100%;
+			height: 100%;
+		}
+
+		.bulkDropdownIcon{
+			z-index: 1;
+			position: relative;
+		}
+	}
+
+	#dropBulkCourse{
+		width: 100%;
+		position: absolute;
+
+		.submenuButtons{
+			width: 100%;
+			border-top: 3px solid white!important;
+			text-align: left!important;
+		}
+	}
+}
+
+
+#courseDetailsMainModal{
+	.courseModalTitle{
+		float: left;
+	}
+
+	.courseModalStatus{
+		float: right;
+		margin-top: 5px;
+	}
+
+	.courseModalDescription{
+		margin-bottom: 20px;
+	}
+
+	.courseModalContent
+	{
+		padding: 10px;
+	}
+
+	.courseModalControl .cancelChanges
+	{
+		margin-left: 15px;
+	}
+}
+
+.loadingIcon
+{
+	float: right;
+    margin-top: 5px;
+    margin-left: 5px;
+
+    &.hidden
+	{
+		display:none;
+	}
+}
+
+#courseDetailsBulkEmail{
+
+	.templateNameLabel{
+		display: inline-block;
+	}
+	
+	.templateControlButtons{
+		float: right;
+
+		i{
+			font-size: 24px;
+		    margin-right: 5px;
+		}
+	}
+
+	.emailModalControl{
+		padding: 15px;
+
+		a{
+			display: block;
+			margin-top: 7px;
+		}
+	}
+
+	.courseModalDescription{
+		margin-bottom: 15px;
+	}
+
+	.leftEmailButtonsContainer{
+		float: left;
+	}
+
+	.rightEmailButtonsContainer{
+		float: right;
+	}
+
+	.buttonBlock{
+		display:inline-block;
+		float: right;
+	}
+
+}

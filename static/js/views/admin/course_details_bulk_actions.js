@@ -1,4 +1,5 @@
 Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
+    emailTemplates: [],
     initialize: function(options){
      this.courses_details_view = options.courses_details_view;
      this.courseDetails = options.courseDetails;
@@ -32,6 +33,57 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         }
       });
       var statusUpdaterIntervalId = null;
+      _this.initializeEmailTemplateListeners();
+      EmailTemplatesManager('GET');
+      $('#courseBulkActionsMainContainer').on('click','.bulkEmailSelectedParticipants',function()
+      {
+        if ($(this).hasClass('disabled'))
+          return;
+        var modal = $('#courseDetailsBulkEmail');
+        modal.one('opened.fndtn.reveal', function(){
+          var modalContainer = modal.parent();
+          modalContainer.find('.reveal-modal-bg').attr('style', function(i,s) { return s + 'z-index: 1001 !important;' });
+          modal.attr('style', function(i,s) { return s + 'z-index: 1002 !important;' });
+          tinymce.init({
+            selector: '#email_editor',
+            theme: 'modern',
+            height: 500,
+            plugins: [
+              'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+              'searchreplace wordcount visualblocks visualchars code fullscreen',
+              'insertdatetime media nonbreaking save table contextmenu directionality',
+              'paste textcolor colorpicker textpattern imagetools'
+            ],
+            toolbar1: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | link image'
+          });
+        });
+        modal.off('change', '.templateNameValue select').on('change', '.templateNameValue select', function()
+        {
+          var editor = tinymce.get('email_editor');
+          var subject = modal.find('.emailSubjectValue input')
+          subject.val('')
+          editor.setContent('');
+          for (var i = 0; i < _this.emailTemplates.length; i++)
+          {
+            if (parseInt(_this.emailTemplates[i].pk) == parseInt($(this).val()))
+            {
+              subject.val(_this.emailTemplates[i].subject)
+              editor.setContent(_this.emailTemplates[i].body);
+              break;
+            }
+          }
+        });
+        modal.find('.templateNameValue select option:eq(0)').prop('selected', true);
+        modal.find('.fromEmailValue input').val("");
+        modal.find('.emailSubjectValue input').val("");
+        var controlButtonContainer = modal.find('.emailModalControl');
+        controlButtonContainer.find('.sendEmail').addClass('disabled');
+        modal.on('change', 'input', function()
+        {
+          controlButtonContainer.find('.sendEmail').removeClass('disabled');
+        })
+        modal.foundation('reveal', 'open');
+      });
       $('#courseBulkActionsMainContainer').on('click','.bulkUnenrollFromCourse',function()
       {
         if ($(this).hasClass('disabled'))
@@ -120,8 +172,18 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
           saveButton.text('Save Changes');
+          saveButton.addClass('disabled');
+          saveButton.attr('disabled','disabled');
+          $("#courseDetailsMainModal input[type='radio']").on('change', function(){
+            saveButton.removeClass('disabled');
+            saveButton.removeAttr('disabled');
+          })
           saveButton.off().on('click', function()
           {
+            if ($(this).hasClass('disabled'))
+              return;
+            saveButton.addClass('disabled');
+            saveButton.attr('disabled','disabled');
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
             var selectedVal = "";
             var selected = $("#courseDetailsMainModal input[type='radio']:checked");
@@ -206,8 +268,23 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
           saveButton.text('Enroll Participants');
+          saveButton.attr('disabled', 'disabled');
+          saveButton.addClass('disabled');
+          $(document).on('autocomplete_found', function(event, input){
+            var course_id = $('.enrollParticipantsCourse input').attr('data-id');
+            if (course_id){
+              input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').removeAttr('disabled');
+              input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').removeClass('disabled');
+            }
+          });
+          $(document).on('autocomplete_not_found', function(event, input){
+            input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').attr('disabled', 'disabled');
+            input.parents('#courseDetailsMainModal').find('.courseModalControl .saveChanges').addClass('disabled');
+          });
           saveButton.off().on('click', function()
           {
+            if ($(this).hasClass('disabled'))
+              return;
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
             var selectedVal = "";
             var selected = $('.enrollParticipantsStatus select');
@@ -249,9 +326,10 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             };
 
             options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+            saveButton.attr('disabled', 'disabled');
+            saveButton.addClass('disabled');
             $.ajax(options)
             .done(function(data) {
-              console.log(data);
               if (data['status'] == 'ok')
               {
                 statusUpdaterIntervalId = _this.courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id'], _this, course_id);
@@ -287,6 +365,8 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       }
       else {
         var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
+        saveButton.removeAttr('disabled');
+        saveButton.removeClass('disabled');
         saveButton.text("I'm Done");
         saveButton.off().on('click', function()
         {
@@ -294,5 +374,131 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         });
         $('#courseDetailsMainModal').foundation('reveal', 'open');
       }
+    },
+    initializeEmailTemplateListeners: function()
+    {
+      var _this = this;
+      var modal = $('#courseDetailsBulkEmail');
+      $(document).on('email_templates_fetched', function(event, data)
+      {
+        _this.emailTemplates = data.data;
+      });
+      $(document).on('email_template_deleted', function(event, data)
+      {
+        modal.find('.templateNameValue select').find('option[value="'+data.pk+'"]').remove();
+        modal.find('.templateNameValue select').trigger('change');
+        alert('Successfully deleted template!');
+      });
+      $(document).on('email_template_added', function(event, data)
+      {
+        modal.find('.templateNameValue select').append('<option value="'+data.data.pk+'">'+data.data.title+'</option>')
+        _this.emailTemplates.push(data.data);
+        modal.find('.templateNameValue select').trigger('change');
+        alert('Successfully added new template!');
+      });
+      $(document).on('email_template_updated', function(event, data)
+      {
+        modal.find('.templateNameValue select').find('option[value="'+data.data.pk+'"]').text(data.data.title);
+        for (var i = 0; i < _this.emailTemplates.length; i++)
+        {
+          if (parseInt(_this.emailTemplates[i].pk) == parseInt(data.data.pk))
+          {
+            _this.emailTemplates[i] = data.data;
+            break;
+          }
+        }
+        alert('Successfully updated template!');
+      });
+      $(document).on('email_sent', function(e, data)
+      {
+        if (data['type'] == 'preview')
+          alert('Successfully sent preview email!');
+        else
+        {
+          alert('Successfully sent email!');
+          modal.foundation('reveal', 'close');
+        }
+          
+      });
+
+      modal.on('closed.fndtn.reveal', function(){
+          tinymce.get('email_editor').setContent("");
+          tinymce.remove('#email_editor');
+      });
+      var controlButtonContainer = modal.find('.emailModalControl');
+      var templateButtonContainer = modal.find('.templateControlButtons');
+      controlButtonContainer.on('click', '.sendEmail', function(e)
+      {
+        if($(this).hasClass('disabled'))
+          return;
+        $(this).addClass('disabled');
+        var sender = modal.find('.fromEmailValue input').val();
+        var body = tinymce.get('email_editor').getContent();
+        var subject = modal.find('.emailSubjectValue input').val();
+        var bbgrid_table = _this.courses_details_view.coursesListDetailsViewGrid;
+        var selectedRowsIds = bbgrid_table.selectedRows;
+        var to_email_list = [];
+        for (var i = 0; i<selectedRowsIds.length; i++ )
+        {
+          to_email_list.push(bbgrid_table.collection.get(selectedRowsIds[i]).attributes.email)
+        }
+        var  template_id = modal.find('.templateNameValue select').val();
+        if (template_id == 'none')
+          template_id = null;
+        SendEmailManager(sender, subject, to_email_list, body, template_id);
+      });
+      controlButtonContainer.on('click', '.previewEmail', function(e)
+      {
+        
+        var email = prompt("Please enter preview email!");
+        if (email != null) 
+        {
+          var sender = modal.find('.fromEmailValue input').val();
+          var body = tinymce.get('email_editor').getContent();
+          var subject = modal.find('.emailSubjectValue input').val();
+          var to_email_list = [];
+          to_email_list.push(email)
+          var  template_id = modal.find('.templateNameValue select').val();
+          if (template_id == 'none')
+            template_id = null;
+          SendEmailManager(sender, subject, to_email_list, body, template_id, true);
+        }
+      });
+      templateButtonContainer.on('click', '.saveAsNewTemplate', function(e)
+      {
+        var subject = modal.find('.emailSubjectValue input').val();
+        var title = prompt("Please enter new template name!", subject);
+        var body = tinymce.get('email_editor').getContent();
+        if (title != null) 
+        {
+          EmailTemplatesManager('POST', "", title, subject, body);
+        }
+      });
+      templateButtonContainer.on('click', '.updateTemplate', function(e)
+      {
+        var select = modal.find('.templateNameValue select');
+        var selected_pk = select.val();
+        if (selected_pk != 'none')
+        {
+          var subject = modal.find('.emailSubjectValue input').val();
+          var title = select.find('option[value="'+selected_pk+'"]').text().trim();
+          title = prompt("Please enter updated template name or leave the old one!", title);
+          var body = tinymce.get('email_editor').getContent();
+          if (title != null) 
+          {
+            EmailTemplatesManager('PUT', selected_pk, title, subject, body);
+          }
+        }
+      });
+      templateButtonContainer.on('click', '.removeTemplate', function(e)
+      {
+        var selected_pk = modal.find('.templateNameValue select').val();
+        if (selected_pk != 'none')
+        {
+          var r = confirm("You are about to delete email template. Are you sure?");
+          if (r == true)
+            EmailTemplatesManager('DELETE', selected_pk);
+        }
+      });
     }
 })

@@ -1,0 +1,24 @@
+- if branding
+    - if branding.background_image
+      - if branding.get_background_style_display == 'Stretched'
+        %script
+          $('body').css('background-repeat', 'no-repeat');
+          $('body').css('background-size', '100% 100%');
+      - else
+        - if branding.get_background_style_display == 'Normal'
+          %script
+            $('body').css('background-repeat', 'no-repeat');
+        - else 
+          - if branding.get_background_style_display == 'Tiled'
+          %script
+            $('body').css('background-repeat', 'repeat');
+      %script
+        $('body').css('background-image', 'url(/company_images/#{branding.background_image})');
+        $('body').css('background-attachment', 'fixed');
+    - else
+      - if branding.background_color
+        %script
+          $('body').css('background-color', '#{branding.background_color}');
+    %script
+      $('body.with-program').css('padding-top', '96px');
+      $('body.with-program').css('margin-top', '0');

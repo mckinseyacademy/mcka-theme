@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
+from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
 from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings
 from admin.views import checked_course_access, AccessChecker
@@ -181,7 +182,7 @@ def course_cohort(request, course_id):
     }
     return render(request, 'courses/course_cohort.haml', data)
 
-def _render_group_work(request, course, project_group, group_project):
+def _render_group_work(request, course, project_group, group_project, ld=False):
 
     seqid = request.GET.get("seqid", None)
     if seqid and " " in seqid:
@@ -219,7 +220,11 @@ def _render_group_work(request, course, project_group, group_project):
     }
     if select_stage:
         data['select_stage'] = select_stage
-    return render(request, 'courses/course_group_work.haml', data)
+
+    if ld:
+        return render(request, 'courses/course_group_work_ld.haml', data)
+    else:
+        return render(request, 'courses/course_group_work.haml', data)
 
 @login_required
 @check_user_course_access
@@ -238,9 +243,24 @@ def user_course_group_work(request, course_id):
     return _render_group_work(request, course, project_group, group_project)
 
 @login_required
+@check_user_course_access
+def user_course_group_work_learner_dashboard(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.group_work:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
+
+    # remove this in case we are a TA who is taking a course themselves
+    user_api.delete_user_preference(request.user.id, "TA_REVIEW_WORKGROUP")
+
+    course = load_course(course_id, request=request)
+    project_group, group_project = get_group_project_for_user_course(request.user.id, course)
+    set_current_course_for_user(request, course_id)
+
+    return _render_group_work(request, course, project_group, group_project, True)
+
+@login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_TA)
 def workgroup_course_group_work(request, course_id, workgroup_id):
-
     # set this workgroup as the preference for reviewing
     user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
 
@@ -249,9 +269,7 @@ def workgroup_course_group_work(request, course_id, workgroup_id):
 
     return _render_group_work(request, course, project_group, group_project)
 
-@login_required
-@check_user_course_access
-def course_discussion(request, course_id):
+def _course_discussion_data(request, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.discussions:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
@@ -274,7 +292,7 @@ def course_discussion(request, course_id):
 
     mcka_ta = choose_random_ta(course_id)
 
-    data = {
+    return {
         "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
         "has_course_discussion": has_course_discussion,
@@ -286,6 +304,18 @@ def course_discussion(request, course_id):
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
         "mcka_ta": mcka_ta
     }
+
+@login_required
+@check_user_course_access
+def course_discussion_learner_dashboard(request, course_id):
+
+    data = _course_discussion_data(request, course_id)
+    return render(request, 'courses/course_discussion_ld.haml', data)
+
+@login_required
+@check_user_course_access
+def course_discussion(request, course_id):
+    data = _course_discussion_data(request, course_id)
     return render(request, 'courses/course_discussion.haml', data)
 
 @login_required
@@ -297,6 +327,9 @@ def course_discussion_userprofile(request, course_id, user_id):
     return render(request, 'courses/course_discussion_userprofile.haml', data)
 
 def _course_progress_for_user(request, course_id, user_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.progress_page:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
@@ -414,6 +447,10 @@ def _course_progress_for_user(request, course_id, user_id):
     return render(request, 'courses/course_progress.haml', data)
 
 def _course_progress_for_user_v2(request, course_id, user_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.progress_page:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
+
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
     social = get_social_metrics(course_id, user_id)
@@ -627,16 +664,23 @@ def infer_page_navigation(request, course_id, page_id):
     chapter_id, vertical_id, final_target_id = get_chapter_and_target_by_location(request, course_id, page_id)
 
     if course_id and chapter_id and vertical_id:
+        if 'learner_dashboard_id' in request.session and 'learnerdashboard' in request.META.get('HTTP_REFERER'):
+            redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
+            if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
+                redirect_url = "/learnerdashboard/courses/{}/group_work".format(course_id)
 
-        redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
-        if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
-            redirect_url = "/courses/{}/group_work".format(course_id)
+            if final_target_id not in (chapter_id, vertical_id):
+                redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
+        else:
+            redirect_url = '/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, vertical_id)
+            if group_project and group_project.is_v2 and group_project.vertical_id == vertical_id:
+                redirect_url = "/courses/{}/group_work".format(course_id)
 
-            if ta_grading_group:
-                redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
+                if ta_grading_group:
+                    redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
 
-        if final_target_id not in (chapter_id, vertical_id):
-            redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
+            if final_target_id not in (chapter_id, vertical_id):
+                redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)
     else:
         redirect_url = '/courses/{}/notready'.format(course_id)
 
@@ -808,24 +852,35 @@ def course_article(request, course_id):
     return render(request, 'courses/course_article.haml', data)
 
 @login_required
-@check_user_course_access
-def course_learner_dashboard(request, course_id):
+def course_learner_dashboard(request):
 
-    organization = user_api.get_user_organizations(request.user.id)[0]
+    if 'learner_dashboard_id' not in request.session:
+        set_learner_dashboard_in_session(request)
 
-    try:
-        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
-    except:
+    course_id = request.session['course_id']
+    learner_dashboard_id = request.session['learner_dashboard_id']
+
+    if learner_dashboard_id is not None:
+        learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
+    elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)
+        return HttpResponseRedirect(redirect_url)
+    else:
+        redirect_url = '/'
         return HttpResponseRedirect(redirect_url)
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
-
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    
+    try:
+         feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    except:
+         feature_flags = []
 
     data ={
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
+        'feature_flags': feature_flags,
         'discovery_items': discovery_items
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
@@ -842,6 +897,9 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
     feature_flags.proficiency = request.POST.get('proficiency', None) == 'on'
     feature_flags.learner_dashboard = request.POST.get('learner_dashboard', None) == 'on'
+    feature_flags.progress_page = request.POST.get('progress_page', None) == 'on'
+    feature_flags.notifications = request.POST.get('notifications', None) == 'on'
+    feature_flags.branding = request.POST.get('branding', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(

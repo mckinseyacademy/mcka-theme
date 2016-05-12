@@ -1,0 +1,63 @@
+- extends "courses/course_navigation.haml"
+- load staticfiles
+
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Discussion | Courses | McKinsey Academy")
+
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
+
+- block current_content
+  - include 'courses/course_learner_dashboard_branding.haml'
+  #course-discussion
+    - if not has_course_discussion
+      .row
+        .error= _("No Discussion has been configured for this course")
+    - else
+      .row
+        .large-12.medium-12.columns
+          .discussion-content
+      - include "courses/contact_ta.haml"
+
+- block footer
+
+- block js_snippets
+  %script{src: "{% static 'js/course_contact_modal.js' %}"}
+  :javascript
+    window.onload = (function(){
+      var discussion_content = $('#course-discussion .discussion-content');
+      var discussion_data = {
+        courseId: '{{ legacy_course_id }}',
+        usageId: '{{ vertical_usage_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        lmsPort: '{{ lms_port }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+      $.when.apply($, discussion_content.xblock(discussion_data)).
+        done(function() {
+          if ($('#discussion-ta-template').length > 0) {
+            $('.discussion-body').prepend($("#discussion-ta-template").html());
+          }
+      });
+    })
+  - if mcka_ta and not course.ended
+    %script#discussion-ta-template{type: "text/template"}
+      .ask-ta
+        .group-member
+          %img.avatar{:src => "#{mcka_ta.image_url}" }
+            .person-info
+              .person-username= mcka_ta.username
+              .person-fullname= mcka_ta.formatted_name
+              - if mcka_ta.title
+                .person-title{:title => "#{mcka_ta.title}"}
+                  = mcka_ta.title
+              .email
+                %a.email-member{'data-member-email': '', 'data-reveal-id': 'contact-ta'}
+                  Email

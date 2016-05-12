@@ -1,0 +1,141 @@
+- extends "courses/course_navigation.haml"
+- load staticfiles
+
+- block page_title
+  %title
+    = program.display_name
+    = _(" | Group Work | Courses | McKinsey Academy")
+
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'
+
+- block current_content
+  - include 'courses/course_learner_dashboard_branding.haml'
+  #course-group-work
+    - if not group_project or not project_group
+      .row
+        .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
+    - else
+      - if not group_project.is_v2
+        .row
+          - include "courses/group_work/activity_menu.haml"
+      .row
+        - if group_project.is_v2
+          .large-12.medium-12.columns.splitpiece.left
+            .lesson-title
+              %span= _("Group Project:")
+              %span= group_project.name
+            .lesson-content
+        - else
+          .large-8.medium-8.columns.splitpiece.left
+            .lesson-title
+              %span= _("Group Project:")
+              %span= group_project.name
+            .lesson-content
+          #group-project-users.large-4.medium-4.columns.splitpiece.right
+            .group-members
+              %h4= _("Group Members")
+              - for member in project_group.members
+                - include "courses/group_work/group_member.haml" with group_member=member data_reveal_id="email-member"
+              - if project_group.id
+                %a.email-team{href: "#", data-reveal-id: 'email-team'}
+                  = _("Email your group")
+            %hr
+            - if ta_user.id and not course.ended
+              .ask-ta
+                %h4= _("Ask a TA")
+                -# Temporarily use mailto: for ta link as well (add data_reveal_id back in for when dialog should be introduced
+                - include "courses/group_work/group_member.haml" with group_member=ta_user data_reveal_id="contact-ta"
+                -# include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant
+            - include "courses/contact_ta.haml" with contact_from="group-work"
+
+- block footer
+
+- block js_snippets
+  %script{src: "{% static 'js/course_contact_modal.js' %}"}
+  :javascript
+    $(function(){
+      var adjust_discussion_height = function(){
+        $('.discussion-module').css('visibility', 'hidden');
+        _.defer(function(){
+          $('.discussion-module').css('margin-top', 'auto');
+
+          var height_left = $('.group-project-xblock-wrapper').height();
+          var height_right = $('#group-project-users').height();
+
+          if (height_right > height_left){
+            $('.discussion-module').css('margin-top', (height_right - height_left).toString()+'px');
+          }
+          $('.discussion-module').css('visibility', 'visible');
+        });
+      };
+
+      var group_activity_step_map = {};
+      $(document).on('steps_available', function(target, step_map){
+        group_activity_step_map = step_map;
+        var activity_dots = $('.activity_dots');
+        var ordered_list = group_activity_step_map.ordered_list;
+        for(var i=0; i<ordered_list.length; ++i){
+          var step = group_activity_step_map[ordered_list[i]];
+          var dot = $('<a>')
+            .addClass('lesson-module-status')
+            .attr('href', '#')
+            .attr('title', step.name)
+            .attr('data-activate', ordered_list[i]);
+          activity_dots.append(dot);
+        }
+      });
+
+      $(document).on('select_stage', function(target, activate_id){
+        if (!group_activity_step_map.ordered_list) {
+          return;
+        }
+        var ordered_list = group_activity_step_map.ordered_list;
+        var add_class = "complete";
+        $('.activity_dots .lesson-module-status').removeClass('complete current');
+        for(var i=0; i<ordered_list.length; ++i){
+          if(ordered_list[i] == activate_id){
+            $('.activity_dots .lesson-module-status[data-activate="'+activate_id+'"]')
+              .addClass('current');
+            add_class = null;
+          }
+          else if(add_class){
+            $('.activity_dots .lesson-module-status[data-activate="'+ordered_list[i]+'"]')
+              .addClass(add_class);
+          }
+        }
+      });
+
+      $('#course-group-work').on('click', '.lesson-module-status', function(){
+        $(document).trigger('select_stage', $(this).data('activate'));
+      });
+
+      // height may have changed whenever we load new data into the xblock... need to re-check height at this point
+      $(document).on('select_stage', adjust_discussion_height);
+      $(document).on('data_loaded', adjust_discussion_height);
+
+      var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
+      var lesson_data = {
+        courseId: '{{ legacy_course_id }}',
+        usageId: '{{ vertical_usage_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        lmsPort: '{{ lms_port }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        data: {
+            activate_block_id: Apros.getParameterByName('activate_block_id'),
+        },
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+
+      lesson_content.xblock(lesson_data);
+
+      {% if select_stage %}
+      $(document).on('activity_initialized', function() {
+        $(document).trigger('select_stage', '{{ select_stage }}');
+      });
+      {% endif %}
+    });
