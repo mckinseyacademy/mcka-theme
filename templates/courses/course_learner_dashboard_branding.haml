@@ -22,3 +22,5 @@
     %script
       $('body.with-program').css('padding-top', '96px');
       $('body.with-program').css('margin-top', '0');
+      if ($(window).width() < 960)
+        alert('Optimized for landscape view, please rotate tablet.');
