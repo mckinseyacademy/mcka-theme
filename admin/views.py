@@ -3486,7 +3486,6 @@ class participant_details_api(APIView):
             else:
                 data = form.cleaned_data
                 try:
-                    print data
                     company = data.get('company', None)
                     company_old = request.DATA.get('company_old', None)
                     if data.get('company', None) != data.get('company_old', None):
