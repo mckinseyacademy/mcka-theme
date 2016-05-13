@@ -107,8 +107,9 @@ def get_organizations(organization_object=JsonObjectWithImage):
             ORGANIZATION_API,
         )
     )
-
-    return JP.from_json(response.read(), organization_object)
+    organizations_string = response.read()
+    organizations_string_parsed = json.dumps(json.loads(organizations_string).get('results', []))
+    return JP.from_json(organizations_string_parsed, organization_object)
 
 @api_error_protect
 def get_organization_groups(organization_id, groups_object=JsonObject, *args, **kwargs):
