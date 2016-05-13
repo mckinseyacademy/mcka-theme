@@ -13,17 +13,17 @@
       var contactsSaveButton = contactsWrapper.find('.contactsSaveButton');
 
       $('#country_edit').countrySelect();
-      var name = $('#country_edit').attr('data-country-short');
+      var name = $('#country_edit').attr('data-country-long');
       var selectableCountries = $.fn['countrySelect'].getCountryData();
       for (var i = 0; i<selectableCountries.length;i++)
       { 
-        if (selectableCountries[i].iso2 == name)
+        if (selectableCountries[i].name == name)
         {
-          $('.countryText').text(selectableCountries[i].name);
+          $('.countryText').text(name);
+          $("#country_edit").countrySelect("selectCountry", selectableCountries[i].iso2);
           break;
         }  
       }
-      $("#country_edit").countrySelect("selectCountry", name);
 
       invoicingDetailsEditContainer.hide();
       contactsEditContainer.hide();
@@ -83,7 +83,9 @@
           var item = {};
           var _this = this;
           var contactType = $(_this).find('.contactTypeText');
+          var contactId = $(_this).find('.contactTypeRow').attr('data-id');
           item['type'] = contactType.text();
+          item['type_id'] = contactId;
           $.each($(_this).find(':input'), function(i, v){
             var input = $(v);
             item[input.attr("name")] = input.val().trim();  
@@ -125,6 +127,12 @@
             invoicingContainer.find('.countryText').text(invoicing['country']);
             invoicingContainer.find('.poText').text(invoicing['po']);
 
+            $.each(invoicing, function(key,value) {
+              if (value == '-')
+              {
+                invoicing[key] = ''
+              }
+            });
             invoicingEditContainer.find('.fullNameInput').val(invoicing['full_name']);
             invoicingEditContainer.find('.titleInput').val(invoicing['title']);
             invoicingEditContainer.find('.address1Input').val(invoicing['address1']);
@@ -132,14 +140,13 @@
             invoicingEditContainer.find('.cityInput').val(invoicing['city']);
             invoicingEditContainer.find('.stateInput').val(invoicing['state']);
             invoicingEditContainer.find('.postalCodeInput').val(invoicing['postal_code']);
-            $("#country_edit").countrySelect("selectCountry", invoicing['country']);
             var selectableCountries = $.fn['countrySelect'].getCountryData();
             for (var i = 0; i<selectableCountries.length;i++)
             { 
-              if (selectableCountries[i].iso2 == invoicing['country'])
+              if (selectableCountries[i].name == invoicing['country'])
               {
-                $('.countryText').text(selectableCountries[i].name);
-                break;
+                $('.countryText').text(invoicing['country']);
+                $("#country_edit").countrySelect("selectCountry", selectableCountries[i].iso2);
               }  
             }
             invoicingEditContainer.find('.poInput').val(invoicing['po']);
@@ -166,6 +173,12 @@
                   $(_this).find('.titleText').text(contacts[i]['title']);
                   $(_this).find('.emailText').text(contacts[i]['email']);
                   $(_this).find('.phoneText').text(contacts[i]['phone']);
+                  $.each(contacts[i], function(key,value) {
+                    if (value == '-')
+                    {
+                      contacts[i][key] = ''
+                    }
+                  });
                   $(_this).find('.fullNameInput').val(contacts[i]['full_name']);
                   $(_this).find('.titleInput').val(contacts[i]['title']);
                   $(_this).find('.emailInput').val(contacts[i]['email']);

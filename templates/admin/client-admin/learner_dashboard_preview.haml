@@ -1,0 +1,32 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-detail.row
+    .large-12.columns
+      - include 'admin/client-admin/course_header.haml'
+  .admin-detail.row{style: "background-image: url(/company_images/#{branding.background_image}); background-size: 100% 100%;"}
+    .large-12.large.columns
+      #home-courses
+        .row
+          .large-8.columns.dash-programs
+            %h3{style: "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
+            %p{style: "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
+            .row
+              -for tile in learner_dashboard_tiles
+                .learner-program
+                  .panel.panel-program{style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+                    .sub-1{style: "color: #{tile.label_color};"} 
+                      -if tile.label
+                        #{tile.label}
+                      -else
+                        #{tile.get_tile_type_display}
+                    %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
+                    .label-3{style: "color: #{tile.note_color};"}= tile.note
+          .large-4.columns.dash-widget{style: "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
+            %h5.label-4{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} FOR DISCOVERY
+            -for item in discovery_items
+              .learner-info
+                %a{href:"#{item.link}", target: "_blank"}
+                  %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
+                %h5
+                  %span{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author

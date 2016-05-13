@@ -21,6 +21,7 @@ urlpatterns = patterns(
     #LD DiscoverContent
     #Learner Dashboard, Tile 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.client_admin_course_learner_dashboard_tile, name='client_admin_course_learner_dashboard_tile'),    
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/preview$', views.client_admin_course_learner_dashboard_preview, name='client_admin_course_learner_dashboard_preview'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard$', views.client_admin_course_learner_dashboard, name='client_admin_course_learner_dashboard'),
     #Learner Dashboard, Tile 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/participant$', views.client_admin_course_analytics_participants, name='client_admin_course_analytics_participants'),
@@ -131,7 +132,9 @@ urlpatterns = patterns(
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),
 
+    url(r'^api/companies/(?P<company_id>[0-9]+)/export_info$', views.download_company_info, name='download_company_info'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/company_info$', views.company_info_api.as_view(), name='company_info_api'),
+    url(r'^api/companies/(?P<company_id>[0-9]+)/edit$', views.company_edit_api.as_view(), name='company_edit_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
     url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
     url(r'^companies$', views.companies_list, name='companies_list'),

@@ -363,8 +363,7 @@ def activate(request, activation_code):
 
         # email should never be changed
         user_data["email"] = user.email
-
-        form = ActivationForm(user_data)  # A form bound to the POST data
+        form = ActivationForm(user_data, initial=initial_data)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
                 user_activation_with_data(user.id, user_data, activation_record)

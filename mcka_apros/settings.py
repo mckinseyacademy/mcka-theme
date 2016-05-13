@@ -360,6 +360,14 @@ FEATURES = {
 #LEARNER DASHBOARD FEATURE ON/OFF SETTING
 LEARNER_DASHBOARD_ENABLED = False
 
+# Add request object to templates
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+    'lib.context_processors.user_program_data',
+    'lib.context_processors.settings_data',
+)
+
 try:
     from local_settings import *
 except ImportError:
@@ -370,14 +378,6 @@ if RUN_LOCAL_MOCK_API:
     INSTALLED_APPS += (
         'mockapi',
     )
-
-# Add request object to templates
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    'django.core.context_processors.request',
-    'lib.context_processors.user_program_data',
-    'lib.context_processors.settings_data',
-)
 
 DEFAULT_DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.versions.VersionsPanel',

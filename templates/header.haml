@@ -85,7 +85,8 @@
                 %a{href: "#{course.nav_url}", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
           .medium-2.columns
             -if learner_dashboard_flag and branding and branding.logo_image
-              %img.program-logo-img{src: "/company_images/#{branding.logo_image}"}
+              %a{href: "/learnerdashboard"}
+                %img.program-logo-img{src: "/company_images/#{branding.logo_image}"}
           .medium-5.columns.course_nav
             - include "courses/content_page/course_tabs.haml"
     - elif program and upcoming_course

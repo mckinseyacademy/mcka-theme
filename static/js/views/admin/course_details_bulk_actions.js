@@ -48,13 +48,15 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             selector: '#email_editor',
             theme: 'modern',
             height: 500,
+            menubar:false,
+            statusbar: false,
             plugins: [
-              'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+              'autolink lists link image charmap print preview hr anchor pagebreak',
               'searchreplace wordcount visualblocks visualchars code fullscreen',
               'insertdatetime media nonbreaking save table contextmenu directionality',
               'paste textcolor colorpicker textpattern imagetools'
             ],
-            toolbar1: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | link image'
+            toolbar1: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | link image | code'
           });
         });
         modal.off('change', '.templateNameValue select').on('change', '.templateNameValue select', function()
@@ -74,7 +76,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           }
         });
         modal.find('.templateNameValue select option:eq(0)').prop('selected', true);
-        modal.find('.fromEmailValue input').val("");
+        modal.find('.fromEmailValue input').val("support@mckinseyacademy.com");
         modal.find('.emailSubjectValue input').val("");
         var controlButtonContainer = modal.find('.emailModalControl');
         controlButtonContainer.find('.sendEmail').addClass('disabled');

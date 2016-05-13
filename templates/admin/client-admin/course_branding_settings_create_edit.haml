@@ -26,48 +26,55 @@
         .small-3.columns= form.logo_image.label_tag
         .small-9.columns= form.logo_image
 
-      .row
-        .small-3.columns
-        .small-9.columns= form.discover_title_color.errors
-      .row
-        .small-3.columns= form.discover_title_color.label_tag
-        .small-9.columns= form.discover_title_color
+      .div{id: "colorInputs"}
+        .row
+          .small-3.columns
+          .small-9.columns= form.discover_title_color.errors
+        .row
+          .small-3.columns= form.discover_title_color.label_tag
+          .small-9.columns
+            %input{'type': 'color', 'id': 'id_discover_title_color', 'name': 'discover_title_color', 'value': "#{form.discover_title_color.value}", 'data-default-value': "#{default_colors.discover_title_color}"}
 
-      .row
-        .small-3.columns
-        .small-9.columns= form.discover_author_color.errors
-      .row
-        .small-3.columns= form.discover_author_color.label_tag
-        .small-9.columns= form.discover_author_color
+        .row
+          .small-3.columns
+          .small-9.columns= form.discover_author_color.errors
+        .row
+          .small-3.columns= form.discover_author_color.label_tag
+          .small-9.columns
+            %input{'type': 'color', 'id': 'id_discover_author_color', 'name': 'discover_author_color', 'value': "#{form.discover_author_color.value}", 'data-default-value': "#{default_colors.discover_author_color}"}
 
-      .row
-        .small-3.columns
-        .small-9.columns= form.discover_rule_color.errors
-      .row
-        .small-3.columns= form.discover_rule_color.label_tag
-        .small-9.columns= form.discover_rule_color
+        .row
+          .small-3.columns
+          .small-9.columns= form.discover_rule_color.errors
+        .row
+          .small-3.columns= form.discover_rule_color.label_tag
+          .small-9.columns
+            %input{'type': 'color', 'id': 'id_discover_rule_color', 'name': 'discover_rule_color', 'value': "#{form.discover_rule_color.value}", 'data-default-value': "#{default_colors.discover_rule_color}"}
 
-      .row
-        .small-3.columns
-        .small-9.columns= form.background_color.errors
-      .row
-        .small-3.columns= form.background_color.label_tag
-        .small-9.columns= form.background_color
+        .row
+          .small-3.columns
+          .small-9.columns= form.background_color.errors
+        .row
+          .small-3.columns= form.background_color.label_tag
+          .small-9.columns
+            %input{'type': 'color', 'id': 'id_background_color', 'name': 'background_color', 'value': "#{form.background_color.value}", 'data-default-value': "#{default_colors.background_color}"}
 
-      .row
-        .small-3.columns
-        .small-9.columns= form.rule_color.errors
-      .row
-        .small-3.columns Rule color
-        .small-9.columns= form.rule_color
+        .row
+          .small-3.columns
+          .small-9.columns= form.rule_color.errors
+        .row
+          .small-3.columns Rule color:
+          .small-9.columns
+            %input{'type': 'color', 'id': 'id_rule_color', 'name': 'rule_color', 'value': "#{form.rule_color.value}", 'data-default-value': "#{default_colors.rule_color}"}
 
-      .row
-        .small-3.columns
-        .small-9.columns= form.icon_color.errors
-      .row
-        .small-3.columns Icon Color
-        .small-9.columns= form.icon_color
-
+        .row
+          .small-3.columns
+          .small-9.columns= form.icon_color.errors
+        .row
+          .small-3.columns Icon Color:
+          .small-9.columns
+            %input{'type': 'color', 'id': 'id_icon_color', 'name': 'icon_color', 'value': "#{form.icon_color.value}", 'data-default-value': "#{default_colors.icon_color}"}
+      %br
       .row
         .small-3.columns
         .small-9.columns= form.background_style.errors
@@ -79,9 +86,38 @@
         - if error
           = error
       %div.submit-area
-        %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
-        %a{class: "button radius small", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
+        - if instance
+          %input.button.radius.small.left{id: "resetColors", type: "submit", value: "Reset colors"}
+        - else
+          %input.button.radius.small.left{id: "resetColors", type: "submit", value: "Reset colors", disabled: "True"}
+        %input.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True", style:"margin-left:10px"}
+        %a{class: "button radius small right", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
           Cancel
 
 - block js_snippets
   %script{src: "{% static 'js/form_changed_check.js' %}"}
+  :javascript
+    $('#colorInputs :input').change(function() {
+      $('#resetColors').attr('disabled',false);
+    });
+
+    var rule_color = $('#id_rule_color');
+    var icon_color = $('#id_icon_color');
+    var discover_title_color = $('#id_discover_title_color');
+    var discover_author_color = $('#id_discover_author_color');
+    var discover_rule_color = $('#id_discover_rule_color');
+    var background_color = $('#id_background_color');
+    
+    $('#resetColors').on('click', function(event){
+      event.preventDefault();
+
+      rule_color.val(rule_color.data('default-value'));
+      icon_color.val(icon_color.data('default-value'));
+      discover_title_color.val(discover_title_color.data('default-value'));
+      discover_author_color.val(discover_author_color.data('default-value'));
+      discover_rule_color.val(discover_rule_color.data('default-value'));
+      background_color.val(background_color.data('default-value'));
+
+      $('#formSubmit').attr('disabled',false);
+      $('#resetColors').attr('disabled',true);
+    });

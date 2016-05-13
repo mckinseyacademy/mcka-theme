@@ -71,4 +71,3 @@ def settings_data(request):
     }
 
     return data
-

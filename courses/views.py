@@ -12,10 +12,11 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
+from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
-from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings
+from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings, TileBookmark
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
@@ -575,7 +576,7 @@ def course_resources_learner_dashboard(request, course_id):
 
 @login_required
 @check_user_course_access
-def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None):
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None, tile_id=None):
 
     ''' go to given page within given chapter within given course '''
     course = load_course(course_id, request=request)
@@ -591,6 +592,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         "course_id": course_id,
         "legacy_course_id": course_id,
         "tile_type": tile_type,
+        "tile_id": tile_id,
     }
 
     if not current_sequential.is_started:
@@ -913,6 +915,11 @@ def course_learner_dashboard(request):
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
     
     try:
+        bookmark = TileBookmark.objects.get(user=request.user.id)
+    except:
+        bookmark = None
+
+    try:
          feature_flags = FeatureFlags.objects.get(course_id=course_id)
     except:
          feature_flags = []
@@ -921,7 +928,8 @@ def course_learner_dashboard(request):
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
         'feature_flags': feature_flags,
-        'discovery_items': discovery_items
+        'discovery_items': discovery_items,
+        'bookmark': bookmark,
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
@@ -946,3 +954,51 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
         json.dumps(feature_flags.as_json()),
         content_type="application/json"
     )
+
+def course_learner_dashboard_bookmark_tile(request):
+
+    if 'tile_id' in request.POST:
+        try:
+            tile = LearnerDashboardTile.objects.get(id=int(request.POST['tile_id']))
+        except ObjectDoesNotExist:
+            return HttpResponse(status=404)
+
+        if 'learner_dashboard_id' not in request.session:
+            set_learner_dashboard_in_session(request)
+
+        if request.session['learner_dashboard_id']:
+            learner_dashboard = LearnerDashboard.objects.get(id=request.session['learner_dashboard_id'])
+        else:
+            return HttpResponse(status=404)
+
+        try:
+            bookmark = TileBookmark.objects.get(user=request.user.id)
+            bookmark.tile = tile
+            bookmark.lesson_link = None
+            bookmark.save()
+        except:
+            bookmark = TileBookmark(
+                user = request.user.id,
+                tile=tile,
+                learner_dashboard=learner_dashboard,
+            )
+            bookmark.save()
+
+        return HttpResponse(status=200)
+
+def course_learner_dashboard_bookmark_lesson(request):
+
+    if 'lesson_link' in request.POST and 'tile_id' in request.POST:
+
+        if request.POST['tile_id']:
+            try:
+                bookmark = TileBookmark.objects.get(user=request.user.id)
+                if int(request.POST['tile_id']) == bookmark.tile.id:
+                    bookmark.lesson_link = request.POST['lesson_link']
+                    bookmark.save()
+            except ObjectDoesNotExist:
+                return HttpResponse(status=404)
+
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=204)
