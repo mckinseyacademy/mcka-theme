@@ -1,43 +1,47 @@
 - extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
-  %header= _("Mass Student Enroll")
-  .subhead= _("Add student(s) to clients program and course")
-  .description
-    %span Select email addresses to enroll into program and course
-    %span= client.display_name
+  #massiveStudentEnrollContainer.row
+    %header= _("Mass Student Enroll")
+    .subhead= _("Add student(s) to clients program and course")
+    %hr
+    .description
+      %span Select email addresses to enroll into program and course
+      %span= client.display_name
 
-  .admin-form
-    %form{action: "/admin/clients/#{client_id}/mass_student_enroll", method: "POST", enctype: "multipart/form-data"}
-      - csrf_token
-      = form
-      .error
-        - if error
-          = error
-      .div.select-group-wrapper
-        %select.select-program{'data-programid-call': "/admin/workgroup/programs/list", 'name': 'select-program'}
-            %option{'value': 'select'}
-              = ' - Select - '
-          - for program in programs
-            %option{'value': '#{program.id}'}
-              = program.display_name
-              (
-              %span><= program.name
-              )
-        %select.select-course{'name': 'select-course'}
-            %option{'value': 'select'}
-              = ' - Select - '
-      .upload_stats
-        %span Total:
-        %span#attempted 0
-        %span Succeded:
-        %span#succeded 0
-        %span Failed:
-        %span#failed 0
-      %input.button.radius.small{type: "submit", value: "Add Student(s)", disabled: "disabled"}
-    .allowed-format
-      Use CSV formatted file (Comma Separated Value)
-    #enroll-error-list
+    .admin-form
+      %form{action: "/admin/clients/#{client_id}/mass_student_enroll", method: "POST", enctype: "multipart/form-data"}
+        - csrf_token
+        = form
+        .error
+          - if error
+            = error
+        .div.select-group-wrapper
+          %label Select Program
+          %select.select-program{'data-programid-call': "/admin/workgroup/programs/list", 'name': 'select-program'}
+              %option{'value': 'select'}
+                = ' - Select - '
+            - for program in programs
+              %option{'value': '#{program.id}'}
+                = program.display_name
+                (
+                %span><= program.name
+                )
+          %label Select Course
+          %select.select-course{'name': 'select-course'}
+              %option{'value': 'select'}
+                = ' - Select - '
+        .upload_stats
+          %span Total:
+          %span#attempted 0
+          %span Succeded:
+          %span#succeded 0
+          %span Failed:
+          %span#failed 0
+        %input.button.radius.small{type: "submit", value: "Add Student(s)", disabled: "disabled"}
+      .allowed-format
+        Use CSV formatted file (Comma Separated Value)
+      #enroll-error-list
 
 
 - block js_snippets
@@ -53,7 +57,7 @@
           url: url,
           data: {group_id: group_id, csrfmiddlewaretoken: csrftoken}
         }).done(function(data){
-          $('select.select-course').html(data);
+          $('select.select-course').html(data);z
         });
       });
       $('select.select-program').trigger('change');

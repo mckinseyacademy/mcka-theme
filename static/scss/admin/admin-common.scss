@@ -89,3 +89,42 @@
 	overflow-y: hidden;
 	z-index: 1;
 }
+
+#massiveStudentEnrollContainer
+{
+	width: 100%;	
+
+	header
+	{
+		font-size: xx-large;
+		margin-bottom: 20px;
+	}
+
+	.subhead
+	{
+		font-size: large;
+		margin-bottom: 20px;
+	}
+
+	.description
+	{
+		font-size: large;
+		margin-bottom: 10px;
+	}
+
+	.select-group-wrapper
+	{
+		width: 300px;
+	}
+
+	.upload_stats
+	{
+		margin-bottom: 10px;
+	}
+
+	.allowed-format
+	{
+		margin-bottom: 10px;
+		margin-top: 10px;
+	}
+}
