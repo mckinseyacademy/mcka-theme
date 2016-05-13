@@ -3489,8 +3489,8 @@ class participant_details_api(APIView):
                     company = data.get('company', None)
                     company_old = request.DATA.get('company_old', None)
                     if data.get('company', None) != data.get('company_old', None):
-                        organization_api.remove_users_from_organization(company_old, user_id)
                         organization_api.add_user_to_organization(company, user_id)
+                        organization_api.remove_users_from_organization(company_old, user_id)
                     response = user_api.update_user_information(user_id,data)
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
