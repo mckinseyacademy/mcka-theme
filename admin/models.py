@@ -523,7 +523,15 @@ class EmailTemplate(db_models.Model):
         email_template = cls(title=title, subject=subject, body=body)
         return email_template
 
+class TileBookmark(db_models.Model):
+    user = db_models.IntegerField(blank=False, unique=True)
+    lesson_link = db_models.CharField(blank=True, null=True, max_length=2000)
 
-
-
-
+    tile = db_models.ForeignKey(
+        'LearnerDashboardTile',
+        on_delete=db_models.CASCADE,
+    )
+    learner_dashboard = db_models.ForeignKey(
+        'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )

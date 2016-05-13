@@ -68,6 +68,14 @@
             position: relative;
             float: left;
 
+            .bookmark{
+                position: absolute;
+                color: orange;
+                margin-left: 150px;
+                margin-top: -4px;
+                z-index:1;
+            }
+
             .panel-program{
                 border: 1px solid $mckinsey-academy-bright-gray;
                 padding: 10px;
