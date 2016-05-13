@@ -102,14 +102,13 @@ def fetch_organization_from_url(url, organization_object=JsonObjectWithImage):
 def get_organizations(organization_object=JsonObjectWithImage):
     ''' fetch all organizations '''
     response = GET(
-        '{}/{}/'.format(
+        '{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,
             ORGANIZATION_API,
+            urlencode({"page_size": 0})
         )
     )
-    organizations_string = response.read()
-    organizations_string_parsed = json.dumps(json.loads(organizations_string).get('results', []))
-    return JP.from_json(organizations_string_parsed, organization_object)
+    return JP.from_json(response.read(), organization_object)
 
 @api_error_protect
 def get_organization_groups(organization_id, groups_object=JsonObject, *args, **kwargs):
