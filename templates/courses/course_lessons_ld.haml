@@ -3,7 +3,7 @@
   - include 'courses/course_learner_dashboard_header.haml'
 - block current_content
   - include 'courses/course_learner_dashboard_branding.haml'
-  #course-lessons
+  #course-lessons{'data-course-url': '/learnerdashboard#{course.current_module.navigation_url}/lesson/#{tile_id}', 'data-tile-id': '#{tile_id}'}
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
     -if tile_type = 'module'
@@ -38,6 +38,7 @@
 - block footer
 
 - block js_snippets
+  %script{src: '/static/js/lesson_url_to_view.js'}
   :javascript
     $(function(){
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
@@ -64,21 +65,5 @@
 
       $('#course-group-work .lesson-module-status').on('click', function(){
         $('#' + $(this).data('activate')).click();
-      });
-    });
-
-    $(document).ready(function() {
-      var headers = {
-        'X-CSRFToken': $.cookie('apros_csrftoken')
-      }
-      $.ajax({
-        headers: headers,
-        dataType: 'json',
-        data: {
-          lesson_link: '/learnerdashboard{{ course.current_module.navigation_url }}/lesson/{{ tile_id }}',
-          tile_id: '{{ tile_id }}'
-        },
-        type: 'POST',
-        url: '/learnerdashboard/bookmark_lesson'
       });
     });
