@@ -190,6 +190,12 @@
 		.bulkEmailSelectedParticipants{
 			z-index: 3;
 			position: relative;
+
+			&.disabled{
+				background-color: #ccc;
+				outline: none;
+				color: white;
+			}
 		}
 
 		.hiddenButtonSplitModifier{
