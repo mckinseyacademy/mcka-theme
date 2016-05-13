@@ -29,7 +29,7 @@
         %li.lesson-row-item
           %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
-            %a{href: "/learnerdashboard#{module.navigation_url}/lesson", class: "{% if module.is_current %}current{% endif %}"}
+            %a{href: "/learnerdashboard#{module.navigation_url}/lesson/#{tile_id}", class: "{% if module.is_current %}current{% endif %}"}
               Module ={module.index}:
             %span= module.name
     .close-reveal-modal
@@ -64,5 +64,21 @@
 
       $('#course-group-work .lesson-module-status').on('click', function(){
         $('#' + $(this).data('activate')).click();
+      });
+    });
+
+    $(document).ready(function() {
+      var headers = {
+        'X-CSRFToken': $.cookie('apros_csrftoken')
+      }
+      $.ajax({
+        headers: headers,
+        dataType: 'json',
+        data: {
+          lesson_link: '/learnerdashboard{{ course.current_module.navigation_url }}/lesson/{{ tile_id }}',
+          tile_id: '{{ tile_id }}'
+        },
+        type: 'POST',
+        url: '/learnerdashboard/bookmark_lesson'
       });
     });
