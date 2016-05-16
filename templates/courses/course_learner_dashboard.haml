@@ -37,13 +37,18 @@
         -for item in discovery_items
           .learner-info
             -if item.link
-              %a{href:"#{item.link}", target: "_blank"}
-                %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
+              -if item.title
+                %a{href:"#{item.link}", target: "_blank"}
+                  %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
+              -if item.author
+                %a{href:"#{item.link}", target: "_blank"}
+                  %h5
+                  %span{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
             -else
               -if item.title
                 %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
-            -if item.author
-              %h5
+              -if item.author
+                %h5
                 %span{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
 
 - block footer
