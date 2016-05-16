@@ -1,8 +1,9 @@
 $('.last_visited').click(function() {
 
-  $('.bookmark').remove();
-  $(this).closest('.learner-program').prepend('<i class="bookmark fa fa-bookmark fa-2x"></i>');
-
+  if ($(this).closest('a').attr('target') == '_blank') {
+    $('.bookmark').remove();
+    $(this).closest('.learner-program').prepend('<i class="bookmark fa fa-bookmark fa-2x"></i>');
+  }
   var headers = {
     'X-CSRFToken': $.cookie('apros_csrftoken')
   }
