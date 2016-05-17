@@ -240,7 +240,7 @@ def send_password_reset_email(domain, user, use_https,
 
 def set_learner_dashboard_in_session(request):
 
-    learner_dashboard = get_current_learner_dashboard_course(request.user.id)
+    learner_dashboard = get_current_learner_dashboard_course(request)
 
     if learner_dashboard:
         request.session['learner_dashboard_id'] = learner_dashboard.id

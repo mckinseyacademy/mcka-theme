@@ -331,12 +331,13 @@ def standard_data(request):
 
     return data
 
-def get_current_learner_dashboard_course(user_id):
+def get_current_learner_dashboard_course(request):
 
-    courses = user_api.get_user_courses(user_id)
+    courses = user_api.get_user_courses(request.user.id)
     course_ids = [c.id for c in courses if c.is_active and c.started]
 
-    organization = user_api.get_user_organizations(user_id)[0]
+    organization = user_api.get_user_organizations(request.user.id)[0]
+    request.session['client_display_name'] = organization.display_name
     features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
 
     if len(features) > 0:

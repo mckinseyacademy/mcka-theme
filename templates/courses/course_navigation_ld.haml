@@ -2,8 +2,11 @@
 
 - block page_title
   %title
+    = request.session.client_display_name
+    = " | "
+    = program.display_name
+    = _(" | McKinsey Academy | ")
     = course.current_lesson.name
-    = _(" | Lessons | McKinsey Academy")
 
 - block content
   %article.row

@@ -913,7 +913,7 @@ def course_learner_dashboard(request):
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
-    
+
     try:
         bookmark = TileBookmark.objects.get(user=request.user.id)
     except:

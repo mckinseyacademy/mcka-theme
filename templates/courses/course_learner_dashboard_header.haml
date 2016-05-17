@@ -31,10 +31,10 @@
                 .fa.fa-file-text-o.header-link
             - if feature_flags.group_work
               - if request.resolver_match.url_name == 'user_course_group_work_learner_dashboard'
-                %a.disabled.right{:href => "/learnerdashboard/courses/#{course.id}/group_work", :data-tooltip => "Group Work"}
+                %a.disabled.right{:href => "/learnerdashboard/courses/#{course.id}/group_work", :data-tooltip => "Miniboard"}
                   .mk-icon-groupworknav.header-link
               - else
-                %a.right{:href => "/learnerdashboard/courses/#{course.id}/group_work", :data-tooltip => "Group Work", :style =>  "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
+                %a.right{:href => "/learnerdashboard/courses/#{course.id}/group_work", :data-tooltip => "Miniboard", :style =>  "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
                   .mk-icon-groupworknav.header-link
             - if feature_flags.discussions
               - if request.resolver_match.url_name == 'course_discussion_learner_dashboard'
@@ -45,8 +45,8 @@
                   .fa.fa-comments-o.header-link
 
             - if request.resolver_match.url_name == 'course_learner_dashboard'
-              %a.disabled.right{:href => "learnerdashboard", :data-tooltip => "Learner Dashboard"}
+              %a.disabled.right{:href => "learnerdashboard", :data-tooltip => "Portal Home"}
                 .fa.fa-map-marker.header-link
             - else
-              %a.right{:href => "/learnerdashboard", :data-tooltip => "Learner Dashboard", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+              %a.right{:href => "/learnerdashboard", :data-tooltip => "Portal Home", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
                 .fa.fa-map-marker.header-link
