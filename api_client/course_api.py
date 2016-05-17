@@ -84,19 +84,38 @@ def get_course_overview(course_id):
     return overview
 
 @api_error_protect
-def get_course_tabs(course_id):
+def get_course_tabs(course_id, details=True):
     '''
     Returns map of tab content key'd on "name" attribute
     '''
-    response = GET('{}/{}/{}/static_tabs?detail=true'.format(
+    param = ""
+    if details:
+        param = "?detail=true"
+    response = GET('{}/{}/{}/static_tabs{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
-        course_id)
+        course_id,
+        param)
     )
 
     tab_array = JP.from_json(response.read(), course_models.CourseTabs).tabs
-
     return {tab.name.lower(): tab for tab in tab_array}
+
+@api_error_protect
+def get_course_tab(course_id, name=None, tab_id=None):
+    """
+    Return static tab content requested by tab name or id.
+    """
+    query = name if name else tab_id
+    response = GET('{}/{}/{}/static_tabs/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id, 
+        query)
+    )
+    array = JP.from_json(response.read(), course_models.CourseTab)
+    array.name = array.name.lower()
+    return array
 
 @api_error_protect
 def get_course_news(course_id):
