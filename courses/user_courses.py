@@ -285,9 +285,8 @@ def standard_data(request):
                     request, request.user.id, course_id, None)
 
             course = build_page_info_for_course(request, course_id, lesson_id, module_id)
-
             # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
-            _inject_formatted_data(program, course, None, get_static_tab_context())
+            _inject_formatted_data(program, course, None, load_static_tabs(course_id))
 
             # Inject course progress for nav header
             load_course_progress(course, request.user.id)

@@ -360,26 +360,26 @@ def group_project_location(group_project, sequential_id=None):
 
 def load_static_tabs(course_id, name=None):
     if name: 
-        static_tabs = get_static_tab_context()
+        static_tabs = get_static_tab_context(course_id)
         if static_tabs is None:
             static_tabs = load_static_tabs_api(course_id, None)
-        static_tab = get_static_tab_context(name)
+        static_tab = get_static_tab_context(course_id, name)
         if getattr(static_tab, 'content', None) is None and getattr(static_tab, 'name', None):
             try: 
                 static_tab = course_api.get_course_tab(course_id, name=static_tab.name)
-                set_static_tab_context(static_tab, static_tab.name.lower())
+                set_static_tab_context(course_id, static_tab, static_tab.name.lower())
             except ApiError as e:
                 pass
         return static_tab
     else:
-        static_tabs = get_static_tab_context()
+        static_tabs = get_static_tab_context(course_id)
         if static_tabs is None:
             static_tabs = load_static_tabs_api(course_id, True)
         return static_tabs
 
 def load_static_tabs_api(course_id, details):
     static_tabs = course_api.get_course_tabs(course_id, details=details)
-    set_static_tab_context(static_tabs)
+    set_static_tab_context(course_id, static_tabs)
     return static_tabs
 
 def round_to_int(value):
