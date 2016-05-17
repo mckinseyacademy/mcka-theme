@@ -4502,5 +4502,5 @@ class company_edit_api(APIView):
         except ApiError as err:
             error = err.message
             return Response({"status":"error", "message": error})
-        return Response({"status":"ok", "message": "successfully changed company name!"})
+        return Response({"status":"ok", "message": "Company name successfully changed!"})
 

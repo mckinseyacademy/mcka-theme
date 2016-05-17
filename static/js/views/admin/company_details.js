@@ -24,8 +24,10 @@
     {
       var _this = this;
       var dataContainer = $('#companyDetailsTopDataWrapper');
+      var _saved = true;
       dataContainer.on('click', '.editCompanyNameIcon', function()
       {
+        _saved = false;
         var mainContainer = $(this).parents('.companyDetailsCompanyName');
         var textContainer = mainContainer.find('.companyDetailsTextName');
         var editContainer = mainContainer.find('.companyDetailsInputName');
@@ -39,6 +41,9 @@
       });
       dataContainer.on('blur', '.companyDetailsInputName input', function()
       {
+        if (_saved)
+          return;
+        _saved = true;
         _this.hideCompanyEditInput(this);
         _this.updateCompanyName($(this).val());
       });
@@ -47,6 +52,9 @@
         var keycode = (ev.keyCode ? ev.keyCode : ev.which);
         if(keycode == 13) 
         {
+          if (_saved)
+            return
+          _saved = true;
           _this.hideCompanyEditInput(this);
           _this.updateCompanyName($(this).val());
         }
