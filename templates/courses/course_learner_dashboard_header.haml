@@ -2,7 +2,8 @@
   .row.collapse.main-nav
     .large-6.small-6.columns.header-row
       -if branding and branding.logo_image
-        %img.header-logo{src: "/company_images/#{branding.logo_image}"}
+        %a{:href => "/learnerdashboard"}
+          %img.header-logo{src: "/company_images/#{branding.logo_image}"}
     .large-6.small-6.columns.header-row
       .row
         .large-12.columns.header-padding
