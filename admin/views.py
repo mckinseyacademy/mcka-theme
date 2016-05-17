@@ -629,7 +629,7 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
                 if tile.get_tile_type_display() == 'Lesson':
                     tile.link = "/learnerdashboard" + tile.link + "/lesson"
                 if tile.get_tile_type_display() == 'Module':
-                    tile.link = "/learnerdashboard" + tile.link + "/module"
+                    tile.link = "/learnerdashboard" + tile.link + "/module/"
                 tile.save()
             if tile.get_tile_type_display() == 'Course':
                 if not "/courses/" in tile.link:
