@@ -1,16 +1,13 @@
-- extends 'admin/admin_layout.haml'
-- load staticfiles
-- block content
-  .admin-detail.row
-    .large-12.columns
-      - include 'admin/client-admin/course_header.haml'
-  .admin-detail.row{style: "background-image: url(/company_images/#{branding.background_image}); background-size: 100% 100%;"}
+#previewModal.reveal-modal{data-reveal: 'true', aria-hidden: 'true', role: 'dialog', style: "background-image: url(/company_images/#{branding.background_image}); background-size: 100% 100%;"}
+  .close-reveal-modal
+    %i.fa.fa-times-circle
+  .row
     .large-12.large.columns
       #home-courses
         .row
           .large-8.columns.dash-programs
-            %h3{style: "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
-            %p{style: "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
+            %h3#preview-text= title
+            %p#preview-desc= description
             .row
               -for tile in learner_dashboard_tiles
                 .learner-program
@@ -30,3 +27,4 @@
                   %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
                 %h5
                   %span{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
+  %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save'}
