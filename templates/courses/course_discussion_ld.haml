@@ -22,7 +22,8 @@
       - include "courses/contact_ta.haml"
 
 - block footer
-
+  - include 'footer.haml'
+  
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
   :javascript
