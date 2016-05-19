@@ -131,6 +131,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 	  			$(v).find('option:eq(0)').prop('selected', true);
 	  		});
 	  		mainContainer.find('.addSingleParticipantButton').addClass('disabled');
+	  		mainContainer.find('.newCompanyCreationPopup').hide();
 	  		mainContainer.foundation('reveal', 'open');
 
 		});
@@ -158,11 +159,17 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		});
 		$(document).on('autocomplete_found', function(event, input)
 		{
-			input.parents('.row').find('select').attr('disabled', false);
+			if (input.parent().hasClass('participantCourseValue'))
+				input.parents('.row').find('select').attr('disabled', false);
+			else if (input.parent().hasClass('participantCompanyValue'))
+				_this.manageNewCompanyPopup(input, false);
 		});
 		$(document).on('autocomplete_not_found', function(event, input)
 		{
-			input.parents('.row').find('select').attr('disabled', true);
+			if (input.parent().hasClass('participantCourseValue'))
+				input.parents('.row').find('select').attr('disabled', true);
+			else if (input.parent().hasClass('participantCompanyValue'))
+				_this.manageNewCompanyPopup(input, true);
 		});
 		$('#add_a_participant').on('click', '.removeItem', function()
 		{
@@ -176,10 +183,19 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 				var data = {}
 		        $.each($("#add_a_participant form").find(':input'), function(i, v){
 		            var input = $(v);
-		            if (input.val())
-		                data[input.attr("name")] = input.val().trim();
+		            var value = input.val().trim();
+		            if (value)
+		                data[input.attr("name")] = value;
 		            if (input.attr("name") == 'company')
-		                data[input.attr("name")] = input.attr('data-id');
+		            {
+		                if (input.attr('data-id').length)
+		                	data[input.attr("name")] = input.attr('data-id');
+		               	else if (input.val().trim().length > 0)
+		               	{
+		               		data[input.attr("name")] = 0;
+		               		data["new_company_name"] = value;
+		               	}
+		            }
 		        });
 
 		        $.each($("#add_a_participant form").find('select'), function(i, v){
@@ -191,7 +207,6 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 		        delete data["undefined"];
 		        data['course_permissions_list'] = _this.getAllCourses();
 		        data['send_activation_email'] = mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').is(":checked");
-
 		        $.ajax({
 		        type: 'POST',
 		        url: '/admin/api/participants',
@@ -253,5 +268,16 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         }
       });
       return courseArray;
+    },
+    manageNewCompanyPopup: function(input, showPopup)
+    {
+    	if (showPopup && ($(input).val().trim().length > 0))
+    	{
+    		$(input).parent().find('.newCompanyCreationPopup').show();
+    	}
+    	else
+    	{
+    		$(input).parent().find('.newCompanyCreationPopup').hide();
+    	}
     }
 });

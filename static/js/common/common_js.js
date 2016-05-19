@@ -193,6 +193,8 @@ GetAutocompleteSource = function(url, thisToAppend, sourceName){
     var selectFillList = [] 
     for (var itemIndex=0;itemIndex < selectableList.length; itemIndex++)
     {
+      if (selectableList[itemIndex].display_name == null)
+        selectableList[itemIndex].display_name = "NoName";
       selectFillList.push({value:selectableList[itemIndex].id, label:selectableList[itemIndex].display_name});
     }
     thisToAppend[sourceName] = selectFillList;
