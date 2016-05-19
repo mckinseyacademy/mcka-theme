@@ -3363,6 +3363,12 @@ class participants_list_api(APIView):
                         'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
                         'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
                     }
+                    if data.get('new_company_name', None):
+                        try:
+                            new_organization = organization_api.create_organization(organization_name=data['new_company_name'].lower().replace(" ", "_"), organization_data={"display_name": data['new_company_name']})
+                            data['company'] = vars(new_organization).get("id", None)
+                        except ApiError, e:
+                            return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't create company!"})
                     if user:
                         client = Client.fetch(data['company'])
                         try:
