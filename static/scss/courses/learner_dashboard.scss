@@ -134,3 +134,13 @@
 .tile-input {
     margin-bottom: 16px;
 }
+
+.learner-dashboard-logo{
+    background-image: url('/static/image/McKA_logo.png');
+    position: fixed;
+    width: 200px;
+    height:21px;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+}
