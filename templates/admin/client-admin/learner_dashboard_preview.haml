@@ -5,17 +5,17 @@
     .large-12.large.columns
       #home-courses
         .row
-          .large-8.columns.dash-programs
+          .large-8.columns.dash-programs{style:"height: 612px;"}
             %h3#preview-text= title
             %p#preview-desc= description
             .row
-              -for tile in learner_dashboard_tiles
-                .learner-program
-                  .panel.panel-program{style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+              %ul#sortable-preview
+                - for tile in learner_dashboard_tiles
+                  %li.item.fixed.ui-state-default{id: "preview#{tile.id}", style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
                     .sub-1{style: "color: #{tile.label_color};"} 
-                      -if tile.label
+                      - if tile.label
                         #{tile.label}
-                      -else
+                      - else
                         #{tile.get_tile_type_display}
                     %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
                     .label-3{style: "color: #{tile.note_color};"}= tile.note
@@ -23,8 +23,8 @@
             %h5.label-4{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} FOR DISCOVERY
             -for item in discovery_items
               .learner-info
-                %a{href:"#{item.link}", target: "_blank"}
+                %a{href:"/", target: "_blank"}
                   %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
                 %h5
                   %span{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
-  %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save'}
+  %input#saveModalLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save'}

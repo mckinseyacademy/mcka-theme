@@ -4,70 +4,82 @@
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
   %script
       $(function() {
-          var title;
-          var description;
-          var previewTextColor;
-          var previewDescColor;
-          
-          $('#previewLearnerDashboard').click(function(){
-            $("#preview-text").html(function(){
-              return $("input[name=title_ld]").val();
-            });
-            $("#preview-desc").html(function(){
-              return $("textarea[name=description]").val();
-            });
-
-            previewTextColor = $('input[name=title_color]').val();
-            previewDescColor = $('input[name=description_color]').val();
-            $('#preview-text').css("color", previewTextColor);
-            $('#preview-desc').css("color", previewDescColor);
+        var title;
+        var description;
+        var previewTextColor;
+        var previewDescColor;
+        
+        $('#previewLearnerDashboard').click(function(){
+          $("#preview-text").html(function(){
+            return $("input[name=title_ld]").val();
+          });
+          $("#preview-desc").html(function(){
+            return $("textarea[name=description]").val();
           });
 
-          if ('{{learner_dashboard_id}}' != 'None') {
-              $('#sortable').sortable({
-                  items: '.item:not(.fixed)'
-              });
-              $('#sortable').disableSelection();
+          previewTextColor = $('input[name=title_color]').val();
+          previewDescColor = $('input[name=description_color]').val();
+          $('#preview-text').css("color", previewTextColor);
+          $('#preview-desc').css("color", previewDescColor);
+        });
 
-              var isDragging;
-              var wasDragging;
+        $('#title, #description, #text_color, #desc_color').on('keyup change', function() {
+          $('#unchangedLearnerDashboard').css("display", "none");
+          $('#saveLearnerDashboard').css("display", "none");
+          $('#previewLearnerDashboard').css("display", "inline");
+        });
 
-              $('.ui-sortable-handle').mousedown(function() {
-                  isDragging = false;
-              }).mousemove(function() {
-                  isDragging = true;
-              }).mouseup(function() {
-                  wasDragging = isDragging;
-                  isDragging = false;
-                  if (wasDragging) {
-                      $('#unchangedLearnerDashboard').css("display", "none");
-                      $('#previewLearnerDashboard').css("display", "inline");
-                }
-              });
+        if ('{{learner_dashboard_id}}' != 'None') {
+          $("#sortable").sortable({
+            update: function (event, ui) {
+             $("#sortable-preview").not($(this)).html($(this).html());
+            }
+          }).disableSelection();
+
+          $('#sortable, #sortable-preview').sortable({
+            items: '.item:not(.fixed)'
+          });
+          $('#sortable').disableSelection();
+
+          var isDragging;
+          var wasDragging;
+
+          $('.ui-sortable-handle').mousedown(function() {
+            isDragging = false;
+          }).mousemove(function() {
+            isDragging = true;
+          }).mouseup(function() {
+            wasDragging = isDragging;
+            isDragging = false;
+            if (wasDragging) {
+              $('#unchangedLearnerDashboard').css("display", "none");
+              $('#previewLearnerDashboard').css("display", "inline");
+            }
+          });
+        }
+
+        $('#saveLearnerDashboard, #saveModalLearnerDashboard').click(function(){
+          var headers = {
+            'X-CSRFToken': $.cookie('apros_csrftoken')
           }
-
-          $('#saveLearnerDashboard').click(function(){
-              var headers = {
-                  'X-CSRFToken': $.cookie('apros_csrftoken')
-              }
-              var data = {
-                  title: $("input[name=title_ld]").val(),
-                  description: $("textarea[name=description]").val(),
-                  title_color: $("input[name=title_color]").val(),
-                  description_color: $("input[name=description_color]").val(),
-              }
-              if ('{{learner_dashboard_id}}' != 'None')
-                data.positions = $('#sortable').sortable('toArray');
-              $.ajax({
-                  headers: headers,
-                  data: data,
-                  type: 'POST',
-                  url: window.location.pathname,
-                  success : function() {
-                      location.reload();
-                  }
-              });
+          var data = {
+            title: $("input[name=title_ld]").val(),
+            description: $("textarea[name=description]").val(),
+            title_color: $("input[name=title_color]").val(),
+            description_color: $("input[name=description_color]").val(),
+          }
+          if ('{{learner_dashboard_id}}' != 'None')
+            data.positions = $('#sortable').sortable('toArray');
+          $.ajax({
+            headers: headers,
+            data: data,
+            type: 'POST',
+            url: window.location.pathname,
+            success : function() {
+                location.reload();
+            }
           });
+        });
       });
 
       function deleteTile(tileId, learnerDashboardId){
@@ -81,6 +93,7 @@
                   url: url
               });
               $('#' + tileId).remove();
+              $('#preview' + tileId).remove();
           }
       }
 
@@ -123,12 +136,12 @@
             %label.inline Tiles
           .large-10.columns
             %ul#sortable
-              -for tile in learner_dashboard_tiles
+              - for tile in learner_dashboard_tiles
                 %li.item.ui-state-default{id: "#{tile.id}", style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
                   .sub-1{style: "color: #{tile.label_color};"} 
-                    -if tile.label
+                    - if tile.label
                       #{tile.label}
-                    -else
+                    - else
                       #{tile.get_tile_type_display}
                     %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
                     %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
@@ -141,20 +154,15 @@
                   .fa.fa-plus.font-plus
       .row
         .large-10.large-offset-2.columns
-          %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'} Preview and Save
-          %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview and Save'}
+          - if learner_dashboard_id
+            %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'} Preview and Save
+            %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview and Save'}
+          - else
+            %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save'}
+            %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Save'}
 
       - if learner_dashboard_id
         %hr
         .row
           .large-12.columns
             %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
-
-- block js_snippets
-  :javascript
-    $(document).ready(function() {
-        $('#title,#description,#text_color,#desc_color').change(function() {
-            $('#unchangedLearnerDashboard').css("display", "none");
-            $('#previewLearnerDashboard').css("display", "inline");
-         });
-    });

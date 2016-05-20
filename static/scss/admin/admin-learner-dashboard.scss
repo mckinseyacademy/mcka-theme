@@ -7,11 +7,11 @@ textarea{
     background: #e6e6e6;
 }
 
-#sortable { 
+#sortable, #sortable-preview {
     list-style-type: none; 
     margin: 0; 
     padding: 0;
-    width: 600px;
+    width: 610px;
     height: 450px;
     overflow: auto;
     background: white;
@@ -49,6 +49,11 @@ textarea{
             padding: 30px 55px;
         }
     }
+}
+
+#sortable-preview{
+    width: 587px;
+    border: none;
 }
 
 #previewLearnerDashboard, #saveTile{
