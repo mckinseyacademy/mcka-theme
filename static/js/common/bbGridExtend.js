@@ -147,7 +147,7 @@ _.extend(bbGrid.View.prototype, {
           valueB = valueB.toLowerCase();
         }
         if (typeof valueB == 'string' && typeof valueA == 'string')
-          return valueA.localeCompare(valueB);
+          return sortNumberFixed(valueA,valueB);
       });
       if (sortOrder === 'desc') {
         models.reverse();
@@ -192,7 +192,31 @@ _.extend(bbGrid.View.prototype, {
     default:
         break;
     }
-    this.collection.models = isSort ? this.collection.sortBy(boundComparator) : this.collection.models.reverse();
+    if (isSort)
+    {
+      if(sortType == 'string')
+      {
+        var _attr = this.sortName;
+        this.collection.models = this.collection.models.sort(function (modelA, modelB) {
+          var valueA = modelA.get(_attr);
+          var valueB = modelB.get(_attr);
+          if (typeof valueA == 'string'){
+            valueA = valueA.toLowerCase();
+          }
+          if (typeof valueB == 'string'){
+            valueB = valueB.toLowerCase();
+          }
+          if (typeof valueB == 'string' && typeof valueA == 'string')
+            return sortNumberFixed(valueA,valueB);
+        });
+      }
+      else
+        this.collection.models = this.collection.sortBy(boundComparator);
+    }
+    else
+    {
+      this.collection.models = this.collection.models.reverse();
+    }
     updateHeaderOnSort(col);
   },
   renderPage: function (options) {
@@ -360,4 +384,29 @@ updateHeaderOnSort = function(col) {
       tag.removeClass("fa fa-chevron-up fa-chevron-down");
     }
   });
+}
+
+function sortNumberFixed(elementA, elementB) {
+    var n;
+    var elementAsplit = elementA.match(/([^0-9]+)|([0-9]+)/g);
+    for (var j in elementAsplit) {
+      if( ! isNaN(n = parseInt(elementAsplit[j])) ){
+        elementAsplit[j] = n;
+      }
+    }
+    var elementBsplit = elementB.match(/([^0-9]+)|([0-9]+)/g);
+    for (var j in elementBsplit) {
+      if( ! isNaN(n = parseInt(elementBsplit[j])) ){
+        elementBsplit[j] = n;
+      }
+    }
+    for (var i in elementAsplit) {
+      if (elementBsplit.length < i || elementAsplit[i] < elementBsplit[i]) {
+        return -1; // x is longer
+      }
+      if (elementAsplit[i] > elementBsplit[i]) {
+        return 1;
+      }
+    }
+    return 0;
 }
