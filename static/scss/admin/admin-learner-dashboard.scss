@@ -12,7 +12,7 @@ textarea{
     margin: 0; 
     padding: 0;
     width: 610px;
-    height: 450px;
+    height: 452px;
     overflow: auto;
     background: white;
     border: 1px solid $mckinsey-grey;
@@ -51,9 +51,13 @@ textarea{
     }
 }
 
-#sortable-preview{
-    width: 587px;
-    border: none;
+#sortable-row-preview{
+    overflow: initial;
+    #sortable-preview{
+        width: 587px;
+        height: 450px;
+        border: none;
+    }
 }
 
 #previewLearnerDashboard, #saveTile{
