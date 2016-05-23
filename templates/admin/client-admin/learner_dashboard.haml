@@ -25,7 +25,7 @@
 
         $('#title, #description, #text_color, #desc_color').on('keyup change', function() {
           $('#unchangedLearnerDashboard').css("display", "none");
-          $('#saveLearnerDashboard').css("display", "none");
+          $('#saveLearnerDashboard').attr('disabled', false);
           $('#previewLearnerDashboard').css("display", "inline");
         });
 
@@ -158,8 +158,7 @@
             %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'} Preview and Save
             %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview and Save'}
           - else
-            %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save'}
-            %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Save'}
+            %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save', disabled: 'disabled'}
 
       - if learner_dashboard_id
         %hr
