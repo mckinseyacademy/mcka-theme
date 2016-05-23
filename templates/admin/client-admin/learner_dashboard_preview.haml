@@ -5,10 +5,10 @@
     .large-12.large.columns
       #home-courses
         .row
-          .large-8.columns.dash-programs{style:"height: 612px;"}
+          .large-8.columns.dash-programs
             %h3#preview-text= title
             %p#preview-desc= description
-            .row
+            #sortable-row-preview.row
               %ul#sortable-preview
                 - for tile in learner_dashboard_tiles
                   %li.item.fixed.ui-state-default{id: "preview#{tile.id}", style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
