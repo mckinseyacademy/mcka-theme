@@ -2,19 +2,20 @@
 
 - block content
   #mainParticipantsWrapper
-    #participantsAddWrapper
-      %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
-      %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
-      %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
-    %hr
-    #participantsSearchWrapper
-      .row
-        .large-4.columns
-          %input{:placeholder => 'Company', :type => 'text', :name => 'company', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
-        .large-4.columns
-          %input{:placeholder => 'Name', :type => 'text', :name => 'name', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
-        .large-4.columns
-          %input{:placeholder => 'Email', :type => 'text', :name => 'custom_email', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
+    #participantsListTopContainer
+      #participantsAddWrapper
+        %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
+        %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
+        %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
+      %hr
+      #participantsSearchWrapper
+        .row
+          .large-4.columns
+            %input{:placeholder => 'Company', :type => 'text', :name => 'company', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
+          .large-4.columns
+            %input{:placeholder => 'Name', :type => 'text', :name => 'name', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
+          .large-4.columns
+            %input{:placeholder => 'Email', :type => 'text', :name => 'custom_email', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
     #participantsListViewGridBlock
 
     #add_a_participant.reveal-modal.small{'data-reveal': None}

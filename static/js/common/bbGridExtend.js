@@ -343,7 +343,8 @@ updateHeader = function() {
     var width = window.getComputedStyle(head).width;
     var height = window.getComputedStyle(head).height;
     clonedHeader.css({"width": width, "height": height});
-
+    var clonedHeaderContainer = $('.clonedHeaderContainer');
+    clonedHeaderContainer.css({"width": width});
     var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
     var trwidth = window.getComputedStyle(tr).width;
     var trheight = window.getComputedStyle(tr).height;
