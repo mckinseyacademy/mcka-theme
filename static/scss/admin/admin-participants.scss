@@ -3,6 +3,15 @@
 	margin-right: auto;
 	display:table;
 	min-width: 760px;
+}
+
+#mainParticipantsWrapper
+{
+	width: 100%;
+}
+
+#mainParticipantsDetailsWrapper
+{
 	max-width: 80%;
 }
 
@@ -28,6 +37,7 @@
 		max-width: 60%;
 		margin-left: auto;
 		margin-right: auto;
+		width: 50%;
 	}
 
 	.menuButton{
@@ -41,6 +51,7 @@
 	display: table;
 	margin-left: auto;
 	margin-right: auto;
+	min-width: 50%;
 
 	.bbGrid-grid{
 		min-width: 100%;

@@ -1,9 +1,16 @@
-#mainCompaniesListDetailsContainer, #mainCompaniesListGridContainer
+#mainCompaniesListDetailsContainer
 {
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 760px;
-	max-width: 60%;	
+	width: 60%;
+}
+
+#mainCompaniesListGridContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 60%;
+	width: 100%;
 }
 
 #companiesListTitle 
@@ -20,7 +27,8 @@
 	margin-left: auto;
 	margin-right: auto;
 	display: table;
-	width: 100%;	
+	width: auto;	
+	min-width: 60%;
 
 	.bbGrid-search-bar
 	{
@@ -35,33 +43,22 @@
 	margin-right: auto;
 	margin-bottom: 100px;
 	position: relative;
+	min-width: 100%;
 
 	.bbGrid-container
 	{
 		max-height: 28.8em;
 		overflow-y: scroll;
+		min-width: 100%;
 	}
 
 	.bbGrid-grid
 	{
 		&.table
 		{
-			width: 100%;
 			margin-left: auto;
 			margin-right: auto;	
-
-			td
-			{
-				text-align: center;
-			}
-		}
-	}
-
-	.clonedHeaderContainer
-	{
-		th
-		{
-			text-align: center;
+			min-width: 100%;
 		}
 	}
 }
@@ -70,16 +67,14 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 760px;
-	max-width: 80%;
+	width: 100%;
 }
 
 #companyDetailsNavigation
 {
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 760px;
-	max-width: 90%;
+	width: 70%;
 }
 
 #mainCompanyDetailsDataContainer
@@ -87,8 +82,7 @@
 	padding-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 760px;
-	max-width: 80%;
+	width: 60%;
 }
 
 #companyDetailsTopDataWrapper
@@ -125,8 +119,23 @@
 
 #companyDetailsDataWrapper
 {
-	min-width: 760px;
-	max-width: 80%;
+	min-width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	display: table;
+	width: auto;
+}
+
+#companyDetailsDataWrapper
+{
+	.bbGrid-grid
+	{
+		&.table
+		{
+			min-width: 80%;
+			width: auto;
+		}
+	}
 }
 
 #companyInfoInvoicingDetails, #companyInfoContacts
