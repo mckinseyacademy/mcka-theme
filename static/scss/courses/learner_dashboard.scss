@@ -121,12 +121,18 @@
             .reg {
                 font-weight: normal;
             }
+            .author-font{
+                font-size: 10px;
+            }
         }
         p{
             font-size: 18px;
         }
         p:hover{
             color: #b1c2cc !important; 
+        }
+        .title-font{
+            font-size: 16px;
         }
     }
 }

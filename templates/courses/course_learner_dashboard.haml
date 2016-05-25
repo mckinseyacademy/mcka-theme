@@ -47,19 +47,19 @@
             -if item.link
               -if item.title
                 <a href="#{item.link}" target="_blank" onclick="ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')">
-                  <p style="{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}">#{item.title}</p>
+                  <p class="title-font" style="{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}">#{item.title}</p>
                 </a>                
               -if item.author
                 %h5
-                <a href="#{item.link}" target="_blank" onclick="ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')">
-                  <span style="{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}">#{item.author}</span>
-                </a>
+                  <a href="#{item.link}" target="_blank" onclick="ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')">
+                    <span class="author-font" style="{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}">#{item.author}</span>
+                  </a>
             -else
               -if item.title
-                %p{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
+                %p.title-font{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
               -if item.author
                 %h5
-                %span{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
+                  %span.author-font{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
 
 
 - block footer
