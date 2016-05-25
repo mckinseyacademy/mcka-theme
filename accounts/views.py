@@ -738,6 +738,11 @@ def reset_complete(request,
 def home(request):
     ''' show me the home page '''
 
+    if 'learner_dashboard_id' in request.session:
+        if request.session['learner_dashboard_id'] is not None:
+            redirect_url = '/learnerdashboard'
+            return HttpResponseRedirect(redirect_url)
+
     programData = standard_data(request)
     program = programData.get('program')
     course = programData.get('course')
