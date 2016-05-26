@@ -293,15 +293,19 @@ class Course(CategorisedJsonObject):
         for lesson in self.chapters:
             appended = None
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+            
             for key, week in weeks.iteritems():
                 if lesson.index in week['grouped']:
                     week["lessons"].append(lesson)
                     appended = True
-                elif len(due_dates) > 0:
-                    due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
-                    if week["start_date"] <= due_date <= week["end_date"]:
-                        week["lessons"].append(lesson)
-                        appended = True
+
+            if not appended:
+                for key, week in weeks.iteritems():
+                    if len(due_dates) > 0 and not appended:
+                        due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+                        if week["start_date"] <= due_date <= week["end_date"]:
+                            week["lessons"].append(lesson)
+                            appended = True
 
             if not appended:
                 due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
