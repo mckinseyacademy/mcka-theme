@@ -18,9 +18,6 @@
           } 
         },
         { title: 'Course ID', index: true, name: 'id' },
-        { title: 'Program', index: true, name: 'program' },
-        { title: 'Type', index: true, name: 'type' },
-        { title: 'Configuration', index: true, name: 'configuration' },
         { title: 'Start', index: true, name: 'start',
           actions: function(id, attributes){ 
             if (attributes['start'] != '-'){
@@ -41,34 +38,8 @@
         }
         ]
       });
-      coursesListViewGrid['partial_collection'] = this.collection;
-      this.$el.find('.bbGrid-container').scroll(this.fetchPages);
-      $(document).on('onSearchEvent', this.onSearchEvent);
       $(document).on('onClearSearchEvent', this.onClearSearchEvent);
 
-    },
-    fetchPages: function(){
-        if  ($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20)
-        {
-          coursesListViewGrid.partial_collection.getNextPage();
-        }  
-    },
-    onSearchEvent: function(){
-        if (typeof waitForLastSuccess == 'undefined')
-          waitForLastSuccess = true;
-        _intervalId = setInterval(function()
-        {
-          if ($('#mainCoursesListBlockContainer .bbGrid-pager').val().trim() === '')
-            clearInterval(_intervalId)
-          waitForLastSuccess = false;
-          coursesListViewGrid.partial_collection.getNextPage({ success: function()
-          {
-            coursesListViewGrid.searchBar.onSearch({target: '#mainCoursesListBlockContainer .bbGrid-pager'});
-            waitForLastSuccess = true;
-          }});
-          if (!coursesListViewGrid.partial_collection.hasNextPage())
-            clearInterval(_intervalId);
-        }, 500);
     },
     onClearSearchEvent: function(){
       coursesListViewGrid.searchBar.onSearch({target: '#mainCoursesListBlockContainer .bbGrid-pager'});
