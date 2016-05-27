@@ -915,17 +915,11 @@ def courses_list(request):
 
 
 class courses_list_api(APIView):
-    '''
-    To Be Done: Tags like program, type and configuration are not yet implemented and that's why they are set to None.
-    '''
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, format=None):
         allCourses = course_api.get_courses_list(request.GET)
-        for course in allCourses['results']:
-            course['program'] = None
-            course['type'] = None
-            course['configuration'] = None
+        for course in allCourses:
             if course['start'] is not None:
                 start = parsedate(course['start'])
                 course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
