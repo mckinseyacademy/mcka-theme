@@ -1182,16 +1182,19 @@ class course_details_api(APIView):
             for course_participant in allCourseParticipantsUsers['results']:
                 if request.GET.get('include_slow_fields', 'false') == 'true':  
                     course_participant['progress'] = '{:03d}'.format(round_to_int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
-                    user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
                     course_participant['groupworks'] = []
                     course_participant['assessments'] = []
-                    for user_grade in user_grades:
-                        data = user_grade
-                        data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
-                        if 'GROUP_PROJECT' in user_grade['category']:
-                            course_participant['groupworks'].append(data)
-                        elif 'assessment' in user_grade['category'].lower():
-                            course_participant['assessments'].append(data)
+                    try:
+                        user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
+                        for user_grade in user_grades:
+                            data = user_grade
+                            data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
+                            if 'GROUP_PROJECT' in user_grade['category']:
+                                course_participant['groupworks'].append(data)
+                            elif 'assessment' in user_grade['category'].lower():
+                                course_participant['assessments'].append(data)
+                    except ApiError:
+                        pass
                 else:
                     course_participant['user_status'] = []
                     course_participant['number_of_assessments'] = number_of_assessments
