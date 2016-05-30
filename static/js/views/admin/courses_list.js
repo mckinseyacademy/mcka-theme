@@ -14,6 +14,9 @@
           actions: function(id, attributes){ 
             var thisId = attributes['id']
             var name = attributes['name']
+            if (name.length > 75){
+              return '<a href="/admin/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
+            }
             return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
           } 
         },
