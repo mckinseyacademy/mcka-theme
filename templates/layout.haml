@@ -148,10 +148,11 @@
 
     -# Video overlay
     - block video_overlay
-      #mckinsey_video.reveal-modal.medium{'data-reveal': None}
-        .close-reveal-modal
-          %i.fa.fa-times-circle
-        .player-wrapper
+      - ifequal request.session.learner_dashboard_id None
+        #mckinsey_video.reveal-modal.medium{'data-reveal': None}
+          .close-reveal-modal
+            %i.fa.fa-times-circle
+          .player-wrapper
 
     -# Block for general purpouse modal dialog
     - block general_modal
