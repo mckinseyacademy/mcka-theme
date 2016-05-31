@@ -148,11 +148,10 @@
 
     -# Video overlay
     - block video_overlay
-      - ifequal request.session.learner_dashboard_id None
-        #mckinsey_video.reveal-modal.medium{'data-reveal': None}
-          .close-reveal-modal
-            %i.fa.fa-times-circle
-          .player-wrapper
+      #mckinsey_video.reveal-modal.medium{'data-reveal': None}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .player-wrapper
 
     -# Block for general purpouse modal dialog
     - block general_modal
@@ -196,13 +195,14 @@
 
     - if request.user.is_authenticated
       - ifequal request.session.learner_dashboard_id None
-        #intro_modal.reveal-modal.small{'data-reveal': None, 'data-options': "close_on_esc: false;"}
-          .close-reveal-modal
-            %i.fa.fa-times-circle
-          %h1 Welcome to McKinsey Academy
-          %p McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage. This video will walk you through our learner experience.
-          #mk-intro-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
-          %p.style-6 This product walkthrough can always be found in the page specific help <i class="fa fa-question-circle"></i>.
+        - if request.session.learner_dashboard_id
+          #intro_modal.reveal-modal.small{'data-reveal': None, 'data-options': "close_on_esc: false;"}
+            .close-reveal-modal
+              %i.fa.fa-times-circle
+            %h1 Welcome to McKinsey Academy
+            %p McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage. This video will walk you through our learner experience.
+            #mk-intro-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
+            %p.style-6 This product walkthrough can always be found in the page specific help <i class="fa fa-question-circle"></i>.
 
     -# jQuery-cookie
     - block jquery_cookie
