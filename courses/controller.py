@@ -366,7 +366,7 @@ def load_static_tabs(course_id, name=None):
         static_tab = get_static_tab_context(course_id, name)
         if getattr(static_tab, 'content', None) is None and getattr(static_tab, 'name', None):
             try: 
-                static_tab = course_api.get_course_tab(course_id, name=static_tab.name)
+                static_tab = course_api.get_course_tab(course_id, tab_id=static_tab.id)
                 set_static_tab_context(course_id, static_tab, static_tab.name.lower())
             except ApiError as e:
                 pass
