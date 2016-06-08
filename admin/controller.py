@@ -903,7 +903,11 @@ def get_program_data_for_report(client_id, program_id=None):
     program = next((p for p in programs if p.id == program_id), programs[0])
     program_courses = program.fetch_courses()
     course_ids = list(set([pc.course_id for pc in program_courses]))
-    courses = course_api.get_courses(course_id=course_ids)
+
+    chunks = [course_ids[x:x+20] for x in xrange(0, len(course_ids), 20)]
+    courses = []
+    for chunk in chunks:
+        courses.extend(course_api.get_courses(course_id=chunk))
 
     for course in courses:
         course.metrics = get_course_metrics_for_organization(course.id, client_id)
