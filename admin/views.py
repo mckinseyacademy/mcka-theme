@@ -291,7 +291,10 @@ def client_admin_home(request, client_id):
         programs.append(_prepare_program_display(program))
 
     coursesIDs = list(set(coursesIDs))
-    courses = course_api.get_courses(course_id=coursesIDs)
+    chunks = [coursesIDs[x:x+20] for x in xrange(0, len(coursesIDs), 20)]
+    courses = []
+    for chunk in chunks:
+        courses.extend(course_api.get_courses(course_id=chunk))
 
     for course in courses:
         course = _prepare_course_display(course)
