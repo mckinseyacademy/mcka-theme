@@ -9,8 +9,8 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 60%;
 	width: 100%;
+	display: table;
 }
 
 #companiesListTitle 
@@ -26,14 +26,19 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	display: table;
-	width: auto;	
-	min-width: 60%;
 
 	.bbGrid-search-bar
 	{
-		float: none!important;
-		display: inline-block;
+		float: none !important;
+	    display: table;
+	    min-width: 60%;
+	    margin-left: auto;
+	    margin-right: auto;
+
+	    .bbGrid-pager
+	    {
+	   		float: left !important;
+	    }
 	}
 }
 
@@ -42,8 +47,9 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 100px;
+	min-width: 60%;
+	display: table;
 	position: relative;
-	min-width: 100%;
 
 	.bbGrid-container
 	{
@@ -113,29 +119,82 @@
 
 #companyDetailsNavigationButtonsContainer
 {
-	min-width: 760px;
-	max-width: 80%;
+	width: 100%;
+
+	.row
+	{
+		margin-left: 0px;
+	}
+
+	hr
+	{
+		width: 100%;
+	}
 }
 
 #companyDetailsDataWrapper
 {
-	min-width: 60%;
 	margin-left: auto;
 	margin-right: auto;
 	display: table;
-	width: auto;
+	width: 100%;
 }
 
-#companyDetailsDataWrapper
+#companyDetailsCoursesContainer
 {
-	.bbGrid-grid
+	margin-left: auto;
+	margin-right: auto;
+
+	.bbGrid-search-bar
 	{
-		&.table
+		float: none !important;
+		display: table;
+		margin-left: auto;
+		margin-right: auto;
+		min-width: 60%;
+
+		.bbGrid-pager
 		{
-			min-width: 80%;
-			width: auto;
+			float: left!important;
+			width: auto!important;
 		}
 	}
+
+	#companyDetailsCoursesViewGridBlock
+	{
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 100px;
+		min-width: 60%;
+		display: table;
+		position: relative;
+
+		.bbGrid-container
+		{
+			max-height: 28.8em;
+			overflow-y: scroll;
+
+			.bbGrid-grid-nav
+			{
+				max-width: 100%!important;
+			}
+
+			.bbGrid-grid
+			{
+				&.table
+				{
+					min-width: 100%;
+				}
+			}
+		}
+	}
+}
+
+.companyCompanyInfo
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
 }
 
 #companyInfoInvoicingDetails, #companyInfoContacts

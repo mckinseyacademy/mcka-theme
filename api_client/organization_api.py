@@ -204,6 +204,20 @@ def get_grade_complete_count(organization_id, organization_object=JsonObject, *a
     return JP.from_json(response.read(), organization_object)
 
 
+@api_error_protect
+def get_organizations_courses(organization_id):
+
+    response = GET(
+        '{}/{}/{}/courses'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id
+        )
+    )
+
+    return json.loads(response.read())
+
+
 ORGANIZATION_ERROR_CODE_MESSAGES = {
     "create_organization": {
         403: _("Permission Denied"),

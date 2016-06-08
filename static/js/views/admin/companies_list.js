@@ -32,7 +32,7 @@
             }
           } 
         },
-        { title: 'No. of Courses', index: true, name: 'numberCourses' }
+        { title: 'No. of Courses', index: true, name: 'numberCourses', sorttype: 'number' }
         ]
       });
       this.companiesListViewGrid = companiesListViewGrid;

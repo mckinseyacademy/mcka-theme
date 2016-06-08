@@ -65,7 +65,7 @@ from .controller import (
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
-    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key
+    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -83,6 +83,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from courses.user_courses import load_course_progress
 import csv
+from django.utils import timezone
 
 
 # TO-DO: DECORATOR TO CHECK LEARNER DASHBOARD FEATURE IS ON. 
@@ -4168,7 +4169,7 @@ class companies_list_api(APIView):
                 company['name'] = vars(client)['display_name']
                 company['id'] = vars(client)['id']
                 company['numberParticipants'] = '.'
-                company['numberCourses'] = '-'
+                company['numberCourses'] = vars(client)['number_of_courses']
                 companies.append(company)
         elif include_slow_fields == 'true':
             for company_id in request.GET['ids'].split(','):
@@ -4195,7 +4196,8 @@ def company_details(request, company_id):
     requestParams['organizations'] = company_id
     participants = user_api.get_filtered_users(requestParams)
     company['numberParticipants'] = participants['count']
-    company['activeCourses'] = '-'
+
+    company['activeCourses'] = len(get_company_active_courses(company_id))
 
     invoicing = {}
     invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
@@ -4261,6 +4263,35 @@ def company_details(request, company_id):
     }
 
     return render(request, 'admin/companies/company_details.haml', data)
+
+
+class company_courses_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, company_id):
+        
+        company_courses = organization_api.get_organizations_courses(company_id)
+        courses = []
+        for company_course in company_courses:
+            course = {}
+            course['name'] = company_course['name']
+            course['id'] = company_course['id']
+            course['participants'] = len(company_course['enrolled_users'])
+            course_roles = course_api.get_users_filtered_by_role(company_course['id'])
+            for user in company_course['enrolled_users']:
+                if any(role.id == user for role in course_roles):
+                    course['participants'] = course['participants'] - 1
+            start = parsedate(company_course['start'])
+            course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
+            if company_course['end'] is not None:
+                end = parsedate(company_course['end'])
+                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y") 
+            else:
+                course['end'] = '-'
+            course['cohort'] = '-'
+            courses.append(course)
+
+        return Response(courses)
 
 
 class company_info_api(APIView):
@@ -4338,7 +4369,7 @@ class company_info_api(APIView):
         flag = request.GET.get('flag', None)
         response = {}
         data = json.loads(request.body)
-        print data
+
         if flag == 'contacts':
             companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
             if len(companyContacts) > 0:
