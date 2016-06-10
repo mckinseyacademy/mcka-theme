@@ -951,39 +951,42 @@ def course_details(request, course_id):
             course[data] = "-"  
 
     course_all_users = course_api.get_course_details_users(course_id)
-    count = len(course_all_users['enrollments'])
-    users_enrolled = []
+    count_all_users = course_all_users['count']
+
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
-    for user in course_all_users['enrollments']:
-        if str(user['id']) not in list_of_user_roles['ids']:
-            users_enrolled.append(user)
 
-    course['users_enrolled'] = len(users_enrolled)
+    #number of active participants = all users - number of users with roles
+    course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
 
     course_completed_users = 0
     course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
     for completed_metric in course_metrics.users_completed:
         course_completed_users += completed_metric[1]
     try:
-        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / len(users_enrolled))
+        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
     except ZeroDivisionError:
         course['completed'] = 0
 
-    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=course['users_enrolled'])
-    course['passed'] = course_pass.pass_rate_display(users_enrolled)
+    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=count_all_users)
+    pass_users = course_pass.pass_rate_display(list_of_user_roles['ids'])
+
+    try:
+        course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
+    except ZeroDivisionError:
+        course['passed'] = 0
 
     course_progress = 0
     course_proficiency = 0
 
-    users_progress = get_course_progress(course_id, users_enrolled, request)
+    users_progress = get_course_progress(course_id, list_of_user_roles['ids'], request)
 
     for user in users_progress:
         course_progress += user['progress']
 
-    course_grades = course_api.get_course_details_metrics_grades(course_id, count)
+    course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
     for user in course_grades['leaders']:
-        if any(item['id'] == user['id'] for item in users_enrolled):
+        if user['id'] not in list_of_user_roles['ids']:
             user_proficiency = float(user['grade'])*100
             course_proficiency += user_proficiency
 
@@ -1121,135 +1124,63 @@ class course_details_api(APIView):
             'observer':'Observer'
             }
             permissionsFilter = ['observer','assistant']
-            allCoursesParticipantList = []
-            len_of_all_users = 0
-            userData = {'ids':[]}
-            current_page = 0
-            if request.GET.get('include_slow_fields', 'false') == 'true':
-                allCourseParticipantsUsers = user_api.get_filtered_users(request.GET)
-                users_progress = get_course_progress(course_id, allCourseParticipantsUsers['results'], request)
-                len_of_all_users = len(allCourseParticipantsUsers['results'])
-                allCourseParticipants = allCourseParticipantsUsers['results']
-            else:
-                allCourseParticipants = course_api.get_user_list_dictionary(course_id)['enrollments']
-                list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
-                allCourseParticipants = sorted(allCourseParticipants, key=lambda k: k['id'])
-                for user_role_id in list_of_user_roles['ids']:          
-                    userData['ids'].append(str(user_role_id))
-                for course_participant in allCourseParticipants:
-                    if str(course_participant['id']) not in userData['ids']:
-                        userData['ids'].append(str(course_participant['id']))
-                requestParams = dict(request.GET)
-                if requestParams['page_size']:
-                    len_of_pages = int(requestParams['page_size'][0])
+            allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
+            users_progress = get_course_progress(course_id, [], request)
+            course_grades = course_api.get_course_details_metrics_grades(course_id, allCourseParticipants['count'])
+            for course_participant in allCourseParticipants['results']:
+                if len(course_participant['organizations'] ) == 0:
+                    course_participant['organizations'] = [{'display_name': 'No company'}]
+                    course_participant['organizations_display_name'] = 'No company'
                 else:
-                    len_of_pages = 50;
-                user_chunked_ids=[userData['ids'][x:x+len_of_pages] for x in xrange(0, len(userData['ids']), len_of_pages)]
-                len_of_all_users = len(userData['ids'])
-                if requestParams['page']:
-                    if int(requestParams['page'][0]) > 0:
-                        current_page = int(requestParams['page'][0])-1
-                    else:
-                        current_page = 0
+                    course_participant['organizations_display_name'] = course_participant['organizations'][0]['display_name']
+                if len(course_participant['roles']) != 0:
+                    if 'assistant' in course_participant['roles']:
+                        course_participant['custom_user_status'] = permissonsMap['assistant']
+                    elif 'observer' in course_participant['roles']:
+                        course_participant['custom_user_status'] = permissonsMap['observer']
+                    elif 'staff' in course_participant['roles'] or 'instructor' in course_participant['roles']:
+                        course_participant['custom_user_status'] = permissonsMap['staff']
                 else:
-                    current_page = 0;
-                del requestParams['include_slow_fields']       
-                userData['ids'] = ",".join(user_chunked_ids[current_page])
-                for key, value in requestParams.items():
-                    requestParams[key] = ",".join(value)
-                requestParams.update(userData)
-                requestParams['page'] = 1
-                allCourseParticipantsUsers = user_api.get_filtered_users(requestParams)
-
-                course_all_users = course_api.get_course_details_users(course_id)
-                count = len(course_all_users['enrollments'])
-                course_grades = course_api.get_course_details_metrics_grades(course_id, count)
-
-            allCourseParticipantsUsers['full_length'] = len_of_all_users
-            allCourseParticipantsUsers['current_page'] = current_page+1
-            
-            number_of_assessments = 0
-            number_of_groupworks = 0
-            test_groupwork = []
-            test_assessment = []
-            if len_of_all_users > 0:
-                try:
-                    user_grades = user_api.get_user_full_gradebook(allCourseParticipants[0]['id'], course_id)['grade_summary']['section_breakdown']
-                    for user_grade in user_grades:
-                        data = user_grade
-                        data['percent'] = '.'
-                        if 'assessment' in user_grade['category'].lower():
-                            number_of_assessments += 1
-                            test_assessment.append(data)
-                        if 'GROUP_PROJECT' in user_grade['category']:
-                            number_of_groupworks += 1
-                            test_groupwork.append(data)
-                except ApiError:
-                    pass
-            for course_participant in allCourseParticipantsUsers['results']:
-                if request.GET.get('include_slow_fields', 'false') == 'true':  
-                    course_participant['progress'] = '{:03d}'.format(round_to_int([user['progress'] for user in users_progress if user['user_id'] == course_participant['id']][0]))
-                    course_participant['groupworks'] = []
-                    course_participant['assessments'] = []
-                    try:
-                        user_grades = user_api.get_user_full_gradebook(course_participant['id'], course_id)['grade_summary']['section_breakdown']
-                        for user_grade in user_grades:
-                            data = user_grade
-                            data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
-                            if 'GROUP_PROJECT' in user_grade['category']:
-                                course_participant['groupworks'].append(data)
-                            elif 'assessment' in user_grade['category'].lower():
-                                course_participant['assessments'].append(data)
-                    except ApiError:
-                        pass
-                else:
-                    course_participant['user_status'] = []
-                    course_participant['number_of_assessments'] = number_of_assessments
-                    course_participant['number_of_groupworks'] = number_of_groupworks
-                    course_participant['progress'] = '.'
-                    course_participant['groupworks'] = test_groupwork
-                    course_participant['assessments'] = test_assessment
-                    course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
-                    if not course_participant['proficiency']:
-                        course_participant['proficiency'] = "000";
-                    else:
-                        course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency'][0]))
-                    for role in list_of_user_roles['data']:
-                        if role['id'] == course_participant['id']:
-                            course_participant['user_status'].append(permissonsMap[role['role']])
-                            del role['role']
-                    if permissonsMap['assistant'] in course_participant['user_status']:
-                        course_participant['custom_user_status'] = 'TA'
-                    elif permissonsMap['observer'] in course_participant['user_status']:
-                        course_participant['custom_user_status'] = 'Observer'
-                    else:
-                        course_participant['custom_user_status']='Active'
-                        course_participant['user_status'].append('Active')
-                    course_participant['progress'] = '.'
-                    if len(course_participant['organizations'] ) == 0:
-                        course_participant['organizations'] = [{'display_name': 'No company'}]
-                        course_participant['organizations_display_name'] = 'No company'
-                    else:
-                        course_participant['organizations_display_name'] = course_participant['organizations'][0]['display_name']
-                    if course_participant['is_active']:
+                    course_participant['custom_user_status'] = 'Active'
+                if course_participant['is_active']:
                         course_participant['custom_activated'] = 'Yes'
-                    else:
-                        course_participant['custom_activated'] = 'No'
-                    if 'last_login' in course_participant:
-                        if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
-                            course_participant['custom_last_login'] = parsedate(course_participant['last_login']).strftime("%Y/%m/%d")
-                        else:
-                            course_participant['custom_last_login'] = '-'
+                else:
+                    course_participant['custom_activated'] = 'No'
+                if 'last_login' in course_participant:
+                    if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
+                        last_login = parsedate(course_participant['last_login'])
+                        course_participant['custom_last_login'] = last_login.strftime("%Y/%m/%d") + ',' + last_login.strftime("%m/%d/%Y")
                     else:
                         course_participant['custom_last_login'] = '-'
-                    if 'created' in course_participant:
-                        if (course_participant['created'] is not None) and (course_participant['created'] is not ''):
-                            course_participant['custom_created'] = parsedate(course_participant['created']).strftime("%Y/%m/%d")
-                        else:
-                            course_participant['custom_created'] = '-'
-                    else:
-                        course_participant['custom_created'] = '-'
-            return Response(allCourseParticipantsUsers)
+                else:
+                    course_participant['custom_last_login'] = '-'
+                user = [user for user in users_progress if user['user_id'] == course_participant['id']]
+                if len(user) > 0:
+                    course_participant['progress'] = '{:03d}'.format(round_to_int(user[0]['progress']))
+                else: 
+                    course_participant['progress'] = "000"
+                course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
+                if not course_participant['proficiency']:
+                    course_participant['proficiency'] = "000"
+                else:
+                    course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency'][0]))
+
+                course_participant['number_of_assessments'] = 0
+                course_participant['number_of_groupworks'] = 0
+                course_participant['groupworks'] = []
+                course_participant['assessments'] = []
+                if allCourseParticipants['count'] > 0:
+                    if course_participant['grades']['section_breakdown']:
+                        for user_grade in course_participant['grades']['section_breakdown']:
+                            data = user_grade
+                            data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
+                            if 'assessment' in user_grade['category'].lower():
+                                course_participant['number_of_assessments'] += 1
+                                course_participant['assessments'].append(data)
+                            if 'GROUP_PROJECT' in user_grade['category']:
+                                course_participant['number_of_groupworks'] += 1
+                                course_participant['groupworks'].append(data)
+            return Response(allCourseParticipants)
         else:
             return Response({})
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

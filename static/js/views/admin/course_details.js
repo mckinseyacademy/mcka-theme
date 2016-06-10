@@ -1,18 +1,52 @@
   Apros.views.CourseDetailsView = Backbone.View.extend({
 
     coursesListDetailsViewGrid: {},
-
+    generatedGridColumns:
+    [
+      { title: 'Name', index: true, name: 'username', titleAttribute: 'full_name',
+      actions: function(id, attributes) 
+      { 
+        return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+      }},
+      { title: 'Email', index: true, name: 'email' },
+      { title: 'Company', index: true, name: 'organizations_display_name'},
+      { title: 'Status', index: true, name: 'custom_user_status'},
+      { title: 'Activated', index: true, name: 'custom_activated'},
+      { title: 'Last Log In', index: true, name: 'custom_last_login',
+      actions: function(id, attributes) 
+      { 
+        if (attributes['custom_last_login'] != '-' && attributes['custom_last_login'] != '' && typeof attributes['custom_last_login'] != 'undefined')
+        {
+         var last_login = attributes['custom_last_login'].split(',')[0].split('/');
+            return '' + last_login[1] + '/' + last_login[2] + '/' + last_login[0];
+        }
+        return attributes['custom_last_login'];
+      }},
+      { title: 'Progress', index: true, name: 'progress', actions: function(id, attributes) 
+      { 
+        value = attributes['progress'];
+        if (value == '-')
+          return value;
+        return '' + parseInt(value) + '%'; 
+      }},
+      { title: 'Proficiency', index: true, name: 'proficiency', actions: function(id, attributes) 
+      { 
+        value = attributes['proficiency'];
+        if (value == '-')
+          return value;
+        return '' + parseInt(value) + '%'; 
+      }}
+    ],
     initialize: function(){
       InitializeTooltipOnPage();
       var _this = this;
       this.collection.fetch({success:function(collection, response, options){
           _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
           cloneHeader('#courseDetailsParticipantsGrid');
-          collection.getSlowFetchedStatus = true;
-          collection.slowFieldsSuccess(collection, response, options);
         }});
     },
     render: function(){
+      var _this = this;
       var coursesListDetailsViewGrid = {}
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       coursesListDetailsViewGrid = new bbGrid.View({
@@ -50,56 +84,7 @@
             }
           }
         },
-        colModel:[
-        { title: 'Name', index: true, name: 'username', titleAttribute: 'full_name',
-        actions: function(id, attributes) 
-        { 
-          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
-        }},
-        { title: 'Email', index: true, name: 'email' },
-        { title: 'Company', index: true, name: 'organizations_display_name'},
-        { title: 'Status', index: true, name: 'custom_user_status',actions: function(id, attributes) 
-        { 
-          if (attributes['custom_user_status'] == '.')
-          {
-            return '<i class="fa fa-spinner fa-spin"></i>';
-          }
-          return attributes['custom_user_status'];
-        }},
-        { title: 'Activated', index: true, name: 'custom_activated'},
-        { title: 'Last Log In', index: true, name: 'custom_last_login',
-        actions: function(id, attributes) 
-        { 
-          if (attributes['custom_last_login'] != '-' && attributes['custom_last_login'] != '' && typeof attributes['custom_last_login'] != 'undefined')
-          {
-            var start = attributes['custom_last_login'].split('/');
-            return '' + start[1] + '/' + start[2] + '/' + start[0];
-          }
-          return attributes['custom_last_login'];
-        }},
-        { title: 'Progress', index: true, name: 'progress', actions: function(id, attributes) 
-        { 
-          if (attributes['progress'] == '.')
-          {
-            return '<i class="fa fa-spinner fa-spin"></i>';
-          }
-          value = attributes['progress']
-          if (value == '-')
-            return value;
-          return '' + parseInt(value) + '%'; 
-        }},
-        { title: 'Proficiency', index: true, name: 'proficiency', actions: function(id, attributes) 
-        { 
-          if (attributes['proficiency'] == '.')
-          {
-            return '<i class="fa fa-spinner fa-spin"></i>';
-          }
-          value = attributes['proficiency']
-          if (value == '-')
-            return value;
-          return '' + parseInt(value) + '%'; 
-        }}
-        ]
+        colModel: _this.generatedGridColumns
       });
       
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
@@ -110,43 +95,27 @@
     },
     fetchPages: function(event){
       var _this = event.data.extra;
-      if  (($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20) && _this.coursesListDetailsViewGrid.partial_collection.hasNextPage()){
-        _collection = _this.coursesListDetailsViewGrid.partial_collection;
-        _collection.saveCurrentPageSlowState();
-        _collection.getNextPage({success:function(collection, response, options){
-          if (!_collection.getSlowFetchedStatus)
-          {
-            _collection.getSlowFetchedStatus = true;
-            _collection.slowFieldsSuccess(_collection, response, options);
-          }
-        }});
+      if  ($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20)
+      {
+        _this.coursesListDetailsViewGrid.partial_collection.getNextPage();
       }
     },
     onSearchEvent: function(event){
-    var _this = event.data.extra;
-    if (typeof waitForLastSuccess == 'undefined')
-      waitForLastSuccess = true;
-      _intervalId = setInterval(function()
-      {
-        if ($('#courseDetailsMainContainer .bbGrid-pager').val().trim() === '')
-          clearInterval(_intervalId)
-        if (waitForLastSuccess)
+      var _this = event.data.extra;
+      if (typeof waitForLastSuccess == 'undefined')
+          waitForLastSuccess = true;
+        _intervalId = setInterval(function()
         {
+          if ($('#courseDetailsMainContainer .bbGrid-pager').val().trim() === '')
+            clearInterval(_intervalId)
           waitForLastSuccess = false;
-          _collection = _this.coursesListDetailsViewGrid.partial_collection;
-          _collection.saveCurrentPageSlowState();
-          _collection.getNextPage({success:function(collection, response, options){
-            if (!_collection.getSlowFetchedStatus)
-            {
-              _collection.getSlowFetchedStatus = true;
-              _collection.slowFieldsSuccess(_collection, response, options);
-            }
+          _this.coursesListDetailsViewGrid.partial_collection.getNextPage({ success: function()
+          {
             _this.coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
             waitForLastSuccess = true;
           }});
-        }
-        if (!_this.coursesListDetailsViewGrid.partial_collection.hasNextPage())
-          clearInterval(_intervalId);
+          if (!_this.coursesListDetailsViewGrid.partial_collection.hasNextPage())
+            clearInterval(_intervalId);
       }, 500);
     },
     onClearSearchEvent: function(event){
@@ -190,7 +159,7 @@
               return value;
             return '' + parseInt(value) + '%'; 
           }})(groupworkIndex);
-          coursesListDetailsViewGrid.colModel.push(groupwork); 
+          this.generatedGridColumns.push(groupwork);
         }
         var assessmentData;
         for (var assessmentIndex = 0; assessmentIndex < modelsList[0].attributes.assessments.length; assessmentIndex++)
@@ -214,7 +183,7 @@
               return value;
             return '' + parseInt(value) + '%'; 
           }})(assessmentIndex);
-          coursesListDetailsViewGrid.colModel.push(assessment); 
+          this.generatedGridColumns.push(assessment);
         }
       }
       coursesListDetailsViewGrid.render();
