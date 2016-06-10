@@ -349,6 +349,16 @@ updateHeader = function() {
     var width = window.getComputedStyle(head).width;
     var height = window.getComputedStyle(head).height;
     clonedHeader.css({"width": width, "height": height});
+    var clonedHeaderContainer = $('.clonedHeaderContainer');
+    var bbGridContainer = $(parentContainer).find('.bbGrid-container');
+    var bbGridContainerWidth = window.getComputedStyle(bbGridContainer[0]).width;
+    clonedHeaderContainer.css("width", parseFloat(bbGridContainerWidth));
+    if(window.getComputedStyle(clonedHeaderContainer[0]).width < window.getComputedStyle(clonedHeader[0]).width)
+    {
+      clonedHeaderContainer.css("width", parseFloat(bbGridContainerWidth) - 15);
+    }
+    var pos = bbGridContainer.position();
+    clonedHeaderContainer.css('left', pos.left);
     
     var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
     var trwidth = window.getComputedStyle(tr).width;

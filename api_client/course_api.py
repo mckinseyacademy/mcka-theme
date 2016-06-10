@@ -554,12 +554,13 @@ def get_course_details(course_id):
 
 
 @api_error_protect
-def get_course_details_users(course_id):
+def get_course_details_users(course_id, qs_params = ''):
 
-    response = GET('{}/{}/{}/users'.format(
+    response = GET('{}/{}/{}/users?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
-        course_id)
+        course_id,
+        urlencode(qs_params))
     )
 
     return json.loads(response.read())

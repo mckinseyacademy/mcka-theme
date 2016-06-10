@@ -1383,28 +1383,28 @@ def get_user_courses_helper(user_id):
 
     return active_courses, course_history
     
-def get_course_progress(course_id, users, request):
+def get_course_progress(course_id, exclude_users, request):
     '''
     Helper method for calculating user pogress on course. 
     Returns dictionary of users with user_id and progress.
+    Can be filtered with exclude_users array.
     '''
     course = None
     course = load_course(course_id, request=request)
 
     users_progress = []
     user_completions = []
-    for user in users:
-        user_completion = {}
-        user_completion['user_id'] = user['id']
-        user_completion['results'] = []
-        user_completions.append(user_completion)
 
     completions = course_api.get_completions_on_course(course.id)
 
     for completion in completions:
-        for user_completion in user_completions:
-            if completion['user_id'] == user_completion['user_id']:
-                user_completion['results'].append(completion)
+        if str(completion['user_id']) not in exclude_users:
+            user_completion = {}
+            user_completion['user_id'] = completion['user_id']
+            user_completion['results'] = []
+            user_completion['results'].append(completion)
+            if not any(user['user_id'] == completion['user_id'] for user in user_completions):
+                user_completions.append(user_completion)
 
     for user_completion in user_completions:
         user_progress = {}

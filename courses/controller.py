@@ -83,18 +83,14 @@ class Proficiency(JsonObject):
     def has_leaders(self):
         return hasattr(self, 'leaders') and len(self.leaders) > 0 and self.leaders[0].grade > 0
 
-    def pass_rate_display(self, users):
+    def pass_rate_display(self, users_with_roles):
         pass_users = 0
-        users_ids = [user['id'] for user in users]
         for user_grade in self.leaders: 
-            if user_grade.id in users_ids:
+            if user_grade.id not in users_with_roles:
                 if user_grade.user_grade_value >= 0.7:
                     pass_users += 1
-        try:
-            pass_rate = round_to_int_bump_zero(100 * float(pass_users) / len(users))
-        except ZeroDivisionError:
-            pass_rate = 0
-        return pass_rate
+
+        return pass_users
 
 class UserProgress(JsonObject):
     @property
