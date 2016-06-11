@@ -489,9 +489,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                             user_dict["email"],
                         ))
                     try:
-                        enrolled_users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'}) if u in students}
-                        if user.id not in enrolled_users:
-                            enroll_user_in_course(user.id, course_id)
+                        enroll_user_in_course(user.id, course_id)
                     except Exception as e: 
                         user_error.append(_("{}: {} - {}").format(
                             "User course enrollment",
@@ -1575,9 +1573,7 @@ def _enroll_participants(participants, request, reg_status):
                         raise ValueError('Activation record error', 'Registering Participant')
                     #Enroll Participant in Course
                     try:
-                        enrolled_users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'}) if u in participants}
-                        if user.id not in enrolled_users:
-                            user_api.enroll_user_in_course(user.id, course_id)
+                        user_api.enroll_user_in_course(user.id, course_id)
                     except ApiError as e: 
                         raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
                     #Set Participant Status on Course

@@ -57,7 +57,7 @@
           url: url,
           data: {group_id: group_id, csrfmiddlewaretoken: csrftoken}
         }).done(function(data){
-          $('select.select-course').html(data);z
+          $('select.select-course').html(data);
         });
       });
       $('select.select-program').trigger('change');
