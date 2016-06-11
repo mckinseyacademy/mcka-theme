@@ -370,11 +370,11 @@ def get_user_metrics_from_lookup(user_id, lookup):
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
     course = load_course(course_id)
-    users = course_api.get_users_list_in_organizations(course_id, client_id)
+    users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': client_id})}
     obs_users_base = [user.id for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
     total_users = len(users)
     if total_users > 0:
-        users_ids = [str(user.id) for user in users if user.id not in obs_users_base]
+        users_ids = [str(user) for user in users if user not in obs_users_base]
         users_progress = organization_course_progress_user_list(course_id, client_id, count=total_users)
         user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
 
@@ -418,10 +418,10 @@ def client_admin_download_course_report(request, client_id, course_id):
         )
     ) + ".csv"
 
-    users = course_api.get_users_list_in_organizations(course_id, client_id)
+    users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': client_id})}
     obs_users_base = [user.id for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
 
-    users_ids = [str(user.id) for user in users if user.id not in obs_users_base]
+    users_ids = [str(user) for user in users if user not in obs_users_base]
     users_progress = organization_course_progress_user_list(course_id, client_id, count=len(users))
 
     user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
@@ -820,14 +820,14 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 def client_admin_email_not_started(request, client_id, course_id):
     students = []
-    participants = course_api.get_users_list_in_organizations(course_id, client_id)
+    participants = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': client_id})}
     course = load_course(course_id)
     total_participants = len(participants)
     if total_participants > 0:
         obs_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == USER_ROLES.OBSERVER]
         users_progress = organization_course_progress_user_list(course_id, client_id, count=total_participants)
         user_progress_lookup = {str(u.id):u.user_progress_display for u in users_progress}
-        users_ids = [str(p.id) for p in participants if str(p.id) not in user_progress_lookup and str(p.id) not in obs_users_base]
+        users_ids = [str(p) for p in participants if str(p) not in user_progress_lookup and str(p) not in obs_users_base]
         additional_fields = ["full_name", "email"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
 
@@ -1061,7 +1061,7 @@ class course_details_cohort_timeline_api(APIView):
         course = load_course(course_id)
         course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
 
-        users = course_api.get_user_list(course.id)
+        users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
 
         metricsJson = get_course_details_progress_data(course, course_modules, users)
 
@@ -1078,8 +1078,8 @@ class course_details_performance_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, course_id, format=None):
         
-        course_users_simple = course_api.get_user_list(course_id)
-        course_users_ids = [str(user.id) for user in course_users_simple]
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
+        course_users_ids = [str(user) for user in course_users_simple]
         roles = course_api.get_users_filtered_by_role(course_id)
         roles_ids = [str(user.id) for user in roles]
         for role_id in roles_ids:
@@ -2386,7 +2386,7 @@ def add_students_to_course(request, client_id, restrict_to_users_ids=None, restr
         students = [u_id for u_id in students if u_id in restrict_to_users_ids]
     exception_messages = []
     for course_id in courses:
-        enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u.id in students}
+        enrolled_users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'}) if u['id'] in students}
         for student_id in students:
             if student_id in enrolled_users:
                 exception_messages.append(_("{} already enrolled in {}").format(

@@ -489,7 +489,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                             user_dict["email"],
                         ))
                     try:
-                        enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in students}
+                        enrolled_users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'}) if u in students}
                         if user.id not in enrolled_users:
                             enroll_user_in_course(user.id, course_id)
                     except Exception as e: 
@@ -678,9 +678,9 @@ def filter_groups_and_students(group_projects, students, restrict_to_users_ids=N
     return group_project_groups, students
 
 def getStudentsWithCompanies(course, restrict_to_users_ids=None):
-    students = course_api.get_user_list(course.id)
+    students = course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id'})
 
-    users_ids = set(user.id for user in students)
+    users_ids = set(user['id'] for user in students)
     if restrict_to_users_ids is not None:
         users_ids &= restrict_to_users_ids
 
@@ -794,9 +794,9 @@ def get_course_metrics_for_organization(course_id, client_id):
 
 def get_course_analytics_progress_data(course, course_modules, client_id=None):
     if client_id:
-        users_count = len(course_api.get_users_list_in_organizations(course.id, client_id))
+        users_count = len({u['id']:u['username'] for u in course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,username', 'organizations': client_id})})
     else:
-        users_count = len(course_api.get_user_list(course.id))
+        users_count = len({u['id']:u['username'] for u in course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,username'})})
     total = users_count * len(course_modules)
     start_date = course.start
     end_date = datetime.now()
@@ -833,7 +833,7 @@ def get_course_details_progress_data(course, course_modules, users):
     course_metrics = course_api.get_course_metrics_completions(course.id, count=total)
     course_leaders_ids = [leader.id for leader in course_metrics.leaders]
     for course_user in users:
-        if course_user.id in course_leaders_ids:
+        if course_user in course_leaders_ids:
             engaged_total += 1
 
     engaged_total = engaged_total * len(course_modules)
@@ -1111,8 +1111,8 @@ def round_to_int_bump_zero(value):
 
 def get_course_social_engagement(course_id):
 
-    course_users_simple = course_api.get_user_list(course_id)
-    course_users_ids = [str(user.id) for user in course_users_simple]
+    course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
+    course_users_ids = [str(user) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
     for role_id in roles_ids:
@@ -1148,8 +1148,8 @@ def get_course_social_engagement(course_id):
 
 def get_course_engagement_summary(course_id):
 
-    course_users_simple = course_api.get_user_list(course_id)
-    course_users_ids = [str(user.id) for user in course_users_simple]
+    course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
+    course_users_ids = [str(user) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
     for role_id in roles_ids:
@@ -1575,7 +1575,7 @@ def _enroll_participants(participants, request, reg_status):
                         raise ValueError('Activation record error', 'Registering Participant')
                     #Enroll Participant in Course
                     try:
-                        enrolled_users = {u.id:u.username for u in course_api.get_user_list(course_id) if u in participants}
+                        enrolled_users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'}) if u in participants}
                         if user.id not in enrolled_users:
                             user_api.enroll_user_in_course(user.id, course_id)
                     except ApiError as e: 
