@@ -146,11 +146,11 @@
           groupwork.name = 'groupworks.' + groupworkIndex + '.percent';
           groupwork.actions = (function(groupworkIndex){ return function(id, attributes) 
           { 
-            if (attributes.groupworks.length != attributes.number_of_groupworks)
+            if (attributes.groupworks.length != attributes.number_of_groupworks || attributes.groupworks.length == 0)
             {
               return '<i class="fa fa-exclamation-triangle"></i>'
             }
-            var value = attributes.groupworks[groupworkIndex].percent
+            var value = attributes.groupworks[groupworkIndex].percent;
             if (value == '.')
             {
               return '<i class="fa fa-spinner fa-spin"></i>';
@@ -170,11 +170,11 @@
           assessment.name = 'assessments.' + assessmentIndex + '.percent';
           assessment.actions = (function(assessmentIndex){ return function(id, attributes) 
           { 
-            if (attributes.assessments.length != attributes.number_of_assessments)
+            if (attributes.assessments.length != attributes.number_of_assessments || attributes.assessments.length == 0)
             {
               return '<i class="fa fa-exclamation-triangle"></i>'
             }
-            var value = attributes.assessments[assessmentIndex].percent
+            var value = attributes.assessments[assessmentIndex].percent;
             if (value == '.')
             {
               return '<i class="fa fa-spinner fa-spin"></i>';
