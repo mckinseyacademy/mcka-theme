@@ -15,6 +15,7 @@ var Router = Backbone.Router.extend({
     'courses/*course_id':                     'course_index',
     'admin/client-admin/*organization_id/courses/*course_id/analytics':   'client_admin_course_analytics',
     'admin/client-admin/*organization_id/courses/*course_id/participants':  '',
+    'admin/client-admin/*organization_id/courses/*course_id/download_course_report':  '',
     'admin/client-admin/*organization_id/courses/*course_id/branding':  '',
     'admin/client-admin/*organization_id/courses/*course_id/branding/create_edit':  '',
     'admin/client-admin/*organization_id/courses/*course_id/learner_dashboard':  '',
