@@ -4,14 +4,13 @@ Apros.collections.Participants = Backbone.PageableCollection.extend({
   mode: "infinite",
   state: {
     firstPage:1,
-    pageSize: 50
+    pageSize: 100
   },
   queryParams: {
     currentPage: "page",
     totalPages: null,
     totalRecords: null,
-    has_organizations: true,
-    page_size: 50,
+    page_size: 100,
   },
   parseLinks: function (resp, options) {
     returnObject={};
@@ -24,33 +23,20 @@ Apros.collections.Participants = Backbone.PageableCollection.extend({
     return returnObject;
   },
   parse: function(data) {
-    participants = data.results;
-    var items = [
-      { 'name': 'organizations_custom_name', 'tag': 'company', 'value': participants[0]['organizations_custom_name']},
-      { 'name': 'full_name', 'tag': 'name', 'value': participants[0]['full_name']},
-      { 'name': 'email', 'tag': 'custom_email', 'value': participants[0]['email']}
-    ];
-
-    $.each(participants, function(i, user){
-      $.each(items, function(j, item){
-        if(item['value'] != user[item['name']]){
-          items[j]['value'] = null
-        }
-      });
-    });
-
-    $.each(items, function(index, value){
-      if(value['value']){
-        highlightSearchBar(value);
-      }
-    });
-      
+    participants = data.results; 
     return participants;
   },
   updateQuerryParams: function(options){
-    for (key in options)
-      this.queryParams[key] = options[key];
+    for (key in options) {
+      if (options[key]){
+        this.queryParams[key] = options[key];
+      }
+      else{
+        delete this.queryParams[key];
+      }
+    }
     this.state['pageSize'] = 100;
     this.queryParams['page_size'] = 100;
+    this.queryParams['match'] = 'partial';
   }
 });
