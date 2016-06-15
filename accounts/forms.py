@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 
 from api_client import user_api
 from django.utils.html import format_html
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 from django.utils.encoding import force_text
 from django.core.urlresolvers import reverse
 from api_client.api_error import ApiError

@@ -125,8 +125,6 @@ class UploadCompanyImageForm(forms.Form):
     company_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
 
 
-
-
 class MultiEmailField(forms.Field):
     """ Comma separated email list """
     def to_python(self, value):

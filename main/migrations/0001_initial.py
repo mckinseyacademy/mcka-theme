@@ -1,40 +1,37 @@
 # -*- coding: utf-8 -*-
-from south.db import db
-from south.v2 import SchemaMigration
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'CuratedContentItem'
-        db.create_table(
-            u'curated_content_item', (
-                (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-                ('title', self.gf('django.db.models.fields.CharField')(max_length=255, null=True)),
-                ('body', self.gf('django.db.models.fields.CharField')(max_length=1000, null=True)),
-                ('byline', self.gf('django.db.models.fields.CharField')(max_length=255, null=True)),
-                ('url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-                ('image_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-                ('content_type', self.gf('django.db.models.fields.CharField')(default='txt', max_length=3)),
-            )
-        )
-        db.send_create_signal(u'main', ['CuratedContentItem'])
+    dependencies = [
+    ]
 
-    def backwards(self, orm):
-        # Deleting model 'CuratedContentItem'
-        db.delete_table(u'curated_content_item')
-
-    models = {
-        u'main.curatedcontentitem': {
-            'Meta': {'object_name': 'CuratedContentItem'},
-            'body': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'null': 'True'}),
-            'byline': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True'}),
-            'content_type': ('django.db.models.fields.CharField', [], {'default': "'txt'", 'max_length': '3'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
-        }
-    }
-
-    complete_apps = ['main']
+    operations = [
+        migrations.CreateModel(
+            name='CuratedContentItem',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('course_id', models.CharField(max_length=255)),
+                ('title', models.CharField(max_length=255, null=True, blank=True)),
+                ('body', models.CharField(max_length=1000, null=True, blank=True)),
+                ('source', models.CharField(max_length=255, null=True, blank=True)),
+                ('byline', models.CharField(max_length=255, null=True, blank=True)),
+                ('byline_title', models.CharField(max_length=255, null=True, blank=True)),
+                ('url', models.URLField(null=True, blank=True)),
+                ('thumbnail_url', models.URLField(null=True, blank=True)),
+                ('image_url', models.URLField(null=True, blank=True)),
+                ('twitter_username', models.CharField(max_length=255, null=True, blank=True)),
+                ('sequence', models.IntegerField()),
+                ('created_at', models.DateTimeField(null=True, blank=True)),
+                ('display_date', models.DateTimeField(null=True, blank=True)),
+                ('content_type', models.CharField(default=b'txt', max_length=3, choices=[(b'txt', b'text'), (b'vid', b'video'), (b'quo', b'quote'), (b'twt', b'tweet'), (b'art', b'article'), (b'img', b'img')])),
+            ],
+            options={
+                'db_table': 'curated_content_item',
+            },
+            bases=(models.Model,),
+        ),
+    ]
