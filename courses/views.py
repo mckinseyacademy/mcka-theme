@@ -842,7 +842,7 @@ def course_export_notes(request, course_id):
     course = load_course(course_id).inject_basic_data()
     notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
 
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse()
     response['Content-Disposition'] = 'attachment; filename="mcka_course_notes.csv"'
     writer = csv.writer(response)
     writer.writerow(['Created At', 'Course Name', 'Lesson Name', 'Module Name', 'Note'])
@@ -858,7 +858,7 @@ def course_notes(request, course_id):
     course = load_course(course_id).inject_basic_data()
     notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
     notes = [note.as_json(course) for note in notes]
-    return HttpResponse(json.dumps(notes), mimetype="application/json")
+    return HttpResponse(json.dumps(notes))
 
 @require_POST
 @login_required
@@ -875,10 +875,7 @@ def add_lesson_note(request, course_id, chapter_id):
     )
     note.save()
 
-    return HttpResponse(
-        json.dumps(note.as_json(course)),
-        mimetype="application/json"
-    )
+    return HttpResponse(json.dumps(note.as_json(course)))
 
 @login_required
 @check_user_course_access

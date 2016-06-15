@@ -1,40 +1,47 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'LessonNotesItem'
-        db.create_table(u'courses_lessonnotesitem', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('body', self.gf('django.db.models.fields.TextField')()),
-            ('course_id', self.gf('django.db.models.fields.CharField')(max_length=200, db_index=True)),
-            ('lesson_id', self.gf('django.db.models.fields.CharField')(max_length=200, db_index=True)),
-            ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_at', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-        ))
-        db.send_create_signal(u'courses', ['LessonNotesItem'])
+    dependencies = [
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'LessonNotesItem'
-        db.delete_table(u'courses_lessonnotesitem')
-
-
-    models = {
-        u'courses.lessonnotesitem': {
-            'Meta': {'object_name': 'LessonNotesItem'},
-            'body': ('django.db.models.fields.TextField', [], {}),
-            'course_id': ('django.db.models.fields.CharField', [], {'max_length': '200', 'db_index': 'True'}),
-            'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'lesson_id': ('django.db.models.fields.CharField', [], {'max_length': '200', 'db_index': 'True'}),
-            'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
-        }
-    }
-
-    complete_apps = ['courses']
+    operations = [
+        migrations.CreateModel(
+            name='FeatureFlags',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('course_id', models.CharField(max_length=200, db_index=True)),
+                ('group_work', models.BooleanField(default=True)),
+                ('discussions', models.BooleanField(default=True)),
+                ('cohort_map', models.BooleanField(default=True)),
+                ('proficiency', models.BooleanField(default=True)),
+                ('learner_dashboard', models.BooleanField(default=False)),
+                ('progress_page', models.BooleanField(default=True)),
+                ('notifications', models.BooleanField(default=True)),
+                ('branding', models.BooleanField(default=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='LessonNotesItem',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('body', models.TextField()),
+                ('user_id', models.IntegerField(null=True, db_index=True)),
+                ('course_id', models.CharField(max_length=200, db_index=True)),
+                ('lesson_id', models.CharField(max_length=200, db_index=True)),
+                ('module_id', models.CharField(max_length=200, db_index=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+    ]
