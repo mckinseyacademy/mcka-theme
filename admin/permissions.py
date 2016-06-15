@@ -1,10 +1,11 @@
 import copy
 import logging
+import time
 from admin.models import (
     internal_admin_role_event, course_program_event, program_client_event, Client,
     ROLE_ACTIONS, ASSOCIATION_ACTIONS
 )
-
+from django.core.cache import cache
 from api_client import user_api, group_api, course_api, organization_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
@@ -28,9 +29,29 @@ class Permissions(object):
     def __init__(self, user_id, ):
         self.permission_groups = group_api.get_groups_of_type(PERMISSION_TYPE)
         self.current_permissions = [pg.name for pg in user_api.get_user_groups(user_id, PERMISSION_TYPE)]
-        self.courses = course_api.get_course_list()
+        self.courses = self.get_course_list_or_cached()
         self.user_roles = user_api.get_user_roles(user_id)
         self.user_id = user_id
+
+    def get_course_list_or_cached(self):
+        course_list = cache.get('course_list_cached', None)
+        time_now = time.time()
+        if course_list is None:
+            course_list = course_api.get_course_list()
+            cache.set('course_list_cached', course_list)
+            time_now = time.time()
+            cache.set('course_list_cached_last_update_time', time_now)
+        else:
+            course_list_last_update_time = cache.get('course_list_cached_last_update_time', None)
+            if course_list_last_update_time:
+                if time_now - course_list_last_update_time > 900:
+                    course_list = course_api.get_course_list()
+                    cache.set('course_list_cached', course_list)
+                    cache.set('course_list_cached_last_update_time', time_now)
+            else:
+                cache.set('course_list_cached_last_update_time', time_now)
+        return course_list
+        
 
     def add_course_role(self, course_id, role):
         per_course_roles = [{"course_id": p.course_id, "role": p.role}
@@ -51,12 +72,20 @@ class Permissions(object):
         self.save(new_perms, per_course_roles)
 
     def update_course_role(self, course_id, role):
-        per_course_roles = [{"course_id": p.course_id, "role": p.role}
-                            for p in self.user_roles if p.course_id != course_id]
-        per_course_roles.append({
-            "course_id": course_id,
-            "role": role,
-        })
+        per_course_roles = []
+        current_course_roles = {}
+        for p in self.user_roles:
+            if p.course_id == course_id:
+                current_course_roles = {"course_id": p.course_id, "role": p.role}
+            else:
+                per_course_roles.append({"course_id": p.course_id, "role": p.role})
+        if current_course_roles.get("role", None) == role:
+            return
+        elif role in self.permission_for_role.keys():
+            per_course_roles.append({
+                "course_id": course_id,
+                "role": role,
+            })
         new_perms = [
                     perm for perm in self.current_permissions
                     if perm not in (PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_OBSERVER)

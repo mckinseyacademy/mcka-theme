@@ -1289,15 +1289,11 @@ def change_user_status(course_id, new_status, status_item):
         'TA': USER_ROLES.TA,
         'Observer': USER_ROLES.OBSERVER
     }
-    if new_status not in status_item['existing_roles']:
-        try:
-            permissions = Permissions(status_item['id'])
-            if new_status != 'Active' :
-                permissions.update_course_role(course_id,permissonsMap[new_status])
-            else:
-                permissions.remove_all_course_roles(course_id)
-        except ApiError as e:
-            return {'status':'error', 'message':e.message}
+    try:
+        permissions = Permissions(status_item['id'])
+        permissions.update_course_role(course_id,permissonsMap.get(new_status, ""))
+    except ApiError as e:
+        return {'status':'error', 'message':e.message}
     return {'status':'success'}
 
 
