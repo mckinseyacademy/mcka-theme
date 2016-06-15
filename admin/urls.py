@@ -116,6 +116,7 @@ urlpatterns = patterns(
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history/export_stats$', views.download_course_history_stats, name='download_course_history_stats'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses$', views.participant_details_active_courses_api.as_view(), name='participant_details_active_courses_api'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history$', views.participant_details_course_history_api.as_view(), name='participant_details_course_history_api'),
+    url(r'^api/participants/(?P<user_id>[0-9]+)/course_manage/(?P<course_id>.+)$', views.participant_course_manage_api.as_view(), name='participant_course_manage_api'),
     url(r'^api/participants/organizations$', views.manage_user_company_api.as_view(), name='manage_user_company_api'),
     url(r'^api/participants/courses$', views.manage_user_courses_api.as_view(), name='manage_user_courses_api'),
     url(r'^api/participants/validate_participant_email/$', views.validate_participant_email, name='validate_participant_email'),

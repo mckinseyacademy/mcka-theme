@@ -257,3 +257,15 @@
 
   #activation-link-modal.reveal-modal.large{"data-reveal": "true"}
 
+  #participantEnrollMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2.participantModalTitle
+    .participantModalStatus
+    %hr
+    .participantModalDescription
+    .participantModalContent
+    .participantModalControl
+      .button.saveChanges
+        Save Changes
+      %a.cancelChanges{:href => "#"} Cancel
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
