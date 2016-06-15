@@ -65,7 +65,8 @@ from .controller import (
     MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
-    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses
+    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
+    _enroll_participant_with_status
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -3491,6 +3492,16 @@ def validate_participant_username(request):
                 return HttpResponse(json.dumps({'status': 'his'}), content_type="application/json")
             else:
                 return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
+
+class participant_course_manage_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request, user_id, course_id, format=None):
+        status = request.POST.get("status", None)
+        if status:
+            enroll_status = _enroll_participant_with_status(course_id, user_id, status)
+            return Response(enroll_status)
+        else:
+            return Response({'status':'error', 'message':'There is a problem with selected user role on new course!'})
 
       
 class participant_details_active_courses_api(APIView):

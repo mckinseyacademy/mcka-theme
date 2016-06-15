@@ -1,6 +1,7 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
       var _this=this;
+      _this.enroll_user_in_course_function();
       _this.setLocationTooltip(); 
       $('#country_edit').countrySelect();
       InitializeAutocompleteInput(options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
@@ -204,5 +205,109 @@
           return true;
       }
       return false;
-    } 
+    },
+    enroll_user_in_course_function: function()
+    {
+      $('#participantsDetailsDataWrapper').on('click','.participantEnrollInCourse',function()
+      {
+        if ($(this).hasClass('disabled'))
+          return;
+        var user_id = $("#participantsDetailsDataWrapper").attr('data-id');
+        var enroll_modal_id = '#participantEnrollMainModal';
+        $(enroll_modal_id).find('.participantModalTitle').text('Select Course');
+        $(enroll_modal_id).find('.participantModalDescription').text('User will be enrolled in course selected below.');
+        $(enroll_modal_id).find('.participantModalContent').html(
+          '<div class="row enrollParticipants">' +
+          '<div class="large-6 columns enrollParticipantsCourse">' +
+          '<p class="labelUnirvesal">Course</p>' +
+          '<input type="text" value="" name="course" maxlength="60">' +
+          '</div>' +
+          '<div class="large-6 columns enrollParticipantsStatus">' +
+          '<p class="labelUnirvesal">Status</p>' +
+          '<select name="status">' +
+          '<option value="Active">Active</option>' +
+          '<option value="Observer">Observer</option>' +
+          '<option value="TA">TA</option></select>' +
+          '</div></div>'
+        );
+        var url = ApiUrls.participant_courses_get_api();
+        InitializeAutocompleteInput(url, '.enrollParticipantsCourse input');
+        $(enroll_modal_id).find('.participantModalControl').find('.cancelChanges').off().on('click', function()
+        {
+          $(enroll_modal_id).find('a.close-reveal-modal').trigger('click');
+        });
+        var saveButton = $(enroll_modal_id).find('.participantModalControl').find('.saveChanges');
+        saveButton.text('Enroll Participant');
+        saveButton.attr('disabled', 'disabled');
+        saveButton.addClass('disabled');
+        $(document).on('autocomplete_found', function(event, input){
+          var course_id = $('.enrollParticipantsCourse input').attr('data-id');
+          if (course_id){
+            input.parents(enroll_modal_id).find('.participantModalControl .saveChanges').removeAttr('disabled');
+            input.parents(enroll_modal_id).find('.participantModalControl .saveChanges').removeClass('disabled');
+          }
+        });
+        $(document).on('autocomplete_not_found', function(event, input){
+          input.parents(enroll_modal_id).find('.participantModalControl .saveChanges').attr('disabled', 'disabled');
+          input.parents(enroll_modal_id).find('.participantModalControl .saveChanges').addClass('disabled');
+        });
+        saveButton.off().on('click', function()
+        {
+          if ($(this).hasClass('disabled'))
+            return;
+          var selectedVal = "";
+          var selected = $('.enrollParticipantsStatus select');
+          if (selected.length > 0) {
+              selectedVal = selected.val();
+              if(!selectedVal){
+                alert('You need to select status!');
+                return;
+              }
+          }
+          else
+          {
+            alert('You need to select status!');
+            return;
+          }
+          var course_id = $('.enrollParticipantsCourse input').attr('data-id');
+          if (!course_id){
+            alert('You need to select course!');
+            return;
+          }
+          if (course_id.length == 0) {
+            alert('You need to select course!');
+            return;
+          }
+          var dictionaryToSend = {"status": selectedVal};
+          var url = ApiUrls.participant_manage_courses(user_id,course_id);
+          var options = {
+            url: url,
+            data: dictionaryToSend,
+            type: "POST",
+            dataType: "json"
+          };
+
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+          saveButton.attr('disabled', 'disabled');
+          saveButton.addClass('disabled');
+          $.ajax(options)
+          .done(function(data) {
+            if (data["status"] == "success")
+            {
+              alert("User successfully enrolled in course");
+              $(enroll_modal_id).find('a.close-reveal-modal').trigger('click');
+            }
+            else if (data["status"] == "error")
+            {
+              alert(data["message"]);
+            }
+            })
+          .fail(function(data) {
+            console.log("Ajax failed to fetch data");
+            console.log(data);
+            })
+          });
+          $(enroll_modal_id).foundation('reveal', 'open');
+      }); 
+    }
   });
