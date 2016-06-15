@@ -608,3 +608,15 @@ def get_user_by_username(user_username):
     )
 
     return json.loads(response.read())
+
+
+@api_error_protect
+def get_filtered_participants_list(qs_params= ''):
+
+    response = GET('{}/{}?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        urlencode(qs_params))
+    )
+
+    return json.loads(response.read())

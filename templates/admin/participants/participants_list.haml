@@ -10,12 +10,14 @@
       %hr
       #participantsSearchWrapper
         .row
-          .large-4.columns
-            %input{:placeholder => 'Company', :type => 'text', :name => 'company', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
-          .large-4.columns
-            %input{:placeholder => 'Name', :type => 'text', :name => 'name', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
-          .large-4.columns
-            %input{:placeholder => 'Email', :type => 'text', :name => 'custom_email', :onkeyup => 'searchParticipantList()', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => 'Company', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => 'Course', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => 'Name', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => 'Email', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
     #participantsListViewGridBlock
 
     #add_a_participant.reveal-modal.small{'data-reveal': None}

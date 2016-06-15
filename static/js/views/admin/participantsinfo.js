@@ -1,8 +1,5 @@
 Apros.views.ParticipantsInfo = Backbone.View.extend({
 	initialize: function(){
-		this.collection.fetch({success: function() {
-      cloneHeader('#participantsListViewGridBlock');
-    }});
     massParticipantsInit();
     this.renderAddSingleUser();
 	},
@@ -21,17 +18,26 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 				{ title: 'Date Added', index: true, name: 'created_custom_date',
 				actions: function(id, attributes) 
 				{ 
-					if (attributes['created_custom_date'] != '-')
-					{
-						var start = attributes['created_custom_date'].split('/');
-						return '' + start[1] + '/' + start[2] + '/' + start[0];
-					}
-					return attributes['created_custom_date'];
+					if (attributes['created_custom_date'] != '-' && attributes['created_custom_date'] != '' && typeof attributes['created_custom_date'] != 'undefined')
+        {
+         var last_login = attributes['created_custom_date'].split(',')[0].split('/');
+            return '' + last_login[1] + '/' + last_login[2] + '/' + last_login[0];
+        }
+        return attributes['created_custom_date'];
 				}},
-				{ title: 'Activated', index: true, name: 'active_custom_text' }]
+        { title: 'Enrolled In', index: true, name: 'courses_enrolled',
+          actions: function(id, attributes) 
+          { 
+            return parseInt(attributes['courses_enrolled']);
+          }
+        },
+				{ title: 'Activated', index: true, name: 'active_custom_text' }
+        ]
 			});
 		participantsListViewGrid['partial_collection']=this.collection;
 		this.$el.find('.bbGrid-container').scroll(this.fetchPages);
+    var _this = this;
+    cloneHeader('#participantsListViewGridBlock');
     $(document).on('closed.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
       $('.upload_stats').empty();
       $('#enroll-error-list').empty();
@@ -41,6 +47,37 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
     $(document).on('open.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
       $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
       $('#import_from_csv input[type=checkbox]').attr('checked', false);
+    });
+    $('#participantsSearchWrapper').on('keyup', 'input', function(){
+      if (_this.liveSearchTimer) {
+        clearTimeout(_this.liveSearchTimer);
+      }
+      _this.liveSearchTimer = setTimeout(function() {
+        var querryDict = {}
+        var searchFlag = false
+        $('#participantsSearchWrapper').find('input').each(function(index, value){
+          val = $(value);
+          name = val.context.name;
+          value = val.context.value.trim();
+          querryDict[name] = value;
+          if (value){
+            searchFlag = true
+          }
+        });
+        if (!jQuery.isEmptyObject(querryDict))
+        {
+          _this.collection.updateQuerryParams(querryDict);
+        }
+
+        if(_this.collection.length > 0){
+          _this.collection.getFirstPage();
+          _this.collection.fullCollection.reset();
+        }
+        if (searchFlag)
+        {
+          _this.collection.fetch();
+        }
+      }, 1000)
     });
 	},
 	fetchPages: function(){

@@ -3222,48 +3222,33 @@ def participant_mail_activation_link(request, user_id):
     return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
 class participants_list_api(APIView):
-    """
-    List all snippets, or create a new snippet.
-    """
+
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, format=None):
 
-        company = request.QUERY_PARAMS.get('company', None)
-        name = request.QUERY_PARAMS.get('name', None)
-        email = request.QUERY_PARAMS.get('custom_email', None)
+        participants = user_api.get_filtered_participants_list(request.GET)
 
-        filters = []
-        if company:
-            filters.append({ 'name': 'organizations_custom_name', 'value': company.lower()})
-        if name:
-            filters.append({ 'name': 'full_name', 'value': name.lower()})
-        if email:
-            filters.append({ 'name': 'email', 'value': email.lower()})
-
-        allParticipants = user_api.get_filtered_users(request.GET)
-        for participant in allParticipants["results"]:
-            if len(participant["organizations"]) > 0:
-                participant["organizations_custom_name"] = participant['organizations'][0]["display_name"]
+        for participant in participants['results']:
+            if len(participant['organizations'] ) == 0:
+                participant['organizations'] = [{'display_name': 'No company'}]
+                participant['organizations_custom_name'] = 'No company'
             else:
-                participant['organizations_custom_name'] = ""
-            participant['created_custom_date'] = parsedate(participant['created']).strftime("%Y/%m/%d")
-            if participant["is_active"]:
-                participant["active_custom_text"]="Yes"
+                participant['organizations_custom_name'] = participant['organizations'][0]['display_name']
+            if participant['is_active']:
+                    participant['active_custom_text'] = 'Yes'
             else:
-                participant["active_custom_text"]="No"
+                participant['active_custom_text'] = 'No'
+            if 'created' in participant:
+                if (participant['created'] is not None) and (participant['created'] is not ''):
+                    created = parsedate(participant['created'])
+                    participant['created_custom_date'] = created.strftime("%Y/%m/%d") + ',' + created.strftime("%m/%d/%Y")
+                else:
+                    participant['created_custom_date'] = '-'
+            else:
+                participant['created_custom_date'] = '-'
+            participant['courses_enrolled'] = '{:010d}'.format(participant['courses_enrolled'])
 
-        if filters:
-            response = {'results': []}  
-            for user in allParticipants['results']:
-                for item in filters:
-                    item['toAppend'] = False
-                    if item['value'] in (user[item['name']]).lower():
-                        item['toAppend'] = True
-                if all(item['toAppend'] for item in filters):
-                    response['results'].append(user)
-            return Response(response)
-
-        return Response(allParticipants)
+        return Response(participants)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request):
