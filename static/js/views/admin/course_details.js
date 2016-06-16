@@ -138,52 +138,65 @@
       var modelsList = collection.models;
       if (modelsList.length > 0)
       {
-        for (var groupworkIndex = 0; groupworkIndex < modelsList[0].attributes.groupworks.length; groupworkIndex++)
+        for (var i=0; i < modelsList.length; i++)
         {
-          groupworkData = modelsList[0].attributes.groupworks[groupworkIndex];
-          groupwork = _.clone(assessment_template);
-          groupwork.title = 'Group Work: ' + groupworkData.label;
-          groupwork.name = 'groupworks.' + groupworkIndex + '.percent';
-          groupwork.actions = (function(groupworkIndex){ return function(id, attributes) 
-          { 
-            if (attributes.groupworks.length != attributes.number_of_groupworks || attributes.groupworks.length == 0)
+          if (modelsList[i].attributes.groupworks.length)
+          {
+            for (var groupworkIndex = 0; groupworkIndex < modelsList[i].attributes.groupworks.length; groupworkIndex++)
             {
-              return '<i class="fa fa-exclamation-triangle"></i>'
+              groupworkData = modelsList[i].attributes.groupworks[groupworkIndex];
+              groupwork = _.clone(assessment_template);
+              groupwork.title = 'Group Work: ' + groupworkData.label;
+              groupwork.name = 'groupworks.' + groupworkIndex + '.percent';
+              groupwork.actions = (function(groupworkIndex){ return function(id, attributes) 
+              { 
+                if (attributes.groupworks.length != attributes.number_of_groupworks || attributes.groupworks.length == 0)
+                {
+                  return '<i class="fa fa-exclamation-triangle"></i>'
+                }
+                var value = attributes.groupworks[groupworkIndex].percent;
+                if (value == '.')
+                {
+                  return '<i class="fa fa-spinner fa-spin"></i>';
+                }
+                if (value == '-')
+                  return value;
+                return '' + parseInt(value) + '%'; 
+              }})(groupworkIndex);
+              this.generatedGridColumns.push(groupwork);
             }
-            var value = attributes.groupworks[groupworkIndex].percent;
-            if (value == '.')
-            {
-              return '<i class="fa fa-spinner fa-spin"></i>';
-            }
-            if (value == '-')
-              return value;
-            return '' + parseInt(value) + '%'; 
-          }})(groupworkIndex);
-          this.generatedGridColumns.push(groupwork);
+            break;
+          }
         }
-        var assessmentData;
-        for (var assessmentIndex = 0; assessmentIndex < modelsList[0].attributes.assessments.length; assessmentIndex++)
+        for (var i=0; i < modelsList.length; i++)
         {
-          assessmentData = modelsList[0].attributes.assessments[assessmentIndex];
-          assessment = _.clone(assessment_template);
-          assessment.title = 'Assessment: ' + assessmentData.label;
-          assessment.name = 'assessments.' + assessmentIndex + '.percent';
-          assessment.actions = (function(assessmentIndex){ return function(id, attributes) 
-          { 
-            if (attributes.assessments.length != attributes.number_of_assessments || attributes.assessments.length == 0)
+          if (modelsList[i].attributes.assessments.length)
+          {
+            for (var assessmentIndex = 0; assessmentIndex < modelsList[i].attributes.assessments.length; assessmentIndex++)
             {
-              return '<i class="fa fa-exclamation-triangle"></i>'
+              assessmentData = modelsList[i].attributes.assessments[assessmentIndex];
+              assessment = _.clone(assessment_template);
+              assessment.title = 'Assessment: ' + assessmentData.label;
+              assessment.name = 'assessments.' + assessmentIndex + '.percent';
+              assessment.actions = (function(assessmentIndex){ return function(id, attributes) 
+              { 
+                if (attributes.assessments.length != attributes.number_of_assessments || attributes.assessments.length == 0)
+                {
+                  return '<i class="fa fa-exclamation-triangle"></i>'
+                }
+                var value = attributes.assessments[assessmentIndex].percent;
+                if (value == '.')
+                {
+                  return '<i class="fa fa-spinner fa-spin"></i>';
+                }
+                if (value == '-')
+                  return value;
+                return '' + parseInt(value) + '%'; 
+              }})(assessmentIndex);
+              this.generatedGridColumns.push(assessment);
             }
-            var value = attributes.assessments[assessmentIndex].percent;
-            if (value == '.')
-            {
-              return '<i class="fa fa-spinner fa-spin"></i>';
-            }
-            if (value == '-')
-              return value;
-            return '' + parseInt(value) + '%'; 
-          }})(assessmentIndex);
-          this.generatedGridColumns.push(assessment);
+            break;
+          }
         }
       }
       coursesListDetailsViewGrid.render();
