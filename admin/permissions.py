@@ -164,6 +164,45 @@ class Permissions(object):
                 internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
 
 
+class SlimAddingPermissions(object):
+    
+    permission_for_role = {
+        USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA,
+        USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
+    }
+
+    def __init__(self, user_id, ):
+        self.permission_groups = self.get_groups_of_type_permission_cached()
+        self.user_id = user_id
+
+    def get_groups_of_type_permission_cached(self):
+        ''' Loads and caches group names and ids via the edX platform '''
+        permission_groups = cache.get('permission_groups_cached', None)
+        if permission_groups is None:
+            permission_groups = group_api.get_groups_of_type(PERMISSION_TYPE)
+            cache.set('permission_groups_cached', permission_groups)
+
+        return permission_groups
+
+    def add_course_role(self, course_id, role):
+        per_course_roles = []
+        per_course_roles.append({
+            "course_id": course_id,
+            "role": role,
+        })
+
+        user_api.update_user_roles(self.user_id, {'roles': per_course_roles, 'ignore_roles': settings.IGNORE_ROLES})
+        self.add_permission(self.permission_for_role.get(role, ""))
+
+    def get_group_id(self, permission_name):
+        return next((g.id for g in self.permission_groups if g.name == permission_name), None)
+
+    def add_permission(self, permission_name):
+        group_id = self.get_group_id(permission_name)
+        if group_id:
+            group_api.add_user_to_group(self.user_id, group_id)
+
+
 class InternalAdminRoleManager(object):
     """
     This class encapsulates various operations involved in keeping Internal Admin access rights
