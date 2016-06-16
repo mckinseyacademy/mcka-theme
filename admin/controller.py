@@ -1394,12 +1394,16 @@ def get_course_progress(course_id, exclude_users, request):
 
     for completion in completions:
         if str(completion['user_id']) not in exclude_users:
-            user_completion = {}
-            user_completion['user_id'] = completion['user_id']
-            user_completion['results'] = []
-            user_completion['results'].append(completion)
             if not any(user['user_id'] == completion['user_id'] for user in user_completions):
+                user_completion = {}
+                user_completion['user_id'] = completion['user_id']
+                user_completion['results'] = []
+                user_completion['results'].append(completion)
                 user_completions.append(user_completion)
+            else:
+                for user_completion in user_completions:
+                    if user_completion['user_id'] == completion['user_id']:
+                        user_completion['results'].append(completion)
 
     for user_completion in user_completions:
         user_progress = {}
