@@ -21,17 +21,7 @@
           } 
         },
         { title: 'Company ID', index: true, name: 'id', sorttype: 'number' },
-        { title: 'No. of Participants', index: true, name: 'numberParticipants', sorttype: 'number',
-          actions: function(id, attributes){ 
-            var numberParticipants = attributes['numberParticipants']
-            if (numberParticipants == '.') {
-              return '<i class="fa fa-spinner fa-spin"></i>';
-            }
-            else{
-              return numberParticipants;
-            }
-          } 
-        },
+        { title: 'No. of Participants', index: true, name: 'numberParticipants', sorttype: 'number' },
         { title: 'No. of Courses', index: true, name: 'numberCourses', sorttype: 'number' }
         ]
       });

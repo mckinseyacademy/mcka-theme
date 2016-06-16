@@ -4085,28 +4085,16 @@ class companies_list_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
-        
-        include_slow_fields = request.GET.get('include_slow_fields', 'false')
 
         companies = []
-        if include_slow_fields == 'false':
-            clients = Client.list()
-            for client in clients:
-                company = {}
-                company['name'] = vars(client)['display_name']
-                company['id'] = vars(client)['id']
-                company['numberParticipants'] = '.'
-                company['numberCourses'] = vars(client)['number_of_courses']
-                companies.append(company)
-        elif include_slow_fields == 'true':
-            for company_id in request.GET['ids'].split(','):
-                requestParams = {}
-                company = {}
-                requestParams['organizations'] = company_id
-                participants = user_api.get_filtered_users(requestParams)
-                company['id'] = company_id
-                company['numberParticipants'] = participants['count']
-                companies.append(company)
+        clients = Client.list()
+        for client in clients:
+            company = {}
+            company['name'] = vars(client)['display_name']
+            company['id'] = vars(client)['id']
+            company['numberParticipants'] = vars(client)['number_of_participants']
+            company['numberCourses'] = vars(client)['number_of_courses']
+            companies.append(company)
 
         return Response(companies)
 

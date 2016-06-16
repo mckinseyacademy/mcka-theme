@@ -1637,20 +1637,11 @@ def get_company_active_courses(company_id):
     company_courses = organization_api.get_organizations_courses(company_id)
     active_courses = []
     for company_course in company_courses:
-        include_course = False
         if timezone.now() >= parsedate(company_course['start']):
             if company_course['end'] is None:
-                course_roles = course_api.get_users_filtered_by_role(company_course['id'])
-                for user in company_course['enrolled_users']:
-                    if not any(role.id == user for role in course_roles):
-                        include_course = True
+                active_courses.append(company_course)
             elif timezone.now() <= parsedate(company_course['end']):
-                course_roles = course_api.get_users_filtered_by_role(company_course['id'])
-                for user in company_course['enrolled_users']:
-                    if not any(role.id == user for role in course_roles):
-                        include_course = True
-        if include_course:
-            active_courses.append(company_course)
+                active_courses.append(company_course)
 
     return active_courses
 
