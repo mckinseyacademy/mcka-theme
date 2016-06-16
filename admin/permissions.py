@@ -25,18 +25,18 @@ class Permissions(object):
         USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA,
         USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
     }
-
+    CACHE_EXPIRE_TIME = 60 # every one minute it will refresh courses list
     def __init__(self, user_id, ):
-        self.permission_groups = group_api.get_groups_of_type(PERMISSION_TYPE)
+        self.permission_groups = self.get_groups_of_type_permission_cached()
         self.current_permissions = [pg.name for pg in user_api.get_user_groups(user_id, PERMISSION_TYPE)]
         self.courses = self.get_course_list_or_cached()
         self.user_roles = user_api.get_user_roles(user_id)
         self.user_id = user_id
 
-    def get_course_list_or_cached(self):
+    def get_course_list_or_cached(self, force_fetch = False):
         course_list = cache.get('course_list_cached', None)
         time_now = time.time()
-        if course_list is None:
+        if course_list is None or force_fetch:
             course_list = course_api.get_course_list()
             cache.set('course_list_cached', course_list)
             time_now = time.time()
@@ -44,14 +44,22 @@ class Permissions(object):
         else:
             course_list_last_update_time = cache.get('course_list_cached_last_update_time', None)
             if course_list_last_update_time:
-                if time_now - course_list_last_update_time > 900:
+                if time_now - course_list_last_update_time > self.CACHE_EXPIRE_TIME:
                     course_list = course_api.get_course_list()
                     cache.set('course_list_cached', course_list)
                     cache.set('course_list_cached_last_update_time', time_now)
             else:
                 cache.set('course_list_cached_last_update_time', time_now)
         return course_list
-        
+    
+    def get_groups_of_type_permission_cached(self):
+        ''' Loads and caches group names and ids via the edX platform '''
+        permission_groups = cache.get('permission_groups_cached', None)
+        if permission_groups is None:
+            permission_groups = group_api.get_groups_of_type(PERMISSION_TYPE)
+            cache.set('permission_groups_cached', permission_groups)
+
+        return permission_groups
 
     def add_course_role(self, course_id, role):
         per_course_roles = [{"course_id": p.course_id, "role": p.role}
