@@ -36,7 +36,7 @@ from lib.mail import (
     )
 
 from api_client.user_api import USER_ROLES
-from .permissions import Permissions
+from .permissions import Permissions, SlimAddingPermissions
 
 import threading
 import Queue
@@ -1575,9 +1575,9 @@ def _enroll_participants(participants, request, reg_status):
                         raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
                     #Set Participant Status on Course
                     try:
-                        permissions = Permissions(user.id)
+                        permissions = SlimAddingPermissions(user.id)
                         if status != 'active' :
-                            permissions.update_course_role(course_id,permissonsMap[status])
+                            permissions.add_course_role(course_id,permissonsMap[status])
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), "Setting Participant's Status")
                 except ValueError as e: 
