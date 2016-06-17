@@ -66,7 +66,7 @@ from .controller import (
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status
+    _enroll_participant_with_status, get_accessible_courses
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -2939,7 +2939,7 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
@@ -3168,21 +3168,21 @@ def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
     return HttpResponse(json.dumps({"message": "Project deleted successfully."}), content_type="application/json")
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+#@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def workgroup_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
 
     if request.method == 'POST':
-        if request.POST['select-program'] != 'select' and request.POST['select-course'] != 'select':
+        if request.POST['select-course'] != 'select':
             return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
-    programs = get_accessible_programs(request.user, restrict_to_programs_ids)
+    courses = get_accessible_courses(request.user)
 
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
         "principal_new_url": "/admin/workgroup/workgroup_new",
-        "programs": programs,
+        "courses": courses,
     }
 
     return render(
