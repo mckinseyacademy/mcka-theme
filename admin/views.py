@@ -2828,7 +2828,7 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     wcd = WorkgroupCompletionData(course_id, group_id, restrict_to_users_ids)
@@ -2845,7 +2845,7 @@ def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     '''
     Get detailed information about the specific workgroup for this course
@@ -2940,7 +2940,7 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
