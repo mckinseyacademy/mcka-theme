@@ -1230,7 +1230,7 @@ def course_bulk_action(course_id, data, batch_status):
             batch_status.attempted = len(data['list_of_items'])
             batch_status.save()
         for status_item in data['list_of_items']:
-            status = _enroll_participant_with_status(data['course_id'], status_item['id'], data['new_status'])
+            status = _enroll_participant_with_status(data['course_id'], status_item['id'], data['new_status'], status_item['organization_id'])
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
@@ -1242,32 +1242,49 @@ def course_bulk_action(course_id, data, batch_status):
                     batch_status.save()    
 
 
-def _enroll_participant_with_status(course_id, user_id, status):
+def _enroll_participant_with_status(course_id, user_id, status, organization_id=None):
     permissonsMap = {
         'TA': USER_ROLES.TA,
         'Observer': USER_ROLES.OBSERVER
     }
     failure = None
-    try:
-        user_api.enroll_user_in_course(user_id, course_id)
-    except ApiError as e: 
-        failure = {
-            "status": 'error',
-            "message": e.message
-        }
-    if failure:
-        return {'status':'error', 'message':e.message}
-    try:
-        permissions = Permissions(user_id)
-        if status != 'Active' :
-            permissions.update_course_role(course_id,permissonsMap[status])
-    except ApiError as e:
-        failure = {
-            "status": 'error',
-            "message": e.message
-        }
-    if failure:
-        return {'status':'error', 'message':e.message}
+
+    if organization_id:
+        programs = Client.fetch(organization_id).fetch_programs()
+        for program in programs:
+            courses = program.fetch_courses()
+            for course in courses:
+                if course.course_id == course_id:
+                    try:
+                        program.add_user(organization_id, user_id)
+                    except ApiError as e:
+                        if e.code != 409:
+                            failure = {
+                                "status": 'error',
+                                "message": e.message
+                            }
+        if failure:
+            return {'status':'error', 'message':e.message}
+        try:
+            user_api.enroll_user_in_course(user_id, course_id)
+        except ApiError as e: 
+            failure = {
+                "status": 'error',
+                "message": e.message
+            }
+        if failure:
+            return {'status':'error', 'message':e.message}
+        try:
+            permissions = Permissions(user_id)
+            if status != 'Active' :
+                permissions.update_course_role(course_id,permissonsMap[status])
+        except ApiError as e:
+            failure = {
+                "status": 'error',
+                "message": e.message
+            }
+        if failure:
+            return {'status':'error', 'message':e.message}
 
     return {'status':'success'}
 
