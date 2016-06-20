@@ -197,7 +197,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
       }
       else
       {
-        alert("Selected organization doesn't have courses!");
+        alert("Selected company doesn't have courses!");
       }
     });
 		$('#add_a_participant').find('.addAnotherCourseWrapper a').on('click', function(event)
@@ -214,7 +214,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
       }
       else
       {
-        alert('You need to select organization!');
+        alert('You need to select company!');
         // if (_this.course_source)
         //   GenerateAutocompleteInput(_this.course_source, appendedChild);
         // else
