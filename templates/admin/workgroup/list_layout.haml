@@ -21,17 +21,14 @@
             .div.select-group-wrapper
               %select.select-program{'name': 'select-course'}
                   %option{'value': 'select'}
-                    = ' - Select - '
-                - for course in courses
-                  %option{'value': '#{course.id}'}
-                    = course.name
-                    (
-                    %span><= course.name
-                    )
+                    = ' - Select -'
+                  - for course in courses
+                    %option{'value': '#{course.id}'}
+                      = course.name
+                      (#{course.id})
 
             .submit-area
               %input.button.radius.small{type: "submit", value: "OK"}
-          -# %a.createworkgroup{'href': '/admin/workgroup/group/create/edX/Open_DemoX/edx_demo_course'}Create
           - block principal_list_filter
           - block principal_list
 
