@@ -348,7 +348,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             $.ajax(options)
             .done(function(data) {
               if (data['status'] == 'ok')
-              {
+              { 
                 statusUpdaterIntervalId = _this.courses_details_view.realtimeStatus(url, '#courseDetailsMainModal .courseModalStatus', data['task_id'], _this, course_id);
               }
               })
@@ -366,6 +366,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         return;
       var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
       var selectedRowsIdsLen = selectedRowsIds.length;
+      var ids = course_id.split(',');
+      if (ids.length > 1)
+      {
+        course_id = ids[0];
+      }
       $('#courseDetailsMainModal').find('.courseModalTitle').text('Successfully Enrolled in 1 Course');
       $('#courseDetailsMainModal').find('.courseModalStatus').empty();
       $('#courseDetailsMainModal').find('.courseModalDescription').text('What would you like to do now?');

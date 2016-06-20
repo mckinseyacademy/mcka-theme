@@ -1248,30 +1248,29 @@ def _enroll_participant_with_status(course_id, user_id, status, organization_id=
         'Observer': USER_ROLES.OBSERVER
     }
     failure = None
-
     if organization_id:
-        programs = Client.fetch(organization_id).fetch_programs()
-        for program in programs:
-            courses = program.fetch_courses()
-            for course in courses:
-                if course.course_id == course_id:
-                    try:
-                        program.add_user(organization_id, user_id)
-                    except ApiError as e:
-                        if e.code != 409:
-                            failure = {
-                                "status": 'error',
-                                "message": e.message
-                            }
+        ids = course_id.split(',');
+        course_id = ids[0]
+        program_id = ids[1]
+        program = group_api.fetch_group(program_id, group_object=Program)
+        try:
+            program.add_user(organization_id, user_id)
+        except ApiError as e:
+            if e.code != 409:
+                failure = {
+                    "status": 'error',
+                    "message": e.message
+                }
         if failure:
             return {'status':'error', 'message':e.message}
         try:
             user_api.enroll_user_in_course(user_id, course_id)
         except ApiError as e: 
-            failure = {
-                "status": 'error',
-                "message": e.message
-            }
+            if e.code != 409:
+                failure = {
+                    "status": 'error',
+                    "message": e.message
+                }
         if failure:
             return {'status':'error', 'message':e.message}
         try:
@@ -1485,8 +1484,8 @@ def _process_line_participants_csv(user_line):
             "first_name": fields[0],
             "last_name": fields[1],
             "email": fields[2],
-            "company_id": fields[3],
-            "program_id": fields[4],
+            "client_name": fields[3],
+            "program_name": fields[4],
             "course_id": fields[5],
             "status": fields[6],
             "username": username,
@@ -1509,14 +1508,23 @@ def _enroll_participants(participants, request, reg_status):
         'observer': USER_ROLES.OBSERVER
     }
 
+    programs = group_api.get_groups_of_type('series', group_object=Program)
+    allPrograms = []
+    for program in programs:
+        programData = vars(program)
+        programDict = {}
+        programDict['id'] = programData['id']
+        programDict['display_name'] = vars(programData['data'])['display_name']
+        allPrograms.append(programDict)
+
     for user_dict in participants:
 
         user = None
         client = None
         course = None
         username = user_dict['username']
-        client_id = int(user_dict['company_id'])
-        program_id = int(user_dict['program_id'])
+        client_name = user_dict['client_name']
+        program_name = user_dict['program_name']
         course_id = user_dict['course_id']
         status = user_dict['status'].lower()
         status_check = ['active', 'observer', 'ta']
@@ -1549,6 +1557,10 @@ def _enroll_participants(participants, request, reg_status):
                     check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
             #Check if client exist
             client = None
+            client_id = 0
+            company = organization_api.get_organization_by_display_name(urllib.quote_plus(client_name))
+            if company['count'] > 0:
+                client_id = company['results'][0]['id']
             try: 
                 client = Client.fetch(client_id)
             except ApiError as e:
@@ -1558,6 +1570,10 @@ def _enroll_participants(participants, request, reg_status):
                     check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Company'})
             #Check if program exist
             program = None
+            program_id = 0
+            for program in allPrograms:
+                if program['display_name'] == program_name:
+                    program_id = program['id']
             try: 
                 program = Program.fetch(program_id)
             except ApiError as e:

@@ -3307,17 +3307,17 @@ class participants_list_api(APIView):
                     courses_permissions_list = []
                     programs = Client.fetch(client.id).fetch_programs()
                     for course_permission in data['course_permissions_list']:
-                        for program in programs:
-                            courses = program.fetch_courses()
-                            for course in courses:
-                                if course.course_id == course_permission['course_id']:
-                                    try:
-                                        program.add_user(client.id, user_data['id'])
-                                    except ApiError as e:
-                                        if e.code != 409:
-                                            return Response({'status':'error', 'type': 'api_error', 'message':e.message})
+                        ids = course_permission['course_id'].split(',');
+                        course_id = ids[0]
+                        program_id = ids[1]
+                        program = group_api.fetch_group(program_id, group_object=Program)
                         try:
-                            user_api.enroll_user_in_course(user_data['id'], course_permission['course_id'])
+                            program.add_user(client.id, user_data['id'])
+                        except ApiError as e:
+                            if e.code != 409:
+                                return Response({'status':'error', 'type': 'api_error', 'message':e.message})
+                        try:
+                            user_api.enroll_user_in_course(user_data['id'], course_id)
                         except ApiError as e:
                             # Ignore 409 errors, because they indicate a user already added
                             if e.code != 409:
@@ -3455,10 +3455,13 @@ class manage_user_courses_api(APIView):
             allCoursesList =[]
             programs = Client.fetch(organization_id).fetch_programs()
             for program in programs:
+                programData = vars(program)
                 courses = program.fetch_courses()
                 for course in courses:
                     courseData = vars(course)
-                    allCoursesList.append({'display_name':courseData['display_name'], 'id': courseData['course_id']})
+                    display_name = '' + courseData['display_name'] + '(' + programData['display_name'] + ')'
+                    data_id = '' + str(courseData['course_id']) + ',' + str(programData['id'])
+                    allCoursesList.append({'display_name': display_name, 'id': data_id})
             response_obj['all_items'] = allCoursesList
             response_obj['status'] = 'ok'
             return Response(response_obj)
