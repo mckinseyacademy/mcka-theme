@@ -37,16 +37,31 @@ class EditEmailForm(forms.Form):
     ''' Used to edit a user's email address. '''
     email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': _("Enter new email address")}))
 
+class CustomSelectDateWidget(SelectDateWidget):
+
+    def create_select(self, *args, **kwargs):
+        old_state = self.is_required
+        self.is_required = False
+        result = super(CustomSelectDateWidget, self).create_select(*args, **kwargs)
+        self.is_required = old_state
+        return result
+
 class ProgramForm(forms.Form):
 
     ''' add a new program to the system '''
     display_name = forms.CharField(max_length=255)
     name = forms.CharField(max_length=255)
     start_date = forms.DateField(
-        widget=SelectDateWidget(years=PROGRAM_YEAR_CHOICES)
+        widget=CustomSelectDateWidget(
+            empty_label=("---", "---", "---"),
+            years=PROGRAM_YEAR_CHOICES
+            )
     )
     end_date = forms.DateField(
-        widget=SelectDateWidget(years=PROGRAM_YEAR_CHOICES)
+        widget=CustomSelectDateWidget(
+            empty_label=("---", "---", "---"),
+            years=PROGRAM_YEAR_CHOICES
+            )
     )
 
 
