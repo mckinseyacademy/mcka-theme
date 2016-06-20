@@ -11,51 +11,45 @@
         %a#edit-company-image{"data-reveal-id": "edit-company-image-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/change_company_image"}
           change photo
     %hr
-    -for program in programs
-      .sub-2
-        = program.display_name
-        = _("Courses:")
-      %br
-      %br
-      %ul.courses-tiles
-        -for course in program.courses
-          %li.course-tile
-            .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50% / 190px auto;'}
-            -if course.started
-              %a{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
-                .label-11
-                  = course.name
-            -else
-              .label-12
+    %ul.courses-tiles
+      -for course in courses
+        %li.course-tile
+          .course-image{'style': 'background: #3384CA url(#{course.course_image_url}) no-repeat 50% 50% / 190px auto;'}
+          -if course.started
+            %a{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
+              .label-11
                 = course.name
-            .course-stats
-              .course-stat-label
-                = _("Course run:")
-                %span.course-stat-value
-                  = course.date_range
-              .course-stat-label
-                = _("Participants:")
-                %span.course-stat-value
-                  = course.metrics.users_enrolled
-              .course-stat-label
-                = _("Started:")
-                %span.course-stat-value
-                  = course.metrics.users_started
-              .course-stat-label
-                = _("Completed:")
-                %span.course-stat-value
-                  = course.metrics.users_completed
-              .course-stat-label
-                = _("% Completed:")
-                %span.course-stat-value
-                  = course.metrics.percent_completed
-            .go-to-link
-              -if course.started
-                %a.course-link{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
-                  %i.fa.fa-chevron-right
-               -else
-                %a.course-link.not-started
-                  %i.fa.fa-chevron-right
+          -else
+            .label-12
+              = course.name
+          .course-stats
+            .course-stat-label
+              = _("Course run:")
+              %span.course-stat-value
+                = course.date_range
+            .course-stat-label
+              = _("Participants:")
+              %span.course-stat-value
+                = course.metrics.users_enrolled
+            .course-stat-label
+              = _("Started:")
+              %span.course-stat-value
+                = course.metrics.users_started
+            .course-stat-label
+              = _("Completed:")
+              %span.course-stat-value
+                = course.metrics.users_completed
+            .course-stat-label
+              = _("% Completed:")
+              %span.course-stat-value
+                = course.metrics.percent_completed
+          .go-to-link
+            -if course.started
+              %a.course-link{'href': '/admin/client-admin/#{client.id}/courses/#{course.id}'}
+                %i.fa.fa-chevron-right
+             -else
+              %a.course-link.not-started
+                %i.fa.fa-chevron-right
 
   - block change_company_image
     #edit-company-image-modal.reveal-modal.medium{'data-reveal': 'true'}

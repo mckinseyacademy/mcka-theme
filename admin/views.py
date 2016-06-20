@@ -280,36 +280,18 @@ def client_admin_home(request, client_id):
 
     organization = Client.fetch(client_id)
 
-    programs = []
-    coursesIDs = []
-    programsAPI = organization.fetch_programs()
-
-    for program in programsAPI:
-        program.coursesIDs = []
-        program.courses = []
-        for course in program.fetch_courses():
-            program.coursesIDs.append(course.course_id)
-            coursesIDs.append(course.course_id)
-        programs.append(_prepare_program_display(program))
-
-    coursesIDs = list(set(coursesIDs))
-    chunks = [coursesIDs[x:x+20] for x in xrange(0, len(coursesIDs), 20)]
     courses = []
-    for chunk in chunks:
-        courses.extend(course_api.get_courses(course_id=chunk))
+    courses.extend(organization_api.get_organizations_courses(client_id))
 
     for course in courses:
         course = _prepare_course_display(course)
-        course.metrics = course_api.get_course_metrics(course.id, organization=client_id)
-        course.metrics.users_completed, course.metrics.percent_completed = get_organizations_users_completion(client_id, course.id, course.metrics.users_enrolled)
-        for program in programs:
-            if course.id in program.coursesIDs:
-                program.courses.append(course)
+        course["metrics"] = course_api.get_course_metrics(course["id"], organization=client_id)
+        course["metrics"].users_completed, course["metrics"].percent_completed = get_organizations_users_completion(client_id, course["id"], course["metrics"].users_enrolled)
 
     company_image = organization.image_url(size=48)
     data = {
         'client': organization,
-        'programs': programs,
+        'courses': courses,
         'company_image': company_image,
         'selected_tab': 'home',
     }
@@ -1697,12 +1679,6 @@ def create_access_key(request, client_id):
         else:
             form = CreateAccessKeyForm(request.POST) # A form bound to the POST data
 
-        # Load course choices for program
-        program_id = int(request.POST.get('program_id'))
-        if program_id:
-            program = Program(dictionary={"id": program_id})
-            courses = [(c.course_id, c.course_id) for c in program.fetch_courses()]
-
         if form.is_valid():  # All validation rules pass
             code = generate_access_key()
             model = form.save(commit=False)
@@ -1714,8 +1690,7 @@ def create_access_key(request, client_id):
         form = CreateAccessKeyForm()
 
     client = Client.fetch(client_id)
-    programs = [(p.id, p.display_name) for p in client.fetch_programs()]
-    form.fields['program_id'].widget.choices = [(0, _('- Select -'))] + programs
+    courses = [(c.id, c.name) for c in course_api.get_course_list()]
     form.fields['course_id'].widget.choices = [('', _('- Select -'))] + courses
 
     data = {

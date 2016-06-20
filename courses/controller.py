@@ -298,7 +298,7 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
         user_workgroups = [workgroup]
     else:
         user_workgroups = user_api.get_user_workgroups(user_id, course.id) 
-
+    print user_workgroups
     if len(user_workgroups) < 1:
         return None, None
 
