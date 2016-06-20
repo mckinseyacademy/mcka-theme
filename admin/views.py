@@ -2543,8 +2543,8 @@ def upload_company_image(request, client_id='new'):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
 
     template = 'admin/workgroup/dashboard.haml'
@@ -2669,8 +2669,8 @@ def _make_select_option_response(item_id, display_name, disabled=False):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=None, restrict_to_courses_ids=None):
     try:
         program_id = int(program_id)
@@ -2687,7 +2687,7 @@ def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=No
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     course = load_course(course_id)
@@ -2698,7 +2698,7 @@ def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=Non
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+#@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
     program_id = request.GET.get('program_id')
     if program_id:
@@ -2726,8 +2726,8 @@ def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
-@checked_program_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_program_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_details(
         request, program_id, course_id, project_id, restrict_to_programs_ids=None, restrict_to_courses_ids=None
 ):
@@ -2767,8 +2767,8 @@ def groupwork_dashboard_details(
     return render(request, template, data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_list(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
@@ -2793,8 +2793,8 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
     return response
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_projects_report(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     filename = slugify(
@@ -2823,7 +2823,7 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
     return response
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
@@ -2840,7 +2840,7 @@ def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     '''
@@ -2881,8 +2881,8 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     selected_project_id = request.GET.get("project_id", None)
@@ -2973,7 +2973,7 @@ def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, re
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
+#@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def workgroup_programs_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
 
@@ -3008,8 +3008,8 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
@@ -3030,8 +3030,8 @@ def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
@@ -3078,8 +3078,8 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_remove(request, group_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     if request.method == 'POST':
 
@@ -3114,7 +3114,7 @@ def workgroup_group_remove(request, group_id, restrict_to_courses_ids=None, rest
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     message = _("Error creating project")
     status_code = 400
@@ -3149,7 +3149,7 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
     project = Project.fetch(project_id)
     AccessChecker.check_has_course_access(project.course_id, restrict_to_courses_ids)
