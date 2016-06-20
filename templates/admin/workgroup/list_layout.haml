@@ -24,8 +24,7 @@
                     = ' - Select -'
                   - for course in courses
                     %option{'value': '#{course.id}'}
-                      = course.name
-                      (#{course.id})
+                      #{course.name} (#{course.id})
 
             .submit-area
               %input.button.radius.small{type: "submit", value: "OK"}

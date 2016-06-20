@@ -1463,6 +1463,27 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
+    
+    if detail_view == "courses_without_programs":
+        data["students"] = client.fetch_students_by_enrolled()
+        # convert all of the date strings to SHORT FORMAT
+        for student in data["students"]:
+            student.created = datetime.strptime(student.created, "%Y-%m-%dT%H:%M:%SZ" ).strftime(settings.SHORT_DATE_FORMAT)
+
+        data["courses"] = course_api.get_course_list()
+        for course in data["courses"]:
+            course = vars(course)
+            start = course.get("start", None)
+            end = course.get("end", None)
+            if start:
+                start = start.strftime(settings.SHORT_DATE_FORMAT)
+            else:
+                start = ""
+            if end:
+                end = end.strftime(settings.SHORT_DATE_FORMAT)
+            else:
+                end = ""
+            course["date_range"] = "{} - {}".format(start, end,)
 
     return render(
         request,
@@ -2972,7 +2993,9 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
     else:
         AccessChecker.check_has_program_access(int(program_id), restrict_to_programs_ids)
         courses = get_accessible_courses_from_program(request.user, int(program_id))
-
+        max_string_length = 75
+        for course in courses:
+            course.display_name = (course.display_name[:max_string_length] + '...') if len(course.display_name) > max_string_length else course.display_name
         data = {
             "courses": courses,
         }
@@ -3152,7 +3175,9 @@ def workgroup_list(request, restrict_to_programs_ids=None):
             return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
     courses = get_accessible_courses(request.user)
-
+    max_string_length = 75
+    for course in courses:
+        course.name = (course.name[:max_string_length] + '...') if len(course.name) > max_string_length else course.name
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),

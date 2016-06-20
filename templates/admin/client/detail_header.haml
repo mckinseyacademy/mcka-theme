@@ -12,11 +12,17 @@
       %a{href:"/admin/clients/#{client.id}/programs"}
         = _("Assign Students to Program")
   %li
-    - if selected_client_tab == 'courses'
+    - if selected_client_tab == 'courses_without_programs'
       %span.selected= _("Assign Students to Courses")
     - else
-      %a{href:"/admin/clients/#{client.id}/courses"}
+      %a{href:"/admin/clients/#{client.id}/courses_without_programs"}
         = _("Assign Students to Courses")
+  %li
+    - if selected_client_tab == 'courses'
+      %span.selected= _("Assign Students to Courses in Programs")
+    - else
+      %a{href:"/admin/clients/#{client.id}/courses"}
+        = _("Assign Students to Courses in Programs")
   - if user.is_mcka_admin
     %li
       - if selected_client_tab == 'contact'

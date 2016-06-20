@@ -950,6 +950,7 @@ def get_accessible_programs(user, restrict_to_programs_ids):
 def get_accessible_courses(user):
     user_roles = user_api.get_user_roles(user.id)
     course_id_list = None
+    courses_list = []
     if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin]):
         course_id_list = []
         for role in user_roles:
