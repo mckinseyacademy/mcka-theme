@@ -7,6 +7,8 @@
         %header
           %h1.principal-title {{principal_name_plural}}: Overview
           %a{href: '/admin/workgroup/dashboard'}= _("Access V2 Dashboard")
+          %br
+          %a{href: '/admin/workgroup/dashboardV2'}= _("Access V2 Dashboard without programs")
           .add-message
             - block principal_message
               Use this block to update the message describing the principal at hand
@@ -19,40 +21,15 @@
           %form.admin-form{action: "/admin/workgroup", method: "POST"}
             - csrf_token
             .div.select-group-wrapper
-              %select.select-program{'data-programid-call': "/admin/workgroup/programs/list", 'name': 'select-program'}
+              %select.select-program{'name': 'select-course'}
                   %option{'value': 'select'}
-                    = ' - Select - '
-                - for program in programs
-                  %option{'value': '#{program.id}'}
-                    = program.display_name
-                    (
-                    %span><= program.name
-                    )
-              %select.select-course{'name': 'select-course'}
-                  %option{'value': 'select'}
-                    = ' - Select - '
+                    = ' - Select -'
+                  - for course in courses
+                    %option{'value': '#{course.id}'}
+                      #{course.name} (#{course.id})
+
             .submit-area
               %input.button.radius.small{type: "submit", value: "OK"}
-          -# %a.createworkgroup{'href': '/admin/workgroup/group/create/edX/Open_DemoX/edx_demo_course'}Create
           - block principal_list_filter
           - block principal_list
 
-- block js_snippets
-  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
-  :javascript
-    $(document).ready(function(){
-      $('select.select-program').on('change', function(){
-        var that = $(this);
-        var url = that.data('programid-call');
-        var group_id = that.find('option:selected').val();
-        var csrftoken = $.cookie('apros_csrftoken');
-        $.ajax({
-          method: 'POST',
-          url: url,
-          data: {group_id: group_id, csrfmiddlewaretoken: csrftoken}
-        }).done(function(data){
-          $('select.select-course').html(data);
-        });
-      });
-      $('select.select-program').trigger('change');
-    });

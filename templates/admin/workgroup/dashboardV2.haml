@@ -1,0 +1,88 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-dashboard
+    .row
+      .large-12.large-centered
+        %header
+          .large-12
+            .large-10.columns
+              %h1.principal-title
+                = _("Group Work Dashboard")
+            .large-2.columns.run-report
+              %a.button.radius.small.disabled{'disabled': 'disabled'}
+                %span.fa.fa-download
+                = _("Report")
+          .row
+          .add-message.detail-message
+            = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
+        %hr
+        %section
+          .row
+          .large-12.medium-12
+            .sub-2= _("Filter by:")
+
+            .dashboard_filters
+              .small-6.columns
+                %select#select-course{'data-filter-endpoint': '/admin/workgroup/dashboard/programs/$value$/courses', 'data-outline-component': 'course'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("Course")
+                  - for course in courses
+                    %option{'value': '#{course.id}'}
+                      = course.name
+                      (
+                      %span><= course.id
+                      )
+
+              .small-3.columns
+                %select#select-project{'data-filter-endpoint': '/admin/workgroup/dashboard/courses/$value$/projects', 'data-outline-component': 'project'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("Project")
+
+              .small-3.columns
+                %select#select-company{'data-filter-endpoint': '/admin/workgroup/dashboard/companies', 'data-outline-component': 'company', 'data-query-mode': 'data', 'data-value-parameter': 'program_id', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
+                  %option{'data-static': 'true', 'value': ''}
+                    = _("All companies")
+          .row
+          .large-12.dashboard_outline_wrapper
+            %span.dashboard_outline_label= _("Displaying:")
+            %span.dashboard_outline.course
+              %i.fa.fa-spin.fa-spinner
+            %span= "|"
+            %span.dashboard_outline.project
+              %i.fa.fa-spin.fa-spinner
+            %span= "|"
+            %span.dashboard_outline.company
+              %i.fa.fa-spin.fa-spinner
+          %hr
+        %section
+          .columns.large-12.group_project_placeholder
+
+- block js_snippets
+  %script{src: "{% static 'js/views/admin/group_work_dashboard_common.js' %}"}
+  %script{src: "{% static 'js/views/admin/group_work_dashboard.js' %}"}
+  :javascript
+
+    var dashboard_configuration = {
+      selected_values: {
+        courseId: '{{ selected_course_id }}',
+        projectId: '{{ selected_project_id }}',
+      },
+      lesson_data_base: {
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        lmsPort: '{{ lms_port }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        block_view: 'dashboard_view',
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      },
+      gp_placeholder: $(".group_project_placeholder"),
+      quick_links_endpoint: "{%url 'groupwork_dashboard_links' %}",
+      csrf_token: '{{csrf_token}}',
+    };
+
+    group_work_dashboard(dashboard_configuration);
+
