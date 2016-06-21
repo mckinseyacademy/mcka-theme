@@ -2568,6 +2568,33 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     return render(request, template, data)
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+def groupwork_dashboardV2(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
+
+    template = 'admin/workgroup/dashboardV2.haml'
+
+    course_id = request.GET.get('course_id')
+    project_id = request.GET.get('project_id')
+
+    courses = get_accessible_courses(request.user)
+    max_string_length = 75
+    for course in courses:
+        course.name = (course.name[:max_string_length] + '...') if len(course.name) > max_string_length else course.name
+
+    data = {
+        'courses': courses,
+        'restrict_to_users': restrict_to_users_ids,
+        'selected_course_id': course_id if course_id else "",
+        'selected_project_id': project_id if project_id else "",
+        "remote_session_key": request.session.get("remote_session_key"),
+        "lms_base_domain": settings.LMS_BASE_DOMAIN,
+        "lms_sub_domain": settings.LMS_SUB_DOMAIN,
+        "lms_port": settings.LMS_PORT,
+        "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
+    }
+
+    return render(request, template, data)
+
 class QuickLinkView(View):
 
     http_method_names = ['get', 'post', 'delete']
