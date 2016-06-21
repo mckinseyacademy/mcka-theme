@@ -1132,10 +1132,8 @@ class course_details_api(APIView):
                 if len(course_participant['organizations'] ) == 0:
                     course_participant['organizations'] = [{'display_name': 'No company'}]
                     course_participant['organizations_display_name'] = 'No company'
-                    course_participant['organization_id'] = 0
                 else:
                     course_participant['organizations_display_name'] = course_participant['organizations'][0]['display_name']
-                    course_participant['organization_id'] = course_participant['organizations'][0]['id']
                 if len(course_participant['roles']) != 0:
                     if 'assistant' in course_participant['roles']:
                         course_participant['custom_user_status'] = permissonsMap['assistant']
@@ -3292,7 +3290,6 @@ class participants_list_api(APIView):
                             data['company'] = vars(new_organization).get("id", None)
                         except ApiError, e:
                             return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't create company!"})
-                    client = None
                     if user:
                         client = Client.fetch(data['company'])
                         try:
@@ -3305,19 +3302,9 @@ class participants_list_api(APIView):
                         except ApiError, e:
                             return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't add user to company!"})
                     courses_permissions_list = []
-                    programs = Client.fetch(client.id).fetch_programs()
                     for course_permission in data['course_permissions_list']:
-                        ids = course_permission['course_id'].split(',');
-                        course_id = ids[0]
-                        program_id = ids[1]
-                        program = group_api.fetch_group(program_id, group_object=Program)
                         try:
-                            program.add_user(client.id, user_data['id'])
-                        except ApiError as e:
-                            if e.code != 409:
-                                return Response({'status':'error', 'type': 'api_error', 'message':e.message})
-                        try:
-                            user_api.enroll_user_in_course(user_data['id'], course_id)
+                            user_api.enroll_user_in_course(user_data['id'], course_permission['course_id'])
                         except ApiError as e:
                             # Ignore 409 errors, because they indicate a user already added
                             if e.code != 409:
@@ -3448,33 +3435,15 @@ class manage_user_company_api(APIView):
 class manage_user_courses_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
-
-        organization_id = request.GET.get('organization_id', None);
-        if organization_id:
-            response_obj = {}
-            allCoursesList =[]
-            programs = Client.fetch(organization_id).fetch_programs()
-            for program in programs:
-                programData = vars(program)
-                courses = program.fetch_courses()
-                for course in courses:
-                    courseData = vars(course)
-                    display_name = '' + courseData['display_name'] + '(' + programData['display_name'] + ')'
-                    data_id = '' + str(courseData['course_id']) + ',' + str(programData['id'])
-                    allCoursesList.append({'display_name': display_name, 'id': data_id})
-            response_obj['all_items'] = allCoursesList
-            response_obj['status'] = 'ok'
-            return Response(response_obj)
-        else:
-            response_obj = {}
-            courses_list = course_api.get_course_list()
-            allCoursesList =[]
-            for course in courses_list:
-                courseData = vars(course)
-                allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
-            response_obj['all_items'] = allCoursesList
-            response_obj['status'] = 'ok'
-            return Response(response_obj)
+        response_obj = {}
+        courses_list = course_api.get_course_list()
+        allCoursesList =[]
+        for course in courses_list:
+            courseData = vars(course)
+            allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+        response_obj['all_items'] = allCoursesList
+        response_obj['status'] = 'ok'
+        return Response(response_obj)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def validate_participant_email(request):
@@ -3513,12 +3482,8 @@ class participant_course_manage_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request, user_id, course_id, format=None):
         status = request.POST.get("status", None)
-        organization_id = request.POST.get("organization_id", None)
         if status:
-            if organization_id:
-                enroll_status = _enroll_participant_with_status(course_id, user_id, status, organization_id)
-            else:
-                enroll_status = _enroll_participant_with_status(course_id, user_id, status)
+            enroll_status = _enroll_participant_with_status(course_id, user_id, status)
             return Response(enroll_status)
         else:
             return Response({'status':'error', 'message':'There is a problem with selected user role on new course!'})
