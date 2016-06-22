@@ -958,7 +958,12 @@ def get_accessible_courses(user):
                 course_id_list.append(role.course_id)
         courses_list = course_api.get_course_list(course_id_list)
     else:
-        courses_list = course_api.get_course_list_in_pages(course_id_list)
+        if user.is_mcka_admin:
+            courses_list = course_api.get_course_list_in_pages(course_id_list)
+        else:
+            user_orgs = user_api.get_user_organizations(user.id)
+            if len(user_orgs) > 0:
+                courses_list = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
     return courses_list
 
 

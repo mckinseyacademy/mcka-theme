@@ -691,3 +691,7 @@ def get_completions_on_course(course_id):
     response = GET(url)
 
     return json.loads(response.read())
+
+def parse_course_list_json_object(course_list_json_object):
+    return CJP.from_json(json.dumps(course_list_json_object))
+
