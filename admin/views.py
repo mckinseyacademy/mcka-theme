@@ -291,7 +291,7 @@ def client_admin_home(request, client_id):
             course["start"] = parsedate(course["start"]).replace(tzinfo=None)
         if course["end"]:
             course["end"] = parsedate(course["end"]).replace(tzinfo=None)
-        if is_future_start(course["start"]) or (course["end"] != None and is_future_start(course["end"]) == False):
+        if is_future_start(course["start"]):
             course["started"] = False
         else:
             course["started"] = True
