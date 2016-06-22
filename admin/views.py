@@ -1470,7 +1470,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         for student in data["students"]:
             student.created = datetime.strptime(student.created, "%Y-%m-%dT%H:%M:%SZ" ).strftime(settings.SHORT_DATE_FORMAT)
 
-        data["courses"] = course_api.get_course_list()
+        data["courses"] = course_api.get_course_list_in_pages()
         for course in data["courses"]:
             course = vars(course)
             start = course.get("start", None)
@@ -1711,7 +1711,7 @@ def create_access_key(request, client_id):
         form = CreateAccessKeyForm()
 
     client = Client.fetch(client_id)
-    courses = [(c.id, c.name) for c in course_api.get_course_list()]
+    courses = [(c.id, c.name) for c in course_api.get_course_list_in_pages()]
     form.fields['course_id'].widget.choices = [('', _('- Select -'))] + courses
 
     data = {
@@ -1907,7 +1907,7 @@ def program_detail(request, program_id, detail_view="detail"):
     if detail_view == "detail":
         data["clients"] = fetch_clients_with_program(program.id)
     elif detail_view == "courses":
-        data["courses"] = course_api.get_course_list()
+        data["courses"] = course_api.get_course_list_in_pages()
         selected_ids = [course.course_id for course in program.fetch_courses()]
         for course in data["courses"]:
             course.instance = course.id.replace("slashes:", "")
@@ -3463,7 +3463,7 @@ class manage_user_courses_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
         response_obj = {}
-        courses_list = course_api.get_course_list()
+        courses_list = course_api.get_course_list_in_pages()
         allCoursesList =[]
         for course in courses_list:
             courseData = vars(course)

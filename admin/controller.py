@@ -956,7 +956,9 @@ def get_accessible_courses(user):
         for role in user_roles:
             if USER_ROLES.TA == role.role:
                 course_id_list.append(role.course_id)
-    courses_list = course_api.get_course_list(course_id_list)
+        courses_list = course_api.get_course_list(course_id_list)
+    else:
+        courses_list = course_api.get_course_list_in_pages(course_id_list)
     return courses_list
 
 
