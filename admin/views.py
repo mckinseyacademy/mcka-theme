@@ -287,6 +287,14 @@ def client_admin_home(request, client_id):
         course = _prepare_course_display(course)
         course["metrics"] = course_api.get_course_metrics(course["id"], organization=client_id)
         course["metrics"].users_completed, course["metrics"].percent_completed = get_organizations_users_completion(client_id, course["id"], course["metrics"].users_enrolled)
+        if course["start"]:
+            course["start"] = parsedate(course["start"]).replace(tzinfo=None)
+        if course["end"]:
+            course["end"] = parsedate(course["end"]).replace(tzinfo=None)
+        if is_future_start(course["start"]) or (course["end"] != None and is_future_start(course["end"]) == False):
+            course["started"] = False
+        else:
+            course["started"] = True
 
     company_image = organization.image_url(size=48)
     data = {
