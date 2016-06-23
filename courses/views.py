@@ -931,7 +931,7 @@ def course_learner_dashboard(request):
 @require_POST
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
