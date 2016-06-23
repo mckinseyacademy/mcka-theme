@@ -1198,9 +1198,15 @@ class course_details_api(APIView):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_list(request, restrict_to_courses_ids=None):
-    courses = course_api.get_course_list(ids=restrict_to_courses_ids)
+    courses = []
+    if request.user.is_internal_admin:
+        user_orgs = user_api.get_user_organizations(request.user.id)
+        if len(user_orgs) > 0:
+            courses = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+    else:
+        courses = course_api.get_course_list(ids=restrict_to_courses_ids)
     for course in courses:
         course.id = urlquote(course.id)
 
@@ -1215,7 +1221,7 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_items(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
@@ -1234,7 +1240,7 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
     error = None
     if request.method == "POST":
@@ -1266,7 +1272,7 @@ def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
         )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_ids=None):
     error = None
     item = CuratedContentItem.objects.filter(id=item_id)[0]
@@ -1296,7 +1302,7 @@ def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_i
     )
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_item_delete(request, item_id, restrict_to_courses_ids=None):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
     AccessChecker.check_has_course_access(item.course_id, restrict_to_courses_ids)
