@@ -183,46 +183,16 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 			else
 				InitializeAutocompleteInput(ApiUrls.participant_organization_get_api(), appendedChild);
 		});
-    $('#add_a_participant').find('.participantCompanyValue input').on('change', function(event)
-    {
-      event.preventDefault();
-      organization_id = $('#add_a_participant').find('.participantCompanyValue input').attr('data-id');
-      if (organization_id)
-      {
-        var objectContainer = $('#add_a_participant').find('.adminCourseAllWrapper');
-        $.each(objectContainer.find('.participantCourseValue input'), function(i, v){
-          var url = '' + ApiUrls.participant_courses_get_api() + '?organization_id=' + organization_id;
-          InitializeAutocompleteInput(url, v);
-        });
-      }
-      else
-      {
-        alert("Selected organization doesn't have courses!");
-      }
-    });
 		$('#add_a_participant').find('.addAnotherCourseWrapper a').on('click', function(event)
 		{
 			event.preventDefault();
 			var objectContainer = $('#add_a_participant').find('.adminCourseAllWrapper');
 			objectContainer.append(enrollInCourseTemplate);
 			var appendedChild = objectContainer.children().last().find('.participantCourseValue input');
-      organization_id = $('#add_a_participant').find('.participantCompanyValue input').attr('data-id');
-      if (organization_id)
-      {
-        var url = '' + ApiUrls.participant_courses_get_api() + '?organization_id=' + organization_id;
-        InitializeAutocompleteInput(url, appendedChild);
-      }
-      else
-      {
-        alert('You need to select organization!');
-        // if (_this.course_source)
-        //   GenerateAutocompleteInput(_this.course_source, appendedChild);
-        // else
-        // {
-        //   InitializeAutocompleteInput(ApiUrls.participant_courses_get_api(), appendedChild);
-        // }
-      }
-			
+			if (_this.course_source)
+				GenerateAutocompleteInput(_this.course_source, appendedChild);
+			else
+				InitializeAutocompleteInput(ApiUrls.participant_courses_get_api(), appendedChild);
 		});
 		$(document).on('autocomplete_found', function(event, input)
 		{

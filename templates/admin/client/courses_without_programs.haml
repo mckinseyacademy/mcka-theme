@@ -1,0 +1,61 @@
+- extends 'admin/client/detail.haml'
+- load staticfiles
+- block admin_detail
+  %h1
+    %span= _("Client: ")
+    %span= client.display_name
+  %hr
+  %section
+    .large-7.columns#student-list
+      - include "admin/client/student_select_course.haml"
+    .large-5.columns.program-selection
+      %a#student-course-action.button.radius.tiny{href: "/admin/clients/#{client.id}/add_students_to_course"}
+        %span= _("Move Selected Students into Course(s)")
+      %div= _("Select one or more courses and assign courses to students.")
+      %div.row{:style => "overflow-y: auto; max-height: 720px;"}
+        - for course in courses
+          .course-box.large-10.large-offset-1
+            %input{type: "checkbox", id:"#{course.id}"}
+            %label{for: "#{course.id}"}
+              .title= course.name
+              .course-info
+                %span= _("Course Run:")
+                %span= course.date_range
+              .course-info
+                %span= _("Company Participants:")
+                %span= course.user_count
+
+- block js_snippets
+  %script{src: "{% static 'js/admin.js' %}"}
+  :javascript
+    $(function(){
+      selections = [
+        {
+          selector: ".student-list .student",
+          submit_name: "students",
+          minimum_count_message: "Please select at least one student"
+        },
+        {
+          selector: ".program-selection",
+          submit_name: "courses",
+          single_select: true,
+          minimum_count_message: "Please select at least one course",
+          data_selector: " input[type=checkbox]:checked"
+        }
+      ];
+
+      activator = {
+        selector: '#student-course-action'
+      };
+      enable_selection(selections, activator);
+
+      $('.student-list').dataTable({
+          paging: false,
+          autoWidth: false,
+          "createdRow": function( row, data, index){
+            var charNumber = [20, 30, null];
+            setTableColumns(row, charNumber);
+          },
+          "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
+      });
+    });

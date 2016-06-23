@@ -899,9 +899,14 @@ def get_admin_users(organizations, org_id, ADMINISTRATIVE):
 
 def get_program_data_for_report(client_id, program_id=None):
     programs = Client.fetch(client_id).fetch_programs()
-    program = next((p for p in programs if p.id == program_id), programs[0])
-    program_courses = program.fetch_courses()
-    course_ids = list(set([pc.course_id for pc in program_courses]))
+    if len(programs) > 0:
+        program = next((p for p in programs if p.id == program_id), programs[0])
+        program_courses = program.fetch_courses()
+        course_ids = list(set([pc.course_id for pc in program_courses]))
+    else:
+        program = None
+        courses_list = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(client_id))
+        course_ids = list(set([pc.id for pc in courses_list]))
 
     chunks = [course_ids[x:x+20] for x in xrange(0, len(course_ids), 20)]
     courses = []
@@ -946,6 +951,25 @@ def get_accessible_programs(user, restrict_to_programs_ids):
                     break
 
     return programs
+
+def get_accessible_courses(user):
+    user_roles = user_api.get_user_roles(user.id)
+    course_id_list = None
+    courses_list = []
+    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin]):
+        course_id_list = []
+        for role in user_roles:
+            if USER_ROLES.TA == role.role:
+                course_id_list.append(role.course_id)
+        courses_list = course_api.get_course_list(course_id_list)
+    else:
+        if user.is_mcka_admin:
+            courses_list = course_api.get_course_list_in_pages(course_id_list)
+        else:
+            user_orgs = user_api.get_user_organizations(user.id)
+            if len(user_orgs) > 0:
+                courses_list = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+    return courses_list
 
 
 def get_accessible_courses_from_program(user, program_id, restrict_to_courses_ids=None):
@@ -1230,7 +1254,7 @@ def course_bulk_action(course_id, data, batch_status):
             batch_status.attempted = len(data['list_of_items'])
             batch_status.save()
         for status_item in data['list_of_items']:
-            status = _enroll_participant_with_status(data['course_id'], status_item['id'], data['new_status'], status_item['organization_id'])
+            status = _enroll_participant_with_status(data['course_id'], status_item['id'], data['new_status'])
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
@@ -1242,49 +1266,32 @@ def course_bulk_action(course_id, data, batch_status):
                     batch_status.save()    
 
 
-def _enroll_participant_with_status(course_id, user_id, status, organization_id=None):
+def _enroll_participant_with_status(course_id, user_id, status):
     permissonsMap = {
         'TA': USER_ROLES.TA,
         'Observer': USER_ROLES.OBSERVER
     }
     failure = None
-
-    if organization_id:
-        programs = Client.fetch(organization_id).fetch_programs()
-        for program in programs:
-            courses = program.fetch_courses()
-            for course in courses:
-                if course.course_id == course_id:
-                    try:
-                        program.add_user(organization_id, user_id)
-                    except ApiError as e:
-                        if e.code != 409:
-                            failure = {
-                                "status": 'error',
-                                "message": e.message
-                            }
-        if failure:
-            return {'status':'error', 'message':e.message}
-        try:
-            user_api.enroll_user_in_course(user_id, course_id)
-        except ApiError as e: 
-            failure = {
-                "status": 'error',
-                "message": e.message
-            }
-        if failure:
-            return {'status':'error', 'message':e.message}
-        try:
-            permissions = Permissions(user_id)
-            if status != 'Active' :
-                permissions.update_course_role(course_id,permissonsMap[status])
-        except ApiError as e:
-            failure = {
-                "status": 'error',
-                "message": e.message
-            }
-        if failure:
-            return {'status':'error', 'message':e.message}
+    try:
+        user_api.enroll_user_in_course(user_id, course_id)
+    except ApiError as e: 
+        failure = {
+            "status": 'error',
+            "message": e.message
+        }
+    if failure:
+        return {'status':'error', 'message':e.message}
+    try:
+        permissions = Permissions(user_id)
+        if status != 'Active' :
+            permissions.update_course_role(course_id,permissonsMap[status])
+    except ApiError as e:
+        failure = {
+            "status": 'error',
+            "message": e.message
+        }
+    if failure:
+        return {'status':'error', 'message':e.message}
 
     return {'status':'success'}
 
@@ -1486,9 +1493,8 @@ def _process_line_participants_csv(user_line):
             "last_name": fields[1],
             "email": fields[2],
             "company_id": fields[3],
-            "program_id": fields[4],
-            "course_id": fields[5],
-            "status": fields[6],
+            "course_id": fields[4],
+            "status": fields[5],
             "username": username,
             "is_active": False,
             "password": settings.INITIAL_PASSWORD,
@@ -1515,8 +1521,7 @@ def _enroll_participants(participants, request, reg_status):
         client = None
         course = None
         username = user_dict['username']
-        client_id = int(user_dict['company_id'])
-        program_id = int(user_dict['program_id'])
+        client_id = user_dict['company_id']
         course_id = user_dict['course_id']
         status = user_dict['status'].lower()
         status_check = ['active', 'observer', 'ta']
@@ -1548,7 +1553,6 @@ def _enroll_participants(participants, request, reg_status):
                 if check_user_username['count'] == 1:
                     check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
             #Check if client exist
-            client = None
             try: 
                 client = Client.fetch(client_id)
             except ApiError as e:
@@ -1556,22 +1560,6 @@ def _enroll_participants(participants, request, reg_status):
                     check_errors.append({'reason': "Company doesn't exist", 'activity': 'Enrolling Participant in Company'})
                 else: 
                     check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Company'})
-            #Check if program exist
-            program = None
-            try: 
-                program = Program.fetch(program_id)
-            except ApiError as e:
-                if e.message == 'NOT FOUND':
-                    check_errors.append({'reason': "Program doesn't exist", 'activity': 'Enrolling Participant in Program'})
-                else: 
-                    check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Program'})
-            #Check if program is in client
-            programs = None
-            if client:
-                programs = Client.fetch(client.id).fetch_programs()
-                if programs:
-                    if not any(program.id == program_id for program in programs):
-                        check_errors.append({'reason': "Program isn't in Company", 'activity': 'Enrolling Participant in Program'})
             #Check if course exist
             try:
                 course = course_api.get_course_details(course_id)
@@ -1580,13 +1568,6 @@ def _enroll_participants(participants, request, reg_status):
                     check_errors.append({'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
                 else: 
                     check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
-            #Check if course is in program
-            courses = None
-            if program:
-                courses = program.fetch_courses()
-                if courses:
-                    if not any(course.course_id == course_id for course in courses):
-                        check_errors.append({'reason': "Course isn't in Program", 'activity': 'Enrolling Participant in Course'})
             #Check if status exist
             if status not in status_check:
                 check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
@@ -1616,11 +1597,6 @@ def _enroll_participants(participants, request, reg_status):
                         activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
                     if not activation_record:
                         raise ValueError('Activation record error', 'Registering Participant')
-                    #Enroll Participant in Program
-                    try:
-                        program.add_user(client.id, user.id)
-                    except ApiError as e:
-                        raise ValueError('{}'.format(e.message), 'Enrolling Participant in Program')
                     #Enroll Participant in Course
                     try:
                         user_api.enroll_user_in_course(user.id, course_id)

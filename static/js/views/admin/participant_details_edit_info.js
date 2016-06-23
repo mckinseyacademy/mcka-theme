@@ -230,8 +230,7 @@
           '<option value="TA">TA</option></select>' +
           '</div></div>'
         );
-        organization_id = $(".participantCompanyValue a").attr('data-id');
-        var url = '' + ApiUrls.participant_courses_get_api() + '?organization_id=' + organization_id;
+        var url = ApiUrls.participant_courses_get_api();
         InitializeAutocompleteInput(url, '.enrollParticipantsCourse input');
         $(enroll_modal_id).find('.participantModalControl').find('.cancelChanges').off().on('click', function()
         {
@@ -279,8 +278,7 @@
             alert('You need to select course!');
             return;
           }
-          organization_id = $(".participantCompanyValue a").attr('data-id');
-          var dictionaryToSend = {"status": selectedVal, "organization_id": organization_id};
+          var dictionaryToSend = {"status": selectedVal};
           var url = ApiUrls.participant_manage_courses(user_id,course_id);
           var options = {
             url: url,

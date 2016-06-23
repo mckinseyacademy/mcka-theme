@@ -235,20 +235,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         if ($(this).hasClass('disabled'))
           return;
         var selectedRowsIdsLen = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
-        var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
-        var org_id_flag = _this.courseDetails.fullCollection.get(selectedRowsIds[0]).attributes.organization_id;
-        for (selectedRowsIndex in selectedRowsIds)
-        {
-          var id = selectedRowsIds[selectedRowsIndex];
-          var selectedModel = _this.courseDetails.fullCollection.get(id);
-          var org_id = selectedModel.attributes.organization_id;
-          if (org_id_flag != org_id || org_id == 0)
-          {
-            alert('You can select participants only from one company');
-            return;
-          }
-        }
-
         $('#courseDetailsMainModal').find('.courseModalTitle').text('Select Course');
         $('#courseDetailsMainModal').find('.courseModalStatus').text('Selected: '+selectedRowsIdsLen+', Successful: 0, Failed: 0');
         $('#courseDetailsMainModal').find('.courseModalDescription').text(''+selectedRowsIdsLen+' Participants will be enroll in course selected below.');
@@ -266,7 +252,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           '<option value="TA">TA</option></select>' +
           '</div></div>'
         );
-        var url = '' + ApiUrls.participant_courses_get_api() + '?organization_id=' + org_id_flag;
+        var url = ApiUrls.participant_courses_get_api();
         InitializeAutocompleteInput(url, '.enrollParticipantsCourse input');
         $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges').off().on('click', function()
         {
@@ -329,8 +315,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             for (selectedRowsIndex in selectedRowsIds)
             {
               var id = selectedRowsIds[selectedRowsIndex];
-              var selectedModel = _this.courseDetails.fullCollection.get(id);
-              var item ={ id: id, organization_id: selectedModel.attributes.organization_id};
+              var item ={ id: id};
               dictionaryToSend.list_of_items.push(item);
             }
             var url = ApiUrls.course_details+'/'+_this.courseId;

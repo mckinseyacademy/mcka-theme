@@ -50,6 +50,41 @@ def get_course_list(ids=None):
     )
     return CJP.from_json(response.read())
 
+@api_error_protect
+def get_course_list_in_pages(ids=None, page_size=100):
+    '''
+    Retrieves list of courses from openedx server
+    '''
+    qs_params = {}
+    if ids:
+        qs_params['course_id'] = ",".join(ids)
+        qs_params["page_size"] = 0
+    else:
+        qs_params["page"]=1
+        qs_params["page_size"] = page_size
+    response = GET('{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            urlencode(qs_params)
+        )
+    )
+    data = json.loads(response.read())
+    if data.get("results", None):
+        data_range = data.get("num_pages", 1)
+        data = []
+        for index in range(1, data_range+1):
+            qs_params["page"]=index
+            response = GET('{}/{}?{}'.format(
+                    settings.API_SERVER_ADDRESS,
+                    COURSEWARE_API,
+                    urlencode(qs_params)
+                )
+            )
+            data_fetched = json.loads(response.read()).get("results", [])
+            data.extend(data_fetched)
+    data = json.dumps(data)
+    return CJP.from_json(data)
+
 
 @api_error_protect
 def get_course_overview(course_id):
@@ -656,3 +691,7 @@ def get_completions_on_course(course_id):
     response = GET(url)
 
     return json.loads(response.read())
+
+def parse_course_list_json_object(course_list_json_object):
+    return CJP.from_json(json.dumps(course_list_json_object))
+

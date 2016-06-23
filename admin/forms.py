@@ -181,14 +181,12 @@ class ShareAccessKeyForm(forms.Form):
 class CreateAccessKeyForm(forms.ModelForm):
     class Meta:
         model = AccessKey
-        fields = ['name', 'program_id', 'course_id']
+        fields = ['name', 'course_id']
         labels = {
             'name': _('Name'),
-            'program_id': _('Program'),
             'course_id': _('Course Instance'),
         }
         widgets = {
-            'program_id': forms.Select,
             'course_id': forms.Select,
         }
         labels = {
