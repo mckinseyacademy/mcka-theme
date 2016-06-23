@@ -169,7 +169,7 @@ def get_course(course_id, depth=3):
     '''
     Retrieves course structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}/?depth={}'.format(
+    response = GET('{}/{}/{}?depth={}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
