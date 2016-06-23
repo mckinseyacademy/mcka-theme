@@ -854,7 +854,7 @@ def client_admin_email_not_started(request, client_id, course_id):
 @permission_group_required(
     PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
 )
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def client_admin_user_progress(request, client_id, course_id, user_id, restrict_to_courses_ids=None):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
