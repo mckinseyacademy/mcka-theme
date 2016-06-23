@@ -2247,13 +2247,16 @@ def _prepare_program_display(program):
     return program
 
 def _prepare_course_display(course):
-    if hasattr(course, "start") and hasattr(course, "end"):
-        if is_future_start(course.start):
-            course.date_range = _("Coming Soon")
-        elif course.end != None and is_future_start(course.end) == False:
-            course.date_range = _("Archived")
-        else:
-            course.date_range = course.formatted_time_span
+    if timezone.now() <= parsedate(course['start']):
+        course['date_range'] = _("Coming Soon")
+    elif course['end'] != None and timezone.now() >= parsedate(course['end']):
+        course['date_range'] = _("Archived")
+    else:
+        end = ''
+        if course['end'] is not None:
+            end = parsedate(course['end']).strftime(settings.SHORT_DATE_FORMAT)
+        start = parsedate(course['start']).strftime(settings.SHORT_DATE_FORMAT)
+        course['date_range'] = '' + start + ' - ' + end
     return course
 
 @ajaxify_http_redirects
