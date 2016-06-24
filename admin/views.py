@@ -283,32 +283,54 @@ def client_admin_home(request, client_id):
     courses = []
     courses.extend(organization_api.get_organizations_courses(client_id))
 
-    for course in courses:
-        course = _prepare_course_display(course)
-        course["metrics"] = course_api.get_course_metrics(course["id"], organization=client_id)
-        course["metrics"].users_completed, course["metrics"].percent_completed = get_organizations_users_completion(client_id, course["id"], course["metrics"].users_enrolled)
-        if course["start"]:
-            course["start"] = parsedate(course["start"]).replace(tzinfo=None)
-        if course["end"]:
-            course["end"] = parsedate(course["end"]).replace(tzinfo=None)
-        if is_future_start(course["start"]):
-            course["started"] = False
-        else:
-            course["started"] = True
+    if request.method == 'POST':
+        myDict = dict(request.POST.iterlists())
+        courses_list = enumerate(myDict['courses_list[]'])
 
-    company_image = organization.image_url(size=48)
-    data = {
-        'client': organization,
-        'courses': courses,
-        'company_image': company_image,
-        'selected_tab': 'home',
-    }
+        for course in courses:
+            if course['id'] in courses_list:
+                course = _prepare_course_display(course)
+                course["metrics"] = course_api.get_course_metrics(course["id"], organization=client_id)
+                course["metrics"].users_completed, course["metrics"].percent_completed = get_organizations_users_completion(client_id, course["id"], course["metrics"].users_enrolled)
+                if course["start"]:
+                    course["start"] = parsedate(course["start"]).replace(tzinfo=None)
+                if course["end"]:
+                    course["end"] = parsedate(course["end"]).replace(tzinfo=None)
+                if is_future_start(course["start"]):
+                    course["started"] = False
+                else:
+                    course["started"] = True
 
-    return render(
-        request,
-        'admin/client-admin/home.haml',
-        data,
-    )
+        data = {
+            'client': organization,
+            'courses': courses
+        }
+
+        return render(
+            request,
+            'admin/client-admin/home_course_metrics.haml',
+            data,
+        )
+
+    else: 
+        courses_list = []
+        for course in courses:
+            courses_list.append(course['id'])
+
+        company_image = organization.image_url(size=48)
+        data = {
+            'client': organization,
+            'courses_list': json.dumps(courses_list),
+            'company_image': company_image,
+            'selected_tab': 'home',
+        }
+
+        return render(
+            request,
+            'admin/client-admin/home.haml',
+            data,
+        )
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
 @client_admin_access
