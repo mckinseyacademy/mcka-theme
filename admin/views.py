@@ -285,7 +285,8 @@ def client_admin_home(request, client_id):
 
     if request.method == 'POST':
         myDict = dict(request.POST.iterlists())
-        courses_list = enumerate(myDict['courses_list[]'])
+        courses_list = myDict['courses_list[]']
+        courses_tiles = []
 
         for course in courses:
             if course['id'] in courses_list:
@@ -301,9 +302,11 @@ def client_admin_home(request, client_id):
                 else:
                     course["started"] = True
 
+                courses_tiles.append(course)
+
         data = {
             'client': organization,
-            'courses': courses
+            'courses': courses_tiles
         }
 
         return render(
