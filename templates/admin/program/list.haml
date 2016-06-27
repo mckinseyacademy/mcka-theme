@@ -3,3 +3,17 @@
   %p= _("McKinsey Academy programs are a set of recommended courses, often tailored to specific clients")
 - block principal_list_message
   %p= _("Here are the programs that we already have in the system")
+- block principal_list
+  %ul
+    - for principal in principals
+      %li
+        %a.edit-principal{ class: 'fa fa-pencil', "data-reveal-id": "edit-principal", "data-reveal-ajax": "#{principal.detail_url}/edit", href: ""}
+          = ' '
+        %a.principal{href: "#{principal.detail_url}"}
+          = principal.id
+          = '-'
+          = principal.display_name
+          (
+          %span><
+            = principal.name
+          )
