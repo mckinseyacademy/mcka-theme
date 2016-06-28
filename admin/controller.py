@@ -735,7 +735,8 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     def prepare_value(obj, name):
         value = getattr(obj, name, None)
-        value = value.encode('ascii', 'ignore')
+        if value is not None:
+            value = value.encode('ascii', 'ignore')
         """
         Fields that contain commas, quotes, and CR/LF need to be wrapped in double-quotes.
         If double-quotes are used to enclose fields, then a double-quote appearing inside a field must be escaped
