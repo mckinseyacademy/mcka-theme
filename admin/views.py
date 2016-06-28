@@ -70,7 +70,7 @@ from .controller import (
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
-    AdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
+    AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, MassStudentListForm, EditExistingUserForm,
     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
     CreateNewParticipant
@@ -137,7 +137,7 @@ class AccessChecker(object):
 
     @staticmethod
     def get_clients_user_has_access_to(user):
-        if user.is_mcka_admin:
+        if user.is_mcka_admin or user.is_mcka_subadmin:
             return Client.list()
         return user_api.get_user_organizations(user.id, organization_object=Client)
 
@@ -152,7 +152,7 @@ class AccessChecker(object):
     @staticmethod
     def _do_wrapping(func, request, restrict_to_key, restrict_to_callback, *args, **kwargs):
         restrict_to_ids = []
-        if request.user.is_mcka_admin:
+        if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
             restrict_to_ids = None
         else:
             org = AccessChecker.get_organization_for_user(request.user)
@@ -244,7 +244,7 @@ class AccessChecker(object):
         @functools.wraps(func)
         def wrapper(request, client_id=None, *args, **kwargs):
             valid_client_id = None
-            if request.user.is_mcka_admin:
+            if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
                 valid_client_id = client_id
 
             # make sure client admin can access only his company
@@ -265,16 +265,14 @@ checked_user_access = AccessChecker.users_access_wrapper
 checked_program_access = AccessChecker.program_access_wrapper
 client_admin_access = AccessChecker.client_admin_wrapper
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def home(request):
     return render(
         request,
         'admin/home.haml'
     )
 
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
-)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_home(request, client_id):
 
@@ -335,7 +333,7 @@ def client_admin_home(request, client_id):
         )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_program_detail(request, client_id):
 
@@ -355,7 +353,7 @@ def client_admin_program_detail(request, client_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course(request, client_id, course_id):
     course = load_course(course_id)
@@ -382,7 +380,7 @@ def client_admin_course(request, client_id, course_id):
 def get_user_metrics_from_lookup(user_id, lookup):
     return lookup[user_id] if user_id in lookup else 0
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_participants(request, client_id, course_id):
     course = load_course(course_id)
@@ -421,7 +419,7 @@ def client_admin_course_participants(request, client_id, course_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_download_course_report(request, client_id, course_id):
 
     filename = slugify(
@@ -474,7 +472,7 @@ def client_admin_download_course_report(request, client_id, course_id):
 
     return response
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_download_program_report(request, client_id, program_id):
     organization = Client.fetch(client_id)
@@ -499,7 +497,7 @@ def client_admin_download_program_report(request, client_id, program_id):
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
     return response
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_analytics(request, client_id, course_id):
 
@@ -546,7 +544,7 @@ def client_admin_course_analytics(request, client_id, course_id):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_learner_dashboard(request, client_id, course_id):
 
@@ -612,7 +610,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
     return render(request, 'admin/client-admin/learner_dashboard.haml', data)
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
 
     error = None
@@ -664,7 +662,7 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
     })
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_analytics_participants(request, client_id, course_id):
     course = course_api.get_course(course_id)
@@ -677,7 +675,7 @@ def client_admin_course_analytics_participants(request, client_id, course_id):
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_analytics_progress(request, client_id, course_id):
     course = load_course(course_id)
@@ -690,7 +688,7 @@ def client_admin_course_analytics_progress(request, client_id, course_id):
                 content_type='application/json'
             )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_status(request, client_id, course_id):
     course = load_course(course_id)
@@ -740,7 +738,7 @@ def _remove_student_from_course(student_id, course_id):
 
 class participant_details_courses_unenroll_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id, course_id, format=None):
         
         try:
@@ -759,9 +757,7 @@ class participant_details_courses_unenroll_api(APIView):
             )
 
 @ajaxify_http_redirects
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
-)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_edit_email(request, client_id, course_id, user_id):
     """
     Supplies a modal for editing a user's email address.
@@ -791,7 +787,7 @@ def client_admin_edit_email(request, client_id, course_id, user_id):
     return render(request, 'admin/client-admin/edit_email_modal.haml', data)
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_unenroll_participant(request, client_id, course_id, user_id):
     error = None
     is_program = 'program' in request.GET
@@ -833,7 +829,7 @@ def client_admin_unenroll_participant(request, client_id, course_id, user_id):
         return render(request, 'admin/client-admin/unenroll_dialog.haml', data)
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_email_not_started(request, client_id, course_id):
     students = []
     participants = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': client_id})}
@@ -876,9 +872,7 @@ def client_admin_email_not_started(request, client_id, course_id):
 
     return render(request, 'admin/client-admin/email_not_started_dialog.haml', data)
 
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN
-)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def client_admin_user_progress(request, client_id, course_id, user_id, restrict_to_courses_ids=None):
     userCourses = user_api.get_user_courses(user_id)
@@ -909,7 +903,7 @@ def client_admin_user_progress(request, client_id, course_id, user_id, restrict_
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_contact(request, client_id):
     client = Client.fetch(client_id)
@@ -929,14 +923,14 @@ def client_admin_contact(request, client_id):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def courses_list(request):
     return render(request, 'admin/courses/courses_list.haml')
 
 
 class courses_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, format=None):
         allCourses = course_api.get_courses_list(request.GET)
         for course in allCourses:
@@ -952,7 +946,7 @@ class courses_list_api(APIView):
         return Response(allCourses)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_details(request, course_id):
 
     course = course_api.get_course_details(course_id)
@@ -1024,14 +1018,14 @@ def course_details(request, course_id):
 
 class course_details_stats_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, course_id, format=None):
         
         course_stats = get_course_social_engagement(course_id)
         return Response(course_stats)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_course_stats(request, course_id):
 
     course = course_api.get_course_details(course_id)
@@ -1063,7 +1057,7 @@ def download_course_stats(request, course_id):
 
 class course_details_engagement_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, course_id, format=None):
         
         course_stats = get_course_engagement_summary(course_id)
@@ -1072,7 +1066,7 @@ class course_details_engagement_api(APIView):
 
 
 class course_details_cohort_timeline_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, course_id):
         course = load_course(course_id)
         course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
@@ -1091,7 +1085,7 @@ class course_details_cohort_timeline_api(APIView):
 
 class course_details_performance_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, course_id, format=None):
         
         course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
@@ -1130,7 +1124,7 @@ class course_details_performance_api(APIView):
         return Response(course_stats)
 
 class course_details_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, course_id=None, format=None):
         if (course_id):
             permissonsMap = {
@@ -1199,7 +1193,7 @@ class course_details_api(APIView):
             return Response(allCourseParticipants)
         else:
             return Response({})
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, course_id=None, format=None):
         data = json.loads(request.body)
         if (data['type'] == 'status_check'):
@@ -1222,7 +1216,7 @@ class course_details_api(APIView):
             return Response({'status':'ok', 'data': data, 'task_id': task_id})
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     courses = []
@@ -1245,7 +1239,7 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_items(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
@@ -1264,7 +1258,7 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
     error = None
@@ -1296,7 +1290,7 @@ def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
             data
         )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_ids=None):
     error = None
@@ -1326,7 +1320,7 @@ def course_meta_content_course_item_edit(request, item_id, restrict_to_courses_i
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_item_delete(request, item_id, restrict_to_courses_ids=None):
     item = CuratedContentItem.objects.filter(id=item_id)[0]
@@ -1336,11 +1330,11 @@ def course_meta_content_course_item_delete(request, item_id, restrict_to_courses
 
     return redirect('/admin/course-meta-content/items/%s' % course_id)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_list(request):
     ''' handles requests for login form and their submission '''
     clients = Client.list()
-    if not request.user.is_mcka_admin:
+    if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
         target_id = AccessChecker.get_organization_for_user(request.user).id
         clients = [
             client for client in clients
@@ -1354,7 +1348,7 @@ def client_list(request):
         "principal_name_plural": _("Clients"),
         "principal_new_url": "/admin/clients/client_new",
         "principals": clients,
-        "read_only": not request.user.is_mcka_admin,
+        "read_only": not request.user.is_mcka_admin and not request.user.is_mcka_subadmin,
     }
 
     return render(
@@ -1364,7 +1358,7 @@ def client_list(request):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_new(request):
     error = None
     company_image = "/static/image/empty_avatar.png"
@@ -1421,7 +1415,7 @@ def client_new(request):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_edit(request, client_id):
     error = None
@@ -1477,7 +1471,7 @@ def _format_upload_results(upload_results):
 
     return upload_results
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_detail(request, client_id, detail_view="detail", upload_results=None):
     client = Client.fetch(client_id)
@@ -1530,7 +1524,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_detail_contact(request, client_id):
 
     client = Client.fetch(client_id)
@@ -1550,7 +1544,7 @@ def client_detail_contact(request, client_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_detail_navigation(request, client_id):
     client = Client.fetch(client_id)
@@ -1575,7 +1569,7 @@ def client_detail_navigation(request, client_id):
     )
 
 @require_POST
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_detail_nav_links(request, client_id):
     for i in range(1, 7):
@@ -1596,7 +1590,7 @@ def client_detail_nav_links(request, client_id):
     return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
 
 @require_POST
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_detail_customization(request, client_id):
     (customization, created) = ClientCustomization.objects.get_or_create(
@@ -1631,7 +1625,7 @@ def client_detail_customization(request, client_id):
     return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_detail_add_contact(request, client_id):
 
     error = None
@@ -1675,7 +1669,7 @@ def client_detail_add_contact(request, client_id):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_detail_remove_contact(request, client_id, user_id):
 
     contact_group = Client.fetch_contact_groups(client_id)[0]
@@ -1692,7 +1686,7 @@ def client_detail_remove_contact(request, client_id, user_id):
         content_type='application/json'
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def access_key_list(request, client_id):
 
     def build_instance_name(program_id, course_id):
@@ -1729,7 +1723,7 @@ def access_key_list(request, client_id):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def create_access_key(request, client_id):
     courses = []
 
@@ -1761,7 +1755,7 @@ def create_access_key(request, client_id):
     return render(request, 'admin/client/create_access_key', data)
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def share_access_key(request, client_id, access_key_id):
     error = None
     access_key = AccessKey.objects.get(pk=access_key_id)
@@ -1796,7 +1790,7 @@ def share_access_key(request, client_id, access_key_id):
     return render(request, 'admin/client/share_access_key.haml', data)
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_resend_user_invite(request, client_id, user_id):
     ''' handles requests for resending student invites '''
@@ -1833,7 +1827,7 @@ def client_resend_user_invite(request, client_id, user_id):
             content_type='application/json'
         )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def program_list(request):
     programs = Program.list()
     for program in programs:
@@ -1853,7 +1847,7 @@ def program_list(request):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def program_new(request):
     ''' handles requests for login form and their submission '''
     error = None
@@ -1888,7 +1882,7 @@ def program_new(request):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def program_edit(request, program_id):
     error = None
     if request.method == 'POST':  # If the form has been submitted...
@@ -1934,7 +1928,7 @@ def program_edit(request, program_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def program_detail(request, program_id, detail_view="detail"):
     program = Program.fetch(program_id)
     view = 'admin/program/{}.haml'.format(detail_view)
@@ -1959,7 +1953,7 @@ def program_detail(request, program_id, detail_view="detail"):
         data,
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def upload_student_list(request, client_id):
     ''' handles requests for login form and their submission '''
@@ -1995,7 +1989,7 @@ def upload_student_list(request, client_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def upload_student_list_check(request, client_id, task_key):
     ''' checks on status of student list upload '''
@@ -2031,7 +2025,7 @@ def upload_student_list_check(request, client_id, task_key):
             content_type='application/json'
         )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def download_student_list(request, client_id):
     client = Client.fetch(client_id)
@@ -2056,7 +2050,7 @@ def download_student_list(request, client_id):
     return response
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def import_participants(request):
 
     if request.method == 'POST':  # If the form has been submitted...
@@ -2075,7 +2069,7 @@ def import_participants(request):
             )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def import_participants_check(request, task_key):
 
     if request.method == 'GET':
@@ -2119,7 +2113,7 @@ def import_participants_check(request, task_key):
             )
 
     
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_activation_links_by_task_key(request):
 
     task_key = request.GET.get('task_key', None)
@@ -2174,7 +2168,7 @@ def download_activation_links_by_task_key(request):
     return response
     
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def mass_student_enroll(request, client_id):
     ''' handles requests for login form and their submission '''
@@ -2219,7 +2213,7 @@ def mass_student_enroll(request, client_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def mass_student_enroll_check(request, client_id, task_key):
     ''' checks on status of student list upload '''
@@ -2255,7 +2249,7 @@ def mass_student_enroll_check(request, client_id, task_key):
             content_type='application/json'
         )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_program_report(request, program_id):
     filename = "Empty Report.csv"
     response = HttpResponse(
@@ -2291,7 +2285,7 @@ def _prepare_course_display(course):
     return course
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def program_association(request, client_id):
     client = Client.fetch(client_id)
     program_list = Program.list()
@@ -2319,7 +2313,7 @@ def program_association(request, client_id):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def add_courses(request, program_id):
     program = Program.fetch(program_id)
     courses = request.POST.getlist("courses[]")
@@ -2347,7 +2341,7 @@ def add_courses(request, program_id):
         content_type='application/json'
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 @client_admin_access
@@ -2403,7 +2397,7 @@ def add_students_to_program(request, client_id, restrict_to_programs_ids=None, r
         content_type='application/json'
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2450,10 +2444,7 @@ def add_students_to_course(request, client_id, restrict_to_users_ids=None, restr
 def not_authorized(request):
     return render(request, 'admin/not_authorized.haml')
 
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
-    PERMISSION_GROUPS.INTERNAL_ADMIN
-)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def change_company_image(request, client_id='new', template='change_company_image', error=None, company_image=None):
     ''' handles requests for login form and their submission '''
@@ -2483,10 +2474,7 @@ def change_company_image(request, client_id='new', template='change_company_imag
         data
     )
 
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
-    PERMISSION_GROUPS.INTERNAL_ADMIN
-)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def company_image_edit(request, client_id="new"):
     if request.method == 'POST':
@@ -2536,10 +2524,8 @@ def company_image_edit(request, client_id="new"):
             client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + new_image_url})
             return HttpResponse(json.dumps({'image_url': '/accounts/' + new_image_url, 'client_id': client.id}), content_type="application/json")
 
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
-    PERMISSION_GROUPS.INTERNAL_ADMIN
-)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def upload_company_image(request, client_id='new'):
     ''' handles requests for login form and their submission '''
@@ -2584,7 +2570,7 @@ def upload_company_image(request, client_id='new'):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
@@ -2610,7 +2596,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     return render(request, template, data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def groupwork_dashboardV2(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
 
     template = 'admin/workgroup/dashboardV2.haml'
@@ -2641,9 +2627,7 @@ class QuickLinkView(View):
 
     http_method_names = ['get', 'post', 'delete']
 
-    @method_decorator(permission_group_required(
-        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA
-    ))
+    @method_decorator(permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN))
     # note this decorator changes method signature by adding restrict_to_programs_ids parameter
     @method_decorator(checked_program_access)
     # note this decorator changes method signature by adding restrict_to_courses_ids parameter
@@ -2737,7 +2721,7 @@ def _make_select_option_response(item_id, display_name, disabled=False):
     return {'value': item_id, 'display_name': display_name, 'disabled': disabled}
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=None, restrict_to_courses_ids=None):
@@ -2755,7 +2739,7 @@ def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=No
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
@@ -2766,7 +2750,7 @@ def groupwork_dashboard_projects(request, course_id, restrict_to_courses_ids=Non
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
     program_id = request.GET.get('program_id')
@@ -2794,7 +2778,7 @@ def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_details(
@@ -2835,7 +2819,7 @@ def groupwork_dashboard_details(
 
     return render(request, template, data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_list(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -2861,7 +2845,7 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
 
     return response
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def download_group_projects_report(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -2891,7 +2875,7 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
 
     return response
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -2908,7 +2892,7 @@ def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -2949,7 +2933,7 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -3003,7 +2987,7 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -3041,7 +3025,7 @@ def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, re
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def workgroup_programs_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
@@ -3076,7 +3060,7 @@ def workgroup_programs_list(request, restrict_to_programs_ids=None):
     )
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -3098,7 +3082,7 @@ def workgroup_group_update(request, group_id, course_id, restrict_to_courses_ids
             return HttpResponse(json.dumps({'status': error}), content_type="application/json")
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -3146,7 +3130,7 @@ def workgroup_group_create(request, course_id, restrict_to_courses_ids=None, res
         {'success': False, 'message': 'Group was not created'}), content_type="application/json"
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_group_remove(request, group_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
@@ -3182,7 +3166,7 @@ def workgroup_group_remove(request, group_id, restrict_to_courses_ids=None, rest
     return HttpResponse('', content_type='application/json')
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     message = _("Error creating project")
@@ -3217,7 +3201,7 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     return response
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
     project = Project.fetch(project_id)
@@ -3234,7 +3218,7 @@ def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
 
     return HttpResponse(json.dumps({"message": "Project deleted successfully."}), content_type="application/json")
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 def workgroup_list(request, restrict_to_programs_ids=None):
     ''' handles requests for login form and their submission '''
@@ -3261,12 +3245,12 @@ def workgroup_list(request, restrict_to_programs_ids=None):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def participants_list(request):
     form = MassStudentListForm()
     return render( request, 'admin/participants/participants_list.haml', {"form": form})
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def participant_password_reset(request, user_id):
     try: 
         user = user_api.get_user(user_id)
@@ -3292,7 +3276,7 @@ def participant_mail_activation_link(request, user_id):
 
 class participants_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, format=None):
 
         participants = user_api.get_filtered_participants_list(request.GET)
@@ -3319,7 +3303,7 @@ class participants_list_api(APIView):
 
         return Response(participants)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request):
         post_data = json.loads(request.body)
         form = CreateNewParticipant(post_data.copy())
@@ -3352,6 +3336,7 @@ class participants_list_api(APIView):
                         'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
                         'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
                         'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+                        'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
                     }
                     if data.get('new_company_name', None):
                         try:
@@ -3395,7 +3380,7 @@ class participants_list_api(APIView):
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
 class participant_details_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id):
         selectedUserResponse = user_api.get_user(user_id)
         userOrganizations = user_api.get_user_organizations(user_id)
@@ -3438,7 +3423,7 @@ class participant_details_api(APIView):
                 selectedUser['has_activation_record'] = False
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, user_id, format=None):
         form = EditExistingUserForm(request.POST.copy())
         if form.is_valid():
@@ -3476,7 +3461,7 @@ class participant_details_api(APIView):
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
 class manage_user_company_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
         user_id = request.GET.get('user_id','');
         response_obj = {}
@@ -3502,7 +3487,7 @@ class manage_user_company_api(APIView):
         return Response(response_obj)
 
 class manage_user_courses_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
         response_obj = {}
         courses_list = course_api.get_course_list_in_pages()
@@ -3514,7 +3499,7 @@ class manage_user_courses_api(APIView):
         response_obj['status'] = 'ok'
         return Response(response_obj)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def validate_participant_email(request):
 
     email = request.GET.get('email', None)
@@ -3531,7 +3516,7 @@ def validate_participant_email(request):
                 return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def validate_participant_username(request):
 
     username = request.GET.get('username', None)
@@ -3548,7 +3533,7 @@ def validate_participant_username(request):
                 return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
 
 class participant_course_manage_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, user_id, course_id, format=None):
         status = request.POST.get("status", None)
         if status:
@@ -3560,7 +3545,7 @@ class participant_course_manage_api(APIView):
       
 class participant_details_active_courses_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id, format=None):
 
         include_slow_fields = request.GET.get('include_slow_fields', 'false')
@@ -3585,7 +3570,7 @@ class participant_details_active_courses_api(APIView):
         return Response({})
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_active_courses_stats(request, user_id):
 
     active_courses, course_history = get_user_courses_helper(user_id)
@@ -3609,7 +3594,7 @@ def download_active_courses_stats(request, user_id):
 
 class participant_details_course_edit_status_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id, course_id, format=None):
         params = urlparse.parse_qs(request.GET.urlencode())
         current_roles = ''
@@ -3633,7 +3618,7 @@ class participant_details_course_edit_status_api(APIView):
 
 class participant_details_course_history_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id, format=None):
 
         active_courses, course_history = get_user_courses_helper(user_id)
@@ -3658,7 +3643,7 @@ class participant_details_course_history_api(APIView):
         return Response(course_history) 
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_course_history_stats(request, user_id):
 
     active_courses, course_history = get_user_courses_helper(user_id)
@@ -3689,7 +3674,7 @@ def download_course_history_stats(request, user_id):
 
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_courses_ids=None):
@@ -3701,6 +3686,8 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_c
 
     if request.user.is_mcka_admin:
         form_class = AdminPermissionForm
+    elif request.user.is_mcka_subadmin:
+        form_class = SubAdminPermissionForm
     else:
         form_class = BasePermissionForm
         AccessChecker.check_has_user_access(int(user_id), restrict_to_users_ids)
@@ -3732,6 +3719,12 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_c
 
             if request.user.is_mcka_admin:
                 new_perms = form.cleaned_data.get('permissions')
+            elif request.user.is_mcka_subadmin:
+                old_permisssions = permissions.current_permissions
+                if PERMISSION_GROUPS.MCKA_ADMIN in old_permisssions:
+                    return HttpResponseRedirect('/admin/permissions')
+                else:
+                    new_perms = form.cleaned_data.get('permissions')
             else:
                 # TA and observer are not handled through this list when saving it-- they're calculated
                 # through the course roles.
@@ -3768,7 +3761,7 @@ def edit_permissions(request, user_id, restrict_to_users_ids=None, restrict_to_c
     }
     return render(request, 'admin/permissions/edit.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def permissions(request):
     '''
     For McKinsey Admins, show users within "Administrative" company, and also users that have no company association.
@@ -3778,7 +3771,7 @@ def permissions(request):
     organizations = Organization.list()
     ADMINISTRATIVE = 0
 
-    if request.user.is_mcka_admin:
+    if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
         organization_options = [(ADMINISTRATIVE, 'ADMINISTRATIVE')]
         organization_options.extend(
             [(org.id, org.display_name) for org in organizations if org.name != settings.ADMINISTRATIVE_COMPANY]
@@ -3803,6 +3796,7 @@ def permissions(request):
         PERMISSION_GROUPS.MCKA_ADMIN: _('ADMIN'),
         PERMISSION_GROUPS.CLIENT_ADMIN: _('COMPANY ADMIN'),
         PERMISSION_GROUPS.INTERNAL_ADMIN: _('INTERNAL ADMIN'),
+        PERMISSION_GROUPS.MCKA_SUBADMIN: _('COURSE OPS'),
     }
 
     for user in users:
@@ -3821,7 +3815,7 @@ def permissions(request):
     }
     return render(request, 'admin/permissions/list.haml', data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def generate_assignments(request, project_id, activity_id):
     error = _("Problem generating activity review assignments")
     status_code = 400
@@ -3861,7 +3855,7 @@ def generate_assignments(request, project_id, activity_id):
     return response
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_branding_settings(request, client_id, course_id):
 
     try:
@@ -3892,7 +3886,7 @@ def load_background_image(request, image_url):
             )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_branding_settings_create_edit(request, client_id, course_id):
 
     try:
@@ -3934,7 +3928,7 @@ def client_admin_branding_settings_create_edit(request, client_id, course_id):
         })
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_branding_settings_reset(request, client_id, course_id):
 
     url = reverse('client_admin_branding_settings', kwargs={
@@ -3953,7 +3947,7 @@ def client_admin_branding_settings_reset(request, client_id, course_id):
 
 
 @ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_course_learner_dashboard_discover_create_edit(request, client_id, course_id, discovery_id=None):
 
     error = None
@@ -4011,7 +4005,7 @@ def client_admin_course_learner_dashboard_discover_create_edit(request, client_i
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_course_learner_dashboard_discover_list(request, client_id, course_id):
 
     learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
@@ -4025,7 +4019,7 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
         })
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_course_learner_dashboard_discover_delete(request, client_id, course_id, discovery_id):
 
     try:
@@ -4058,7 +4052,7 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
 
 
 class email_templates_get_and_post_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, format=None):   
         list_of_email_templates = EmailTemplate.objects.all().order_by('title')
         templates = []
@@ -4066,7 +4060,7 @@ class email_templates_get_and_post_api(APIView):
             templates.append({'pk':email_template.pk, 'title':email_template.title, 'subject':email_template.subject, 'body': email_template.body})
         return Response(templates)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, format=None):
         title = request.DATA.get('title', None)
         subject = request.DATA.get('subject', None)
@@ -4082,7 +4076,7 @@ class email_templates_get_and_post_api(APIView):
 
 
 class email_templates_put_and_delete_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, pk, format=None):
         if pk:
             email_template = EmailTemplate.objects.filter(pk=pk)
@@ -4095,7 +4089,7 @@ class email_templates_put_and_delete_api(APIView):
         else:
             return Response({'status':'error', 'message':'Missing email template key!'}) 
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def delete(self, request, pk, format=None):
         if pk:
             selected_template = EmailTemplate.objects.filter(pk=pk)
@@ -4108,7 +4102,7 @@ class email_templates_put_and_delete_api(APIView):
         else:
             return Response({'status':'error', 'message':'Missing email template key!'})
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def put(self, request, pk=None, format=None):
         if pk:
             selected_template = EmailTemplate.objects.filter(pk=pk)
@@ -4133,7 +4127,7 @@ class email_templates_put_and_delete_api(APIView):
 
 
 class email_send_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, format=None):
         data = json.loads(request.body)
         result = _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), \
@@ -4145,14 +4139,14 @@ class email_send_api(APIView):
         return Response(response)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
 
 class companies_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
 
         companies = []
@@ -4169,7 +4163,7 @@ class companies_list_api(APIView):
 
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def company_details(request, company_id):
 
     client = Client.fetch(company_id)
@@ -4251,7 +4245,7 @@ def company_details(request, company_id):
 
 class company_courses_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, company_id):
         
         company_courses = organization_api.get_organizations_courses(company_id)
@@ -4280,7 +4274,7 @@ class company_courses_api(APIView):
 
 class company_info_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, company_id):
         
         flag = request.GET.get('flag', None)
@@ -4347,7 +4341,7 @@ class company_info_api(APIView):
         
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def put(self, request, company_id):
 
         flag = request.GET.get('flag', None)
@@ -4404,7 +4398,7 @@ class company_info_api(APIView):
         return Response(response)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_company_info(request, company_id):
 
     client = Client.fetch(company_id)
@@ -4500,7 +4494,7 @@ def download_company_info(request, company_id):
 
 class company_edit_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, company_id):
         try:
             client = Client.update_and_fetch(company_id, request.DATA)

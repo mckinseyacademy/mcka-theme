@@ -11,7 +11,7 @@
           %span= _("Client: ")
           %span= client.display_name
 
-        - if user.is_mcka_admin or user.is_internal_admin
+        - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
           %a{href: "/admin/client-admin/={client.id}", target: "_blank"} Access Company Dashboard
         %hr
         %section
@@ -41,7 +41,7 @@
               Massive Student Enroll
             .upload_results
         %hr
-        - if user.is_mcka_admin
+        - if user.is_mcka_admin or user.is_mcka_subadmin
           %section
             %header Add a Program:
             %div Add a program to a client

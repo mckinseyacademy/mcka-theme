@@ -937,7 +937,7 @@ def get_accessible_programs(user, restrict_to_programs_ids):
             if program.id in restrict_to_programs_ids
     ]
 
-    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin]):
+    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin, user.is_mcka_subadmin]):
         # User is a TA. They'll need to be scoped only to the courses they're a TA on, not just enrolled in.
         roles = user.get_roles()
         base_programs = programs
@@ -954,14 +954,14 @@ def get_accessible_courses(user):
     user_roles = user_api.get_user_roles(user.id)
     course_id_list = None
     courses_list = []
-    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin]):
+    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin, user.is_mcka_subadmin]):
         course_id_list = []
         for role in user_roles:
             if USER_ROLES.TA == role.role:
                 course_id_list.append(role.course_id)
         courses_list = course_api.get_course_list(course_id_list)
     else:
-        if user.is_mcka_admin:
+        if user.is_mcka_admin or user.is_mcka_subadmin:
             courses_list = course_api.get_course_list_in_pages(course_id_list)
         else:
             user_orgs = user_api.get_user_organizations(user.id)
@@ -973,7 +973,7 @@ def get_accessible_courses(user):
 def get_accessible_courses_from_program(user, program_id, restrict_to_courses_ids=None):
     program = Program.fetch(program_id)
     courses = program.fetch_courses()
-    if not any([user.is_client_admin, user.is_mcka_admin, user.is_internal_admin]):
+    if not any([user.is_client_admin, user.is_mcka_admin, user.is_internal_admin, user.is_mcka_subadmin]):
         roles = user.get_roles()
         # User is TA. Only show courses in program they have access to.
         courses = [
