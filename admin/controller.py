@@ -1669,3 +1669,15 @@ def get_company_active_courses(company_id):
 
     return active_courses
 
+
+def validate_company_display_name(company_display_name):
+
+    company = organization_api.get_organization_by_display_name(urllib.quote_plus(company_display_name))
+    if company['count'] != 0:
+        return {'status': 'error', 'message': 'This company already exists!'}
+
+    if not company_display_name.replace(' ','').isalnum():
+        return {'status': 'error', 'message': 'This company name cannot contain non-alphanumeric characters!'}
+
+    return {'status': 'ok', 'message':'Company Validation Success!'}
+

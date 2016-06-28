@@ -14,8 +14,8 @@ var ApiUrls = {
   {
     return this.participants_list+'/courses';
   },
-  validate_participant_email: this.participants_list+'/validate_participant_email',
-  validate_participant_username: this.participants_list+'/validate_participant_username',
+  validate_participant_email: '/admin/api/participants/validate_participant_email',
+  validate_participant_username: '/admin/api/participants/validate_participant_username',
   course_details: '/admin/api/courses',
   email_templates: '/admin/api/email-templates',
   email: '/admin/api/email',

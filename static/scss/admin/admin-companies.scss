@@ -14,11 +14,32 @@
 }
 
 #companiesListTitle 
-{
+{	
+	float: left;
+
 	p
 	{
 		font-size: xx-large;
 		margin-bottom: 20px;
+	}
+}
+
+#companiesCreateNewCompanyButton
+{
+	float: right;
+}
+
+#companiesListText
+{
+	clear: both;
+}
+
+#createNewCompanyModal
+{
+	.errorMessage
+	{
+		color: red;
+		padding-bottom: 10px;
 	}
 }
 
@@ -89,6 +110,14 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 60%;
+
+	.errorMessage
+	{
+		color: red;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		font-size: small;
+	}
 }
 
 #companyDetailsTopDataWrapper

@@ -66,7 +66,7 @@ from .controller import (
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses
+    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -1368,7 +1368,7 @@ def client_new(request):
             try:
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
-                client = Client.create(name, client_data)
+                client = Client.create(name, name)
                 # save identity provider
                 (customization, created) = ClientCustomization.objects.get_or_create(
                     client_id=client.id
@@ -3339,6 +3339,7 @@ class participants_list_api(APIView):
                         'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
                     }
                     if data.get('new_company_name', None):
+
                         try:
                             new_organization = organization_api.create_organization(organization_name=data['new_company_name'].lower().replace(" ", "_"), organization_data={"display_name": data['new_company_name']})
                             data['company'] = vars(new_organization).get("id", None)
@@ -3503,17 +3504,13 @@ class manage_user_courses_api(APIView):
 def validate_participant_email(request):
 
     email = request.GET.get('email', None)
-    userId = request.GET.get('userId', None)
 
     if email:
         user = user_api.get_user_by_email(email)
         if user['count'] == 0:
             return HttpResponse(json.dumps({'status': 'notTaken'}), content_type="application/json")
-        elif user['count'] >=1 and user['results'][0]['email'] == email:
-            if int(user['results'][0]['id']) == int(userId):
-                return HttpResponse(json.dumps({'status': 'his'}), content_type="application/json")
-            else:
-                return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
+        elif user['count'] >=1 and user['results'][0]['email'] == str(email):
+            return HttpResponse(json.dumps({'status': 'taken'}), content_type="application/json")
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -4162,6 +4159,34 @@ class companies_list_api(APIView):
         return Response(companies)
 
 
+class create_new_company_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request):
+
+        company_display_name = request.GET.get('company_display_name', None)
+
+        response = {'status': 'error', 'message':'No Company Display name!'}
+
+        if company_display_name:
+            response = validate_company_display_name(company_display_name)
+
+        return Response(response)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def post(self, request):
+        company_display_name = request.DATA.get('company_display_name', None)
+
+        if company_display_name:
+            company_name = company_display_name.lower().replace(" ", "_")
+            try:
+                organization_api.create_organization(organization_name=company_name, organization_data={"display_name": company_display_name})
+            except ApiError:
+                return Response({'status':'error'})
+            return Response({'status': 'ok'})
+        else:
+            return Response({'status':'error'})
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def company_details(request, company_id):
@@ -4495,7 +4520,20 @@ def download_company_info(request, company_id):
 class company_edit_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, company_id):
+
+        company_display_name = request.GET.get('company_display_name', None)
+
+        response = {'status': 'error', 'message':'No Company Display name!'}
+
+        if company_display_name:
+            response = validate_company_display_name(company_display_name)
+
+        return Response(response)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, company_id):
+
         try:
             client = Client.update_and_fetch(company_id, request.DATA)
         except ApiError as err:
