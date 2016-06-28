@@ -4,9 +4,28 @@
   #mainCompaniesListDetailsContainer
     #companiesListTitle
       %p Companies
+    #companiesCreateNewCompanyButton
+      %input.button.small.radius.createNewCompanyOpenModal{:type => "button", :value => "Create New Company"}
     #companiesListText
       %p "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     %hr
   #mainCompaniesListGridContainer
     #mainCompaniesListGridWrapper
       #companiesListViewGridBlock
+
+
+  #createNewCompanyModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2 Enter Display Name for New Company
+    %hr
+    .row.companyDisplayNameValue
+      .large-6.columns
+        %input.companyDisplayName{:type => "text", :value => '', :name => "company_display_name" }
+    .row
+      .large-12.columns
+        .errorMessage
+    .row.createNewCompanyControl
+      .button.createNewCompany.small.radius
+        Create New Company
+      %a.closeModal{:href => "#"} Cancel
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;

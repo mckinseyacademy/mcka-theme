@@ -218,6 +218,23 @@ def get_organizations_courses(organization_id):
     return json.loads(response.read())
 
 
+@api_error_protect
+def get_organization_by_display_name(organization_display_name):
+
+
+    print organization_display_name
+    
+    response = GET(
+        '{}/{}?display_name={}'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_display_name
+        )
+    )
+
+    return json.loads(response.read())
+
+
 ORGANIZATION_ERROR_CODE_MESSAGES = {
     "create_organization": {
         403: _("Permission Denied"),

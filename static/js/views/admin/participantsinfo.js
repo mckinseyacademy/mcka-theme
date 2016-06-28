@@ -307,10 +307,21 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
       return courseArray;
     },
     manageNewCompanyPopup: function(input, showPopup)
-    {
-    	if (showPopup && ($(input).val().trim().length > 0))
-    	{
-    		$(input).parent().find('.newCompanyCreationPopup').show();
+    { 
+      var value = $(input).val().trim();
+    	if (showPopup && (value.length > 0))
+    	{  
+        var testValue = value.replace(' ','');
+        if (/^[a-z0-9]+$/i.test(testValue)) 
+        {
+          $('#add_a_participant').find('.addSingleParticipantButton').removeClass('disabled');
+          $(input).parent().find('.newCompanyCreationPopup').show();
+        }
+        else
+        {
+          $('#add_a_participant').find('.addSingleParticipantButton').addClass('disabled');
+          $('.participantCompanyValue').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
+        }
     	}
     	else
     	{
