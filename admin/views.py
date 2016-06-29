@@ -38,7 +38,7 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email
 from api_client import user_models
-from api_client import course_api, user_api, group_api, workgroup_api, organization_api
+from api_client import course_api, user_api, group_api, workgroup_api, organization_api, project_api
 from api_client.api_error import ApiError
 from api_client.organization_models import Organization
 from api_client.project_models import Project
@@ -2771,6 +2771,32 @@ def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
         # all clients if program_id is not specified; otherwise only clients associated with that program
         if not program_id or program_id in client.groups
     )
+
+    data = [
+        _make_select_option_response(item.id, item.display_name, item.id not in accessible_clients) for item in all_clients
+    ]
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def groupwork_dashboard_companiesV2(request):
+    course_id = request.GET.get('course_id', None)
+    content_id = request.GET.get('project_id', None)
+    project_list=None
+    if course_id and content_id:
+        project_list=project_api.get_all_projects(course_id, content_id)
+    all_clients = sorted(
+        AccessChecker.get_clients_user_has_access_to(request.user),
+        key=operator.attrgetter('display_name')
+    )
+    if project_list:
+        accessible_clients = []
+        for project in project_list:
+            if project.organization:
+                accessible_clients.append(project.organization)
+        accessible_clients = set(accessible_clients)
+    else:
+        accessible_clients = set(client.id for client in all_clients)
 
     data = [
         _make_select_option_response(item.id, item.display_name, item.id not in accessible_clients) for item in all_clients

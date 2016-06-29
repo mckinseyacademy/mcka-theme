@@ -6,7 +6,7 @@ function group_work_dashboard(dashboard_configuration) {
     var quick_links_endpoint = dashboard_configuration['quick_links_endpoint'];
     var csrf_token = dashboard_configuration['csrf_token'];
     var common = new DashboardCommon(gp_placeholder, lesson_data_base);
-
+    var no_program_functionality = dashboard_configuration['no_program_functionality'];
     // Stores mapping from quick_link_id to quick-link object
     var quick_links = {};
 
@@ -228,8 +228,15 @@ function group_work_dashboard(dashboard_configuration) {
 
         $("#quick-links td a").removeClass('disabled');
 
-        chain_selects('select#select-program', 'select#select-course');
-        chain_selects('select#select-program', 'select#select-company');
+        if (no_program_functionality)
+        {
+            chain_selects('select#select-project', 'select#select-company');
+        }
+        else
+        {
+            chain_selects('select#select-program', 'select#select-course');
+            chain_selects('select#select-program', 'select#select-company');
+        }
         chain_selects('select#select-course', 'select#select-project');
 
         $filters.on('change', function () {

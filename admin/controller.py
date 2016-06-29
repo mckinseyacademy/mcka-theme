@@ -34,6 +34,7 @@ from lib.mail import (
     sendMultipleEmails, email_add_active_student, email_add_inactive_student, 
     email_add_single_new_user, create_multiple_emails
     )
+from lib.util import DottableDict
 
 from api_client.user_api import USER_ROLES
 from .permissions import Permissions, SlimAddingPermissions
@@ -676,24 +677,20 @@ def filter_groups_and_students(group_projects, students, restrict_to_users_ids=N
     return group_project_groups, students
 
 def getStudentsWithCompanies(course, restrict_to_users_ids=None):
-    students = course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id'})
-
-    users_ids = set(user['id'] for user in students)
-    if restrict_to_users_ids is not None:
-        users_ids &= restrict_to_users_ids
-
-    additional_fields = ["organizations"]
-    students = user_api.get_users(ids=[str(user_id) for user_id in users_ids], fields=additional_fields)
+    students = course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,email,username,organizations'})
 
     companies = {}
+    students_dot = []
     for student in students:
-        studentCompanies = student.organizations
+        student_data = DottableDict({"id": student['id'],"email":student['email'],"username":student['username']})
+        studentCompanies = student["organizations"]
         if len(studentCompanies) > 0:
-            company = studentCompanies[0]
-            if not company.id in companies:
-                companies[company.id] = company
-            student.company = companies[company.id]
-    return students, companies
+            company = DottableDict(studentCompanies[0])
+            if not company["id"] in companies:
+                companies[company["id"]] = company
+            student_data.company = companies[company["id"]]
+        students_dot.append(student_data)
+    return students_dot, companies
 
 
 def parse_studentslist_from_post(postValues):

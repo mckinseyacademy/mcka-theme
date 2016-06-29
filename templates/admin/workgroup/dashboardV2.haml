@@ -40,7 +40,7 @@
                     = _("Project")
 
               .small-3.columns
-                %select#select-company{'data-filter-endpoint': '/admin/workgroup/dashboard/companies', 'data-outline-component': 'company', 'data-query-mode': 'data', 'data-value-parameter': 'program_id', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
+                %select#select-company{'data-filter-endpoint': '/admin/workgroup/dashboardV2/companies', 'data-outline-component': 'company', 'data-query-mode': 'company', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
                   %option{'data-static': 'true', 'value': ''}
                     = _("All companies")
           .row
@@ -82,6 +82,7 @@
       gp_placeholder: $(".group_project_placeholder"),
       quick_links_endpoint: "{%url 'groupwork_dashboard_links' %}",
       csrf_token: '{{csrf_token}}',
+      no_program_functionality: true,
     };
 
     group_work_dashboard(dashboard_configuration);

@@ -5,7 +5,8 @@ function DashboardCommon(gp_placeholder, lesson_data_base){
     var NONE_DATA_VALUE = "N_A";
     var QUERY_MODES = {
         path: 'path',
-        data: 'data'
+        data: 'data',
+        company: 'company'
     };
 
 
@@ -37,6 +38,10 @@ function DashboardCommon(gp_placeholder, lesson_data_base){
                 if (value) {
                     result.data[$target_select.data('value-parameter')] = value;
                 }
+                break;
+            case QUERY_MODES.company:
+                    result.data["course_id"] = $('select#select-course').find('option:selected').val();
+                    result.data["project_id"] = $('select#select-project').find('option:selected').val();
                 break;
         }
 
