@@ -98,34 +98,49 @@
     },
     validateCompanyName: function(newName)
     {
-      var _this = this;
-      var companyId = $("#mainCompanyDetailsDataContainer").attr("data-id");
-      var options = {
-        url: ApiUrls.company+companyId+"/edit?company_display_name=" + newName,
-        type: "GET",
-        dataType: "json"
-      };
-      options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
-      $.ajax(options)
-      .done(function(data) 
+      if(newName != '') 
       {
-        if (data['status'] == 'ok')
+        var testValue = newName.replace(/ /g,'');
+        if (/^[a-z0-9]+$/i.test(testValue)) 
         {
-          _this.updateCompanyName(newName);
+          var _this = this;
+          var companyId = $("#mainCompanyDetailsDataContainer").attr("data-id");
+          var options = {
+            url: ApiUrls.company+companyId+"/edit?company_display_name=" + newName,
+            type: "GET",
+            dataType: "json"
+          };
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+          $.ajax(options)
+          .done(function(data) 
+          {
+            if (data['status'] == 'ok')
+            {
+              _this.updateCompanyName(newName);
+            }
+            else if(data['status'] == 'error')
+            {
+              $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(data['message']);
+            }
+          })
+          .fail(function(data) {
+            console.log("Ajax failed to fetch data");
+            console.log(data);
+          })
+          .always(function(data)
+          {
+            $(document).trigger('email_finished', [data]);
+          })
         }
-        else if(data['status'] == 'error')
+        else
         {
-          $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(data['message']);
+          $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
         }
-      })
-      .fail(function(data) {
-        console.log("Ajax failed to fetch data");
-        console.log(data);
-      })
-      .always(function(data)
+      }
+      else
       {
-        $(document).trigger('email_finished', [data]);
-      })
+        $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('No Company Display Name!');
+      }
     },
     updateCompanyName: function(newName)
     {
