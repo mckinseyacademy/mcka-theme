@@ -23,7 +23,7 @@
     - else
       %a{href:"/admin/clients/#{client.id}/courses"}
         = _("Assign Students to Courses in Programs")
-  - if user.is_mcka_admin
+  - if user.is_mcka_admin or user.is_mcka_subadmin
     %li
       - if selected_client_tab == 'contact'
         %span.selected= _("Contacts")

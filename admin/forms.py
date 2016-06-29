@@ -130,6 +130,19 @@ class AdminPermissionForm(BasePermissionForm):
         widget=forms.CheckboxSelectMultiple,
         choices=[
             (PERMISSION_GROUPS.MCKA_ADMIN, _("ADMIN")),
+            (PERMISSION_GROUPS.MCKA_SUBADMIN, _("COURSE OPS")),
+            (PERMISSION_GROUPS.INTERNAL_ADMIN, _("INTERNAL ADMIN")),
+            (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
+        ]
+    )
+
+class SubAdminPermissionForm(BasePermissionForm):
+    permissions = forms.MultipleChoiceField(
+        required=False,
+        label='',
+        widget=forms.CheckboxSelectMultiple,
+        choices=[
+            (PERMISSION_GROUPS.MCKA_SUBADMIN, _("COURSE OPS")),
             (PERMISSION_GROUPS.INTERNAL_ADMIN, _("INTERNAL ADMIN")),
             (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
         ]

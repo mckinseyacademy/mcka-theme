@@ -53,6 +53,7 @@
       dataContainer.on('click', '.editCompanyNameIcon', function()
       {
         _saved = false;
+        $('#mainCompanyDetailsDataContainer').find('.errorMessage').empty();
         var mainContainer = $(this).parents('.companyDetailsCompanyName');
         var textContainer = mainContainer.find('.companyDetailsTextName');
         var editContainer = mainContainer.find('.companyDetailsInputName');
@@ -69,8 +70,9 @@
         if (_saved)
           return;
         _saved = true;
+        $('#mainCompanyDetailsDataContainer').find('.errorMessage').empty();
         _this.hideCompanyEditInput(this);
-        _this.updateCompanyName($(this).val());
+        _this.validateCompanyName($(this).val().trim());
       });
       dataContainer.on('keydown', '.companyDetailsInputName input', function(ev)
       {
@@ -80,8 +82,9 @@
           if (_saved)
             return
           _saved = true;
+          $('#mainCompanyDetailsDataContainer').find('.errorMessage').empty();
           _this.hideCompanyEditInput(this);
-          _this.updateCompanyName($(this).val());
+          _this.validateCompanyName($(this).val().trim());
         }
       });
     },
@@ -92,6 +95,52 @@
       textContainer.show();
       mainContainer.find('.editCompanyNameIcon').show();
       editContainer.hide();
+    },
+    validateCompanyName: function(newName)
+    {
+      if(newName != '') 
+      {
+        var testValue = newName.replace(/ /g,'');
+        if (/^[a-z0-9]+$/i.test(testValue)) 
+        {
+          var _this = this;
+          var companyId = $("#mainCompanyDetailsDataContainer").attr("data-id");
+          var options = {
+            url: ApiUrls.company+companyId+"/edit?company_display_name=" + newName,
+            type: "GET",
+            dataType: "json"
+          };
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+          $.ajax(options)
+          .done(function(data) 
+          {
+            if (data['status'] == 'ok')
+            {
+              _this.updateCompanyName(newName);
+            }
+            else if(data['status'] == 'error')
+            {
+              $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(data['message']);
+            }
+          })
+          .fail(function(data) {
+            console.log("Ajax failed to fetch data");
+            console.log(data);
+          })
+          .always(function(data)
+          {
+            $(document).trigger('email_finished', [data]);
+          })
+        }
+        else
+        {
+          $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
+        }
+      }
+      else
+      {
+        $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('No Company Display Name!');
+      }
     },
     updateCompanyName: function(newName)
     {

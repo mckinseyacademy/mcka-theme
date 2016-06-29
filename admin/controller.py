@@ -15,7 +15,7 @@ from accounts.middleware.thread_local import set_course_context, get_course_cont
 from admin.models import Program
 from courses.models import FeatureFlags
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, organization_api, project_api, user_models, workgroup_api
+from api_client import user_api, group_api, course_api, course_models, organization_api, project_api, user_models, workgroup_api
 from accounts.models import UserActivation
 from datetime import datetime
 from pytz import UTC
@@ -735,7 +735,8 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     def prepare_value(obj, name):
         value = getattr(obj, name, None)
-        value = value.encode('ascii', 'ignore')
+        if value is not None:
+            value = value.encode('ascii', 'ignore')
         """
         Fields that contain commas, quotes, and CR/LF need to be wrapped in double-quotes.
         If double-quotes are used to enclose fields, then a double-quote appearing inside a field must be escaped
@@ -899,19 +900,17 @@ def get_admin_users(organizations, org_id, ADMINISTRATIVE):
 
 def get_program_data_for_report(client_id, program_id=None):
     programs = Client.fetch(client_id).fetch_programs()
+    
     if len(programs) > 0:
         program = next((p for p in programs if p.id == program_id), programs[0])
         program_courses = program.fetch_courses()
-        course_ids = list(set([pc.course_id for pc in program_courses]))
+        courses = []
+        for pc in program_courses:
+            course = course_models.Course(dictionary={'id': pc.course_id, 'name': pc.display_name})
+            courses.append(course)
     else:
         program = None
-        courses_list = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(client_id))
-        course_ids = list(set([pc.id for pc in courses_list]))
-
-    chunks = [course_ids[x:x+20] for x in xrange(0, len(course_ids), 20)]
-    courses = []
-    for chunk in chunks:
-        courses.extend(course_api.get_courses(course_id=chunk))
+        courses = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(client_id))
 
     for course in courses:
         course.metrics = get_course_metrics_for_organization(course.id, client_id)
@@ -939,7 +938,7 @@ def get_accessible_programs(user, restrict_to_programs_ids):
             if program.id in restrict_to_programs_ids
     ]
 
-    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin]):
+    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin, user.is_mcka_subadmin]):
         # User is a TA. They'll need to be scoped only to the courses they're a TA on, not just enrolled in.
         roles = user.get_roles()
         base_programs = programs
@@ -956,14 +955,14 @@ def get_accessible_courses(user):
     user_roles = user_api.get_user_roles(user.id)
     course_id_list = None
     courses_list = []
-    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin]):
+    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin, user.is_mcka_subadmin]):
         course_id_list = []
         for role in user_roles:
             if USER_ROLES.TA == role.role:
                 course_id_list.append(role.course_id)
         courses_list = course_api.get_course_list(course_id_list)
     else:
-        if user.is_mcka_admin:
+        if user.is_mcka_admin or user.is_mcka_subadmin:
             courses_list = course_api.get_course_list_in_pages(course_id_list)
         else:
             user_orgs = user_api.get_user_organizations(user.id)
@@ -975,7 +974,7 @@ def get_accessible_courses(user):
 def get_accessible_courses_from_program(user, program_id, restrict_to_courses_ids=None):
     program = Program.fetch(program_id)
     courses = program.fetch_courses()
-    if not any([user.is_client_admin, user.is_mcka_admin, user.is_internal_admin]):
+    if not any([user.is_client_admin, user.is_mcka_admin, user.is_internal_admin, user.is_mcka_subadmin]):
         roles = user.get_roles()
         # User is TA. Only show courses in program they have access to.
         courses = [
@@ -1669,4 +1668,13 @@ def get_company_active_courses(company_id):
                 active_courses.append(company_course)
 
     return active_courses
+
+
+def validate_company_display_name(company_display_name):
+
+    company = organization_api.get_organization_by_display_name(urllib.quote_plus(company_display_name))
+    if company['count'] != 0:
+        return {'status': 'error', 'message': 'This company already exists!'}
+
+    return {'status': 'ok', 'message':'Company Validation Success!'}
 

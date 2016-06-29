@@ -191,7 +191,7 @@ def check_company_admin_user_access(func):
     '''
     @functools.wraps(func)
     def admin_user_user_access_checker(request, user_id, *args, **kwargs):
-        if not request.user.is_mcka_admin:
+        if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
             def org_set(uid):
                 return set([o.id for o in user_api.get_user_organizations(uid)])
 

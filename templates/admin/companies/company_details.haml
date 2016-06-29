@@ -12,6 +12,7 @@
           %i.fa.fa-pencil.editCompanyNameIcon
           .companyDetailsInputName{:style => 'display:none;'}
             %input{:type => 'text', :value => '#{company.name}'}
+          .errorMessage
 
         .row.companyDetailsNumberParticipants
           %p Total Participants: ={company.numberParticipants}

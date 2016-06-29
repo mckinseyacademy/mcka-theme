@@ -28,7 +28,7 @@
           .large-7.medium-7.columns
             - include 'admin/workgroup/project_dropdown.haml'
           .large-5.medium-5.columns.group-selection
-            - if user.is_mcka_admin or user.is_internal_admin
+            - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
               %a#create-group-project.button.radius.tiny{href: "#", "data-reveal-id": "create-project-modal"}
                 %span= _("Create New Group Project")
               %a#delete-group-project.button.radius.tiny{href: "#", "data-reveal-id": "delete-project-modal"}
@@ -36,12 +36,12 @@
         %hr
         %section
           %input#course_id{'type': 'hidden', 'value': '#{course.id}'}
-          - if user.is_mcka_admin or user.is_internal_admin
+          - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
             #student-list.large-7.columns
               .sub-1 Course Participants:
               - include 'admin/workgroup/student_table.haml'
           .large-5.columns.group-selection
-            - if user.is_mcka_admin or user.is_internal_admin
+            - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
               .sub-1= _("Group Students:")
               .description= _("Create and manage groups of students within this course by selecting names to create a new group or add them to an existing group.")
               %a#student-group-action.button.radius.small{href: "/admin/workgroup/group/create/#{course.id}"}
@@ -65,10 +65,10 @@
                           .label-2= student.username
                           %a.label-2{href: "mailto:#{student.email}"}= student.email
                           .label-2= student.company.display_name
-                          - if user.is_mcka_admin or user.is_internal_admin
+                          - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
                             %a.remove{href: '/admin/workgroup/group/#{group.id}/remove'}
                               %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
-                    - if user.is_mcka_admin or user.is_internal_admin
+                    - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
                       .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
                         = _("Update")
                       .delete-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/#{group.id}/remove', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
