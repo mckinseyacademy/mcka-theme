@@ -177,6 +177,9 @@
             .participantCompanyValue
               %input{:type => "text", :value => '#{company_name}', :data-id => '#{company_id}', :name => "company", :maxlength => "60", :data-old-id => '#{company_id}'}
               %i.fa.fa-check-circle-o.correctInput
+              .newCompanyCreationPopup
+                Since this company does not yet exist, a new company will be created. If this is an error, try selecting your company from the type-ahead results.
+              .errorMessage
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               Gender

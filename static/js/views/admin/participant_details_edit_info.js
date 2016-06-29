@@ -5,6 +5,23 @@
       _this.setLocationTooltip(); 
       $('#country_edit').countrySelect();
       InitializeAutocompleteInput(options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
+      $('#participantDetailsWrapper').find('.newCompanyCreationPopup').hide();
+      $(document).on('autocomplete_found', function(event, input)
+      {
+        if (input.parent().hasClass('participantCompanyValue'))
+        {
+          $('#participantDetailsWrapper').find('.errorMessage').empty();
+          _this.manageNewCompanyPopup(input, false);
+        }
+      });
+      $(document).on('autocomplete_not_found', function(event, input)
+      {
+        if (input.parent().hasClass('participantCompanyValue'))
+        {
+          $('#participantDetailsWrapper').find('.errorMessage').empty();
+          _this.manageNewCompanyPopup(input, true);
+        }
+      });
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
         var cont = $('#participantDetailsWrapper');
@@ -309,5 +326,28 @@
           });
           $(enroll_modal_id).foundation('reveal', 'open');
       }); 
+    },
+    manageNewCompanyPopup: function(input, showPopup)
+    { 
+      var value = $(input).val().trim();
+      if (showPopup && (value.length > 0))
+      {  
+        var testValue = value.replace(' ','');
+        if (/^[a-z0-9]+$/i.test(testValue)) 
+        {
+          $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
+          $('#participantDetailsWrapper').find('.errorMessage').empty();
+          $(input).parent().find('.newCompanyCreationPopup').show();
+        }
+        else
+        {
+          $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
+          $('.participantCompanyValue').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
+        }
+      }
+      else
+      {
+        $(input).parent().find('.newCompanyCreationPopup').hide();
+      }
     }
   });
