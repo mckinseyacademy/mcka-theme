@@ -8,7 +8,7 @@
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
             %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
-        #courseDetailsDataWrapper{:data-id => '#{id}'}
+        #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}'}
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
                     .courseDetailsNameAndId
