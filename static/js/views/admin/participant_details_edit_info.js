@@ -332,12 +332,20 @@
       var value = $(input).val().trim();
       if (showPopup && (value.length > 0))
       {  
-        var testValue = value.replace(' ','');
+        var testValue = value.replace(/ /g,'');
         if (/^[a-z0-9]+$/i.test(testValue)) 
         {
-          $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
-          $('#participantDetailsWrapper').find('.errorMessage').empty();
-          $(input).parent().find('.newCompanyCreationPopup').show();
+          if (value.length <= 30)
+          {
+            $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
+            $('#participantDetailsWrapper').find('.errorMessage').empty();
+            $(input).parent().find('.newCompanyCreationPopup').show();
+          }
+          else
+          {
+            $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
+            $('.participantCompanyValue').find('.errorMessage').text('This company name cannot have more than 30 characters!');
+          }
         }
         else
         {
