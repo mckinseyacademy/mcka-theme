@@ -1,6 +1,7 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
       var _this=this;
+      var _options=options;
       _this.enroll_user_in_course_function();
       _this.setLocationTooltip(); 
       $('#country_edit').countrySelect();
@@ -70,8 +71,23 @@
             data[input.attr("name")] = input.val().trim();
             if (input.attr("name") == 'company')
             {
-              data['company'] = input.attr('data-id');  
-              data['company_old'] = input.attr('data-old-id');
+              if (input.attr('data-id').length)
+              {
+                data[input.attr("name")] = input.attr('data-id');
+              }
+              else if (input.val().trim().length > 0)
+              {
+                data[input.attr("name")] = 0;
+                data["new_company_name"] = input.val().trim();
+              }
+              if (input.attr('data-old-id'))
+              {
+                data['company_old'] = input.attr('data-old-id');
+              }
+              else
+              {
+                data['company_old'] = 0;
+              }
             }
           });
           delete data["undefined"];
@@ -88,8 +104,9 @@
                 if (data['status'] == "ok") {
                   _this.setLocationTooltip(); 
                   _this.update_participant_field_data();
+                  InitializeAutocompleteInput(_options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
                   var company = $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantCompanyValue input');
-                  company.attr('data-old-id',company.attr('data-id'));
+                  company.attr('data-old-id',data['company']);
                   $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
                   $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
