@@ -2797,7 +2797,7 @@ def groupwork_dashboard_companiesV2(request):
                 accessible_clients.append(project.organization)
         accessible_clients = set(accessible_clients)
     else:
-        accessible_clients = set(client.id for client in all_clients)
+        accessible_clients = set()
 
     data = [
         _make_select_option_response(item.id, item.display_name, item.id not in accessible_clients) for item in all_clients
