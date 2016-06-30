@@ -572,10 +572,11 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             instance.save()
         
             myDict = dict(request.POST.iterlists())
-            for index, item_id in enumerate(myDict['positions[]']):
-                tileItem = LearnerDashboardTile.objects.get(id=item_id)
-                tileItem.position = index
-                tileItem.save()
+            if myDict.get('positions[]'):
+                for index, item_id in enumerate(myDict['positions[]']):
+                    tileItem = LearnerDashboardTile.objects.get(id=item_id)
+                    tileItem.position = index
+                    tileItem.save()
 
     if instance:
         try:
