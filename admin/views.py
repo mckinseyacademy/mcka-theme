@@ -3431,14 +3431,18 @@ class participant_details_api(APIView):
                 selectedUser['company_id'] = ''
             if selectedUser['gender'] == '' or selectedUser['gender'] == None:
                 selectedUser['gender'] = 'N/A'
-            selectedUser['city'] = selectedUser['city'].strip()
-            selectedUser['country'] = selectedUser['country'].strip().upper()
+            if selectedUser['city']:
+                selectedUser['city'] = selectedUser['city'].strip()
+            if selectedUser['country']:
+                selectedUser['country'] = selectedUser['country'].strip().upper()
             if selectedUser['city'] == '' and selectedUser['country'] == '':
                 selectedUser['location'] = 'N/A'
             elif selectedUser['country'] == '':
                 selectedUser['location'] = selectedUser['city']
             elif selectedUser['city'] == '':
                 selectedUser['location'] = selectedUser['country']
+            elif selectedUser['city'] == None and selectedUser['country'] == None:
+                selectedUser['location'] = 'N/A'
             else:
                 selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
             selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
@@ -3474,16 +3478,24 @@ class participant_details_api(APIView):
                 return Response({'status':'error', 'type': 'user_exist', 'message':'User with that username or email already exists!'})
             else:
                 data = form.cleaned_data
+                new_company_name = request.DATA.get('new_company_name', None)
+                if new_company_name:
+                    try:
+                        new_organization = organization_api.create_organization(organization_name=new_company_name.lower().replace(" ", "_"), organization_data={"display_name": new_company_name})
+                        data['company'] = vars(new_organization).get("id", None)
+                    except ApiError, e:
+                        return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't create company!"})
                 try:
                     company = data.get('company', None)
                     company_old = request.DATA.get('company_old', None)
-                    if data.get('company', None) != data.get('company_old', None):
+                    if company != company_old:
                         organization_api.add_user_to_organization(company, user_id)
-                        organization_api.remove_users_from_organization(company_old, user_id)
+                        if int(company_old) > 0:
+                            organization_api.remove_users_from_organization(company_old, user_id)
                     response = user_api.update_user_information(user_id,data)
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
-                return Response({'status':'ok', 'message':vars(response)})
+                return Response({'status':'ok', 'message':vars(response), 'company': company})
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
