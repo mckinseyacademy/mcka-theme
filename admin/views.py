@@ -1369,7 +1369,7 @@ def client_new(request):
             try:
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
-                client = Client.create(name, name)
+                client = Client.create(name, client_data)
                 # save identity provider
                 (customization, created) = ClientCustomization.objects.get_or_create(
                     client_id=client.id
