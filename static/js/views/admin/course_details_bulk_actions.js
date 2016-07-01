@@ -509,10 +509,10 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       $(document).on('email_sent', function(e, data)
       {
         if (data['type'] == 'preview')
-          alert('Successfully sent preview email!');
+          CreateNicePopup("Email Preview Success!", 'Successfully sent preview email!');
         else
         {
-          alert('Successfully sent email!');
+          CreateNicePopup("Email Success!", 'Successfully sent email!');
           modal.foundation('reveal', 'close');
         }
           
@@ -547,19 +547,22 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       controlButtonContainer.on('click', '.previewEmail', function(e)
       {
         
-        var email = prompt("Please enter preview email!");
-        if (email != null) 
+        var email = CreatNicePrompt("Preview Email!","Please enter preview email!");
+        $(document).one("dynamic_prompt_confirmed", function(e, email)
         {
-          var sender = modal.find('.fromEmailValue input').val();
-          var body = tinymce.get('email_editor').getContent();
-          var subject = modal.find('.emailSubjectValue input').val();
-          var to_email_list = [];
-          to_email_list.push(email)
-          var  template_id = modal.find('.templateNameValue select').val();
-          if (template_id == 'none')
-            template_id = null;
-          SendEmailManager(sender, subject, to_email_list, body, template_id, true);
-        }
+          if (email != null) 
+          {
+            var sender = modal.find('.fromEmailValue input').val();
+            var body = tinymce.get('email_editor').getContent();
+            var subject = modal.find('.emailSubjectValue input').val();
+            var to_email_list = [];
+            to_email_list.push(email)
+            var  template_id = modal.find('.templateNameValue select').val();
+            if (template_id == 'none')
+              template_id = null;
+            SendEmailManager(sender, subject, to_email_list, body, template_id, true);
+          }
+        })
       });
       templateButtonContainer.on('click', '.saveAsNewTemplate', function(e)
       {

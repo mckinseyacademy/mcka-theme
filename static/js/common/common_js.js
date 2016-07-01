@@ -423,3 +423,44 @@ function downloadCSV(args) {
   link.click();
   document.body.removeChild(link);
 }
+
+
+function CreateNicePopup(title, content)
+{
+  popup_html = "<div class='fixedDynamicPopupContainer reveal-modal small' style='display:block; visibility:visible;'>";
+  if (title)
+    popup_html += "<div class='fixedDynamicPopupTitle'>"+title+"</div>";
+  popup_html += '<i class="fa fa-times-circle fixedDynamicPopupCancelButton" aria-hidden="true"></i>';
+  popup_html += "<hr>";
+  if (content)
+    popup_html += "<div class='fixedDynamicPopupContent'>"+content+"</div>";
+  popup_html += "</div>";
+  $("body").append(popup_html);
+  popup = $("body").find(".fixedDynamicPopupContainer").last();
+  popup.on("click", ".fixedDynamicPopupCancelButton", function(){
+    $(this).parents(".fixedDynamicPopupContainer").hide(400, function(){
+      $(this).remove();
+    })
+  })
+}
+
+function CreatNicePrompt(title, input_label)
+{
+  content = '<div class="fixedDynamicPopupPrompContentContainer"><div class="fixedDynamicPopupPrompContent">'+input_label+'</div>';
+  content += '<br><input type="text"/><div class="button savePromptChanges">Save</div>';
+  content += '</div>';
+  CreateNicePopup(title, content);
+  popup = $("body").find(".fixedDynamicPopupContainer").last();
+  popup.on("click", ".savePromptChanges", function(){
+    data = $(this).parents(".fixedDynamicPopupContainer").find("input").val().trim();
+    if (data.length > 0)
+    {
+      $(document).trigger("dynamic_prompt_confirmed", [data]);
+      $(this).parents(".fixedDynamicPopupContainer").hide(400, function(){
+        $(this).remove();
+      })
+    }
+  })
+
+}
+
