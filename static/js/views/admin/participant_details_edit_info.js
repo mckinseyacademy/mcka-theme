@@ -66,9 +66,33 @@
         {
           var id = $('#participantsDetailsDataWrapper').attr('data-id');
           var data = {}
+          var validation_fail = false;
+          var validation_message = "";    
           $.each($("form").find(':input'), function(i, v){
             var input = $(v);
             data[input.attr("name")] = input.val().trim();
+
+            if (input.attr("name") == "username" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "Username can't be empty! ";
+              validation_fail = true;
+            }
+            else if (input.attr("name") == "first_name" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "First name can't be empty! ";
+              validation_fail = true;
+            }
+            else if (input.attr("name") == "last_name" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "Last name can't be empty! ";
+              validation_fail = true;
+            }
+            else if (input.attr("name") == "email" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "Email can't be empty! ";
+              validation_fail = true;
+            }
+
             if (input.attr("name") == 'company')
             {
               if (input.attr('data-id').length)
@@ -90,6 +114,11 @@
               }
             }
           });
+          if (validation_fail)
+          {
+            alert(validation_message);
+            return;
+          }
           delete data["undefined"];
           var xcsrf = data['csrfmiddlewaretoken'];
           delete data['csrfmiddlewaretoken'];
