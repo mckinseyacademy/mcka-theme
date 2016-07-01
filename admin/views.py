@@ -990,7 +990,7 @@ def course_details(request, course_id):
     course_progress = 0
     course_proficiency = 0
 
-    users_progress = get_course_progress(course_id, list_of_user_roles['ids'], request)
+    users_progress = get_course_progress(course_id, list_of_user_roles['ids'])
 
     for user in users_progress:
         course_progress += user['progress']
@@ -1136,7 +1136,7 @@ class course_details_api(APIView):
             }
             permissionsFilter = ['observer','assistant']
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
-            users_progress = get_course_progress(course_id, [], request)
+            users_progress = get_course_progress(course_id, [])
             course_grades = course_api.get_course_details_metrics_grades(course_id, allCourseParticipants['count'])
             for course_participant in allCourseParticipants['results']:
                 if len(course_participant['organizations'] ) == 0:
