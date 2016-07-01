@@ -673,24 +673,27 @@ def get_course_details_metrics_social(course_id):
 
     return json.loads(response.read())
 
+
+@api_error_protect
+def get_course_details_completions_leaders(course_id):
+    ''' fetch social metrics for course '''
+
+    response = GET(
+        '{}/{}/{}/metrics/completions/leaders'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id
+        )
+    )
+
+    return json.loads(response.read())
+
+
 @api_error_protect
 def get_user_list_dictionary(course_id, program_id = None):
 
     return json.loads(get_user_list_json(course_id, program_id))
 
-
-@api_error_protect
-def get_completions_on_course(course_id):
-    ''' fetch course module completion list '''
-
-    url = '{}/{}/{}/completions/?page_size=0'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id
-    )
-    response = GET(url)
-
-    return json.loads(response.read())
 
 def parse_course_list_json_object(course_list_json_object):
     return CJP.from_json(json.dumps(course_list_json_object))
