@@ -87,21 +87,24 @@
             .participantPermissionsValue
               %select{:name => "company_permissions"}
                 %option{:value => "none"} None
-                %option{:value => "uber_admin"} Uber admin
-                %option{:value => "course_ops"} Course ops admin
-                -#%option{:value => "company_admin"} Company admin
+                - if user.is_mcka_admin
+                  %option{:value => "uber_admin"} Uber admin
+                - if user.is_mcka_admin or user.is_mcka_subadmin
+                  %option{:value => "course_ops"} Course ops admin
                 %option{:value => "internal_admin"} Internal Admin
         %hr
         .adminAnotherCompanyAllWrapper
-        .addAnotherCompanyWrapper.row
-          %a.large-12.columns
-            + Add company admin privileges
-        %hr
+        - if user.is_mcka_admin or user.is_mcka_subadmin
+          .addAnotherCompanyWrapper.row
+            %a.large-12.columns
+              + Add company admin privileges
+          %hr
         .adminCourseAllWrapper
-        .addAnotherCourseWrapper.row
-          %a.large-12.columns
-            + Add course
-        %hr
+        - if user.is_mcka_admin or user.is_mcka_subadmin
+          .addAnotherCourseWrapper.row
+            %a.large-12.columns
+              + Add course
+          %hr
         .emailActivationWrapper.row
           .large-12.columns
             .emailActivationLinkCheckboxWrapper
