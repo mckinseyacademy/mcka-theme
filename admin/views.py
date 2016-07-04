@@ -4175,25 +4175,37 @@ class email_send_api(APIView):
         return Response(response)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
 
 class companies_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
-
         companies = []
+        user_organizations = None
         clients = Client.list()
+        if request.user.is_client_admin:
+            user_organizations = user_api.get_user_organizations(request.user.id)
         for client in clients:
-            company = {}
-            company['name'] = vars(client)['display_name']
-            company['id'] = vars(client)['id']
-            company['numberParticipants'] = vars(client)['number_of_participants']
-            company['numberCourses'] = vars(client)['number_of_courses']
-            companies.append(company)
+            if user_organizations:
+                for user_org in user_organizations:
+                    if client.id == user_org.id:
+                        company = {}
+                        company['name'] = vars(client)['display_name']
+                        company['id'] = vars(client)['id']
+                        company['numberParticipants'] = vars(client)['number_of_participants']
+                        company['numberCourses'] = vars(client)['number_of_courses']
+                        companies.append(company)
+            else:
+                company = {}
+                company['name'] = vars(client)['display_name']
+                company['id'] = vars(client)['id']
+                company['numberParticipants'] = vars(client)['number_of_participants']
+                company['numberCourses'] = vars(client)['number_of_courses']
+                companies.append(company)
 
         return Response(companies)
 
@@ -4227,7 +4239,7 @@ class create_new_company_api(APIView):
             return Response({'status':'error'})
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def company_details(request, company_id):
 
     client = Client.fetch(company_id)
@@ -4309,7 +4321,7 @@ def company_details(request, company_id):
 
 class company_courses_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, company_id):
         
         company_courses = organization_api.get_organizations_courses(company_id)
@@ -4338,7 +4350,7 @@ class company_courses_api(APIView):
 
 class company_info_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, company_id):
         
         flag = request.GET.get('flag', None)
@@ -4405,7 +4417,7 @@ class company_info_api(APIView):
         
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def put(self, request, company_id):
 
         flag = request.GET.get('flag', None)
@@ -4462,7 +4474,7 @@ class company_info_api(APIView):
         return Response(response)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_company_info(request, company_id):
 
     client = Client.fetch(company_id)
