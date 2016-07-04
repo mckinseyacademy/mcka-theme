@@ -130,3 +130,19 @@
 		margin-top: 10px;
 	}
 }
+
+.fixedDynamicPopupContainer{
+	z-index: 100000000000000;
+    top: 50%;
+    font-size: 16px;
+    box-sizing: border-box;
+
+    .fixedDynamicPopupCancelButton{
+    	float: right;
+    	font-size: 24px;
+    }
+    .fixedDynamicPopupTitle{
+    	float: left;
+    }
+
+}

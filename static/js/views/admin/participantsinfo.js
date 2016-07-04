@@ -311,11 +311,20 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
       var value = $(input).val().trim();
     	if (showPopup && (value.length > 0))
     	{  
-        var testValue = value.replace(' ','');
+        var testValue = value.replace(/ /g,'');
         if (/^[a-z0-9]+$/i.test(testValue)) 
         {
-          $('#add_a_participant').find('.addSingleParticipantButton').removeClass('disabled');
-          $(input).parent().find('.newCompanyCreationPopup').show();
+          if (value.length <= 30)
+          {
+            $('#add_a_participant').find('.addSingleParticipantButton').removeClass('disabled');
+            $('.participantCompanyValue').find('.errorMessage').empty();
+            $(input).parent().find('.newCompanyCreationPopup').show();
+          }
+          else
+          {
+            $('#add_a_participant').find('.addSingleParticipantButton').addClass('disabled');
+            $('.participantCompanyValue').find('.errorMessage').text('This company name cannot have more than 30 characters!');
+          }
         }
         else
         {

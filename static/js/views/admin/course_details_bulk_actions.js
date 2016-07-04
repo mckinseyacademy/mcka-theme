@@ -345,6 +345,101 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           $('#courseDetailsMainModal').foundation('reveal', 'open');
         }
       }); 
+      $('#courseBulkActionsMainContainer').on('click','.bulkExportStats',function()
+      {
+        if ($(this).hasClass('disabled'))
+        {
+          return;
+        }
+        var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
+
+        var modelsList = _this.courseDetails.fullCollection.models;
+
+        items = []
+        for (selectedRowsIndex in selectedRowsIds)
+        {
+          var id = selectedRowsIds[selectedRowsIndex];
+          var selectedModel = _this.courseDetails.fullCollection.get(id);
+          var last_login = selectedModel.attributes.custom_last_login.split(',')[1];
+          var progress = '' + parseInt(selectedModel.attributes.progress) + '%';
+          var proficiency = '' + parseInt(selectedModel.attributes.proficiency) + '%';
+          var item =
+          { 
+            'id': id,
+            'First name': selectedModel.attributes.first_name, 
+            'Last name': selectedModel.attributes.last_name,
+            'Username': selectedModel.attributes.username,
+            'Email': selectedModel.attributes.email,
+            'Company': selectedModel.attributes.organizations_display_name,
+            'Status': selectedModel.attributes.custom_user_status,
+            'Activated': selectedModel.attributes.custom_activated,
+            'Last login': last_login,
+            'Progress': progress,
+            'Proficiency': proficiency,
+          };
+          items.push(item);
+        }
+
+        for (var i=0; i < modelsList.length; i++)
+        {
+          if (modelsList[i].attributes.groupworks.length)
+          {
+            for (var groupworkIndex = 0; groupworkIndex < modelsList[i].attributes.groupworks.length; groupworkIndex++)
+            {
+              groupworkData = modelsList[i].attributes.groupworks[groupworkIndex];
+              for(var j=0; j < items.length; j++)
+              {
+                var selected = _this.courseDetails.fullCollection.get(items[j]['id']);
+                var label = 'Group Work: ' + groupworkData.label;
+                if (selected.attributes.groupworks.length)
+                {
+                  items[j][label] = '' + parseInt(selected.attributes.groupworks[groupworkIndex].percent) + '%';
+                }
+                else
+                {
+                  items[j][label] = '' + parseInt('000') + '%';   
+                }
+              }
+            }
+            break;  
+          }
+        }
+
+        for (var i=0; i < modelsList.length; i++)
+        {
+          if (modelsList[i].attributes.assessments.length)
+          {
+            for (var assessmentIndex = 0; assessmentIndex < modelsList[i].attributes.assessments.length; assessmentIndex++)
+            {
+              assessmentData = modelsList[i].attributes.assessments[assessmentIndex];
+              for(var j=0; j < items.length; j++)
+              {
+                var selected = _this.courseDetails.fullCollection.get(items[j]['id']);
+                var label = 'Assessment: ' + assessmentData.label;
+                if (selected.attributes.assessments.length)
+                {
+                  items[j][label] = '' + parseInt(selected.attributes.assessments[assessmentIndex].percent) + '%';
+                }
+                else
+                {
+                  items[j][label] = '' + parseInt('000') + '%';   
+                }
+              }
+            }
+            break;  
+          }
+        }
+
+        for(var j=0; j < items.length; j++)
+        {
+          delete items[j]['id'];
+        }
+
+        var filename = '' + $('#courseDetailsDataWrapper').attr('data-name').replace(/ /g,'_') + '_users_stats.csv';
+
+        downloadCSV({data: items, filename: filename});
+
+      });
     },
     createConfirmationScreenOnCourseDetails: function(_this, course_id) {
       if ($(this).hasClass('disabled'))
@@ -414,10 +509,10 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       $(document).on('email_sent', function(e, data)
       {
         if (data['type'] == 'preview')
-          alert('Successfully sent preview email!');
+          CreateNicePopup("Email Preview Success!", 'Successfully sent preview email!');
         else
         {
-          alert('Successfully sent email!');
+          CreateNicePopup("Email Success!", 'Successfully sent email!');
           modal.foundation('reveal', 'close');
         }
           
@@ -452,19 +547,22 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       controlButtonContainer.on('click', '.previewEmail', function(e)
       {
         
-        var email = prompt("Please enter preview email!");
-        if (email != null) 
+        var email = CreatNicePrompt("Preview Email!","Please enter preview email!");
+        $(document).one("dynamic_prompt_confirmed", function(e, email)
         {
-          var sender = modal.find('.fromEmailValue input').val();
-          var body = tinymce.get('email_editor').getContent();
-          var subject = modal.find('.emailSubjectValue input').val();
-          var to_email_list = [];
-          to_email_list.push(email)
-          var  template_id = modal.find('.templateNameValue select').val();
-          if (template_id == 'none')
-            template_id = null;
-          SendEmailManager(sender, subject, to_email_list, body, template_id, true);
-        }
+          if (email != null) 
+          {
+            var sender = modal.find('.fromEmailValue input').val();
+            var body = tinymce.get('email_editor').getContent();
+            var subject = modal.find('.emailSubjectValue input').val();
+            var to_email_list = [];
+            to_email_list.push(email)
+            var  template_id = modal.find('.templateNameValue select').val();
+            if (template_id == 'none')
+              template_id = null;
+            SendEmailManager(sender, subject, to_email_list, body, template_id, true);
+          }
+        })
       });
       templateButtonContainer.on('click', '.saveAsNewTemplate', function(e)
       {

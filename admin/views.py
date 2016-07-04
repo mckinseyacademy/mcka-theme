@@ -38,7 +38,7 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from accounts.models import UserActivation
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email
 from api_client import user_models
-from api_client import course_api, user_api, group_api, workgroup_api, organization_api
+from api_client import course_api, user_api, group_api, workgroup_api, organization_api, project_api
 from api_client.api_error import ApiError
 from api_client.organization_models import Organization
 from api_client.project_models import Project
@@ -572,10 +572,11 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             instance.save()
         
             myDict = dict(request.POST.iterlists())
-            for index, item_id in enumerate(myDict['positions[]']):
-                tileItem = LearnerDashboardTile.objects.get(id=item_id)
-                tileItem.position = index
-                tileItem.save()
+            if myDict.get('positions[]'):
+                for index, item_id in enumerate(myDict['positions[]']):
+                    tileItem = LearnerDashboardTile.objects.get(id=item_id)
+                    tileItem.position = index
+                    tileItem.save()
 
     if instance:
         try:
@@ -989,7 +990,7 @@ def course_details(request, course_id):
     course_progress = 0
     course_proficiency = 0
 
-    users_progress = get_course_progress(course_id, list_of_user_roles['ids'], request)
+    users_progress = get_course_progress(course_id, list_of_user_roles['ids'])
 
     for user in users_progress:
         course_progress += user['progress']
@@ -1135,7 +1136,7 @@ class course_details_api(APIView):
             }
             permissionsFilter = ['observer','assistant']
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
-            users_progress = get_course_progress(course_id, [], request)
+            users_progress = get_course_progress(course_id, [])
             course_grades = course_api.get_course_details_metrics_grades(course_id, allCourseParticipants['count'])
             for course_participant in allCourseParticipants['results']:
                 if len(course_participant['organizations'] ) == 0:
@@ -1368,7 +1369,7 @@ def client_new(request):
             try:
                 client_data = {k:v for k, v in request.POST.iteritems()}
                 name = client_data["display_name"].lower().replace(' ', '_')
-                client = Client.create(name, name)
+                client = Client.create(name, client_data)
                 # save identity provider
                 (customization, created) = ClientCustomization.objects.get_or_create(
                     client_id=client.id
@@ -2779,6 +2780,32 @@ def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def groupwork_dashboard_companiesV2(request):
+    course_id = request.GET.get('course_id', None)
+    content_id = request.GET.get('project_id', None)
+    project_list=None
+    if course_id and content_id:
+        project_list=project_api.get_all_projects(course_id, content_id)
+    all_clients = sorted(
+        AccessChecker.get_clients_user_has_access_to(request.user),
+        key=operator.attrgetter('display_name')
+    )
+    if project_list:
+        accessible_clients = []
+        for project in project_list:
+            if project.organization:
+                accessible_clients.append(project.organization)
+        accessible_clients = set(accessible_clients)
+    else:
+        accessible_clients = set()
+
+    data = [
+        _make_select_option_response(item.id, item.display_name, item.id not in accessible_clients) for item in all_clients
+    ]
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def groupwork_dashboard_details(
@@ -3405,14 +3432,18 @@ class participant_details_api(APIView):
                 selectedUser['company_id'] = ''
             if selectedUser['gender'] == '' or selectedUser['gender'] == None:
                 selectedUser['gender'] = 'N/A'
-            selectedUser['city'] = selectedUser['city'].strip()
-            selectedUser['country'] = selectedUser['country'].strip().upper()
+            if selectedUser['city']:
+                selectedUser['city'] = selectedUser['city'].strip()
+            if selectedUser['country']:
+                selectedUser['country'] = selectedUser['country'].strip().upper()
             if selectedUser['city'] == '' and selectedUser['country'] == '':
                 selectedUser['location'] = 'N/A'
             elif selectedUser['country'] == '':
                 selectedUser['location'] = selectedUser['city']
             elif selectedUser['city'] == '':
                 selectedUser['location'] = selectedUser['country']
+            elif selectedUser['city'] == None and selectedUser['country'] == None:
+                selectedUser['location'] = 'N/A'
             else:
                 selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
             selectedUser['mcka_permissions'] = vars(Permissions(user_id))['current_permissions']
@@ -3448,16 +3479,24 @@ class participant_details_api(APIView):
                 return Response({'status':'error', 'type': 'user_exist', 'message':'User with that username or email already exists!'})
             else:
                 data = form.cleaned_data
+                new_company_name = request.DATA.get('new_company_name', None)
+                if new_company_name:
+                    try:
+                        new_organization = organization_api.create_organization(organization_name=new_company_name.lower().replace(" ", "_"), organization_data={"display_name": new_company_name})
+                        data['company'] = vars(new_organization).get("id", None)
+                    except ApiError, e:
+                        return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't create company!"})
                 try:
                     company = data.get('company', None)
                     company_old = request.DATA.get('company_old', None)
-                    if data.get('company', None) != data.get('company_old', None):
+                    if company != company_old:
                         organization_api.add_user_to_organization(company, user_id)
-                        organization_api.remove_users_from_organization(company_old, user_id)
+                        if int(company_old) > 0:
+                            organization_api.remove_users_from_organization(company_old, user_id)
                     response = user_api.update_user_information(user_id,data)
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
-                return Response({'status':'ok', 'message':vars(response)})
+                return Response({'status':'ok', 'message':vars(response), 'company': company})
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 

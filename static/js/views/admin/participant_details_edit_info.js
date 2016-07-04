@@ -1,6 +1,7 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
       var _this=this;
+      var _options=options;
       _this.enroll_user_in_course_function();
       _this.setLocationTooltip(); 
       $('#country_edit').countrySelect();
@@ -65,15 +66,59 @@
         {
           var id = $('#participantsDetailsDataWrapper').attr('data-id');
           var data = {}
+          var validation_fail = false;
+          var validation_message = "";    
           $.each($("form").find(':input'), function(i, v){
             var input = $(v);
             data[input.attr("name")] = input.val().trim();
+
+            if (input.attr("name") == "username" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "Username can't be empty! ";
+              validation_fail = true;
+            }
+            else if (input.attr("name") == "first_name" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "First name can't be empty! ";
+              validation_fail = true;
+            }
+            else if (input.attr("name") == "last_name" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "Last name can't be empty! ";
+              validation_fail = true;
+            }
+            else if (input.attr("name") == "email" && data[input.attr("name")].length == 0)
+            {
+              validation_message += "Email can't be empty! ";
+              validation_fail = true;
+            }
+
             if (input.attr("name") == 'company')
             {
-              data['company'] = input.attr('data-id');  
-              data['company_old'] = input.attr('data-old-id');
+              if (input.attr('data-id').length)
+              {
+                data[input.attr("name")] = input.attr('data-id');
+              }
+              else if (input.val().trim().length > 0)
+              {
+                data[input.attr("name")] = 0;
+                data["new_company_name"] = input.val().trim();
+              }
+              if (input.attr('data-old-id'))
+              {
+                data['company_old'] = input.attr('data-old-id');
+              }
+              else
+              {
+                data['company_old'] = 0;
+              }
             }
           });
+          if (validation_fail)
+          {
+            alert(validation_message);
+            return;
+          }
           delete data["undefined"];
           var xcsrf = data['csrfmiddlewaretoken'];
           delete data['csrfmiddlewaretoken'];
@@ -88,8 +133,9 @@
                 if (data['status'] == "ok") {
                   _this.setLocationTooltip(); 
                   _this.update_participant_field_data();
+                  InitializeAutocompleteInput(_options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
                   var company = $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantCompanyValue input');
-                  company.attr('data-old-id',company.attr('data-id'));
+                  company.attr('data-old-id',data['company']);
                   $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
                   $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
@@ -332,12 +378,20 @@
       var value = $(input).val().trim();
       if (showPopup && (value.length > 0))
       {  
-        var testValue = value.replace(' ','');
+        var testValue = value.replace(/ /g,'');
         if (/^[a-z0-9]+$/i.test(testValue)) 
         {
-          $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
-          $('#participantDetailsWrapper').find('.errorMessage').empty();
-          $(input).parent().find('.newCompanyCreationPopup').show();
+          if (value.length <= 30)
+          {
+            $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
+            $('#participantDetailsWrapper').find('.errorMessage').empty();
+            $(input).parent().find('.newCompanyCreationPopup').show();
+          }
+          else
+          {
+            $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
+            $('.participantCompanyValue').find('.errorMessage').text('This company name cannot have more than 30 characters!');
+          }
         }
         else
         {

@@ -1,6 +1,7 @@
 ''' API calls with respect to groups '''
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from urllib import urlencode
 
 from lib.util import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
@@ -86,6 +87,26 @@ def update_project(project_id, project_data, project_object=JsonObject):
     )
 
     return JP.from_json(response.read(), project_object)
+
+
+@api_error_protect
+def get_all_projects(course_id=None, content_id=None, project_object=JsonObject):
+    ''' update existing project '''
+
+    qs_params = {}
+    if course_id and content_id:
+        qs_params["course_id"]=course_id
+        qs_params["content_id"]=content_id
+    response = GET(
+        '{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            PROJECT_API,
+            urlencode(qs_params),
+        ),
+    )
+
+    return JP.from_json(response.read(), project_object)
+
 
 @api_error_protect
 def get_project_workgroups(project_id, workgroup_object=workgroup_models.Workgroup):

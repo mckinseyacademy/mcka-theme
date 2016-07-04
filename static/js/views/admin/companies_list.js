@@ -55,39 +55,48 @@
             var value = $(company_name_input).val().trim();
             if( value != '')
             { 
-              var testValue = value.replace(/ /g,'');
-              if (/^[a-z0-9]+$/i.test(testValue)) 
+              if (value.length <= 30)
               {
-                var url = ApiUrls.company + 'new_company?company_display_name=' + value;
-                var options = {
-                  url: url,
-                  type: "GET",
-                  dataType: "json"
-                };
-                options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
-                $.ajax(options)
-                .done(function(data) 
-                { 
-                  if(data['status'] == 'error')
-                  {
-                    $(errorContainer).text(data['message']);
-                    $(create_button).attr('disabled', 'disabled');
-                    $(create_button).addClass('disabled');
-                  }
-                  else if(data['status'] == 'ok')
-                  {
-                    $(errorContainer).empty();
-                    $(create_button).removeAttr('disabled');
-                    $(create_button).removeClass('disabled');
-                  }
-                })
-                .fail(function(data) {
-                  console.log("Ajax failed to fetch data");
-                });
+                var testValue = value.replace(/ /g,'');
+                if (/^[a-z0-9]+$/i.test(testValue)) 
+                {
+                  var url = ApiUrls.company + 'new_company?company_display_name=' + value;
+                  var options = {
+                    url: url,
+                    type: "GET",
+                    dataType: "json"
+                  };
+                  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+                  $.ajax(options)
+                  .done(function(data) 
+                  { 
+                    if(data['status'] == 'error')
+                    {
+                      $(errorContainer).text(data['message']);
+                      $(create_button).attr('disabled', 'disabled');
+                      $(create_button).addClass('disabled');
+                    }
+                    else if(data['status'] == 'ok')
+                    {
+                      $(errorContainer).empty();
+                      $(create_button).removeAttr('disabled');
+                      $(create_button).removeClass('disabled');
+                    }
+                  })
+                  .fail(function(data) {
+                    console.log("Ajax failed to fetch data");
+                  });
+                }
+                else
+                {
+                  $(errorContainer).text('This company name cannot contain non-alphanumeric characters!');
+                  $(create_button).attr('disabled', 'disabled');
+                  $(create_button).addClass('disabled');
+                }
               }
               else
               {
-                $(errorContainer).text('This company name cannot contain non-alphanumeric characters!');
+                $(errorContainer).text('This company name cannot have more than 30 characters!');
                 $(create_button).attr('disabled', 'disabled');
                 $(create_button).addClass('disabled');
               }
