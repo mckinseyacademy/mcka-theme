@@ -35,6 +35,7 @@
         - if apros_features.ADMIN_COMPANIES_TAB
           %li
             %a{href: '/admin/companies'}= _("Companies")
+      - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
         %li
           %a{href: '/admin/permissions'}= _("Roles & Permissions")
       - if user.is_client_admin
