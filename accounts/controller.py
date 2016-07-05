@@ -143,6 +143,16 @@ def process_access_key(user, access_key, client):
 
                 if enroll_in_course_result.new_enrollment:
                     new_enrollements_course_ids.append(enroll_in_course_result.course_id)
+    else:
+        enroll_in_course_result = enroll_student_in_course_without_program(user, access_key.course_id)
+        if enroll_in_course_result.message:
+            processing_messages.append(enroll_in_course_result.message)
+
+        if enroll_in_course_result.enrolled:
+            enrolled_in_course_ids.append(enroll_in_course_result.course_id)
+
+            if enroll_in_course_result.new_enrollment:
+                new_enrollements_course_ids.append(enroll_in_course_result.course_id)
 
     return ProcessAccessKeyResult(
         enrolled_in_course_ids=enrolled_in_course_ids, new_enrollements_course_ids=new_enrollements_course_ids,
@@ -212,6 +222,35 @@ def enroll_student_in_course(user, program, course_id):
             _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
         )
     return EnrollStudentInCourseResult(course_id, enrolled, new_enrollment, message)
+
+
+def enroll_student_in_course_without_program(user, course_id):
+    """
+    Enroll the given user to the specified course
+    Returns EnrollStudentInCourseResult, containing the course_id (if exists) and messages (if any)
+    """
+    enrolled, new_enrollment = False, False
+    try:
+        user_api.enroll_user_in_course(user.id, course_id)
+        message = (
+            messages.INFO, _("Successfully enrolled you in a course {}.").format(course_id)
+        )
+        enrolled, new_enrollment = True, True
+    except ApiError as e:
+        if e.code == 409:
+            message = (
+                messages.INFO,
+                _('You are already enrolled in course "{}"').format(course_id)
+            )
+            enrolled = True
+        else:
+            message = (
+                messages.ERROR,
+                _('Unable to enroll you in course "{}".').format(course_id)
+            )
+
+    return EnrollStudentInCourseResult(course_id, enrolled, new_enrollment, message)
+
 
 def send_password_reset_email(domain, user, use_https, 
                             subject_template_name='registration/password_reset_subject.txt',
