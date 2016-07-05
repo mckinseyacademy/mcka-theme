@@ -92,6 +92,149 @@
       this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
       $(document).on('onSearchEvent', { extra : this}, this.onSearchEvent);
       $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
+
+      $('#mainCourseDetailsWrapper').on('click', '.courseTagsIcon', function()
+      {
+        var course_tags_modal = $('#courseTagsModal');
+        var errorMessage = course_tags_modal.find('.errorMessage');
+        var addTagButton = course_tags_modal.find('.addTagButton');
+        var courseTagsInput = course_tags_modal.find('.courseTagsInput');
+        errorMessage.empty();
+        addTagButton.addClass('disabled');
+        courseTagsInput.val('');
+        var tag_id = 0;
+        course_tags_modal.find('.newTagCreationPopup').hide();
+        var course_id = $('#courseDetailsDataWrapper').attr('data-id');
+        course_tags_modal.find('.courseTagsModalControl').find('.closeModal').off().on('click', function()
+        {
+          course_tags_modal.find('a.close-reveal-modal').trigger('click');
+        });
+        var url = ApiUrls.tags + '?course_id=' + course_id;
+        InitializeAutocompleteInput(url, '.courseTagsList input');
+        $(document).on('autocomplete_found', function(event, input)
+        {
+          if (input.parent().hasClass('courseTagsList'))
+          {
+            errorMessage.empty();
+            _this.manageNewTagPopup(input, false);
+            addTagButton.removeClass('disabled');
+          }
+        });
+        $(document).on('autocomplete_not_found', function(event, input)
+        {
+          if (input.parent().hasClass('courseTagsList'))
+          {
+            errorMessage.empty();
+            _this.manageNewTagPopup(input, true);
+          }
+        });
+        course_tags_modal.on('click', '.addTagButton', function()
+        {
+          if ($(this).hasClass('disabled'))
+            return;
+          $(this).addClass('disabled');
+          if (courseTagsInput.attr('data-id'))
+          {
+            tag_id = courseTagsInput.attr('data-id');
+            _this.addTagToCourse(tag_id, course_id);
+          }
+          else
+          {
+            var tag_name = courseTagsInput.val().trim();
+            var data = {"name": tag_name};
+            var url = ApiUrls.tags;
+            var options = {
+              url: url,
+              data: data,
+              type: "POST",
+              dataType: "json"
+            };
+            options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+            $.ajax(options)
+            .done(function(data) {
+              if (data['status'] == 'ok')
+              {
+                tag_id = parseInt(data['id']);
+                _this.addTagToCourse(tag_id, course_id);
+              }
+              else if (data['status'] == 'error')
+              {
+                alert("Couldn't create new tag!")
+                return;
+              }
+            })
+            .fail(function(data) {
+              console.log("Ajax failed to fetch data");
+            });
+          }
+        });
+        course_tags_modal.foundation('reveal', 'open');
+      });
+      $('#mainCourseDetailsWrapper').find('.courseDetailsTagsList').hover(function() {
+        var course_id = $('#courseDetailsDataWrapper').attr('data-id');
+        var tag_id = $(this).attr('data-id');
+        $(this).find('.courseTagsDeleteIcon').show();
+        $(this).on('click', '.courseTagsDeleteIcon', function(event)
+        {
+          event.stopPropagation();
+          var url = ApiUrls.courses_list + '/' + course_id + '/tags?tag_id=' + tag_id;
+          var options = {
+            url: url,
+            type: "DELETE",
+            dataType: "json"
+          };
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+          $.ajax(options)
+          .done(function(data) {
+            if (data['status'] == 'ok')
+            {
+              location.reload();
+            }
+            else if (data['status'] == 'error')
+            {
+              alert("Couldn't delete tag!")
+              return;
+            }
+          })
+          .fail(function(data) {
+            console.log("Ajax failed to fetch data");
+          });
+        });
+      }, function(){
+        $(this).find('.courseTagsDeleteIcon').hide();
+      });
+      $('#mainCourseDetailsWrapper').on('click', '.courseDetailsTagsList', function()
+      {
+        var tag_courses_modal = $('#tagCoursesListModal');
+        var tagCoursesListBlock = tag_courses_modal.find('#tagCoursesListBlock');
+        tagCoursesListBlock.empty();
+        var tagCoursesListView
+        var tag_id = $(this).attr('data-id');
+        var url = ApiUrls.tags + '/' + tag_id;
+        var tagCourses = new Apros.collections.TagCourses({ url : url});
+        tagCourses.fetch({success: function(){
+          tagCoursesListView = new bbGrid.View({
+            container: tagCoursesListBlock,
+            collection: tagCourses,
+            colModel:[
+            { title: 'Course Name', index: true, name: 'display_name',
+              actions: function(id, attributes){ 
+                var thisId = attributes['course_id']
+                var name = attributes['display_name']
+                if (name.length > 75){
+                  return '<a href="/admin/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
+                }
+                return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+              } 
+            },
+            { title: 'Course ID', index: true, name: 'course_id' }
+          ]});
+          tagCoursesListView.render();
+          var text = '' + tagCourses.length + ' Courses Tagged with "' + tagCourses.tagDetails + '"';
+          tag_courses_modal.find('.tagCoursesListTitle').text(text);
+          tag_courses_modal.foundation('reveal', 'open');
+        }});
+      });
     },
     fetchPages: function(event){
       var _this = event.data.extra;
@@ -250,5 +393,65 @@
           });
       }, 3000);
       return interval_id;
+    },
+    manageNewTagPopup: function(input, showPopup)
+    { 
+      var value = $(input).val().trim();
+      if (showPopup && (value.length > 0))
+      {  
+        var testValue = value.replace(/ /g,'');
+        if (/^[a-z0-9]+$/i.test(testValue)) 
+        {
+          if (value.length <= 30)
+          {
+            $('#courseTagsModal').find('.addTagButton').removeClass('disabled');
+            $('#courseTagsModal').find('.errorMessage').empty();
+            $(input).parent().find('.newTagCreationPopup').show();
+          }
+          else
+          {
+            $('#courseTagsModal').find('.addTagButton').addClass('disabled');
+            $('#courseTagsModal').find('.errorMessage').text('This tag name cannot have more than 30 characters!');
+            $(input).parent().find('.newTagCreationPopup').hide();
+          }
+        }
+        else
+        {
+          $('#courseTagsModal').find('.addTagButton').addClass('disabled');
+          $('#courseTagsModal').find('.errorMessage').text('This tag name cannot contain non-alphanumeric characters!');
+          $(input).parent().find('.newTagCreationPopup').hide();
+        }
+      }
+      else
+      {
+        $(input).parent().find('.newTagCreationPopup').hide();
+      }
+    },
+    addTagToCourse: function(tag_id, course_id)
+    {
+      var data = {"tag_id": tag_id};
+      var url = ApiUrls.courses_list + '/' + course_id + '/tags';
+      var options = {
+        url: url,
+        data: data,
+        type: "POST",
+        dataType: "json"
+      };
+      options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+      $.ajax(options)
+      .done(function(data) {
+        if (data['status'] == 'ok')
+        { 
+          location.reload();
+        }
+        else if (data['status'] == 'error')
+        {
+          alert("Couldn't add tag to course!")
+          return;
+        }
+      })
+      .fail(function(data) {
+        console.log("Ajax failed to fetch data");
+      });
     }
   });
