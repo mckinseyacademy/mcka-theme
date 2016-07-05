@@ -1701,6 +1701,10 @@ def access_key_list(request, client_id):
                     instance += ": {}".format(courses.get(course_id, _("Invalid Course Run")))
             else:
                 instance = _("Invalid Program ID")
+        else:
+            if course_id:
+                courses = {course_id: course_id}
+                instance += "Course: {}".format(courses.get(course_id, _("Invalid Course Run")))
         return instance
 
     client = Client.fetch(client_id)
