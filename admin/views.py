@@ -1015,6 +1015,11 @@ def course_details(request, course_id):
     for email_template in list_of_email_templates:    
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
+    course_tags = course_api.get_course_groups(course_id=course_id, group_type='tag')
+    course['tags'] = []
+    for tag in course_tags:
+        course['tags'].append(vars(tag))
+
     return render(request, 'admin/courses/course_details.haml', course)
 
 class course_details_stats_api(APIView):
@@ -4596,3 +4601,87 @@ class company_edit_api(APIView):
             return Response({"status":"error", "message": error})
         return Response({"status":"ok", "message": "Company name successfully changed!"})
 
+
+class tags_list_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request):
+
+        course_id = request.GET.get('course_id', None)
+        tags = group_api.get_groups_of_type(group_type='tag')
+        allTagsList = []
+        response = {}
+        ids = []
+        if course_id:
+            course_tags = course_api.get_course_groups(course_id=course_id, group_type='tag')
+            for tag in course_tags:
+                ids.append(vars(tag)['id'])
+        for tag in tags:
+            tag = vars(tag)
+            if tag['id'] not in ids:
+                tag['data'] = vars(tag['data'])
+                tag['display_name'] = tag['name']
+                allTagsList.append(tag)
+        response['all_items'] = allTagsList
+        response['status'] = 'ok'
+        return Response(response)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request):
+
+        tag_name = request.DATA.get('name', None)
+        if tag_name:
+            try:
+                response = group_api.create_group(group_name=tag_name, group_type='tag')
+            except ApiError as e:
+                return Response({'status':'error', 'message': e.message})
+            return Response({'status':'ok', 'message':'Tag created!', 'id': vars(response)['id']})
+        else:
+            return Response({'status':'error', 'message':"You need to select tag's name!"})
+        return Response(tag)
+
+
+class tag_details_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, tag_id):
+
+        tag = group_api.fetch_group(group_id=tag_id)
+        tag = vars(tag)
+        tag['data'] = vars(tag['data'])
+        for i in range(0, len(tag['resources'])):
+            tag['resources'][i] = vars(tag['resources'][i])
+        tag['courses'] = []
+        courses = group_api.get_courses_in_group(group_id=tag_id)
+        for course in courses:
+            tag['courses'].append(vars(course))
+        return Response(tag)
+
+
+class course_details_tags_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+
+        tag_id = request.DATA.get('tag_id', None)
+        if tag_id:
+            try:
+                response = group_api.add_course_to_group(course_id=course_id, group_id=tag_id)
+            except ApiError as e:
+                return Response({'status':'error', 'message': e.message})
+            return Response({'status':'ok', 'message':'Tag added to Course!'})
+        else:
+            return Response({'status':'error', 'message':'You need to select tag!'})
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, request, course_id):
+
+        tag_id = request.GET.get('tag_id', None)
+        if tag_id:
+            try:
+                response = group_api.remove_course_from_group(course_id=course_id, group_id=tag_id)
+            except ApiError as e:
+                return Response({'status':'error', 'message': e.message})
+            return Response({'status':'ok', 'message':'Tag removed from Course!'})
+        else:
+            return Response({'status':'error', 'message':'You need to select tag!'})

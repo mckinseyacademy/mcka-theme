@@ -38,6 +38,7 @@ urlpatterns = patterns(
     url(r'^api/courses/(?P<course_id>.*)/engagement/$', views.course_details_engagement_api.as_view(), name='course_details_engagement_api'),
     url(r'^api/courses/(?P<course_id>.*)/performance/$', views.course_details_performance_api.as_view(), name='course_details_performance_api'),
     url(r'^api/courses/(?P<course_id>.*)/timeline/$', views.course_details_cohort_timeline_api.as_view(), name='course_details_cohort_timeline_api'),
+    url(r'^api/courses/(?P<course_id>.*)/tags$', views.course_details_tags_api.as_view(), name='course_details_tags_api'),
     url(r'^api/courses/(?P<course_id>.+)$', views.course_details_api.as_view(), name='course_details_api'),
     url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
     url(r'^courses/(?P<course_id>.*)/download_course_stats/$', views.download_course_stats, name='download_course_stats'),
@@ -142,6 +143,9 @@ urlpatterns = patterns(
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
     url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
     url(r'^companies$', views.companies_list, name='companies_list'),
+
+    url(r'^api/tags/(?P<tag_id>[0-9]+)', views.tag_details_api.as_view(), name='tag_details_api'),
+    url(r'^api/tags$', views.tags_list_api.as_view(), name='tags_list_api'),
 
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),

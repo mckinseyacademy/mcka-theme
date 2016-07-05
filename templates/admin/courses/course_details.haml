@@ -15,6 +15,11 @@
                       ={name}  
                       ={id}
                     .courseDetailsTags
+                      - for tag in tags
+                        .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
+                          ={tag.name}
+                          %i.fa.fa-times.courseTagsDeleteIcon
+                      %i.fa.fa-pencil.courseTagsIcon
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock
                       - if start == '-' or end == '-'
@@ -134,5 +139,32 @@
           %a.previewEmail{:href => "#"} Preview email
           %a.scheduleForLater{:href => "#"} Schedule for Later
 
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
+
+
+  #courseTagsModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2 Add Tags to this Course
+    %hr
+    .row
+      .large-6.columns
+        .courseTagsList
+          %input.courseTagsInput{:type => "text", :value => '', :name => "tag_name" }
+          .errorMessage
+          .newTagCreationPopup
+            Since this tag does not yet exist, a new Tag will be created. If this is an error, try selecting your tag from the type-ahead results.
+    .row.courseTagsModalControl
+      .button.addTagButton.small.radius
+        Save
+      %a.closeModal{:href => "#"} Cancel
+    %a.close-reveal-modal{"aria-label" => "Close"}
+      &#215;
+
+
+  #tagCoursesListModal.reveal-modal.tiny{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    %h2.tagCoursesListTitle
+    %hr
+    .row
+      #tagCoursesListBlock
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
