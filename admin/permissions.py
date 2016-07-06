@@ -11,6 +11,7 @@ from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
 from api_client.api_error import ApiError
 from django.conf import settings
+from django.core.cache import cache
 
 
 class PermissionSaveError(Exception):
@@ -25,7 +26,7 @@ class Permissions(object):
         USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA,
         USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
     }
-    CACHE_EXPIRE_TIME = 60 # every one minute it will refresh courses list
+    CACHE_EXPIRE_TIME = 300 # every five minutes it will refresh courses list
     def __init__(self, user_id, ):
         self.permission_groups = self.get_groups_of_type_permission_cached()
         self.current_permissions = [pg.name for pg in user_api.get_user_groups(user_id, PERMISSION_TYPE)]
@@ -162,6 +163,64 @@ class Permissions(object):
             group_api.remove_user_from_group(self.user_id, group_id)
             if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
                 internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
+    
+    def add_company_admin_permission(self, organization_id):
+        group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
+        if group_id:
+            all_organization_groups = organization_api.get_all_organization_groups(organization_id)
+            add_company_admin_group = True
+            for organization_group in all_organization_groups:
+                if organization_group["type"] == PERMISSION_TYPE and int(group_id) == int(organization_group["id"]):
+                    add_company_admin_group = False 
+                    break
+            if add_company_admin_group:
+                organization_api.add_group_to_organization(organization_id, group_id)
+            if organization_api.add_user_to_organization(organization_id, self.user_id):
+                group_api.add_user_to_group(self.user_id, group_id)
+                organization_api.add_users_to_organization_group(organization_id, group_id, self.user_id)
+
+    def remove_company_admin_permission(self, organization_id):
+        group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
+        if group_id:
+            user_organizations = self.get_all_user_organizations_with_permissions()
+            if user_organizations["company_num"] > 1:
+                organization_api.remove_users_from_organization(organization_id, self.user_id)
+
+            remove_global_company_admin = True
+            if len(user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN]) > 1:
+                remove_global_company_admin = False
+                
+            if remove_global_company_admin:
+                group_api.remove_user_from_group(self.user_id, group_id)
+            organization_api.remove_users_from_organization_group(organization_id, group_id, self.user_id)
+
+    def check_if_company_admin(self, organization_id, group_id = None):
+        if not group_id:
+            group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
+        if group_id:
+            company_admin_list = organization_api.get_users_from_organization_group(organization_id, group_id)
+            for company_admin in company_admin_list:
+                if int(company_admin["id"]) == int(self.user_id):
+                    return True
+            return False
+        else:
+            return False
+
+    def get_all_user_organizations_with_permissions(self):
+        group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
+        user_statuses = {PERMISSION_GROUPS.COMPANY_ADMIN:[], "main_company":[], "company_num":0}
+        if group_id:
+            organizations_list = user_api.get_user_organizations(self.user_id)
+            user_statuses["company_num"] = len(organizations_list)
+            for organization in organizations_list:
+                organization_data = vars(organization)
+                if self.check_if_company_admin(organization_data["id"], group_id):
+                    user_statuses[PERMISSION_GROUPS.COMPANY_ADMIN].append(organization)
+                else:
+                    user_statuses["main_company"].append(organization)
+            if user_statuses["company_num"] > 0 and len(user_statuses["main_company"]) == 0: #naive approach that main company is first company
+                user_statuses["main_company"].append(user_statuses[PERMISSION_GROUPS.COMPANY_ADMIN][0])
+        return user_statuses
 
 
 class SlimAddingPermissions(object):

@@ -3342,6 +3342,7 @@ class participants_list_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request):
         post_data = json.loads(request.body)
+        print post_data
         form = CreateNewParticipant(post_data.copy())
         if form.is_valid():
             filterUsers = {}
@@ -3403,13 +3404,16 @@ class participants_list_api(APIView):
                         if course_permission['role'] != 'active':
                             course_permission['role'] = roles[course_permission['role']]
                             courses_permissions_list.append(course_permission)
-                    if len(courses_permissions_list) > 0 or data['company_permissions'] != 'none':
+                    if len(courses_permissions_list) > 0 or data.get('company_permissions', None) or len(data.get('company_permissions_list', [])):
                         permissions = Permissions(user_data['id'])
                     if len(courses_permissions_list) > 0:
                         permissions.update_courses_roles_list(courses_permissions_list)
-                    if data['company_permissions'] != 'none':
+                    if data.get('company_permissions', None):
                         if data['company_permissions'] in permissions_groups:
                             permissions.add_permission(permissions_groups[data['company_permissions']])
+                    for company_admin_permission in data.get('company_permissions_list', []):
+                        permissions.add_company_admin_permission(company_admin_permission)
+
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
                 return Response({'status':'ok', 'message':'Successfully added new user!', 'user_id': user_data['id']})
@@ -4184,20 +4188,23 @@ class email_send_api(APIView):
         return Response(response)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
 
 class companies_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request):
         companies = []
         user_organizations = None
         clients = Client.list()
         if request.user.is_client_admin:
             user_organizations = user_api.get_user_organizations(request.user.id)
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
         for client in clients:
             if user_organizations:
                 for user_org in user_organizations:

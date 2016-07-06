@@ -243,6 +243,9 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 
 		        delete data["undefined"];
 		        data['course_permissions_list'] = _this.getAllCourses();
+		        data['company_permissions_list'] = _this.getAllCompanies();
+		        if (data['company_permissions'] == 'none')
+		        	data['company_permissions'] = null;
 		        data['send_activation_email'] = mainContainer.find('.emailActivationLinkCheckboxWrapper').find('input').is(":checked");
 		        $.ajax({
 		        type: 'POST',
@@ -305,6 +308,22 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         }
       });
       return courseArray;
+    },
+    getAllCompanies: function()
+    {
+      var companyContainer = $('#add_a_participant').find('.adminAnotherCompanyAllWrapper');
+      var companyArray = [];
+      companyContainer.find('.row').each(function()
+      {
+        var company = $(this);
+        var companyObject = {};
+        var companyId = company.find('input').attr('data-id');
+        if (companyId != '')
+        {
+          companyArray.push(companyId);
+        }
+      });
+      return companyArray;
     },
     manageNewCompanyPopup: function(input, showPopup)
     { 
