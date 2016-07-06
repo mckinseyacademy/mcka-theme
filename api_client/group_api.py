@@ -30,6 +30,11 @@ PERMISSION_GROUPS = DottableDict(
     COMPANY_ADMIN ='mcka_role_company_admin',
 )
 
+TAG_GROUPS = DottableDict(
+    INTERNAL='tag:internal',
+    COMMON='tag',
+)
+
 @api_error_protect
 def get_groups_of_type(group_type, group_object=JsonObject, *args, **kwargs):
     ''' gets all groups of provided type'''

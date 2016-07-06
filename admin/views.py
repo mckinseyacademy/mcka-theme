@@ -31,7 +31,7 @@ from django.views.generic.base import View
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course
-from api_client.group_api import PERMISSION_GROUPS
+from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
@@ -66,7 +66,8 @@ from .controller import (
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name
+    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses, check_if_course_is_internal,
+    check_if_user_is_internal
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -933,22 +934,46 @@ class courses_list_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, format=None):
+
         allCourses = course_api.get_courses_list(request.GET)
-        for course in allCourses:
-            if course['start'] is not None:
-                start = parsedate(course['start'])
-                course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
-            if course['end'] is not None:
-                end = parsedate(course['end'])
-                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
-            for data in course:
-                if course.get(data) is None:
-                    course[data] = "-"        
-        return Response(allCourses)
+
+        if request.user.is_internal_admin:
+            courses = []
+            internal_ids = get_internal_courses()
+            for course in allCourses:
+                if course['id'] in internal_ids:
+                    if course['start'] is not None:
+                        start = parsedate(course['start'])
+                        course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
+                    if course['end'] is not None:
+                        end = parsedate(course['end'])
+                        course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
+                    for data in course:
+                        if course.get(data) is None:
+                            course[data] = "-"   
+                    courses.append(course)
+            return Response(courses)  
+        else:
+            for course in allCourses:
+                if course['start'] is not None:
+                    start = parsedate(course['start'])
+                    course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
+                if course['end'] is not None:
+                    end = parsedate(course['end'])
+                    course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
+                for data in course:
+                    if course.get(data) is None:
+                        course[data] = "-"     
+            return Response(allCourses)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_details(request, course_id):
+
+    if request.user.is_internal_admin:
+        internal_flag = check_if_course_is_internal(course_id)
+        if internal_flag == False:
+            return permission_denied(request)
 
     course = course_api.get_course_details(course_id)
     course_metrics_end = datetime.now().strftime("%m/%d/%Y")
@@ -1015,7 +1040,9 @@ def course_details(request, course_id):
     for email_template in list_of_email_templates:    
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
-    course_tags = course_api.get_course_groups(course_id=course_id, group_type='tag')
+    course_tags = []
+    for tag_type in TAG_GROUPS:
+        course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
     course['tags'] = []
     for tag in course_tags:
         course['tags'].append(vars(tag))
@@ -3028,6 +3055,12 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
+
+    if request.user.is_internal_admin:
+        internal_flag = check_if_course_is_internal(course_id)
+        if internal_flag == False:
+            return permission_denied(request)
+
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     selected_project_id = request.GET.get("project_id", None)
@@ -3423,6 +3456,12 @@ class participants_list_api(APIView):
 class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id):
+
+        if request.user.is_internal_admin:
+            internal_flag = check_if_user_is_internal(user_id)
+            if internal_flag == False:
+                return permission_denied(request)
+
         selectedUserResponse = user_api.get_user(user_id)
         userOrganizations = user_api.get_user_organizations(user_id)
         userOrganizationsList =[]
@@ -3600,7 +3639,7 @@ class participant_details_active_courses_api(APIView):
         include_slow_fields = request.GET.get('include_slow_fields', 'false')
 
         if include_slow_fields == 'false':
-            active_courses, course_history = get_user_courses_helper(user_id)
+            active_courses, course_history = get_user_courses_helper(user_id, request)
             return Response(active_courses)
         elif include_slow_fields == 'true':  
             fetch_courses =[]
@@ -3622,7 +3661,7 @@ class participant_details_active_courses_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_active_courses_stats(request, user_id):
 
-    active_courses, course_history = get_user_courses_helper(user_id)
+    active_courses, course_history = get_user_courses_helper(user_id, request)
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="active_courses_stats.csv"'
@@ -3670,7 +3709,7 @@ class participant_details_course_history_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id, format=None):
 
-        active_courses, course_history = get_user_courses_helper(user_id)
+        active_courses, course_history = get_user_courses_helper(user_id, request)
 
         user_grades = user_api.get_user_grades(user_id)
 
@@ -3695,7 +3734,7 @@ class participant_details_course_history_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_course_history_stats(request, user_id):
 
-    active_courses, course_history = get_user_courses_helper(user_id)
+    active_courses, course_history = get_user_courses_helper(user_id, request)
     user_grades = user_api.get_user_grades(user_id)
     for grade in user_grades:
         for user_course in course_history:
@@ -4615,12 +4654,16 @@ class tags_list_api(APIView):
     def get(self, request):
 
         course_id = request.GET.get('course_id', None)
-        tags = group_api.get_groups_of_type(group_type='tag')
+        tags = []
+        for tag_type in TAG_GROUPS:
+            tags.extend(group_api.get_groups_of_type(group_type=TAG_GROUPS[tag_type]))
         allTagsList = []
         response = {}
         ids = []
         if course_id:
-            course_tags = course_api.get_course_groups(course_id=course_id, group_type='tag')
+            course_tags = []
+            for tag_type in TAG_GROUPS:
+                course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
             for tag in course_tags:
                 ids.append(vars(tag)['id'])
         for tag in tags:
@@ -4638,10 +4681,16 @@ class tags_list_api(APIView):
 
         tag_name = request.DATA.get('name', None)
         if tag_name:
-            try:
-                response = group_api.create_group(group_name=tag_name, group_type='tag')
-            except ApiError as e:
-                return Response({'status':'error', 'message': e.message})
+            if tag_name == 'INTERNAL':
+                try:
+                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+            else:
+                try:
+                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.COMMON)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
             return Response({'status':'ok', 'message':'Tag created!', 'id': vars(response)['id']})
         else:
             return Response({'status':'error', 'message':"You need to select tag's name!"})
@@ -4671,12 +4720,13 @@ class course_details_tags_api(APIView):
     def post(self, request, course_id):
 
         tag_id = request.DATA.get('tag_id', None)
-        if tag_id:
+        tag_name = request.DATA.get('tag_name', None)
+        if tag_id and tag_name:
             try:
                 response = group_api.add_course_to_group(course_id=course_id, group_id=tag_id)
             except ApiError as e:
                 return Response({'status':'error', 'message': e.message})
-            return Response({'status':'ok', 'message':'Tag added to Course!'})
+            return Response({'status':'ok', 'message':'Tag added to Course!', 'id': tag_id, 'name': tag_name})
         else:
             return Response({'status':'error', 'message':'You need to select tag!'})
 

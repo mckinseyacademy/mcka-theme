@@ -31,7 +31,7 @@
         - if apros_features.ADMIN_PARTICIPANTS_TAB
           %li
             %a{href: '/admin/participants'}= _("Participants")
-      - if user.is_mcka_admin or user.is_internal_admin or user.is_client_admin or user.is_mcka_subadmin or user.is_company_admin
+      - if user.is_mcka_admin or user.is_client_admin or user.is_mcka_subadmin or user.is_company_admin
         - if apros_features.ADMIN_COMPANIES_TAB
           %li
             %a{href: '/admin/companies'}= _("Companies")
