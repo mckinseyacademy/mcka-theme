@@ -136,11 +136,20 @@
           if (courseTagsInput.attr('data-id'))
           {
             tag_id = courseTagsInput.attr('data-id');
-            _this.addTagToCourse(tag_id, course_id);
+            tag_name = courseTagsInput.val();
+            if (tag_name.toLowerCase() == 'internal')
+            {
+              tag_name = tag_name.toUpperCase();
+            }
+            _this.addTagToCourse(tag_id, course_id, tag_name);
           }
           else
           {
             var tag_name = courseTagsInput.val().trim();
+            if (tag_name.toLowerCase() == 'internal')
+            {
+              tag_name = tag_name.toUpperCase();
+            }
             var data = {"name": tag_name};
             var url = ApiUrls.tags;
             var options = {
@@ -155,7 +164,7 @@
               if (data['status'] == 'ok')
               {
                 tag_id = parseInt(data['id']);
-                _this.addTagToCourse(tag_id, course_id);
+                _this.addTagToCourse(tag_id, course_id, tag_name);
               }
               else if (data['status'] == 'error')
               {
@@ -170,12 +179,14 @@
         });
         course_tags_modal.foundation('reveal', 'open');
       });
-      $('#mainCourseDetailsWrapper').find('.courseDetailsTagsList').hover(function() {
+      $('#mainCourseDetailsWrapper').on('mouseover', '.courseDetailsTagsList', function() 
+      {
         var course_id = $('#courseDetailsDataWrapper').attr('data-id');
         var tag_id = $(this).attr('data-id');
+        var _thisTag = this;
         $(this).find('.courseTagsDeleteIcon').show();
         $(this).on('click', '.courseTagsDeleteIcon', function(event)
-        {
+        { 
           event.stopPropagation();
           var url = ApiUrls.courses_list + '/' + course_id + '/tags?tag_id=' + tag_id;
           var options = {
@@ -188,7 +199,7 @@
           .done(function(data) {
             if (data['status'] == 'ok')
             {
-              location.reload();
+              _thisTag.remove();
             }
             else if (data['status'] == 'error')
             {
@@ -200,7 +211,9 @@
             console.log("Ajax failed to fetch data");
           });
         });
-      }, function(){
+      });
+      $('#mainCourseDetailsWrapper').on('mouseout', '.courseDetailsTagsList', function() 
+      {
         $(this).find('.courseTagsDeleteIcon').hide();
       });
       $('#mainCourseDetailsWrapper').on('click', '.courseDetailsTagsList', function()
@@ -427,9 +440,9 @@
         $(input).parent().find('.newTagCreationPopup').hide();
       }
     },
-    addTagToCourse: function(tag_id, course_id)
+    addTagToCourse: function(tag_id, course_id, tag_name)
     {
-      var data = {"tag_id": tag_id};
+      var data = {"tag_id": tag_id, "tag_name": tag_name};
       var url = ApiUrls.courses_list + '/' + course_id + '/tags';
       var options = {
         url: url,
@@ -442,7 +455,17 @@
       .done(function(data) {
         if (data['status'] == 'ok')
         { 
-          location.reload();
+          var courseTagsIcon = $('#courseDetailsDataWrapper').find('.courseTagsIcon');
+          var newTag = $('<div class="courseDetailsTagsList button small radius"></div>');
+          newTag.attr('data-id', data['id']);
+          newTag.val(data['name']);
+          newTag.text(data['name']);
+          newTag.css('margin-right', '5px');
+          var deleteTagIcon = $('<i class="fa fa-times courseTagsDeleteIcon"></i>');
+          deleteTagIcon.css('padding-left', '5px');
+          newTag.append(deleteTagIcon);
+          courseTagsIcon.before(newTag);
+          $('#courseTagsModal').find('a.close-reveal-modal').trigger('click');
         }
         else if (data['status'] == 'error')
         {

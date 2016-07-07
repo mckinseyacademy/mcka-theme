@@ -15,11 +15,16 @@
                       ={name}  
                       ={id}
                     .courseDetailsTags
-                      - for tag in tags
-                        .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
-                          ={tag.name}
-                          %i.fa.fa-times.courseTagsDeleteIcon
-                      %i.fa.fa-pencil.courseTagsIcon
+                      - if user.is_internal_admin
+                        - for tag in tags
+                          .courseDetailsTagsListInternal.button.small.radius
+                            ={tag.name}
+                      - else
+                        - for tag in tags
+                          .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
+                            %span ={tag.name}
+                            %i.fa.fa-times.courseTagsDeleteIcon
+                        %i.fa.fa-pencil.courseTagsIcon
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock
                       - if start == '-' or end == '-'
@@ -51,8 +56,12 @@
                 #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                   .bulkButtonWrapper
                     .hiddenButtonSplitModifier.bulkButton.disabled
-                    %a.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
-                      Email Selected Participants
+                    - if user.is_internal_admin
+                      %a.bulkEmailSelectedParticipantsInternal.button.disabled{:href => "#"}
+                        Email Selected Participants
+                    - else
+                      %a.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
+                        Email Selected Participants
                     %a.button.bulkDropdownIcon.bulkButton.disabled
                       .fa.fa-chevron-down
                   #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}

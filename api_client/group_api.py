@@ -27,6 +27,12 @@ PERMISSION_GROUPS = DottableDict(
     CLIENT_TA='mcka_role_client_ta',
     CLIENT_OBSERVER='mcka_role_client_observer',
     INTERNAL_ADMIN='mcka_role_internal_admin',
+    COMPANY_ADMIN ='mcka_role_company_admin',
+)
+
+TAG_GROUPS = DottableDict(
+    INTERNAL='tag:internal',
+    COMMON='tag',
 )
 
 @api_error_protect

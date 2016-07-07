@@ -37,6 +37,7 @@ from lib.mail import (
 from lib.util import DottableDict
 
 from api_client.user_api import USER_ROLES
+from api_client.group_api import TAG_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
 
 import threading
@@ -961,6 +962,12 @@ def get_accessible_courses(user):
     else:
         if user.is_mcka_admin or user.is_mcka_subadmin:
             courses_list = course_api.get_course_list_in_pages(course_id_list)
+        elif user.is_internal_admin:
+            courses = course_api.get_course_list_in_pages(course_id_list)
+            internal_courses = get_internal_courses()
+            for course in courses:
+                if vars(course)['id'] in internal_courses:
+                    courses_list.append(course)
         else:
             user_orgs = user_api.get_user_organizations(user.id)
             if len(user_orgs) > 0:
@@ -979,6 +986,10 @@ def get_accessible_courses_from_program(user, program_id, restrict_to_courses_id
                 role.role for role in roles if role.course_id == course.course_id
                 ]
             ]
+
+    if user.is_internal_admin:
+        internal_courses = get_internal_courses()
+        courses = [course for course in courses if course.course_id in internal_courses]
 
     if restrict_to_courses_ids:
         courses = [course for course in courses if course.course_id in restrict_to_courses_ids]
@@ -1334,10 +1345,11 @@ def get_course_users_roles(course_id, permissions_filter_list):
     user_roles_list['ids'] = list(user_roles_list['ids'])
     return user_roles_list
 
-def get_user_courses_helper(user_id):
+def get_user_courses_helper(user_id, request):
 
     user_courses = []
     allCourses = user_api.get_courses_from_user(user_id)
+
     for course in allCourses:
         user_course = {}
         user_course['name'] = course['name']
@@ -1385,6 +1397,11 @@ def get_user_courses_helper(user_id):
                     user_course['status'] = 'Observer'
                 if vars(role)['role'] == 'assistant':
                     user_course['status'] = 'TA'
+
+
+    if request.user.is_internal_admin:
+        internal_ids = get_internal_courses()
+        user_courses = [course for course in user_courses if course['id'] in internal_ids]
 
     active_courses = []
     course_history = []    
@@ -1645,3 +1662,33 @@ def validate_company_display_name(company_display_name):
 
     return {'status': 'ok', 'message':'Company Validation Success!'}
 
+
+def get_internal_courses():
+
+    internal_ids = []
+    internal_tags = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
+    internal_courses = []
+    for internal_tag in internal_tags:
+        internal_courses.extend(group_api.get_courses_in_group(group_id=vars(internal_tag)['id']))
+    for course in internal_courses:
+        internal_ids.append(vars(course)['course_id'])
+
+    return internal_ids
+
+
+def check_if_course_is_internal(course_id):
+
+    internal_ids = get_internal_courses()
+    if str(course_id) in internal_ids:
+        return True
+    return False
+
+
+def check_if_user_is_internal(user_id):
+
+    user_courses = user_api.get_courses_from_user(user_id)
+    internal_ids = get_internal_courses()
+    for course in user_courses:
+        if course['id'] in internal_ids:
+            return True
+    return False
