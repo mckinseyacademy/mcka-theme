@@ -169,6 +169,44 @@ GetAutocompleteSource = function(url, thisToAppend, sourceName){
     console.log(data)
   });
 }
+GetUserAdminCompanies = function(user_id){
+  var options = {
+      url: ApiUrls.company_admin_get_post_put_delete(user_id),
+      type: "GET",
+      dataType: "json",
+      timeout: 10000
+    };
+
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    $(document).trigger('admin_companies_get', [data])
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+PutUserAdminCompanies = function(user_id, list_of_company_ids){
+  var options = {
+      url: ApiUrls.company_admin_get_post_put_delete(user_id),
+      type: "PUT",
+      dataType: "json",
+      timeout: 10000,
+      data: JSON.stringify({"ids":list_of_company_ids}),
+      processData: false
+    };
+
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    $(document).trigger('admin_companies_put', [data])
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
 GenerateAutocompleteInput = function(source, input)
 {
   var inputField = $(input);

@@ -14,6 +14,10 @@ var ApiUrls = {
   {
     return this.participants_list+'/courses';
   },
+  company_admin_get_post_put_delete: function(user_id)
+  {
+    return this.participants_list+'/'+user_id+'/admin_companies';
+  },
   validate_participant_email: '/admin/api/participants/validate_participant_email',
   validate_participant_username: '/admin/api/participants/validate_participant_username',
   course_details: '/admin/api/courses',

@@ -203,23 +203,28 @@
               City
             .participantCityValue
               %input{:type => "text", :value => '#{city}', :name => "city", :maxlength => "60"}
-        .row.companyAdminRolesContainer
-          .large-6.columns.participantPermissions
-            .participantPermissionsLabel.labelUniversal
-              Admin Permissions
-            .participantPermissionsValue
-              %select
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Uber admin
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Course ops admin
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Company admin
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Internal Admin
-          .large-6.columns.participantAdminCompany
-            .participantAdminCompanyLabel.labelUniversal
-              Admin Company
-            .participantAdminCompanyValue
-              %input{:type => "text", :value => '#{company_name}'}
-            .participantEmailReset.inlineBlock
-              %a{:href => '/admin/participants/#{id}', :target => '_self'}> + Add another company
+        %hr
+        .companyAdminRolesContainer
+          / - for company in company_admin_list
+          /   .row.adminAnotherCompany
+          /     .large-6.columns.participantAdminCompany
+          /       .participantAdminCompanyLabel.labelUniversal
+          /         Admin Company
+          /       .participantAdminCompanyValue
+          /         %input{:type => "text", :data-id => "#{company.id}", :value => "#{company.display_name}"}
+          /         .fa.fa-check-circle-o.correctInput
+          /     .large-6.columns.participantPermissions
+          /       .participantPermissionsLabel.labelUniversal
+          /         Admin Permissions
+          /       .participantPermissionsValue.permissionSelect.large-10
+          /         %input{:type => "text", :value => "Company Admin", :data-id => "company_admin", :disabled => "true"}
+          /       %i.fa.fa-times.removeItem.large-2
+
+        .addAnotherCompanyToAdminister.companyAdminControles
+          %a{:href => '#', :target => '_self'}> + Add another company
+        .refreshCompanyToAdminister.companyAdminControles
+          %a{:href => '#', :target => '_self'}> Refresh
+        %hr
         .row
           .large-12.columns.participantBottomSaveEdit
             .button.small.radius.disabled.participantDetailsSave

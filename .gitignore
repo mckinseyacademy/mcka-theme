@@ -12,3 +12,4 @@ tracking.log
 /static_cache
 
 /static/image/learner_dashboard/
+refresh_assets.sh
