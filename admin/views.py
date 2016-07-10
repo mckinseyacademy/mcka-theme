@@ -1157,7 +1157,7 @@ class course_details_performance_api(APIView):
         return Response(course_stats)
 
 class course_details_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id=None, format=None):
         if (course_id):
             permissonsMap = {
@@ -3497,7 +3497,7 @@ class participants_list_api(APIView):
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
 class participant_details_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, user_id):
 
         if request.user.is_internal_admin:
@@ -3675,7 +3675,7 @@ class participant_course_manage_api(APIView):
       
 class participant_details_active_courses_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, user_id, format=None):
 
         include_slow_fields = request.GET.get('include_slow_fields', 'false')
@@ -3700,7 +3700,7 @@ class participant_details_active_courses_api(APIView):
         return Response({})
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def download_active_courses_stats(request, user_id):
 
     active_courses, course_history = get_user_courses_helper(user_id, request)
@@ -3748,7 +3748,7 @@ class participant_details_course_edit_status_api(APIView):
 
 class participant_details_course_history_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, user_id, format=None):
 
         active_courses, course_history = get_user_courses_helper(user_id, request)
@@ -3773,7 +3773,7 @@ class participant_details_course_history_api(APIView):
         return Response(course_history) 
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def download_course_history_stats(request, user_id):
 
     active_courses, course_history = get_user_courses_helper(user_id, request)
@@ -4333,47 +4333,32 @@ class users_company_admin_get_post_put_delete_api(APIView):
         return Response(response_dict)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
 
 class companies_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
         companies = []
         user_organizations = None
         clients = Client.list()
-        if request.user.is_client_admin:
-            user_organizations = user_api.get_user_organizations(request.user.id)
-        if request.user.is_company_admin:
-            user_permissions = Permissions(request.user.id)
-            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
         for client in clients:
-            if user_organizations:
-                for user_org in user_organizations:
-                    if client.id == user_org.id:
-                        company = {}
-                        company['name'] = vars(client)['display_name']
-                        company['id'] = vars(client)['id']
-                        company['numberParticipants'] = vars(client)['number_of_participants']
-                        company['numberCourses'] = vars(client)['number_of_courses']
-                        companies.append(company)
-            else:
-                company = {}
-                company['name'] = vars(client)['display_name']
-                company['id'] = vars(client)['id']
-                company['numberParticipants'] = vars(client)['number_of_participants']
-                company['numberCourses'] = vars(client)['number_of_courses']
-                companies.append(company)
+            company = {}
+            company['name'] = vars(client)['display_name']
+            company['id'] = vars(client)['id']
+            company['numberParticipants'] = vars(client)['number_of_participants']
+            company['numberCourses'] = vars(client)['number_of_courses']
+            companies.append(company)
 
         return Response(companies)
 
 
 class create_new_company_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
 
         company_display_name = request.GET.get('company_display_name', None)
@@ -4385,7 +4370,7 @@ class create_new_company_api(APIView):
 
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request):
         company_display_name = request.DATA.get('company_display_name', None)
 
@@ -4400,8 +4385,17 @@ class create_new_company_api(APIView):
             return Response({'status':'error'})
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def company_details(request, company_id):
+
+    if request.user.is_company_admin:
+        user_permissions = Permissions(request.user.id)
+        user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+        company_ids = []
+        for user_org in user_organizations:
+            company_ids.append(int(user_org.id))
+        if int(company_id) not in company_ids:
+            return permission_denied(request)
 
     client = Client.fetch(company_id)
     company = {}
@@ -4412,7 +4406,8 @@ def company_details(request, company_id):
     participants = user_api.get_filtered_users(requestParams)
     company['numberParticipants'] = participants['count']
 
-    company['activeCourses'] = len(get_company_active_courses(company_id))
+    company_courses = organization_api.get_organizations_courses(company_id)
+    company['activeCourses'] = len(get_company_active_courses(company_courses))
 
     invoicing = {}
     invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
@@ -4482,8 +4477,17 @@ def company_details(request, company_id):
 
 class company_courses_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, company_id):
+
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
         
         company_courses = organization_api.get_organizations_courses(company_id)
         courses = []
@@ -4509,10 +4513,107 @@ class company_courses_api(APIView):
         return Response(courses)
 
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+def company_course_details(request, company_id, course_id):
+
+
+    if request.user.is_company_admin:
+        user_permissions = Permissions(request.user.id)
+        user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+        company_ids = []
+        for user_org in user_organizations:
+            company_ids.append(int(user_org.id))
+        if int(company_id) not in company_ids:
+            return permission_denied(request)
+
+    course = course_api.get_course_details(course_id)
+    course_metrics_end = datetime.now().strftime("%m/%d/%Y")
+    if course['start'] is not None:
+        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+    if course['end'] is not None:
+        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y") 
+        course_metrics_end = course['end'] 
+    for data in course:
+        if course.get(data) is None:
+            course[data] = "-"  
+
+    course_all_users = course_api.get_course_details_users(course_id)
+    count_all_users = course_all_users['count']
+
+    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
+    list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
+
+    #number of active participants = all users - number of users with roles
+    course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
+
+    course_completed_users = 0
+    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
+    for completed_metric in course_metrics.users_completed:
+        course_completed_users += completed_metric[1]
+    try:
+        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
+    except ZeroDivisionError:
+        course['completed'] = 0
+
+    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=count_all_users)
+    pass_users = course_pass.pass_rate_display(list_of_user_roles['ids'])
+
+    try:
+        course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
+    except ZeroDivisionError:
+        course['passed'] = 0
+
+    course_progress = 0
+    course_proficiency = 0
+
+    users_progress = get_course_progress(course_id, list_of_user_roles['ids'])
+
+    for user in users_progress:
+        course_progress += user['progress']
+
+    course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
+    for user in course_grades['leaders']:
+        if user['id'] not in list_of_user_roles['ids']:
+            user_proficiency = float(user['grade'])*100
+            course_proficiency += user_proficiency
+
+    try:
+        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
+    except ZeroDivisionError:
+        course['average_progress'] = 0
+    try:
+        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])
+    except ZeroDivisionError:
+        course['proficiency'] = 0
+
+    list_of_email_templates = EmailTemplate.objects.all()
+    course['template_list'] = []
+    for email_template in list_of_email_templates:    
+        course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
+
+    course_tags = []
+    for tag_type in TAG_GROUPS:
+        course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
+    course['tags'] = []
+    for tag in course_tags:
+        course['tags'].append(vars(tag))
+
+    return render(request, 'admin/courses/course_details.haml', course)
+
+
 class company_info_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, company_id):
+
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
         
         flag = request.GET.get('flag', None)
         response = {}
@@ -4578,8 +4679,17 @@ class company_info_api(APIView):
         
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def put(self, request, company_id):
+
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
 
         flag = request.GET.get('flag', None)
         response = {}
@@ -4635,8 +4745,17 @@ class company_info_api(APIView):
         return Response(response)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def download_company_info(request, company_id):
+
+    if request.user.is_company_admin:
+        user_permissions = Permissions(request.user.id)
+        user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+        company_ids = []
+        for user_org in user_organizations:
+            company_ids.append(int(user_org.id))
+        if int(company_id) not in company_ids:
+            return permission_denied(request)
 
     client = Client.fetch(company_id)
     name = vars(client)['display_name']
@@ -4731,8 +4850,17 @@ def download_company_info(request, company_id):
 
 class company_edit_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, company_id):
+
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
 
         company_display_name = request.GET.get('company_display_name', None)
 
@@ -4743,8 +4871,17 @@ class company_edit_api(APIView):
 
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def post(self, request, company_id):
+
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
 
         try:
             client = Client.update_and_fetch(company_id, request.DATA)
@@ -4848,3 +4985,45 @@ class course_details_tags_api(APIView):
             return Response({'status':'ok', 'message':'Tag removed from Course!'})
         else:
             return Response({'status':'error', 'message':'You need to select tag!'})
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+def company_dashboard(request):
+
+    companies = []
+    user_organizations = None
+    clients = Client.list()
+    if request.user.is_company_admin:
+        user_permissions = Permissions(request.user.id)
+        user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+    for client in clients:
+        if user_organizations:
+            for user_org in user_organizations:
+                if client.id == user_org.id:
+                    company = {}
+                    company['name'] = vars(client)['display_name']
+                    company['id'] = vars(client)['id']
+                    company['numberParticipants'] = vars(client)['number_of_participants']
+                    company['numberCourses'] = vars(client)['number_of_courses']
+                    company_courses = organization_api.get_organizations_courses(company['id'])
+                    company['activeCourses'] = len(get_company_active_courses(company_courses))
+                    company['courses'] = []
+                    if len(company_courses) > 3:
+                        courses = company_courses[-3:]
+                    else:
+                        courses = company_courses
+                    for course in courses:
+                        start = parsedate(course['start'])
+                        course['start'] = start.strftime("%m/%d/%Y")
+                        if course['end']:
+                            end = parsedate(course['end'])
+                            course['end'] = end.strftime("%m/%d/%Y")
+                        else:
+                            course['end'] = '-'
+                        company['courses'].append(course)
+                    companies.append(company)
+
+    data = {
+        'companies': companies
+    }
+    return render(request, 'admin/companies/company_dashboard.haml', data)

@@ -35,7 +35,9 @@
                 Last logged in: ={custom_last_login}
           .large-2.columns
           .large-3.columns
-            %input.button.small.radius.participantEnrollInCourse{:type => "button", :value => "Enroll in a Course"}
+            - if user.is_company_admin
+            - else
+              %input.button.small.radius.participantEnrollInCourse{:type => "button", :value => "Enroll in a Course"}
       #participantsMainDetailsContainerView
         .participantDetailsMenuButtons.row
           .participantProfileButton.large-2.columns
@@ -56,15 +58,19 @@
               Participant Details
             .large-5.columns
             .participantDetailsEditButton.large-2.columns
-              %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
-        - if has_activation_record
-          - if not is_active
-            .row
-              .large-12.columns.participantBottomArchiveEdit
-                %p.error
-                  &ast; This user has not yet activated their account.
-                %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}> Get Activation Link
-                %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}> Resend Activation Link
+              - if user.is_company_admin
+              - else
+                %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
+        - if user.is_company_admin
+          - else
+            - if has_activation_record
+              - if not is_active
+                .row
+                  .large-12.columns.participantBottomArchiveEdit
+                    %p.error
+                      &ast; This user has not yet activated their account.
+                    %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}> Get Activation Link
+                    %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}> Resend Activation Link
         .row
           .large-6.columns.participantFirstName
             .participantFirstNameLabel.labelUniversal
@@ -132,10 +138,12 @@
                   &#8212;
                 - else
                   #{mcka_permission}
-        .row
-          .large-12.columns.participantBottomArchiveEdit
-            %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
-            %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
+        - if user.is_company_admin
+        - else
+          .row
+            .large-12.columns.participantBottomArchiveEdit
+              %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
+              %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
 
       %form.participantDetailsEditForm{:style => "display: none"}
         - csrf_token

@@ -143,8 +143,10 @@ urlpatterns = patterns(
     url(r'^api/companies/(?P<company_id>[0-9]+)/edit$', views.company_edit_api.as_view(), name='company_edit_api'),
     url(r'^api/companies/new_company$', views.create_new_company_api.as_view(), name='create_new_company_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
+    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)', views.company_course_details, name='company_course_details'),
     url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
-    url(r'^companies$', views.companies_list, name='companies_list'),
+    url(r'^companies', views.companies_list, name='companies_list'),
+    url(r'^company_dashboard', views.company_dashboard, name='company_dashboard'),
 
     url(r'^api/tags/(?P<tag_id>[0-9]+)', views.tag_details_api.as_view(), name='tag_details_api'),
     url(r'^api/tags$', views.tags_list_api.as_view(), name='tags_list_api'),

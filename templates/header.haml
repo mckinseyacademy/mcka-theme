@@ -48,7 +48,7 @@
                 %a{href: '/admin/client-admin'}= _("Client Admin")
             - if user.is_company_admin
               %li
-                %a{href: '/admin/companies'}= _("Company Admin")
+                %a{href: '/admin/company_dashboard'}= _("Company Admin")
       - block user_region
         - if request.user.is_authenticated
           %a.user-info{data-dropdown: "profile-container"}

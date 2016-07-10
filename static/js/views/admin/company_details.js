@@ -6,6 +6,7 @@
       this.setEditCompanyNameEvents();
     },
     render: function(){
+      var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
       companyDetailsCoursesViewGrid = new bbGrid.View({
         container: this.$el,
         collection: this.collection,
@@ -16,9 +17,9 @@
             var thisId = attributes['id']
             var name = attributes['name']
             if (name.length > 75){
-              return '<a href="/admin/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
+              return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
             }
-            return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+            return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
           } 
         },
         { title: 'Course ID', index: true, name: 'id' },

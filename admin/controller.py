@@ -1640,9 +1640,8 @@ def send_activation_emails_by_task_key(request, task_key):
         _send_activation_email_to_single_new_user(record, record, absolute_uri)
 
 
-def get_company_active_courses(company_id):
+def get_company_active_courses(company_courses):
 
-    company_courses = organization_api.get_organizations_courses(company_id)
     active_courses = []
     for company_course in company_courses:
         if timezone.now() >= parsedate(company_course['start']):

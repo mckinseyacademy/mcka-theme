@@ -310,3 +310,92 @@
 	margin-top: 20px!important;
 	display: none;
 }
+
+
+#mainCompanyDashboardContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+
+
+	#companyDashboardTitle 
+	{	
+		float: left;
+
+		p
+		{
+			font-size: xx-large;
+			margin-bottom: 20px;
+		}
+	}
+
+	#companyDashboardText
+	{
+		clear: both;
+	}
+
+	.companyDashboardCompanyContainer
+	{
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		margin-bottom: 100px;
+
+		.companyDashboardCompanyContainerTable
+		{
+			width: 100%; 
+			border: 1px solid #CCCCCC !important;
+
+			.companyDashboardCompanyDataContainer
+			{
+				background-color: #E0E0E0;
+				text-align: center;
+    			vertical-align: middle;
+
+    			.companyDashboardCompanyName
+    			{
+    				p
+    				{
+    					font-weight: bold;
+    					font-size: large;
+    					padding-bottom: 10px;
+    				}
+    			}
+			}
+
+			.companyDashboardCompanyCoursesContainer
+			{	
+				padding: 0px;
+
+				.companyDashboardCompanyCoursesTable
+				{
+					width: 100%; 
+					border: none !important;
+					margin-bottom: 0px;
+
+					.companyDashboardCompanyCourse
+					{
+						width: 100%;
+
+						td
+						{
+							text-align: center;
+						}
+					}
+				}
+			}
+		}
+
+		.companyDashboardCompanyInfo
+		{
+			float: left;
+			text-decoration: underline;
+		}
+
+		.companyDashboardCompanyAllCourses
+		{
+			float: right;
+		}
+	}
+}
