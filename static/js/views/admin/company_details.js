@@ -1,19 +1,9 @@
   Apros.views.CompanyDetailsCoursesView = Backbone.View.extend({
-    initialize: function(){
-      this.collection.fetch({success: function(){
-        cloneHeader('#companyDetailsCoursesViewGridBlock');
-      }});
-      this.setEditCompanyNameEvents();
-    },
-    render: function(){
-      var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
-      companyDetailsCoursesViewGrid = new bbGrid.View({
-        container: this.$el,
-        collection: this.collection,
-        enableSearch: true,
-        colModel:[
+    gridColumns:
+      [
         { title: 'Course Name', index: true, name: 'name',
           actions: function(id, attributes){ 
+            var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
             var thisId = attributes['id']
             var name = attributes['name']
             if (name.length > 75){
@@ -42,8 +32,27 @@
             return attributes['end'];
           } 
         },
-        { title: 'Cohort Comp.', index: true, name: 'cohort' },
-        ]
+      ],
+    initialize: function(){
+      this.collection.fetch({success: function(){
+        cloneHeader('#companyDetailsCoursesViewGridBlock');
+      }});
+      this.setEditCompanyNameEvents();
+    },
+    render: function(){
+      var _this = this;
+      var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
+      var companyAdminFlag = $('#mainCompanyDetailsDataContainer').attr('admin-flag');
+      if (companyAdminFlag == 'False')
+      {
+        var cohortColumn = { title: 'Cohort Comp.', index: true, name: 'cohort' };
+        _this.gridColumns.push(cohortColumn);
+      }
+      companyDetailsCoursesViewGrid = new bbGrid.View({
+        container: this.$el,
+        collection: this.collection,
+        enableSearch: true,
+        colModel: _this.gridColumns
       });
     },
     setEditCompanyNameEvents: function()

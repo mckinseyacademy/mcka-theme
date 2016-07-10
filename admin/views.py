@@ -3547,6 +3547,11 @@ class participant_details_api(APIView):
                 selectedUser['has_activation_record'] = True
             else:
                 selectedUser['has_activation_record'] = False
+
+            companyAdminFlag = False
+            if request.user.is_company_admin:
+                companyAdminFlag = True
+            selectedUser['companyAdminFlag'] = companyAdminFlag
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -4388,7 +4393,9 @@ class create_new_company_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def company_details(request, company_id):
 
+    companyAdminFlag = False
     if request.user.is_company_admin:
+        companyAdminFlag = True
         user_permissions = Permissions(request.user.id)
         user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
         company_ids = []
@@ -4469,7 +4476,8 @@ def company_details(request, company_id):
     data = {
         'company': company,
         'contacts': contacts,
-        'invoicing': invoicing
+        'invoicing': invoicing, 
+        'companyAdminFlag': companyAdminFlag
     }
 
     return render(request, 'admin/companies/company_details.haml', data)

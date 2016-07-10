@@ -20,9 +20,13 @@
 
 - block content
   #mainParticipantsDetailsWrapper
-    .participantDetailsNavigationButton
-      %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
-    #participantsDetailsDataWrapper{:data-id => '#{id}'}
+    - if user.is_company_admin
+      .participantDetailsNavigationButton
+        %a.participantDetailsNavigationButtonCompanyAdmin{:href => '#', :target => '_self'}> < Back
+    - else
+      .participantDetailsNavigationButton
+        %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
+    #participantsDetailsDataWrapper{:data-id => '#{id}', :admin-flag => '#{companyAdminFlag}'}
       #participantsTopDetailsContainer
         .row
           .large-2.columns
@@ -96,8 +100,10 @@
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
                 Email
-              .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
+              - if user.is_company_admin
+              - else
+                .participantEmailReset.inlineBlock
+                  %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               ={email}
         %hr

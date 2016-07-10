@@ -1,5 +1,10 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
+      $('#mainParticipantsDetailsWrapper').on('click', '.participantDetailsNavigationButtonCompanyAdmin', function(event){
+        event.preventDefault();
+        window.history.back();
+      });
+
       var _this=this;
       var _options=options;
       _this.enroll_user_in_course_function();
