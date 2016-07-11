@@ -1051,21 +1051,25 @@ def course_details(request, course_id):
 
 class course_details_stats_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id, format=None):
+
+        company_id = request.GET.get('company_id', None)
         
-        course_stats = get_course_social_engagement(course_id)
+        course_stats = get_course_social_engagement(course_id, company_id)
         return Response(course_stats)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def download_course_stats(request, course_id):
+
+    company_id = request.GET.get('company_id', None)
 
     course = course_api.get_course_details(course_id)
     course_name = course['name'].replace(' ', '_')
 
-    course_social_engagement = get_course_social_engagement(course_id)
-    course_engagement_summary = get_course_engagement_summary(course_id)
+    course_social_engagement = get_course_social_engagement(course_id, company_id)
+    course_engagement_summary = get_course_engagement_summary(course_id, company_id)
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + course_name + '_stats.csv"'
@@ -1090,23 +1094,28 @@ def download_course_stats(request, course_id):
 
 class course_details_engagement_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-    def get(self, request, course_id, format=None):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    def get(self, request, course_id, format=None): 
+
+        company_id = request.GET.get('company_id', None)     
         
-        course_stats = get_course_engagement_summary(course_id)
+        course_stats = get_course_engagement_summary(course_id, company_id)
         
         return Response(course_stats)
 
 
 class course_details_cohort_timeline_api(APIView):
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id):
+
+        company_id = request.GET.get('company_id', None)
+
         course = load_course(course_id)
         course_modules = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
 
         users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
 
-        metricsJson = get_course_details_progress_data(course, course_modules, users)
+        metricsJson = get_course_details_progress_data(course, course_modules, users, company_id)
 
         jsonResult = [{"key": "% Progress", "values": metricsJson[0]},
                         {"key": "% Progress (Engaged)", "values": metricsJson[1]}]
@@ -1118,7 +1127,7 @@ class course_details_cohort_timeline_api(APIView):
 
 class course_details_performance_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id, format=None):
         
         course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
@@ -4524,8 +4533,9 @@ class company_courses_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def company_course_details(request, company_id, course_id):
 
-
+    companyAdminFlag = False
     if request.user.is_company_admin:
+        companyAdminFlag = True
         user_permissions = Permissions(request.user.id)
         user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
         company_ids = []
@@ -4545,17 +4555,28 @@ def company_course_details(request, company_id, course_id):
         if course.get(data) is None:
             course[data] = "-"  
 
-    course_all_users = course_api.get_course_details_users(course_id)
-    count_all_users = course_all_users['count']
+    qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
+    count_all_users = course_api.get_course_details_users(course_id=course_id)['count']
+    course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
+    count_company_users = len(course_company_users)
+
+    company_ids = []
+    for user in course_company_users:
+        company_ids.append(user['id'])
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
 
+    counter_roles = 0
+    for role_id in list_of_user_roles['ids']:
+        if int(role_id) in company_ids:
+            counter_roles = counter_roles + 1
+
     #number of active participants = all users - number of users with roles
-    course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
+    course['users_enrolled'] = count_company_users - counter_roles
 
     course_completed_users = 0
-    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
+    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months', organization=company_id)
     for completed_metric in course_metrics.users_completed:
         course_completed_users += completed_metric[1]
     try:
@@ -4564,7 +4585,7 @@ def company_course_details(request, company_id, course_id):
         course['completed'] = 0
 
     course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=count_all_users)
-    pass_users = course_pass.pass_rate_display(list_of_user_roles['ids'])
+    pass_users = course_pass.pass_rate_display_for_company(list_of_user_roles['ids'], company_ids)
 
     try:
         course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
@@ -4574,16 +4595,17 @@ def company_course_details(request, company_id, course_id):
     course_progress = 0
     course_proficiency = 0
 
-    users_progress = get_course_progress(course_id, list_of_user_roles['ids'])
+    users_progress = get_course_progress(course_id, list_of_user_roles['ids'], company_id=company_id)
 
     for user in users_progress:
         course_progress += user['progress']
 
     course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
     for user in course_grades['leaders']:
-        if user['id'] not in list_of_user_roles['ids']:
-            user_proficiency = float(user['grade'])*100
-            course_proficiency += user_proficiency
+        if user['id'] in company_ids:
+            if user['id'] not in list_of_user_roles['ids']:
+                user_proficiency = float(user['grade'])*100
+                course_proficiency += user_proficiency
 
     try:
         course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
@@ -4606,6 +4628,10 @@ def company_course_details(request, company_id, course_id):
     for tag in course_tags:
         course['tags'].append(vars(tag))
 
+    course['companyAdminFlag'] = companyAdminFlag
+    course['companyCourseDeatilsPage'] = True
+    course['companyId'] = company_id
+    course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
     return render(request, 'admin/courses/course_details.haml', course)
 
 

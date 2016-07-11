@@ -815,7 +815,7 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
 
     return metricsJson
 
-def get_course_details_progress_data(course, course_modules, users):
+def get_course_details_progress_data(course, course_modules, users, company_id):
 
     start_date = course.start
     end_date = datetime.now()
@@ -823,13 +823,20 @@ def get_course_details_progress_data(course, course_modules, users):
         if end_date > course.end:
             end_date = course.end
     delta = end_date - start_date
-    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
+    if company_id:
+        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days', organization=company_id)
+    else:
+        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
 
     total = len(users) * len(course_modules)
     engaged_total = 0
 
-    course_metrics = course_api.get_course_metrics_completions(course.id, count=total)
-    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+    if company_id:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course.id, organization=company_id)
+    else:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course.id)
+
+    course_leaders_ids = [leader['id'] for leader in course_metrics['leaders']]
     for course_user in users:
         if course_user in course_leaders_ids:
             engaged_total += 1
@@ -1140,9 +1147,12 @@ def round_to_int_bump_zero(value):
     return rounded_value
 
 
-def get_course_social_engagement(course_id):
+def get_course_social_engagement(course_id, company_id):
 
-    course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
+    if company_id:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': company_id})}
+    else:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
     course_users_ids = [str(user) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
@@ -1153,7 +1163,10 @@ def get_course_social_engagement(course_id):
 
     number_of_posts = 0
     number_of_participants_posting = 0
-    course_metrics_social = course_api.get_course_details_metrics_social(course_id)
+    if company_id:
+        course_metrics_social = course_api.get_course_details_metrics_social(course_id, {'organization': company_id})
+    else:
+        course_metrics_social = course_api.get_course_details_metrics_social(course_id)
 
     for user in course_metrics_social['users']:
         user_data = course_metrics_social['users'][str(user)]
@@ -1177,9 +1190,12 @@ def get_course_social_engagement(course_id):
     return course_stats
 
 
-def get_course_engagement_summary(course_id):
+def get_course_engagement_summary(course_id, company_id):
 
-    course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
+    if company_id:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': company_id})}
+    else:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
     course_users_ids = [str(user) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
@@ -1188,12 +1204,17 @@ def get_course_engagement_summary(course_id):
 
     additional_fields = ["is_active"]
     course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
-    course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
-    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+    if company_id:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
+    else:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id)
+
+    course_leaders_ids = [leader['id'] for leader in course_metrics['leaders']]
 
     active_users = 0
     engaged_users = 0
-    engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+    engaged_progress_sum = sum([leader['completions'] for leader in course_metrics['leaders']])
     for course_user in course_users:
         if course_user.is_active is True:
             active_users += 1
@@ -1416,7 +1437,7 @@ def get_user_courses_helper(user_id, request):
 
     return active_courses, course_history
     
-def get_course_progress(course_id, exclude_users):
+def get_course_progress(course_id, exclude_users, company_id=None):
     '''
     Helper method for calculating user pogress on course. 
     Returns dictionary of users with user_id and progress.
@@ -1425,7 +1446,7 @@ def get_course_progress(course_id, exclude_users):
 
     users_progress = []
 
-    leaders = course_api.get_course_details_completions_leaders(course_id)
+    leaders = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
 
     for user in leaders['leaders']:
         if user['id'] not in exclude_users:
