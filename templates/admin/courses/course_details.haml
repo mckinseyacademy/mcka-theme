@@ -7,23 +7,24 @@
 - block content 
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
+          - if companyCourseDeatilsPage
+            %a{:href => '/admin/companies/#{companyId}', :target => '_self'}> 
+              < Back to ={companyName}
+          - else
             %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
-        #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}'}
+        #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}', :admin-flag => '#{companyAdminFlag}', :company-page => '#{companyCourseDeatilsPage}', :company-id => '#{companyId}'}
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
                     .courseDetailsNameAndId
                       ={name}  
                       ={id}
                     .courseDetailsTags
-                      - if user.is_internal_admin
-                        - for tag in tags
-                          .courseDetailsTagsListInternal.button.small.radius
-                            ={tag.name}
-                      - else
-                        - for tag in tags
-                          .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
-                            %span ={tag.name}
+                      - for tag in tags
+                        .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
+                          %span ={tag.name}
+                          - if user.is_mcka_admin or user.is_mcka_subadmin
                             %i.fa.fa-times.courseTagsDeleteIcon
+                      - if user.is_mcka_admin or user.is_mcka_subadmin
                         %i.fa.fa-pencil.courseTagsIcon
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock
@@ -44,12 +45,14 @@
                   %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PARTICIPANTS
                 .courseStatsButton.large-2.columns
                   %a{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  STATS
-                .courseDiscoverContentButton.large-3.columns
-                  %p DISCOVER CONTENT
-                .courseFeatureFlaggingButton.large-3.columns
-                  %p FEATURE FLAGGING  
-                .courseCommunicationsButton.large-2.columns
-                  %p COMMUNICATIONS 
+                - if user.is_company_admin
+                - else
+                  .courseDiscoverContentButton.large-3.columns
+                    %p DISCOVER CONTENT
+                  .courseFeatureFlaggingButton.large-3.columns
+                    %p FEATURE FLAGGING  
+                  .courseCommunicationsButton.large-2.columns
+                    %p COMMUNICATIONS 
                 %hr
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
@@ -75,7 +78,10 @@
                 #courseDetailsEngagementTopic.courseDetailsTopic
                   Engagement Summary
                 #coursesDownloadStatsButton
-                  %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}> Export Stats
+                  - if companyCourseDeatilsPage
+                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}> Export Stats
+                  - else
+                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}> Export Stats
                 #courseDetailsEngagementViewGrid.courseDetailsViewGrid.large-12.columns
                 #courseDetailsPerformanceTopic.courseDetailsTopic
                   Participant Performance

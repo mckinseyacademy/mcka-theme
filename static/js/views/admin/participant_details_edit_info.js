@@ -1,5 +1,10 @@
  Apros.views.ParticipantEditDetailsView = Backbone.View.extend({
     initialize: function(options){
+      $('#mainParticipantsDetailsWrapper').on('click', '.participantDetailsNavigationButtonCompanyAdmin', function(event){
+        event.preventDefault();
+        window.history.back();
+      });
+
       var _this=this;
       var _options=options;
       _this.enroll_user_in_course_function();
@@ -20,11 +25,16 @@
         if (input.parent().hasClass('participantCompanyValue'))
         {
           $('#participantDetailsWrapper').find('.errorMessage').empty();
-          _this.manageNewCompanyPopup(input, true);
+          var internalAdminFlag = $('#participantsDetailsDataWrapper').attr('internal-flag');
+          if (internalAdminFlag == 'False')
+          {
+            _this.manageNewCompanyPopup(input, true);
+          }
         }
       });
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
       {
+        _this.generateCompanyAdminRights(_this.user_id, _this.adminAnotherCompanyTemplate, $('#participantDetailsWrapper').find('.companyAdminRolesContainer'));
         var cont = $('#participantDetailsWrapper');
         cont.find('.participantDetailsWrapper').hide();
         cont.find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
@@ -40,6 +50,9 @@
             $("#country_edit").countrySelect("selectCountry", 'us');
         }
       });
+      $('#participantDetailsWrapper').find('.companyAdminRolesContainer').on("focus", "input", function(){
+        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
+      });
       $('#participantDetailsWrapper').find('.cancelParticipantEdit').off().on("click", function()
       {
         var cont = $('#participantDetailsWrapper');
@@ -48,6 +61,26 @@
         cont.find('.participantDetailsWrapper').show();
         _this.setLocationTooltip(); 
         _this.update_edit_field_data(_this);
+      });
+      $('#participantDetailsWrapper .participantDetailsEditForm').on('click', '.addAnotherCompanyToAdminister a', function(event)
+      {
+        event.preventDefault();
+        var objectContainer = $('#participantDetailsWrapper').find('.companyAdminRolesContainer');
+        objectContainer.append(_this.adminAnotherCompanyTemplate);
+        var appendedChild = objectContainer.children().last().find('.participantAdminCompanyValue input');
+        if (_this.organization_source)
+          GenerateAutocompleteInput(_this.organization_source, appendedChild);
+        else
+          InitializeAutocompleteInput(ApiUrls.participant_organization_get_api(), appendedChild);
+      });
+      $('#participantDetailsWrapper .participantDetailsEditForm').on('click', '.removeItem', function()
+      {
+        $(this).parents('.row').remove();
+        $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').removeClass('disabled');
+      });
+      $('#participantDetailsWrapper .participantDetailsEditForm').on('click', '.refreshCompanyToAdminister', function()
+      {
+        _this.generateCompanyAdminRights(_this.user_id, _this.adminAnotherCompanyTemplate, $('#participantDetailsWrapper').find('.companyAdminRolesContainer'));
       });
       $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('input').off('focus').on("focus", function()
       { 
@@ -101,8 +134,17 @@
               }
               else if (input.val().trim().length > 0)
               {
-                data[input.attr("name")] = 0;
-                data["new_company_name"] = input.val().trim();
+                var internalAdminFlag = $('#participantsDetailsDataWrapper').attr('internal-flag');
+                if (internalAdminFlag == 'False')
+                {
+                  data[input.attr("name")] = 0;
+                  data["new_company_name"] = input.val().trim();
+                }
+                else
+                {
+                  validation_message += "Company doesn't exist! ";
+                  validation_fail = true;
+                }
               }
               if (input.attr('data-old-id'))
               {
@@ -122,6 +164,7 @@
           delete data["undefined"];
           var xcsrf = data['csrfmiddlewaretoken'];
           delete data['csrfmiddlewaretoken'];
+          _this.updateCompanyAdminPermissions();
           $.ajax({
             type: 'POST',
             url: '/admin/participants/'+id,
@@ -403,5 +446,61 @@
       {
         $(input).parent().find('.newCompanyCreationPopup').hide();
       }
-    }
+    },
+    updateCompanyAdminPermissions: function()
+    {
+      var list_of_company_ids = [];
+      var container = $('#participantDetailsWrapper').find('.companyAdminRolesContainer')
+      container.find('.participantAdminCompanyValue input').each(function()
+      {
+        var id = $(this).attr("data-id");
+        if (id != "")
+          list_of_company_ids.push(parseInt(id));
+      });
+      PutUserAdminCompanies(this.user_id, list_of_company_ids);
+    },
+    generateCompanyAdminRights: function(user_id, template, container)
+    {
+      GetUserAdminCompanies(user_id);
+      $(container).empty();
+      $(container).append('<i class="fa fa-spinner fa-spin"></i>')
+      $(document).on("admin_companies_get", function(event, data)
+      {
+        var objectContainer = $(container);
+        objectContainer.empty();
+        var companies = data.company_list;
+        for (var i = 0; i<companies.length; i++)
+        {
+          objectContainer.append(template);
+          var appendedChild = objectContainer.children().last().find('.participantAdminCompanyValue input');
+          appendedChild.attr("data-id", companies[i].id);
+          appendedChild.val(companies[i].display_name);
+          if (this.organization_source)
+              GenerateAutocompleteInput(this.organization_source, appendedChild);
+          else
+              InitializeAutocompleteInput(ApiUrls.participant_organization_get_api(), appendedChild);
+        }
+      });
+    },
+    user_id: $("#participantsDetailsDataWrapper").attr('data-id'),
+    adminAnotherCompanyTemplate: '<div class="row adminAnotherCompany">'+
+          '<div class="large-6 columns participantAdminCompany">'+
+            '<div class="participantAdminCompanyLabel labelUniversal">'+
+              'Admin Company'+
+            '</div>'+
+            '<div class="participantAdminCompanyValue">'+
+              '<input type="text" data-id/>'+
+              '<i class="fa fa-check-circle-o correctInput" aria-hidden="true"></i>'+
+            '</div>'+
+          '</div>'+
+          '<div class="large-6 columns participantPermissions">'+
+            '<div class="participantPermissionsLabel labelUniversal">'+
+              'Admin Permissions'+
+            '</div>'+
+            '<div class="participantPermissionsValue permissionSelect large-10">'+
+              '<input type="text" value="Company Admin" disabled data-id="company_admin"/>'+
+            '</div>'+
+            '<i class="fa fa-times removeItem large-2" aria-hidden="true"></i>'+
+          '</div>'+
+        '</div>'
   });

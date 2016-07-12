@@ -660,14 +660,15 @@ def get_course_details_metrics_grades(course_id, count):
 
 
 @api_error_protect
-def get_course_details_metrics_social(course_id):
+def get_course_details_metrics_social(course_id, qs_params = ''):
     ''' fetch social metrics for course '''
 
     response = GET(
-        '{}/{}/{}/metrics/social'.format(
+        '{}/{}/{}/metrics/social/?'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
-            course_id
+            course_id,
+            urlencode(qs_params)
         )
     )
 
@@ -675,14 +676,18 @@ def get_course_details_metrics_social(course_id):
 
 
 @api_error_protect
-def get_course_details_completions_leaders(course_id):
+def get_course_details_completions_leaders(course_id, *args, **kwargs):
     ''' fetch social metrics for course '''
 
+    qs_params = {}
+    qs_params.update(kwargs)
+
     response = GET(
-        '{}/{}/{}/metrics/completions/leaders'.format(
+        '{}/{}/{}/metrics/completions/leaders?'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
-            course_id
+            course_id,
+            urlencode(qs_params)
         )
     )
 

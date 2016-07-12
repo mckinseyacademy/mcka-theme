@@ -92,6 +92,17 @@ class Proficiency(JsonObject):
 
         return pass_users
 
+    def pass_rate_display_for_company(self, users_with_roles, company_ids):
+        pass_users = 0
+        for user_grade in self.leaders: 
+            if user_grade.id in company_ids:
+                if user_grade.id not in users_with_roles:
+                    if user_grade.user_grade_value >= 0.7:
+                        pass_users += 1
+
+        return pass_users
+
+
 class UserProgress(JsonObject):
     @property
     def user_progress_value(self):

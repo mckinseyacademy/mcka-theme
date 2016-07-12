@@ -191,7 +191,7 @@ class ShareAccessKeyForm(forms.Form):
         widget=forms.Textarea(attrs={'placeholder': _('Message (optional)')}))
 
 
-class CreateAccessKeyForm(forms.ModelForm):
+class CreateCourseAccessKeyForm(forms.ModelForm):
     class Meta:
         model = AccessKey
         fields = ['name', 'course_id']
@@ -200,6 +200,23 @@ class CreateAccessKeyForm(forms.ModelForm):
             'course_id': _('Course Instance'),
         }
         widgets = {
+            'course_id': forms.Select,
+        }
+        labels = {
+            'name': mark_safe('Name <span class="required-field"></span>')
+        }
+
+class CreateAccessKeyForm(forms.ModelForm):
+    class Meta:
+        model = AccessKey
+        fields = ['name', 'program_id', 'course_id']
+        labels = {
+            'name': _('Name'),
+            'program_id': _('Program'),
+            'course_id': _('Course Instance'),
+        }
+        widgets = {
+            'program_id': forms.Select,
             'course_id': forms.Select,
         }
         labels = {

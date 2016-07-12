@@ -40,6 +40,12 @@
     initialize: function(){
       InitializeTooltipOnPage();
       var _this = this;
+      var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+      if (companyPageFlag == 'True')
+      {
+        var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+        this.collection.updateCompanyQuerryParams(companyId);
+      }
       this.collection.fetch({success:function(collection, response, options){
           _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
           cloneHeader('#courseDetailsParticipantsGrid');
@@ -47,6 +53,17 @@
     },
     render: function(){
       var _this = this;
+      var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
+      if (companyAdminFlag == 'True')
+      {
+        for (var i=0; i < _this.generatedGridColumns.length; i++)
+        {
+          if (_this.generatedGridColumns[i]['title'] == 'Company')
+          {
+            delete _this.generatedGridColumns[i];
+          }
+        }
+      }
       var coursesListDetailsViewGrid = {}
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       coursesListDetailsViewGrid = new bbGrid.View({

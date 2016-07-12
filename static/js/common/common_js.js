@@ -169,6 +169,44 @@ GetAutocompleteSource = function(url, thisToAppend, sourceName){
     console.log(data)
   });
 }
+GetUserAdminCompanies = function(user_id){
+  var options = {
+      url: ApiUrls.company_admin_get_post_put_delete(user_id),
+      type: "GET",
+      dataType: "json",
+      timeout: 10000
+    };
+
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    $(document).trigger('admin_companies_get', [data])
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+PutUserAdminCompanies = function(user_id, list_of_company_ids){
+  var options = {
+      url: ApiUrls.company_admin_get_post_put_delete(user_id),
+      type: "PUT",
+      dataType: "json",
+      timeout: 10000,
+      data: JSON.stringify({"ids":list_of_company_ids}),
+      processData: false
+    };
+
+  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+  $.ajax(options)
+  .done(function(data) {
+    $(document).trigger('admin_companies_put', [data])
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
 GenerateAutocompleteInput = function(source, input)
 {
   var inputField = $(input);
@@ -333,11 +371,13 @@ EmailTemplatesManager = function(method, pk, title, subject, body)
       $(document).trigger('email_template_finished', [data]);
     })
 }
-SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail)
+SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail, optional_data)
 {
   var dictionaryToSend = {'subject':subject, 'from_email': sender, 'to_email_list': to_email_list, 'email_body': body}
   if (template_id)
     dictionaryToSend['template_id'] = template_id;
+  if (optional_data)
+    dictionaryToSend['optional_data'] = optional_data;
   var options = {
     url: ApiUrls.email,
     data: JSON.stringify(dictionaryToSend),
@@ -447,11 +487,35 @@ function CreateNicePopup(title, content)
 function CreatNicePrompt(title, input_label)
 {
   content = '<div class="fixedDynamicPopupPrompContentContainer"><div class="fixedDynamicPopupPrompContent">'+input_label+'</div>';
-  content += '<br><input type="text"/><div class="button savePromptChanges">Save</div>';
+  content += '<br><input type="text"/><div class="button savePromptChanges disabled">Send</div>';
   content += '</div>';
+  var _this = this;
   CreateNicePopup(title, content);
   popup = $("body").find(".fixedDynamicPopupContainer").last();
+  popup.on('keyup', 'input', function()
+  {
+    var _thisInput = $(this);
+    if (_this.liveSearchTimer) 
+    {
+      clearTimeout(_this.liveSearchTimer);
+    }
+    _this.liveSearchTimer = setTimeout(function() 
+    {
+      var value = _thisInput.val().trim();
+      if (value != '')
+      {
+        popup.find('.savePromptChanges').removeClass('disabled');
+      }
+      else
+      {
+        popup.find('.savePromptChanges').addClass('disabled');
+      }
+    }, 1000);
+  });
+
   popup.on("click", ".savePromptChanges", function(){
+    if ($(this).hasClass('disabled'))
+          return;
     data = $(this).parents(".fixedDynamicPopupContainer").find("input").val().trim();
     if (data.length > 0)
     {

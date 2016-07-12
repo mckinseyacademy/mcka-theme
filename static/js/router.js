@@ -28,7 +28,8 @@ var Router = Backbone.Router.extend({
     'admin/courses/*course_id/': 'admin_course_details_participants',
     'admin/clients/*client_id/mass_student_enroll': 'mass_student_enroll',
     'admin/companies': 'companies_list',
-    'admin/companies/*company_id': 'company_details_courses' 
+    'admin/companies/*company_id/courses/*course_id': 'admin_course_details_participants', 
+    'admin/companies/*company_id': 'company_details_courses'
   },
 
   home: function() {
@@ -159,6 +160,7 @@ var Router = Backbone.Router.extend({
   },
 
   admin_course_details_stats: function(course_id){
+    var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
     $('#courseDetailsMainContainer').find('.courseDetailsTopic').each(function(index, value){
       val = $(value);
       val.show();
@@ -167,6 +169,12 @@ var Router = Backbone.Router.extend({
     var courseId = $('#courseDetailsDataWrapper').attr('data-id');
     ApiUrls.course_details_stats = ApiUrls.course_details+'/'+courseId+'/stats/';
     ApiUrls.course_details_engagement = ApiUrls.course_details+'/'+courseId+'/engagement/';
+    if (companyPageFlag == 'True')
+    {
+      var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+      ApiUrls.course_details_stats = ApiUrls.course_details_stats + '?company_id=' + companyId;
+      ApiUrls.course_details_engagement = ApiUrls.course_details_engagement + '?company_id=' + companyId;
+    }
     var courseDetailsEngagement = new Apros.collections.CourseDetailsEngagement({url: ApiUrls.course_details_engagement});
     var course_details_engagement_view = new Apros.views.CourseDetailsEngagementView({collection: courseDetailsEngagement, el: '#courseDetailsEngagementViewGrid'});
     var courseDetailsStats = new Apros.collections.CourseDetailsStats({url: ApiUrls.course_details_stats});
@@ -205,7 +213,7 @@ var Router = Backbone.Router.extend({
     });
     var companyId = $('#mainCompanyDetailsDataContainer').attr('data-id');
     Apros.Router.linked_views['companyCourses']['drawn'] = true;
-    var url = ApiUrls.companies_list+'/'+company_id+'/courses';
+    var url = ApiUrls.companies_list+'/'+companyId+'/courses';
     var companyCourses = new Apros.collections.CompanyDetailsCourses({ url : url});
     var company_courses_view = new Apros.views.CompanyDetailsCoursesView({collection: companyCourses, el: '#companyDetailsCoursesViewGridBlock'});
     company_courses_view.render();
