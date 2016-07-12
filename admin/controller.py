@@ -1519,6 +1519,10 @@ def _enroll_participants(participants, request, reg_status):
         'observer': USER_ROLES.OBSERVER
     }
 
+    internalAdminFlag = False
+    if request.user.is_internal_admin:
+        internalAdminFlag = True
+
     for user_dict in participants:
 
         user = None
@@ -1572,10 +1576,13 @@ def _enroll_participants(participants, request, reg_status):
                     check_errors.append({'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
                 else: 
                     check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
+            #For Internal Admin Check if Course Is Internal
+            if internalAdminFlag:
+                if not check_if_course_is_internal(course_id):
+                    check_errors.append({'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
             #Check if status exist
             if status not in status_check:
                 check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
-
             #If errors exist add them, else continue
             if check_errors:
                 for error in check_errors:

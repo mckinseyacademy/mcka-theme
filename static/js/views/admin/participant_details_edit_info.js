@@ -25,7 +25,11 @@
         if (input.parent().hasClass('participantCompanyValue'))
         {
           $('#participantDetailsWrapper').find('.errorMessage').empty();
-          _this.manageNewCompanyPopup(input, true);
+          var internalAdminFlag = $('#participantsDetailsDataWrapper').attr('internal-flag');
+          if (internalAdminFlag == 'False')
+          {
+            _this.manageNewCompanyPopup(input, true);
+          }
         }
       });
       $('#participantDetailsWrapper').find('.participantEditDetails').off().on("click", function()
@@ -130,8 +134,17 @@
               }
               else if (input.val().trim().length > 0)
               {
-                data[input.attr("name")] = 0;
-                data["new_company_name"] = input.val().trim();
+                var internalAdminFlag = $('#participantsDetailsDataWrapper').attr('internal-flag');
+                if (internalAdminFlag == 'False')
+                {
+                  data[input.attr("name")] = 0;
+                  data["new_company_name"] = input.val().trim();
+                }
+                else
+                {
+                  validation_message += "Company doesn't exist! ";
+                  validation_fail = true;
+                }
               }
               if (input.attr('data-old-id'))
               {

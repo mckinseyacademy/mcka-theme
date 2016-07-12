@@ -3369,7 +3369,15 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def participants_list(request):
     form = MassStudentListForm()
-    return render( request, 'admin/participants/participants_list.haml', {"form": form})
+    internalAdminFlag = False
+    if request.user.is_internal_admin:
+        internalAdminFlag = True
+
+    data = {
+        'form': form,
+        'internalAdminFlag': internalAdminFlag
+    }
+    return render( request, 'admin/participants/participants_list.haml', data)
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def participant_password_reset(request, user_id):
@@ -3509,10 +3517,12 @@ class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, user_id):
 
+        internalAdminFlag = False
         if request.user.is_internal_admin:
             internal_flag = check_if_user_is_internal(user_id)
             if internal_flag == False:
                 return permission_denied(request)
+            internalAdminFlag = True
 
         selectedUserResponse = user_api.get_user(user_id)
         selectedUserPermissions = Permissions(user_id)
@@ -3561,6 +3571,7 @@ class participant_details_api(APIView):
             if request.user.is_company_admin:
                 companyAdminFlag = True
             selectedUser['companyAdminFlag'] = companyAdminFlag
+            selectedUser['companyAdminFlag'] = internalAdminFlag
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -3637,12 +3648,20 @@ class manage_user_company_api(APIView):
 class manage_user_courses_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
+
+        internal_ids = None
+        if request.user.is_internal_admin:
+            internal_ids = get_internal_courses()
         response_obj = {}
         courses_list = course_api.get_course_list_in_pages()
         allCoursesList =[]
         for course in courses_list:
             courseData = vars(course)
-            allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+            if internal_ids:
+                if courseData['id'] in internal_ids:
+                    allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+            else:
+                allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
         response_obj['all_items'] = allCoursesList
         response_obj['status'] = 'ok'
         return Response(response_obj)
@@ -4979,6 +4998,10 @@ class tag_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, tag_id):
 
+        internal_ids = None
+        if request.user.is_internal_admin:
+            internal_ids = get_internal_courses()
+
         tag = group_api.fetch_group(group_id=tag_id)
         tag = vars(tag)
         tag['data'] = vars(tag['data'])
@@ -4987,7 +5010,11 @@ class tag_details_api(APIView):
         tag['courses'] = []
         courses = group_api.get_courses_in_group(group_id=tag_id)
         for course in courses:
-            tag['courses'].append(vars(course))
+            if internal_ids:
+                if course.course_id in internal_ids:
+                    tag['courses'].append(vars(course))
+            else:
+                tag['courses'].append(vars(course))
         return Response(tag)
 
 

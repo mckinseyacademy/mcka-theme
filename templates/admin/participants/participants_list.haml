@@ -2,7 +2,7 @@
 
 - block content
   #mainParticipantsWrapper
-    #participantsListTopContainer
+    #participantsListTopContainer{:internal-flag => '#{internalAdminFlag}'}
       #participantsAddWrapper
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
         %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
@@ -104,7 +104,7 @@
               + Add company admin privileges
           %hr
         .adminCourseAllWrapper
-        - if user.is_mcka_admin or user.is_mcka_subadmin
+        - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
           .addAnotherCourseWrapper.row
             %a.large-12.columns
               + Add course

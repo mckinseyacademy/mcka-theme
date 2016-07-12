@@ -19,15 +19,12 @@
                       ={name}  
                       ={id}
                     .courseDetailsTags
-                      - if user.is_internal_admin
-                        - for tag in tags
-                          .courseDetailsTagsListInternal.button.small.radius
-                            ={tag.name}
-                      - else
-                        - for tag in tags
-                          .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
-                            %span ={tag.name}
+                      - for tag in tags
+                        .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
+                          %span ={tag.name}
+                          - if user.is_mcka_admin or user.is_mcka_subadmin
                             %i.fa.fa-times.courseTagsDeleteIcon
+                      - if user.is_mcka_admin or user.is_mcka_subadmin
                         %i.fa.fa-pencil.courseTagsIcon
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock

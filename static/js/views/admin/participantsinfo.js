@@ -198,9 +198,17 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         $(document).on('autocomplete_not_found', function(event, input)
         {
             if (input.parent().hasClass('participantCourseValue'))
-                input.parents('.row').find('select').attr('disabled', true);
+            {
+              input.parents('.row').find('select').attr('disabled', true);
+            }
             else if (input.parent().hasClass('participantCompanyValue'))
+            {
+              var internalAdminFlag = $('#participantsListTopContainer').attr('internal-flag');
+              if (internalAdminFlag == 'False')
+              {
                 _this.manageNewCompanyPopup(input, true);
+              }
+            }
         });
         $('#add_a_participant').on('click', '.removeItem', function()
         {
@@ -223,8 +231,12 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                             data[input.attr("name")] = input.attr('data-id');
                         else if (input.val().trim().length > 0)
                         {
+                          var internalAdminFlag = $('#participantsListTopContainer').attr('internal-flag');
+                          if (internalAdminFlag == 'False')
+                          {
                             data[input.attr("name")] = 0;
                             data["new_company_name"] = value;
+                          }
                         }
                     }
                 });

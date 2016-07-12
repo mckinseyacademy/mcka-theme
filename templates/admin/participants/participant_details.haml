@@ -26,7 +26,7 @@
     - else
       .participantDetailsNavigationButton
         %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
-    #participantsDetailsDataWrapper{:data-id => '#{id}', :admin-flag => '#{companyAdminFlag}'}
+    #participantsDetailsDataWrapper{:data-id => '#{id}', :admin-flag => '#{companyAdminFlag}', :internal-flag => '#{internalAdminFlag}'}
       #participantsTopDetailsContainer
         .row
           .large-2.columns
@@ -112,8 +112,11 @@
             .participantCompanyLabel.labelUniversal
               Company
             .participantCompanyValue
-              %a{:href => '/admin/clients/#{company_id}', :target => '_self', :data-id => '#{company_id}'}> 
-                ={company_name}
+              - if user.is_internal_admin
+                %p ={company_name}
+              - else
+                %a{:href => '/admin/companies/#{company_id}', :target => '_self', :data-id => '#{company_id}'}> 
+                  ={company_name}
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               Gender
@@ -218,27 +221,13 @@
             .participantCityValue
               %input{:type => "text", :value => '#{city}', :name => "city", :maxlength => "60"}
         %hr
-        .companyAdminRolesContainer
-          / - for company in company_admin_list
-          /   .row.adminAnotherCompany
-          /     .large-6.columns.participantAdminCompany
-          /       .participantAdminCompanyLabel.labelUniversal
-          /         Admin Company
-          /       .participantAdminCompanyValue
-          /         %input{:type => "text", :data-id => "#{company.id}", :value => "#{company.display_name}"}
-          /         .fa.fa-check-circle-o.correctInput
-          /     .large-6.columns.participantPermissions
-          /       .participantPermissionsLabel.labelUniversal
-          /         Admin Permissions
-          /       .participantPermissionsValue.permissionSelect.large-10
-          /         %input{:type => "text", :value => "Company Admin", :data-id => "company_admin", :disabled => "true"}
-          /       %i.fa.fa-times.removeItem.large-2
-
-        .addAnotherCompanyToAdminister.companyAdminControles
-          %a{:href => '#', :target => '_self'}> + Add another company
-        .refreshCompanyToAdminister.companyAdminControles
-          %a{:href => '#', :target => '_self'}> Refresh
-        %hr
+        - if user.is_mcka_admin or user.is_mcka_subadmin
+          .companyAdminRolesContainer
+          .addAnotherCompanyToAdminister.companyAdminControles
+            %a{:href => '#', :target => '_self'}> + Add another company
+          .refreshCompanyToAdminister.companyAdminControles
+            %a{:href => '#', :target => '_self'}> Refresh
+          %hr
         .row
           .large-12.columns.participantBottomSaveEdit
             .button.small.radius.disabled.participantDetailsSave
