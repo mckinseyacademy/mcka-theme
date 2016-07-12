@@ -371,11 +371,13 @@ EmailTemplatesManager = function(method, pk, title, subject, body)
       $(document).trigger('email_template_finished', [data]);
     })
 }
-SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail)
+SendEmailManager = function(sender, subject, to_email_list, body, template_id, previewEmail, optional_data)
 {
   var dictionaryToSend = {'subject':subject, 'from_email': sender, 'to_email_list': to_email_list, 'email_body': body}
   if (template_id)
     dictionaryToSend['template_id'] = template_id;
+  if (optional_data)
+    dictionaryToSend['optional_data'] = optional_data;
   var options = {
     url: ApiUrls.email,
     data: JSON.stringify(dictionaryToSend),

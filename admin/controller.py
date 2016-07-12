@@ -3,6 +3,7 @@ import urllib
 import collections
 import re
 import uuid
+import string
 
 from dateutil.parser import parse as parsedate
 
@@ -1649,15 +1650,73 @@ def _send_activation_email_to_single_new_user(activation_record, user, absolute_
     return result
 
 
-def _send_multiple_emails(from_email = None, to_email_list = None, subject = None, email_body = None, template_id = None):
+def _send_multiple_emails(from_email = None, to_email_list = None, subject = None, email_body = None, template_id = None, optional_data = None):
     if template_id:
         template = EmailTemplate.objects.get(pk = template_id)
         subject = template.subject
         email_body = template.body
 
-    msg = [create_multiple_emails(from_email, to_email_list, subject, email_body)]
+    if optional_data:
+        msg = []
+        parsed_emails = _parse_email_text_template(email_body, optional_data)
+        if parsed_emails["parsable"]:
+            for email_data in parsed_emails["proccessed_email_data"]:
+                msg.append(create_multiple_emails(from_email, [email_data["email"]], subject, email_data["email_body"]))
+        else:
+            msg = [create_multiple_emails(from_email, to_email_list, subject, email_body)]
+
+    else:
+        msg = [create_multiple_emails(from_email, to_email_list, subject, email_body)]
     result = sendMultipleEmails(msg)
     return result
+
+
+def _parse_email_text_template(text_body, optional_data=None):
+
+    parsed = {"parsable": False}
+    parsed["proccessed_email_data"] = []
+    if text_body and optional_data:
+        list_of_keywords = ["FIRST_NAME", "LAST_NAME", "PROGRESS", "PROFICIENCY", "SOCIAL_ENGAGEMENT", "COMPANY"]
+        list_of_found = [False,False,False,False,False,False]
+        set_of_delimiter = [["&lt;&lt;","&gt;&gt;"], ["<<",">>"]]
+        use_delimiter = 0
+        for keyword in list_of_keywords:
+            for delimiter in set_of_delimiter:
+                delimiter_construct = delimiter[0]+"{}"+delimiter[1]
+                if text_body.find(delimiter_construct.format(keyword)) > -1:
+                    parsed["parsable"] = True
+                    list_of_found[list_of_keywords.index(keyword)] = True
+                    use_delimiter = set_of_delimiter.index(delimiter)
+        if parsed["parsable"]:
+            delimiter = set_of_delimiter[use_delimiter]
+            delimiter_construct = delimiter[0]+"{}"+delimiter[1]
+            temp_text_parsed = text_body
+            for keyword in list_of_keywords:
+                temp_text_parsed = temp_text_parsed.replace(delimiter_construct.format(keyword), "{{"+keyword.lower()+"}}")
+            string_template = CustomTemplate(temp_text_parsed)
+            for user in optional_data.get("user_list",[]):
+                temp_text = text_body
+                constructed_vars = {}
+                for keyword in list_of_keywords:
+                    if list_of_found[list_of_keywords.index(keyword)]:
+                        if keyword == "FIRST_NAME":
+                            constructed_vars[keyword.lower()] = user["first_name"]
+                        elif  keyword == "LAST_NAME":
+                            constructed_vars[keyword.lower()] = user["last_name"]
+                        elif  keyword == "PROGRESS":
+                            constructed_vars[keyword.lower()] = user["progress"]+"%"
+                        elif  keyword == "PROFICIENCY":
+                            constructed_vars[keyword.lower()] = user["proficiency"]+"%"
+                        elif  keyword == "SOCIAL_ENGAGEMENT":
+                            social_engagement_data = user_api.get_course_social_metrics(user["id"], optional_data["course_id"])
+                            if social_engagement_data:
+                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(social_engagement_data.num_threads, 
+                                    social_engagement_data.num_comments, social_engagement_data.num_replies)
+                        elif  keyword == "COMPANY":
+                            constructed_vars[keyword.lower()] = user["organization_name"]
+                temp_text = string_template.safe_substitute(constructed_vars)
+                parsed["proccessed_email_data"].append({"email_body":temp_text, "email": user["email"]})
+        return parsed
 
 
 def send_activation_emails_by_task_key(request, task_key):
@@ -1719,3 +1778,14 @@ def check_if_user_is_internal(user_id):
         if course['id'] in internal_ids:
             return True
     return False
+
+
+class CustomTemplate(string.Template):
+    delimiter = '{{'
+    pattern = r'''
+    \{\{(?:
+    (?P<escaped>\{\{)|
+    (?P<named>[_a-z][_a-z0-9]*)\}\}|
+    (?P<braced>[_a-z][_a-z0-9]*)\}\}|
+    (?P<invalid>)
+    )'''

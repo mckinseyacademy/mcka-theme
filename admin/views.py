@@ -4294,7 +4294,7 @@ class email_send_api(APIView):
     def post(self, request, format=None):
         data = json.loads(request.body)
         result = _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), \
-            subject = data.get('subject', None), email_body = data.get('email_body', None), template_id = data.get('template_id', None))
+            subject = data.get('subject', None), email_body = data.get('email_body', None), template_id = data.get('template_id', None), optional_data = data.get('optional_data', None))
         if result == True:
             response = {'status':'ok'}
         else:
