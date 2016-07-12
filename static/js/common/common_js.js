@@ -485,11 +485,35 @@ function CreateNicePopup(title, content)
 function CreatNicePrompt(title, input_label)
 {
   content = '<div class="fixedDynamicPopupPrompContentContainer"><div class="fixedDynamicPopupPrompContent">'+input_label+'</div>';
-  content += '<br><input type="text"/><div class="button savePromptChanges">Save</div>';
+  content += '<br><input type="text"/><div class="button savePromptChanges disabled">Send</div>';
   content += '</div>';
+  var _this = this;
   CreateNicePopup(title, content);
   popup = $("body").find(".fixedDynamicPopupContainer").last();
+  popup.on('keyup', 'input', function()
+  {
+    var _thisInput = $(this);
+    if (_this.liveSearchTimer) 
+    {
+      clearTimeout(_this.liveSearchTimer);
+    }
+    _this.liveSearchTimer = setTimeout(function() 
+    {
+      var value = _thisInput.val().trim();
+      if (value != '')
+      {
+        popup.find('.savePromptChanges').removeClass('disabled');
+      }
+      else
+      {
+        popup.find('.savePromptChanges').addClass('disabled');
+      }
+    }, 1000);
+  });
+
   popup.on("click", ".savePromptChanges", function(){
+    if ($(this).hasClass('disabled'))
+          return;
     data = $(this).parents(".fixedDynamicPopupContainer").find("input").val().trim();
     if (data.length > 0)
     {
