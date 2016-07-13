@@ -4977,15 +4977,17 @@ class tags_list_api(APIView):
 
         tag_name = request.DATA.get('name', None)
         if tag_name:
+            tags = []
+            for tag_type in TAG_GROUPS:
+                tags.extend(group_api.get_groups_of_type(group_type=TAG_GROUPS[tag_type]))
+            for tag in tags:
+                if tag.name.lower() == tag_name.lower():
+                    return Response({'status':'errorAlreadyExist', 'message': "Tag with this name already exist's!"})
             if tag_name == 'INTERNAL':
-                response = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
-                if response:
-                    return Response({'status':'okButInternal', 'message':'Internal Tag Already Exist! You cannot create a new one!', 'id': vars(response[0])['id']})
-                else:
-                    try:
-                        response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)
-                    except ApiError as e:
-                        return Response({'status':'error', 'message': e.message})
+                try:
+                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
             else:
                 try:
                     response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.COMMON)

@@ -188,7 +188,7 @@
                 alert("Couldn't create new tag!")
                 return;
               }
-              else if(data['status'] == 'okButInternal')
+              else if(data['status'] == 'errorAlreadyExist')
               {
                 $('#courseTagsModal').find('.errorMessage').text(data['message']);
               }
