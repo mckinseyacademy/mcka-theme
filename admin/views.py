@@ -4978,10 +4978,14 @@ class tags_list_api(APIView):
         tag_name = request.DATA.get('name', None)
         if tag_name:
             if tag_name == 'INTERNAL':
-                try:
-                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)
-                except ApiError as e:
-                    return Response({'status':'error', 'message': e.message})
+                response = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
+                if response:
+                    return Response({'status':'okButInternal', 'message':'Internal Tag Already Exist! You cannot create a new one!', 'id': vars(response[0])['id']})
+                else:
+                    try:
+                        response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)
+                    except ApiError as e:
+                        return Response({'status':'error', 'message': e.message})
             else:
                 try:
                     response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.COMMON)

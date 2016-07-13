@@ -188,6 +188,10 @@
                 alert("Couldn't create new tag!")
                 return;
               }
+              else if(data['status'] == 'okButInternal')
+              {
+                $('#courseTagsModal').find('.errorMessage').text(data['message']);
+              }
             })
             .fail(function(data) {
               console.log("Ajax failed to fetch data");
