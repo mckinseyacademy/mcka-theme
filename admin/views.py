@@ -1180,7 +1180,7 @@ class course_details_api(APIView):
             'observer':'Observer'
             }
             permissionsFilter = ['observer','assistant']
-            allUsersCount = course_api.get_course_details_users(course_id)
+            allUsersCount = course_api.get_course_details_users(course_id)['count']
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
             course_progress = course_api.get_course_details_completions_all_users(course_id=course_id)
             course_grades = course_api.get_course_details_metrics_grades_all_users(course_id, allUsersCount)
