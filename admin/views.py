@@ -970,7 +970,9 @@ class courses_list_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_details(request, course_id):
 
+    internalAdminFlag = False
     if request.user.is_internal_admin:
+        internalAdminFlag = True
         internal_flag = check_if_course_is_internal(course_id)
         if internal_flag == False:
             return permission_denied(request)
@@ -1046,6 +1048,8 @@ def course_details(request, course_id):
     course['tags'] = []
     for tag in course_tags:
         course['tags'].append(vars(tag))
+
+    course['internalAdminFlag'] = internalAdminFlag
 
     return render(request, 'admin/courses/course_details.haml', course)
 
@@ -1178,12 +1182,6 @@ class course_details_api(APIView):
             permissionsFilter = ['observer','assistant']
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
             course_progress = course_api.get_course_details_completions_all_users(course_id=course_id)
-            # users_progress = []
-            # for user in leaders['leaders']:
-            #     user_progress = {}
-            #     user_progress['user_id'] = user['id']
-            #     user_progress['progress'] = user['completions']
-            #     users_progress.append(user_progress)
             course_grades = course_api.get_course_details_metrics_grades_all_users(course_id)
             for course_participant in allCourseParticipants['results']:
                 if len(course_participant['organizations'] ) == 0:
