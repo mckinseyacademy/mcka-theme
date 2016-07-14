@@ -708,13 +708,14 @@ def get_course_details_completions_all_users(course_id):
 
 
 @api_error_protect
-def get_course_details_metrics_grades_all_users(course_id):
+def get_course_details_metrics_grades_all_users(course_id, count):
 
     response = GET(
-        '{}/{}/{}/metrics/grades/leaders?exclude_roles=none'.format(
+        '{}/{}/{}/metrics/grades/leaders?exclude_roles=none&count={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
-            course_id
+            course_id,
+            count
         )
     )
 
