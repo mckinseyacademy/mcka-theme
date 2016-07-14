@@ -1177,8 +1177,14 @@ class course_details_api(APIView):
             }
             permissionsFilter = ['observer','assistant']
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
-            users_progress = get_course_progress(course_id, [])
-            course_grades = course_api.get_course_details_metrics_grades(course_id, allCourseParticipants['count'])
+            course_progress = course_api.get_course_details_completions_all_users(course_id=course_id)
+            # users_progress = []
+            # for user in leaders['leaders']:
+            #     user_progress = {}
+            #     user_progress['user_id'] = user['id']
+            #     user_progress['progress'] = user['completions']
+            #     users_progress.append(user_progress)
+            course_grades = course_api.get_course_details_metrics_grades_all_users(course_id)
             for course_participant in allCourseParticipants['results']:
                 if len(course_participant['organizations'] ) == 0:
                     course_participant['organizations'] = [{'display_name': 'No company'}]
@@ -1206,9 +1212,9 @@ class course_details_api(APIView):
                         course_participant['custom_last_login'] = '-'
                 else:
                     course_participant['custom_last_login'] = '-'
-                user = [user for user in users_progress if user['user_id'] == course_participant['id']]
+                user = [user for user in course_progress['leaders'] if user['id'] == course_participant['id']]
                 if len(user) > 0:
-                    course_participant['progress'] = '{:03d}'.format(round_to_int(user[0]['progress']))
+                    course_participant['progress'] = '{:03d}'.format(round_to_int(user[0]['completions']))
                 else: 
                     course_participant['progress'] = "000"
                 course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
