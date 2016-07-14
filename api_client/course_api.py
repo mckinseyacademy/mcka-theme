@@ -677,7 +677,6 @@ def get_course_details_metrics_social(course_id, qs_params = ''):
 
 @api_error_protect
 def get_course_details_completions_leaders(course_id, *args, **kwargs):
-    ''' fetch social metrics for course '''
 
     qs_params = {}
     qs_params.update(kwargs)
@@ -688,6 +687,35 @@ def get_course_details_completions_leaders(course_id, *args, **kwargs):
             COURSEWARE_API,
             course_id,
             urlencode(qs_params)
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_completions_all_users(course_id):
+
+    response = GET(
+        '{}/{}/{}/metrics/completions/leaders?exclude_roles=none'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_grades_all_users(course_id, count):
+
+    response = GET(
+        '{}/{}/{}/metrics/grades/leaders?exclude_roles=none&count={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            count
         )
     )
 

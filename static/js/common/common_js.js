@@ -174,10 +174,11 @@ GetUserAdminCompanies = function(user_id){
       url: ApiUrls.company_admin_get_post_put_delete(user_id),
       type: "GET",
       dataType: "json",
-      timeout: 10000
+      timeout: 10000,
+      beforeSend: function( xhr ) {
+        xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+      }
     };
-
-  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
   $.ajax(options)
   .done(function(data) {
     $(document).trigger('admin_companies_get', [data])
@@ -194,10 +195,12 @@ PutUserAdminCompanies = function(user_id, list_of_company_ids){
       dataType: "json",
       timeout: 10000,
       data: JSON.stringify({"ids":list_of_company_ids}),
-      processData: false
+      processData: false,  
+      beforeSend: function( xhr ) {
+        xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+      }
     };
 
-  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
   $.ajax(options)
   .done(function(data) {
     $(document).trigger('admin_companies_put', [data])
@@ -383,9 +386,11 @@ SendEmailManager = function(sender, subject, to_email_list, body, template_id, p
     data: JSON.stringify(dictionaryToSend),
     processData: false,
     type: "POST",
-    dataType: "json"
+    dataType: "json",  
+    beforeSend: function( xhr ) {
+      xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+    }
   };
-  options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
   $.ajax(options)
   .done(function(data) {
     if (data['status'] == 'ok')

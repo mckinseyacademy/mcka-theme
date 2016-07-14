@@ -12,7 +12,7 @@
               < Back to ={companyName}
           - else
             %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
-        #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}', :admin-flag => '#{companyAdminFlag}', :company-page => '#{companyCourseDeatilsPage}', :company-id => '#{companyId}'}
+        #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}', :admin-flag => '#{companyAdminFlag}', :company-page => '#{companyCourseDeatilsPage}', :company-id => '#{companyId}', :internal-flag => '#{internalAdminFlag}'}
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
                     .courseDetailsNameAndId
@@ -22,10 +22,8 @@
                       - for tag in tags
                         .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
                           %span ={tag.name}
-                          - if user.is_mcka_admin or user.is_mcka_subadmin
-                            %i.fa.fa-times.courseTagsDeleteIcon
-                      - if user.is_mcka_admin or user.is_mcka_subadmin
-                        %i.fa.fa-pencil.courseTagsIcon
+                          %i.fa.fa-times.courseTagsDeleteIcon
+                      %i.fa.fa-pencil.courseTagsIcon
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock
                       - if start == '-' or end == '-'

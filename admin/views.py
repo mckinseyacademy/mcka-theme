@@ -970,7 +970,9 @@ class courses_list_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_details(request, course_id):
 
+    internalAdminFlag = False
     if request.user.is_internal_admin:
+        internalAdminFlag = True
         internal_flag = check_if_course_is_internal(course_id)
         if internal_flag == False:
             return permission_denied(request)
@@ -1046,6 +1048,8 @@ def course_details(request, course_id):
     course['tags'] = []
     for tag in course_tags:
         course['tags'].append(vars(tag))
+
+    course['internalAdminFlag'] = internalAdminFlag
 
     return render(request, 'admin/courses/course_details.haml', course)
 
@@ -1176,9 +1180,10 @@ class course_details_api(APIView):
             'observer':'Observer'
             }
             permissionsFilter = ['observer','assistant']
+            allUsersCount = course_api.get_course_details_users(course_id)['count']
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
-            users_progress = get_course_progress(course_id, [])
-            course_grades = course_api.get_course_details_metrics_grades(course_id, allCourseParticipants['count'])
+            course_progress = course_api.get_course_details_completions_all_users(course_id=course_id)
+            course_grades = course_api.get_course_details_metrics_grades_all_users(course_id, allUsersCount)
             for course_participant in allCourseParticipants['results']:
                 if len(course_participant['organizations'] ) == 0:
                     course_participant['organizations'] = [{'display_name': 'No company'}]
@@ -1206,9 +1211,9 @@ class course_details_api(APIView):
                         course_participant['custom_last_login'] = '-'
                 else:
                     course_participant['custom_last_login'] = '-'
-                user = [user for user in users_progress if user['user_id'] == course_participant['id']]
+                user = [user for user in course_progress['leaders'] if user['id'] == course_participant['id']]
                 if len(user) > 0:
-                    course_participant['progress'] = '{:03d}'.format(round_to_int(user[0]['progress']))
+                    course_participant['progress'] = '{:03d}'.format(round_to_int(user[0]['completions']))
                 else: 
                     course_participant['progress'] = "000"
                 course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
@@ -4977,6 +4982,12 @@ class tags_list_api(APIView):
 
         tag_name = request.DATA.get('name', None)
         if tag_name:
+            tags = []
+            for tag_type in TAG_GROUPS:
+                tags.extend(group_api.get_groups_of_type(group_type=TAG_GROUPS[tag_type]))
+            for tag in tags:
+                if tag.name.lower() == tag_name.lower():
+                    return Response({'status':'errorAlreadyExist', 'message': "Tag with this name already exist's!"})
             if tag_name == 'INTERNAL':
                 try:
                     response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)

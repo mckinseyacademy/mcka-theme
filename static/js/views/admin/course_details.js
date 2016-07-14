@@ -162,36 +162,48 @@
           }
           else
           {
-            var tag_name = courseTagsInput.val().trim();
-            if (tag_name.toLowerCase() == 'internal')
+            var internalAdminFlag = $('#courseDetailsDataWrapper').attr('internal-flag');
+            if (internalAdminFlag == 'False')
             {
-              tag_name = tag_name.toUpperCase();
+              var tag_name = courseTagsInput.val().trim();
+              if (tag_name.toLowerCase() == 'internal')
+              {
+                tag_name = tag_name.toUpperCase();
+              }
+              var data = {"name": tag_name};
+              var url = ApiUrls.tags;
+              var options = {
+                url: url,
+                data: data,
+                type: "POST",
+                dataType: "json"
+              };
+              options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+              $.ajax(options)
+              .done(function(data) {
+                if (data['status'] == 'ok')
+                {
+                  tag_id = parseInt(data['id']);
+                  _this.addTagToCourse(tag_id, course_id, tag_name);
+                }
+                else if (data['status'] == 'error')
+                {
+                  alert("Couldn't create new tag!")
+                  return;
+                }
+                else if(data['status'] == 'errorAlreadyExist')
+                {
+                  $('#courseTagsModal').find('.errorMessage').text(data['message']);
+                }
+              })
+              .fail(function(data) {
+                console.log("Ajax failed to fetch data");
+              });
             }
-            var data = {"name": tag_name};
-            var url = ApiUrls.tags;
-            var options = {
-              url: url,
-              data: data,
-              type: "POST",
-              dataType: "json"
-            };
-            options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
-            $.ajax(options)
-            .done(function(data) {
-              if (data['status'] == 'ok')
-              {
-                tag_id = parseInt(data['id']);
-                _this.addTagToCourse(tag_id, course_id, tag_name);
-              }
-              else if (data['status'] == 'error')
-              {
-                alert("Couldn't create new tag!")
-                return;
-              }
-            })
-            .fail(function(data) {
-              console.log("Ajax failed to fetch data");
-            });
+            else
+            {
+              $('#courseTagsModal').find('.errorMessage').text("You don't have permission to create a new tag, please select one from the list!");
+            }
           }
         });
         course_tags_modal.foundation('reveal', 'open');
