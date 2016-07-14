@@ -54,8 +54,10 @@
     render: function(){
       var _this = this;
       var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
+      var multiSelectFlag = true
       if (companyAdminFlag == 'True')
       {
+        multiSelectFlag = false
         for (var i=0; i < _this.generatedGridColumns.length; i++)
         {
           if (_this.generatedGridColumns[i]['title'] == 'Company')
@@ -68,7 +70,7 @@
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
-        multiselect: true,
+        multiselect: multiSelectFlag,
         enableSearch: true,
         collection: this.collection.fullCollection,
         onRowClick: function()
