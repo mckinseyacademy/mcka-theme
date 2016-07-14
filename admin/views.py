@@ -3576,7 +3576,7 @@ class participant_details_api(APIView):
             if request.user.is_company_admin:
                 companyAdminFlag = True
             selectedUser['companyAdminFlag'] = companyAdminFlag
-            selectedUser['companyAdminFlag'] = internalAdminFlag
+            selectedUser['internalAdminFlag'] = internalAdminFlag
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
