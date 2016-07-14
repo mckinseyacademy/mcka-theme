@@ -233,9 +233,9 @@ def get_all_organization_groups(organization_id):
 @api_error_protect
 def add_group_to_organization(organization_id, group_id):
 
-    data = {"group_id":group_id}
+    data = {"id":int(group_id)}
     response = POST(
-        '{}/{}/{}/groups'.format(
+        '{}/{}/{}/groups/'.format(
             settings.API_SERVER_ADDRESS,
             ORGANIZATION_API,
             organization_id,

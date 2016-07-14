@@ -168,7 +168,9 @@
           $.ajax({
             type: 'POST',
             url: '/admin/participants/'+id,
-            headers: { 'X-CSRFToken': xcsrf },
+            beforeSend: function( xhr ) {
+              xhr.setRequestHeader("X-CSRFToken", xcsrf);
+            },
             data: data,
             dataType: "json",
             cache: false,
@@ -390,10 +392,11 @@
             url: url,
             data: dictionaryToSend,
             type: "POST",
-            dataType: "json"
+            dataType: "json",
+            beforeSend: function( xhr ) {
+              xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+            },
           };
-
-          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
           saveButton.attr('disabled', 'disabled');
           saveButton.addClass('disabled');
           $.ajax(options)
