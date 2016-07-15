@@ -534,7 +534,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_user_progress(request, user_id, course_id):
     return _course_progress_for_user(request, course_id, user_id)
 
@@ -545,7 +545,7 @@ def course_progress(request, course_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_user_progress_v2(request, user_id, course_id):
     return _course_progress_for_user_v2(request, course_id, user_id)
 
@@ -927,7 +927,7 @@ def course_learner_dashboard(request):
 
 @require_POST
 @login_required
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)

@@ -11,7 +11,6 @@ from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
 from api_client.api_error import ApiError
 from django.conf import settings
-from django.core.cache import cache
 
 
 class PermissionSaveError(Exception):
