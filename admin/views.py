@@ -3659,15 +3659,15 @@ class manage_user_courses_api(APIView):
         if request.user.is_internal_admin:
             internal_ids = get_internal_courses()
         response_obj = {}
-        courses_list = course_api.get_course_list_in_pages()
+        courses_list = course_api.get_course_list()
         allCoursesList =[]
         for course in courses_list:
             courseData = vars(course)
             if internal_ids:
                 if courseData['id'] in internal_ids:
-                    allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+                    allCoursesList.append({'display_name':courseData['name'] +'('+ courseData['id'] + ')', 'id': courseData['id']})
             else:
-                allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+                allCoursesList.append({'display_name':courseData['name'] +'('+ courseData['id'] + ')', 'id': courseData['id']})
         response_obj['all_items'] = allCoursesList
         response_obj['status'] = 'ok'
         return Response(response_obj)
