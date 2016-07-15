@@ -6,7 +6,24 @@
       { title: 'Name', index: true, name: 'username', titleAttribute: 'full_name',
       actions: function(id, attributes) 
       { 
-        return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+        var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+        if (companyPageFlag == 'False')
+        {
+          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+        }
+        else
+        {
+          var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
+          if (companyAdminFlag == 'False')
+          {
+            return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+          }
+          else
+          {
+            var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+            return '<a href="/admin/companies/' + companyId + '/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+          }
+        }
       }},
       { title: 'Email', index: true, name: 'email' },
       { title: 'Company', index: true, name: 'organizations_display_name'},

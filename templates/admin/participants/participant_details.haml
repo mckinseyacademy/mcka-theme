@@ -26,7 +26,7 @@
     - else
       .participantDetailsNavigationButton
         %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
-    #participantsDetailsDataWrapper{:data-id => '#{id}', :admin-flag => '#{companyAdminFlag}', :internal-flag => '#{internalAdminFlag}'}
+    #participantsDetailsDataWrapper{:data-id => '#{id}', :admin-flag => '#{companyAdminFlag}', :internal-flag => '#{internalAdminFlag}', :company-id => '#{companyId}'}
       #participantsTopDetailsContainer
         .row
           .large-2.columns

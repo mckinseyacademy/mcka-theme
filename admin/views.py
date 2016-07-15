@@ -1049,7 +1049,9 @@ def course_details(request, course_id):
     for tag in course_tags:
         course['tags'].append(vars(tag))
 
+    companyAdminFlag = False
     course['internalAdminFlag'] = internalAdminFlag
+    course['companyAdminFlag'] = companyAdminFlag
 
     return render(request, 'admin/courses/course_details.haml', course)
 
@@ -5098,3 +5100,66 @@ def company_dashboard(request):
         'companies': companies
     }
     return render(request, 'admin/companies/company_dashboard.haml', data)
+
+
+class company_participant_details_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    def get(self, request, company_id, user_id):
+
+        internalAdminFlag = False
+        if request.user.is_internal_admin:
+            internal_flag = check_if_user_is_internal(user_id)
+            if internal_flag == False:
+                return permission_denied(request)
+            internalAdminFlag = True
+
+        selectedUserResponse = user_api.get_user(user_id)
+        selectedUserPermissions = Permissions(user_id)
+        userOrganizations = selectedUserPermissions.get_all_user_organizations_with_permissions()
+        if selectedUserResponse is not None:
+            selectedUser = selectedUserResponse.to_dict()
+            if 'last_login' in selectedUser:
+                if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
+                    selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+                else:
+                    selectedUser['custom_last_login'] = 'N/A'
+            else:
+                selectedUser['custom_last_login'] = 'N/A'
+            if len(userOrganizations["main_company"]):
+                selectedUser['company_name'] = userOrganizations["main_company"][0].display_name
+                selectedUser['company_id'] = userOrganizations["main_company"][0].id
+            else:
+                selectedUser['company_name'] = 'No company'
+                selectedUser['company_id'] = ''
+            selectedUser['company_admin_list'] = userOrganizations[PERMISSION_GROUPS.COMPANY_ADMIN]
+            if selectedUser['gender'] == '' or selectedUser['gender'] == None:
+                selectedUser['gender'] = 'N/A'
+            if selectedUser['city']:
+                selectedUser['city'] = selectedUser['city'].strip()
+            if selectedUser['country']:
+                selectedUser['country'] = selectedUser['country'].strip().upper()
+            if selectedUser['city'] == '' and selectedUser['country'] == '':
+                selectedUser['location'] = 'N/A'
+            elif selectedUser['country'] == '':
+                selectedUser['location'] = selectedUser['city']
+            elif selectedUser['city'] == '':
+                selectedUser['location'] = selectedUser['country']
+            elif selectedUser['city'] == None and selectedUser['country'] == None:
+                selectedUser['location'] = 'N/A'
+            else:
+                selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
+            selectedUser['mcka_permissions'] = selectedUserPermissions.current_permissions
+            if not len(selectedUser['mcka_permissions']):
+                selectedUser['mcka_permissions'] = ['-']
+            if UserActivation.get_user_activation(user=selectedUserResponse):
+                selectedUser['has_activation_record'] = True
+            else:
+                selectedUser['has_activation_record'] = False
+
+            companyAdminFlag = False
+            if request.user.is_company_admin:
+                companyAdminFlag = True
+            selectedUser['companyId'] = company_id
+            selectedUser['companyAdminFlag'] = companyAdminFlag
+            selectedUser['internalAdminFlag'] = internalAdminFlag
+            return render( request, 'admin/participants/participant_details.haml', selectedUser)
