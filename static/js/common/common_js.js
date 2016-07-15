@@ -464,3 +464,35 @@ function CreatNicePrompt(title, input_label)
 
 }
 
+function CreateNiceAjaxSelect(parent_container, resource_name, select_name, default_option, fresh)
+{
+  $(parent_container).empty();
+  $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
+  var options = {
+    url: ApiUrls.cached_resource_api(resource_name, fresh),
+    type: "GET",
+    dataType: "json",
+    timeout: 1000000,
+    beforeSend: function( xhr ) {
+      xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+    }
+  };
+  $.ajax(options)
+  .done(function(data) {
+    select_html = '<select class="niceAjaxSelectGlobal resourceName_'+resource_name+'" name="'+select_name+'">';
+    if (default_option)
+      select_html += '<option value="'+default_option["value"]+'">'+default_option["name"]+'</option>';
+    for (var i=0; i<data.length; i++)
+    {
+      select_html += '<option value="'+data[i]["value"]+'">'+data[i]["name"]+'</option>';
+    }
+    select_html += "</select>";
+    $(parent_container).empty();
+    $(parent_container).append(select_html);
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+
