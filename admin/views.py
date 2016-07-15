@@ -997,11 +997,8 @@ def course_details(request, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
 
-    course_metrics_all_users = course_api.get_course_details_metrics(course_id)
-    qs_params = {
-        'groups' : '1,2,3,4,5,6,7,8,9'
-    }
-    course_metrics_filtered_users = course_api.get_course_details_metrics(course_id, qs_params)
+    course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id)
+    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id)
     course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
 
     try:
@@ -4603,13 +4600,8 @@ def company_course_details(request, company_id, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_company_users - counter_roles
 
-    qs_param = { 'organization' : company_id}
-    course_metrics_all_users = course_api.get_course_details_metrics(course_id, qs_param)
-    qs_params = {
-        'organization' : company_id,
-        'groups' : '1,2,3,4,5,6,7,8,9'
-    }
-    course_metrics_filtered_users = course_api.get_course_details_metrics(course_id, qs_params)
+    course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
+    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, company_id)
     course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
 
     try:

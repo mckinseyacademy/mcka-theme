@@ -723,18 +723,34 @@ def get_course_details_metrics_grades_all_users(course_id, count):
 
 
 @api_error_protect
-def get_course_details_metrics(course_id,  qs_params = ''):
+def get_course_details_metrics_all_users(course_id, organization_id = ''):
 
     response = GET(
-        '{}/{}/{}/metrics?'.format(
+        '{}/{}/{}/metrics?organization={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
-            urlencode(qs_params)
+            organization_id
         )
     )
 
     return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_filtered_by_groups(course_id, organization_id = ''):
+
+    response = GET(
+        '{}/{}/{}/metrics/?groups=1,2,3,4,5,6,7,8,9&organization={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            organization_id
+        )
+    )
+
+    return json.loads(response.read())
+
 
 @api_error_protect
 def get_user_list_dictionary(course_id, program_id = None):
