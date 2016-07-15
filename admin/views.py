@@ -4651,6 +4651,10 @@ def company_course_details(request, company_id, course_id):
     course['companyCourseDeatilsPage'] = True
     course['companyId'] = company_id
     course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
+    internalAdminFlag = False
+    if request.user.is_internal_admin:
+        internalAdminFlag = True
+    course['internalAdminFlag'] = internalAdminFlag
     return render(request, 'admin/courses/course_details.haml', course)
 
 
