@@ -1440,7 +1440,7 @@ def get_course_progress(course_id, exclude_users, company_id=None):
     leaders = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
 
     for user in leaders['leaders']:
-        if user['id'] not in exclude_users:
+        if str(user['id']) not in exclude_users:
             user_progress = {}
             user_progress['user_id'] = user['id']
             user_progress['progress'] = user['completions']

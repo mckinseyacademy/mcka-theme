@@ -1024,7 +1024,7 @@ def course_details(request, course_id):
 
     course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
     for user in course_grades['leaders']:
-        if user['id'] not in list_of_user_roles['ids']:
+        if str(user['id']) not in list_of_user_roles['ids']:
             user_proficiency = float(user['grade'])*100
             course_proficiency += user_proficiency
 
