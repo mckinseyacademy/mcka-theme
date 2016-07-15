@@ -191,6 +191,17 @@
 
 #participantDetailsWrapper{
 
+	.disabledATag
+	{
+		pointer-events: none;
+   		cursor: default;
+   		color: #333333;
+		font-family: "Open Sans",sans-serif;
+		font-weight: normal;
+		font-style: normal;
+		line-height: 1;
+   	}
+
 	.participantDetailsContent .participantEmailReset{
 		float: right;
 	}

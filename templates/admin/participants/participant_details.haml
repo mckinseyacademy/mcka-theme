@@ -113,7 +113,8 @@
               Company
             .participantCompanyValue
               - if user.is_internal_admin
-                %p ={company_name}
+                %a.disabledATag{:href => '/admin/companies/#{company_id}', :data-id => '#{company_id}'}>
+                  ={company_name}
               - else
                 %a{:href => '/admin/companies/#{company_id}', :target => '_self', :data-id => '#{company_id}'}> 
                   ={company_name}
