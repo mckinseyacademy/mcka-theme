@@ -3113,11 +3113,6 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
 def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
 
-    if request.user.is_internal_admin:
-        internal_flag = check_if_course_is_internal(course_id)
-        if internal_flag == False:
-            return permission_denied(request)
-
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     selected_project_id = request.GET.get("project_id", None)

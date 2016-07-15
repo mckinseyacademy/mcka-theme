@@ -970,12 +970,6 @@ def get_accessible_courses(user):
     else:
         if user.is_mcka_admin or user.is_mcka_subadmin:
             courses_list = course_api.get_course_list_in_pages(course_id_list)
-        elif user.is_internal_admin:
-            courses = course_api.get_course_list_in_pages(course_id_list)
-            internal_courses = get_internal_courses()
-            for course in courses:
-                if vars(course)['id'] in internal_courses:
-                    courses_list.append(course)
         else:
             user_orgs = user_api.get_user_organizations(user.id)
             if len(user_orgs) > 0:
@@ -994,10 +988,6 @@ def get_accessible_courses_from_program(user, program_id, restrict_to_courses_id
                 role.role for role in roles if role.course_id == course.course_id
                 ]
             ]
-
-    if user.is_internal_admin:
-        internal_courses = get_internal_courses()
-        courses = [course for course in courses if course.course_id in internal_courses]
 
     if restrict_to_courses_ids:
         courses = [course for course in courses if course.course_id in restrict_to_courses_ids]
