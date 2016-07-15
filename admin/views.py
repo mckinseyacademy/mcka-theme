@@ -997,10 +997,13 @@ def course_details(request, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
 
-    course_completed_users = 0
-    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
-    for completed_metric in course_metrics.users_completed:
-        course_completed_users += completed_metric[1]
+    course_metrics_all_users = course_api.get_course_details_metrics(course_id)
+    qs_params = {
+        'groups' : '1,2,3,4,5,6,7,8,9'
+    }
+    course_metrics_filtered_users = course_api.get_course_details_metrics(course_id, qs_params)
+    course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
+
     try:
         course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
     except ZeroDivisionError:
@@ -4596,10 +4599,15 @@ def company_course_details(request, company_id, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_company_users - counter_roles
 
-    course_completed_users = 0
-    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months', organization=company_id)
-    for completed_metric in course_metrics.users_completed:
-        course_completed_users += completed_metric[1]
+    qs_param = { 'organization' : company_id}
+    course_metrics_all_users = course_api.get_course_details_metrics(course_id, qs_param)
+    qs_params = {
+        'organization' : company_id,
+        'groups' : '1,2,3,4,5,6,7,8,9'
+    }
+    course_metrics_filtered_users = course_api.get_course_details_metrics(course_id, qs_params)
+    course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
+
     try:
         course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
     except ZeroDivisionError:
@@ -4624,7 +4632,7 @@ def company_course_details(request, company_id, course_id):
     course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
     for user in course_grades['leaders']:
         if user['id'] in company_ids:
-            if user['id'] not in list_of_user_roles['ids']:
+            if str(user['id']) not in list_of_user_roles['ids']:
                 user_proficiency = float(user['grade'])*100
                 course_proficiency += user_proficiency
 
