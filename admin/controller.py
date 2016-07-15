@@ -1694,9 +1694,9 @@ def _parse_email_text_template(text_body, optional_data=None):
                         elif  keyword == "LAST_NAME":
                             constructed_vars[keyword.lower()] = user["last_name"]
                         elif  keyword == "PROGRESS":
-                            constructed_vars[keyword.lower()] = user["progress"]+"%"
+                            constructed_vars[keyword.lower()] = str(int(user.get("progress",0)))+"%"
                         elif  keyword == "PROFICIENCY":
-                            constructed_vars[keyword.lower()] = user["proficiency"]+"%"
+                            constructed_vars[keyword.lower()] = str(int(user.get("proficiency",0)))+"%"
                         elif  keyword == "SOCIAL_ENGAGEMENT":
                             social_engagement_data = user_api.get_course_social_metrics(user["id"], optional_data["course_id"])
                             if social_engagement_data:
