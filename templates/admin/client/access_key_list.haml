@@ -29,9 +29,12 @@
                   %a{href: "", "data-reveal-id": "new-principal", "data-options": "hover_delay: 0;", "data-reveal-ajax": "access_keys/#{key.pk}/share"}
                     %i.fa.fa-lg.fa-paper-plane
     .large-4.columns
+      -# %label &nbsp;
+      -# %a#create-access-key.button.radius.tiny{"data-reveal-id": "new-principal", "data-reveal-ajax": "access_keys/create", href: ""}
+      -#   %span= _("Create Access Key")
       %label &nbsp;
-      %a#create-access-key.button.radius.tiny{"data-reveal-id": "new-principal", "data-reveal-ajax": "access_keys/create", href: ""}
-        %span= _("Create Access Key")
+      %a#create-access-key-course.button.radius.tiny{"data-reveal-id": "new-principal", "data-reveal-ajax": "access_keys/course-create", href: ""}
+        %span= _("Create Course Access Key")
 
   #new-principal.reveal-modal.medium{"data-reveal": "true"}
 

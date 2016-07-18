@@ -2,23 +2,27 @@
 
 - block content
   #mainParticipantsWrapper
-    #participantsListTopContainer
+    #participantsListTopContainer{:internal-flag => '#{internalAdminFlag}'}
       #participantsAddWrapper
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
         %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
       %hr
-      #participantsSearchWrapper
-        .row
-          .large-3.columns
-            %input{:placeholder => 'Company', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => 'Course', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => 'Name', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => 'Email', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
-    #participantsListViewGridBlock
+      - if user.is_internal_admin
+      - else
+        #participantsSearchWrapper
+          .row
+            .large-3.columns
+              %input{:placeholder => 'Company', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
+            .large-3.columns
+              %input{:placeholder => 'Course', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
+            .large-3.columns
+              %input{:placeholder => 'Name', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
+            .large-3.columns
+              %input{:placeholder => 'Email', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
+    - if user.is_internal_admin
+    - else
+      #participantsListViewGridBlock
 
     #add_a_participant.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal
@@ -100,7 +104,7 @@
               + Add company admin privileges
           %hr
         .adminCourseAllWrapper
-        - if user.is_mcka_admin or user.is_mcka_subadmin
+        - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
           .addAnotherCourseWrapper.row
             %a.large-12.columns
               + Add course

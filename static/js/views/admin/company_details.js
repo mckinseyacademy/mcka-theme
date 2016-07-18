@@ -1,4 +1,49 @@
   Apros.views.CompanyDetailsCoursesView = Backbone.View.extend({
+    gridColumns:
+      [
+        { title: 'Course Name', index: true, name: 'name',
+          actions: function(id, attributes){ 
+            var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
+            var thisId = attributes['id']
+            var name = attributes['name']
+            return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+          } 
+        },
+        { title: 'Course ID', index: true, name: 'id' },
+        { title: 'Participants', index: true, name: 'participants', sorttype: 'number'},
+        { title: 'Start', index: true, name: 'start',
+          actions: function(id, attributes){ 
+            if(attributes['start'])
+            {
+              if (attributes['start'] != '-'){
+                var start = attributes['start'].split(',')[0].split('/');
+                return '' + start[1] + '/' + start[2] + '/' + start[0];
+              }
+              return attributes['start'];
+            }
+            else
+            {
+              return '-';
+            }
+          } 
+        },
+        { title: 'End', index: true, name: 'end',
+          actions: function(id, attributes){ 
+            if(attributes['end'])
+            {
+              if (attributes['end'] != '-'){
+                var end = attributes['end'].split(',')[0].split('/');
+                return '' + end[1] + '/' + end[2] + '/' + end[0];
+              }
+              return attributes['end'];
+            }
+            else
+            {
+              return '-';
+            }
+          } 
+        },
+      ],
     initialize: function(){
       this.collection.fetch({success: function(){
         cloneHeader('#companyDetailsCoursesViewGridBlock');
@@ -6,43 +51,19 @@
       this.setEditCompanyNameEvents();
     },
     render: function(){
+      var _this = this;
+      var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
+      var companyAdminFlag = $('#mainCompanyDetailsDataContainer').attr('admin-flag');
+      if (companyAdminFlag == 'False')
+      {
+        var cohortColumn = { title: 'Cohort Comp.', index: true, name: 'cohort' };
+        _this.gridColumns.push(cohortColumn);
+      }
       companyDetailsCoursesViewGrid = new bbGrid.View({
         container: this.$el,
         collection: this.collection,
         enableSearch: true,
-        colModel:[
-        { title: 'Course Name', index: true, name: 'name',
-          actions: function(id, attributes){ 
-            var thisId = attributes['id']
-            var name = attributes['name']
-            if (name.length > 75){
-              return '<a href="/admin/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
-            }
-            return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
-          } 
-        },
-        { title: 'Course ID', index: true, name: 'id' },
-        { title: 'Participants', index: true, name: 'participants', sorttype: 'number'},
-        { title: 'Start', index: true, name: 'start',
-          actions: function(id, attributes){ 
-            if (attributes['start'] != '-'){
-              var start = attributes['start'].split(',')[0].split('/');
-              return '' + start[1] + '/' + start[2] + '/' + start[0];
-            }
-            return attributes['start'];
-          } 
-        },
-        { title: 'End', index: true, name: 'end',
-          actions: function(id, attributes){ 
-            if (attributes['end'] != '-'){
-              var end = attributes['end'].split(',')[0].split('/');
-              return '' + end[1] + '/' + end[2] + '/' + end[0];
-            }
-            return attributes['end'];
-          } 
-        },
-        { title: 'Cohort Comp.', index: true, name: 'cohort' },
-        ]
+        colModel: _this.gridColumns
       });
     },
     setEditCompanyNameEvents: function()

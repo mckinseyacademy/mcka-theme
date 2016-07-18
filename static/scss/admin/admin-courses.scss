@@ -121,6 +121,12 @@
 						display: none;
 					}
 				}
+
+				.courseDetailsTagsListCompAdmin
+				{
+					font-size: small;
+					padding: 5px;
+				}
 			}
 		}
 		.courseDetailsBlocks{
@@ -141,7 +147,6 @@
 		}
 	}
 }
-
 
 #courseMainDetailsContainerView
 {
@@ -230,10 +235,6 @@
 {
 	float: right;
 	display: none;
-
-	.button{
-		background-color: #868685!important;
-	}
 }
 
 #courseBulkActionsMainContainer{

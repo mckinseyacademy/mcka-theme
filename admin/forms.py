@@ -37,16 +37,31 @@ class EditEmailForm(forms.Form):
     ''' Used to edit a user's email address. '''
     email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': _("Enter new email address")}))
 
+class CustomSelectDateWidget(SelectDateWidget):
+
+    def create_select(self, *args, **kwargs):
+        old_state = self.is_required
+        self.is_required = False
+        result = super(CustomSelectDateWidget, self).create_select(*args, **kwargs)
+        self.is_required = old_state
+        return result
+
 class ProgramForm(forms.Form):
 
     ''' add a new program to the system '''
     display_name = forms.CharField(max_length=255)
     name = forms.CharField(max_length=255)
     start_date = forms.DateField(
-        widget=SelectDateWidget(years=PROGRAM_YEAR_CHOICES)
+        widget=CustomSelectDateWidget(
+            empty_label=("---", "---", "---"),
+            years=PROGRAM_YEAR_CHOICES
+            )
     )
     end_date = forms.DateField(
-        widget=SelectDateWidget(years=PROGRAM_YEAR_CHOICES)
+        widget=CustomSelectDateWidget(
+            empty_label=("---", "---", "---"),
+            years=PROGRAM_YEAR_CHOICES
+            )
     )
 
 
@@ -138,8 +153,6 @@ class UploadCompanyImageForm(forms.Form):
     company_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
 
 
-
-
 class MultiEmailField(forms.Field):
     """ Comma separated email list """
     def to_python(self, value):
@@ -178,7 +191,7 @@ class ShareAccessKeyForm(forms.Form):
         widget=forms.Textarea(attrs={'placeholder': _('Message (optional)')}))
 
 
-class CreateAccessKeyForm(forms.ModelForm):
+class CreateCourseAccessKeyForm(forms.ModelForm):
     class Meta:
         model = AccessKey
         fields = ['name', 'course_id']
@@ -187,6 +200,23 @@ class CreateAccessKeyForm(forms.ModelForm):
             'course_id': _('Course Instance'),
         }
         widgets = {
+            'course_id': forms.Select,
+        }
+        labels = {
+            'name': mark_safe('Name <span class="required-field"></span>')
+        }
+
+class CreateAccessKeyForm(forms.ModelForm):
+    class Meta:
+        model = AccessKey
+        fields = ['name', 'program_id', 'course_id']
+        labels = {
+            'name': _('Name'),
+            'program_id': _('Program'),
+            'course_id': _('Course Instance'),
+        }
+        widgets = {
+            'program_id': forms.Select,
             'course_id': forms.Select,
         }
         labels = {

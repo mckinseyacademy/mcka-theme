@@ -17,7 +17,6 @@ def permission_groups_map():
         permission_groups = group_api.get_groups_of_type('permission')
         permission_groups_map = {permission_group.name: permission_group.id for permission_group in permission_groups}
         cache.set('permission_groups_map', permission_groups_map)
-
     return permission_groups_map
 
 
@@ -26,7 +25,6 @@ def is_user_in_permission_group(user, *group_names):
         if group_name in permission_groups_map().keys():
             if user_api.is_user_in_group(user.id, permission_groups_map()[group_name]):
                 return True
-
     return False
 
 
@@ -59,7 +57,6 @@ def permission_group_required_api(*group_names):
         return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
     return decorator
 
-
 def permission_group_required_not_in_group(request):
     template = loader.get_template('not_authorized.haml')
     context = RequestContext(request, {'request_path': request.path})
@@ -70,3 +67,16 @@ def permission_group_required_not_authenticated(request):
     path = urlquote(request.get_full_path())
     login_tuple = settings.LOGIN_URL, REDIRECT_FIELD_NAME, path
     return HttpResponseRedirect('%s?%s=%s' % login_tuple)
+
+
+def get_user_permissions(user):
+    ''' Loads and caches group names and ids via the edX platform '''
+    permissions_data = {"global_permissions":[],"organization_permissions":[]}
+    permission_dict = permission_groups_map()
+    current_permissions = [pg.name for pg in user_api.get_user_groups(user.id, PERMISSION_TYPE)]
+    for perm in current_permissions:
+        if perm not in (PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_OBSERVER):
+            permissions_data["global_permissions"].append({perm: permission_dict[perm]})
+    
+    global_permissions = [{perm: permission_dict[perm]} for perm in current_permissions if perm not in (PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_OBSERVER)]
+    return permissions_data

@@ -11,8 +11,18 @@
           actions: function(id, attributes){ 
             var thisId = attributes['id']
             var name = attributes['name']
-            if (name)
-              return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+            var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
+            if (companyAdminFlag == 'False')
+            {
+              if (name) {
+                return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+              }
+            }
+            else
+            {
+              var companyId = $('#participantsDetailsDataWrapper').attr('company-id');
+              return '<a href="/admin/companies/' +  companyId + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+            }
           } 
         },
         { title: 'Course ID', index: true, name: 'id' },

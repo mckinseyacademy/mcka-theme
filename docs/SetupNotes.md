@@ -259,7 +259,7 @@ As the `vagrant` user:
 
 To begin setting up Apros, **make sure that the LMS and forum/comment service are running**. Then, run the following commands as the `apros` user:
 
-    ./manage.py syncdb --migrate
+    ./manage.py migrate
     mkdir /edx/app/apros/mcka_apros/static/gen
     ./manage.py load_seed_data
 

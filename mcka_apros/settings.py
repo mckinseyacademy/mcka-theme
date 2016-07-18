@@ -50,7 +50,6 @@ DEFAULT_APPS = (
 THIRD_PARTY_APPS = (
     'debug_toolbar',
     'django_assets',
-    'south',
 )
 
 LOCAL_APPS = (
@@ -69,13 +68,6 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
-
-SOUTH_MIGRATION_MODULES = {
-    'accounts': 'accounts.migrations',
-    'admin': 'admin.migrations',
-    'main': 'main.migrations',
-    'license': 'license.migrations',
-}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -403,24 +395,6 @@ DEBUG_TOOLBAR_PANELS = DEFAULT_DEBUG_TOOLBAR_PANELS + LOCAL_DEBUG_TOOLBAR_PANELS
 DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': '',  # rely on a version of jQuery that already exists
     'SHOW_TOOLBAR_CALLBACK': 'util.debug_toolbar.show_toolbar'   # override when the Django Debug Toolbar appears
-}
-
-DAILY_EMAIL_REPORTS_CONFIG = {
-    #email stuff
-    "smtp_server":"smtp.gmail.com",
-    "smtp_port":"587",
-    "smtp_user_email":"systembot@mckinseyacademy.com", #TODO:add user email
-    "smtp_user_password":"YesniKcM123", #TODO: add user password
-    "email_to":"vishal@mckinseyacademy.com", #TODO: add daily stats email
-    "email_from":"vishal@mckinseyacademy.com", #TODO: add from email
-    "date_format":"%d/%m/%Y",
-    "email_space":", ",
-    "data":"related",
-    #build script stuff
-    "output_directory":"analytics/output/",
-    "edx_db_name":"edx",
-    "apros_db_name":"default",
-    "file_format":".xlsx",
 }
 
 ################################### EDX-NOTIFICATIONS SUBSYSTEM ######################################

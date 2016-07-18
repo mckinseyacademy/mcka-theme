@@ -49,21 +49,23 @@
     },
     render: function(){
       var _this = this;
-      this.delegateEvents();
-      if(this.participantDetailsActiveCoursesViewGrid) {
-        this.participantDetailsActiveCoursesViewGrid.undelegateEvents();
-        this.$el.html('');
-      }
-      this.participantDetailsActiveCoursesViewGrid = new bbGrid.View({
-        container: this.$el,
-        collection: this.collection,
-        colModel:[
+      var gridColumns = 
+      [
         { title: 'Course Name', index: true, name: 'name', sorttype: 'string',
           actions: function(id, attributes){ 
             var thisId = attributes['id'];
             var name = attributes['name'];
-            if (name) {
-              return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+            var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
+            if (companyAdminFlag == 'False')
+            {
+              if (name) {
+                return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+              }
+            }
+            else
+            {
+              var companyId = $('#participantsDetailsDataWrapper').attr('company-id');
+              return '<a href="/admin/companies/' +  companyId + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
             }
           } 
         },
@@ -102,16 +104,38 @@
         { title: 'Status', index: true, name: 'status', 
         actions: function(id, attributes) {
             var status = attributes['status'];
-            return status + ' <a class="edit-status fa fa-pencil" data-revealhref="/admin/participants/' + 
-            _this.user_id + '/courses/' + id + 
-            '/edit_status"></a>';
+            var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
+            if (companyAdminFlag == 'False')
+            {
+              return status + ' <a class="edit-status fa fa-pencil" data-revealhref="/admin/participants/' + 
+              _this.user_id + '/courses/' + id + 
+              '/edit_status"></a>';
+            }
+            else
+            {
+              return status;
+            }
           }
-        },
-        { title: 'Unenroll', index: false, name: 'unenroll',
+        }
+        ];
+      var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
+      if (companyAdminFlag == 'False')
+      {
+        var unerollColumn =  { title: 'Unenroll', index: false, name: 'unenroll',
           actions: function(id, attributes){ 
             return '<a href="#" data-courseid="' + id + '" class="unenroll-user">Unenroll</a>'; 
-          } }
-        ]
+          } };
+        gridColumns.push(unerollColumn);
+      }
+      this.delegateEvents();
+      if(this.participantDetailsActiveCoursesViewGrid) {
+        this.participantDetailsActiveCoursesViewGrid.undelegateEvents();
+        this.$el.html('');
+      }
+      this.participantDetailsActiveCoursesViewGrid = new bbGrid.View({
+        container: this.$el,
+        collection: this.collection,
+        colModel: gridColumns
       });
     }, 
     editStatus: function(e) {

@@ -34,7 +34,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       });
       var statusUpdaterIntervalId = null;
       _this.initializeEmailTemplateListeners();
-      EmailTemplatesManager('GET');
+      var companyAdminFlag = $('#mainCompanyDetailsDataContainer').attr('admin-flag');
+      if (companyAdminFlag == 'False')
+      {
+        EmailTemplatesManager('GET');
+      }
       $('#courseBulkActionsMainContainer').on('click','.bulkEmailSelectedParticipants',function()
       {
         if ($(this).hasClass('disabled'))
@@ -74,6 +78,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
               break;
             }
           }
+          modal.find('.emailModalControl').find('.sendEmail').removeClass("disabled");
         });
         modal.find('.templateNameValue select option:eq(0)').prop('selected', true);
         modal.find('.fromEmailValue input').val("support@mckinseyacademy.com");
@@ -535,14 +540,21 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         var bbgrid_table = _this.courses_details_view.coursesListDetailsViewGrid;
         var selectedRowsIds = bbgrid_table.selectedRows;
         var to_email_list = [];
+        var student_list = [];
+        var user_data = null
         for (var i = 0; i<selectedRowsIds.length; i++ )
         {
-          to_email_list.push(bbgrid_table.collection.get(selectedRowsIds[i]).attributes.email)
+          user_data = bbgrid_table.collection.get(selectedRowsIds[i]).attributes;
+          to_email_list.push(user_data.email);
+          var user_stats = {"id": user_data.id, "progress": user_data.progress, "proficiency": user_data.proficiency, "email": user_data.email, 
+                            "organization_name":user_data.organizations_display_name, "first_name": user_data.first_name, "last_name": user_data.last_name};
+          student_list.push(user_stats);
         }
+        var course_id = $("#courseDetailsDataWrapper").attr("data-id");
         var  template_id = modal.find('.templateNameValue select').val();
         if (template_id == 'none')
           template_id = null;
-        SendEmailManager(sender, subject, to_email_list, body, template_id);
+        SendEmailManager(sender, subject, to_email_list, body, template_id, false, {"course_id":course_id, "user_list":student_list});
       });
       controlButtonContainer.on('click', '.previewEmail', function(e)
       {

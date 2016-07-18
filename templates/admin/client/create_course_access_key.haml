@@ -1,0 +1,22 @@
+- load staticfiles
+%header
+  %h1= _("Create access key")
+
+.close-reveal-modal
+  %i.fa.fa-times-circle
+
+%form.admin-form{action: "access_keys/course-create", method: "POST"}
+  - if error
+    .error= error
+  - csrf_token
+  %fieldset
+    - for field in form.visible_fields
+      .row
+        .small-3.columns
+        .small-9.columns= field.errors
+      .row
+        .small-3.columns= field.label_tag
+        .small-9.columns= field
+
+  .submit-area
+    %input.button.radius.small{type: "submit", value: "#{submit_label}"}

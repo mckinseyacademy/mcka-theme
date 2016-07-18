@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.core.management import call_command
 import os
 import subprocess
@@ -8,13 +8,16 @@ import atexit
 class Command(BaseCommand):
     help = 'Runs the dev server and watches compileable assets'
 
+    def add_arguments(self, parser):
+        parser.add_argument('port', type=str)
+
     def handle(self, *args, **options):
         global assets_watcher_pid
         assets_watcher_pid = None
 
         port = '3000'
-        if len(args) > 0:
-            port = args[0]
+        if options['port'] > 0:
+            port = options['port']
 
         startup_message = "Starting dev server on port {0} with asset watcher...".format(port)
         self.stdout.write(startup_message)

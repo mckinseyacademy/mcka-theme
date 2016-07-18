@@ -20,9 +20,13 @@
 
 - block content
   #mainParticipantsDetailsWrapper
-    .participantDetailsNavigationButton
-      %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
-    #participantsDetailsDataWrapper{:data-id => '#{id}'}
+    - if user.is_company_admin
+      .participantDetailsNavigationButton
+        %a.participantDetailsNavigationButtonCompanyAdmin{:href => '#', :target => '_self'}> < Back
+    - else
+      .participantDetailsNavigationButton
+        %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
+    #participantsDetailsDataWrapper{:data-id => '#{id}', :admin-flag => '#{companyAdminFlag}', :internal-flag => '#{internalAdminFlag}', :company-id => '#{companyId}'}
       #participantsTopDetailsContainer
         .row
           .large-2.columns
@@ -35,7 +39,9 @@
                 Last logged in: ={custom_last_login}
           .large-2.columns
           .large-3.columns
-            %input.button.small.radius.participantEnrollInCourse{:type => "button", :value => "Enroll in a Course"}
+            - if user.is_company_admin
+            - else
+              %input.button.small.radius.participantEnrollInCourse{:type => "button", :value => "Enroll in a Course"}
       #participantsMainDetailsContainerView
         .participantDetailsMenuButtons.row
           .participantProfileButton.large-2.columns
@@ -56,15 +62,19 @@
               Participant Details
             .large-5.columns
             .participantDetailsEditButton.large-2.columns
-              %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
-        - if has_activation_record
-          - if not is_active
-            .row
-              .large-12.columns.participantBottomArchiveEdit
-                %p.error
-                  &ast; This user has not yet activated their account.
-                %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}> Get Activation Link
-                %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}> Resend Activation Link
+              - if user.is_company_admin
+              - else
+                %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
+        - if user.is_company_admin
+          - else
+            - if has_activation_record
+              - if not is_active
+                .row
+                  .large-12.columns.participantBottomArchiveEdit
+                    %p.error
+                      &ast; This user has not yet activated their account.
+                    %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}> Get Activation Link
+                    %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}> Resend Activation Link
         .row
           .large-6.columns.participantFirstName
             .participantFirstNameLabel.labelUniversal
@@ -90,8 +100,10 @@
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
                 Email
-              .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
+              - if user.is_company_admin
+              - else
+                .participantEmailReset.inlineBlock
+                  %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
             .participantEmailValue
               ={email}
         %hr
@@ -100,8 +112,12 @@
             .participantCompanyLabel.labelUniversal
               Company
             .participantCompanyValue
-              %a{:href => '/admin/clients/#{company_id}', :target => '_self', :data-id => '#{company_id}'}> 
-                ={company_name}
+              - if user.is_internal_admin
+                %a.disabledATag{:href => '/admin/companies/#{company_id}', :data-id => '#{company_id}'}>
+                  ={company_name}
+              - else
+                %a{:href => '/admin/companies/#{company_id}', :target => '_self', :data-id => '#{company_id}'}> 
+                  ={company_name}
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               Gender
@@ -132,10 +148,12 @@
                   &#8212;
                 - else
                   #{mcka_permission}
-        .row
-          .large-12.columns.participantBottomArchiveEdit
-            %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
-            %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
+        - if user.is_company_admin
+        - else
+          .row
+            .large-12.columns.participantBottomArchiveEdit
+              %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
+              %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
 
       %form.participantDetailsEditForm{:style => "display: none"}
         - csrf_token
@@ -203,23 +221,14 @@
               City
             .participantCityValue
               %input{:type => "text", :value => '#{city}', :name => "city", :maxlength => "60"}
-        .row
-          .large-6.columns.participantPermissions
-            .participantPermissionsLabel.labelUniversal
-              Admin Permissions
-            .participantPermissionsValue
-              %select
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Uber admin
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Course ops admin
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Company admin
-                %option{:value => "", :selected => '#{mcka_permission}' == ""} Internal Admin
-          .large-6.columns.participantAdminCompany
-            .participantAdminCompanyLabel.labelUniversal
-              Admin Company
-            .participantAdminCompanyValue
-              %input{:type => "text", :value => '#{company_name}'}
-            .participantEmailReset.inlineBlock
-              %a{:href => '/admin/participants/#{id}', :target => '_self'}> + Add another company
+        %hr
+        - if user.is_mcka_admin or user.is_mcka_subadmin
+          .companyAdminRolesContainer
+          .addAnotherCompanyToAdminister.companyAdminControles
+            %a{:href => '#', :target => '_self'}> + Add another company
+          .refreshCompanyToAdminister.companyAdminControles
+            %a{:href => '#', :target => '_self'}> Refresh
+          %hr
         .row
           .large-12.columns.participantBottomSaveEdit
             .button.small.radius.disabled.participantDetailsSave

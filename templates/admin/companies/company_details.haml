@@ -3,8 +3,11 @@
 - block content 
   #mainCompanyDetailsContainer
     #companyDetailsNavigation
-      %a{:href => '/admin/companies', :target => '_self'}> < Back to All Companies
-    #mainCompanyDetailsDataContainer{:data-id => '#{company.id}'}
+      - if user.is_company_admin
+        %a{:href => '/admin/company_dashboard', :target => '_self'}> < Back to All Companies
+      - else
+        %a{:href => '/admin/companies', :target => '_self'}> < Back to All Companies
+    #mainCompanyDetailsDataContainer{:data-id => '#{company.id}', :admin-flag => '#{companyAdminFlag}'}
       #companyDetailsTopDataWrapper
         .row.companyDetailsCompanyName
           .companyDetailsTextName

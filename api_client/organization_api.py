@@ -203,6 +203,83 @@ def get_grade_complete_count(organization_id, organization_object=JsonObject, *a
 
     return JP.from_json(response.read(), organization_object)
 
+@api_error_protect
+def get_users_from_organization_group(organization_id, group_id):
+
+    response = GET(
+        '{}/{}/{}/groups/{}/users'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+            group_id,
+        )
+    )
+
+    return json.loads(response.read())
+
+@api_error_protect
+def get_all_organization_groups(organization_id):
+
+    response = GET(
+        '{}/{}/{}/groups?page_size=0'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+        )
+    )
+
+    return json.loads(response.read())
+
+@api_error_protect
+def add_group_to_organization(organization_id, group_id):
+
+    data = {"id":int(group_id)}
+    response = POST(
+        '{}/{}/{}/groups/'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+        ),
+        data
+    )
+
+    return json.loads(response.read())
+
+@api_error_protect
+def add_users_to_organization_group(organization_id, group_id, user_ids):
+
+    data = {}
+    if isinstance(user_ids, list):
+        data["users"] = ",".join(user_ids)
+    else:
+        data["users"] = str(user_ids)
+    response = POST(
+        '{}/{}/{}/groups/{}/users'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+            group_id,),
+        data
+    )
+
+    return (response.code == 201)
+
+@api_error_protect
+def remove_users_from_organization_group(organization_id, group_id, user_ids):
+    qs_params = {}
+    if isinstance(user_ids, list):
+        qs_params['users'] = ",".join(user_ids)
+    else:
+        qs_params['users'] = str(user_ids)
+    response = DELETE(
+        '{}/{}/{}/groups/{}/users'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            organization_id,
+            group_id),
+        qs_params
+    )
+    return (response.code == 200)
 
 @api_error_protect
 def get_organizations_courses(organization_id):
@@ -246,3 +323,5 @@ ORGANIZATION_ERROR_CODE_MESSAGES = {
     },
 }
 ERROR_CODE_MESSAGES.update(ORGANIZATION_ERROR_CODE_MESSAGES)
+
+

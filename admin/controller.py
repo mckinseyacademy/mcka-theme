@@ -3,6 +3,7 @@ import urllib
 import collections
 import re
 import uuid
+import string
 
 from dateutil.parser import parse as parsedate
 
@@ -37,6 +38,7 @@ from lib.mail import (
 from lib.util import DottableDict
 
 from api_client.user_api import USER_ROLES
+from api_client.group_api import TAG_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
 
 import threading
@@ -814,7 +816,7 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
 
     return metricsJson
 
-def get_course_details_progress_data(course, course_modules, users):
+def get_course_details_progress_data(course, course_modules, users, company_id):
 
     start_date = course.start
     end_date = datetime.now()
@@ -822,13 +824,20 @@ def get_course_details_progress_data(course, course_modules, users):
         if end_date > course.end:
             end_date = course.end
     delta = end_date - start_date
-    metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
+    if company_id:
+        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days', organization=company_id)
+    else:
+        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
 
     total = len(users) * len(course_modules)
     engaged_total = 0
 
-    course_metrics = course_api.get_course_metrics_completions(course.id, count=total)
-    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+    if company_id:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course.id, organization=company_id)
+    else:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course.id)
+
+    course_leaders_ids = [leader['id'] for leader in course_metrics['leaders']]
     for course_user in users:
         if course_user in course_leaders_ids:
             engaged_total += 1
@@ -1129,9 +1138,12 @@ def round_to_int_bump_zero(value):
     return rounded_value
 
 
-def get_course_social_engagement(course_id):
+def get_course_social_engagement(course_id, company_id):
 
-    course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
+    if company_id:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': company_id})}
+    else:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
     course_users_ids = [str(user) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
@@ -1142,7 +1154,10 @@ def get_course_social_engagement(course_id):
 
     number_of_posts = 0
     number_of_participants_posting = 0
-    course_metrics_social = course_api.get_course_details_metrics_social(course_id)
+    if company_id:
+        course_metrics_social = course_api.get_course_details_metrics_social(course_id, {'organization': company_id})
+    else:
+        course_metrics_social = course_api.get_course_details_metrics_social(course_id)
 
     for user in course_metrics_social['users']:
         user_data = course_metrics_social['users'][str(user)]
@@ -1166,9 +1181,12 @@ def get_course_social_engagement(course_id):
     return course_stats
 
 
-def get_course_engagement_summary(course_id):
+def get_course_engagement_summary(course_id, company_id):
 
-    course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
+    if company_id:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': company_id})}
+    else:
+        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
     course_users_ids = [str(user) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
@@ -1177,12 +1195,17 @@ def get_course_engagement_summary(course_id):
 
     additional_fields = ["is_active"]
     course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
-    course_metrics = course_api.get_course_metrics_completions(course_id, count=len(course_users_simple))
-    course_leaders_ids = [leader.id for leader in course_metrics.leaders]
+
+    if company_id:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
+    else:
+        course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id)
+
+    course_leaders_ids = [leader['id'] for leader in course_metrics['leaders']]
 
     active_users = 0
     engaged_users = 0
-    engaged_progress_sum = sum([leader.completions for leader in course_metrics.leaders])
+    engaged_progress_sum = sum([leader['completions'] for leader in course_metrics['leaders']])
     for course_user in course_users:
         if course_user.is_active is True:
             active_users += 1
@@ -1334,10 +1357,11 @@ def get_course_users_roles(course_id, permissions_filter_list):
     user_roles_list['ids'] = list(user_roles_list['ids'])
     return user_roles_list
 
-def get_user_courses_helper(user_id):
+def get_user_courses_helper(user_id, request):
 
     user_courses = []
     allCourses = user_api.get_courses_from_user(user_id)
+
     for course in allCourses:
         user_course = {}
         user_course['name'] = course['name']
@@ -1386,6 +1410,11 @@ def get_user_courses_helper(user_id):
                 if vars(role)['role'] == 'assistant':
                     user_course['status'] = 'TA'
 
+
+    if request.user.is_internal_admin:
+        internal_ids = get_internal_courses()
+        user_courses = [course for course in user_courses if course['id'] in internal_ids]
+
     active_courses = []
     course_history = []    
     for user_course in user_courses:
@@ -1399,7 +1428,7 @@ def get_user_courses_helper(user_id):
 
     return active_courses, course_history
     
-def get_course_progress(course_id, exclude_users):
+def get_course_progress(course_id, exclude_users, company_id=None):
     '''
     Helper method for calculating user pogress on course. 
     Returns dictionary of users with user_id and progress.
@@ -1408,10 +1437,10 @@ def get_course_progress(course_id, exclude_users):
 
     users_progress = []
 
-    leaders = course_api.get_course_details_completions_leaders(course_id)
+    leaders = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
 
     for user in leaders['leaders']:
-        if user['id'] not in exclude_users:
+        if str(user['id']) not in exclude_users:
             user_progress = {}
             user_progress['user_id'] = user['id']
             user_progress['progress'] = user['completions']
@@ -1481,6 +1510,10 @@ def _enroll_participants(participants, request, reg_status):
         'observer': USER_ROLES.OBSERVER
     }
 
+    internalAdminFlag = False
+    if request.user.is_internal_admin:
+        internalAdminFlag = True
+
     for user_dict in participants:
 
         user = None
@@ -1534,10 +1567,13 @@ def _enroll_participants(participants, request, reg_status):
                     check_errors.append({'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
                 else: 
                     check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
+            #For Internal Admin Check if Course Is Internal
+            if internalAdminFlag:
+                if not check_if_course_is_internal(course_id):
+                    check_errors.append({'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
             #Check if status exist
             if status not in status_check:
                 check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
-
             #If errors exist add them, else continue
             if check_errors:
                 for error in check_errors:
@@ -1604,15 +1640,73 @@ def _send_activation_email_to_single_new_user(activation_record, user, absolute_
     return result
 
 
-def _send_multiple_emails(from_email = None, to_email_list = None, subject = None, email_body = None, template_id = None):
+def _send_multiple_emails(from_email = None, to_email_list = None, subject = None, email_body = None, template_id = None, optional_data = None):
     if template_id:
         template = EmailTemplate.objects.get(pk = template_id)
         subject = template.subject
         email_body = template.body
 
-    msg = [create_multiple_emails(from_email, to_email_list, subject, email_body)]
+    if optional_data:
+        msg = []
+        parsed_emails = _parse_email_text_template(email_body, optional_data)
+        if parsed_emails["parsable"]:
+            for email_data in parsed_emails["proccessed_email_data"]:
+                msg.append(create_multiple_emails(from_email, [email_data["email"]], subject, email_data["email_body"]))
+        else:
+            msg = [create_multiple_emails(from_email, to_email_list, subject, email_body)]
+
+    else:
+        msg = [create_multiple_emails(from_email, to_email_list, subject, email_body)]
     result = sendMultipleEmails(msg)
     return result
+
+
+def _parse_email_text_template(text_body, optional_data=None):
+
+    parsed = {"parsable": False}
+    parsed["proccessed_email_data"] = []
+    if text_body and optional_data:
+        list_of_keywords = ["FIRST_NAME", "LAST_NAME", "PROGRESS", "PROFICIENCY", "SOCIAL_ENGAGEMENT", "COMPANY"]
+        list_of_found = [False,False,False,False,False,False]
+        set_of_delimiter = [["&lt;&lt;","&gt;&gt;"], ["<<",">>"]]
+        use_delimiter = 0
+        for keyword in list_of_keywords:
+            for delimiter in set_of_delimiter:
+                delimiter_construct = delimiter[0]+"{}"+delimiter[1]
+                if text_body.find(delimiter_construct.format(keyword)) > -1:
+                    parsed["parsable"] = True
+                    list_of_found[list_of_keywords.index(keyword)] = True
+                    use_delimiter = set_of_delimiter.index(delimiter)
+        if parsed["parsable"]:
+            delimiter = set_of_delimiter[use_delimiter]
+            delimiter_construct = delimiter[0]+"{}"+delimiter[1]
+            temp_text_parsed = text_body
+            for keyword in list_of_keywords:
+                temp_text_parsed = temp_text_parsed.replace(delimiter_construct.format(keyword), "{{"+keyword.lower()+"}}")
+            string_template = CustomTemplate(temp_text_parsed)
+            for user in optional_data.get("user_list",[]):
+                temp_text = text_body
+                constructed_vars = {}
+                for keyword in list_of_keywords:
+                    if list_of_found[list_of_keywords.index(keyword)]:
+                        if keyword == "FIRST_NAME":
+                            constructed_vars[keyword.lower()] = user["first_name"]
+                        elif  keyword == "LAST_NAME":
+                            constructed_vars[keyword.lower()] = user["last_name"]
+                        elif  keyword == "PROGRESS":
+                            constructed_vars[keyword.lower()] = str(int(user.get("progress",0)))+"%"
+                        elif  keyword == "PROFICIENCY":
+                            constructed_vars[keyword.lower()] = str(int(user.get("proficiency",0)))+"%"
+                        elif  keyword == "SOCIAL_ENGAGEMENT":
+                            social_engagement_data = user_api.get_course_social_metrics(user["id"], optional_data["course_id"])
+                            if social_engagement_data:
+                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(social_engagement_data.num_threads, 
+                                    social_engagement_data.num_comments, social_engagement_data.num_replies)
+                        elif  keyword == "COMPANY":
+                            constructed_vars[keyword.lower()] = user["organization_name"]
+                temp_text = string_template.safe_substitute(constructed_vars)
+                parsed["proccessed_email_data"].append({"email_body":temp_text, "email": user["email"]})
+        return parsed
 
 
 def send_activation_emails_by_task_key(request, task_key):
@@ -1623,9 +1717,8 @@ def send_activation_emails_by_task_key(request, task_key):
         _send_activation_email_to_single_new_user(record, record, absolute_uri)
 
 
-def get_company_active_courses(company_id):
+def get_company_active_courses(company_courses):
 
-    company_courses = organization_api.get_organizations_courses(company_id)
     active_courses = []
     for company_course in company_courses:
         if timezone.now() >= parsedate(company_course['start']):
@@ -1645,3 +1738,44 @@ def validate_company_display_name(company_display_name):
 
     return {'status': 'ok', 'message':'Company Validation Success!'}
 
+
+def get_internal_courses():
+
+    internal_ids = []
+    internal_tags = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
+    internal_courses = []
+    for internal_tag in internal_tags:
+        internal_courses.extend(group_api.get_courses_in_group(group_id=vars(internal_tag)['id']))
+    for course in internal_courses:
+        internal_ids.append(vars(course)['course_id'])
+
+    return internal_ids
+
+
+def check_if_course_is_internal(course_id):
+
+    internal_ids = get_internal_courses()
+    if str(course_id) in internal_ids:
+        return True
+    return False
+
+
+def check_if_user_is_internal(user_id):
+
+    user_courses = user_api.get_courses_from_user(user_id)
+    internal_ids = get_internal_courses()
+    for course in user_courses:
+        if course['id'] in internal_ids:
+            return True
+    return False
+
+
+class CustomTemplate(string.Template):
+    delimiter = '{{'
+    pattern = r'''
+    \{\{(?:
+    (?P<escaped>\{\{)|
+    (?P<named>[_a-z][_a-z0-9]*)\}\}|
+    (?P<braced>[_a-z][_a-z0-9]*)\}\}|
+    (?P<invalid>)
+    )'''

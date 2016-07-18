@@ -90,6 +90,10 @@ class RemoteUser(AbstractUser):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_ADMIN)
 
     @cached_property
+    def is_company_admin(self):
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.COMPANY_ADMIN)
+
+    @cached_property
     def is_client_subadmin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.CLIENT_SUBADMIN)
 

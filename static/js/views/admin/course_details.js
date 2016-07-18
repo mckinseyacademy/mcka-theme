@@ -6,7 +6,24 @@
       { title: 'Name', index: true, name: 'username', titleAttribute: 'full_name',
       actions: function(id, attributes) 
       { 
-        return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+        var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+        if (companyPageFlag == 'False')
+        {
+          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+        }
+        else
+        {
+          var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
+          if (companyAdminFlag == 'False')
+          {
+            return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+          }
+          else
+          {
+            var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+            return '<a href="/admin/companies/' + companyId + '/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+          }
+        }
       }},
       { title: 'Email', index: true, name: 'email' },
       { title: 'Company', index: true, name: 'organizations_display_name'},
@@ -40,6 +57,12 @@
     initialize: function(){
       InitializeTooltipOnPage();
       var _this = this;
+      var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+      if (companyPageFlag == 'True')
+      {
+        var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+        this.collection.updateCompanyQuerryParams(companyId);
+      }
       this.collection.fetch({success:function(collection, response, options){
           _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
           cloneHeader('#courseDetailsParticipantsGrid');
@@ -47,11 +70,24 @@
     },
     render: function(){
       var _this = this;
+      var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
+      var multiSelectFlag = true
+      if (companyAdminFlag == 'True')
+      {
+        multiSelectFlag = false
+        for (var i=0; i < _this.generatedGridColumns.length; i++)
+        {
+          if (_this.generatedGridColumns[i]['title'] == 'Company')
+          {
+            delete _this.generatedGridColumns[i];
+          }
+        }
+      }
       var coursesListDetailsViewGrid = {}
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
-        multiselect: true,
+        multiselect: multiSelectFlag,
         enableSearch: true,
         collection: this.collection.fullCollection,
         onRowClick: function()
@@ -136,46 +172,69 @@
           if (courseTagsInput.attr('data-id'))
           {
             tag_id = courseTagsInput.attr('data-id');
-            _this.addTagToCourse(tag_id, course_id);
+            tag_name = courseTagsInput.val();
+            if (tag_name.toLowerCase() == 'internal')
+            {
+              tag_name = tag_name.toUpperCase();
+            }
+            _this.addTagToCourse(tag_id, course_id, tag_name);
           }
           else
           {
-            var tag_name = courseTagsInput.val().trim();
-            var data = {"name": tag_name};
-            var url = ApiUrls.tags;
-            var options = {
-              url: url,
-              data: data,
-              type: "POST",
-              dataType: "json"
-            };
-            options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
-            $.ajax(options)
-            .done(function(data) {
-              if (data['status'] == 'ok')
+            var internalAdminFlag = $('#courseDetailsDataWrapper').attr('internal-flag');
+            if (internalAdminFlag == 'False')
+            {
+              var tag_name = courseTagsInput.val().trim();
+              if (tag_name.toLowerCase() == 'internal')
               {
-                tag_id = parseInt(data['id']);
-                _this.addTagToCourse(tag_id, course_id);
+                tag_name = tag_name.toUpperCase();
               }
-              else if (data['status'] == 'error')
-              {
-                alert("Couldn't create new tag!")
-                return;
-              }
-            })
-            .fail(function(data) {
-              console.log("Ajax failed to fetch data");
-            });
+              var data = {"name": tag_name};
+              var url = ApiUrls.tags;
+              var options = {
+                url: url,
+                data: data,
+                type: "POST",
+                dataType: "json"
+              };
+              options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+              $.ajax(options)
+              .done(function(data) {
+                if (data['status'] == 'ok')
+                {
+                  tag_id = parseInt(data['id']);
+                  _this.addTagToCourse(tag_id, course_id, tag_name);
+                }
+                else if (data['status'] == 'error')
+                {
+                  alert("Couldn't create new tag!")
+                  return;
+                }
+                else if(data['status'] == 'errorAlreadyExist')
+                {
+                  $('#courseTagsModal').find('.errorMessage').text(data['message']);
+                }
+              })
+              .fail(function(data) {
+                console.log("Ajax failed to fetch data");
+              });
+            }
+            else
+            {
+              $('#courseTagsModal').find('.errorMessage').text("You don't have permission to create a new tag, please select one from the list!");
+            }
           }
         });
         course_tags_modal.foundation('reveal', 'open');
       });
-      $('#mainCourseDetailsWrapper').find('.courseDetailsTagsList').hover(function() {
+      $('#mainCourseDetailsWrapper').on('mouseover', '.courseDetailsTagsList', function() 
+      {
         var course_id = $('#courseDetailsDataWrapper').attr('data-id');
         var tag_id = $(this).attr('data-id');
+        var _thisTag = this;
         $(this).find('.courseTagsDeleteIcon').show();
         $(this).on('click', '.courseTagsDeleteIcon', function(event)
-        {
+        { 
           event.stopPropagation();
           var url = ApiUrls.courses_list + '/' + course_id + '/tags?tag_id=' + tag_id;
           var options = {
@@ -188,7 +247,7 @@
           .done(function(data) {
             if (data['status'] == 'ok')
             {
-              location.reload();
+              _thisTag.remove();
             }
             else if (data['status'] == 'error')
             {
@@ -200,7 +259,9 @@
             console.log("Ajax failed to fetch data");
           });
         });
-      }, function(){
+      });
+      $('#mainCourseDetailsWrapper').on('mouseout', '.courseDetailsTagsList', function() 
+      {
         $(this).find('.courseTagsDeleteIcon').hide();
       });
       $('#mainCourseDetailsWrapper').on('click', '.courseDetailsTagsList', function()
@@ -427,9 +488,9 @@
         $(input).parent().find('.newTagCreationPopup').hide();
       }
     },
-    addTagToCourse: function(tag_id, course_id)
+    addTagToCourse: function(tag_id, course_id, tag_name)
     {
-      var data = {"tag_id": tag_id};
+      var data = {"tag_id": tag_id, "tag_name": tag_name};
       var url = ApiUrls.courses_list + '/' + course_id + '/tags';
       var options = {
         url: url,
@@ -442,7 +503,17 @@
       .done(function(data) {
         if (data['status'] == 'ok')
         { 
-          location.reload();
+          var courseTagsIcon = $('#courseDetailsDataWrapper').find('.courseTagsIcon');
+          var newTag = $('<div class="courseDetailsTagsList button small radius"></div>');
+          newTag.attr('data-id', data['id']);
+          newTag.val(data['name']);
+          newTag.text(data['name']);
+          newTag.css('margin-right', '5px');
+          var deleteTagIcon = $('<i class="fa fa-times courseTagsDeleteIcon"></i>');
+          deleteTagIcon.css('padding-left', '5px');
+          newTag.append(deleteTagIcon);
+          courseTagsIcon.before(newTag);
+          $('#courseTagsModal').find('a.close-reveal-modal').trigger('click');
         }
         else if (data['status'] == 'error')
         {

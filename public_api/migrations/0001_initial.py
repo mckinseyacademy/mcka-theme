@@ -1,20 +1,26 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        pass
+    dependencies = [
+    ]
 
-    def backwards(self, orm):
-        pass
-
-    models = {
-        
-    }
-
-    complete_apps = ['public_api']
+    operations = [
+        migrations.CreateModel(
+            name='ApiToken',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('client_id', models.IntegerField(default=0, unique=True)),
+                ('token', models.CharField(unique=True, max_length=200, db_index=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+    ]

@@ -660,11 +660,44 @@ def get_course_details_metrics_grades(course_id, count):
 
 
 @api_error_protect
-def get_course_details_metrics_social(course_id):
+def get_course_details_metrics_social(course_id, qs_params = ''):
     ''' fetch social metrics for course '''
 
     response = GET(
-        '{}/{}/{}/metrics/social'.format(
+        '{}/{}/{}/metrics/social/?'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            urlencode(qs_params)
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_completions_leaders(course_id, *args, **kwargs):
+
+    qs_params = {}
+    qs_params.update(kwargs)
+
+    response = GET(
+        '{}/{}/{}/metrics/completions/leaders?'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            urlencode(qs_params)
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_completions_all_users(course_id):
+
+    response = GET(
+        '{}/{}/{}/metrics/completions/leaders?exclude_roles=none'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id
@@ -675,14 +708,44 @@ def get_course_details_metrics_social(course_id):
 
 
 @api_error_protect
-def get_course_details_completions_leaders(course_id):
-    ''' fetch social metrics for course '''
+def get_course_details_metrics_grades_all_users(course_id, count):
 
     response = GET(
-        '{}/{}/{}/metrics/completions/leaders'.format(
+        '{}/{}/{}/metrics/grades/leaders?exclude_roles=none&count={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
-            course_id
+            course_id,
+            count
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_all_users(course_id, organization_id = ''):
+
+    response = GET(
+        '{}/{}/{}/metrics?organization={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            organization_id
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_details_metrics_filtered_by_groups(course_id, organization_id = ''):
+
+    response = GET(
+        '{}/{}/{}/metrics/?groups=1,2,3,4,5,6,7,8,9&organization={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            organization_id
         )
     )
 

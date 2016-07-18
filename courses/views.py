@@ -519,6 +519,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
         "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
         "course_run": course_run,
+        'feature_flags': feature_flags,
     }
 
     if progress_user.id != request.user.id:
@@ -534,7 +535,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_user_progress(request, user_id, course_id):
     return _course_progress_for_user(request, course_id, user_id)
 
@@ -545,7 +546,7 @@ def course_progress(request, course_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_user_progress_v2(request, user_id, course_id):
     return _course_progress_for_user_v2(request, course_id, user_id)
 
@@ -842,7 +843,7 @@ def course_export_notes(request, course_id):
     course = load_course(course_id).inject_basic_data()
     notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
 
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse()
     response['Content-Disposition'] = 'attachment; filename="mcka_course_notes.csv"'
     writer = csv.writer(response)
     writer.writerow(['Created At', 'Course Name', 'Lesson Name', 'Module Name', 'Note'])
@@ -858,7 +859,7 @@ def course_notes(request, course_id):
     course = load_course(course_id).inject_basic_data()
     notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
     notes = [note.as_json(course) for note in notes]
-    return HttpResponse(json.dumps(notes), mimetype="application/json")
+    return HttpResponse(json.dumps(notes))
 
 @require_POST
 @login_required
@@ -875,10 +876,7 @@ def add_lesson_note(request, course_id, chapter_id):
     )
     note.save()
 
-    return HttpResponse(
-        json.dumps(note.as_json(course)),
-        mimetype="application/json"
-    )
+    return HttpResponse(json.dumps(note.as_json(course)))
 
 @login_required
 @check_user_course_access
@@ -930,7 +928,7 @@ def course_learner_dashboard(request):
 
 @require_POST
 @login_required
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)

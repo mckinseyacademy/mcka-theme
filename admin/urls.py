@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from admin import views
+from admin import cache as cache_views
 
 urlpatterns = patterns(
     'admin',
@@ -78,6 +79,7 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/nav_links', views.client_detail_nav_links, name='client_detail_nav_links'),
     url(r'^clients/(?P<client_id>[0-9]+)/customization', views.client_detail_customization, name='client_detail_customization'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/create', views.create_access_key, name='create_access_key'),
+    url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create', views.create_course_access_key, name='create_course_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/(?P<access_key_id>[0-9]+)/share', views.share_access_key, name='share_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys', views.access_key_list, name='access_key_list'),
     url(r'^clients/(?P<client_id>[0-9]+)/(?P<detail_view>.*)', views.client_detail, name='client_detail'),
@@ -120,6 +122,7 @@ urlpatterns = patterns(
     url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses$', views.participant_details_active_courses_api.as_view(), name='participant_details_active_courses_api'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history$', views.participant_details_course_history_api.as_view(), name='participant_details_course_history_api'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_manage/(?P<course_id>.+)$', views.participant_course_manage_api.as_view(), name='participant_course_manage_api'),
+    url(r'^api/participants/(?P<user_id>[0-9]+)/admin_companies', views.users_company_admin_get_post_put_delete_api.as_view(), name='users_company_admin_get_post_put_delete_api'),
     url(r'^api/participants/organizations$', views.manage_user_company_api.as_view(), name='manage_user_company_api'),
     url(r'^api/participants/courses$', views.manage_user_courses_api.as_view(), name='manage_user_courses_api'),
     url(r'^api/participants/validate_participant_email/$', views.validate_participant_email, name='validate_participant_email'),
@@ -141,8 +144,13 @@ urlpatterns = patterns(
     url(r'^api/companies/(?P<company_id>[0-9]+)/edit$', views.company_edit_api.as_view(), name='company_edit_api'),
     url(r'^api/companies/new_company$', views.create_new_company_api.as_view(), name='create_new_company_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
+    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)', views.company_course_details, name='company_course_details'),
+    url(r'^companies/(?P<company_id>[0-9]+)/participants/(?P<user_id>[0-9]+)', views.company_participant_details_api.as_view(), name='company_participants_details'),
     url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
-    url(r'^companies$', views.companies_list, name='companies_list'),
+    url(r'^companies', views.companies_list, name='companies_list'),
+    url(r'^company_dashboard', views.company_dashboard, name='company_dashboard'),
+
+    url(r'^api/cache/courses_list', cache_views.course_list_cached_api.as_view(), name='cache_views.course_list_cached_api'),
 
     url(r'^api/tags/(?P<tag_id>[0-9]+)', views.tag_details_api.as_view(), name='tag_details_api'),
     url(r'^api/tags$', views.tags_list_api.as_view(), name='tags_list_api'),
