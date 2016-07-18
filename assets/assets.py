@@ -22,31 +22,31 @@ def _build_file_list(folder, ext):
     return matching_files
 
 js_ie8_files = []
-js_ie8_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/polyfills", ".js"))
-js_ie8_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/plugins", ".js"))
+js_ie8_files.extend(_build_file_list("js/polyfills", ".js"))
+js_ie8_files.extend(_build_file_list("js/plugins", ".js"))
 js_ie8_files.extend([
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery.form.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/json2.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/underscore.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/backbone.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/Backbone.CrossDomain.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/backbone.paginator.js', 
+    'js/vendor/jquery.form.js',
+    'js/vendor/json2.js',
+    'js/vendor/underscore.js',
+    'js/vendor/backbone.js',
+    'js/vendor/Backbone.CrossDomain.js',
+    'js/vendor/backbone.paginator.js', 
     #'js/vendor/d3.v3.js',
     #'js/vendor/nv.d3.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/dataTables.foundation.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery.dataTables.rowGrouping.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/bbGrid.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery-ui.min.js', 
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery.clearsearch.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/countrySelect.min.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/dropzone.js',
-    '/edx/app/apros/mcka_apros/static/js/application.js',
-    '/edx/app/apros/mcka_apros/static/js/router.js',
+    'js/vendor/dataTables.foundation.js',
+    'js/vendor/jquery.dataTables.rowGrouping.js',
+    'js/vendor/bbGrid.js',
+    'js/vendor/jquery-ui.min.js', 
+    'js/vendor/jquery.clearsearch.js',
+    'js/vendor/countrySelect.min.js',
+    'js/vendor/dropzone.js',
+    'js/application.js',
+    'js/router.js',
 ])
-js_ie8_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/common", ".js"))
-js_ie8_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/models", ".js"))
-js_ie8_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/collections", ".js"))
-js_ie8_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/views", ".js"))
+js_ie8_files.extend(_build_file_list("js/common", ".js"))
+js_ie8_files.extend(_build_file_list("js/models", ".js"))
+js_ie8_files.extend(_build_file_list("js/collections", ".js"))
+js_ie8_files.extend(_build_file_list("js/views", ".js"))
 # Javascript squashing
 JS_IE8 = Bundle(
     *js_ie8_files,
@@ -56,33 +56,33 @@ JS_IE8 = Bundle(
 register('js_ie8', JS_IE8)
 
 js_files = []
-js_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/polyfills", ".js"))
-js_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/plugins", ".js"))
+js_files.extend(_build_file_list("js/polyfills", ".js"))
+js_files.extend(_build_file_list("js/plugins", ".js"))
 js_files.extend([
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery.form.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/json2.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/underscore.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/backbone.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/Backbone.CrossDomain.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/backbone.paginator.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/d3.v3.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/nv.d3.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/dataTables.foundation.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery.dataTables.rowGrouping.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery.touchwipe.min.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/moment-with-locales.min.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/bbGrid.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery-ui.min.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/jquery.clearsearch.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/countrySelect.min.js',
-    '/edx/app/apros/mcka_apros/static/js/vendor/dropzone.js',
-    '/edx/app/apros/mcka_apros/static/js/application.js',
-    '/edx/app/apros/mcka_apros/static/js/router.js',
+    'js/vendor/jquery.form.js',
+    'js/vendor/json2.js',
+    'js/vendor/underscore.js',
+    'js/vendor/backbone.js',
+    'js/vendor/Backbone.CrossDomain.js',
+    'js/vendor/backbone.paginator.js',
+    'js/vendor/d3.v3.js',
+    'js/vendor/nv.d3.js',
+    'js/vendor/dataTables.foundation.js',
+    'js/vendor/jquery.dataTables.rowGrouping.js',
+    'js/vendor/jquery.touchwipe.min.js',
+    'js/vendor/moment-with-locales.min.js',
+    'js/vendor/bbGrid.js',
+    'js/vendor/jquery-ui.min.js',
+    'js/vendor/jquery.clearsearch.js',
+    'js/vendor/countrySelect.min.js',
+    'js/vendor/dropzone.js',
+    'js/application.js',
+    'js/router.js',
 ])
-js_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/common", ".js"))
-js_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/models", ".js"))
-js_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/collections", ".js"))
-js_files.extend(_build_file_list("/edx/app/apros/mcka_apros/static/js/views", ".js"))
+js_files.extend(_build_file_list("js/common", ".js"))
+js_files.extend(_build_file_list("js/models", ".js"))
+js_files.extend(_build_file_list("js/collections", ".js"))
+js_files.extend(_build_file_list("js/views", ".js"))
 
 # Javascript squashing
 JS = Bundle(
@@ -95,7 +95,7 @@ register('js_all', JS)
 # CSS compilation and squashing
 # Core CSS
 SCSS_CORE = Bundle(
-    '/edx/app/apros/mcka_apros/static/scss/core.scss',
+    'scss/core.scss',
     filters='sass',
     output='core.css',
     depends=('scss/**/*.scss')
@@ -111,7 +111,7 @@ register('css_core', CSS_CORE)
 
 # Applicaiton CSS
 SCSS_APP = Bundle(
-    '/edx/app/apros/mcka_apros/static/scss/app.scss',
+    'scss/app.scss',
     filters='sass',
     output='app.css',
     depends=('scss/**/*.scss')
@@ -127,7 +127,7 @@ register('css_app', CSS_APP)
 
 # Admin CSS
 SCSS_ADMIN = Bundle(
-    '/edx/app/apros/mcka_apros/static/scss/admin.scss',
+    'scss/admin.scss',
     filters='sass',
     output='admin.css',
     depends=('scss/**/*.scss')
@@ -143,7 +143,7 @@ register('css_admin', CSS_ADMIN)
 
 # IE8 Overries
 SCSS_IE8 = Bundle(
-    '/edx/app/apros/mcka_apros/static/scss/ie8.scss',
+    'scss/ie8.scss',
     filters='sass',
     output='ie8.css',
     depends=('scss/**/*.scss')
