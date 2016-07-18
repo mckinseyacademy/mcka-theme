@@ -2,7 +2,6 @@ var ApiUrls = {
   courses_list: '/admin/api/courses',
   participants_list: '/admin/api/participants',
   companies_list: '/admin/api/companies',
-  cache: '/admin/api/cache',
   participant_manage_courses: function(user_id, course_id)
   {
     return this.participants_list+'/'+user_id+'/course_manage/'+ course_id;
@@ -14,17 +13,6 @@ var ApiUrls = {
   participant_courses_get_api: function()
   {
     return this.participants_list+'/courses';
-  },
-  company_admin_get_post_put_delete: function(user_id)
-  {
-    return this.participants_list+'/'+user_id+'/admin_companies';
-  },
-  cached_resource_api: function(resource_name, fresh)
-  {
-    query_set = "";
-    if (fresh)
-      query_set ="?force_refresh=true";
-    return this.cache+'/'+resource_name+query_set;
   },
   validate_participant_email: '/admin/api/participants/validate_participant_email',
   validate_participant_username: '/admin/api/participants/validate_participant_username',

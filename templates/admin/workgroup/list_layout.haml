@@ -19,18 +19,17 @@
             - block principal_list_message
               Add a message here to describe the list of principals
           %form.admin-form{action: "/admin/workgroup", method: "POST"}
-            - csrf_token   
-            - if not user.is_mcka_admin and not user.is_mcka_subadmin
-              .div.select-group-wrapper{'data-enable-cache': 'false'}
-                %select.select-program{'name': 'select-course'}
+            - csrf_token
+            .div.select-group-wrapper
+              %select.select-program{'name': 'select-course'}
                   %option{'value': 'select'}
                     = ' - Select -'
                   - for course in courses
                     %option{'value': '#{course.id}'}
                       #{course.name} (#{course.id})
-            - else
-              .div.select-group-wrapper{'data-enable-cache': 'true'}
+
             .submit-area
               %input.button.radius.small{type: "submit", value: "OK"}
           - block principal_list_filter
           - block principal_list
+

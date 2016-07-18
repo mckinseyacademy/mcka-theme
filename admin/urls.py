@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, url
 from admin import views
-from admin import cache as cache_views
 
 urlpatterns = patterns(
     'admin',
@@ -144,8 +143,6 @@ urlpatterns = patterns(
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
     url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
     url(r'^companies$', views.companies_list, name='companies_list'),
-
-    url(r'^api/cache/courses_list', cache_views.course_list_cached_api.as_view(), name='cache_views.course_list_cached_api'),
 
     url(r'^api/tags/(?P<tag_id>[0-9]+)', views.tag_details_api.as_view(), name='tag_details_api'),
     url(r'^api/tags$', views.tags_list_api.as_view(), name='tags_list_api'),
