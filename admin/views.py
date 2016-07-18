@@ -997,10 +997,10 @@ def course_details(request, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
 
-    course_completed_users = 0
-    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months')
-    for completed_metric in course_metrics.users_completed:
-        course_completed_users += completed_metric[1]
+    course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id)
+    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id)
+    course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
+
     try:
         course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
     except ZeroDivisionError:
@@ -1024,7 +1024,7 @@ def course_details(request, course_id):
 
     course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
     for user in course_grades['leaders']:
-        if user['id'] not in list_of_user_roles['ids']:
+        if str(user['id']) not in list_of_user_roles['ids']:
             user_proficiency = float(user['grade'])*100
             course_proficiency += user_proficiency
 
@@ -1049,7 +1049,9 @@ def course_details(request, course_id):
     for tag in course_tags:
         course['tags'].append(vars(tag))
 
+    companyAdminFlag = False
     course['internalAdminFlag'] = internalAdminFlag
+    course['companyAdminFlag'] = companyAdminFlag
 
     return render(request, 'admin/courses/course_details.haml', course)
 
@@ -3113,11 +3115,6 @@ def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=Non
 def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     ''' handles requests for login form and their submission '''
 
-    if request.user.is_internal_admin:
-        internal_flag = check_if_course_is_internal(course_id)
-        if internal_flag == False:
-            return permission_denied(request)
-
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     selected_project_id = request.GET.get("project_id", None)
@@ -3353,10 +3350,14 @@ def workgroup_list(request, restrict_to_programs_ids=None):
         if request.POST['select-course'] != 'select':
             return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
-    courses = get_accessible_courses(request.user)
-    max_string_length = 75
-    for course in courses:
-        course.name = (course.name[:max_string_length] + '...') if len(course.name) > max_string_length else course.name
+    if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
+        courses = get_accessible_courses(request.user)
+        max_string_length = 75
+        for course in courses:
+            course.name = (course.name[:max_string_length] + '...') if len(course.name) > max_string_length else course.name
+    else:
+        courses = []
+        
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
@@ -3576,7 +3577,7 @@ class participant_details_api(APIView):
             if request.user.is_company_admin:
                 companyAdminFlag = True
             selectedUser['companyAdminFlag'] = companyAdminFlag
-            selectedUser['companyAdminFlag'] = internalAdminFlag
+            selectedUser['internalAdminFlag'] = internalAdminFlag
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -3658,15 +3659,15 @@ class manage_user_courses_api(APIView):
         if request.user.is_internal_admin:
             internal_ids = get_internal_courses()
         response_obj = {}
-        courses_list = course_api.get_course_list_in_pages()
+        courses_list = course_api.get_course_list()
         allCoursesList =[]
         for course in courses_list:
             courseData = vars(course)
             if internal_ids:
                 if courseData['id'] in internal_ids:
-                    allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+                    allCoursesList.append({'display_name':courseData['name'] +'('+ courseData['id'] + ')', 'id': courseData['id']})
             else:
-                allCoursesList.append({'display_name':courseData['name'], 'id': courseData['id']})
+                allCoursesList.append({'display_name':courseData['name'] +'('+ courseData['id'] + ')', 'id': courseData['id']})
         response_obj['all_items'] = allCoursesList
         response_obj['status'] = 'ok'
         return Response(response_obj)
@@ -4599,10 +4600,10 @@ def company_course_details(request, company_id, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_company_users - counter_roles
 
-    course_completed_users = 0
-    course_metrics = course_api.get_course_time_series_metrics(course_id, course['start'], course['end'], interval='months', organization=company_id)
-    for completed_metric in course_metrics.users_completed:
-        course_completed_users += completed_metric[1]
+    course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
+    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, company_id)
+    course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
+
     try:
         course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
     except ZeroDivisionError:
@@ -4627,7 +4628,7 @@ def company_course_details(request, company_id, course_id):
     course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
     for user in course_grades['leaders']:
         if user['id'] in company_ids:
-            if user['id'] not in list_of_user_roles['ids']:
+            if str(user['id']) not in list_of_user_roles['ids']:
                 user_proficiency = float(user['grade'])*100
                 course_proficiency += user_proficiency
 
@@ -4656,6 +4657,10 @@ def company_course_details(request, company_id, course_id):
     course['companyCourseDeatilsPage'] = True
     course['companyId'] = company_id
     course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
+    internalAdminFlag = False
+    if request.user.is_internal_admin:
+        internalAdminFlag = True
+    course['internalAdminFlag'] = internalAdminFlag
     return render(request, 'admin/courses/course_details.haml', course)
 
 
@@ -5099,3 +5104,66 @@ def company_dashboard(request):
         'companies': companies
     }
     return render(request, 'admin/companies/company_dashboard.haml', data)
+
+
+class company_participant_details_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    def get(self, request, company_id, user_id):
+
+        internalAdminFlag = False
+        if request.user.is_internal_admin:
+            internal_flag = check_if_user_is_internal(user_id)
+            if internal_flag == False:
+                return permission_denied(request)
+            internalAdminFlag = True
+
+        selectedUserResponse = user_api.get_user(user_id)
+        selectedUserPermissions = Permissions(user_id)
+        userOrganizations = selectedUserPermissions.get_all_user_organizations_with_permissions()
+        if selectedUserResponse is not None:
+            selectedUser = selectedUserResponse.to_dict()
+            if 'last_login' in selectedUser:
+                if (selectedUser['last_login'] is not None) and (selectedUser['last_login'] is not ''):
+                    selectedUser['custom_last_login'] = parsedate(selectedUser['last_login']).strftime('%b %d, %Y %I:%M %P')
+                else:
+                    selectedUser['custom_last_login'] = 'N/A'
+            else:
+                selectedUser['custom_last_login'] = 'N/A'
+            if len(userOrganizations["main_company"]):
+                selectedUser['company_name'] = userOrganizations["main_company"][0].display_name
+                selectedUser['company_id'] = userOrganizations["main_company"][0].id
+            else:
+                selectedUser['company_name'] = 'No company'
+                selectedUser['company_id'] = ''
+            selectedUser['company_admin_list'] = userOrganizations[PERMISSION_GROUPS.COMPANY_ADMIN]
+            if selectedUser['gender'] == '' or selectedUser['gender'] == None:
+                selectedUser['gender'] = 'N/A'
+            if selectedUser['city']:
+                selectedUser['city'] = selectedUser['city'].strip()
+            if selectedUser['country']:
+                selectedUser['country'] = selectedUser['country'].strip().upper()
+            if selectedUser['city'] == '' and selectedUser['country'] == '':
+                selectedUser['location'] = 'N/A'
+            elif selectedUser['country'] == '':
+                selectedUser['location'] = selectedUser['city']
+            elif selectedUser['city'] == '':
+                selectedUser['location'] = selectedUser['country']
+            elif selectedUser['city'] == None and selectedUser['country'] == None:
+                selectedUser['location'] = 'N/A'
+            else:
+                selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
+            selectedUser['mcka_permissions'] = selectedUserPermissions.current_permissions
+            if not len(selectedUser['mcka_permissions']):
+                selectedUser['mcka_permissions'] = ['-']
+            if UserActivation.get_user_activation(user=selectedUserResponse):
+                selectedUser['has_activation_record'] = True
+            else:
+                selectedUser['has_activation_record'] = False
+
+            companyAdminFlag = False
+            if request.user.is_company_admin:
+                companyAdminFlag = True
+            selectedUser['companyId'] = company_id
+            selectedUser['companyAdminFlag'] = companyAdminFlag
+            selectedUser['internalAdminFlag'] = internalAdminFlag
+            return render( request, 'admin/participants/participant_details.haml', selectedUser)

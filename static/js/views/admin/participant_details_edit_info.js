@@ -14,7 +14,7 @@
       $('#participantDetailsWrapper').find('.newCompanyCreationPopup').hide();
       $(document).on('autocomplete_found', function(event, input)
       {
-        if (input.parent().hasClass('participantCompanyValue'))
+        if (input.parent().hasClass('participantCompanyValue') || (input.parent().hasClass('participantAdminCompanyValue')))
         {
           $('#participantDetailsWrapper').find('.errorMessage').empty();
           _this.manageNewCompanyPopup(input, false);
@@ -22,7 +22,7 @@
       });
       $(document).on('autocomplete_not_found', function(event, input)
       {
-        if (input.parent().hasClass('participantCompanyValue'))
+        if (input.parent().hasClass('participantCompanyValue') || (input.parent().hasClass('participantAdminCompanyValue')))
         {
           $('#participantDetailsWrapper').find('.errorMessage').empty();
           var internalAdminFlag = $('#participantsDetailsDataWrapper').attr('internal-flag');
@@ -493,6 +493,7 @@
             '</div>'+
             '<div class="participantAdminCompanyValue">'+
               '<input type="text" data-id/>'+
+              '<div class="newCompanyCreationPopup">Try selecting your company from the type-ahead results.</div>'+
               '<i class="fa fa-check-circle-o correctInput" aria-hidden="true"></i>'+
             '</div>'+
           '</div>'+

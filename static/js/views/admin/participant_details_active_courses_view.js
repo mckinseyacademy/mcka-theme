@@ -8,14 +8,64 @@
       'click .unenroll-user' : 'unenrollUser', 
       'editStatusDone': 'editStatusHandler'
       }, 
-    gridColumns:
-    [
-      { title: 'Course Name', index: true, name: 'name', sorttype: 'string',
+
+    initialize: function(options){
+      if (typeof options['user_id'] !== "undefined") {
+        this.user_id = options['user_id'];
+      }
+      this.refreshCollection();
+
+      var _this = this;
+
+      ajaxify_overlay_form('#edit-status-modal', 'form', 
+        function() {
+          _this.$el.trigger('editStatusDone');
+        }
+      );
+
+      $('#unenroll-user-modal .okbutton').on('click', function (e) {
+        var url = '/admin/participants/' + _this.user_id + '/courses/' + _this.selected_course_id + '/unenroll';
+        $.ajax({
+          method: 'GET',
+          url: url,
+          data: {}
+        })
+        .done(function(data, status, xhr) { 
+          if(data.status == 'success') {
+            _this.editStatusHandler();
+          }
+          else {
+            $('#unenroll-user-modal').find('.error').text(data.message);
+          }
+        });
+      });
+    },
+    refreshCollection: function() {
+      this.collection.fetch({success:function(collection, response, options)
+        {
+          collection.getSlowFetchedStatus = true;
+          collection.slowFieldsSuccess(collection, response, options);
+        }});
+    },
+    render: function(){
+      var _this = this;
+      var gridColumns = 
+      [
+        { title: 'Course Name', index: true, name: 'name', sorttype: 'string',
           actions: function(id, attributes){ 
             var thisId = attributes['id'];
             var name = attributes['name'];
-            if (name) {
-              return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+            var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
+            if (companyAdminFlag == 'False')
+            {
+              if (name) {
+                return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+              }
+            }
+            else
+            {
+              var companyId = $('#participantsDetailsDataWrapper').attr('company-id');
+              return '<a href="/admin/companies/' +  companyId + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
             }
           } 
         },
@@ -58,7 +108,7 @@
             if (companyAdminFlag == 'False')
             {
               return status + ' <a class="edit-status fa fa-pencil" data-revealhref="/admin/participants/' + 
-              this.user_id + '/courses/' + id + 
+              _this.user_id + '/courses/' + id + 
               '/edit_status"></a>';
             }
             else
@@ -67,47 +117,7 @@
             }
           }
         }
-    ],
-    initialize: function(options){
-      if (typeof options['user_id'] !== "undefined") {
-        this.user_id = options['user_id'];
-      }
-      this.refreshCollection();
-
-      var _this = this;
-
-      ajaxify_overlay_form('#edit-status-modal', 'form', 
-        function() {
-          _this.$el.trigger('editStatusDone');
-        }
-      );
-
-      $('#unenroll-user-modal .okbutton').on('click', function (e) {
-        var url = '/admin/participants/' + _this.user_id + '/courses/' + _this.selected_course_id + '/unenroll';
-        $.ajax({
-          method: 'GET',
-          url: url,
-          data: {}
-        })
-        .done(function(data, status, xhr) { 
-          if(data.status == 'success') {
-            _this.editStatusHandler();
-          }
-          else {
-            $('#unenroll-user-modal').find('.error').text(data.message);
-          }
-        });
-      });
-    },
-    refreshCollection: function() {
-      this.collection.fetch({success:function(collection, response, options)
-        {
-          collection.getSlowFetchedStatus = true;
-          collection.slowFieldsSuccess(collection, response, options);
-        }});
-    },
-    render: function(){
-      var _this = this;
+        ];
       var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
       if (companyAdminFlag == 'False')
       {
@@ -115,7 +125,7 @@
           actions: function(id, attributes){ 
             return '<a href="#" data-courseid="' + id + '" class="unenroll-user">Unenroll</a>'; 
           } };
-        _this.gridColumns.push(unerollColumn);
+        gridColumns.push(unerollColumn);
       }
       this.delegateEvents();
       if(this.participantDetailsActiveCoursesViewGrid) {
@@ -125,7 +135,7 @@
       this.participantDetailsActiveCoursesViewGrid = new bbGrid.View({
         container: this.$el,
         collection: this.collection,
-        colModel: _this.gridColumns
+        colModel: gridColumns
       });
     }, 
     editStatus: function(e) {

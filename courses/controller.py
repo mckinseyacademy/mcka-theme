@@ -86,7 +86,7 @@ class Proficiency(JsonObject):
     def pass_rate_display(self, users_with_roles):
         pass_users = 0
         for user_grade in self.leaders: 
-            if user_grade.id not in users_with_roles:
+            if str(user_grade.id) not in users_with_roles:
                 if user_grade.user_grade_value >= 0.7:
                     pass_users += 1
 
@@ -96,7 +96,7 @@ class Proficiency(JsonObject):
         pass_users = 0
         for user_grade in self.leaders: 
             if user_grade.id in company_ids:
-                if user_grade.id not in users_with_roles:
+                if str(user_grade.id) not in users_with_roles:
                     if user_grade.user_grade_value >= 0.7:
                         pass_users += 1
 

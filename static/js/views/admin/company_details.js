@@ -6,9 +6,6 @@
             var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
             var thisId = attributes['id']
             var name = attributes['name']
-            if (name.length > 75){
-              return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
-            }
             return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
           } 
         },
@@ -16,20 +13,34 @@
         { title: 'Participants', index: true, name: 'participants', sorttype: 'number'},
         { title: 'Start', index: true, name: 'start',
           actions: function(id, attributes){ 
-            if (attributes['start'] != '-'){
-              var start = attributes['start'].split(',')[0].split('/');
-              return '' + start[1] + '/' + start[2] + '/' + start[0];
+            if(attributes['start'])
+            {
+              if (attributes['start'] != '-'){
+                var start = attributes['start'].split(',')[0].split('/');
+                return '' + start[1] + '/' + start[2] + '/' + start[0];
+              }
+              return attributes['start'];
             }
-            return attributes['start'];
+            else
+            {
+              return '-';
+            }
           } 
         },
         { title: 'End', index: true, name: 'end',
           actions: function(id, attributes){ 
-            if (attributes['end'] != '-'){
-              var end = attributes['end'].split(',')[0].split('/');
-              return '' + end[1] + '/' + end[2] + '/' + end[0];
+            if(attributes['end'])
+            {
+              if (attributes['end'] != '-'){
+                var end = attributes['end'].split(',')[0].split('/');
+                return '' + end[1] + '/' + end[2] + '/' + end[0];
+              }
+              return attributes['end'];
             }
-            return attributes['end'];
+            else
+            {
+              return '-';
+            }
           } 
         },
       ],

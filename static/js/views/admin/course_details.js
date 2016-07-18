@@ -6,7 +6,24 @@
       { title: 'Name', index: true, name: 'username', titleAttribute: 'full_name',
       actions: function(id, attributes) 
       { 
-        return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+        var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+        if (companyPageFlag == 'False')
+        {
+          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+        }
+        else
+        {
+          var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
+          if (companyAdminFlag == 'False')
+          {
+            return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+          }
+          else
+          {
+            var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+            return '<a href="/admin/companies/' + companyId + '/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+          }
+        }
       }},
       { title: 'Email', index: true, name: 'email' },
       { title: 'Company', index: true, name: 'organizations_display_name'},
@@ -54,8 +71,10 @@
     render: function(){
       var _this = this;
       var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
+      var multiSelectFlag = true
       if (companyAdminFlag == 'True')
       {
+        multiSelectFlag = false
         for (var i=0; i < _this.generatedGridColumns.length; i++)
         {
           if (_this.generatedGridColumns[i]['title'] == 'Company')
@@ -68,7 +87,7 @@
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
-        multiselect: true,
+        multiselect: multiSelectFlag,
         enableSearch: true,
         collection: this.collection.fullCollection,
         onRowClick: function()

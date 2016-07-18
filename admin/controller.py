@@ -970,12 +970,6 @@ def get_accessible_courses(user):
     else:
         if user.is_mcka_admin or user.is_mcka_subadmin:
             courses_list = course_api.get_course_list_in_pages(course_id_list)
-        elif user.is_internal_admin:
-            courses = course_api.get_course_list_in_pages(course_id_list)
-            internal_courses = get_internal_courses()
-            for course in courses:
-                if vars(course)['id'] in internal_courses:
-                    courses_list.append(course)
         else:
             user_orgs = user_api.get_user_organizations(user.id)
             if len(user_orgs) > 0:
@@ -994,10 +988,6 @@ def get_accessible_courses_from_program(user, program_id, restrict_to_courses_id
                 role.role for role in roles if role.course_id == course.course_id
                 ]
             ]
-
-    if user.is_internal_admin:
-        internal_courses = get_internal_courses()
-        courses = [course for course in courses if course.course_id in internal_courses]
 
     if restrict_to_courses_ids:
         courses = [course for course in courses if course.course_id in restrict_to_courses_ids]
@@ -1450,7 +1440,7 @@ def get_course_progress(course_id, exclude_users, company_id=None):
     leaders = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
 
     for user in leaders['leaders']:
-        if user['id'] not in exclude_users:
+        if str(user['id']) not in exclude_users:
             user_progress = {}
             user_progress['user_id'] = user['id']
             user_progress['progress'] = user['completions']
@@ -1704,9 +1694,9 @@ def _parse_email_text_template(text_body, optional_data=None):
                         elif  keyword == "LAST_NAME":
                             constructed_vars[keyword.lower()] = user["last_name"]
                         elif  keyword == "PROGRESS":
-                            constructed_vars[keyword.lower()] = user["progress"]+"%"
+                            constructed_vars[keyword.lower()] = str(int(user.get("progress",0)))+"%"
                         elif  keyword == "PROFICIENCY":
-                            constructed_vars[keyword.lower()] = user["proficiency"]+"%"
+                            constructed_vars[keyword.lower()] = str(int(user.get("proficiency",0)))+"%"
                         elif  keyword == "SOCIAL_ENGAGEMENT":
                             social_engagement_data = user_api.get_course_social_metrics(user["id"], optional_data["course_id"])
                             if social_engagement_data:
