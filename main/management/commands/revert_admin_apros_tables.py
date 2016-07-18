@@ -28,10 +28,10 @@ def get_table_names():
 class Command(BaseCommand):
 
     """
-    Management command to rename admin_apros tables after Django upgrade to 1.8.13
+    Management command to revert rename admin_apros tables before Django downgrade
     """
-    help = """Makes database level changes to rename admin_apros app tables after upgrading Django to 1.8.13. 
-        Usage: ./manage.py rename_admin_apros_tables {db_alias}
+    help = """Makes database level changes to revert rename admin_apros app tables 
+        Usage: ./manage.py revert_admin_apros_tables {db_alias}
         """
 
     old_app = 'admin'
@@ -51,7 +51,7 @@ class Command(BaseCommand):
 
             """Rename the admin_apros tables"""
             try:
-                sql_tables = 'RENAME TABLE %s_%s TO %s_%s;' % (self.old_app, table_name, self.new_app, table_name)
+                sql_tables = 'RENAME TABLE %s_%s TO %s_%s;' % (self.new_app, table_name, self.old_app, table_name)
                 cursor.execute(sql_tables)
             except:
                 print "Warning: Problem renaming table: " + table_name
@@ -59,7 +59,7 @@ class Command(BaseCommand):
 
             """Rename the app_labels in django_content_type"""
             try:
-                sql_models = 'UPDATE django_content_type SET app_label = "%s" WHERE (model = "%s" AND app_label = "%s")' % (self.new_app, table_name, self.old_app)
+                sql_models = 'UPDATE django_content_type SET app_label = "%s" WHERE (model = "%s" AND app_label = "%s")' % (self.old_app, table_name, self.new_app)
                 cursor.execute(sql_models)
             except: 
                 print "Warning: Problem renaming django_content_type table where model = " + table_name
