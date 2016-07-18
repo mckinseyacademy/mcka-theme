@@ -29,6 +29,7 @@ var Router = Backbone.Router.extend({
     'admin/clients/*client_id/mass_student_enroll': 'mass_student_enroll',
     'admin/companies': 'companies_list',
     'admin/companies/*company_id/courses/*course_id': 'admin_course_details_participants', 
+    'admin/companies/*company_id/participants/*id': 'initialize_participant_details',
     'admin/companies/*company_id': 'company_details_courses',
     'admin/workgroup':'workgroup_main'
   },
