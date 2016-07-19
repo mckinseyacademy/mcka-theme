@@ -71,17 +71,19 @@
     render: function(){
       var _this = this;
       var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
-      var multiSelectFlag = true
+      var multiSelectFlag = true;
       if (companyAdminFlag == 'True')
       {
-        multiSelectFlag = false
+        multiSelectFlag = false;
+        var index = 0;
         for (var i=0; i < _this.generatedGridColumns.length; i++)
         {
           if (_this.generatedGridColumns[i]['title'] == 'Company')
           {
-            delete _this.generatedGridColumns[i];
+            index = i;
           }
         }
+        _this.generatedGridColumns.splice(index,1);
       }
       var coursesListDetailsViewGrid = {}
       coursesListDetailsViewGrid['partial_collection'] = this.collection;

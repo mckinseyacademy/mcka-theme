@@ -76,14 +76,14 @@ _.extend(bbGrid.SearchView.prototype, {
   ),
   onSearch: function (event) {
     $(document).trigger('onSearchEvent');
-    var self = this,
-        $el = $(event.target);
+    var self = this;
+    $el = $(event.target);
     this.searchText = $el.val().trim();
     this.view.collection = this.view._collection;
     if (this.searchText && !this.view.loadDynamic) {
         this.view.setCollection(new this.view._collection.constructor(
             this.view.collection.filter(function (data) {
-                var value = null
+                var value = null;
                 for (index = 0; index < self.view.colModel.length; index++)
                 {
                   value += " " + data.get(self.view.colModel[index].name);
