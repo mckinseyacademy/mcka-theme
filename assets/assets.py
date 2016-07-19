@@ -47,7 +47,6 @@ js_ie8_files.extend(_build_file_list("js/common", ".js"))
 js_ie8_files.extend(_build_file_list("js/models", ".js"))
 js_ie8_files.extend(_build_file_list("js/collections", ".js"))
 js_ie8_files.extend(_build_file_list("js/views", ".js"))
-
 # Javascript squashing
 JS_IE8 = Bundle(
     *js_ie8_files,
@@ -85,12 +84,11 @@ js_files.extend(_build_file_list("js/models", ".js"))
 js_files.extend(_build_file_list("js/collections", ".js"))
 js_files.extend(_build_file_list("js/views", ".js"))
 
-
 # Javascript squashing
 JS = Bundle(
     *js_files,
     # filters='jsmin',
-    output='gen/packed.js'
+    output='packed.js'
 )
 register('js_all', JS)
 
@@ -99,7 +97,7 @@ register('js_all', JS)
 SCSS_CORE = Bundle(
     'scss/core.scss',
     filters='sass',
-    output='gen/core.css',
+    output='core.css',
     depends=('scss/**/*.scss')
 )
 register('scss_core', SCSS_CORE)
@@ -107,7 +105,7 @@ register('scss_core', SCSS_CORE)
 CSS_CORE = Bundle(
     SCSS_CORE,
     filters='cssmin',
-    output='gen/packed_core.css'
+    output='packed_core.css'
 )
 register('css_core', CSS_CORE)
 
@@ -115,14 +113,15 @@ register('css_core', CSS_CORE)
 SCSS_APP = Bundle(
     'scss/app.scss',
     filters='sass',
-    output='gen/app.css',
+    output='app.css',
     depends=('scss/**/*.scss')
 )
 register('scss_app', SCSS_APP)
+
 CSS_APP = Bundle(
     SCSS_APP,
     filters='cssmin',
-    output='gen/packed_app.css'
+    output='packed_app.css'
 )
 register('css_app', CSS_APP)
 
@@ -130,7 +129,7 @@ register('css_app', CSS_APP)
 SCSS_ADMIN = Bundle(
     'scss/admin.scss',
     filters='sass',
-    output='gen/admin.css',
+    output='admin.css',
     depends=('scss/**/*.scss')
 )
 register('scss_admin', SCSS_ADMIN)
@@ -138,7 +137,7 @@ register('scss_admin', SCSS_ADMIN)
 CSS_ADMIN = Bundle(
     SCSS_ADMIN,
     filters='cssmin',
-    output='gen/packed_admin.css'
+    output='packed_admin.css'
 )
 register('css_admin', CSS_ADMIN)
 
@@ -146,7 +145,7 @@ register('css_admin', CSS_ADMIN)
 SCSS_IE8 = Bundle(
     'scss/ie8.scss',
     filters='sass',
-    output='gen/ie8.css',
+    output='ie8.css',
     depends=('scss/**/*.scss')
 )
 register('scss_ie8', SCSS_IE8)
@@ -154,6 +153,6 @@ register('scss_ie8', SCSS_IE8)
 CSS_IE8 = Bundle(
     SCSS_IE8,
     filters='cssmin',
-    output='gen/packed_ie8.css'
+    output='packed_ie8.css'
 )
 register('css_ie8', CSS_IE8)
