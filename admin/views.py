@@ -67,7 +67,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses, check_if_course_is_internal,
-    check_if_user_is_internal
+    check_if_user_is_internal, student_list_chunks_tracker
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -2144,6 +2144,30 @@ def download_student_list(request, client_id):
     )
 
     return response
+
+
+class download_student_list_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, client_id):
+        valid_client_id = None
+        if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+            valid_client_id = client_id
+
+        # make sure client admin can access only his company
+        elif request.user.is_client_admin or request.user.is_internal_admin:
+            org = AccessChecker.get_organization_for_user(request.user)
+            if org:
+                valid_client_id = org.id
+
+        if valid_client_id is None:
+            raise Http404
+        else:
+            client_id = valid_client_id
+
+        activation_link = request.build_absolute_uri('/accounts/activate')
+        data = student_list_chunks_tracker(request.POST, client_id, activation_link)
+
+        return Response(data)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)

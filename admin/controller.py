@@ -47,6 +47,7 @@ import atexit
 
 import csv
 from django.core.validators import validate_email, ValidationError
+from django.core.cache import cache
 
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
 MINIMAL_COURSE_DEPTH = 5
@@ -570,6 +571,18 @@ def _formatted_user_string(user):
         user.username,
         user.activation_link,
     )
+
+def _formatted_user_array(user):
+    return [
+        user.email,
+        user.first_name,
+        user.last_name,
+        user.title,
+        user.city,
+        user.country,
+        user.username,
+        user.activation_link,
+    ]
 
 def _formatted_user_string_group_list(user):
     return u"{},{},{},{}".format(
@@ -1783,3 +1796,59 @@ class CustomTemplate(string.Template):
     (?P<braced>[_a-z][_a-z0-9]*)\}\}|
     (?P<invalid>)
     )'''
+
+def student_list_chunks_tracker(data, client_id, activation_link):
+    default_chunk_size = 100
+    respone_data = {}
+
+    if data.get("task_id", None):
+        cached_student_progress = cache.get('student-list-'+data["task_id"], None)
+
+        if cached_student_progress:
+            chunk_count = int(cached_student_progress.get("chunk_count", 0))
+            chunk_request = int(data.get("chunk_request", 0))
+
+            if chunk_request < chunk_count:
+                chunks = cached_student_progress.get("list_chunked", [])
+                users_ids = [str(user_id) for user_id in chunks[chunk_request]]
+                if users_ids == []:
+                    user_list = []
+                else:
+                    additional_fields = ["title","city","country","first_name","last_name"]
+                    user_list = user_api.get_users(ids=users_ids,fields=additional_fields)
+                user_strings = [_formatted_user_array(get_user_with_activation(user, activation_link)) for user in user_list]
+                return {"task_id": data["task_id"], "chunk_count": chunk_count, "chunk_request": chunk_request+1, 
+                        "chunk_size": cached_student_progress.get("chunk_size", default_chunk_size), "file_name": cached_student_progress.get("file_name", "download.csv"),
+                        "element_count": cached_student_progress.get("element_count", 0), "data": user_strings, "status": "csv_chunk_sent"}
+            else:
+                return {"status": "error", "message": "You have sent incorrect chunk number!"}
+        else:
+            return {"status": "error", "message": "You have sent incorrect task key!"}
+    else:
+        unique_id = str(uuid.uuid4());
+        cached_data = {}
+        user_list = organization_api.fetch_organization_user_ids(client_id)
+        user_list_chunked = None
+        chunk_size = int(data.get("chunk_size", default_chunk_size))
+
+        if len(user_list):
+
+            client = Client.fetch(client_id)
+            file_name = unicode("Student List for {} on {}.csv".format(client.display_name, datetime.now().isoformat()))
+
+            user_list_chunked = [user_list[i:i+chunk_size] for i in xrange(0, len(user_list), chunk_size)]
+            cached_data["chunk_count"] = len(user_list_chunked);
+            cached_data["list_chunked"] = user_list_chunked
+            cached_data["element_count"] = len(user_list)
+            cached_data["chunk_size"] = chunk_size
+            cached_data["file_name"] = file_name
+            cache.set('student-list-'+unique_id, cached_data)
+        else:
+            return {"status": "error", "message": "There are no users in organization!"}
+
+        return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size, "element_count": len(user_list), "status": "csv_task_created", 
+                "file_name":file_name}
+
+
+
+

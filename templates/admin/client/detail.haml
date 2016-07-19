@@ -35,7 +35,7 @@
           .manage-student-list
             %a.button.radius.small{"data-reveal-id": "upload_student_list", "data-reveal-ajax": "/admin/clients/#{client.id}/upload_student_list", href: ""}
               Upload Student List
-            %a.button.radius.small{href: "/admin/clients/#{client.id}/download_student_list", target: "_blank"}
+            .button.radius.small.downloadStudentList{'data-url': '/admin/api/clients/#{client.id}/download_student_list', 'data-custom-class': 'studentDownloadListAjaxDownloader'}
               Download Student List
             %a.button.radius.small{href: "/admin/clients/#{client.id}/mass_student_enroll", target: "_blank"}
               Massive Student Enroll
