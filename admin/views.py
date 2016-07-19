@@ -989,6 +989,7 @@ def course_details(request, course_id):
             course[data] = "-"  
 
     course_all_users = course_api.get_course_details_users(course_id)
+    user_gradebook = user_api.get_user_gradebook(course_all_users['results'][0]['id'], course_id)
     count_all_users = course_all_users['count']
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
@@ -1236,7 +1237,7 @@ class course_details_api(APIView):
                             if 'assessment' in user_grade['category'].lower():
                                 course_participant['number_of_assessments'] += 1
                                 course_participant['assessments'].append(data)
-                            if 'GROUP_PROJECT' in user_grade['category']:
+                            if 'group_project' in user_grade['category'].lower():
                                 course_participant['number_of_groupworks'] += 1
                                 course_participant['groupworks'].append(data)
             return Response(allCourseParticipants)
@@ -4605,7 +4606,9 @@ def company_course_details(request, company_id, course_id):
             course[data] = "-"  
 
     qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
-    count_all_users = course_api.get_course_details_users(course_id=course_id)['count']
+    course_all_users = course_api.get_course_details_users(course_id=course_id)
+    count_all_users = course_all_users['count']
+    user_gradebook = user_api.get_user_gradebook(course_all_users['results'][0]['id'], course_id)
     course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
     count_company_users = len(course_company_users)
 
