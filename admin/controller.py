@@ -1205,14 +1205,18 @@ def get_course_engagement_summary(course_id, company_id):
 
     active_users = 0
     engaged_users = 0
-    engaged_progress_sum = sum([leader['completions'] for leader in course_metrics['leaders']])
+    engaged_progress_sum = 0
+    course_users_filtered_ids = [user.id for user in course_users]
+    for leader in course_metrics['leaders']:
+        if leader['id'] in course_users_filtered_ids:
+            engaged_progress_sum += leader['completions']
     for course_user in course_users:
         if course_user.is_active is True:
             active_users += 1
         if course_user.id in course_leaders_ids:
             engaged_users += 1
 
-    course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users_simple)) if len(course_users_simple) > 0 else 0
+    course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users)) if len(course_users_simple) > 0 else 0
     activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
     engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
     active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
