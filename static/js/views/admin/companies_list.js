@@ -44,6 +44,11 @@
         {
           $(create_new_company_modal).find('a.close-reveal-modal').trigger('click');
         });
+        $(create_new_company_modal).on('keydown','.companyDisplayName',function()
+        { 
+          $(create_button).attr('disabled', 'disabled');
+          $(create_button).addClass('disabled');
+        });
         $(create_new_company_modal).on('keyup','.companyDisplayName',function()
         {
           if (_this.liveSearchTimer) 
