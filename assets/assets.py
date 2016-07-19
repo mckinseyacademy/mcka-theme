@@ -52,7 +52,7 @@ js_ie8_files.extend(_build_file_list("js/views", ".js"))
 JS_IE8 = Bundle(
     *js_ie8_files,
     filters='jsmin',
-    output='packed_ie8.js'
+    output='gen/packed_ie8.js'
 )
 register('js_ie8', JS_IE8)
 
@@ -96,7 +96,6 @@ register('js_all', JS)
 
 # CSS compilation and squashing
 # Core CSS
-
 SCSS_CORE = Bundle(
     'scss/core.scss',
     filters='sass',
