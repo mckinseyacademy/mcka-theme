@@ -1270,18 +1270,20 @@ class course_details_api(APIView):
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     courses = []
-    if request.user.is_internal_admin:
-        user_orgs = user_api.get_user_organizations(request.user.id)
-        if len(user_orgs) > 0:
-            courses = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
-    else:
-        courses = course_api.get_course_list(ids=restrict_to_courses_ids)
-    for course in courses:
-        course.id = urlquote(course.id)
+    data = {}
+    if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
+        if request.user.is_internal_admin:
+            user_orgs = user_api.get_user_organizations(request.user.id)
+            if len(user_orgs) > 0:
+                courses = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+        else:
+            courses = course_api.get_course_list(ids=restrict_to_courses_ids)
+        for course in courses:
+            course.id = urlquote(course.id)
 
-    data = {
-        "courses": courses
-    }
+        data = {
+            "courses": courses
+        }
 
     return render(
         request,

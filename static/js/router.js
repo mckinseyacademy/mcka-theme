@@ -32,7 +32,8 @@ var Router = Backbone.Router.extend({
     'admin/companies/*company_id/courses/*course_id': 'admin_course_details_participants', 
     'admin/companies/*company_id/participants/*id': 'initialize_participant_details',
     'admin/companies/*company_id': 'company_details_courses',
-    'admin/workgroup':'workgroup_main'
+    'admin/workgroup':'workgroup_main',
+    'admin/course-meta-content':'course_meta_content',
   },
 
   home: function() {
@@ -245,6 +246,14 @@ var Router = Backbone.Router.extend({
     {
       GenerateCSVDownloader(this);
     });
+  },
+  course_meta_content: function()
+  {
+    console.log("jsfjabJ");
+    var container = "#course_meta_content_main_container";
+    if ($(container).length)
+      if($(container).attr('data-enable-cache')==='true')
+        CreateNiceAjaxLinkList(container, 'courses_list', '/admin/course-meta-content/items/', true);
   }
 });
 Apros.Router = new Router;

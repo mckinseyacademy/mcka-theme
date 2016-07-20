@@ -535,6 +535,39 @@ function CreatNicePrompt(title, input_label)
 
 }
 
+function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, fresh)
+{
+  $(parent_container).empty();
+  $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
+  if (!hrefPrefix)
+    hrefPrefix=""
+  var options = {
+    url: ApiUrls.cached_resource_api(resource_name, fresh),
+    type: "GET",
+    dataType: "json",
+    timeout: 1000000,
+    beforeSend: function( xhr ) {
+      xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+    }
+  };
+  $.ajax(options)
+  .done(function(data) {
+    link_list = '';
+    for (var i=0; i<data.length; i++)
+    {
+      link_list += '<a href="'+hrefPrefix+data[i]["value"]+'" class="resourceName_'+resource_name+'" style="display:block;">'+data[i]["name"]+'</a>';
+    }
+    link_list += "";
+    $(parent_container).empty();
+    $(parent_container).append(link_list);
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+
+
 function CreateNiceAjaxSelect(parent_container, resource_name, select_name, default_option, fresh)
 {
   $(parent_container).empty();
