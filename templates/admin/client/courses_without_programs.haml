@@ -17,7 +17,8 @@
           .course-box.large-10.large-offset-1
             %input{type: "checkbox", id:"#{course.id}"}
             %label{for: "#{course.id}"}
-              .title= course.name
+              .title 
+                #{course.name}(#{course.id})
               .course-info
                 %span= _("Course Run:")
                 %span= course.date_range
