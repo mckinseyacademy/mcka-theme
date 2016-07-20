@@ -67,7 +67,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses, check_if_course_is_internal,
-    check_if_user_is_internal
+    check_if_user_is_internal, student_list_chunks_tracker
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -989,6 +989,7 @@ def course_details(request, course_id):
             course[data] = "-"  
 
     course_all_users = course_api.get_course_details_users(course_id)
+    user_gradebook = user_api.get_user_gradebook(course_all_users['results'][0]['id'], course_id)
     count_all_users = course_all_users['count']
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
@@ -1236,7 +1237,7 @@ class course_details_api(APIView):
                             if 'assessment' in user_grade['category'].lower():
                                 course_participant['number_of_assessments'] += 1
                                 course_participant['assessments'].append(data)
-                            if 'GROUP_PROJECT' in user_grade['category']:
+                            if 'group_project' in user_grade['category'].lower():
                                 course_participant['number_of_groupworks'] += 1
                                 course_participant['groupworks'].append(data)
             return Response(allCourseParticipants)
@@ -1269,18 +1270,20 @@ class course_details_api(APIView):
 #@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     courses = []
-    if request.user.is_internal_admin:
-        user_orgs = user_api.get_user_organizations(request.user.id)
-        if len(user_orgs) > 0:
-            courses = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
-    else:
-        courses = course_api.get_course_list(ids=restrict_to_courses_ids)
-    for course in courses:
-        course.id = urlquote(course.id)
+    data = {}
+    if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
+        if request.user.is_internal_admin:
+            user_orgs = user_api.get_user_organizations(request.user.id)
+            if len(user_orgs) > 0:
+                courses = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+        else:
+            courses = course_api.get_course_list(ids=restrict_to_courses_ids)
+        for course in courses:
+            course.id = urlquote(course.id)
 
-    data = {
-        "courses": courses
-    }
+        data = {
+            "courses": courses
+        }
 
     return render(
         request,
@@ -1552,16 +1555,26 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         for student in data["students"]:
             student.created = datetime.strptime(student.created, "%Y-%m-%dT%H:%M:%SZ" ).strftime(settings.SHORT_DATE_FORMAT)
 
-        data["courses"] = course_api.get_course_list_in_pages()
+        if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+            data["courses"] = course_api.get_course_list_in_pages()
+        elif request.user.is_internal_admin:
+            user_orgs = user_api.get_user_organizations(request.user.id)
+            if len(user_orgs) > 0:
+                data["courses"] = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+
         for course in data["courses"]:
             course = vars(course)
             start = course.get("start", None)
             end = course.get("end", None)
             if start:
+                if type(start) == unicode:
+                    start = parsedate(start)
                 start = start.strftime(settings.SHORT_DATE_FORMAT)
             else:
                 start = ""
             if end:
+                if type(end) == unicode:
+                    end = parsedate(end)
                 end = end.strftime(settings.SHORT_DATE_FORMAT)
             else:
                 end = ""
@@ -2144,6 +2157,30 @@ def download_student_list(request, client_id):
     )
 
     return response
+
+
+class download_student_list_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, client_id):
+        valid_client_id = None
+        if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+            valid_client_id = client_id
+
+        # make sure client admin can access only his company
+        elif request.user.is_client_admin or request.user.is_internal_admin:
+            org = AccessChecker.get_organization_for_user(request.user)
+            if org:
+                valid_client_id = org.id
+
+        if valid_client_id is None:
+            raise Http404
+        else:
+            client_id = valid_client_id
+
+        activation_link = request.build_absolute_uri('/accounts/activate')
+        data = student_list_chunks_tracker(request.POST, client_id, activation_link)
+
+        return Response(data)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -4581,8 +4618,10 @@ def company_course_details(request, company_id, course_id):
             course[data] = "-"  
 
     qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
-    count_all_users = course_api.get_course_details_users(course_id=course_id)['count']
+    course_all_users = course_api.get_course_details_users(course_id=course_id)
+    count_all_users = course_all_users['count']
     course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
+    user_gradebook = user_api.get_user_gradebook(course_company_users[0]['id'], course_id)
     count_company_users = len(course_company_users)
 
     company_ids = []

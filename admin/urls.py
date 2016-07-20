@@ -54,6 +54,7 @@ urlpatterns = patterns(
 
     url(r'^not_authorized', views.not_authorized, name='not_authorized'),
 
+    url(r'^api/clients/(?P<client_id>[0-9]+)/download_student_list', views.download_student_list_api.as_view(), name='download_student_list_api'),
     url(r'^clients/client_new', views.client_new, name='client_new'),
     url(r'^clients/(?P<client_id>[0-9]+)/edit', views.client_edit, name='client_edit'),
     url(r'^clients/(?P<client_id>[0-9]+)$', views.client_detail, name='client_detail'),

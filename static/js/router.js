@@ -27,11 +27,13 @@ var Router = Backbone.Router.extend({
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/': 'admin_course_details_participants',
     'admin/clients/*client_id/mass_student_enroll': 'mass_student_enroll',
+    'admin/clients/*client_id': 'client_details_view',
     'admin/companies': 'companies_list',
     'admin/companies/*company_id/courses/*course_id': 'admin_course_details_participants', 
     'admin/companies/*company_id/participants/*id': 'initialize_participant_details',
     'admin/companies/*company_id': 'company_details_courses',
-    'admin/workgroup':'workgroup_main'
+    'admin/workgroup':'workgroup_main',
+    'admin/course-meta-content':'course_meta_content',
   },
 
   home: function() {
@@ -236,6 +238,22 @@ var Router = Backbone.Router.extend({
     {
       CreateNiceAjaxSelect('.select-group-wrapper', 'courses_list', 'select-course', {"value":'select', "name": '- Select -'}, true);
     }
+  },
+  client_details_view: function()
+  {
+    $(document).on("csv_chunk_sent", CSVDataCollector);
+    $('.manage-student-list .downloadStudentList').on("click", function()
+    {
+      GenerateCSVDownloader(this);
+    });
+  },
+  course_meta_content: function()
+  {
+    console.log("jsfjabJ");
+    var container = "#course_meta_content_main_container";
+    if ($(container).length)
+      if($(container).attr('data-enable-cache')==='true')
+        CreateNiceAjaxLinkList(container, 'courses_list', '/admin/course-meta-content/items/', true);
   }
 });
 Apros.Router = new Router;

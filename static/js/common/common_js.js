@@ -470,9 +470,11 @@ function downloadCSV(args) {
 }
 
 
-function CreateNicePopup(title, content)
+function CreateNicePopup(title, content, customClass)
 {
-  popup_html = "<div class='fixedDynamicPopupContainer reveal-modal small' style='display:block; visibility:visible;'>";
+  if (!customClass)
+    customClass = "";
+  popup_html = "<div class='fixedDynamicPopupContainer reveal-modal small "+customClass+"' style='display:block; visibility:visible;'>";
   if (title)
     popup_html += "<div class='fixedDynamicPopupTitle'>"+title+"</div>";
   popup_html += '<i class="fa fa-times-circle fixedDynamicPopupCancelButton" aria-hidden="true"></i>';
@@ -533,6 +535,39 @@ function CreatNicePrompt(title, input_label)
 
 }
 
+function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, fresh)
+{
+  $(parent_container).empty();
+  $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
+  if (!hrefPrefix)
+    hrefPrefix=""
+  var options = {
+    url: ApiUrls.cached_resource_api(resource_name, fresh),
+    type: "GET",
+    dataType: "json",
+    timeout: 1000000,
+    beforeSend: function( xhr ) {
+      xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+    }
+  };
+  $.ajax(options)
+  .done(function(data) {
+    link_list = '';
+    for (var i=0; i<data.length; i++)
+    {
+      link_list += '<a href="'+hrefPrefix+data[i]["value"]+'" class="resourceName_'+resource_name+'" style="display:block;">'+data[i]["name"]+'</a>';
+    }
+    link_list += "";
+    $(parent_container).empty();
+    $(parent_container).append(link_list);
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+
+
 function CreateNiceAjaxSelect(parent_container, resource_name, select_name, default_option, fresh)
 {
   $(parent_container).empty();
@@ -564,4 +599,93 @@ function CreateNiceAjaxSelect(parent_container, resource_name, select_name, defa
     console.log(data)
   });
 }
+
+function GenerateCSVDownloader(click_element, data_to_send)
+{
+  if (!data_to_send)
+    data_to_send = {"chunk_size":100};
+  var options = {
+    url: $(click_element).attr("data-url"),
+    data: data_to_send,
+    type: "POST",
+    dataType: "json",  
+    beforeSend: function( xhr ) {
+      xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+    }
+  };
+  $.ajax(options)
+  .done(function(data) {
+    if (data['status'] == 'csv_task_created')
+    {
+      var customClass = $(click_element).attr("data-custom-class");
+      if (!customClass)
+        customClass = "";
+      var title = "Fetching data for file: " + data["file_name"];
+      var content = "<progress style='width:100%', value='0' max='"+data["chunk_count"]+"'></progress>";
+      CreateNicePopup(title, content, customClass);
+      var data_send = {"task_id":data["task_id"], "chunk_request":0};
+      GenerateCSVDownloader(click_element, data_send)
+    }
+    else if (data['status'] == 'csv_chunk_sent')
+    {
+      var customClass = $(click_element).attr("data-custom-class");
+      if (customClass)
+      {
+        var popup_progress = $("."+customClass).find("progress");
+        popup_progress.attr('value', data["chunk_request"]);
+        $(document).trigger("csv_chunk_sent", [data]);
+        if (data["chunk_request"] < data["chunk_count"])
+        {
+          var data_send = {"task_id":data["task_id"], "chunk_request":data["chunk_request"]};
+          GenerateCSVDownloader(click_element, data_send);
+        }
+      }
+    }
+    else if (data['status'] == 'error')
+    {
+      alert(data["message"]);
+    }
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data);
+  })
+}
+
+function CSVDataCollector(event,data)
+{
+  if (typeof CSVDataCollector[data["task_id"]] === "undefined")
+  {
+    CSVDataCollector[data["task_id"]] = {};
+    CSVDataCollector[data["task_id"]]["data"] = data["data"];
+    CSVDataCollector[data["task_id"]]["filename"] = data["file_name"];
+    if (data["chunk_request"] === data["chunk_count"])
+    {
+      downloadCSV(CSVDataCollector[data["task_id"]]);
+      setTimeout(function()
+      {
+        delete CSVDataCollector[data["task_id"]];
+      }, 30000);
+    }
+  }
+  else
+  {
+    if (data["chunk_request"] < data["chunk_count"])
+    {
+      CSVDataCollector[data["task_id"]]["data"] = CSVDataCollector[data["task_id"]]["data"].concat(data["data"]);
+    }
+    else
+    {
+      CSVDataCollector[data["task_id"]]["data"] = CSVDataCollector[data["task_id"]]["data"].concat(data["data"]);
+      downloadCSV(CSVDataCollector[data["task_id"]]);
+      setTimeout(function()
+      {
+        delete CSVDataCollector[data["task_id"]];
+      }, 30000);
+    }
+  }
+}
+
+
+
 
