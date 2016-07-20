@@ -4608,8 +4608,8 @@ def company_course_details(request, company_id, course_id):
     qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
     course_all_users = course_api.get_course_details_users(course_id=course_id)
     count_all_users = course_all_users['count']
-    user_gradebook = user_api.get_user_gradebook(course_all_users['results'][0]['id'], course_id)
     course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
+    user_gradebook = user_api.get_user_gradebook(course_company_users[0]['id'], course_id)
     count_company_users = len(course_company_users)
 
     company_ids = []
