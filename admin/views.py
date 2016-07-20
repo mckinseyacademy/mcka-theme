@@ -1555,16 +1555,26 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         for student in data["students"]:
             student.created = datetime.strptime(student.created, "%Y-%m-%dT%H:%M:%SZ" ).strftime(settings.SHORT_DATE_FORMAT)
 
-        data["courses"] = course_api.get_course_list_in_pages()
+        if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+            data["courses"] = course_api.get_course_list_in_pages()
+        elif request.user.is_internal_admin:
+            user_orgs = user_api.get_user_organizations(request.user.id)
+            if len(user_orgs) > 0:
+                data["courses"] = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+
         for course in data["courses"]:
             course = vars(course)
             start = course.get("start", None)
             end = course.get("end", None)
             if start:
+                if type(start) == unicode:
+                    start = parsedate(start)
                 start = start.strftime(settings.SHORT_DATE_FORMAT)
             else:
                 start = ""
             if end:
+                if type(end) == unicode:
+                    end = parsedate(end)
                 end = end.strftime(settings.SHORT_DATE_FORMAT)
             else:
                 end = ""
