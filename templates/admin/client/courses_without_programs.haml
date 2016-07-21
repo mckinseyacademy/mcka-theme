@@ -19,6 +19,9 @@
             %label{for: "#{course.id}"}
               .title= course.name
               .course-info
+                %span= _("Course Id:")
+                %p= course.id
+              .course-info
                 %span= _("Course Run:")
                 %span= course.date_range
               .course-info
