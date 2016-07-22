@@ -650,7 +650,7 @@ def reset_confirm(request, uidb64=None, token=None,
             if form.is_valid():
                 user = form.save()
                 if hasattr(user, 'error'):
-                    from django.forms.util import ErrorList
+                    from django.forms.utils import ErrorList
                     errors = form._errors.setdefault("new_password1", ErrorList())
                     errors.append(user.error)
                 else:
