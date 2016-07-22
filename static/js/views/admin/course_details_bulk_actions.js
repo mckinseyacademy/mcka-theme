@@ -35,7 +35,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       var statusUpdaterIntervalId = null;
       _this.initializeEmailTemplateListeners();
       var companyAdminFlag = $('#mainCompanyDetailsDataContainer').attr('admin-flag');
-      if (companyAdminFlag == 'False')
+      if (companyAdminFlag == 'False' || companyAdminFlag == "" || companyAdminFlag == null || companyAdminFlag == false)
       {
         EmailTemplatesManager('GET');
       }
