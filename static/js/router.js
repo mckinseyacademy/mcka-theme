@@ -22,6 +22,7 @@ var Router = Backbone.Router.extend({
     'admin/client-admin/*organization_id/courses/*course_id/learner_dashboard/discover/list':  '',
     'admin/client-admin/*organization_id/courses/*course_id':  'client_admin_course_info',
     'admin/course-meta-content/items/*course_id': 'admin_course_meta',
+    'admin/course-meta-content':'course_meta_content',
     'admin/participants': 'participants_list',
     'admin/participants/*id': 'initialize_participant_details',
     'admin/courses/': 'admin_courses',
@@ -33,7 +34,7 @@ var Router = Backbone.Router.extend({
     'admin/companies/*company_id/participants/*id': 'initialize_participant_details',
     'admin/companies/*company_id': 'company_details_courses',
     'admin/workgroup':'workgroup_main',
-    'admin/course-meta-content':'course_meta_content',
+    'admin/programs/*program_id/courses': 'program_courses_main',
   },
 
   home: function() {
@@ -236,7 +237,7 @@ var Router = Backbone.Router.extend({
   workgroup_main: function(){
     if($(".select-group-wrapper").attr('data-enable-cache')==='true')
     {
-      CreateNiceAjaxSelect('.select-group-wrapper', 'courses_list', 'select-course', {"value":'select', "name": '- Select -'}, true);
+      CreateNiceAjaxSelect('.select-group-wrapper', 'courses_list', 'select-course', {"value":'select', "name": '- Select -'}, {"force_refresh":true});
     }
   },
   client_details_view: function()
@@ -249,11 +250,41 @@ var Router = Backbone.Router.extend({
   },
   course_meta_content: function()
   {
-    console.log("jsfjabJ");
     var container = "#course_meta_content_main_container";
     if ($(container).length)
       if($(container).attr('data-enable-cache')==='true')
-        CreateNiceAjaxLinkList(container, 'courses_list', '/admin/course-meta-content/items/', true);
+        CreateNiceAjaxLinkList(container, 'courses_list', '/admin/course-meta-content/items/', {"force_refresh":true});
+  },
+  program_courses_main: function(program_id)
+  {
+    var container = '#course-list table';
+    if ($(container).length)
+    {
+      CreateNiceAjaxTable(container, 'courses_list', {"header_fields":['Name', 'Instance'],"table_classes":"course-list", "table_ids":"course-list-table", "row_classes":"course"},
+        {"force_refresh":true, "program_id":program_id, "data_format":"table"});
+      $(document).on("nice_table_generated", function(event, container_name){
+        if (container_name != '#course-list table')
+          return;
+        var selection = {
+        selector: '.course-list .course',
+        submit_name: 'courses',
+        minimum_count: 0,
+        minimum_count_message: "Please select at least one course"
+        };
+
+        var activator = {
+          selector: '#course-program-action'
+        }
+        enable_selection(selection, activator);
+
+        $('.student-list').dataTable({
+            paging: false,
+            autoWidth: false,
+            scrollX: true,
+            "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
+        });
+      });
+    }
   }
 });
 Apros.Router = new Router;

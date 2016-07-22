@@ -2049,11 +2049,11 @@ def program_detail(request, program_id, detail_view="detail"):
     if detail_view == "detail":
         data["clients"] = fetch_clients_with_program(program.id)
     elif detail_view == "courses":
-        data["courses"] = course_api.get_course_list_in_pages()
+        # data["courses"] = course_api.get_course_list_in_pages()
         selected_ids = [course.course_id for course in program.fetch_courses()]
-        for course in data["courses"]:
-            course.instance = course.id.replace("slashes:", "")
-            course.class_name = "selected" if course.id in selected_ids else None
+        # for course in data["courses"]:
+        #     course.instance = course.id.replace("slashes:", "")
+        #     course.class_name = "selected" if course.id in selected_ids else None
         data["course_count"] = len(selected_ids)
 
     return render(
