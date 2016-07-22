@@ -590,7 +590,7 @@ function CreateNiceAjaxSelect(parent_container, resource_name, select_name, defa
       select_html += '<option value="'+default_option["value"]+'">'+default_option["name"]+'</option>';
     for (var i=0; i<data.length; i++)
     {
-      select_html += '<option value="'+data[i]["value"]+'">'+data[i]["name"]+'</option>';
+      select_html += '<option value="'+data[i]["value"]+'">'+data[i]["name"]+'('+data[i]['value']+')</option>';
     }
     select_html += "</select>";
     $(parent_container).empty();
