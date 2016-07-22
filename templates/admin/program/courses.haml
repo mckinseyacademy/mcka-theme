@@ -6,8 +6,8 @@
     %span= program.display_name
   %hr
   %section
-    .large-7.columns#course-list
-      - include "admin/program/course_select.haml"
+    #course-list.large-7.columns
+      %table.course-list
     .large-5.columns.course-selection
       %a#course-program-action.button.radius.tiny{href: "/admin/programs/#{program.id}/add_courses/"}
         %span= _("Update course(s) in this program")
@@ -24,25 +24,3 @@
         .prog-info
           %span= _("Number of Courses:")
           %span= course_count
-- block js_snippets
-  :javascript
-    $(function(){
-      selection = {
-        selector: '.course-list .course',
-        submit_name: 'courses',
-        minimum_count: 0,
-        minimum_count_message: "Please select at least one course"
-      };
-
-      activator = {
-        selector: '#course-program-action'
-      }
-      enable_selection(selection, activator);
-
-      $('.student-list').dataTable({
-          paging: false,
-          autoWidth: false,
-          scrollX: true,
-          "dom": '<"top small-6"f>rt<"bottom"ilp><"clear">'
-      });
-    });

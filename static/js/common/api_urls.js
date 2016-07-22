@@ -19,12 +19,9 @@ var ApiUrls = {
   {
     return this.participants_list+'/'+user_id+'/admin_companies';
   },
-  cached_resource_api: function(resource_name, fresh)
+  cached_resource_api: function(resource_name)
   {
-    query_set = "";
-    if (fresh)
-      query_set ="?force_refresh=true";
-    return this.cache+'/'+resource_name+query_set;
+    return this.cache+'/'+resource_name;
   },
   validate_participant_email: '/admin/api/participants/validate_participant_email',
   validate_participant_username: '/admin/api/participants/validate_participant_username',

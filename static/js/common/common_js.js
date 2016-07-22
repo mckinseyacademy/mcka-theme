@@ -535,16 +535,17 @@ function CreatNicePrompt(title, input_label)
 
 }
 
-function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, fresh)
+function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, urlParams)
 {
   $(parent_container).empty();
   $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
   if (!hrefPrefix)
     hrefPrefix=""
   var options = {
-    url: ApiUrls.cached_resource_api(resource_name, fresh),
+    url: ApiUrls.cached_resource_api(resource_name),
     type: "GET",
-    dataType: "json",
+    dataType: "json",    
+    data: urlParams,
     timeout: 1000000,
     beforeSend: function( xhr ) {
       xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
@@ -552,7 +553,7 @@ function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, fre
   };
   $.ajax(options)
   .done(function(data) {
-    link_list = '';
+    var link_list = '';
     for (var i=0; i<data.length; i++)
     {
       link_list += '<a href="'+hrefPrefix+data[i]["value"]+'" class="resourceName_'+resource_name+'" style="display:block;">'+data[i]["name"]+'</a>';
@@ -568,14 +569,15 @@ function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, fre
 }
 
 
-function CreateNiceAjaxSelect(parent_container, resource_name, select_name, default_option, fresh)
+function CreateNiceAjaxSelect(parent_container, resource_name, select_name, default_option, urlParams)
 {
   $(parent_container).empty();
   $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
   var options = {
-    url: ApiUrls.cached_resource_api(resource_name, fresh),
+    url: ApiUrls.cached_resource_api(resource_name),
     type: "GET",
     dataType: "json",
+    data: urlParams,
     timeout: 1000000,
     beforeSend: function( xhr ) {
       xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
@@ -583,7 +585,7 @@ function CreateNiceAjaxSelect(parent_container, resource_name, select_name, defa
   };
   $.ajax(options)
   .done(function(data) {
-    select_html = '<select class="niceAjaxSelectGlobal resourceName_'+resource_name+'" name="'+select_name+'">';
+    var select_html = '<select class="niceAjaxSelectGlobal resourceName_'+resource_name+'" name="'+select_name+'">';
     if (default_option)
       select_html += '<option value="'+default_option["value"]+'">'+default_option["name"]+'</option>';
     for (var i=0; i<data.length; i++)
@@ -599,6 +601,53 @@ function CreateNiceAjaxSelect(parent_container, resource_name, select_name, defa
     console.log(data)
   });
 }
+
+
+function CreateNiceAjaxTable(parent_container, resource_name, table_data, urlParams)
+{
+  $(parent_container).empty();
+  $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
+  var options = {
+    url: ApiUrls.cached_resource_api(resource_name),
+    type: "GET",
+    dataType: "json",
+    data: urlParams,
+    timeout: 1000000,
+    beforeSend: function( xhr ) {
+      xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+    }
+  };
+  $.ajax(options)
+  .done(function(data) {
+    var table_html = '';
+    if (table_data["header_fields"])
+    {
+      table_html +='<thead><tr>';
+      for (var j=0; j<table_data["header_fields"].length; j++)
+      {
+        table_html += '<th>'+table_data["header_fields"][j]+'</th>';
+      }
+      table_html +='</tr></thead>';
+    }
+    table_html += "<tbody>";
+    for (var i=0; i<data.length; i++)
+    {
+      table_html += '<tr id="'+data[i]["row_ids"]+'" class="'+table_data["row_classes"]+" "+data[i]["additional_class"]+'">';
+      for (var k=0; k<data[i]["table_data"].length; k++)
+       table_html +=' <td>'+data[i]["table_data"][k]+'</td>'
+      table_html += '</tr>';
+    }
+    table_html += "</tbody>";
+    $(parent_container).empty();
+    $(parent_container).append(table_html);
+    $(document).trigger("nice_table_generated", [parent_container]);
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+
 
 function GenerateCSVDownloader(click_element, data_to_send)
 {
