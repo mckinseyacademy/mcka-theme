@@ -1,7 +1,7 @@
 - extends 'admin/admin_layout.haml'
 - load staticfiles
 - block content
-  .admin-dashboard
+  .admin-dashboard.dashboardV2
     .row
       .large-12.large-centered
         %header
@@ -23,16 +23,17 @@
             .sub-2= _("Filter by:")
 
             .dashboard_filters
-              .small-6.columns
-                %select#select-course{'data-filter-endpoint': '/admin/workgroup/dashboard/programs/$value$/courses', 'data-outline-component': 'course'}
-                  %option{'data-static': 'true', 'value': ''}
-                    = _("Course")
-                  - for course in courses
-                    %option{'value': '#{course.id}'}
-                      = course.name
-                      (
-                      %span><= course.id
-                      )
+              .small-6.columns.selectContainer
+                - if not user.is_mcka_admin and not user.is_mcka_subadmin
+                  %select#select-course{'data-outline-component': 'course'}
+                    %option{'data-static': 'true', 'value': ''}
+                      = _("Course")
+                    - for course in courses
+                      %option{'value': '#{course.id}'}
+                        = course.name
+                        (
+                        %span><= course.id
+                        )
 
               .small-3.columns
                 %select#select-project{'data-filter-endpoint': '/admin/workgroup/dashboard/courses/$value$/projects', 'data-outline-component': 'project'}

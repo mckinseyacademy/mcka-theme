@@ -2736,11 +2736,12 @@ def groupwork_dashboardV2(request, restrict_to_programs_ids=None, restrict_to_us
 
     course_id = request.GET.get('course_id')
     project_id = request.GET.get('project_id')
-
-    courses = get_accessible_courses(request.user)
-    max_string_length = 75
-    for course in courses:
-        course.name = (course.name[:max_string_length] + '...') if len(course.name) > max_string_length else course.name
+    courses = []
+    if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
+        courses = get_accessible_courses(request.user)
+        max_string_length = 75
+        for course in courses:
+            course.name = (course.name[:max_string_length] + '...') if len(course.name) > max_string_length else course.name
 
     data = {
         'courses': courses,

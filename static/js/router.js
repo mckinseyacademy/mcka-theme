@@ -237,7 +237,7 @@ var Router = Backbone.Router.extend({
   workgroup_main: function(){
     if($(".select-group-wrapper").attr('data-enable-cache')==='true')
     {
-      CreateNiceAjaxSelect('.select-group-wrapper', 'courses_list', 'select-course', {"value":'select', "name": '- Select -'}, {"force_refresh":true});
+      CreateNiceAjaxSelect('.select-group-wrapper', 'courses_list', {'name':'select-course','id':''}, {"value":'select', "name": '- Select -'}, {"force_refresh":true});
     }
   },
   client_details_view: function()

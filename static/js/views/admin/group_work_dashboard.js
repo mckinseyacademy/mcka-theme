@@ -365,16 +365,35 @@ function group_work_dashboard(dashboard_configuration) {
     }
 
     $(document).ready(function () {
-        load_quick_filters();
+        if ($(".admin-dashboard").hasClass("dashboardV2"))
+        {
+            load_quick_filters();
+            $("#save-filter").click(save_quick_filter);
+            $("#quick-links").on('click', 'td.delete-filter a', delete_quick_filter);  
+            $(document).on("nice_select_generated", function(event, parent_container){
+                activate_ui();
+                update_select_options('select#select-company'); // populating company filter with all companies
+                if (selected_values.projectId) {
+                    restore_selection(selected_values);
+                }
+            });
 
-        activate_ui();
-        update_select_options('select#select-company'); // populating company filter with all companies
+            CreateNiceAjaxSelect('.small-6.columns.selectContainer', 'courses_list', {'name':'','id':'select-course', "customAttr":'data-outline-component="course"'}, 
+                {"value":'', "name": 'Course', 'customAttr':"data-static=true"}, {"force_refresh":true});
+        }
+        else
+        {
+            load_quick_filters();
 
-        $("#save-filter").click(save_quick_filter);
-        $("#quick-links").on('click', 'td.delete-filter a', delete_quick_filter);
+            activate_ui();
+            update_select_options('select#select-company'); // populating company filter with all companies
 
-        if (selected_values.projectId) {
-            restore_selection(selected_values);
+            $("#save-filter").click(save_quick_filter);
+            $("#quick-links").on('click', 'td.delete-filter a', delete_quick_filter);
+
+            if (selected_values.projectId) {
+                restore_selection(selected_values);
+            }
         }
     });
 }

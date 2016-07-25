@@ -561,6 +561,7 @@ function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, url
     link_list += "";
     $(parent_container).empty();
     $(parent_container).append(link_list);
+    $(document).trigger("nice_links_generated", [parent_container]);
   })
   .fail(function(data) {
     console.log("Ajax failed to fetch data");
@@ -569,7 +570,7 @@ function CreateNiceAjaxLinkList(parent_container, resource_name, hrefPrefix, url
 }
 
 
-function CreateNiceAjaxSelect(parent_container, resource_name, select_name, default_option, urlParams)
+function CreateNiceAjaxSelect(parent_container, resource_name, select_data, default_option, urlParams)
 {
   $(parent_container).empty();
   $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
@@ -585,9 +586,14 @@ function CreateNiceAjaxSelect(parent_container, resource_name, select_name, defa
   };
   $.ajax(options)
   .done(function(data) {
-    var select_html = '<select class="niceAjaxSelectGlobal resourceName_'+resource_name+'" name="'+select_name+'">';
-    if (default_option)
-      select_html += '<option value="'+default_option["value"]+'">'+default_option["name"]+'</option>';
+    if (!select_data["customAttr"])
+      select_data["customAttr"]="";
+    var select_html = '<select class="niceAjaxSelectGlobal resourceName_'+resource_name+'" id="'+select_data["id"]+'" name="'+select_data["name"]+'" '+select_data["customAttr"]+'>';
+    if (default_option){
+      if (!default_option["customAttr"])
+        default_option["customAttr"]="";
+      select_html += '<option value="'+default_option["value"]+'" '+default_option["customAttr"]+'>'+default_option["name"]+'</option>';
+    }
     for (var i=0; i<data.length; i++)
     {
       select_html += '<option value="'+data[i]["value"]+'">'+data[i]["name"]+'('+data[i]['value']+')</option>';
@@ -595,6 +601,7 @@ function CreateNiceAjaxSelect(parent_container, resource_name, select_name, defa
     select_html += "</select>";
     $(parent_container).empty();
     $(parent_container).append(select_html);
+    $(document).trigger("nice_select_generated", [parent_container]);
   })
   .fail(function(data) {
     console.log("Ajax failed to fetch data");
