@@ -1769,6 +1769,15 @@ def get_internal_courses():
     return internal_ids
 
 
+def get_internal_courses_list():
+
+    internal_tags = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
+    internal_courses = []
+    for internal_tag in internal_tags:
+        internal_courses.extend(group_api.get_courses_in_group(group_id=vars(internal_tag)['id']))
+    return internal_courses
+
+
 def check_if_course_is_internal(course_id):
 
     internal_ids = get_internal_courses()

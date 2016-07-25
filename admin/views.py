@@ -67,7 +67,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -3693,17 +3693,18 @@ class manage_user_courses_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request):
 
-        internal_ids = None
-        if request.user.is_internal_admin:
-            internal_ids = get_internal_courses()
         response_obj = {}
-        courses_list = course_api.get_course_list()
         allCoursesList =[]
+        internalAdminFlag = False
+        if request.user.is_internal_admin:
+            courses_list = get_internal_courses_list()
+            internalAdminFlag = True
+        else:
+            courses_list = course_api.get_course_list()
         for course in courses_list:
             courseData = vars(course)
-            if internal_ids:
-                if courseData['id'] in internal_ids:
-                    allCoursesList.append({'display_name':courseData['name'] +'('+ courseData['id'] + ')', 'id': courseData['id']})
+            if internalAdminFlag:
+                allCoursesList.append({'display_name':courseData['display_name'] +'('+ courseData['course_id'] + ')', 'id': courseData['course_id']})
             else:
                 allCoursesList.append({'display_name':courseData['name'] +'('+ courseData['id'] + ')', 'id': courseData['id']})
         response_obj['all_items'] = allCoursesList
