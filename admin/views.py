@@ -2703,7 +2703,7 @@ def upload_company_image(request, client_id='new'):
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 #@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
@@ -2729,7 +2729,7 @@ def groupwork_dashboard(request, restrict_to_programs_ids=None, restrict_to_user
 
     return render(request, template, data)
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def groupwork_dashboardV2(request, restrict_to_programs_ids=None, restrict_to_users_ids=None):
 
     template = 'admin/workgroup/dashboardV2.haml'
