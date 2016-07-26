@@ -978,19 +978,20 @@ def course_details(request, course_id):
             return permission_denied(request)
 
     course = course_api.get_course_details(course_id)
-    course_metrics_end = datetime.now().strftime("%m/%d/%Y")
     if course['start'] is not None:
         course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
     if course['end'] is not None:
         course['end'] = parsedate(course['end']).strftime("%m/%d/%Y") 
-        course_metrics_end = course['end'] 
     for data in course:
         if course.get(data) is None:
             course[data] = "-"  
 
-    course_all_users = course_api.get_course_details_users(course_id)
+    qs_params = {'fields': 'id'}
+    course_all_users = course_api.get_course_details_users(course_id, qs_params)
+    #ensure that there is one user with created gradebook
     user_gradebook = user_api.get_user_gradebook(course_all_users['results'][0]['id'], course_id)
     count_all_users = course_all_users['count']
+    course['count'] = count_all_users
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
@@ -1001,7 +1002,6 @@ def course_details(request, course_id):
     course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id)
     course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id)
     course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
-
     try:
         course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
     except ZeroDivisionError:
@@ -1009,7 +1009,6 @@ def course_details(request, course_id):
 
     course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=count_all_users)
     pass_users = course_pass.pass_rate_display(list_of_user_roles['ids'])
-
     try:
         course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
     except ZeroDivisionError:
@@ -1017,18 +1016,10 @@ def course_details(request, course_id):
 
     course_progress = 0
     course_proficiency = 0
-
     users_progress = get_course_progress(course_id, list_of_user_roles['ids'])
-
     for user in users_progress:
         course_progress += user['progress']
-
-    course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
-    for user in course_grades['leaders']:
-        if str(user['id']) not in list_of_user_roles['ids']:
-            user_proficiency = float(user['grade'])*100
-            course_proficiency += user_proficiency
-
+    course_proficiency = course_pass.course_proficiency(list_of_user_roles['ids'])
     try:
         course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
     except ZeroDivisionError:
@@ -1183,10 +1174,10 @@ class course_details_api(APIView):
             'observer':'Observer'
             }
             permissionsFilter = ['observer','assistant']
-            allUsersCount = course_api.get_course_details_users(course_id)['count']
+            count = request.GET.get('count', None)
+            course_grades = course_api.get_course_details_metrics_grades_all_users(course_id, count)
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
             course_progress = course_api.get_course_details_completions_all_users(course_id=course_id)
-            course_grades = course_api.get_course_details_metrics_grades_all_users(course_id, allUsersCount)
             for course_participant in allCourseParticipants['results']:
                 if len(course_participant['organizations'] ) == 0:
                     course_participant['organizations'] = [{'display_name': 'No company'}]
@@ -1214,16 +1205,26 @@ class course_details_api(APIView):
                         course_participant['custom_last_login'] = '-'
                 else:
                     course_participant['custom_last_login'] = '-'
-                user = [user for user in course_progress['leaders'] if user['id'] == course_participant['id']]
-                if len(user) > 0:
-                    course_participant['progress'] = '{:03d}'.format(round_to_int(user[0]['completions']))
+                user = None
+                for progress in course_progress['leaders']:
+                    if progress['id'] == course_participant['id']:
+                        user = progress
+                        course_progress['leaders'].remove(progress)
+                        break
+                if user:
+                    course_participant['progress'] = '{:03d}'.format(round_to_int(user['completions']))
                 else: 
                     course_participant['progress'] = "000"
-                course_participant['proficiency'] = [float(user['grade'])*100 for user in course_grades['leaders'] if user['id'] == course_participant['id']]
+                course_participant['proficiency'] = None
+                for grade in course_grades['leaders']:
+                    if grade['id'] == course_participant['id']:
+                        course_participant['proficiency'] = float(grade['grade'])*100
+                        course_grades['leaders'].remove(grade)
+                        break
                 if not course_participant['proficiency']:
                     course_participant['proficiency'] = "000"
                 else:
-                    course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency'][0]))
+                    course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency']))
 
                 course_participant['number_of_assessments'] = 0
                 course_participant['number_of_groupworks'] = 0
@@ -4609,19 +4610,19 @@ def company_course_details(request, company_id, course_id):
             return permission_denied(request)
 
     course = course_api.get_course_details(course_id)
-    course_metrics_end = datetime.now().strftime("%m/%d/%Y")
     if course['start'] is not None:
         course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
     if course['end'] is not None:
         course['end'] = parsedate(course['end']).strftime("%m/%d/%Y") 
-        course_metrics_end = course['end'] 
     for data in course:
         if course.get(data) is None:
             course[data] = "-"  
 
-    qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
+    qs_params = {'fields': 'id'}
     course_all_users = course_api.get_course_details_users(course_id=course_id)
     count_all_users = course_all_users['count']
+    course['count'] = count_all_users
+    qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
     course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
     user_gradebook = user_api.get_user_gradebook(course_company_users[0]['id'], course_id)
     count_company_users = len(course_company_users)
@@ -4665,14 +4666,7 @@ def company_course_details(request, company_id, course_id):
 
     for user in users_progress:
         course_progress += user['progress']
-
-    course_grades = course_api.get_course_details_metrics_grades(course_id, count_all_users)
-    for user in course_grades['leaders']:
-        if user['id'] in company_ids:
-            if str(user['id']) not in list_of_user_roles['ids']:
-                user_proficiency = float(user['grade'])*100
-                course_proficiency += user_proficiency
-
+    course_proficiency = course_pass.course_proficiency_for_company(list_of_user_roles['ids'], company_ids)
     try:
         course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
     except ZeroDivisionError:

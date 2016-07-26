@@ -102,6 +102,23 @@ class Proficiency(JsonObject):
 
         return pass_users
 
+    def course_proficiency(self, users_with_roles):
+        course_proficiency_sum = 0
+        for user_grade in self.leaders: 
+            if str(user_grade.id) not in users_with_roles:
+                user_proficiency = float(user_grade.user_grade_value)*100
+                course_proficiency_sum += user_proficiency
+        return course_proficiency_sum
+
+    def course_proficiency_for_company(self, users_with_roles, company_ids):
+        course_proficiency_sum = 0
+        for user_grade in self.leaders: 
+            if user_grade.id in company_ids:
+                if str(user_grade.id) not in users_with_roles:
+                    user_proficiency = float(user_grade.user_grade_value)*100
+                    course_proficiency_sum += user_proficiency
+        return course_proficiency_sum
+
 
 class UserProgress(JsonObject):
     @property

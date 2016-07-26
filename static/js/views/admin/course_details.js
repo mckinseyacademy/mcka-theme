@@ -63,6 +63,8 @@
         var companyId = $('#courseDetailsDataWrapper').attr('company-id');
         this.collection.updateCompanyQuerryParams(companyId);
       }
+      var count = course_details_count_all_users;
+      this.collection.updateCountQuerryParams(count);
       this.collection.fetch({success:function(collection, response, options){
           _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
           cloneHeader('#courseDetailsParticipantsGrid');

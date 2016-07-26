@@ -33,5 +33,8 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
   },
   updateCompanyQuerryParams: function(company_id){
     this.queryParams['organizations'] = company_id;
+  },
+  updateCountQuerryParams: function(count){
+    this.queryParams['count'] = count;
   }
 });
