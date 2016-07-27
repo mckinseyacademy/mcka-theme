@@ -1154,10 +1154,10 @@ def round_to_int_bump_zero(value):
 def get_course_social_engagement(course_id, company_id):
 
     if company_id:
-        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': company_id})}
+        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id', 'organizations': company_id})
     else:
-        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
-    course_users_ids = [str(user) for user in course_users_simple]
+        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id'})
+    course_users_ids = [str(user['id']) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
     for role_id in roles_ids:
@@ -1173,10 +1173,11 @@ def get_course_social_engagement(course_id, company_id):
         course_metrics_social = course_api.get_course_details_metrics_social(course_id)
 
     for user in course_metrics_social['users']:
-        user_data = course_metrics_social['users'][str(user)]
-        number_of_participants_posting += 1
-        number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data['num_comments']
-        number_of_posts += number_of_posts_per_participant
+        if str(user) in course_users_ids:
+            user_data = course_metrics_social['users'][str(user)]
+            number_of_participants_posting += 1
+            number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data['num_comments']
+            number_of_posts += number_of_posts_per_participant
 
     if number_of_users:
         participants_posting = str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'
@@ -1197,39 +1198,42 @@ def get_course_social_engagement(course_id, company_id):
 def get_course_engagement_summary(course_id, company_id):
 
     if company_id:
-        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': company_id})}
+        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active', 'organizations': company_id})
     else:
-        course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
-    course_users_ids = [str(user) for user in course_users_simple]
+        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active'})
+
+    course_users_ids = [str(user['id']) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
     for role_id in roles_ids:
         if role_id in course_users_ids: course_users_ids.remove(role_id)
-
-    additional_fields = ["is_active"]
-    course_users = user_api.get_users(ids=course_users_ids, fields=additional_fields)
+        
+    course_users = []
+    for user in course_users_simple:
+        if str(user['id']) in course_users_ids:
+            course_users.append(user)
 
     if company_id:
         course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
     else:
         course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id)
 
-    course_leaders_ids = [leader['id'] for leader in course_metrics['leaders']]
+    course_leaders_ids = [str(leader['id']) for leader in course_metrics['leaders']]
 
     active_users = 0
     engaged_users = 0
     engaged_progress_sum = 0
-    course_users_filtered_ids = [user.id for user in course_users]
+    course_users_filtered_ids = [str(user['id']) for user in course_users]
     for leader in course_metrics['leaders']:
-        if leader['id'] in course_users_filtered_ids:
+        if str(leader['id']) in course_users_filtered_ids:
             engaged_progress_sum += leader['completions']
     for course_user in course_users:
-        if course_user.is_active is True:
+        if course_user['is_active'] is True:
             active_users += 1
-        if course_user.id in course_leaders_ids:
+        if str(course_user['id']) in course_leaders_ids:
             engaged_users += 1
 
-    course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users)) if len(course_users_simple) > 0 else 0
+    course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users)) if len(course_users) > 0 else 0
     activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
     engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
     active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0

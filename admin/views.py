@@ -992,6 +992,8 @@ def course_details(request, course_id):
     user_gradebook = user_api.get_user_gradebook(course_all_users['results'][0]['id'], course_id)
     count_all_users = course_all_users['count']
     course['count'] = count_all_users
+    #deleting unused data
+    del course_all_users
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
@@ -1173,7 +1175,6 @@ class course_details_api(APIView):
             'staff':'Staff',
             'observer':'Observer'
             }
-            permissionsFilter = ['observer','assistant']
             count = request.GET.get('count', None)
             course_grades = course_api.get_course_details_metrics_grades_all_users(course_id, count)
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
@@ -4620,14 +4621,17 @@ def company_course_details(request, company_id, course_id):
     course_all_users = course_api.get_course_details_users(course_id=course_id)
     count_all_users = course_all_users['count']
     course['count'] = count_all_users
-    qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
-    course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
-    user_gradebook = user_api.get_user_gradebook(course_company_users[0]['id'], course_id)
-    count_company_users = len(course_company_users)
+    #delete unused data
+    del course_all_users
+    # qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
+    # course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
+    company_ids = organization_api.get_organization_user_ids_on_course(company_id, course_id)
+    user_gradebook = user_api.get_user_gradebook(company_ids[0], course_id)
+    count_company_users = len(company_ids)
 
-    company_ids = []
-    for user in course_company_users:
-        company_ids.append(user['id'])
+    # company_ids = []
+    # for user in course_company_users:
+    #     company_ids.append(user['id'])
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
