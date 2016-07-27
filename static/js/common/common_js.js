@@ -609,6 +609,53 @@ function CreateNiceAjaxSelect(parent_container, resource_name, select_data, defa
   });
 }
 
+function CreateNiceAjaxTemplate(parent_container, resource_name, render_data, urlParams)
+{
+  $(parent_container).empty();
+  $(parent_container).append('<i class="fa fa-spinner fa-spin"></i>');
+  var options = {
+    url: ApiUrls.cached_resource_api(resource_name),
+    type: "GET",
+    dataType: "json",
+    data: urlParams,
+    timeout: 1000000,
+    beforeSend: function( xhr ) {
+      xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+    }
+  };
+  $.ajax(options)
+  .done(function(data) {
+
+    var templ = _.template(render_data["template"]);
+    var data_extended = {};
+    var html = "";
+
+    if (render_data["render_prefix"])
+      html += render_data["render_prefix"];
+
+    if (render_data["default"])
+      html += templ(render_data["default"]);
+
+    for (var i=0; i<data.length; i++)
+    {
+      data_extended = data[i]
+      if (render_data["data"])
+        data_extended = $.extend({},data[i],render_data["data"]);
+      html += templ(data_extended);
+    }
+
+    if (render_data["render_postfix"])
+      html += render_data["render_postfix"];
+
+    $(parent_container).empty();
+    $(parent_container).append(html);
+    $(document).trigger("nice_"+render_data["type"]+"_generated", [parent_container]);
+  })
+  .fail(function(data) {
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
 
 function CreateNiceAjaxTable(parent_container, resource_name, table_data, urlParams)
 {

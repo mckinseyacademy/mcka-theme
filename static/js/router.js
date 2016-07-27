@@ -27,6 +27,7 @@ var Router = Backbone.Router.extend({
     'admin/participants/*id': 'initialize_participant_details',
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/': 'admin_course_details_participants',
+    'admin/clients/*client_id/courses_without_programs': 'assign_students_in_courses',
     'admin/clients/*client_id/mass_student_enroll': 'mass_student_enroll',
     'admin/clients/*client_id': 'client_details_view',
     'admin/companies': 'companies_list',
@@ -230,6 +231,14 @@ var Router = Backbone.Router.extend({
     });
     var company_info_view = new Apros.views.CompanyInfoView();
     company_info_view.render();
+  },
+  assign_students_in_courses: function(client_id)
+  {
+    $(document).on("nice_checkbox_generated", function(event, parentContainer)
+    {
+      AdjustCompanyParticiantsNumber(client_id, parentContainer, {"force_refresh":true});
+    });
+    CreateNiceAjaxTemplate(".coursesCheckboxContainer", 'courses_list', {"template":$("#courseCheckboxTemplate").html(), "type":"checkbox"}, {"force_refresh":true});
   },
   mass_student_enroll: function(client_id){
     massParticipantsInit();

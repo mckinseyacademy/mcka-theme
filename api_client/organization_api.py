@@ -111,6 +111,18 @@ def get_organizations(organization_object=JsonObjectWithImage):
     return JP.from_json(response.read(), organization_object)
 
 @api_error_protect
+def get_organizations_dict():
+    ''' fetch all organizations '''
+    response = GET(
+        '{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            urlencode({"page_size": 0})
+        )
+    )
+    return json.loads(response.read())
+
+@api_error_protect
 def get_organization_groups(organization_id, groups_object=JsonObject, *args, **kwargs):
     ''' fetch all organization groups '''
     qs_params = {}

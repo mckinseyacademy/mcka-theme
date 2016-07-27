@@ -152,6 +152,8 @@ urlpatterns = patterns(
     url(r'^company_dashboard', views.company_dashboard, name='company_dashboard'),
 
     url(r'^api/cache/courses_list', cache_views.course_list_cached_api.as_view(), name='cache_views.course_list_cached_api'),
+    url(r'^api/cache/organizations/(?P<organization_id>[0-9]+)/courses', cache_views.organization_courses_cached_api.as_view(), name='cache_views.organization_courses_cached_api'),
+    url(r'^api/cache/organizations$', cache_views.organizations_list_cached_api.as_view(), name='cache_views.organizations_list_cached_api'),
 
     url(r'^api/tags/(?P<tag_id>[0-9]+)', views.tag_details_api.as_view(), name='tag_details_api'),
     url(r'^api/tags$', views.tags_list_api.as_view(), name='tags_list_api'),

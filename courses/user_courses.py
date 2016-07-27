@@ -313,11 +313,10 @@ def standard_data(request):
 
             client_nav_links = ClientNavLinks.objects.filter(client_id=organization.id)
             client_nav_links = dict((link.link_name, link) for link in client_nav_links)
-        
-        if course: 
-            if course.ended:
-                if len(course.name) > 37:
-                    course.name = course.name[:37] + '...'
+            
+        if course and course.ended:
+            if len(course.name) > 37:
+                course.name = course.name[:37] + '...'
 
     data = {
         "course": course,

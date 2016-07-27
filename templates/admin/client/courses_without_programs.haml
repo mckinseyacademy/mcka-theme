@@ -1,6 +1,31 @@
 - extends 'admin/client/detail.haml'
 - load staticfiles
 - block admin_detail
+  %script{id: "courseCheckboxTemplate", type: "x-template"}
+    :plain
+      <div class="course-box large-10 large-offset-1">
+        <input id="<%= id %>" type="checkbox">
+        <label for="<%= id %>">
+          <div class="title"><%= name %></div>
+          <div class="course-info">
+            <span>Course Id:</span>
+            <p><%= id %></p>
+          </div>
+          <div class="course-info">
+            <span>Course Run:</span>
+            <span>
+            <%
+            if (start) {var a = new Date(Date.parse(start)); var fragments=[a.getMonth() + 1, a.getDate(), a.getFullYear()]; print(fragments.join("/"));}
+            %> - <%
+            if (end) {var b = new Date(Date.parse(end)); var fragments=[b.getMonth() + 1, b.getDate(), b.getFullYear()]; print(fragments.join("/"));}
+            %></span>
+          </div>
+          <div class="course-info">
+            <span>Company Participants:</span>
+            <span class="companyParticipantsNumber"><i class="fa fa-spinner fa-spin loadingCompanyParticipantNumber"></i></span>
+          </div>
+        </label>
+      </div>
   %h1
     %span= _("Client: ")
     %span= client.display_name
@@ -12,24 +37,26 @@
       %a#student-course-action.button.radius.tiny{href: "/admin/clients/#{client.id}/add_students_to_course"}
         %span= _("Move Selected Students into Course(s)")
       %div= _("Select one or more courses and assign courses to students.")
-      %div.row{:style => "overflow-y: auto; max-height: 720px;"}
-        - for course in courses
-          .course-box.large-10.large-offset-1
-            %input{type: "checkbox", id:"#{course.id}"}
-            %label{for: "#{course.id}"}
-              .title= course.name
-              .course-info
-                %span= _("Course Id:")
-                %p= course.id
-              .course-info
-                %span= _("Course Run:")
-                %span= course.date_range
-              .course-info
-                %span= _("Company Participants:")
-                %span= course.user_count
+      %div.row.coursesCheckboxContainer{:style => "overflow-y: auto; max-height: 720px;"}
+        - if not user.is_mcka_admin and not user.is_mcka_subadmin
+          - for course in courses
+            .course-box.large-10.large-offset-1
+              %input{type: "checkbox", id:"#{course.id}"}
+              %label{for: "#{course.id}"}
+                .title= course.name
+                .course-info
+                  %span= _("Course Id:")
+                  %p= course.id
+                .course-info
+                  %span= _("Course Run:")
+                  %span= course.date_range
+                .course-info
+                  %span= _("Company Participants:")
+                  %span= course.user_count
 
 - block js_snippets
   %script{src: "{% static 'js/admin.js' %}"}
+  %script{src: "{% static 'js/client_functions.js' %}"}
   :javascript
     $(function(){
       selections = [
