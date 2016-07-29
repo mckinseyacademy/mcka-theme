@@ -357,8 +357,9 @@ updateHeader = function() {
     {
       clonedHeaderContainer.css("width", parseFloat(bbGridContainerWidth) - 15);
     }
-    var pos = bbGridContainer.position();
-    clonedHeaderContainer.css('left', pos.left);
+    var parent = $(bbGridContainer).parent();
+    var left = window.getComputedStyle(bbGridContainer[0]).left - window.getComputedStyle(parent[0]).left;
+    clonedHeaderContainer.css('left', parseFloat(left));
     
     var tr = $(parentContainer).find('.bbGrid-grid').find('.bbGrid-grid-head').find('tr')[0];
     var trwidth = window.getComputedStyle(tr).width;

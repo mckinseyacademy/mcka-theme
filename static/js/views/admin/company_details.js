@@ -6,7 +6,15 @@
             var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
             var thisId = attributes['id']
             var name = attributes['name']
-            return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+            if (name){
+              if (name.length > 75){
+                return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
+              }
+              else
+              {
+                return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+              }
+            }
           } 
         },
         { title: 'Course ID', index: true, name: 'id' },
@@ -65,6 +73,10 @@
         enableSearch: true,
         colModel: _this.gridColumns
       });
+      $(document).on('onClearSearchEvent', this.onClearSearchEvent);
+    },
+    onClearSearchEvent: function(){
+      companyDetailsCoursesViewGrid.searchBar.onSearch({target: '#companyDetailsDataWrapper .bbGrid-pager'});
     },
     setEditCompanyNameEvents: function()
     {
