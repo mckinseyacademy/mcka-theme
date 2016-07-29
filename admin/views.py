@@ -1557,7 +1557,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         for student in data["students"]:
             student.created = datetime.strptime(student.created, "%Y-%m-%dT%H:%M:%SZ" ).strftime(settings.SHORT_DATE_FORMAT)
 
-        if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin and request.user.is_internal_admin:
+        if request.user.is_internal_admin:
             user_orgs = user_api.get_user_organizations(request.user.id)
             if len(user_orgs) > 0:
                 data["courses"] = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
