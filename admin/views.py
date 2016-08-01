@@ -2532,8 +2532,8 @@ def add_students_to_program(request, client_id, restrict_to_programs_ids=None, r
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+# @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+# @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def add_students_to_course(request, client_id, restrict_to_users_ids=None, restrict_to_courses_ids=None):
 
     def enroll_user_in_course(user_id, course_id):
