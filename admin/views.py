@@ -2253,7 +2253,7 @@ def download_activation_links_by_task_key(request):
     user_id = request.GET.get('user_id', None)
     res_type = request.GET.get('res_type', 'csv')
 
-    file_name = "download-activation-links-output"
+    file_name = "download-activation-links-output.csv"
     company_id = 'N/A'
 
     if task_key:
