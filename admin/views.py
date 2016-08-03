@@ -4623,15 +4623,9 @@ def company_course_details(request, company_id, course_id):
     course['count'] = count_all_users
     #delete unused data
     del course_all_users
-    # qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
-    # course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
     company_ids = organization_api.get_organization_user_ids_on_course(company_id, course_id)
     user_gradebook = user_api.get_user_gradebook(company_ids[0], course_id)
     count_company_users = len(company_ids)
-
-    # company_ids = []
-    # for user in course_company_users:
-    #     company_ids.append(user['id'])
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
