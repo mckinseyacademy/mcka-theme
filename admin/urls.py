@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from admin import views
 from admin import cache as cache_views
+from admin import s3 as s3views
 
 urlpatterns = patterns(
     'admin',
@@ -162,6 +163,8 @@ urlpatterns = patterns(
     url(r'^permissions', views.permissions, name='permissions'),
 
     url(r'^project/(?P<project_id>.*)/activity/(?P<activity_id>.*)/generate_assignments', views.generate_assignments, name='generate_assignments'),
+
+    url(r'^api/s3file', s3views.s3file_api.as_view(), name='s3file_api'),
 
     url(r'^api/email-templates$', views.email_templates_get_and_post_api.as_view(), name='email_templates_get_and_post_api'),
     url(r'^api/email-templates/(?P<pk>[0-9]+)$', views.email_templates_put_and_delete_api.as_view(), name='email_templates_put_and_delete_api'),

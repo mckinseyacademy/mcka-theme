@@ -1198,9 +1198,9 @@ def get_course_social_engagement(course_id, company_id):
 def get_course_engagement_summary(course_id, company_id):
 
     if company_id:
-        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active', 'organizations': company_id})
+        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active,last_login', 'organizations': company_id})
     else:
-        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active'})
+        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active,last_login'})
 
     course_users_ids = [str(user['id']) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
@@ -1221,6 +1221,8 @@ def get_course_engagement_summary(course_id, company_id):
     course_leaders_ids = [str(leader['id']) for leader in course_metrics['leaders']]
 
     active_users = 0
+    login_users = 0
+    login_users_progress = 0
     engaged_users = 0
     engaged_progress_sum = 0
     course_users_filtered_ids = [str(user['id']) for user in course_users]
@@ -1230,6 +1232,11 @@ def get_course_engagement_summary(course_id, company_id):
     for course_user in course_users:
         if course_user['is_active'] is True:
             active_users += 1
+        if parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
+            login_users += 1
+            for leader in course_metrics['leaders']:
+                if leader['id'] == course_user['id']:
+                    login_users_progress += leader['completions']
         if str(course_user['id']) in course_leaders_ids:
             engaged_users += 1
 
@@ -1238,12 +1245,14 @@ def get_course_engagement_summary(course_id, company_id):
     engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
     active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
     engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum)/engaged_users) if engaged_users > 0 else 0
+    logined_users = round_to_int_bump_zero((float(login_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
+    login_progress = round_to_int_bump_zero((float(login_users_progress)/login_users)) if login_users > 0 else 0
 
     course_stats = [
          { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
          { 'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
          { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
-         { 'name': 'Logged in over last 7 days', 'people': 'N/A', 'invited': 'N/A', 'progress': 'N/A'}
+         { 'name': 'Logged in over last 7 days', 'people': login_users, 'invited': str(logined_users) + '%', 'progress': str(login_progress) + '%'}
     ]
 
     return course_stats

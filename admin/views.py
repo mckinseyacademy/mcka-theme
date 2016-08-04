@@ -87,6 +87,7 @@ from courses.user_courses import load_course_progress
 import csv
 from django.utils import timezone
 
+from s3 import get_files_urls, push_file_to_s3
 
 # TO-DO: DECORATOR TO CHECK LEARNER DASHBOARD FEATURE IS ON. 
 # ADD TO LD VIEWS ONCE TESTING IS COMPLETE.
@@ -1557,7 +1558,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         for student in data["students"]:
             student.created = datetime.strptime(student.created, "%Y-%m-%dT%H:%M:%SZ" ).strftime(settings.SHORT_DATE_FORMAT)
 
-        if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin and request.user.is_internal_admin:
+        if request.user.is_internal_admin:
             user_orgs = user_api.get_user_organizations(request.user.id)
             if len(user_orgs) > 0:
                 data["courses"] = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
@@ -2253,7 +2254,7 @@ def download_activation_links_by_task_key(request):
     user_id = request.GET.get('user_id', None)
     res_type = request.GET.get('res_type', 'csv')
 
-    file_name = "download-activation-links-output"
+    file_name = "download-activation-links-output.csv"
     company_id = 'N/A'
 
     if task_key:
@@ -2532,8 +2533,8 @@ def add_students_to_program(request, client_id, restrict_to_programs_ids=None, r
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
-@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
-@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+# @checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
+# @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def add_students_to_course(request, client_id, restrict_to_users_ids=None, restrict_to_courses_ids=None):
 
     def enroll_user_in_course(user_id, course_id):
@@ -4623,15 +4624,9 @@ def company_course_details(request, company_id, course_id):
     course['count'] = count_all_users
     #delete unused data
     del course_all_users
-    # qs_params = {'organizations': company_id, 'fields': 'id', 'page_size': 0}
-    # course_company_users = course_api.get_course_details_users(course_id=course_id, qs_params=qs_params)
     company_ids = organization_api.get_organization_user_ids_on_course(company_id, course_id)
     user_gradebook = user_api.get_user_gradebook(company_ids[0], course_id)
     count_company_users = len(company_ids)
-
-    # company_ids = []
-    # for user in course_company_users:
-    #     company_ids.append(user['id'])
 
     permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)

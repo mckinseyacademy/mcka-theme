@@ -234,11 +234,14 @@ var Router = Backbone.Router.extend({
   },
   assign_students_in_courses: function(client_id)
   {
-    $(document).on("nice_checkbox_generated", function(event, parentContainer)
+    if ($(".course-box").length === 0)
     {
-      AdjustCompanyParticiantsNumber(client_id, parentContainer, {"force_refresh":true});
-    });
-    CreateNiceAjaxTemplate(".coursesCheckboxContainer", 'courses_list', {"template":$("#courseCheckboxTemplate").html(), "type":"checkbox"}, {"force_refresh":true});
+      $(document).on("nice_checkbox_generated", function(event, parentContainer)
+      {
+        AdjustCompanyParticiantsNumber(client_id, parentContainer, {"force_refresh":true});
+      });
+      CreateNiceAjaxTemplate(".coursesCheckboxContainer", 'courses_list', {"template":$("#courseCheckboxTemplate").html(), "type":"checkbox"}, {"force_refresh":true});
+    }
   },
   mass_student_enroll: function(client_id){
     massParticipantsInit();
