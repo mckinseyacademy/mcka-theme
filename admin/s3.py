@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 
 import boto
@@ -8,11 +10,12 @@ from rest_framework.response import Response
 
 def get_connection_settings():
     S3_BUCKET_NAME = settings.S3_BUCKET_NAME
+    S3_BUCKET_URL = settings.S3_BUCKET_URL
     S3_AWS_ACCESS_KEY_ID = settings.S3_AWS_ACCESS_KEY_ID
     S3_AWS_SECRET_ACCESS_KEY = settings.S3_AWS_SECRET_ACCESS_KEY
-    if S3_BUCKET_NAME and S3_AWS_SECRET_ACCESS_KEY and S3_AWS_ACCESS_KEY_ID:
+    if S3_BUCKET_NAME and S3_AWS_SECRET_ACCESS_KEY and S3_AWS_ACCESS_KEY_ID and S3_BUCKET_URL:
         return {"S3_BUCKET_NAME":S3_BUCKET_NAME,"S3_AWS_ACCESS_KEY_ID":S3_AWS_ACCESS_KEY_ID,
-        "S3_AWS_SECRET_ACCESS_KEY":S3_AWS_SECRET_ACCESS_KEY, "S3_BUCKET_PATH":"http://s3.amazonaws.com/"+S3_BUCKET_NAME+"/"}
+        "S3_AWS_SECRET_ACCESS_KEY":S3_AWS_SECRET_ACCESS_KEY, "S3_BUCKET_PATH":S3_BUCKET_URL}
     else:
         return None
 
@@ -25,6 +28,11 @@ def push_file_to_s3(file, folder=None):
         name = file.name
         if folder:
             name = folder+file.name
+
+        last_dot_index = name.rfind(".")
+        if last_dot_index >= 0:
+            name = name[:last_dot_index] + "-" + str(uuid.uuid4()) + "." + name[last_dot_index+1:]
+            
         # create a key to keep track of our file in the storage
         k = Key(bucket)
         k.key = name
