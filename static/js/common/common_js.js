@@ -789,6 +789,36 @@ function CSVDataCollector(event,data)
   }
 }
 
+function S3FileUploader(files){
+  var formData = new FormData();
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    // Add the file to the request.
+    formData.append('files[]', file, file.name);
+  }
+  var options = {
+      url: ApiUrls.file_upload,
+      type: "POST",
+      timeout: 10000,
+      processData: false,
+      contentType: false,
+      data: formData,
+      beforeSend: function( xhr ) {
+        xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+      }
+    };
+
+  $.ajax(options)
+  .done(function(data) {
+    $(document).trigger('s3_files_uploaded', [data]);
+  })
+  .fail(function(data) {
+    $(document).trigger('s3_files_failed', [data]);
+    console.log("Ajax failed to fetch data");
+    console.log(data)
+  });
+}
+
 
 
 

@@ -51,6 +51,23 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           tinymce.init({
             selector: '#email_editor',
             theme: 'modern',
+            file_browser_callback: function(field_name, url, type, win) {
+                if(type=='image') {
+                  $('#hidden_file_upload_form input').attr('accept',"image/*");
+                  $(document).one("s3_files_uploaded",function(event, data){
+                    alert("File successfully uploaded!");
+                    $('#hidden_file_upload_form input').val("");
+                    if (data["urls"].length)
+                      $('#'+field_name).val(data["urls"][0]);
+                  });
+                  $('#hidden_file_upload_form input').one("change", function(e)
+                  {
+                    if ($(this).val())
+                      S3FileUploader(this.files);
+                  });
+                  $('#hidden_file_upload_form input').click();
+                }
+            },
             height: 500,
             menubar:false,
             statusbar: false,

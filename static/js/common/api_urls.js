@@ -23,6 +23,7 @@ var ApiUrls = {
   {
     return this.cache+'/'+resource_name;
   },
+  file_upload:"/admin/api/s3file",
   validate_participant_email: '/admin/api/participants/validate_participant_email',
   validate_participant_username: '/admin/api/participants/validate_participant_username',
   course_details: '/admin/api/courses',

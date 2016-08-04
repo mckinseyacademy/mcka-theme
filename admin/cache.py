@@ -15,7 +15,6 @@ class course_list_cached_api(APIView):
         force_new = request.GET.get('force_refresh', None)
         program_id = request.GET.get('program_id', None)
         data_format = request.GET.get('data_format', None)
-        
 
         if force_new:
             course_list = course_api.get_course_list()

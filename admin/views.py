@@ -87,6 +87,7 @@ from courses.user_courses import load_course_progress
 import csv
 from django.utils import timezone
 
+from s3 import get_files_urls, push_file_to_s3
 
 # TO-DO: DECORATOR TO CHECK LEARNER DASHBOARD FEATURE IS ON. 
 # ADD TO LD VIEWS ONCE TESTING IS COMPLETE.
