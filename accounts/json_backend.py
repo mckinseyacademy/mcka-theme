@@ -38,7 +38,11 @@ class JsonBackend(object):
             # If remote_session_key is specified, we are attempting to upgrade the remote
             # session from AnonymousUser to an authorized user, using the given credentials.
             # Otherwise a new session will be created.
-            auth_info = user_api.authenticate(username, password, remote_session_key=remote_session_key)
+            try:
+                auth_info = user_api.authenticate(username, password, remote_session_key=remote_session_key)
+            except ApiError as err:
+                if err.code == 403:
+                    return None
             auth_info.user = user_api.get_user(auth_info.user.id)
         user = self._load_user(auth_info.user, auth_info.token)
         if hasattr(auth_info, 'csrftoken'):
