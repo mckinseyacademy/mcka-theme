@@ -262,6 +262,13 @@ class Permissions(object):
                     user_statuses["main_company"].append(organization)
             if user_statuses["company_num"] > 0 and len(user_statuses["main_company"]) == 0: #naive approach that main company is first company
                 user_statuses["main_company"].append(user_statuses[PERMISSION_GROUPS.COMPANY_ADMIN][0])
+        else:
+            organizations_list = user_api.get_user_organizations(self.user_id)
+            user_statuses["company_num"] = 1
+            user_statuses["company_ids"] = []
+            if len(organizations_list) > 0:
+                user_statuses["main_company"].append(organizations_list[0])
+                user_statuses["company_ids"].append(int(organizations_list[0].id))
         return user_statuses
 
 
