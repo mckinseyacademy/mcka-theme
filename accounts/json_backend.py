@@ -40,9 +40,9 @@ class JsonBackend(object):
             # Otherwise a new session will be created.
             try:
                 auth_info = user_api.authenticate(username, password, remote_session_key=remote_session_key)
-            except ApiError as err:
-                if err.code == 403:
-                    return None
+            except ApiError:
+                return None
+
             auth_info.user = user_api.get_user(auth_info.user.id)
         user = self._load_user(auth_info.user, auth_info.token)
         if hasattr(auth_info, 'csrftoken'):
