@@ -676,17 +676,14 @@ def get_course_details_metrics_social(course_id, qs_params = ''):
 
 
 @api_error_protect
-def get_course_details_completions_leaders(course_id, *args, **kwargs):
-
-    qs_params = {}
-    qs_params.update(kwargs)
+def get_course_details_completions_leaders(course_id, organization_id = ''):
 
     response = GET(
-        '{}/{}/{}/metrics/completions/leaders?'.format(
+        '{}/{}/{}/metrics/completions/leaders?organizations={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
-            urlencode(qs_params)
+            organization_id
         )
     )
 

@@ -996,7 +996,7 @@ def course_details(request, course_id):
     #deleting unused data
     del course_all_users
 
-    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
+    permissionsFilter = ['observer','assistant', 'staff']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
 
     #number of active participants = all users - number of users with roles
@@ -4628,16 +4628,16 @@ def company_course_details(request, company_id, course_id):
     user_gradebook = user_api.get_user_gradebook(company_ids[0], course_id)
     count_company_users = len(company_ids)
 
-    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
+    permissionsFilter = ['observer','assistant', 'staff']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
 
-    counter_roles = 0
-    for role_id in list_of_user_roles['ids']:
-        if int(role_id) in company_ids:
-            counter_roles = counter_roles + 1
+    list_of_user_roles_company = []
+    for user_id in list_of_user_roles['ids']:
+        if int(user_id) in company_ids:
+            list_of_user_roles_company.append(user_id)
 
     #number of active participants = all users - number of users with roles
-    course['users_enrolled'] = count_company_users - counter_roles
+    course['users_enrolled'] = count_company_users - len(list_of_user_roles_company)
 
     course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
     course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, company_id)
@@ -4663,6 +4663,7 @@ def company_course_details(request, company_id, course_id):
 
     for user in users_progress:
         course_progress += user['progress']
+
     course_proficiency = course_pass.course_proficiency_for_company(list_of_user_roles['ids'], company_ids)
     try:
         course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])

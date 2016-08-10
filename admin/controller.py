@@ -846,9 +846,9 @@ def get_course_details_progress_data(course, course_modules, users, company_id):
     engaged_total = 0
 
     if company_id:
-        course_metrics = course_api.get_course_details_completions_leaders(course_id=course.id, organization=company_id)
+        course_metrics = course_api.get_course_details_completions_leaders(course.id, company_id)
     else:
-        course_metrics = course_api.get_course_details_completions_leaders(course_id=course.id)
+        course_metrics = course_api.get_course_details_completions_leaders(course.id)
 
     course_leaders_ids = [leader['id'] for leader in course_metrics['leaders']]
     for course_user in users:
@@ -1214,9 +1214,9 @@ def get_course_engagement_summary(course_id, company_id):
             course_users.append(user)
 
     if company_id:
-        course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
+        course_metrics = course_api.get_course_details_completions_leaders(course_id, company_id)
     else:
-        course_metrics = course_api.get_course_details_completions_leaders(course_id=course_id)
+        course_metrics = course_api.get_course_details_completions_leaders(course_id)
 
     course_leaders_ids = [str(leader['id']) for leader in course_metrics['leaders']]
 
@@ -1387,6 +1387,7 @@ def get_course_users_roles(course_id, permissions_filter_list):
     user_roles_list['ids'] = list(user_roles_list['ids'])
     return user_roles_list
 
+
 def get_user_courses_helper(user_id, request):
 
     user_courses = []
@@ -1466,8 +1467,10 @@ def get_course_progress(course_id, exclude_users, company_id=None):
     '''
 
     users_progress = []
-
-    leaders = course_api.get_course_details_completions_leaders(course_id=course_id, organization=company_id)
+    if company_id:
+        leaders = course_api.get_course_details_completions_leaders(course_id, company_id)
+    else:
+        leaders = course_api.get_course_details_completions_leaders(course_id)
 
     for user in leaders['leaders']:
         if str(user['id']) not in exclude_users:
