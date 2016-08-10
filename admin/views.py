@@ -1002,8 +1002,14 @@ def course_details(request, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
 
+    permissions_groups = group_api.get_groups_of_type('permission')
+    group_ids = ''
+    for group in permissions_groups:
+        group_ids += str(group.id) + ','
+    group_ids = group_ids[:-1]
+
     course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id)
-    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id)
+    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, group_ids)
     course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
     try:
         course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
@@ -4639,8 +4645,14 @@ def company_course_details(request, company_id, course_id):
     #number of active participants = all users - number of users with roles
     course['users_enrolled'] = count_company_users - len(list_of_user_roles_company)
 
+    permissions_groups = group_api.get_groups_of_type('permission')
+    group_ids = ''
+    for group in permissions_groups:
+        group_ids += str(group.id) + ','
+    group_ids = group_ids[:-1]
+    
     course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
-    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, company_id)
+    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, group_ids, company_id)
     course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
 
     try:

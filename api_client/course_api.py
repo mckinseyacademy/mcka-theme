@@ -735,13 +735,14 @@ def get_course_details_metrics_all_users(course_id, organization_id = ''):
 
 
 @api_error_protect
-def get_course_details_metrics_filtered_by_groups(course_id, organization_id = ''):
+def get_course_details_metrics_filtered_by_groups(course_id, group_ids, organization_id = ''):
 
     response = GET(
-        '{}/{}/{}/metrics/?groups=1,2,3,4,5,6,7,8,9&organization={}'.format(
+        '{}/{}/{}/metrics/?groups={}&organization={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
+            group_ids,
             organization_id
         )
     )
