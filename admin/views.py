@@ -987,20 +987,26 @@ def course_details(request, course_id):
         if course.get(data) is None:
             course[data] = "-"  
 
-    qs_params = {'fields': 'id'}
+    qs_params = {'fields': 'id', 'page_size': 0}
     course_all_users = course_api.get_course_details_users(course_id, qs_params)
     #ensure that there is one user with created gradebook
-    user_gradebook = user_api.get_user_gradebook(course_all_users['results'][0]['id'], course_id)
-    count_all_users = course_all_users['count']
+    user_gradebook = user_api.get_user_gradebook(course_all_users[0]['id'], course_id)
+    count_all_users = len(course_all_users)
     course['count'] = count_all_users
+
+    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
+    list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
+
+    course_users_ids = [str(user['id']) for user in course_all_users]
+    for user_id in list_of_user_roles['ids']:
+        if user_id in course_users_ids:
+            course_users_ids.remove(user_id)
+
     #deleting unused data
     del course_all_users
 
-    permissionsFilter = ['observer','assistant', 'staff']
-    list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
-
     #number of active participants = all users - number of users with roles
-    course['users_enrolled'] = count_all_users - len(list_of_user_roles['ids'])
+    course['users_enrolled'] = len(course_users_ids)
 
     permissions_groups = group_api.get_groups_of_type('permission')
     group_ids = ''
@@ -1197,8 +1203,10 @@ class course_details_api(APIView):
                         course_participant['custom_user_status'] = permissonsMap['assistant']
                     elif 'observer' in course_participant['roles']:
                         course_participant['custom_user_status'] = permissonsMap['observer']
-                    elif 'staff' in course_participant['roles'] or 'instructor' in course_participant['roles']:
+                    elif 'staff' in course_participant['roles']:
                         course_participant['custom_user_status'] = permissonsMap['staff']
+                    elif 'instructor' in course_participant['roles']:
+                        course_participant['custom_user_status'] = permissonsMap['instructor']
                 else:
                     course_participant['custom_user_status'] = 'Active'
                 if course_participant['is_active']:
@@ -4634,16 +4642,14 @@ def company_course_details(request, company_id, course_id):
     user_gradebook = user_api.get_user_gradebook(company_ids[0], course_id)
     count_company_users = len(company_ids)
 
-    permissionsFilter = ['observer','assistant', 'staff']
+    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
     list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
 
-    list_of_user_roles_company = []
     for user_id in list_of_user_roles['ids']:
         if int(user_id) in company_ids:
-            list_of_user_roles_company.append(user_id)
+            count_company_users -= 1
 
-    #number of active participants = all users - number of users with roles
-    course['users_enrolled'] = count_company_users - len(list_of_user_roles_company)
+    course['users_enrolled'] = count_company_users
 
     permissions_groups = group_api.get_groups_of_type('permission')
     group_ids = ''
