@@ -204,6 +204,9 @@ def _render_group_work(request, course, project_group, group_project, ld=False):
 
     ta_user = choose_random_ta(course.id)
 
+    notify_group_on_submission_url = "/"
+    if course and project_group:
+        notify_group_on_submission_url = reverse('notify_group_on_submission', args=[course.id, project_group.id])
     data = {
         "lesson_content_parent_id": "course-group-work",
         "vertical_usage_id": vertical_usage_id,
@@ -219,7 +222,7 @@ def _render_group_work(request, course, project_group, group_project, ld=False):
         "current_activity": activity,
         "ta_user": ta_user,
         "group_work_url": request.path_info,
-        "notify_group_on_submission_url": reverse('notify_group_on_submission', args=[course.id, project_group.id])
+        "notify_group_on_submission_url": notify_group_on_submission_url
     }
     if select_stage:
         data['select_stage'] = select_stage
@@ -450,7 +453,11 @@ def _course_progress_for_user(request, course_id, user_id):
     return render(request, 'courses/course_progress.haml', data)
 
 def _course_progress_for_user_v2(request, course_id, user_id):
-    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    feature_flags = FeatureFlags.objects.filter(course_id=course_id)
+    if len(feature_flags) > 0:
+        feature_flags = feature_flags[0]
+    else:
+        feature_flags = None
     if feature_flags and not feature_flags.progress_page:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
