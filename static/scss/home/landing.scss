@@ -226,12 +226,11 @@
         text-align: center;
         padding: 40px 15px;
         h1{
-            font-weight: 400;
-            color: #333;
-            font-size: 28px;
+            color: $mckinsey-academy-black;
+            @include font-spec(28, 400);
             span{
                 display: block;
-                color: #66ccff;
+                color: $hero-subheading-color;
                 font-size: 54%;
                 line-height: 1.5;
             }
@@ -246,7 +245,7 @@
 
 /*Card*/
 .card{
-    background-color: #203753;
+    background-color: $mckinsey-dark-blue;
     text-align: center;
     margin: 0 5% 40px;
     display: block;
@@ -257,29 +256,26 @@
         padding: 1px 20px 25px;
     }
     h3{
-        font-weight: normal;
+        @include font-spec(22 , normal);
         margin-bottom: 8px;
         color: $pure-white;
-        font-size: 22px;
         margin-top: 15px;
     }
     p{
         margin-top: 0;
         color: $pure-white;
-        line-height: 21px;
-        font-size: 15px;
+        @include font-spec(15, normal);
         line-height: 1.6;
         margin-bottom: 15px;
     }
     a{
-        color: #fff;
-        background-color: #1daeec;
+        color: $pure-white;
+        background-color: $light-blue;
         padding: 7px 10px;
-        font-size: 16px;
         text-decoration: none;
         text-align: center;
         display: inline-block;
-        font-weight: 600;
+        @include font-spec(16, 600);
         min-width: 100px;
         box-sizing: border-box;
     }
@@ -326,10 +322,10 @@
             padding: 12% 0 0;
             height: 410px;
             h1{
-                font-size: 42px;
+                @include font-spec(42);
                 color: $pure-white;
                 span{
-                    font-size: 22px;
+                    @include font-spec(22);
                 }
               img{
                 width: auto;
