@@ -1,5 +1,4 @@
 #home-landing {
-  width: 300px * 6;
   margin: 0 auto;
   @include clearfix;
 
@@ -206,6 +205,167 @@
       }
     }
   }
+  .wrapper {
+      max-width: 1440px;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+/*Hero*/
+.universal-hero {
+    margin: 0;
+    width: 100%;
+    .image{
+        width: 100%;
+        @include retina-image('/static/image/home-grid/hero-img-small', center center, 'jpg', null, '@2x');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        padding-top: 62.5%;
+    }
+    .hero-text{
+        text-align: center;
+        padding: 40px 15px;
+        h1{
+            font-weight: 400;
+            color: #333;
+            font-size: 28px;
+            span{
+                display: block;
+                color: #66ccff;
+                font-size: 54%;
+                line-height: 1.5;
+            }
+            img{
+                width: 36%;
+                min-width: 215px;
+            }
+        }
+    }
+}
+
+
+/*Card*/
+.card{
+    background-color: #203753;
+    text-align: center;
+    margin: 0 5% 40px;
+    display: block;
+    padding: 1px 20px 25px;
+    vertical-align: top;
+    box-sizing: border-box;
+    &.padding-low{
+        padding: 1px 20px 25px;
+    }
+    h3{
+        font-weight: normal;
+        margin-bottom: 8px;
+        color: $pure-white;
+        font-size: 22px;
+        margin-top: 15px;
+    }
+    p{
+        margin-top: 0;
+        color: $pure-white;
+        line-height: 21px;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    a{
+        color: #fff;
+        background-color: #1daeec;
+        padding: 7px 10px;
+        font-size: 16px;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        min-width: 100px;
+        box-sizing: border-box;
+    }
+}
+
+
+/*Misc*/
+
+.row{
+    display: table;
+    max-width: 1440px;
+    content: "";
+    clear: both;
+    margin: auto;
+}
+.text-center{
+    text-align: center;
+}
+
+/*Media Queries*/
+
+
+/*Tablet & small desktop*/
+@media only screen and (min-width: 768px){
+    .universal-hero{
+        position: relative;
+        height: 410px;
+        display: table;
+        .image{
+            @include retina-image('/static/image/home-grid/hero-img', cover, 'jpg', null, '@2x');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 68% 0%;
+            position: absolute;
+            padding-top: 0;
+            height: 100%;
+        }
+        .hero-text{
+            position: relative;
+            @include retina-image('/static/image/home-grid/shadow', cover, 'png', null, '@2x');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            padding: 12% 0 0;
+            height: 410px;
+            h1{
+                font-size: 42px;
+                color: $pure-white;
+                span{
+                    font-size: 22px;
+                }
+              img{
+                width: auto;
+              }
+            }
+        }
+    }
+    .card{
+        width: 42%;
+        margin: -35px 20px 0;
+        z-index: 5;
+        position: relative;
+        max-width: 400px;
+        display: inline-block;
+        padding: 1px 65px 25px;
+      &.padding-low{
+        padding: 1px 45px 25px;
+      }
+    }
+}
+
+
+/*Large Desktop*/
+@media only screen and (min-width: 1180px){
+    .universal-hero{
+        width: 85.27473%;
+        margin: 0 7.36264%;
+        .image{
+            background-position: right center;
+            background-size: cover;
+        }
+      .hero-text{
+        padding: 9% 0 0;
+      }
+    }
+}
 }
 
 #mckinsey_video {

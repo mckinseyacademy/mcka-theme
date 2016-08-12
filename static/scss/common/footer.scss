@@ -1,6 +1,7 @@
 footer[role=contentinfo]{
   color: $footer-text;
-  padding: 15px 0;
+  padding: 15px;
+  max-width: 90.57143rem;
 
   .copyright{
     color: $mckinsey-dark-grey;
