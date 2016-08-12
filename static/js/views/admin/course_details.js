@@ -176,12 +176,7 @@
           if (courseTagsInput.attr('data-id'))
           {
             tag_id = courseTagsInput.attr('data-id');
-            tag_name = courseTagsInput.val();
-            if (tag_name.toLowerCase() == 'internal')
-            {
-              tag_name = tag_name.toUpperCase();
-            }
-            _this.addTagToCourse(tag_id, course_id, tag_name);
+            _this.addTagToCourse(tag_id, course_id);
           }
           else
           {
@@ -207,7 +202,7 @@
                 if (data['status'] == 'ok')
                 {
                   tag_id = parseInt(data['id']);
-                  _this.addTagToCourse(tag_id, course_id, tag_name);
+                  _this.addTagToCourse(tag_id, course_id);
                 }
                 else if (data['status'] == 'error')
                 {
@@ -237,7 +232,7 @@
         var tag_id = $(this).attr('data-id');
         var _thisTag = this;
         $(this).find('.courseTagsDeleteIcon').show();
-        $(this).on('click', '.courseTagsDeleteIcon', function(event)
+        $(this).off('click').on('click', '.courseTagsDeleteIcon', function(event)
         { 
           event.stopPropagation();
           var url = ApiUrls.courses_list + '/' + course_id + '/tags?tag_id=' + tag_id;
@@ -492,9 +487,9 @@
         $(input).parent().find('.newTagCreationPopup').hide();
       }
     },
-    addTagToCourse: function(tag_id, course_id, tag_name)
+    addTagToCourse: function(tag_id, course_id)
     {
-      var data = {"tag_id": tag_id, "tag_name": tag_name};
+      var data = {"tag_id": tag_id};
       var url = ApiUrls.courses_list + '/' + course_id + '/tags';
       var options = {
         url: url,
@@ -510,9 +505,11 @@
           var courseTagsIcon = $('#courseDetailsDataWrapper').find('.courseTagsIcon');
           var newTag = $('<div class="courseDetailsTagsList button small radius"></div>');
           newTag.attr('data-id', data['id']);
-          newTag.val(data['name']);
-          newTag.text(data['name']);
+          var newTagSpan = $('<span></span>');
+          newTagSpan.val(data['name']);
+          newTagSpan.text(data['name']);
           newTag.css('margin-right', '5px');
+          newTag.append(newTagSpan);
           var deleteTagIcon = $('<i class="fa fa-times courseTagsDeleteIcon"></i>');
           deleteTagIcon.css('padding-left', '5px');
           newTag.append(deleteTagIcon);
