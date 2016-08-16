@@ -16,7 +16,7 @@
           %li
             %a{href: '/admin/courses/'}= _("Courses")  
 
-      - if user.is_mcka_admin or user.is_mcka_subadmin
+      - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
         - if apros_features.ADMIN_PARTICIPANTS_TAB
           %li
             %a{href: '/admin/participants'}= _("Participants")

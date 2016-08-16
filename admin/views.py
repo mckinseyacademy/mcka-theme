@@ -3619,8 +3619,34 @@ class participant_details_api(APIView):
             else:
                 selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
             selectedUser['mcka_permissions'] = selectedUserPermissions.current_permissions
+            
+            nice_permissions = {
+                PERMISSION_GROUPS.MCKA_ADMIN : "Uber admin",
+                PERMISSION_GROUPS.INTERNAL_ADMIN : "Internal admin",
+                PERMISSION_GROUPS.CLIENT_ADMIN : "Client admin",
+                PERMISSION_GROUPS.MCKA_SUBADMIN : "Course ops admin" 
+            }
+            nice_perms = []
+            for perm in selectedUser['mcka_permissions']:
+                nice_perms.append(nice_permissions.get(perm, perm))
+
+            permissions_groups = {
+                'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+                'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+                'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+                'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
+            }
+            selectedUser['company_permission'] = "none"
+
             if not len(selectedUser['mcka_permissions']):
                 selectedUser['mcka_permissions'] = ['-']
+            else:
+                for key, value in permissions_groups.iteritems():
+                    if value == selectedUser['mcka_permissions'][0]:
+                        selectedUser['company_permission'] = key
+
+            selectedUser['mcka_permissions'] = nice_perms
+
             if UserActivation.get_user_activation(user=selectedUserResponse):
                 selectedUser['has_activation_record'] = True
             else:
@@ -3665,16 +3691,37 @@ class participant_details_api(APIView):
                     except ApiError, e:
                         return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't create company!"})
                 try:
+
+                    permissions_groups = {
+                        'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+                        'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+                        'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+                        'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
+                    }
                     company = data.get('company', None)
                     company_old = request.DATA.get('company_old', None)
+                    permissions = None
+
                     if company != company_old:
                         organization_api.add_user_to_organization(company, user_id)
                         if int(company_old) > 0:
                             organization_api.remove_users_from_organization(company_old, user_id)
                     response = user_api.update_user_information(user_id,data)
+                    if request.DATA.get('company_permissions', None):
+                        if request.DATA['company_permissions'] in permissions_groups:
+                            if not permissions:
+                                permissions = Permissions(user_id)
+                            if request.DATA['company_permissions'] != request.DATA['company_permissions_old']:
+                                permissions.add_permission(permissions_groups[request.DATA['company_permissions']])
+                                if request.DATA['company_permissions_old'] != "none":
+                                    permissions.remove_permission(permissions_groups[request.DATA['company_permissions_old']])
+                        elif request.DATA['company_permissions'] == "none" and request.DATA['company_permissions'] != request.DATA['company_permissions_old']:
+                            if not permissions:
+                                permissions = Permissions(user_id)
+                            permissions.remove_permission(permissions_groups[request.DATA['company_permissions_old']])
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
-                return Response({'status':'ok', 'message':vars(response), 'company': company})
+                return Response({'status':'ok', 'message':vars(response), 'company': company, 'company_permissions': request.DATA['company_permissions']})
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 

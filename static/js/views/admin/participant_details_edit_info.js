@@ -155,6 +155,15 @@
                 data['company_old'] = 0;
               }
             }
+            if (input.attr("name") == 'company_permissions')
+              if (input.attr('data-old-permission'))
+              {
+                data['company_permissions_old'] = input.attr('data-old-permission');
+              }
+              else
+              {
+                data['company_permissions_old'] = "none";
+              }
           });
           if (validation_fail)
           {
@@ -181,6 +190,8 @@
                   InitializeAutocompleteInput(_options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
                   var company = $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantCompanyValue input');
                   company.attr('data-old-id',data['company']);
+                  var company_permissions = $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantPermissionsValue select');
+                  company_permissions.attr('data-old-permission',data['company_permissions']);
                   $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
                   $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
@@ -224,6 +235,7 @@
       details.find('.participantUsernameValue').text(edit.find('.participantUsernameValue input').val());
       details.find('.participantEmailValue').text(edit.find('.participantEmailValue input').val());
       details.find('.participantCompanyValue a').text(edit.find('.participantCompanyValue input').val());
+      details.find('.participantPermissionsValue').text(edit.find('.participantPermissionsValue select option:selected').text());
       var company_data_id = edit.find('.participantCompanyValue input').attr('data-id');
       details.find('.participantCompanyValue a').attr('data-id',company_data_id);
       var company_href = details.find('.participantCompanyValue a').attr('href')

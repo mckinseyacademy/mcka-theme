@@ -286,6 +286,10 @@ cloneHeader = function(parentContainer) {
   clonedHeader.addClass("cloned-header");
 
   var head = $(parentContainer).find('.bbGrid-grid-head');
+  
+  if (head.length == 0)
+    return;
+
   var width = window.getComputedStyle(head[0]).width;
   var height = window.getComputedStyle(head[0]).height;
   clonedHeader.css({"width": width, "height": height});
