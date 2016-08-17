@@ -7,7 +7,11 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from .models import Client, Program, AccessKey, DashboardAdminQuickFilter, BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile
+from .models import (
+    Client, Program, AccessKey, DashboardAdminQuickFilter, 
+    BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile,
+    LearnerDashboardMilestone
+)
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
@@ -319,4 +323,28 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'title_color': forms.TextInput(attrs={'type': 'color'}),
             'note_color': forms.TextInput(attrs={'type': 'color'}),
             'tile_background_color': forms.TextInput(attrs={'type': 'color'}),
+        }
+
+
+class LearnerDashboardMilestoneForm(forms.ModelForm):
+
+    class Meta:
+        model = LearnerDashboardMilestone
+        fields = [
+            'label',
+            'title',
+            'location',
+            'download_link',
+            'details_link',
+            'milestone_type',
+            'digital_content_type',
+            'start_date',
+            'end_date',
+            'active',
+            'learner_dashboard'
+        ]
+        widgets = {
+            'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
+            'download_link': forms.TextInput(attrs={'type': 'url'}),
+            'details_link': forms.TextInput(attrs={'type': 'url'}),
         }

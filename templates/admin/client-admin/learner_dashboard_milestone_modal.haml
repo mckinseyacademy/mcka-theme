@@ -1,0 +1,92 @@
+- if milestone_id
+  %section
+    %h1 Edit Milestone
+- else 
+  %section
+    %h1 Create Milestone
+%hr
+.close-reveal-modal
+  %i.fa.fa-times-circle
+%form{action: '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/milestone/#{milestone_id}', method: 'POST', enctype: 'multipart/form-data'}
+  - csrf_token
+  .row
+    .small-3.columns
+    .small-9.columns= form.label.errors
+  .row
+    .small-3.columns= form.label.label_tag
+    .small-9.columns= form.label
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.title.errors
+  .row
+    .small-3.columns= form.title.label_tag
+    .small-9.columns= form.title
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.location.errors
+  .row
+    .small-3.columns= form.location.label_tag
+    .small-9.columns= form.location
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.download_link.errors
+  .row
+    .small-3.columns= form.download_link.label_tag
+    .small-9.columns= form.download_link
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.details_link.errors
+  .row
+    .small-3.columns= form.details_link.label_tag
+    .small-9.columns= form.details_link
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.milestone_type.errors
+  .row
+    .small-3.columns= form.milestone_type.label_tag
+    .small-9.columns= form.milestone_type
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.digital_content_type.errors
+  .row
+    .small-3.columns= form.digital_content_type.label_tag
+    .small-9.columns= form.digital_content_type
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.start_date.errors
+  .row
+    .small-3.columns= form.start_date.label_tag
+    .small-9.columns= form.start_date
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.end_date.errors
+  .row
+    .small-3.columns= form.end_date.label_tag
+    .small-9.columns= form.end_date
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.active.errors
+  .row
+    .small-3.columns= form.active.label_tag
+    .small-9.columns= form.active
+
+  %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
+  .error
+    - if error
+      = error
+
+  %input.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
+
+- block js_snippets
+  %script{src: "/static/js/form_changed_check.js"}
+
+  :javascript
