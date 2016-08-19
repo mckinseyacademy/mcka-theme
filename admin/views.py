@@ -55,7 +55,8 @@ from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
-    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, CompanyContact
+    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, CompanyContact,
+    Tag
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -1049,9 +1050,7 @@ def course_details(request, course_id):
     for email_template in list_of_email_templates:    
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
-    course_tags = []
-    for tag_type in TAG_GROUPS:
-        course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
+    course_tags = Tag.course_tags(course_id)
     course['tags'] = []
     for tag in course_tags:
         course['tags'].append(vars(tag))
@@ -4744,9 +4743,7 @@ def company_course_details(request, company_id, course_id):
     for email_template in list_of_email_templates:    
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
-    course_tags = []
-    for tag_type in TAG_GROUPS:
-        course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
+    course_tags = Tag.course_tags(course_id)
     course['tags'] = []
     for tag in course_tags:
         course['tags'].append(vars(tag))
@@ -5058,16 +5055,12 @@ class tags_list_api(APIView):
     def get(self, request):
 
         course_id = request.GET.get('course_id', None)
-        tags = []
-        for tag_type in TAG_GROUPS:
-            tags.extend(group_api.get_groups_of_type(group_type=TAG_GROUPS[tag_type]))
+        tags = Tag.fetch_all()
         allTagsList = []
         response = {}
         ids = []
         if course_id:
-            course_tags = []
-            for tag_type in TAG_GROUPS:
-                course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
+            course_tags = Tag.course_tags(course_id)
             for tag in course_tags:
                 ids.append(vars(tag)['id'])
         for tag in tags:
@@ -5084,21 +5077,20 @@ class tags_list_api(APIView):
     def post(self, request):
 
         tag_name = request.DATA.get('name', None)
+        tag_data = {}
         if tag_name:
-            tags = []
-            for tag_type in TAG_GROUPS:
-                tags.extend(group_api.get_groups_of_type(group_type=TAG_GROUPS[tag_type]))
+            tags = Tag.fetch_all()
             for tag in tags:
                 if tag.name.lower() == tag_name.lower():
                     return Response({'status':'errorAlreadyExist', 'message': "Tag with this name already exist's!"})
-            if tag_name == 'INTERNAL':
+            if tag_name.lower() == 'internal':
                 try:
-                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)
+                    response = Tag.create_internal(tag_name, tag_data)
                 except ApiError as e:
                     return Response({'status':'error', 'message': e.message})
             else:
                 try:
-                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.COMMON)
+                    response = Tag.create(tag_name, tag_data)
                 except ApiError as e:
                     return Response({'status':'error', 'message': e.message})
             return Response({'status':'ok', 'message':'Tag created!', 'id': vars(response)['id']})
@@ -5116,20 +5108,20 @@ class tag_details_api(APIView):
         if request.user.is_internal_admin:
             internal_ids = get_internal_courses()
 
-        tag = group_api.fetch_group(group_id=tag_id)
-        tag = vars(tag)
-        tag['data'] = vars(tag['data'])
-        for i in range(0, len(tag['resources'])):
-            tag['resources'][i] = vars(tag['resources'][i])
-        tag['courses'] = []
-        courses = group_api.get_courses_in_group(group_id=tag_id)
+        tag = Tag.fetch(tag_id)
+        tag_data = vars(tag)
+        tag_data['data'] = vars(tag_data['data'])
+        for i in range(0, len(tag_data['resources'])):
+            tag_data['resources'][i] = vars(tag_data['resources'][i])
+        tag_data['courses'] = []
+        courses = tag.get_courses()
         for course in courses:
             if internal_ids:
                 if course.course_id in internal_ids:
-                    tag['courses'].append(vars(course))
+                    tag_data['courses'].append(vars(course))
             else:
-                tag['courses'].append(vars(course))
-        return Response(tag)
+                tag_data['courses'].append(vars(course))
+        return Response(tag_data)
 
 
 class course_details_tags_api(APIView):
@@ -5138,13 +5130,19 @@ class course_details_tags_api(APIView):
     def post(self, request, course_id):
 
         tag_id = request.DATA.get('tag_id', None)
-        tag_name = request.DATA.get('tag_name', None)
-        if tag_id and tag_name:
-            try:
-                response = group_api.add_course_to_group(course_id=course_id, group_id=tag_id)
-            except ApiError as e:
-                return Response({'status':'error', 'message': e.message})
-            return Response({'status':'ok', 'message':'Tag added to Course!', 'id': tag_id, 'name': tag_name})
+        if tag_id:
+            tag = Tag.fetch(tag_id)
+            if tag.type == TAG_GROUPS.INTERNAL:
+                try:
+                    response = tag.add_internal_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+            elif tag.type == TAG_GROUPS.COMMON:
+                try:
+                    response = tag.add_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+            return Response({'status':'ok', 'message':'Tag added to Course!', 'id': tag.id, 'name': tag.name})
         else:
             return Response({'status':'error', 'message':'You need to select tag!'})
 
@@ -5153,10 +5151,17 @@ class course_details_tags_api(APIView):
 
         tag_id = request.GET.get('tag_id', None)
         if tag_id:
-            try:
-                response = group_api.remove_course_from_group(course_id=course_id, group_id=tag_id)
-            except ApiError as e:
-                return Response({'status':'error', 'message': e.message})
+            tag = Tag.fetch(tag_id)
+            if tag.type == TAG_GROUPS.INTERNAL:
+                try:
+                    response = tag.remove_internal_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+            elif tag.type == TAG_GROUPS.COMMON:
+                try:
+                    response = tag.remove_internal_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
             return Response({'status':'ok', 'message':'Tag removed from Course!'})
         else:
             return Response({'status':'error', 'message':'You need to select tag!'})

@@ -3,7 +3,7 @@ import logging
 import time
 from admin.models import (
     internal_admin_role_event, course_program_event, program_client_event, Client,
-    ROLE_ACTIONS, ASSOCIATION_ACTIONS
+    ROLE_ACTIONS, ASSOCIATION_ACTIONS, internal_course_event, new_internal_admin_event
 )
 from django.core.cache import cache
 from api_client import user_api, group_api, course_api, organization_api
@@ -11,6 +11,8 @@ from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
 from api_client.api_error import ApiError
 from django.conf import settings
+
+from api_client.group_api import TAG_GROUPS
 
 
 class PermissionSaveError(Exception):
@@ -154,14 +156,16 @@ class Permissions(object):
         if group_id:
             group_api.add_user_to_group(self.user_id, group_id)
             if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
-                internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.GRANT)
+                # internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.GRANT)
+                new_internal_admin_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.GRANT)
 
     def remove_permission(self, permission_name):
         group_id = self.get_group_id(permission_name)
         if group_id:
             group_api.remove_user_from_group(self.user_id, group_id)
             if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
-                internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
+                # internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
+                new_internal_admin_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
     
     def add_company_admin_permissions(self, organization_ids):
         group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
@@ -346,6 +350,19 @@ class InternalAdminRoleManager(object):
         return cls.get_all_internal_admins() & set(student.id for student in organization.fetch_students())
 
     @classmethod
+    def _get_all_internal_courses(cls):
+
+        internal_ids = []
+        internal_tags = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
+        internal_courses = []
+        for internal_tag in internal_tags:
+            internal_courses.extend(group_api.get_courses_in_group(group_id=internal_tag.id))
+        for course in internal_courses:
+            internal_ids.append(course.course_id)
+
+        return set(internal_ids)
+
+    @classmethod
     def handle_internal_admin_role_event(cls, sender, *args, **kwargs):
         user_id, action = kwargs.get('user_id'), kwargs.get('action')
         if action not in cls._role_actions_map:
@@ -388,6 +405,26 @@ class InternalAdminRoleManager(object):
         cls._do_role_management(operation, user_ids, course_ids, USER_ROLES.INSTRUCTOR)
 
     @classmethod
+    def handle_internal_course_event(cls, sender, *args, **kwargs):
+        course_id, action = kwargs.get('course_id'), kwargs.get('action')
+
+        user_ids = cls.get_all_internal_admins()
+
+        operation = cls._course_operations_map[action]
+
+        cls._do_role_management(operation, user_ids, [course_id], USER_ROLES.INSTRUCTOR)
+
+    @classmethod
+    def handle_new_internal_admin_event(cls, sender, *args, **kwargs):
+        user_id, action = kwargs.get('user_id'), kwargs.get('action')
+
+        course_ids = cls._get_all_internal_courses()
+
+        operation = cls._role_actions_map[action]
+
+        cls._do_role_management(operation, [user_id], course_ids, USER_ROLES.INSTRUCTOR)
+
+    @classmethod
     def _do_role_management(cls, operation, users, courses, role):
         for course_id in courses:
             for user_id in users:
@@ -396,3 +433,5 @@ class InternalAdminRoleManager(object):
 internal_admin_role_event.connect(InternalAdminRoleManager.handle_internal_admin_role_event)
 course_program_event.connect(InternalAdminRoleManager.handle_course_program_event)
 program_client_event.connect(InternalAdminRoleManager.handle_program_client_event)
+internal_course_event.connect(InternalAdminRoleManager.handle_internal_course_event)
+new_internal_admin_event.connect(InternalAdminRoleManager.handle_new_internal_admin_event)
