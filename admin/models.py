@@ -541,9 +541,10 @@ class LearnerDashboardMilestone(db_models.Model):
     label = db_models.CharField(blank=True, max_length=20)
     title = db_models.CharField(max_length=5000)
     location = db_models.CharField(blank=True, max_length=250)
+    details = db_models.CharField(blank=True, max_length=5000)
 
     download_link = db_models.URLField(blank=True, null=True)
-    details_link = db_models.URLField(blank=True, null=True)
+    link = db_models.URLField(blank=True, null=True)
 
     start_date = db_models.DateTimeField(null=True, blank=True)
     end_date = db_models.DateTimeField(null=True, blank=True)
@@ -580,13 +581,9 @@ class LearnerDashboardMilestoneProgress(db_models.Model):
         (u'3', u'Incomplete')
     )
     progress = db_models.CharField(max_length=1, choices=PROGRESS_TYPES)
+    percentage = db_models.IntegerField(blank=False, unique=True)
 
     milestone = db_models.ForeignKey(
         'LearnerDashboardMilestone',
-        on_delete=db_models.CASCADE,
-    )
-
-    learner_dashboard = db_models.ForeignKey(
-        'LearnerDashboard',
         on_delete=db_models.CASCADE,
     )

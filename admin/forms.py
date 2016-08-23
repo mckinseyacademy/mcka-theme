@@ -335,7 +335,8 @@ class LearnerDashboardMilestoneForm(forms.ModelForm):
             'title',
             'location',
             'download_link',
-            'details_link',
+            'link',
+            'details',
             'milestone_type',
             'digital_content_type',
             'start_date',
@@ -346,5 +347,5 @@ class LearnerDashboardMilestoneForm(forms.ModelForm):
         widgets = {
             'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
             'download_link': forms.TextInput(attrs={'type': 'url'}),
-            'details_link': forms.TextInput(attrs={'type': 'url'}),
+            'link': forms.TextInput(attrs={'type': 'url'}),
         }
