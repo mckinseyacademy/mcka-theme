@@ -63,11 +63,11 @@ from .controller import (
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
-    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
+    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data,
+    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles,
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses, check_if_course_is_internal,
+    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
     check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list
 )
 from .forms import (
@@ -941,7 +941,7 @@ class courses_list_api(APIView):
 
         if request.user.is_internal_admin:
             courses = []
-            internal_ids = get_internal_courses()
+            internal_ids = get_internal_courses_ids()
             for course in allCourses:
                 if course['id'] in internal_ids:
                     if course['start'] is not None:
@@ -3393,14 +3393,17 @@ def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
 
     return HttpResponse(json.dumps({"message": "Project deleted successfully."}), content_type="application/json")
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-#@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
-def workgroup_list(request, restrict_to_programs_ids=None):
-    ''' handles requests for login form and their submission '''
 
-    if request.method == 'POST':
-        if request.POST['select-course'] != 'select':
-            return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA,
+                           PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+# @checked_program_access (NOTE this decorator changes method signature by adding restrict_to_programs_ids parameter)
+def workgroup_list(request, restrict_to_programs_ids=None):
+    """
+    Handles requests for login form and their submission
+    """
+
+    if request.method == 'POST' and request.POST['select-course'] != 'select':
+        return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
     if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
         courses = get_accessible_courses(request.user)
@@ -5106,7 +5109,7 @@ class tag_details_api(APIView):
 
         internal_ids = None
         if request.user.is_internal_admin:
-            internal_ids = get_internal_courses()
+            internal_ids = get_internal_courses_ids()
 
         tag = Tag.fetch(tag_id)
         tag_data = vars(tag)

@@ -752,7 +752,6 @@ def get_course_details_metrics_filtered_by_groups(course_id, group_ids, organiza
 
 @api_error_protect
 def get_user_list_dictionary(course_id, program_id = None):
-
     return json.loads(get_user_list_json(course_id, program_id))
 
 

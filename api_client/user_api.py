@@ -467,6 +467,7 @@ def get_user_preferences(user_id):
     # Note that we return plain dictionary here - makes more sense 'cos we set a dictionary
     return json.loads(response.read())
 
+
 @api_error_protect
 def get_user_organizations(user_id, organization_object=organization_models.Organization):
     ''' return organizations with which the user is associated '''
