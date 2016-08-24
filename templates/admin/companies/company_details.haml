@@ -23,6 +23,13 @@
           %p Company ID: ={company.id}
         .row.companyDetailsNumberActiveCourses
           %p Active Courses: ={company.activeCourses}
+
+      #additionalCompanyButtons
+        %a.button.small.radius.navigationLink{:href => "/admin/clients/#{company.id}/navigation"}
+          Navigation
+        %a.button.small.radius.accessLink{:href => "/admin/clients/#{company.id}/access_keys"}
+          Access
+          
       #companyDetailsNavigationButtonsContainer
         .row
           .companyDetailsCoursesButton.large-3.columns

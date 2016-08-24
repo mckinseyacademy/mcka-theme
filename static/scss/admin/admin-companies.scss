@@ -110,6 +110,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 60%;
+	position: relative;
 
 	.errorMessage
 	{
@@ -117,6 +118,13 @@
 		padding-top: 5px;
 		padding-bottom: 5px;
 		font-size: small;
+	}
+
+	#additionalCompanyButtons
+	{
+		position: absolute;
+		right: 0px;
+		top: 20px;
 	}
 }
 
