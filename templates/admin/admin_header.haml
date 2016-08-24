@@ -30,7 +30,7 @@
         %li
           %a{href: '/admin/workgroup'}= _("Group Work")
 
-      - if user.is_mcka_admin or user.is_mcka_subadmin
+      - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
         %li
           %a{href: '/admin/course-meta-content'}= _("Course Content")
      
