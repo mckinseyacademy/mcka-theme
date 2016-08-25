@@ -16,6 +16,8 @@ from django.utils import timezone
 from django.db import models as db_models
 from django.dispatch import Signal
 
+from api_client.group_api import TAG_GROUPS
+
 GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'gp-v2-project'
 GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'gp-v2-activity'
@@ -48,16 +50,16 @@ class Program(BaseGroupModel):
 
     def add_course(self, course_id):
         result = group_api.add_course_to_group(course_id, self.id)
-        course_program_event.send(
-            sender=self.__class__, course_id=course_id, program_id=self.id, action=ASSOCIATION_ACTIONS.ADD
-        )
+        # course_program_event.send(
+        #     sender=self.__class__, course_id=course_id, program_id=self.id, action=ASSOCIATION_ACTIONS.ADD
+        # )
         return result
 
     def remove_course(self, course_id):
         result = group_api.remove_course_from_group(course_id, self.id)
-        course_program_event.send(
-            sender=self.__class__, course_id=course_id, program_id=self.id, action=ASSOCIATION_ACTIONS.REMOVE
-        )
+        # course_program_event.send(
+        #     sender=self.__class__, course_id=course_id, program_id=self.id, action=ASSOCIATION_ACTIONS.REMOVE
+        # )
         return result
 
     def fetch_courses(self):
@@ -102,6 +104,59 @@ class Program(BaseGroupModel):
 
     def __repr__(self):
         return unicode(self)
+
+class Tag(BaseGroupModel):
+
+    '''
+    Tags are edx groups for tagging course. Group types for tags are in TAG_GROUPS.
+    '''
+
+    group_type = TAG_GROUPS.COMMON
+
+    def get_courses(self):
+        return group_api.get_courses_in_group(self.id)
+
+    def add_course(self, course_id):
+        return group_api.add_course_to_group(course_id, self.id)
+
+    def remove_course(self, course_id):
+        return group_api.remove_course_from_group(course_id, self.id)
+
+    def add_internal_course(self, course_id):
+        response = group_api.add_course_to_group(course_id, self.id)
+        internal_course_event.send(
+            sender=self.__class__, course_id=course_id, action=ASSOCIATION_ACTIONS.ADD
+        )
+        return response
+
+    def remove_internal_course(self, course_id):
+        response = group_api.remove_course_from_group(course_id, self.id)
+        internal_course_event.send(
+            sender=self.__class__, course_id=course_id, action=ASSOCIATION_ACTIONS.REMOVE
+        )
+        return response
+
+    @classmethod
+    def fetch_all(cls):
+        tags = []
+        for tag_type in TAG_GROUPS:
+            cls.group_type = TAG_GROUPS[tag_type]
+            tags.extend(cls.list())
+        return tags
+
+    @classmethod
+    def create_internal(cls, tag_name, tag_data):
+        cls.group_type = TAG_GROUPS.INTERNAL
+        return cls.create(tag_name, tag_data)
+
+    @classmethod
+    def course_tags(cls, course_id):
+        tags = []
+        for tag_type in TAG_GROUPS:
+            cls.group_type = TAG_GROUPS[tag_type]
+            tags.extend(course_api.get_course_groups(course_id=course_id, group_type=cls.group_type))
+        return tags
+
 
 class ReviewAssignmentGroup(BaseGroupModel):
     data_fields = ["assignment_date", "xblock_id"]
@@ -151,9 +206,9 @@ class Client(organization_models.Organization):
         # set up licenses
         license_controller.create_licenses(program_id, self.id, places)
 
-        program_client_event.send(
-            sender=self.__class__, client_id=self.id, program_id=program_id, action=ASSOCIATION_ACTIONS.ADD
-        )
+        # program_client_event.send(
+        #     sender=self.__class__, client_id=self.id, program_id=program_id, action=ASSOCIATION_ACTIONS.ADD
+        # )
 
         return self
 
@@ -393,6 +448,8 @@ ASSOCIATION_ACTIONS = DottableDict(
 internal_admin_role_event = Signal(providing_args=['user_id', 'action'])
 course_program_event = Signal(providing_args=['course_id', 'program_id', 'action'])
 program_client_event = Signal(providing_args=['client_id', 'program_id', 'action'])
+internal_course_event = Signal(providing_args=['course_id', 'action'])
+new_internal_admin_event = Signal(providing_args=['user_id', 'action'])
 
 class AccessKey(db_models.Model):
     """

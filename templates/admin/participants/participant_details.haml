@@ -198,17 +198,29 @@
               .newCompanyCreationPopup
                 Since this company does not yet exist, a new company will be created. If this is an error, try selecting your company from the type-ahead results.
               .errorMessage
-          .large-6.columns.participantGender
-            .participantGenderLabel.labelUniversal
-              Gender
-            .participantGenderValue
-              %select{:name => "gender"}
-                - if gender == 'M' 
-                  %option{:value => "M", :selected => 'True'} Male
-                  %option{:value => "F"} Female
+          .large-6.columns.participantPermissions
+            .participantPermissionsLabel.labelUniversal
+              Permissions
+            .participantPermissionsValue
+              %select{:name => "company_permissions", :data-old-permission => '#{company_permission}'}
+                - if company_permission == "none"
+                  %option{:value => "none", :selected => "selected"} None
                 - else
-                  %option{:value => "M"} Male
-                  %option{:value => "F", :selected => 'True'} Female
+                  %option{:value => "none"} None
+                - if user.is_mcka_admin
+                  - if company_permission == "uber_admin"
+                    %option{:value => "uber_admin", :selected => "selected"} Uber admin
+                  - else
+                    %option{:value => "uber_admin"} Uber admin
+                - if user.is_mcka_admin or user.is_mcka_subadmin
+                  - if company_permission == "course_ops"
+                    %option{:value => "course_ops", :selected => "selected"} Course ops admin
+                  - else
+                    %option{:value => "course_ops"} Course ops admin
+                - if company_permission == "internal_admin"
+                  %option{:value => "internal_admin", :selected => "selected"} Internal Admin
+                - else
+                  %option{:value => "internal_admin"} Internal Admin
         .row
           .large-6.columns.participantCountry
             .participantCountryLabel.labelUniversal
@@ -221,6 +233,18 @@
               City
             .participantCityValue
               %input{:type => "text", :value => '#{city}', :name => "city", :maxlength => "60"}
+        .row
+          .large-6.columns.participantGender
+            .participantGenderLabel.labelUniversal
+              Gender
+            .participantGenderValue
+              %select{:name => "gender"}
+                - if gender == 'M' 
+                  %option{:value => "M", :selected => 'True'} Male
+                  %option{:value => "F"} Female
+                - else
+                  %option{:value => "M"} Male
+                  %option{:value => "F", :selected => 'True'} Female
         %hr
         - if user.is_mcka_admin or user.is_mcka_subadmin
           .companyAdminRolesContainer

@@ -1051,9 +1051,7 @@ def course_details(request, course_id):
     for email_template in list_of_email_templates:    
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
-    course_tags = []
-    for tag_type in TAG_GROUPS:
-        course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
+    course_tags = Tag.course_tags(course_id)
     course['tags'] = []
     for tag in course_tags:
         course['tags'].append(vars(tag))
@@ -3621,8 +3619,34 @@ class participant_details_api(APIView):
             else:
                 selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
             selectedUser['mcka_permissions'] = selectedUserPermissions.current_permissions
+            
+            nice_permissions = {
+                PERMISSION_GROUPS.MCKA_ADMIN : "Uber admin",
+                PERMISSION_GROUPS.INTERNAL_ADMIN : "Internal admin",
+                PERMISSION_GROUPS.CLIENT_ADMIN : "Client admin",
+                PERMISSION_GROUPS.MCKA_SUBADMIN : "Course ops admin" 
+            }
+            nice_perms = []
+            for perm in selectedUser['mcka_permissions']:
+                nice_perms.append(nice_permissions.get(perm, perm))
+
+            permissions_groups = {
+                'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+                'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+                'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+                'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
+            }
+            selectedUser['company_permission'] = "none"
+
             if not len(selectedUser['mcka_permissions']):
                 selectedUser['mcka_permissions'] = ['-']
+            else:
+                for key, value in permissions_groups.iteritems():
+                    if value == selectedUser['mcka_permissions'][0]:
+                        selectedUser['company_permission'] = key
+
+            selectedUser['mcka_permissions'] = nice_perms
+
             if UserActivation.get_user_activation(user=selectedUserResponse):
                 selectedUser['has_activation_record'] = True
             else:
@@ -3667,16 +3691,37 @@ class participant_details_api(APIView):
                     except ApiError, e:
                         return Response({'status':'error', 'type': 'api_error', 'message':"Couldn't create company!"})
                 try:
+
+                    permissions_groups = {
+                        'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+                        'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+                        'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+                        'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
+                    }
                     company = data.get('company', None)
                     company_old = request.DATA.get('company_old', None)
+                    permissions = None
+
                     if company != company_old:
                         organization_api.add_user_to_organization(company, user_id)
                         if int(company_old) > 0:
                             organization_api.remove_users_from_organization(company_old, user_id)
                     response = user_api.update_user_information(user_id,data)
+                    if request.DATA.get('company_permissions', None):
+                        if request.DATA['company_permissions'] in permissions_groups:
+                            if not permissions:
+                                permissions = Permissions(user_id)
+                            if request.DATA['company_permissions'] != request.DATA['company_permissions_old']:
+                                permissions.add_permission(permissions_groups[request.DATA['company_permissions']])
+                                if request.DATA['company_permissions_old'] != "none":
+                                    permissions.remove_permission(permissions_groups[request.DATA['company_permissions_old']])
+                        elif request.DATA['company_permissions'] == "none" and request.DATA['company_permissions'] != request.DATA['company_permissions_old']:
+                            if not permissions:
+                                permissions = Permissions(user_id)
+                            permissions.remove_permission(permissions_groups[request.DATA['company_permissions_old']])
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
-                return Response({'status':'ok', 'message':vars(response), 'company': company})
+                return Response({'status':'ok', 'message':vars(response), 'company': company, 'company_permissions': request.DATA['company_permissions']})
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
@@ -4749,9 +4794,7 @@ def company_course_details(request, company_id, course_id):
     for email_template in list_of_email_templates:    
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
-    course_tags = []
-    for tag_type in TAG_GROUPS:
-        course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
+    course_tags = Tag.course_tags(course_id)
     course['tags'] = []
     for tag in course_tags:
         course['tags'].append(vars(tag))
@@ -5063,16 +5106,12 @@ class tags_list_api(APIView):
     def get(self, request):
 
         course_id = request.GET.get('course_id', None)
-        tags = []
-        for tag_type in TAG_GROUPS:
-            tags.extend(group_api.get_groups_of_type(group_type=TAG_GROUPS[tag_type]))
+        tags = Tag.fetch_all()
         allTagsList = []
         response = {}
         ids = []
         if course_id:
-            course_tags = []
-            for tag_type in TAG_GROUPS:
-                course_tags.extend(course_api.get_course_groups(course_id=course_id, group_type=TAG_GROUPS[tag_type]))
+            course_tags = Tag.course_tags(course_id)
             for tag in course_tags:
                 ids.append(vars(tag)['id'])
         for tag in tags:
@@ -5089,21 +5128,20 @@ class tags_list_api(APIView):
     def post(self, request):
 
         tag_name = request.DATA.get('name', None)
+        tag_data = {}
         if tag_name:
-            tags = []
-            for tag_type in TAG_GROUPS:
-                tags.extend(group_api.get_groups_of_type(group_type=TAG_GROUPS[tag_type]))
+            tags = Tag.fetch_all()
             for tag in tags:
                 if tag.name.lower() == tag_name.lower():
                     return Response({'status':'errorAlreadyExist', 'message': "Tag with this name already exist's!"})
-            if tag_name == 'INTERNAL':
+            if tag_name.lower() == 'internal':
                 try:
-                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.INTERNAL)
+                    response = Tag.create_internal(tag_name, tag_data)
                 except ApiError as e:
                     return Response({'status':'error', 'message': e.message})
             else:
                 try:
-                    response = group_api.create_group(group_name=tag_name, group_type=TAG_GROUPS.COMMON)
+                    response = Tag.create(tag_name, tag_data)
                 except ApiError as e:
                     return Response({'status':'error', 'message': e.message})
             return Response({'status':'ok', 'message':'Tag created!', 'id': vars(response)['id']})
@@ -5121,20 +5159,20 @@ class tag_details_api(APIView):
         if request.user.is_internal_admin:
             internal_ids = get_internal_courses()
 
-        tag = group_api.fetch_group(group_id=tag_id)
-        tag = vars(tag)
-        tag['data'] = vars(tag['data'])
-        for i in range(0, len(tag['resources'])):
-            tag['resources'][i] = vars(tag['resources'][i])
-        tag['courses'] = []
-        courses = group_api.get_courses_in_group(group_id=tag_id)
+        tag = Tag.fetch(tag_id)
+        tag_data = vars(tag)
+        tag_data['data'] = vars(tag_data['data'])
+        for i in range(0, len(tag_data['resources'])):
+            tag_data['resources'][i] = vars(tag_data['resources'][i])
+        tag_data['courses'] = []
+        courses = tag.get_courses()
         for course in courses:
             if internal_ids:
                 if course.course_id in internal_ids:
-                    tag['courses'].append(vars(course))
+                    tag_data['courses'].append(vars(course))
             else:
-                tag['courses'].append(vars(course))
-        return Response(tag)
+                tag_data['courses'].append(vars(course))
+        return Response(tag_data)
 
 
 class course_details_tags_api(APIView):
@@ -5143,13 +5181,19 @@ class course_details_tags_api(APIView):
     def post(self, request, course_id):
 
         tag_id = request.DATA.get('tag_id', None)
-        tag_name = request.DATA.get('tag_name', None)
-        if tag_id and tag_name:
-            try:
-                response = group_api.add_course_to_group(course_id=course_id, group_id=tag_id)
-            except ApiError as e:
-                return Response({'status':'error', 'message': e.message})
-            return Response({'status':'ok', 'message':'Tag added to Course!', 'id': tag_id, 'name': tag_name})
+        if tag_id:
+            tag = Tag.fetch(tag_id)
+            if tag.type == TAG_GROUPS.INTERNAL:
+                try:
+                    response = tag.add_internal_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+            elif tag.type == TAG_GROUPS.COMMON:
+                try:
+                    response = tag.add_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+            return Response({'status':'ok', 'message':'Tag added to Course!', 'id': tag.id, 'name': tag.name})
         else:
             return Response({'status':'error', 'message':'You need to select tag!'})
 
@@ -5158,10 +5202,17 @@ class course_details_tags_api(APIView):
 
         tag_id = request.GET.get('tag_id', None)
         if tag_id:
-            try:
-                response = group_api.remove_course_from_group(course_id=course_id, group_id=tag_id)
-            except ApiError as e:
-                return Response({'status':'error', 'message': e.message})
+            tag = Tag.fetch(tag_id)
+            if tag.type == TAG_GROUPS.INTERNAL:
+                try:
+                    response = tag.remove_internal_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+            elif tag.type == TAG_GROUPS.COMMON:
+                try:
+                    response = tag.remove_internal_course(course_id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
             return Response({'status':'ok', 'message':'Tag removed from Course!'})
         else:
             return Response({'status':'error', 'message':'You need to select tag!'})
