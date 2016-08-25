@@ -2,7 +2,6 @@
   margin-top: rem-calc(48);
   padding: rem-calc(20);
   background-color: $pure-white;
-  @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
   h1 {
     padding-bottom: rem-calc(20);
