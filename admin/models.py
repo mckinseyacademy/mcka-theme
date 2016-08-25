@@ -528,7 +528,7 @@ class LearnerDashboard(db_models.Model):
     title_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TITLE_COLOR)
     description_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_DESCRIPTION_COLOR)
 
-    client_id = db_models.IntegerField(blank=False, unique=True)
+    client_id = db_models.IntegerField(blank=False)
     course_id = db_models.CharField(blank=False, max_length=500)
 
 class LearnerDashboardTile(db_models.Model):
@@ -590,5 +590,57 @@ class TileBookmark(db_models.Model):
     )
     learner_dashboard = db_models.ForeignKey(
         'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+class LearnerDashboardMilestone(db_models.Model):
+
+    label = db_models.CharField(blank=True, max_length=20)
+    title = db_models.CharField(max_length=5000)
+    location = db_models.CharField(blank=True, max_length=250)
+    details = db_models.CharField(blank=True, max_length=5000)
+
+    download_link = db_models.URLField(blank=True, null=True)
+    link = db_models.URLField(blank=True, null=True)
+
+    start_date = db_models.DateTimeField(null=True, blank=True)
+    end_date = db_models.DateTimeField(null=True, blank=True)
+
+    active = db_models.BooleanField(default=False)
+
+    MILESTONE_TYPES = (
+        (u'1', u'In Person Session'),
+        (u'2', u'Webinar'),
+        (u'3', u'Digital Content')
+    )
+    milestone_type = db_models.CharField(max_length=1, choices=MILESTONE_TYPES)
+
+    DIGITAL_CONTENT_TYPES = (
+        (u'1', u'Prework'),
+        (u'2', u'Single Module'),
+        (u'3', u'External Content')
+    )
+    digital_content_type = db_models.CharField(max_length=1, choices=DIGITAL_CONTENT_TYPES, blank=True)
+
+    learner_dashboard = db_models.ForeignKey(
+        'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+class LearnerDashboardMilestoneProgress(db_models.Model):
+
+    user = db_models.IntegerField(blank=False, unique=True)
+
+    PROGRESS_TYPES = (
+        (u'1', u'Not Started'),
+        (u'2', u'In Progress'),
+        (u'3', u'Complete'),
+        (u'3', u'Incomplete')
+    )
+    progress = db_models.CharField(max_length=1, choices=PROGRESS_TYPES)
+    percentage = db_models.IntegerField(blank=False, unique=True)
+
+    milestone = db_models.ForeignKey(
+        'LearnerDashboardMilestone',
         on_delete=db_models.CASCADE,
     )

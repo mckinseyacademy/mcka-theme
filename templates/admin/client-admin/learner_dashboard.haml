@@ -163,5 +163,9 @@
       - if learner_dashboard_id
         %hr
         .row
+          - if milestones_enabled
+            .large-12.columns
+              %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/milestone/list"} Milestones
           .large-12.columns
             %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
+

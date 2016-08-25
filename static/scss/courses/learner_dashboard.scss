@@ -150,3 +150,71 @@
     right: 10px;
     z-index: -1;
 }
+
+
+#over-calendar{
+    width: 960px;
+    height: 430px;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    padding: 22px 0px 0px 10px;
+
+    .tab-month {
+        width: 235px;
+        float: left;
+        margin: 0 1px 0 0;
+        list-style: none;
+
+        li {
+            width: 116px;
+            height: 74px;
+        }
+
+        .head-month {
+            display: table;
+            width: 100%;
+            height: 30px;
+            background-color: lightblue;
+
+            span {
+                text-transform: uppercase;
+                font-family: "Open Sans", sans-serif;
+                font-weight: bold;
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+                border: 1px solid silver;
+                border-style: dotted;
+                font-size: 15px;
+            }
+        }
+
+        .active {
+            background-color: coral;
+            color: white;
+        }
+
+        .first {
+            border: 0 solid gainsboro;
+            border-width: 0 0 1px 1px;
+            float: left;
+            border-style: dotted;
+        }
+
+        .second {
+            float: right;
+            border: 0 solid gainsboro;
+            border-width: 0 1px 1px 1px;
+            border-style: dotted;
+        }
+    }
+}
+
+#highcharts-container {
+    position: absolute;
+    z-index: 200;
+    margin-top: 40px;
+    width: 960px; 
+    height: 400px;
+}

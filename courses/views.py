@@ -13,10 +13,14 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
+from django.core import serializers
 
 from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
-from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings, TileBookmark
+from admin.models import (
+    WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
+    BrandingSettings, TileBookmark, LearnerDashboardMilestone
+    )
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
@@ -913,6 +917,7 @@ def course_learner_dashboard(request):
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    #milestones = LearnerDashboardMilestone.objects.filter(learner_dashboard=learner_dashboard.id).order_by('start_date')
 
     try:
         bookmark = TileBookmark.objects.get(user=request.user.id)
@@ -924,12 +929,19 @@ def course_learner_dashboard(request):
     except:
          feature_flags = []
 
+    milestones = serializers.serialize(
+        "json",
+        LearnerDashboardMilestone.objects.filter(learner_dashboard=learner_dashboard.id).order_by('start_date')
+    )
+
     data ={
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
         'feature_flags': feature_flags,
         'discovery_items': discovery_items,
         'bookmark': bookmark,
+        'milestones': milestones,
+        'milestones_enabled': settings.MILESTONES_ENABLED,
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
