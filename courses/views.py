@@ -940,7 +940,8 @@ def course_learner_dashboard(request):
         'feature_flags': feature_flags,
         'discovery_items': discovery_items,
         'bookmark': bookmark,
-        'milestones': milestones
+        'milestones': milestones,
+        'milestones_enabled': settings.MILESTONES_ENABLED,
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
