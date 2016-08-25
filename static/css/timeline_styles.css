@@ -1,0 +1,73 @@
+#leftcolumn {width:150px !important}
+div#timelinemeta h3 {background: no-repeat scroll 3px 0 #C5C5E1; font-size: 1.2em; height: 25px; margin-bottom: 10px; padding: 0 10px 0 25px;}
+div#timelinemeta p {font-size:0.9em; line-height:1.3em; font-weight:bold;}
+
+/* Timeline Table */
+#latestProjects {width: 562px; overflow: hidden; height: 300px; position: relative;}
+#latestProjects .project {position: absolute; bottom: 0; margin: 0; left: 880px; width: 715px;}
+#latestProjects .project img {position: absolute; top: 0; width: 550px; height: 240px; margin-left: 10px;}
+#latestProjects .project div {margin: 21px 0 0 0; height: 230px; width: 100px; padding-top: 10px;}
+#latestProjects .project div h3{font-size: 1.4em; color: #111B50; font-weight: bold; line-height: 1.2em; margin-top: 0; letter-spacing: -0.05em; text-shadow: #888 1px 2px 2px; margin-bottom: 10px;}
+#latestProjects .project div p{font-size: 1em;}
+#latestProjects .project div p a{position: absolute; bottom: 70px; right: 250px;}
+#latestProjects .project div p a img{height: 32px; width: 120px;}
+#latestProjects #project1{left: 0px; top: 0;}
+
+#calendartable{font-size: 0.8em; width: 2256px !important; border-collapse: collapse; margin-bottom: 20px; }
+#calendartable thead tr th{font-weight: bold; border-bottom: 6px solid #fff; color: #000; margin: 0; padding: 5px 0; text-align: left; vertical-align: bottom; line-height: 1em; width: 94px !important; text-transform: uppercase; text-align: center; background-color: transparent}
+#calendartable thead tr th.highlight{background-color: #A00; color: white;}
+#calendartable tbody tr th{font-weight: normal; background-color: #DFEFAA !important; border: 1px solid #DFEFAA; color: #222; margin: 0; padding: 5px 2px; font-weight: bold;}
+#calendartable thead {background: #E8EBF2  repeat -1px 0 !important;}
+#calendartable tbody {background: #E8EBF2  repeat -1px 0 !important;}
+#calendartable tbody tr td{margin: 0; padding: 0; vertical-align: center; background-color: transparent;}
+#calendartable tbody tr td.col1{padding: 5px 2px; font-weight: bold;}
+#calendartable tbody tr td.highlight{background-color: #A00; color: white;}
+#calendartable tbody tr td a{display: block; text-decoration: none; padding: 2px 2px 1px 2px; width: auto; height: 30px; background-color: #FAA; color: #000 !important; text-align: center;}
+
+#calendartable tbody tr td a {background-color: #FAA; margin-bottom: 2px !important; border:1px solid #FAA;}
+#calendartable tbody tr td a:hover, #calendartable tbody tr td a.hover {background-color:#A00 !important; color:#fff !important}
+
+#calendartable tbody tr td a.p{background-color: #A00;}
+#calendartable tbody tr td a.m{background-color: #004;}
+#calendartable tbody tr td.w{background-color: #FFFFEF;}
+#calendartable col{width: 94px;}
+
+#next {position: absolute; left: 280px; left: 282px \9; _left: 281px}
+#previous {margin-left: 186px; margin-left: 188px \9; _margin-left: 187px;}
+
+#currentmonthhoriz{border-top: 2px solid #0073cf; height: 2px !important; width: 1px; position: absolute; left: 0; _line-height: 0;}
+#currentmonthvert{border-right: 2px solid #F00; height: 182px !important; width: 1px; position: absolute; left: 0;}
+
+/* Timeline Left Col */
+#timelineleft {font-size: 1em; letter-spacing: -0.02em; width: 150px !important; border-collapse: collapse; margin-bottom: 20px; position:absolute; top:0px;}
+
+#timelineleft tbody tr th{font-weight: normal; background-color: #DFEFAA; border: 1px solid #DFEFAA; color: #222; margin: 0; padding: 5px 2px; font-weight: bold;}
+#timelineleft tbody tr td{margin: 0; padding: 0; vertical-align: center; background-color: #fff !important;}
+#timelineleft tbody tr td.col1{padding: 1px 2px; font-weight: bold;}
+
+#timelineleft tbody tr td a{display: block; text-decoration: none; padding: 2px 2px 1px 2px; width: auto; height: 30px; background-color: #FAA; color: white; text-align: center;}
+
+#timelineleft tbody tr td a {background-color: #FAA; color: #000; margin-bottom: 2px !important; border:1px solid #FAA; text-align: left; !important; color: #000 !important; font-weight: bold;}
+#timelineleft tbody tr td a:hover, #timelineleft tbody tr td a.hover {background-color: #A00; color:#fff !important}
+
+/* Timeline Mini */
+#calendartable-mini col{width: 23px;}
+#calendartable-mini{font-size: 0.8em; width: 552px !important; border-collapse: collapse; background: white repeat top left; margin-bottom: 0 !important; height: 58px;}
+#calendartable-mini tbody tr th{font-weight: normal; background-color: #DFEFAA; border: 1px solid #DFEFAA; color: #222; margin: 0; padding: 5px 2px; font-weight: bold;}
+#calendartable-mini tbody tr td{margin: 0; padding: 0; vertical-align: center; background-color: transparent !important;}
+#calendartable-mini tbody tr td.col1{padding: 5px 2px; font-weight: bold;}
+#calendartable-mini tbody tr td.highlight{background-color: #A00; color: white;}
+#calendartable-mini tbody tr td a{display: block; text-decoration: none; padding: 5px 2px; width: auto; height: auto; *height: 100%; background-color: #FAA; color: white; text-align: center;}
+#calendartable-mini tbody tr td a{height: 1px !important; font-size: 0.01em !important; line-height: 0.01em !important; margin: 1px 0 !important; border: 0 !important; padding: 0 !important; overflow: hidden}
+
+#calendartable-mini tbody tr td a {background-color: #FAA; border:1px solid #4d50a8; margin-bottom: 5px; }
+#calendartable-mini tbody tr td a:hover, #calendartable-mini tbody tr td a.hover {background-color:#A00 !important; color:#fff !important}
+
+#calendartable-mini tbody tr td a.p{background-color: #A00;}
+#calendartable-mini tbody tr td a.m{background-color: #004;}
+#calendartable-mini tbody tr td.w{background-color: #FFFFEF;}
+
+#calendarmini-div{position: relative; height: 60px; _height: 61px; margin-bottom: 16px; width: 552px !important;}
+#calendarmini-div #viewport{-moz-opacity:.40; filter:alpha(opacity=40); opacity:.40; cursor:move; height: 58px; _height: 59px;}
+
+#calendartable-overlay {position:absolute; top:0; left:0; cursor:pointer; z-index:1000;}

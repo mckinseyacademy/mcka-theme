@@ -24,6 +24,7 @@ def _build_file_list(folder, ext):
 js_ie8_files = []
 js_ie8_files.extend(_build_file_list("js/polyfills", ".js"))
 js_ie8_files.extend(_build_file_list("js/plugins", ".js"))
+js_ie8_files.extend(_build_file_list("js/highcharts", ".js"))
 js_ie8_files.extend([
     'js/vendor/jquery.form.js',
     'js/vendor/json2.js',
@@ -58,6 +59,7 @@ register('js_ie8', JS_IE8)
 js_files = []
 js_files.extend(_build_file_list("js/polyfills", ".js"))
 js_files.extend(_build_file_list("js/plugins", ".js"))
+js_files.extend(_build_file_list("js/highcharts", ".js"))
 js_files.extend([
     'js/vendor/jquery.form.js',
     'js/vendor/json2.js',
