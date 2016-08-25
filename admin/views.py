@@ -600,6 +600,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'description_color': instance.description_color,
             'learner_dashboard_tiles': learner_dashboard_tiles,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+            'milestones_enabled': settings.MILESTONES_ENABLED,
             'discovery_items': discovery_items,
             'branding': branding
         }
