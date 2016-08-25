@@ -9,7 +9,13 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content
+  %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
+
   - include 'courses/course_learner_dashboard_branding.haml'
+  .row
+    .large-8
+      - include 'courses/course_learner_dashboard_calendar.haml'
 
   #home-courses
     .row
@@ -61,6 +67,25 @@
                 %h5
                   %span.author-font{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
 
+  %script
+    var milestones = {{milestones|safe}};
+    console.log(milestones)
+
+    dataIPS = [];
+    for (var i=0; i < milestones.length; i++){
+      if (milestones[i]["fields"].milestone_type == "1") {
+
+        dataIPS.push({
+          name: milestones[i]["fields"].title,
+          x: 0,
+          low: Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].start_date)).getUTCSeconds()),
+          high: Date.UTC((new Date(milestones[i]["fields"].end_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].end_date)).getUTCMonth(), (new Date(milestones[i]["fields"].end_date)).getUTCDate(),  (new Date(milestones[i]["fields"].end_date)).getUTCHours(), (new Date(milestones[i]["fields"].end_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].end_date)).getUTCSeconds())
+        });
+      }
+    }
+    var series = 'dsads'
+    var series2 = ''
+    //alert (series[0]["fields"].title);
 
 - block footer
   - include 'footer_ld.haml'
@@ -68,3 +93,4 @@
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
   %script{src: "{% static 'js/tile_id_to_view.js' %}"}
+  %script{src: "{% static 'js/learner_dashboard_calendar.js' %}"}
