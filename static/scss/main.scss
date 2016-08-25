@@ -10,6 +10,9 @@ body{
     header[role=banner].background-blue{
     .logo{
       margin: 0;
+      display: inline-block;
+      float: left;
+      margin-right: 20px;
     }
   }
   }
