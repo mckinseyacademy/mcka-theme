@@ -348,4 +348,5 @@ class LearnerDashboardMilestoneForm(forms.ModelForm):
             'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
             'download_link': forms.TextInput(attrs={'type': 'url'}),
             'link': forms.TextInput(attrs={'type': 'url'}),
+            'active': forms.CheckboxInput(attrs={'checked' : 'checked'}),
         }

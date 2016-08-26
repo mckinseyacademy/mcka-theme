@@ -2,6 +2,8 @@
 - load staticfiles
 - block content  
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
+  %link{rel: 'stylesheet', href: "{% static 'css/flatpickr.min.css' %}"}
+
   %script
     $(function() {
       
@@ -28,12 +30,14 @@
       %table{style:"table-layout: fixed; width: 100%"}
         %thead
           %tr
+            %th= _("Type")
             %th= _("Title")
             %th= _("Edit")
             %th= _("Delete")
         %tbody
           - for milestone in milestones
             %tr{id: "#{milestone.id}"}
+              %td{style: "word-wrap: break-word"}= milestone.get_milestone_type_display
               %td{style: "word-wrap: break-word"}= milestone.title
               %td
                 %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/milestone/#{milestone.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
