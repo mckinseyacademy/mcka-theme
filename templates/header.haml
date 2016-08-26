@@ -7,6 +7,26 @@
       - block header_menu
         %nav{role: 'navigation'}
           %ul
+            - if client_nav_links
+              %li
+                - if client_nav_links.about
+                  %a{href: "#{client_nav_links.about.link_url}", target: "_blank"}= client_nav_links.about.link_label
+              %li
+                - if client_nav_links.programs
+                  %a{href: "#{client_nav_links.programs.link_url}", target: "_blank"}= client_nav_links.programs.link_label
+              %li
+                - if client_nav_links.experience
+                  %a{href: "#{client_nav_links.experience.link_url}", target: "_blank"}= client_nav_links.experience.link_label
+              %li
+                - if client_nav_links.contact
+                  %a{href: "#{client_nav_links.contact.link_url}", target: "_blank"}= client_nav_links.contact.link_label
+              %li
+                - if client_nav_links.navlink5
+                  %a{href: "#{client_nav_links.navlink5.link_url}", target: "_blank"}= client_nav_links.navlink5.link_label
+              %li
+                - if client_nav_links.navlink6
+                  %a{href: "#{client_nav_links.navlink6.link_url}", target: "_blank"}= client_nav_links.navlink6.link_label
+            - else
             - if user.is_mcka_admin or user.is_mcka_ta or user.is_mcka_subadmin
               %li
                 %a{href: '/admin'}= _("McKA Admin")
