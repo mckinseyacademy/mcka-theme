@@ -245,7 +245,7 @@
 
 /*Card*/
 .card{
-    background-color: $mckinsey-dark-blue;
+    background-color: $mckinsey-blue-bar;
     text-align: center;
     margin: 0 5% 40px;
     display: block;
@@ -278,6 +278,9 @@
         @include font-spec(16, 600);
         min-width: 100px;
         box-sizing: border-box;
+        &.login-btn{
+          background-color: $disabled-link-color;
+        }
     }
 }
 
@@ -343,6 +346,11 @@
         padding: 1px 65px 25px;
       &.padding-low{
         padding: 1px 45px 25px;
+      }
+      a {
+        &.login-btn {
+          background-color: $light-blue;
+        }
       }
     }
 }

@@ -8,10 +8,13 @@ body{
   &.with-program {
     margin-top: $header-bar-height + $program-bar-height;
     header[role=banner].background-blue{
-    .logo{
-      margin: 0;
+      .logo{
+        margin: 0;
+        display: inline-block;
+        float: left;
+        margin-right: 20px;
+      }
     }
-  }
   }
 }
 
