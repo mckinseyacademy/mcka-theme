@@ -13,7 +13,7 @@ $(function() {
             text: ''
         },
         xAxis: {
-            categories: ['', '', '', '', ''],
+            categories: ['', '', '', ''],
             labels: {
             enabled: false
         },
@@ -61,124 +61,122 @@ $(function() {
         },
 
         tooltip: {
+            useHTML: true,
+            backgroundColor: 'white',
+            borderRadius: 15,
             formatter: function() {
-                return '<b>' + this.x + this.point.name + '</b><br/>' + Highcharts.dateFormat('%e %B %H:%M', this.point.low) +
-                ' - ' + Highcharts.dateFormat('%B %e %H:%M', this.point.high) + '<br/>';
+                if (this.point.x == 0)
+                    return '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
+                    this.point.label +  '</div>' + 
+                    '<div style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    this.point.name + '</div>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
+                    Highcharts.dateFormat('%b %e, %Y', this.point.low) + 
+                    '</br>' + this.point.location + '</div>';
+
+                else if (this.point.x == 2)
+                    return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
+                    this.point.label +  '</div>' + 
+                    '<div style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    this.point.name + '</div>' + '<div style="padding: 2px; font-style: italic; color:#cccccc"></div>';
+
+                else if (this.point.x == 2)
+                    return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
+                    this.point.label +  '</div>' + 
+                    '<div style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    this.point.name + '</div>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
+                    Highcharts.dateFormat('%b %e, %Y', this.point.low) + 
+                    '</br>' + Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
+
+                else if (this.point.x == 3)
+                    return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
+                    this.point.label +  '</div>' + 
+                    '<div style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    this.point.name + '</div>';
             }
         },
 
         series: [{
             name: 'In Person Session',
-            borderRadius: 33,
+            borderRadius: 24,
             data: dataIPS,
-            minPointLength: 65,
-            pointWidth: 65,
+            minPointLength: 48,
+            pointWidth: 48,
             dataLabels: {
                 inside: true,
                 enabled: true,
-                //useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
-                format: 'S',
+                format: '\uf0c0',
                 style: {
-                    fontSize: '25px'
+                    fontSize: '20px'
+                }
+            }
+        },
+        {
+            name: 'Digital Course',
+            borderRadius: 18,
+            pointWidth: 48,
+            data: [{
+                color: '#e0e0e0',
+                name: 'dasads',
+                label: 'Course',
+                x: 1,
+                low: Date.UTC(2016, 07, 01, 4, 0, 0),
+                high: Date.UTC(2016, 07, 18, 4, 0, 0)
+            }, 
+            {
+                color: '#e0e0e0',
+                name: 'dasads',
+                label: 'Course',
+                x: 1,
+                low: Date.UTC(2016, 08, 14, 0, 0, 0),
+                high: Date.UTC(2016, 10, 03, 0, 0, 0)
+            }],
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                verticalAlign: 'middle',
+                align: 'left',
+                fontFamily: '"Open Sans" , sans-serif',
+                formatter: function() {
+                    return 'Digital Content'
+                },
+                style: {
+                    fontSize: '15px'
                 }
             }
         },
         {
             name: 'Webinar',
-            borderRadius: 18,
-            data: [{
-                name: 'dasads',
-                x: 1,
-                low: Date.UTC(2016, 07, 01, 4, 0, 0),
-                high: Date.UTC(2016, 07, 09, 4, 0, 0)
-            }, 
-            {
-                name: 'dasads',
-                x: 1,
-                low: Date.UTC(2016, 07, 15, 0, 0, 0),
-                high: Date.UTC(2016, 10, 03, 0, 0, 0)
-            }]
+            data: dataWeb,
+            borderRadius: 24,
+            minPointLength: 48,
+            pointWidth: 48,
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                verticalAlign: 'middle',
+                align: 'center',
+                format: '\uf03d',
+                style: {
+                    fontSize: '20px'
+                }
+            }
         }, 
         {
             name: "Digital Content",
-            borderRadius: 18,
-            data: [{
-                name: 'dasads',
-                x: 2,
-                low: Date.UTC(2016, 08, 04, 1, 0, 0),
-                high: Date.UTC(2016, 09, 25, 5, 0, 0)
-            }, 
-            {
-                name: 'dasads',
-                x: 2,
-                low: Date.UTC(2016, 10, 02, 10, 0, 0),
-                high: Date.UTC(2016, 10, 18, 23, 0, 0)
-            }],
-            minPointLength: 60,
+            data: dataDig,
+            borderRadius: 24,
+            minPointLength: 48,
+            pointWidth: 48,
             dataLabels: {
                 inside: true,
                 enabled: true,
-                verticalAlign: 'middle',
-                align: 'left',
-                format: 'Digital Content',
-                style: {
-                    fontSize: '15px'
-                }
-            }
-        }, 
-        {
-            name: 'Example 1',
-            borderRadius: 33,
-            data: [{
-                name: 'dasads',
-                x: 3,
-                low: Date.UTC(2016, 07, 01, 0, 0, 0),
-                high: Date.UTC(2016, 07, 02, 0, 0, 0)
-            }, 
-            {
-                name: 'dasads',
-                x: 3,
-                low: Date.UTC(2016, 10, 01, 14, 0, 0),
-                high: Date.UTC(2016, 10, 02, 14, 0, 0)
-            }],
-            minPointLength: 65,
-            pointWidth: 65,
-            dataLabels: {
-                inside: true,
-                enabled: true,
-                //useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
-                format: 'D',
+                format: '\uf109',
                 style: {
                     fontSize: '25px'
-                }
-            }
-        }, 
-        {
-            name: "Example 3",
-            borderRadius: 18,
-            data: [{
-                x: 4,
-                low: Date.UTC(2016, 08, 04, 1, 0, 0),
-                high: Date.UTC(2016, 09, 25, 5, 0, 0)
-            }, 
-            {
-                x: 4,
-                low: Date.UTC(2016, 10, 02, 10, 0, 0),
-                high: Date.UTC(2016, 10, 30, 20, 0, 0)
-            }],
-            minPointLength: 60,
-            dataLabels: {
-                inside: true,
-                enabled: true,
-                verticalAlign: 'middle',
-                align: 'left',
-                format: 'Mini Board',
-                style: {
-                    fontSize: '15px'
                 }
             }
         }]
