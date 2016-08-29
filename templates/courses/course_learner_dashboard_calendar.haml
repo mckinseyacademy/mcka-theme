@@ -1,4 +1,5 @@
 #over-calendar
+  %span.close-calendar.fa.fa-close
   %ul.tab-month
     %li.head-month
       %span August
@@ -8,10 +9,8 @@
     %li.second
     %li.first
     %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
+    %li.first.last
+    %li.second.last
   %ul.tab-month
     %li.head-month.active
       %span September
@@ -21,10 +20,8 @@
     %li.second
     %li.first
     %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
+    %li.first.last
+    %li.second.last
   %ul.tab-month
     %li.head-month
       %span October
@@ -34,10 +31,8 @@
     %li.second
     %li.first
     %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
+    %li.first.last
+    %li.second.last
   %ul.tab-month
     %li.head-month
       %span November
@@ -47,9 +42,78 @@
     %li.second
     %li.first
     %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
+    %li.first.last
+    %li.second.last
+  %ul.legend-list
+    %li.light-gray-legend
+      %i.fa.fa-circle
+      not available
+    %li.gray-legend
+      %i.fa.fa-circle
+      not started
+    %li.light-green-legend
+      %i.fa.fa-circle
+      in progress
+    %li.green-legend
+      %i.fa.fa-circle
+      complete
+    %li.red-legend
+      %i.fa.fa-circle
+      incomplete
+    %li.teal-legend
+      %i.fa.fa-circle
+      not tracked
 
 #highcharts-container
+
+
+%script
+  var milestones = {{milestones|safe}} ? {{milestones|safe}}: {};
+
+  dataIPS = [];
+  dataWeb = [];
+  dataDig = [];
+  for (var i=0; i < milestones.length; i++){
+    if (milestones[i]["fields"].milestone_type == "1") {
+      dataIPS.push({
+        color: '#e0e0e0',
+        x: 0,
+        label: milestones[i]["fields"].label,
+        name: milestones[i]["fields"].title,
+        location: milestones[i]["fields"].location,
+        details: milestones[i]["fields"].details,
+        low: Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].start_date)).getUTCSeconds()),
+        high: Date.UTC((new Date(milestones[i]["fields"].end_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].end_date)).getUTCMonth(), (new Date(milestones[i]["fields"].end_date)).getUTCDate(),  (new Date(milestones[i]["fields"].end_date)).getUTCHours(), (new Date(milestones[i]["fields"].end_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].end_date)).getUTCSeconds())
+      });
+    }
+
+    if (milestones[i]["fields"].milestone_type == "2") {
+      dataWeb.push({
+        color: '#e0e0e0',
+        x: 2,
+        label: milestones[i]["fields"].label,
+        name: milestones[i]["fields"].title,
+        link: milestones[i]["fields"].link,
+        details: milestones[i]["fields"].details,
+        low: Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].start_date)).getUTCSeconds()),
+        high: Date.UTC((new Date(milestones[i]["fields"].end_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].end_date)).getUTCMonth(), (new Date(milestones[i]["fields"].end_date)).getUTCDate(),  (new Date(milestones[i]["fields"].end_date)).getUTCHours(), (new Date(milestones[i]["fields"].end_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].end_date)).getUTCSeconds())
+      });
+    }
+
+    if (milestones[i]["fields"].milestone_type == "3") {
+      dataDig.push({
+        color: '#e0e0e0',
+        x: 3,
+        label: milestones[i]["fields"].label,
+        name: milestones[i]["fields"].title,
+        link: milestones[i]["fields"].link,
+        low: Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].start_date)).getUTCSeconds()),
+        high: Date.UTC((new Date(milestones[i]["fields"].end_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].end_date)).getUTCMonth(), (new Date(milestones[i]["fields"].end_date)).getUTCDate(),  (new Date(milestones[i]["fields"].end_date)).getUTCHours(), (new Date(milestones[i]["fields"].end_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].end_date)).getUTCSeconds())
+      });
+    }
+  }
+
+  $('.close-calendar').click(function() {
+    $('#replace-calendar').empty();
+  });
+%script{src: "/static/js/learner_dashboard_calendar.js"}
