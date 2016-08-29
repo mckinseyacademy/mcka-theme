@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
 
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
@@ -1029,9 +1029,48 @@ def course_learner_dashboard_calendar(request):
         return HttpResponseRedirect(redirect_url)
 
     milestones = serializers.serialize("json", milestoneData)
+
+
+    #mydate = datetime.datetime.now()
+    #mydate.strftime("%B")
+
+    #today = datetime.date.today()
+    #first = today.replace(day=1)
+    #lastMonth = first - datetime.timedelta(days=1)
+    #print lastMonth.strftime("%Y%m")
+
+    first = datetime.now().replace(day=1)
+    now = datetime(first.year, first.month, first.day)
+
+    dates = [
+        datetime(now.year, (now.month - 3), now.day),
+        datetime(now.year, (now.month - 2), now.day),
+        datetime(now.year, (now.month - 1), now.day),
+        now,
+        datetime(now.year, (now.month + 1), now.day)
+    ]
+
+    months = [
+        dates[0].strftime("%B"),
+        dates[1].strftime("%B"),
+        dates[2].strftime("%B"),
+        dates[3].strftime("%B")
+    ]
+
+    dates = [
+        dates[0].strftime("%Y-%m-%d"),
+        dates[1].strftime("%Y-%m-%d"),
+        dates[2].strftime("%Y-%m-%d"),
+        dates[3].strftime("%Y-%m-%d"),
+        dates[4].strftime("%Y-%m-%d")
+    ]
+
     data ={
         'milestones': milestones,
+        'months': months,
+        'dates': dates
     }
+
     if request.is_ajax():
         html = loader.render_to_string('courses/course_learner_dashboard_calendar.haml', data, context_instance=RequestContext(request))
 

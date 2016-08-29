@@ -1,78 +1,107 @@
-#over-calendar
-  %span.close-calendar.fa.fa-close
-  %ul.tab-month
-    %li.head-month
-      %span August
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first.last
-    %li.second.last
-  %ul.tab-month
-    %li.head-month.active
-      %span September
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first.last
-    %li.second.last
-  %ul.tab-month
-    %li.head-month
-      %span October
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first.last
-    %li.second.last
-  %ul.tab-month
-    %li.head-month
-      %span November
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first
-    %li.second
-    %li.first.last
-    %li.second.last
-  %ul.legend-list
-    %li.light-gray-legend
-      %i.fa.fa-circle
-      not available
-    %li.gray-legend
-      %i.fa.fa-circle
-      not started
-    %li.light-green-legend
-      %i.fa.fa-circle
-      in progress
-    %li.green-legend
-      %i.fa.fa-circle
-      complete
-    %li.red-legend
-      %i.fa.fa-circle
-      incomplete
-    %li.teal-legend
-      %i.fa.fa-circle
-      not tracked
+#over-full-calendar
+  %span#next-calendar.fa.fa-angle-right
+  %span#previous-calendar.fa.fa-angle-left
+  .row.
+    .large-12.columns
+      #over-calendar
+        %span#close-calendar.fa.fa-close
+        %ul.tab-month
+          %li.head-month
+            %span.month
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first.last
+          %li.second.last
+        %ul.tab-month
+          %li.head-month
+            %span.month
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first.last
+          %li.second.last
+        %ul.tab-month
+          %li.head-month
+            %span.month
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first.last
+          %li.second.last
+        %ul.tab-month
+          %li.head-month.active
+            %span.month
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first
+          %li.second
+          %li.first.last
+          %li.second.last
+        %ul.legend-list
+          %li.light-gray-legend
+            %i.fa.fa-circle
+            not available
+          %li.gray-legend
+            %i.fa.fa-circle
+            not started
+          %li.light-green-legend
+            %i.fa.fa-circle
+            in progress
+          %li.green-legend
+            %i.fa.fa-circle
+            complete
+          %li.red-legend
+            %i.fa.fa-circle
+            incomplete
+          %li.teal-legend
+            %i.fa.fa-circle
+            not tracked
 
-#highcharts-container
+      #highcharts-container
 
 
 %script
   var milestones = {{milestones|safe}} ? {{milestones|safe}}: {};
+  var dates = {{dates|safe}};
+  var months = {{months|safe}};
 
-  dataIPS = [];
-  dataWeb = [];
-  dataDig = [];
+  var dataIPS = [];
+  var dataWeb = [];
+  var dataDig = [];
+  var dateList = [];
+
+  dateList.push(
+    Date.UTC((new Date(dates[0])).getUTCFullYear(), (new Date(dates[0])).getUTCMonth(), (new Date(dates[0])).getUTCDate())
+  );
+  dateList.push(
+    Date.UTC((new Date(dates[1])).getUTCFullYear(), (new Date(dates[1])).getUTCMonth(), (new Date(dates[1])).getUTCDate())
+  );
+  dateList.push(
+    Date.UTC((new Date(dates[2])).getUTCFullYear(), (new Date(dates[2])).getUTCMonth(), (new Date(dates[2])).getUTCDate())
+  );
+  dateList.push(
+    Date.UTC((new Date(dates[3])).getUTCFullYear(), (new Date(dates[3])).getUTCMonth(), (new Date(dates[3])).getUTCDate())
+  );
+  dateList.push(
+    Date.UTC((new Date(dates[4])).getUTCFullYear(), (new Date(dates[4])).getUTCMonth(), (new Date(dates[4])).getUTCDate())
+  );
+
+  $( ".month" ).each(function( index ) {
+    $( this ).html( months[index] );
+  });
+
   for (var i=0; i < milestones.length; i++){
     if (milestones[i]["fields"].milestone_type == "1") {
       dataIPS.push({
@@ -113,7 +142,7 @@
     }
   }
 
-  $('.close-calendar').click(function() {
+  $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
   });
 %script{src: "/static/js/learner_dashboard_calendar.js"}

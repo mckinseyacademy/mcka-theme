@@ -1,7 +1,4 @@
 $(function() {
-    var yourLabels = ["", "August", "September", "October", "November"];
-    var monthIndex = 0;
-
     $('#highcharts-container').highcharts({
 
         chart: {
@@ -25,12 +22,12 @@ $(function() {
             type: 'datetime',
             title: '',
             opposite: true,
-            min: Date.UTC(2016, 07, 01),
-            max: Date.UTC(2016, 11, 01),
+            min: dateList[0],
+            max: dateList[4],
             gridLineColor: 'transparent',
             gridLineWidth: 0,
             tickPositioner: function() {
-                return [this.min, Date.UTC(2016, 08, 01, 0), Date.UTC(2016, 09, 01, 0), Date.UTC(2016, 10, 01, 0), this.max];
+                return dateList;
             },
             labels: {
                 enabled: false
