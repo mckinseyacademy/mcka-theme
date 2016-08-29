@@ -166,6 +166,9 @@
                         courseId = $(element).data('course-id'),
                         lmsBaseURL = $this.getLmsBaseURL(options);
 
+                    if (handlerName=="submit")
+                        $this.dispatcher.trigger(handlerName, element);
+
                     return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId +
                             '/handler/' + handlerName);
                 },
@@ -219,6 +222,7 @@
                 }
 
                 console.log('Initializing XBlock JS', initFnName, blockDOM);
+
                 var runtime = $this.getRuntime(options, blockDOM);
                 var initFn = window[initFnName];
                 blockJS = new initFn(runtime, blockDOM, initArgs(blockDOM)) || {};
@@ -229,6 +233,7 @@
             blockJS.element = blockDOM;
             blockJS.type = $blockDOM.data('block-type');
             $blockDOM.addClass('xblock-initialized');
+            $this.dispatcher.trigger("xblock-initialized", $blockDOM);
             return blockJS;
         },
 
@@ -341,6 +346,7 @@
                     $this.watchLinks(options, root);
                     $this.initializeXBlocks(options, root);
                     deferred.resolve();
+                    $this.dispatcher.trigger("xblock-rendered", root);
                 });
 
                 $this.setAjaxCSRFToken(response.csrf_token, options, root);

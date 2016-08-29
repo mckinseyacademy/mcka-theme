@@ -625,6 +625,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
+
     if tile_type:
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
@@ -1002,3 +1003,21 @@ def course_learner_dashboard_bookmark_lesson(request):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=204)
+
+@login_required
+def get_user_progress_json(request, course_id):
+    user_progress = course_api.get_course_metrics_completions(course_id=course_id, user_id = request.user.id, skipleaders = True)
+    if user_progress:
+        data = {"user_progress": user_progress.completions}
+    else:
+       data = {"user_progress": 0}
+    
+    return HttpResponse(
+        json.dumps(data),
+        content_type='application/json'
+    )
+
+
+
+
+

@@ -282,6 +282,39 @@ $(function(){
     }
   });
 
+  $.xblock.getRuntime().listenTo('navigation', function(event, data) {
+
+    if (data.state == "unlock")
+    {
+      var data = ParseReviewStep();
+      if (data)
+      {
+        SendMessageToSCORMShell(JSON.stringify(data));
+      }
+    }
+  
+  });
+
+  $.xblock.getRuntime().listenTo('xblock-rendered', function(event, rendered_xblock) {
+    if (SCORM_SHELL)
+    {
+      var timeout_waiting = false;
+      var waiting_review = setInterval(function(){
+        if (timeout_waiting)
+          clearInterval(waiting_review)
+
+        var data = ParseReviewStep();
+        if (data)
+        {
+          clearInterval(waiting_review)
+          SendMessageToSCORMShell(JSON.stringify(data));
+        }
+      }, 300);
+      setTimeout(function(){timeout_waiting=true;}, 10000);
+      SendProgressToScormShell();
+    }
+  });
+
   var msg_modal_selector = '#messagesModal';
   if ($(msg_modal_selector).length) {
     Apros.chainModal(0, msg_modal_selector, function() {
