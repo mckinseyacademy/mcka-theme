@@ -4373,6 +4373,22 @@ def client_admin_course_learner_dashboard_milestone(request, client_id, course_i
         'milestone_id': milestone_id
     })
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def client_admin_course_learner_dashboard_milestone_delete(request, client_id, course_id, milestone_id):
+
+    try:
+        milestone = LearnerDashboardMilestone.objects.get(id=milestone_id)
+    except:
+        return render(request, '404.haml')
+
+    milestone.delete()
+
+    url = reverse('client_admin_course_learner_dashboard_milestone_list', kwargs={
+        'client_id': client_id,
+        'course_id': course_id,
+    })
+
+    return HttpResponseRedirect(url)
 
 class email_templates_get_and_post_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)

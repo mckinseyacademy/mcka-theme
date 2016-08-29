@@ -6,7 +6,9 @@
 
   %script
     $(function() {
-      
+      $('.confirm').click(function() {
+        return window.confirm("Are you sure?");
+      });
     });
   .admin-detail.row
     .large-12.columns
@@ -43,7 +45,7 @@
                 %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/milestone/#{milestone.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
                   %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
               %td
-                %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/milestone/#{milestone.id}"}
+                %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/milestone/delete/#{milestone.id}"}
                   %i{'style': "color:red", 'class': "fa fa-times"}
     -else
       This learner dashboard has no milestone content!

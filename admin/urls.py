@@ -21,9 +21,10 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_delete, name='client_admin_course_learner_dashboard_discover_delete'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.client_admin_course_learner_dashboard_discover_reorder, name='client_admin_course_learner_dashboard_discover_reorder'),
     #LD DiscoverContent
-    #Milestone
+    #Milestones
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/milestone/list$', views.client_admin_course_learner_dashboard_milestone_list, name='client_admin_course_learner_dashboard_milestone_list'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/milestone/(?P<milestone_id>.*)$', views.client_admin_course_learner_dashboard_milestone, name='client_admin_course_learner_dashboard_milestone'),
+    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/milestone/delete/(?P<milestone_id>.*)$', views.client_admin_course_learner_dashboard_milestone_delete, name='client_admin_course_learner_dashboard_milestone_delete'),
     #Milestones
     #Learner Dashboard, Tile 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.client_admin_course_learner_dashboard_tile, name='client_admin_course_learner_dashboard_tile'),    
