@@ -616,8 +616,8 @@ class LearnerDashboardMilestone(db_models.Model):
     milestone_type = db_models.CharField(max_length=1, choices=MILESTONE_TYPES)
 
     DIGITAL_CONTENT_TYPES = (
-        (u'1', u'Prework'),
-        (u'2', u'Single Module'),
+        (u'1', u'Lesson'),
+        (u'2', u'Module'),
         (u'3', u'External Content')
     )
     digital_content_type = db_models.CharField(max_length=1, choices=DIGITAL_CONTENT_TYPES, blank=True)
