@@ -1,6 +1,6 @@
 - extends "courses/course_navigation.haml"
 - block current_content
-  #course-lessons
+  #course-lessons{'data-current-progress': '#{user_progress}'}
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
     %a.global-help{'data-reveal-id': 'mckinsey_help'}

@@ -166,6 +166,9 @@
                         courseId = $(element).data('course-id'),
                         lmsBaseURL = $this.getLmsBaseURL(options);
 
+                    if (handlerName=="submit")
+                        $this.dispatcher.trigger(handlerName, element);
+
                     return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId +
                             '/handler/' + handlerName);
                 },
