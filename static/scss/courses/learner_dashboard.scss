@@ -156,9 +156,15 @@
     width: 960px;
     height: 300px;
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     background-color: white;
     padding: 27px 0px 0px 10px;
+
+    .close-calendar {
+        float:right;
+        margin-top: -20px;
+        margin-right: 10px;
+    }
 
     .tab-month {
         width: 232px;

@@ -73,7 +73,7 @@ $(function() {
                     Highcharts.dateFormat('%b %e, %Y', this.point.low) + 
                     '</br>' + this.point.location + '</div>';
 
-                else if (this.point.x == 2)
+                else if (this.point.x == 1)
                     return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
                     this.point.label +  '</div>' + 
                     '<div style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 

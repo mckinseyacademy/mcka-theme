@@ -6,20 +6,19 @@
     = " | "
     = program.display_name
     = _(" | McKinsey Academy | Learner Dashboard")
-- block header
-  - include 'courses/course_learner_dashboard_header.haml'
 - block content
+  %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
   %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
   %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
 
   - include 'courses/course_learner_dashboard_branding.haml'
-  - if milestones_enabled
-    .row
-      .large-8
-        - include 'courses/course_learner_dashboard_calendar.haml'
-
+- block header
+  - include 'courses/course_learner_dashboard_header.haml'    
+  .row.
+    .large-8.columns
+      #replace-calendar 
   #home-courses
-    .row
+    .row.
       .large-8.columns.dash-programs
         %h3{style: "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
         %p{style: "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
@@ -68,56 +67,10 @@
                 %h5
                   %span.author-font{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
 
-  %script
-    var milestones = {{milestones|safe}};
-
-    dataIPS = [];
-    dataWeb = [];
-    dataDig = [];
-    for (var i=0; i < milestones.length; i++){
-      if (milestones[i]["fields"].milestone_type == "1") {
-        dataIPS.push({
-          color: '#e0e0e0',
-          x: 0,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          location: milestones[i]["fields"].location,
-          details: milestones[i]["fields"].details,
-          low: Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].start_date)).getUTCSeconds()),
-          high: Date.UTC((new Date(milestones[i]["fields"].end_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].end_date)).getUTCMonth(), (new Date(milestones[i]["fields"].end_date)).getUTCDate(),  (new Date(milestones[i]["fields"].end_date)).getUTCHours(), (new Date(milestones[i]["fields"].end_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].end_date)).getUTCSeconds())
-        });
-      }
-
-      if (milestones[i]["fields"].milestone_type == "2") {
-        dataWeb.push({
-          color: '#e0e0e0',
-          x: 2,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          link: milestones[i]["fields"].link,
-          details: milestones[i]["fields"].details,
-          low: Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].start_date)).getUTCSeconds()),
-          high: Date.UTC((new Date(milestones[i]["fields"].end_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].end_date)).getUTCMonth(), (new Date(milestones[i]["fields"].end_date)).getUTCDate(),  (new Date(milestones[i]["fields"].end_date)).getUTCHours(), (new Date(milestones[i]["fields"].end_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].end_date)).getUTCSeconds())
-        });
-      }
-
-      if (milestones[i]["fields"].milestone_type == "3") {
-        dataDig.push({
-          color: '#e0e0e0',
-          x: 3,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          link: milestones[i]["fields"].link,
-          low: Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].start_date)).getUTCSeconds()),
-          high: Date.UTC((new Date(milestones[i]["fields"].end_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].end_date)).getUTCMonth(), (new Date(milestones[i]["fields"].end_date)).getUTCDate(),  (new Date(milestones[i]["fields"].end_date)).getUTCHours(), (new Date(milestones[i]["fields"].end_date)).getUTCMinutes(), (new Date(milestones[i]["fields"].end_date)).getUTCSeconds())
-        });
-      }
-    }
-
 - block footer
   - include 'footer_ld.haml'
 
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
   %script{src: "{% static 'js/tile_id_to_view.js' %}"}
-  %script{src: "{% static 'js/learner_dashboard_calendar.js' %}"}
+  %script{src: "{% static 'js/learner_dashboard_calendar_load.js' %}"}

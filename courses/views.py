@@ -8,12 +8,14 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError, JsonResponse
+
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
 from django.core import serializers
+from django.template import loader, RequestContext
 
 from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
@@ -917,7 +919,6 @@ def course_learner_dashboard(request):
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
-    #milestones = LearnerDashboardMilestone.objects.filter(learner_dashboard=learner_dashboard.id).order_by('start_date')
 
     try:
         bookmark = TileBookmark.objects.get(user=request.user.id)
@@ -929,18 +930,12 @@ def course_learner_dashboard(request):
     except:
          feature_flags = []
 
-    milestones = serializers.serialize(
-        "json",
-        LearnerDashboardMilestone.objects.filter(learner_dashboard=learner_dashboard.id).order_by('start_date')
-    )
-
     data ={
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
         'feature_flags': feature_flags,
         'discovery_items': discovery_items,
         'bookmark': bookmark,
-        'milestones': milestones,
         'milestones_enabled': settings.MILESTONES_ENABLED,
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
@@ -1014,3 +1009,33 @@ def course_learner_dashboard_bookmark_lesson(request):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=204)
+
+def course_learner_dashboard_calendar(request):
+
+    if 'learner_dashboard_id' not in request.session:
+        set_learner_dashboard_in_session(request)
+
+    course_id = request.session['course_id']
+    learner_dashboard_id = request.session['learner_dashboard_id']
+
+    milestoneData = {}
+    if learner_dashboard_id is not None:
+        milestoneData = LearnerDashboardMilestone.objects.filter(learner_dashboard=learner_dashboard_id).order_by('start_date')
+    elif course_id is not None:
+        redirect_url = '/courses/{}/'.format(course_id)
+        return HttpResponseRedirect(redirect_url)
+    else:
+        redirect_url = '/'
+        return HttpResponseRedirect(redirect_url)
+
+    milestones = serializers.serialize("json", milestoneData)
+    data ={
+        'milestones': milestones,
+    }
+    if request.is_ajax():
+        html = loader.render_to_string('courses/course_learner_dashboard_calendar.haml', data, context_instance=RequestContext(request))
+
+        return HttpResponse(json.dumps({'html': html}), content_type="application/json")
+    else:
+        return HttpResponse(status=404)
+
