@@ -282,6 +282,10 @@ $(function(){
     }
   });
 
+  $.xblock.getRuntime().listenTo('submit', function(event, data) {
+    console.log(data);
+  });
+
   var msg_modal_selector = '#messagesModal';
   if ($(msg_modal_selector).length) {
     Apros.chainModal(0, msg_modal_selector, function() {
