@@ -343,7 +343,11 @@ def get_current_learner_dashboard_course(request):
     courses = user_api.get_user_courses(request.user.id)
     course_ids = [c.id for c in courses if c.is_active and c.started]
 
-    organization = user_api.get_user_organizations(request.user.id)[0]
+    organizations = user_api.get_user_organizations(request.user.id)
+    if len(organizations) > 0:
+        organization = organizations[0]
+    else:
+        return None
     request.session['client_display_name'] = organization.display_name
     features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
 
