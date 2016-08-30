@@ -138,36 +138,19 @@
   });
 
   $('#next-calendar').click(function() {
-    var chart = $('#highcharts-container').highcharts();
-
-    extremes = chart.yAxis[0].getExtremes();
-    var min_date = new Date(extremes.min);
-    min_date = min_date.setUTCMonth((min_date).getUTCMonth() + 4);
-
-    extremes.min = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth());
-    extremes.max = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth() + 4);
-
-    dateList = [];
-    for (var i=0; i < 5; i++) {
-      dateList.push(
-        Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth() + i)
-      );
-    }
-
-    chart.yAxis[0].options.tickInterval = dateList;
-    chart.yAxis[0].isDirty = true;
-
-    chart.yAxis[0].setExtremes(extremes.min, extremes.max);
-
-    addMonthNames( dateList );
+    moveCalendarDates(4);
   });
 
   $('#previous-calendar').click(function() {
-    var chart = $('#highcharts-container').highcharts();
+    moveCalendarDates(-4);
+  });
 
+  function moveCalendarDates(moveMonth) {
+    var chart = $('#highcharts-container').highcharts();
     extremes = chart.yAxis[0].getExtremes();
+
     var min_date = new Date(extremes.min);
-    min_date = min_date.setUTCMonth((min_date).getUTCMonth() - 4);
+    min_date = min_date.setUTCMonth((min_date).getUTCMonth() + moveMonth);
 
     extremes.min = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth());
     extremes.max = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth() + 4);
@@ -185,7 +168,7 @@
     chart.yAxis[0].setExtremes(extremes.min, extremes.max);
 
     addMonthNames( dateList );
-  });
+  }
 
   function addMonthNames( dateList ) {
     $( ".month" ).each(function( index ) {
@@ -201,4 +184,4 @@
     return Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes());
   }
 
-%script{src: "/static/js/learner_dashboard_calendar.js"}
+%script{src: "/static/js/learner_dashboard_calendar_highcharts.js"}

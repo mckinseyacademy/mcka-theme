@@ -1018,6 +1018,7 @@ def course_learner_dashboard_bookmark_lesson(request):
             return HttpResponse(status=204)
 
 
+@login_required
 def course_learner_dashboard_calendar(request):
 
     if 'learner_dashboard_id' not in request.session:
@@ -1039,10 +1040,8 @@ def course_learner_dashboard_calendar(request):
     milestones = serializers.serialize("json", milestoneData)
 
     first = datetime.now().replace(day=1)
-    print first
     now = datetime(first.year, first.month, first.day)
-    print now
-    print 'asdas dsa as dsa ds adsa  dsadas ds'
+
     dates = [
         (datetime(now.year, (now.month - 1), now.day)).strftime("%Y-%m-%d"),
         now.strftime("%Y-%m-%d"),

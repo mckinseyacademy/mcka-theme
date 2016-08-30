@@ -5,7 +5,7 @@ $('#open-calendar').click(function() {
   }
   $.ajax({
     headers: headers,
-    type: 'POST',
+    type: 'GET',
     url: '/learnerdashboard/calendar',
     success : function(data) {
       $('#replace-calendar').html(data.html);
