@@ -159,19 +159,20 @@
     z-index: 2;
 
     #previous-calendar, #next-calendar {
-        margin-top: 115px;
+        margin-top: 100px;
         font-size: 50px;
-        font-weight: bold
+        font-weight: bold;
+        color: #4789c4;
+        position: absolute;
     }
 
     #previous-calendar {
-        margin-left: 10px;
-        float: left;
+        margin-left: -20px;
+        left: 0;
     }
 
     #next-calendar {
-        margin-right: 10px;
-        float: right;
+        right: 0;
     }
 
     #over-calendar{

@@ -1017,6 +1017,7 @@ def course_learner_dashboard_bookmark_lesson(request):
         else:
             return HttpResponse(status=204)
 
+
 def course_learner_dashboard_calendar(request):
 
     if 'learner_dashboard_id' not in request.session:
@@ -1037,44 +1038,21 @@ def course_learner_dashboard_calendar(request):
 
     milestones = serializers.serialize("json", milestoneData)
 
-
-    #mydate = datetime.datetime.now()
-    #mydate.strftime("%B")
-
-    #today = datetime.date.today()
-    #first = today.replace(day=1)
-    #lastMonth = first - datetime.timedelta(days=1)
-    #print lastMonth.strftime("%Y%m")
-
     first = datetime.now().replace(day=1)
+    print first
     now = datetime(first.year, first.month, first.day)
-
+    print now
+    print 'asdas dsa as dsa ds adsa  dsadas ds'
     dates = [
-        datetime(now.year, (now.month - 3), now.day),
-        datetime(now.year, (now.month - 2), now.day),
-        datetime(now.year, (now.month - 1), now.day),
-        now,
-        datetime(now.year, (now.month + 1), now.day)
-    ]
-
-    months = [
-        dates[0].strftime("%B"),
-        dates[1].strftime("%B"),
-        dates[2].strftime("%B"),
-        dates[3].strftime("%B")
-    ]
-
-    dates = [
-        dates[0].strftime("%Y-%m-%d"),
-        dates[1].strftime("%Y-%m-%d"),
-        dates[2].strftime("%Y-%m-%d"),
-        dates[3].strftime("%Y-%m-%d"),
-        dates[4].strftime("%Y-%m-%d")
+        (datetime(now.year, (now.month - 1), now.day)).strftime("%Y-%m-%d"),
+        now.strftime("%Y-%m-%d"),
+        (datetime(now.year, (now.month + 1), now.day)).strftime("%Y-%m-%d"),
+        (datetime(now.year, (now.month + 2), now.day)).strftime("%Y-%m-%d"),
+        (datetime(now.year, (now.month + 3), now.day)).strftime("%Y-%m-%d")
     ]
 
     data ={
         'milestones': milestones,
-        'months': months,
         'dates': dates
     }
 
@@ -1084,4 +1062,3 @@ def course_learner_dashboard_calendar(request):
         return HttpResponse(json.dumps({'html': html}), content_type="application/json")
     else:
         return HttpResponse(status=404)
-
