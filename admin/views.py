@@ -4350,8 +4350,10 @@ def client_admin_course_learner_dashboard_milestone(request, client_id, course_i
         instance = None
 
     if request.method == 'POST':
-        form = LearnerDashboardMilestoneForm(request.POST, request.FILES, instance=instance)
+        form = LearnerDashboardMilestoneForm(request.POST, instance=instance)
         if form.is_valid():
+            if form.instance.milestone_type == "2":
+                form.instance.end_date = form.instance.start_date
             form.save()
 
             redirect_url = reverse('client_admin_course_learner_dashboard_milestone_list', kwargs={'client_id': client_id, 'course_id': course_id})

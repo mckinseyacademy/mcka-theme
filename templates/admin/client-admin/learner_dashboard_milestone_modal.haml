@@ -96,13 +96,18 @@
   %script{src: "/static/js/learner_dashboard_milestone_modal.js"}
   %script{src: "/static/js/vendor/flatpickr.min.js"}
   :javascript
-    $('#id_start_date').flatpickr({
+    var startDate = document.getElementById("id_start_date").flatpickr({
       enableTime: true,
       dateFormat: "m/d/Y H:i",
     });
-    $('#id_end_date').flatpickr({
+
+    var endDate = document.getElementById("id_end_date").flatpickr({
       enableTime: true,
       dateFormat: "m/d/Y H:i",
     });
+
+    startDate.config.onChange = dateObj => endDate.set("minDate", dateObj.fp_incr(0));
+    endDate.config.onChange = dateObj => startDate.set("maxDate", dateObj.fp_incr(0));
+
     $('.flatpickr-calendar').css('z-index','10000000');
 
