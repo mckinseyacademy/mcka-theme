@@ -1,7 +1,7 @@
 body{
   color: $mckinsey-academy-black;
   margin-top: $header-bar-height;
-  background-color: $pure-white;
+  background-color: $background-tint;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -13,7 +13,16 @@ body{
         display: inline-block;
         float: left;
         margin-right: 20px;
+        margin-left: 20px;
       }
+    }
+    #home-landing{
+     .card{
+       .login-btn{
+          background-color: $disabled-link-color;
+          pointer-events: none;
+       }
+     }
     }
   }
 }

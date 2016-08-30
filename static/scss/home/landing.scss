@@ -278,8 +278,8 @@
         @include font-spec(16, 600);
         min-width: 100px;
         box-sizing: border-box;
-        &.login-btn{
-          background-color: $disabled-link-color;
+        &.login-btn {
+          display: none;
         }
     }
 }
@@ -347,9 +347,9 @@
       &.padding-low{
         padding: 1px 45px 25px;
       }
-      a {
+      a{
         &.login-btn {
-          background-color: $light-blue;
+          display: inline-block;
         }
       }
     }
