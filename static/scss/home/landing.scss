@@ -217,10 +217,10 @@
     width: 100%;
     .image{
         width: 100%;
-        @include retina-image('/static/image/home-grid/hero-img-small', center center, 'jpg', null, '@2x');
+        @include retina-image('/static/image/home-grid/hero-img-small', cover, 'jpg', null, '@2x');
+        background-position: center center;
         background-repeat: no-repeat;
-        background-size: 100%;
-        padding-top: 62.5%;
+        padding-top: 51.5%;
     }
     .hero-text{
         text-align: center;
@@ -237,6 +237,7 @@
             img{
                 width: 36%;
                 min-width: 215px;
+                max-width: 366px;
             }
         }
     }

@@ -21,6 +21,7 @@ body{
        .login-btn{
           background-color: $disabled-link-color;
           pointer-events: none;
+          cursor: default;
        }
      }
     }
@@ -893,7 +894,7 @@ div.notification-digest {
 .hidden-mobile{
   display: none;
   visibility: hidden;
-    @media only screen and (min-device-width: 768px) {
+    @media only screen and (min-width: 768px) {
       display: inline-block;
       visibility: visible;
     }
@@ -902,7 +903,7 @@ div.notification-digest {
 .visible-mobile{
   display: inline-block;
   visibility: visible;
-    @media only screen and (min-device-width: 768px) {
+    @media only screen and (min-width: 768px) {
       display: none;
       visibility: hidden;
     }
