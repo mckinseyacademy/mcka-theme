@@ -232,6 +232,7 @@
             blockJS.element = blockDOM;
             blockJS.type = $blockDOM.data('block-type');
             $blockDOM.addClass('xblock-initialized');
+            $this.dispatcher.trigger("xblock-initialized", $blockDOM);
             return blockJS;
         },
 
