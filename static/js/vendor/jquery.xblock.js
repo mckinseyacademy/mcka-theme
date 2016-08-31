@@ -222,6 +222,10 @@
                 }
 
                 console.log('Initializing XBlock JS', initFnName, blockDOM);
+
+                if (PatchGradeXblockTemplate)
+                    PatchGradeXblockTemplate();
+
                 var runtime = $this.getRuntime(options, blockDOM);
                 var initFn = window[initFnName];
                 blockJS = new initFn(runtime, blockDOM, initArgs(blockDOM)) || {};
