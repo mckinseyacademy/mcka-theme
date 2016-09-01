@@ -8,8 +8,7 @@ window.onmessage = function(e){
 
 function SendMessageToSCORMShell(message)
 {
-    if (SCORM_SHELL)
-        window.top.postMessage(message, '*');
+    window.top.postMessage(message, '*');
 }
 SCORM_SHELL = false;
 console.log("sent scorm shell request");
