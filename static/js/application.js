@@ -282,20 +282,18 @@ $(function(){
     }
   });
 
-  $.xblock.getRuntime().listenTo('submit', function(event, data) {
-    var gradeTemplate = $("#xblock-grade-template");
-    if (typeof gradeTemplatePatched == "undefined")
-      gradeTemplatePatched = false;
-    if (gradeTemplate.length && !gradeTemplatePatched)
-    {
-      var patch = '<div id="assessment-grade-tracker-patch" onload="SendScormAssigmentRelevantData()" data-attempt-score=<%= score %> data-attempt-count=<%= num_attempts %> data-attempt-max=<%= max_attempts %> ></div>';
-      gradeTemplate.html(gradeTemplate.html()+patch);
-      gradeTemplatePatched = true;
-    }
-  });
+  $.xblock.getRuntime().listenTo('navigation', function(event, data) {
 
-  // $.xblock.getRuntime().listenTo('xblock-initialized', function(event, data) {
-  // });
+    if (data.state == "unlock")
+    {
+      var data = ParseReviewStep();
+      if (data)
+      {
+        SendMessageToSCORMShell(JSON.stringify(data));
+      }
+    }
+
+  });
 
   var msg_modal_selector = '#messagesModal';
   if ($(msg_modal_selector).length) {
