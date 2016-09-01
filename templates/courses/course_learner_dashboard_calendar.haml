@@ -75,11 +75,13 @@
 %script
   var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
   var dates = {{dates|safe}} ? {{dates|safe}}: [];
+  var courses = {{courses|safe}} ? {{courses|safe}}: [];
 
   var dataIPS = [];
   var dataWeb = [];
   var dataDig = [];
   var dateList = [];
+  var dataCourses = [];
 
   var mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
@@ -91,6 +93,20 @@
 
   addMonthNames(dates);
 
+  for (var j=0 in courses){
+    dataCourses.push({
+      color: '#e0e0e0',
+      x: 1,
+      label: "Course",
+      name: courses[j].name,
+      link: courses[j].link,
+      user_progress: ("Your progress: " + courses[j].user_progress + "%"),
+      cohort_progress: ("Cohort progress: " + courses[j].cohort_progress + "%"),
+      low: (Date.parse(courses[j].start)).getTime(),
+      high: (Date.parse(courses[j].end)).getTime(),
+    });
+  }
+
   for (var i=0; i < milestones.length; i++){
     if (milestones[i]["fields"].milestone_type == "1") {
       dataIPS.push({
@@ -101,8 +117,8 @@
         location: milestones[i]["fields"].location,
         details: milestones[i]["fields"].details,
         link: milestones[i]["fields"].link,
-        low: processDate(new Date(milestones[i]["fields"].start_date)),
-        high: processDate(new Date(milestones[i]["fields"].end_date))
+        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
+        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
       });
     }
 
@@ -115,8 +131,8 @@
         link: milestones[i]["fields"].link,
         details: milestones[i]["fields"].details,
         link: milestones[i]["fields"].link,
-        low: processDate(new Date(milestones[i]["fields"].start_date)),
-        high: processDate(new Date(milestones[i]["fields"].end_date))
+        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
+        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
       });
     }
 
@@ -127,8 +143,8 @@
         label: milestones[i]["fields"].label,
         name: milestones[i]["fields"].title,
         link: milestones[i]["fields"].link,
-        low: processDate(new Date(milestones[i]["fields"].start_date)),
-        high: processDate(new Date(milestones[i]["fields"].end_date))
+        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
+        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
       });
     }
   }
@@ -179,10 +195,6 @@
       if ( ((new Date(dateList[index])).getMonth()) == (new Date()).getMonth() && ((new Date(dateList[index + 1])).getYear()) == (new Date()).getYear())
         $( this ).parent().addClass( "active" );
     });
-  }
-
-  function processDate(date) {
-    return Date.UTC((new Date(milestones[i]["fields"].start_date)).getUTCFullYear(), (new Date(milestones[i]["fields"].start_date)).getUTCMonth(), (new Date(milestones[i]["fields"].start_date)).getUTCDate(), (new Date(milestones[i]["fields"].start_date)).getUTCHours(), (new Date(milestones[i]["fields"].start_date)).getUTCMinutes());
   }
 
 %script{src: "/static/js/learner_dashboard_calendar_highcharts.js"}

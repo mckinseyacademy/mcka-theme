@@ -292,7 +292,29 @@ $(function(){
         SendMessageToSCORMShell(JSON.stringify(data));
       }
     }
+  
+  });
 
+  $.xblock.getRuntime().listenTo('xblock-initialized', function(event, xblock) {
+    if ($(xblock).hasClass("xblock-student_view-step-builder"))
+    {
+      var timeout_waiting = false;
+      var waiting_review = setInterval(function(){
+
+        if (timeout_waiting)
+          clearInterval(waiting_review)
+
+        var data = ParseReviewStep();
+
+        if (data)
+        {
+          clearInterval(waiting_review)
+          SendMessageToSCORMShell(JSON.stringify(data));
+        }
+
+      }, 300);
+      setTimeout(function(){timeout_waiting=true;}, 10000);
+    }
   });
 
   var msg_modal_selector = '#messagesModal';

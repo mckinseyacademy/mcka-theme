@@ -34,7 +34,7 @@ from lib.util import DottableDict
 from main.models import CuratedContentItem
 
 from .models import LessonNotesItem, FeatureFlags
-from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location
+from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, group_project_reviews
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
@@ -1050,9 +1050,25 @@ def course_learner_dashboard_calendar(request):
         (datetime(now.year, (now.month + 3), now.day)).strftime("%Y-%m-%d")
     ]
 
+    courses = user_api.get_user_courses(request.user.id)
+    coursesData = {}
+    courseData = {}
+    for i, course in enumerate(courses):
+        courseData = {
+            "name": course.name,
+            "link": course.nav_url,
+            "start": str(course.start),
+            "end": str(course.end),
+            "user_progress": average_progress(course, request.user.id),
+            "cohort_progress": return_course_progress(course, request.user.id)
+        }
+        coursesData[i] = courseData
+        courseData = {}
+
     data ={
         'milestones': milestones,
-        'dates': dates
+        'dates': dates,
+        'courses': json.dumps(coursesData),
     }
 
     if request.is_ajax():

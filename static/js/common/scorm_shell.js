@@ -8,8 +8,7 @@ window.onmessage = function(e){
 
 function SendMessageToSCORMShell(message)
 {
-    if (SCORM_SHELL)
-        window.top.postMessage(message, '*');
+    window.top.postMessage(message, '*');
 }
 SCORM_SHELL = false;
 console.log("sent scorm shell request");
@@ -50,8 +49,8 @@ function ParseReviewStep()
         var attempts_text = main_xblock.find(".submit .attempts").text();
         var attempts_data = attempts_text.match(/\d+?/g);
         var data = {"type":"data", "course_id":scorm_data.courseId,"assessment":{"lesson-id":scorm_data.lessonId, 
-        "module-id":scorm_data.moduleId, "assessment-attempt-count":attempts_data[0],"assessment-attempt-max":attempts_data[1], 
-        "assessment-score":score}};
+        "module-id":scorm_data.moduleId, "attempts-count":parseInt(attempts_data[0]),"attempts-max":parseInt(attempts_data[1]),
+        "score":score}};
         return data;
     }
     else

@@ -71,17 +71,19 @@ $(function() {
                     '</br>' + this.point.location + '</div>';
 
                 else if (this.point.x == 1)
-                    return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
-                    this.point.label +  '</div>' + 
+                    return '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
+                    this.point.label +  '</div>' +
                     '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
-                    this.point.name + '</a>' + '<div style="padding: 2px; font-style: italic; color:#cccccc"></div>';
+                    this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
+                    this.point.user_progress +
+                    '</br>' + this.point.cohort_progress + '</div>';
 
                 else if (this.point.x == 2)
                     return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
                     this.point.label +  '</div>' + 
                     '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
-                    Highcharts.dateFormat('%b %e, %Y', this.point.low) + 
+                    Highcharts.dateFormat('%b %e, %Y', this.point.low) +
                     '</br>' + Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
 
                 else if (this.point.x == 3)
@@ -113,22 +115,7 @@ $(function() {
             name: 'Digital Course',
             borderRadius: 18,
             pointWidth: 48,
-            data: [{
-                color: '#e0e0e0',
-                name: 'dasads',
-                label: 'Course',
-                x: 1,
-                low: Date.UTC(2016, 07, 01, 4, 0, 0),
-                high: Date.UTC(2016, 07, 18, 4, 0, 0)
-            }, 
-            {
-                color: '#e0e0e0',
-                name: 'dasads',
-                label: 'Course',
-                x: 1,
-                low: Date.UTC(2016, 08, 14, 0, 0, 0),
-                high: Date.UTC(2016, 10, 03, 0, 0, 0)
-            }],
+            data: dataCourses,
             dataLabels: {
                 inside: true,
                 enabled: true,
@@ -136,7 +123,7 @@ $(function() {
                 align: 'left',
                 fontFamily: '"Open Sans" , sans-serif',
                 formatter: function() {
-                    return 'Digital Content'
+                    return 'Digital Course'
                 },
                 style: {
                     fontSize: '15px'
