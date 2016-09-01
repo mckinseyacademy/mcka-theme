@@ -282,6 +282,19 @@ $(function(){
     }
   });
 
+  $.xblock.getRuntime().listenTo('navigation', function(event, data) {
+
+    if (data.state == "unlock")
+    {
+      var data = ParseReviewStep();
+      if (data)
+      {
+        SendMessageToSCORMShell(JSON.stringify(data));
+      }
+    }
+
+  });
+
   var msg_modal_selector = '#messagesModal';
   if ($(msg_modal_selector).length) {
     Apros.chainModal(0, msg_modal_selector, function() {

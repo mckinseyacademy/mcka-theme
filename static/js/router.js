@@ -118,6 +118,13 @@ var Router = Backbone.Router.extend({
   },
 
   course_lesson: function(courseId, lessonId, moduleId) {
+
+    if (typeof scorm_data == "undefined")
+      scorm_data = {}
+    scorm_data.courseId = courseId;
+    scorm_data.lessonId = lessonId;
+    scorm_data.moduleId = moduleId;
+
     var el = $('#course-lessons'),
         collection = new Apros.collections.CourseNotes(null, {courseId: courseId})
     new Apros.views.CourseLesson({el: el, collection: collection}).render();
