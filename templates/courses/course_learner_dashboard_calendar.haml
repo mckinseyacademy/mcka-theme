@@ -1,10 +1,10 @@
 #over-full-calendar
-  .row.
-    .large-12
+  #row-full-calendar
+    .row
+      %span#next-calendar.fa.fa-angle-right
+      %span#previous-calendar.fa.fa-angle-left
       #over-calendar
-        %span#next-calendar.fa.fa-angle-right
-        %span#previous-calendar.fa.fa-angle-left
-        %span#close-calendar.fa.fa-close
+        %span#close-calendar.fa.fa-times-circle
         %ul.tab-month
           %li.head-month
             %span.month
@@ -135,6 +135,7 @@
 
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
+    opened = false
   });
 
   $('#next-calendar').click(function() {
