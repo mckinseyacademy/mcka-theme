@@ -38,7 +38,10 @@ $(function() {
         plotOptions: {
             columnrange: {
                 grouping: false,
+                crop: false,
                 dataLabels: {
+                    crop: false,
+                    overflow: 'none',
                     style: {
                         textShadow: false,
                         color: '#FFFFFF'
@@ -46,7 +49,7 @@ $(function() {
                 }
             },
             series: {
-                pointWidth: 55
+                pointWidth: 55,
             }
         },
 
@@ -106,9 +109,15 @@ $(function() {
                 enabled: true,
                 verticalAlign: 'middle',
                 align: 'center',
+                crop: true,
+                overflow: 'none',
                 format: '\uf0c0',
                 style: {
                     fontSize: '20px'
+                },
+                formatter: function () {
+                    if (this.percentage.toFixed(0) > 0) return this.percentage.toFixed(0);
+                    else return '';
                 }
             }
         },
@@ -140,6 +149,8 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                crop: true,
+                overflow: 'none',
                 verticalAlign: 'middle',
                 align: 'center',
                 format: '\uf03d',
@@ -155,10 +166,13 @@ $(function() {
             minPointLength: 48,
             pointWidth: 48,
             dataLabels: {
-                inside: true,
                 enabled: true,
+                inside: true,
+                crop: true,
+                overflow: 'none',
                 verticalAlign: 'middle',
-                align: 'center',
+                align: 'center',  
+                yLow: -5,
                 format: '\uf109',
                 style: {
                     fontSize: '25px'
@@ -166,4 +180,7 @@ $(function() {
             }
         }]
     });
+
+    // Problem with the y setting the font-awesome icon to low, gets all Dig Con icons and sets them higher
+    //$('.highcharts-series-3 g text').attr('y', 27);
 });
