@@ -4,7 +4,8 @@ $(function() {
         chart: {
             type: 'columnrange',
             inverted: true,
-            backgroundColor: null
+            backgroundColor: null,
+            animation: false
         },
         title: {
             text: ''
@@ -45,7 +46,7 @@ $(function() {
                 }
             },
             series: {
-                pointWidth: 55,
+                pointWidth: 55
             }
         },
 

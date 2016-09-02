@@ -1,75 +1,76 @@
 #over-full-calendar
   #row-full-calendar
     .row
-      %span#next-calendar.fa.fa-angle-right
-      %span#previous-calendar.fa.fa-angle-left
-      #over-calendar
-        %span#close-calendar.fa.fa-times-circle
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.legend-list
-          %li.light-gray-legend
-            %i.fa.fa-circle
-            not available
-          %li.gray-legend
-            %i.fa.fa-circle
-            not started
-          %li.light-green-legend
-            %i.fa.fa-circle
-            in progress
-          %li.green-legend
-            %i.fa.fa-circle
-            complete
-          %li.red-legend
-            %i.fa.fa-circle
-            incomplete
-          %li.teal-legend
-            %i.fa.fa-circle
-            not tracked
+      .large-12
+        %span#next-calendar.fa.fa-angle-right
+        %span#previous-calendar.fa.fa-angle-left
+        #over-calendar
+          %span#close-calendar.fa.fa-times-circle
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.legend-list
+            %li.light-gray-legend
+              %i.fa.fa-circle
+              not available
+            %li.gray-legend
+              %i.fa.fa-circle
+              not started
+            %li.light-green-legend
+              %i.fa.fa-circle
+              in progress
+            %li.green-legend
+              %i.fa.fa-circle
+              complete
+            %li.red-legend
+              %i.fa.fa-circle
+              incomplete
+            %li.teal-legend
+              %i.fa.fa-circle
+              not tracked
 
-      #highcharts-container
+        #highcharts-container
 
 
 %script
@@ -107,7 +108,7 @@
     });
   }
 
-  for (var i=0; i < milestones.length; i++){
+  for (var i=0 in milestones){
     if (milestones[i]["fields"].milestone_type == "1") {
       dataIPS.push({
         color: '#e0e0e0',
