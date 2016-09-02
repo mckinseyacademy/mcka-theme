@@ -61,3 +61,26 @@ function CheckIfReviewStepVisible()
 {
     return $(".xblock-mentoring_view-sb-review-step").is(':visible');
 }
+
+function SendProgressToScormShell()
+{
+    var options = {
+        url: "/courses/"+scorm_data.courseId+"/progress-json",
+        type: "GET",
+        dataType: "json",
+        timeout: 5000,
+        beforeSend: function( xhr ) {
+            xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+        }
+    };
+
+    $.ajax(options)
+    .done(function(data) {
+        console.log(data);
+        SendMessageToSCORMShell(JSON.stringify({"type":"data", "progress":data.user_progress, "course_id": scorm_data.courseId}));
+    })
+    .fail(function(data) {
+        console.log("Ajax failed to fetch data");
+        console.log(data)
+    });
+}
