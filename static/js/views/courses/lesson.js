@@ -4,10 +4,6 @@ Apros.views.CourseLesson = Backbone.View.extend({
     this.noteViews = [];
     this.listenTo(this.collection, 'add', this.addNote);
     this.listenTo(this.collection, 'sort', this.sorted);
-    if(SCORM_SHELL)
-    {
-      SendMessageToSCORMShell(JSON.stringify({"type":"data", "progress":$("#course-lessons").attr("data-current-progress"), "course_id": scorm_data.courseId}));
-    }
   },
 
   events: {

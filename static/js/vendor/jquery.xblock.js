@@ -346,6 +346,7 @@
                     $this.watchLinks(options, root);
                     $this.initializeXBlocks(options, root);
                     deferred.resolve();
+                    $this.dispatcher.trigger("xblock-rendered", root);
                 });
 
                 $this.setAjaxCSRFToken(response.csrf_token, options, root);
