@@ -1,10 +1,12 @@
 #over-full-calendar
   #row-full-calendar
     .row
-      .large-12
-        %span#next-calendar.fa.fa-angle-right
-        %span#previous-calendar.fa.fa-angle-left
-        #over-calendar
+      .large-12        
+        #over-calendar-left{style: "width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
+          %span#previous-calendar.fa.fa-angle-left
+        #over-calendar-right{style: "margin-left: 1020px; width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
+          %span#next-calendar.fa.fa-angle-right
+        #under-calendar
           %span#close-calendar.fa.fa-times-circle
           %ul.tab-month
             %li.head-month
@@ -84,6 +86,9 @@
   var dateList = [];
   var dataCourses = [];
 
+  var minDate;
+  var maxDate;
+
   var mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
   for (var i=0; i < 5; i++) {
@@ -93,6 +98,11 @@
   }
 
   addMonthNames(dates);
+  dateList.push(dateList[4] + 86400 * 9 * 1000);
+  dateList.unshift(dateList[0] - 86400 * 9 * 1000);
+
+  minDate = dateList[1];
+  maxDate = dateList[5];
 
   for (var j=0 in courses){
     dataCourses.push({
@@ -106,9 +116,25 @@
       low: (Date.parse(courses[j].start)).getTime(),
       high: (Date.parse(courses[j].end)).getTime(),
     });
+
+    if (dataCourses[j].start < minDate)
+      minDate = dataCourses[j].start
+    if (dataCourses[j].end > maxDate)
+      maxDate = dataCourses[j].end
   }
 
-  for (var i=0 in milestones){
+  var low;
+  var high;
+  for (var i=0 in milestones) {
+
+    low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
+    high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
+
+    if (low < minDate)
+      minDate = low;
+    if (high > maxDate)
+      maxDate = high;
+
     if (milestones[i]["fields"].milestone_type == "1") {
       dataIPS.push({
         color: '#e0e0e0',
@@ -118,8 +144,8 @@
         location: milestones[i]["fields"].location,
         details: milestones[i]["fields"].details,
         link: milestones[i]["fields"].link,
-        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
-        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
+        low: low,
+        high: high
       });
     }
 
@@ -132,8 +158,8 @@
         link: milestones[i]["fields"].link,
         details: milestones[i]["fields"].details,
         link: milestones[i]["fields"].link,
-        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
-        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
+        low: low,
+        high: high
       });
     }
 
@@ -144,48 +170,53 @@
         label: milestones[i]["fields"].label,
         name: milestones[i]["fields"].title,
         link: milestones[i]["fields"].link,
-        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
-        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
+        low: low,
+        high: high
       });
     }
   }
 
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
-    opened = false
+    opened = false;
   });
 
   $('#next-calendar').click(function() {
-    moveCalendarDates(4);
+    if (maxDate > dateList[5])
+      moveCalendarDates(4);
   });
 
   $('#previous-calendar').click(function() {
-    moveCalendarDates(-4);
+    if (minDate < dateList[1])
+      moveCalendarDates(-4);
   });
 
   function moveCalendarDates(moveMonth) {
     var chart = $('#highcharts-container').highcharts();
     extremes = chart.yAxis[0].getExtremes();
 
-    var min_date = new Date(extremes.min);
-    min_date = min_date.setUTCMonth((min_date).getUTCMonth() + moveMonth);
+    var minDate = new Date(extremes.min + 86400 * 9 *1000);
+    minDate = minDate.setUTCMonth((minDate).getUTCMonth() + moveMonth);
 
-    extremes.min = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth());
-    extremes.max = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth() + 4);
+    extremes.min = Date.UTC((new Date(minDate)).getUTCFullYear(), (new Date(minDate)).getUTCMonth());
+    extremes.max = Date.UTC((new Date(minDate)).getUTCFullYear(), (new Date(minDate)).getUTCMonth() + 4);
 
     dateList = [];
     for (var i=0; i < 5; i++) {
       dateList.push(
-        Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth() + i)
+        Date.UTC((new Date(minDate)).getUTCFullYear(), (new Date(minDate)).getUTCMonth() + i)
       );
     }
+
+    addMonthNames( dateList );
+
+    dateList.push(dateList[4] + 86400 * 9 * 1000);
+    dateList.unshift(dateList[0] - 86400 * 9 * 1000);
 
     chart.yAxis[0].options.tickInterval = dateList;
     chart.yAxis[0].isDirty = true;
 
     chart.yAxis[0].setExtremes(extremes.min, extremes.max);
-
-    addMonthNames( dateList );
   }
 
   function addMonthNames( dateList ) {

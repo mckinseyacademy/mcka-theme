@@ -167,11 +167,12 @@
 
     #previous-calendar {
         float: left;
+        margin-left: 30px;
     }
 
     #next-calendar {
         float: right;
-        padding-bottom: 125px;
+        margin-right: 30px;
     }
 
     #row-full-calendar {
@@ -179,18 +180,18 @@
         background: white;
 
         .row {
-            width: 1000px;
-            max-width: 1000px;
+            width: 1100px;
+            max-width: 1100px;
             background: white;
         }
 
-        #over-calendar{
+        #under-calendar{
             width: 945px;
             height: 290px;
             position: absolute;
             background-color: white;
             padding-top: 25px;
-            margin-left: 30px;
+            margin-left: 80px;
 
             #close-calendar {
                 float: right;
@@ -317,8 +318,8 @@
     position: absolute;
     z-index: 200;
     margin-top: 40px;
-    margin-left: 20px;
-    width: 960px; 
+    //margin-left: 20px;
+    width: 1100px; 
     height: 232px;
 
     .highcharts-tooltip {

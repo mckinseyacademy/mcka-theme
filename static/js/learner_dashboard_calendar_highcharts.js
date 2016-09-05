@@ -1,6 +1,7 @@
 $(function() {
-    $('#highcharts-container').highcharts({
-
+    //$('#highcharts-container').highcharts({
+    var chart;
+    var chartingOptions = {
         chart: {
             type: 'columnrange',
             inverted: true,
@@ -24,7 +25,7 @@ $(function() {
             title: '',
             opposite: true,
             min: dateList[0],
-            max: dateList[4],
+            max: dateList[5],
             gridLineColor: 'transparent',
             gridLineWidth: 0,
             tickPositioner: function() {
@@ -95,6 +96,25 @@ $(function() {
                     this.point.label +  '</div>' + 
                     '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>';
+            },
+            positioner: function (labelWidth, labelHeight, point) {
+                var tooltipX, tooltipY;
+                if (point.plotX + labelWidth + 80 > chart.plotWidth) {
+                    tooltipX = point.plotX + chart.plotLeft - labelWidth - 20;
+                } else {
+                    tooltipX = point.plotX + chart.plotLeft + 20;
+                }
+
+                if (point.plotY + labelHeight - 20 > chart.plotHeight) {
+                    tooltipY = point.plotY + chart.plotTop - labelHeight + 30;
+                } else {
+                    tooltipY = point.plotY + chart.plotTop - 35;
+                }
+
+                return {
+                    x: tooltipX,
+                    y: tooltipY
+                };
             }
         },
 
@@ -109,8 +129,6 @@ $(function() {
                 enabled: true,
                 verticalAlign: 'middle',
                 align: 'center',
-                crop: true,
-                overflow: 'none',
                 format: '\uf0c0',
                 style: {
                     fontSize: '20px'
@@ -149,8 +167,6 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
-                crop: true,
-                overflow: 'none',
                 verticalAlign: 'middle',
                 align: 'center',
                 format: '\uf03d',
@@ -168,19 +184,15 @@ $(function() {
             dataLabels: {
                 enabled: true,
                 inside: true,
-                crop: true,
-                overflow: 'none',
                 verticalAlign: 'middle',
                 align: 'center',  
-                yLow: -5,
+                yLow: -3,
                 format: '\uf109',
                 style: {
                     fontSize: '25px'
                 }
             }
         }]
-    });
-
-    // Problem with the y setting the font-awesome icon to low, gets all Dig Con icons and sets them higher
-    //$('.highcharts-series-3 g text').attr('y', 27);
+    };
+    chart = $('#highcharts-container').highcharts(chartingOptions).highcharts();
 });
