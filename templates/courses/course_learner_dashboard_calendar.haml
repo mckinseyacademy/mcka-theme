@@ -176,35 +176,44 @@
     }
   }
 
+  if (minDate > dateList[1])
+    $( "#previous-calendar" ).css( "color", "#f2f1f1" );
+  if (maxDate < dateList[5])
+    $( "#next-calendar" ).css( "color", "#f2f1f1" );
+
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
     opened = false;
   });
 
   $('#next-calendar').click(function() {
-    if (maxDate > dateList[5])
+    if (maxDate > dateList[5]) {
+      $( "#previous-calendar").css( "color", "#4789c4" );
       moveCalendarDates(4);
+    }
   });
 
   $('#previous-calendar').click(function() {
-    if (minDate < dateList[1])
+    if (minDate < dateList[1]) {
+      $( "#next-calendar").css( "color", "#4789c4" );
       moveCalendarDates(-4);
+    }
   });
 
   function moveCalendarDates(moveMonth) {
     var chart = $('#highcharts-container').highcharts();
     extremes = chart.yAxis[0].getExtremes();
 
-    var minDate = new Date(extremes.min + 86400 * 9 *1000);
-    minDate = minDate.setUTCMonth((minDate).getUTCMonth() + moveMonth);
+    var newMinDate = new Date(extremes.min + 86400 * 9 *1000);
+    newMinDate = newMinDate.setUTCMonth((newMinDate).getUTCMonth() + moveMonth);
 
-    extremes.min = Date.UTC((new Date(minDate)).getUTCFullYear(), (new Date(minDate)).getUTCMonth());
-    extremes.max = Date.UTC((new Date(minDate)).getUTCFullYear(), (new Date(minDate)).getUTCMonth() + 4);
+    extremes.min = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth());
+    extremes.max = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + 4);
 
     dateList = [];
     for (var i=0; i < 5; i++) {
       dateList.push(
-        Date.UTC((new Date(minDate)).getUTCFullYear(), (new Date(minDate)).getUTCMonth() + i)
+        Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + i)
       );
     }
 
@@ -217,6 +226,11 @@
     chart.yAxis[0].isDirty = true;
 
     chart.yAxis[0].setExtremes(extremes.min, extremes.max);
+
+    if (minDate > dateList[1])
+      $( '#previous-calendar').css( 'color', '#f2f1f1' );
+    if (maxDate < dateList[5])
+      $('#next-calendar').css( 'color', '#f2f1f1' );
   }
 
   function addMonthNames( dateList ) {
