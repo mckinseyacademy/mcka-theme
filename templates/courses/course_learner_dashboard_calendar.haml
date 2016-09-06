@@ -78,13 +78,11 @@
 %script
   var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
   var dates = {{dates|safe}} ? {{dates|safe}}: [];
-  var courses = {{courses|safe}} ? {{courses|safe}}: [];
 
   var dataIPS = [];
   var dataWeb = [];
   var dataDig = [];
   var dateList = [];
-  var dataCourses = [];
 
   var minDate;
   var maxDate;
@@ -104,25 +102,6 @@
   minDate = dateList[1];
   maxDate = dateList[5];
 
-  for (var j=0 in courses){
-    dataCourses.push({
-      color: '#e0e0e0',
-      x: 1,
-      label: "Course",
-      name: courses[j].name,
-      link: courses[j].link,
-      user_progress: ("Your progress: " + courses[j].user_progress + "%"),
-      cohort_progress: ("Cohort progress: " + courses[j].cohort_progress + "%"),
-      low: (Date.parse(courses[j].start)).getTime(),
-      high: (Date.parse(courses[j].end)).getTime(),
-    });
-
-    if (dataCourses[j].start < minDate)
-      minDate = dataCourses[j].start
-    if (dataCourses[j].end > maxDate)
-      maxDate = dataCourses[j].end
-  }
-
   var low;
   var high;
   for (var i=0 in milestones) {
@@ -135,7 +114,7 @@
     if (high > maxDate)
       maxDate = high;
 
-    if (milestones[i]["fields"].milestone_type == "1") {
+    if (milestones[i]["fields"].tile_type == "5") {
       dataIPS.push({
         color: '#e0e0e0',
         x: 0,
@@ -149,7 +128,7 @@
       });
     }
 
-    if (milestones[i]["fields"].milestone_type == "2") {
+    if (milestones[i]["fields"].tile_type == "6") {
       dataWeb.push({
         color: '#e0e0e0',
         x: 2,
@@ -163,7 +142,7 @@
       });
     }
 
-    if (milestones[i]["fields"].milestone_type == "3") {
+    if (milestones[i]["fields"].tile_type == "2" || milestones[i]["fields"].tile_type == "3" || milestones[i]["fields"].tile_type == "4") {
       dataDig.push({
         color: '#e0e0e0',
         x: 3,

@@ -140,25 +140,6 @@ $(function() {
             }
         },
         {
-            name: 'Digital Course',
-            borderRadius: 18,
-            pointWidth: 48,
-            data: dataCourses,
-            dataLabels: {
-                inside: true,
-                enabled: true,
-                verticalAlign: 'middle',
-                align: 'left',
-                fontFamily: '"Open Sans" , sans-serif',
-                formatter: function() {
-                    return 'Digital Course'
-                },
-                style: {
-                    fontSize: '15px'
-                }
-            }
-        },
-        {
             name: 'Webinar',
             data: dataWeb,
             borderRadius: 24,
