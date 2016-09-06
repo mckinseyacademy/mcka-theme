@@ -1,75 +1,78 @@
 #over-full-calendar
   #row-full-calendar
     .row
-      %span#next-calendar.fa.fa-angle-right
-      %span#previous-calendar.fa.fa-angle-left
-      #over-calendar
-        %span#close-calendar.fa.fa-times-circle
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.tab-month
-          %li.head-month
-            %span.month
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first
-          %li.second
-          %li.first.last
-          %li.second.last
-        %ul.legend-list
-          %li.light-gray-legend
-            %i.fa.fa-circle
-            not available
-          %li.gray-legend
-            %i.fa.fa-circle
-            not started
-          %li.light-green-legend
-            %i.fa.fa-circle
-            in progress
-          %li.green-legend
-            %i.fa.fa-circle
-            complete
-          %li.red-legend
-            %i.fa.fa-circle
-            incomplete
-          %li.teal-legend
-            %i.fa.fa-circle
-            not tracked
+      .large-12        
+        #over-calendar-left{style: "width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
+          %span#previous-calendar.fa.fa-angle-left
+        #over-calendar-right{style: "margin-left: 1020px; width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
+          %span#next-calendar.fa.fa-angle-right
+        #under-calendar
+          %span#close-calendar.fa.fa-times-circle
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.legend-list
+            %li.light-gray-legend
+              %i.fa.fa-circle
+              not available
+            %li.gray-legend
+              %i.fa.fa-circle
+              not started
+            %li.light-green-legend
+              %i.fa.fa-circle
+              in progress
+            %li.green-legend
+              %i.fa.fa-circle
+              complete
+            %li.red-legend
+              %i.fa.fa-circle
+              incomplete
+            %li.teal-legend
+              %i.fa.fa-circle
+              not tracked
 
-      #highcharts-container
+        #highcharts-container
 
 
 %script
@@ -83,6 +86,9 @@
   var dateList = [];
   var dataCourses = [];
 
+  var minDate;
+  var maxDate;
+
   var mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
   for (var i=0; i < 5; i++) {
@@ -92,6 +98,11 @@
   }
 
   addMonthNames(dates);
+  dateList.push(dateList[4] + 86400 * 9 * 1000);
+  dateList.unshift(dateList[0] - 86400 * 9 * 1000);
+
+  minDate = dateList[1];
+  maxDate = dateList[5];
 
   for (var j=0 in courses){
     dataCourses.push({
@@ -105,9 +116,25 @@
       low: (Date.parse(courses[j].start)).getTime(),
       high: (Date.parse(courses[j].end)).getTime(),
     });
+
+    if (dataCourses[j].start < minDate)
+      minDate = dataCourses[j].start
+    if (dataCourses[j].end > maxDate)
+      maxDate = dataCourses[j].end
   }
 
-  for (var i=0; i < milestones.length; i++){
+  var low;
+  var high;
+  for (var i=0 in milestones) {
+
+    low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
+    high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
+
+    if (low < minDate)
+      minDate = low;
+    if (high > maxDate)
+      maxDate = high;
+
     if (milestones[i]["fields"].milestone_type == "1") {
       dataIPS.push({
         color: '#e0e0e0',
@@ -117,8 +144,8 @@
         location: milestones[i]["fields"].location,
         details: milestones[i]["fields"].details,
         link: milestones[i]["fields"].link,
-        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
-        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
+        low: low,
+        high: high
       });
     }
 
@@ -131,8 +158,8 @@
         link: milestones[i]["fields"].link,
         details: milestones[i]["fields"].details,
         link: milestones[i]["fields"].link,
-        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
-        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
+        low: low,
+        high: high
       });
     }
 
@@ -143,48 +170,67 @@
         label: milestones[i]["fields"].label,
         name: milestones[i]["fields"].title,
         link: milestones[i]["fields"].link,
-        low: (Date.parse(milestones[i]["fields"].start_date)).getTime(),
-        high: (Date.parse(milestones[i]["fields"].end_date)).getTime(),
+        low: low,
+        high: high
       });
     }
   }
 
+  if (minDate > dateList[1])
+    $( "#previous-calendar" ).css( "color", "#f2f1f1" );
+  if (maxDate < dateList[5])
+    $( "#next-calendar" ).css( "color", "#f2f1f1" );
+
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
-    opened = false
+    opened = false;
   });
 
   $('#next-calendar').click(function() {
-    moveCalendarDates(4);
+    if (maxDate > dateList[5]) {
+      $( "#previous-calendar").css( "color", "#4789c4" );
+      moveCalendarDates(4);
+    }
   });
 
   $('#previous-calendar').click(function() {
-    moveCalendarDates(-4);
+    if (minDate < dateList[1]) {
+      $( "#next-calendar").css( "color", "#4789c4" );
+      moveCalendarDates(-4);
+    }
   });
 
   function moveCalendarDates(moveMonth) {
     var chart = $('#highcharts-container').highcharts();
     extremes = chart.yAxis[0].getExtremes();
 
-    var min_date = new Date(extremes.min);
-    min_date = min_date.setUTCMonth((min_date).getUTCMonth() + moveMonth);
+    var newMinDate = new Date(extremes.min + 86400 * 9 *1000);
+    newMinDate = newMinDate.setUTCMonth((newMinDate).getUTCMonth() + moveMonth);
 
-    extremes.min = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth());
-    extremes.max = Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth() + 4);
+    extremes.min = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth());
+    extremes.max = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + 4);
 
     dateList = [];
     for (var i=0; i < 5; i++) {
       dateList.push(
-        Date.UTC((new Date(min_date)).getUTCFullYear(), (new Date(min_date)).getUTCMonth() + i)
+        Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + i)
       );
     }
+
+    addMonthNames( dateList );
+
+    dateList.push(dateList[4] + 86400 * 9 * 1000);
+    dateList.unshift(dateList[0] - 86400 * 9 * 1000);
 
     chart.yAxis[0].options.tickInterval = dateList;
     chart.yAxis[0].isDirty = true;
 
     chart.yAxis[0].setExtremes(extremes.min, extremes.max);
 
-    addMonthNames( dateList );
+    if (minDate > dateList[1])
+      $( '#previous-calendar').css( 'color', '#f2f1f1' );
+    if (maxDate < dateList[5])
+      $('#next-calendar').css( 'color', '#f2f1f1' );
   }
 
   function addMonthNames( dateList ) {

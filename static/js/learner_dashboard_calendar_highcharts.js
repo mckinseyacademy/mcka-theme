@@ -1,10 +1,12 @@
 $(function() {
-    $('#highcharts-container').highcharts({
-
+    //$('#highcharts-container').highcharts({
+    var chart;
+    var chartingOptions = {
         chart: {
             type: 'columnrange',
             inverted: true,
-            backgroundColor: null
+            backgroundColor: null,
+            animation: false
         },
         title: {
             text: ''
@@ -23,7 +25,7 @@ $(function() {
             title: '',
             opposite: true,
             min: dateList[0],
-            max: dateList[4],
+            max: dateList[5],
             gridLineColor: 'transparent',
             gridLineWidth: 0,
             tickPositioner: function() {
@@ -37,7 +39,10 @@ $(function() {
         plotOptions: {
             columnrange: {
                 grouping: false,
+                crop: false,
                 dataLabels: {
+                    crop: false,
+                    overflow: 'none',
                     style: {
                         textShadow: false,
                         color: '#FFFFFF'
@@ -91,6 +96,25 @@ $(function() {
                     this.point.label +  '</div>' + 
                     '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>';
+            },
+            positioner: function (labelWidth, labelHeight, point) {
+                var tooltipX, tooltipY;
+                if (point.plotX + labelWidth + 80 > chart.plotWidth) {
+                    tooltipX = point.plotX + chart.plotLeft - labelWidth - 20;
+                } else {
+                    tooltipX = point.plotX + chart.plotLeft + 20;
+                }
+
+                if (point.plotY + labelHeight - 20 > chart.plotHeight) {
+                    tooltipY = point.plotY + chart.plotTop - labelHeight + 30;
+                } else {
+                    tooltipY = point.plotY + chart.plotTop - 35;
+                }
+
+                return {
+                    x: tooltipX,
+                    y: tooltipY
+                };
             }
         },
 
@@ -108,6 +132,10 @@ $(function() {
                 format: '\uf0c0',
                 style: {
                     fontSize: '20px'
+                },
+                formatter: function () {
+                    if (this.percentage.toFixed(0) > 0) return this.percentage.toFixed(0);
+                    else return '';
                 }
             }
         },
@@ -154,15 +182,17 @@ $(function() {
             minPointLength: 48,
             pointWidth: 48,
             dataLabels: {
-                inside: true,
                 enabled: true,
+                inside: true,
                 verticalAlign: 'middle',
-                align: 'center',
+                align: 'center',  
+                yLow: -3,
                 format: '\uf109',
                 style: {
                     fontSize: '25px'
                 }
             }
         }]
-    });
+    };
+    chart = $('#highcharts-container').highcharts(chartingOptions).highcharts();
 });
