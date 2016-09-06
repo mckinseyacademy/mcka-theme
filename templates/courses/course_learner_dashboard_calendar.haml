@@ -155,9 +155,9 @@
     }
   }
 
-  if (minDate > dateList[1])
+  if (minDate >= dateList[1])
     $( "#previous-calendar" ).css( "color", "#f2f1f1" );
-  if (maxDate < dateList[5])
+  if (maxDate <= dateList[5])
     $( "#next-calendar" ).css( "color", "#f2f1f1" );
 
   $('#close-calendar').click(function() {
