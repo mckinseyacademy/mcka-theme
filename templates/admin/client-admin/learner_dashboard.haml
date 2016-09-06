@@ -2,6 +2,7 @@
 - load staticfiles
 - block content
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
+  %link{rel: 'stylesheet', href: "{% static 'css/flatpickr.min.css' %}"}
   %script
       $(function() {
         var title;
@@ -130,10 +131,42 @@
           %label.inline Description color
         .large-10.columns
           %input#desc_color{:type => 'color', :value => '#{description_color}', :name => 'description_color'}
+      .row
+        .large-2.columns
+          %label.inline Tiles
+        .large-10.columns
+          %table
+            %thead
+              %tr
+                %th= _("Title")
+                %th= _("Calendar visible")
+                %th= _("Dashboard visible")
+                %th= _("Type")
+                %th= _("Edit")
+                %th= _("Delete")
+            %tbody
+              - for tile in learner_dashboard_tiles
+                %tr{id: "#{tile.id}"}
+                  %td{style: "word-wrap: break-word"}= tile.title
+                  %td{style: "word-wrap: break-word"}= tile.show_in_calendar
+                  %td{style: "word-wrap: break-word"}= tile.show_in_dashboard
+                  %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
+                  %td
+                    %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                      %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+                  %td
+                    %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/tile/delete/#{tile.id}"}
+                      %i{'style': "color:red", 'class': "fa fa-times"}
+
+          %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+            New tile
+            %i{'class': "fa fa-plus"}
+      %br
+
       - if learner_dashboard_id
         .row
           .large-2.columns
-            %label.inline Tiles
+            %label.inline Tile positions
           .large-10.columns
             %ul#sortable
               - for tile in learner_dashboard_tiles
@@ -163,9 +196,6 @@
       - if learner_dashboard_id
         %hr
         .row
-          - if milestones_enabled
-            .large-12.columns
-              %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/milestone/list"} Milestones
           .large-12.columns
             %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
 

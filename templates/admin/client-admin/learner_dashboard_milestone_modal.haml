@@ -9,43 +9,9 @@
   %i.fa.fa-times-circle
 %form.milestone_modal_form{action: '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/milestone/#{milestone_id}', method: 'POST', enctype: 'multipart/form-data'}
   - csrf_token
-  .row
-    .small-3.columns
-    .small-9.columns= form.milestone_type.errors
-  .row
-    .small-3.columns= form.milestone_type.label_tag
-    .small-9.columns= form.milestone_type
 
-  .digital_content
-    .row
-      .small-3.columns
-      .small-9.columns= form.digital_content_type.errors
-    .row
-      .small-3.columns= form.digital_content_type.label_tag
-      .small-9.columns= form.digital_content_type
 
-  .row
-    .small-3.columns
-    .small-9.columns= form.label.errors
-  .row
-    .small-3.columns= form.label.label_tag
-    .small-9.columns= form.label
-
-  .row
-    .small-3.columns
-    .small-9.columns= form.title.errors
-  .row
-    .small-3.columns= form.title.label_tag
-    .small-9.columns= form.title
-
-  .row
-    .small-3.columns
-    .small-9.columns= form.details.errors
-  .row
-    .small-3.columns= form.details.label_tag
-    .small-9.columns= form.details
-
-  .start_date.webinar.in_person_session.digital_content
+  .start_date.webinar.in_person_session
     .row
       .small-3.columns
       .small-9.columns= form.start_date.errors
@@ -53,7 +19,7 @@
       .small-3.columns= form.start_date.label_tag
       .small-9.columns= form.start_date
 
-  .in_person_session.digital_content
+  .in_person_session
     .row
       .small-3.columns
       .small-9.columns= form.end_date.errors
@@ -61,7 +27,7 @@
       .small-3.columns= form.end_date.label_tag
       .small-9.columns= form.end_date
 
-  .webinar.digital_content
+  .webinar
     .row
       .small-3.columns
       .small-9.columns= form.link.errors
@@ -77,12 +43,6 @@
       .small-3.columns= form.location.label_tag
       .small-9.columns= form.location
 
-  .row
-    .small-3.columns
-    .small-9.columns= form.active.errors
-  .row
-    .small-3.columns= form.active.label_tag
-    .small-9.columns= form.active
 
   %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
   .error

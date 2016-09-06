@@ -56,7 +56,7 @@ from .models import (
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
     LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, 
-    CompanyContact, LearnerDashboardMilestone, Tag
+    CompanyContact, Tag
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -75,7 +75,7 @@ from .forms import (
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, EditExistingUserForm,
     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
-    CreateNewParticipant, LearnerDashboardMilestoneForm
+    CreateNewParticipant
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -4323,74 +4323,6 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
             discoveryItem.save()
         return HttpResponse('200')
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def client_admin_course_learner_dashboard_milestone_list(request, client_id, course_id):
-
-    learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
-    milestones = LearnerDashboardMilestone.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('start_date')
-
-    return render(request, 'admin/client-admin/learner_dashboard_milestone_list.haml', {
-        'client_id': client_id,
-        'course_id': course_id,
-        'milestones': milestones,
-        'learner_dashboard_id': learner_dashboard.id,
-        'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED
-        })
-
-
-@ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def client_admin_course_learner_dashboard_milestone(request, client_id, course_id, learner_dashboard_id, milestone_id):
-
-    error = None
-    try:
-        instance = LearnerDashboardMilestone.objects.get(id=milestone_id)
-    except:
-        instance = None
-
-    if request.method == 'POST':
-        form = LearnerDashboardMilestoneForm(request.POST, instance=instance)
-        if form.is_valid():
-            if form.instance.milestone_type == "2":
-                form.instance.end_date = form.instance.start_date
-            form.save()
-
-            redirect_url = reverse('client_admin_course_learner_dashboard_milestone_list', kwargs={'client_id': client_id, 'course_id': course_id})
-            return HttpResponseRedirect(redirect_url)
-    elif request.method == 'DELETE':
-        instance.delete()
-
-        redirect_url = reverse('client_admin_course_learner_dashboard_milestone_list', kwargs={'client_id': client_id, 'course_id': course_id})
-        return HttpResponseRedirect(redirect_url)
-    else:
-        form = LearnerDashboardMilestoneForm(instance=instance)
-
-    return render(request, 'admin/client-admin/learner_dashboard_milestone_modal.haml', {
-        'error': error,
-        'form': form,
-        'client_id': client_id,
-        'course_id': course_id,
-        'learner_dashboard_id': learner_dashboard_id,
-        'milestone_id': milestone_id
-    })
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def client_admin_course_learner_dashboard_milestone_delete(request, client_id, course_id, milestone_id):
-
-    try:
-        milestone = LearnerDashboardMilestone.objects.get(id=milestone_id)
-    except:
-        return render(request, '404.haml')
-
-    milestone.delete()
-
-    url = reverse('client_admin_course_learner_dashboard_milestone_list', kwargs={
-        'client_id': client_id,
-        'course_id': course_id,
-    })
-
-    return HttpResponseRedirect(url)
 
 class email_templates_get_and_post_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)

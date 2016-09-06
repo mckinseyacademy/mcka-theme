@@ -21,7 +21,7 @@ from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
-    BrandingSettings, TileBookmark, LearnerDashboardMilestone
+    BrandingSettings, TileBookmark
     )
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
@@ -1023,7 +1023,7 @@ def course_learner_dashboard_calendar(request):
 
     milestoneData = {}
     if learner_dashboard_id is not None:
-        milestoneData = LearnerDashboardMilestone.objects.filter(learner_dashboard=learner_dashboard_id).order_by('start_date')
+        milestoneData = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar = True).order_by('start_date')
     elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)
         return HttpResponseRedirect(redirect_url)
@@ -1044,25 +1044,9 @@ def course_learner_dashboard_calendar(request):
         (datetime(now.year, (now.month + 3), now.day)).strftime("%Y-%m-%d")
     ]
 
-    courses = user_api.get_user_courses(request.user.id)
-    coursesData = {}
-    courseData = {}
-    for i, course in enumerate(courses):
-        courseData = {
-            "name": course.name,
-            "link": course.nav_url,
-            "start": str(course.start),
-            "end": str(course.end),
-            "user_progress": average_progress(course, request.user.id),
-            "cohort_progress": return_course_progress(course, request.user.id)
-        }
-        coursesData[i] = courseData
-        courseData = {}
-
     data ={
         'milestones': milestones,
         'dates': dates,
-        'courses': json.dumps(coursesData),
     }
 
     if request.is_ajax():

@@ -9,8 +9,7 @@ from django.core.exceptions import ValidationError
 
 from .models import (
     Client, Program, AccessKey, DashboardAdminQuickFilter, 
-    BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile,
-    LearnerDashboardMilestone
+    BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile
 )
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
@@ -315,6 +314,13 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'title_color',
             'note_color',
             'tile_background_color',
+            'location',
+            'download_link',
+            'details',
+            'start_date',
+            'end_date',
+            'show_in_calendar',
+            'show_in_dashboard',
        	]
        	widgets = {
        		'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
@@ -323,30 +329,5 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'title_color': forms.TextInput(attrs={'type': 'color'}),
             'note_color': forms.TextInput(attrs={'type': 'color'}),
             'tile_background_color': forms.TextInput(attrs={'type': 'color'}),
-        }
-
-
-class LearnerDashboardMilestoneForm(forms.ModelForm):
-
-    class Meta:
-        model = LearnerDashboardMilestone
-        fields = [
-            'label',
-            'title',
-            'location',
-            'download_link',
-            'link',
-            'details',
-            'milestone_type',
-            'digital_content_type',
-            'start_date',
-            'end_date',
-            'active',
-            'learner_dashboard'
-        ]
-        widgets = {
-            'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
             'download_link': forms.TextInput(attrs={'type': 'url'}),
-            'link': forms.TextInput(attrs={'type': 'url'}),
-            'active': forms.CheckboxInput(attrs={'checked' : 'checked'}),
         }
