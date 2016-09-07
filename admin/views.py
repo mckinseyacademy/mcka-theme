@@ -4323,6 +4323,19 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
             discoveryItem.save()
         return HttpResponse('200')
 
+def client_admin_course_learner_dashboard_reorder(request, course_id, client_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        dataDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(dataDict['position[]']):
+            discoveryItem = LearnerDashboardTile.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
+
 
 class email_templates_get_and_post_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)

@@ -143,7 +143,13 @@
                       %td
                         %a{class: "confirm", OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
                           %i{'style': "color:red", 'class': "fa fa-times"}
+            %a{id: "saveSort", class: "button radius small", style: "display:none; float:right;"}
+                Save list order
+                %i{'class': "fa fa-save"}
 
+            %div{id: "savedSort", class: "button radius small disabled", style: "display:none; float:right;"}
+              Saved
+                %i{'class': "fa fa-check", style: "color:green"}
             %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
               New tile
               %i{'class': "fa fa-plus"}
@@ -205,4 +211,5 @@
         .row
           .large-12.columns
             %a.left{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/list"} Discover Content
-
+- block js_snippets
+  %script{src: "{% static 'js/learner_dashboard_sort.js' %}"}
