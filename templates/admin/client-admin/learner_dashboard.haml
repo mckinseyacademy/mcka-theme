@@ -111,81 +111,84 @@
       - if error
         .error
           = error
+      - if learner_dashboard_id
+        .row
+          .large-2.columns
+            %label.inline Dashboard elements:
+          .large-10.columns
+            -if learner_dashboard_tiles
+              %table
+                %thead
+                  %tr
+                    %th= _("Title")
+                    %th= _("Calendar visible")
+                    %th= _("Dashboard visible")
+                    %th= _("Type")
+                    %th= _("Edit")
+                    %th= _("Delete")
+                %tbody
+                  - for tile in learner_dashboard_tiles
+                    %tr{id: "#{tile.id}"}
+                      %td{style: "word-wrap: break-word"}= tile.title
+                      %td{style: "word-wrap: break-word; text-align: center;"}
+                        -if tile.show_in_calendar
+                          %i{'style': "color:green", 'class': "fa fa-check"}
+                      %td{style: "word-wrap: break-word; text-align: center;"}
+                        -if tile.show_in_dashboard
+                          %i{'style': "color:green", 'class': "fa fa-check"}
+                      %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
+                      %td
+                        %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                          %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+                      %td
+                        %a{class: "confirm", OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
+                          %i{'style': "color:red", 'class': "fa fa-times"}
+
+            %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+              New tile
+              %i{'class': "fa fa-plus"}
+        %br
       .row
         .large-2.columns
-          %label.inline Title
+          %label.inline Title:
         .large-10.columns
           %input#title{:type => 'text', :value => '#{title}', :name => 'title_ld', :maxlength => '80'}
       .row
         .large-2.columns
-          %label.inline Title color
+          %label.inline Title color:
         .large-10.columns
           %input#text_color{:type => 'color', :value => '#{title_color}', :name => 'title_color'}
       .row
         .large-2.columns
-          %label.inline Description
+          %label.inline Description:
         .large-10.columns
           %textarea#description{:value => '#{description}', :name => 'description', :maxlength => '5000', :rows => 7}= description
       .row
         .large-2.columns
-          %label.inline Description color
+          %label.inline Description color:
         .large-10.columns
           %input#desc_color{:type => 'color', :value => '#{description_color}', :name => 'description_color'}
-      .row
-        .large-2.columns
-          %label.inline Tiles
-        .large-10.columns
-          %table
-            %thead
-              %tr
-                %th= _("Title")
-                %th= _("Calendar visible")
-                %th= _("Dashboard visible")
-                %th= _("Type")
-                %th= _("Edit")
-                %th= _("Delete")
-            %tbody
-              - for tile in learner_dashboard_tiles
-                %tr{id: "#{tile.id}"}
-                  %td{style: "word-wrap: break-word"}= tile.title
-                  %td{style: "word-wrap: break-word; text-align: center;"}
-                    -if tile.show_in_calendar
-                      %i{'style': "color:green", 'class': "fa fa-check"}
-                  %td{style: "word-wrap: break-word; text-align: center;"}
-                    -if tile.show_in_dashboard
-                      %i{'style': "color:green", 'class': "fa fa-check"}
-                  %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
-                  %td
-                    %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
-                      %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
-                  %td
-                    %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/tile/delete/#{tile.id}"}
-                      %i{'style': "color:red", 'class': "fa fa-times"}
-
-          %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
-            New tile
-            %i{'class': "fa fa-plus"}
-      %br
 
       - if learner_dashboard_id
         .row
           .large-2.columns
-            %label.inline Tile positions
+            %label.inline Tile positions:
           .large-10.columns
             %ul#sortable
               - for tile in learner_dashboard_tiles
-                %li.item.ui-state-default{id: "#{tile.id}", style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
-                  .sub-1{style: "color: #{tile.label_color};"} 
-                    - if tile.label
-                      #{tile.label}
-                    - else
-                      #{tile.get_tile_type_display}
-                    %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
-                    %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
-                      %i.fa.fa-pencil-square-o{'style': "color:green"}
-                  %a{href: "#{tile.link}"}
-                    %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
-                  .label-3{style: "color: #{tile.note_color};"}= tile.note
+                - if tile.show_in_dashboard
+                  %li.item.ui-state-default{id: "#{tile.id}", style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+                    .sub-1{style: "color: #{tile.label_color};"} 
+                      - if tile.label
+                        #{tile.label}
+                      - else
+                        #{tile.get_tile_type_display}
+                      %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
+                      %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                        %i.fa.fa-pencil-square-o{'style': "color:green"}
+                    %a{href: "#{tile.link}"}
+                      %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
+                    .label-3{style: "color: #{tile.note_color};"}= tile.note
               %li.item.fixed.ui-state-default.add-tile 
                 %a{:href => '/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
                   .fa.fa-plus.font-plus
