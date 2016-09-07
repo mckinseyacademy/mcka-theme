@@ -148,8 +148,12 @@
               - for tile in learner_dashboard_tiles
                 %tr{id: "#{tile.id}"}
                   %td{style: "word-wrap: break-word"}= tile.title
-                  %td{style: "word-wrap: break-word"}= tile.show_in_calendar
-                  %td{style: "word-wrap: break-word"}= tile.show_in_dashboard
+                  %td{style: "word-wrap: break-word; text-align: center;"}
+                    -if tile.show_in_calendar
+                      %i{'style': "color:green", 'class': "fa fa-check"}
+                  %td{style: "word-wrap: break-word; text-align: center;"}
+                    -if tile.show_in_dashboard
+                      %i{'style': "color:green", 'class': "fa fa-check"}
                   %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
                   %td
                     %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
