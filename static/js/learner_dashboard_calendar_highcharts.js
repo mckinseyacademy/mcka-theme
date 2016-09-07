@@ -1,5 +1,4 @@
 $(function() {
-    //$('#highcharts-container').highcharts({
     var chart;
     var chartingOptions = {
         chart: {
@@ -70,7 +69,8 @@ $(function() {
                 if (this.point.x == 0)
                     return '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
                     this.point.label +  '</div>' + 
-                    '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' + 
+                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
                     Highcharts.dateFormat('%b %e, %Y', this.point.low) + 
                     '</br>' + this.point.location + '</div>';
@@ -78,15 +78,16 @@ $(function() {
                 else if (this.point.x == 1)
                     return '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
                     this.point.label +  '</div>' +
-                    '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
-                    this.point.user_progress +
-                    '</br>' + this.point.cohort_progress + '</div>';
+                    '</br>' +  '</div>';
 
                 else if (this.point.x == 2)
                     return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
                     this.point.label +  '</div>' + 
-                    '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block; height: 65px;' + 
+                    'margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
                     Highcharts.dateFormat('%b %e, %Y', this.point.low) +
                     '</br>' + Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
@@ -94,7 +95,8 @@ $(function() {
                 else if (this.point.x == 3)
                     return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
                     this.point.label +  '</div>' + 
-                    '<a href="' + this.point.link + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>';
             },
             positioner: function (labelWidth, labelHeight, point) {
@@ -132,10 +134,28 @@ $(function() {
                 format: '\uf0c0',
                 style: {
                     fontSize: '20px'
+                }
+            }
+        },
+        {
+            name: 'Digital Course',
+            borderRadius: 18,
+            pointWidth: 48,
+            data: dataCourse,
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                verticalAlign: 'middle',
+                align: 'left',
+                fontFamily: '"Open Sans" , sans-serif',
+                formatter: function() {
+                    var labelWidth = this.point.plotLow - this.point.plotHigh
+                    if ( this.point.name.length * 6 > labelWidth )
+                        return this.point.name.substr( 0, (labelWidth / 6) - 10 ) + "...";
+                    return this.point.name
                 },
-                formatter: function () {
-                    if (this.percentage.toFixed(0) > 0) return this.percentage.toFixed(0);
-                    else return '';
+                style: {
+                    fontSize: '15px'
                 }
             }
         },

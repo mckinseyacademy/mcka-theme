@@ -159,7 +159,7 @@
     background-color: rgba(0,0,0,0.4);
 
     #previous-calendar, #next-calendar {
-        margin-top: 115px;
+        margin-top: 100px;
         font-size: 50px;
         font-weight: bold;
         color: #4789c4;
@@ -318,7 +318,6 @@
     position: absolute;
     z-index: 200;
     margin-top: 40px;
-    //margin-left: 20px;
     width: 1100px; 
     height: 232px;
 
@@ -330,6 +329,7 @@
             height: 120px;
             background-color: white;
             overflow:auto;
+            white-space: normal !important;
         }
     }
 }

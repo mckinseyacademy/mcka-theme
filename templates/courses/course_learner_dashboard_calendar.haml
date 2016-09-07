@@ -82,6 +82,8 @@
   var dataIPS = [];
   var dataWeb = [];
   var dataDig = [];
+  var dataCourse = [];
+
   var dateList = [];
 
   var minDate;
@@ -96,16 +98,15 @@
   }
 
   addMonthNames(dates);
-  dateList.push(dateList[4] + 86400 * 9 * 1000);
-  dateList.unshift(dateList[0] - 86400 * 9 * 1000);
-
+  addExtraSpaceToFrontEnd();
+  
   minDate = dateList[1];
   maxDate = dateList[5];
 
   var low;
   var high;
-  for (var i=0 in milestones) {
 
+  for (var i=0 in milestones) {
     low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
     high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
 
@@ -113,6 +114,31 @@
       minDate = low;
     if (high > maxDate)
       maxDate = high;
+
+    if (milestones[i]["fields"].tile_type == "1" || milestones[i]["fields"].tile_type == "2" || milestones[i]["fields"].tile_type == "3") {
+      dataDig.push({
+        color: '#e0e0e0',
+        x: 3,
+        label: milestones[i]["fields"].label,
+        name: milestones[i]["fields"].title,
+        link: milestones[i]["fields"].link,
+        low: low,
+        high: high
+      });
+    }
+
+    if (milestones[i]["fields"].tile_type == "4") {
+      dataCourse.push({
+        color: '#e0e0e0',
+        x: 1,
+        label: milestones[i]["fields"].label,
+        name: milestones[i]["fields"].title,
+        link: milestones[i]["fields"].link,
+        details: milestones[i]["fields"].details,
+        low: low,
+        high: high
+      });
+    }
 
     if (milestones[i]["fields"].tile_type == "5") {
       dataIPS.push({
@@ -136,29 +162,13 @@
         name: milestones[i]["fields"].title,
         link: milestones[i]["fields"].link,
         details: milestones[i]["fields"].details,
-        link: milestones[i]["fields"].link,
-        low: low,
-        high: high
-      });
-    }
-
-    if (milestones[i]["fields"].tile_type == "2" || milestones[i]["fields"].tile_type == "3" || milestones[i]["fields"].tile_type == "4") {
-      dataDig.push({
-        color: '#e0e0e0',
-        x: 3,
-        label: milestones[i]["fields"].label,
-        name: milestones[i]["fields"].title,
-        link: milestones[i]["fields"].link,
         low: low,
         high: high
       });
     }
   }
 
-  if (minDate >= dateList[1])
-    $( "#previous-calendar" ).css( "color", "#f2f1f1" );
-  if (maxDate <= dateList[5])
-    $( "#next-calendar" ).css( "color", "#f2f1f1" );
+  changeDisableArrowColors();
 
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
@@ -197,18 +207,25 @@
     }
 
     addMonthNames( dateList );
-
-    dateList.push(dateList[4] + 86400 * 9 * 1000);
-    dateList.unshift(dateList[0] - 86400 * 9 * 1000);
+    addExtraSpaceToFrontEnd();
 
     chart.yAxis[0].options.tickInterval = dateList;
     chart.yAxis[0].isDirty = true;
 
     chart.yAxis[0].setExtremes(extremes.min, extremes.max);
 
-    if (minDate > dateList[1])
+    changeDisableArrowColors();
+  }
+
+  function addExtraSpaceToFrontEnd() {
+    dateList.push(dateList[4] + 86400 * 9 * 1000);
+    dateList.unshift(dateList[0] - 86400 * 9 * 1000);
+  }
+
+  function changeDisableArrowColors() {
+    if (minDate >= dateList[1])
       $( '#previous-calendar').css( 'color', '#f2f1f1' );
-    if (maxDate < dateList[5])
+    if (maxDate <= dateList[5])
       $('#next-calendar').css( 'color', '#f2f1f1' );
   }
 
