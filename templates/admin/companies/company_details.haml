@@ -26,6 +26,14 @@
 
       - if not user.is_company_admin
         #additionalCompanyButtons
+          - if not user.is_internal_admin
+            - if internalCompanyTagFlag
+              - if thisInternalCompanyFlag
+                %a.button.small.radius.internalTag{:href => "/admin/api/companies/#{company.id}/remove_internal_company"}
+                  Remove Internal Company
+            - else
+              %a.button.small.radius.internalTag{:href => "/admin/api/companies/#{company.id}/add_internal_company"}
+                Add Internal Company
           %a.button.small.radius.navigationLink{:href => "/admin/clients/#{company.id}/navigation"}
             Navigation
           %a.button.small.radius.accessLink{:href => "/admin/clients/#{company.id}/access_keys"}

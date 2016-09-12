@@ -3733,6 +3733,20 @@ class manage_user_company_api(APIView):
     def get(self, request):
         user_id = request.GET.get('user_id','');
         response_obj = {}
+
+        if request.user.is_internal_admin:
+            company = Tag.fetch_internal_company()
+            if company: 
+                companyList = []
+                companyData = {}
+                companyData['display_name'] = company.display_name
+                companyData['id'] = company.id
+                companyList.append(companyData)
+                response_obj['all_items'] = companyList
+                response_obj['status'] = 'ok'
+                return Response(response_obj)
+            else:
+                return Response(response_obj)
         if user_id != '':
             selectedUser = user_api.get_user(user_id)
             if selectedUser is not None:
@@ -4596,6 +4610,57 @@ class create_new_company_api(APIView):
             return Response({'status':'error'})
 
 
+class add_internal_company(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, company_id):
+
+        tag = None
+
+        if company_id:
+            tag = Tag.fetch_internal_company_tag()
+            if tag:
+                return HttpResponseRedirect('/admin/companies/{}'.format(company_id))
+            else:
+                try:
+                    tag = Tag.create_internal_company_tag()
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+                try:
+                    organization_api.add_group_to_organization(company_id, tag.id)
+                except ApiError as e:
+                    return Response({'status':'error', 'message': e.message})
+                return HttpResponseRedirect('/admin/companies/{}'.format(company_id))
+        else:
+            return Response({'status':'error', 'message': 'noCompanyId'})
+
+
+class remove_internal_company(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, company_id):
+
+        tag = Tag.fetch_internal_company_tag()
+
+        if company_id:
+            try:
+                group_api.delete_group(tag.id)
+            except ApiError as e:
+                return Response({'status':'error', 'message': e.message})
+            return HttpResponseRedirect('/admin/companies/{}'.format(company_id))
+        else:
+            return Response({'status':'error', 'message': 'noCompanyId'})
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def internal_company(request):
+
+    company = Tag.fetch_internal_company()
+    if company:
+        return HttpResponseRedirect('/admin/companies/{}'.format(company.id))
+    else:
+        return HttpResponseRedirect('/admin')
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_details(request, company_id):
 
@@ -4609,6 +4674,21 @@ def company_details(request, company_id):
             company_ids.append(int(user_org.id))
         if int(company_id) not in company_ids:
             return permission_denied(request)
+
+    internal_company = Tag.fetch_internal_company()
+    if request.user.is_internal_admin:
+        if internal_company:
+            if internal_company.id != int(company_id):
+                return permission_denied(request)
+        else:
+            return permission_denied(request)
+
+    internalCompanyTagFlag = False
+    thisInternalCompanyFlag = False
+    if internal_company:
+        if internal_company.id == int(company_id):
+            thisInternalCompanyFlag = True
+        internalCompanyTagFlag = True
 
     client = Client.fetch(company_id)
     company = {}
@@ -4683,7 +4763,9 @@ def company_details(request, company_id):
         'company': company,
         'contacts': contacts,
         'invoicing': invoicing, 
-        'companyAdminFlag': companyAdminFlag
+        'companyAdminFlag': companyAdminFlag,
+        'internalCompanyTagFlag': internalCompanyTagFlag,
+        'thisInternalCompanyFlag': thisInternalCompanyFlag
     }
 
     return render(request, 'admin/companies/company_details.haml', data)
@@ -4705,6 +4787,7 @@ class company_courses_api(APIView):
         
         company_courses = organization_api.get_organizations_courses(company_id)
         courses = []
+
         for company_course in company_courses:
             course = {}
             course['name'] = company_course['name']
@@ -4729,6 +4812,14 @@ class company_courses_api(APIView):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_course_details(request, company_id, course_id):
+
+
+    internalAdminFlag = False
+    if request.user.is_internal_admin:
+        internalAdminFlag = True
+        internal_flag = check_if_course_is_internal(course_id)
+        if internal_flag == False:
+            return permission_denied(request)
 
     companyAdminFlag = False
     if request.user.is_company_admin:
@@ -4824,9 +4915,6 @@ def company_course_details(request, company_id, course_id):
     course['companyCourseDeatilsPage'] = True
     course['companyId'] = company_id
     course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
-    internalAdminFlag = False
-    if request.user.is_internal_admin:
-        internalAdminFlag = True
     course['internalAdminFlag'] = internalAdminFlag
     return render(request, 'admin/courses/course_details.haml', course)
 
