@@ -201,29 +201,12 @@
     });
   }
 
-  
   $('#next-calendar').click(function() {
     if (maxDate > dateList[5]) {
       $( "#previous-calendar").css( "color", "#4789c4" );
 
-      var headers = {
-        'X-CSRFToken': $.cookie('apros_csrftoken')
-      }
-
-      $.ajax({
-        headers: headers,
-        type: 'GET',
-        url: '/learnerdashboard/calendar',
-        data: { beginDate: dateList[5] },
-        success : function(data) {
-          opened = true;
-          $('#replace-calendar').html(data.html);
-        },
-        error: function(xhr, status, error) {
-          var err = eval("(" + xhr.responseText + ")");
-          console.log (err);
-        }
-      });
+      var param = { beginDate: dateList[5] };
+      nextPrevCalendar(param);
     }
   });
 
@@ -231,24 +214,8 @@
     if (minDate < dateList[1]) {
       $( "#next-calendar").css( "color", "#4789c4" );
 
-      var headers = {
-        'X-CSRFToken': $.cookie('apros_csrftoken')
-      }
-
-      $.ajax({
-        headers: headers,
-        type: 'GET',
-        url: '/learnerdashboard/calendar',
-        data: { endDate: dateList[1] },
-        success : function(data) {
-          opened = true;
-          $('#replace-calendar').html(data.html);
-        },
-        error: function(xhr, status, error) {
-          var err = eval("(" + xhr.responseText + ")");
-          console.log (err);
-        }
-      });
+      var param = { endDate: dateList[1] };
+      nextPrevCalendar(param);
     }
   });
 
