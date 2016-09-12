@@ -35,6 +35,10 @@ TAG_GROUPS = DottableDict(
     COMMON='tag',
 )
 
+COMPANY_TAG_GROUPS = DottableDict(
+    INTERNAL_COMPANY='company_tag:internal',
+)
+
 @api_error_protect
 def get_groups_of_type(group_type, group_object=JsonObject, *args, **kwargs):
     ''' gets all groups of provided type'''
