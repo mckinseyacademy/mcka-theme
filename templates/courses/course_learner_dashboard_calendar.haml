@@ -106,65 +106,69 @@
   var low;
   var high;
 
-  for (var i=0 in milestones) {
-    low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
-    high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
+  processMilestones();
 
-    if (low < minDate)
-      minDate = low;
-    if (high > maxDate)
-      maxDate = high;
+  function processMilestones() {
+    for (var i=0 in milestones) {
+      low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
+      high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
 
-    if (milestones[i]["fields"].tile_type == "1" || milestones[i]["fields"].tile_type == "2" || milestones[i]["fields"].tile_type == "3") {
-      dataDig.push({
-        color: '#e0e0e0',
-        x: 3,
-        label: milestones[i]["fields"].label,
-        name: milestones[i]["fields"].title,
-        link: milestones[i]["fields"].link,
-        low: low,
-        high: high
-      });
-    }
+      if (low < minDate)
+        minDate = low;
+      if (high > maxDate)
+        maxDate = high;
 
-    if (milestones[i]["fields"].tile_type == "4") {
-      dataCourse.push({
-        color: '#e0e0e0',
-        x: 1,
-        label: milestones[i]["fields"].label,
-        name: milestones[i]["fields"].title,
-        link: milestones[i]["fields"].link,
-        details: milestones[i]["fields"].details,
-        low: low,
-        high: high
-      });
-    }
+      if (milestones[i]["fields"].tile_type == "1" || milestones[i]["fields"].tile_type == "2" || milestones[i]["fields"].tile_type == "3") {
+        dataDig.push({
+          color: '#e0e0e0',
+          x: 3,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          link: milestones[i]["fields"].link,
+          low: low,
+          high: high
+        });
+      }
 
-    if (milestones[i]["fields"].tile_type == "5") {
-      dataIPS.push({
-        color: '#e0e0e0',
-        x: 0,
-        label: milestones[i]["fields"].label,
-        name: milestones[i]["fields"].title,
-        location: milestones[i]["fields"].location,
-        details: milestones[i]["fields"].details,
-        link: milestones[i]["fields"].link,
-        low: low,
-        high: high
-      });
-    }
+      if (milestones[i]["fields"].tile_type == "4") {
+        dataCourse.push({
+          color: '#e0e0e0',
+          x: 1,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          link: milestones[i]["fields"].link,
+          details: milestones[i]["fields"].details,
+          low: low,
+          high: high
+        });
+      }
 
-    if (milestones[i]["fields"].tile_type == "6") {
-      dataWeb.push({
-        color: '#e0e0e0',
-        x: 2,
-        label: milestones[i]["fields"].label,
-        name: milestones[i]["fields"].title,
-        link: milestones[i]["fields"].link,
-        details: milestones[i]["fields"].details,
-        low: low,
-        high: high
-      });
+      if (milestones[i]["fields"].tile_type == "5") {
+        dataIPS.push({
+          color: '#e0e0e0',
+          x: 0,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          location: milestones[i]["fields"].location,
+          details: milestones[i]["fields"].details,
+          link: milestones[i]["fields"].link,
+          low: low,
+          high: high
+        });
+      }
+
+      if (milestones[i]["fields"].tile_type == "6") {
+        dataWeb.push({
+          color: '#e0e0e0',
+          x: 2,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          link: milestones[i]["fields"].link,
+          details: milestones[i]["fields"].details,
+          low: low,
+          high: high
+        });
+      }
     }
   }
 
@@ -174,48 +178,6 @@
     $('#replace-calendar').empty();
     opened = false;
   });
-
-  $('#next-calendar').click(function() {
-    if (maxDate > dateList[5]) {
-      $( "#previous-calendar").css( "color", "#4789c4" );
-      moveCalendarDates(4);
-    }
-  });
-
-  $('#previous-calendar').click(function() {
-    if (minDate < dateList[1]) {
-      $( "#next-calendar").css( "color", "#4789c4" );
-      moveCalendarDates(-4);
-    }
-  });
-
-  function moveCalendarDates(moveMonth) {
-    var chart = $('#highcharts-container').highcharts();
-    extremes = chart.yAxis[0].getExtremes();
-
-    var newMinDate = new Date(extremes.min + 86400 * 9 *1000);
-    newMinDate = newMinDate.setUTCMonth((newMinDate).getUTCMonth() + moveMonth);
-
-    extremes.min = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth());
-    extremes.max = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + 4);
-
-    dateList = [];
-    for (var i=0; i < 5; i++) {
-      dateList.push(
-        Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + i)
-      );
-    }
-
-    addMonthNames( dateList );
-    addExtraSpaceToFrontEnd();
-
-    chart.yAxis[0].options.tickInterval = dateList;
-    chart.yAxis[0].isDirty = true;
-
-    chart.yAxis[0].setExtremes(extremes.min, extremes.max);
-
-    changeDisableArrowColors();
-  }
 
   function addExtraSpaceToFrontEnd() {
     dateList.push(dateList[4] + 86400 * 9 * 1000);
@@ -238,5 +200,56 @@
         $( this ).parent().addClass( "active" );
     });
   }
+
+  
+  $('#next-calendar').click(function() {
+    if (maxDate > dateList[5]) {
+      $( "#previous-calendar").css( "color", "#4789c4" );
+
+      var headers = {
+        'X-CSRFToken': $.cookie('apros_csrftoken')
+      }
+
+      $.ajax({
+        headers: headers,
+        type: 'GET',
+        url: '/learnerdashboard/calendar',
+        data: { beginDate: dateList[5] },
+        success : function(data) {
+          opened = true;
+          $('#replace-calendar').html(data.html);
+        },
+        error: function(xhr, status, error) {
+          var err = eval("(" + xhr.responseText + ")");
+          console.log (err);
+        }
+      });
+    }
+  });
+
+  $('#previous-calendar').click(function() {
+    if (minDate < dateList[1]) {
+      $( "#next-calendar").css( "color", "#4789c4" );
+
+      var headers = {
+        'X-CSRFToken': $.cookie('apros_csrftoken')
+      }
+
+      $.ajax({
+        headers: headers,
+        type: 'GET',
+        url: '/learnerdashboard/calendar',
+        data: { endDate: dateList[1] },
+        success : function(data) {
+          opened = true;
+          $('#replace-calendar').html(data.html);
+        },
+        error: function(xhr, status, error) {
+          var err = eval("(" + xhr.responseText + ")");
+          console.log (err);
+        }
+      });
+    }
+  });
 
 %script{src: "/static/js/learner_dashboard_calendar_highcharts.js"}

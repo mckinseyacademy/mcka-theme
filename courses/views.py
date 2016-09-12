@@ -36,7 +36,7 @@ from main.models import CuratedContentItem
 from .models import LessonNotesItem, FeatureFlags
 from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
-from .controller import update_bookmark, group_project_reviews
+from .controller import update_bookmark, group_project_reviews, add_months_to_date
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
@@ -1031,18 +1031,44 @@ def course_learner_dashboard_calendar(request):
         redirect_url = '/'
         return HttpResponseRedirect(redirect_url)
 
+    beginDate = request.GET.get('beginDate', None)
+    endDate = request.GET.get('endDate', None)
+
+    if beginDate:
+        first = datetime.utcfromtimestamp(int(beginDate)/1000.0)
+
+        dates = [
+            datetime(first.year, first.month, first.day).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 1).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 2).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 3).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 4).replace(day=1).strftime("%Y-%m-%d")
+        ]
+
+    elif endDate:
+        last = datetime.utcfromtimestamp(int(endDate)/1000.0)
+
+        dates = [
+            add_months_to_date(last, -4).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(last, -3).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(last, -2).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(last, -1).replace(day=1).strftime("%Y-%m-%d"),
+            last.strftime("%Y-%m-%d")
+        ]
+
+    else:
+        first = datetime.now().replace(day=1)
+        now = datetime(first.year, first.month, first.day)
+
+        dates = [
+            add_months_to_date(now, -1).replace(day=1).strftime("%Y-%m-%d"),
+            now.strftime("%Y-%m-%d"),
+            add_months_to_date(now, 1).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(now, 2).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(now, 3).replace(day=1).strftime("%Y-%m-%d")
+        ]
+
     milestones = serializers.serialize("json", milestoneData)
-
-    first = datetime.now().replace(day=1)
-    now = datetime(first.year, first.month, first.day)
-
-    dates = [
-        (datetime(now.year, (now.month - 1), now.day)).strftime("%Y-%m-%d"),
-        now.strftime("%Y-%m-%d"),
-        (datetime(now.year, (now.month + 1), now.day)).strftime("%Y-%m-%d"),
-        (datetime(now.year, (now.month + 2), now.day)).strftime("%Y-%m-%d"),
-        (datetime(now.year, (now.month + 3), now.day)).strftime("%Y-%m-%d")
-    ]
 
     data ={
         'milestones': milestones,

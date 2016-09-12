@@ -3,6 +3,7 @@
 
 import copy
 import random
+from datetime import datetime
 
 from django.conf import settings
 
@@ -638,3 +639,10 @@ def inject_gradebook_info(user_id, course):
                     activity.is_graded = True
 
     return gradebook
+
+
+def add_months_to_date(new_date, months):
+    month = new_date.month - 1 + months
+    year = int(new_date.year + month / 12)
+    month = month % 12 + 1
+    return datetime(year, month, 1)
