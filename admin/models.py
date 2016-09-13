@@ -16,7 +16,7 @@ from django.utils import timezone
 from django.db import models as db_models
 from django.dispatch import Signal
 
-from api_client.group_api import TAG_GROUPS, COMPANY_TAG_GROUPS
+from api_client.group_api import TAG_GROUPS
 
 GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'gp-v2-project'
@@ -143,34 +143,6 @@ class Tag(BaseGroupModel):
             cls.group_type = TAG_GROUPS[tag_type]
             tags.extend(cls.list())
         return tags
-
-    @classmethod
-    def fetch_internal_company_tag(cls):
-        cls.group_type = COMPANY_TAG_GROUPS.INTERNAL_COMPANY
-        tags = cls.list()
-        if tags:
-            return tags[0]
-        else:
-            return tags
-
-    @classmethod
-    def create_internal_company_tag(cls):
-        tag_name = 'internal_company'
-        tag_data = {}
-        cls.group_type = COMPANY_TAG_GROUPS.INTERNAL_COMPANY
-        return cls.create(tag_name, tag_data)
-
-    @classmethod
-    def fetch_internal_company(cls):
-        tag = cls.fetch_internal_company_tag()
-        if tag:
-            organizations = group_api.get_organizations_in_group(tag.id)
-            if len(organizations) > 0:
-                return organizations[0]
-            else:
-                return organizations
-        else:
-            return tag
 
     @classmethod
     def create_internal(cls, tag_name, tag_data):
