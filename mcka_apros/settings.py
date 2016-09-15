@@ -78,12 +78,15 @@ MIDDLEWARE_CLASSES = (
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.session_timeout.SessionTimeout',
     'accounts.middleware.thread_local.ThreadLocal',
+    'main.middleware.add_csp_header.AllowEmbedUrlMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',      # explicitly add this, otherwise this doesn't seem to appear on AWS environments
     'accounts.middleware.ajax_redirect.AjaxRedirect',
     'lib.middleware.handle_prior_ids.PriorIdRequest',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
+
+ALLOW_EMBED_URL = 'http://apros.mcka.local'
 
 WSGI_APPLICATION = 'mcka_apros.wsgi.application'
 
