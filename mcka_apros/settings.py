@@ -86,7 +86,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'mcka_apros.urls'
 
-ALLOW_EMBED_URL = 'http://apros.mcka.local'
+ALLOW_EMBED_URL = ''
 
 WSGI_APPLICATION = 'mcka_apros.wsgi.application'
 
