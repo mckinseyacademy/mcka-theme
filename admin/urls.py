@@ -142,6 +142,7 @@ urlpatterns = patterns(
     url(r'^participants$', views.participants_list, name='participants_list'),
 
     url(r'^api/companies/(?P<company_id>[0-9]+)/courses$', views.company_courses_api.as_view(), name='company_courses_api'),
+    url(r'^api/companies/(?P<company_id>[0-9]+)/learner_dashboards$', views.company_learner_dashboards_api.as_view(), name='company_learner_dashboards_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/export_info$', views.download_company_info, name='download_company_info'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/company_info$', views.company_info_api.as_view(), name='company_info_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/edit$', views.company_edit_api.as_view(), name='company_edit_api'),
