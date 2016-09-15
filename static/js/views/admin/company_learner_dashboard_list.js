@@ -7,7 +7,7 @@ Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
           var course_id = attributes['course_id']
           var name = attributes['name']
           if (name) {
-            return '<a href="/admin/client-admin/' + company_id + '/courses/' + course_id + '/learner_dashboard" target="_self">' + name.slice(0,75) + '...</a>'; 
+            return '<a href="/admin/companies/' + company_id + '/courses/' + course_id + '/learner_dashboard" target="_self">' + name.slice(0,75) + '...</a>'; 
           }
         } 
       },

@@ -4702,15 +4702,86 @@ class company_learner_dashboards_api(APIView):
 
         learner_dashboards = []
         for course_id in coursesIDs:
-            learner_dashboard = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
-            learner_dashboards.append({
-                'id': learner_dashboard.id,
-                'name': learner_dashboard.title,
-                'client_id': company_id,
-                'course_id': course_id
-            })
+            try:
+                learner_dashboard = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
+                if learner_dashboard:
+                    learner_dashboards.append({
+                        'id': learner_dashboard.id,
+                        'name': learner_dashboard.title,
+                        'client_id': company_id,
+                        'course_id': course_id
+                    })
+            except:
+                continue
 
         return Response(learner_dashboards)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_course_learner_dashboard(request, company_id, course_id):
+
+    try:
+        instance = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
+    except:
+        instance = None
+
+    if request.method == "POST":
+        if instance == None:
+            instance = LearnerDashboard(
+                title = request.POST['title'],
+                description = request.POST['description'],
+                title_color = request.POST['title_color'],
+                description_color = request.POST['description_color'],
+                client_id = company_id, 
+                course_id = course_id
+            )
+            instance.save()
+        else:
+            instance.title = request.POST['title']
+            instance.description = request.POST['description']
+            instance.title_color = request.POST['title_color']
+            instance.description_color = request.POST['description_color']
+            instance.save()
+
+            myDict = dict(request.POST.iterlists())
+            if myDict.get('positions[]'):
+                for index, item_id in enumerate(myDict['positions[]']):
+                    tileItem = LearnerDashboardTile.objects.get(id=item_id)
+                    tileItem.position = index
+                    tileItem.save()
+
+    if instance:
+        try:
+            branding = BrandingSettings.objects.get(client_id=company_id)
+        except:
+            branding = None
+
+        discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=instance.id).order_by('position')
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
+        
+        data = {
+            'client_id': company_id,
+            'course_id': course_id,
+            'learner_dashboard_id': instance.id,
+            'title': instance.title,
+            'description': instance.description,
+            'title_color': instance.title_color,
+            'description_color': instance.description_color,
+            'learner_dashboard_tiles': learner_dashboard_tiles,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+            'milestones_enabled': settings.MILESTONES_ENABLED,
+            'discovery_items': discovery_items,
+            'branding': branding
+        }
+    else:
+        data = {
+            'client_id': company_id,
+            'course_id': course_id,
+            'learner_dashboard_id': None,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+        }
+
+    return render(request, 'admin/learner_dashboard/main.haml', data)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
