@@ -3,6 +3,7 @@
 - block content
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
   %link{rel: 'stylesheet', href: "{% static 'css/flatpickr.min.css' %}"}
+  %script{src: "/static/js/learner_dashboard_sort.js"}
   %script
     $(function() {
       var title;
@@ -119,6 +120,10 @@
       #element-positions.admin-ld-component
         - include 'admin/learner_dashboard/element_positions.haml'
 
+    - if learner_dashboard_id
+      #element-discovery-content.admin-ld-component
+        - include 'admin/learner_dashboard/discovery_content.haml'
+
       #button-row.row
         .large-10.large-offset-2.columns
           - if learner_dashboard_id
@@ -126,6 +131,3 @@
             %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview and Save'}
           - else
             %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save', disabled: 'disabled'}
-
-- block js_snippets
-  %script{src: "{% static 'js/learner_dashboard_sort.js' %}"}
