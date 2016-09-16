@@ -490,7 +490,7 @@ class WorkgroupCompletionData(object):
             workgroup_data = self._v2_get_workgroup_data(workgroup, activity_xblocks)
             if workgroup_data:
                 workgroup_data.users = self._v2_get_workgroup_users_data(workgroup, activity_xblocks)
-            result.workgroups.append(workgroup_data)
+                result.workgroups.append(workgroup_data)
 
         return result
 
