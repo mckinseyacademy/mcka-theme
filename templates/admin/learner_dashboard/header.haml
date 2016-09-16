@@ -1,0 +1,25 @@
+%ul#header-ld
+  %li
+    %a{href:"#"}
+      = _("Dashboard Elements")
+  %li
+    %a{href:"#"}
+      = _("Title/Description")
+  %li
+    %a{href:"#"}
+      = _("Tile Positions")
+  %li
+    %a{href:"#"}
+      = _("Discover Content")
+
+%script
+  $("#header-ld li").on('click', function (){
+    $('.admin-ld-component').hide().eq($(this).index()).show();
+
+    if ($(this).index() == 0){
+      $('#button-row').hide();
+    }
+    else{
+      $('#button-row').show();
+    }
+  });

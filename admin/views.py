@@ -4711,7 +4711,7 @@ class company_learner_dashboards_api(APIView):
                         'client_id': company_id,
                         'course_id': course_id
                     })
-            except:
+            except LearnerDashboard.DoesNotExist:
                 continue
 
         return Response(learner_dashboards)
@@ -4722,7 +4722,7 @@ def company_course_learner_dashboard(request, company_id, course_id):
 
     try:
         instance = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
-    except:
+    except LearnerDashboard.DoesNotExist:
         instance = None
 
     if request.method == "POST":
@@ -4753,7 +4753,7 @@ def company_course_learner_dashboard(request, company_id, course_id):
     if instance:
         try:
             branding = BrandingSettings.objects.get(client_id=company_id)
-        except:
+        except BrandingSettings.DoesNotExist:
             branding = None
 
         discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=instance.id).order_by('position')
