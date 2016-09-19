@@ -5,9 +5,9 @@
     = error
 .row
   .large-12.columns
-    %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
+    %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
       New element
-      %i{'class': "fa fa-plus"}
+      %i.fa.fa-plus
 
     -if learner_dashboard_tiles
       %table
@@ -25,14 +25,14 @@
               %td{style: "word-wrap: break-word"}= tile.title
               %td{style: "word-wrap: break-word; text-align: center;"}
                 -if tile.show_in_calendar
-                  %i{'style': "color:green", 'class': "fa fa-check"}
+                  %i.fa.fa-check{'style': "color:green"}
               %td{style: "word-wrap: break-word; text-align: center;"}
                 -if tile.show_in_dashboard
-                  %i{'style': "color:green", 'class': "fa fa-check"}
+                  %i.fa.fa-check{'style': "color:green"}
               %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
               %td
-                %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
-                  %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+                %a{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                  %i.fa.fa-pencil-square-o{'style': "color:green"}
               %td
-                %a{class: "confirm", OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
-                  %i{'style': "color:red", 'class': "fa fa-times"}
+                %a.confirm{OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
+                  %i.fa.fa-times{'style': "color:red"}

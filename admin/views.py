@@ -4722,7 +4722,7 @@ def company_course_learner_dashboard(request, company_id, course_id):
 
     try:
         instance = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
-    except LearnerDashboard.DoesNotExist:
+    except:
         instance = None
 
     if request.method == "POST":
@@ -4753,7 +4753,7 @@ def company_course_learner_dashboard(request, company_id, course_id):
     if instance:
         try:
             branding = BrandingSettings.objects.get(client_id=company_id)
-        except BrandingSettings.DoesNotExist:
+        except:
             branding = None
 
         discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=instance.id).order_by('position')
@@ -4782,6 +4782,61 @@ def company_course_learner_dashboard(request, company_id, course_id):
         }
 
     return render(request, 'admin/learner_dashboard/main.haml', data)
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_tile(request, company_id, course_id, learner_dashboard_id, tile_id):
+
+    error = None
+    try:
+        instance = LearnerDashboardTile.objects.get(id=tile_id)
+    except:
+        instance = None
+
+    if request.method == 'POST':
+        form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            tile = form.save()
+
+            if not "/learnerdashboard/" in tile.link:
+                if tile.get_tile_type_display() == 'Lesson':
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
+                if tile.get_tile_type_display() == 'Module':
+                    tile.link = "/learnerdashboard" + tile.link + "/module/"
+                tile.save()
+            if tile.get_tile_type_display() == 'Course':
+                if not "/courses/" in tile.link:
+                    tile.link = "/courses/" + tile.link
+                    tile.save()
+
+            redirect_url = reverse('company_course_learner_dashboard', kwargs={'company_id': company_id, 'course_id': course_id})
+            return HttpResponseRedirect(redirect_url)
+
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse('company_course_learner_dashboard', kwargs={'company_id': company_id, 'course_id': course_id})
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = LearnerDashboardTileForm(instance=instance)
+
+    default_colors = {
+        'label': settings.TILE_LABEL_COLOR,
+        'note': settings.TILE_NOTE_COLOR,
+        'title': settings.TILE_TITLE_COLOR,
+        'background': settings.TILE_BACKGROUND_COLOR,
+    }
+
+    return render(request, 'admin/learner_dashboard/element_modal.haml', {
+        'error': error,
+        'form': form,
+        'company_id': company_id,
+        'course_id': course_id,
+        'learner_dashboard_id': learner_dashboard_id,
+        'tile_id': tile_id,
+        'default_colors': default_colors,
+    })
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

@@ -1,9 +1,9 @@
 .admin-detail.row
   #contentModal.reveal-modal.small{'data-reveal': None}
   %div.submit-area
-    %a{:class => "button radius small", :href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
+    %a.button.radius.small{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
       New item
-      %i{'class': "fa fa-plus"}
+      %i.fa.fa-plus
   %br
   .large-12.large.columns
   -if discovery_items
@@ -23,17 +23,17 @@
             %td{style: "word-wrap: break-word"}= content.author
             %td
               %a{:href => "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/edit/#{content.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
-                %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+                %i.fa.fa-pencil-square-o{'style': "color:green"}
             %td
-              %a{class: "confirm", href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/delete/#{content.id}"}
-                %i{'style': "color:red", 'class': "fa fa-times"}
+              %a.confirm{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard/discover/delete/#{content.id}"}
+                %i.fa.fa-times{'style': "color:red"}
   -else
     This learner dashboard has no discover content!
 
-  %a{id: "saveSort", class: "button radius small", style: "display:none"}
+  %a#saveSortDiscovery.button.radius.small{style: "display:none"}
       Save list order
-      %i{'class': "fa fa-save"}
+      %i.fa.fa-save
 
-  %div{id: "savedSort", class: "button radius small disabled", style: "display:none"}
+  %div#savedSort.button.radius.small.disabled{style: "display:none"}
     Saved
-      %i{'class': "fa fa-check", style: "color:green"}
+      %i.fa.fa-check{style: "color:green"}
