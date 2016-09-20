@@ -1,0 +1,38 @@
+- csrf_token
+= form
+- if error
+  .error
+    = error
+.row
+  .large-12.columns
+    %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
+      New element
+      %i.fa.fa-plus
+
+    -if learner_dashboard_tiles
+      %table
+        %thead
+          %tr
+            %th= _("Title")
+            %th= _("Calendar visible")
+            %th= _("Dashboard visible")
+            %th= _("Type")
+            %th= _("Edit")
+            %th= _("Delete")
+        %tbody
+          - for tile in learner_dashboard_tiles
+            %tr{id: "#{tile.id}"}
+              %td{style: "word-wrap: break-word"}= tile.title
+              %td{style: "word-wrap: break-word; text-align: center;"}
+                -if tile.show_in_calendar
+                  %i.fa.fa-check{'style': "color:green"}
+              %td{style: "word-wrap: break-word; text-align: center;"}
+                -if tile.show_in_dashboard
+                  %i.fa.fa-check{'style': "color:green"}
+              %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
+              %td
+                %a{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                  %i.fa.fa-pencil-square-o{'style': "color:green"}
+              %td
+                %a.confirm{OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
+                  %i.fa.fa-times{'style': "color:red"}

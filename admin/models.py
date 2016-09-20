@@ -528,7 +528,7 @@ class LearnerDashboard(db_models.Model):
     title_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TITLE_COLOR)
     description_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_DESCRIPTION_COLOR)
 
-    client_id = db_models.IntegerField(blank=False, unique=True)
+    client_id = db_models.IntegerField(blank=False)
     course_id = db_models.CharField(blank=False, max_length=500)
 
 class LearnerDashboardTile(db_models.Model):
@@ -536,10 +536,21 @@ class LearnerDashboardTile(db_models.Model):
     label = db_models.CharField(max_length=20, blank=True)
     title = db_models.CharField(blank=True, max_length=40)
     link = db_models.CharField(blank=False, max_length=500)
-    position = db_models.IntegerField(blank=False, default=100)
-    background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND_IMAGE, blank=True)
     note = db_models.CharField(blank=True, max_length=40)
+    details = db_models.CharField(blank=True, max_length=200)
+    location = db_models.CharField(blank=True, max_length=200)
+    download_link = db_models.URLField(blank=True, null=True)
 
+    position = db_models.IntegerField(blank=False, default=100)
+
+    show_in_calendar = db_models.BooleanField(default=False)
+    show_in_dashboard = db_models.BooleanField(default=True)
+
+    start_date = db_models.DateTimeField(null=True, blank=True)
+    end_date = db_models.DateTimeField(null=True, blank=True)
+    publish_date = db_models.DateTimeField(null=True, blank=True)
+
+    background_image = db_models.ImageField(upload_to=settings.TILE_BACKGROUND_IMAGE, blank=True)
     label_color = db_models.CharField(max_length=20, default=settings.TILE_LABEL_COLOR, blank=True)
     title_color = db_models.CharField(max_length=20, default=settings.TILE_TITLE_COLOR, blank=True)
     note_color = db_models.CharField(max_length=20, default=settings.TILE_NOTE_COLOR, blank=True)
@@ -550,6 +561,8 @@ class LearnerDashboardTile(db_models.Model):
         (u'2', u'Lesson'),
         (u'3', u'Module'),
         (u'4', u'Course'),
+        (u'5', u'In Person Session'),
+        (u'6', u'Webinar'),
     )
     tile_type = db_models.CharField(max_length=1, choices=TYPES)
 
@@ -590,5 +603,23 @@ class TileBookmark(db_models.Model):
     )
     learner_dashboard = db_models.ForeignKey(
         'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
+class LearnerDashboardTileProgress(db_models.Model):
+
+    user = db_models.IntegerField(blank=False, null=False)
+
+    PROGRESS_TYPES = (
+        (u'1', u'Not Started'),
+        (u'2', u'In Progress'),
+        (u'3', u'Complete'),
+        (u'3', u'Incomplete')
+    )
+    progress = db_models.CharField(max_length=1, choices=PROGRESS_TYPES, blank=True, null=True)
+    percentage = db_models.IntegerField(blank=True, null=True)
+
+    milestone = db_models.ForeignKey(
+        'LearnerDashboardTile',
         on_delete=db_models.CASCADE,
     )

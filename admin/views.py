@@ -55,19 +55,19 @@ from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
-    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, CompanyContact,
-    Tag
+    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, 
+    CompanyContact, Tag
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
     get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data, 
-    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles, 
+    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data,
+    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles,
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses, check_if_course_is_internal,
+    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
     check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list
 )
 from .forms import (
@@ -600,6 +600,7 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'description_color': instance.description_color,
             'learner_dashboard_tiles': learner_dashboard_tiles,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+            'milestones_enabled': settings.MILESTONES_ENABLED,
             'discovery_items': discovery_items,
             'branding': branding
         }
@@ -941,7 +942,7 @@ class courses_list_api(APIView):
 
         if request.user.is_internal_admin:
             courses = []
-            internal_ids = get_internal_courses()
+            internal_ids = get_internal_courses_ids()
             for course in allCourses:
                 if course['id'] in internal_ids:
                     if course['start'] is not None:
@@ -1289,9 +1290,9 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     data = {}
     if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
         if request.user.is_internal_admin:
-            user_orgs = user_api.get_user_organizations(request.user.id)
-            if len(user_orgs) > 0:
-                courses = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+            internal_ids = get_internal_courses_ids()
+            if len(internal_ids) > 0:
+                courses = course_api.get_course_list(internal_ids)
         else:
             courses = course_api.get_course_list(ids=restrict_to_courses_ids)
         for course in courses:
@@ -3393,14 +3394,17 @@ def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
 
     return HttpResponse(json.dumps({"message": "Project deleted successfully."}), content_type="application/json")
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-#@checked_program_access  # note this decorator changes method signature by adding restrict_to_programs_ids parameter
-def workgroup_list(request, restrict_to_programs_ids=None):
-    ''' handles requests for login form and their submission '''
 
-    if request.method == 'POST':
-        if request.POST['select-course'] != 'select':
-            return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_TA,
+                           PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+# @checked_program_access (NOTE this decorator changes method signature by adding restrict_to_programs_ids parameter)
+def workgroup_list(request, restrict_to_programs_ids=None):
+    """
+    Handles requests for login form and their submission
+    """
+
+    if request.method == 'POST' and request.POST['select-course'] != 'select':
+        return HttpResponseRedirect('/admin/workgroup/course/{}'.format(request.POST['select-course']))
 
     if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
         courses = get_accessible_courses(request.user)
@@ -4319,6 +4323,19 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
             discoveryItem.save()
         return HttpResponse('200')
 
+def client_admin_course_learner_dashboard_reorder(request, course_id, client_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        dataDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(dataDict['position[]']):
+            discoveryItem = LearnerDashboardTile.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
+
 
 class email_templates_get_and_post_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -4472,14 +4489,14 @@ class users_company_admin_get_post_put_delete_api(APIView):
         return Response(response_dict)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
 
 class companies_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
         companies = []
         user_organizations = None
@@ -4497,7 +4514,7 @@ class companies_list_api(APIView):
 
 class create_new_company_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request):
 
         company_display_name = request.GET.get('company_display_name', None)
@@ -4509,7 +4526,7 @@ class create_new_company_api(APIView):
 
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request):
         company_display_name = request.DATA.get('company_display_name', None)
 
@@ -4524,7 +4541,7 @@ class create_new_company_api(APIView):
             return Response({'status':'error'})
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_details(request, company_id):
 
     companyAdminFlag = False
@@ -4619,7 +4636,7 @@ def company_details(request, company_id):
 
 class company_courses_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, company_id):
 
         if request.user.is_company_admin:
@@ -4655,7 +4672,174 @@ class company_courses_api(APIView):
         return Response(courses)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+class company_learner_dashboards_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, company_id):
+
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
+
+
+        organization = Client.fetch(company_id)
+  
+        coursesIDs = []
+        programsAPI = organization.fetch_programs()
+    
+        for program in programsAPI:
+            program.coursesIDs = []
+            program.courses = []
+            for course in program.fetch_courses():
+                coursesIDs.append(course.course_id)
+    
+        coursesIDs = list(set(coursesIDs))
+
+        learner_dashboards = []
+        for course_id in coursesIDs:
+            try:
+                learner_dashboard = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
+                if learner_dashboard:
+                    learner_dashboards.append({
+                        'id': learner_dashboard.id,
+                        'name': learner_dashboard.title,
+                        'client_id': company_id,
+                        'course_id': course_id
+                    })
+            except LearnerDashboard.DoesNotExist:
+                continue
+
+        return Response(learner_dashboards)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_course_learner_dashboard(request, company_id, course_id):
+
+    try:
+        instance = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
+    except:
+        instance = None
+
+    if request.method == "POST":
+        if instance == None:
+            instance = LearnerDashboard(
+                title = request.POST['title'],
+                description = request.POST['description'],
+                title_color = request.POST['title_color'],
+                description_color = request.POST['description_color'],
+                client_id = company_id, 
+                course_id = course_id
+            )
+            instance.save()
+        else:
+            instance.title = request.POST['title']
+            instance.description = request.POST['description']
+            instance.title_color = request.POST['title_color']
+            instance.description_color = request.POST['description_color']
+            instance.save()
+
+            myDict = dict(request.POST.iterlists())
+            if myDict.get('positions[]'):
+                for index, item_id in enumerate(myDict['positions[]']):
+                    tileItem = LearnerDashboardTile.objects.get(id=item_id)
+                    tileItem.position = index
+                    tileItem.save()
+
+    if instance:
+        try:
+            branding = BrandingSettings.objects.get(client_id=company_id)
+        except:
+            branding = None
+
+        discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=instance.id).order_by('position')
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
+        
+        data = {
+            'client_id': company_id,
+            'course_id': course_id,
+            'learner_dashboard_id': instance.id,
+            'title': instance.title,
+            'description': instance.description,
+            'title_color': instance.title_color,
+            'description_color': instance.description_color,
+            'learner_dashboard_tiles': learner_dashboard_tiles,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+            'milestones_enabled': settings.MILESTONES_ENABLED,
+            'discovery_items': discovery_items,
+            'branding': branding
+        }
+    else:
+        data = {
+            'client_id': company_id,
+            'course_id': course_id,
+            'learner_dashboard_id': None,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+        }
+
+    return render(request, 'admin/learner_dashboard/main.haml', data)
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_tile(request, company_id, course_id, learner_dashboard_id, tile_id):
+
+    error = None
+    try:
+        instance = LearnerDashboardTile.objects.get(id=tile_id)
+    except:
+        instance = None
+
+    if request.method == 'POST':
+        form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            tile = form.save()
+
+            if not "/learnerdashboard/" in tile.link:
+                if tile.get_tile_type_display() == 'Lesson':
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
+                if tile.get_tile_type_display() == 'Module':
+                    tile.link = "/learnerdashboard" + tile.link + "/module/"
+                tile.save()
+            if tile.get_tile_type_display() == 'Course':
+                if not "/courses/" in tile.link:
+                    tile.link = "/courses/" + tile.link
+                    tile.save()
+
+            redirect_url = reverse('company_course_learner_dashboard', kwargs={'company_id': company_id, 'course_id': course_id})
+            return HttpResponseRedirect(redirect_url)
+
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse('company_course_learner_dashboard', kwargs={'company_id': company_id, 'course_id': course_id})
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = LearnerDashboardTileForm(instance=instance)
+
+    default_colors = {
+        'label': settings.TILE_LABEL_COLOR,
+        'note': settings.TILE_NOTE_COLOR,
+        'title': settings.TILE_TITLE_COLOR,
+        'background': settings.TILE_BACKGROUND_COLOR,
+    }
+
+    return render(request, 'admin/learner_dashboard/element_modal.haml', {
+        'error': error,
+        'form': form,
+        'company_id': company_id,
+        'course_id': course_id,
+        'learner_dashboard_id': learner_dashboard_id,
+        'tile_id': tile_id,
+        'default_colors': default_colors,
+    })
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_course_details(request, company_id, course_id):
 
     companyAdminFlag = False
@@ -4761,7 +4945,7 @@ def company_course_details(request, company_id, course_id):
 
 class company_info_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, company_id):
 
         if request.user.is_company_admin:
@@ -4837,7 +5021,7 @@ class company_info_api(APIView):
         
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def put(self, request, company_id):
 
         if request.user.is_company_admin:
@@ -4903,7 +5087,7 @@ class company_info_api(APIView):
         return Response(response)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def download_company_info(request, company_id):
 
     if request.user.is_company_admin:
@@ -5008,7 +5192,7 @@ def download_company_info(request, company_id):
 
 class company_edit_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def get(self, request, company_id):
 
         if request.user.is_company_admin:
@@ -5029,7 +5213,7 @@ class company_edit_api(APIView):
 
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
     def post(self, request, company_id):
 
         if request.user.is_company_admin:
@@ -5106,7 +5290,7 @@ class tag_details_api(APIView):
 
         internal_ids = None
         if request.user.is_internal_admin:
-            internal_ids = get_internal_courses()
+            internal_ids = get_internal_courses_ids()
 
         tag = Tag.fetch(tag_id)
         tag_data = vars(tag)

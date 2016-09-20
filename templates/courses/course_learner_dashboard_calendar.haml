@@ -1,0 +1,222 @@
+#over-full-calendar
+  #row-full-calendar
+    .row
+      .large-12        
+        #over-calendar-left{style: "width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
+          %span#previous-calendar.fa.fa-angle-left
+        #over-calendar-right{style: "margin-left: 1020px; width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
+          %span#next-calendar.fa.fa-angle-right
+        #under-calendar
+          %span#close-calendar.fa.fa-times-circle
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.tab-month
+            %li.head-month
+              %span.month
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first
+            %li.second
+            %li.first.last
+            %li.second.last
+          %ul.legend-list
+            %li.light-gray-legend
+              %i.fa.fa-circle
+              not available
+            %li.gray-legend
+              %i.fa.fa-circle
+              not started
+            %li.light-green-legend
+              %i.fa.fa-circle
+              in progress
+            %li.green-legend
+              %i.fa.fa-circle
+              complete
+            %li.red-legend
+              %i.fa.fa-circle
+              incomplete
+            %li.teal-legend
+              %i.fa.fa-circle
+              not tracked
+
+        #highcharts-container
+
+
+%script
+  var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
+  var dates = {{dates|safe}} ? {{dates|safe}}: [];
+
+  var dataIPS = [];
+  var dataWeb = [];
+  var dataDig = [];
+  var dataCourse = [];
+
+  var dateList = [];
+
+  var minDate;
+  var maxDate;
+
+  var mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+
+  for (var i=0; i < 5; i++) {
+    dateList.push(
+      Date.UTC((new Date(dates[i])).getUTCFullYear(), (new Date(dates[i])).getUTCMonth())
+    );
+  }
+
+  addMonthNames(dates);
+  addExtraSpaceToFrontEnd();
+  
+  minDate = dateList[1];
+  maxDate = dateList[5];
+
+  var low;
+  var high;
+
+  processMilestones();
+
+  function processMilestones() {
+    for (var i=0 in milestones) {
+      low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
+      high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
+
+      if (low < minDate)
+        minDate = low;
+      if (high > maxDate)
+        maxDate = high;
+
+      if (milestones[i]["fields"].tile_type == "1" || milestones[i]["fields"].tile_type == "2" || milestones[i]["fields"].tile_type == "3") {
+        dataDig.push({
+          color: '#e0e0e0',
+          x: 3,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          link: milestones[i]["fields"].link,
+          low: low,
+          high: high
+        });
+      }
+
+      if (milestones[i]["fields"].tile_type == "4") {
+        dataCourse.push({
+          color: '#e0e0e0',
+          x: 1,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          link: milestones[i]["fields"].link,
+          details: milestones[i]["fields"].details,
+          low: low,
+          high: high
+        });
+      }
+
+      if (milestones[i]["fields"].tile_type == "5") {
+        dataIPS.push({
+          color: '#e0e0e0',
+          x: 0,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          location: milestones[i]["fields"].location,
+          details: milestones[i]["fields"].details,
+          link: milestones[i]["fields"].link,
+          low: low,
+          high: high
+        });
+      }
+
+      if (milestones[i]["fields"].tile_type == "6") {
+        dataWeb.push({
+          color: '#e0e0e0',
+          x: 2,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          link: milestones[i]["fields"].link,
+          details: milestones[i]["fields"].details,
+          low: low,
+          high: high
+        });
+      }
+    }
+  }
+
+  changeDisableArrowColors();
+
+  $('#close-calendar').click(function() {
+    $('#replace-calendar').empty();
+    opened = false;
+  });
+
+  function addExtraSpaceToFrontEnd() {
+    dateList.push(dateList[4] + 86400 * 9 * 1000);
+    dateList.unshift(dateList[0] - 86400 * 9 * 1000);
+  }
+
+  function changeDisableArrowColors() {
+    if (minDate >= dateList[1])
+      $( '#previous-calendar').css( 'color', '#f2f1f1' );
+    if (maxDate <= dateList[5])
+      $('#next-calendar').css( 'color', '#f2f1f1' );
+  }
+
+  function addMonthNames( dateList ) {
+    $( ".month" ).each(function( index ) {
+      $( this ).parent().removeClass( "active" );
+      $( this ).html( mlist[new Date(dateList[index]).getMonth()] );
+
+      if ( ((new Date(dateList[index])).getMonth()) == (new Date()).getMonth() && ((new Date(dateList[index + 1])).getYear()) == (new Date()).getYear())
+        $( this ).parent().addClass( "active" );
+    });
+  }
+
+  $('#next-calendar').click(function() {
+    if (maxDate > dateList[5]) {
+      $( "#previous-calendar").css( "color", "#4789c4" );
+
+      var param = { beginDate: dateList[5] };
+      nextPrevCalendar(param);
+    }
+  });
+
+  $('#previous-calendar').click(function() {
+    if (minDate < dateList[1]) {
+      $( "#next-calendar").css( "color", "#4789c4" );
+
+      var param = { endDate: dateList[1] };
+      nextPrevCalendar(param);
+    }
+  });
+
+%script{src: "/static/js/learner_dashboard_calendar_highcharts.js"}

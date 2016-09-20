@@ -23,6 +23,10 @@
       .row
         .large-12.columns.header-padding
           %div.right.header-path
+            - if milestones_enabled
+              %a.right{:href => "#", :data-tooltip => "Calendar", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %i#open-calendar.fa.fa-calendar.header-link
+
             - if request.resolver_match.url_name == 'course_resources_learner_dashboard'
                 %a.disabled.right{:href => "/learnerdashboard/courses/#{course.id}/resources", :data-tooltip => "Resources"}
                   .fa.fa-file-text-o.header-link

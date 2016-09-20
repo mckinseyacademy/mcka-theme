@@ -1,7 +1,7 @@
 header[role=banner].background-blue {
   // TODO: replace with extend depth5
   position: fixed;
-  background-color: $header-background;
+  background-color: $mckinsey-blue-bar;
   width: 100%;
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@ header[role=banner].background-blue {
   @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
 
   .row.main-nav {
-    @include linear-gradient(to right, $header-right-color, $header-left-color 60px, $header-right-color);
+    //@include linear-gradient(to right, $header-right-color, $header-left-color 60px, $header-right-color);
 
     .columns {
       height: $header-bar-height;
@@ -66,22 +66,15 @@ header[role=banner].background-blue {
   }
 
   .logo {
-    background: url(/static/image/McK_McKA_cobranding.png) no-repeat 0 center;
+    background: url(/static/image/mckinsey&academy.png) no-repeat 0 center;
     background-size: 100%;
-    width: 328px;
-    height: 100%;
-    float: left;
-    margin-right: rem-calc(25);
+    width: 170px;
+    height: 48px;
+    margin: 0 auto;
+    display: block;
 
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      background-image: url(/static/image/McK_McKA_cobranding@2x.png);
-    }
-
-    @media #{$screen} and (max-width: 950px) {
-      width: 135px;
-      background-size: 265px;
-      background-position: -122px 17px;
-      margin-right: rem-calc(10);
+      background-image: url(/static/image/mckinsey&academy@2x.png);
     }
   }
 

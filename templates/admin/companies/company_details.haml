@@ -23,18 +23,31 @@
           %p Company ID: ={company.id}
         .row.companyDetailsNumberActiveCourses
           %p Active Courses: ={company.activeCourses}
+
+      - if not user.is_company_admin
+        #additionalCompanyButtons
+          %a.button.small.radius.navigationLink{:href => "/admin/clients/#{company.id}/navigation"}
+            Navigation
+          %a.button.small.radius.accessLink{:href => "/admin/clients/#{company.id}/access_keys"}
+            Access
+          
       #companyDetailsNavigationButtonsContainer
         .row
           .companyDetailsCoursesButton.large-3.columns
             %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}> COURSES
           .companyDetailsCompanyInfoButton.large-3.columns
             %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCompanyInfo', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COMPANY INFO
+          .companyDetailsLearnerDashboardsButton.large-3.columns
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLearnerDashboards', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> LEARNER DASHBOARDS
           .large-6.columns
         %hr
     #companyDetailsDataWrapper
       .companyCourses.contentNavigationContainer
         #companyDetailsCoursesContainer
           #companyDetailsCoursesViewGridBlock
+      .companyLearnerDashboards.contentNavigationContainer
+        #companyLearnerDashboardsContainer
+          #companyLearnerDashboardsViewGridBlock
       .companyCompanyInfo.contentNavigationContainer  
         #companyInfoDataWrapper
           #companyInfoInvoicingDetails.companyInfoTopic

@@ -1,0 +1,1 @@
+  Apros.models.CompanyLearnerDashboards = Backbone.Model.extend({});

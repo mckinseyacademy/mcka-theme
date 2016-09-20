@@ -10,6 +10,6 @@
       currentPage: 0,
       totalPages: null,
       totalRecords: null,
-      page_size: 0,
+      page_size: 0
     }
   });

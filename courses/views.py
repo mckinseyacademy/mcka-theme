@@ -9,14 +9,20 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
+
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
+from django.core import serializers
+from django.template import loader, RequestContext
 
 from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
-from admin.models import WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, BrandingSettings, TileBookmark
+from admin.models import (
+    WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
+    BrandingSettings, TileBookmark
+    )
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
@@ -28,9 +34,9 @@ from lib.util import DottableDict
 from main.models import CuratedContentItem
 
 from .models import LessonNotesItem, FeatureFlags
-from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location
+from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
-from .controller import update_bookmark, group_project_reviews
+from .controller import update_bookmark, group_project_reviews, add_months_to_date
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
@@ -912,7 +918,7 @@ def course_learner_dashboard(request):
         redirect_url = '/'
         return HttpResponseRedirect(redirect_url)
 
-    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     try:
@@ -931,6 +937,7 @@ def course_learner_dashboard(request):
         'feature_flags': feature_flags,
         'discovery_items': discovery_items,
         'bookmark': bookmark,
+        'milestones_enabled': settings.MILESTONES_ENABLED,
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
@@ -1005,6 +1012,77 @@ def course_learner_dashboard_bookmark_lesson(request):
             return HttpResponse(status=204)
 
 @login_required
+def course_learner_dashboard_calendar(request):
+
+    if 'learner_dashboard_id' not in request.session:
+        set_learner_dashboard_in_session(request)
+
+    course_id = request.session['course_id']
+    learner_dashboard_id = request.session['learner_dashboard_id']
+
+    milestoneData = {}
+    if learner_dashboard_id is not None:
+        milestoneData = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar = True).order_by('start_date')
+    elif course_id is not None:
+        redirect_url = '/courses/{}/'.format(course_id)
+        return HttpResponseRedirect(redirect_url)
+    else:
+        redirect_url = '/'
+        return HttpResponseRedirect(redirect_url)
+
+    beginDate = request.GET.get('beginDate', None)
+    endDate = request.GET.get('endDate', None)
+
+    if beginDate:
+        first = datetime.utcfromtimestamp(int(beginDate)/1000.0)
+
+        dates = [
+            datetime(first.year, first.month, first.day).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 1).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 2).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 3).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(first, 4).replace(day=1).strftime("%Y-%m-%d")
+        ]
+
+    elif endDate:
+        last = datetime.utcfromtimestamp(int(endDate)/1000.0)
+
+        dates = [
+            add_months_to_date(last, -4).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(last, -3).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(last, -2).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(last, -1).replace(day=1).strftime("%Y-%m-%d"),
+            last.strftime("%Y-%m-%d")
+        ]
+
+    else:
+        first = datetime.now().replace(day=1)
+        now = datetime(first.year, first.month, first.day)
+
+        dates = [
+            add_months_to_date(now, -1).replace(day=1).strftime("%Y-%m-%d"),
+            now.strftime("%Y-%m-%d"),
+            add_months_to_date(now, 1).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(now, 2).replace(day=1).strftime("%Y-%m-%d"),
+            add_months_to_date(now, 3).replace(day=1).strftime("%Y-%m-%d")
+        ]
+
+    milestones = serializers.serialize("json", milestoneData)
+
+    data ={
+        'milestones': milestones,
+        'dates': dates,
+    }
+
+    if request.is_ajax():
+        html = loader.render_to_string('courses/course_learner_dashboard_calendar.haml', data, context_instance=RequestContext(request))
+
+        return HttpResponse(json.dumps({'html': html}), content_type="application/json")
+    else:
+        return HttpResponse(status=404)
+
+
+@login_required
 def get_user_progress_json(request, course_id):
     user_progress = course_api.get_course_metrics_completions(course_id=course_id, user_id = request.user.id, skipleaders = True)
     if user_progress:
@@ -1016,8 +1094,3 @@ def get_user_progress_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
-
-
-
-
-

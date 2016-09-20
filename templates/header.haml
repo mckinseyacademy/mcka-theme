@@ -3,8 +3,6 @@
     .large-12.columns
       - block header_home
         %a.logo{href: "/"}
-      %label.button.radius.small.mobile-menu{for: 'mobile-menu-toggle'}
-        %i.fa.fa-bars
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu
         %nav{role: 'navigation'}
@@ -29,14 +27,6 @@
                 - if client_nav_links.navlink6
                   %a{href: "#{client_nav_links.navlink6.link_url}", target: "_blank"}= client_nav_links.navlink6.link_label
             - else
-              %li
-                %a{href: '/about'}= _("About")
-              %li
-                %a{href: '/programs'}= _("Programs")
-              %li
-                %a{href: '/experience'}= _("Experience")
-              %li
-                %a{href: '/contact'}= _("Contact")
             - if user.is_mcka_admin or user.is_mcka_ta or user.is_mcka_subadmin
               %li
                 %a{href: '/admin'}= _("McKA Admin")
@@ -57,9 +47,6 @@
             .user-image
               %img{src: "#{user.image_url}", alt: "#{user.username}"}
             #profile-container{data-dropdown-content: "true"}
-        - else
-          .login-action
-            %a.small.radius.button{href: "/accounts/login"}= _("Log in")
   - block program_bar
     - if program and course and course.started
       .program-bar.background-alt-blue{style: "{% if client_customization and client_customization.hex_background_bar %}background-color:#{client_customization.hex_background_bar};{% endif %} {% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %}"}

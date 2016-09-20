@@ -2,38 +2,26 @@
 
 - block content
   #home-landing
-    - for cell in cells
-      - if cell.type == 'tagline'
-        .cell.col-2.tagline
-          %span= cell.content
-      - elif cell.type == 'entry-point'
-        %a.cell.entry-point{href: "#{cell.url}"}
-          .icon-circled{class: "#{cell.icon_color}"}
-            %i{class: "mk-icon-#{cell.icon}"}
-          .nav-1= cell.title
-          .subtitle= cell.subtitle
-          .label-2= cell.content|safe
-          %i.fa.fa-arrow-circle-right
-      - elif cell.type == 'distinctive-feature'
-        %a.cell.distinctive-feature{href: "#{cell.url}", class: "#{cell.background}"}
-          .nav-1 Distinctive Features:
-          .title= cell.title
-          .content= cell.content|safe
-          %i.fa.fa-arrow-right
-      - elif cell.type == 'quote'
-        .cell.quote
-          %blockquote= cell.quote
-          .headshot
-            %img{src: "/static/image/home-grid/quoteheadshots/#{cell.image}.jpg", srcset: "/static/image/home-grid/quoteheadshots/#{cell.image}@2x.jpg 2x"}
-          .label-2= cell.name
-          .title= cell.title
-      - elif cell.type == 'stock-image'
-        .cell.stock-image
-          %img{src: "/static/image/home-grid/#{cell.image}.jpg", srcset: "/static/image/home-grid/#{cell.image}@2x.jpg 2x"}
-      - elif cell.type == 'video'
-        .cell.video
-          %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{cell.url}"}
-            %i.fa.fa-play-circle
+    .wrapper
+      .universal-hero
+        .image
+        .hero-text
+          %h1
+            %img.hidden-mobile{src: "/static/image/mckinsey-academy.png", srcset: "/static/image/mckinsey-academy@2x.png 2x"}
+            %img.visible-mobile{src: "/static/image/mckinsey-academy-mobile.png", srcset: "/static/image/mckinsey-academy-mobile@2x.png 2x"}
+            %span Unlocking Leadership Potential
+    .header-cards
+      .row.text-center
+        .card.padding-low
+          %h3 For Information:
+          %p
+            Learn more about how we accelerate transformations of individuals, organizations, and communities by unlocking the potential of people
+          %a{:href => "http://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients", :target => "_blank"} Learn more
+        .card
+          %h3 For Participants:
+          %p
+            If you are an enrolled participant, please log in below to access your McKinsey Academy learning experience
+          %a.login-btn{:href => "/accounts/login"} Log in
 
 - block general_modal
   #generalModal.reveal-modal.small{'data-reveal': ''}

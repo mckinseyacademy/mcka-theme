@@ -970,23 +970,25 @@ def get_accessible_programs(user, restrict_to_programs_ids):
 
     return programs
 
+
 def get_accessible_courses(user):
-    user_roles = user_api.get_user_roles(user.id)
-    course_id_list = None
+    """ Returns all available courses for the provided user """
+
     courses_list = []
-    if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin, user.is_mcka_subadmin]):
+    if user.is_mcka_admin or user.is_mcka_subadmin:
+        courses_list = course_api.get_course_list()
+    elif user.is_internal_admin:
+        internal_ids = get_internal_courses_ids()
+        if len(internal_ids) > 0:
+            courses_list = course_api.get_course_list(internal_ids)
+    else:
         course_id_list = []
+        user_roles = user_api.get_user_roles(user.id)
         for role in user_roles:
             if USER_ROLES.TA == role.role:
                 course_id_list.append(role.course_id)
         courses_list = course_api.get_course_list(course_id_list)
-    else:
-        if user.is_mcka_admin or user.is_mcka_subadmin:
-            courses_list = course_api.get_course_list_in_pages(course_id_list)
-        else:
-            user_orgs = user_api.get_user_organizations(user.id)
-            if len(user_orgs) > 0:
-                courses_list = course_api.parse_course_list_json_object(organization_api.get_organizations_courses(user_orgs[0].id))
+
     return courses_list
 
 
@@ -1441,9 +1443,8 @@ def get_user_courses_helper(user_id, request):
                 if vars(role)['role'] == 'assistant':
                     user_course['status'] = 'TA'
 
-
     if request.user.is_internal_admin:
-        internal_ids = get_internal_courses()
+        internal_ids = get_internal_courses_ids()
         user_courses = [course for course in user_courses if course['id'] in internal_ids]
 
     active_courses = []
@@ -1772,31 +1773,28 @@ def validate_company_display_name(company_display_name):
     return {'status': 'ok', 'message':'Company Validation Success!'}
 
 
-def get_internal_courses():
-
+def get_internal_courses_ids():
+    """ Return a List of internal courses Id's """
     internal_ids = []
-    internal_tags = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
-    internal_courses = []
-    for internal_tag in internal_tags:
-        internal_courses.extend(group_api.get_courses_in_group(group_id=vars(internal_tag)['id']))
+    internal_courses = get_internal_courses_list()
     for course in internal_courses:
         internal_ids.append(vars(course)['course_id'])
-
     return internal_ids
 
 
 def get_internal_courses_list():
-
+    """ Return a List of courses tagged :internal """
     internal_tags = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
     internal_courses = []
     for internal_tag in internal_tags:
         internal_courses.extend(group_api.get_courses_in_group(group_id=vars(internal_tag)['id']))
+
     return internal_courses
 
 
 def check_if_course_is_internal(course_id):
 
-    internal_ids = get_internal_courses()
+    internal_ids = get_internal_courses_ids()
     if str(course_id) in internal_ids:
         return True
     return False
@@ -1805,7 +1803,7 @@ def check_if_course_is_internal(course_id):
 def check_if_user_is_internal(user_id):
 
     user_courses = user_api.get_courses_from_user(user_id)
-    internal_ids = get_internal_courses()
+    internal_ids = get_internal_courses_ids()
     for course in user_courses:
         if course['id'] in internal_ids:
             return True

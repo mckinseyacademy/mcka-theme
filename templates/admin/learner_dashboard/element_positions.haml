@@ -1,0 +1,20 @@
+.row
+  .large-12.columns
+    %ul#sortable
+      - for tile in learner_dashboard_tiles
+        - if tile.show_in_dashboard
+          %li.item.ui-state-default{id: "#{tile.id}", style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+            .sub-1{style: "color: #{tile.label_color};"} 
+              - if tile.label
+                #{tile.label}
+              - else
+                #{tile.get_tile_type_display}
+              %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
+              %a{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                %i.fa.fa-pencil-square-o{'style': "color:green"}
+            %a{href: "#{tile.link}"}
+              %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
+            .label-3{style: "color: #{tile.note_color};"}= tile.note
+      %li.item.fixed.ui-state-default.add-tile 
+        %a{:href => '/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/', :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+          .fa.fa-plus.font-plus

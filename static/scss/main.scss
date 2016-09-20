@@ -7,8 +7,27 @@ body{
 
   &.with-program {
     margin-top: $header-bar-height + $program-bar-height;
+    header[role=banner].background-blue{
+      .logo{
+        margin: 0;
+        display: inline-block;
+        float: left;
+        margin-right: 20px;
+        margin-left: 20px;
+      }
+    }
+    #home-landing{
+     .card{
+       .login-btn{
+          background-color: $disabled-link-color;
+          pointer-events: none;
+          cursor: default;
+       }
+     }
+    }
   }
 }
+
 
 main[role=main] {
   min-height: 50%;
@@ -870,4 +889,22 @@ div.notification-digest {
     margin-top: 3px;
     margin-bottom: 3px;
   }
+}
+
+.hidden-mobile{
+  display: none;
+  visibility: hidden;
+    @media only screen and (min-width: 768px) {
+      display: inline-block;
+      visibility: visible;
+    }
+}
+
+.visible-mobile{
+  display: inline-block;
+  visibility: visible;
+    @media only screen and (min-width: 768px) {
+      display: none;
+      visibility: hidden;
+    }
 }

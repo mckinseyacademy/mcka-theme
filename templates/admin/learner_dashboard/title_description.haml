@@ -1,0 +1,20 @@
+.row
+  .large-2.columns
+    %label.inline Title:
+  .large-10.columns
+    %input#title{:type => 'text', :value => '#{title}', :name => 'title_ld', :maxlength => '80'}
+.row
+  .large-2.columns
+    %label.inline Title color:
+  .large-10.columns
+    %input#text_color{:type => 'color', :value => '#{title_color}', :name => 'title_color'}
+.row
+  .large-2.columns
+    %label.inline Description:
+  .large-10.columns
+    %textarea#description{:value => '#{description}', :name => 'description', :maxlength => '5000', :rows => 7}= description
+.row
+  .large-2.columns
+    %label.inline Description color:
+  .large-10.columns
+    %input#desc_color{:type => 'color', :value => '#{description_color}', :name => 'description_color'}
