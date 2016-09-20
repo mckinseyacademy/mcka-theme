@@ -3,7 +3,6 @@
 - block content
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
   %link{rel: 'stylesheet', href: "{% static 'css/flatpickr.min.css' %}"}
-  %script{src: "/static/js/learner_dashboard_sort.js"}
   %script
     $(function() {
       var title;
@@ -12,7 +11,6 @@
       var previewDescColor;
 
       $('.admin-ld-component').hide().eq(0).show();
-      $('#button-row').hide();
 
       $('#previewLearnerDashboard').on('click', function(){
         $("#preview-text").html(function(){
@@ -98,20 +96,38 @@
           url: url
         });
         $('#' + tileId).remove();
-        $('#preview' + tileId).remove();
       }
     }
 
+    function deleteDiscover(discoverId, learnerDashboardId){
+      if (window.confirm("Are you sure?")) {
+        var url = window.location.pathname + '/' + learnerDashboardId + "/discover/" + discoverId;
+        $.ajax({
+          headers: {
+            'X-CSRFToken': $.cookie('apros_csrftoken')
+          },
+          type: 'DELETE',
+          url: url
+        });
+        $('#' + discoverId).remove();
+      }
+    }
+  %script{src: "/static/js/admin_learner_dashboard/sort.js"}
+
   #tileModal.reveal-modal.small{'data-reveal': None}
+  #discoverModal.reveal-modal.small{'data-reveal': None}
   - include 'admin/learner_dashboard/preview.haml'
 
   .admin-detail.row
     .large-12.columns
       - include 'admin/learner_dashboard/header.haml'
   .admin-detail
-    #element-list.admin-ld-component
-      - if learner_dashboard_id
+    - if learner_dashboard_id
+      #element-list.admin-ld-component
         - include 'admin/learner_dashboard/element_list.haml'
+
+      #element-discovery-content.admin-ld-component
+        - include 'admin/learner_dashboard/discovery_content.haml'
 
     #title-description.admin-ld-component
       - include 'admin/learner_dashboard/title_description.haml'
@@ -120,14 +136,10 @@
       #element-positions.admin-ld-component
         - include 'admin/learner_dashboard/element_positions.haml'
 
-    - if learner_dashboard_id
-      #element-discovery-content.admin-ld-component
-        - include 'admin/learner_dashboard/discovery_content.haml'
-
-      #button-row.row
-        .large-10.large-offset-2.columns
-          - if learner_dashboard_id
-            %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'} Preview and Save
-            %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview and Save'}
-          - else
-            %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save', disabled: 'disabled'}
+    #button-row.row
+      .large-10.large-offset-2.columns
+        - if learner_dashboard_id
+          %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'} Preview and Save
+          %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview and Save'}
+        - else
+          %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save', disabled: 'disabled'}
