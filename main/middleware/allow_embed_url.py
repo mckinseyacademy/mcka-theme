@@ -13,5 +13,5 @@ class AllowEmbedUrlMiddleware(object):
     def process_response(self, request, response):
         if self.is_scorm_shell:
             response['Content-Security-Policy'] = 'frame-ancestors ' + settings.ALLOW_EMBED_URL
-            response['X-Frame-Options'] = 'ALLOW FROM ' + settings.ALLOW_EMBED_URL
+            response['X-Frame-Options'] = 'ALLOW-FROM ' + settings.ALLOW_EMBED_URL
         return response

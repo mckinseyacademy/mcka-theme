@@ -26,4 +26,4 @@ class AllowEmbedUrlTest(TestCase):
 
         self.assertEqual(middleware.is_scorm_shell, True)
         self.assertEqual(response['Content-Security-Policy'], 'frame-ancestors ' + ALLOW_EMBED_URL)
-        self.assertEqual(response['X-Frame-Options'], 'ALLOW FROM ' + ALLOW_EMBED_URL)
+        self.assertEqual(response['X-Frame-Options'], 'ALLOW-FROM ' + ALLOW_EMBED_URL)
