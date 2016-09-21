@@ -4810,12 +4810,18 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
                     tile.link = "/courses/" + tile.link
                     tile.save()
 
-            redirect_url = reverse('company_course_learner_dashboard', kwargs={'company_id': company_id, 'course_id': course_id})
+            redirect_url = reverse(
+                'company_course_learner_dashboard', 
+                kwargs={'company_id': company_id, 'course_id': course_id}
+            )
             return HttpResponseRedirect(redirect_url)
 
     elif request.method == 'DELETE':
         instance.delete()
-        redirect_url = reverse('company_course_learner_dashboard', kwargs={'company_id': company_id, 'course_id': course_id})
+        redirect_url = reverse(
+            'company_course_learner_dashboard', 
+            kwargs={'company_id': company_id, 'course_id': course_id}
+        )
         return HttpResponseRedirect(redirect_url)
 
     else:
@@ -4828,7 +4834,7 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
         'background': settings.TILE_BACKGROUND_COLOR,
     }
 
-    return render(request, 'admin/learner_dashboard/element_modal.haml', {
+    data = {
         'error': error,
         'form': form,
         'company_id': company_id,
@@ -4836,7 +4842,83 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
         'learner_dashboard_id': learner_dashboard_id,
         'tile_id': tile_id,
         'default_colors': default_colors,
-    })
+    }
+
+    return render(request, 'admin/learner_dashboard/element_modal.haml', data)
+
+
+def company_course_learner_dashboard_element_reorder(request, company_id, course_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        dataDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(dataDict['position[]']):
+            discoveryItem = LearnerDashboardTile.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_discover(request, company_id, course_id, learner_dashboard_id, discovery_id):
+
+    error = None
+
+    try:
+        instance = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+    except: 
+        instance = None
+
+    if request.method == 'POST':
+        form = DiscoveryContentCreateForm (request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+
+            redirect_url = reverse(
+                'company_course_learner_dashboard', 
+                kwargs={'company_id': company_id, 'course_id': course_id}
+            )
+
+            return HttpResponseRedirect(redirect_url)
+
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse(
+            'company_course_learner_dashboard', 
+            kwargs={'company_id': company_id, 'course_id': course_id}
+        )        
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = DiscoveryContentCreateForm(instance=instance)        
+
+    data = {
+        'error': error,
+        'form': form,
+        'company_id': company_id,
+        'course_id': course_id,
+        'discovery_id': discovery_id,
+        'learner_dashboard_id': learner_dashboard_id,
+    }
+
+    return render(request, 'admin/learner_dashboard/discover_modal.haml', data)
+
+
+def company_course_learner_dashboard_discover_reorder(request, company_id, course_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        dataDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(dataDict['position[]']):
+            discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
