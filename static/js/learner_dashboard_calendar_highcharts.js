@@ -1,5 +1,12 @@
 $(function() {
     var chart;
+
+    Highcharts.setOptions({
+        global: {
+            useUTC : false
+        }
+    });
+
     var chartingOptions = {
         chart: {
             type: 'columnrange',
@@ -49,7 +56,8 @@ $(function() {
                 }
             },
             series: {
-                pointWidth: 55,
+                animation: false,
+                pointWidth: 55
             }
         },
 
