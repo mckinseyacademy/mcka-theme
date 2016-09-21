@@ -330,10 +330,10 @@
             window.setup_debug = function(){};
             $this.toggleSpinner(root, true);
             var data = options.data;
-            if (('bookmarked' in data) === false){
+            if (('bookmarked' in data) === false) {
                 data.bookmarked = false;
             }
-            if (('username' in data) === false){
+            if (('username' in data) === false) {
                 data.username = 'Anonymous';
             }
 
