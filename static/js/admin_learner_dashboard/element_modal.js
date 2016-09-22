@@ -20,16 +20,28 @@ modal_form.find('#id_show_in_dashboard').change(function(){
   adjust_for_tile_entry($('#id_show_in_dashboard'));
 });
 
-modal_form.find('#id_tile_type').change(function() {
+modal_form.find('#id_tile_type').change(function(){
   selected_tile_type = $('#id_tile_type option:selected').text();
   adjust_by_tile_type(selected_tile_type);
+});
+
+modal_form.find('#id_start_date').on('click', function(){
+  $('#formSubmit').attr('disabled',false);
+});
+
+modal_form.find('#id_end_date').on('click', function(){
+  $('#formSubmit').attr('disabled',false);
 });
 
 function adjust_for_calendar_entry(calendar_checkbox){
   if (calendar_checkbox.is(':checked')){
     calendar_fields.slideDown('fast');
+    $("#id_start_date").prop('required',true);
+    $("#id_end_date").prop('required',true);
   } else {
     calendar_fields.slideUp('fast');
+    $("#id_start_date").prop('required',false);
+    $("#id_end_date").prop('required',false);
   }
 }
 
