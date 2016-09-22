@@ -4718,6 +4718,35 @@ class company_learner_dashboards_api(APIView):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_learner_dashboard_select_course(request, company_id):
+    if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
+
+    organization = Client.fetch(company_id)
+
+    coursesIDs = []
+    programsAPI = organization.fetch_programs()
+
+    for program in programsAPI:
+        program.courses = []
+        program.courses = []
+        for course in program.fetch_courses():
+            coursesIDs.append(course.course_id)
+
+    data = {
+        'coursesIDs': coursesIDs,
+        'company_id': company_id,
+    }
+
+    return render(request, 'admin/learner_dashboard/course_select.haml', data)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_course_learner_dashboard(request, company_id, course_id):
 
     try:

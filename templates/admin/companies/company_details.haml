@@ -1,6 +1,7 @@
 - extends "admin/admin_layout.haml"
 
-- block content 
+- block content
+  #coursesModal.reveal-modal.tiny{'data-reveal': None}
   #mainCompanyDetailsContainer
     #companyDetailsNavigation
       - if user.is_company_admin
@@ -46,6 +47,8 @@
         #companyDetailsCoursesContainer
           #companyDetailsCoursesViewGridBlock
       .companyLearnerDashboards.contentNavigationContainer
+        %a.radius.small.button{:style => 'right: 20%; float: right; position: absolute;', :href => '/admin/companies/#{company.id}/learner_dashboard/select_course', :data-reveal-id => 'coursesModal', :data-reveal-ajax =>'true'}
+          Add Learner Dashboard
         #companyLearnerDashboardsContainer
           #companyLearnerDashboardsViewGridBlock
       .companyCompanyInfo.contentNavigationContainer  

@@ -150,11 +150,12 @@ urlpatterns = patterns(
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
 
     #Learner Dashboard, Element
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.company_course_learner_dashboard_tile, name='company_course_learner_dashboard_tile'),    
+    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.company_course_learner_dashboard_tile, name='company_course_learner_dashboard_tile'),
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/discover/(?P<discovery_id>.*)$', views.company_course_learner_dashboard_discover, name='company_course_learner_dashboard_discover'),
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/element_reorder$', views.company_course_learner_dashboard_element_reorder, name='company_course_learner_dashboard_element_reorder'),    
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover_reorder$', views.company_course_learner_dashboard_discover_reorder, name='company_course_learner_dashboard_discover_reorder'),    
+    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/element_reorder$', views.company_course_learner_dashboard_element_reorder, name='company_course_learner_dashboard_element_reorder'),
+    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover_reorder$', views.company_course_learner_dashboard_discover_reorder, name='company_course_learner_dashboard_discover_reorder'),
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)/learner_dashboard', views.company_course_learner_dashboard, name='company_course_learner_dashboard'),
+    url(r'^companies/(?P<company_id>[0-9]+)/learner_dashboard/select_course', views.company_learner_dashboard_select_course, name='company_learner_dashboard_select_course'),
     #Learner Dashboard, Element
 
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)', views.company_course_details, name='company_course_details'),
