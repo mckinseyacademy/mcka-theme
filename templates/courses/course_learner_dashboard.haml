@@ -64,8 +64,6 @@
               -if item.author
                 %h5
                   %span.author-font{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
-  %script
-    $('#home-courses').css('margin-top', '96px');
 
 - block footer
   - include 'footer_ld.haml'
