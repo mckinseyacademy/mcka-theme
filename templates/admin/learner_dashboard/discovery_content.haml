@@ -1,10 +1,9 @@
--if discovery_items
-  .row
-    .large-12.columns
-      %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
-        New item
-        %i.fa.fa-plus
-
+.row
+  .large-12.columns
+    %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
+      New item
+      %i.fa.fa-plus
+    -if discovery_items
       %table{style:"table-layout: fixed; width: 100%"}
         %thead
           %tr
@@ -25,7 +24,7 @@
               %td
                 %a.confirm{OnClick: 'deleteDiscover(#{discover.id}, #{learner_dashboard_id})'}
                     %i.fa.fa-times{'style': "color:red"}
-
+    -if discovery_items
       %a#saveSortDiscover.button.radius.small{style: "display:none"}
         Save list order
           %i.fa.fa-save
