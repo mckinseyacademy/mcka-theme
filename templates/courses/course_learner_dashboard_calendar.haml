@@ -78,6 +78,7 @@
 %script
   var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
   var dates = {{dates|safe}} ? {{dates|safe}}: [];
+  var courses = {{courses|safe}} ? {{courses|safe}}: [];
 
   var dataIPS = [];
   var dataWeb = [];
@@ -109,6 +110,39 @@
   processMilestones();
 
   function processMilestones() {
+
+    for (var j=0 in courses){
+
+      if (courses[j].type == "2" || courses[j].type == "3") {
+        console.log(courses[j].type);
+        dataDig.push({
+          color: '#e0e0e0',
+          x: 3,
+          label: courses[j].label,
+          name: courses[j].name,
+          link: courses[j].link,
+          user_progress: ("Your progress: " + courses[j].user_progress + "%"),
+          low: courses[j].start,
+          high: courses[j].end,
+        });
+      }
+
+      if (courses[j].type == "4"){
+        console.log(courses[j].type);
+        dataCourse.push({
+          color: '#e0e0e0',
+          x: 1,
+          label: courses[j].label,
+          name: courses[j].name,
+          link: courses[j].link,
+          user_progress: ("Your progress: " + courses[j].user_progress + "%"),
+          cohort_progress: ("Cohort progress: " + courses[j].cohort_progress + "%"),
+          low: courses[j].start,
+          high: courses[j].end,
+        });
+      }
+    }
+
     for (var i=0 in milestones) {
       low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
       high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
@@ -117,31 +151,6 @@
         minDate = low;
       if (high > maxDate)
         maxDate = high;
-
-      if (milestones[i]["fields"].tile_type == "1" || milestones[i]["fields"].tile_type == "2" || milestones[i]["fields"].tile_type == "3") {
-        dataDig.push({
-          color: '#e0e0e0',
-          x: 3,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          link: milestones[i]["fields"].link,
-          low: low,
-          high: high
-        });
-      }
-
-      if (milestones[i]["fields"].tile_type == "4") {
-        dataCourse.push({
-          color: '#e0e0e0',
-          x: 1,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          link: milestones[i]["fields"].link,
-          details: milestones[i]["fields"].details,
-          low: low,
-          high: high
-        });
-      }
 
       if (milestones[i]["fields"].tile_type == "5") {
         dataIPS.push({

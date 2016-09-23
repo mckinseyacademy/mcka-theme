@@ -21,7 +21,7 @@ from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
-    BrandingSettings, TileBookmark
+    BrandingSettings, TileBookmark, LearnerDashboardTileProgress
     )
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
@@ -1025,7 +1025,16 @@ def course_learner_dashboard_calendar(request):
 
     milestoneData = {}
     if learner_dashboard_id is not None:
-        milestoneData = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar = True).order_by('start_date')
+        trackedData = LearnerDashboardTile.objects.filter(
+            learner_dashboard=learner_dashboard_id, 
+            show_in_calendar = True
+        ).exclude(tile_type='1').exclude(tile_type='5').exclude(tile_type='6')
+
+        milestoneData = LearnerDashboardTile.objects.filter(
+            learner_dashboard=learner_dashboard_id, 
+            show_in_calendar = True
+        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').order_by('start_date')
+
     elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)
         return HttpResponseRedirect(redirect_url)
@@ -1072,9 +1081,28 @@ def course_learner_dashboard_calendar(request):
 
     milestones = serializers.serialize("json", milestoneData)
 
+    tile_ids = [str(i.id) for i in trackedData]
+    progressDataAll = LearnerDashboardTileProgress.objects.filter(user=request.user.id, milestone_id__in=tile_ids)
+
+    coursesData = {}
+    courseData = {}
+    for i, content in enumerate(progressDataAll):
+        courseData = {
+            "name": content.milestone.title,
+            "link": content.milestone.link,
+            "start": int(content.milestone.start_date.strftime("%s")) * 1000,
+            "end": int(content.milestone.end_date.strftime("%s")) * 1000,
+            "type": content.milestone.tile_type,
+            "user_progress": content.percentage,
+            "cohort_progress": 0,
+        }
+        coursesData[i] = courseData
+        courseData = {}
+
     data ={
         'milestones': milestones,
         'dates': dates,
+        'courses': json.dumps(coursesData),
     }
 
     if request.is_ajax():

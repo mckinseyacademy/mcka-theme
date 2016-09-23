@@ -46,7 +46,7 @@ from api_client.workgroup_models import Submission
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
-    social_total, round_to_int_bump_zero, round_to_int
+    social_total, round_to_int_bump_zero, round_to_int, create_tile_progress_data
 )
 from courses.models import FeatureFlags
 from license import controller as license_controller
