@@ -159,10 +159,6 @@ $(function() {
                 align: 'left',
                 fontFamily: '"Open Sans" , sans-serif',
                 formatter: function() {
-                    console.log ('plotLow plotHigh')
-                    console.log (this.point.plotLow, this.point.plotHigh);
-                    console.log ('point')
-                    console.log (this.point);
                     var labelWidth = this.point.plotLow - this.point.plotHigh
                     if ( this.point.name.length * 7.8 > labelWidth )
                         return this.point.name.substr( 0, (labelWidth / 6) - 10 ) + "...";
