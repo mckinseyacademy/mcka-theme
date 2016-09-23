@@ -720,10 +720,9 @@ def calculate_user_lesson_progress(user_id, course, chapter_id, completions):
             )
             if len(lesson_component_ids) > 0:
                 matches = set(lesson_component_ids).intersection(completed_ids)
-                return round_to_int(100 * len(matches) / len(lesson_component_ids))
-        else:
-            #lesson not found
-            return 0
+                lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+            return lesson.progress
+
 
 def calculate_user_module_progress(user_id, course, chapter_id, page_id, completions):
 
