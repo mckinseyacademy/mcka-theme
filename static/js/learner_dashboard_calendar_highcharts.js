@@ -89,6 +89,7 @@ $(function() {
                     '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
                     'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
+                    this.point.user_progress +
                     '</br>' +  '</div>';
 
                 else if (this.point.x == 2)
@@ -105,6 +106,7 @@ $(function() {
                     this.point.label +  '</div>' + 
                     '<a href="' + this.point.link + '" target="_blank" style="word-break: break-all; padding: 2px; display: inline-block;' +
                     'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
+                    this.point.user_progress +
                     this.point.name + '</a>';
             },
             positioner: function (labelWidth, labelHeight, point) {

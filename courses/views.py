@@ -21,7 +21,7 @@ from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
-    BrandingSettings, TileBookmark
+    BrandingSettings, TileBookmark, LearnerDashboardTileProgress
     )
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
@@ -36,7 +36,7 @@ from main.models import CuratedContentItem
 from .models import LessonNotesItem, FeatureFlags
 from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
-from .controller import update_bookmark, group_project_reviews, add_months_to_date
+from .controller import update_bookmark, group_project_reviews, add_months_to_date, progress_update_handler
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
@@ -631,11 +631,14 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
+    
+    progress_update_handler(request, course, chapter_id, page_id)
 
     if tile_type:
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
         return render(request, 'courses/course_lessons.haml', data)
+
 
 def course_notready(request, course_id):
     course = load_course(course_id, request=request)
@@ -1022,7 +1025,16 @@ def course_learner_dashboard_calendar(request):
 
     milestoneData = {}
     if learner_dashboard_id is not None:
-        milestoneData = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar = True).order_by('start_date')
+        trackedData = LearnerDashboardTile.objects.filter(
+            learner_dashboard=learner_dashboard_id, 
+            show_in_calendar = True
+        ).exclude(tile_type='1').exclude(tile_type='5').exclude(tile_type='6')
+
+        milestoneData = LearnerDashboardTile.objects.filter(
+            learner_dashboard=learner_dashboard_id, 
+            show_in_calendar = True
+        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').order_by('start_date')
+
     elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)
         return HttpResponseRedirect(redirect_url)
@@ -1069,9 +1081,28 @@ def course_learner_dashboard_calendar(request):
 
     milestones = serializers.serialize("json", milestoneData)
 
+    tile_ids = [str(i.id) for i in trackedData]
+    progressDataAll = LearnerDashboardTileProgress.objects.filter(user=request.user.id, milestone_id__in=tile_ids)
+
+    coursesData = {}
+    courseData = {}
+    for i, content in enumerate(progressDataAll):
+        courseData = {
+            "name": content.milestone.title,
+            "link": content.milestone.link,
+            "start": int(content.milestone.start_date.strftime("%s")) * 1000,
+            "end": int(content.milestone.end_date.strftime("%s")) * 1000,
+            "type": content.milestone.tile_type,
+            "user_progress": content.percentage,
+            "cohort_progress": 0,
+        }
+        coursesData[i] = courseData
+        courseData = {}
+
     data ={
         'milestones': milestones,
         'dates': dates,
+        'courses': json.dumps(coursesData),
     }
 
     if request.is_ajax():

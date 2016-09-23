@@ -645,6 +645,21 @@ def get_course_details_metrics_completions(course_id, count):
 
 
 @api_error_protect
+def get_course_module_completions(course_id, user_id, content_id):
+
+    response = GET(
+        '{}/{}/{}/completions/?user_id={}&content_id={}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            user_id,
+            content_id,
+        )
+    )
+
+    return json.loads(response.read())
+
+@api_error_protect
 def get_course_details_metrics_grades(course_id, count):
 
     response = GET(
