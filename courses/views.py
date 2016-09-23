@@ -1014,7 +1014,6 @@ def course_learner_dashboard_bookmark_lesson(request):
         else:
             return HttpResponse(status=204)
 
-
 @login_required
 def course_learner_dashboard_calendar(request):
 

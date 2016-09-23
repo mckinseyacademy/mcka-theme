@@ -1,0 +1,37 @@
+-if discovery_items
+  .row
+    .large-12.columns
+      %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
+        New item
+        %i.fa.fa-plus
+
+      %table{style:"table-layout: fixed; width: 100%"}
+        %thead
+          %tr
+            %th= _("Title")
+            %th= _("Link")
+            %th= _("Author")
+            %th= _("Edit")
+            %th= _("Delete")
+        %tbody#discover-body
+          - for discover in discovery_items
+            %tr{id: "#{discover.id}"}
+              %td{style: "word-wrap: break-word"}= discover.title
+              %td{style: "word-wrap: break-word"}= discover.link
+              %td{style: "word-wrap: break-word"}= discover.author
+              %td
+                %a{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/#{discover.id}", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true'}
+                  %i.fa.fa-pencil-square-o{'style': "color:green"}
+              %td
+                %a.confirm{OnClick: 'deleteDiscover(#{discover.id}, #{learner_dashboard_id})'}
+                    %i.fa.fa-times{'style': "color:red"}
+
+      %a#saveSortDiscover.button.radius.small{style: "display:none"}
+        Save list order
+          %i.fa.fa-save
+
+      %div#savedSortDiscover.button.radius.small.disabled{style: "display:none"}
+        Saved
+          %i.fa.fa-check{style: "color:green"}
+
+  

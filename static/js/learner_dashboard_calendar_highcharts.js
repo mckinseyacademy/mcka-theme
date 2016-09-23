@@ -1,5 +1,12 @@
 $(function() {
     var chart;
+
+    Highcharts.setOptions({
+        global: {
+            useUTC : false
+        }
+    });
+
     var chartingOptions = {
         chart: {
             type: 'columnrange',
@@ -49,7 +56,8 @@ $(function() {
                 }
             },
             series: {
-                pointWidth: 55,
+                animation: false,
+                pointWidth: 55
             }
         },
 
@@ -95,7 +103,7 @@ $(function() {
                 else if (this.point.x == 3)
                     return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
                     this.point.label +  '</div>' + 
-                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                    '<a href="' + this.point.link + '" target="_blank" style="word-break: break-all; padding: 2px; display: inline-block;' +
                     'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
                     this.point.name + '</a>';
             },

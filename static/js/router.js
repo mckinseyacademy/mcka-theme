@@ -34,6 +34,7 @@ var Router = Backbone.Router.extend({
     'admin/companies': 'companies_list',
     'admin/companies/*company_id/courses/*course_id': 'admin_course_details_participants', 
     'admin/companies/*company_id/participants/*id': 'initialize_participant_details',
+    'admin/companies/*company_id/learner_dashboards': 'company_learner_dashboards',
     'admin/companies/*company_id': 'company_details_courses',
     'admin/workgroup':'workgroup_main',
     'admin/programs/*program_id/courses': 'program_courses_main',
@@ -232,6 +233,27 @@ var Router = Backbone.Router.extend({
     var company_courses_view = new Apros.views.CompanyDetailsCoursesView({collection: companyCourses, el: '#companyDetailsCoursesViewGridBlock'});
     company_courses_view.render();
   },
+
+  company_learner_dashboards: function(company_id){
+    $('#companyDetailsDataWrapper').find('.contentNavigationContainer').each(function(index, value){
+      val = $(value);
+      if (val.hasClass('companyLearnerDashboards'))
+        val.show();
+      else
+        val.hide();
+    });
+    var companyId = $('#mainCompanyDetailsDataContainer').attr('data-id');
+    Apros.Router.linked_views['companyLearnerDashboards']['drawn'] = true;
+    var url = ApiUrls.companies_list+'/'+companyId+'/learner_dashboards';
+
+    var companyLearnerDashboards = new Apros.collections.CompanyLearnerDashboards({ url : url});
+    var company_learner_dashboards_view = new Apros.views.CompanyLearnerDashboardsView({
+      collection: companyLearnerDashboards, el: '#companyLearnerDashboardsViewGridBlock'
+    });
+
+    company_learner_dashboards_view.render();
+  },
+
   company_details_company_info: function(company_id){
     $('#companyDetailsDataWrapper').find('.companyInfoTopic').each(function(index, value){
       val = $(value);
@@ -331,6 +353,10 @@ Apros.Router.linked_views = {
   },
   'companyCourses': {
     'function':Apros.Router.company_details_courses,
+    'drawn': false
+  },
+  'companyLearnerDashboards': {
+    'function':Apros.Router.company_learner_dashboards,
     'drawn': false
   },
   'companyCompanyInfo': {

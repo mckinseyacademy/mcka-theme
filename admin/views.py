@@ -4675,6 +4675,284 @@ class company_courses_api(APIView):
         return Response(courses)
 
 
+class company_learner_dashboards_api(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+    def get(self, request, company_id):
+
+        if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
+
+
+        organization = Client.fetch(company_id)
+  
+        coursesIDs = []
+        programsAPI = organization.fetch_programs()
+    
+        for program in programsAPI:
+            program.coursesIDs = []
+            program.courses = []
+            for course in program.fetch_courses():
+                coursesIDs.append(course.course_id)
+    
+        coursesIDs = list(set(coursesIDs))
+
+        learner_dashboards = []
+        for course_id in coursesIDs:
+            try:
+                learner_dashboard = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
+                if learner_dashboard:
+                    learner_dashboards.append({
+                        'id': learner_dashboard.id,
+                        'name': learner_dashboard.title,
+                        'client_id': company_id,
+                        'course_id': course_id
+                    })
+            except LearnerDashboard.DoesNotExist:
+                continue
+
+        return Response(learner_dashboards)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_learner_dashboard_select_course(request, company_id):
+    if request.user.is_company_admin:
+            user_permissions = Permissions(request.user.id)
+            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+            company_ids = []
+            for user_org in user_organizations:
+                company_ids.append(int(user_org.id))
+            if int(company_id) not in company_ids:
+                return permission_denied(request)
+
+    organization = Client.fetch(company_id)
+
+    coursesIDs = []
+    programsAPI = organization.fetch_programs()
+
+    for program in programsAPI:
+        program.courses = []
+        program.courses = []
+        for course in program.fetch_courses():
+            coursesIDs.append(course.course_id)
+
+    data = {
+        'coursesIDs': coursesIDs,
+        'company_id': company_id,
+    }
+
+    return render(request, 'admin/learner_dashboard/course_select.haml', data)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+def company_course_learner_dashboard(request, company_id, course_id):
+
+    try:
+        instance = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
+    except:
+        instance = None
+
+    if request.method == "POST":
+        if instance == None:
+            instance = LearnerDashboard(
+                title = request.POST['title'],
+                description = request.POST['description'],
+                title_color = request.POST['title_color'],
+                description_color = request.POST['description_color'],
+                client_id = company_id, 
+                course_id = course_id
+            )
+            instance.save()
+        else:
+            instance.title = request.POST['title']
+            instance.description = request.POST['description']
+            instance.title_color = request.POST['title_color']
+            instance.description_color = request.POST['description_color']
+            instance.save()
+
+            myDict = dict(request.POST.iterlists())
+            if myDict.get('positions[]'):
+                for index, item_id in enumerate(myDict['positions[]']):
+                    tileItem = LearnerDashboardTile.objects.get(id=item_id)
+                    tileItem.position = index
+                    tileItem.save()
+
+    if instance:
+        try:
+            branding = BrandingSettings.objects.get(client_id=company_id)
+        except:
+            branding = None
+
+        discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=instance.id).order_by('position')
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
+        
+        data = {
+            'client_id': company_id,
+            'course_id': course_id,
+            'learner_dashboard_id': instance.id,
+            'title': instance.title,
+            'description': instance.description,
+            'title_color': instance.title_color,
+            'description_color': instance.description_color,
+            'learner_dashboard_tiles': learner_dashboard_tiles,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+            'milestones_enabled': settings.MILESTONES_ENABLED,
+            'discovery_items': discovery_items,
+            'branding': branding
+        }
+    else:
+        data = {
+            'client_id': company_id,
+            'course_id': course_id,
+            'learner_dashboard_id': None,
+            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
+        }
+
+    return render(request, 'admin/learner_dashboard/main.haml', data)
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_tile(request, company_id, course_id, learner_dashboard_id, tile_id):
+
+    error = None
+    try:
+        instance = LearnerDashboardTile.objects.get(id=tile_id)
+    except:
+        instance = None
+
+    if request.method == 'POST':
+        form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            tile = form.save()
+
+            if not "/learnerdashboard/" in tile.link:
+                if tile.get_tile_type_display() == 'Lesson':
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
+                if tile.get_tile_type_display() == 'Module':
+                    tile.link = "/learnerdashboard" + tile.link + "/module/"
+                tile.save()
+            if tile.get_tile_type_display() == 'Course':
+                if not "/courses/" in tile.link:
+                    tile.link = "/courses/" + tile.link
+                    tile.save()
+
+            redirect_url = reverse(
+                'company_course_learner_dashboard', 
+                kwargs={'company_id': company_id, 'course_id': course_id}
+            )
+            return HttpResponseRedirect(redirect_url)
+
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse(
+            'company_course_learner_dashboard', 
+            kwargs={'company_id': company_id, 'course_id': course_id}
+        )
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = LearnerDashboardTileForm(instance=instance)
+
+    default_colors = {
+        'label': settings.TILE_LABEL_COLOR,
+        'note': settings.TILE_NOTE_COLOR,
+        'title': settings.TILE_TITLE_COLOR,
+        'background': settings.TILE_BACKGROUND_COLOR,
+    }
+
+    data = {
+        'error': error,
+        'form': form,
+        'company_id': company_id,
+        'course_id': course_id,
+        'learner_dashboard_id': learner_dashboard_id,
+        'tile_id': tile_id,
+        'default_colors': default_colors,
+    }
+
+    return render(request, 'admin/learner_dashboard/element_modal.haml', data)
+
+
+def company_course_learner_dashboard_element_reorder(request, company_id, course_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        dataDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(dataDict['position[]']):
+            discoveryItem = LearnerDashboardTile.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_discover(request, company_id, course_id, learner_dashboard_id, discovery_id):
+
+    error = None
+
+    try:
+        instance = LearnerDashboardDiscovery.objects.get(id=discovery_id)
+    except: 
+        instance = None
+
+    if request.method == 'POST':
+        form = DiscoveryContentCreateForm (request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+
+            redirect_url = reverse(
+                'company_course_learner_dashboard', 
+                kwargs={'company_id': company_id, 'course_id': course_id}
+            )
+
+            return HttpResponseRedirect(redirect_url)
+
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse(
+            'company_course_learner_dashboard', 
+            kwargs={'company_id': company_id, 'course_id': course_id}
+        )        
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = DiscoveryContentCreateForm(instance=instance)        
+
+    data = {
+        'error': error,
+        'form': form,
+        'company_id': company_id,
+        'course_id': course_id,
+        'discovery_id': discovery_id,
+        'learner_dashboard_id': learner_dashboard_id,
+    }
+
+    return render(request, 'admin/learner_dashboard/discover_modal.haml', data)
+
+
+def company_course_learner_dashboard_discover_reorder(request, company_id, course_id):
+
+    if request.method == 'POST':
+
+        data = request.POST
+        dataDict = dict(data.iterlists())
+
+        for index, item_id in enumerate(dataDict['position[]']):
+            discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
+            discoveryItem.position = index
+            discoveryItem.save()
+        return HttpResponse('200')
+
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_course_details(request, company_id, course_id):
 

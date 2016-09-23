@@ -1,0 +1,21 @@
+%ul#header-ld
+  - if learner_dashboard_id
+    %li
+      %a{href:"#"}
+        = _("Dashboard Elements")
+    %li
+      %a{href:"#"}
+        = _("Discover Content")
+  %li
+      %a{href:"#"}
+        = _("Title/Description")
+  - if learner_dashboard_id
+    %li
+      %a{href:"#"}
+        = _("Tile Positions")
+
+
+%script
+  $("#header-ld li").on('click', function (){
+    $('.admin-ld-component').hide().eq($(this).index()).show();
+  });
