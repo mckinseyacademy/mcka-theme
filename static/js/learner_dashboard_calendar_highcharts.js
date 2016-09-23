@@ -109,7 +109,7 @@ $(function() {
             },
             positioner: function (labelWidth, labelHeight, point) {
                 var tooltipX, tooltipY;
-                if (point.plotX + labelWidth + 80 > chart.plotWidth) {
+                if (point.plotX + labelWidth + 85 > chart.plotWidth) {
                     tooltipX = point.plotX + chart.plotLeft - labelWidth - 20;
                 } else {
                     tooltipX = point.plotX + chart.plotLeft + 20;
@@ -158,7 +158,7 @@ $(function() {
                 fontFamily: '"Open Sans" , sans-serif',
                 formatter: function() {
                     var labelWidth = this.point.plotLow - this.point.plotHigh
-                    if ( this.point.name.length * 6 > labelWidth )
+                    if ( this.point.name.length * 7.8 > labelWidth )
                         return this.point.name.substr( 0, (labelWidth / 6) - 10 ) + "...";
                     return this.point.name
                 },
