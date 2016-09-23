@@ -68,7 +68,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list,
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -628,10 +628,9 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
         form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             tile = form.save()
-
             if not "/learnerdashboard/" in tile.link:
                 if tile.get_tile_type_display() == 'Lesson':
-                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson/"
                 if tile.get_tile_type_display() == 'Module':
                     tile.link = "/learnerdashboard" + tile.link + "/module/"
                 tile.save()
@@ -639,6 +638,10 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
                 if not "/courses/" in tile.link:
                     tile.link = "/courses/" + tile.link
                     tile.save()
+            
+            #filter digital content types
+            if tile.tile_type == '2' or tile.tile_type == '3' or tile.tile_type == '4':
+                create_tile_progress_data(tile)
 
             redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
             return HttpResponseRedirect(redirect_url)

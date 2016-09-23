@@ -36,7 +36,7 @@ from main.models import CuratedContentItem
 from .models import LessonNotesItem, FeatureFlags
 from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
-from .controller import update_bookmark, group_project_reviews, add_months_to_date
+from .controller import update_bookmark, group_project_reviews, add_months_to_date, progress_update_handler
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
@@ -631,11 +631,14 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
+    
+    progress_update_handler(request, course, chapter_id, page_id)
 
     if tile_type:
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
         return render(request, 'courses/course_lessons.haml', data)
+
 
 def course_notready(request, course_id):
     course = load_course(course_id, request=request)

@@ -4,6 +4,7 @@
 import copy
 import random
 from datetime import datetime
+import re
 
 from django.conf import settings
 
@@ -16,17 +17,14 @@ from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES, workgroup_models
 from api_client.api_error import ApiError
-from admin.models import WorkGroup
-from admin.controller import load_course, get_group_activity_xblock, is_group_activity, MINIMAL_COURSE_DEPTH
-from admin.models import ReviewAssignmentGroup
-
+from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
 from lib.util import PriorIdConvert
+from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
 
 # logic functions - recieve api implementor for test
-
 class AcademyGradeAssessmentType(JsonObject):
     @property
     def type_name(self):
@@ -168,7 +166,7 @@ def build_page_info_for_course(
     Returns course structure and user's status within course
         course_api_impl - optional api client module to use (useful in mocks)
     '''
-
+    
     course = copy.deepcopy(load_course(course_id, MINIMAL_COURSE_DEPTH, course_api_impl, request=request))
 
     # something sensible if we fail...
@@ -646,3 +644,150 @@ def add_months_to_date(new_date, months):
     year = int(new_date.year + month / 12)
     month = month % 12 + 1
     return datetime(year, month, 1)
+
+
+def create_tile_progress_data(tile):
+
+    link = strip_tile_link(tile.link)
+    users = json.loads(course_api.get_user_list_json(link['course_id']))
+
+    for user in users['results']:
+        course = get_course_object(user['id'], link['course_id'])
+        if course:
+            course_completions = course_api.get_course_completions(course.id, user['id'])
+            update_progress(tile, user['id'], course, course_completions, link)
+
+
+def progress_update_handler(request, course, chapter_id, page_id):
+
+    '''
+    Triggered by user visiting the module. Filters tiles with current course_ids.
+    Updates progress only for current module and parent lesson/course.
+    '''
+
+    tiles = LearnerDashboardTile.objects.filter(link__icontains=course.id)
+
+    course_completions = course_api.get_course_completions(course.id, request.user.id)
+
+    if course_completions:
+        for tile in tiles:
+            link = strip_tile_link(tile.link)
+            if tile.tile_type == '3' and not page_id in tile.link:
+                continue
+            if tile.tile_type == '2' and not chapter_id in tile.link:
+                continue
+            update_progress(tile, request.user.id, course, course_completions, link)
+
+
+def update_progress(tile, user_id, course, course_completions, link):
+
+    obj, created = LearnerDashboardTileProgress.objects.get_or_create(
+        milestone=tile,
+        user=user_id,
+    )
+
+    if tile.tile_type == '4':
+        obj.percentage = calculate_user_course_progress(user_id, course.id)
+    elif tile.tile_type == '2':
+        obj.percentage = calculate_user_lesson_progress(user_id, course, link['lesson_id'], course_completions)
+    elif tile.tile_type == '3':
+        obj.percentage = calculate_user_module_progress(user_id, course, link['lesson_id'], link['page_id'], course_completions)
+    obj.save()
+
+
+def calculate_user_course_progress(user_id, course_id):
+
+    user_progress = course_api.get_course_metrics_completions(course_id, user_id = user_id, skipleaders = True)
+    if user_progress:
+        return user_progress.completions
+    else:
+        return 0
+
+
+def calculate_user_lesson_progress(user_id, course, chapter_id, completions):
+    
+    completed_ids = [result.content_id for result in completions]
+    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+    
+    for lesson in course.chapters:
+        if lesson.id == chapter_id:
+            lesson.progress = 0
+            lesson_component_ids = course.lesson_component_ids(
+                lesson.id, 
+                completed_ids,
+                settings.PROGRESS_IGNORE_COMPONENTS,
+            )
+            if len(lesson_component_ids) > 0:
+                matches = set(lesson_component_ids).intersection(completed_ids)
+                return round_to_int(100 * len(matches) / len(lesson_component_ids))
+        else:
+            #lesson not found
+            return 0
+
+def calculate_user_module_progress(user_id, course, chapter_id, page_id, completions):
+
+    completed_ids = [result.content_id for result in completions]
+
+    module = course.get_module(chapter_id, page_id)
+    if module:
+        for child in module.children:
+            matching = [s for s in completed_ids if child.id in s]
+            if matching:
+                return 100
+            else:
+                return 0
+    else:
+        sequential = course.get_current_sequential(chapter_id, page_id)
+        if sequential:
+            for vertical in sequential.children:
+                for child in vertical.children:
+                    matching = [s for s in completed_ids if child.id in s]
+                    if matching:
+                        return 100
+                    else: 
+                        return 0
+        else:
+            #this should never happen
+            return None
+
+
+def get_course_object(user_id, course_id):
+    
+    courses = user_api.get_user_courses(user_id)
+    course = [c for c in courses if c.id == course_id]
+    if course:
+        return load_course(course[0].id, depth=MINIMAL_COURSE_DEPTH)
+    else:
+        return None
+
+
+def strip_tile_link(link):
+
+    if link.startswith("/learnerdashboard/"):
+        link = link[17:]
+    if link.endswith("/lesson/") or link.endswith("/module/"):
+        link = link[:-8]
+
+    try:
+        substring = re.search('/courses/(.*)/lessons/', link)
+        course_id = substring.group(1)
+    except: 
+        stripped_link = {
+            'course_id': link.replace("/courses/", ""),
+            'lesson_id': None,
+            'page_id': None,
+        }
+        return stripped_link
+
+    substring = re.search('/lessons/(.*)/module/', link)
+    lesson_id = substring.group(1)
+
+    substring = re.search('/module/(.*)$', link)
+    page_id = substring.group(1)
+
+    stripped_link = {
+        'course_id': course_id,
+        'lesson_id': lesson_id,
+        'page_id': page_id,
+    }
+    return stripped_link

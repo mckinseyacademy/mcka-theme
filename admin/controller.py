@@ -28,7 +28,7 @@ from license import controller as license_controller
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
-    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate
+    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate, LearnerDashboardTileProgress,
 )
 
 from lib.mail import (
@@ -44,7 +44,9 @@ from .permissions import Permissions, SlimAddingPermissions
 import threading
 import Queue
 import atexit
+from random import randint
 
+import json
 import csv
 from django.core.validators import validate_email, ValidationError
 from django.core.cache import cache
@@ -1871,7 +1873,3 @@ def student_list_chunks_tracker(data, client_id, activation_link):
 
         return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size, "element_count": len(user_list), "status": "csv_task_created", 
                 "file_name":file_name}
-
-
-
-
