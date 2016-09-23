@@ -1,10 +1,9 @@
--if learner_dashboard_tiles
-  .row
-    .large-12.columns
-      %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
-        New element
-        %i.fa.fa-plus
-    
+.row
+  .large-12.columns
+    %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
+      New element
+      %i.fa.fa-plus
+    -if learner_dashboard_tiles
       %table{style:"table-layout: fixed; width: 100%"}
         %thead
           %tr
@@ -31,7 +30,7 @@
               %td
                 %a.confirm{OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
                   %i.fa.fa-times{'style': "color:red"}
-
+    -if learner_dashboard_tiles
       %a#saveSortElement.button.radius.small{style: "display:none"}
         Save list order
           %i.fa.fa-save

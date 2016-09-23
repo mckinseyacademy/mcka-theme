@@ -112,9 +112,9 @@ $(function() {
             positioner: function (labelWidth, labelHeight, point) {
                 var tooltipX, tooltipY;
                 if (point.plotX + labelWidth + 85 > chart.plotWidth) {
-                    tooltipX = point.plotX + chart.plotLeft - labelWidth - 20;
+                    tooltipX = Math.abs(point.plotX) + chart.plotLeft - labelWidth - 20;
                 } else {
-                    tooltipX = point.plotX + chart.plotLeft + 20;
+                    tooltipX = Math.abs(point.plotX) + chart.plotLeft + 20;
                 }
 
                 if (point.plotY + labelHeight - 20 > chart.plotHeight) {
