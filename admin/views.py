@@ -638,7 +638,7 @@ def client_admin_course_learner_dashboard_tile(request, client_id, course_id, le
                 if not "/courses/" in tile.link:
                     tile.link = "/courses/" + tile.link
                     tile.save()
-            
+
             #filter digital content types
             if tile.tile_type == '2' or tile.tile_type == '3' or tile.tile_type == '4':
                 create_tile_progress_data(tile)
@@ -4851,6 +4851,10 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
                 if not "/courses/" in tile.link:
                     tile.link = "/courses/" + tile.link
                     tile.save()
+
+            #filter digital content types
+            if tile.tile_type == '2' or tile.tile_type == '3' or tile.tile_type == '4':
+                create_tile_progress_data(tile)
 
             redirect_url = reverse(
                 'company_course_learner_dashboard', 
