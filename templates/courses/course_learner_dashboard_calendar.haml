@@ -112,9 +112,22 @@
   function processMilestones() {
 
     for (var j=0 in courses){
+      console.log ('course');
+      console.log (courses[j]);
+
+      var color = '#cccccc';
+      var timeNow = (new Date()).getTime();
+
+      if (timeNow > courses[j].start && timeNow < courses[j].end)
+        color = '#b6d332';
+      else if (timeNow > courses[j].end){
+        if (courses[j].user_progress == 100)
+          color = '#629b2b';
+        else
+          color = '#cd202c';
+      }
 
       if (courses[j].type == "2" || courses[j].type == "3") {
-        console.log(courses[j].type);
         dataDig.push({
           color: '#e0e0e0',
           x: 3,
@@ -128,7 +141,6 @@
       }
 
       if (courses[j].type == "4"){
-        console.log(courses[j].type);
         dataCourse.push({
           color: '#e0e0e0',
           x: 1,
@@ -154,7 +166,7 @@
 
       if (milestones[i]["fields"].tile_type == "5") {
         dataIPS.push({
-          color: '#e0e0e0',
+          color: '#66a5b5',
           x: 0,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
@@ -168,7 +180,7 @@
 
       if (milestones[i]["fields"].tile_type == "6") {
         dataWeb.push({
-          color: '#e0e0e0',
+          color: '#66a5b5',
           x: 2,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
