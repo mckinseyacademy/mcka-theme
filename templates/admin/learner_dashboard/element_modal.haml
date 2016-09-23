@@ -1,9 +1,9 @@
 - if tile_id
   %section
-    %h1 Edit Tile
+    %h1 Edit Element
 - else 
   %section
-    %h1 Create Tile
+    %h1 Create Element
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
@@ -20,7 +20,7 @@
     .small-3.columns
     .small-9.columns= form.show_in_dashboard.errors
   .row
-    .small-3.columns= "Tile view:"
+    .small-3.columns= "Element view:"
     .small-9.columns= form.show_in_dashboard
 
   .row

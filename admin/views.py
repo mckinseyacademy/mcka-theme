@@ -4711,7 +4711,7 @@ class company_learner_dashboards_api(APIView):
                         'client_id': company_id,
                         'course_id': course_id
                     })
-            except LearnerDashboard.DoesNotExist:
+            except:
                 continue
 
         return Response(learner_dashboards)
@@ -4719,6 +4719,7 @@ class company_learner_dashboards_api(APIView):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_learner_dashboard_select_course(request, company_id):
+
     if request.user.is_company_admin:
             user_permissions = Permissions(request.user.id)
             user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
@@ -4738,6 +4739,15 @@ def company_learner_dashboard_select_course(request, company_id):
         program.courses = []
         for course in program.fetch_courses():
             coursesIDs.append(course.course_id)
+
+    coursesIDs = list(set(coursesIDs))
+
+    for course_id in coursesIDs:
+        try:
+            if LearnerDashboard.objects.get(client_id=company_id, course_id=course_id):
+                coursesIDs.remove(course_id)
+        except:
+            continue
 
     data = {
         'coursesIDs': coursesIDs,
