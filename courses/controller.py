@@ -648,15 +648,17 @@ def add_months_to_date(new_date, months):
 
 
 def create_tile_progress_data(tile):
-
+    '''
+    Triggered by admin creating the tile in learner dashboard CMS
+    '''
     link = strip_tile_link(tile.link)
     users = json.loads(course_api.get_user_list_json(link['course_id']))
 
     for user in users['results']:
         course = get_course_object(user['id'], link['course_id'])
         if course:
-            course_completions = course_api.get_course_completions(course.id, user['id'])
-            update_progress(tile, user['id'], course, course_completions, link)
+            completions = course_api.get_course_completions(course.id, user['id'])
+            update_progress(tile, user['id'], course, completions, link)
 
 
 def progress_update_handler(request, course, chapter_id, page_id):
@@ -668,19 +670,20 @@ def progress_update_handler(request, course, chapter_id, page_id):
 
     tiles = LearnerDashboardTile.objects.filter(link__icontains=course.id)
 
-    course_completions = course_api.get_course_completions(course.id, request.user.id)
+    completions = course_api.get_course_completions(course.id, request.user.id)
 
-    if course_completions:
+    if completions and tiles:
         for tile in tiles:
             link = strip_tile_link(tile.link)
-            if tile.tile_type == '3' and not page_id in tile.link:
-                continue
-            if tile.tile_type == '2' and not chapter_id in tile.link:
-                continue
-            update_progress(tile, request.user.id, course, course_completions, link)
+            if link:
+                if tile.tile_type == '3' and not page_id in tile.link:
+                    continue
+                if tile.tile_type == '2' and not chapter_id in tile.link:
+                    continue
+                update_progress(tile, request.user.id, course, completions, link)
 
 
-def update_progress(tile, user_id, course, course_completions, link):
+def update_progress(tile, user_id, course, completions, link):
 
     obj, created = LearnerDashboardTileProgress.objects.get_or_create(
         milestone=tile,
@@ -688,21 +691,21 @@ def update_progress(tile, user_id, course, course_completions, link):
     )
 
     if tile.tile_type == '4':
-        obj.percentage = calculate_user_course_progress(user_id, course.id)
+        obj.percentage = calculate_user_course_progress(user_id, course, completions)
     elif tile.tile_type == '2':
-        obj.percentage = calculate_user_lesson_progress(user_id, course, link['lesson_id'], course_completions)
+        obj.percentage = calculate_user_lesson_progress(user_id, course, link['lesson_id'], completions)
     elif tile.tile_type == '3':
-        obj.percentage = calculate_user_module_progress(user_id, course, link['lesson_id'], link['page_id'], course_completions)
+        obj.percentage = calculate_user_module_progress(user_id, course, link['lesson_id'], link['page_id'], completions)
     obj.save()
 
 
-def calculate_user_course_progress(user_id, course_id):
+def calculate_user_course_progress(user_id, course, completions):
 
-    user_progress = course_api.get_course_metrics_completions(course_id, user_id = user_id, skipleaders = True)
-    if user_progress:
-        return user_progress.completions
-    else:
-        return 0
+    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+    completed_ids = [result.content_id for result in completions]
+    matches = set(component_ids).intersection(completed_ids)
+
+    return round_to_int(100 * len(matches) / len(component_ids))
 
 
 def calculate_user_lesson_progress(user_id, course, chapter_id, completions):
