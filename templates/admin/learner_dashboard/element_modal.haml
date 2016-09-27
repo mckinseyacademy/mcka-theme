@@ -145,7 +145,7 @@
     %input#resetColors.tile_fields.button.radius.small.left{type: "submit", value: "Reset tile colors"}
   - else
     %input#resetColors.tile_fields.button.radius.small.left{type: "submit", value: "Reset tile colors", disabled: "True"}
-  %input#formSubmit.button.radius.small.right{type: "submit", value: "Save", disabled: "True"}
+  %input#tileFormSubmit.button.radius.small.right{type: "submit", value: "Save", disabled: "True"}
 
   %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
   %script{src: "/static/js/admin_learner_dashboard/element_modal.js"}
@@ -213,6 +213,6 @@
       label.val(label.data('default-value'));
       note.val(note.data('default-value'));
       title.val(title.data('default-value'));
-      $('#formSubmit').attr('disabled',false);
+      $('#tileFormSubmit').attr('disabled',false);
       $('#resetColors').attr('disabled',true);
     });

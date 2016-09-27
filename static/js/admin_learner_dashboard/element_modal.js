@@ -26,11 +26,11 @@ modal_form.find('#id_tile_type').change(function(){
 });
 
 modal_form.find('#id_start_date').on('click', function(){
-  $('#formSubmit').attr('disabled',false);
+  $('#tileFormSubmit').attr('disabled',false);
 });
 
 modal_form.find('#id_end_date').on('click', function(){
-  $('#formSubmit').attr('disabled',false);
+  $('#tileFormSubmit').attr('disabled',false);
 });
 
 function adjust_for_calendar_entry(calendar_checkbox){

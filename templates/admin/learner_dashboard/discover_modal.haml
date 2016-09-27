@@ -7,7 +7,7 @@
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-%form.admin-form{action: '/admin/companies/#{company_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/#{discovery_id}', method: "POST"}
+%form.discover_modal_form{action: '/admin/companies/#{company_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/#{discovery_id}', method: "POST"}
   - csrf_token
   .row
     .small-3.columns
@@ -31,6 +31,6 @@
   .error
     - if error
       = error
-  %input.button.radius.small{id: "formSubmit", type: "submit", value: "Save", disabled: "True"}
+  %input#discoverFormSubmit.button.radius.small{type: "submit", value: "Save", disabled: "True"}
 
   %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
