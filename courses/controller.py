@@ -654,11 +654,13 @@ def create_tile_progress_data(tile):
     link = strip_tile_link(tile.link)
     users = json.loads(course_api.get_user_list_json(link['course_id']))
 
+    completions = course_api.get_course_completions(link['course_id'], page_size=100)
+
     for user in users['results']:
         course = get_course_object(user['id'], link['course_id'])
         if course:
-            completions = course_api.get_course_completions(course.id, user['id'])
-            update_progress(tile, user['id'], course, completions, link)
+            user_completions = [u for u in completions if u.user_id == user['id']]
+            update_progress(tile, user['id'], course, user_completions, link)
 
 
 def progress_update_handler(request, course, chapter_id, page_id):
@@ -705,7 +707,10 @@ def calculate_user_course_progress(user_id, course, completions):
     completed_ids = [result.content_id for result in completions]
     matches = set(component_ids).intersection(completed_ids)
 
-    return round_to_int(100 * len(matches) / len(component_ids))
+    if len(completed_ids) > 0:
+        return round_to_int(100 * len(matches) / len(component_ids))
+    else:
+        return 0
 
 
 def calculate_user_lesson_progress(user_id, course, chapter_id, completions):

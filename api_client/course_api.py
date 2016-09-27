@@ -374,9 +374,9 @@ def get_course_content_groups(course_id, content_id):
     return JP.from_json(response.read(), course_models.CourseContentGroup)
 
 @api_error_protect
-def get_course_completions(course_id, user_id=None):
+def get_course_completions(course_id, user_id=None, page_size=0):
     ''' fetch course module completion list '''
-    qs_params = {"page_size": 0}
+    qs_params = {"page_size": page_size}
     if user_id:
         qs_params["user_id"] = user_id
 
@@ -386,9 +386,21 @@ def get_course_completions(course_id, user_id=None):
         course_id,
         urlencode(qs_params),
     )
-    response = GET(url)
-
-    return JP.from_json(response.read())
+    if page_size != 0:
+        results = []
+        response = GET(url)
+        data = json.loads(response.read())
+        pages = data['num_pages']
+        for x in range(0, pages):
+            result = data['results']
+            results.extend(result)
+            if data['next']:
+                response =  GET(data['next'])
+                data = json.loads(response.read())
+        return JP.from_json(json.dumps(results))
+    else:
+        response = GET(url)
+        return JP.from_json(response.read())
 
 @api_error_protect
 def get_course_metrics(course_id, *args, **kwargs):
