@@ -83,13 +83,21 @@ $(function() {
                 else
                     tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">&nbsp;</div>';
 
-                if (this.point.x == 0){
-                    tooltipHTML += '<a href="' + this.point.link + 
-                                    '" target="_blank" style="word-break: break-all; padding: 2px; display: inline-block;' +
-                                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' +
-                                    this.point.name + '</a> <div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
+                if ($.inArray(this.point.x, [0,2]) != -1){
+                    tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca; " target="_blank">' + this.point.name + '</a>';
+
+                    if (this.point.x == 0){
+                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
                                     Highcharts.dateFormat('%b %e, %Y', this.point.low) + '</br>' + this.point.location + '</div>';
-                    return tooltipHTML;
+                        return tooltipHTML;
+                    }
+                    if (this.point.x == 2){
+                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
+                                        Highcharts.dateFormat('%b %e, %Y', this.point.low) + '</br>' +
+                                        Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
+                        return tooltipHTML;
+                    }
                 }
                 else {
                     tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
@@ -101,12 +109,6 @@ $(function() {
                         return tooltipHTML;
                     }
 
-                    if (this.point.x == 2){
-                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
-                                        Highcharts.dateFormat('%b %e, %Y', this.point.low) + '</br>' +
-                                        Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
-                        return tooltipHTML;
-                    }
                     else if (this.point.x == 3){
                         tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
                                         this.point.user_progress + '</br> </div>';
