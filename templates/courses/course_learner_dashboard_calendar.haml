@@ -80,15 +80,7 @@
   var dates = {{dates|safe}} ? {{dates|safe}}: [];
   var courses = {{courses|safe}} ? {{courses|safe}}: [];
 
-  var dataIPS = [];
-  var dataWeb = [];
-  var dataDig = [];
-  var dataCourse = [];
-
   var dateList = [];
-
-  var minDate;
-  var maxDate;
 
   var mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
@@ -101,8 +93,14 @@
   addMonthNames(dates);
   addExtraSpaceToFrontEnd();
   
-  minDate = dateList[1];
-  maxDate = dateList[5];
+  var minDate = dateList[1];
+  var maxDate = dateList[5];
+
+  /* If there are no elements for that row, still make the row fill its line (highcarts removes if it is empty) */
+  var dataIPS = [{ x: 0, low: dateList[0], high: dateList[0] }];
+  var dataCourse = [{ x: 1, name: '', low: dateList[0], high: dateList[0] }];
+  var dataWeb = [{ x: 2, low: dateList[0], high: dateList[0] }];
+  var dataDig = [{ x: 3, low: dateList[0], high: dateList[0] }];
 
   var low;
   var high;
