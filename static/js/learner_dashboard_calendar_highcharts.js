@@ -74,40 +74,45 @@ $(function() {
             backgroundColor: 'white',
             borderRadius: 15,
             formatter: function() {
-                if (this.point.x == 0)
-                    return '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
-                    this.point.label +  '</div>' + 
-                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' + 
-                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
-                    this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
-                    Highcharts.dateFormat('%b %e, %Y', this.point.low) + 
-                    '</br>' + this.point.location + '</div>';
+                var tooltipHTML = '';
 
-                else if (this.point.x == 1)
-                    return '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
-                    this.point.label +  '</div>' +
-                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
-                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
-                    this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
-                    this.point.user_progress +
-                    '</br>' +  '</div>';
+                if (this.point.label){
+                    tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
+                        this.point.label + '</div>';
+                }
+                else
+                    tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">&nbsp;</div>';
 
-                else if (this.point.x == 2)
-                    return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
-                    this.point.label +  '</div>' + 
-                    '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block; height: 65px;' + 
-                    'margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
-                    this.point.name + '</a>' + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
-                    Highcharts.dateFormat('%b %e, %Y', this.point.low) +
-                    '</br>' + Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
+                if (this.point.x == 0){
+                    tooltipHTML += '<a href="' + this.point.link + 
+                                    '" target="_blank" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' +
+                                    this.point.name + '</a> <div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
+                                    Highcharts.dateFormat('%b %e, %Y', this.point.low) + '</br>' + this.point.location + '</div>';
+                    return tooltipHTML;
+                }
+                else {
+                    tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + this.point.name + '</a>';
 
-                else if (this.point.x == 3)
-                    return '<div style="padding: 2px; font-size: 7pt; font-weight: bold; text-transform: uppercase; color:#868685;">' + 
-                    this.point.label +  '</div>' + 
-                    '<a href="' + this.point.link + '" target="_blank" style="word-break: break-all; padding: 2px; display: inline-block;' +
-                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + 
-                    this.point.user_progress +
-                    this.point.name + '</a>';
+                    if (this.point.x == 1){
+                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
+                                        this.point.user_progress + '</br> </div>';
+                        return tooltipHTML;
+                    }
+
+                    if (this.point.x == 2){
+                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
+                                        Highcharts.dateFormat('%b %e, %Y', this.point.low) + '</br>' +
+                                        Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
+                        return tooltipHTML;
+                    }
+                    else if (this.point.x == 3){
+                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
+                                        this.point.user_progress + '</br> </div>';
+                        return tooltipHTML;
+                    }
+                }
             },
             positioner: function (labelWidth, labelHeight, point) {
                 var tooltipX, tooltipY;
