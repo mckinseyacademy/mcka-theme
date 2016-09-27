@@ -331,3 +331,16 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'tile_background_color': forms.TextInput(attrs={'type': 'color'}),
             'download_link': forms.TextInput(attrs={'type': 'url'}),
         }
+
+        def clean(self):
+            cleaned_data = super(LearnerDashboardTileForm, self).clean()
+            link = cleaned_data.get("link")
+            tile_type = cleaned_data.get("tile_type")
+
+            if tile_type == "4" and "/courses/" not in link:
+                raise forms.ValidationError({'link': "Link to course is not valid"})
+            if tile_type == "2" and "/chapter/" not in link:
+                raise forms.ValidationError({'link': "Link to lesson is not valid"})
+            if tile_type == "3" and "/module/" not in link:
+                raise forms.ValidationError({'link': "Link to module is not valid"})
+            return self.cleaned_data
