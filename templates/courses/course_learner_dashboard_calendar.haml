@@ -96,11 +96,10 @@
   var minDate = dateList[1];
   var maxDate = dateList[5];
 
-  /* If there are no elements for that row, still make the row fill its line (highcarts removes if it is empty) */
-  var dataIPS = [{ x: 0, low: dateList[0], high: dateList[0] }];
-  var dataCourse = [{ x: 1, name: '', low: dateList[0], high: dateList[0] }];
-  var dataWeb = [{ x: 2, low: dateList[0], high: dateList[0] }];
-  var dataDig = [{ x: 3, low: dateList[0], high: dateList[0] }];
+  var dataIPS = [];
+  var dataCourse = [];
+  var dataWeb = [];
+  var dataDig = [];
 
   var low;
   var high;
@@ -112,6 +111,11 @@
     var timeNow = (new Date()).getTime();
 
     for (var j=0 in courses){
+
+      if (courses[j].start < minDate)
+        minDate = courses[j].start;
+      if (courses[j].end > maxDate)
+        maxDate = courses[j].end;
 
       if (courses[j].type == "2" || courses[j].type == "3") {
         dataDig.push({
@@ -223,6 +227,47 @@
     opened = false;
   });
 
+  $('#next-calendar').click(function() {
+    if (maxDate > dateList[5]) {
+      $( "#previous-calendar").css( "color", "#4789c4" );
+      moveCalendarDates(4);
+    }
+  });
+
+  $('#previous-calendar').click(function() {
+    if (minDate < dateList[1]) {
+      $( "#next-calendar").css( "color", "#4789c4" );
+      moveCalendarDates(-4);
+    }
+  });
+
+  function moveCalendarDates(moveMonth) {
+    var chart = $('#highcharts-container').highcharts();
+    extremes = chart.yAxis[0].getExtremes();
+
+    var newMinDate = new Date(extremes.min + 86400 * 9 *1000);
+    newMinDate = newMinDate.setUTCMonth((newMinDate).getUTCMonth() + moveMonth);
+
+    extremes.min = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth());
+    extremes.max = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + 4);
+
+    dateList = [];
+    for (var i=0; i < 5; i++) {
+      dateList.push(
+        Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + i)
+      );
+    }
+
+    addMonthNames( dateList );
+    addExtraSpaceToFrontEnd();
+
+    chart.yAxis[0].options.tickInterval = dateList;
+    chart.yAxis[0].isDirty = true;
+
+    chart.yAxis[0].setExtremes(extremes.min, extremes.max);
+    changeDisableArrowColors();
+  }
+
   function addExtraSpaceToFrontEnd() {
     dateList.push(dateList[4] + 86400 * 9 * 1000);
     dateList.unshift(dateList[0] - 86400 * 9 * 1000);
@@ -245,22 +290,4 @@
     });
   }
 
-  $('#next-calendar').click(function() {
-    if (maxDate > dateList[5]) {
-      $( "#previous-calendar").css( "color", "#4789c4" );
-
-      var param = { beginDate: dateList[5] };
-      nextPrevCalendar(param);
-    }
-  });
-
-  $('#previous-calendar').click(function() {
-    if (minDate < dateList[1]) {
-      $( "#next-calendar").css( "color", "#4789c4" );
-
-      var param = { endDate: dateList[1] };
-      nextPrevCalendar(param);
-    }
-  });
-
-%script{src: "/static/js/learner_dashboard_calendar_highcharts.js"}
+%script{src: "/static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js"}

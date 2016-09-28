@@ -19,11 +19,13 @@ $(function() {
         },
         xAxis: {
             categories: ['', '', '', ''],
+            min: 0,
+            max: 3,
             labels: {
-            enabled: false
-        },
-        tickLength: 0,
-        lineWidth: 0
+                enabled: false
+            },
+            tickLength: 0,
+            lineWidth: 0
         },
      
         yAxis: {
