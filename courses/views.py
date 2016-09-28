@@ -1089,6 +1089,7 @@ def course_learner_dashboard_calendar(request):
     for i, content in enumerate(progressDataAll):
         courseData = {
             "name": content.milestone.title,
+            "label": content.milestone.label,
             "link": content.milestone.link,
             "start": int(content.milestone.start_date.strftime("%s")) * 1000,
             "end": int(content.milestone.end_date.strftime("%s")) * 1000,

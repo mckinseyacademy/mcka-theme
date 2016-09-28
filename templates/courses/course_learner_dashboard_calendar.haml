@@ -109,23 +109,13 @@
 
   function processMilestones() {
 
+    var timeNow = (new Date()).getTime();
+
     for (var j=0 in courses){
-
-      var color = '#cccccc';
-      var timeNow = (new Date()).getTime();
-
-      if (timeNow > courses[j].start && timeNow < courses[j].end)
-        color = '#b6d332';
-      else if (timeNow > courses[j].end){
-        if (courses[j].user_progress == 100)
-          color = '#629b2b';
-        else
-          color = '#cd202c';
-      }
 
       if (courses[j].type == "2" || courses[j].type == "3") {
         dataDig.push({
-          color: '#e0e0e0',
+          color: calculateColor(courses[j], timeNow),
           x: 3,
           label: courses[j].label,
           name: courses[j].name,
@@ -138,7 +128,7 @@
 
       if (courses[j].type == "4"){
         dataCourse.push({
-          color: '#e0e0e0',
+          color: calculateColor(courses[j], timeNow),
           x: 1,
           label: courses[j].label,
           name: courses[j].name,
@@ -186,6 +176,43 @@
           high: high
         });
       }
+    }
+  }
+
+  function calculateColor(element, now){
+    switch(element.type) {
+      case '3':
+        if (now < element.start){
+          return '#f2f1f1';
+          break;
+          } else if (now >= element.start && element.user_progress == 0){
+              return '#ccc';
+              break;
+          } else if (now >= element.start && element.user_progress == 100 ){
+              return '#629b2b';
+              break;
+          } else if (now >= element.start && element.user_progress < 100 ){
+              return '#cd202c';
+              break;
+          }
+      case '2':
+      case '4':
+        if (now < element.start){
+          return '#f2f1f1';
+          break;
+          } else if (now >= element.start && element.user_progress == 0){
+              return '#ccc';
+              break;
+          } else if (now >= element.start && (element.user_progress > 0 && element.user_progress < 100) ){
+              return '#b6d332';
+              break;
+          } else if (now >= element.start && element.user_progress == 100 ){
+              return '#629b2b';
+              break;
+          } else if (now >= element.start && element.user_progress < 100 ){
+              return '#cd202c';
+              break;
+          }
     }
   }
 
