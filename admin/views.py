@@ -87,6 +87,7 @@ from rest_framework import status
 from courses.user_courses import load_course_progress
 import csv
 from django.utils import timezone
+from django.forms.models import model_to_dict
 
 from s3 import get_files_urls, push_file_to_s3
 
@@ -4689,34 +4690,8 @@ class company_learner_dashboards_api(APIView):
             if int(company_id) not in company_ids:
                 return permission_denied(request)
 
-
-        organization = Client.fetch(company_id)
-  
-        coursesIDs = []
-        programsAPI = organization.fetch_programs()
-    
-        for program in programsAPI:
-            program.coursesIDs = []
-            program.courses = []
-            for course in program.fetch_courses():
-                coursesIDs.append(course.course_id)
-    
-        coursesIDs = list(set(coursesIDs))
-
-        learner_dashboards = []
-        for course_id in coursesIDs:
-            try:
-                learner_dashboard = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
-                if learner_dashboard:
-                    learner_dashboards.append({
-                        'id': learner_dashboard.id,
-                        'name': learner_dashboard.title,
-                        'client_id': company_id,
-                        'course_id': course_id
-                    })
-            except:
-                continue
-
+        learner_dashboards = LearnerDashboard.objects.filter(client_id=company_id).values()
+        
         return Response(learner_dashboards)
 
 
@@ -4732,28 +4707,25 @@ def company_learner_dashboard_select_course(request, company_id):
             if int(company_id) not in company_ids:
                 return permission_denied(request)
 
-    organization = Client.fetch(company_id)
+    courses = course_api.get_course_list()
 
-    coursesIDs = []
-    programsAPI = organization.fetch_programs()
+    courseIds = []
 
-    for program in programsAPI:
-        program.courses = []
-        program.courses = []
-        for course in program.fetch_courses():
-            coursesIDs.append(course.course_id)
+    for course in courses:
 
-    coursesIDs = list(set(coursesIDs))
-
-    for course_id in coursesIDs:
+        learner_dashboard = None
         try:
-            if LearnerDashboard.objects.get(client_id=company_id, course_id=course_id):
-                coursesIDs.remove(course_id)
+            learner_dashboard = LearnerDashboard.objects.get(client_id=company_id, course_id=course.id)
         except:
-            continue
+            try:
+                feature_flags = FeatureFlags.objects.get(course_id=course.id)
+                if (feature_flags and feature_flags.learner_dashboard):
+                    courseIds.append(course.id)
+            except:
+                continue
 
     data = {
-        'coursesIDs': coursesIDs,
+        'courseIds': courseIds,
         'company_id': company_id,
     }
 
