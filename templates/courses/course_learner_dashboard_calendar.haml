@@ -76,6 +76,7 @@
 
 
 %script
+  var now = new Date();
   var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
   var dates = {{dates|safe}} ? {{dates|safe}}: [];
   var courses = {{courses|safe}} ? {{courses|safe}}: [];
@@ -114,12 +115,14 @@
     for (var j=0 in courses){
 
       if (courses[j].type == "2" || courses[j].type == "3") {
+
         dataDig.push({
           color: calculateColor(courses[j], timeNow),
           x: 3,
           label: courses[j].label,
           name: courses[j].name,
           link: courses[j].link,
+          publish_date: getPublishDate(courses[j]),
           user_progress: ("Your progress: " + courses[j].user_progress + "%"),
           low: courses[j].start,
           high: courses[j].end,
@@ -127,12 +130,14 @@
       }
 
       if (courses[j].type == "4"){
+
         dataCourse.push({
           color: calculateColor(courses[j], timeNow),
           x: 1,
           label: courses[j].label,
           name: courses[j].name,
           link: courses[j].link,
+          publish_date: getPublishDate(courses[j]),
           user_progress: ("Your progress: " + courses[j].user_progress + "%"),
           cohort_progress: ("Cohort progress: " + courses[j].cohort_progress + "%"),
           low: courses[j].start,
@@ -157,6 +162,7 @@
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
           location: milestones[i]["fields"].location,
+          publish_date: getPublishDate(milestones[i]["fields"]),
           details: milestones[i]["fields"].details,
           link: milestones[i]["fields"].link,
           low: low,
@@ -171,11 +177,20 @@
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
           link: milestones[i]["fields"].link,
+          publish_date: getPublishDate(milestones[i]["fields"]),
           details: milestones[i]["fields"].details,
           low: low,
           high: high
         });
       }
+    }
+  }
+
+  function getPublishDate(element){
+    if (element.publish_date){
+      return new Date(element.publish_date);
+    } else {
+      return null;
     }
   }
 

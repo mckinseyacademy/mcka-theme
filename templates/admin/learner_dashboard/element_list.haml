@@ -10,6 +10,7 @@
             %th= _("Title")
             %th= _("Calendar visible")
             %th= _("Dashboard visible")
+            %th= _("Published")
             %th= _("Type")
             %th= _("Edit")
             %th= _("Delete")
@@ -23,6 +24,9 @@
               %td{style: "word-wrap: break-word; text-align: center;"}
                 -if tile.show_in_dashboard
                   %i.fa.fa-check{'style': "color:green"}
+              %td{style: "word-wrap: break-word; text-align: center;"}
+                -if tile.publish_date|date:"Y-m-d" < now|date:"Y-m-d"
+                  %i{'style': "color:green", 'class': "fa fa-check"}
               %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
               %td
                 %a{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}

@@ -306,6 +306,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'label',
             'title',
             'note',
+            'publish_date',
             'link',
             'tile_type',
             'background_image',

@@ -32,6 +32,13 @@
 
   .row
     .small-3.columns
+    .small-9.columns= form.publish_date.errors
+  .row
+    .small-3.columns= form.publish_date.label_tag
+    .small-9.columns= form.publish_date
+
+  .row
+    .small-3.columns
     .small-9.columns= form.label.errors
   .row
     .small-3.columns= form.label.label_tag
@@ -158,6 +165,11 @@
       dateFormat: "m/d/Y H:i",
     });
     var endDate = document.getElementById("id_end_date").flatpickr({
+      enableTime: true,
+      dateFormat: "m/d/Y H:i",
+    });
+
+    var publishDate = document.getElementById("id_publish_date").flatpickr({
       enableTime: true,
       dateFormat: "m/d/Y H:i",
     });

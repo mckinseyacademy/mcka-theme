@@ -602,7 +602,8 @@ def client_admin_course_learner_dashboard(request, client_id, course_id):
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
             'milestones_enabled': settings.MILESTONES_ENABLED,
             'discovery_items': discovery_items,
-            'branding': branding
+            'branding': branding,
+            'now': datetime.now(),
         }
     else:
         data = {
@@ -4813,7 +4814,8 @@ def company_course_learner_dashboard(request, company_id, course_id):
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
             'milestones_enabled': settings.MILESTONES_ENABLED,
             'discovery_items': discovery_items,
-            'branding': branding
+            'branding': branding,
+            'now': datetime.now(),
         }
     else:
         data = {

@@ -921,7 +921,7 @@ def course_learner_dashboard(request):
         redirect_url = '/'
         return HttpResponseRedirect(redirect_url)
 
-    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).order_by('position')
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).exclude(publish_date__gte=datetime.today()).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     try:
@@ -1033,7 +1033,7 @@ def course_learner_dashboard_calendar(request):
         milestoneData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, 
             show_in_calendar = True
-        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').order_by('start_date')
+        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4')
 
     elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)
@@ -1097,6 +1097,11 @@ def course_learner_dashboard_calendar(request):
             "user_progress": content.percentage,
             "cohort_progress": 0,
         }
+        if content.milestone.publish_date:
+            courseData["publish_date"] = (int(content.milestone.publish_date.strftime("%s")) * 1000)
+        else:
+            courseData["publish_date"] = None
+
         coursesData[i] = courseData
         courseData = {}
 

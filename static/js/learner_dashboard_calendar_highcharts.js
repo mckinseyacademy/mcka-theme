@@ -75,6 +75,7 @@ $(function() {
             borderRadius: 15,
             formatter: function() {
                 var tooltipHTML = '';
+                var now = new Date();
 
                 if (this.point.label){
                     tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
@@ -84,8 +85,14 @@ $(function() {
                     tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">&nbsp;</div>';
 
                 if ($.inArray(this.point.x, [0,2]) != -1){
-                    tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
-                                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca; " target="_blank">' + this.point.name + '</a>';
+                    if ((this.point.publish_date) && (this.point.publish_date < now)) {
+                        tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca; " target="_blank">' + this.point.name + '</a>';
+                    } else {
+                       tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; pointer-events: none;cursor: default;opacity: 0.4; padding: 2px; display: inline-block;' +
+                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca; " target="_blank">' + this.point.name + '</a>';
+
+                    }
 
                     if (this.point.x == 0){
                         tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
@@ -100,9 +107,13 @@ $(function() {
                     }
                 }
                 else {
-                    tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
-                                    'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + this.point.name + '</a>';
-
+                    if ((this.point.publish_date) && (this.point.publish_date < now)) {
+                        tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
+                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + this.point.name + '</a>';
+                    } else {
+                        tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; pointer-events: none;cursor: default;opacity: 0.4; padding: 2px; display: inline-block;' +
+                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + this.point.name + '</a>';
+                    }
                     if (this.point.x == 1){
                         tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
                                         this.point.user_progress + '</br> </div>';
