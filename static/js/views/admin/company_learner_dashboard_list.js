@@ -1,11 +1,11 @@
 Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
   gridColumns:
     [
-      { title: 'Dashboard Name', index: true, name: 'name',
+      { title: 'Dashboard Name', index: true, name: 'title',
         actions: function(id, attributes){ 
           var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
           var course_id = attributes['course_id']
-          var name = attributes['name']
+          var name = attributes['title']
           if (name) {
             return '<a href="/admin/companies/' + company_id + '/courses/' + course_id + '/learner_dashboard" target="_self">' + name.slice(0,75) + '</a>'; 
           }
@@ -47,11 +47,13 @@ Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
 
     dataContainer.on('click', '.editCompanyNameIcon', function() {
       _saved = false;
+
       $('#mainCompanyDetailsDataContainer').find('.errorMessage').empty();
       var mainContainer = $(this).parents('.companyDetailsCompanyName');
       var textContainer = mainContainer.find('.companyDetailsTextName');
       var editContainer = mainContainer.find('.companyDetailsInputName');
       var text_width = textContainer.width();
+
       editContainer.find('input').val(textContainer.text().trim());
       textContainer.hide();
       mainContainer.find('.editCompanyNameIcon').hide();
@@ -64,6 +66,7 @@ Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
       if (_saved)
         return;
       _saved = true;
+
       $('#mainCompanyDetailsDataContainer').find('.errorMessage').empty();
       _this.hideCompanyEditInput(this);
       _this.validateCompanyName($(this).val().trim());
@@ -71,6 +74,7 @@ Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
 
     dataContainer.on('keydown', '.companyDetailsInputName input', function(ev) {
       var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+
       if(keycode == 13) 
       {
         if (_saved)
@@ -87,6 +91,7 @@ Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
     var mainContainer = $(eventElement).parents('.companyDetailsCompanyName');
     var textContainer = mainContainer.find('.companyDetailsTextName');
     var editContainer = mainContainer.find('.companyDetailsInputName');
+
     textContainer.show();
     mainContainer.find('.editCompanyNameIcon').show();
     editContainer.hide();

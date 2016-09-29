@@ -1042,42 +1042,16 @@ def course_learner_dashboard_calendar(request):
         redirect_url = '/'
         return HttpResponseRedirect(redirect_url)
 
-    beginDate = request.GET.get('beginDate', None)
-    endDate = request.GET.get('endDate', None)
+    first = datetime.now().replace(day=1)
+    now = datetime(first.year, first.month, first.day)
 
-    if beginDate:
-        first = datetime.utcfromtimestamp(int(beginDate)/1000.0)
-
-        dates = [
-            datetime(first.year, first.month, first.day).strftime("%Y-%m-%d"),
-            add_months_to_date(first, 1).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(first, 2).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(first, 3).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(first, 4).replace(day=1).strftime("%Y-%m-%d")
-        ]
-
-    elif endDate:
-        last = datetime.utcfromtimestamp(int(endDate)/1000.0)
-
-        dates = [
-            add_months_to_date(last, -4).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(last, -3).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(last, -2).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(last, -1).replace(day=1).strftime("%Y-%m-%d"),
-            last.strftime("%Y-%m-%d")
-        ]
-
-    else:
-        first = datetime.now().replace(day=1)
-        now = datetime(first.year, first.month, first.day)
-
-        dates = [
-            add_months_to_date(now, -1).replace(day=1).strftime("%Y-%m-%d"),
-            now.strftime("%Y-%m-%d"),
-            add_months_to_date(now, 1).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(now, 2).replace(day=1).strftime("%Y-%m-%d"),
-            add_months_to_date(now, 3).replace(day=1).strftime("%Y-%m-%d")
-        ]
+    dates = [
+        add_months_to_date(now, -1).replace(day=1).strftime("%Y-%m-%d"),
+        now.strftime("%Y-%m-%d"),
+        add_months_to_date(now, 1).replace(day=1).strftime("%Y-%m-%d"),
+        add_months_to_date(now, 2).replace(day=1).strftime("%Y-%m-%d"),
+        add_months_to_date(now, 3).replace(day=1).strftime("%Y-%m-%d")
+    ]
 
     milestones = serializers.serialize("json", milestoneData)
 
