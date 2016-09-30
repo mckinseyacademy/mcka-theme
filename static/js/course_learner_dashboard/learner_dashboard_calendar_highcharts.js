@@ -87,7 +87,7 @@ $(function() {
                     tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">&nbsp;</div>';
 
                 if ($.inArray(this.point.x, [0,2]) != -1){
-                    if ((this.point.publish_date) && (this.point.publish_date < now)) {
+                    if (this.point.publish_date < now) {
                         tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
                                         'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca; " target="_blank">' + this.point.name + '</a>';
                     } else {
@@ -109,7 +109,7 @@ $(function() {
                     }
                 }
                 else {
-                    if ((this.point.publish_date) && (this.point.publish_date < now)) {
+                    if (this.point.publish_date < now) {
                         tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
                                         'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + this.point.name + '</a>';
                     } else {
