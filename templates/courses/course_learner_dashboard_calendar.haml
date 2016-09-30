@@ -159,6 +159,20 @@
       if (high > maxDate)
         maxDate = high;
 
+      if (milestones[i]["fields"].tile_type == "1") {
+        dataDig.push({
+          color: '#66a5b5',
+          x: 3,
+          tile_type: milestones[i]["fields"].tile_type,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          publish_date: getPublishDate(milestones[i]["fields"]),
+          link: milestones[i]["fields"].link,
+          low: low,
+          high: high
+        });
+      }
+
       if (milestones[i]["fields"].tile_type == "5") {
         dataIPS.push({
           color: '#66a5b5',

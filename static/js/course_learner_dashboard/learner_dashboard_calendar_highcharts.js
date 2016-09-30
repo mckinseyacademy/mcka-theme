@@ -123,9 +123,14 @@ $(function() {
                     }
 
                     else if (this.point.x == 3){
-                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
-                                        this.point.user_progress + '</br> </div>';
-                        return tooltipHTML;
+                        if (this.point.tile_type != 1){
+                            tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
+                                            this.point.user_progress + '</br> </div>';
+                            return tooltipHTML;
+                        } else {
+                            tooltipHTML += '</br> </div>';
+                            return tooltipHTML;
+                        }
                     }
                 }
             },
