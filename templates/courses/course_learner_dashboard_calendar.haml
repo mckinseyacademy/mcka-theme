@@ -118,11 +118,12 @@
       if (courses[j].end > maxDate)
         maxDate = courses[j].end;
 
-      if (courses[j].type == "2" || courses[j].type == "3") {
+      if (courses[j].tile_type == "2" || courses[j].tile_type == "3") {
 
         dataDig.push({
           color: calculateColor(courses[j], timeNow),
           x: 3,
+          tile_type: courses[j].tile_type,
           label: courses[j].label,
           name: courses[j].name,
           link: courses[j].link,
@@ -133,11 +134,12 @@
         });
       }
 
-      if (courses[j].type == "4"){
+      if (courses[j].tile_type == "4"){
 
         dataCourse.push({
           color: calculateColor(courses[j], timeNow),
           x: 1,
+          tile_type: courses[j].tile_type,
           label: courses[j].label,
           name: courses[j].name,
           link: courses[j].link,
@@ -177,6 +179,7 @@
         dataIPS.push({
           color: '#66a5b5',
           x: 0,
+          tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
           location: milestones[i]["fields"].location,
@@ -192,6 +195,7 @@
         dataWeb.push({
           color: '#66a5b5',
           x: 2,
+          tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
           link: milestones[i]["fields"].link,
@@ -213,7 +217,7 @@
   }
 
   function calculateColor(element, now){
-    switch(element.type) {
+    switch(element.tile_type) {
       case '3':
         if (now < element.start){
           return '#e0e0e0';

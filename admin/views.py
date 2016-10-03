@@ -4817,7 +4817,7 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
 
             if not "/learnerdashboard/" in tile.link:
                 if tile.get_tile_type_display() == 'Lesson':
-                    tile.link = "/learnerdashboard" + tile.link + "/lesson"
+                    tile.link = "/learnerdashboard" + tile.link + "/lesson/"
                 if tile.get_tile_type_display() == 'Module':
                     tile.link = "/learnerdashboard" + tile.link + "/module/"
                 tile.save()

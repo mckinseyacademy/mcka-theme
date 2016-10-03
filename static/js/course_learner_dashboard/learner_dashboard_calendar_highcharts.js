@@ -79,70 +79,52 @@ $(function() {
                 var tooltipHTML = '';
                 var now = new Date();
 
+                var new_tab = (this.point.tile_type == 1 || this.point.tile_type == 5 || this.point.tile_type == 6);
+
                 if (this.point.label){
                     tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
                         this.point.label + '</div>';
                 }
-                else
-                    tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">&nbsp;</div>';
-
-                if ($.inArray(this.point.x, [0,2]) != -1){
-                    if (this.point.publish_date < now) {
-                        tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
-                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca; " target="_blank">' + this.point.name + '</a>';
-                    } else {
-                       tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; pointer-events: none;cursor: default;opacity: 0.4; padding: 2px; display: inline-block;' +
-                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca; " target="_blank">' + this.point.name + '</a>';
-
-                    }
-
-                    if (this.point.x == 0){
-                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
-                                    Highcharts.dateFormat('%b %e, %Y', this.point.low) + '</br>' + this.point.location + '</div>';
-                        return tooltipHTML;
-                    }
-                    if (this.point.x == 2){
-                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' + 
-                                        Highcharts.dateFormat('%b %e, %Y', this.point.low) + '</br>' +
-                                        Highcharts.dateFormat('%H:%M', this.point.low) + '</div>';
-                        return tooltipHTML;
-                    }
-                }
                 else {
-                    if (this.point.publish_date < now) {
-                        tooltipHTML += '<a href="' + this.point.link
-                            + '" style="word-break: break-all; padding: 2px; display: inline-block;'
-                            + 'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;'
-                            + (this.point.tile_type == 1 ? '" target="_blank"' : "")
-                            + '">'
-                            + this.point.name
-                            + '</a>';
-                    } else {
-                        tooltipHTML += '<a href="'
-                            + this.point.link
-                            + '" style="word-break: break-all; pointer-events: none;cursor: default;opacity: 0.4; padding: 2px; display: inline-block;'
-                            + 'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;'
-                            + (this.point.tile_type == 1 ? '" target="_blank"' : "")
-                            +'>'
-                            + this.point.name
-                            + '"</a>';
-                    }
-                    if (this.point.x == 1){
-                        tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
-                                        this.point.user_progress + '</br> </div>';
-                        return tooltipHTML;
-                    }
+                    tooltipHTML += '<div>&nbsp;</div>';
+                }
 
-                    else if (this.point.x == 3){
+                tooltipHTML += '<a href="'
+                    + this.point.link
+                    + '" style="word-break: break-all;'
+                    + (this.point.publish_date < now ? "" : 'pointer-events: none;cursor: default;opacity: 0.4;')
+                    + ' padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;'
+                    + (new_tab ? '" target="_blank">':'">')
+                    + this.point.name
+                    + '</a>'
+                    + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">';
+
+                switch(this.point.x) {
+                    case 0:
+                        tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
+                            + '</br>'
+                            + this.point.location
+                            + '</div>';
+                        return tooltipHTML;
+                        break;
+                    case 1:
+                        tooltipHTML += this.point.user_progress + '</br> </div>';
+                        return tooltipHTML;
+                        break;
+                    case 2:
+                        tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
+                            + '</br>'
+                            + Highcharts.dateFormat('%H:%M', this.point.low)
+                            + '</div>';
+                        return tooltipHTML;
+                    case 3:
                         if (this.point.tile_type != 1){
-                            tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
-                                            this.point.user_progress + '</br> </div>';
+                            tooltipHTML += this.point.user_progress + '</br> </div>';
                             return tooltipHTML;
                         } else {
                             tooltipHTML += '</br> </div>';
                             return tooltipHTML;
                         }
-                    }
                 }
             },
             positioner: function (labelWidth, labelHeight, point) {

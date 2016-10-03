@@ -1067,7 +1067,7 @@ def course_learner_dashboard_calendar(request):
             "link": content.milestone.link,
             "start": int(content.milestone.start_date.strftime("%s")) * 1000,
             "end": int(content.milestone.end_date.strftime("%s")) * 1000,
-            "type": content.milestone.tile_type,
+            "tile_type": content.milestone.tile_type,
             "user_progress": content.percentage,
             "cohort_progress": 0,
         }
