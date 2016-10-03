@@ -110,11 +110,22 @@ $(function() {
                 }
                 else {
                     if (this.point.publish_date < now) {
-                        tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; padding: 2px; display: inline-block;' +
-                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + this.point.name + '</a>';
+                        tooltipHTML += '<a href="' + this.point.link
+                            + '" style="word-break: break-all; padding: 2px; display: inline-block;'
+                            + 'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;'
+                            + (this.point.tile_type == 1 ? '" target="_blank"' : "")
+                            + '">'
+                            + this.point.name
+                            + '</a>';
                     } else {
-                        tooltipHTML += '<a href="' + this.point.link + '" style="word-break: break-all; pointer-events: none;cursor: default;opacity: 0.4; padding: 2px; display: inline-block;' +
-                                        'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;">' + this.point.name + '</a>';
+                        tooltipHTML += '<a href="'
+                            + this.point.link
+                            + '" style="word-break: break-all; pointer-events: none;cursor: default;opacity: 0.4; padding: 2px; display: inline-block;'
+                            + 'height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;'
+                            + (this.point.tile_type == 1 ? '" target="_blank"' : "")
+                            +'>'
+                            + this.point.name
+                            + '"</a>';
                     }
                     if (this.point.x == 1){
                         tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">' +
