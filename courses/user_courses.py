@@ -297,7 +297,10 @@ def standard_data(request):
         #### Check if any of the courses have learner dashboard on, to make url links to those LDs
         if program and program.courses:
             organization_ids = [o.id for o in organizations]
-            course_ids = [c.id for c in program.courses if c.is_active and c.started]
+            course_ids = []
+            #for course in program.courses:
+                #course_ids.append(course.id)
+            #course_ids = [c.id for c in program.courses if c.is_active and c.started]
 
             features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
         
