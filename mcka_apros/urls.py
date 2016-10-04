@@ -38,7 +38,8 @@ urlpatterns += patterns(
     url(r'^learnerdashboard/courses/(?P<course_id>.*)/resources$', courseviews.course_resources_learner_dashboard, name='course_resources_learner_dashboard'),
     url(r'^learnerdashboard/courses/(?P<course_id>.*)/discussion$', courseviews.course_discussion_learner_dashboard, name='course_discussion_learner_dashboard'),
     url(r'^learnerdashboard/courses/(?P<course_id>.*)/group_work$', courseviews.user_course_group_work_learner_dashboard, name='user_course_group_work_learner_dashboard'),
-    url(r'^learnerdashboard/calendar$', courseviews.course_learner_dashboard_calendar, name='course_learner_dashboard_calendar')
+    url(r'^learnerdashboard/calendar$', courseviews.course_learner_dashboard_calendar, name='course_learner_dashboard_calendar'),
+    url(r'^learnerdashboard/(?P<learner_dashboard_id>.*)$', courseviews.course_learner_dashboard, name='course_learner_dashboard')
 )
 
 urlpatterns += patterns(

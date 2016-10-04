@@ -294,13 +294,14 @@ def standard_data(request):
 
         organizations = user_api.get_user_organizations(request.user.id)
 
-        #### Check if any of the courses have learner dashboard on, to make url links to those LDs
+        #### Check if any of the courses have learner dashboard On, to make url links to those LDs
         if program and program.courses:
             organization_ids = [o.id for o in organizations]
             course_ids = []
-            #for course in program.courses:
-                #course_ids.append(course.id)
-            #course_ids = [c.id for c in program.courses if c.is_active and c.started]
+
+            #### Breaks if we use for in program.courses
+            for index in range(0, len(program.courses)):
+                course_ids.append(program.courses[index].id)
 
             features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
         
@@ -312,9 +313,11 @@ def standard_data(request):
                 )
 
                 if len(learner_dashboards) > 0:
-                    for course in program.courses:
-                        if (any(learner_dashboard.course_id == course.id for learner_dashboard in learner_dashboards)):
-                            course.existing_ld = True
+                    for index in range(0, len(program.courses)):
+                        learner_dashboard = [ld for ld in learner_dashboards if ld.course_id == program.courses[index].id]
+                        if learner_dashboard:
+                            program.courses[index].learner_dashboard_id = learner_dashboard[0].id
+                            program.courses[index].existing_ld = True
         ####
 
         if len(organizations) > 0:

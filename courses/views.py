@@ -904,16 +904,22 @@ def course_article(request, course_id):
     return render(request, 'courses/course_article.haml', data)
 
 @login_required
-def course_learner_dashboard(request):
+def course_learner_dashboard(request, learner_dashboard_id=None):
 
     if 'learner_dashboard_id' not in request.session:
         set_learner_dashboard_in_session(request)
 
+    if not learner_dashboard_id:
+        learner_dashboard_id = request.session['learner_dashboard_id']
+    
     course_id = request.session['course_id']
-    learner_dashboard_id = request.session['learner_dashboard_id']
 
     if learner_dashboard_id is not None:
-        learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
+        try:
+            learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
+        except:
+            redirect_url = '/'
+            return HttpResponseRedirect(redirect_url)
     elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)
         return HttpResponseRedirect(redirect_url)
@@ -930,7 +936,7 @@ def course_learner_dashboard(request):
         bookmark = None
 
     try:
-         feature_flags = FeatureFlags.objects.get(course_id=course_id)
+         feature_flags = FeatureFlags.objects.get(course_id=learner_dashboard.course_id)
     except:
          feature_flags = []
 
