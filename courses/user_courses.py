@@ -2,7 +2,6 @@ import functools
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
-from pprint import pprint
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
 from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings, LearnerDashboard
@@ -294,23 +293,25 @@ def standard_data(request):
             upcoming_course = program.courses[0]
 
         organizations = user_api.get_user_organizations(request.user.id)
-        organization_ids = [o.id for o in organizations]
 
         #### Check if any of the courses have learner dashboard on, to make url links to those LDs
-        course_ids = [c.id for c in program.courses if c.is_active and c.started]
-        features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
+        if program and program.courses:
+            organization_ids = [o.id for o in organizations]
+            course_ids = [c.id for c in program.courses if c.is_active and c.started]
+
+            features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
         
-        if len(features) > 0:
-            features_learnerdashboard_ids = [f.course_id for f in features]
+            if len(features) > 0:
+                features_learnerdashboard_ids = [f.course_id for f in features]
 
-            learner_dashboards = LearnerDashboard.objects.filter(
-                course_id__in=features_learnerdashboard_ids, client_id__in=organization_ids
-            )
+                learner_dashboards = LearnerDashboard.objects.filter(
+                    course_id__in=features_learnerdashboard_ids, client_id__in=organization_ids
+                )
 
-            if len(learner_dashboards) > 0:
-                for course in program.courses:
-                    if (any(learner_dashboard.course_id == course.id for learner_dashboard in learner_dashboards)):
-                        course.existing_ld = True
+                if len(learner_dashboards) > 0:
+                    for course in program.courses:
+                        if (any(learner_dashboard.course_id == course.id for learner_dashboard in learner_dashboards)):
+                            course.existing_ld = True
         ####
 
         if len(organizations) > 0:
