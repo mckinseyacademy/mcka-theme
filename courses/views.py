@@ -906,12 +906,10 @@ def course_article(request, course_id):
 @login_required
 def course_learner_dashboard(request, learner_dashboard_id=None):
 
-    if 'learner_dashboard_id' not in request.session:
-        set_learner_dashboard_in_session(request)
+    if 'learner_dashboard_id' not in request.session or learner_dashboard_id is not request.session['learner_dashboard_id']:
+        set_learner_dashboard_in_session(request, learner_dashboard_id)
 
-    if not learner_dashboard_id:
-        learner_dashboard_id = request.session['learner_dashboard_id']
-    
+    learner_dashboard_id = request.session['learner_dashboard_id']
     course_id = request.session['course_id']
 
     if learner_dashboard_id is not None:
