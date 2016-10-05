@@ -247,23 +247,37 @@ def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args,
     return JP.from_json(response.read(), group_object)
 
 @api_error_protect
-def get_user_list_json(course_id, program_id = None):
+def get_user_list_json(course_id, program_id = None, page_size=0):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
-    qs_params = {}
+    qs_params = {"page_size": page_size}
     if program_id:
         qs_params['project'] = program_id
 
-    response = GET('{}/{}/{}/users?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            urlencode(qs_params),
-        )
+    url = '{}/{}/{}/users?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params),
     )
 
-    return response.read()
+    if page_size != 0:
+        results = []
+        response = GET(url)
+        data = json.loads(response.read())
+        pages = data['num_pages']
+        for x in range(0, pages):
+            result = data['results']
+            results.extend(result)
+            if data['next']:
+                response =  GET(data['next'])
+                data = json.loads(response.read())
+        return json.dumps(results)
+    else:
+        response = GET(url)
+        return response.read()
+
 
 @api_error_protect
 def get_user_list(course_id, program_id = None):

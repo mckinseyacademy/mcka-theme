@@ -652,11 +652,11 @@ def create_tile_progress_data(tile):
     Triggered by admin creating the tile in learner dashboard CMS
     '''
     link = strip_tile_link(tile.link)
-    users = json.loads(course_api.get_user_list_json(link['course_id']))
+    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=100))
 
     completions = course_api.get_course_completions(link['course_id'], page_size=100)
 
-    for user in users['results']:
+    for user in users:
         course = get_course_object(user['id'], link['course_id'])
         if course:
             user_completions = [u for u in completions if u.user_id == user['id']]
@@ -707,9 +707,9 @@ def calculate_user_course_progress(user_id, course, completions):
     completed_ids = [result.content_id for result in completions]
     matches = set(component_ids).intersection(completed_ids)
 
-    if len(completed_ids) > 0:
+    try:
         return round_to_int(100 * len(matches) / len(component_ids))
-    else:
+    except ZeroDivisionError:
         return 0
 
 
