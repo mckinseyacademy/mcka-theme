@@ -277,14 +277,21 @@ def send_password_reset_email(domain, user, use_https,
     email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
     email.send(fail_silently=False)
 
-def set_learner_dashboard_in_session(request):
+def set_learner_dashboard_in_session(request, learner_dashboard_id=None):
 
-    learner_dashboard = get_current_learner_dashboard_course(request)
+    if learner_dashboard_id:
+        request.session['learner_dashboard_id'] = learner_dashboard_id
 
-    if learner_dashboard:
-        request.session['learner_dashboard_id'] = learner_dashboard.id
+        learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
         request.session['course_id'] = learner_dashboard.course_id
+
     else:
-        request.session['learner_dashboard_id'] = None
-        request.session['course_id'] = get_current_course_for_user(request)
+        learner_dashboard = get_current_learner_dashboard_course(request)
+
+        if learner_dashboard:
+            request.session['learner_dashboard_id'] = learner_dashboard.id
+            request.session['course_id'] = learner_dashboard.course_id
+        else:
+            request.session['learner_dashboard_id'] = None
+            request.session['course_id'] = get_current_course_for_user(request)
 
