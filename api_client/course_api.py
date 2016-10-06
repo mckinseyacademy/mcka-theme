@@ -33,6 +33,7 @@ OBJECT_CATEGORY_MAP = {
 
 CJP = CategorisedJsonParser(OBJECT_CATEGORY_MAP)
 
+
 @api_error_protect
 def get_course_list(ids=None):
     '''
@@ -49,6 +50,7 @@ def get_course_list(ids=None):
         )
     )
     return CJP.from_json(response.read())
+
 
 @api_error_protect
 def get_course_list_in_pages(ids=None, page_size=100):
@@ -118,6 +120,7 @@ def get_course_overview(course_id):
 
     return overview
 
+
 @api_error_protect
 def get_course_tabs(course_id, details=True):
     '''
@@ -136,6 +139,7 @@ def get_course_tabs(course_id, details=True):
     tab_array = JP.from_json(response.read(), course_models.CourseTabs).tabs
     return {tab.name.lower(): tab for tab in tab_array}
 
+
 @api_error_protect
 def get_course_tab(course_id, name=None, tab_id=None):
     """
@@ -152,6 +156,7 @@ def get_course_tab(course_id, name=None, tab_id=None):
     array.name = array.name.lower()
     return array
 
+
 @api_error_protect
 def get_course_news(course_id):
     '''
@@ -163,6 +168,7 @@ def get_course_news(course_id):
         course_id)
     )
     return JP.from_json(response.read()).postings
+
 
 @api_error_protect
 def get_course(course_id, depth=3):
@@ -211,6 +217,7 @@ def get_courses(**kwargs):
 
     return CJP.from_json(response.read())
 
+
 @api_error_protect
 def get_course_content(course_id, content_id):
     ''' returns course content'''
@@ -224,6 +231,7 @@ def get_course_content(course_id, content_id):
     )
 
     return JP.from_json(response.read())
+
 
 @api_error_protect
 def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args, **kwargs):
@@ -245,6 +253,7 @@ def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args,
 
     response = GET(url)
     return JP.from_json(response.read(), group_object)
+
 
 @api_error_protect
 def get_user_list_json(course_id, program_id = None, page_size=0):
@@ -283,7 +292,6 @@ def get_user_list_json(course_id, program_id = None, page_size=0):
 def get_user_list(course_id, program_id = None):
 
     return JP.from_json(get_user_list_json(course_id, program_id), course_models.CourseEnrollmentList).enrollments
-
 
 
 @api_error_protect
@@ -325,6 +333,7 @@ def add_group_to_course_content(group_id, course_id, content_id):
 
     return JP.from_json(response.read())
 
+
 @api_error_protect
 def get_users_content_filtered(course_id, content_id, *args, **kwargs):
     ''' filter and get course content'''
@@ -343,6 +352,7 @@ def get_users_content_filtered(course_id, content_id, *args, **kwargs):
 
     return JP.from_json(response.read())
 
+
 @api_error_protect
 def get_users_filtered_by_group(course_id, group_ids):
     ''' filter and get course users'''
@@ -359,6 +369,7 @@ def get_users_filtered_by_group(course_id, group_ids):
 
     return JP.from_json(response.read()).enrollments
 
+
 @api_error_protect
 def get_users_filtered_by_role(course_id):
     ''' filter and get course users'''
@@ -373,6 +384,7 @@ def get_users_filtered_by_role(course_id):
 
     return JP.from_json(response.read())
 
+
 @api_error_protect
 def get_course_content_groups(course_id, content_id):
     ''' fetch associates groups to specific content within specific course '''
@@ -386,6 +398,7 @@ def get_course_content_groups(course_id, content_id):
     )
 
     return JP.from_json(response.read(), course_models.CourseContentGroup)
+
 
 @api_error_protect
 def get_course_completions(course_id, user_id=None, page_size=0):
@@ -416,6 +429,7 @@ def get_course_completions(course_id, user_id=None, page_size=0):
         response = GET(url)
         return JP.from_json(response.read())
 
+
 @api_error_protect
 def get_course_metrics(course_id, *args, **kwargs):
     ''' retrieves course metrics '''
@@ -437,6 +451,7 @@ def get_course_metrics(course_id, *args, **kwargs):
 
     response = GET(url)
     return JP.from_json(response.read(), course_models.CourseMetrics)
+
 
 @api_error_protect
 def get_course_metrics_by_city(course_id, cities=None):
@@ -473,6 +488,7 @@ def get_course_metrics_grades(course_id, grade_object_type=JsonObject, **kwargs)
 
     return JP.from_json(response.read(), grade_object_type)
 
+
 @api_error_protect
 def get_course_metrics_completions(course_id, completions_object_type=JsonObject, **kwargs):
     ''' retrieves users who are leading in terms of  course module completions '''
@@ -489,6 +505,7 @@ def get_course_metrics_completions(course_id, completions_object_type=JsonObject
     response = GET(url)
 
     return JP.from_json(response.read(), completions_object_type)
+
 
 @api_error_protect
 def get_course_social_metrics(course_id, organization_id=None):
@@ -544,6 +561,7 @@ def get_course_projects(course_id, page_size=0, project_object=JsonObject):
 
     return JP.from_json(response.read(), project_object)
 
+
 @api_error_protect
 def get_module_details(module_uri, include_fields = [], module_object = None):
     ''' Fetches the details of the object at the specific uri with the named custom fields'''
@@ -559,6 +577,7 @@ def get_module_details(module_uri, include_fields = [], module_object = None):
         return JP.from_json(response.read(), module_object)
 
     return CJP.from_json(response.read())
+
 
 @api_error_protect
 def get_course_content_detail(course_id, content_id, include_fields = [], module_object = None):
@@ -684,6 +703,7 @@ def get_course_module_completions(course_id, user_id, content_id):
     )
 
     return json.loads(response.read())
+
 
 @api_error_protect
 def get_course_details_metrics_grades(course_id, count):
