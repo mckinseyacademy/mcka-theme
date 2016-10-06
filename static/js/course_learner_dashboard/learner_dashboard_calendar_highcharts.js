@@ -103,7 +103,7 @@ $(function() {
                     case 0:
                         tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
                             + '</br>'
-                            + this.point.location
+                            + this.point.note
                             + '</div>';
                         return tooltipHTML;
                         break;

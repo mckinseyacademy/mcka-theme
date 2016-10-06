@@ -315,7 +315,6 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'title_color',
             'note_color',
             'tile_background_color',
-            'location',
             'download_link',
             'details',
             'start_date',
