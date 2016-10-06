@@ -928,6 +928,9 @@ def course_learner_dashboard(request, learner_dashboard_id=None):
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).exclude(publish_date__gte=datetime.today()).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
+    calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_calendar=True)
+    calendar_enabled = True if calendar_items else False
+
     try:
         bookmark = TileBookmark.objects.get(user=request.user.id)
     except:
@@ -945,6 +948,7 @@ def course_learner_dashboard(request, learner_dashboard_id=None):
         'discovery_items': discovery_items,
         'bookmark': bookmark,
         'milestones_enabled': settings.MILESTONES_ENABLED,
+        'calendar_enabled': calendar_enabled,
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
