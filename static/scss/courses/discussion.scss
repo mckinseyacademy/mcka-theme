@@ -8,6 +8,13 @@
 #course-discussion .discussion-content {
   fieldset { margin:0; padding: 0; border:0; }
 
+  .forum-nav-thread-link:hover,
+  .forum-nav-thread-link:active,
+  .forum-nav-thread-link:focus,
+  .forum-nav-thread-link.is_active {
+      background-color: #d8eaf3;
+  }
+
   .forum-nav {
     select {
       margin: 0;
@@ -48,11 +55,25 @@
         // have to use !important to override other !important at
         // edx-platform/lms/static/sass/discussion/utilities/_shame.scss .forum-nav-browse rule
         color: $pure-white !important;
+        padding: 5px;
 
-        &:hover, &:focus, &.is-active {
-          background-color: $mckinsey-academy-blue-gray;
+        &:focus, &.is-active {
+          background-color: $mckinsey-academy-blue-gray !important;
+        }
+
+        &:hover {
+          background-color: #b1c2cc !important;
         }
       }
+    }
+
+    .forum-nav-thread {
+      border-bottom: 1px solid #c8c8c8;
+      background-color: #f1f1f1;
+    }
+
+    .forum-nav-thread.never-read {
+      background-color: $pure-white;
     }
 
     .forum-nav-refine-bar {
@@ -101,9 +122,11 @@
 
       .forum-nav-thread-comments-count {
         background-image: none;
+        background-color: #c8c8c8;
         &:after {
           z-index: auto;
           background: none;
+          border-color: transparent #c8c8c8 transparent transparent
         }
       }
 
@@ -176,6 +199,29 @@
       }
 
     }
+
+    .thread-main-wrapper {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .add-response {
+      display: block;
+      margin-top: 20px;
+      padding: 0 30px;
+    }
+
+    .user-label-staff {
+      font-weight: 700;
+    }
+
+    h1 {
+      color: #66a5b5;
+      font-weight: 700;
+    }
+
+    .responses {
+      margin-bottom: 1.42857rem;
+    }
   }
 
   .comments {
@@ -185,6 +231,26 @@
 
     .comment-actions-list {
       width: 19%;
+    }
+  }
+
+  .comments > li {
+    border-top: 1px solid #e3e3e3;
+  }
+
+  .response-pagination {
+    padding: 10px 30px;
+    background-color: #f8f8f8;
+    box-shadow: 0 1px 1px #e3e3e3 inset, 0 -1px 1px #e3e3e3 inset;
+  }
+
+  // Fix the spacing of the "Add a response" header
+  .discussion-reply-new {
+    padding: 20px 30px;
+
+    h4 {
+      clear: both;
+      padding-top: 1.25rem;
     }
   }
 
@@ -212,6 +278,25 @@
     }
   }
 
+  .add-response-btn::first-letter {
+    text-transform: lowercase !important;
+  }
+
+  .post-type-input:checked+.post-type-label {
+    background-color: #d8eaf3;
+    color: #434242;
+  }
+
+  // Hide the bookmark button
+  .bookmark-button-wrapper {
+    display: none;
+  }
+
+  // Remove all box shadows from buttons
+  button, .button {
+    box-shadow: none;
+  }
+
   a.new-post-btn {
     &, &:hover, &:visited, &:active {
       margin-right: 2em;
@@ -221,8 +306,37 @@
   /* Discussion column */
 
   .discussion-column {
-    border-color: #ddd;
+    border: 1px solid #ddd;
     box-shadow: none;
+    padding-left: 0;
+
+    .discussion-post {
+      padding: 40px 40px 20px 40px;
+    }
+
+    .response-count {
+      margin-top: 20px;
+      padding: 0 30px;
+      color: #767676;
+      font-size: 14px;
+    }
+
+    .forum-new-post-form,
+    .field-input {
+      background: #f1f1f1;
+    }
+
+    input.field-input {
+      background: $pure-white;
+      border: 1px solid #acacac;
+    }
+
+    button.cancel {
+      &, &:hover, &:visited, &:active {
+        float: left;
+        margin: 15px 0;
+      }
+    }
   }
 
   .wrap-instructor-info {
@@ -252,6 +366,17 @@
       position: absolute;
       display: block;
     }
+  }
+
+  .action-button,
+  .action-list-item {
+    &:hover, &:active, &:focus {
+      background-color: $pure-white;
+    }
+  }
+
+  .action-list-item {
+    width: 100%;
   }
 
   .discussion-article {

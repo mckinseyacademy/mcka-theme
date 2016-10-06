@@ -48,6 +48,10 @@
   }
 }
 
+.bookmark-button-wrapper {
+  display: none;
+}
+
 /* Rules shared with course discussion. */
 /* Course discussion specific rules can be found in ../course/discusssion.scss */
 
@@ -65,6 +69,11 @@
   }
 
   .thread-content-wrapper, .new-post-article {
+    h1.post-title {
+      color: #66a5b5;
+      font-weight: 700;
+    }
+
     .forum-new-post-form, .edit-post-form {
       min-width: 700px;
 
@@ -168,7 +177,16 @@
     .thread-wrapper {
       max-height: none;
       width: 100%;
+      background-color: $pure-white;
+
+      .thread-main-wrapper {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      }
     }
+  }
+
+  .js-response-list, .comments {
+    list-style: none;
   }
 
   .responses {
@@ -177,6 +195,16 @@
 
     .discussion-response {
       background-color: #fafafa;
+      padding: 20px;
+
+      .response-header-actions {
+        right: 0;
+        top: 0;
+      }
+    }
+
+    header {
+      position: relative;
     }
   }
 
@@ -186,6 +214,26 @@
 
   .response-count {
     float: left;
+    margin-top: 20px;
+    padding: 0 30px;
+    color: #767676;
+    font-size: 14px;
+  }
+
+  .forum-nav-thread {
+    border-bottom: 1px solid #c8c8c8;
+    background-color: #f1f1f1;
+  }
+
+  .forum-nav-thread.never-read {
+    background-color: $pure-white;
+  }
+
+  .forum-nav-thread-link:hover,
+  .forum-nav-thread-link:active,
+  .forum-nav-thread-link:focus,
+  .forum-nav-thread-link.is-active {
+      background-color: #d8eaf3;
   }
 
   /* Standard Buttons */
@@ -233,6 +281,9 @@
       margin-left: 0;
       li.forum-response {
         margin: 0;
+        box-shadow: 3px 3px 0 0 rgba(51,51,51,0);
+        background-color: #fafafa;
+        border: 1px solid #a7a4a4;
       }
     }
   }
@@ -262,9 +313,6 @@
     }
 
     text-transform: lowercase;
-    &:first-letter {
-      text-transform: uppercase;
-    }
   }
 
   .vote-btn {
@@ -292,6 +340,24 @@
   .comments .comment-form .discussion-submit-comment {
     &, &:hover {
       margin-top: 15px;
+    }
+  }
+
+  .comments {
+    box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5) inset;
+    border-radius: 0 0 3px 3px;
+    padding: 0;
+    margin: 0;
+
+    >li {
+      border-top: 1px solid #e3e3e3;
+      padding: 10px 20px;
+    }
+
+    .comment-form::after {
+      clear: both;
+      content: "";
+      display: table;
     }
   }
 
@@ -424,6 +490,48 @@
         display: none;
       }
     }
+  }
+
+  .forum-thread-expand,
+  .forum-thread-collapse {
+    margin: 0;
+    background-color: transparent;
+    color: #065683;
+    box-shadow: none;
+  }
+
+  .action-button,
+  .action-list-item {
+    margin: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .action-button {
+    padding: 1px;
+    &:hover, &:active, &:focus {
+      background-color: $pure-white;
+    }
+  }
+
+  .action-list-item {
+    width: 100%;
+  }
+
+  .actions-dropdown-list {
+    background-color: $pure-white;
+  }
+
+  button.cancel {
+    &, &:hover, &:visited, &:active {
+      float: left !important;
+      margin: 15px 0 !important;
+    }
+  }
+
+  .post-type-input:checked+.post-type-label {
+    background-color: #d8eaf3;
+    color: #434242;
   }
 }
 
