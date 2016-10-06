@@ -925,7 +925,7 @@ def course_learner_dashboard(request, learner_dashboard_id=None):
         redirect_url = '/'
         return HttpResponseRedirect(redirect_url)
 
-    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).exclude(publish_date__gte=datetime.today()).order_by('position')
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_calendar=True)
@@ -937,9 +937,9 @@ def course_learner_dashboard(request, learner_dashboard_id=None):
         bookmark = None
 
     try:
-         feature_flags = FeatureFlags.objects.get(course_id=learner_dashboard.course_id)
+        feature_flags = FeatureFlags.objects.get(course_id=learner_dashboard.course_id)
     except:
-         feature_flags = []
+        feature_flags = []
 
     data ={
         'learner_dashboard': learner_dashboard,

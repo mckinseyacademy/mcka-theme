@@ -337,3 +337,9 @@
 svg text {
     font-family: FontAwesome, sans-serif;
 }
+
+.not-published {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.4;
+}
