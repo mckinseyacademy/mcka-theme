@@ -541,6 +541,7 @@ class LearnerDashboardTile(db_models.Model):
     location = db_models.CharField(blank=True, max_length=200)
     download_link = db_models.URLField(blank=True, null=True)
 
+    fa_icon = db_models.CharField(blank=True, max_length=20)
     position = db_models.IntegerField(blank=False, default=100)
 
     show_in_calendar = db_models.BooleanField(default=False)
@@ -565,6 +566,15 @@ class LearnerDashboardTile(db_models.Model):
         (u'6', u'Webinar'),
     )
     tile_type = db_models.CharField(max_length=1, choices=TYPES)
+
+    ROW = (
+        (u'1', u'1'),
+        (u'2', u'2'),
+        (u'3', u'3'),
+        (u'4', u'4'),
+        (u'5', u'5')
+    )
+    row = db_models.CharField(max_length=1, choices=ROW, blank=True)
 
     learner_dashboard = db_models.ForeignKey(
         'LearnerDashboard',

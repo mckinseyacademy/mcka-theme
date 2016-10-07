@@ -299,7 +299,7 @@ class DiscoveryContentCreateForm(forms.ModelForm):
         }
 
 class LearnerDashboardTileForm(forms.ModelForm):
-    
+
 	class Meta:
 		model = LearnerDashboardTile
 		fields = [
@@ -316,12 +316,14 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'note_color',
             'tile_background_color',
             'download_link',
-            'details',
             'start_date',
             'end_date',
             'show_in_calendar',
             'show_in_dashboard',
+            'fa_icon',
+            'row'
        	]
+
        	widgets = {
        		'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
 			'link': forms.TextInput(attrs={'type': 'url'}),
@@ -331,6 +333,10 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'tile_background_color': forms.TextInput(attrs={'type': 'color'}),
             'download_link': forms.TextInput(attrs={'type': 'url'}),
         }
+
+        def __init__(self, *args, **kwargs):
+            super(LearnerDashboardTileForm, self).__init__(*args, **kwargs)
+            self.fields['label'].widget.attrs['maxlength'] = 16
 
         def clean(self):
             cleaned_data = super(LearnerDashboardTileForm, self).clean()

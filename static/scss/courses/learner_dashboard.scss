@@ -159,7 +159,7 @@
     background-color: rgba(0,0,0,0.4);
 
     #previous-calendar, #next-calendar {
-        margin-top: 100px;
+        margin-top: 130px;
         font-size: 50px;
         font-weight: bold;
         color: #4789c4;
@@ -176,7 +176,7 @@
     }
 
     #row-full-calendar {
-        height: 290px;
+        height: 340px;
         background: white;
 
         .row {
@@ -187,7 +187,7 @@
 
         #under-calendar{
             width: 945px;
-            height: 290px;
+            height: 340px;
             position: absolute;
             background-color: white;
             padding-top: 25px;
@@ -319,7 +319,7 @@
     z-index: 200;
     margin-top: 40px;
     width: 1100px; 
-    height: 232px;
+    height: 283px;
 
     .highcharts-tooltip {
 
