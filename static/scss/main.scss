@@ -4,7 +4,6 @@ body{
   background-color: $background-tint;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   &.with-program {
     margin-top: $header-bar-height + $program-bar-height;
     header[role=banner].background-blue{
@@ -24,6 +23,19 @@ body{
           cursor: default;
        }
      }
+    }
+    &.limit-user{
+      margin-top: 48px;
+    }
+    header[role=banner].background-blue{
+      .logo{
+        background: url(/static/image/mckinsey-academy.png) no-repeat 0 center;
+        background-size: 100%;
+
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+          background-image: url(/static/image/mckinsey-academy@2x.png);
+        }
+      }
     }
   }
 }
