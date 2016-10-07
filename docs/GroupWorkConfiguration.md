@@ -8,12 +8,14 @@ admin interface, by McKA admin user.
 ## Prerequisites
 
 * [GroupWorkV2 XBlock][gwv2-xblock] is installed and enabled in LMS
-* GroupWorkV2 XBlock is added and configured in a course
-* Course is added to a Program
+* [GroupWorkV2 XBlock is added and configured in a course][gwv2-course-config]
+* [Course is added to a Program][apros-initial-setup]
 * There's at least one Client with seats in that Program
 * Some Client's student are enrolled into a course with Group Work V2 XBlock 
 
-[gwv2-xblock]: https://github.com/open-craft/xblock-group-project-v2
+[gwv2-xblock]: https://github.com/open-craft/xblock-group-project-v2/blob/master/docs/deployment.md#setup
+[gwv2-course-config]: https://github.com/open-craft/xblock-group-project-v2/blob/master/docs/deployment.md#enabling-group-project-xblock-v2-in-a-course
+[apros-initial-setup]: /apros_initial_configuration.md
 
 ## Creating a Group Project for GroupWorkV2
 
