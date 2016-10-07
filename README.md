@@ -19,8 +19,11 @@ Mckinsey Academy custom front end application
 
 * Notes for upgrading to Django 1.8 can be found [there][upgrade-notes]
 
+* Notes for configuring Group Work v2 can be found [there][group-work-config]
+
 [setup-notes]: /docs/SetupNotes.md
 [upgrade-notes]: /docs/UpgradeNotes.md
+[group-work-config]: /docs/GroupWorkConfiguration.md
 
 #### Templates
 We are using standard Django templates, but we are preprocessing them with haml preprocessor (installed via pip)
