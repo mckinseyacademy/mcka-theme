@@ -631,8 +631,9 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
     })
-    
-    progress_update_handler(request, course, chapter_id, page_id)
+
+    if request.is_ajax():
+        progress_update_handler(request, course, chapter_id, page_id)
 
     if tile_type:
         return render(request, 'courses/course_lessons_ld.haml', data)
