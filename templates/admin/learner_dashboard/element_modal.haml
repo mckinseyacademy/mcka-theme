@@ -88,12 +88,13 @@
         .small-3.columns= form.end_date.label_tag
         .small-9.columns= form.end_date
 
-    .row
-      .small-3.columns= "Font Awesome Icon:"
-      .small-9.columns= form.fa_icon.errors
-    .row
-      .small-3.columns= form.fa_icon.label_tag
-      .small-9.columns= form.fa_icon
+    .fa_icon
+      .row
+        .small-3.columns
+        .small-9.columns= form.fa_icon.errors
+      .row
+        .small-3.columns= "Font Awesome Icon:"
+        .small-9.columns= form.fa_icon
 
   .tile_fields
     .row

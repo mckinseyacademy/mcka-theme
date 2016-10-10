@@ -114,6 +114,7 @@
           user_progress: ("Your progress: " + courses[j].user_progress + "%"),
           low: courses[j].start,
           high: courses[j].end,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf109'
         });
       }
 
@@ -130,7 +131,7 @@
           user_progress: ("Your progress: " + courses[j].user_progress + "%"),
           cohort_progress: ("Cohort progress: " + courses[j].cohort_progress + "%"),
           low: courses[j].start,
-          high: courses[j].end,
+          high: courses[j].end
         });
       }
     }
@@ -160,7 +161,8 @@
           publish_date: getPublishDate(milestones[i]["fields"]),
           link: milestones[i]["fields"].link,
           low: low,
-          high: high
+          high: high,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf109'
         });
       }
 
@@ -176,7 +178,8 @@
           details: milestones[i]["fields"].details,
           link: milestones[i]["fields"].link,
           low: low,
-          high: high
+          high: high,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf0c0'
         });
       }
 
@@ -191,7 +194,8 @@
           publish_date: getPublishDate(milestones[i]["fields"]),
           details: milestones[i]["fields"].details,
           low: low,
-          high: high
+          high: high,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf03d'
         });
       }
     }

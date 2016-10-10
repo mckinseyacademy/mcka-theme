@@ -159,7 +159,9 @@ $(function() {
                 enabled: true,
                 verticalAlign: 'middle',
                 align: 'center',
-                format: '\uf0c0',
+                formatter: function() {
+                    return this.point.fa_icon
+                },
                 style: {
                     fontSize: '20px'
                 }
@@ -198,7 +200,9 @@ $(function() {
                 enabled: true,
                 verticalAlign: 'middle',
                 align: 'center',
-                format: '\uf03d',
+                formatter: function() {
+                    return this.point.fa_icon
+                },
                 style: {
                     fontSize: '20px'
                 }
@@ -216,7 +220,9 @@ $(function() {
                 verticalAlign: 'middle',
                 align: 'center',  
                 yLow: -3,
-                format: '\uf109',
+                formatter: function() {
+                    return this.point.fa_icon
+                },
                 style: {
                     fontSize: '25px'
                 }
