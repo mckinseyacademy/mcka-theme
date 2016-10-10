@@ -22,7 +22,7 @@
         %p{style: "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
         .row
           -for tile in learner_dashboard_tiles
-            .learner-program{class: '{% if tile.publish_date|date:"Y-m-d" > now|date:"Y-m-d" %}not-published{%endif%}'}
+            .learner-program{class: '{% if tile.publish_date|date:"Y-m-d" <= today|date:"Y-m-d" %}published{%else%}not-published{%endif%}'}
               -if bookmark.tile.id == tile.id
                 %i.bookmark{class: "fa fa-bookmark fa-2x"}
               .panel.panel-program{style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}

@@ -950,6 +950,7 @@ def course_learner_dashboard(request, learner_dashboard_id=None):
         'bookmark': bookmark,
         'milestones_enabled': settings.MILESTONES_ENABLED,
         'calendar_enabled': calendar_enabled,
+        'today': datetime.now(),
     }
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
