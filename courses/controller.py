@@ -703,12 +703,19 @@ def update_progress(tile, user_id, course, completions, link):
 
 def calculate_user_course_progress(user_id, course, completions):
 
-    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
     completed_ids = [result.content_id for result in completions]
-    matches = set(component_ids).intersection(completed_ids)
+    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+    for lesson in course.chapters:
+        lesson.progress = 0
+        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                           settings.PROGRESS_IGNORE_COMPONENTS)
+        if len(lesson_component_ids) > 0:
+            matches = set(lesson_component_ids).intersection(completed_ids)
+            lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+    actual_completions = set(component_ids).intersection(completed_ids)
 
     try:
-        return round_to_int(100 * len(matches) / len(component_ids))
+        return round_to_int(float(100 * len(actual_completions))/len(component_ids))
     except ZeroDivisionError:
         return 0
 
