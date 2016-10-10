@@ -214,37 +214,44 @@
   }
 
   function calculateColor(element, now){
+
+    var notAvailable = "#e0e0e0";
+    var notStarted = "#ccc";
+    var inProgress = "#b6d332";
+    var complete = "#629b2b";
+    var incomplete = "#cd202c";
+
     switch(element.tile_type) {
       case '3':
-        if (now < element.start){
-          return '#e0e0e0';
+        if (now < getPublishDate(element)){
+          return notAvailable;
           break;
-          } else if (now >= element.start && element.user_progress == 0){
-              return '#ccc';
+          } else if (element.user_progress == 100){
+              return complete;
               break;
-          } else if (now >= element.start && element.user_progress == 100 ){
-              return '#629b2b';
+          } else if (element.user_progress == 0 && now < element.end){
+              return notStarted;
               break;
-          } else if (now >= element.start && element.user_progress < 100 ){
-              return '#cd202c';
+          } else if (element.user_progress < 100 && now > element.end){
+              return incomplete;
               break;
           }
       case '2':
       case '4':
-        if (now < element.start){
-          return '#e0e0e0';
+        if (now < getPublishDate(element)){
+          return notAvailable;
           break;
-          } else if (now >= element.start && element.user_progress == 0){
-              return '#ccc';
+          } else if (element.user_progress == 100){
+              return complete;
               break;
-          } else if (now >= element.start && (element.user_progress > 0 && element.user_progress < 100) ){
-              return '#b6d332';
+          } else if (element.user_progress == 0 && now < element.end){
+              return notStarted;
               break;
-          } else if (now >= element.start && element.user_progress == 100 ){
-              return '#629b2b';
+          } else if (element.user_progress > 0 && element.user_progress < 100 && now < element.end){
+              return inProgress;
               break;
-          } else if (now >= element.start && element.user_progress < 100 ){
-              return '#cd202c';
+          } else if (element.user_progress < 100 && now > element.end){
+              return incomplete;
               break;
           }
     }
