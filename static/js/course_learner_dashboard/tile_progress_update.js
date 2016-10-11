@@ -1,24 +1,18 @@
 $(function(){
 
-  moduleUrl = $.xblock.location.pathname;
+  var moduleUrl = $.xblock.location.pathname;
 
-  $.xblock.getRuntime().listenTo('submit', function(event, data) {
-    updateTileProgress();
-  });
-
-  $.xblock.getRuntime().listenTo('xblock-rendered', function(event, data) {
-    updateTileProgress();
+  $.xblock.getRuntime().listenTo('xblock-rendered submit', function(event, data) {
+    $(document).ajaxComplete(function() {
+      updateTileProgress();
+    });
   });
 
   function updateTileProgress(){
-    var headers = {
-      'X-CSRFToken': $.cookie('apros_csrftoken')
-    }
     $.ajax({
-      headers: headers,
-      dataType: 'json',
       type: 'GET',
       url: moduleUrl
     });
+    $(document).unbind("ajaxComplete");
   }
 });
