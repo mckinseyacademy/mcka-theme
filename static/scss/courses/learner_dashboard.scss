@@ -158,21 +158,35 @@
     z-index: 2;
     background-color: rgba(0,0,0,0.4);
 
-    #previous-calendar, #next-calendar {
-        margin-top: 130px;
-        font-size: 50px;
-        font-weight: bold;
-        color: #4789c4;
+    .over-calendar{
+        width: 80px;
+        height: 290px;
+        position: absolute;
+        background-color: white;
+        padding-top: 25px;
+        background-color:white;
+        z-index:221;
+
+            .arrow-calendar {
+                margin-top: 130px;
+                font-size: 50px;
+                font-weight: bold;
+                color: #4789c4;
+            }
+
+            #previous-calendar {
+                float: left;
+                margin-left: 30px;
+            }
+
+            #next-calendar {
+                float: right;
+                margin-right: 30px;
+            }
     }
 
-    #previous-calendar {
-        float: left;
-        margin-left: 30px;
-    }
-
-    #next-calendar {
-        float: right;
-        margin-right: 30px;
+    #over-calendar-right{
+        margin-left: 1020px; 
     }
 
     #row-full-calendar {

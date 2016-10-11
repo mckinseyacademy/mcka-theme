@@ -2,10 +2,10 @@
   #row-full-calendar
     .row
       .large-12        
-        #over-calendar-left{style: "width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
-          %span#previous-calendar.fa.fa-angle-left
-        #over-calendar-right{style: "margin-left: 1020px; width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
-          %span#next-calendar.fa.fa-angle-right
+        .over-calendar
+          %span#previous-calendar.arrow-calendar.fa.fa-angle-left
+        #over-calendar-right.over-calendar
+          %span#next-calendar.arrow-calendar.fa.fa-angle-right
         #under-calendar
           %span#close-calendar.fa.fa-times-circle
           %ul.tab-month
@@ -72,7 +72,7 @@
   
   var minDate = dateList[1];
   var maxDate = dateList[5];
-  var maxRow = 1;
+  var maxRow = 2;
 
   var dataIPS = [];
   var dataCourse = [];
@@ -204,6 +204,9 @@
   for (i=1; i < maxRow; i++) {
     $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
   }
+
+  $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (190 + (maxRow - 2) * 50) );
+  $( ".arrow-calendar").css( "margin-top", (50 + (maxRow - 2) * 20) );
 
   function getPublishDate(element){
     if (element.publish_date){
