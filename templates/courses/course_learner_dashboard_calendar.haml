@@ -2,54 +2,30 @@
   #row-full-calendar
     .row
       .large-12        
-        #over-calendar-left{style: "width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
-          %span#previous-calendar.fa.fa-angle-left
-        #over-calendar-right{style: "margin-left: 1020px; width: 80px;height: 290px;position: absolute;background-color: white;padding-top: 25px;background-color:white;z-index:221;"}
-          %span#next-calendar.fa.fa-angle-right
+        .over-calendar
+          %span#previous-calendar.arrow-calendar.fa.fa-angle-left
+        #over-calendar-right.over-calendar
+          %span#next-calendar.arrow-calendar.fa.fa-angle-right
         #under-calendar
           %span#close-calendar.fa.fa-times-circle
           %ul.tab-month
             %li.head-month
               %span.month
-            %li.first
-            %li.second
-            %li.first
-            %li.second
-            %li.first
-            %li.second
             %li.first.last
             %li.second.last
           %ul.tab-month
             %li.head-month
               %span.month
-            %li.first
-            %li.second
-            %li.first
-            %li.second
-            %li.first
-            %li.second
             %li.first.last
             %li.second.last
           %ul.tab-month
             %li.head-month
               %span.month
-            %li.first
-            %li.second
-            %li.first
-            %li.second
-            %li.first
-            %li.second
             %li.first.last
             %li.second.last
           %ul.tab-month
             %li.head-month
               %span.month
-            %li.first
-            %li.second
-            %li.first
-            %li.second
-            %li.first
-            %li.second
             %li.first.last
             %li.second.last
           %ul.legend-list
@@ -96,6 +72,7 @@
   
   var minDate = dateList[1];
   var maxDate = dateList[5];
+  var maxRow = 2;
 
   var dataIPS = [];
   var dataCourse = [];
@@ -118,11 +95,17 @@
       if (courses[j].end > maxDate)
         maxDate = courses[j].end;
 
+      if (parseInt(courses[j].row, 10) > maxRow)
+        maxRow = parseInt(courses[j].row, 10);
+
+      if (courses[j].label)
+        courses[j].label = courses[j].label.substring(0, 16);
+
       if (courses[j].tile_type == "2" || courses[j].tile_type == "3") {
 
         dataDig.push({
           color: calculateColor(courses[j], timeNow),
-          x: 3,
+          x: (courses[j].row - 1),
           tile_type: courses[j].tile_type,
           label: courses[j].label,
           name: courses[j].name,
@@ -131,6 +114,7 @@
           user_progress: ("Your progress: " + courses[j].user_progress + "%"),
           low: courses[j].start,
           high: courses[j].end,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf109'
         });
       }
 
@@ -138,7 +122,7 @@
 
         dataCourse.push({
           color: calculateColor(courses[j], timeNow),
-          x: 1,
+          x: (courses[j].row - 1),
           tile_type: courses[j].tile_type,
           label: courses[j].label,
           name: courses[j].name,
@@ -147,7 +131,7 @@
           user_progress: ("Your progress: " + courses[j].user_progress + "%"),
           cohort_progress: ("Cohort progress: " + courses[j].cohort_progress + "%"),
           low: courses[j].start,
-          high: courses[j].end,
+          high: courses[j].end
         });
       }
     }
@@ -161,24 +145,31 @@
       if (high > maxDate)
         maxDate = high;
 
+      if (parseInt(milestones[i]["fields"].row, 10) > maxRow)
+        maxRow = parseInt(milestones[i]["fields"].row, 10);
+
+      if (milestones[i]["fields"].label)
+        milestones[i]["fields"].label = milestones[i]["fields"].label.substring(0, 16);
+
       if (milestones[i]["fields"].tile_type == "1") {
         dataDig.push({
           color: '#66a5b5',
-          x: 3,
+          x: (milestones[i]["fields"].row - 1),
           tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
           publish_date: getPublishDate(milestones[i]["fields"]),
           link: milestones[i]["fields"].link,
           low: low,
-          high: high
+          high: high,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf109'
         });
       }
 
       if (milestones[i]["fields"].tile_type == "5") {
         dataIPS.push({
           color: '#66a5b5',
-          x: 0,
+          x: (milestones[i]["fields"].row - 1),
           tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
@@ -187,14 +178,15 @@
           details: milestones[i]["fields"].details,
           link: milestones[i]["fields"].link,
           low: low,
-          high: high
+          high: high,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf0c0'
         });
       }
 
       if (milestones[i]["fields"].tile_type == "6") {
         dataWeb.push({
           color: '#66a5b5',
-          x: 2,
+          x: (milestones[i]["fields"].row - 1),
           tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
@@ -202,11 +194,19 @@
           publish_date: getPublishDate(milestones[i]["fields"]),
           details: milestones[i]["fields"].details,
           low: low,
-          high: high
+          high: high,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf03d'
         });
       }
     }
   }
+
+  for (i=1; i < maxRow; i++) {
+    $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
+  }
+
+  $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (190 + (maxRow - 2) * 50) );
+  $( ".arrow-calendar").css( "margin-top", (50 + (maxRow - 2) * 20) );
 
   function getPublishDate(element){
     if (element.publish_date){

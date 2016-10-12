@@ -18,9 +18,9 @@ $(function() {
             text: ''
         },
         xAxis: {
-            categories: ['', '', '', ''],
+            categories: ['', '', '', '', ''],
             min: 0,
-            max: 3,
+            max: 4,
             labels: {
                 enabled: false
             },
@@ -99,32 +99,33 @@ $(function() {
                     + '</a>'
                     + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">';
 
-                switch(this.point.x) {
-                    case 0:
+                switch (this.point.tile_type) {
+                    case '1' :
+                        tooltipHTML += '</br> </div>';
+                        return tooltipHTML;
+                        break;
+                    case '2' :
+                    case '3' :
+                        tooltipHTML += this.point.user_progress + '</br> </div>';
+                        return tooltipHTML;
+                        break;
+                    case '4' :
+                        tooltipHTML += this.point.user_progress + '</br> </div>';
+                        return tooltipHTML;
+                        break;
+                    case '5' :
                         tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
                             + '</br>'
                             + this.point.note
                             + '</div>';
                         return tooltipHTML;
                         break;
-                    case 1:
-                        tooltipHTML += this.point.user_progress + '</br> </div>';
-                        return tooltipHTML;
-                        break;
-                    case 2:
+                    case '6' :
                         tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
                             + '</br>'
                             + Highcharts.dateFormat('%H:%M', this.point.low)
                             + '</div>';
                         return tooltipHTML;
-                    case 3:
-                        if (this.point.tile_type != 1){
-                            tooltipHTML += this.point.user_progress + '</br> </div>';
-                            return tooltipHTML;
-                        } else {
-                            tooltipHTML += '</br> </div>';
-                            return tooltipHTML;
-                        }
                 }
             },
             positioner: function (labelWidth, labelHeight, point) {
@@ -159,7 +160,9 @@ $(function() {
                 enabled: true,
                 verticalAlign: 'middle',
                 align: 'center',
-                format: '\uf0c0',
+                formatter: function() {
+                    return this.point.fa_icon
+                },
                 style: {
                     fontSize: '20px'
                 }
@@ -198,7 +201,9 @@ $(function() {
                 enabled: true,
                 verticalAlign: 'middle',
                 align: 'center',
-                format: '\uf03d',
+                formatter: function() {
+                    return this.point.fa_icon
+                },
                 style: {
                     fontSize: '20px'
                 }
@@ -216,7 +221,9 @@ $(function() {
                 verticalAlign: 'middle',
                 align: 'center',  
                 yLow: -3,
-                format: '\uf109',
+                formatter: function() {
+                    return this.point.fa_icon
+                },
                 style: {
                     fontSize: '25px'
                 }

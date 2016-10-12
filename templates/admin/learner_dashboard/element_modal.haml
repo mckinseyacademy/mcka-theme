@@ -66,6 +66,13 @@
     .small-9.columns= form.note
 
   .calendar_fields
+    .row
+      .small-3.columns
+      .small-9.columns= form.row.errors
+    .row
+      .small-3.columns= form.row.label_tag
+      .small-9.columns= form.row
+
     .start_date
       .row
         .small-3.columns
@@ -81,12 +88,13 @@
         .small-3.columns= "Calendar end date:"
         .small-9.columns= form.end_date
 
-    .row
-      .small-3.columns
-      .small-9.columns= form.details.errors
-    .row
-      .small-3.columns= form.details.label_tag
-      .small-9.columns= form.details
+    .fa_icon
+      .row
+        .small-3.columns
+        .small-9.columns= form.fa_icon.errors
+      .row
+        .small-3.columns= "Font Awesome Icon:"
+        .small-9.columns= form.fa_icon
 
   .tile_fields
     .row

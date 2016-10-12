@@ -1,5 +1,7 @@
 var modal_form = $('.tile_modal_form');
 var in_person_session = modal_form.find('.in_person_session');
+var fa_icon = modal_form.find('.fa_icon');
+var fa_icon_input = modal_form.find('#id_fa_icon')
 var webinar = modal_form.find('.webinar');
 var start_date = modal_form.find('.start_date');
 var selected_tile_type = modal_form.find('#id_tile_type option:selected').text();
@@ -35,6 +37,7 @@ modal_form.find('#id_end_date').on('click', function(){
 
 function adjust_for_calendar_entry(calendar_checkbox){
   if (calendar_checkbox.is(':checked')){
+
     calendar_fields.slideDown('fast');
     $("#id_start_date").prop('required',true);
     $("#id_end_date").prop('required',true);
@@ -54,6 +57,14 @@ function adjust_for_tile_entry(tile_checkbox){
 }
 
 function adjust_by_tile_type(selected_tile_type) {
+  if (selected_tile_type.trim() == 'Course') {
+    fa_icon.hide();
+    fa_icon_input.val('');
+  }
+  else {
+    fa_icon.show();
+  }
+
   if (selected_tile_type.trim() == 'In Person Session') {
     in_person_session.show();
   } else {
