@@ -101,7 +101,7 @@
       if (courses[j].label)
         courses[j].label = courses[j].label.substring(0, 16);
 
-      if (courses[j].tile_type == "2" || courses[j].tile_type == "3") {
+      if (courses[j].tile_type == "2" || courses[j].tile_type == "3" || courses[j].tile_type == "5") {
 
         dataDig.push({
           color: calculateColor(courses[j], timeNow),
@@ -111,10 +111,10 @@
           name: courses[j].name,
           link: courses[j].link,
           publish_date: getPublishDate(courses[j]),
-          user_progress: ("Your progress: " + courses[j].user_progress + "%"),
+          user_progress: courses[j].user_progress,
           low: courses[j].start,
           high: courses[j].end,
-          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf109'
+          fa_icon: courses[j].fa_icon ? unescape('%u' + courses[j].fa_icon.slice(-6,-2)) : '\uf109'
         });
       }
 
@@ -128,8 +128,7 @@
           name: courses[j].name,
           link: courses[j].link,
           publish_date: getPublishDate(courses[j]),
-          user_progress: ("Your progress: " + courses[j].user_progress + "%"),
-          cohort_progress: ("Cohort progress: " + courses[j].cohort_progress + "%"),
+          user_progress: courses[j].user_progress,
           low: courses[j].start,
           high: courses[j].end
         });
@@ -163,23 +162,6 @@
           low: low,
           high: high,
           fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf109'
-        });
-      }
-
-      if (milestones[i]["fields"].tile_type == "5") {
-        dataIPS.push({
-          color: '#66a5b5',
-          x: (milestones[i]["fields"].row - 1),
-          tile_type: milestones[i]["fields"].tile_type,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          note: milestones[i]["fields"].note,
-          publish_date: getPublishDate(milestones[i]["fields"]),
-          details: milestones[i]["fields"].details,
-          link: milestones[i]["fields"].link,
-          low: low,
-          high: high,
-          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf0c0'
         });
       }
 
@@ -226,6 +208,7 @@
 
     switch(element.tile_type) {
       case '3':
+      case '5':
         if (now < getPublishDate(element)){
           return notAvailable;
           break;

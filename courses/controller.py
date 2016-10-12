@@ -678,7 +678,7 @@ def progress_update_handler(request, course, chapter_id, page_id):
         for tile in tiles:
             link = strip_tile_link(tile.link)
             if link:
-                if tile.tile_type == '3' and not page_id in tile.link:
+                if (tile.tile_type == '3' or tile.tile_type == '5') and not page_id in tile.link:
                     continue
                 if tile.tile_type == '2' and not chapter_id in tile.link:
                     continue
@@ -696,7 +696,7 @@ def update_progress(tile, user_id, course, completions, link):
         obj.percentage = calculate_user_course_progress(user_id, course, completions)
     elif tile.tile_type == '2':
         obj.percentage = calculate_user_lesson_progress(user_id, course, link['lesson_id'], completions)
-    elif tile.tile_type == '3':
+    elif tile.tile_type == '3' or tile.tile_type == '5':
         obj.percentage = calculate_user_module_progress(user_id, course, link['lesson_id'], link['page_id'], completions)
     obj.save()
 

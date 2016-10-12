@@ -1042,12 +1042,12 @@ def course_learner_dashboard_calendar(request):
         trackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, 
             show_in_calendar = True
-        ).exclude(tile_type='1').exclude(tile_type='5').exclude(tile_type='6')
+        ).exclude(tile_type='1').exclude(tile_type='6')
 
         milestoneData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, 
             show_in_calendar = True
-        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4')
+        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').exclude(tile_type='5')
 
     elif course_id is not None:
         redirect_url = '/courses/{}/'.format(course_id)

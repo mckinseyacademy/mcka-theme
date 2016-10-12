@@ -79,7 +79,7 @@ $(function() {
                 var tooltipHTML = '';
                 var now = new Date();
 
-                var new_tab = (this.point.tile_type == 1 || this.point.tile_type == 5 || this.point.tile_type == 6);
+                var new_tab = (this.point.tile_type == 1 || this.point.tile_type == 6);
 
                 if (this.point.label){
                     tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
@@ -106,17 +106,14 @@ $(function() {
                         break;
                     case '2' :
                     case '3' :
-                        tooltipHTML += this.point.user_progress + '</br> </div>';
-                        return tooltipHTML;
-                        break;
                     case '4' :
-                        tooltipHTML += this.point.user_progress + '</br> </div>';
+                        tooltipHTML += "Your progress: " + this.point.user_progress + "%" + '</br> </div>';
                         return tooltipHTML;
                         break;
                     case '5' :
                         tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
                             + '</br>'
-                            + this.point.note
+                            + (this.point.user_progress == 100 ? "Complete" :"Incomplete")
                             + '</div>';
                         return tooltipHTML;
                         break;
