@@ -633,7 +633,11 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
     })
 
     if request.is_ajax():
-        progress_update_handler(request, course, chapter_id, page_id)
+        try:
+            progress_update_handler(request, course, chapter_id, page_id)
+            return HttpResponse(status=200)
+        except:
+            return HttpResponse(status=204)
 
     if tile_type:
         return render(request, 'courses/course_lessons_ld.haml', data)

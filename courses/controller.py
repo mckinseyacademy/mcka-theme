@@ -780,8 +780,12 @@ def strip_tile_link(link):
 
     if link.startswith("/learnerdashboard/"):
         link = link[17:]
+
     if link.endswith("/lesson/") or link.endswith("/module/"):
         link = link[:-8]
+
+    if link.endswith("/discussion") or link.endswith("/group_work"):
+        link = link[:-11]
 
     try:
         substring = re.search('/courses/(.*)/lessons/', link)
