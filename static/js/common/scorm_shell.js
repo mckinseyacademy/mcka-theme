@@ -84,3 +84,26 @@ function SendProgressToScormShell()
         console.log(data)
     });
 }
+
+function SendGradebookToScormShell()
+{
+    var options = {
+        url: "/courses/"+scorm_data.courseId+"/grades-json",
+        type: "GET",
+        dataType: "json",
+        timeout: 5000,
+        beforeSend: function( xhr ) {
+            xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+        }
+    };
+
+    $.ajax(options)
+    .done(function(data) {
+        console.log(data);
+        SendMessageToSCORMShell(JSON.stringify({"type":"data", "gradebook":data, "course_id": scorm_data.courseId}));
+    })
+    .fail(function(data) {
+        console.log("Ajax failed to fetch data");
+        console.log(data)
+    });
+}

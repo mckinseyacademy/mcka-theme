@@ -312,6 +312,7 @@ $(function(){
       }, 300);
       setTimeout(function(){timeout_waiting=true;}, 10000);
       SendProgressToScormShell();
+      SendGradebookToScormShell();
     }
   });
 

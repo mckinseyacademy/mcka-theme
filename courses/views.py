@@ -1121,3 +1121,16 @@ def get_user_progress_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
+
+@login_required
+def get_user_gradebook_json(request, course_id):
+    user_grades = user_api.get_user_full_gradebook(user_id = request.user.id, course_id=course_id)
+    if user_grades:
+        data = {"user_gradebook": user_grades}
+    else:
+       data = {"user_gradebook": None}
+    
+    return HttpResponse(
+        json.dumps(data),
+        content_type='application/json'
+    )
