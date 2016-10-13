@@ -101,7 +101,7 @@
       if (courses[j].label)
         courses[j].label = courses[j].label.substring(0, 16);
 
-      if (courses[j].tile_type == "2" || courses[j].tile_type == "3" || courses[j].tile_type == "5") {
+      if (courses[j].tile_type == "2" || courses[j].tile_type == "3") {
 
         dataDig.push({
           color: calculateColor(courses[j], timeNow),
@@ -115,6 +115,23 @@
           low: courses[j].start,
           high: courses[j].end,
           fa_icon: courses[j].fa_icon ? unescape('%u' + courses[j].fa_icon.slice(-6,-2)) : '\uf109'
+        });
+      }
+
+      if (courses[j].tile_type == "5") {
+
+        dataIPS.push({
+          color: calculateColor(courses[j], timeNow),
+          x: (courses[j].row - 1),
+          tile_type: courses[j].tile_type,
+          label: courses[j].label,
+          name: courses[j].name,
+          link: courses[j].link,
+          publish_date: getPublishDate(courses[j]),
+          user_progress: courses[j].user_progress,
+          low: courses[j].start,
+          high: courses[j].end,
+          fa_icon: courses[j].fa_icon ? unescape('%u' + courses[j].fa_icon.slice(-6,-2)) : '\uf0c0'
         });
       }
 
