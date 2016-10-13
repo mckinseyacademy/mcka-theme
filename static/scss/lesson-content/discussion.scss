@@ -70,7 +70,7 @@
 
   .thread-content-wrapper, .new-post-article {
     h1.post-title {
-      color: #66a5b5;
+      color: $mckinsey-academy-turquoise;
       font-weight: 700;
     }
 
@@ -180,7 +180,7 @@
       background-color: $pure-white;
 
       .thread-main-wrapper {
-        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        box-shadow: 0 1px 3px $thread-main-wrapper-shadow-color;
       }
     }
   }
@@ -194,7 +194,7 @@
     clear: both;
 
     .discussion-response {
-      background-color: #fafafa;
+      background-color: $bottom-page;
       padding: 20px;
 
       .response-header-actions {
@@ -216,13 +216,13 @@
     float: left;
     margin-top: 20px;
     padding: 0 30px;
-    color: #767676;
+    color: $response-count-color;
     font-size: 14px;
   }
 
   .forum-nav-thread {
-    border-bottom: 1px solid #c8c8c8;
-    background-color: #f1f1f1;
+    border-bottom: 1px solid $comment-background-color;
+    background-color: $forum-thread-background-color;
   }
 
   .forum-nav-thread.never-read {
@@ -233,7 +233,7 @@
   .forum-nav-thread-link:active,
   .forum-nav-thread-link:focus,
   .forum-nav-thread-link.is-active {
-      background-color: #d8eaf3;
+      background-color: $forum-nav-link-active;
   }
 
   /* Standard Buttons */
@@ -281,9 +281,9 @@
       margin-left: 0;
       li.forum-response {
         margin: 0;
-        box-shadow: 3px 3px 0 0 rgba(51,51,51,0);
-        background-color: #fafafa;
-        border: 1px solid #a7a4a4;
+        box-shadow: 3px 3px 0 0 $forum-response-list-shadow-color;
+        background-color: $bottom-page;
+        border: 1px solid $forum-response-list-border-color;
       }
     }
   }
@@ -329,7 +329,7 @@
       color: $mckinsey-academy-black;
       text-shadow: none;
       box-shadow: none;
-      border-color: #b2b2b2;
+      border-color: $mckinsey-academy-discussion-icon-gray;
 
       .plus-icon {
         background-position: 0 0;
@@ -344,13 +344,13 @@
   }
 
   .comments {
-    box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5) inset;
+    box-shadow: 0 1px 3px -1px $comment-shadow-color inset;
     border-radius: 0 0 3px 3px;
     padding: 0;
     margin: 0;
 
     >li {
-      border-top: 1px solid #e3e3e3;
+      border-top: 1px solid $comment-list-border-color;
       padding: 10px 20px;
     }
 
@@ -451,7 +451,7 @@
 
   .helpgrid-row {
     td {
-      border: 1px solid #B2B2B2;
+      border: 1px solid $mckinsey-academy-discussion-icon-gray;
     }
 
     .row-title {
@@ -496,7 +496,7 @@
   .forum-thread-collapse {
     margin: 0;
     background-color: transparent;
-    color: #065683;
+    color: $forum-thread-collapse-color;
     box-shadow: none;
   }
 
@@ -530,8 +530,8 @@
   }
 
   .post-type-input:checked+.post-type-label {
-    background-color: #d8eaf3;
-    color: #434242;
+    background-color: $forum-nav-link-active;
+    color: $post-input-label-checked-color;
   }
 }
 
