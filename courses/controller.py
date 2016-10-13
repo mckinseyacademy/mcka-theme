@@ -792,6 +792,10 @@ def strip_tile_link(link):
     if discussion:
         link = link.replace(discussion.group(0), "")
 
+    resources  = re.search('/resources(.*)$', link)
+    if resources:
+        link = link.replace(resources.group(0), "")
+
     try:
         substring = re.search('/courses/(.*)/lessons/', link)
         course_id = substring.group(1)
