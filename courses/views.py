@@ -1085,6 +1085,7 @@ def course_learner_dashboard_calendar(request):
             "tile_type": content.milestone.tile_type,
             "user_progress": content.percentage,
             "cohort_progress": 0,
+            "fa_icon": content.milestone.fa_icon,
         }
         if content.milestone.publish_date:
             courseData["publish_date"] = (int(content.milestone.publish_date.strftime("%s")) * 1000)
