@@ -23,7 +23,7 @@
       .row
         .large-12.columns.header-padding
           %div.right.header-path
-            - if milestones_enabled and calendar_enabled
+            - if calendar_enabled
               %a.right{:href => "#", :data-tooltip => "Calendar", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
                 %i#open-calendar.fa.fa-calendar.header-link
 

@@ -952,7 +952,6 @@ def course_learner_dashboard(request, learner_dashboard_id=None):
         'feature_flags': feature_flags,
         'discovery_items': discovery_items,
         'bookmark': bookmark,
-        'milestones_enabled': settings.MILESTONES_ENABLED,
         'calendar_enabled': calendar_enabled,
         'today': datetime.now(),
     }
