@@ -129,6 +129,7 @@
           name: courses[j].name,
           link: courses[j].link,
           publish_date: getPublishDate(courses[j]),
+          note: courses[j].note,
           user_progress: courses[j].user_progress,
           low: courses[j].start,
           high: courses[j].end,
@@ -208,7 +209,6 @@
           name: milestones[i]["fields"].title,
           link: milestones[i]["fields"].link,
           publish_date: getPublishDate(milestones[i]["fields"]),
-          details: milestones[i]["fields"].details,
           low: low,
           high: high,
           fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf03d'
