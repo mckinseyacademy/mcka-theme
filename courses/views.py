@@ -1042,7 +1042,7 @@ def course_learner_dashboard_calendar(request):
         trackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, 
             show_in_calendar = True
-        ).exclude(tile_type='1').exclude(tile_type='6')
+        ).exclude(tile_type='1').exclude(tile_type='6').exclude(tile_type='7')
 
         milestoneData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, 

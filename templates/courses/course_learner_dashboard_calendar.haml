@@ -78,6 +78,7 @@
   var dataCourse = [];
   var dataWeb = [];
   var dataDig = [];
+  var dataGroup = [];
 
   var low;
   var high;
@@ -182,6 +183,22 @@
         });
       }
 
+      if (milestones[i]["fields"].tile_type == "7") {
+        dataDig.push({
+          color: '#66a5b5',
+          x: (milestones[i]["fields"].row - 1),
+          tile_type: milestones[i]["fields"].tile_type,
+          label: milestones[i]["fields"].label,
+          name: milestones[i]["fields"].title,
+          publish_date: getPublishDate(milestones[i]["fields"]),
+          link: milestones[i]["fields"].link,
+          note: milestones[i]["fields"].note,
+          low: low,
+          high: high,
+          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf086'
+        });
+      }
+
       if (milestones[i]["fields"].tile_type == "6") {
         dataWeb.push({
           color: '#66a5b5',
@@ -197,6 +214,7 @@
           fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf03d'
         });
       }
+
     }
   }
 

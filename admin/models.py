@@ -564,6 +564,7 @@ class LearnerDashboardTile(db_models.Model):
         (u'4', u'Course'),
         (u'5', u'In Person Session'),
         (u'6', u'Webinar'),
+        (u'7', u'Group work'),
     )
     tile_type = db_models.CharField(max_length=1, choices=TYPES)
 

@@ -123,6 +123,10 @@ $(function() {
                             + Highcharts.dateFormat('%H:%M', this.point.low)
                             + '</div>';
                         return tooltipHTML;
+                    case '7' :
+                        tooltipHTML += this.point.note + '</br> </div>';
+                        return tooltipHTML;
+                        break;
                 }
             },
             positioner: function (labelWidth, labelHeight, point) {
@@ -184,6 +188,25 @@ $(function() {
                 },
                 style: {
                     fontSize: '15px'
+                }
+            }
+        },
+        {
+            name: 'Group work',
+            data: dataGroup,
+            borderRadius: 24,
+            minPointLength: 48,
+            pointWidth: 48,
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                verticalAlign: 'middle',
+                align: 'center',
+                formatter: function() {
+                    return this.point.fa_icon
+                },
+                style: {
+                    fontSize: '20px'
                 }
             }
         },
