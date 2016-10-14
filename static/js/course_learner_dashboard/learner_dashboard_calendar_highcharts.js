@@ -111,7 +111,8 @@ $(function() {
                         return tooltipHTML;
                         break;
                     case '5' :
-                        tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
+                        tooltipHTML += (this.point.note ? this.point.note + "</br>" : "")
+                            + Highcharts.dateFormat('%b %e, %Y', this.point.low)
                             + '</br>'
                             + (this.point.user_progress == 100 ? "Complete" :"Incomplete")
                             + '</div>';
