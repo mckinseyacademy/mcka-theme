@@ -91,7 +91,7 @@ $(function() {
 
                 tooltipHTML += '<a href="'
                     + this.point.link
-                    + '" style="word-break: break-all;'
+                    + '" style="'
                     + (this.point.publish_date < now ? "" : 'pointer-events: none;cursor: default;opacity: 0.4;')
                     + ' padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;'
                     + (new_tab ? '" target="_blank">':'">')
