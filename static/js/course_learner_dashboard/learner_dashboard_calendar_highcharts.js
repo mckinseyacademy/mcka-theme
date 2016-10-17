@@ -79,7 +79,7 @@ $(function() {
                 var tooltipHTML = '';
                 var now = new Date();
 
-                var new_tab = (this.point.tile_type == 1 || this.point.tile_type == 6);
+                var new_tab = (this.point.tile_type == 1);
 
                 if (this.point.label){
                     tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-weight:600; text-transform: uppercase; color:#868685;">' + 
