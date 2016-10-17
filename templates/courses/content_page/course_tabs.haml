@@ -1,4 +1,8 @@
 %ul.course-tabs
+  - if learner_dashboard_flag
+    %li
+      %a{class: "nav-1", href: "/learnerdashboard", "data-tooltip": "Learner Dashboard", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+        %i.fa.fa-map-marker
   %li
     %a.nav-1{class: "{% ifequal request.resolver_match.url_name 'navigate_to_lesson_module' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons", "data-dropdown": "lessons-content", "data-tooltip": "Lessons", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
       %i.mk-icon-lessonsnav
