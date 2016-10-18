@@ -641,6 +641,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
             return HttpResponse(status=204)
 
     if tile_type:
+        data.update({"calendar_enabled": True})
+
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
         return render(request, 'courses/course_lessons.haml', data)
