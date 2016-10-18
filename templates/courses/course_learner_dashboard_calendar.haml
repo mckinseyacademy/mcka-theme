@@ -342,9 +342,9 @@
   function addMonthNames( dateList ) {
     $( ".month" ).each(function( index ) {
       $( this ).parent().removeClass( "active" );
-      $( this ).html( mlist[new Date(dateList[index]).getMonth()] );
+      $( this ).html( mlist[new Date(dateList[index]).getUTCMonth()] );
 
-      if ( ((new Date(dateList[index])).getMonth()) == (new Date()).getMonth() && ((new Date(dateList[index + 1])).getYear()) == (new Date()).getYear())
+      if ( ((new Date(dateList[index])).getUTCMonth()) == (new Date()).getUTCMonth() && ((new Date(dateList[index + 1])).getUTCFullYear()) == (new Date()).getUTCFullYear())
         $( this ).parent().addClass( "active" );
     });
   }
