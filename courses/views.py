@@ -580,7 +580,8 @@ def course_resources(request, course_id):
 @check_user_course_access
 def course_resources_learner_dashboard(request, course_id):
     data = {
-        "resources": load_static_tabs(course_id, name="resources")
+        "resources": load_static_tabs(course_id, name="resources"),
+        "course_id": course_id
     }
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
 
