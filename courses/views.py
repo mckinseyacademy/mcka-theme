@@ -1070,8 +1070,22 @@ def course_learner_dashboard_calendar(request):
 
     milestones = serializers.serialize("json", milestoneData)
 
-    tile_ids = [str(i.id) for i in trackedData] + [str(i.id) for i in milestoneData]
+    tile_ids = [str(i.id) for i in trackedData]
+
     progressDataAll = LearnerDashboardTileProgress.objects.filter(user=request.user.id, milestone_id__in=tile_ids)
+
+    if len(trackedData) > len(progressDataAll):
+
+        progress_ids = [str(i.milestone.id) for i in progressDataAll]
+        tiles = list(set(tile_ids) - set(progress_ids))
+
+        for tile in tiles:
+            obj, created = LearnerDashboardTileProgress.objects.get_or_create(
+                milestone_id=int(tile),
+                user=request.user.id,
+                percentage=0,
+            )
+        progressDataAll = LearnerDashboardTileProgress.objects.filter(user=request.user.id, milestone_id__in=tile_ids)
 
     coursesData = {}
     courseData = {}
