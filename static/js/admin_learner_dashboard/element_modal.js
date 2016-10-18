@@ -31,6 +31,10 @@ modal_form.find('#id_start_date').on('click', function(){
   $('#tileFormSubmit').attr('disabled',false);
 });
 
+modal_form.find('#id_publish_date').on('click', function(){
+  $('#tileFormSubmit').attr('disabled',false);
+});
+
 modal_form.find('#id_end_date').on('click', function(){
   $('#tileFormSubmit').attr('disabled',false);
 });
