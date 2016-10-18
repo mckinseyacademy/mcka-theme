@@ -89,15 +89,21 @@ $(function() {
                     tooltipHTML += '<div>&nbsp;</div>';
                 }
 
-                tooltipHTML += '<a href="'
-                    + this.point.link
-                    + '" style="'
-                    + (this.point.publish_date < now ? "" : 'pointer-events: none;cursor: default;opacity: 0.4;')
-                    + ' padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;'
-                    + (new_tab ? '" target="_blank">':'">')
-                    + this.point.name
-                    + '</a>'
-                    + '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">';
+                if (this.point.publish_date > now) {
+                    tooltipHTML += '<div style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#868685;">'
+                        +this.point.name
+                        +'</div>'
+                } else {
+                    tooltipHTML += '<a href="'
+                        + this.point.link
+                        + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;"'
+                        + (this.point.publish_date < now ? ' class="published"' : ' class="not-published"')
+                        + (new_tab ? ' target="_blank">':'>')
+                        + this.point.name
+                        + '</a>';
+                }
+
+                tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">';
 
                 switch (this.point.tile_type) {
                     case '1' :
