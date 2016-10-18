@@ -291,6 +291,7 @@ $(function(){
       {
         SendMessageToSCORMShell(JSON.stringify(data));
       }
+      setTimeout(function(){SendGradebookToScormShell();}, 300);
     }
   
   });
@@ -312,6 +313,7 @@ $(function(){
       }, 300);
       setTimeout(function(){timeout_waiting=true;}, 10000);
       SendProgressToScormShell();
+      setTimeout(function(){SendGradebookToScormShell();}, 300);
     }
   });
 
