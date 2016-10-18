@@ -306,13 +306,14 @@ $(function(){
         var data = ParseReviewStep();
         if (data)
         {
+          timeout_waiting=true;
           clearInterval(waiting_review)
           SendMessageToSCORMShell(JSON.stringify(data));
+          setTimeout(function(){SendGradebookToScormShell();}, 100);
         }
       }, 300);
       setTimeout(function(){timeout_waiting=true;}, 10000);
       SendProgressToScormShell();
-      setTimeout(function(){SendGradebookToScormShell();}, 500);
 
     }
   });
