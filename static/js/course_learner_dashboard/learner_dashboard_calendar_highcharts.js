@@ -18,16 +18,16 @@ $(function() {
             text: ''
         },
         xAxis: {
-            categories: [''],
+            categories: ['', '', '', '', '', '', '', '', '', '', '', '', ''],
             min: 0,
-            max: (maxRow - 1),
+            max: 4,
             labels: {
                 enabled: false
             },
             tickLength: 0,
             lineWidth: 0
         },
-
+     
         yAxis: {
             type: 'datetime',
             title: '',
