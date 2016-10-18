@@ -18,7 +18,7 @@ $(function() {
             text: ''
         },
         xAxis: {
-            categories: ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            categories: ['', '', '', '', ''],
             min: 0,
             max: 4,
             labels: {

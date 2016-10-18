@@ -268,7 +268,6 @@
                     border-width: 0 0 0 1px;
                     float: left;
                     border-style: dotted;
-                    border-bottom-width: 1px;
                 }
 
                 .second {
@@ -276,6 +275,9 @@
                     border: 0 solid gainsboro;
                     border-width: 0 1px 0 0;
                     border-style: dotted;
+                }
+
+                .last {
                     border-bottom-width: 1px;
                 }
             }
@@ -338,10 +340,6 @@
             }
         }
     }
-}
-
-.inter-row {
-    border-bottom-width: 0 !important;
 }
 
 #highcharts-container {

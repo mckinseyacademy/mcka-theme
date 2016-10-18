@@ -75,11 +75,6 @@
   var maxDate = dateList[5];
   var maxRow = 2;
 
-  var duplicateRows = 0;
-  var addedRowsPerDuplicate = [0, 0, 0, 0, 0];
-  var dataAll = [];
-  var addToRow;
-
   var dataIPS = [];
   var dataCourse = [];
   var dataWeb = [];
@@ -108,38 +103,11 @@
       if (courses[j].label)
         courses[j].label = courses[j].label.substring(0, 16);
 
-
-      for ( var z=0 in dataAll) {
-        if (dataAll[z].row == courses[j].row && dataAll[z].isChecked != true) {
-          if((dataAll[z].start <= courses[j].start && dataAll[z].end >= courses[j].start) || (dataAll[z].start <= courses[j].end && dataAll[z].end >= courses[j].end)) {
-            courses[j].addedRows = dataAll[z].addedRows + 1;
-            if (courses[j].addedRows > addedRowsPerDuplicate[courses[j].row - 1])
-              addedRowsPerDuplicate[courses[j].row - 1] = courses[j].addedRows;
-
-            dataAll[z].isChecked = true;
-          }
-        } 
-        else {
-          courses[j].addedRows = 0;
-        }
-      }
-
-      if (dataAll.length == 0) {
-        courses[j].addedRows = 0;
-      }
-
-      dataAll.push(courses[j]);
-
-      addToRow = 0;
-        for (row = 0; row < (courses[j].row - 1); row++) {
-          addToRow += addedRowsPerDuplicate[row];
-        }
-
       if (courses[j].tile_type == "2" || courses[j].tile_type == "3") {
 
         dataDig.push({
           color: calculateColor(courses[j], timeNow),
-          x: (courses[j].row - 1 + courses[j].addedRows + addToRow),
+          x: (courses[j].row - 1),
           tile_type: courses[j].tile_type,
           label: courses[j].label,
           name: courses[j].name,
@@ -156,7 +124,7 @@
 
         dataIPS.push({
           color: calculateColor(courses[j], timeNow),
-          x: (courses[j].row - 1 + courses[j].addedRows + addToRow),
+          x: (courses[j].row - 1),
           tile_type: courses[j].tile_type,
           label: courses[j].label,
           name: courses[j].name,
@@ -174,7 +142,7 @@
 
         dataCourse.push({
           color: calculateColor(courses[j], timeNow),
-          x: (courses[j].row - 1 + courses[j].addedRows + addToRow),
+          x: (courses[j].row - 1),
           tile_type: courses[j].tile_type,
           label: courses[j].label,
           name: courses[j].name,
@@ -202,39 +170,10 @@
       if (milestones[i]["fields"].label)
         milestones[i]["fields"].label = milestones[i]["fields"].label.substring(0, 16);
 
-
-      for ( var z=0 in dataAll ) {
-        if (dataAll[z].row == milestones[i]["fields"].row && dataAll[z].isChecked != true) {
-          if((dataAll[z].start <= low && dataAll[z].end >= low) || (dataAll[z].start <= high && dataAll[z].end >= high)) {
-            milestones[i]["fields"].addedRows = dataAll[z].addedRows + 1;
-            if (milestones[i]["fields"].addedRows > addedRowsPerDuplicate[milestones[i]["fields"].row - 1])
-              addedRowsPerDuplicate[milestones[i]["fields"].row - 1] = milestones[i]["fields"].addedRows;
-
-            dataAll[z].isChecked = true;
-          }
-        } else {
-          milestones[i]["fields"].addedRows = 0;
-        }
-      }
-
-      if (dataAll.length == 0) {
-        milestones[i]["fields"].addedRows = 0;
-      }
-
-      milestones[i]["fields"].start = low;
-      milestones[i]["fields"].end = high;
-
-      dataAll.push(milestones[i]["fields"]);
-
-      addToRow = 0;
-        for (row=0; row<courses[j].row - 1; row++) {
-          addToRow += addedRowsPerDuplicate[row];
-        }
-
       if (milestones[i]["fields"].tile_type == "1") {
         dataDig.push({
           color: '#66a5b5',
-          x: (milestones[i]["fields"].row - 1 + milestones[i]["fields"].addedRows + addToRow),
+          x: (milestones[i]["fields"].row - 1),
           tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
@@ -249,7 +188,7 @@
       if (milestones[i]["fields"].tile_type == "7") {
         dataDig.push({
           color: '#66a5b5',
-          x: (milestones[i]["fields"].row - 1 + milestones[i]["fields"].addedRows + addToRow),
+          x: (milestones[i]["fields"].row - 1),
           tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
@@ -265,7 +204,7 @@
       if (milestones[i]["fields"].tile_type == "6") {
         dataWeb.push({
           color: '#66a5b5',
-          x: (milestones[i]["fields"].row - 1 + milestones[i]["fields"].addedRows + addToRow),
+          x: (milestones[i]["fields"].row - 1),
           tile_type: milestones[i]["fields"].tile_type,
           label: milestones[i]["fields"].label,
           name: milestones[i]["fields"].title,
@@ -276,21 +215,14 @@
           fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf03d'
         });
       }
+
     }
   }
 
-  for (i=1; i < (maxRow + 1); i++) {
-    
-    for (j=0; j < addedRowsPerDuplicate[i - 1]; j++) {
-      $( "<li class='first inter-row'></li><li class='second inter-row'></li>" ).insertBefore( ".first.last" );
-      duplicateRows += 1;
-    }
-
-    if (i < maxRow)
-      $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
+  for (i=1; i < maxRow; i++) {
+    $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
   }
 
-  maxRow += duplicateRows;
   $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (190 + (maxRow - 2) * 50) );
   $( ".arrow-calendar").css( "margin-top", (50 + (maxRow - 2) * 20) );
 
