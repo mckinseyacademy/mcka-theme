@@ -38,7 +38,7 @@ from .controller import inject_gradebook_info, round_to_int, Proficiency, get_ch
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, group_project_reviews, add_months_to_date, progress_update_handler
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
-from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location
+from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location, createProgressObjects
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
 
@@ -1038,14 +1038,13 @@ def course_learner_dashboard_calendar(request):
     course_id = request.session['course_id']
     learner_dashboard_id = request.session['learner_dashboard_id']
 
-    milestoneData = {}
     if learner_dashboard_id is not None:
         trackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, 
             show_in_calendar = True
         ).exclude(tile_type='1').exclude(tile_type='6').exclude(tile_type='7')
 
-        milestoneData = LearnerDashboardTile.objects.filter(
+        notTrackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, 
             show_in_calendar = True
         ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').exclude(tile_type='5')
@@ -1068,29 +1067,21 @@ def course_learner_dashboard_calendar(request):
         add_months_to_date(now, 3).replace(day=1).strftime("%Y-%m-%d")
     ]
 
-    milestones = serializers.serialize("json", milestoneData)
-
     tile_ids = [str(i.id) for i in trackedData]
 
-    progressDataAll = LearnerDashboardTileProgress.objects.filter(user=request.user.id, milestone_id__in=tile_ids)
+    progressData = LearnerDashboardTileProgress.objects.filter(user=request.user.id, milestone_id__in=tile_ids)
 
-    if len(trackedData) > len(progressDataAll):
+    if len(trackedData) > len(progressData):
+        createProgressObjects(progressData, tile_ids, request.user.id)
+        progressData = LearnerDashboardTileProgress.objects.filter(
+            user=request.user.id,
+            milestone_id__in=tile_ids
+        )
 
-        progress_ids = [str(i.milestone.id) for i in progressDataAll]
-        tiles = list(set(tile_ids) - set(progress_ids))
-
-        for tile in tiles:
-            obj, created = LearnerDashboardTileProgress.objects.get_or_create(
-                milestone_id=int(tile),
-                user=request.user.id,
-                percentage=0,
-            )
-        progressDataAll = LearnerDashboardTileProgress.objects.filter(user=request.user.id, milestone_id__in=tile_ids)
-
-    coursesData = {}
-    courseData = {}
-    for i, content in enumerate(progressDataAll):
-        courseData = {
+    trackedDataJson = {}
+    trackedDataJsonRow = {}
+    for i, content in enumerate(progressData):
+        trackedDataJsonRow = {
             "name": content.milestone.title,
             "label": content.milestone.label,
             "link": content.milestone.link,
@@ -1104,17 +1095,17 @@ def course_learner_dashboard_calendar(request):
             "fa_icon": content.milestone.fa_icon,
         }
         if content.milestone.publish_date:
-            courseData["publish_date"] = (int(content.milestone.publish_date.strftime("%s")) * 1000)
+            trackedDataJsonRow["publish_date"] = (int(content.milestone.publish_date.strftime("%s")) * 1000)
         else:
-            courseData["publish_date"] = None
+            trackedDataJsonRow["publish_date"] = None
 
-        coursesData[i] = courseData
-        courseData = {}
+        trackedDataJson[i] = trackedDataJsonRow
+        trackedDataJsonRow = {}
 
     data ={
-        'milestones': milestones,
+        'milestones': serializers.serialize("json", notTrackedData),
         'dates': dates,
-        'courses': json.dumps(coursesData),
+        'courses': json.dumps(trackedDataJson),
     }
 
     if request.is_ajax():
@@ -1123,7 +1114,6 @@ def course_learner_dashboard_calendar(request):
         return HttpResponse(json.dumps({'html': html}), content_type="application/json")
     else:
         return HttpResponse(status=404)
-
 
 @login_required
 def get_user_progress_json(request, course_id):

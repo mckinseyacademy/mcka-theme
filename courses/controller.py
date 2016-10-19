@@ -815,3 +815,16 @@ def strip_tile_link(link):
         'page_id': page_id,
     }
     return stripped_link
+
+
+def createProgressObjects(progressData, tile_ids, user_id):
+
+    progress_ids = [str(i.milestone.id) for i in progressData]
+    tiles = list(set(tile_ids) - set(progress_ids))
+
+    for tile in tiles:
+        obj, created = LearnerDashboardTileProgress.objects.get_or_create(
+            milestone_id=int(tile),
+            user=user_id,
+            percentage=0,
+        )
