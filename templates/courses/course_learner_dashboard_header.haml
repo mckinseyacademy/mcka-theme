@@ -48,9 +48,9 @@
                   .fa.fa-comments-o.header-link
 
             - if request.resolver_match.url_name == 'course_learner_dashboard'
-              %a.disabled.right{:href => "learnerdashboard", :data-tooltip => "Portal Home"}
+              %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "Portal Home"}
                 .fa.fa-map-marker.header-link
             - else
-              %a.right{:href => "/learnerdashboard", :data-tooltip => "Portal Home", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+              %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "Portal Home", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
                 .fa.fa-map-marker.header-link
 %div.learner-dashboard-logo
