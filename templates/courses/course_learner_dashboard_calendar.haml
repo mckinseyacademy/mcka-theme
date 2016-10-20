@@ -57,7 +57,6 @@
   var dates = {{dates|safe}} ? {{dates|safe}}: [];
   var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
 
-  console.log(milestones);
   var dateList = [];
 
   var mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
@@ -77,7 +76,6 @@
 
   var duplicateRows = 0;
   var addedRowsPerDuplicate = [0, 0, 0, 0, 0];
-  var dataAll = [];
   var addToRow;
 
   var dataIPS = [];
@@ -89,7 +87,31 @@
   var low;
   var high;
 
+  var milestonesProcessed = milestones;
+
+  processDuplicateDates();
+
   processMilestones();
+
+  function processDuplicateDates() {
+
+    for (var j=0 in milestones){
+      milestones[j].addedRows = 0;
+        for ( var z=0 in milestonesProcessed ) {
+          if (milestonesProcessed[z].row == milestones[j].row && milestonesProcessed[z].checked) {
+            if((milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].start) || (milestonesProcessed[z].start >= milestones[j].start && milestonesProcessed[z].end <= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].end && milestonesProcessed[z].end >= milestones[j].end) || ( milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].start )) {
+              milestones[j].addedRows += 1;
+            }
+          }
+        }
+
+        if (milestones[j].addedRows > addedRowsPerDuplicate[milestones[j].row - 1]) {
+          addedRowsPerDuplicate[milestones[j].row - 1] = milestones[j].addedRows;
+        }
+
+        milestonesProcessed[j].checked = true;
+    }
+  }
 
   function processMilestones() {
 
@@ -105,33 +127,10 @@
       if (parseInt(milestones[j].row, 10) > maxRow)
         maxRow = parseInt(milestones[j].row, 10);
 
-      if (milestones[j].label)
-        milestones[j].label = milestones[j].label.substring(0, 16);
+      milestones[j].label = milestones[j].label ? milestones[j].label.substring(0, 16) : milestones[j].label;
 
-      for ( var z=0 in dataAll) {
-        if (dataAll[z].row == milestones[j].row && dataAll[z].isChecked != true) {
-          if((dataAll[z].start <= milestones[j].start && dataAll[z].end >= milestones[j].start) || (dataAll[z].start <= milestones[j].end && dataAll[z].end >= milestones[j].end) || ( dataAll[z].start >= milestones[j].start && dataAll[z].end <= milestones[j].end )) {
-            milestones[j].addedRows = dataAll[z].addedRows + 1;
-            if (milestones[j].addedRows > addedRowsPerDuplicate[milestones[j].row - 1])
-               addedRowsPerDuplicate[milestones[j].row - 1] = milestones[j].addedRows;
- 
-            dataAll[z].isChecked = true;
-          }
-        }
-        else {
-          milestones[j].addedRows = 0;
-        }
-      }
- 
-      if (dataAll.length == 0) {
-        milestones[j].addedRows = 0;
-      }
- 
-      dataAll.push(milestones[j]);
- 
-      addToRow = 0;
-        for (row = 0; row < (milestones[j].row - 1); row++) {
-          addToRow += addedRowsPerDuplicate[row];
+      for (row = 0; row < (milestones[j].row - 1); row ++) {
+        milestones[j].addedRows += addedRowsPerDuplicate[row];
       }
 
       //Tracked Data
@@ -140,7 +139,7 @@
 
         dataDig.push({
           color: calculateColor(milestones[j], timeNow),
-          x: (milestones[j].row - 1 + milestones[j].addedRows + addToRow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
           tile_type: milestones[j].tile_type,
           label: milestones[j].label,
           name: milestones[j].name,
@@ -157,7 +156,7 @@
 
         dataIPS.push({
           color: calculateColor(milestones[j], timeNow),
-          x: (milestones[j].row - 1 + milestones[j].addedRows + addToRow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
           tile_type: milestones[j].tile_type,
           label: milestones[j].label,
           name: milestones[j].name,
@@ -175,7 +174,7 @@
 
         dataCourse.push({
           color: calculateColor(milestones[j], timeNow),
-          x: (milestones[j].row - 1 + milestones[j].addedRows + addToRow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
           tile_type: milestones[j].tile_type,
           label: milestones[j].label,
           name: milestones[j].name,
@@ -192,10 +191,10 @@
       if (milestones[j].tile_type == "1") {
         dataDig.push({
           color: '#66a5b5',
-          x: (milestones[j].row - 1 + milestones[j].addedRows + addToRow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
           tile_type: milestones[j].tile_type,
           label: milestones[j].label,
-          name: milestones[j].title,
+          name: milestones[j].name,
           publish_date: getPublishDate(milestones[j]),
           link: milestones[j].link,
           low: milestones[j].start,
@@ -207,10 +206,10 @@
       if (milestones[j].tile_type == "7") {
         dataDig.push({
           color: '#66a5b5',
-          x: (milestones[j].row - 1 + milestones[j].addedRows + addToRow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
           tile_type: milestones[j].tile_type,
           label: milestones[j].label,
-          name: milestones[j].title,
+          name: milestones[j].name,
           publish_date: getPublishDate(milestones[j]),
           link: milestones[j].link,
           note: milestones[j].note,
@@ -223,10 +222,10 @@
       if (milestones[j].tile_type == "6") {
         dataWeb.push({
           color: '#66a5b5',
-          x: (milestones[j].row - 1 + milestones[j].addedRows + addToRow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
           tile_type: milestones[j].tile_type,
           label: milestones[j].label,
-          name: milestones[j].title,
+          name: milestones[j].name,
           link: milestones[j].link,
           publish_date: getPublishDate(milestones[j]),
           low: milestones[j].start,
