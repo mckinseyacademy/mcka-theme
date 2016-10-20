@@ -67,7 +67,10 @@ var Router = Backbone.Router.extend({
     }
   },
 
-  course_index: function() {
+  course_index: function(course_id) {
+    if (typeof scorm_data == "undefined")
+      scorm_data = {}
+    scorm_data.courseId = course_id;
     var el = $('#home-courses');
     new Apros.views.HomeCourses({el: el}).render();
     if (SCORM_SHELL)
