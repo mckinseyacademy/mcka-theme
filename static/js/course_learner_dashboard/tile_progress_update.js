@@ -2,9 +2,12 @@ $(function(){
 
   var moduleUrl = $.xblock.location.pathname;
 
-  $.xblock.getRuntime().listenTo('xblock-rendered submit', function(event, data) {
-    $(document).ajaxComplete(function() {
-      updateTileProgress();
+  $.xblock.getRuntime().listenTo('xblock-rendered', function(event, data) {
+    updateTileProgress();
+    $(data).find(".input-main").click(function () {
+      $(document).ajaxComplete(function() {
+        updateTileProgress();
+      });
     });
   });
 

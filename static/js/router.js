@@ -70,6 +70,11 @@ var Router = Backbone.Router.extend({
   course_index: function() {
     var el = $('#home-courses');
     new Apros.views.HomeCourses({el: el}).render();
+    if (SCORM_SHELL)
+    {
+      SendGradebookToScormShell();
+      SendProgressToScormShell();
+    }
   },
 
   course_progress: function(course_id) {
