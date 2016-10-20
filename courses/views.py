@@ -1140,4 +1140,18 @@ def get_user_gradebook_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
-    
+
+@login_required
+def get_user_completion_json(request, course_id):
+    grades = {grade.course_id: grade for grade in user_api.get_user_grades(request.user.id)}
+    course_grade = grades.get(course_id, None)
+    if course_grade:
+        data = {"grades": {"course_id":course_grade.course_id, "current_grade":course_grade.current_grade,
+        "proforma_grade":course_grade.proforma_grade, "complete_status":course_grade.complete_status}}
+    else:
+       data = {"grades": None}
+
+    return HttpResponse(
+        json.dumps(data),
+        content_type='application/json'
+    )

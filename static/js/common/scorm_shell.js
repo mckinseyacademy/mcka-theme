@@ -1,9 +1,17 @@
 window.onmessage = function(e){
-    if (e.data == 'is_scorm_shell') {
-        $(document).trigger("scorm_shell_activate");
-        SCORM_SHELL = true;
-        console.log("SCORM shell present");
+    try {
+        var data = JSON.parse(e.data);
+        if (data.type == 'is_scorm_shell') {
+            $(document).trigger("scorm_shell_activate");
+            SCORM_API = data;
+            SCORM_SHELL = true;
+            console.log("SCORM shell present");
+        }
+    } catch (e) {
+        var data = e.data;
     }
+
+    
 };
 
 function SendMessageToSCORMShell(message)
@@ -11,6 +19,7 @@ function SendMessageToSCORMShell(message)
     window.top.postMessage(message, '*');
 }
 SCORM_SHELL = false;
+SCORM_API={};
 console.log("sent scorm shell request");
 SendMessageToSCORMShell('{"type":"detect_scorm_shell"}');
 
@@ -64,6 +73,9 @@ function CheckIfReviewStepVisible()
 
 function SendProgressToScormShell()
 {
+    if (!SCORM_API.progress)
+        return;
+
     var options = {
         url: "/courses/"+scorm_data.courseId+"/progress-json",
         type: "GET",
@@ -87,6 +99,9 @@ function SendProgressToScormShell()
 
 function SendGradebookToScormShell()
 {
+    if (!SCORM_API.score)
+        return;
+
     var options = {
         url: "/courses/"+scorm_data.courseId+"/grades-json",
         type: "GET",
@@ -107,3 +122,30 @@ function SendGradebookToScormShell()
         console.log(data)
     });
 }
+
+function SendCompletionToScormShell()
+{
+    if (!SCORM_API.completion)
+        return;
+
+    var options = {
+        url: "/courses/"+scorm_data.courseId+"/completion-json",
+        type: "GET",
+        dataType: "json",
+        timeout: 5000,
+        beforeSend: function( xhr ) {
+            xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+        }
+    };
+
+    $.ajax(options)
+    .done(function(data) {
+        console.log(data);
+        SendMessageToSCORMShell(JSON.stringify({"type":"data", "completion":data, "course_id": scorm_data.courseId}));
+    })
+    .fail(function(data) {
+        console.log("Ajax failed to fetch data");
+        console.log(data)
+    });
+}
+

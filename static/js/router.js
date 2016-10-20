@@ -77,6 +77,7 @@ var Router = Backbone.Router.extend({
     {
       SendGradebookToScormShell();
       SendProgressToScormShell();
+      SendCompletionToScormShell();
     }
   },
 
