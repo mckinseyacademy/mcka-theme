@@ -97,19 +97,24 @@
 
     for (var j=0 in milestones){
       milestones[j].addedRows = 0;
-        for ( var z=0 in milestonesProcessed ) {
-          if (milestonesProcessed[z].row == milestones[j].row && milestonesProcessed[z].checked) {
-            if((milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].start) || (milestonesProcessed[z].start >= milestones[j].start && milestonesProcessed[z].end <= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].end && milestonesProcessed[z].end >= milestones[j].end) || ( milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].start )) {
+
+      for ( var z=0 in milestonesProcessed ) {
+        if (milestonesProcessed[z].row == milestones[j].row && milestonesProcessed[z].checked) {
+          if((milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].start) || (milestonesProcessed[z].start >= milestones[j].start && milestonesProcessed[z].end <= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].end && milestonesProcessed[z].end >= milestones[j].end)) {
+            milestones[j].addedRows += 1;
+            
+            if(milestones[j].addedRows == milestonesProcessed[z].addedRows) {
               milestones[j].addedRows += 1;
             }
           }
         }
+      }
 
-        if (milestones[j].addedRows > addedRowsPerDuplicate[milestones[j].row - 1]) {
-          addedRowsPerDuplicate[milestones[j].row - 1] = milestones[j].addedRows;
-        }
+      if (milestones[j].addedRows > addedRowsPerDuplicate[milestones[j].row - 1]) {
+        addedRowsPerDuplicate[milestones[j].row - 1] = milestones[j].addedRows;
+      }
 
-        milestonesProcessed[j].checked = true;
+      milestonesProcessed[j].checked = true;
     }
   }
 
