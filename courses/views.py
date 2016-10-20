@@ -1131,8 +1131,8 @@ def get_user_progress_json(request, course_id):
 @login_required
 def get_user_gradebook_json(request, course_id):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
-    if user_grades:
-        data = {"proficiency": proficiency}
+    if proficiency:
+        data = {"proficiency": {"user_grade_value": proficiency.user_grade_value }}
     else:
        data = {"proficiency": None}
     
@@ -1140,3 +1140,4 @@ def get_user_gradebook_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
+    
