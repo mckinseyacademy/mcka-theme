@@ -1078,10 +1078,10 @@ def course_learner_dashboard_calendar(request):
             milestone_id__in=tile_ids
         )
 
-    trackedDataJson = {}
-    trackedDataJsonRow = {}
+    enum = 0
+    milestoneDataJson = {}
     for i, content in enumerate(progressData):
-        trackedDataJsonRow = {
+        milestoneDataJson[i] = {
             "name": content.milestone.title,
             "label": content.milestone.label,
             "link": content.milestone.link,
@@ -1093,19 +1093,28 @@ def course_learner_dashboard_calendar(request):
             "user_progress": content.percentage,
             "cohort_progress": 0,
             "fa_icon": content.milestone.fa_icon,
+            "publish_date": None if content.milestone.publish_date is None else int(content.milestone.publish_date.strftime("%s")) * 1000 ,
         }
-        if content.milestone.publish_date:
-            trackedDataJsonRow["publish_date"] = (int(content.milestone.publish_date.strftime("%s")) * 1000)
-        else:
-            trackedDataJsonRow["publish_date"] = None
 
-        trackedDataJson[i] = trackedDataJsonRow
-        trackedDataJsonRow = {}
+        enum = i
+
+    for i, item in enumerate(notTrackedData):
+        milestoneDataJson[i + enum] = {
+            "name": item.title,
+            "label": item.label,
+            "link": item.link,
+            "start": int(item.start_date.strftime("%s")) * 1000,
+            "end": int(item.end_date.strftime("%s")) * 1000,
+            "row": item.row,
+            "note": item.note,
+            "tile_type": item.tile_type,
+            "fa_icon": item.fa_icon,
+            "publish_date": None if item.publish_date is None else int(item.publish_date.strftime("%s")) * 1000 ,
+        }
 
     data ={
-        'milestones': serializers.serialize("json", notTrackedData),
         'dates': dates,
-        'courses': json.dumps(trackedDataJson),
+        'milestones': json.dumps(milestoneDataJson),
     }
 
     if request.is_ajax():
