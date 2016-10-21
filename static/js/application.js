@@ -312,8 +312,10 @@ $(function(){
         }
       }, 300);
       setTimeout(function(){timeout_waiting=true;}, 10000);
-      SendProgressToScormShell();
+      
+      setTimeout(function(){SendProgressToScormShell();}, 300);
       setTimeout(function(){SendGradebookToScormShell();}, 300);
+      setTimeout(function(){SendCompletionToScormShell();}, 300);
     }
   });
 
