@@ -54,9 +54,8 @@
 
 %script
   var now = new Date();
-  var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
   var dates = {{dates|safe}} ? {{dates|safe}}: [];
-  var courses = {{courses|safe}} ? {{courses|safe}}: [];
+  var milestones = {{milestones|safe}} ? {{milestones|safe}}: [];
 
   var dateList = [];
 
@@ -75,6 +74,10 @@
   var maxDate = dateList[5];
   var maxRow = 2;
 
+  var duplicateRows = 0;
+  var addedRowsPerDuplicate = [0, 0, 0, 0, 0];
+  var addToRow;
+
   var dataIPS = [];
   var dataCourse = [];
   var dataWeb = [];
@@ -84,146 +87,186 @@
   var low;
   var high;
 
+  var milestonesProcessed = milestones;
+
+  processDuplicateDates();
+
   processMilestones();
+
+  function processDuplicateDates() {
+
+    for (var j=0 in milestones){
+      milestones[j].addedRows = 0;
+
+      checkIfOverlap(j);
+
+      if (milestones[j].addedRows > addedRowsPerDuplicate[milestones[j].row - 1]) {
+        addedRowsPerDuplicate[milestones[j].row - 1] = milestones[j].addedRows;
+      }
+
+      milestonesProcessed[j].checked = true;
+    }
+  }
+
+  function checkIfOverlap(index) {
+
+    var addedRowsForMilestone = milestones[index].addedRows;
+
+    for ( var z=0 in milestonesProcessed ) {
+      if (milestonesProcessed[z].row == milestones[index].row && z!=index && milestonesProcessed[z].checked) {
+        if((milestonesProcessed[z].start <= milestones[index].start && milestonesProcessed[z].end >= milestones[index].start) || (milestonesProcessed[z].start >= milestones[index].start && milestonesProcessed[z].end <= milestones[index].end) || (milestonesProcessed[z].start <= milestones[index].start && milestonesProcessed[z].end >= milestones[index].end) || (milestonesProcessed[z].start <= milestones[index].end && milestonesProcessed[z].end >= milestones[index].end)) {
+            if(milestones[index].addedRows == milestonesProcessed[z].addedRows) {
+              milestones[index].addedRows += 1;
+            }
+        }
+      } 
+    }
+
+    if (milestones[index].addedRows != addedRowsForMilestone ) {
+      checkIfOverlap(index);
+    }
+
+    return;
+  }
+
 
   function processMilestones() {
 
     var timeNow = (new Date()).getTime();
 
-    for (var j=0 in courses){
+    for (var j=0 in milestones){
 
-      if (courses[j].start < minDate)
-        minDate = courses[j].start;
-      if (courses[j].end > maxDate)
-        maxDate = courses[j].end;
+      if (milestones[j].start < minDate)
+        minDate = milestones[j].start;
+      if (milestones[j].end > maxDate)
+        maxDate = milestones[j].end;
 
-      if (parseInt(courses[j].row, 10) > maxRow)
-        maxRow = parseInt(courses[j].row, 10);
+      if (parseInt(milestones[j].row, 10) > maxRow)
+        maxRow = parseInt(milestones[j].row, 10);
 
-      if (courses[j].label)
-        courses[j].label = courses[j].label.substring(0, 16);
+      milestones[j].label = milestones[j].label ? milestones[j].label.substring(0, 16) : milestones[j].label;
 
-      if (courses[j].tile_type == "2" || courses[j].tile_type == "3") {
+      for (row = 0; row < (milestones[j].row - 1); row ++) {
+        milestones[j].addedRows += addedRowsPerDuplicate[row];
+      }
+
+      //Tracked Data
+
+      if (milestones[j].tile_type == "2" || milestones[j].tile_type == "3") {
 
         dataDig.push({
-          color: calculateColor(courses[j], timeNow),
-          x: (courses[j].row - 1),
-          tile_type: courses[j].tile_type,
-          label: courses[j].label,
-          name: courses[j].name,
-          link: courses[j].link,
-          publish_date: getPublishDate(courses[j]),
-          user_progress: courses[j].user_progress,
-          low: courses[j].start,
-          high: courses[j].end,
-          fa_icon: courses[j].fa_icon ? unescape('%u' + courses[j].fa_icon.slice(-6,-2)) : '\uf109'
+          color: calculateColor(milestones[j], timeNow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
+          tile_type: milestones[j].tile_type,
+          label: milestones[j].label,
+          name: milestones[j].name,
+          link: milestones[j].link,
+          publish_date: getPublishDate(milestones[j]),
+          user_progress: milestones[j].user_progress,
+          low: milestones[j].start,
+          high: milestones[j].end,
+          fa_icon: milestones[j].fa_icon ? unescape('%u' + milestones[j].fa_icon.slice(-6,-2)) : '\uf109'
         });
       }
 
-      if (courses[j].tile_type == "5") {
+      if (milestones[j].tile_type == "5") {
 
         dataIPS.push({
-          color: calculateColor(courses[j], timeNow),
-          x: (courses[j].row - 1),
-          tile_type: courses[j].tile_type,
-          label: courses[j].label,
-          name: courses[j].name,
-          link: courses[j].link,
-          publish_date: getPublishDate(courses[j]),
-          note: courses[j].note,
-          user_progress: courses[j].user_progress,
-          low: courses[j].start,
-          high: courses[j].end,
-          fa_icon: courses[j].fa_icon ? unescape('%u' + courses[j].fa_icon.slice(-6,-2)) : '\uf0c0'
+          color: calculateColor(milestones[j], timeNow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
+          tile_type: milestones[j].tile_type,
+          label: milestones[j].label,
+          name: milestones[j].name,
+          link: milestones[j].link,
+          publish_date: getPublishDate(milestones[j]),
+          note: milestones[j].note,
+          user_progress: milestones[j].user_progress,
+          low: milestones[j].start,
+          high: milestones[j].end,
+          fa_icon: milestones[j].fa_icon ? unescape('%u' + milestones[j].fa_icon.slice(-6,-2)) : '\uf0c0'
         });
       }
 
-      if (courses[j].tile_type == "4"){
+      if (milestones[j].tile_type == "4"){
 
         dataCourse.push({
-          color: calculateColor(courses[j], timeNow),
-          x: (courses[j].row - 1),
-          tile_type: courses[j].tile_type,
-          label: courses[j].label,
-          name: courses[j].name,
-          link: courses[j].link,
-          publish_date: getPublishDate(courses[j]),
-          user_progress: courses[j].user_progress,
-          low: courses[j].start,
-          high: courses[j].end
+          color: calculateColor(milestones[j], timeNow),
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
+          tile_type: milestones[j].tile_type,
+          label: milestones[j].label,
+          name: milestones[j].name,
+          link: milestones[j].link,
+          publish_date: getPublishDate(milestones[j]),
+          user_progress: milestones[j].user_progress,
+          low: milestones[j].start,
+          high: milestones[j].end
         });
       }
-    }
 
-    for (var i=0 in milestones) {
-      low = (Date.parse(milestones[i]["fields"].start_date)).getTime();
-      high = (Date.parse(milestones[i]["fields"].end_date)).getTime();
+      //Not Tracked Data
 
-      if (low < minDate)
-        minDate = low;
-      if (high > maxDate)
-        maxDate = high;
-
-      if (parseInt(milestones[i]["fields"].row, 10) > maxRow)
-        maxRow = parseInt(milestones[i]["fields"].row, 10);
-
-      if (milestones[i]["fields"].label)
-        milestones[i]["fields"].label = milestones[i]["fields"].label.substring(0, 16);
-
-      if (milestones[i]["fields"].tile_type == "1") {
+      if (milestones[j].tile_type == "1") {
         dataDig.push({
           color: '#66a5b5',
-          x: (milestones[i]["fields"].row - 1),
-          tile_type: milestones[i]["fields"].tile_type,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          publish_date: getPublishDate(milestones[i]["fields"]),
-          link: milestones[i]["fields"].link,
-          low: low,
-          high: high,
-          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf109'
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
+          tile_type: milestones[j].tile_type,
+          label: milestones[j].label,
+          name: milestones[j].name,
+          publish_date: getPublishDate(milestones[j]),
+          link: milestones[j].link,
+          low: milestones[j].start,
+          high: milestones[j].end,
+          fa_icon: milestones[j].fa_icon ? unescape('%u' + milestones[j].fa_icon.slice(-6,-2)) : '\uf109'
         });
       }
 
-      if (milestones[i]["fields"].tile_type == "7") {
+      if (milestones[j].tile_type == "7") {
         dataDig.push({
           color: '#66a5b5',
-          x: (milestones[i]["fields"].row - 1),
-          tile_type: milestones[i]["fields"].tile_type,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          publish_date: getPublishDate(milestones[i]["fields"]),
-          link: milestones[i]["fields"].link,
-          note: milestones[i]["fields"].note,
-          low: low,
-          high: high,
-          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf086'
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
+          tile_type: milestones[j].tile_type,
+          label: milestones[j].label,
+          name: milestones[j].name,
+          publish_date: getPublishDate(milestones[j]),
+          link: milestones[j].link,
+          note: milestones[j].note,
+          low: milestones[j].start,
+          high: milestones[j].end,
+          fa_icon: milestones[j].fa_icon ? unescape('%u' + milestones[j].fa_icon.slice(-6,-2)) : '\uf086'
         });
       }
 
-      if (milestones[i]["fields"].tile_type == "6") {
+      if (milestones[j].tile_type == "6") {
         dataWeb.push({
           color: '#66a5b5',
-          x: (milestones[i]["fields"].row - 1),
-          tile_type: milestones[i]["fields"].tile_type,
-          label: milestones[i]["fields"].label,
-          name: milestones[i]["fields"].title,
-          link: milestones[i]["fields"].link,
-          publish_date: getPublishDate(milestones[i]["fields"]),
-          low: low,
-          high: high,
-          fa_icon: milestones[i]["fields"].fa_icon ? unescape('%u' + milestones[i]["fields"].fa_icon.slice(-6,-2)) : '\uf03d'
+          x: (milestones[j].row - 1 + milestones[j].addedRows),
+          tile_type: milestones[j].tile_type,
+          label: milestones[j].label,
+          name: milestones[j].name,
+          link: milestones[j].link,
+          publish_date: getPublishDate(milestones[j]),
+          low: milestones[j].start,
+          high: milestones[j].end,
+          fa_icon: milestones[j].fa_icon ? unescape('%u' + milestones[j].fa_icon.slice(-6,-2)) : '\uf03d'
         });
       }
-
     }
   }
 
-  for (i=1; i < maxRow; i++) {
-    $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
+  for (i=1; i < (maxRow + 1); i++) {
+    for (j=0; j < addedRowsPerDuplicate[i - 1]; j++) {
+      $( "<li class='first inter-row'></li><li class='second inter-row'></li>" ).insertBefore( ".first.last" );
+      duplicateRows += 1;
+    }
+
+    if (i < maxRow)
+      $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
   }
 
-  $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (190 + (maxRow - 2) * 50) );
+  maxRow += duplicateRows;
+
+  $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (200 + (maxRow - 2) * 50) );
+  $( "#highcharts-container").css( "height", (283 + (maxRow - 5) * 52) );
   $( ".arrow-calendar").css( "margin-top", (50 + (maxRow - 2) * 20) );
 
   function getPublishDate(element){
