@@ -98,16 +98,8 @@
     for (var j=0 in milestones){
       milestones[j].addedRows = 0;
 
-      for ( var z=0 in milestonesProcessed ) {
-        if (milestonesProcessed[z].row == milestones[j].row && milestonesProcessed[z].checked) {
-          if((milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].start) || (milestonesProcessed[z].start >= milestones[j].start && milestonesProcessed[z].end <= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].start && milestonesProcessed[z].end >= milestones[j].end) || (milestonesProcessed[z].start <= milestones[j].end && milestonesProcessed[z].end >= milestones[j].end)) {
-            if(milestones[j].addedRows == milestonesProcessed[i].addedRows) {
-              milestones[j].addedRows += 1;
-            }
-          }
-        }
-      }
       checkIfOverlap(j);
+
       if (milestones[j].addedRows > addedRowsPerDuplicate[milestones[j].row - 1]) {
         addedRowsPerDuplicate[milestones[j].row - 1] = milestones[j].addedRows;
       }
@@ -116,17 +108,25 @@
     }
   }
 
-  function checkIfOverlap(j) {
-    var addedRowsForMilestone = 0;
-    for ( var i=0 in milestonesProcessed ) {
-      if (milestonesProcessed[i].row == milestones[j].row && i!=j && milestonesProcessed[i].checked) {
-        if((milestonesProcessed[i].start <= milestones[j].start && milestonesProcessed[i].end >= milestones[j].start) || (milestonesProcessed[i].start >= milestones[j].start && milestonesProcessed[i].end <= milestones[j].end) || (milestonesProcessed[i].start <= milestones[j].start && milestonesProcessed[i].end >= milestones[j].end) || (milestonesProcessed[i].start <= milestones[j].end && milestonesProcessed[i].end >= milestones[j].end)) {
-            if(milestones[j].addedRows == milestonesProcessed[i].addedRows) {
-              milestones[j].addedRows += 1;
+  function checkIfOverlap(index) {
+
+    var addedRowsForMilestone = milestones[index].addedRows;
+
+    for ( var z=0 in milestonesProcessed ) {
+      if (milestonesProcessed[z].row == milestones[index].row && z!=index && milestonesProcessed[z].checked) {
+        if((milestonesProcessed[z].start <= milestones[index].start && milestonesProcessed[z].end >= milestones[index].start) || (milestonesProcessed[z].start >= milestones[index].start && milestonesProcessed[z].end <= milestones[index].end) || (milestonesProcessed[z].start <= milestones[index].start && milestonesProcessed[z].end >= milestones[index].end) || (milestonesProcessed[z].start <= milestones[index].end && milestonesProcessed[z].end >= milestones[index].end)) {
+            if(milestones[index].addedRows == milestonesProcessed[z].addedRows) {
+              milestones[index].addedRows += 1;
             }
         }
       } 
     }
+
+    if (milestones[index].addedRows != addedRowsForMilestone ) {
+      checkIfOverlap(index);
+    }
+
+    return;
   }
 
 
@@ -265,7 +265,7 @@
 
   maxRow += duplicateRows;
 
-  $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (190 + (maxRow - 2) * 50) );
+  $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (200 + (maxRow - 2) * 50) );
   $( "#highcharts-container").css( "height", (283 + (maxRow - 5) * 52) );
   $( ".arrow-calendar").css( "margin-top", (50 + (maxRow - 2) * 20) );
 
