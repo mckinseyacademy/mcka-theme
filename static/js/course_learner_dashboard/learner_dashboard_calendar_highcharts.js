@@ -20,7 +20,7 @@ $(function() {
         xAxis: {
             categories: [''],
             min: 0,
-            max: (maxRow - 1),
+            max: (maxRow + 2),
             labels: {
                 enabled: false
             },
