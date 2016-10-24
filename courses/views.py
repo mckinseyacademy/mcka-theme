@@ -1099,7 +1099,7 @@ def course_learner_dashboard_calendar(request):
         enum = i
 
     for i, item in enumerate(notTrackedData):
-        milestoneDataJson[i + enum] = {
+        milestoneDataJson[i + enum + 1] = {
             "name": item.title,
             "label": item.label,
             "link": item.link,
