@@ -90,13 +90,13 @@ $(function() {
                 }
 
                 if (this.point.publish_date > now) {
-                    tooltipHTML += '<div style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#868685;">'
+                    tooltipHTML += '<div style="padding: 2px; display: inline-block; height: 55px; margin-top: 5px; font-size: 10pt; color:#868685;">'
                         +this.point.name
                         +'</div>'
                 } else {
                     tooltipHTML += '<a href="'
                         + this.point.link
-                        + '" style="padding: 2px; display: inline-block; height: 65px; margin-top: 5px; font-size: 10pt; color:#3384ca;"'
+                        + '" style="padding: 2px; display: inline-block; height: 55px; margin-top: 5px; font-size: 10pt; color:#3384ca;"'
                         + (this.point.publish_date < now ? ' class="published"' : ' class="not-published"')
                         + (new_tab ? ' target="_blank">':'>')
                         + this.point.name
