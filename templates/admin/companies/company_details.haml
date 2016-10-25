@@ -38,8 +38,9 @@
             %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}> COURSES
           .companyDetailsCompanyInfoButton.large-3.columns
             %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCompanyInfo', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COMPANY INFO
-          .companyDetailsLearnerDashboardsButton.large-3.columns
-            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLearnerDashboards', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> LEARNER DASHBOARDS
+          - if not user.is_company_admin or not user.is_internal_admin
+            .companyDetailsLearnerDashboardsButton.large-3.columns
+              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLearnerDashboards', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> LEARNER DASHBOARDS
           .large-6.columns
         %hr
     #companyDetailsDataWrapper
