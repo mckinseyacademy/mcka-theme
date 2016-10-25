@@ -138,13 +138,27 @@ $(function() {
             },
             positioner: function (labelWidth, labelHeight, point) {
                 var tooltipX, tooltipY;
+
                 if (point.plotX + labelWidth + 115 > chart.plotWidth) {
-                    tooltipX = Math.abs(point.plotX) + chart.plotLeft - labelWidth - 20;
+                    if (point.plotX > chart.plotWidth) {
+                        tooltipX = Math.abs(point.plotX) + chart.plotLeft - labelWidth - 80 - (point.plotX - chart.plotWidth);
+                    } else {
+                        if (point.plotX > 0) {
+                            tooltipX = Math.abs(point.plotX) + chart.plotLeft - labelWidth - 20;
+                        } else {
+                            tooltipX = point.plotX + chart.plotLeft - labelWidth - 20;
+                        }
+                    }
                 } else {
-                    tooltipX = Math.abs(point.plotX) + chart.plotLeft + 20;
+                    if (point.plotX > 0) {
+                        tooltipX = Math.abs(point.plotX) + chart.plotLeft + 60;
+                    }
+                    else {
+                        tooltipX = chart.plotLeft + 80;
+                    }
                 }
 
-                if (point.plotY + labelHeight - 20 > chart.plotHeight) {
+                if (point.plotY + labelHeight - 15 > chart.plotHeight) {
                     tooltipY = point.plotY + chart.plotTop - labelHeight + 30;
                 } else {
                     tooltipY = point.plotY + chart.plotTop - 35;

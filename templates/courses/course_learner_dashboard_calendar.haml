@@ -84,8 +84,8 @@
   var dataDig = [];
   var dataGroup = [];
 
-  var low;
-  var high;
+  var start;
+  var end;
 
   var milestonesProcessed = milestones;
 
@@ -113,11 +113,19 @@
     var addedRowsForMilestone = milestones[index].addedRows;
 
     for ( var z=0 in milestonesProcessed ) {
-      if (milestonesProcessed[z].row == milestones[index].row && z!=index && milestonesProcessed[z].checked) {
-        if((milestonesProcessed[z].start <= milestones[index].start && milestonesProcessed[z].end >= milestones[index].start) || (milestonesProcessed[z].start >= milestones[index].start && milestonesProcessed[z].end <= milestones[index].end) || (milestonesProcessed[z].start <= milestones[index].start && milestonesProcessed[z].end >= milestones[index].end) || (milestonesProcessed[z].start <= milestones[index].end && milestonesProcessed[z].end >= milestones[index].end)) {
-            if(milestones[index].addedRows == milestonesProcessed[z].addedRows) {
-              milestones[index].addedRows += 1;
-            }
+      
+      if (milestonesProcessed[z].row == milestones[index].row && milestonesProcessed[z].checked && milestones[index].addedRows == milestonesProcessed[z].addedRows && z!=index) {
+
+        start = milestones[index].start;
+        end = milestones[index].end;
+
+        if((milestonesProcessed[z].end - milestonesProcessed[z].start) <= 518400000 || ((end - start) <= 518400000 && milestones[index].tile_type != "4")) {
+          start -= 518400000;
+          end += 518400000;
+        }
+
+        if((milestonesProcessed[z].start <= start && milestonesProcessed[z].end >= start) || (milestonesProcessed[z].start >= start && milestonesProcessed[z].end <= end) || (milestonesProcessed[z].start <= start && milestonesProcessed[z].end >= end) || (milestonesProcessed[z].start <= end && milestonesProcessed[z].end >= end)) {
+          milestones[index].addedRows += 1;
         }
       } 
     }
