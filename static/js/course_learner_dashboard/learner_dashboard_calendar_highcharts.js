@@ -1,12 +1,6 @@
 $(function() {
     var chart;
 
-    Highcharts.setOptions({
-        global: {
-            useUTC : false
-        }
-    });
-
     var chartingOptions = {
         chart: {
             type: 'columnrange',
@@ -274,5 +268,6 @@ $(function() {
             }
         }]
     };
+
     chart = $('#highcharts-container').highcharts(chartingOptions).highcharts();
 });
