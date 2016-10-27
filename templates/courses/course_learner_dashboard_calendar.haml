@@ -158,8 +158,6 @@
         milestones[j].addedRows += addedRowsPerDuplicate[row];
       }
 
-      //Tracked Data
-
       if (milestones[j].tile_type == "2" || milestones[j].tile_type == "3") {
 
         dataDig.push({
@@ -210,8 +208,6 @@
           high: milestones[j].end
         });
       }
-
-      //Not Tracked Data
 
       if (milestones[j].tile_type == "1") {
         dataDig.push({
