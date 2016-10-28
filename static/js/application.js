@@ -302,18 +302,27 @@ $(function(){
       var timeout_waiting = false;
       var waiting_review = setInterval(function(){
         if (timeout_waiting)
-          clearInterval(waiting_review)
+          clearInterval(waiting_review);
 
         var data = ParseReviewStep();
         if (data)
         {
-          clearInterval(waiting_review)
+          clearInterval(waiting_review);
           SendMessageToSCORMShell(JSON.stringify(data));
         }
       }, 300);
       setTimeout(function(){timeout_waiting=true;}, 10000);
-      
-      setTimeout(function(){SendProgressToScormShell();}, 300);
+      var counter = 0;
+      var progress_tracker = setInterval(function()
+        {
+          counter++;
+
+          if (counter > 3)
+            clearInterval(progress_tracker);
+
+          SendProgressToScormShell();
+
+        }, 700);
       setTimeout(function(){SendGradebookToScormShell();}, 300);
       setTimeout(function(){SendCompletionToScormShell();}, 300);
     }

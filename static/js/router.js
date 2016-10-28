@@ -73,6 +73,7 @@ var Router = Backbone.Router.extend({
     scorm_data.courseId = course_id;
     var el = $('#home-courses');
     new Apros.views.HomeCourses({el: el}).render();
+    COURSE_MAIN_PAGE = true;
     if (SCORM_SHELL)
     {
       SendGradebookToScormShell();

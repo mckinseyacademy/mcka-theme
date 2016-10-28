@@ -2,10 +2,10 @@ window.onmessage = function(e){
     try {
         var data = JSON.parse(e.data);
         if (data.type == 'is_scorm_shell') {
-            $(document).trigger("scorm_shell_activate");
             SCORM_API = data;
             SCORM_SHELL = true;
             console.log("SCORM shell present");
+            $(document).trigger("scorm_shell_activate");
         }
     } catch (e) {
         var data = e.data;
@@ -18,10 +18,25 @@ function SendMessageToSCORMShell(message)
 {
     window.top.postMessage(message, '*');
 }
+
 SCORM_SHELL = false;
 SCORM_API={};
 console.log("sent scorm shell request");
 SendMessageToSCORMShell('{"type":"detect_scorm_shell"}');
+
+if (typeof COURSE_MAIN_PAGE === "undefined")
+    COURSE_MAIN_PAGE = false;
+
+$(document).on("scorm_shell_activate", function()
+{
+    if (COURSE_MAIN_PAGE && SCORM_SHELL)
+    {
+        SendGradebookToScormShell();
+        SendProgressToScormShell();
+        SendCompletionToScormShell();
+    }
+});
+
 
 function SendScormAssigmentRelevantData()
 {
