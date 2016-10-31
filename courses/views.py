@@ -213,7 +213,6 @@ def _render_group_work(request, course, project_group, group_project, ld=False):
     notify_group_on_submission_url = "/"
     if course and project_group:
         notify_group_on_submission_url = reverse('notify_group_on_submission', args=[course.id, project_group.id])
-
     data = {
         "lesson_content_parent_id": "course-group-work",
         "vertical_usage_id": vertical_usage_id,
@@ -235,13 +234,6 @@ def _render_group_work(request, course, project_group, group_project, ld=False):
         data['select_stage'] = select_stage
 
     if ld:
-        if 'learner_dashboard_id' not in request.session:
-            set_learner_dashboard_in_session(request, learner_dashboard_id)
-
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-        calendar_enabled = True if calendar_items else False
-        data['calendar_enabled'] = calendar_enabled
-
         return render(request, 'courses/course_group_work_ld.haml', data)
     else:
         return render(request, 'courses/course_group_work.haml', data)
@@ -322,7 +314,7 @@ def _course_discussion_data(request, course_id):
         "lms_sub_domain": lms_sub_domain,
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
-        "mcka_ta": mcka_ta,
+        "mcka_ta": mcka_ta
     }
 
 @login_required
@@ -330,14 +322,6 @@ def _course_discussion_data(request, course_id):
 def course_discussion_learner_dashboard(request, course_id):
 
     data = _course_discussion_data(request, course_id)
-
-    if 'learner_dashboard_id' not in request.session:
-        set_learner_dashboard_in_session(request, learner_dashboard_id)
-
-    calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-    calendar_enabled = True if calendar_items else False
-    data["calendar_enabled"] = calendar_enabled
-
     return render(request, 'courses/course_discussion_ld.haml', data)
 
 @login_required
@@ -595,16 +579,9 @@ def course_resources(request, course_id):
 @login_required
 @check_user_course_access
 def course_resources_learner_dashboard(request, course_id):
-    if 'learner_dashboard_id' not in request.session:
-        set_learner_dashboard_in_session(request, learner_dashboard_id)
-
-    calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-    calendar_enabled = True if calendar_items else False
-
     data = {
         "resources": load_static_tabs(course_id, name="resources"),
-        "course_id": course_id,
-        'calendar_enabled': calendar_enabled
+        "course_id": course_id
     }
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
 
@@ -664,14 +641,6 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
             return HttpResponse(status=204)
 
     if tile_type:
-
-        if 'learner_dashboard_id' not in request.session:
-            set_learner_dashboard_in_session(request, learner_dashboard_id)
-
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-        calendar_enabled = True if calendar_items else False
-        data["calendar_enabled"] = calendar_enabled
-
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
         return render(request, 'courses/course_lessons.haml', data)
