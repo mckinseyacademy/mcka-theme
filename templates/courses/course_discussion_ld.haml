@@ -1,4 +1,4 @@
-- extends "courses/course_navigation.haml"
+- extends "courses/course_navigation_ld.haml"
 - load staticfiles
 
 - block page_title
@@ -10,6 +10,8 @@
   - include 'courses/course_learner_dashboard_header.haml'
 
 - block current_content
+  %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
   - include 'courses/course_learner_dashboard_branding.haml'
   #course-discussion
     - if not has_course_discussion
@@ -25,6 +27,8 @@
   - include 'footer_ld.haml'
   
 - block js_snippets
+  %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
+  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
   :javascript
     window.onload = (function(){
