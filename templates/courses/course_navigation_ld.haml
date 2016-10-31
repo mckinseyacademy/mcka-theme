@@ -1,4 +1,5 @@
 - extends "courses/course_main.haml"
+- load staticfiles
 
 - block page_title
   %title
@@ -9,6 +10,7 @@
     = course.current_lesson.name
 
 - block content
+
   #replace-calendar
   %article.row
     .medium-10.medium-centered.columns.course-page
