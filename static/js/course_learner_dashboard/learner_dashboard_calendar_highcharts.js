@@ -144,11 +144,14 @@ $(function() {
                         }
                     }
                 } else {
-                    if (point.plotX > 0) {
-                        tooltipX = Math.abs(point.plotX) + chart.plotLeft + 60;
+                    if (point.plotX < 0) {
+                        tooltipX = chart.plotLeft + 80;
+                    }
+                    else if (point.plotX < 100) {
+                        tooltipX = Math.abs(point.plotX) + chart.plotLeft + 70;
                     }
                     else {
-                        tooltipX = chart.plotLeft + 80;
+                        tooltipX = Math.abs(point.plotX) + chart.plotLeft;
                     }
                 }
 
