@@ -4,14 +4,12 @@ window.onmessage = function(e){
         if (data.type == 'is_scorm_shell') {
             SCORM_API = data;
             SCORM_SHELL = true;
-            console.log("SCORM shell present");
             $(document).trigger("scorm_shell_activate");
+            console.log("SCORM shell present");
         }
     } catch (e) {
         var data = e.data;
     }
-
-    
 };
 
 function SendMessageToSCORMShell(message)
@@ -21,7 +19,6 @@ function SendMessageToSCORMShell(message)
 
 SCORM_SHELL = false;
 SCORM_API={};
-console.log("sent scorm shell request");
 SendMessageToSCORMShell('{"type":"detect_scorm_shell"}');
 
 if (typeof COURSE_MAIN_PAGE === "undefined")
@@ -34,6 +31,7 @@ $(document).on("scorm_shell_activate", function()
         SendGradebookToScormShell();
         SendProgressToScormShell();
         SendCompletionToScormShell();
+        SendFullGradebookToScormShell();
     }
 });
 
@@ -157,6 +155,32 @@ function SendCompletionToScormShell()
     .done(function(data) {
         console.log(data);
         SendMessageToSCORMShell(JSON.stringify({"type":"data", "completion":data, "course_id": scorm_data.courseId}));
+    })
+    .fail(function(data) {
+        console.log("Ajax failed to fetch data");
+        console.log(data)
+    });
+}
+
+function SendFullGradebookToScormShell()
+{
+    if (!SCORM_API.score)
+        return;
+
+    var options = {
+        url: "/courses/"+scorm_data.courseId+"/gradebook-json",
+        type: "GET",
+        dataType: "json",
+        timeout: 5000,
+        beforeSend: function( xhr ) {
+            xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
+        }
+    };
+
+    $.ajax(options)
+    .done(function(data) {
+        console.log(data);
+        SendMessageToSCORMShell(JSON.stringify({"type":"data", "full_gradebook":data, "course_id": scorm_data.courseId}));
     })
     .fail(function(data) {
         console.log("Ajax failed to fetch data");
