@@ -134,7 +134,7 @@ $(function() {
                 var tooltipX, tooltipY;
 
                 if (point.plotX + labelWidth + 115 > chart.plotWidth) {
-                    if (point.plotX > chart.plotWidth) {
+                    if (point.plotX + 50 > chart.plotWidth) {
                         tooltipX = Math.abs(point.plotX) + chart.plotLeft - labelWidth - 80 - (point.plotX - chart.plotWidth);
                     } else {
                         if (point.plotX > 0) {
