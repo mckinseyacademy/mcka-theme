@@ -237,9 +237,10 @@ def _render_group_work(request, course, project_group, group_project, ld=False):
         if 'learner_dashboard_id' not in request.session:
             set_learner_dashboard_in_session(request, learner_dashboard_id)
 
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-        calendar_enabled = True if calendar_items else False
-        data['calendar_enabled'] = calendar_enabled
+        if course.id == request.session['course_id']: 
+            calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
+            calendar_enabled = True if calendar_items else False
+            data['calendar_enabled'] = calendar_enabled
 
         return render(request, 'courses/course_group_work_ld.haml', data)
     else:
@@ -333,9 +334,11 @@ def course_discussion_learner_dashboard(request, course_id):
     if 'learner_dashboard_id' not in request.session:
         set_learner_dashboard_in_session(request, learner_dashboard_id)
 
-    calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-    calendar_enabled = True if calendar_items else False
-    data["calendar_enabled"] = calendar_enabled
+    if course_id == request.session['course_id']:
+        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
+        calendar_enabled = True if calendar_items else False
+        data["calendar_enabled"] = calendar_enabled
+
     return render(request, 'courses/course_discussion_ld.haml', data)
 
 @login_required
@@ -596,8 +599,10 @@ def course_resources_learner_dashboard(request, course_id):
     if 'learner_dashboard_id' not in request.session:
         set_learner_dashboard_in_session(request, learner_dashboard_id)
 
-    calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-    calendar_enabled = True if calendar_items else False
+    calendar_enabled = False
+    if course_id == request.session['course_id']:
+        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
+        calendar_enabled = True if calendar_items else False
 
     data = {
         "resources": load_static_tabs(course_id, name="resources"),
@@ -665,9 +670,10 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         if 'learner_dashboard_id' not in request.session:
             set_learner_dashboard_in_session(request, learner_dashboard_id)
 
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-        calendar_enabled = True if calendar_items else False
-        data["calendar_enabled"] = calendar_enabled
+        if course_id == request.session['course_id']:
+            calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
+            calendar_enabled = True if calendar_items else False
+            data["calendar_enabled"] = calendar_enabled
 
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
