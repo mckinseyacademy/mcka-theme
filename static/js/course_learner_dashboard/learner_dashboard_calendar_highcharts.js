@@ -14,7 +14,7 @@ $(function() {
         xAxis: {
             categories: [''],
             min: 0,
-            max: (maxRow + 2),
+            max: (totalRows+2),
             labels: {
                 enabled: false
             },

@@ -1121,7 +1121,7 @@ def course_learner_dashboard_calendar(request):
             "link": content.milestone.link,
             "start": int(content.milestone.start_date.strftime("%s")) * 1000,
             "end": int(content.milestone.end_date.strftime("%s")) * 1000,
-            "row": content.milestone.row,
+            "row": int(content.milestone.row),
             "note": content.milestone.note,
             "tile_type": content.milestone.tile_type,
             "user_progress": content.percentage,
@@ -1139,7 +1139,7 @@ def course_learner_dashboard_calendar(request):
             "link": item.link,
             "start": int(item.start_date.strftime("%s")) * 1000,
             "end": int(item.end_date.strftime("%s")) * 1000,
-            "row": item.row,
+            "row": int(item.row),
             "note": item.note,
             "tile_type": item.tile_type,
             "fa_icon": item.fa_icon,
@@ -1157,7 +1157,7 @@ def course_learner_dashboard_calendar(request):
         return HttpResponse(json.dumps({'html': html}), content_type="application/json")
     else:
         return HttpResponse(status=404)
-
+ 
 @login_required
 def get_user_progress_json(request, course_id):
     user_progress = course_api.get_course_metrics_completions(course_id=course_id, user_id = request.user.id, skipleaders = True)
