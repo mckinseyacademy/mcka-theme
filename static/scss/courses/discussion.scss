@@ -1,5 +1,15 @@
 /* See ../lesson-content/discussion.scss for rules shared with lession discussion */
 
+header .course-name {
+  line-height: 14px !important;
+  margin: 4px 0 !important;
+}
+
+header .course-tabs li {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
 #course-discussion {
   .discussion-course {
     margin-top: 10px;
