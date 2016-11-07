@@ -107,13 +107,24 @@ $(function() {
                     case '2' :
                     case '3' :
                     case '4' :
-                        tooltipHTML += "Your progress: " + this.point.user_progress + "%" + '</br> </div>';
+                        if (this.point.track_progress){
+                            tooltipHTML += "Your progress: " + this.point.user_progress + "%" + '</br> </div>';
+                        } else {
+                            tooltipHTML += '</div>';
+                        }
                         return tooltipHTML;
                         break;
                     case '5' :
                         tooltipHTML += (this.point.note ? this.point.note + "</br>" : "")
                             + (this.point.user_progress == 100 ? "Complete" :"Incomplete")
                             + '</div>';
+                        if (this.point.track_progress){
+                            tooltipHTML += '</br>'
+                                + (this.point.user_progress == 100 ? "Complete" :"Incomplete")
+                                + '</div>';
+                        } else {
+                            tooltipHTML += '</div>';
+                        }
                         return tooltipHTML;
                         break;
                     case '6' :

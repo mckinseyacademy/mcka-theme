@@ -229,6 +229,11 @@
     var inProgress = "#b6d332";
     var complete = "#629b2b";
     var incomplete = "#cd202c";
+    var notTracked = "#66a5b5";
+
+    if (!element.track_progress){
+      return notTracked;
+    }
 
     switch(element.tile_type) {
       case '3':
@@ -290,7 +295,8 @@
         user_progress: element.user_progress,
         low: element.start,
         high: element.end,
-        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf109'
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf109',
+        track_progress: element.track_progress
       });
     }
 
@@ -308,7 +314,8 @@
         user_progress: element.user_progress,
         low: element.start,
         high: element.end,
-        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf0c0'
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf0c0',
+        track_progress: element.track_progress
       });
     }
 
@@ -324,7 +331,8 @@
         publish_date: getPublishDate(element),
         user_progress: element.user_progress,
         low: element.start,
-        high: element.end
+        high: element.end,
+        track_progress: element.track_progress
       });
     }
 
@@ -339,7 +347,8 @@
         link: element.link,
         low: element.start,
         high: element.end,
-        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf109'
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf109',
+        track_progress: element.track_progress
       });
     }
 
@@ -355,7 +364,8 @@
         note: element.note,
         low: element.start,
         high: element.end,
-        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf086'
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf086',
+        track_progress: element.track_progress
       });
     }
 
@@ -370,7 +380,8 @@
         publish_date: getPublishDate(element),
         low: element.start,
         high: element.end,
-        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf03d'
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf03d',
+        track_progress: element.track_progress
       });
     }
   }
