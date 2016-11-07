@@ -303,6 +303,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
 	class Meta:
 		model = LearnerDashboardTile
 		fields = [
+            'track_progress',
             'label',
             'title',
             'note',
