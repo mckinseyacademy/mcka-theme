@@ -97,7 +97,8 @@ $(function() {
                         + '</a>';
                 }
 
-                tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">';
+                tooltipHTML += '<div style="padding: 2px; font-size: 7pt; font-style: italic; color:#868685">'
+                            + (this.point.note ? this.point.note + "</br>" : "");
 
                 switch (this.point.tile_type) {
                     case '1' :
@@ -115,8 +116,6 @@ $(function() {
                         return tooltipHTML;
                         break;
                     case '5' :
-                        tooltipHTML += (this.point.note ? this.point.note + "</br>" : "")
-                            + Highcharts.dateFormat('%b %e, %Y', this.point.low);
                         if (this.point.track_progress){
                             tooltipHTML += '</br>'
                                 + (this.point.user_progress == 100 ? "Complete" :"Incomplete")
@@ -133,7 +132,7 @@ $(function() {
                             + '</div>';
                         return tooltipHTML;
                     case '7' :
-                        tooltipHTML += this.point.note + '</br> </div>';
+                        tooltipHTML += '</br> </div>';
                         return tooltipHTML;
                         break;
                 }

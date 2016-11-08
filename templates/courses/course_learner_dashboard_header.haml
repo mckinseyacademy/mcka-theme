@@ -23,15 +23,13 @@
       .row
         .large-12.columns.header-padding
           %div.right.header-path
-            - if calendar_enabled
-              %a.right{:href => "#", :data-tooltip => "Calendar", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
-                %i#open-calendar.fa.fa-calendar.header-link
             - if request.resolver_match.url_name == 'course_resources_learner_dashboard'
                 %a.disabled.right{:href => "/learnerdashboard/courses/#{course_id}/resources", :data-tooltip => "Resources"}
                   .fa.fa-file-text-o.header-link
             - else
               %a.right{:href => "/learnerdashboard/courses/#{course_id}/resources", :data-tooltip => "Resources", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
                 .fa.fa-file-text-o.header-link
+
             - if feature_flags.group_work
               - if request.resolver_match.url_name == 'user_course_group_work_learner_dashboard'
                 %a.disabled.right{:href => "/learnerdashboard/courses/#{course_id}/group_work", :data-tooltip => "Miniboard"}
@@ -39,6 +37,7 @@
               - else
                 %a.right{:href => "/learnerdashboard/courses/#{course_id}/group_work", :data-tooltip => "Miniboard", :style =>  "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
                   .mk-icon-groupworknav.header-link
+
             - if feature_flags.discussions
               - if request.resolver_match.url_name == 'course_discussion_learner_dashboard'
                 %a.disabled.right{:href => "/learnerdashboard/courses/#{course_id}/discussion", :data-tooltip => "Discussion"}
@@ -53,4 +52,14 @@
             - else
               %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "Portal Home", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
                 .fa.fa-map-marker.header-link
+
+            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
+              .fa.fa-th-large.header-link{style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+            #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
+              - include "courses/content_page/program_menu.haml"
+
+            - if calendar_enabled
+              %a.right{:href => "#", :data-tooltip => "Calendar", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %i#open-calendar.fa.fa-calendar.header-link
+
 %div.learner-dashboard-logo

@@ -283,7 +283,7 @@
             .legend-list {
                 float: left;
                 margin: 10px 15px 0 0;
-                font-size: 8px;
+                font-size: 10px;
 
                 li {
                     font-family: 'Open Sans';
@@ -372,4 +372,82 @@ svg text {
 .not-published {
     cursor: default;
     opacity: 0.4;
+}
+
+// Program menu on learner dashboard
+.program-menu-content {
+  color: $mckinsey-blue;
+  display: none;
+  &.open{
+    display: block;
+  }
+
+  position: absolute !important;
+  left: 0 !important;
+  top: $program-bar-height !important;
+  left: auto !important;
+  z-index: 10000;
+  width: 275px;
+  background-color: $pure-white;
+  @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
+
+  .program-title {
+    margin: 12px 20px 0;
+    text-transform: uppercase;
+    @include font-spec(10, bold);
+
+    &:after{
+      content: ':';
+    }
+  }
+
+  .courses {
+    max-height: rem-calc(350);
+    overflow: auto;
+  }
+
+  a.course-name, .course-name {
+    @include font-spec(12, bold);
+    padding: 5px 0;
+    color: $pure-black !important;
+    display: block;
+    line-height: rem-calc(14);
+
+    &.unavailable {
+      color: $mckinsey-dark-grey !important;
+    }
+
+    &.current {
+      color: $mckinsey-orange !important;
+    }
+  }
+
+  a.course-name {
+    &:hover{
+      color: $mckinsey-academy-blue-gray !important;
+    }
+  }
+
+  .status {
+    @include font-spec(10, semibold);
+    font-style: italic;
+    color: $mckinsey-dark-grey;
+
+    &.complete{
+      color: $mckinsey-green;
+    }
+  }
+
+  ul {
+    margin: 0 12px;
+    list-style: none;
+    li{
+      padding: 0 8px 8px;
+      border-top: 1px solid $almost-white;
+      &:first-child{
+        border-top: none;
+        margin-top: 0;
+      }
+    }
+  }
 }
