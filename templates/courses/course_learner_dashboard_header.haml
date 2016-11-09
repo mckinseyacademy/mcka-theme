@@ -53,13 +53,13 @@
               %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "Portal Home", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
                 .fa.fa-map-marker.header-link
 
-            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
-              .fa.fa-th-large.header-link{style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program', style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+              .fa.fa-th-large.header-link
             #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
               - include "courses/content_page/program_menu.haml"
 
             - if calendar_enabled
-              %a.right{:href => "#", :data-tooltip => "Calendar", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+              %a.right{:href => "#", :data-tooltip => "Calendar", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
                 %i#open-calendar.fa.fa-calendar.header-link
 
 %div.learner-dashboard-logo
