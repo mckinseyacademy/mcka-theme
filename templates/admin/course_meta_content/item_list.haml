@@ -85,3 +85,9 @@
           - else
             %input#cohort_map{type: 'checkbox', name: 'learner_dashboard'}
           %label{for: 'learner_dashboard'} Learner Dashboard
+        %li
+          - if feature_flags.resources
+            %input#cohort_map{type: 'checkbox', name: 'resources', checked: None}
+          - else
+            %input#cohort_map{type: 'checkbox', name: 'resources'}
+          %label{for: 'resources'} Resources

@@ -47,6 +47,7 @@ class FeatureFlags(db_models.Model):
     progress_page = db_models.BooleanField(default=True)
     notifications = db_models.BooleanField(default=True)
     branding = db_models.BooleanField(default=True)
+    resources = db_models.BooleanField(default=True)
 
     def as_json(self):
         return dict(
@@ -58,5 +59,6 @@ class FeatureFlags(db_models.Model):
             learner_dashboard = self.learner_dashboard,
             progress_page = self.progress_page,
             notifications = self.notifications,
-            branding = self.branding
+            branding = self.branding,
+            resources = self.resources
         )

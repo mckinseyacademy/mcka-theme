@@ -1008,6 +1008,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.progress_page = request.POST.get('progress_page', None) == 'on'
     feature_flags.notifications = request.POST.get('notifications', None) == 'on'
     feature_flags.branding = request.POST.get('branding', None) == 'on'
+    feature_flags.resources = request.POST.get('resources', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(
