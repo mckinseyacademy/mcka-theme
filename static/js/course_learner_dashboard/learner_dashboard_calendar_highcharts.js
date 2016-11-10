@@ -126,13 +126,8 @@ $(function() {
                         return tooltipHTML;
                         break;
                     case '6' :
-                        tooltipHTML += Highcharts.dateFormat('%b %e, %Y', this.point.low)
-                            + '</br>'
-                            + Highcharts.dateFormat('%H:%M', this.point.low)
-                            + '</div>';
-                        return tooltipHTML;
                     case '7' :
-                        tooltipHTML += '</br> </div>';
+                        tooltipHTML += '</div>';
                         return tooltipHTML;
                         break;
                 }
