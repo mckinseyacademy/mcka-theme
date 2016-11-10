@@ -113,6 +113,10 @@ def get_current_program_for_user(request):
             if len(programs) > 0:
                 program = Program.fetch(programs[0].id)
 
+            # if user goes to LD after the first login (without accessing any course)
+            if not program:
+                program = Program.no_program()
+
         if program:
             _load_intersecting_program_courses(program, user_api.get_user_courses(request.user.id))
             set_current_program_for_user(request, program)
