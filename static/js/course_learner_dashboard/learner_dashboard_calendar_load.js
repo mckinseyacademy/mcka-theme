@@ -1,5 +1,7 @@
 var opened = false;
 
+var learnerdashboardId = ($('#replace-calendar').data("learner-dashboard-id"));
+
 $('#open-calendar').click(function() {
   if (!opened) {
 
@@ -10,7 +12,7 @@ $('#open-calendar').click(function() {
     $.ajax({
       headers: headers,
       type: 'GET',
-      url: '/learnerdashboard/calendar',
+      url: '/learnerdashboard/' + learnerdashboardId + '/calendar',
       success : function(data) {
         opened = true;
         $('#replace-calendar').html(data.html);
@@ -31,7 +33,7 @@ function nextPrevCalendar(param) {
   $.ajax({
     headers: headers,
     type: 'GET',
-    url: '/learnerdashboard/calendar',
+    url: 'learnerdashboard/' + learnerdashboardId + '/calendar',
     data: param,
     success : function(data) {
       opened = true;

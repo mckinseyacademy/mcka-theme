@@ -294,32 +294,6 @@ def standard_data(request):
 
         organizations = user_api.get_user_organizations(request.user.id)
 
-        #### Check if any of the courses have learner dashboard On, to make url links to those LDs
-        if program and program.courses:
-            organization_ids = [o.id for o in organizations]
-            course_ids = []
-
-            #### Breaks if we use for in program.courses
-            for index in range(0, len(program.courses)):
-                course_ids.append(program.courses[index].id)
-
-            features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
-        
-            if len(features) > 0:
-                features_learnerdashboard_ids = [f.course_id for f in features]
-
-                learner_dashboards = LearnerDashboard.objects.filter(
-                    course_id__in=features_learnerdashboard_ids, client_id__in=organization_ids
-                )
-
-                if len(learner_dashboards) > 0:
-                    for index in range(0, len(program.courses)):
-                        learner_dashboard = [ld for ld in learner_dashboards if ld.course_id == program.courses[index].id]
-                        if learner_dashboard:
-                            program.courses[index].learner_dashboard_id = learner_dashboard[0].id
-                            program.courses[index].existing_ld = True
-        ####
-
         if len(organizations) > 0:
             organization = organizations[0]
             try:
@@ -362,27 +336,3 @@ def standard_data(request):
     request.user_program_data = data
 
     return data
-
-def get_current_learner_dashboard_course(request):
-
-    courses = user_api.get_user_courses(request.user.id)
-    course_ids = [c.id for c in courses if c.is_active and c.started]
-
-    organizations = user_api.get_user_organizations(request.user.id)
-    if len(organizations) > 0:
-        organization = organizations[0]
-    else:
-        return None
-    request.session['client_display_name'] = organization.display_name
-    features = FeatureFlags.objects.filter(course_id__in=course_ids, learner_dashboard='True')
-
-    if len(features) > 0:
-        for feature in features:
-            try:
-                learner_dashboard = LearnerDashboard.objects.get(course_id=feature.course_id, client_id=organization.id)
-                return learner_dashboard
-            except:
-                pass
-        return None
-    else:
-        return None

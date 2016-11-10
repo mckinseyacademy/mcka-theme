@@ -2,20 +2,12 @@
   - for program_course in courses
     %li
       - if program_course.ended
-        - if program_course.existing_ld
-          %a.course-name{href: "/learnerdashboard/#{program_course.learner_dashboard_id}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
-            = program_course.name
-        - else
-          %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
-            = program_course.name
+        %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
+          = program_course.name
         .status= _("Archived")
       - elif program_course.started
-        - if program_course.existing_ld
-          %a.course-name{href: "/learnerdashboard/#{program_course.learner_dashboard_id}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
-            = program_course.name
-        - else
-          %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
-            = program_course.name
+        %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
+          = program_course.name
         .status= _("In Progress")
       - else
         .course-name.unavailable{'data-numdays': '#{program_course.days_till_start}'}

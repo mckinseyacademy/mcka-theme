@@ -9,7 +9,7 @@
     = course.current_lesson.name
 
 - block content
-  #replace-calendar
+  #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
   %article.row
     .medium-10.medium-centered.columns.course-page
       - block current_content

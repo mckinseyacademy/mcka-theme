@@ -30,7 +30,6 @@ from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program, LearnerDashboard
 from admin.controller import load_course
-from accounts.controller import set_learner_dashboard_in_session
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
     CURRENT_PROGRAM, set_current_course_for_user
@@ -145,13 +144,6 @@ def _get_redirect_to_current_course(request):
             future_start_date = is_future_start(program.start_date)
 
     if course_id and not future_start_date:
-        if settings.LEARNER_DASHBOARD_ENABLED:
-            set_learner_dashboard_in_session(request)
-            learner_dashboard_id = request.session['learner_dashboard_id']
-            if learner_dashboard_id is not None:
-                return reverse('course_learner_dashboard')
-            else:
-                return reverse('course_landing_page', kwargs=dict(course_id=course_id))
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
     return reverse('protected_home')
 
@@ -737,11 +729,6 @@ def reset_complete(request,
 
 def home(request):
     ''' show me the home page '''
-
-    if 'learner_dashboard_id' in request.session:
-        if request.session['learner_dashboard_id'] is not None:
-            redirect_url = '/learnerdashboard'
-            return HttpResponseRedirect(redirect_url)
 
     programData = standard_data(request)
     program = programData.get('program')

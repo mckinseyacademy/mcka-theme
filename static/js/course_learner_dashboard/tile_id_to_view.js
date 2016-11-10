@@ -1,3 +1,5 @@
+var learnerdashboardId = ($('#replace-calendar').data("learner-dashboard-id"));
+
 $('.last_visited').click(function() {
 
   if ($(this).closest('a').attr('target') == '_blank') {
@@ -12,6 +14,6 @@ $('.last_visited').click(function() {
     dataType: 'json',
     data: {tile_id: $(this).data('tile-id')},
     type: 'POST',
-    url: '/learnerdashboard/bookmark_tile'
+    url: '/learnerdashboard/bookmark_tile/' + learnerdashboardId + '/'
   });
 });

@@ -2,10 +2,7 @@
   .row.collapse.main-nav
     .large-12.columns
       - block header_home
-        - if learner_dashboard_flag
-          %a.logo{href: "/learnerdashboard"}
-        - else
-          %a.logo{href: "/"}
+        %a.logo{href: "/"}
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu
         %nav{role: 'navigation'}

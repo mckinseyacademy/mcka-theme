@@ -17,7 +17,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core import serializers
 from django.template import loader, RequestContext
 
-from accounts.controller import set_learner_dashboard_in_session
 from admin.controller import load_course
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
@@ -62,6 +61,11 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
+    learner_dashboard = get_learner_dashboard(request, course_id)
+    if learner_dashboard:
+        redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
+        return HttpResponseRedirect(redirect_url)
+
     set_current_course_for_user(request, course_id)
     static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
@@ -88,6 +92,28 @@ def course_landing_page(request, course_id):
         "graded_items_count": graded_items_count,
     }
     return render(request, 'courses/course_main.haml', data)
+
+def get_learner_dashboard(request, course_id):
+
+    learner_dashboard = None
+
+    if settings.LEARNER_DASHBOARD_ENABLED:
+        try:
+            feature_flags = FeatureFlags.objects.get(course_id=course_id)
+            learner_dashboard_flag = feature_flags.learner_dashboard
+        except:
+            learner_dashboard_flag = None
+
+        if learner_dashboard_flag:
+            organizations = user_api.get_user_organizations(request.user.id)
+            if len(organizations) > 0:
+                organization = organizations[0]
+                request.session['client_display_name'] = organization.display_name
+                try:
+                    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+                except:
+                    pass
+    return learner_dashboard
 
 @login_required
 @check_user_course_access
@@ -190,7 +216,7 @@ def course_cohort(request, course_id):
     }
     return render(request, 'courses/course_cohort.haml', data)
 
-def _render_group_work(request, course, project_group, group_project, ld=False):
+def _render_group_work(request, course, project_group, group_project, learner_dashboard_id):
 
     seqid = request.GET.get("seqid", None)
     if seqid and " " in seqid:
@@ -233,14 +259,20 @@ def _render_group_work(request, course, project_group, group_project, ld=False):
     if select_stage:
         data['select_stage'] = select_stage
 
-    if ld:
-        if 'learner_dashboard_id' not in request.session:
-            set_learner_dashboard_in_session(request, learner_dashboard_id)
+    if learner_dashboard_id:
 
-        if course.id == request.session['course_id']: 
-            calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-            calendar_enabled = True if calendar_items else False
-            data['calendar_enabled'] = calendar_enabled
+        try:
+            learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
+        except:
+            return HttpResponse(status=404)
+
+        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
+
+        data.update({
+            "learner_dashboard": learner_dashboard,
+            "calendar_enabled": True if calendar_items else False,
+            "course_id": course.id,
+        })
 
         return render(request, 'courses/course_group_work_ld.haml', data)
     else:
@@ -263,8 +295,7 @@ def user_course_group_work(request, course_id):
     return _render_group_work(request, course, project_group, group_project)
 
 @login_required
-@check_user_course_access
-def user_course_group_work_learner_dashboard(request, course_id):
+def user_course_group_work_learner_dashboard(request, learner_dashboard_id, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.group_work:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
@@ -276,7 +307,7 @@ def user_course_group_work_learner_dashboard(request, course_id):
     project_group, group_project = get_group_project_for_user_course(request.user.id, course)
     set_current_course_for_user(request, course_id)
 
-    return _render_group_work(request, course, project_group, group_project, True)
+    return _render_group_work(request, course, project_group, group_project, learner_dashboard_id)
 
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_TA)
@@ -326,18 +357,22 @@ def _course_discussion_data(request, course_id):
     }
 
 @login_required
-@check_user_course_access
-def course_discussion_learner_dashboard(request, course_id):
+def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id):
 
     data = _course_discussion_data(request, course_id)
 
-    if 'learner_dashboard_id' not in request.session:
-        set_learner_dashboard_in_session(request, learner_dashboard_id)
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
+    except:
+        return HttpResponse(status=404)
 
-    if course_id == request.session['course_id']:
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-        calendar_enabled = True if calendar_items else False
-        data["calendar_enabled"] = calendar_enabled
+    calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
+
+    data.update({
+        "learner_dashboard": learner_dashboard,
+        "calendar_enabled": True if calendar_items else False,
+        "course_id": course_id,
+    })
 
     return render(request, 'courses/course_discussion_ld.haml', data)
 
@@ -594,26 +629,27 @@ def course_resources(request, course_id):
     return render(request, 'courses/course_resources.haml', data)
 
 @login_required
-@check_user_course_access
-def course_resources_learner_dashboard(request, course_id):
-    if 'learner_dashboard_id' not in request.session:
-        set_learner_dashboard_in_session(request, learner_dashboard_id)
+def course_resources_learner_dashboard(request, learner_dashboard_id, course_id):
 
-    calendar_enabled = False
-    if course_id == request.session['course_id']:
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-        calendar_enabled = True if calendar_items else False
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
+    except:
+        return HttpResponse(status=404)
+
+    calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
 
     data = {
         "resources": load_static_tabs(course_id, name="resources"),
         "course_id": course_id,
-        "calendar_enabled": calendar_enabled
+        "calendar_enabled": True if calendar_items else False,
+        "learner_dashboard": learner_dashboard,
     }
+
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
 
 @login_required
 @check_user_course_access
-def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None, tile_id=None):
+def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None, tile_id=None, learner_dashboard_id=None):
 
     ''' go to given page within given chapter within given course '''
     course = load_course(course_id, request=request)
@@ -666,14 +702,19 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         except:
             return HttpResponse(status=204)
 
-    if tile_type:
-        if 'learner_dashboard_id' not in request.session:
-            set_learner_dashboard_in_session(request, learner_dashboard_id)
+    if learner_dashboard_id:
 
-        if course_id == request.session['course_id']:
-            calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=request.session['learner_dashboard_id'], show_in_calendar=True)
-            calendar_enabled = True if calendar_items else False
-            data["calendar_enabled"] = calendar_enabled
+        try:
+            learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
+        except:
+            return HttpResponse(status=404)
+
+        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
+
+        data.update({
+            "learner_dashboard": learner_dashboard,
+            "calendar_enabled": True if calendar_items else False,
+        })
 
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
@@ -944,32 +985,20 @@ def course_article(request, course_id):
     return render(request, 'courses/course_article.haml', data)
 
 @login_required
-def course_learner_dashboard(request, learner_dashboard_id=None):
+def course_learner_dashboard(request, learner_dashboard_id):
 
-    if 'learner_dashboard_id' not in request.session or learner_dashboard_id is not request.session['learner_dashboard_id']:
-        set_learner_dashboard_in_session(request, learner_dashboard_id)
-
-    learner_dashboard_id = request.session['learner_dashboard_id']
-    course_id = request.session['course_id']
-
-    if learner_dashboard_id is not None:
+    if settings.LEARNER_DASHBOARD_ENABLED:
         try:
-            learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
-        except:
-            redirect_url = '/'
-            return HttpResponseRedirect(redirect_url)
-    elif course_id is not None:
-        redirect_url = '/courses/{}/'.format(course_id)
-        return HttpResponseRedirect(redirect_url)
+            learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
+        except ObjectDoesNotExist:
+            return HttpResponse(status=404)
     else:
-        redirect_url = '/'
-        return HttpResponseRedirect(redirect_url)
+        return HttpResponse(status=403)
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_calendar=True)
-    calendar_enabled = True if calendar_items else False
 
     try:
         bookmark = TileBookmark.objects.get(user=request.user.id)
@@ -987,7 +1016,7 @@ def course_learner_dashboard(request, learner_dashboard_id=None):
         'feature_flags': feature_flags,
         'discovery_items': discovery_items,
         'bookmark': bookmark,
-        'calendar_enabled': calendar_enabled,
+        'calendar_enabled': True if calendar_items else False,
         'today': datetime.now(),
         'course_id': learner_dashboard.course_id
     }
@@ -1016,20 +1045,12 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
         content_type="application/json"
     )
 
-def course_learner_dashboard_bookmark_tile(request):
+def course_learner_dashboard_bookmark_tile(request, learner_dashboard_id):
 
     if 'tile_id' in request.POST:
         try:
             tile = LearnerDashboardTile.objects.get(id=int(request.POST['tile_id']))
         except ObjectDoesNotExist:
-            return HttpResponse(status=404)
-
-        if 'learner_dashboard_id' not in request.session:
-            set_learner_dashboard_in_session(request)
-
-        if request.session['learner_dashboard_id']:
-            learner_dashboard = LearnerDashboard.objects.get(id=request.session['learner_dashboard_id'])
-        else:
             return HttpResponse(status=404)
 
         try:
@@ -1047,7 +1068,7 @@ def course_learner_dashboard_bookmark_tile(request):
 
         return HttpResponse(status=200)
 
-def course_learner_dashboard_bookmark_lesson(request):
+def course_learner_dashboard_bookmark_lesson(request, learner_dashboard_id):
 
     if 'lesson_link' in request.POST and 'tile_id' in request.POST:
 
@@ -1065,31 +1086,26 @@ def course_learner_dashboard_bookmark_lesson(request):
             return HttpResponse(status=204)
 
 @login_required
-def course_learner_dashboard_calendar(request):
+def course_learner_dashboard_calendar(request, learner_dashboard_id):
 
-    if 'learner_dashboard_id' not in request.session:
-        set_learner_dashboard_in_session(request)
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
+    except:
+        learner_dashboard = None
 
-    course_id = request.session['course_id']
-    learner_dashboard_id = request.session['learner_dashboard_id']
-
-    if learner_dashboard_id is not None:
+    if learner_dashboard:
         trackedData = LearnerDashboardTile.objects.filter(
-            learner_dashboard=learner_dashboard_id, 
+            learner_dashboard=learner_dashboard,
             show_in_calendar = True
         ).exclude(tile_type='1').exclude(tile_type='6').exclude(tile_type='7')
 
         notTrackedData = LearnerDashboardTile.objects.filter(
-            learner_dashboard=learner_dashboard_id, 
+            learner_dashboard=learner_dashboard,
             show_in_calendar = True
         ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').exclude(tile_type='5')
-
-    elif course_id is not None:
-        redirect_url = '/courses/{}/'.format(course_id)
-        return HttpResponseRedirect(redirect_url)
     else:
-        redirect_url = '/'
-        return HttpResponseRedirect(redirect_url)
+        return HttpResponse(status=404)
+
 
     first = datetime.now().replace(day=1)
     now = datetime(first.year, first.month, first.day)
@@ -1132,6 +1148,9 @@ def course_learner_dashboard_calendar(request):
             "track_progress": content.milestone.track_progress,
         }
 
+        if check_tile_type(content):
+            milestoneDataJson[i]["link"] = content.milestone.link + str(content.milestone.id) + "/" + str(learner_dashboard_id)
+
         enum = i
 
     for i, content in enumerate(notTrackedData):
@@ -1161,6 +1180,13 @@ def course_learner_dashboard_calendar(request):
     else:
         return HttpResponse(status=404)
  
+def check_tile_type(element):
+
+    if element.milestone.tile_type == "2" or element.milestone.tile_type == "3" or element.milestone.tile_type == "5":
+        return True
+    else:
+        return False
+
 @login_required
 def get_user_progress_json(request, course_id):
     user_progress = course_api.get_course_metrics_completions(course_id=course_id, user_id = request.user.id, skipleaders = True)
