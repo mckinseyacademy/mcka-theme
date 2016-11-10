@@ -61,12 +61,13 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     '''
+    set_current_course_for_user(request, course_id)
+
     learner_dashboard = get_learner_dashboard(request, course_id)
     if learner_dashboard:
         redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
         return HttpResponseRedirect(redirect_url)
 
-    set_current_course_for_user(request, course_id)
     static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
@@ -1242,3 +1243,4 @@ def get_user_complete_gradebook_json(request, course_id):
     )
 
 
+    
