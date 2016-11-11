@@ -2280,7 +2280,7 @@ def download_activation_links_by_task_key(request):
         activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
 
     if user_id:
-        uri_head = request.build_absolute_uri('/accounts/activateV2')
+        uri_head = request.build_absolute_uri('/accounts/activate')
         user_data = user_api.get_user(user_id=user_id)
         company_id = vars(user_api.get_user_organizations(user_id)[0])['id']
         activation_records = [UserActivation.get_user_activation(user=user_data)]
@@ -3462,7 +3462,7 @@ def participant_mail_activation_link(request, user_id):
         try:
             if not user.is_active:
                 activation_record = UserActivation.get_user_activation(user)
-                email_head = request.build_absolute_uri('/accounts/activateV2') #change if we want old registration form
+                email_head = request.build_absolute_uri('/accounts/activate') #change if we want old registration form
                 _send_activation_email_to_single_new_user(activation_record, user, email_head)
                 messages.info(request, "Activation email sent.")
         except Exception as e:
@@ -3547,7 +3547,7 @@ class participants_list_api(APIView):
                             if not user.is_active:
                                 activation_record = UserActivation.user_activation(user)
                                 if data['send_activation_email']:
-                                    email_head = request.build_absolute_uri('/accounts/activateV2') #change if we want old registration form
+                                    email_head = request.build_absolute_uri('/accounts/activate') #change if we want old registration form
                                     _send_activation_email_to_single_new_user(activation_record, user, email_head)
                             client.add_user(user.id)
                         except ApiError, e:
