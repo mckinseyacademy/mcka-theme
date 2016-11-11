@@ -111,7 +111,7 @@ def get_learner_dashboard(request, course_id):
                 organization = organizations[0]
                 request.session['client_display_name'] = organization.display_name
                 try:
-                    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id, client_id=organization.id)
+                    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
                 except:
                     pass
     return learner_dashboard
@@ -217,7 +217,7 @@ def course_cohort(request, course_id):
     }
     return render(request, 'courses/course_cohort.haml', data)
 
-def _render_group_work(request, course, project_group, group_project, learner_dashboard_id):
+def _render_group_work(request, course, project_group, group_project, learner_dashboard_id=None):
 
     seqid = request.GET.get("seqid", None)
     if seqid and " " in seqid:
@@ -1241,6 +1241,3 @@ def get_user_complete_gradebook_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
-
-
-    
