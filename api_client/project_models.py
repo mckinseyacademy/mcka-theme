@@ -23,6 +23,10 @@ class Project(JsonObject):
         return project_api.get_project(project_id, project_object=cls)
 
     @classmethod
+    def list(cls, course_id, content_id):
+        return project_api.get_all_projects(course_id, content_id, project_object=ProjectListResponse)
+
+    @classmethod
     def fetch_from_url(cls, url):
         return project_api.fetch_project_from_url(url, project_object=cls)
 
@@ -37,3 +41,9 @@ class Project(JsonObject):
     @classmethod
     def delete(cls, project_id):
         return project_api.delete_project(project_id)
+
+
+class ProjectListResponse(JsonObject):
+    object_map = {
+        "results": Project
+    }

@@ -2813,7 +2813,7 @@ def groupwork_dashboard_companiesV2(request):
     content_id = request.GET.get('project_id', None)
     project_list=None
     if course_id and content_id:
-        project_list=project_api.get_all_projects(course_id, content_id)
+        project_list = Project.list(course_id, content_id)
     all_clients = sorted(
         AccessChecker.get_clients_user_has_access_to(request.user),
         key=operator.attrgetter('display_name')
