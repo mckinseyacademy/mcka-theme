@@ -16,6 +16,54 @@ header .course-tabs li {
   }
 }
 
+.wmd-prompt-background {
+  background-color: $pure-white !important;
+}
+
+.wmd-prompt-dialog {
+  padding: 10px 20px !important;
+  background-color: #b1c2cc !important;
+  border: none !important;
+  font-family: "Open Sans",sans-serif !important;
+
+  .form {
+    width: auto !important;
+    margin: 0 auto !important;
+
+    .form-group-hd {
+      display: none !important;
+    }
+
+    .field-group {
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+    }
+
+    .input-text {
+      width: 100% !important;
+    }
+
+    .form-actions {
+      text-align: center !important;
+    }
+  }
+
+  .form-btn {
+    display: inline-block !important;
+    margin: 10px !important;
+    color: $pure-black !important;
+    background-color: $mckinsey-grey;
+    border: 1px solid $pure-black !important;
+    border-radius: 3px !important;
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
+
+
+}
+
 #course-discussion .discussion-content {
   fieldset { margin:0; padding: 0; border:0; }
 
