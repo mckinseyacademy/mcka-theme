@@ -18,6 +18,7 @@ webassets==0.11.1
 wsgiref==0.1.2
 boto>=2.1.0
 django-ses==0.7.0
+django-storages==1.1.8
 --allow-external Pillow
 --allow-unverified Pillow
 Pillow==2.7.0
