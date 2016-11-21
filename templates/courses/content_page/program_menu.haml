@@ -1,8 +1,5 @@
-.program-title<
-  = program.display_name
-- include 'courses/content_page/courses_menu_list.haml' with courses=program.courses
-- if program.outside_courses
-  %hr
-  .program-title.other-courses<
-    = _("Other Enrolled Courses")
-  - include 'courses/content_page/courses_menu_list.haml' with courses=program.outside_courses
+-for program in programs
+    .program-title<
+      = program.0.display_name
+      .indent
+        - include 'courses/content_page/courses_menu_list.haml' with courses=program.1

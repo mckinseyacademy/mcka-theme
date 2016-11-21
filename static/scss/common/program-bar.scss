@@ -20,7 +20,6 @@
 
   .program-name {
     padding-top: 10px;
-    &:after{ content: ':'; }
   }
 
   .course-name {
@@ -168,11 +167,7 @@
     .program-title {
       margin: 12px 20px 0;
       text-transform: uppercase;
-      @include font-spec(10, bold);
-
-      &:after{
-        content: ':';
-      }
+      @include font-spec(12, bold);
     }
 
     .courses {
@@ -228,5 +223,11 @@
 
   .program-logo-img {
     height: 48px;
+  }
+  .indent {
+    border-top: 1px solid;
+    border-color: $mckinsey-grey;
+    margin-top: 10px;
+    padding-left: 15px;
   }
 }

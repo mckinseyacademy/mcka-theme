@@ -253,6 +253,7 @@ def standard_data(request):
     branding = None
     feature_flags = None
     learner_dashboard_flag = False
+    programs = None
 
     # have we already fetched this before and attached it to the current request?
     if hasattr(request, 'user_program_data'):
@@ -325,9 +326,12 @@ def standard_data(request):
                 if len(course.name) > 57:
                     course.name = course.name[:57] + '...'
 
+        programs = get_program_menu_list(request, course)
+
     data = {
         "course": course,
         "program": program,
+        "programs": programs,
         "upcoming_course": upcoming_course,
         "client_customization": client_customization,
         "client_nav_links": client_nav_links,
@@ -340,3 +344,48 @@ def standard_data(request):
     request.user_program_data = data
 
     return data
+
+def get_program_menu_list(request, current_course):
+
+    programs = []
+    current_program = None
+    user_programs = Program.user_program_list(request.user.id)
+    user_courses = user_api.get_user_courses(request.user.id)
+
+    for program in user_programs:
+
+        row = []
+        program_courses = []
+        program_course_ids = [course.course_id for course in program.fetch_courses()]
+
+        for program_course_id in program_course_ids:
+            for i, course in enumerate(user_courses):
+
+                if course.id == program_course_id:
+                    program_courses.append(user_courses[i])
+
+            if current_course.id == program_course_id:
+                current_program = program
+
+        row.append(program)
+        row.append(program_courses)
+        programs.append(row)
+
+        user_courses = [course for course in user_courses if course not in program_courses]
+
+    if user_courses:
+        row = []
+        row.append(Program.no_program())
+        row.append(user_courses)
+        programs.append(row)
+        if not current_program:
+            current_program = Program.no_program()
+
+    for i, program in enumerate(programs):
+        if program[0] == current_program:
+            programs.insert(0, programs.pop(i))
+        for j, course in enumerate(program[1]):
+            if course.id == current_course.id:
+                program[1].insert(0, program[1].pop(j))
+                program[1][0].course_class = "current"
+    return programs

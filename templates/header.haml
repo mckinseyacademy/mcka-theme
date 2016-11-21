@@ -61,7 +61,7 @@
               #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
                 - include "courses/content_page/program_menu.haml"
             .label-4.program-name{style: "{% if client_customization and client_customization.hex_program_name %}color:#{client_customization.hex_program_name};{% endif %}"}<
-              = program.display_name
+              = programs.0.0.display_name
             %h4.course-name
               - if course.ended
                 %span= _("COURSE CLOSED")

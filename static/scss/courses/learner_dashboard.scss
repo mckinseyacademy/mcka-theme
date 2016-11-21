@@ -395,10 +395,6 @@ svg text {
     margin: 12px 20px 0;
     text-transform: uppercase;
     @include font-spec(10, bold);
-
-    &:after{
-      content: ':';
-    }
   }
 
   .courses {
@@ -449,5 +445,11 @@ svg text {
         margin-top: 0;
       }
     }
+  }
+  .indent {
+    border-top: 1px solid;
+    border-color: $mckinsey-grey;
+    margin-top: 10px;
+    padding-left: 15px;
   }
 }
