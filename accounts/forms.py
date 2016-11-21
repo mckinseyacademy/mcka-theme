@@ -335,9 +335,6 @@ class BaseRegistrationForm(NoSuffixLabelForm):
     title = forms.CharField(max_length=255, required=False)
     city = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}), label=mark_safe('City <span class="required-field"></span>'))
     country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=True, label=mark_safe('Country <span class="required-field"></span>'))
-    level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES, required=False)
-    gender = forms.ChoiceField(choices=GENDER_CHOICES, required=False)
-    year_of_birth = forms.ChoiceField(choices=YEAR_CHOICES, required=False, initial=("", "---"))
     accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
 
     def clean_accept_terms(self):

@@ -56,7 +56,7 @@ from admin.views import ajaxify_http_redirects
 
 log = logging.getLogger(__name__)
 
-VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "is_active", "year_of_birth", "gender", "title", "avatar_url"]
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "password", "is_active", "title", "avatar_url"]
 USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]")
 
 LOGIN_MODE_COOKIE = 'login_mode'
