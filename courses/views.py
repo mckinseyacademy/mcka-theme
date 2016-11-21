@@ -20,7 +20,7 @@ from django.template import loader, RequestContext
 from admin.controller import load_course
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
-    BrandingSettings, TileBookmark, LearnerDashboardTileProgress
+    BrandingSettings, TileBookmark, LearnerDashboardTileProgress, LearnerDashboardBranding
     )
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
@@ -217,7 +217,7 @@ def course_cohort(request, course_id):
     }
     return render(request, 'courses/course_cohort.haml', data)
 
-def _render_group_work(request, course, project_group, group_project, learner_dashboard_id=None):
+def _render_group_work(request, course, project_group, group_project, learner_dashboard_id=None, flag_branding=None):
 
     seqid = request.GET.get("seqid", None)
     if seqid and " " in seqid:
@@ -275,6 +275,12 @@ def _render_group_work(request, course, project_group, group_project, learner_da
             "course_id": course.id,
         })
 
+        if flag_branding:
+            try:
+                data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+            except:
+                pass
+
         return render(request, 'courses/course_group_work_ld.haml', data)
     else:
         return render(request, 'courses/course_group_work.haml', data)
@@ -308,7 +314,7 @@ def user_course_group_work_learner_dashboard(request, learner_dashboard_id, cour
     project_group, group_project = get_group_project_for_user_course(request.user.id, course)
     set_current_course_for_user(request, course_id)
 
-    return _render_group_work(request, course, project_group, group_project, learner_dashboard_id)
+    return _render_group_work(request, course, project_group, group_project, learner_dashboard_id, feature_flags.branding)
 
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_TA)
@@ -354,7 +360,8 @@ def _course_discussion_data(request, course_id):
         "lms_sub_domain": lms_sub_domain,
         "lms_port": lms_port,
         "use_current_host": getattr(settings, 'IS_EDXAPP_ON_SAME_DOMAIN', True),
-        "mcka_ta": mcka_ta
+        "mcka_ta": mcka_ta,
+        "flag_branding": feature_flags.branding
     }
 
 @login_required
@@ -366,6 +373,12 @@ def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id
         learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
     except:
         return HttpResponse(status=404)
+
+    if data['flag_branding']:
+        try:
+            data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+        except:
+            pass
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
 
@@ -631,6 +644,9 @@ def course_resources(request, course_id):
 
 @login_required
 def course_resources_learner_dashboard(request, learner_dashboard_id, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.resources:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     try:
         learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
@@ -645,6 +661,12 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
         "calendar_enabled": True if calendar_items else False,
         "learner_dashboard": learner_dashboard,
     }
+
+    if feature_flags.branding:
+        try:
+            data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+        except:
+            pass
 
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
 
@@ -716,6 +738,16 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
             "learner_dashboard": learner_dashboard,
             "calendar_enabled": True if calendar_items else False,
         })
+
+        try:
+            feature_flags = FeatureFlags.objects.get(course_id=course_id)
+            if feature_flags.branding:
+                try:
+                    data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+                except:
+                    pass
+        except:
+            pass
 
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
@@ -1012,7 +1044,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
     except:
         feature_flags = []
 
-    data ={
+    data = {
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
         'feature_flags': feature_flags,
@@ -1021,7 +1053,15 @@ def course_learner_dashboard(request, learner_dashboard_id):
         'calendar_enabled': True if calendar_items else False,
         'today': datetime.now(),
         'course_id': learner_dashboard.course_id
-    }
+    }        
+
+    if feature_flags and feature_flags.branding:
+        try:
+            learner_dashboard_branding = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard.id)
+            data['branding'] = learner_dashboard_branding
+        except:
+            pass
+
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
 @require_POST

@@ -152,6 +152,8 @@ urlpatterns = patterns(
     #Learner Dashboard, Element
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.company_course_learner_dashboard_tile, name='company_course_learner_dashboard_tile'),
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/discover/(?P<discovery_id>.*)$', views.company_course_learner_dashboard_discover, name='company_course_learner_dashboard_discover'),
+    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/branding_reset$', views.company_course_learner_dashboard_branding_reset, name='company_course_learner_dashboard_branding_reset'),
+    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/branding$', views.company_course_learner_dashboard_branding, name='company_course_learner_dashboard_branding'),
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/element_reorder$', views.company_course_learner_dashboard_element_reorder, name='company_course_learner_dashboard_element_reorder'),
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover_reorder$', views.company_course_learner_dashboard_discover_reorder, name='company_course_learner_dashboard_discover_reorder'),
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)/learner_dashboard', views.company_course_learner_dashboard, name='company_course_learner_dashboard'),

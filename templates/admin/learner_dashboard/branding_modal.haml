@@ -1,0 +1,87 @@
+%section
+  %h1 Learner Dashboard Branding
+%hr
+.close-reveal-modal
+  %i.fa.fa-times-circle
+%form.branding_modal_form{action: '/admin/companies/#{company_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding', method: "POST", enctype: "multipart/form-data"}
+  - csrf_token
+  .row
+    .small-3.columns
+    .small-9.columns= form.background_image.errors
+  .row
+    .small-3.columns= form.background_image.label_tag
+    .small-9.columns= form.background_image
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.logo_image.errors
+  .row
+    .small-3.columns= form.logo_image.label_tag
+    .small-9.columns= form.logo_image
+
+  #colorInputs.div
+    .row
+      .small-3.columns
+      .small-9.columns= form.discover_title_color.errors
+    .row.branding-row
+      .small-3.columns= form.discover_title_color.label_tag
+      .small-9.columns
+        %input#id_discover_title_color{'type': 'color', 'name': 'discover_title_color', 'value': "#{form.discover_title_color.value}", 'data-default-value': "#{default_colors.discover_title_color}"}
+
+    .row
+      .small-3.columns
+      .small-9.columns= form.discover_author_color.errors
+    .row.branding-row
+      .small-3.columns= form.discover_author_color.label_tag
+      .small-9.columns
+        %input#id_discover_author_color{'type': 'color', 'name': 'discover_author_color', 'value': "#{form.discover_author_color.value}", 'data-default-value': "#{default_colors.discover_author_color}"}
+
+    .row
+      .small-3.columns
+      .small-9.columns= form.discover_rule_color.errors
+    .row.branding-row
+      .small-3.columns= form.discover_rule_color.label_tag
+      .small-9.columns
+        %input#id_discover_rule_color{'type': 'color', 'name': 'discover_rule_color', 'value': "#{form.discover_rule_color.value}", 'data-default-value': "#{default_colors.discover_rule_color}"}
+
+    .row
+      .small-3.columns
+      .small-9.columns= form.background_color.errors
+    .row.branding-row
+      .small-3.columns= form.background_color.label_tag
+      .small-9.columns
+        %input#id_background_color{'type': 'color', 'name': 'background_color', 'value': "#{form.background_color.value}", 'data-default-value': "#{default_colors.background_color}"}
+
+    .row
+      .small-3.columns
+      .small-9.columns= form.rule_color.errors
+    .row.branding-row
+      .small-3.columns Rule color:
+      .small-9.columns
+        %input#id_rule_color{'type': 'color', 'name': 'rule_color', 'value': "#{form.rule_color.value}", 'data-default-value': "#{default_colors.rule_color}"}
+
+    .row
+      .small-3.columns
+      .small-9.columns= form.icon_color.errors
+    .row.branding-row
+      .small-3.columns Icon Color:
+      .small-9.columns
+        %input#id_icon_color{'type': 'color', 'name': 'icon_color', 'value': "#{form.icon_color.value}", 'data-default-value': "#{default_colors.icon_color}"}
+  %br
+  .row
+    .small-3.columns
+    .small-9.columns= form.background_style.errors
+  .row
+    .small-3.columns= form.background_style.label_tag
+    .small-9.columns= form.background_style
+  %input{'type': 'hidden', 'name': 'client_id', 'value': '#{client_id}'}
+  .error
+    - if error
+      = error
+  %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
+  .error
+    - if error
+      = error
+  %input#brandingFormSubmit.button.radius.small.right{type: "submit", value: "Save", disabled: "True"}
+
+  %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}

@@ -595,6 +595,29 @@ class LearnerDashboardDiscovery(db_models.Model):
         on_delete=db_models.CASCADE,
     )
 
+class LearnerDashboardBranding(db_models.Model):
+
+    background_image = db_models.ImageField(upload_to=settings.LEARNER_DASHBOARD_BACKGROUND_IMAGE, blank=True)
+    logo_image = db_models.ImageField(upload_to=settings.LEARNER_DASHBOARD_LOGO_IMAGE, blank=True)
+    rule_color = db_models.CharField(settings.LEARNER_DASHBOARD_RULE_COLOR, max_length=20, blank=True)
+    icon_color = db_models.CharField(settings.LEARNER_DASHBOARD_ICON_COLOR, max_length=20, blank=True)
+    discover_title_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TITLE_COLOR)
+    discover_author_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_AUTHOR_COLOR)
+    discover_rule_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_RULE_COLOR)
+    background_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
+
+    TYPES = (
+        (u'1', u'Normal'),
+        (u'2', u'Tiled'),
+        (u'3', u'Stretched')
+    )
+    background_style = db_models.CharField(max_length=1, choices=TYPES, blank=True)
+
+    learner_dashboard = db_models.ForeignKey(
+        'LearnerDashboard',
+        on_delete=db_models.CASCADE,
+    )
+
 class EmailTemplate(db_models.Model):
     title = db_models.CharField(blank=False, null=False, max_length=64)
     subject = db_models.CharField(blank=False, null=False, max_length=256)

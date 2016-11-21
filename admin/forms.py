@@ -9,7 +9,8 @@ from django.core.exceptions import ValidationError
 
 from .models import (
     Client, Program, AccessKey, DashboardAdminQuickFilter, 
-    BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile
+    BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile,
+    LearnerDashboardBranding
 )
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
@@ -297,6 +298,33 @@ class DiscoveryContentCreateForm(forms.ModelForm):
             'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
             'link': forms.TextInput(attrs={'type': 'url'}),
         }
+
+
+class LearnerDashboardBrandingForm(forms.ModelForm):
+
+    class Meta:
+        model = LearnerDashboardBranding
+        fields = [
+            'background_image',
+            'background_style',
+            'background_color',
+            'icon_color',
+            'logo_image',
+            'rule_color',
+            'discover_title_color',
+            'discover_author_color',
+            'discover_rule_color',
+            'learner_dashboard'
+        ]
+        widgets = {
+            'background_color': forms.TextInput(attrs={'type': 'color'}),
+            'rule_color': forms.TextInput(attrs={'type': 'color'}),
+            'icon_color': forms.TextInput(attrs={'type': 'color'}),
+            'discover_title_color': forms.TextInput(attrs={'type': 'color'}),
+            'discover_author_color': forms.TextInput(attrs={'type': 'color'}),
+            'discover_rule_color': forms.TextInput(attrs={'type': 'color'})
+        }
+
 
 class LearnerDashboardTileForm(forms.ModelForm):
 

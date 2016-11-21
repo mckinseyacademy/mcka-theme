@@ -56,7 +56,7 @@ from .models import (
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
     LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, 
-    CompanyContact, Tag
+    CompanyContact, Tag, LearnerDashboardBranding
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -75,7 +75,7 @@ from .forms import (
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, EditExistingUserForm,
     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
-    CreateNewParticipant
+    CreateNewParticipant, LearnerDashboardBrandingForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -4766,13 +4766,18 @@ def company_course_learner_dashboard(request, company_id, course_id):
 
     if instance:
         try:
-            branding = BrandingSettings.objects.get(client_id=company_id)
+            learner_dashboard_branding = LearnerDashboardBranding.objects.get(learner_dashboard=instance.id)
+            branding = learner_dashboard_branding
         except:
-            branding = None
+            learner_dashboard_branding = None
+            try:
+                branding = BrandingSettings.objects.get(client_id=company_id)
+            except:
+                branding = None
 
         discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=instance.id).order_by('position')
         learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
-        
+
         data = {
             'client_id': company_id,
             'course_id': course_id,
@@ -4785,6 +4790,7 @@ def company_course_learner_dashboard(request, company_id, course_id):
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
             'discovery_items': discovery_items,
             'branding': branding,
+            'learner_dashboard_branding': learner_dashboard_branding,
             'now': datetime.now(),
         }
     else:
@@ -4937,6 +4943,69 @@ def company_course_learner_dashboard_discover_reorder(request, company_id, cours
             discoveryItem.position = index
             discoveryItem.save()
         return HttpResponse('200')
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_branding(request, company_id, course_id, learner_dashboard_id):
+
+    try:
+        instance = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+    except:
+        instance = None
+
+    if request.method == 'POST':
+        form = LearnerDashboardBrandingForm (request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            form.save()
+
+            redirect_url = reverse(
+                'company_course_learner_dashboard',
+                kwargs={'company_id': company_id, 'course_id': course_id}
+            )
+
+            return HttpResponseRedirect(redirect_url)
+
+    elif request.method == 'DELETE':
+        instance.delete()
+        redirect_url = reverse(
+            'company_course_learner_dashboard',
+            kwargs={'company_id': company_id, 'course_id': course_id}
+        )
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        form = LearnerDashboardBrandingForm(instance=instance)
+
+    data = {
+        'form': form,
+        'company_id': company_id,
+        'course_id': course_id,
+        'learner_dashboard_id': learner_dashboard_id,
+    }
+
+    return render(request, 'admin/learner_dashboard/branding_modal.haml', data)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_branding_reset(request, company_id, course_id, learner_dashboard_id):
+
+    redirect_url = reverse(
+        'company_course_learner_dashboard',
+        kwargs={'company_id': company_id, 'course_id': course_id}
+    )
+    try:
+        instance = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+    except:
+        redirect_url = reverse(
+            'company_course_learner_dashboard',
+            kwargs={'company_id': company_id, 'course_id': course_id}
+        )
+        return HttpResponseRedirect(redirect_url)
+
+    instance.delete()
+
+    return HttpResponseRedirect(redirect_url)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

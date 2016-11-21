@@ -136,6 +136,10 @@
       #element-positions.admin-ld-component
         - include 'admin/learner_dashboard/element_positions.haml'
 
+    - if learner_dashboard_id
+      #branding.admin-ld-component
+        - include 'admin/learner_dashboard/branding.haml'
+
     #button-row.row
       .large-10.large-offset-2.columns
         - if learner_dashboard_id
