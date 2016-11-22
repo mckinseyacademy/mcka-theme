@@ -1023,7 +1023,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
     if settings.LEARNER_DASHBOARD_ENABLED:
         try:
             learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-            request.session['last_visited_ld'] = learner_dashboard.id
+            request.session['last_visited_course'] = learner_dashboard.course_id
         except ObjectDoesNotExist:
             return HttpResponse(status=404)
     else:

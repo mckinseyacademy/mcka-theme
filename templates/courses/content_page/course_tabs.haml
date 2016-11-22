@@ -1,7 +1,7 @@
 %ul.course-tabs
-  - if request.session.last_visited_ld
+  - if request.session.last_visited_course
     %li
-      %a{class: "nav-1", href: "/learnerdashboard/#{request.session.last_visited_ld}", "data-tooltip": "Learner Dashboard", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+      %a{class: "nav-1", href: "/courses/#{request.session.last_visited_course}", "data-tooltip": "Learner Dashboard", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.fa.fa-map-marker
   %li
     %a.nav-1{class: "{% ifequal request.resolver_match.url_name 'navigate_to_lesson_module' %}selected{% endifequal %}", href: "/courses/#{course.id}/lessons", "data-dropdown": "lessons-content", "data-tooltip": "Lessons", style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
