@@ -360,10 +360,8 @@ def get_program_menu_list(request, current_course):
 
         for program_course_id in program_course_ids:
             for i, course in enumerate(user_courses):
-
                 if course.id == program_course_id:
                     program_courses.append(user_courses[i])
-
             if current_course.id == program_course_id:
                 current_program = program
 
