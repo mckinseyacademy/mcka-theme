@@ -326,7 +326,7 @@ def standard_data(request):
                 if len(course.name) > 57:
                     course.name = course.name[:57] + '...'
 
-        programs = get_program_menu_list(request, course)
+            programs = get_program_menu_list(request, course)
 
     data = {
         "course": course,
@@ -381,9 +381,13 @@ def get_program_menu_list(request, current_course):
 
     for i, program in enumerate(programs):
         if program[0] == current_program:
+            if program[1]:
+                move_course_to_first_place(program, current_course)
             programs.insert(0, programs.pop(i))
-        for j, course in enumerate(program[1]):
-            if course.id == current_course.id:
-                program[1].insert(0, program[1].pop(j))
-                program[1][0].course_class = "current"
     return programs
+
+def move_course_to_first_place(program, current_course):
+    for i, course in enumerate(program[1]):
+            if course.id == current_course.id:
+                program[1].insert(0, program[1].pop(i))
+                program[1][0].course_class = "current"
