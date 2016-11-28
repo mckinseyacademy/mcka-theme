@@ -309,7 +309,6 @@ def standard_data(request):
             try:
                 if feature_flags and feature_flags.branding:
                     branding = BrandingSettings.objects.get(client_id=organization.id)
-                    client_customization = None
                 else:
                     branding = None
             except:
