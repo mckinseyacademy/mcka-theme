@@ -8,7 +8,7 @@
   %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
   %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
   - include 'courses/course_learner_dashboard_branding.haml'
-  #course-lessons{'data-course-url': '/learnerdashboard#{course.current_module.navigation_url}/lesson/#{tile_id}', 'data-tile-id': '#{tile_id}', 'data-current-progress': '#{user_progress}'}
+  #course-lessons{'data-course-url': '/learnerdashboard#{course.current_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}', 'data-tile-id': '#{tile_id}', 'data-current-progress': '#{user_progress}'}
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
     -if tile_type = 'module'
@@ -33,7 +33,7 @@
         %li.lesson-row-item
           %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
-            %a{href: "/learnerdashboard#{module.navigation_url}/lesson/#{tile_id}", class: "{% if module.is_current %}current{% endif %}"}
+            %a{href: "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", class: "{% if module.is_current %}current{% endif %}"}
               Module ={module.index}:
             %span= module.name
     .close-reveal-modal

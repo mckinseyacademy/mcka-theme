@@ -1,7 +1,7 @@
 -if tile_type = 'lesson'
   -if course.current_lesson.index == course.current_lesson.previous_module.lesson_index
     - if course.current_lesson.previous_module
-      %a.page-to.previous{href: '/learnerdashboard#{course.current_lesson.previous_module.navigation_url}/lesson/#{tile_id}'}
+      %a.page-to.previous{href: '/learnerdashboard#{course.current_lesson.previous_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}'}
         %i.fa.fa-chevron-left
         .mcka-tooltip
           %p.style-4
@@ -13,7 +13,7 @@
         %i.fa.fa-chevron-left
   -if course.current_lesson.index == course.current_lesson.next_module.lesson_index
     - if course.current_lesson.next_module
-      %a.page-to.next{href: '/learnerdashboard#{course.current_lesson.next_module.navigation_url}/lesson/#{tile_id}'}
+      %a.page-to.next{href: '/learnerdashboard#{course.current_lesson.next_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}'}
         %i.fa.fa-chevron-right
         .mcka-tooltip
           %p.style-4
