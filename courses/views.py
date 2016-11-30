@@ -1100,11 +1100,12 @@ def course_learner_dashboard_bookmark_tile(request, learner_dashboard_id):
             bookmark.tile = tile
             bookmark.lesson_link = None
             bookmark.save()
+
         except:
             bookmark = TileBookmark(
                 user = request.user.id,
                 tile=tile,
-                learner_dashboard=learner_dashboard,
+                learner_dashboard_id=learner_dashboard_id,
             )
             bookmark.save()
 
