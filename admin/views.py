@@ -4699,13 +4699,13 @@ class company_learner_dashboards_api(APIView):
 def company_learner_dashboard_select_course(request, company_id):
 
     if request.user.is_company_admin:
-            user_permissions = Permissions(request.user.id)
-            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
-            company_ids = []
-            for user_org in user_organizations:
-                company_ids.append(int(user_org.id))
-            if int(company_id) not in company_ids:
-                return permission_denied(request)
+        user_permissions = Permissions(request.user.id)
+        user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
+        company_ids = []
+        for user_org in user_organizations:
+            company_ids.append(int(user_org.id))
+        if int(company_id) not in company_ids:
+            return permission_denied(request)
 
     courses = course_api.get_course_list()
 
@@ -4994,16 +4994,71 @@ def company_course_learner_dashboard_branding_reset(request, company_id, course_
         'company_course_learner_dashboard',
         kwargs={'company_id': company_id, 'course_id': course_id}
     )
+
     try:
         instance = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
     except:
-        redirect_url = reverse(
-            'company_course_learner_dashboard',
-            kwargs={'company_id': company_id, 'course_id': course_id}
-        )
         return HttpResponseRedirect(redirect_url)
 
     instance.delete()
+
+    return HttpResponseRedirect(redirect_url)
+
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_duplicates_list(request, company_id, course_id, learner_dashboard_id):
+
+    learner_dashboards = LearnerDashboard.objects.filter(course_id=course_id).exclude(id=learner_dashboard_id)
+
+    data = {
+        'learner_dashboards': learner_dashboards,
+        'company_id': company_id,
+        'course_id': course_id,
+        'learner_dashboard_id': learner_dashboard_id,
+    }
+
+    return render(request, 'admin/learner_dashboard/duplicate_modal.haml', data)
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def company_course_learner_dashboard_duplicate(request, company_id, course_id, learner_dashboard_id, learner_dashboard_duplicate_id):
+
+    redirect_url = reverse(
+        'company_course_learner_dashboard',
+        kwargs={'company_id': company_id, 'course_id': course_id}
+    )
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(id=learner_dashboard_id)
+    except:
+        learner_dashboard = None
+
+    discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard_duplicate_id)
+    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_duplicate_id)
+
+    try:
+        learner_dashboard_branding = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_duplicate_id)
+
+        learner_dashboard_branding.pk = None
+        learner_dashboard_branding.learner_dashboard = learner_dashboard
+        learner_dashboard_branding.save()
+    except:
+        learner_dashboard_branding = None
+
+    for discovery_item in discovery_items:
+        discovery_item.pk = None
+        discovery_item.learner_dashboard = learner_dashboard
+        discovery_item.save()
+
+    for learner_dashboard_tile in learner_dashboard_tiles:
+        learner_dashboard_tile.pk = None
+        learner_dashboard_tile.learner_dashboard = learner_dashboard
+        learner_dashboard_tile.save()
+
+         #filter digital content types
+        if learner_dashboard_tile.tile_type == '2' or learner_dashboard_tile.tile_type == '3' or learner_dashboard_tile.tile_type == '4' or learner_dashboard_tile.tile_type == '5':
+            create_tile_progress_data(learner_dashboard_tile)
 
     return HttpResponseRedirect(redirect_url)
 

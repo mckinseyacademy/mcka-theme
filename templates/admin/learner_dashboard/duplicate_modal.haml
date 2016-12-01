@@ -1,0 +1,22 @@
+%section
+  %h1 Duplicate learner dashboard from
+%hr
+.close-reveal-modal
+  %i.fa.fa-times-circle
+.row
+  .large-12.columns
+    - if learner_dashboards
+      %table{style:"table-layout: fixed; width: 100%"}
+        %thead
+          %tr
+            %th= _("Name")
+            %th= _("")
+        %tbody#element-body
+          - for learner_dashboard in learner_dashboards
+            %tr{id: "#{courseId}"}
+              %td{style: "word-wrap: break-word"}= learner_dashboard.title
+              %td
+                %a{:href => "/admin/companies/#{company_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/duplicate/#{learner_dashboard.id}"}
+                  %i.fa.fa-arrow-down{'style': "color:green; float: right;"}
+    - else
+      There are no available learner dashboards with this course
