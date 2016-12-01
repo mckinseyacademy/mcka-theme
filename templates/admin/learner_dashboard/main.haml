@@ -116,7 +116,7 @@
 
   #tileModal.reveal-modal.small{'data-reveal': None}
   #discoverModal.reveal-modal.small{'data-reveal': None}
-  #duplicateModal.reveal-modal.tiny{'data-reveal': None}
+  - include 'admin/learner_dashboard/preview.haml'
 
   .admin-detail.row
     .large-12.columns
@@ -145,7 +145,5 @@
         - if learner_dashboard_id
           %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'} Preview
           %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview'}
-          %a..button.radius.small.right.bottom-buttons{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/duplicates_list", :data-reveal-id => 'duplicateModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
-            Duplicate From
         - else
           %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save', disabled: 'disabled'}
