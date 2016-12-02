@@ -39,7 +39,7 @@ from .controller import update_bookmark, group_project_reviews, add_months_to_da
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location, createProgressObjects
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
-from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user
+from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user, check_course_shell_access
 
 # Create your views here.
 
@@ -1028,6 +1028,8 @@ def course_learner_dashboard(request, learner_dashboard_id):
             return HttpResponse(status=404)
     else:
         return HttpResponse(status=403)
+
+    check_course_shell_access(request, learner_dashboard.course_id)
 
     learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).order_by('position')
     discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')

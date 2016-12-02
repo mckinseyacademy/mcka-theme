@@ -390,3 +390,17 @@ def move_course_to_first_place(program, current_course):
             if course.id == current_course.id:
                 program[1].insert(0, program[1].pop(i))
                 program[1][0].course_class = "current"
+
+def check_course_shell_access(request, course_id):
+
+    access = False
+    courses = user_api.get_user_courses(request.user.id)
+
+    for course in courses:
+        if course_id == course.id:
+            access = True
+
+    if not access:
+        clear_current_course_for_user(request)
+        request.session['last_visited_course'] = None
+        raise CourseAccessDeniedError(course_id, request.user.id)
