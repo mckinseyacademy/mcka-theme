@@ -745,21 +745,23 @@ def calculate_user_module_progress(user_id, course, chapter_id, page_id, complet
 
     module = course.get_module(chapter_id, page_id)
     if module:
-        for child in module.children:
-            matching = [s for s in completed_ids if child.id in s]
-            if matching:
-                return 100
-            else:
-                return 0
+        child_ids = [child.id for child in module.children]
+        completed = set(completed_ids).intersection(child_ids)
+        if len(completed) == len(module.children):
+            return 100
+        else:
+            return 0
+
     else:
         sequential = course.get_current_sequential(chapter_id, page_id)
         if sequential:
             for vertical in sequential.children:
-                for child in vertical.children:
-                    matching = [s for s in completed_ids if child.id in s]
-                    if matching:
+                if vertical.id == page_id:
+                    child_ids = [child.id for child in vertical.children]
+                    completed = set(completed_ids).intersection(child_ids)
+                    if len(completed) == len(vertical.children):
                         return 100
-                    else: 
+                    else:
                         return 0
         else:
             #this should never happen
