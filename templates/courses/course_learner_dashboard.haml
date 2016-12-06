@@ -31,9 +31,9 @@
                     #{tile.label}
                   -else
                     #{tile.get_tile_type_display}
-                -if bookmark.tile.id == tile.id and bookmark.lesson_link
+                -if bookmark.tile.id == tile.id
                   -if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i"
-                    <a class="last_visited" href="#{bookmark.lesson_link}/#{learner_dashboard.id}" target="{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}" onclick="ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')" data-tile-id="#{tile.id}">
+                    <a class="last_visited" href="{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}" target="{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}" onclick="ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')" data-tile-id="#{tile.id}">
                   <blockquote class="user-quote" style="color: #{tile.title_color};"}>
                     #{tile.title}
                   </blockquote>
