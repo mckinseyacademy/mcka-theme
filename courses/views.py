@@ -260,6 +260,16 @@ def _render_group_work(request, course, project_group, group_project, learner_da
     if select_stage:
         data['select_stage'] = select_stage
 
+    organizations = user_api.get_user_organizations(request.user.id)
+    if len(organizations) > 0 and learner_dashboard_id is None:
+        organization = organizations[0]
+        try:
+            learner_dashboard_id = LearnerDashboard.objects.get(course_id=course.id, client_id=organization.id).id
+            redirect_url = "/learnerdashboard/" + str(learner_dashboard_id) + request.get_full_path()
+            return HttpResponseRedirect(redirect_url)
+        except:
+            pass
+
     if learner_dashboard_id:
 
         try:
