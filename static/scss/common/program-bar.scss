@@ -167,6 +167,10 @@
     .program-title {
       margin: 12px 20px 0;
       @include font-spec(12, bold);
+      
+      span{
+          text-transform: uppercase;
+      }
     }
 
     .courses {

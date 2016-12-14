@@ -1,5 +1,6 @@
 -for program in programs
     .program-title<
-      = program.0.display_name
+      %span
+      	= program.0.display_name
       .indent
         - include 'courses/content_page/courses_menu_list.haml' with courses=program.1

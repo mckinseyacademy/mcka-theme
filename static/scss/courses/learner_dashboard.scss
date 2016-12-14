@@ -394,6 +394,10 @@ svg text {
   .program-title {
     margin: 12px 20px 0;
     @include font-spec(10, bold);
+
+    span{
+          text-transform: uppercase;
+      }
   }
 
   .courses {
