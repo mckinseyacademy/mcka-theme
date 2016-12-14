@@ -11,21 +11,27 @@ urlpatterns = patterns(
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/email_not_started$', views.client_admin_email_not_started, name='client_admin_email_not_started'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/download_course_report$', views.client_admin_download_course_report, name='download_course_report'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants$', views.client_admin_course_participants, name='client_admin_course_participants'),
+
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/reset$', views.client_admin_branding_settings_reset, name='client_admin_branding_settings_reset'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding$', views.client_admin_branding_settings, name='client_admin_branding_settings'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/branding/create_edit$', views.client_admin_branding_settings_create_edit, name='client_admin_branding_settings_create_edit'),
-    #LD DiscoverContent
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.client_admin_course_learner_dashboard_discover_list, name='client_admin_course_learner_dashboard_discover_list'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_create_edit, name='client_admin_course_learner_dashboard_discover_create_edit'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.client_admin_course_learner_dashboard_discover_delete, name='client_admin_course_learner_dashboard_discover_delete'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.client_admin_course_learner_dashboard_discover_reorder, name='client_admin_course_learner_dashboard_discover_reorder'),
-    #LD DiscoverContent
-    #Learner Dashboard, Tile
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.client_admin_course_learner_dashboard_tile, name='client_admin_course_learner_dashboard_tile'),    
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard$', views.client_admin_course_learner_dashboard, name='client_admin_course_learner_dashboard'),
-    url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/reorder$', views.client_admin_course_learner_dashboard_reorder, name='client_admin_course_learner_dashboard_reorder'),
-    #Learner Dashboard, Tile
+
+    #Learner dashboard urls
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/branding_reset$', views.course_learner_dashboard_branding_reset, name='course_learner_dashboard_branding_reset'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/branding$', views.course_learner_dashboard_branding, name='course_learner_dashboard_branding'),
+
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.course_learner_dashboard_discover_list, name='course_learner_dashboard_discover_list'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_delete, name='course_learner_dashboard_discover_delete'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.course_learner_dashboard_discover_reorder, name='course_learner_dashboard_discover_reorder'),
+
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.course_learner_dashboard_tile, name='course_learner_dashboard_tile'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/element_reorder$', views.course_learner_dashboard_tile_reorder, name='course_learner_dashboard_tile_reorder'),
+    url(r'^courses/(?P<course_id>.*)/learner_dashboard', views.course_learner_dashboard, name='course_learner_dashboard'),
+
+    #Learner dashboard urls
+
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/participant$', views.client_admin_course_analytics_participants, name='client_admin_course_analytics_participants'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/progress$', views.client_admin_course_analytics_progress, name='client_admin_course_analytics_progress'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics$', views.client_admin_course_analytics, name='client_admin_course_analytics'),
@@ -142,23 +148,11 @@ urlpatterns = patterns(
     url(r'^participants$', views.participants_list, name='participants_list'),
 
     url(r'^api/companies/(?P<company_id>[0-9]+)/courses$', views.company_courses_api.as_view(), name='company_courses_api'),
-    url(r'^api/companies/(?P<company_id>[0-9]+)/learner_dashboards$', views.company_learner_dashboards_api.as_view(), name='company_learner_dashboards_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/export_info$', views.download_company_info, name='download_company_info'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/company_info$', views.company_info_api.as_view(), name='company_info_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/edit$', views.company_edit_api.as_view(), name='company_edit_api'),
     url(r'^api/companies/new_company$', views.create_new_company_api.as_view(), name='create_new_company_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
-
-    #Learner Dashboard, Element
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.company_course_learner_dashboard_tile, name='company_course_learner_dashboard_tile'),
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/discover/(?P<discovery_id>.*)$', views.company_course_learner_dashboard_discover, name='company_course_learner_dashboard_discover'),
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/branding_reset$', views.company_course_learner_dashboard_branding_reset, name='company_course_learner_dashboard_branding_reset'),
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/branding$', views.company_course_learner_dashboard_branding, name='company_course_learner_dashboard_branding'),
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/element_reorder$', views.company_course_learner_dashboard_element_reorder, name='company_course_learner_dashboard_element_reorder'),
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.+)/learner_dashboard/discover_reorder$', views.company_course_learner_dashboard_discover_reorder, name='company_course_learner_dashboard_discover_reorder'),
-    url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)/learner_dashboard', views.company_course_learner_dashboard, name='company_course_learner_dashboard'),
-    url(r'^companies/(?P<company_id>[0-9]+)/learner_dashboard/select_course', views.company_learner_dashboard_select_course, name='company_learner_dashboard_select_course'),
-    #Learner Dashboard, Element
 
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)', views.company_course_details, name='company_course_details'),
     url(r'^companies/(?P<company_id>[0-9]+)/participants/(?P<user_id>[0-9]+)', views.company_participant_details_api.as_view(), name='company_participants_details'),

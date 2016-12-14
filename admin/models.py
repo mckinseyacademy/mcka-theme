@@ -528,7 +528,7 @@ class LearnerDashboard(db_models.Model):
     title_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TITLE_COLOR)
     description_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_DESCRIPTION_COLOR)
 
-    client_id = db_models.IntegerField(blank=False)
+    client_id = db_models.IntegerField(null=True)
     course_id = db_models.CharField(blank=False, max_length=500)
 
 class LearnerDashboardTile(db_models.Model):

@@ -547,130 +547,6 @@ def client_admin_course_analytics(request, client_id, course_id):
         data,
     )
 
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-@client_admin_access
-def client_admin_course_learner_dashboard(request, client_id, course_id):
-
-    try:
-        instance = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
-    except:
-        instance = None
-
-    if request.method == "POST":
-        if instance == None:
-            instance = LearnerDashboard(
-                title = request.POST['title'],
-                description = request.POST['description'],
-                title_color = request.POST['title_color'],
-                description_color = request.POST['description_color'],
-                client_id = client_id, 
-                course_id = course_id
-            )
-            instance.save()
-        else:
-            instance.title = request.POST['title']
-            instance.description = request.POST['description']
-            instance.title_color = request.POST['title_color']
-            instance.description_color = request.POST['description_color']
-            instance.save()
-        
-            myDict = dict(request.POST.iterlists())
-            if myDict.get('positions[]'):
-                for index, item_id in enumerate(myDict['positions[]']):
-                    tileItem = LearnerDashboardTile.objects.get(id=item_id)
-                    tileItem.position = index
-                    tileItem.save()
-
-    if instance:
-        try:
-            branding = BrandingSettings.objects.get(client_id=client_id)
-        except:
-            branding = None
-
-        discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=instance.id).order_by('position')
-        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
-        
-        data = {
-            'client_id': client_id,
-            'course_id': course_id,
-            'learner_dashboard_id': instance.id,
-            'title': instance.title,
-            'description': instance.description,
-            'title_color': instance.title_color,
-            'description_color': instance.description_color,
-            'learner_dashboard_tiles': learner_dashboard_tiles,
-            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
-            'discovery_items': discovery_items,
-            'branding': branding,
-            'now': datetime.now(),
-        }
-    else:
-        data = {
-            'client_id': client_id,
-            'course_id': course_id,
-            'learner_dashboard_id': None,
-            'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
-        }
-
-    return render(request, 'admin/client-admin/learner_dashboard.haml', data)
-
-@ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def client_admin_course_learner_dashboard_tile(request, client_id, course_id, learner_dashboard_id, tile_id):
-
-    error = None
-    try:
-        instance = LearnerDashboardTile.objects.get(id=tile_id)
-    except:
-        instance = None
-
-    if request.method == 'POST':
-        form = LearnerDashboardTileForm(request.POST, request.FILES, instance=instance)
-        if form.is_valid():
-            tile = form.save()
-            if not "/learnerdashboard/" in tile.link:
-                if tile.get_tile_type_display() == 'Lesson':
-                    tile.link = "/learnerdashboard" + tile.link + "/lesson/"
-                if tile.get_tile_type_display() == 'Module':
-                    tile.link = "/learnerdashboard" + tile.link + "/module/"
-                tile.save()
-            if tile.get_tile_type_display() == 'Course':
-                if not "/courses/" in tile.link:
-                    tile.link = "/courses/" + tile.link
-                    tile.save()
-
-            #filter digital content types
-            if tile.tile_type == '2' or tile.tile_type == '3' or tile.tile_type == '4':
-                create_tile_progress_data(tile)
-
-            redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
-            return HttpResponseRedirect(redirect_url)
-    elif request.method == 'DELETE':
-        instance.delete()
-        redirect_url = reverse('client_admin_course_learner_dashboard', kwargs={'client_id': client_id, 'course_id': course_id})
-        return HttpResponseRedirect(redirect_url)
-    else:
-        form = LearnerDashboardTileForm(instance=instance)
-
-    default_colors = {
-        'label': settings.TILE_LABEL_COLOR,
-        'note': settings.TILE_NOTE_COLOR,
-        'title': settings.TILE_TITLE_COLOR,
-        'background': settings.TILE_BACKGROUND_COLOR,
-    }
-
-    return render(request, 'admin/client-admin/learner_dashboard_tile_modal.haml', {
-        'error': error,
-        'form': form,
-        'client_id': client_id,
-        'course_id': course_id,
-        'learner_dashboard_id': learner_dashboard_id,
-        'tile_id': tile_id,
-        'default_colors': default_colors,
-    })
-
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_analytics_participants(request, client_id, course_id):
@@ -4225,28 +4101,26 @@ def client_admin_branding_settings_reset(request, client_id, course_id):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def client_admin_course_learner_dashboard_discover_create_edit(request, client_id, course_id, discovery_id=None):
+def course_learner_dashboard_discover_create_edit(request, course_id, discovery_id=None):
 
     error = None
 
     try:
-        learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
     except: 
         return render(request, '404.haml')
 
     if discovery_id:
         discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
 
-        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
-            'client_id': client_id,
+        url = reverse('course_learner_dashboard_discover_create_edit', kwargs={
             'course_id': course_id,
             'discovery_id': discovery.id,
             })
     else:
         discovery = None
 
-        url = reverse('client_admin_course_learner_dashboard_discover_create_edit', kwargs={
-            'client_id': client_id,
+        url = reverse('course_learner_dashboard_discover_create_edit', kwargs={
             'course_id': course_id,
             })
 
@@ -4255,8 +4129,7 @@ def client_admin_course_learner_dashboard_discover_create_edit(request, client_i
         if form.is_valid():
             form.save()
 
-            url_list = reverse('client_admin_course_learner_dashboard_discover_list', kwargs={
-                'client_id': client_id,
+            url_list = reverse('course_learner_dashboard_discover_list', kwargs={
                 'course_id': course_id,
             })
 
@@ -4269,7 +4142,6 @@ def client_admin_course_learner_dashboard_discover_create_edit(request, client_i
         'url': url,
         'error': error,
         'form': form,
-        'client_id': client_id,
         'course_id': course_id,
         'discovery_id': discovery_id,
         'learner_dashboard': learner_dashboard.id,
@@ -4277,19 +4149,18 @@ def client_admin_course_learner_dashboard_discover_create_edit(request, client_i
 
     return render(
         request,
-        'admin/client-admin/learner_dashboard_discovery_create_edit.haml',
+        'admin/learner_dashboard/discover_modal.haml',
         data
     )
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def client_admin_course_learner_dashboard_discover_list(request, client_id, course_id):
+def course_learner_dashboard_discover_list(request, course_id):
 
-    learner_dashboard = LearnerDashboard.objects.get(client_id=client_id, course_id=course_id)
+    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
     discovery = LearnerDashboardDiscovery.objects.filter(learner_dashboard_id=learner_dashboard.id).order_by('position')
 
-    return render(request, 'admin/client-admin/learner_dashboard_discovery_list.haml', {
-        'client_id': client_id,
+    return render(request, 'admin/learner_dashboard/discovery_list.haml', {
         'course_id': course_id,
         'discovery': discovery,
         'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
@@ -4297,7 +4168,7 @@ def client_admin_course_learner_dashboard_discover_list(request, client_id, cour
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def client_admin_course_learner_dashboard_discover_delete(request, client_id, course_id, discovery_id):
+def course_learner_dashboard_discover_delete(request, course_id, discovery_id):
 
     try:
         discovery = LearnerDashboardDiscovery.objects.get(id=discovery_id)
@@ -4306,15 +4177,14 @@ def client_admin_course_learner_dashboard_discover_delete(request, client_id, co
 
     discovery.delete()
 
-    url = reverse('client_admin_course_learner_dashboard_discover_list', kwargs={
-        'client_id': client_id,
+    url = reverse('course_learner_dashboard_discover_list', kwargs={
         'course_id': course_id,
     })
 
     return HttpResponseRedirect(url)
 
 
-def client_admin_course_learner_dashboard_discover_reorder(request, course_id, client_id):
+def course_learner_dashboard_discover_reorder(request, course_id):
 
     if request.method == 'POST':
 
@@ -4323,19 +4193,6 @@ def client_admin_course_learner_dashboard_discover_reorder(request, course_id, c
 
         for index, item_id in enumerate(dataDict['position[]']):
             discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
-            discoveryItem.position = index
-            discoveryItem.save()
-        return HttpResponse('200')
-
-def client_admin_course_learner_dashboard_reorder(request, course_id, client_id):
-
-    if request.method == 'POST':
-
-        data = request.POST
-        dataDict = dict(data.iterlists())
-
-        for index, item_id in enumerate(dataDict['position[]']):
-            discoveryItem = LearnerDashboardTile.objects.get(pk=item_id)
             discoveryItem.position = index
             discoveryItem.save()
         return HttpResponse('200')
@@ -4676,66 +4533,11 @@ class company_courses_api(APIView):
         return Response(courses)
 
 
-class company_learner_dashboards_api(APIView):
-
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-    def get(self, request, company_id):
-
-        if request.user.is_company_admin:
-            user_permissions = Permissions(request.user.id)
-            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
-            company_ids = []
-            for user_org in user_organizations:
-                company_ids.append(int(user_org.id))
-            if int(company_id) not in company_ids:
-                return permission_denied(request)
-
-        learner_dashboards = LearnerDashboard.objects.filter(client_id=company_id).values()
-        
-        return Response(learner_dashboards)
-
-
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def company_learner_dashboard_select_course(request, company_id):
-
-    if request.user.is_company_admin:
-            user_permissions = Permissions(request.user.id)
-            user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
-            company_ids = []
-            for user_org in user_organizations:
-                company_ids.append(int(user_org.id))
-            if int(company_id) not in company_ids:
-                return permission_denied(request)
-
-    courses = course_api.get_course_list()
-
-    courseIds = []
-
-    for course in courses:
-
-        learner_dashboard = None
-        try:
-            learner_dashboard = LearnerDashboard.objects.get(client_id=company_id, course_id=course.id)
-        except:
-            try:
-                feature_flags = FeatureFlags.objects.get(course_id=course.id)
-                if (feature_flags and feature_flags.learner_dashboard):
-                    courseIds.append(course.id)
-            except:
-                continue
-
-    data = {
-        'courseIds': courseIds,
-        'company_id': company_id,
-    }
-
-    return render(request, 'admin/learner_dashboard/course_select.haml', data)
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def company_course_learner_dashboard(request, company_id, course_id):
+def course_learner_dashboard(request, course_id):
 
     try:
-        instance = LearnerDashboard.objects.get(client_id=company_id, course_id=course_id)
+        instance = LearnerDashboard.objects.get(course_id=course_id)
     except:
         instance = None
 
@@ -4746,7 +4548,6 @@ def company_course_learner_dashboard(request, company_id, course_id):
                 description = request.POST['description'],
                 title_color = request.POST['title_color'],
                 description_color = request.POST['description_color'],
-                client_id = company_id, 
                 course_id = course_id
             )
             instance.save()
@@ -4779,7 +4580,6 @@ def company_course_learner_dashboard(request, company_id, course_id):
         learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=instance.id).order_by('position')
 
         data = {
-            'client_id': company_id,
             'course_id': course_id,
             'learner_dashboard_id': instance.id,
             'title': instance.title,
@@ -4795,7 +4595,6 @@ def company_course_learner_dashboard(request, company_id, course_id):
         }
     else:
         data = {
-            'client_id': company_id,
             'course_id': course_id,
             'learner_dashboard_id': None,
             'learner_dashboard_enabled': settings.LEARNER_DASHBOARD_ENABLED,
@@ -4806,7 +4605,7 @@ def company_course_learner_dashboard(request, company_id, course_id):
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def company_course_learner_dashboard_tile(request, company_id, course_id, learner_dashboard_id, tile_id):
+def course_learner_dashboard_tile(request, course_id, learner_dashboard_id, tile_id):
 
     error = None
     try:
@@ -4835,16 +4634,16 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
                 create_tile_progress_data(tile)
 
             redirect_url = reverse(
-                'company_course_learner_dashboard', 
-                kwargs={'company_id': company_id, 'course_id': course_id}
+                'course_learner_dashboard', 
+                kwargs={'course_id': course_id}
             )
             return HttpResponseRedirect(redirect_url)
 
     elif request.method == 'DELETE':
         instance.delete()
         redirect_url = reverse(
-            'company_course_learner_dashboard', 
-            kwargs={'company_id': company_id, 'course_id': course_id}
+            'course_learner_dashboard', 
+            kwargs={'course_id': course_id}
         )
         return HttpResponseRedirect(redirect_url)
 
@@ -4861,7 +4660,6 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
     data = {
         'error': error,
         'form': form,
-        'company_id': company_id,
         'course_id': course_id,
         'learner_dashboard_id': learner_dashboard_id,
         'tile_id': tile_id,
@@ -4871,7 +4669,7 @@ def company_course_learner_dashboard_tile(request, company_id, course_id, learne
     return render(request, 'admin/learner_dashboard/element_modal.haml', data)
 
 
-def company_course_learner_dashboard_element_reorder(request, company_id, course_id):
+def course_learner_dashboard_tile_reorder(request, course_id):
 
     if request.method == 'POST':
 
@@ -4887,7 +4685,7 @@ def company_course_learner_dashboard_element_reorder(request, company_id, course
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def company_course_learner_dashboard_discover(request, company_id, course_id, learner_dashboard_id, discovery_id):
+def course_learner_dashboard_discover(request, course_id, learner_dashboard_id, discovery_id):
 
     error = None
 
@@ -4902,8 +4700,8 @@ def company_course_learner_dashboard_discover(request, company_id, course_id, le
             form.save()
 
             redirect_url = reverse(
-                'company_course_learner_dashboard', 
-                kwargs={'company_id': company_id, 'course_id': course_id}
+                'course_learner_dashboard',
+                kwargs={'course_id': course_id}
             )
 
             return HttpResponseRedirect(redirect_url)
@@ -4911,8 +4709,8 @@ def company_course_learner_dashboard_discover(request, company_id, course_id, le
     elif request.method == 'DELETE':
         instance.delete()
         redirect_url = reverse(
-            'company_course_learner_dashboard', 
-            kwargs={'company_id': company_id, 'course_id': course_id}
+            'course_learner_dashboard',
+            kwargs={'course_id': course_id}
         )        
         return HttpResponseRedirect(redirect_url)
 
@@ -4922,7 +4720,6 @@ def company_course_learner_dashboard_discover(request, company_id, course_id, le
     data = {
         'error': error,
         'form': form,
-        'company_id': company_id,
         'course_id': course_id,
         'discovery_id': discovery_id,
         'learner_dashboard_id': learner_dashboard_id,
@@ -4931,23 +4728,9 @@ def company_course_learner_dashboard_discover(request, company_id, course_id, le
     return render(request, 'admin/learner_dashboard/discover_modal.haml', data)
 
 
-def company_course_learner_dashboard_discover_reorder(request, company_id, course_id):
-
-    if request.method == 'POST':
-
-        data = request.POST
-        dataDict = dict(data.iterlists())
-
-        for index, item_id in enumerate(dataDict['position[]']):
-            discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
-            discoveryItem.position = index
-            discoveryItem.save()
-        return HttpResponse('200')
-
-
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def company_course_learner_dashboard_branding(request, company_id, course_id, learner_dashboard_id):
+def course_learner_dashboard_branding(request, course_id, learner_dashboard_id):
 
     try:
         instance = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
@@ -4960,8 +4743,8 @@ def company_course_learner_dashboard_branding(request, company_id, course_id, le
             form.save()
 
             redirect_url = reverse(
-                'company_course_learner_dashboard',
-                kwargs={'company_id': company_id, 'course_id': course_id}
+                'course_learner_dashboard',
+                kwargs={'course_id': course_id}
             )
 
             return HttpResponseRedirect(redirect_url)
@@ -4969,8 +4752,8 @@ def company_course_learner_dashboard_branding(request, company_id, course_id, le
     elif request.method == 'DELETE':
         instance.delete()
         redirect_url = reverse(
-            'company_course_learner_dashboard',
-            kwargs={'company_id': company_id, 'course_id': course_id}
+            'course_learner_dashboard',
+            kwargs={'course_id': course_id}
         )
         return HttpResponseRedirect(redirect_url)
 
@@ -4979,7 +4762,6 @@ def company_course_learner_dashboard_branding(request, company_id, course_id, le
 
     data = {
         'form': form,
-        'company_id': company_id,
         'course_id': course_id,
         'learner_dashboard_id': learner_dashboard_id,
     }
@@ -4988,18 +4770,18 @@ def company_course_learner_dashboard_branding(request, company_id, course_id, le
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def company_course_learner_dashboard_branding_reset(request, company_id, course_id, learner_dashboard_id):
+def course_learner_dashboard_branding_reset(request, course_id, learner_dashboard_id):
 
     redirect_url = reverse(
-        'company_course_learner_dashboard',
-        kwargs={'company_id': company_id, 'course_id': course_id}
+        'course_learner_dashboard',
+        kwargs={'course_id': course_id}
     )
     try:
         instance = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
     except:
         redirect_url = reverse(
-            'company_course_learner_dashboard',
-            kwargs={'company_id': company_id, 'course_id': course_id}
+            'course_learner_dashboard',
+            kwargs={'course_id': course_id}
         )
         return HttpResponseRedirect(redirect_url)
 

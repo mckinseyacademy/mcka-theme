@@ -46,12 +46,12 @@
           -else
             None
       %div
-        %a.button.radius.small{href: "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding", data-reveal-id: 'tileModal', data-reveal-ajax: 'true'}
+        %a.button.radius.small{href: "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding", data-reveal-id: 'brandingModal', data-reveal-ajax: 'true'}
             Edit
-        %a.button.radius.small..confirm{href: "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding_reset"}
+        %a.button.radius.small.confirm{href: "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding_reset"}
             Delete Branding
     - else 
       %p
-        Learner dashboard branding is not defined for this client
-      %a.button.radius.small{href: "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding", data-reveal-id: 'tileModal', data-reveal-ajax: 'true'}
+        Learner dashboard branding is not defined
+      %a.button.radius.small{href: "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding", data-reveal-id: 'brandingModal', data-reveal-ajax: 'true'}
             Create Branding

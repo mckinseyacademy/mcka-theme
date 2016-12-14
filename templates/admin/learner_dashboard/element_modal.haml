@@ -7,7 +7,7 @@
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-%form.tile_modal_form{action: '/admin/companies/#{company_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
+%form.tile_modal_form{action: '/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
   - csrf_token
   .row
     .small-3.columns

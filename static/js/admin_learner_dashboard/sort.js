@@ -21,7 +21,7 @@ $(function() {
         position: $("#discover-body").sortable('toArray')
       },
       type: 'POST',
-      url: window.location.pathname + "/discover_reorder"
+      url: window.location.pathname + "/discover/list/reorder"
     });
 
     $("#saveSortDiscover").css("display", "none");

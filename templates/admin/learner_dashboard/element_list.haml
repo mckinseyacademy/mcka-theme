@@ -1,6 +1,6 @@
 .row
   .large-12.columns
-    %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
+    %a.button.radius.small{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
       New element
       %i.fa.fa-plus
     -if learner_dashboard_tiles
@@ -29,7 +29,7 @@
                   %i{'style': "color:green", 'class': "fa fa-check"}
               %td{style: "word-wrap: break-word"}= tile.get_tile_type_display
               %td
-                %a{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
+                %a{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
                   %i.fa.fa-pencil-square-o{'style': "color:green"}
               %td
                 %a.confirm{OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}

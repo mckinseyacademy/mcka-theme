@@ -38,20 +38,12 @@
             %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}> COURSES
           .companyDetailsCompanyInfoButton.large-3.columns
             %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCompanyInfo', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COMPANY INFO
-          - if not user.is_company_admin and not user.is_internal_admin
-            .companyDetailsLearnerDashboardsButton.large-3.columns
-              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLearnerDashboards', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> LEARNER DASHBOARDS
           .large-6.columns
         %hr
     #companyDetailsDataWrapper
       .companyCourses.contentNavigationContainer
         #companyDetailsCoursesContainer
           #companyDetailsCoursesViewGridBlock
-      .companyLearnerDashboards.contentNavigationContainer
-        %a.radius.small.button{:style => 'right: 20%; float: right; position: absolute;', :href => '/admin/companies/#{company.id}/learner_dashboard/select_course', :data-reveal-id => 'coursesModal', :data-reveal-ajax =>'true'}
-          Add Learner Dashboard
-        #companyLearnerDashboardsContainer
-          #companyLearnerDashboardsViewGridBlock
       .companyCompanyInfo.contentNavigationContainer  
         #companyInfoDataWrapper
           #companyInfoInvoicingDetails.companyInfoTopic

@@ -7,7 +7,7 @@
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-%form.discover_modal_form{action: '/admin/companies/#{company_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/#{discovery_id}', method: "POST"}
+%form.discover_modal_form{action: "#{url}", method: "POST"}
   - csrf_token
   .row
     .small-3.columns
@@ -27,7 +27,7 @@
   .row
     .small-3.columns= form.author.label_tag
     .small-9.columns= form.author
-  %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard_id}'}
+  %input{'type': 'hidden', 'name': 'learner_dashboard', 'value': '#{learner_dashboard}'}
   .error
     - if error
       = error

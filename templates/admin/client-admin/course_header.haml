@@ -11,14 +11,6 @@
     - else
       %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/participants"}
         = _("Participants")
-  - if user.is_mcka_admin or user.is_mcka_subadmin 
-    - if learner_dashboard_enabled
-    	%li
-    	  - if request.resolver_match.url_name == 'client_admin_course_learner_dashboard'
-    	    %span.selected= _("Learner Dashboard")
-        - else
-          %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/learner_dashboard"}
-            = _("Learner Dashboard")
   - if user.is_client_admin or user.is_mcka_admin or user.is_mcka_subadmin
     %li
       - if request.resolver_match.url_name == 'client_admin_course_analytics'

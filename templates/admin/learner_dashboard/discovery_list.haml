@@ -1,7 +1,7 @@
 .row
   .large-12.columns
-    %a.button.radius.small{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
-      New item
+    %a.button.radius.small{:href => "/admin/courses/#{course_id}/learner_dashboard/discover/create", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
+      New discovery item
       %i.fa.fa-plus
     -if discovery_items
       %table{style:"table-layout: fixed; width: 100%"}
@@ -19,7 +19,7 @@
               %td{style: "word-wrap: break-word"}= discover.link
               %td{style: "word-wrap: break-word"}= discover.author
               %td
-                %a{:href => "/admin/companies/#{client_id}/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/#{discover.id}", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true'}
+                %a{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/#{discover.id}", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true'}
                   %i.fa.fa-pencil-square-o{'style': "color:green"}
               %td
                 %a.confirm{OnClick: 'deleteDiscover(#{discover.id}, #{learner_dashboard_id})'}
