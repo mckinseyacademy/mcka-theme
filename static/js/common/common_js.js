@@ -24,6 +24,15 @@ $(function() {
     $('.clearableParticipantsList').width('200px').change();
 });
 
+$(function() {
+  $("#program-menu-content").on('opened.fndtn.dropdown', function(e) {
+    RecalculateCourseListSize();
+  });
+  $(window).resize(function() {
+    RecalculateCourseListSize();
+  });
+});
+
 validateParticipantEmail = function() {
   if (this.liveSearchTimer) {
     clearTimeout(this.liveSearchTimer);
@@ -819,6 +828,18 @@ function S3FileUploader(files){
   });
 }
 
-
+function RecalculateCourseListSize(){
+  var course_list = $("#program-menu-content");
+  if (course_list.hasClass("open"))
+  {
+    var course_list_height = parseInt(course_list.height());
+    var top_offset = parseInt(course_list.offset().top);
+    var window_height = parseInt($("html").height());
+    if (window_height < course_list_height+top_offset)
+    {
+      setTimeout(function(){course_list.css({"height": window_height-top_offset+"px", "overflow":"auto"})}, 50);
+    }
+  }
+}
 
 
