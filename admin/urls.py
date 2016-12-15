@@ -26,6 +26,8 @@ urlpatterns = patterns(
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_delete, name='course_learner_dashboard_discover_delete'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.course_learner_dashboard_discover_reorder, name='course_learner_dashboard_discover_reorder'),
 
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/duplicate/(?P<copy_to_course_id>.+)$', views.course_learner_dashboard_copy, name='course_learner_dashboard_copy'),
+
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.course_learner_dashboard_tile, name='course_learner_dashboard_tile'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/element_reorder$', views.course_learner_dashboard_tile_reorder, name='course_learner_dashboard_tile_reorder'),
     url(r'^courses/(?P<course_id>.*)/learner_dashboard', views.course_learner_dashboard, name='course_learner_dashboard'),

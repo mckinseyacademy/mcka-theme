@@ -1,0 +1,18 @@
+.row
+  .large-12.columns
+    %table{style:"table-layout: fixed; width: 100%"}
+      %thead
+        %tr
+          %th="Destination course:"
+          %th="LD flag active:"
+          %th
+      %tbody
+        - for course in courses
+          %tr{id: "#{course.course_id}"}
+            %td{style: "word-wrap: break-word"}= course.course_id
+            %td
+                -if course.learner_dashboard
+                  %i{'style': "color:green; text-align: center;", 'class': "fa fa-check"}
+            %td
+              %a.confirm{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/duplicate/#{course.course_id}"}
+                %i.fa.fa-copy{'style': "color:green; float: right;"}

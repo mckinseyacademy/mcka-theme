@@ -4532,6 +4532,66 @@ class company_courses_api(APIView):
 
         return Response(courses)
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def course_learner_dashboard_copy(request, course_id, learner_dashboard_id, copy_to_course_id):
+
+    _check_if_course_has_ld(copy_to_course_id)
+
+    try:
+        learner_dashboard_copy = LearnerDashboard.objects.get(id=learner_dashboard_id)
+        learner_dashboard_copy.pk = None
+        learner_dashboard_copy.course_id = copy_to_course_id
+        learner_dashboard_copy.save()
+    except:
+        learner_dashboard_copy = None
+
+    if learner_dashboard_copy:
+
+        discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard_id)
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id)
+
+        for discovery_item in discovery_items:
+             discovery_item.pk = None
+             discovery_item.learner_dashboard = learner_dashboard_copy
+             discovery_item.save()
+
+        for learner_dashboard_tile in learner_dashboard_tiles:
+            learner_dashboard_tile.pk = None
+            learner_dashboard_tile.learner_dashboard = learner_dashboard_copy
+            learner_dashboard_tile.save()
+
+            if (learner_dashboard_tile.tile_type == '2' or
+                learner_dashboard_tile.tile_type == '3' or
+                learner_dashboard_tile.tile_type == '4' or
+                learner_dashboard_tile.tile_type == '5'
+                ):
+                create_tile_progress_data(learner_dashboard_tile)
+
+        try:
+            learner_dashboard_branding = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+            learner_dashboard_branding.pk = None
+            learner_dashboard_branding.learner_dashboard = learner_dashboard_copy
+            learner_dashboard_branding.save()
+        except:
+            pass
+
+        redirect_url = reverse(
+            'course_learner_dashboard',
+            kwargs={'course_id': copy_to_course_id}
+        )
+        return HttpResponseRedirect(redirect_url)
+
+    else:
+        return render(request, '404.haml')
+
+def _check_if_course_has_ld(course_id):
+
+    try:
+        learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
+    except:
+        learner_dashboard = None
+    if learner_dashboard:
+        learner_dashboard.delete()
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_learner_dashboard(request, course_id):
@@ -4566,7 +4626,11 @@ def course_learner_dashboard(request, course_id):
                     tileItem.save()
 
     if instance:
+
+        courses = FeatureFlags.objects.all()
+
         try:
+
             learner_dashboard_branding = LearnerDashboardBranding.objects.get(learner_dashboard=instance.id)
             branding = learner_dashboard_branding
         except:
@@ -4581,6 +4645,7 @@ def course_learner_dashboard(request, course_id):
 
         data = {
             'course_id': course_id,
+            'courses': courses,
             'learner_dashboard_id': instance.id,
             'title': instance.title,
             'description': instance.description,
