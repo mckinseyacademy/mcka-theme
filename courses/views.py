@@ -674,7 +674,7 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
         "learner_dashboard": learner_dashboard,
     }
 
-    if learner_dashboard.course_id == course.id:
+    if learner_dashboard.course_id == course_id:
         if feature_flags.branding:
             try:
                 data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
