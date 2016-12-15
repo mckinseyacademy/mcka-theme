@@ -285,11 +285,12 @@ def _render_group_work(request, course, project_group, group_project, learner_da
             "course_id": course.id,
         })
 
-        if flag_branding:
-            try:
-                data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-            except:
-                pass
+        if learner_dashboard.course_id == course.id:
+            if flag_branding:
+                try:
+                    data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+                except:
+                    pass
 
         return render(request, 'courses/course_group_work_ld.haml', data)
     else:
@@ -384,11 +385,12 @@ def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id
     except:
         return HttpResponse(status=404)
 
-    if data['flag_branding']:
-        try:
-            data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-        except:
-            pass
+    if learner_dashboard.course_id == course_id:
+        if data['flag_branding']:
+            try:
+                data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+            except:
+                pass
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
 
@@ -672,11 +674,12 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
         "learner_dashboard": learner_dashboard,
     }
 
-    if feature_flags.branding:
-        try:
-            data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-        except:
-            pass
+    if learner_dashboard.course_id == course.id:
+        if feature_flags.branding:
+            try:
+                data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+            except:
+                pass
 
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
 
@@ -749,15 +752,15 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
             "calendar_enabled": True if calendar_items else False,
         })
 
-        try:
-            feature_flags = FeatureFlags.objects.get(course_id=course_id)
-            if feature_flags.branding:
-                try:
-                    data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-                except:
-                    pass
-        except:
-            pass
+        if learner_dashboard.course_id == course_id:
+            try:
+                if feature_flags.branding:
+                    try:
+                        data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+                    except:
+                        pass
+            except:
+                pass
 
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
