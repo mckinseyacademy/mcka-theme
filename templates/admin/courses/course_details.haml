@@ -49,8 +49,7 @@
                   %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PARTICIPANTS
                 .courseStatsButton.large-2.columns
                   %a{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  STATS
-                - if user.is_company_admin
-                - else
+                - if request.resolver_match.url_name == 'course_details'
                   .courseStatsButton.large-4.columns
                     %a{:href => 'learner_dashboard'}>  LEARNER DASHBOARD
                   / .courseDiscoverContentButton.large-3.columns

@@ -4129,7 +4129,7 @@ def course_learner_dashboard_discover_create_edit(request, course_id, discovery_
         if form.is_valid():
             form.save()
 
-            url_list = reverse('course_learner_dashboard_discover_list', kwargs={
+            url_list = reverse('course_learner_dashboard', kwargs={
                 'course_id': course_id,
             })
 
