@@ -761,6 +761,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
                         pass
             except:
                 pass
+        else:
+            return render(request, 'courses/course_lessons_ld_external.haml', data)
 
         return render(request, 'courses/course_lessons_ld.haml', data)
     else:
