@@ -109,7 +109,20 @@ In `~/lms.auth.json`, configure the LMS to integrate with Apros by adding the fo
     "apros": {
         "secret_key": "1private_apros_key",
         "url": "http://mcka.local/accounts/finalize/",
-        "error_url": "http://mcka.local/accounts/sso_error/"
+        "error_url": "http://mcka.local/accounts/sso_error/",
+        "link_by_email": true
     }
 }
 ```
+
+
+# Using SSO
+
+1. To use SSO it is necessary first to go into the Apros Client Admin screen at `(apros)/admin/clients/`, then find the client you wish to link to an IdP. Click the pencil icon to edit that client, and set the "Identity Provider" value to same the "IDP Slug" value seen in the LMS SAML admin at `(LMS)/admin/third_party_auth/samlproviderconfig/`.
+1. Next, create an access key for that client: From the Apros admin screen, go to Companies > (Company Name) > Access, which should bring you to `(apros)/admin/clients/(client_ID)/access_keys`. Click "Create Course Access Key". Complete the form and save the access key URL that is given.
+1. In an incognito window, open the access key URL. It should redirect you to that company's SSO provider, then upon successful login, allow you to complete the registration form on the Apros site. After that point, it will enroll you into any courses specified by the access key.
+1. After a user has created an account using an access key, that user will be able to use SSO to login again from the SSO option on `/accounts/login/`. Using that login method before creating an account with an access key will not work, and will result in the error "This email is not associated with any identity provider."
+
+# Skipping the registration form
+
+To skip the registration form for certain trusted identity providers, configure the `SSO_AUTOPROVISION_PROVIDERS` and `SSO_AUTOPROVISION_CITY` Apros django settings [as described in settings.py](https://github.com/mckinseyacademy/mcka_apros/blob/8eb09f6510c12b1d90d1c470de4bd2c04f5c0117/mcka_apros/settings.py#L206-L214).
