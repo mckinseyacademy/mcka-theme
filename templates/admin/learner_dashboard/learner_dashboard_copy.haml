@@ -1,18 +1,43 @@
 .row
   .large-12.columns
+    %p.strong Source course: #{course_id}
     %table{style:"table-layout: fixed; width: 100%"}
       %thead
         %tr
           %th="Destination course:"
-          %th="LD flag active:"
           %th
       %tbody
         - for course in courses
-          %tr{id: "#{course.course_id}"}
+          %tr{id: "#{course.pk}"}
             %td{style: "word-wrap: break-word"}= course.course_id
             %td
-                -if course.learner_dashboard
-                  %i{'style': "color:green; text-align: center;", 'class': "fa fa-check"}
-            %td
-              %a.confirm{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/duplicate/#{course.course_id}"}
+              %a{href: '#', :OnClick => 'confirmAndCopy(\"#{course_id}\", \"#{learner_dashboard_id}\", \"#{course.course_id}\", #{course.pk})'}
                 %i.fa.fa-copy{'style': "color:green; float: right;"}
+
+%script
+  function confirmAndCopy(source, learner_dashboard_id, destination, id){
+      if (window.confirm("You are about to copy dashboard " + source + " to " + destination)) {
+        var url = "/admin/courses/" + source + "/learner_dashboard/" + learner_dashboard_id + "/duplicate/" + destination;
+        var element = $("#" + id);
+        $.ajax({
+          headers: {
+            'X-CSRFToken': $.cookie('apros_csrftoken')
+          },
+          type: 'POST',
+          url: url,
+          beforeSend: function(){
+            element.find('.fa').removeClass('fa-copy').addClass('fa-spin fa-spinner');
+          },
+          complete: function(){
+            var hrefElement = element.find('a');
+            var newUrl = "/admin/courses/" + destination + "/learner_dashboard";
+            element.find('.fa').removeClass('fa-spin fa-spinner').addClass('fa-check');
+            hrefElement.prop("onclick", null);
+            hrefElement.attr("href", newUrl);
+          },
+          error: function(){
+            alert("Something went wrong!");
+          }
+        });
+      }
+    }

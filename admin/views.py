@@ -4579,10 +4579,10 @@ def course_learner_dashboard_copy(request, course_id, learner_dashboard_id, copy
             'course_learner_dashboard',
             kwargs={'course_id': copy_to_course_id}
         )
-        return HttpResponseRedirect(redirect_url)
+        return HttpResponse('200')
 
     else:
-        return render(request, '404.haml')
+        return HttpResponse('404')
 
 def _check_if_course_has_ld(course_id):
 
@@ -4627,7 +4627,7 @@ def course_learner_dashboard(request, course_id):
 
     if instance:
 
-        courses = FeatureFlags.objects.all()
+        courses = FeatureFlags.objects.filter(learner_dashboard=1).exclude(course_id=course_id).order_by('course_id')
 
         try:
 
