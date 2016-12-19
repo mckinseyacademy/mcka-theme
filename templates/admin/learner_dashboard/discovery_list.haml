@@ -19,7 +19,7 @@
               %td{style: "word-wrap: break-word"}= discover.link
               %td{style: "word-wrap: break-word"}= discover.author
               %td
-                %a{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/discover/#{discover.id}", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true'}
+                %a{:href => "/admin/courses/#{course_id}/learner_dashboard/discover/edit/#{discover.id}", :data-reveal-id => 'discoverModal', :data-reveal-ajax =>'true'}
                   %i.fa.fa-pencil-square-o{'style': "color:green"}
               %td
                 %a.confirm{OnClick: 'deleteDiscover(#{discover.id}, #{learner_dashboard_id})'}
@@ -32,5 +32,3 @@
       %div#savedSortDiscover.button.radius.small.disabled{style: "display:none"}
         Saved
           %i.fa.fa-check{style: "color:green"}
-
-  
