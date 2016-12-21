@@ -19,6 +19,7 @@
       if (window.confirm("You are about to copy dashboard " + source + " to " + destination)) {
         var url = "/admin/courses/" + source + "/learner_dashboard/" + learner_dashboard_id + "/duplicate/" + destination;
         var element = $("#" + id);
+        var hrefElement = element.find('a');
         $.ajax({
           headers: {
             'X-CSRFToken': $.cookie('apros_csrftoken')
@@ -28,15 +29,17 @@
           beforeSend: function(){
             element.find('.fa').removeClass('fa-copy').addClass('fa-spin fa-spinner');
           },
-          complete: function(){
-            var hrefElement = element.find('a');
+          success: function(){
             var newUrl = "/admin/courses/" + destination + "/learner_dashboard";
             element.find('.fa').removeClass('fa-spin fa-spinner').addClass('fa-check');
             hrefElement.prop("onclick", null);
             hrefElement.attr("href", newUrl);
           },
-          error: function(){
-            alert("Something went wrong!");
+          error: function(xhr, status, error) {
+            element.find('.fa').removeClass('fa-spin fa-spinner').addClass('fa-times');
+            hrefElement.prop("onclick", null);
+            hrefElement.attr("href", "#");
+            alert("Something went wrong:" + xhr.responseText);
           }
         });
       }

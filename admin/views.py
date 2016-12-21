@@ -4579,10 +4579,10 @@ def course_learner_dashboard_copy(request, course_id, learner_dashboard_id, copy
             'course_learner_dashboard',
             kwargs={'course_id': copy_to_course_id}
         )
-        return HttpResponse('200')
+        return HttpResponse(json.dumps("Ok"), content_type='application/json')
 
     else:
-        return HttpResponse('404')
+        return HttpResponse(json.dumps("Learner dashboard not found"), content_type='application/json')
 
 def _check_if_course_has_ld(course_id):
 
