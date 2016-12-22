@@ -754,9 +754,10 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
 
         if learner_dashboard.course_id == course_id:
             try:
+                feature_flags = FeatureFlags.objects.get(course_id=course_id)
                 if feature_flags.branding:
                     try:
-                        data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
+                        data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard)
                     except:
                         pass
             except:
