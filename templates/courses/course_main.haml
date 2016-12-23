@@ -6,6 +6,13 @@
     = program.display_name
     = _(" | Courses | McKinsey Academy")
 
+- block custom_css
+  -# lms-discussion-main.css is spiltted to two files for IE9
+  <!--[if IE 9]>
+    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.0.min.css' %}"}
+    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.1.min.css' %}"}
+  <![endif]-->
+
 - block content
   #home-courses
     .row
