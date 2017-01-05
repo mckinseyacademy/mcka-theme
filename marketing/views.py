@@ -1,6 +1,7 @@
 ''' rendering templates from requests related to marketing '''
 from django.shortcuts import render, redirect
 from django.template import TemplateDoesNotExist
+from django.template.loader import get_template
 from django.http import Http404, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -12,17 +13,23 @@ from .forms import TechSupportForm, SubscribeForm, EdxOfferForm
 def infer_default_navigation(request, page_name):
     page = "marketing/{0}.haml".format(page_name.lower())
     try:
-        return render(request, page)
+        template = get_template(page)
+        if page_name == "programs" or page_name == "about" or page_name == "experience":
+            return redirect('/')
+        else:
+            return render(request, page)
+
     except TemplateDoesNotExist:
         raise Http404
 
 def contact(request, tech_support_form=TechSupportForm, subscribe_form=SubscribeForm):
-    data = {
-        "support_form": tech_support_form(),
-        "subscribe_form": subscribe_form(),
-    }
+    # data = {
+    #     "support_form": tech_support_form(),
+    #     "subscribe_form": subscribe_form(),
+    # }
 
-    return render(request, 'marketing/contact.haml', data)
+    # return render(request, 'marketing/contact.haml', data)
+    return redirect('/')
 
 @require_POST
 def support(request, tech_support_form=TechSupportForm):
@@ -42,6 +49,7 @@ def subscribe(request, subscribe_form=SubscribeForm):
 
 def styleguide(request):
     return render(request, 'marketing/styleguide.haml')
+    # return redirect('/')
 
 def edxoffer(request, offer_form=EdxOfferForm):
     data = {
@@ -49,6 +57,8 @@ def edxoffer(request, offer_form=EdxOfferForm):
     }
 
     return render(request, 'marketing/edxoffer.haml', data)
+    # return redirect('/')
 
 def fblf(request):
     return redirect('http://www.fblf.info')
+    # return redirect('/')
