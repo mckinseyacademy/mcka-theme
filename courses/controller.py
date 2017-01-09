@@ -6,6 +6,7 @@ import random
 from datetime import datetime
 import re
 import json
+from decimal import Decimal, ROUND_UP
 
 from django.conf import settings
 
@@ -407,7 +408,7 @@ def load_static_tabs_api(course_id, details):
     return static_tabs
 
 def round_to_int(value):
-    return int(round(value))
+    return int(round(Decimal(value).quantize(Decimal('.01'), rounding=ROUND_UP)))
 
 def round_to_int_bump_zero(value):
     rounded_value = round_to_int(value)
