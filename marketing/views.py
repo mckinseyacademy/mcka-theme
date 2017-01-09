@@ -14,7 +14,7 @@ def infer_default_navigation(request, page_name):
     page = "marketing/{0}.haml".format(page_name.lower())
     try:
         template = get_template(page)
-        if page_name == "programs" or page_name == "about" or page_name == "experience":
+        if page_name == "programs" or page_name == "about" or page_name == "experience" or page_name == "edxoffer" or page_name == "fblf":
             return redirect('/')
         else:
             return render(request, page)
@@ -52,13 +52,13 @@ def styleguide(request):
     # return redirect('/')
 
 def edxoffer(request, offer_form=EdxOfferForm):
-    data = {
-        "edx_offer_form": offer_form(),
-    }
+    # data = {
+    #     "edx_offer_form": offer_form(),
+    # }
 
-    return render(request, 'marketing/edxoffer.haml', data)
-    # return redirect('/')
+    # return render(request, 'marketing/edxoffer.haml', data)
+    return redirect('/')
 
 def fblf(request):
-    return redirect('http://www.fblf.info')
-    # return redirect('/')
+    # return redirect('http://www.fblf.info')
+    return redirect('/')
