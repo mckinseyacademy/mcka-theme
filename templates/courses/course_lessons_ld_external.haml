@@ -8,23 +8,19 @@
   #course-lessons{'data-course-url': '/learnerdashboard#{course.current_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}', 'data-tile-id': '#{tile_id}', 'data-current-progress': '#{user_progress}'}
     - if apros_features.notes
       - include 'courses/lesson_notes.haml'
-    -if tile_type = 'module'
-      .lesson-title
-        %h1= course.current_module.name
-    -else
-      .lesson-title
-        %span.label-3.lesson-name= course.current_lesson.name
-      %h1
-        %a{'data-reveal-id': 'module_list', "data-tooltip": "Lesson Modules"}
-          %i.fa.fa-list-ul
-        = course.current_module.name
+    .lesson-title
+      %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
+      %span.label-3.lesson-name= course.current_lesson.name
+    %h1
+      %a{'data-reveal-id': 'module_list', "data-tooltip": "Lesson Modules"}
+        %i.fa.fa-list-ul
+      = course.current_module.name
     - block lesson_content
       .lesson-content
       .lesson-discussion
-    -if tile_type != 'module'
-      - include "courses/content_page/lesson_pager_ld.haml"
+    - include "courses/content_page/lesson_pager.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
-    %p.style-2 You have completed ={course.current_lesson.progress}% of ={course.current_lesson.name}
+    %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
