@@ -211,7 +211,7 @@ SSO_AUTOPROVISION_PROVIDERS = ["saml-mckinsey"]
 
 # When autoprovisioning (see previous setting), set the user's city to this value. (A city is
 # required for things like the map of students, but we don't get 'city' from the SSO provider.)
-SSO_AUTOPROVISION_CITY = "Gotham"
+SSO_AUTOPROVISION_CITY = "New York"
 
 # Whether or not to cache courseware content locally, defult=False but can be overridden in local_settings.py
 USE_SESSION_COURSEWARE_CACHING = False
