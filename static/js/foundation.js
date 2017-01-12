@@ -3948,6 +3948,7 @@
           var old_success = typeof ajax_settings.success !== 'undefined' ? ajax_settings.success : null;
 
           $.extend(ajax_settings, {
+            timeout: 30000,
             success: function (data, textStatus, jqXHR) {
               if ( $.isFunction(old_success) ) {
                 old_success(data, textStatus, jqXHR);
@@ -3962,7 +3963,6 @@
               self.show(modal, settings.css.open);
             }
           });
-
           $.ajax(ajax_settings);
         }
       }
