@@ -10,8 +10,13 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             colModel:[
                 { title: 'Name', index: true, name: 'full_name', 
                 actions: function(id, attributes) 
-                { 
-                    return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['full_name'] + '</a>';
+                {
+                    var custom_name = attributes['full_name'];
+                    if (custom_name === "")
+                      custom_name=attributes['first_name']+" " +attributes['last_name'];
+                    if (custom_name === " ")
+                      custom_name=attributes['username'];
+                    return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + custom_name + '</a>';
                 }},
                 { title: 'Company', index: true, name: 'organizations_custom_name' },
                 { title: 'Email', index: true, name: 'email' },
