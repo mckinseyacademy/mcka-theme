@@ -4560,13 +4560,6 @@ def course_learner_dashboard_copy(request, course_id, learner_dashboard_id, copy
             learner_dashboard_tile.learner_dashboard = learner_dashboard_copy
             learner_dashboard_tile.save()
 
-            if (learner_dashboard_tile.tile_type == '2' or
-                learner_dashboard_tile.tile_type == '3' or
-                learner_dashboard_tile.tile_type == '4' or
-                learner_dashboard_tile.tile_type == '5'
-                ):
-                create_tile_progress_data(learner_dashboard_tile)
-
         try:
             learner_dashboard_branding = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
             learner_dashboard_branding.pk = None
