@@ -12,8 +12,9 @@
 - block custom_css
   -# lms-discussion-main.css is spiltted to two files for IE9 or below
   /[if lte IE 9]
-    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.0.min.css' %}"}
-    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.1.min.css' %}"}
+    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.0.min.css' %}"}
+    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.1.min.css' %}"}
+
 - block current_content
   %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
   %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}

@@ -268,7 +268,7 @@
       float: right;
       @include button($button-sml, $primary-color, true);
       margin-left: $button-margin;
-      padding: 10px 28px;
+      padding: 10px 26px;
 
       &:hover {
         background-color: $mckinsey-academy-blue-gray;
