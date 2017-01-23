@@ -326,11 +326,12 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
         user_workgroups = [workgroup]
     else:
         user_workgroups = user_api.get_user_workgroups(user_id, course.id) 
-    print user_workgroups
+
     if len(user_workgroups) < 1:
         return None, None
 
     project_group = user_workgroups[0]
+
     user_ids = [str(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
     additional_fields = ["title", "first_name", "last_name", "avatar_url"]
     project_group.members = user_api.get_users(ids=user_ids,fields=additional_fields)

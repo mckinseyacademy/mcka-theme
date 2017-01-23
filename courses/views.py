@@ -582,6 +582,10 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         group_activities, group_work_avg = group_project_reviews(user_id, course_id, project_group, group_project)
 
         # format scores & grades
+        for course_group_project in course.group_projects:
+            if group_project.id != course_group_project.id:
+                course.group_projects.remove(course_group_project)
+
         for activity in group_activities:
             if activity.is_graded and activity.score is not None:
                 completed_items_count += 1
