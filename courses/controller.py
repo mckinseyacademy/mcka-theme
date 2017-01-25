@@ -831,3 +831,19 @@ def createProgressObjects(progressData, tile_ids, user_id):
             user=user_id,
             percentage=0,
         )
+
+def _remove_duplicate_grader(graders):
+    """
+    Removes duplicate graders, used for private group work configuration.
+    """
+    for i in range(0, len(graders)):
+        for j in range(i+1,len(graders)):
+            if compare_graders(graders[i], graders[j]):
+                graders.pop(i)
+                break
+
+def compare_graders(a, b):
+    if (a.weight == b.weight) and ("GROUP_PROJECT_" in str(a.type)) and ("GROUP_PROJECT_" in str(b.type)):
+        return True
+    else:
+        return False

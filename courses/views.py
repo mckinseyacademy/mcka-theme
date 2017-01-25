@@ -37,7 +37,7 @@ from .controller import inject_gradebook_info, round_to_int, Proficiency, get_ch
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, group_project_reviews, add_months_to_date, progress_update_handler
 from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
-from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location, createProgressObjects
+from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location, createProgressObjects, _remove_duplicate_grader
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user, check_course_shell_access
 
@@ -563,8 +563,15 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     gradebook = inject_gradebook_info(user_id, course)
 
     graders = gradebook.grading_policy.GRADER
+
+    graders_weight_sum = 0
+
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
+        graders_weight_sum += grader.weight
+
+    if graders_weight_sum > 100:
+        _remove_duplicate_grader(graders)
 
     # add module completion
     completions = course_api.get_course_completions(course.id, user_id)
