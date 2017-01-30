@@ -37,6 +37,7 @@ urlpatterns += patterns(
     url(r'^learnerdashboard/courses/(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)/(?P<tile_type>.*)/(?P<tile_id>.*)/(?P<learner_dashboard_id>[0-9]+)$', courseviews.navigate_to_lesson_module, name='navigate_to_lesson_module'),
     url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/resources$', courseviews.course_resources_learner_dashboard, name='course_resources_learner_dashboard'),
     url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/discussion$', courseviews.course_discussion_learner_dashboard, name='course_discussion_learner_dashboard'),
+    url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work/(?P<workgroup_id>[0-9]+)$', courseviews.workgroup_course_group_work, name='user_course_group_work_learner_dashboard'),
     url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work$', courseviews.user_course_group_work_learner_dashboard, name='user_course_group_work_learner_dashboard'),
     url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/calendar$', courseviews.course_learner_dashboard_calendar, name='course_learner_dashboard_calendar'),
 )

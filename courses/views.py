@@ -329,14 +329,21 @@ def user_course_group_work_learner_dashboard(request, learner_dashboard_id, cour
 
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_TA)
-def workgroup_course_group_work(request, course_id, workgroup_id):
+def workgroup_course_group_work(request, course_id, workgroup_id, learner_dashboard_id=None):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    branding_flag = None
+    if feature_flags and not feature_flags.group_work:
+        return HttpResponseRedirect('/courses/{}'.format(course_id))
+    if feature_flags and feature_flags.group_work:
+        branding_flag = feature_flags.branding
+
     # set this workgroup as the preference for reviewing
     user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
 
     course = load_course(course_id, request=request)
     project_group, group_project = get_group_project_for_workgroup_course(workgroup_id, course)
 
-    return _render_group_work(request, course, project_group, group_project)
+    return _render_group_work(request, course, project_group, group_project, learner_dashboard_id, branding_flag)
 
 def _course_discussion_data(request, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
