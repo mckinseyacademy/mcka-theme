@@ -664,7 +664,7 @@ def create_tile_progress_data(tile):
             update_progress(tile, user['id'], course, user_completions, link)
 
 
-def progress_update_handler(request, course, chapter_id, page_id):
+def progress_update_handler(request, course, chapter_id=None, page_id=None):
 
     '''
     Triggered by user visiting the module. Filters tiles with current course_ids.
@@ -683,6 +683,8 @@ def progress_update_handler(request, course, chapter_id, page_id):
                     continue
                 if tile.tile_type == '2' and not chapter_id in tile.link:
                     continue
+                if tile.tile_type == '7' and not link['block_id'] in tile.link:
+                    continue
                 update_progress(tile, request.user.id, course, completions, link)
 
 
@@ -699,7 +701,22 @@ def update_progress(tile, user_id, course, completions, link):
         obj.percentage = calculate_user_lesson_progress(user_id, course, link['lesson_id'], completions)
     elif tile.tile_type == '3' or tile.tile_type == '5':
         obj.percentage = calculate_user_module_progress(user_id, course, link['lesson_id'], link['page_id'], completions)
+    elif tile.tile_type == '7' and link['block_id']:
+        obj.percentage = calculate_user_group_activity_progress(user_id, course, link['block_id'], completions)
     obj.save()
+
+
+def calculate_user_group_activity_progress(user_id, course, link, completions):
+
+    completed_ids = [result.content_id for result in completions]
+    project_group, group_project = get_group_project_for_user_course(user_id, course)
+
+    for activity in group_project._activities:
+        activity_response = workgroup_api.get_groupwork_activity(activity.uri)
+        stage_ids = [stage.id for stage in activity_response.children]
+        if link in stage_ids:
+            matches = set(stage_ids).intersection(completed_ids)
+            return round_to_int(100 * len(matches)/len(stage_ids))
 
 
 def calculate_user_course_progress(user_id, course, completions):
@@ -712,7 +729,7 @@ def calculate_user_course_progress(user_id, course, completions):
                                                            settings.PROGRESS_IGNORE_COMPONENTS)
         if len(lesson_component_ids) > 0:
             matches = set(lesson_component_ids).intersection(completed_ids)
-            lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+            lesson.progress = round_to_int(100 * len(matches)/len(lesson_component_ids))
     actual_completions = set(component_ids).intersection(completed_ids)
 
     try:
@@ -781,6 +798,8 @@ def get_course_object(user_id, course_id):
 
 def strip_tile_link(link):
 
+    #TODO: Refactor!!!
+
     if link.startswith("/learnerdashboard/"):
         link = link[17:]
 
@@ -791,9 +810,25 @@ def strip_tile_link(link):
     if discussion:
         link = link.replace(discussion.group(0), "")
 
-    resources  = re.search('/resources(.*)$', link)
+    resources = re.search('/resources(.*)$', link)
     if resources:
         link = link.replace(resources.group(0), "")
+
+    gw_activity = re.search('activate_block_id(.*)$', str(link))
+    if gw_activity:
+        substring_course_id = re.search('/courses/(.*)/group_work', link)
+        course_id = substring_course_id.group(1)
+
+        substring_block_id = re.search('activate_block_id=(.*)', link)
+        block_id = substring_block_id.group(1)
+
+        stripped_link = {
+            'course_id': course_id,
+            'lesson_id': None,
+            'page_id': None,
+            'block_id': block_id,
+        }
+        return stripped_link
 
     try:
         substring = re.search('/courses/(.*)/lessons/', link)
@@ -803,6 +838,7 @@ def strip_tile_link(link):
             'course_id': link.replace("/courses/", ""),
             'lesson_id': None,
             'page_id': None,
+            'block_id': None,
         }
         return stripped_link
 
@@ -816,6 +852,7 @@ def strip_tile_link(link):
         'course_id': course_id,
         'lesson_id': lesson_id,
         'page_id': page_id,
+        'block_id': None,
     }
     return stripped_link
 

@@ -4,7 +4,7 @@ $(function(){
 
   $.xblock.getRuntime().listenTo('xblock-rendered', function(event, data) {
     updateTileProgress();
-    $(data).find(".input-main").click(function () {
+    $(data).find(".input-main, .submit, #group-project-completion-checkmark").click(function () {
       $(document).ajaxComplete(function() {
         updateTileProgress();
       });

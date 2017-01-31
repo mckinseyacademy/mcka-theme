@@ -253,6 +253,7 @@
           }
       case '2':
       case '4':
+      case '7':
         if (now < getPublishDate(element)){
           return notAvailable;
           break;
@@ -357,7 +358,7 @@
 
     if (element.tile_type == "7") {
       dataDig.push({
-        color: '#66a5b5',
+        color: calculateColor(element, now.getTime()),
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),

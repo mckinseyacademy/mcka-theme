@@ -4691,6 +4691,10 @@ def course_learner_dashboard_tile(request, course_id, learner_dashboard_id, tile
             if tile.tile_type == '2' or tile.tile_type == '3' or tile.tile_type == '4' or tile.tile_type == '5':
                 create_tile_progress_data(tile)
 
+            #creating progress data for groupwork activity links
+            if tile.tile_type == '7' and "activate_block_id" in tile.link:
+                create_tile_progress_data(tile)
+
             redirect_url = reverse(
                 'course_learner_dashboard', 
                 kwargs={'course_id': course_id}

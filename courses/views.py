@@ -219,6 +219,13 @@ def course_cohort(request, course_id):
 
 def _render_group_work(request, course, project_group, group_project, learner_dashboard_id=None, flag_branding=None):
 
+    if request.is_ajax():
+        try:
+            progress_update_handler(request, course)
+            return HttpResponse(status=200)
+        except:
+            return HttpResponse(status=204)
+
     seqid = request.GET.get("seqid", None)
     if seqid and " " in seqid:
         seqid = seqid.replace(" ", "+")
@@ -1176,12 +1183,12 @@ def course_learner_dashboard_calendar(request, learner_dashboard_id):
         trackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard,
             show_in_calendar = True
-        ).exclude(tile_type='1').exclude(tile_type='6').exclude(tile_type='7')
+        ).exclude(tile_type='1').exclude(tile_type='6')
 
         notTrackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard,
             show_in_calendar = True
-        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').exclude(tile_type='5')
+        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').exclude(tile_type='5').exclude(tile_type='7')
     else:
         return HttpResponse(status=404)
 

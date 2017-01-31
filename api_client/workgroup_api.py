@@ -189,3 +189,9 @@ def get_workgroup_review_items(workgroup_id):
         )
     )
     return JP.from_json(response.read())
+
+
+@api_error_protect
+def get_groupwork_activity(uri):
+    response = GET(uri)
+    return JP.from_json(response.read())
