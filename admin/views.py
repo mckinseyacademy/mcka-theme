@@ -4070,6 +4070,7 @@ def client_admin_branding_settings_create_edit(request, client_id, course_id):
         'discover_author_color':settings.DISCOVER_AUTHOR_COLOR,
         'discover_rule_color':settings.DISCOVER_RULE_COLOR,
         'background_color':settings.LEARNER_DASHBOARD_BACKGROUND_COLOR,
+        'top_bar_color':settings.LEARNER_DASHBOARD_TOP_BAR_COLOR,
     }
 
     return render(request, 'admin/client-admin/course_branding_settings_create_edit.haml', {

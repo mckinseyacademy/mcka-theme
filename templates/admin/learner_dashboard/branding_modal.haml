@@ -62,6 +62,14 @@
 
     .row
       .small-3.columns
+      .small-9.columns= form.top_bar_color.errors
+    .row.branding-row
+      .small-3.columns Top bar color:
+      .small-9.columns
+        %input#id_rule_color{'type': 'color', 'name': 'top_bar_color', 'value': "#{form.top_bar_color.value}", 'data-default-value': "#{default_colors.top_bar_color}"}
+
+    .row
+      .small-3.columns
       .small-9.columns= form.icon_color.errors
     .row.branding-row
       .small-3.columns Icon Color:

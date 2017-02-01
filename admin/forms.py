@@ -276,7 +276,8 @@ class BrandingSettingsForm(forms.ModelForm):
             'discover_title_color',
             'discover_author_color',
             'discover_rule_color',
-            'client_id'
+            'client_id',
+            'top_bar_color'
         ]
         widgets = {
             'background_color': forms.TextInput(attrs={'type': 'color'}),
@@ -284,7 +285,8 @@ class BrandingSettingsForm(forms.ModelForm):
             'icon_color': forms.TextInput(attrs={'type': 'color'}),
             'discover_title_color': forms.TextInput(attrs={'type': 'color'}),
             'discover_author_color': forms.TextInput(attrs={'type': 'color'}),
-            'discover_rule_color': forms.TextInput(attrs={'type': 'color'})
+            'discover_rule_color': forms.TextInput(attrs={'type': 'color'}),
+            'top_bar_color': forms.TextInput(attrs={'type': 'color'})
         }
 
 class DiscoveryContentCreateForm(forms.ModelForm):
@@ -314,7 +316,8 @@ class LearnerDashboardBrandingForm(forms.ModelForm):
             'discover_title_color',
             'discover_author_color',
             'discover_rule_color',
-            'learner_dashboard'
+            'learner_dashboard',
+            'top_bar_color'
         ]
         widgets = {
             'background_color': forms.TextInput(attrs={'type': 'color'}),
@@ -322,7 +325,8 @@ class LearnerDashboardBrandingForm(forms.ModelForm):
             'icon_color': forms.TextInput(attrs={'type': 'color'}),
             'discover_title_color': forms.TextInput(attrs={'type': 'color'}),
             'discover_author_color': forms.TextInput(attrs={'type': 'color'}),
-            'discover_rule_color': forms.TextInput(attrs={'type': 'color'})
+            'discover_rule_color': forms.TextInput(attrs={'type': 'color'}),
+            'top_bar_color': forms.TextInput(attrs={'type': 'color'})
         }
 
 

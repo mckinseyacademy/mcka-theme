@@ -510,6 +510,7 @@ class BrandingSettings(db_models.Model):
     discover_author_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_AUTHOR_COLOR)
     discover_rule_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_RULE_COLOR)
     background_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
+    top_bar_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TOP_BAR_COLOR)
 
     TYPES = (
         (u'1', u'Normal'),
@@ -605,6 +606,7 @@ class LearnerDashboardBranding(db_models.Model):
     discover_author_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_AUTHOR_COLOR)
     discover_rule_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_RULE_COLOR)
     background_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
+    top_bar_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TOP_BAR_COLOR)
 
     TYPES = (
         (u'1', u'Normal'),
