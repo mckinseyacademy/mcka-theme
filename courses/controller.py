@@ -714,7 +714,7 @@ def calculate_user_group_activity_progress(user_id, course, link, completions):
     if group_project:
         for activity in group_project._activities:
             activity_response = workgroup_api.get_groupwork_activity(activity.uri)
-            stage_ids = [stage.id for stage in activity_response.children]
+            stage_ids = [stage.id for stage in activity_response.children if "peer-review" not in stage.id]
             if link in stage_ids:
                 matches = set(stage_ids).intersection(completed_ids)
                 return round_to_int(100 * len(matches)/len(stage_ids))
