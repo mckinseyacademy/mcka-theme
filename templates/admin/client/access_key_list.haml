@@ -35,8 +35,43 @@
       %label &nbsp;
       %a#create-access-key-course.button.radius.tiny{"data-reveal-id": "new-principal", "data-reveal-ajax": "access_keys/course-create", href: ""}
         %span= _("Create Course Access Key")
+      %label &nbsp;
+      %a#create-access-key-course-quick.button.radius.tiny{"data-reveal-id": "ajaxAccessKeyCreation", href: ""}
+        %span= _("Quick Create Course Access Key")
 
   #new-principal.reveal-modal.medium{"data-reveal": "true"}
+
+
+  #ajaxAccessKeyCreation.reveal-modal.small{'data-reveal': None}
+    %header
+      %h1= _("Quick create access key")
+
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+
+    %form.admin-form{action: "access_keys/course-create", method: "POST"}
+      - csrf_token
+      %fieldset
+        .row
+          .small-12.columns
+            %h2= _("There is no validation for Course ID so double check it!")
+        %label &nbsp;
+        .row
+          .small-3.columns
+            %label{"for":"id_name"}
+              Name:
+          .small-9.columns
+            %input#id_name{"name": "name", "type": "text"}
+        .row
+          .small-3.columns
+            %label{"for":"id_course_id"}
+              Course id:
+          .small-9.columns
+            %input#id_course_id{"name": "course_id", "type": "text"}
+
+      .submit-area
+        %input.button.radius.small{type: "submit", value: "Create"}
+
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
