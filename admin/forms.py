@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from .models import (
     Client, Program, AccessKey, DashboardAdminQuickFilter, 
     BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile,
-    LearnerDashboardBranding
+    LearnerDashboardBranding, CourseRun
 )
 from main.models import CuratedContentItem
 from api_client.user_api import USER_ROLES
@@ -383,3 +383,16 @@ class LearnerDashboardTileForm(forms.ModelForm):
             if tile_type == "3" and "/module/" not in link:
                 raise forms.ValidationError({'link': "Link to module is not valid"})
             return self.cleaned_data
+
+class CourseRunForm(forms.ModelForm):
+
+    class Meta:
+        model = CourseRun
+        fields = [
+            'name',
+            'max_participants',
+            'opened',
+            'mcka_course_id',
+            'mcka_email_template',
+            'non_mcka_email_template',
+        ]

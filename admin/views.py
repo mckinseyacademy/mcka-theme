@@ -35,7 +35,7 @@ from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
-from accounts.models import UserActivation
+from accounts.models import UserActivation, PublicRegistrationRequest
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email
 from api_client import user_models
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, project_api
@@ -56,7 +56,7 @@ from .models import (
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
     LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, 
-    CompanyContact, Tag, LearnerDashboardBranding
+    CompanyContact, Tag, LearnerDashboardBranding, CourseRun
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -75,7 +75,7 @@ from .forms import (
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
     EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, EditExistingUserForm,
     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
-    CreateNewParticipant, LearnerDashboardBrandingForm
+    CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -5468,3 +5468,88 @@ class company_participant_details_api(APIView):
             selectedUser['companyAdminFlag'] = companyAdminFlag
             selectedUser['internalAdminFlag'] = internalAdminFlag
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
+
+def course_run_list(request):
+    course_runs = CourseRun.objects.all()
+    return render(request, 'admin/course_run/list.haml', {'course_runs': course_runs})
+
+def course_run_view(request, course_run_id):
+
+    try:
+        course_run = CourseRun.objects.get(pk=course_run_id)
+    except:
+        return render(request, '404.haml')
+
+    users = PublicRegistrationRequest.objects.filter(course_run=course_run)
+    data = {
+        'course_run': course_run,
+        'users': users,
+        'total_users': len(users),
+    }
+
+    return render(request, 'admin/course_run/view.haml', data)
+
+@ajaxify_http_redirects
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def course_run_create_edit(request, course_run_id=None):
+
+    try:
+        course_run = CourseRun.objects.get(pk=course_run_id)
+    except:
+        course_run = None
+
+    if request.method == 'POST':
+        form = CourseRunForm(request.POST, instance=course_run)
+        if form.is_valid():
+            form.save()
+            url = reverse(
+                'course_run_list',
+            )
+            return HttpResponseRedirect(url)
+    else:
+        form = CourseRunForm(instance=course_run)
+
+    data = {
+        'form': form,
+        'course_run': course_run,
+    }
+
+    return render(request, 'admin/course_run/form_modal.haml', data)
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def course_run_csv_download(request, course_run_id):
+
+    try:
+        course_run = CourseRun.objects.get(pk=course_run_id)
+    except:
+        return render(request, '404.haml')
+
+    users = PublicRegistrationRequest.objects.filter(course_run=course_run)
+
+    if users:
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="' + course_run.name + '.csv"'
+        writer = csv.writer(response)
+        writer.writerow([
+            "First name",
+            "Last name",
+            "Company name",
+            "Company email",
+            "Current role",
+            "New user",
+            "McKA user"
+        ])
+        for user in users:
+            writer.writerow([
+                user.first_name,
+                user.last_name,
+                user.company_name,
+                user.company_email,
+                user.current_role,
+                str(user.new_user),
+                str(user.mcka_user)
+            ])
+
+        return response
+    else:
+        return render(request, '404.haml')

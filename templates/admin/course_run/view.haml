@@ -1,0 +1,63 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content  
+  .admin-detail.row
+    #contentModal.reveal-modal.small{'data-reveal': None}
+    %section
+      %h1 Course Run: ={course_run.name}
+      %p Course signup form will be available at /demoregistration/={course_run.name}
+    %hr
+    %section
+      .row
+        .large-4.columns
+          %strong Course ID:
+          %p ={course_run.mcka_course_id}
+          %strong Max participants:
+          %p ={course_run.max_participants}
+          %strong Total participants:
+          %p ={total_users}
+          %a{:class => "button radius small", :href => "/admin/course_run/csv_download/#{course_run.id}"}
+            Download CSV
+            %i{'class': "fa fa-download"}
+        .large-4.columns
+          %strong Email template for McKA users:
+          %p ={course_run.mcka_email_template}
+        .large-4.columns
+          %strong Email template for non McKA users:
+          %p ={course_run.non_mcka_email_template}
+    %br
+    %hr
+    .large-10.large.columns
+    -if users
+      %p
+        List of users registered for this course:
+      %table{style:"table-layout: fixed; width: 100%"}
+        %thead
+          %tr
+            %th= _("First Name")
+            %th= _("Last name")
+            %th= _("Company name")
+            %th= _("Company email")
+            %th= _("Current role")
+            %th= _("New user")
+            %th= _("McKA User")
+        %tbody
+          - for user in users
+            %tr{id: "#{user.id}"}
+              %td{style: "word-wrap: break-word"}= user.first_name
+              %td{style: "word-wrap: break-word"}= user.last_name
+              %td{style: "word-wrap: break-word"}= user.company_name
+              %td{style: "word-wrap: break-word"}= user.company_email
+              %td{style: "word-wrap: break-word"}= user.current_role
+              %td{style: "word-wrap: break-word; text-align: left;"}
+                -if user.mcka_user
+                  %i.fa.fa-check{'style': "color:green"}
+                -else
+                  %i.fa.fa-times{'style': "color:red"}
+              %td{style: "word-wrap: break-word; text-align: left;"}
+                -if user.new_user
+                  %i.fa.fa-check{'style': "color:green"}
+                -else
+                  %i.fa.fa-times{'style': "color:red"}
+    -else
+      No users registered for this course run!

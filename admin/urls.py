@@ -31,8 +31,16 @@ urlpatterns = patterns(
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/tile/(?P<tile_id>.*)$', views.course_learner_dashboard_tile, name='course_learner_dashboard_tile'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/element_reorder$', views.course_learner_dashboard_tile_reorder, name='course_learner_dashboard_tile_reorder'),
     url(r'^courses/(?P<course_id>.*)/learner_dashboard', views.course_learner_dashboard, name='course_learner_dashboard'),
-
     #Learner dashboard urls
+
+    #Demo registration CMS urls
+    url(r'^course_runs/$', views.course_run_list, name='course_run_list'),
+    url(r'^course_run/view/(?P<course_run_id>.+)/$', views.course_run_view, name='course_run_view'),
+    url(r'^course_run/create/$', views.course_run_create_edit, name='course_run_create_edit'),
+    url(r'^course_run/create/(?P<course_run_id>.+)$', views.course_run_create_edit, name='course_run_create_edit'),
+    url(r'^course_run/csv_download/(?P<course_run_id>.+)/$', views.course_run_csv_download, name='course_run_csv_download'),
+
+    #Demo registration CMS urls
 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/participant$', views.client_admin_course_analytics_participants, name='client_admin_course_analytics_participants'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/progress$', views.client_admin_course_analytics_progress, name='client_admin_course_analytics_progress'),

@@ -660,3 +660,14 @@ class LearnerDashboardTileProgress(db_models.Model):
         'LearnerDashboardTile',
         on_delete=db_models.CASCADE,
     )
+
+class CourseRun(db_models.Model):
+
+    name = db_models.SlugField(max_length=50, blank=False)
+    max_participants = db_models.IntegerField(blank=True, null=True)
+    opened = db_models.BooleanField(default=True)
+
+    mcka_course_id = db_models.CharField(blank=False, null=False, max_length=500)
+
+    mcka_email_template = db_models.CharField(blank=False, null=False, max_length=2000)
+    non_mcka_email_template = db_models.CharField(blank=False, null=False, max_length=2000)

@@ -1,0 +1,70 @@
+- if course_run
+  %section
+    %h1 Edit Course Run
+- else
+  %section
+    %h1 Create Course Run
+%hr
+.close-reveal-modal
+  %i.fa.fa-times-circle
+%form.discover_modal_form{action: "/admin/course_run/create/#{course_run.id}", method: "POST"}
+  - csrf_token
+  .row
+    .small-3.columns
+    .small-9.columns= form.name.errors
+  .row
+    .small-3.columns Url friendly name:
+    .small-9.columns= form.name
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.max_participants.errors
+  .row
+    .small-3.columns= form.max_participants.label_tag
+    .small-9.columns= form.max_participants
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.opened.errors
+  .row
+    .small-3.columns= form.opened.label_tag
+    .small-9.columns= form.opened
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.mcka_course_id.errors
+  .row
+    .small-3.columns Course ID:
+    .small-9.columns= form.mcka_course_id
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.mcka_email_template.errors
+  .row
+    .small-3.columns Email template for mcka users:
+    .small-9.columns= form.mcka_email_template
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.non_mcka_email_template.errors
+  .row
+    .small-3.columns Email template for non mcka users:
+    .small-9.columns= form.non_mcka_email_template
+
+  .error
+    - if error
+      = error
+  %input#discoverFormSubmit.button.radius.small{type: "submit", value: "Save", disabled: "True"}
+
+  %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
+
+
+/ name = db_models.SlugField(max_length=50, blank=False)
+/ max_participants = db_models.IntegerField(blank=True, null=True)
+/ opened = db_models.BooleanField(default=True)
+
+/ mcka_course_id = db_models.CharField(blank=False, null=False, max_length=500)
+/ non_mcka_course_id = db_models.CharField(blank=False, null=False, max_length=500)
+
+/ mcka_email_template = db_models.CharField(blank=False, null=False, max_length=2000)
+/ non_mcka_email_template = db_models.CharField(blank=False, null=False, max_length=2000)
