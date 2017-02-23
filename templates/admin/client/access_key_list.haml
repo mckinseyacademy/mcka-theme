@@ -44,7 +44,7 @@
 
   #ajaxAccessKeyCreation.reveal-modal.small{'data-reveal': None}
     %header
-      %h1= _("Quick create access key")
+      %h1= _("Create access key")
 
     .close-reveal-modal
       %i.fa.fa-times-circle
@@ -52,9 +52,6 @@
     %form.admin-form{action: "access_keys/course-create-api", method: "POST"}
       - csrf_token
       %fieldset
-        .row
-          .small-12.columns
-            %h2= _("There is no validation for Course ID so double check it!")
         %label &nbsp;
         .row
           .small-3.columns
