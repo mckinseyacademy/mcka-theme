@@ -90,6 +90,7 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/nav_links', views.client_detail_nav_links, name='client_detail_nav_links'),
     url(r'^clients/(?P<client_id>[0-9]+)/customization', views.client_detail_customization, name='client_detail_customization'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/create', views.create_access_key, name='create_access_key'),
+    url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create-api', views.create_course_access_key_api.as_view(), name='create_course_access_key_api'),    
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create', views.create_course_access_key, name='create_course_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/(?P<access_key_id>[0-9]+)/share', views.share_access_key, name='share_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys', views.access_key_list, name='access_key_list'),
