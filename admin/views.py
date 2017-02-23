@@ -1757,6 +1757,24 @@ def create_course_access_key(request, client_id):
     }
     return render(request, 'admin/client/create_course_access_key', data)
 
+class create_course_access_key_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, client_id):
+        form = CreateCourseAccessKeyForm(request.POST) # A form bound to the POST data
+
+        if form.is_valid():  # All validation rules pass
+            try:
+                course_api.get_course_shallow(request.POST.get("course_id"))
+                code = generate_access_key()
+                model = form.save(commit=False)
+                model.client_id = int(client_id)
+                model.code = code
+                model.save()
+            except:
+                return Response({"status":"error", "msg": "Access Key couldn't be created, please check course ID!"})
+            return Response({"status":"success", "msg": "Access Key created successfully!"})
+        return Response({"status":"error", "msg": "Access Key couldn't be created, please check course ID!"})
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
