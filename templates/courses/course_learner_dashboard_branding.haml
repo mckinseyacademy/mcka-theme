@@ -7,6 +7,7 @@
       - else
         - if branding.get_background_style_display == 'Normal'
           $('body').css('background-repeat', 'no-repeat');
+          $('body').css('background-position', 'center');
         - else 
           - if branding.get_background_style_display == 'Tiled'
             $('body').css('background-repeat', 'repeat');
