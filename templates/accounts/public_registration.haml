@@ -1,0 +1,54 @@
+- extends "layout.haml"
+
+- block page_title
+  %title= _("Login | McKinsey Academy")
+
+- block header
+  - include 'accounts/login_header.haml'
+- load staticfiles
+- block content
+  .row
+    .login-form.large-12.medium-12.large-centered.medium-centered.columns{style:"height:940px"}
+      - if request.is_IE8
+        %br
+        .outdated_browser
+          = _("We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.")
+      - else
+        .row
+          .large-8.medium-8.columns
+            %h1 Welcome to McKinsey Academy
+            .description
+              %h4 REGISTER FOR ACCESS TO THE DEMO BUISNESS STRATEGY COURSE
+              %span Take your strategic thinking to the next level -- assess the robustness of a strategy and apply Mckinsey's Strategy Method to develop strategies that can help your businesses gain a sustainable advantage in the market.
+              %br
+              %br
+              %span Complete the fields below. Required fields are noted by an asterisk (
+              %span.required-field><
+              %span ).
+              %form{action: "/demoregistration/#{course_run_name}/", method: "POST"}
+                .error
+                  - if error
+                    = error
+                - csrf_token
+                = form
+                %input.button.radius.small{type: "submit", value: "Register"}
+          .large-4.medium-4.columns
+            %h4 WELCOME
+            .sidebar
+              %p Registering gives you access to course content and ensures that you recieve updates and notifications from McKinsey Academy.
+              %br
+              %p Following successful registration, you will recieve an email granting access to the course.
+            %hr
+            %h4 Need Help?
+            .sidebar
+              %a{href: "/faq"} View our FAQ for answers to commonly asked questions.
+/ - block js_snippets
+/   :javascript
+/     var $current_role_other = $("#id_current_role_other");
+/     $("#id_current_role").change(function(e){
+/         if($('input[name=current_role]:checked').val() == 'other') {
+/           $current_role_other.prop('disabled', false);
+/         } else {
+/           $current_role_other.prop('disabled', true);
+/         }
+/     });

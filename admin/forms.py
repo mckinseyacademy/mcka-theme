@@ -384,7 +384,11 @@ class LearnerDashboardTileForm(forms.ModelForm):
                 raise forms.ValidationError({'link': "Link to module is not valid"})
             return self.cleaned_data
 
+
 class CourseRunForm(forms.ModelForm):
+
+    mcka_email_template = forms.CharField(widget=forms.Textarea)
+    non_mcka_email_template = forms.CharField(widget=forms.Textarea)
 
     class Meta:
         model = CourseRun

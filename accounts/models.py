@@ -193,19 +193,11 @@ class UserPasswordReset(db_models.Model):
 
 class PublicRegistrationRequest(db_models.Model):
 
-    CURRENT_ROLE = (
-        (u'senior_executive', u'Senior Executive (e.g. SVP+)'),
-        (u'senior_manager', u'Seasoned Leader/Senior Manager (e.g. Director, VP)'),
-        (u'mid_manager', u'Mid-Level Manager (e.g. Manager, Senior Manager)'),
-        (u'analyst', u'Early Career Professional (e.g. Analyst/Associate)'),
-        (u'other', u'Other (please describe below)'),
-    )
-
     first_name = db_models.CharField(blank=False, null=False, max_length=50)
     last_name = db_models.CharField(blank=False, null=False, max_length=50)
     company_name = db_models.CharField(blank=False, null=False, max_length=50)
     company_email = db_models.EmailField(blank=False, null=False)
-    current_role = db_models.CharField(max_length=100, choices=CURRENT_ROLE, blank=False, null=True)
+    current_role = db_models.CharField(blank=False, null=True, max_length=100)
     current_role_other = db_models.CharField(blank=True, null=True, max_length=60)
 
     mcka_user = db_models.BooleanField()
@@ -215,3 +207,4 @@ class PublicRegistrationRequest(db_models.Model):
         CourseRun,
         on_delete=db_models.CASCADE,
     )
+

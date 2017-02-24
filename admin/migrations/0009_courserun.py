@@ -19,7 +19,6 @@ class Migration(migrations.Migration):
                 ('max_participants', models.IntegerField(null=True, blank=True)),
                 ('opened', models.BooleanField(default=True)),
                 ('mcka_course_id', models.CharField(max_length=500)),
-                ('non_mcka_course_id', models.CharField(max_length=500)),
                 ('mcka_email_template', models.CharField(max_length=2000)),
                 ('non_mcka_email_template', models.CharField(max_length=2000)),
             ],

@@ -28,7 +28,7 @@ from courses.models import FeatureFlags
 from api_client import user_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
-from admin.models import Client, Program, LearnerDashboard
+from admin.models import Client, Program, LearnerDashboard, CourseRun
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
@@ -41,7 +41,7 @@ from .controller import (
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
-    EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2
+    EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2, PublicRegistrationForm
 )
 from django.shortcuts import resolve_url
 from django.utils.http import urlsafe_base64_decode
@@ -1001,3 +1001,44 @@ def access_key(request, code):
     }
 
     return render(request, template, data)
+
+
+def demo_registration(request, course_run_name):
+
+    try:
+        course_run = CourseRun.objects.get(name=course_run_name)
+    except:
+        course_run = None
+
+    if course_run and course_run.opened:
+        if request.method == 'POST':
+            form = PublicRegistrationForm(request.POST)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.course_run = course_run
+
+                if "@mckinsey.com" in user.company_email:
+                    user.mcka_user = True
+                else:
+                    user.mcka_user = False
+
+                users = user_api.get_users(email=user.company_email)
+                if len(users) < 1:
+                    user.new_user = True
+                else: 
+                    user.new_user = False
+
+                user.save()
+                return render(request, '403.haml')
+        else:
+            form = PublicRegistrationForm()
+
+        data = {
+            'form': form,
+            'course_run_name': course_run_name,
+        }
+
+        return render(request, 'accounts/public_registration.haml', data)
+
+    else:
+        return render(request, '404.haml')

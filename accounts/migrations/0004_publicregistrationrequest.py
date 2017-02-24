@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=50)),
                 ('company_name', models.CharField(max_length=50)),
                 ('company_email', models.EmailField(max_length=254)),
-                ('current_role', models.CharField(max_length=100, null=True, choices=[('senior_executive', 'Senior Executive (e.g. SVP+)'), ('senior_manager', 'Seasoned Leader/Senior Manager (e.g. Director, VP)'), ('mid_manager', 'Mid-Level Manager (e.g. Manager, Senior Manager)'), ('analyst', 'Early Career Professional (e.g. Analyst/Associate)'), ('other', 'Other (please describe below)')])),
+                ('current_role', models.CharField(max_length=100, null=True)),
                 ('current_role_other', models.CharField(max_length=60, null=True, blank=True)),
                 ('mcka_user', models.BooleanField()),
                 ('new_user', models.BooleanField()),
