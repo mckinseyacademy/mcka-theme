@@ -13,7 +13,6 @@
           - if branding.get_background_style_display == 'Tiled'
             $('body').css('background-repeat', 'repeat');
       $('body').css('background-image', 'url(/company_images/#{branding.background_image})');
-      $('body').css('background-attachment', 'fixed');
     - else
       - if branding.background_color
         $('body').css('background-color', '#{branding.background_color}');
