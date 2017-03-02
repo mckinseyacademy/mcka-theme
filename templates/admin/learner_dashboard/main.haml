@@ -101,7 +101,7 @@
 
     function deleteDiscover(discoverId, learnerDashboardId){
       if (window.confirm("Are you sure?")) {
-        var url = window.location.pathname + '/' + learnerDashboardId + "/discover/" + discoverId;
+        var url = window.location.pathname + "/discover/delete/" + discoverId;
         $.ajax({
           headers: {
             'X-CSRFToken': $.cookie('apros_csrftoken')

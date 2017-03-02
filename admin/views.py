@@ -4154,6 +4154,14 @@ def course_learner_dashboard_discover_create_edit(request, course_id, discovery_
 
             return HttpResponseRedirect(url_list)
 
+    elif request.method == 'DELETE' and discovery:
+        discovery.delete()
+        redirect_url = reverse(
+            'course_learner_dashboard',
+            kwargs={'course_id': course_id}
+        )
+        return HttpResponseRedirect(redirect_url)
+
     else:
         form = DiscoveryContentCreateForm(instance=discovery)        
 

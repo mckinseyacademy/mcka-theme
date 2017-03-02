@@ -23,7 +23,7 @@ urlpatterns = patterns(
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.course_learner_dashboard_discover_list, name='course_learner_dashboard_discover_list'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
-    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_delete, name='course_learner_dashboard_discover_delete'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.course_learner_dashboard_discover_reorder, name='course_learner_dashboard_discover_reorder'),
 
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/duplicate/(?P<copy_to_course_id>.+)$', views.course_learner_dashboard_copy, name='course_learner_dashboard_copy'),
