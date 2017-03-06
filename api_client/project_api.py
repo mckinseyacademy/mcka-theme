@@ -105,7 +105,7 @@ def get_all_projects(course_id=None, content_id=None, project_object=JsonObject)
         ),
     )
 
-    return JP.from_json(response.read(), project_object)
+    return JP.from_json(response.read(), project_object).results
 
 
 @api_error_protect

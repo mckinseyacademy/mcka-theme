@@ -34,6 +34,8 @@ class Objectifier(object):
 
     def _build_from_dictionary(self, dictionary):
         ''' Set the attributes of the object from the given dictionary '''
+        if isinstance(dictionary, list):
+            return
         for item in dictionary:
             if isinstance(dictionary[item], dict):
                 self.__setattr__(
