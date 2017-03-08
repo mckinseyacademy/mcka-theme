@@ -61,20 +61,20 @@ from .models import (
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
-    upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report, get_organizations_users_completion,
-    get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, get_program_data_for_report,
-    MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data,
+    upload_student_list_threaded, mass_student_enroll_threaded, enroll_participants_threaded, generate_course_report, 
+    get_organizations_users_completion, get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, 
+    get_program_data_for_report, MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data,
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles,
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list,
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, MassParticipantsEnrollListForm, 
+    EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
     CreateNewParticipant, LearnerDashboardBrandingForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
@@ -2114,6 +2114,25 @@ def import_participants(request):
                 content_type='text/plain'
             )
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def enroll_participants_from_csv(request):
+
+    if request.method == 'POST':  # If the form has been submitted...
+        # A form bound to the POST data and FILE data
+        form = MassParticipantsEnrollListForm(request.POST, request.FILES)
+        if form.is_valid():  # All validation rules pass
+            reg_status = UserRegistrationBatch.create();
+            enroll_participants_threaded(
+                request.FILES['student_enroll_list'],
+                request, 
+                reg_status
+            )
+            return HttpResponse(
+                json.dumps({"task_key": _(reg_status.task_key)}),
+                content_type='text/plain'
+            )
+
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def import_participants_check(request, task_key):
@@ -2123,7 +2142,7 @@ def import_participants_check(request, task_key):
         UserRegistrationBatch.clean_old()
         if len(reg_status) > 0:
             reg_status = reg_status[0]
-            if reg_status.attempted == (reg_status.failed + reg_status.succeded):
+            if (int(reg_status.attempted>0)) and (reg_status.attempted == (reg_status.failed + reg_status.succeded)):
                 errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
                 errors_as_json = serializers.serialize('json', errors)
                 message = _("Successfully Added {} Participants").format(
@@ -2131,11 +2150,11 @@ def import_participants_check(request, task_key):
                 )
                 for error in errors:
                     error.delete()
-                attempted = str(reg_status.attempted)
-                failed = str(reg_status.failed)
-                succeded = str(reg_status.succeded)
+                attempted = str(reg_status.attempted) or "0"
+                failed = str(reg_status.failed) or "0"
+                succeded = str(reg_status.succeded) or "0"
                 reg_status.delete()
-                emails = request.GET.get('emails', None)
+                emails = request.GET.get('emails', "")
                 if int(failed) == 0 and emails == 'true':
                     send_activation_emails_by_task_key(request, task_key)
                 return HttpResponse(
@@ -3329,12 +3348,14 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def participants_list(request):
     form = MassStudentListForm()
+    form_enroll = MassParticipantsEnrollListForm()
     internalAdminFlag = False
     if request.user.is_internal_admin:
         internalAdminFlag = True
 
     data = {
         'form': form,
+        'form_enroll': form_enroll,
         'internalAdminFlag': internalAdminFlag
     }
     return render( request, 'admin/participants/participants_list.haml', data)
@@ -3395,7 +3416,6 @@ class participants_list_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request):
         post_data = json.loads(request.body)
-        print post_data
         form = CreateNewParticipant(post_data.copy())
         if form.is_valid():
             filterUsers = {}
@@ -4046,7 +4066,6 @@ def load_background_image(request, image_url):
     from django.core.files.storage import default_storage
     if default_storage.exists(image_url):
         image = default_storage.open(image_url).read()
-        print image
         from mimetypes import MimeTypes
         import urllib
         mime = MimeTypes()

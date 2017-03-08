@@ -1,6 +1,7 @@
 Apros.views.ParticipantsInfo = Backbone.View.extend({
     initialize: function(){
     massParticipantsInit();
+    massParticipantsEnrollInit();
     this.renderAddSingleUser();
     },
     render: function(){

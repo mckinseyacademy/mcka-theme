@@ -79,6 +79,10 @@ class MassStudentListForm(forms.Form):
     ''' form to upload file for student list '''
     student_list = forms.FileField(help_text="ClientStudentList.csv")
 
+class MassParticipantsEnrollListForm(forms.Form):
+
+    ''' form to upload file for student list '''
+    student_enroll_list = forms.FileField(help_text="ParticipantsCourseList.csv")
 
 class ProgramAssociationForm(forms.Form):
 

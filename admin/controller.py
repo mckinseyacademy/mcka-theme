@@ -1492,11 +1492,17 @@ def import_participants_threaded(student_list, request, reg_status):
     _thread.start()
     process_import_participants_list(student_list, request, reg_status)  
 
+def enroll_participants_threaded(student_list, request, reg_status):
+    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
+    _thread.daemon = True # so we can exit
+    _thread.start()
+    process_enroll_participants_list(student_list, request, reg_status) 
+
 
 @postpone
 def process_import_participants_list(file_stream, request, reg_status=None):
     # 1) Build user list
-    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_participants_csv)
+    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
     if reg_status is not None:
         reg_status.attempted = len(user_list)
         reg_status.save()
@@ -1510,7 +1516,24 @@ def process_import_participants_list(file_stream, request, reg_status=None):
     _enroll_participants(user_list, request, reg_status)
 
 
-def _process_line_participants_csv(user_line):
+@postpone
+def process_enroll_participants_list(file_stream, request, reg_status=None):
+    # 1) Build user list
+    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_enroll_participants_csv)
+    if reg_status is not None:
+        reg_status.attempted = len(user_list)
+        reg_status.save()
+    for user_info in user_list:
+        if "error" in user_info:
+            error = UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+            reg_status.failed = reg_status.failed + 1
+            reg_status.save()
+    user_list = [user_info for user_info in user_list if "error" not in user_info]
+    # 2) enroll the users
+    _just_enroll_participants(user_list, request, reg_status)
+
+
+def _process_line_register_participants_csv(user_line):
     try:
         fields = user_line.strip().split(',')
         # format is FirstName, LastName, Email, Company, CourseID, Status
@@ -1530,6 +1553,25 @@ def _process_line_participants_csv(user_line):
             "username": username,
             "is_active": False,
             "password": settings.INITIAL_PASSWORD,
+        }
+
+    except Exception as e:
+        user_info = {
+            "error": _("Could not parse user info from {}").format(user_line)
+        }
+
+    return user_info
+
+
+def _process_line_enroll_participants_csv(user_line):
+    try:
+        fields = user_line.strip().split(',')
+        # format is Email, CourseID, Status
+
+        user_info = {
+            "email": fields[0],
+            "course_id": fields[1],
+            "status": fields[2]
         }
 
     except Exception as e:
@@ -1649,6 +1691,102 @@ def _enroll_participants(participants, request, reg_status):
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), "Setting Participant's Status")
                 except ValueError as e: 
+                    user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
+                        e.args[0],
+                        e.args[1],
+                        email
+                    ))
+        except Exception as e:
+            reason = e.message if e.message else _("Processing Data Error")
+            user_error.append(_("Error processing data: {} - {}").format(
+                reason,
+                email
+            ))
+
+        if user_error:
+            for user_e in user_error:
+                error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
+            reg_status.failed = reg_status.failed + 1
+            reg_status.save()
+        else:
+            reg_status.succeded = reg_status.succeded + 1
+            reg_status.save() 
+
+
+def _just_enroll_participants(participants, request, reg_status):
+
+    permissonsMap = {
+        'ta': USER_ROLES.TA,
+        'observer': USER_ROLES.OBSERVER
+    }
+
+    internalAdminFlag = False
+    if request.user.is_internal_admin:
+        internalAdminFlag = True
+
+    for user_dict in participants:
+
+        course_id = user_dict['course_id'].strip()
+        status = user_dict['status'].lower().strip()
+        status_check = ['active', 'observer', 'ta']
+        check_errors = []
+        user_error = []
+        user_email = user_dict.get('email', '').strip()
+        email = user_dict.get('email', '').strip()
+        try:
+            #Check for empty fields
+            for key,value in user_dict.items():
+                if str(value).strip() == '':
+                    if key == 'email':
+                        email = "No email"
+                    check_errors.append({'reason': 'Empty field: {}'.format(key), 'activity': 'Processing Participant'})
+            #Check if email is valid
+            try:
+                validate_email(user_email)
+            except ValidationError:
+                check_errors.append({'reason': 'Valid e-mail is required: '+user_email, 'activity': 'Processing Participant'})
+            #Check if user already exist
+            user_data = user_api.get_user_by_email(user_email)
+            if user_data['count'] == 0:
+                check_errors.append({'reason': "User doesn't exist", 'activity': 'Processing Participant'})
+            #Check if course exist
+            try:
+                course = course_api.get_course_details(course_id)
+            except ApiError as e:
+                if e.message == 'NOT FOUND':
+                    check_errors.append({'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
+                else:
+                    check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
+            #For Internal Admin Check if Course Is Internal
+            if internalAdminFlag:
+                if not check_if_course_is_internal(course_id):
+                    check_errors.append({'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
+            #Check if status exist
+            if status not in status_check:
+                check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
+            #If errors exist add them, else continue
+            if check_errors:
+                for error in check_errors:
+                    user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
+                        error['reason'],
+                        error['activity'],
+                        email
+                    ))
+            else:
+                try:    
+                    #Enroll Participant in Course
+                    try:
+                        user_api.enroll_user_in_course(user_data["results"][0]["id"], course_id)
+                    except ApiError as e:
+                        raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
+                    #Set Participant Status on Course
+                    try:
+                        permissions = Permissions(user_data["results"][0]["id"])
+                        if status != 'active' :
+                            permissions.add_course_role(course_id,permissonsMap[status])
+                    except ApiError as e:
+                        raise ValueError('{}'.format(e.message), "Setting Participant's Status")
+                except ValueError as e:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
                         e.args[0],
                         e.args[1],

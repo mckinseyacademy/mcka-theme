@@ -5,6 +5,7 @@
     #participantsListTopContainer{:internal-flag => '#{internalAdminFlag}'}
       #participantsAddWrapper
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
+        %input.button.small.radius.menuButton{:type => "button", :value => "Enroll from CSV", 'data-reveal-id': 'enroll_to_course_from_csv'}
         %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
       %hr
@@ -162,6 +163,29 @@
             .emailActivationLinkCheckboxWrapper
               %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled', :id => 'emailActivationCheckboxId'} 
               %label.emailActivation{:for => 'emailActivationCheckboxId' } Email activation links now
+
+    #enroll_to_course_from_csv.reveal-modal.medium{'data-reveal': None}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %h2 Enroll Participants to courses from CSV
+      %hr
+      .bottomPadding
+        //%a{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
+      .admin-form
+
+        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data"}
+          - csrf_token
+          = form_enroll
+
+          .button-wrapper.topPadding
+            %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: ''}
+            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+              Cancel
+
+        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsEnrollCsvUpload'}
+
+        .upload_stats
+        #enroll-participants-error-list
 
     #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   
       .close-reveal-modal
