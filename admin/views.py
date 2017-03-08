@@ -3377,7 +3377,6 @@ class participants_list_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request):
         post_data = json.loads(request.body)
-        print post_data
         form = CreateNewParticipant(post_data.copy())
         if form.is_valid():
             filterUsers = {}
@@ -5470,7 +5469,7 @@ class company_participant_details_api(APIView):
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
 def course_run_list(request):
-    course_runs = CourseRun.objects.all()
+    course_runs = CourseRun.objects.all().order_by('name')
     return render(request, 'admin/course_run/list.haml', {'course_runs': course_runs})
 
 def course_run_view(request, course_run_id):
@@ -5484,7 +5483,6 @@ def course_run_view(request, course_run_id):
     data = {
         'course_run': course_run,
         'users': users,
-        'total_users': len(users),
     }
 
     return render(request, 'admin/course_run/view.haml', data)
@@ -5503,8 +5501,10 @@ def course_run_create_edit(request, course_run_id=None):
         if form.is_valid():
             form.save()
             url = reverse(
-                'course_run_list',
+                'course_run_view',
+                kwargs={'course_run_id': form.instance.id}
             )
+
             return HttpResponseRedirect(url)
     else:
         form = CourseRunForm(instance=course_run)

@@ -4,14 +4,14 @@
   .admin-detail.row
     #contentModal.reveal-modal.small{'data-reveal': None}
     %section
-      %h1 Course Runs
+      %h1 Self-sign up courses
     %section
       %p
-        You can manage the Course Runs here
+        You can manage the self-sign up courses here
     %br
     %div.submit-area
       %a{:class => "button radius small", :href => "/admin/course_run/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
-        New run
+        New
         %i{'class': "fa fa-plus"}
 
     %hr
@@ -23,24 +23,27 @@
             %th= _("Name")
             %th= _("Course ID")
             %th= _("Open")
+            %th= _("Total/Max")
             %th= _("Edit")
-            %th= _("View")
         %tbody
           - for run in course_runs
             %tr{id: "#{run.id}"}
-              %td{style: "word-wrap: break-word"}= run.name
-              %td{style: "word-wrap: break-word"}= run.mcka_course_id
+              %td{style: "word-wrap: break-word"}
+                %a{:href => "/admin/course_run/view/#{run.id}"}
+                  = run.name
+              %td{style: "word-wrap: break-word"}= run.course_id
               %td{style: "word-wrap: break-word; text-align: left;"}
-                -if run.opened
+                -if run.is_open
                   %i.fa.fa-check{'style': "color:green"}
                 -else
                   %i.fa.fa-times{'style': "color:red"}
+              %td{style: "word-wrap: break-word"}
+                = run.total_participants
+                = " / "
+                = run.max_participants
               %td
                 %a{:href => "/admin/course_run/create/#{run.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
                   %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
-              %td
-                %a{class: "confirm", href: "/admin/course_run/view/#{run.id}"}
-                  %i{'style': "color:green", 'class': "fa fa-binoculars"}
     -else
       No course runs defined!
 

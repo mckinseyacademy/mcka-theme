@@ -39,7 +39,6 @@ urlpatterns = patterns(
     url(r'^course_run/create/$', views.course_run_create_edit, name='course_run_create_edit'),
     url(r'^course_run/create/(?P<course_run_id>.+)$', views.course_run_create_edit, name='course_run_create_edit'),
     url(r'^course_run/csv_download/(?P<course_run_id>.+)/$', views.course_run_csv_download, name='course_run_csv_download'),
-
     #Demo registration CMS urls
 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/participant$', views.client_admin_course_analytics_participants, name='client_admin_course_analytics_participants'),

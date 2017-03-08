@@ -387,16 +387,21 @@ class LearnerDashboardTileForm(forms.ModelForm):
 
 class CourseRunForm(forms.ModelForm):
 
-    mcka_email_template = forms.CharField(widget=forms.Textarea)
-    non_mcka_email_template = forms.CharField(widget=forms.Textarea)
+    email_template_new = forms.CharField(widget=forms.Textarea)
+    email_template_existing = forms.CharField(widget=forms.Textarea)
+    email_template_mcka = forms.CharField(widget=forms.Textarea)
+    email_template_closed = forms.CharField(widget=forms.Textarea)
 
     class Meta:
         model = CourseRun
         fields = [
             'name',
             'max_participants',
-            'opened',
-            'mcka_course_id',
-            'mcka_email_template',
-            'non_mcka_email_template',
+            'is_open',
+            'course_id',
+            'course_id_sso',
+            'email_template_new',
+            'email_template_existing',
+            'email_template_mcka',
+            'email_template_closed',
         ]

@@ -230,7 +230,7 @@ ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
 
 # EMAIL BACKEND
-EMAIL_BACKEND = "django_ses.SESBackend"
+
 APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
 # Date formatting rules

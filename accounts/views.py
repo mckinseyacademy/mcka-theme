@@ -37,7 +37,7 @@ from courses.user_courses import standard_data, get_current_course_for_user, get
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
-    process_access_key
+    process_access_key, process_registration_request
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -1010,12 +1010,16 @@ def demo_registration(request, course_run_name):
     except:
         course_run = None
 
-    if course_run and course_run.opened:
+    if course_run and course_run.is_open:
         if request.method == 'POST':
             form = PublicRegistrationForm(request.POST)
             if form.is_valid():
                 user = form.save(commit=False)
                 user.course_run = course_run
+
+                if "other" == user.current_role:
+                    user.current_role = user.current_role_other
+                    user.current_role_other == None
 
                 if "@mckinsey.com" in user.company_email:
                     user.mcka_user = True
@@ -1025,11 +1029,21 @@ def demo_registration(request, course_run_name):
                 users = user_api.get_users(email=user.company_email)
                 if len(users) < 1:
                     user.new_user = True
-                else: 
+                else:
                     user.new_user = False
 
                 user.save()
-                return render(request, '403.haml')
+
+                course_run.total_participants += 1
+                course_run.save()
+
+                #if existing user, send user object
+                if not user.new_user and users[0]:
+                    process_registration_request(request, user, course_run, users[0])
+                else:
+                    process_registration_request(request, user, course_run)
+
+                return render(request, 'accounts/public_registration.haml')
         else:
             form = PublicRegistrationForm()
 

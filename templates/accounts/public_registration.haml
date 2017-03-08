@@ -42,13 +42,26 @@
             %h4 Need Help?
             .sidebar
               %a{href: "/faq"} View our FAQ for answers to commonly asked questions.
-/ - block js_snippets
-/   :javascript
-/     var $current_role_other = $("#id_current_role_other");
-/     $("#id_current_role").change(function(e){
-/         if($('input[name=current_role]:checked').val() == 'other') {
-/           $current_role_other.prop('disabled', false);
-/         } else {
-/           $current_role_other.prop('disabled', true);
-/         }
-/     });
+
+- block js_snippets
+  :javascript
+    var modal_success = "{{success_modal}}";
+    if (modal_success == "True"){
+      $('.reveal-modal').foundation('reveal', 'open');
+    }
+
+    var $current_role_other = $("#id_current_role_other");
+    $(window).on( "load", function() {
+      toggle_field();
+    });
+    $("#id_current_role").change(function(e){
+      toggle_field();
+    });
+    function toggle_field(){
+      if($('input[name=current_role]:checked').val() == 'other') {
+          $current_role_other.prop('disabled', false);
+        } else {
+          $current_role_other.val("");
+          $current_role_other.prop('disabled', true);
+        }
+    }

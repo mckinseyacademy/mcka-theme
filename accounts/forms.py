@@ -294,11 +294,11 @@ READ_ONLY_IF_DATA_FIELDS = ["company", "full_name"]
 DISABLED_IF_DATA_FIELDS = []
 
 CURRENT_ROLE = (
-        (u'senior_executive', u'Senior Executive (e.g. SVP+)'),
-        (u'senior_manager', u'Seasoned Leader/Senior Manager (e.g. Director, VP)'),
-        (u'mid_manager', u'Mid-Level Manager (e.g. Manager, Senior Manager)'),
-        (u'analyst', u'Early Career Professional (e.g. Analyst/Associate)'),
-        (u'other', u'Other (please describe below)'),
+        (u'Senior Executive', u'Senior Executive (e.g. SVP+)'),
+        (u'Seasoned Leader/Senior Manager', u'Seasoned Leader/Senior Manager (e.g. Director, VP)'),
+        (u'Mid-Level Manager', u'Mid-Level Manager (e.g. Manager, Senior Manager)'),
+        (u'Early Career Professional', u'Early Career Professional (e.g. Analyst/Associate)'),
+        (u'Other', u'Other (please describe below)'),
     )
 
 BANNED_EMAILS = [
@@ -526,15 +526,21 @@ class PublicRegistrationForm(forms.ModelForm):
             'current_role_other',
         ]
 
-    def clean_current_role(self):
+    def clean_current_role_other(self):
+
         current_role = self.cleaned_data.get("current_role")
         current_role_other = self.cleaned_data.get("current_role_other")
 
         if "other" == current_role and not current_role_other:
-            raise forms.ValidationError("You must choose your role!")
+            raise forms.ValidationError("You must write your role!")
+
+        return current_role_other
 
     def clean_company_email(self):
+
         email = self.cleaned_data['company_email']
         for mail in BANNED_EMAILS:
             if mail in email.lower():
                 raise forms.ValidationError("Email you provided is not allowed!")
+
+        return email

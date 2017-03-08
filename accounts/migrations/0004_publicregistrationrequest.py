@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('first_name', models.CharField(max_length=50)),
                 ('last_name', models.CharField(max_length=50)),
                 ('company_name', models.CharField(max_length=50)),
-                ('company_email', models.EmailField(max_length=254)),
+                ('company_email', models.EmailField(unique=True, max_length=254)),
                 ('current_role', models.CharField(max_length=100, null=True)),
                 ('current_role_other', models.CharField(max_length=60, null=True, blank=True)),
                 ('mcka_user', models.BooleanField()),

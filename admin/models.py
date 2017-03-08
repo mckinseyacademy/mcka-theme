@@ -663,11 +663,13 @@ class LearnerDashboardTileProgress(db_models.Model):
 
 class CourseRun(db_models.Model):
 
-    name = db_models.SlugField(max_length=50, blank=False)
+    name = db_models.SlugField(max_length=50, blank=False, unique=True)
     max_participants = db_models.IntegerField(blank=True, null=True)
-    opened = db_models.BooleanField(default=True)
-
-    mcka_course_id = db_models.CharField(blank=False, null=False, max_length=500)
-
-    mcka_email_template = db_models.CharField(blank=False, null=False, max_length=2000)
-    non_mcka_email_template = db_models.CharField(blank=False, null=False, max_length=2000)
+    total_participants = db_models.IntegerField(blank=True, null=True, default=0)
+    is_open = db_models.BooleanField(default=True)
+    course_id = db_models.CharField(blank=False, null=False, max_length=500)
+    course_id_sso = db_models.CharField(blank=True, null=True, max_length=500)
+    email_template_new = db_models.CharField(blank=False, null=False, max_length=2000)
+    email_template_existing = db_models.CharField(blank=False, null=False, max_length=2000)
+    email_template_mcka = db_models.CharField(blank=False, null=False, max_length=2000)
+    email_template_closed = db_models.CharField(blank=False, null=False, max_length=2000)

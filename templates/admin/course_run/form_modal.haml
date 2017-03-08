@@ -25,31 +25,49 @@
 
   .row
     .small-3.columns
-    .small-9.columns= form.opened.errors
+    .small-9.columns= form.is_open.errors
   .row
-    .small-3.columns= form.opened.label_tag
-    .small-9.columns= form.opened
+    .small-3.columns= form.is_open.label_tag
+    .small-9.columns= form.is_open
 
   .row
     .small-3.columns
-    .small-9.columns= form.mcka_course_id.errors
+    .small-9.columns= form.course_id.errors
   .row
     .small-3.columns Course ID:
-    .small-9.columns= form.mcka_course_id
+    .small-9.columns= form.course_id
 
   .row
     .small-3.columns
-    .small-9.columns= form.mcka_email_template.errors
+    .small-9.columns= form.course_id_sso.errors
   .row
-    .small-3.columns Email template for mcka users:
-    .small-9.columns= form.mcka_email_template
+    .small-3.columns Course ID(SSO):
+    .small-9.columns= form.course_id_sso
+
+  %hr
+  .row
+    .small-12.columns
+      Email template for existing McKA users:
+      = form.email_template_existing.errors
+      = form.email_template_existing
 
   .row
-    .small-3.columns
-    .small-9.columns= form.non_mcka_email_template.errors
+    .small-12.columns 
+      Email template for new McKA users:
+      = form.email_template_new.errors
+      = form.email_template_new
+
   .row
-    .small-3.columns Email template for non mcka users:
-    .small-9.columns= form.non_mcka_email_template
+    .small-12.columns 
+      Email template for McKA employees (SSO):
+      = form.email_template_mcka.errors
+      = form.email_template_mcka
+
+  .row
+    .small-12.columns 
+      Copy for closed status message:
+      = form.email_template_closed.errors
+      = form.email_template_closed
 
   .error
     - if error

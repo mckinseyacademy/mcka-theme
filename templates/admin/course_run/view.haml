@@ -4,28 +4,44 @@
   .admin-detail.row
     #contentModal.reveal-modal.small{'data-reveal': None}
     %section
-      %h1 Course Run: ={course_run.name}
-      %p Course signup form will be available at /demoregistration/={course_run.name}
+      .row
+        .large-4.columns
+          %a{:href => "/admin/course_runs/"}
+            %p < Back to list
+          %h1 Course Run: ={course_run.name}
+          %a{:href => "/demoregistration/#{course_run.name}"}
+            View live
+        .large-4.columns
+          %a.right{:class => "button radius small", :href => "/admin/course_run/create/#{course_run.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
+            Edit
+            %i{'class': "fa fa-pencil"}
     %hr
     %section
       .row
         .large-4.columns
           %strong Course ID:
-          %p ={course_run.mcka_course_id}
+            %a{:href => "/admin/courses/#{course_run.course_id}"}
+              %p ={course_run.course_id}
           %strong Max participants:
           %p ={course_run.max_participants}
           %strong Total participants:
-          %p ={total_users}
-          %a{:class => "button radius small", :href => "/admin/course_run/csv_download/#{course_run.id}"}
+          %p ={course_run.total_participants}
+          %a{:class => "button radius small {% if course_run.total_participants < 1 %} disabled {%endif%}", :href => "/admin/course_run/csv_download/#{course_run.id}"}
             Download CSV
             %i{'class': "fa fa-download"}
-        .large-4.columns
-          %strong Email template for McKA users:
-          %p ={course_run.mcka_email_template}
-        .large-4.columns
-          %strong Email template for non McKA users:
-          %p ={course_run.non_mcka_email_template}
-    %br
+        .large-8.columns
+          %strong Email template for existing McKA users:
+          %p ={course_run.email_template_existing}
+          %br
+          %strong Email template for new McKA users:
+          %p ={course_run.email_template_new}
+          %br
+          %strong Email template for McKA employees (SSO):
+          %p ={course_run.email_template_mcka}
+          %br
+          %strong Copy for closed status message:
+          %p ={course_run.email_template_closed}
+          %br
     %hr
     .large-10.large.columns
     -if users
@@ -61,3 +77,8 @@
                   %i.fa.fa-times{'style': "color:red"}
     -else
       No users registered for this course run!
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form('#contentModal', 'form');
