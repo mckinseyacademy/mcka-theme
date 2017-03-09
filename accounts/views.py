@@ -1038,7 +1038,7 @@ def demo_registration(request, course_run_name):
                 course_run.save()
 
                 #if existing user, send user object
-                if not user.new_user and users[0]:
+                if not user.new_user:
                     process_registration_request(request, user, course_run, users[0])
                 else:
                     process_registration_request(request, user, course_run)
