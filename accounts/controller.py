@@ -288,20 +288,24 @@ def process_registration_request(request, user, course_run, existing_user_object
     10 - new user non mcka user
     11 - new user mcka user
     '''
+
+    domain = request.META.get('HTTP_HOST')
+    protocol = 'https' if request.is_secure() else 'http'
+
     if not user.new_user and not user.mcka_user:
-        _process_existing_non_mcka_user(course_run, existing_user_object)
+        _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object)
 
     if user.new_user and not user.mcka_user:
         _process_new_non_mcka_user(request, user, course_run)
 
     if not user.new_user and user.mcka_user:
-        _process_existing_mcka_user(course_run, existing_user_object)
+        _process_existing_mcka_user(domain, protocol, course_run, existing_user_object)
 
     if user.new_user and user.mcka_user:
         _process_new_mcka_user(request, user, course_run)
 
 
-def _process_existing_non_mcka_user(course_run, existing_user_object):
+def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object):
 
     email_template_name = 'registration/public_registration_existing_non_mcka.haml'
     subject = "Existing non mcka user email subject"
@@ -319,7 +323,7 @@ def _process_new_non_mcka_user(request, registration_request, course_run):
         _get_set_company(user.id)
         enroll_user_in_course(user.id, course_run.course_id)
 
-def _process_existing_mcka_user(course_run, existing_user_object):
+def _process_existing_mcka_user(domain, protocol, course_run, existing_user_object):
 
     email_template_name = 'registration/public_registration_existing_mcka.haml'
     subject = "Existing mcka user email subject"

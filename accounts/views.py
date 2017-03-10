@@ -14,7 +14,7 @@ import string
 import re
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.validators import validate_slug
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib import auth, messages
@@ -1007,7 +1007,7 @@ def demo_registration(request, course_run_name):
 
     try:
         course_run = CourseRun.objects.get(name=course_run_name)
-    except:
+    except ObjectDoesNotExist:
         course_run = None
 
     if course_run and course_run.is_open:
@@ -1021,16 +1021,10 @@ def demo_registration(request, course_run_name):
                     registration_request.current_role = registration_request.current_role_other
                     registration_request.current_role_other == None
 
-                if "@mckinsey.com" in registration_request.company_email:
-                    registration_request.mcka_user = True
-                else:
-                    registration_request.mcka_user = False
+                registration_request.mcka_user = True if settings.MCKINSEY_EMAIL_DOMAIN in registration_request.company_email else False
 
                 users = user_api.get_users(email=registration_request.company_email)
-                if len(users) < 1:
-                    registration_request.new_user = True
-                else:
-                    registration_request.new_user = False
+                registration_request.new_user = True if len(users) < 1 else False
 
                 registration_request.save()
 

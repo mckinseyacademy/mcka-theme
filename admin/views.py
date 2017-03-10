@@ -17,10 +17,10 @@ from django.conf import settings
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader, RequestContext
 from django.utils.dateformat import format
 from django.utils.decorators import method_decorator
@@ -5469,14 +5469,16 @@ class company_participant_details_api(APIView):
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
 def course_run_list(request):
-    course_runs = CourseRun.objects.all().order_by('name')
+
+    key = request.GET.get('order_by','name')
+    course_runs = CourseRun.objects.all().order_by(key)
     return render(request, 'admin/course_run/list.haml', {'course_runs': course_runs})
 
 def course_run_view(request, course_run_id):
 
     try:
         course_run = CourseRun.objects.get(pk=course_run_id)
-    except:
+    except ObjectDoesNotExist:
         return render(request, '404.haml')
 
     users = PublicRegistrationRequest.objects.filter(course_run=course_run)
@@ -5493,7 +5495,7 @@ def course_run_create_edit(request, course_run_id=None):
 
     try:
         course_run = CourseRun.objects.get(pk=course_run_id)
-    except:
+    except ObjectDoesNotExist:
         course_run = None
 
     if request.method == 'POST':
@@ -5519,10 +5521,7 @@ def course_run_create_edit(request, course_run_id=None):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_csv_download(request, course_run_id):
 
-    try:
-        course_run = CourseRun.objects.get(pk=course_run_id)
-    except:
-        return render(request, '404.haml')
+    course_run = get_object_or_404(CourseRun, pk=course_run_id)
 
     users = PublicRegistrationRequest.objects.filter(course_run=course_run)
 
