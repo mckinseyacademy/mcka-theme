@@ -375,7 +375,7 @@ def _register_user_on_platform(user):
     data = {}
 
     if len(user.company_email) > 30:
-        data['username'] = user.email[:29]
+        data['username'] = user.company_email[:29]
     else:
         data['username'] = user.company_email
     data['email'] = user.company_email

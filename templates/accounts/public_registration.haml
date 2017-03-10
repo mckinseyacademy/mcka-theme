@@ -45,11 +45,7 @@
 
 - block js_snippets
   :javascript
-    var modal_success = "{{success_modal}}";
-    if (modal_success == "True"){
-      $('.reveal-modal').foundation('reveal', 'open');
-    }
-
+    $('label[for="id_current_role_other"]').hide();
     var $current_role_other = $("#id_current_role_other");
     $(window).on( "load", function() {
       toggle_field();
@@ -58,7 +54,8 @@
       toggle_field();
     });
     function toggle_field(){
-      if($('input[name=current_role]:checked').val() == 'other') {
+      console.log("drkedrkedjon");
+      if($('input[name=current_role]:checked').val() == 'Other') {
           $current_role_other.prop('disabled', false);
         } else {
           $current_role_other.val("");

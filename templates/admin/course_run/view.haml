@@ -66,15 +66,16 @@
               %td{style: "word-wrap: break-word"}= user.company_email
               %td{style: "word-wrap: break-word"}= user.current_role
               %td{style: "word-wrap: break-word; text-align: left;"}
-                -if user.mcka_user
-                  %i.fa.fa-check{'style': "color:green"}
-                -else
-                  %i.fa.fa-times{'style': "color:red"}
-              %td{style: "word-wrap: break-word; text-align: left;"}
                 -if user.new_user
                   %i.fa.fa-check{'style': "color:green"}
                 -else
                   %i.fa.fa-times{'style': "color:red"}
+              %td{style: "word-wrap: break-word; text-align: left;"}
+                -if user.mcka_user
+                  %i.fa.fa-check{'style': "color:green"}
+                -else
+                  %i.fa.fa-times{'style': "color:red"}
+
     -else
       No users registered for this course run!
 

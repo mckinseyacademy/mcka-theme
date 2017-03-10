@@ -1014,34 +1014,34 @@ def demo_registration(request, course_run_name):
         if request.method == 'POST':
             form = PublicRegistrationForm(request.POST)
             if form.is_valid():
-                user = form.save(commit=False)
-                user.course_run = course_run
+                registration_request = form.save(commit=False)
+                registration_request.course_run = course_run
 
-                if "other" == user.current_role:
-                    user.current_role = user.current_role_other
-                    user.current_role_other == None
+                if "other" == registration_request.current_role:
+                    registration_request.current_role = registration_request.current_role_other
+                    registration_request.current_role_other == None
 
-                if "@mckinsey.com" in user.company_email:
-                    user.mcka_user = True
+                if "@mckinsey.com" in registration_request.company_email:
+                    registration_request.mcka_user = True
                 else:
-                    user.mcka_user = False
+                    registration_request.mcka_user = False
 
-                users = user_api.get_users(email=user.company_email)
+                users = user_api.get_users(email=registration_request.company_email)
                 if len(users) < 1:
-                    user.new_user = True
+                    registration_request.new_user = True
                 else:
-                    user.new_user = False
+                    registration_request.new_user = False
 
-                user.save()
+                registration_request.save()
 
                 course_run.total_participants += 1
                 course_run.save()
 
                 #if existing user, send user object
-                if not user.new_user:
-                    process_registration_request(request, user, course_run, users[0])
+                if not registration_request.new_user:
+                    process_registration_request(request, registration_request, course_run, users[0])
                 else:
-                    process_registration_request(request, user, course_run)
+                    process_registration_request(request, registration_request, course_run)
 
                 return render(request, 'accounts/public_registration.haml')
         else:
