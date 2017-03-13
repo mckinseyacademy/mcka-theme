@@ -37,7 +37,7 @@ from courses.user_courses import standard_data, get_current_course_for_user, get
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
-    process_access_key, process_registration_request
+    process_access_key, process_registration_request, _send_course_run_closed_email
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -1027,6 +1027,10 @@ def demo_registration(request, course_run_name):
                 registration_request.new_user = True if len(users) < 1 else False
 
                 registration_request.save()
+
+                if course_run.max_participants >= course_run.total_participants:
+                    _send_course_run_closed_email(registration_request, course_run)
+                    return redirect('home')
 
                 course_run.total_participants += 1
                 course_run.save()

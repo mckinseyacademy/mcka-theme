@@ -28,7 +28,7 @@ urlpatterns = patterns(
     url(r'^notification_redir$', 'main.views.notification_redir'),
     url(r'^access/(?P<code>[^/]*)$', 'accounts.views.access_key', name="access_key"),
     url(r'^__debug__/', include(debug_toolbar.urls)),
-    url(r'^(?P<course_run_name>.+)/$', accountsviews.demo_registration, name='demo_registration'),
+    url(r'^registration/(?P<course_run_name>.+)/$', accountsviews.demo_registration, name='demo_registration'),
 )
 
 urlpatterns += patterns(

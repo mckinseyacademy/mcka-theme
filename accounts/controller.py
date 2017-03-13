@@ -312,7 +312,7 @@ def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_
     url = "/courses/" + course_run.course_id
 
     enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
-    send_registration_email(domain, protocol, existing_user_object, email_template_name, subject, url)
+    send_info_email(domain, protocol, existing_user_object, email_template_name, subject, url)
 
 def _process_new_non_mcka_user(request, registration_request, course_run):
 
@@ -330,7 +330,7 @@ def _process_existing_mcka_user(domain, protocol, course_run, existing_user_obje
     url = "/courses/" + course_run.course_id_sso
 
     enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id_sso)
-    send_registration_email(domain, protocol, existing_user_object, email_template_name, subject, url)
+    send_info_email(domain, protocol, existing_user_object, email_template_name, subject, url)
 
 def _process_new_mcka_user(request, registration_request, course_run):
 
@@ -354,6 +354,25 @@ def _get_set_company(user_id):
     client = Client.fetch(company)
     client.add_user(user_id)
 
+def _send_course_run_closed_email(registration_request, course_run):
+
+    email_template_name = 'registration/course_closed.haml'
+    subject = "Course closed email"
+
+    c = {
+        'email_body': course_run.email_template_closed,
+    }
+
+    email_template = loader.render_to_string(email_template_name, c)
+    email = EmailMessage(
+        subject,
+        email_template,
+        settings.APROS_EMAIL_SENDER,
+        [registration_request.company_email],
+        headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
+
+    email.send(fail_silently=False)
+
 def _send_activation_link(request, user):
 
     if not user.is_active:
@@ -361,7 +380,7 @@ def _send_activation_link(request, user):
         email_head = request.build_absolute_uri('/accounts/activate')
         _send_activation_email_to_single_new_user(activation_record, user, email_head)
 
-def send_registration_email(domain, protocol, user, email_template_name, subject, url, email_body=None):
+def send_info_email(domain, protocol, user, email_template_name, subject, url, email_body=None):
 
     c = {
         'email': user.email,
