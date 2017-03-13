@@ -1757,6 +1757,24 @@ def create_course_access_key(request, client_id):
     }
     return render(request, 'admin/client/create_course_access_key', data)
 
+class create_course_access_key_api(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, client_id):
+        form = CreateCourseAccessKeyForm(request.POST) # A form bound to the POST data
+
+        if form.is_valid():  # All validation rules pass
+            try:
+                course_api.get_course_shallow(request.POST.get("course_id"))
+                code = generate_access_key()
+                model = form.save(commit=False)
+                model.client_id = int(client_id)
+                model.code = code
+                model.save()
+            except:
+                return Response({"status":"error", "msg": "Access Key couldn't be created, please check course ID!"})
+            return Response({"status":"success", "msg": "Access Key created successfully!"})
+        return Response({"status":"error", "msg": "Access Key couldn't be created, please check course ID!"})
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -2813,7 +2831,7 @@ def groupwork_dashboard_companiesV2(request):
     content_id = request.GET.get('project_id', None)
     project_list=None
     if course_id and content_id:
-        project_list=project_api.get_all_projects(course_id, content_id)
+        project_list = Project.list(course_id, content_id)
     all_clients = sorted(
         AccessChecker.get_clients_user_has_access_to(request.user),
         key=operator.attrgetter('display_name')
@@ -4134,6 +4152,14 @@ def course_learner_dashboard_discover_create_edit(request, course_id, discovery_
             })
 
             return HttpResponseRedirect(url_list)
+
+    elif request.method == 'DELETE' and discovery:
+        discovery.delete()
+        redirect_url = reverse(
+            'course_learner_dashboard',
+            kwargs={'course_id': course_id}
+        )
+        return HttpResponseRedirect(redirect_url)
 
     else:
         form = DiscoveryContentCreateForm(instance=discovery)        

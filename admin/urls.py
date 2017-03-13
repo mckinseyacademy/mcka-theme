@@ -23,7 +23,7 @@ urlpatterns = patterns(
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/list$', views.course_learner_dashboard_discover_list, name='course_learner_dashboard_discover_list'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/create$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/edit/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
-    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_delete, name='course_learner_dashboard_discover_delete'),
+    url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/delete/(?P<discovery_id>.*)$', views.course_learner_dashboard_discover_create_edit, name='course_learner_dashboard_discover_create_edit'),
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/discover/list/reorder$', views.course_learner_dashboard_discover_reorder, name='course_learner_dashboard_discover_reorder'),
 
     url(r'^courses/(?P<course_id>.+)/learner_dashboard/(?P<learner_dashboard_id>.+)/duplicate/(?P<copy_to_course_id>.+)$', views.course_learner_dashboard_copy, name='course_learner_dashboard_copy'),
@@ -97,6 +97,7 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/nav_links', views.client_detail_nav_links, name='client_detail_nav_links'),
     url(r'^clients/(?P<client_id>[0-9]+)/customization', views.client_detail_customization, name='client_detail_customization'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/create', views.create_access_key, name='create_access_key'),
+    url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create-api', views.create_course_access_key_api.as_view(), name='create_course_access_key_api'),    
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create', views.create_course_access_key, name='create_course_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/(?P<access_key_id>[0-9]+)/share', views.share_access_key, name='share_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys', views.access_key_list, name='access_key_list'),

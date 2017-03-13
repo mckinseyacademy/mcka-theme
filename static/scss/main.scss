@@ -567,6 +567,9 @@ div.xblock-student_view {
   &.xmodule_display {
     visibility: visible;
   }
+  div.bookmark-button-wrapper{
+    display: none;
+  }
 }
 
 div.xblock-spinner {

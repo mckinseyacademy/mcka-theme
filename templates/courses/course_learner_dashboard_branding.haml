@@ -1,4 +1,5 @@
 %script
+  $('body').addClass("learner-dashboard-view");
   - if branding
     - if branding.background_image
       - if branding.get_background_style_display == 'Stretched'
@@ -6,12 +7,65 @@
         $('body').css('background-size', '100% 100%');
       - else
         - if branding.get_background_style_display == 'Normal'
-          $('body').css('background-repeat', 'no-repeat');
+          var window_object = $(window);
+          var body_object = $('body');
+          body_object.css('background-repeat', 'no-repeat');
+          var header_height = parseInt($("#learner-dashboard-header").outerHeight());
+          var window_height = parseInt(window_object.height());
+          body_object.css('background-position', 'center '+header_height+'px');
+          body_object.css('background-size', 'auto '+(window_height-header_height)+'px');
+
+          var background_image = new Image();
+          var background_image_height=0;
+          var background_image_width=0;
+          var scaled_height = 0;
+
+          resize_learner_dashboard_function = function(){
+            var width_available = parseInt(window_object.width());
+            var window_height = parseInt(window_object.height());
+            var calculated_offest = header_height;
+            var height_available = window_height - calculated_offest;
+            var calculated_height = background_image_height*width_available/background_image_width;
+            var calculated_width = height_available*background_image_width/background_image_height;
+            var final_height=height_available;
+            var final_width=width_available;
+            if (calculated_width<width_available){
+              final_width=calculated_width;
+            }
+            if (calculated_height<height_available){
+              final_height=calculated_height;
+            }
+            if (width_available<=960){             
+              body_object.css('background-size', '960px '+ scaled_height +"px");
+              body_object.css('background-position', '0px '+ calculated_offest +'px');
+            }
+            else{
+              if (height_available<=scaled_height){
+                body_object.css('background-size', '960px '+scaled_height+"px");
+              } 
+              else{
+                body_object.css('background-size', ""+final_width+"px "+final_height+"px");
+              }
+              body_object.css('background-position', 'center '+ calculated_offest+'px');
+            }
+          };
+
+          // just in case it is not already loaded
+          $(background_image).load(function () {
+            background_image_width=background_image.width;
+            background_image_height=background_image.height;
+            scaled_height = background_image_height*960/background_image_width;
+            body_object.css('min-height', 'auto '+scaled_height+'px');
+            resize_learner_dashboard_function();
+          });
+          background_image.src = "/company_images/#{branding.background_image}";
+          window_object.on("scroll", resize_learner_dashboard_function);
+          window_object.on("resize", resize_learner_dashboard_function);
         - else 
           - if branding.get_background_style_display == 'Tiled'
             $('body').css('background-repeat', 'repeat');
       $('body').css('background-image', 'url(/company_images/#{branding.background_image})');
-      $('body').css('background-attachment', 'fixed');
+
     - else
       - if branding.background_color
         $('body').css('background-color', '#{branding.background_color}');
@@ -21,4 +75,3 @@
            alert("Optimized for landscape view, please rotate your device.");
         }
       }
-  $('body').css('margin-top', '0');

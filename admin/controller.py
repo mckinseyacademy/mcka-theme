@@ -1236,7 +1236,8 @@ def get_course_engagement_summary(course_id, company_id):
     for course_user in course_users:
         if course_user['is_active'] is True:
             active_users += 1
-        if parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
+        if course_user['last_login'] and \
+                parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
             login_users += 1
             for leader in course_metrics['leaders']:
                 if leader['id'] == course_user['id']:

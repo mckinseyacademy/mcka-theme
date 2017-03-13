@@ -1,12 +1,78 @@
 /* See ../lesson-content/discussion.scss for rules shared with lession discussion */
+
+header .course-name {
+  line-height: 14px !important;
+  margin: 4px 0 !important;
+}
+
+header .course-tabs li {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
 #course-discussion {
   .discussion-course {
     margin-top: 10px;
   }
 }
 
+.wmd-prompt-background {
+  background-color: $pure-white !important;
+}
+
+.wmd-prompt-dialog {
+  padding: 10px 20px !important;
+  background-color: #b1c2cc !important;
+  border: none !important;
+  font-family: "Open Sans",sans-serif !important;
+
+  .form {
+    width: auto !important;
+    margin: 0 auto !important;
+
+    .form-group-hd {
+      display: none !important;
+    }
+
+    .field-group {
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+    }
+
+    .input-text {
+      width: 100% !important;
+    }
+
+    .form-actions {
+      text-align: center !important;
+    }
+  }
+
+  .form-btn {
+    display: inline-block !important;
+    margin: 10px !important;
+    color: $pure-black !important;
+    background-color: $mckinsey-grey;
+    border: 1px solid $pure-black !important;
+    border-radius: 3px !important;
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
+
+
+}
+
 #course-discussion .discussion-content {
   fieldset { margin:0; padding: 0; border:0; }
+
+  .forum-nav-thread-link:hover,
+  .forum-nav-thread-link:active,
+  .forum-nav-thread-link:focus,
+  .forum-nav-thread-link.is_active {
+      background-color: $forum-nav-link-active;
+  }
 
   .forum-nav {
     select {
@@ -48,11 +114,21 @@
         // have to use !important to override other !important at
         // edx-platform/lms/static/sass/discussion/utilities/_shame.scss .forum-nav-browse rule
         color: $pure-white !important;
+        padding: 5px;
 
-        &:hover, &:focus, &.is-active {
-          background-color: $mckinsey-academy-blue-gray;
+        &:focus, &:hover, &.is-active {
+          background-color: $mckinsey-academy-blue-gray !important;
         }
       }
+    }
+
+    .forum-nav-thread {
+      border-bottom: 1px solid $comment-background-color;
+      background-color: $forum-thread-background-color;
+    }
+
+    .forum-nav-thread.never-read {
+      background-color: $pure-white;
     }
 
     .forum-nav-refine-bar {
@@ -101,9 +177,11 @@
 
       .forum-nav-thread-comments-count {
         background-image: none;
+        background-color: $comment-background-color;
         &:after {
           z-index: auto;
           background: none;
+          border-color: transparent $comment-background-color transparent transparent
         }
       }
 
@@ -146,7 +224,7 @@
 
       height: 80px;
       padding: 10px;
-      background-color: #ffffff;
+      background-color: $pure-white;
       border: 1px solid #aaa;
       border-bottom: none;
       position: absolute;
@@ -176,6 +254,29 @@
       }
 
     }
+
+    .thread-main-wrapper {
+      box-shadow: 0 1px 3px $thread-main-wrapper-shadow-color;
+    }
+
+    .add-response {
+      display: block;
+      margin-top: 20px;
+      padding: 0 30px;
+    }
+
+    .user-label-staff {
+      font-weight: 700;
+    }
+
+    h1 {
+      color: $mckinsey-academy-turquoise;
+      font-weight: 700;
+    }
+
+    .responses {
+      margin-bottom: 1.42857rem;
+    }
   }
 
   .comments {
@@ -185,6 +286,26 @@
 
     .comment-actions-list {
       width: 19%;
+    }
+  }
+
+  .comments > li {
+    border-top: 1px solid $comment-list-border-color;
+  }
+
+  .response-pagination {
+    padding: 10px 30px;
+    background-color: $response-pagination-color;
+    box-shadow: 0 1px 1px $comment-list-border-color inset, 0 -1px 1px $comment-list-border-color inset;
+  }
+
+  // Fix the spacing of the "Add a response" header
+  .discussion-reply-new {
+    padding: 20px 30px;
+
+    h4 {
+      clear: both;
+      padding-top: 1.25rem;
     }
   }
 
@@ -212,6 +333,25 @@
     }
   }
 
+  .add-response-btn::first-letter {
+    text-transform: lowercase !important;
+  }
+
+  .post-type-input:checked+.post-type-label {
+    background-color: $forum-nav-link-active;
+    color: $post-input-label-checked-color;
+  }
+
+  // Hide the bookmark button
+  .bookmark-button-wrapper {
+    display: none;
+  }
+
+  // Remove all box shadows from buttons
+  button, .button {
+    box-shadow: none;
+  }
+
   a.new-post-btn {
     &, &:hover, &:visited, &:active {
       margin-right: 2em;
@@ -221,8 +361,37 @@
   /* Discussion column */
 
   .discussion-column {
-    border-color: #ddd;
+    border: 1px solid #ddd;
     box-shadow: none;
+    padding-left: 0;
+
+    .discussion-post {
+      padding: 40px 40px 20px 40px;
+    }
+
+    .response-count {
+      margin-top: 20px;
+      padding: 0 30px;
+      color: $response-count-color;
+      font-size: 14px;
+    }
+
+    .forum-new-post-form,
+    .field-input {
+      background: $forum-thread-background-color;
+    }
+
+    input.field-input {
+      background: $pure-white;
+      border: 1px solid $field-input-border-color;
+    }
+
+    button.cancel {
+      &, &:hover, &:visited, &:active {
+        float: left;
+        margin: 15px 0;
+      }
+    }
   }
 
   .wrap-instructor-info {
@@ -252,6 +421,17 @@
       position: absolute;
       display: block;
     }
+  }
+
+  .action-button,
+  .action-list-item {
+    &:hover, &:active, &:focus {
+      background-color: $pure-white;
+    }
+  }
+
+  .action-list-item {
+    width: 100%;
   }
 
   .discussion-article {

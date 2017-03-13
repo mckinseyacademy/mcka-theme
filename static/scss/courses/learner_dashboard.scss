@@ -31,12 +31,27 @@
     }
 }
 
+#home-courses{
+    &.learner-dashboard-enabled{
+        padding-top: 20px;
+    }
+}
+
+footer.ld-footer-main{
+    margin-top: -80px;
+    margin-bottom: 20px;
+}
+
+body.learner-dashboard-view{
+    background-attachment: fixed;
+    min-width: 960px;
+}
+
 .dash-programs{
     background: white;
-    height: 645px;
+    height: 632px;
     width: 600px;
-    padding-left: 10px;
-    padding-right: 0;
+    margin-left: 20px;
 
     h3 {
         width: 565px;
@@ -110,6 +125,7 @@
     border-top: 1px solid $mckinsey-academy-bright-gray;
     border-bottom: 1px solid $mckinsey-academy-bright-gray;
     padding: 10px 0px;
+    margin-right: 20px;
 
     .learner-info{
         margin: 15px 0;

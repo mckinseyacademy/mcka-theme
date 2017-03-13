@@ -1,4 +1,4 @@
-%header#learner-dashboard-header.background-blue{role: 'banner', style: "position: inherit; {% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
+%header#learner-dashboard-header.background-blue{role: 'banner', style: "position: fixed; {% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
   .row.collapse.main-nav{style: "{% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
     .large-6.small-6.columns.header-row
       -if branding and branding.logo_image
