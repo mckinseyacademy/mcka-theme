@@ -5468,12 +5468,14 @@ class company_participant_details_api(APIView):
             selectedUser['internalAdminFlag'] = internalAdminFlag
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_list(request):
 
     key = request.GET.get('order_by','name')
     course_runs = CourseRun.objects.all().order_by(key)
     return render(request, 'admin/course_run/list.haml', {'course_runs': course_runs})
 
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_view(request, course_run_id):
 
     try:

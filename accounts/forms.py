@@ -513,7 +513,8 @@ class ActivationFormV2(BaseRegistrationFormV2):
 class PublicRegistrationForm(forms.ModelForm):
 
     current_role = forms.ChoiceField(widget=forms.RadioSelect, choices=CURRENT_ROLE)
-    
+    current_role_other = forms.CharField(widget=forms.TextInput, label='', required=False)
+
     class Meta:
 
         model = PublicRegistrationRequest

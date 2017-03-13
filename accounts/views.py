@@ -18,7 +18,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.validators import validate_slug
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib import auth, messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
@@ -1037,7 +1037,7 @@ def demo_registration(request, course_run_name):
                 else:
                     process_registration_request(request, registration_request, course_run)
 
-                return render(request, 'accounts/public_registration.haml')
+                return redirect('home')
         else:
             form = PublicRegistrationForm()
 
