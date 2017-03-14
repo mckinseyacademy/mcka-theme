@@ -1010,7 +1010,7 @@ def demo_registration(request, course_run_name):
     except ObjectDoesNotExist:
         course_run = None
 
-    if course_run and course_run.is_open:
+    if course_run:
         if request.method == 'POST':
             form = PublicRegistrationForm(request.POST)
             if form.is_valid():
@@ -1028,7 +1028,7 @@ def demo_registration(request, course_run_name):
 
                 registration_request.save()
 
-                if course_run.max_participants >= course_run.total_participants:
+                if (course_run.max_participants >= course_run.total_participants) or not course_run.is_open:
                     _send_course_run_closed_email(registration_request, course_run)
                     return redirect('home')
 
