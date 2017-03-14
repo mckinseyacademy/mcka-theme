@@ -9,7 +9,7 @@
           %a{:href => "/admin/course_runs/"}
             %p < Back to list
           %h1 Course Run: ={course_run.name}
-          %a{:href => "/demoregistration/#{course_run.name}"}
+          %a{:href => "/registration/#{course_run.name}"}
             View live
         .large-4.columns
           %a.right{:class => "button radius small", :href => "/admin/course_run/create/#{course_run.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
