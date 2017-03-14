@@ -1,0 +1,77 @@
+- if course_run
+  %section
+    %h1 Edit Course Run
+- else
+  %section
+    %h1 Create Course Run
+%hr
+.close-reveal-modal
+  %i.fa.fa-times-circle
+%form.discover_modal_form{action: "/admin/course_run/create/#{course_run.id}", method: "POST"}
+  - csrf_token
+  .row
+    .small-3.columns
+    .small-9.columns= form.name.errors
+  .row
+    .small-3.columns Url friendly name:
+    .small-9.columns= form.name
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.max_participants.errors
+  .row
+    .small-3.columns= form.max_participants.label_tag
+    .small-9.columns= form.max_participants
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.is_open.errors
+  .row
+    .small-3.columns= form.is_open.label_tag
+    .small-9.columns= form.is_open
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.course_id.errors
+  .row
+    .small-3.columns Course ID:
+    .small-9.columns= form.course_id
+
+  .row
+    .small-3.columns
+    .small-9.columns= form.course_id_sso.errors
+  .row
+    .small-3.columns Course ID(SSO):
+    .small-9.columns= form.course_id_sso
+
+  %hr
+  .row
+    .small-12.columns
+      Email template for existing McKA users:
+      = form.email_template_existing.errors
+      = form.email_template_existing
+
+  .row
+    .small-12.columns 
+      Email template for new McKA users:
+      = form.email_template_new.errors
+      = form.email_template_new
+
+  .row
+    .small-12.columns 
+      Email template for McKA employees (SSO):
+      = form.email_template_mcka.errors
+      = form.email_template_mcka
+
+  .row
+    .small-12.columns 
+      Copy for closed status message:
+      = form.email_template_closed.errors
+      = form.email_template_closed
+
+  .error
+    - if error
+      = error
+  %input#discoverFormSubmit.button.radius.small{type: "submit", value: "Save", disabled: "True"}
+
+  %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}

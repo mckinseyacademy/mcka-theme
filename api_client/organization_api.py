@@ -20,7 +20,8 @@ def create_organization(organization_name, organization_data=None, organization_
         "name": organization_name,
     }
 
-    data.update(organization_data)
+    if organization_data:
+        data.update(organization_data)
 
     response = POST(
         '{}/{}/'.format(

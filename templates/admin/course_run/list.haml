@@ -1,0 +1,53 @@
+- extends 'admin/admin_layout.haml'
+- load staticfiles
+- block content
+  .admin-detail.row
+    #contentModal.reveal-modal.small{'data-reveal': None}
+    %section
+      %h1 Self-sign up courses
+    %section
+      %p
+        You can manage the self-sign up courses here
+    %br
+    %div.submit-area
+      %a{:class => "button radius small", :href => "/admin/course_run/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
+        New
+        %i{'class': "fa fa-plus"}
+
+    %hr
+    .large-10.large.columns
+    -if course_runs
+      %table{style:"table-layout: fixed; width: 100%"}
+        %thead
+          %tr
+            %th= _("Name")
+            %th= _("Course ID")
+            %th= _("Open")
+            %th= _("Total/Max")
+            %th= _("Edit")
+        %tbody
+          - for run in course_runs
+            %tr{id: "#{run.id}"}
+              %td{style: "word-wrap: break-word"}
+                %a{:href => "/admin/course_run/view/#{run.id}"}
+                  = run.name
+              %td{style: "word-wrap: break-word"}= run.course_id
+              %td{style: "word-wrap: break-word; text-align: left;"}
+                -if run.is_open
+                  %i.fa.fa-check{'style': "color:green"}
+                -else
+                  %i.fa.fa-times{'style': "color:red"}
+              %td{style: "word-wrap: break-word"}
+                = run.total_participants
+                = " / "
+                = run.max_participants
+              %td
+                %a{:href => "/admin/course_run/create/#{run.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
+                  %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
+    -else
+      No course runs defined!
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  :javascript
+    ajaxify_overlay_form('#contentModal', 'form');

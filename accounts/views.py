@@ -14,11 +14,11 @@ import string
 import re
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.validators import validate_slug
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.contrib import auth, messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
@@ -28,7 +28,7 @@ from courses.models import FeatureFlags
 from api_client import user_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
-from admin.models import Client, Program, LearnerDashboard
+from admin.models import Client, Program, LearnerDashboard, CourseRun
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
@@ -37,11 +37,11 @@ from courses.user_courses import standard_data, get_current_course_for_user, get
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
-    process_access_key
+    process_access_key, process_registration_request, _send_course_run_closed_email
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
-    EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2
+    EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2, PublicRegistrationForm
 )
 from django.shortcuts import resolve_url
 from django.utils.http import urlsafe_base64_decode
@@ -1001,3 +1001,56 @@ def access_key(request, code):
     }
 
     return render(request, template, data)
+
+
+def demo_registration(request, course_run_name):
+
+    try:
+        course_run = CourseRun.objects.get(name=course_run_name)
+    except ObjectDoesNotExist:
+        course_run = None
+
+    if course_run:
+        if request.method == 'POST':
+            form = PublicRegistrationForm(request.POST)
+            if form.is_valid():
+                registration_request = form.save(commit=False)
+                registration_request.course_run = course_run
+
+                if "other" == registration_request.current_role:
+                    registration_request.current_role = registration_request.current_role_other
+                    registration_request.current_role_other == None
+
+                registration_request.mcka_user = True if settings.MCKINSEY_EMAIL_DOMAIN in registration_request.company_email else False
+
+                users = user_api.get_users(email=registration_request.company_email)
+                registration_request.new_user = True if len(users) < 1 else False
+
+                registration_request.save()
+
+                if (course_run.max_participants >= course_run.total_participants) or not course_run.is_open:
+                    _send_course_run_closed_email(registration_request, course_run)
+                    return redirect('home')
+
+                course_run.total_participants += 1
+                course_run.save()
+
+                #if existing user, send user object
+                if not registration_request.new_user:
+                    process_registration_request(request, registration_request, course_run, users[0])
+                else:
+                    process_registration_request(request, registration_request, course_run)
+
+                return redirect('home')
+        else:
+            form = PublicRegistrationForm()
+
+        data = {
+            'form': form,
+            'course_run_name': course_run_name,
+        }
+
+        return render(request, 'accounts/public_registration.haml', data)
+
+    else:
+        return render(request, '404.haml')

@@ -2,6 +2,8 @@ from collections import namedtuple
 import datetime
 from django.contrib import messages
 import os
+import re
+import urllib
 
 from django.conf import settings
 from django.utils.encoding import force_bytes
@@ -11,15 +13,16 @@ from django.core.urlresolvers import reverse
 from django.template import loader
 from django.core.mail import EmailMessage
 
-from admin.models import Program, LearnerDashboard
+from admin.controller import _send_activation_email_to_single_new_user, enroll_user_in_course
+from admin.models import Program, LearnerDashboard, Client
 from courses.user_courses import get_current_course_for_user
 from courses.models import FeatureFlags
 
-from api_client import user_api, third_party_auth_api
+from api_client import user_api, third_party_auth_api, organization_api
 from api_client.api_error import ApiError
 
 from license import controller as license_controller
-from .models import UserPasswordReset
+from .models import UserPasswordReset, UserActivation
 
 
 class ActivationError(Exception):
@@ -276,3 +279,131 @@ def send_password_reset_email(domain, user, use_https,
     email = loader.render_to_string(email_template_name, c)
     email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
     email.send(fail_silently=False)
+
+
+def process_registration_request(request, user, course_run, existing_user_object=None):
+    '''
+    00 - existing non mcka user
+    01 - existing mcka user
+    10 - new user non mcka user
+    11 - new user mcka user
+    '''
+
+    domain = request.META.get('HTTP_HOST')
+    protocol = 'https' if request.is_secure() else 'http'
+
+    if not user.new_user and not user.mcka_user:
+        _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object)
+
+    if user.new_user and not user.mcka_user:
+        _process_new_non_mcka_user(request, user, course_run)
+
+    if not user.new_user and user.mcka_user:
+        _process_existing_mcka_user(domain, protocol, course_run, existing_user_object)
+
+    if user.new_user and user.mcka_user:
+        _process_new_mcka_user(request, user, course_run)
+
+
+def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object):
+
+    email_template_name = 'registration/public_registration_existing_non_mcka.haml'
+    subject = "Existing non mcka user email subject"
+    url = "/courses/" + course_run.course_id
+
+    enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
+    send_info_email(domain, protocol, existing_user_object, email_template_name, subject, url)
+
+def _process_new_non_mcka_user(request, registration_request, course_run):
+
+    user = _register_user_on_platform(registration_request)
+
+    if user:
+        _send_activation_link(request, user)
+        _get_set_company(user.id)
+        enroll_user_in_course(user.id, course_run.course_id)
+
+def _process_existing_mcka_user(domain, protocol, course_run, existing_user_object):
+
+    email_template_name = 'registration/public_registration_existing_mcka.haml'
+    subject = "Existing mcka user email subject"
+    url = "/courses/" + course_run.course_id_sso
+
+    enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id_sso)
+    send_info_email(domain, protocol, existing_user_object, email_template_name, subject, url)
+
+def _process_new_mcka_user(request, registration_request, course_run):
+
+    user = _register_user_on_platform(registration_request)
+
+    if user:
+        _send_activation_link(request, user)
+        _get_set_company(user.id)
+        enroll_user_in_course(user.id, course_run.course_id_sso)
+
+def _get_set_company(user_id):
+
+    companies = organization_api.get_organization_by_display_name("demo_course")
+
+    if companies['count'] != 0:
+        company = companies['results'][0]['id']
+    else:
+        new_company = organization_api.create_organization(organization_name="demo_course", organization_data={"display_name": "demo_course"})
+        company = vars(new_company).get("id", None)
+
+    client = Client.fetch(company)
+    client.add_user(user_id)
+
+def _send_course_run_closed_email(registration_request, course_run):
+
+    email_template_name = 'registration/course_closed.haml'
+    subject = "Course closed email"
+
+    c = {
+        'email_body': course_run.email_template_closed,
+    }
+
+    email_template = loader.render_to_string(email_template_name, c)
+    email = EmailMessage(
+        subject,
+        email_template,
+        settings.APROS_EMAIL_SENDER,
+        [registration_request.company_email],
+        headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
+
+    email.send(fail_silently=False)
+
+def _send_activation_link(request, user):
+
+    if not user.is_active:
+        activation_record = UserActivation.user_activation(user)
+        email_head = request.build_absolute_uri('/accounts/activate')
+        _send_activation_email_to_single_new_user(activation_record, user, email_head)
+
+def send_info_email(domain, protocol, user, email_template_name, subject, url, email_body=None):
+
+    c = {
+        'email': user.email,
+        'domain': domain,
+        'url': url,
+        'user': user,
+        'protocol': protocol,
+    }
+    email = loader.render_to_string(email_template_name, c)
+    email = EmailMessage(subject, email, settings.APROS_EMAIL_SENDER, [user.email], headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
+    email.send(fail_silently=False)
+
+def _register_user_on_platform(user):
+
+    data = {}
+
+    if len(user.company_email) > 30:
+        data['username'] = user.company_email[:29]
+    else:
+        data['username'] = user.company_email
+    data['email'] = user.company_email
+    data['username'] = re.sub(r'\W', '', user.company_email)
+    data['password'] = settings.INITIAL_PASSWORD
+    data['is_active'] = False
+
+    return user_api.register_user(data)

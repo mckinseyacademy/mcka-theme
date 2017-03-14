@@ -11,6 +11,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from lib.authorization import is_user_in_permission_group
 from api_client.group_api import PERMISSION_GROUPS
+from admin.models import CourseRun
 
 from django.utils.functional import cached_property
 from django.core.cache import cache
@@ -189,3 +190,20 @@ class UserPasswordReset(db_models.Model):
             if reset_record.validation_key == token and (reset_record.time_requested + timedelta(days=1)) >= timezone.now():
                 return reset_record
         return None
+
+class PublicRegistrationRequest(db_models.Model):
+
+    first_name = db_models.CharField(blank=False, null=False, max_length=50)
+    last_name = db_models.CharField(blank=False, null=False, max_length=50)
+    company_name = db_models.CharField(blank=False, null=False, max_length=50)
+    company_email = db_models.EmailField(blank=False, null=False, unique=True)
+    current_role = db_models.CharField(blank=False, null=True, max_length=100)
+    current_role_other = db_models.CharField(blank=True, null=True, max_length=60)
+
+    mcka_user = db_models.BooleanField()
+    new_user = db_models.BooleanField()
+
+    course_run = db_models.ForeignKey(
+        CourseRun,
+        on_delete=db_models.CASCADE,
+    )
