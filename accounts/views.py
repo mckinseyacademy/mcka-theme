@@ -1026,14 +1026,13 @@ def demo_registration(request, course_run_name):
                 users = user_api.get_users(email=registration_request.company_email)
                 registration_request.new_user = True if len(users) < 1 else False
 
-                registration_request.save()
-
-                if (course_run.max_participants >= course_run.total_participants) or not course_run.is_open:
-                    _send_course_run_closed_email(registration_request, course_run)
-                    return redirect('home')
-
                 course_run.total_participants += 1
                 course_run.save()
+                registration_request.save()
+
+                if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
+                    _send_course_run_closed_email(registration_request, course_run)
+                    return redirect('home')
 
                 #if existing user, send user object
                 if not registration_request.new_user:
