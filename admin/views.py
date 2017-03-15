@@ -73,8 +73,8 @@ from .controller import (
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, EditExistingUserForm,
-    DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, MassParticipantsEnrollListForm, 
+    EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
     CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
