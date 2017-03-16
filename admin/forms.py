@@ -409,3 +409,14 @@ class CourseRunForm(forms.ModelForm):
             'email_template_mcka',
             'email_template_closed',
         ]
+
+    def clean_max_participants(self):
+
+        max_participants = self.cleaned_data.get("max_participants")
+
+        if max_participants < 1:
+            raise forms.ValidationError("That number is not allowed")
+        if max_participants >= 5000:
+            raise forms.ValidationError("Number of participants is limited to 5000")
+
+        return max_participants
