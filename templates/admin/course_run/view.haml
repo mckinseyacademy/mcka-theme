@@ -26,9 +26,14 @@
           %p ={course_run.max_participants}
           %strong Total participants:
           %p ={course_run.total_participants}
-          %a{:class => "button radius small {% if course_run.total_participants < 1 %} disabled {%endif%}", :href => "/admin/course_run/csv_download/#{course_run.id}"}
-            Download CSV
-            %i{'class': "fa fa-download"}
+          - if course_run.total_participants < 1
+            %button{:class => "button radius small disabled"}
+              Download CSV
+              %i{'class': "fa fa-download"}
+          - else
+            %a{:class => "button radius small", :href => "/admin/course_run/csv_download/#{course_run.id}"}
+              Download CSV
+              %i{'class': "fa fa-download"}
         .large-8.columns
           %strong Email template for existing McKA users:
           %p ={course_run.email_template_existing}
