@@ -13,6 +13,7 @@ from .models import (
     LearnerDashboardBranding, CourseRun
 )
 from main.models import CuratedContentItem
+from api_client import course_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonObjectWithImage
@@ -409,6 +410,22 @@ class CourseRunForm(forms.ModelForm):
             'email_template_mcka',
             'email_template_closed',
         ]
+
+    def clean_course_id(self):
+        course_id = self.cleaned_data.get("course_id")
+        try:
+            course = course_api.get_course_shallow(course_id)
+            return course_id
+        except:
+            raise forms.ValidationError("Course with this ID does not exist")
+
+    def clean_course_id_sso(self):
+        course_id_sso = self.cleaned_data.get("course_id_sso")
+        try:
+            course = course_api.get_course_shallow(course_id_sso)
+            return course_id_sso
+        except:
+            raise forms.ValidationError("Course with this ID does not exist")
 
     def clean_max_participants(self):
 
