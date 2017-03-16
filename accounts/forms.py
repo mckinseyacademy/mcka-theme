@@ -532,7 +532,7 @@ class PublicRegistrationForm(forms.ModelForm):
         current_role = self.cleaned_data.get("current_role")
         current_role_other = self.cleaned_data.get("current_role_other")
 
-        if "other" == current_role and not current_role_other:
+        if "Other" == current_role and not current_role_other:
             raise forms.ValidationError("You must write your role!")
 
         return current_role_other
