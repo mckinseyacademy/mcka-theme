@@ -8,16 +8,16 @@
 - load staticfiles
 - block content
   .row
-    .login-form.large-12.medium-12.large-centered.medium-centered.columns{style:"height:940px"}
+    .login-form.large-12.medium-12.large-centered.medium-centered.columns{style:"min-height:940px"}
       - if request.is_IE8
         %br
         .outdated_browser
           = _("We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.")
       - else
-        .row
-          .large-8.medium-8.columns
+        .row{style:"height:100%;"}
+          .large-8.medium-8.columns{style:"height: 100%;border-right: 1px solid #ccc;"}
             %h1 Welcome to McKinsey Academy
-            .description
+            .description{style:"height:auto;"}
               %h4 REGISTER FOR ACCESS TO THE DEMO BUISNESS STRATEGY COURSE
               %span Take your strategic thinking to the next level -- assess the robustness of a strategy and apply Mckinsey's Strategy Method to develop strategies that can help your businesses gain a sustainable advantage in the market.
               %br
@@ -32,7 +32,7 @@
                 - csrf_token
                 = form
                 %input.button.radius.small{type: "submit", value: "Register"}
-          .large-4.medium-4.columns
+          .large-4.medium-4.columns{style:"border-left: none;"}
             %h4 WELCOME
             .sidebar
               %p Registering gives you access to course content and ensures that you recieve updates and notifications from McKinsey Academy.
