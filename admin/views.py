@@ -5533,6 +5533,7 @@ def course_run_view(request, course_run_id):
     data = {
         'course_run': course_run,
         'users': users,
+        'total_registered_users': len(users),
     }
 
     return render(request, 'admin/course_run/view.haml', data)

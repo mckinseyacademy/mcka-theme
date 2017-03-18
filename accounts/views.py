@@ -25,7 +25,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from courses.models import FeatureFlags
-from api_client import user_api
+from api_client import user_api, course_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from admin.models import Client, Program, LearnerDashboard, CourseRun
@@ -1026,11 +1026,13 @@ def demo_registration(request, course_run_name):
                 users = user_api.get_users(email=registration_request.company_email)
                 registration_request.new_user = True if len(users) < 1 else False
 
-                course_run.total_participants += 1
+                #todo check for better api approach
+                course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
+                course_run.total_participants = len(course_users)
                 course_run.save()
                 registration_request.save()
 
-                if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
+                if (len(course_users) >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
                     return redirect('home')
 

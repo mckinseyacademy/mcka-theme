@@ -282,12 +282,6 @@ def send_password_reset_email(domain, user, use_https,
 
 
 def process_registration_request(request, user, course_run, existing_user_object=None):
-    '''
-    00 - existing non mcka user
-    01 - existing mcka user
-    10 - new user non mcka user
-    11 - new user mcka user
-    '''
 
     domain = request.META.get('HTTP_HOST')
     protocol = 'https' if request.is_secure() else 'http'
@@ -298,15 +292,12 @@ def process_registration_request(request, user, course_run, existing_user_object
     if user.new_user and not user.mcka_user:
         _process_new_non_mcka_user(request, user, course_run)
 
-    if not user.new_user and user.mcka_user:
-        _process_existing_mcka_user(domain, protocol, course_run, existing_user_object)
-
-    if user.new_user and user.mcka_user:
-        _process_new_mcka_user(request, user, course_run)
+    if user.mcka_user:
+        _process_mcka_user(request, user, course_run)
 
 def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object):
 
-    email_template_name = 'registration/public_registration_existing_non_mcka.haml'
+    email_template_name = "registration/public_registration_existing_non_mcka.haml"
     subject = "Existing non mcka user email subject"
     link = protocol + "://" + domain + "/courses/" + course_run.course_id
     template_text = course_run.email_template_existing
@@ -314,19 +305,9 @@ def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_
     enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
     send_email(email_template_name, subject, link, template_text, existing_user_object.username, existing_user_object.email)
 
-def _process_existing_mcka_user(domain, protocol, course_run, existing_user_object):
-
-    email_template_name = 'registration/public_registration_existing_mcka.haml'
-    subject = "Existing McKA user email subject"
-    link = protocol + "://" + domain + "/courses/" + course_run.course_id_sso
-    template_text = course_run.email_template_mcka
-
-    enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id_sso)
-    send_email(email_template_name, subject, link, template_text, existing_user_object.username, existing_user_object.email)
-
 def _process_new_non_mcka_user(request, registration_request, course_run):
 
-    email_template_name = 'registration/public_registration_activation_link.haml'
+    email_template_name = "registration/public_registration_activation_link.haml"
     subject = "New, non McKA activation"
     template_text = course_run.email_template_new
 
@@ -338,19 +319,13 @@ def _process_new_non_mcka_user(request, registration_request, course_run):
         _get_set_company(user.id)
         enroll_user_in_course(user.id, course_run.course_id)
 
-def _process_new_mcka_user(request, registration_request, course_run):
+def _process_mcka_user(request, registration_request, course_run):
 
-    email_template_name = 'registration/public_registration_activation_link.haml'
+    email_template_name = "registration/public_registration_mcka_user.haml"
     subject = "New McKA activation"
-    template_text = course_run.email_template_new
+    template_text = course_run.email_template_mcka
 
-    user = _register_user_on_platform(registration_request)
-
-    if user and not user.is_active:
-        link = generate_activation_link(request, user)
-        send_email(email_template_name, subject, link, template_text, user.username, user.email)
-        _get_set_company(user.id)
-        enroll_user_in_course(user.id, course_run.course_id_sso)
+    send_email(email_template_name, subject, None, template_text, registration_request.first_name, registration_request.company_email)
 
 def generate_activation_link(request, user):
     activation_record = UserActivation.user_activation(user)

@@ -22,10 +22,12 @@
           %strong Course ID:
             %a{:href => "/admin/courses/#{course_run.course_id}"}
               %p ={course_run.course_id}
-          %strong Max participants:
+          %strong Max users in course:
           %p ={course_run.max_participants}
-          %strong Total participants:
+          %strong Total users in course:
           %p ={course_run.total_participants}
+          %strong Total registered users:
+          %p ={total_registered_users}
           - if course_run.total_participants < 1
             %button{:class => "button radius small disabled"}
               Download CSV

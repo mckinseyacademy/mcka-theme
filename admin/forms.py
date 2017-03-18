@@ -404,7 +404,6 @@ class CourseRunForm(forms.ModelForm):
             'max_participants',
             'is_open',
             'course_id',
-            'course_id_sso',
             'email_template_new',
             'email_template_existing',
             'email_template_mcka',
@@ -416,14 +415,6 @@ class CourseRunForm(forms.ModelForm):
         try:
             course = course_api.get_course_shallow(course_id)
             return course_id
-        except:
-            raise forms.ValidationError("Course with this ID does not exist")
-
-    def clean_course_id_sso(self):
-        course_id_sso = self.cleaned_data.get("course_id_sso")
-        try:
-            course = course_api.get_course_shallow(course_id_sso)
-            return course_id_sso
         except:
             raise forms.ValidationError("Course with this ID does not exist")
 

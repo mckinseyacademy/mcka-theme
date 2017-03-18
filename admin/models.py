@@ -668,7 +668,6 @@ class CourseRun(db_models.Model):
     total_participants = db_models.IntegerField(blank=True, null=True, default=0)
     is_open = db_models.BooleanField(default=True)
     course_id = db_models.CharField(blank=False, null=False, max_length=500)
-    course_id_sso = db_models.CharField(blank=True, null=True, max_length=500)
     email_template_new = db_models.CharField(blank=False, null=False, max_length=2000)
     email_template_existing = db_models.CharField(blank=False, null=False, max_length=2000)
     email_template_mcka = db_models.CharField(blank=False, null=False, max_length=2000)
