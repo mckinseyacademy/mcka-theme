@@ -1,3 +1,19 @@
-Hello #{username}
-#{template_text}
-#{link}
+%img{src: "cid:static/image/email_header.png"}
+%p Dear #{username},
+%p #{template_text}
+%p
+  %strong Account activation:
+  Please use the following
+  %strong one-time activation link
+  to create your username and password for the system. Personalized link:
+  %br
+  #{link}
+%p
+  %strong McKinsey Academy course access:
+  After you have activated your account, log in directly from www.mckinseyacademy.com to access your course.
+%p Please contact our team at support@mckinseyacademy.com if you experience any technical issues.
+
+%p
+  Best,
+  %br
+  McKinsey Academy

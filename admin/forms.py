@@ -404,6 +404,7 @@ class CourseRunForm(forms.ModelForm):
             'max_participants',
             'is_open',
             'course_id',
+            'access_key_link',
             'email_template_new',
             'email_template_existing',
             'email_template_mcka',

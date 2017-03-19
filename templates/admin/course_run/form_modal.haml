@@ -37,16 +37,23 @@
     .small-3.columns Course ID:
     .small-9.columns= form.course_id
 
+  .row
+    .small-3.columns
+    .small-9.columns= form.access_key_link.errors
+  .row
+    .small-3.columns Access link (SSO):
+    .small-9.columns= form.access_key_link
+
   %hr
   .row
     .small-12.columns
-      Email template for existing McKA users:
+      Email template for existing users:
       = form.email_template_existing.errors
       = form.email_template_existing
 
   .row
     .small-12.columns 
-      Email template for new McKA users:
+      Email template for new users:
       = form.email_template_new.errors
       = form.email_template_new
 

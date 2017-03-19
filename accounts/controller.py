@@ -11,7 +11,9 @@ from django.utils.translation import ugettext as _
 from django.utils.http import urlsafe_base64_encode
 from django.core.urlresolvers import reverse
 from django.template import loader
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
+from email.MIMEImage import MIMEImage
+from django.utils.html import strip_tags
 
 from admin.controller import _send_activation_email_to_single_new_user, enroll_user_in_course
 from admin.models import Program, LearnerDashboard, Client
@@ -257,7 +259,7 @@ def enroll_student_in_course_without_program(user, course_id):
 
 def send_password_reset_email(domain, user, use_https, 
                             subject_template_name='registration/password_reset_subject.txt',
-                            email_template_name='registration/password_reset_email.html', 
+                            email_template_name='registration/password_reset_email.html',
                             from_email=settings.APROS_EMAIL_SENDER):
 
     uid = urlsafe_base64_encode(force_bytes(user.id))
@@ -276,7 +278,7 @@ def send_password_reset_email(domain, user, use_https,
     subject = loader.render_to_string(subject_template_name, c)
     # Email subject *must not* contain newlines
     subject = ''.join(subject.splitlines())
-    email = loader.render_to_string(email_template_name, c)
+    email = loader.render_to_string(email_template_html, c)
     email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
     email.send(fail_silently=False)
 
@@ -297,35 +299,46 @@ def process_registration_request(request, user, course_run, existing_user_object
 
 def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object):
 
-    email_template_name = "registration/public_registration_existing_non_mcka.haml"
-    subject = "Existing non mcka user email subject"
+    email_template_html = "registration/public_registration_existing_non_mcka.haml"
+    subject = "Welcome to McKinsey Academy"
     link = protocol + "://" + domain + "/courses/" + course_run.course_id
     template_text = course_run.email_template_existing
 
     enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
-    send_email(email_template_name, subject, link, template_text, existing_user_object.username, existing_user_object.email)
+    send_email(email_template_html, subject, link, template_text, existing_user_object.username, existing_user_object.email)
 
 def _process_new_non_mcka_user(request, registration_request, course_run):
 
-    email_template_name = "registration/public_registration_activation_link.haml"
-    subject = "New, non McKA activation"
+    email_template_html = "registration/public_registration_activation_link.haml"
+    subject = "Welcome to McKinsey Academy"
     template_text = course_run.email_template_new
 
     user = _register_user_on_platform(registration_request)
 
     if user and not user.is_active:
         link = generate_activation_link(request, user)
-        send_email(email_template_name, subject, link, template_text, user.username, user.email)
+        send_email(email_template_html, subject, link, template_text, user.username, user.email)
         _get_set_company(user.id)
         enroll_user_in_course(user.id, course_run.course_id)
 
 def _process_mcka_user(request, registration_request, course_run):
 
-    email_template_name = "registration/public_registration_mcka_user.haml"
-    subject = "New McKA activation"
+    email_template_html = "registration/public_registration_mcka_user.haml"
+    subject = "Welcome to McKinsey Academy"
     template_text = course_run.email_template_mcka
+    link = course_run.access_key_link
 
-    send_email(email_template_name, subject, None, template_text, registration_request.first_name, registration_request.company_email)
+    send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
+
+def _process_course_run_closed(registration_request, course_run):
+
+    email_template_html = 'registration/public_registration_course_closed.haml'
+    subject = "Course closed email"
+    template_text = course_run.email_template_closed
+    link = None
+
+    send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
+
 
 def generate_activation_link(request, user):
     activation_record = UserActivation.user_activation(user)
@@ -360,7 +373,7 @@ def _register_user_on_platform(user):
 
     return user_api.register_user(data)
 
-def send_email(email_template_name, subject, link, template_text, user_name, user_email):
+def send_email(email_template_html, subject, link, template_text, user_name, user_email):
 
     c = {
         'username': user_name,
@@ -368,20 +381,24 @@ def send_email(email_template_name, subject, link, template_text, user_name, use
         'link': link,
         'template_text': template_text,
     }
-    email_string = loader.render_to_string(email_template_name, c)
-    email = EmailMessage(
+    email_html = loader.render_to_string(email_template_html, c)
+    email_plain = strip_tags(email_html)
+
+    email = EmailMultiAlternatives(
         subject,
-        email_string,
+        email_plain,
         settings.APROS_EMAIL_SENDER,
         [user_email],
         headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
+    email.attach_alternative(email_html, "text/html")
+    email.mixed_subtype = 'related'
+
+    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+    f = 'static/image/email_header.png'
+    fp = open(os.path.join(BASE_DIR, f), 'rb')
+    msg_img = MIMEImage(fp.read())
+    fp.close()
+    msg_img.add_header('Content-ID', '<{}>'.format(f))
+    email.attach(msg_img)
+
     email.send(fail_silently=False)
-
-def _process_course_run_closed(registration_request, course_run):
-
-    email_template_name = 'registration/public_registration_course_closed.haml'
-    subject = "Course closed email"
-    template_text = course_run.email_template_closed
-    link = None
-
-    send_email(email_template_name, subject, link, template_text, registration_request.first_name, registration_request.company_email)
