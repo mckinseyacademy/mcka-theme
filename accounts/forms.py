@@ -16,6 +16,7 @@ from api_client.api_error import ApiError
 
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
+from admin.models import CourseRun
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -512,6 +513,10 @@ class ActivationFormV2(BaseRegistrationFormV2):
 
 class PublicRegistrationForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        self.course_run_name = kwargs.pop('course_run_name', None)
+        super(PublicRegistrationForm, self).__init__(*args, **kwargs)
+
     current_role = forms.ChoiceField(widget=forms.RadioSelect, choices=CURRENT_ROLE)
     current_role_other = forms.CharField(widget=forms.TextInput, label='', required=False)
 
@@ -527,21 +532,28 @@ class PublicRegistrationForm(forms.ModelForm):
             'current_role_other',
         ]
 
+    def clean_company_email(self):
+
+        company_email = self.cleaned_data.get("company_email")
+
+        for mail in BANNED_EMAILS:
+            if mail in company_email.lower():
+                raise forms.ValidationError("Email you provided is not allowed!")
+
+        course_run = CourseRun.objects.filter(name=self.course_run_name)
+        users = PublicRegistrationRequest.objects.filter(course_run=course_run)
+        for user in users:
+            if user.company_email == company_email:
+                raise forms.ValidationError("This email address has already been registered.")
+
+        return company_email
+
     def clean_current_role_other(self):
 
         current_role = self.cleaned_data.get("current_role")
         current_role_other = self.cleaned_data.get("current_role_other")
 
         if "Other" == current_role and not current_role_other:
-            raise forms.ValidationError("You must write your role!")
+            raise forms.ValidationError("Please specify your role.")
 
         return current_role_other
-
-    def clean_company_email(self):
-
-        email = self.cleaned_data['company_email']
-        for mail in BANNED_EMAILS:
-            if mail in email.lower():
-                raise forms.ValidationError("Email you provided is not allowed!")
-
-        return email

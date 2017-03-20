@@ -1012,7 +1012,7 @@ def demo_registration(request, course_run_name):
 
     if course_run:
         if request.method == 'POST':
-            form = PublicRegistrationForm(request.POST)
+            form = PublicRegistrationForm(request.POST, course_run_name=course_run_name)
             if form.is_valid():
                 registration_request = form.save(commit=False)
                 registration_request.course_run = course_run

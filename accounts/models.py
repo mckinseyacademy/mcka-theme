@@ -196,7 +196,7 @@ class PublicRegistrationRequest(db_models.Model):
     first_name = db_models.CharField(blank=False, null=False, max_length=50)
     last_name = db_models.CharField(blank=False, null=False, max_length=50)
     company_name = db_models.CharField(blank=False, null=False, max_length=50)
-    company_email = db_models.EmailField(blank=False, null=False, unique=True)
+    company_email = db_models.EmailField(blank=False, null=False)
     current_role = db_models.CharField(blank=False, null=True, max_length=100)
     current_role_other = db_models.CharField(blank=True, null=True, max_length=60)
 
