@@ -68,7 +68,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, _validate_company_permissions
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -3482,10 +3482,16 @@ class participants_list_api(APIView):
                     if len(courses_permissions_list) > 0:
                         permissions.update_courses_roles_list(courses_permissions_list)
                     if data.get('company_permissions', None):
-                        if data['company_permissions'] in permissions_groups:
+                        requester_permissions=Permissions(request.user.id).current_permissions
+                        if data['company_permissions'] in permissions_groups and _validate_company_permissions(permissions_groups[data['company_permissions']],requester_permissions):
                             permissions.add_permission(permissions_groups[data['company_permissions']])
                     if len(data.get('company_permissions_list', [])):
-                        permissions.add_company_admin_permissions(data.get('company_permissions_list', []))
+                        try:
+                            requester_permissions
+                        except NameError:
+                            requester_permissions=Permissions(request.user.id).current_permissions
+                        if _validate_company_permissions([PERMISSION_GROUPS.COMPANY_ADMIN], requester_permissions):
+                            permissions.add_company_admin_permissions(data.get('company_permissions_list', []))
 
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})

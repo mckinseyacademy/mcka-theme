@@ -38,7 +38,7 @@ from lib.mail import (
 from lib.util import DottableDict
 
 from api_client.user_api import USER_ROLES
-from api_client.group_api import TAG_GROUPS
+from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
 
 import threading
@@ -2012,3 +2012,15 @@ def student_list_chunks_tracker(data, client_id, activation_link):
 
         return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size, "element_count": len(user_list), "status": "csv_task_created", 
                 "file_name":file_name}
+
+
+def _validate_company_permissions(new_user_permisions, creator_permissions):
+    if PERMISSION_GROUPS.MCKA_ADMIN in creator_permissions:
+        return True
+    elif PERMISSION_GROUPS.MCKA_SUBADMIN in creator_permissions and PERMISSION_GROUPS.MCKA_ADMIN not in new_user_permisions:
+        return True
+    elif PERMISSION_GROUPS.INTERNAL_ADMIN in creator_permissions and PERMISSION_GROUPS.INTERNAL_ADMIN in new_user_permisions:
+        return True
+    return False
+
+
