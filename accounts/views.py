@@ -1032,7 +1032,7 @@ def demo_registration(request, course_run_name):
                 course_run.save()
                 registration_request.save()
 
-                if (len(course_users) >= course_run.max_participants) or not course_run.is_open:
+                if (len(course_users) > course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
                     return redirect('home')
 
