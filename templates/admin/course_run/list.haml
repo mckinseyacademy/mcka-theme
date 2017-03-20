@@ -23,7 +23,7 @@
             %th= _("Name")
             %th= _("Course ID")
             %th= _("Open")
-            %th= _("Total/Max")
+            %th= _("Total")
             %th= _("Edit")
         %tbody
           - for run in course_runs
@@ -39,8 +39,6 @@
                   %i.fa.fa-times{'style': "color:red"}
               %td{style: "word-wrap: break-word"}
                 = run.total_participants
-                = " / "
-                = run.max_participants
               %td
                 %a{:href => "/admin/course_run/create/#{run.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
                   %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
