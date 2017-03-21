@@ -1,0 +1,6 @@
+
+# Packaging pre-requisites.
+pyparsing==2.0.7
+setuptools==33.1.1
+pip==9.0.1
+
