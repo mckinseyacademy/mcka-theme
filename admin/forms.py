@@ -425,7 +425,7 @@ class CourseRunForm(forms.ModelForm):
 
         if max_participants < 1:
             raise forms.ValidationError("That number is not allowed")
-        if max_participants >= 5000:
+        if max_participants > 5000:
             raise forms.ValidationError("Number of participants is limited to 5000")
 
         return max_participants

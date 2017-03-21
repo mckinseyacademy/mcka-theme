@@ -1,9 +1,6 @@
 from collections import namedtuple
-import datetime
 from django.contrib import messages
-import os
-import re
-import urllib
+import os, re, urllib, json, datetime
 
 from django.conf import settings
 from django.utils.encoding import force_bytes
@@ -20,7 +17,7 @@ from admin.models import Program, LearnerDashboard, Client
 from courses.user_courses import get_current_course_for_user
 from courses.models import FeatureFlags
 
-from api_client import user_api, third_party_auth_api, organization_api
+from api_client import user_api, third_party_auth_api, organization_api, course_api
 from api_client.api_error import ApiError
 
 from license import controller as license_controller
@@ -402,3 +399,8 @@ def send_email(email_template_html, subject, link, template_text, user_name, use
     email.attach(msg_img)
 
     email.send(fail_silently=False)
+
+def _set_number_of_enrolled_users(course_run):
+    course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
+    course_run.total_participants = len(course_users)
+    course_run.save()

@@ -37,7 +37,7 @@ from courses.user_courses import standard_data, get_current_course_for_user, get
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
-    process_access_key, process_registration_request, _process_course_run_closed
+    process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -1027,12 +1027,10 @@ def demo_registration(request, course_run_name):
                 registration_request.new_user = True if len(users) < 1 else False
 
                 #todo check for better api approach
-                course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
-                course_run.total_participants = len(course_users)
-                course_run.save()
+                _set_number_of_enrolled_users(course_run)
                 registration_request.save()
 
-                if (len(course_users) > course_run.max_participants) or not course_run.is_open:
+                if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
                     return redirect('home')
 

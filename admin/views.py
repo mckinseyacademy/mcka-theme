@@ -36,7 +36,7 @@ from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation, PublicRegistrationRequest
-from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email
+from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, _set_number_of_enrolled_users
 from api_client import user_models
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, project_api
 from api_client.api_error import ApiError
@@ -5528,6 +5528,8 @@ def course_run_view(request, course_run_id):
         course_run = CourseRun.objects.get(pk=course_run_id)
     except ObjectDoesNotExist:
         return render(request, '404.haml')
+
+    _set_number_of_enrolled_users(course_run)
 
     users = PublicRegistrationRequest.objects.filter(course_run=course_run)
     data = {
