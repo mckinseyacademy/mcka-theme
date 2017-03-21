@@ -5,7 +5,7 @@
     #participantsListTopContainer{:internal-flag => '#{internalAdminFlag}'}
       #participantsAddWrapper
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
-        %input.button.small.radius.menuButton{:type => "button", :value => "Enroll from CSV", 'data-reveal-id': 'enroll_to_course_from_csv'}
+        %input.button.small.radius.menuButton{:type => "button", :value => "Enroll Existing Participants", 'data-reveal-id': 'enroll_to_course_from_csv'}
         %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
       %hr
@@ -170,21 +170,21 @@
       %h2 Enroll Participants to courses from CSV
       %hr
       .bottomPadding
-        //%a{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
-      .admin-form
+        %a#enrollParticipantTemplate{:href => "#", 'download': 'template.csv'} CSV Template
+      .admin-form{style: "padding-bottom:0px;"}
 
-        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data"}
+        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "fileInputEnroll"}
           - csrf_token
           = form_enroll
-
-          .button-wrapper.topPadding
-            %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: ''}
-            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-              Cancel
 
         %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsEnrollCsvUpload'}
 
         .upload_stats
+        .button-wrapper.topPadding{style: "padding-top:10px;padding-bottom:10px;position:relative;"}
+            %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: 'submitCSVEnroll'}
+            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+              Cancel
+            %i.fa.fa-spin.fa-spinner{style: "display:none;"}
         #enroll-participants-error-list
 
     #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   

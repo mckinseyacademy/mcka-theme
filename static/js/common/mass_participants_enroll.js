@@ -4,13 +4,17 @@ massParticipantsEnrollInit = function(){
     $(document).on('open.fndtn.reveal', '[data-reveal]', function () {
       setTimeout(function(){
         var element = $('#id_student_enroll_list');
-        var form = element.parents('form')
+        var form = $('#enroll_to_course_from_csv');
         element.val('');
-        form.find('#enroll_to_course_from_csv input[type=submit]').attr('disabled', 'disabled');
+        form.find('#submitCSVEnroll').attr('disabled', 'disabled');
+        form.find('.button-wrapper i').hide();
+        form.find('#id_student_enroll_list').attr('accept', '.csv');
         form.find('#attempted-enroll').val('0');
         form.find('#succeded-enroll').val('0');
         form.find('#failed-enroll').val('0');
         form.find('#enroll-participants-error-list').empty();
+        form.find(".upload_stats").empty();
+        PopulateTemplateData();
         $(document).trigger('clearDropzone');
       }, 10);
     });
@@ -20,13 +24,47 @@ massParticipantsEnrollInit = function(){
       headers: { 'X-CSRFToken': $.cookie('apros_csrftoken')},
       autoProcessQueue: false,
       addRemoveLinks: true,
+      acceptedFiles: ".csv",
+      maxFilesize: 10,
       init: function() {
         var _this = this;
         $(document).on('submitDropzone', function() {
-          var fileList = _this.getQueuedFiles().length;
-          if (fileList > 0){
-            _this.processQueue();
+          var fileList = _this.getQueuedFiles();
+          var checked_files = 0;
+          var permission = true;
+          if (fileList.length > 0){
+            var interval_id = setInterval(function()
+            {
+              if (fileList.length === checked_files){
+                if (permission){
+                  _this.processQueue();
+                }
+                clearInterval(interval_id);
+              }
+            }, 1000);
+
+            for(var i=0; i<fileList.length; i++){
+              var reader = new FileReader();
+              reader.onload = function(e) {
+                var limit = 5000;
+                var contents = e.target.result.split(/\n/g);
+                var lines = contents.length-1;
+                if (contents[lines]=="")
+                  lines--;
+
+                if (lines>limit){
+                  alert("The .csv file has more then "+limit+ " rows: "+lines+", please split it to more files!");
+                  $('#enroll_to_course_from_csv .admin-form').find('.button-wrapper i').hide();
+                  $('#enroll_to_course_from_csv #submitCSVEnroll').removeAttr('disabled');
+                  permission = permission & false;
+                }
+                checked_files+=1;
+              };
+              reader.readAsText(fileList[i]);
+            }
           }
+            
+          
         });
         $(document).on('clearDropzone', function() {
           _this.removeAllFiles(true);
@@ -64,31 +102,51 @@ massParticipantsEnrollInit = function(){
     $('#enroll_to_course_from_csv #enroll-participants-error-list').empty();
   });
 
-  $('#enroll_to_course_from_csv .admin-form form').on('click', 'input[type=submit]', function(e){
+  $('#enroll_to_course_from_csv .admin-form').on('click', '#submitCSVEnroll', function(e){
     e.preventDefault();
-    var form = $(this).parents('form');
+    var ready = false;
+    var form = $(this).parents('.admin-form').find(".fileInputEnroll");
     var modal = form.parent();
     modal.find('.error').html('');
     $(this).attr('disabled', 'disabled');
+    var _this = this;
+    modal.find('.button-wrapper i').show();
+    var file_input = document.getElementById("id_student_enroll_list").files;
+    if (file_input.length > 0){
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var limit = 5000
+        var contents = e.target.result.split(/\n/g);
+        var lines = contents.length-1;
+        if (contents[lines]=="")
+          lines--;
+        var val_result = true;
+        if (lines>limit){
+          alert("The .csv file has more then "+limit+ " rows: "+lines+", please split it to more files!");
+          modal.find('.button-wrapper i').hide();
+          $(_this).removeAttr('disabled');
+          return;
+        }
 
-    if (document.getElementById("id_student_enroll_list").files.length > 0){
-      var options = {
-      url     : form.attr('action'),
-      type    : 'POST',
-      contentType: false,
-      processData: false,
-      dataType: 'text',
-      cache: false,
-      success:function( data ) {
-        checkForEnrollStatus(data, form);
-      },
-      error: function( data ){
-            data = $.parseJSON(data);
-            modal.find('.error').append('<p class="warning">Please select file first.</p>');
-            $('#enroll_to_course_from_csv input[type=submit]').removeAttr('disabled');
-          }
-      }
-      form.ajaxSubmit(options);
+        var options = {
+        url     : form.attr('action'),
+        type    : 'POST',
+        contentType: false,
+        processData: false,
+        dataType: 'text',
+        cache: false,
+        success:function( data ) {
+          checkForEnrollStatus(data, form);
+        },
+        error: function( data ){
+              data = $.parseJSON(data);
+              modal.find('.error').append('<p class="warning">Please select file first.</p>');
+              $('#enroll_to_course_from_csv input[type=submit]').removeAttr('disabled');
+            }
+        }
+        form.ajaxSubmit(options);
+      };
+      reader.readAsText(file_input[0]);
     }
     else if (modal.find('.dropzone')){
       $(document).trigger('submitDropzone');
@@ -147,6 +205,7 @@ checkForEnrollStatus = function(data, form) {
       }
     }).done(function(data){
       if(data.done === 'done'){
+        $('#enroll_to_course_from_csv .button-wrapper i').hide();
         clearInterval(poolingInterval);
         $('#enroll_to_course_from_csv input[type=submit]').removeAttr('disabled');
         if ($('#participantsEnrollCsvUpload').length) {
@@ -175,4 +234,21 @@ checkForEnrollStatus = function(data, form) {
       }
     })
   }, 10000);
+}
+
+PopulateTemplateData = function()
+{
+  var data = [["email", "course id", "status"], 
+  ["sinatest@yopmail.com", "edX/TwoX/Two_Course", "active"], 
+  ["sinatest1@yopmail.com", "edX/TwoX/Two_Course", "ta"], 
+  ["sinatest2@yopmail.com", "edX/TwoX/Two_Course", "observer"]];
+  var csvContent = "data:text/csv;charset=utf-8,";
+  data.forEach(function(infoArray, index){
+
+     dataString = infoArray.join(",");
+     csvContent += index < data.length ? dataString+ "\n" : dataString;
+
+  }); 
+  var encodedUri = encodeURI(csvContent);
+  $('#enroll_to_course_from_csv #enrollParticipantTemplate').attr("href", encodedUri);
 }
