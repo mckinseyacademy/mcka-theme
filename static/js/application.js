@@ -3,6 +3,7 @@ window.Apros = {
   collections: {},
   views: {},
   modals: [],
+  config: {},
 
   initialize: function() {
     var route     = window.location.pathname.replace(/\/$/, ''),
