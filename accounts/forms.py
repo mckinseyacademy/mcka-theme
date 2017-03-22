@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 ''' forms for login and activation '''
-import datetime
+import datetime, re
 from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
+from django.core.validators import validate_email, RegexValidator
 
 from api_client import user_api
 from django.utils.html import format_html
@@ -532,13 +533,27 @@ class PublicRegistrationForm(forms.ModelForm):
             'current_role_other',
         ]
 
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get("first_name")
+        if not re.match(r'^[A-Za-z ]+$', first_name):
+            raise forms.ValidationError("First name you provided is not valid.")
+        else:
+            return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get("last_name")
+        if not re.match(r'^[A-Za-z ]+$', last_name):
+            raise forms.ValidationError("Last name you provided is not valid.")
+        else:
+            return last_name
+
     def clean_company_email(self):
 
         company_email = self.cleaned_data.get("company_email")
 
         for mail in BANNED_EMAILS:
             if mail in company_email.lower():
-                raise forms.ValidationError("Email you provided is not allowed!")
+                raise forms.ValidationError("Email you provided is not allowed.")
 
         course_run = CourseRun.objects.filter(name=self.course_run_name)
         users = PublicRegistrationRequest.objects.filter(course_run=course_run)
@@ -546,7 +561,21 @@ class PublicRegistrationForm(forms.ModelForm):
             if user.company_email == company_email:
                 raise forms.ValidationError("This email address has already been registered.")
 
+        try:
+            validate_email(company_email)
+        except:
+            raise forms.ValidationError("This email address is not valid")
+
         return company_email
+
+    def clean_company_name(self):
+
+        company_name = self.cleaned_data.get("company_name")
+
+        if not re.match(r'^[A-Za-z0-9 ]+$', company_name):
+            raise forms.ValidationError("The name you provided is not valid.")
+
+        return company_name
 
     def clean_current_role_other(self):
 
@@ -555,5 +584,9 @@ class PublicRegistrationForm(forms.ModelForm):
 
         if "Other" == current_role and not current_role_other:
             raise forms.ValidationError("Please specify your role.")
+
+        if "Other" == current_role:
+            if not re.match(r'^[A-Za-z0-9 ]+$', current_role_other):
+                raise forms.ValidationError("The name you provided is not valid.")
 
         return current_role_other
