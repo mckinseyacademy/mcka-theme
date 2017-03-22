@@ -275,7 +275,7 @@ def send_password_reset_email(domain, user, use_https,
     subject = loader.render_to_string(subject_template_name, c)
     # Email subject *must not* contain newlines
     subject = ''.join(subject.splitlines())
-    email = loader.render_to_string(email_template_html, c)
+    email = loader.render_to_string(email_template_name, c)
     email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
     email.send(fail_silently=False)
 
