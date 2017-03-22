@@ -7,6 +7,20 @@
   - include 'accounts/login_header.haml'
 - load staticfiles
 - block content
+  #confirmation_registration.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 Request Successfull!
+    %p
+      Thanks! We have received your request to access McKinsey Academy's demo course.
+
+  #error_registration.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 Registration Error!
+    %p
+      Sorry, there was an error during registration.
+
   .row
     .login-form.large-12.medium-12.large-centered.medium-centered.columns{style:"min-height:940px"}
       - if request.is_IE8
@@ -48,6 +62,7 @@
     var $current_role_other = $("#id_current_role_other");
     $(window).on( "load", function() {
       toggle_field();
+      show_popup_on_registration("{{registration_status}}");
     });
     $("#id_current_role").change(function(e){
       toggle_field();
@@ -59,4 +74,20 @@
           $current_role_other.val("");
           $current_role_other.prop('disabled', true);
         }
+    }
+    function show_popup_on_registration(status_text){
+      if (status_text==="Registered")
+      {
+        $(document).on('close.fndtn.reveal', '#confirmation_registration', function(){
+          window.location.replace("{{home_url}}")
+        });
+        $("#confirmation_registration").foundation('reveal', 'open');
+      }
+      else if (status_text==="Error")
+      {
+        $(document).on('close.fndtn.reveal', '#error_registration', function(){
+          window.location.replace("{{home_url}}")
+        });
+        $("#error_registration").foundation('reveal', 'open');
+      }
     }

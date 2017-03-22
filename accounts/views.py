@@ -1010,6 +1010,8 @@ def demo_registration(request, course_run_name):
     except ObjectDoesNotExist:
         course_run = None
 
+    registration_status = "Initial"
+
     if course_run:
         if request.method == 'POST':
             form = PublicRegistrationForm(request.POST, course_run_name=course_run_name)
@@ -1040,13 +1042,15 @@ def demo_registration(request, course_run_name):
                 else:
                     process_registration_request(request, registration_request, course_run)
 
-                return redirect('home')
+                registration_status = "Registered"
         else:
             form = PublicRegistrationForm()
 
         data = {
             'form': form,
             'course_run_name': course_run_name,
+            'registration_status': registration_status,
+            'home_url': reverse('home')
         }
 
         return render(request, 'accounts/public_registration.haml', data)
