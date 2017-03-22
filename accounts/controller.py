@@ -340,7 +340,7 @@ def _process_course_run_closed(registration_request, course_run):
 def generate_activation_link(request, user):
     activation_record = UserActivation.user_activation(user)
     absolute_activation_uri = request.build_absolute_uri('/accounts/activate')
-    return "{}/{}".format(absolute_activation_uri, activation_record.activation_key)
+    return "{}/{}/{}".format(absolute_activation_uri, activation_record.activation_key, "activation/")
 
 def _get_set_company(user_id):
 
@@ -368,7 +368,10 @@ def _register_user_on_platform(user):
     data['password'] = settings.INITIAL_PASSWORD
     data['is_active'] = False
 
-    return user_api.register_user(data)
+    try:
+        return user_api.register_user(data)
+    except:
+        return None
 
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):
 

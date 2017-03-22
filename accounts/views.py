@@ -23,6 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.forms.widgets import HiddenInput
 
 from courses.models import FeatureFlags
 from api_client import user_api, course_api
@@ -322,7 +323,7 @@ def logout(request):
     return response
 
 
-def activate(request, activation_code):
+def activate(request, activation_code, registration=None):
     ''' handles requests for activation form and their submission '''
     error = None
     user = None
@@ -357,6 +358,8 @@ def activate(request, activation_code):
         user_data["email"] = user.email
         form = ActivationForm(user_data, initial=initial_data)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
+            if registration:
+                form.fields["company"].widget = HiddenInput()
             try:
                 user_activation_with_data(user.id, user_data, activation_record)
 
@@ -375,6 +378,8 @@ def activate(request, activation_code):
 
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+        if registration:
+            form.fields["company"].widget = HiddenInput()
 
     data = {
         "user": user,
