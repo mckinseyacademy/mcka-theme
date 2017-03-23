@@ -332,7 +332,7 @@ def _process_mcka_user(request, registration_request, course_run):
 def _process_course_run_closed(registration_request, course_run):
 
     email_template_html = 'registration/public_registration_course_closed.haml'
-    subject = "Course closed email"
+    subject = "Your request to access McKinsey Academy"
     template_text = course_run.email_template_closed
     link = None
 
