@@ -317,6 +317,8 @@ def _process_new_non_mcka_user(request, registration_request, course_run):
         send_email(email_template_html, subject, link, template_text, registration_request.first_name, user.email)
         _get_set_company(user.id)
         enroll_user_in_course(user.id, course_run.course_id)
+        course_run.total_activations_sent += 1
+        course_run.save()
 
 def _process_mcka_user(request, registration_request, course_run):
 

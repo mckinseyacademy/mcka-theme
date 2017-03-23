@@ -24,10 +24,12 @@
               %p ={course_run.course_id}
           %strong Max users in course:
           %p ={course_run.max_participants}
-          %strong Total users in course:
+          %strong Total enrolled users in course:
           %p ={course_run.total_participants}
           %strong No. of users signed up:
           %p ={total_registered_users}
+          %strong Total activation emails sent:
+          %p ={course_run.total_activations_sent}
           - if course_run.total_participants < 1
             %button{:class => "button radius small disabled"}
               Download CSV
