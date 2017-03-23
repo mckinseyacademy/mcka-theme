@@ -1057,7 +1057,8 @@ def demo_registration(request, course_run_name):
             'form': form,
             'course_run_name': course_run_name,
             'registration_status': registration_status,
-            'home_url': reverse('home')
+            'home_url': reverse('home'),
+            'program': True # header css issue
         }
 
         return render(request, 'accounts/public_registration.haml', data)
