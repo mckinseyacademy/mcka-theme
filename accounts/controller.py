@@ -302,6 +302,8 @@ def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_
     template_text = course_run.email_template_existing
 
     enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
+    if not enroll_in_course_result.enrolled:
+        raise ValueError('Problem with course enrollment')
     send_email(email_template_html, subject, link, template_text, existing_user_object.username, existing_user_object.email)
 
 def _process_new_non_mcka_user(request, registration_request, course_run):
@@ -314,11 +316,14 @@ def _process_new_non_mcka_user(request, registration_request, course_run):
 
     if user and not user.is_active:
         link = generate_activation_link(request, user)
-        send_email(email_template_html, subject, link, template_text, registration_request.first_name, user.email)
-        _get_set_company(user.id)
-        enroll_user_in_course(user.id, course_run.course_id)
-        course_run.total_activations_sent += 1
-        course_run.save()
+        if link:
+            send_email(email_template_html, subject, link, template_text, registration_request.first_name, user.email)
+            _get_set_company(user.id)
+            enroll_user_in_course(user.id, course_run.course_id)
+            course_run.total_activations_sent += 1
+            course_run.save()
+        else:
+            raise ValueError('Activation link generation problem')
 
 def _process_mcka_user(request, registration_request, course_run):
 
@@ -373,7 +378,7 @@ def _register_user_on_platform(user):
     try:
         return user_api.register_user(data)
     except:
-        return None
+        raise ValueError('Api error')
 
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):
 

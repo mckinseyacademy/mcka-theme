@@ -1042,12 +1042,14 @@ def demo_registration(request, course_run_name):
                     return redirect('home')
 
                 #if existing user, send user object
-                if not registration_request.new_user:
-                    process_registration_request(request, registration_request, course_run, users[0])
-                else:
-                    process_registration_request(request, registration_request, course_run)
-
-                registration_status = "Registered"
+                try:
+                    if not registration_request.new_user:
+                        process_registration_request(request, registration_request, course_run, users[0])
+                    else:
+                        process_registration_request(request, registration_request, course_run)
+                    registration_status = "Registered"
+                except ValueError:
+                    registration_status = "Error"
         else:
             form = PublicRegistrationForm()
 
