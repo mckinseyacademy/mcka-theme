@@ -392,6 +392,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
 
 class CourseRunForm(forms.ModelForm):
 
+    access_key_link = forms.CharField(required=False, widget=forms.TextInput(attrs={'readonly': True}))
     email_template_new = forms.CharField(widget=forms.Textarea)
     email_template_existing = forms.CharField(widget=forms.Textarea)
     email_template_mcka = forms.CharField(widget=forms.Textarea)
