@@ -45,7 +45,8 @@
                     = error
                 - csrf_token
                 = form
-                %input.button.radius.small{type: "submit", value: "Register"}
+                %input.button.radius.small.registration_submit{type: "submit", value: "Register", disabled: "True"}
+
           .large-4.medium-4.columns{style:"border-left: none;"}
             %h4 WELCOME
             .sidebar
@@ -59,6 +60,9 @@
 
 - block js_snippets
   :javascript
+    $('form, select, input').on('keyup change', function(e) {
+      $('.registration_submit').attr('disabled',false);
+    });
     var $current_role_other = $("#id_current_role_other");
     $(window).on( "load", function() {
       toggle_field();
