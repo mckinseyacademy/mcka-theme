@@ -44,6 +44,24 @@
       // hide them both until JS code decides which one to show
       display: none;
     }
+
+    .errorlist{
+      margin-bottom: 0px;
+      padding-top: 0px;
+    }
+
+    #id_current_role + .errorlist{
+      display: none;
+    }
+
+    #id_current_role{
+      margin-bottom: 0px;
+    }
+
+    #id_current_role_other{
+      margin-left: 1.1rem;
+      width: calc(100% - 1.1rem);
+    }
   }
 
   form label {
