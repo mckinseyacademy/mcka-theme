@@ -67,6 +67,7 @@
     $(window).on( "load", function() {
       toggle_field();
       show_popup_on_registration("{{registration_status}}");
+      adjust_error_messages();
     });
     $("#id_current_role").change(function(e){
       toggle_field();
@@ -93,5 +94,11 @@
           window.location.replace("{{home_url}}")
         });
         $("#error_registration").foundation('reveal', 'open');
+      }
+    }
+    function adjust_error_messages(){
+      if ($("#id_current_role + .errorlist")){
+        var error_message = $("#id_current_role + .errorlist").detach();
+        $("ul#id_current_role").before(error_message);
       }
     }

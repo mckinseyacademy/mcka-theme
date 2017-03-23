@@ -514,10 +514,6 @@ class ActivationFormV2(BaseRegistrationFormV2):
 
 class PublicRegistrationForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        self.course_run_name = kwargs.pop('course_run_name', None)
-        super(PublicRegistrationForm, self).__init__(*args, **kwargs)
-
     current_role = forms.ChoiceField(widget=forms.RadioSelect, choices=CURRENT_ROLE)
     current_role_other = forms.CharField(widget=forms.TextInput, label='', required=False)
 
@@ -531,7 +527,16 @@ class PublicRegistrationForm(forms.ModelForm):
             'company_email',
             'current_role',
             'current_role_other',
-        ]
+        ] 
+
+    def __init__(self, *args, **kwargs):
+        self.course_run_name = kwargs.pop('course_run_name', None)
+        super(PublicRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].label=mark_safe('First Name <span class="required-field"></span>')
+        self.fields['last_name'].label=mark_safe('Last Name <span class="required-field"></span>')
+        self.fields['company_name'].label=mark_safe('Company Name <span class="required-field"></span>')
+        self.fields['company_email'].label=mark_safe('Company Email <span class="required-field"></span>')
+        self.fields['current_role'].label=mark_safe('Current Role <span class="required-field"></span>')
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get("first_name")
