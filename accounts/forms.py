@@ -551,6 +551,25 @@ class PublicRegistrationForm(forms.ModelForm):
 
         company_email = self.cleaned_data.get("company_email")
 
+        if not isinstance(company_email, basestring):
+            raise forms.ValidationError(u"Email must be a string")
+
+        if len(company_email) < 3:
+            raise forms.ValidationError(
+                u"Email '{email}' must be at least {min} characters long".format(
+                    email=company_email,
+                    min=3
+                )
+            )
+
+        if len(company_email) > 250:
+            raise forms.ValidationError(
+                u"Email '{email}' must be at most {max} characters long".format(
+                    email=company_email,
+                    max=250
+                )
+            )
+
         for mail in BANNED_EMAILS:
             if mail in company_email.lower():
                 raise forms.ValidationError("Email you provided is not allowed.")
