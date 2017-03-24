@@ -516,6 +516,7 @@ class PublicRegistrationForm(forms.ModelForm):
 
     current_role = forms.ChoiceField(widget=forms.RadioSelect, choices=CURRENT_ROLE)
     current_role_other = forms.CharField(widget=forms.TextInput, label='', required=False)
+    company_email = forms.CharField(max_length=70)
 
     class Meta:
 
@@ -567,11 +568,11 @@ class PublicRegistrationForm(forms.ModelForm):
                 )
             )
 
-        if len(company_email) > 250:
+        if len(company_email) > 70:
             raise forms.ValidationError(
                 u"Email '{email}' must be at most {max} characters long".format(
                     email=company_email,
-                    max=250
+                    max=70
                 )
             )
 
