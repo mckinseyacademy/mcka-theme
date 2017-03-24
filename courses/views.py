@@ -163,8 +163,6 @@ def course_cohort(request, course_id):
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
-    organizations = user_api.get_user_organizations(request.user.id)
-    metrics.company_enrolled = 0
     metrics.group_enrolled = 0
 
     ta_user_json = json.dumps({})
@@ -175,10 +173,6 @@ def course_cohort(request, course_id):
         ta_user_json = ta_user.to_json()
     ta_user_id = ta_user.id if ta_user else None
 
-    if len(organizations) > 0:
-        organization = organizations[0]
-        organizationUsers = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username', 'organizations': organization.id})}
-        metrics.company_enrolled = len(organizationUsers)
     metrics.groups_users = []
     if len(workgroups) > 0:
         workgroup = workgroup_api.get_workgroup(workgroups[0].id)
