@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 from django.utils.http import urlsafe_base64_encode
 from django.core.urlresolvers import reverse
 from django.template import loader
-from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
 from email.MIMEImage import MIMEImage
 from django.utils.html import strip_tags
 
@@ -414,3 +414,12 @@ def _set_number_of_enrolled_users(course_run):
     course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
     course_run.total_participants = len(course_users)
     course_run.save()
+
+def send_warning_email_to_admin():
+    send_mail(
+        'Warning',
+        'Course run treshold is reached',
+        settings.APROS_EMAIL_SENDER,
+        [settings.DEDICATED_COURSE_RUN_PERSON],
+        fail_silently=False,
+    )

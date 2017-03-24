@@ -38,7 +38,8 @@ from courses.user_courses import standard_data, get_current_course_for_user, get
 from .models import RemoteUser, UserActivation, UserPasswordReset
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
-    process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users
+    process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
+    send_warning_email_to_admin
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -1024,18 +1025,21 @@ def demo_registration(request, course_run_name):
                 registration_request = form.save(commit=False)
                 registration_request.course_run = course_run
 
-                if "other" == registration_request.current_role:
+                if "Other" == registration_request.current_role:
                     registration_request.current_role = registration_request.current_role_other
                     registration_request.current_role_other == None
 
                 registration_request.mcka_user = True if settings.MCKINSEY_EMAIL_DOMAIN in registration_request.company_email else False
 
+                #todo check for better api approach
                 users = user_api.get_users(email=registration_request.company_email)
                 registration_request.new_user = True if len(users) < 1 else False
 
-                #todo check for better api approach
                 _set_number_of_enrolled_users(course_run)
                 registration_request.save()
+
+                if course_run.total_participants == settings.COURSE_RUN_PARTICIPANTS_TRESHOLD:
+                    send_warning_email_to_admin()
 
                 if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
