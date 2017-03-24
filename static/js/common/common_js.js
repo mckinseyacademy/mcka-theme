@@ -466,12 +466,16 @@ function downloadCSV(args) {
   if (csv == null) return;
   filename = args.filename || 'export.csv';
 
+  // encodeURIComponent can encode more characters than encodeURI
+  // works for FF as well
+  var csvData = encodeURIComponent(csv);
+
   if (!csv.match(/^data:text\/csv/i)) {
-      csv = 'data:text/csv;charset=utf-8,' + csv;
+      csvData = 'data:text/csv;charset=utf-8,' + csvData;
   }
-  data = encodeURI(csv);
+
   link = document.createElement('a');
-  link.setAttribute('href', data);
+  link.setAttribute('href', csvData);
   link.setAttribute('download', filename);
   document.body.appendChild(link);
   link.click();

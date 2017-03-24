@@ -2,9 +2,11 @@
 
 - block page_title
   %title= _("Demo registration | McKinsey Academy")
+  %meta{property: "og:title", content: "McKinsey Academy"}
 
 - block header
   - include 'accounts/login_header.haml'
+
 - load staticfiles
 - block content
   #confirmation_registration.reveal-modal.small{'data-reveal': None}
@@ -32,7 +34,7 @@
           .large-8.medium-8.columns{style:"height: 100%;border-right: 1px solid #ccc;"}
             %h1 Welcome to McKinsey Academy
             .description{style:"height:auto;"}
-              %h4 REGISTER FOR ACCESS TO THE DEMO BUISNESS STRATEGY COURSE
+              %h4 REGISTER FOR ACCESS TO THE DEMO BUSINESS STRATEGY COURSE
               %span Take your strategic thinking to the next level -- assess the robustness of a strategy and apply Mckinsey's Strategy Method to develop strategies that can help your businesses gain a sustainable advantage in the market.
               %br
               %br
@@ -44,7 +46,16 @@
                   - if error
                     = error
                 - csrf_token
-                = form
+                - for field in form
+                  - if field.id_for_label != "id_current_role_other"
+                    <label for="#{field.id_for_label}">#{field.label}</label>
+                  - if field.help_text and "options" in field.help_text
+                    = field.help_text|safe
+                  = field.errors
+                  = field
+                  - if field.help_text and "email" in field.help_text
+                    = field.help_text|safe
+
                 %input.button.radius.small.registration_submit{type: "submit", value: "Register", disabled: "True"}
 
           .large-4.medium-4.columns{style:"border-left: none;"}
@@ -67,7 +78,7 @@
     $(window).on( "load", function() {
       toggle_field();
       show_popup_on_registration("{{registration_status}}");
-      adjust_error_messages();
+      adjust_messages();
     });
     $("#id_current_role").change(function(e){
       toggle_field();
@@ -96,7 +107,7 @@
         $("#error_registration").foundation('reveal', 'open');
       }
     }
-    function adjust_error_messages(){
+    function adjust_messages(){
       if ($("#id_current_role + .errorlist")){
         var error_message = $("#id_current_role + .errorlist").detach();
         $("ul#id_current_role").before(error_message);

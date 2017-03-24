@@ -78,6 +78,8 @@ js_files.extend([
     'js/vendor/dropzone.js',
     'js/application.js',
     'js/router.js',
+    'js/config.js',
+    'js/utils.js',
 ])
 js_files.extend(_build_file_list("js/common", ".js"))
 js_files.extend(_build_file_list("js/models", ".js"))
