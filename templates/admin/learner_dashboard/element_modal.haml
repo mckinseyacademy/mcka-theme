@@ -7,7 +7,7 @@
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-%form.tile_modal_form{action: '/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
+%form.modal_form{action: '/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile_id}', method: 'POST', enctype: 'multipart/form-data'}
   - csrf_token
   .row
     .small-3.columns
@@ -159,7 +159,7 @@
     %input#resetColors.tile_fields.button.radius.small.left{type: "submit", value: "Reset tile colors"}
   - else
     %input#resetColors.tile_fields.button.radius.small.left{type: "submit", value: "Reset tile colors", disabled: "True"}
-  %input#tileFormSubmit.button.radius.small.right{type: "submit", value: "Save", disabled: "True"}
+  %input#formSubmit.button.radius.small.right{type: "submit", value: "Save", disabled: "True"}
 
   %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
   %script{src: "/static/js/admin_learner_dashboard/element_modal.js"}
@@ -232,6 +232,6 @@
       label.val(label.data('default-value'));
       note.val(note.data('default-value'));
       title.val(title.data('default-value'));
-      $('#tileFormSubmit').attr('disabled',false);
+      $('#formSubmit').attr('disabled',false);
       $('#resetColors').attr('disabled',true);
     });

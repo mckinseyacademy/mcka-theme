@@ -3,7 +3,7 @@
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-%form.branding_modal_form{action: '/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding', method: "POST", enctype: "multipart/form-data"}
+%form.modal_form{action: '/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding', method: "POST", enctype: "multipart/form-data"}
   - csrf_token
   .row
     .small-3.columns
@@ -90,6 +90,6 @@
   .error
     - if error
       = error
-  %input#brandingFormSubmit.button.radius.small.right{type: "submit", value: "Save", disabled: "True"}
+  %input#formSubmit.button.radius.small.right{type: "submit", value: "Save", disabled: "True"}
 
   %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
