@@ -35,7 +35,7 @@ from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
     CURRENT_PROGRAM, set_current_course_for_user
 
-from .models import RemoteUser, UserActivation, UserPasswordReset
+from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
@@ -330,11 +330,20 @@ def activate(request, activation_code, registration=None):
     user = None
     user_data = None
     initial_data = {}
+
     try:
         activation_record = UserActivation.objects.get(activation_key=activation_code)
         user = user_api.get_user(activation_record.user_id)
+
         if user.is_active:
             raise
+
+        #get registration object to prepopulate/hide fields in form if user came from registration form
+        if registration:
+            try:
+                registration_request = PublicRegistrationRequest.objects.get(company_email=user.email)
+            except:
+                registration_request = None
 
         for field_name in VALID_USER_FIELDS:
             if field_name == "full_name":
@@ -359,8 +368,6 @@ def activate(request, activation_code, registration=None):
         user_data["email"] = user.email
         form = ActivationForm(user_data, initial=initial_data)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
-            if registration:
-                form.fields["company"].widget = HiddenInput()
             try:
                 user_activation_with_data(user.id, user_data, activation_record)
 
@@ -373,14 +380,22 @@ def activate(request, activation_code, registration=None):
             except ActivationError as activation_error:
                 error = activation_error.value
         elif not error:
+            if registration:
+                form.fields["company"].widget = HiddenInput()
+                form.fields["title"].widget.attrs.update({'readonly': 'readonly'})
             error = _("Some required information was missing. Please check the fields below.")
     else:
         form = ActivationForm(user_data, initial=initial_data)
 
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
+
         if registration:
             form.fields["company"].widget = HiddenInput()
+            if registration_request:
+                form.fields["title"].widget.attrs.update({'readonly': 'readonly'})
+                initial_data["full_name"] = registration_request.first_name + " " + registration_request.first_name
+                initial_data["title"] = registration_request.current_role
 
     data = {
         "user": user,
