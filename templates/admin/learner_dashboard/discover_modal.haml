@@ -7,7 +7,7 @@
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
-%form.discover_modal_form{action: "#{url}", method: "POST"}
+%form.modal_form{action: "#{url}", method: "POST"}
   - csrf_token
   .row
     .small-3.columns
@@ -31,6 +31,6 @@
   .error
     - if error
       = error
-  %input#discoverFormSubmit.button.radius.small{type: "submit", value: "Save", disabled: "True"}
+  %input#formSubmit.button.radius.small{type: "submit", value: "Save", disabled: "True"}
 
   %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
