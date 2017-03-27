@@ -394,7 +394,7 @@ def activate(request, activation_code, registration=None):
             form.fields["company"].widget = HiddenInput()
             if registration_request:
                 form.fields["title"].widget.attrs.update({'readonly': 'readonly'})
-                initial_data["full_name"] = registration_request.first_name + " " + registration_request.first_name
+                initial_data["full_name"] = registration_request.first_name + " " + registration_request.last_name
                 initial_data["title"] = registration_request.current_role
 
     data = {
