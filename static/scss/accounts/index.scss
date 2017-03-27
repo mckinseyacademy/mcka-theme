@@ -68,14 +68,14 @@
       margin-bottom: 0px;
     }
 
+    .company_email_helptext + label{
+      padding-bottom:0px!important;
+    }
+
     .company_email_helptext, .current_role_helptext{
       font-style: italic;
       color:#888;
       padding-bottom: 10px;
-    }
-
-    br{
-      display:none;
     }
   }
 
@@ -83,6 +83,7 @@
     @include font-spec(14, semibold);
     padding-bottom: rem-calc(10);
   }
+
   .columns + .columns {
     display: block;
     border-left: 1px solid $mckinsey-grey;
