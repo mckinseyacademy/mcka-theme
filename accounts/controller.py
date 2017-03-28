@@ -411,7 +411,17 @@ def send_email(email_template_html, subject, link, template_text, user_name, use
     email.send(fail_silently=False)
 
 def _set_number_of_enrolled_users(course_run):
+
     course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
+    roles_user_ids = course_api.get_users_filtered_by_role(course_run.course_id)
+    exclude_user_ids = [role.id for role in roles_user_ids]
+    #removing duplicates
+    exclude_user_ids = list(set(exclude_user_ids))
+
+    for user in course_users:
+        if user['id'] in exclude_user_ids:
+            course_users.remove(user)
+
     course_run.total_participants = len(course_users)
     course_run.save()
     return course_users
