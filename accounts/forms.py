@@ -545,14 +545,14 @@ class PublicRegistrationForm(forms.ModelForm):
     def clean_first_name(self):
         first_name = self.cleaned_data.get("first_name")
         if not re.match(r'^[A-Za-z ]+$', first_name):
-            raise forms.ValidationError("First name you provided is not valid.")
+            raise forms.ValidationError("Special characters are not valid.")
         else:
             return first_name
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get("last_name")
         if not re.match(r'^[A-Za-z ]+$', last_name):
-            raise forms.ValidationError("Last name you provided is not valid.")
+            raise forms.ValidationError("Special characters are not valid.")
         else:
             return last_name
 
@@ -561,7 +561,7 @@ class PublicRegistrationForm(forms.ModelForm):
         company_email = self.cleaned_data.get("company_email")
 
         if not isinstance(company_email, basestring):
-            raise forms.ValidationError(u"Email must be a string")
+            raise forms.ValidationError(u"Email must be a string.")
 
         if len(company_email) < 3:
             raise forms.ValidationError(
@@ -601,7 +601,7 @@ class PublicRegistrationForm(forms.ModelForm):
         company_name = self.cleaned_data.get("company_name")
 
         if not re.match(r'^[A-Za-z0-9 ]+$', company_name):
-            raise forms.ValidationError("The name you provided is not valid.")
+            raise forms.ValidationError("Special characters are not valid.")
 
         return company_name
 
@@ -615,6 +615,6 @@ class PublicRegistrationForm(forms.ModelForm):
 
         if "Other" == current_role:
             if not re.match(r'^[A-Za-z0-9 ]+$', current_role_other):
-                raise forms.ValidationError("The name you provided is not valid.")
+                raise forms.ValidationError("Special characters are not valid.")
 
         return current_role_other
