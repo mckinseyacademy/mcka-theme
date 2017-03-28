@@ -1059,17 +1059,18 @@ def demo_registration(request, course_run_name):
 
                 if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
-                    return redirect('home')
+                    registration_status = "Course Closed"
 
                 #if existing user, send user object
-                try:
-                    if not registration_request.new_user:
-                        process_registration_request(request, registration_request, course_run, users[0])
-                    else:
-                        process_registration_request(request, registration_request, course_run)
-                    registration_status = "Registered"
-                except ValueError:
-                    registration_status = "Error"
+                if registration_status == "Initial":
+                    try:
+                        if not registration_request.new_user:
+                            process_registration_request(request, registration_request, course_run, users[0])
+                        else:
+                            process_registration_request(request, registration_request, course_run)
+                        registration_status = "Registered"
+                    except ValueError:
+                        registration_status = "Error"
         else:
             form = PublicRegistrationForm()
 

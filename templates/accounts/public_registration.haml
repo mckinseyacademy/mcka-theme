@@ -23,6 +23,13 @@
     %p
       Sorry, there seems to be a problem with registering your account, please contact info@mckinseyacademy.com
 
+  #course_closed_registration.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 Thank you for your request
+    %p
+      We will send you an email shortly.
+
   .row
     .login-form.large-12.medium-12.large-centered.medium-centered.columns{style:"min-height:940px"}
       - if request.is_IE8
@@ -105,6 +112,13 @@
           window.location.replace("{{home_url}}")
         });
         $("#error_registration").foundation('reveal', 'open');
+      }
+      else if (status_text==="Course Closed")
+      {
+        $(document).on('close.fndtn.reveal', '#course_closed_registration', function(){
+          window.location.replace("{{home_url}}")
+        });
+        $("#course_closed_registration").foundation('reveal', 'open');
       }
     }
     function adjust_messages(){
