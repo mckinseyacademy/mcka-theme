@@ -379,6 +379,8 @@ def activate(request, activation_code, registration=None):
                 )
             except ActivationError as activation_error:
                 error = activation_error.value
+                form.fields["company"].widget = HiddenInput()
+                form.fields["title"].widget = HiddenInput()
         elif not error:
             if registration:
                 form.fields["company"].widget = HiddenInput()
