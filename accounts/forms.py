@@ -592,7 +592,7 @@ class PublicRegistrationForm(forms.ModelForm):
         try:
             validate_email(company_email)
         except:
-            raise forms.ValidationError("This email address is not valid")
+            raise forms.ValidationError("Please enter a valid company email address.")
 
         return company_email
 
