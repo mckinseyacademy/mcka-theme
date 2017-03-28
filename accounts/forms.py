@@ -536,7 +536,7 @@ class PublicRegistrationForm(forms.ModelForm):
         self.fields['first_name'].label=mark_safe('First Name <span class="required-field"></span>')
         self.fields['last_name'].label=mark_safe('Last Name <span class="required-field"></span>')
         self.fields['company_name'].label=mark_safe('Company Name <span class="required-field"></span>')
-        self.fields['company_email'].label=mark_safe('Company E-mail <span class="required-field"></span>')
+        self.fields['company_email'].label=mark_safe('Company Email <span class="required-field"></span>')
         self.fields['current_role'].label=mark_safe('Current Role <span class="required-field"></span>')
         self.fields['company_email'].help_text=mark_safe('<div class="company_email_helptext">Note: personal email addresses will not be processed</div>')
         self.fields['current_role'].help_text=mark_safe('<div class="current_role_helptext">(please choose one of the following options)</div>')
