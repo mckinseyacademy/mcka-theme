@@ -587,6 +587,7 @@ def _formatted_user_array(user):
     ]
 
 def _formatted_user_string_group_list(user):
+    # apply csv cleaning here
     return u"{},{},{},{}".format(
         user.email,
         user.username,

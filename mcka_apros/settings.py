@@ -439,3 +439,24 @@ TILE_LABEL_COLOR = "#000000"
 TILE_TITLE_COLOR = "#3384CA"
 TILE_NOTE_COLOR = "#868685"
 TILE_BACKGROUND_COLOR = "#FFFFFF"
+
+# CSV Characters blacklist
+# Characters added here will not be included in CSV exports data
+CSV_CHARACTERS_BLACKLIST = [
+    '+',
+    '-',
+    '=',
+    '|',
+    '!',
+    '@',
+    '#',
+    '$',
+    '%',
+    '^',
+    '&',
+    '(',
+    ')',
+    ':',
+    ';',
+    '*'
+]
