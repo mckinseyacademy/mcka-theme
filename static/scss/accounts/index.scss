@@ -107,6 +107,10 @@
     background-color: transparent;
   }
 
+  .errorlist + #id_accept_terms{
+    top: -54px!important;
+  }
+
   #id_accept_terms {
     position: relative;
     margin: 0;
