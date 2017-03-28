@@ -12,9 +12,9 @@
   #confirmation_registration.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    %h2 Request Successfull!
+    %h2 Thank you for your request
     %p
-      Thank you for your request. We will send you an email shortly with instructions on how to access McKinsey Academy.
+      We will send you an email shortly.
 
   #error_registration.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
@@ -22,6 +22,13 @@
     %h2 Registration Error!
     %p
       Sorry, there seems to be a problem with registering your account, please contact info@mckinseyacademy.com
+
+  #course_closed_registration.reveal-modal.small{'data-reveal': None}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 Thank you for your request
+    %p
+      We will send you an email shortly.
 
   .row
     .login-form.large-12.medium-12.large-centered.medium-centered.columns{style:"min-height:940px"}
@@ -35,7 +42,7 @@
             %h1 Welcome to McKinsey Academy
             .description{style:"height:auto;"}
               %h4 REGISTER FOR ACCESS TO THE DEMO BUSINESS STRATEGY COURSE
-              %span Take your strategic thinking to the next level -- assess the robustness of a strategy and apply Mckinsey's Strategy Method to develop strategies that can help your businesses gain a sustainable advantage in the market.
+              %span Take your strategic thinking to the next level &mdash; assess the robustness of a strategy and apply McKinsey's Strategy Method to develop strategies that can help your businesses gain a sustainable advantage in the market.
               %br
               %br
               %span Complete the fields below. Required fields are noted by an asterisk (
@@ -105,6 +112,13 @@
           window.location.replace("{{home_url}}")
         });
         $("#error_registration").foundation('reveal', 'open');
+      }
+      else if (status_text==="Course Closed")
+      {
+        $(document).on('close.fndtn.reveal', '#course_closed_registration', function(){
+          window.location.replace("{{home_url}}")
+        });
+        $("#course_closed_registration").foundation('reveal', 'open');
       }
     }
     function adjust_messages(){
