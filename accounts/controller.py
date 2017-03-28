@@ -286,7 +286,7 @@ def process_registration_request(request, user, course_run, existing_user_object
     protocol = 'https' if request.is_secure() else 'http'
 
     if not user.new_user and not user.mcka_user:
-        _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object)
+        _process_existing_non_mcka_user(domain, protocol, user, course_run, existing_user_object)
 
     if user.new_user and not user.mcka_user:
         _process_new_non_mcka_user(request, user, course_run)
@@ -294,7 +294,7 @@ def process_registration_request(request, user, course_run, existing_user_object
     if user.mcka_user:
         _process_mcka_user(request, user, course_run)
 
-def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_object):
+def _process_existing_non_mcka_user(domain, protocol, user, course_run, existing_user_object):
 
     email_template_html = "registration/public_registration_existing_non_mcka.haml"
     subject = "Welcome to McKinsey Academy"
@@ -304,7 +304,7 @@ def _process_existing_non_mcka_user(domain, protocol, course_run, existing_user_
     enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
     if not enroll_in_course_result.enrolled:
         raise ValueError('Problem with course enrollment')
-    send_email(email_template_html, subject, link, template_text, existing_user_object.username, existing_user_object.email)
+    send_email(email_template_html, subject, link, template_text, user.first_name, existing_user_object.email)
 
 def _process_new_non_mcka_user(request, registration_request, course_run):
 
