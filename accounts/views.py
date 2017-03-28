@@ -382,7 +382,7 @@ def activate(request, activation_code, registration=None):
         elif not error:
             if registration:
                 form.fields["company"].widget = HiddenInput()
-                form.fields["title"].widget.attrs.update({'readonly': 'readonly'})
+                form.fields["title"].widget = HiddenInput()
             error = _("Some required information was missing. Please check the fields below.")
     else:
         form = ActivationForm(user_data, initial=initial_data)
@@ -392,6 +392,7 @@ def activate(request, activation_code, registration=None):
 
         if registration:
             form.fields["company"].widget = HiddenInput()
+            form.fields["title"].widget = HiddenInput()
             if registration_request:
                 form.fields["title"].widget.attrs.update({'readonly': 'readonly'})
                 initial_data["full_name"] = registration_request.first_name + " " + registration_request.last_name
