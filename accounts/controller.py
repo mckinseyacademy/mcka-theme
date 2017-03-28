@@ -414,6 +414,7 @@ def _set_number_of_enrolled_users(course_run):
     course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
     course_run.total_participants = len(course_users)
     course_run.save()
+    return course_users
 
 def send_warning_email_to_admin():
     send_mail(

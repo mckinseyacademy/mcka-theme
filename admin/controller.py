@@ -2023,4 +2023,33 @@ def _validate_company_permissions(new_user_permisions, creator_permissions):
         return True
     return False
 
+def construct_users_list(enrolled_users, registration_requests):
+    '''
+    Returns users list of dictionaries with activation and enrollment status
+    '''
+    def check_user_status(registration_request):
+        for user in enrolled_users:
+            if user['email'] == registration_request.company_email:
+                return True, user['is_active']
+        return False, False
+
+    full_users_list = []
+    full_user_row = {}
+
+    for registration_request in registration_requests:
+        enrolled, activated = check_user_status(registration_request)
+        full_user_row['id'] = registration_request.pk
+        full_user_row['first_name'] = registration_request.first_name
+        full_user_row['last_name'] = registration_request.last_name
+        full_user_row['is_active'] = activated
+        full_user_row['is_enrolled'] = enrolled
+        full_user_row['company_name'] = registration_request.company_name
+        full_user_row['company_email'] = registration_request.company_email
+        full_user_row['current_role'] = registration_request.current_role
+        full_user_row['mcka_user'] = registration_request.mcka_user
+        full_user_row['new_user'] = registration_request.new_user
+        full_users_list.append(full_user_row)
+        full_user_row = {}
+
+    return full_users_list
 

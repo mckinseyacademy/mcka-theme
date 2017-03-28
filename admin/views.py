@@ -68,7 +68,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, _validate_company_permissions
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, _validate_company_permissions, construct_users_list
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -5535,13 +5535,16 @@ def course_run_view(request, course_run_id):
     except ObjectDoesNotExist:
         return render(request, '404.haml')
 
-    _set_number_of_enrolled_users(course_run)
+    enrolled_users = _set_number_of_enrolled_users(course_run)
+    registration_requests = PublicRegistrationRequest.objects.filter(course_run=course_run)
 
-    users = PublicRegistrationRequest.objects.filter(course_run=course_run)
+    full_users_list = construct_users_list(enrolled_users, registration_requests)
+
     data = {
         'course_run': course_run,
-        'users': users,
-        'total_registered_users': len(users),
+        'users': registration_requests,
+        'total_registered_users': registration_requests.count(),
+        'user_list': full_users_list
     }
 
     return render(request, 'admin/course_run/view.haml', data)
@@ -5580,9 +5583,13 @@ def course_run_csv_download(request, course_run_id):
 
     course_run = get_object_or_404(CourseRun, pk=course_run_id)
 
-    users = PublicRegistrationRequest.objects.filter(course_run=course_run)
+    enrolled_users = _set_number_of_enrolled_users(course_run)
+    registration_requests = PublicRegistrationRequest.objects.filter(course_run=course_run)
 
-    if users:
+    if registration_requests:
+
+        full_users_list = construct_users_list(enrolled_users, registration_requests)
+
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="' + course_run.name + '.csv"'
         writer = csv.writer(response)
@@ -5593,17 +5600,21 @@ def course_run_csv_download(request, course_run_id):
             "Company email",
             "Current role",
             "New user",
-            "McKA user"
+            "McK user",
+            "Enrolled",
+            "Active"
         ])
-        for user in users:
+        for user in full_users_list:
             writer.writerow([
-                user.first_name,
-                user.last_name,
-                user.company_name,
-                user.company_email,
-                user.current_role,
-                str(user.new_user),
-                str(user.mcka_user)
+                user['first_name'],
+                user['last_name'],
+                user['company_name'],
+                user['company_email'],
+                user['current_role'],
+                user['new_user'],
+                user['mcka_user'],
+                user['is_enrolled'],
+                user['is_active'],
             ])
 
         return response

@@ -65,9 +65,11 @@
             %th= _("Company email")
             %th= _("Current role")
             %th= _("New user")
-            %th= _("McKA Employee")
+            %th= _("McK Employee")
+            %th= _("Enrolled")
+            %th= _("Active")
         %tbody
-          - for user in users
+          - for user in user_list
             %tr{id: "#{user.id}"}
               %td{style: "word-wrap: break-word"}= user.first_name
               %td{style: "word-wrap: break-word"}= user.last_name
@@ -81,6 +83,16 @@
                   %i.fa.fa-times{'style': "color:red"}
               %td{style: "word-wrap: break-word; text-align: left;"}
                 -if user.mcka_user
+                  %i.fa.fa-check{'style': "color:green"}
+                -else
+                  %i.fa.fa-times{'style': "color:red"}
+              %td{style: "word-wrap: break-word; text-align: left;"}
+                -if user.is_enrolled
+                  %i.fa.fa-check{'style': "color:green"}
+                -else
+                  %i.fa.fa-times{'style': "color:red"}
+              %td{style: "word-wrap: break-word; text-align: left;"}
+                -if user.is_active
                   %i.fa.fa-check{'style': "color:green"}
                 -else
                   %i.fa.fa-times{'style': "color:red"}
