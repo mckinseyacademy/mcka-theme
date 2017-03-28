@@ -545,14 +545,14 @@ class PublicRegistrationForm(forms.ModelForm):
     def clean_first_name(self):
         first_name = self.cleaned_data.get("first_name")
         if not re.match(r'^[A-Za-z ]+$', first_name):
-            raise forms.ValidationError("Special characters are not valid.")
+            raise forms.ValidationError("Special characters or numbers are not valid.")
         else:
             return first_name
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get("last_name")
         if not re.match(r'^[A-Za-z ]+$', last_name):
-            raise forms.ValidationError("Special characters are not valid.")
+            raise forms.ValidationError("Special characters or numbers are not valid.")
         else:
             return last_name
 
