@@ -11,7 +11,7 @@ Apros.utils.cleanParticipantProps = function (dataObj) {
         if(_.contains(Apros.config.PARTICIPANT_PROPERTIES_TO_CLEAN, prop)){
             value = Apros.utils.escapeHtml(value);
 
-            if(value && Apros.config.FORMULA_CHARACTERS_ESCAPING){
+            if(value && Apros.config.ENABLE_FORMULA_CHARACTERS_ESCAPING){
                 value = Apros.utils.cleanFormulaInjectionCharacters(value, formulaCleanRegex);
             }
 
