@@ -544,6 +544,7 @@ class PublicRegistrationForm(forms.ModelForm):
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get("first_name")
+        first_name = ' '.join(first_name.split())
         if not re.match(r'^[A-Za-z ]+$', first_name):
             raise forms.ValidationError("Special characters or numbers are not valid.")
         else:
@@ -551,6 +552,7 @@ class PublicRegistrationForm(forms.ModelForm):
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get("last_name")
+        last_name = ' '.join(last_name.split())
         if not re.match(r'^[A-Za-z ]+$', last_name):
             raise forms.ValidationError("Special characters or numbers are not valid.")
         else:
@@ -599,6 +601,7 @@ class PublicRegistrationForm(forms.ModelForm):
     def clean_company_name(self):
 
         company_name = self.cleaned_data.get("company_name")
+        company_name = ' '.join(company_name.split())
 
         if not re.match(r'^[A-Za-z0-9 ]+$', company_name):
             raise forms.ValidationError("Special characters are not valid.")
@@ -609,6 +612,8 @@ class PublicRegistrationForm(forms.ModelForm):
 
         current_role = self.cleaned_data.get("current_role")
         current_role_other = self.cleaned_data.get("current_role_other")
+
+        current_role_other = ' '.join(current_role_other.split())
 
         if "Other" == current_role and not current_role_other:
             raise forms.ValidationError("Please specify your role.")
