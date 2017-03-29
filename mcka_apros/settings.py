@@ -440,7 +440,6 @@ TILE_TITLE_COLOR = "#3384CA"
 TILE_NOTE_COLOR = "#868685"
 TILE_BACKGROUND_COLOR = "#FFFFFF"
 
-# CSV Characters blacklist
 # Characters added here will not be included in CSV exports data
 CSV_CHARACTERS_BLACKLIST = [
     '+',
@@ -459,4 +458,14 @@ CSV_CHARACTERS_BLACKLIST = [
     ':',
     ';',
     '*'
+]
+
+# Data cleaning methods will be applied on following User properties
+USER_PROPERTIES_TO_CLEAN = [
+    'first_name',
+    'last_name',
+    'full_name',
+    'title',
+    'country',
+    'city',
 ]
