@@ -1057,7 +1057,7 @@ def demo_registration(request, course_run_name):
                 registration_request.save()
 
                 if course_run.total_participants == settings.COURSE_RUN_PARTICIPANTS_TRESHOLD:
-                    send_warning_email_to_admin()
+                    send_warning_email_to_admin(course_run)
 
                 if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)

@@ -426,11 +426,24 @@ def _set_number_of_enrolled_users(course_run):
     course_run.save()
     return course_users
 
-def send_warning_email_to_admin():
-    send_mail(
-        'Warning',
-        'Course run treshold is reached',
+def send_warning_email_to_admin(course_run):
+
+    email_template_html = 'registration/public_registration_warning.haml'
+    subject = 'Demo Registration - Warning'
+
+    c = {
+        'max_participants': course_run.max_participants,
+        'treshold': settings.COURSE_RUN_PARTICIPANTS_TRESHOLD,
+        'course_id': course_run.course_id,
+    }
+
+    email_html = loader.render_to_string(email_template_html, c)
+    email_plain = strip_tags(email_html)
+    email = EmailMultiAlternatives(
+        subject,
+        email_plain,
         settings.APROS_EMAIL_SENDER,
         [settings.DEDICATED_COURSE_RUN_PERSON],
-        fail_silently=False,
-    )
+        headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
+    email.attach_alternative(email_html, 'text/html')
+    email.send(fail_silently=False)
