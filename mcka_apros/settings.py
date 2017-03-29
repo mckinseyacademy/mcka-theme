@@ -460,7 +460,7 @@ CSV_CHARACTERS_BLACKLIST = [
     '*'
 ]
 
-# Data cleaning methods will be applied on following User properties
+# Properties to clean
 USER_PROPERTIES_TO_CLEAN = [
     'first_name',
     'last_name',
@@ -468,4 +468,19 @@ USER_PROPERTIES_TO_CLEAN = [
     'title',
     'country',
     'city',
+]
+
+COMPANY_PROPERTIES_TO_CLEAN = [
+    'full_name',
+    'title',
+    'address1',
+    'address2',
+    'city',
+    'state',
+    'country'
+]
+
+CONTACT_PROPERTIES_TO_CLEAN = [
+    'full_name',
+    'title'
 ]

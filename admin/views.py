@@ -5230,6 +5230,13 @@ def download_company_info(request, company_id):
             contact['phone'] = '-'
             contacts.append(contact)
 
+    # apply cleaning on data
+    contacts = [
+        sanitize_data(data=contact, props_to_clean=settings.CONTACT_PROPERTIES_TO_CLEAN)
+        for contact in contacts
+    ]
+
+    invoicing = sanitize_data(data=invoicing, props_to_clean=settings.COMPANY_PROPERTIES_TO_CLEAN)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + name.replace(' ', '_') + '_info.csv"'
