@@ -616,10 +616,10 @@ class PublicRegistrationForm(forms.ModelForm):
         current_role_other = ' '.join(current_role_other.split())
 
         if "Other" == current_role and not current_role_other:
-            raise forms.ValidationError("Please specify your role.")
+            raise forms.ValidationError("Please specify your Role.")
 
         if "Other" == current_role:
             if not re.match(r'^[A-Za-z0-9 ]+$', current_role_other):
-                raise forms.ValidationError("Special characters are not valid.")
+                raise forms.ValidationError("Please enter a valid Role.")
 
         return current_role_other
