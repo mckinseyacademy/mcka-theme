@@ -545,6 +545,7 @@ def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=N
             output_line(workgroup_row)
 
             for user in workgroup.users:
+                # apply csv cleaning here
                 user_row = ["", user.username]  # Group and User columns
                 for user_activity_status in user.activity_statuses:  # for each activity
                     for stage_key, stage in user_activity_status.stages.iteritems():  # one column per stage

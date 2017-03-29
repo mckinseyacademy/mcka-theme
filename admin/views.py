@@ -80,6 +80,7 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
+from util.data_sanitizing import sanitize_data
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -5605,6 +5606,9 @@ def course_run_csv_download(request, course_run_id):
             "Active"
         ])
         for user in full_users_list:
+            # sanitize data before writing to csv
+            user = sanitize_data(data=user, props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
+
             writer.writerow([
                 user['first_name'],
                 user['last_name'],
