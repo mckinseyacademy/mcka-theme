@@ -370,6 +370,8 @@ def _register_user_on_platform(user):
         data['username'] = user.company_email[:29]
     else:
         data['username'] = user.company_email
+    data['first_name'] = user.first_name
+    data['last_name'] = user.last_name
     data['email'] = user.company_email
     data['username'] = re.sub(r'\W', '', user.company_email)
     data['password'] = settings.INITIAL_PASSWORD
