@@ -40,6 +40,7 @@ from lib.util import DottableDict
 from api_client.user_api import USER_ROLES
 from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
+from util.data_sanitizing import sanitize_data
 
 import threading
 import Queue
@@ -587,12 +588,14 @@ def _formatted_user_array(user):
     ]
 
 def _formatted_user_string_group_list(user):
-    # apply csv cleaning here
+    # apply csv cleaning
+    user_data = sanitize_data(data=user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
+
     return u"{},{},{},{}".format(
-        user.email,
-        user.username,
-        user.first_name,
-        user.last_name,
+        user_data.get('email', ''),
+        user_data.get('username', ''),
+        user_data.get('first_name', ''),
+        user_data.get('last_name', ''),
     )
 
 def _formatted_group_string(group):
