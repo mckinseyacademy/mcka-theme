@@ -5230,7 +5230,6 @@ def download_company_info(request, company_id):
             contact['phone'] = '-'
             contacts.append(contact)
 
-    # apply cleaning on data
     contacts = [
         sanitize_data(data=contact, props_to_clean=settings.CONTACT_PROPERTIES_TO_CLEAN)
         for contact in contacts
