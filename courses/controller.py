@@ -8,6 +8,7 @@ import re
 import json
 
 from django.conf import settings
+from django.core.cache import cache
 
 from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
 
@@ -520,8 +521,21 @@ def social_total(social_metrics):
 
     return social_total
 
-def get_social_metrics(course_id, user_id):
+
+def get_social_metrics(course_id, user_id, single_user=False):
     ''' returns social engagement points and leaders '''
+    course_social_avg_cache_key = "cached_course_social_avg_%s" % course_id
+    course_avg = cache.get(course_social_avg_cache_key)
+    if course_avg and single_user:
+        user_metrics = user_api.get_course_social_metrics(user_id, course_id)
+        return {
+            'points': social_total(user_metrics),
+            'position': None,
+            'metrics': user_metrics,
+            'course_avg': course_avg,
+            'leaders': []
+        }
+
     course_metrics = course_api.get_course_social_metrics(course_id)
     total_enrollments = course_metrics.total_enrollments
     point_sum = 0
@@ -538,6 +552,8 @@ def get_social_metrics(course_id, user_id):
         user_scores.append(user)
 
     course_avg = float(point_sum) / total_enrollments if total_enrollments > 0 else 0
+    course_avg = round_to_int_bump_zero(course_avg)
+    cache.set(course_social_avg_cache_key, course_avg)
 
     # sort by social score
     sorted_users = sorted(user_scores, key=lambda u: u["points"], reverse=True)
@@ -574,7 +590,7 @@ def get_social_metrics(course_id, user_id):
         'points': user.get("points", 0),
         'position': user.get("rank", None),
         'metrics': user.get("metrics", {}),
-        'course_avg': round_to_int_bump_zero(course_avg),
+        'course_avg': course_avg,
         'leaders': leaders
     }
 
