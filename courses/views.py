@@ -72,7 +72,7 @@ def course_landing_page(request, course_id):
     course = standard_data(request).get("course", None)
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
     load_lesson_estimated_time(course)
-    social = get_social_metrics(course_id, request.user.id)
+    social = get_social_metrics(course_id, request.user.id, single_user=True)
     gradebook = inject_gradebook_info(request.user.id, course)
     graded_items_count = sum(len(graded) for graded in course.graded_items().values())
 
@@ -555,7 +555,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
-    social = get_social_metrics(course_id, user_id)
+    social = get_social_metrics(course_id, user_id, single_user=True)
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     course.group_work_enabled = feature_flags.group_work
