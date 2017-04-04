@@ -1,6 +1,10 @@
 """ generic data clean functions """
 
+import logging
+
 from django.conf import settings
+
+_logger = logging.getLogger(__name__)
 
 
 def remove_characters(value, char_blacklist):
@@ -40,13 +44,10 @@ def apply_clean_methods(value, methods=()):
         # don't break if a method fails
         try:
             value = method(value)
-        except Exception:
-            pass
+        except Exception as e:
+            _logger.warning('Clean method `{}` failed with message "{}"'.format(method.__name__, e.message))
 
     return value
-
-
-DEFAULT_CLEAN_METHODS = (clean_formula_characters, clean_xss_characters)
 
 
 def sanitize_data(data, props_to_clean=None, additional_clean_methods=()):
@@ -79,9 +80,10 @@ def sanitize_data(data, props_to_clean=None, additional_clean_methods=()):
     clean_methods = DEFAULT_CLEAN_METHODS + additional_clean_methods
 
     for key, val in data.items():
-        if not props_to_clean:
-            data[key] = apply_clean_methods(val, clean_methods)
-        elif key in props_to_clean:
+        if (not props_to_clean) or (key in props_to_clean):
             data[key] = apply_clean_methods(val, clean_methods)
 
     return data
+
+
+DEFAULT_CLEAN_METHODS = (clean_formula_characters, clean_xss_characters)
