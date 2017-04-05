@@ -1,10 +1,31 @@
-""" generic data clean functions """
+""" generic data clean utilities """
 
 import logging
 
 from django.conf import settings
+from django.utils.html import escape
+from django.core.validators import RegexValidator
+from django.utils.translation import ugettext_lazy as _
 
 _logger = logging.getLogger(__name__)
+
+
+class UsernameValidator(RegexValidator):
+    """
+    Allows letters, numbers, underscores and hyphens in accordance with
+    the username validation used at EdX platform API
+    """
+    regex = r'^[a-zA-Z0-9_-]+\Z'
+    message = _("Username can only consist of letters, numbers underscores and hyphens, with no spaces.")
+
+
+class AlphanumericValidator(RegexValidator):
+    """
+    Validates that given value is alphanumeric characters with hyphens,
+    dots, underscore and spaces
+    """
+    regex = r'^[a-zA-Z0-9-_\. ]+\Z'
+    message = _("Enter a valid value consisting of letters, numbers, underscores, dots, hyphens or spaces.")
 
 
 def remove_characters(value, char_blacklist):
@@ -30,8 +51,7 @@ def clean_xss_characters(value):
     """
     Remove XSS related characters from passed string
     """
-    # ToDo: implementation
-    return value
+    return escape(value)
 
 
 def apply_clean_methods(value, methods=()):

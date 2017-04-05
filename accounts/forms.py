@@ -18,6 +18,7 @@ from api_client.api_error import ApiError
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
 from admin.models import CourseRun
+from util.data_sanitizing import AlphanumericValidator, UsernameValidator
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -361,13 +362,21 @@ class LoginForm(NoSuffixLabelForm):
 class BaseRegistrationForm(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
-    username = forms.CharField(max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
+    username = forms.CharField(
+        max_length=255,
+        label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'),
+        validators=[UsernameValidator()]
+    )
     password = forms.CharField(widget=forms.PasswordInput(),
         label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
-    title = forms.CharField(max_length=255, required=False)
-    city = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}), label=mark_safe('City <span class="required-field"></span>'))
+    title = forms.CharField(max_length=255, required=False, validators=[AlphanumericValidator()])
+    city = forms.CharField(
+        max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}),
+        label=mark_safe('City <span class="required-field"></span>'),
+        validators=[AlphanumericValidator()]
+    )
     country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=False)
     accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
 
@@ -482,12 +491,12 @@ class UploadProfileImageForm(forms.Form):
 
 class EditFullNameForm(forms.Form):
     ''' edit user full name '''
-    first_name = forms.CharField(max_length=30, label='First Name')
-    last_name = forms.CharField(max_length=30, label='Last Name')
+    first_name = forms.CharField(max_length=30, label='First Name', validators=[AlphanumericValidator()])
+    last_name = forms.CharField(max_length=30, label='Last Name', validators=[AlphanumericValidator()])
 
 class EditTitleForm(forms.Form):
     ''' edit user title '''
-    title = forms.CharField(max_length=255, label='', required=False)
+    title = forms.CharField(max_length=255, label='', required=False, validators=[AlphanumericValidator()])
 
 class BaseRegistrationFormV2(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
