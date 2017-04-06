@@ -553,7 +553,7 @@ def get_social_metrics(course_id, user_id, single_user=False):
 
     course_avg = float(point_sum) / total_enrollments if total_enrollments > 0 else 0
     course_avg = round_to_int_bump_zero(course_avg)
-    cache.set(course_social_avg_cache_key, course_avg)
+    cache.set(course_social_avg_cache_key, course_avg, 3600)
 
     # sort by social score
     sorted_users = sorted(user_scores, key=lambda u: u["points"], reverse=True)
