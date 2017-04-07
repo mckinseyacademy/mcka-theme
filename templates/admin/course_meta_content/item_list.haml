@@ -91,3 +91,9 @@
           - else
             %input#cohort_map{type: 'checkbox', name: 'resources'}
           %label{for: 'resources'} Resources
+        %li
+          - if feature_flags.cohort_avg
+            %input#cohort_avg{type: 'checkbox', name: 'cohort_avg', checked: None}
+          - else
+            %input#cohort_avg{type: 'checkbox', name: 'cohort_avg'}
+          %label{for: 'cohort_avg'} Cohort Average
