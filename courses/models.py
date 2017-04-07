@@ -48,6 +48,7 @@ class FeatureFlags(db_models.Model):
     notifications = db_models.BooleanField(default=True)
     branding = db_models.BooleanField(default=True)
     resources = db_models.BooleanField(default=True)
+    cohort_avg = db_models.BooleanField(default=True)
 
     def as_json(self):
         return dict(
