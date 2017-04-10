@@ -61,7 +61,7 @@ def create_multiple_emails(from_email, to_email_list, subject, email_body):
     text_content = strip_tags(email_body)
     html_content = email_body
     msg = EmailMultiAlternatives(
-        subject, html_content, from_email, to_email_list)
+        subject, text_content, from_email, to_email_list)
     msg.content_subtype = "html"
-    msg.attach_alternative(text_content, "text/plain")
+    msg.attach_alternative(html_content, "text/html")
     return msg
