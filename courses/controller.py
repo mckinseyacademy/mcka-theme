@@ -538,7 +538,10 @@ def get_user_social_metrics(user_id, course_id, include_stats=False):
     """
     :param course_id:
     :param user_id:
-    :param include_stats:
+    :param include_stats: a boolean value to indicate if we needs social stats also
+        social stats contains a dict with these keys
+        num_threads, num_thread_followers, num_replies, num_flagged, num_comments, num_threads_read,
+        num_downvotes, num_upvotes, num_comments_generated
     :return: a dict having user's social metrics for given course
     """
     data = {'points': 0, 'course_avg': 0, 'metrics': {}}
