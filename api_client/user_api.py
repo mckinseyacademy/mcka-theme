@@ -512,15 +512,19 @@ def get_users_city_metrics():
     return JP.from_json(response.read(), user_models.CityList)
 
 @api_error_protect
-def get_course_social_metrics(user_id, course_id):
+def get_course_social_metrics(user_id, course_id, include_stats):
     ''' fetch social metrics for course '''
+    qs_params = {}
+    if include_stats:
+        qs_params['include_stats'] = 'true'
 
     response = GET(
-        '{}/{}/{}/courses/{}/metrics/social/'.format(
+        '{}/{}/{}/courses/{}/metrics/social/?{}'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
             user_id,
             course_id,
+            urlencode(qs_params),
         )
     )
 
