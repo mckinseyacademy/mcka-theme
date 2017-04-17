@@ -24,13 +24,18 @@
     }
   }
 
-  .forum-new-post-form {
-    .field-label {
-      width: 55%;
-    }
-    .field-help {
-      width: 45%;
-    }
+  .inline-threads {
+    clear: both;
+  }
+
+  .forum-nav-sort-control {
+    padding-right: 22px;
+  }
+
+  .forum-nav-sort-control, .forum-nav-filter-main-control {
+    margin: 0px;
+    height: auto;
+    width: auto;
   }
 }
 
@@ -66,6 +71,7 @@
 
   .wmd-input {
     background-color: $pure-white;
+    margin: 0px;
   }
 
   .thread-content-wrapper, .new-post-article {
@@ -224,16 +230,14 @@
   }
 
   .response-count {
-    float: left;
-    margin-top: 20px;
-    padding: 0 30px;
+    float: right;
+    margin-top: 5px;
     color: $response-count-color;
     font-size: 14px;
   }
 
   .forum-nav-thread {
     border-bottom: 1px solid $comment-background-color;
-    background-color: $forum-thread-background-color;
   }
 
   .forum-nav-thread.never-read {
@@ -301,7 +305,7 @@
   }
 
   .discussion-article, .new-post-article {
-    .post-update, .submit,
+    .post-update,
     a.post-cancel, a.cancel {
       &, &:visited, &:hover, &:focus {
         margin: 15px 0px;
@@ -411,11 +415,11 @@
     position: relative;
     padding: 0;
     margin: 0;
-    width: 70px;
+    width: 80px;
     display: inline-block;
 
     &:before {
-      width: 70px;
+      width: 80px;
       content: "McKinsey TA";
       text-transform: uppercase;
       color: white;
@@ -431,6 +435,10 @@
   .home-header {
 
     border-bottom: none;
+
+    .home-title{
+      display: none;
+    }
 
     .label {
       @include font-spec(22px, normal, 24);
@@ -459,6 +467,7 @@
 
   .home-helpgrid {
     box-shadow: none;
+    margin-right: 5px;
   }
 
   .helpgrid-row {
@@ -599,4 +608,76 @@ body > .tooltip {
       background-image: url("/static/image/lesson-content/discussion/close_button.png");
       opacity: 0.7;
     }
+}
+
+#course-lessons .discussion-module {
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.discussion-show {
+  padding-top: 0.7rem !important;
+}
+
+.is-hidden {
+  display: none;
+}
+
+.sr, .sr-only {
+  display: none;
+}
+
+.lesson-content .wmd-button {
+  position: absolute;
+  background: none;
+  padding-left: 0px;
+  padding-top: 0px;
+  box-shadow: none;
+}
+
+#course-lessons .new-post-btn,
+#course-lessons .all-posts-btn,
+#course-lessons .add-post-cancel {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0075b4 !important;
+}
+
+#course-lessons .all-posts-btn {
+  font-size: 1.2rem;
+  padding: 0px !important;
+}
+
+#course-lessons .discussion-module .post-header-content {
+  padding-top: 10px;
+}
+
+#course-lessons .discussion-module .submit,
+#course-lessons .discussion-module .discussion-submit-post {
+  margin: 15px 0 0 15px !important;
+}
+
+#course-lessons .discussion-module .forum-nav-thread-list {
+  overflow-y: inherit;
+}
+
+#course-lessons .discussion-module .forum-nav-thread .forum-nav-thread-link {
+  width: 100% !important;
+}
+
+#course-lessons .discussion-module .forum-nav-thread .forum-nav-thread-link {
+  display: table;
+  border: none;
+}
+
+#course-lessons .discussion-module .forum-nav-thread a.forum-nav-thread-link div {
+  display: table-cell;
+}
+
+#course-lessons .discussion-module .thread-main-wrapper {
+  border: 1px solid $mckinsey-grey;
+}
+
+.row.collapse {
+  display: block;
 }

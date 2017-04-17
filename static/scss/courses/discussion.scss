@@ -65,6 +65,10 @@ header .course-tabs li {
 }
 
 #course-discussion .discussion-content {
+  .unit-title {
+    display: none;
+  }
+
   fieldset { margin:0; padding: 0; border:0; }
 
   .forum-nav-thread-link:hover,
@@ -229,7 +233,8 @@ header .course-tabs li {
       border-bottom: none;
       position: absolute;
       top: -78px;
-      width: 31%;
+      width: calc(33.33333% - 1rem);
+      margin-left: 7px;
 
       .group-member {
         padding-bottom: 10px;
@@ -267,6 +272,7 @@ header .course-tabs li {
 
     .user-label-staff {
       font-weight: 700;
+      margin-top: -2px;
     }
 
     h1 {
@@ -370,27 +376,32 @@ header .course-tabs li {
     }
 
     .response-count {
-      margin-top: 20px;
+      margin-top: 15px;
       padding: 0 30px;
       color: $response-count-color;
       font-size: 14px;
     }
 
-    .forum-new-post-form,
     .field-input {
-      background: $forum-thread-background-color;
+      select {
+        width: 90%;
+        -webkit-appearance: menulist !important;
+      }
     }
 
     input.field-input {
       background: $pure-white;
-      border: 1px solid $field-input-border-color;
     }
 
     button.cancel {
       &, &:hover, &:visited, &:active {
         float: left;
-        margin: 15px 0;
+        margin: 0px !important;
       }
+    }
+
+    .new-post-article {
+      margin-top: 0px;
     }
   }
 
@@ -440,5 +451,15 @@ header .course-tabs li {
     .label-settings {
       padding-top: 0px;
     }
+  }
+
+  .thread-wrapper {
+    .response-btn-count-wrapper {
+      margin: 0px;
+    }
+  }
+
+  .forum-nav {
+    position: relative !important;
   }
 }
