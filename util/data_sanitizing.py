@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 """ generic data clean utilities """
 
 import logging
+import unicodedata
 
 from django.conf import settings
 from django.utils.html import escape
@@ -26,6 +29,28 @@ class AlphanumericValidator(RegexValidator):
     """
     regex = r'^[a-zA-Z0-9-_\. ]+\Z'
     message = _("Enter a valid value consisting of letters, numbers, underscores, dots, hyphens or spaces.")
+
+
+class AlphanumericWithAccentedChars(AlphanumericValidator):
+    """
+    Extends AlphanumericValidator to include accented characters
+    """
+    def __call__(self, value):
+        value = remove_diacritics(value)
+        super(AlphanumericWithAccentedChars, self).__call__(value)
+
+
+def remove_diacritics(text):
+    """
+    Return a string with all diacritics (aka non-spacing marks) removed
+
+    For example "Héllô" will become "Hello"
+    Useful for comparing strings in an accent-insensitive fashion
+    """
+    text = text if isinstance(text, unicode) else unicode(text)
+
+    normalized = unicodedata.normalize("NFKD", text)
+    return "".join(c for c in normalized if unicodedata.category(c) != "Mn")
 
 
 def remove_characters(value, char_blacklist):
