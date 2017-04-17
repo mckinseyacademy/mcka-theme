@@ -1,10 +1,56 @@
-""" generic data clean functions """
+# -*- coding: utf-8 -*-
+
+""" generic data clean utilities """
 
 import logging
+import unicodedata
 
 from django.conf import settings
+from django.utils.html import escape
+from django.core.validators import RegexValidator
+from django.utils.translation import ugettext_lazy as _
 
 _logger = logging.getLogger(__name__)
+
+
+class UsernameValidator(RegexValidator):
+    """
+    Allows letters, numbers, underscores and hyphens in accordance with
+    the username validation used at EdX platform API
+    """
+    regex = r'^[a-zA-Z0-9_-]+\Z'
+    message = _("Username can only consist of letters, numbers underscores and hyphens, with no spaces.")
+
+
+class AlphanumericValidator(RegexValidator):
+    """
+    Validates that given value is alphanumeric characters with hyphens,
+    dots, underscore and spaces
+    """
+    regex = r'^[a-zA-Z0-9-_\. ]+\Z'
+    message = _("Enter a valid value consisting of letters, numbers, underscores, dots, hyphens or spaces.")
+
+
+class AlphanumericWithAccentedChars(AlphanumericValidator):
+    """
+    Extends AlphanumericValidator to include accented characters
+    """
+    def __call__(self, value):
+        value = remove_diacritics(value)
+        super(AlphanumericWithAccentedChars, self).__call__(value)
+
+
+def remove_diacritics(text):
+    """
+    Return a string with all diacritics (aka non-spacing marks) removed
+
+    For example "Héllô" will become "Hello"
+    Useful for comparing strings in an accent-insensitive fashion
+    """
+    text = text if isinstance(text, unicode) else unicode(text)
+
+    normalized = unicodedata.normalize("NFKD", text)
+    return "".join(c for c in normalized if unicodedata.category(c) != "Mn")
 
 
 def remove_characters(value, char_blacklist):
@@ -30,8 +76,7 @@ def clean_xss_characters(value):
     """
     Remove XSS related characters from passed string
     """
-    # ToDo: implementation
-    return value
+    return escape(value)
 
 
 def apply_clean_methods(value, methods=()):

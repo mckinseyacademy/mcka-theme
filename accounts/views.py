@@ -366,10 +366,12 @@ def activate(request, activation_code, registration=None):
 
         # email should never be changed
         user_data["email"] = user.email
-        form = ActivationForm(user_data, initial=initial_data)  # A form bound to the POST data
+        form = ActivationForm(
+            user_data, initial=initial_data
+        )
         if form.is_valid():  # All validation rules pass
             try:
-                user_activation_with_data(user.id, user_data, activation_record)
+                user_activation_with_data(user.id, form.cleaned_data, activation_record)
 
                 # Redirect after POST
                 return HttpResponseRedirect(
@@ -949,8 +951,8 @@ def edit_fullname(request):
         if form.is_valid():
             try:
                 user_api.update_user_information(request.user.id, {
-                    'first_name': form.data['first_name'],
-                    'last_name': form.data['last_name']
+                    'first_name': form.cleaned_data['first_name'],
+                    'last_name': form.cleaned_data['last_name']
                 })
             except ApiError as err:
                 error = err.message
@@ -974,7 +976,7 @@ def edit_title(request):
         if form.is_valid():
             try:
                 user_api.update_user_information(request.user.id, {
-                    'title': form.data['title']
+                    'title': form.cleaned_data['title']
                 })
             except ApiError as err:
                 error = err.message
