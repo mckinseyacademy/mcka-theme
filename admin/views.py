@@ -3605,17 +3605,27 @@ class participant_details_api(APIView):
     def post(self, request, user_id, format=None):
         form = EditExistingUserForm(request.POST.copy())
         if form.is_valid():
+            cleaned_data = form.cleaned_data
+
+            # validate new company name
+            if request.POST.get('new_company_name'):
+                alphanum_validator = AlphanumericValidator()
+                try:
+                    alphanum_validator(request.POST.get('new_company_name'))
+                except ValidationError:
+                    return Response({'status': 'error', 'type': 'validation_error',
+                                     'message': 'Company name can only contain alphanumeric characters'})
             filterUsers = {}
             existing_users_length = 0
-            if request.POST['username']:
-                filterUsers = {'username' : request.POST['username']}
+            if cleaned_data.get('username'):
+                filterUsers = {'username' : cleaned_data.get('username')}
                 existing_users = user_api.get_filtered_users(filterUsers)
                 existing_users_length += int(existing_users['count'])
                 for user in existing_users['results']:
                     if int(user['id']) == int(user_id):
                         existing_users_length -= 1
-            if request.POST['email']:
-                filterUsers = {'email' : request.POST['email']}
+            if cleaned_data.get('email'):
+                filterUsers = {'email' : cleaned_data.get('email')}
                 existing_users = user_api.get_filtered_users(filterUsers)
                 existing_users_length += int(existing_users['count'])
                 for user in existing_users['results']:
