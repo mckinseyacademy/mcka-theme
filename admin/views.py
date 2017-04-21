@@ -17,7 +17,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render, redirect, get_object_or_404
@@ -80,7 +80,7 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
-from util.data_sanitizing import sanitize_data
+from util.data_sanitizing import sanitize_data, AlphanumericValidator
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -3423,25 +3423,35 @@ class participants_list_api(APIView):
         post_data = json.loads(request.body)
         form = CreateNewParticipant(post_data.copy())
         if form.is_valid():
+            # Applying validation for `new_company_name` here as it's not a form field
+            if post_data.get('new_company_name'):
+                alphanum_validator = AlphanumericValidator()
+                try:
+                    alphanum_validator(post_data.get('new_company_name'))
+                except ValidationError:
+                    return Response({'status': 'error', 'type': 'validation_error',
+                                     'message': 'Company name can only contain alphanumeric characters'})
+
             filterUsers = {}
             existing_users_length = 0
-            if post_data['email']:
-                filterUsers = {'email' : post_data['email']}
+            if form.cleaned_data['email']:
+                filterUsers = {'email': form.cleaned_data['email']}
                 existing_users = user_api.get_filtered_users(filterUsers)
                 existing_users_length += int(existing_users['count'])
             if (existing_users_length > 0):
                 return Response({'status':'error', 'type': 'user_exist', 'message':'User with that email already exists!'})
             else:
                 data = post_data
+                cleaned_data = form.cleaned_data
                 try:
-                    if len(data['email']) > 30:
-                        data['username'] = data['email'][:29]
+                    if len(cleaned_data['email']) > 30:
+                        cleaned_data['username'] = cleaned_data['email'][:29]
                     else:
-                        data['username'] = data['email']
-                    data['username'] = re.sub(r'\W', '', data['username'])
-                    data['password'] = settings.INITIAL_PASSWORD
-                    data['is_active'] = False
-                    user = user_api.register_user(data)
+                        cleaned_data['username'] = cleaned_data['email']
+                    cleaned_data['username'] = re.sub(r'\W', '', cleaned_data['username'])
+                    cleaned_data['password'] = settings.INITIAL_PASSWORD
+                    cleaned_data['is_active'] = False
+                    user = user_api.register_user(cleaned_data)
                     user_data = vars(user)
                     roles = {
                         'assistant' : USER_ROLES.TA,
