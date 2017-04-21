@@ -17,6 +17,7 @@ from api_client import course_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonObjectWithImage
+from util.data_sanitizing import AlphanumericWithAccentedChars
 
 from django.forms import CharField
 
@@ -243,13 +244,13 @@ class EditExistingUserForm(forms.Form):
     city = forms.CharField(required=False, widget=forms.TextInput())
 
 class CreateNewParticipant(forms.Form):
-    first_name = forms.CharField(required=True, widget=forms.TextInput())
-    last_name = forms.CharField(required=True, widget=forms.TextInput())
+    first_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
+    last_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
     email = forms.EmailField(required=True, widget=forms.TextInput())
     company = forms.CharField(required=True, widget=forms.TextInput())
     gender = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False, widget=forms.TextInput())
-    city = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
 
 class DashboardAdminQuickFilterForm(forms.ModelForm):
 
