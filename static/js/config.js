@@ -12,7 +12,8 @@ Apros.config.PARTICIPANT_PROPERTIES_TO_CLEAN = [
     'full_name',
     'title',
     'country',
-    'city'
+    'city',
+    'organizations_custom_name'
 ];
 
 Apros.config.COMPANY_PROPERTIES_TO_CLEAN = [
