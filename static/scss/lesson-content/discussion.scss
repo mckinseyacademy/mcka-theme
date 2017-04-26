@@ -618,13 +618,23 @@ body > .tooltip {
     }
 }
 
+#course-group-work .discussion-module,
 #course-lessons .discussion-module {
   padding: 20px;
   margin: 20px 0;
+
+  div {
+    line-height: 1;
+  }
 }
 
 .discussion-show {
   padding-top: 0.7rem !important;
+  margin-top: 4px !important;
+  line-height: normal !important;
+
+  font-size: 13px !important;
+  font-weight: bold !important;
 }
 
 .is-hidden {
