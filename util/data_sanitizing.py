@@ -47,7 +47,7 @@ def remove_diacritics(text):
     For example "Héllô" will become "Hello"
     Useful for comparing strings in an accent-insensitive fashion
     """
-    text = text if isinstance(text, unicode) else unicode(text)
+    text = text if isinstance(text, unicode) else unicode(text, encoding='utf-8')
 
     normalized = unicodedata.normalize("NFKD", text)
     return "".join(c for c in normalized if unicodedata.category(c) != "Mn")
@@ -60,7 +60,7 @@ def remove_characters(value, char_blacklist):
     remove_chars_map = dict((ord(char), None) for char in char_blacklist)
 
     # encode strings to unicode for consistency
-    value = value if isinstance(value, unicode) else unicode(value)
+    value = value if isinstance(value, unicode) else unicode(value, encoding='utf-8')
 
     return value.translate(remove_chars_map)
 

@@ -40,7 +40,7 @@ from lib.util import DottableDict
 from api_client.user_api import USER_ROLES
 from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
-from util.data_sanitizing import sanitize_data
+from util.data_sanitizing import sanitize_data, UsernameValidator, AlphanumericWithAccentedChars
 
 import threading
 import Queue
@@ -1547,6 +1547,12 @@ def _process_line_register_participants_csv(user_line):
         if len(username) > 30:
             username = username[:29]
 
+        # validate for invalid input for first and last name
+        alphanum_validator = AlphanumericWithAccentedChars()
+
+        alphanum_validator(fields[0])
+        alphanum_validator(fields[1])
+
         user_info = {
             "first_name": fields[0],
             "last_name": fields[1],
@@ -1558,7 +1564,8 @@ def _process_line_register_participants_csv(user_line):
             "is_active": False,
             "password": settings.INITIAL_PASSWORD,
         }
-
+    except ValidationError as e:
+        user_info = {'error': _("For first name and last name, {}".format(e.message))}
     except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
