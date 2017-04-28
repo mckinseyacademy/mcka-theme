@@ -7,6 +7,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 from django.core.validators import validate_email, RegexValidator
+from django.core.exceptions import ValidationError
 
 from api_client import user_api
 from django.utils.html import format_html
@@ -421,6 +422,19 @@ class FinalizeRegistrationForm(BaseRegistrationForm):
 
 class FpasswordForm(forms.Form):
     email = forms.EmailField(label=_("Email"), max_length=254)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        users = user_api.get_users(fields=['is_active'], email=email)
+
+        # only activated users can reset passwords
+        if users and not (users[0].get('is_active')):
+            raise ValidationError(
+                _('The account associated with this email is not activated yet'),
+                code='not_active'
+            )
+
+        return email
 
     def save(self, domain_override=None,
              subject_template_name='registration/password_reset_subject.txt',
