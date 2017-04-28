@@ -358,8 +358,7 @@ def activate(request, activation_code, registration=None):
             initial_data["company"] = company.display_name
 
     except:
-        user_data = None
-        error = _("Invalid Activation Code")
+        return render(request, 'accounts/incorrect_activation_code.haml')
 
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
