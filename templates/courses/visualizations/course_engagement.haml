@@ -11,7 +11,7 @@
     .band-1{class: "{% if social.points >= 30 %}filled{% endif %}"}
     .band-2{class: "{% if social.points >= 60 %}filled{% endif %}"}
     .total= social.points
-  .label-4 {% if social.course_avg %}cohort average = ={social.course_avg} points{% endif %}
+  .label-4 cohort average = ={social.course_avg} points
   %a.info{'data-reveal-id': 'mckinsey_social_help'}
     %i.fa.fa-info-circle
   #mckinsey_social_help.reveal-modal.small{'data-reveal': None}
