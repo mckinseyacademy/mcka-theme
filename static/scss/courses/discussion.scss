@@ -11,7 +11,7 @@ header .course-tabs li {
 }
 
 #course-discussion {
-  .discussion-course {
+  .discussion-content {
     margin-top: 10px;
   }
 }
@@ -65,8 +65,17 @@ header .course-tabs li {
 }
 
 #course-discussion .discussion-content {
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
   .unit-title {
     display: none;
+  }
+
+  .page-content{
+    clear: both;
   }
 
   fieldset { margin:0; padding: 0; border:0; }
@@ -76,6 +85,46 @@ header .course-tabs li {
   .forum-nav-thread-link:focus,
   .forum-nav-thread-link.is_active {
       background-color: $forum-nav-link-active;
+  }
+
+  .page-header-secondary {
+    float: right;
+    text-align: right;
+    display: inline-block;
+    vertical-align: text-bottom;
+
+    .form-actions {
+      display: inline-block;
+    }
+
+    .form-actions > * {
+      margin-left: 10px;
+      vertical-align: middle;
+      height: 34px;
+    }
+
+    .form-actions > button {
+      height: 34px;
+    }
+
+    .form-actions > *:first-child {
+      margin-left: 0;
+    }
+
+    .forum-search {
+      margin-left: 20px;
+      display: inline-block;
+
+      .field-input {
+        display: inline-block;
+        height: auto !important;
+      }
+
+      .search-btn {
+        padding: 8px;
+        line-height: normal;
+      }
+    }
   }
 
   .forum-nav {
@@ -158,39 +207,21 @@ header .course-tabs li {
       }
     }
 
-    .forum-nav-thread-list  {
-      .forum-nav-thread-wrapper-0 {
-        .icon-question, .icon-comments, .icon-ok {
-          color: $mckinsey-academy-discussion-icon-gray;
-        }
-      }
-
-      .forum-nav-thread-wrapper-1 {
-        padding-left: 5px;
-      }
-
-      .post-label-by-staff {
-        // need more than css to swap "Staff" for "McKinsey TA" there
-        // TODO: get more power
+    .forum-nav-thread-list {
+      .posted-details, .thread-preview-body, .post-context  {
         display: none;
       }
 
-      .forum-nav-thread-title {
-        color: #000;
+      .forum-nav-thread-link {
+        padding: 4px !important;
       }
 
-      .forum-nav-thread-comments-count {
-        background-image: none;
-        background-color: $comment-background-color;
-        &:after {
-          z-index: auto;
-          background: none;
-          border-color: transparent $comment-background-color transparent transparent
-        }
+      .forum-nav-thread-wrapper-1 {
+        max-width: none !important;
       }
 
-      .forum-nav-thread-votes-count {
-        background-color: #D4D4D4;
+      .forum-nav-thread-wrapper-2 {
+        min-width: inherit !important;
       }
     }
   }
@@ -462,4 +493,123 @@ header .course-tabs li {
   .forum-nav {
     position: relative !important;
   }
+}
+
+.discussion-module-title {
+  color: $mckinsey-academy-turquoise;
+  margin-bottom: 10px !important;
+}
+
+.inline-discussion {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  a, a:visited  {
+    font-weight: normal;
+    line-height: normal;
+  }
+
+  .forum-nav-thread-list  {
+    min-height: inherit !important;
+
+    .forum-nav-thread-wrapper-0 {
+      .icon-question, .icon-comments, .icon-ok {
+        color: $mckinsey-academy-discussion-icon-gray;
+      }
+    }
+
+    .forum-nav-thread-wrapper-1 {
+      padding-left: 5px;
+    }
+
+    .post-label-by-staff {
+      // need more than css to swap "Staff" for "McKinsey TA" there
+      // TODO: get more power
+      display: none;
+    }
+
+    .forum-nav-thread-title {
+      color: $mckinsey-academy-turquoise;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .posted-details {
+      color: $mckinsey-dark-grey;
+
+      .username {
+        font-weight: 600;
+        font-size: 1rem;
+      }
+    }
+
+    .thread-preview-body {
+      color: $mckinsey-academy-black;
+      font-size: 1rem;
+      margin-top: 16px;
+    }
+
+    .forum-nav-thread-labels {
+      margin-top: 20px;
+    }
+
+    .group-visibility-label {
+      font-size: 0.9rem;
+      margin-top: 5px;
+      font-style: italic;
+      color: $mckinsey-academy-black !important;
+    }
+
+    .forum-nav-thread-comments-count {
+      background-image: none;
+      background-color: $comment-background-color;
+      &:after {
+        z-index: auto;
+        background: none;
+        border-color: transparent $comment-background-color transparent transparent
+      }
+    }
+
+    .forum-nav-thread-votes-count {
+      background-color: #D4D4D4;
+    }
+  }
+
+  .discussion-article {
+    .post-title {
+      color: $mckinsey-academy-turquoise;
+      font-weight: 700;
+      line-height: 1.2em;
+    }
+  }
+}
+
+// Disable code and image buttons on Markdown Editor
+.wmd-panel .wmd-button-row {
+  .wmd-button:nth-child(6), .wmd-button:nth-child(7) {
+    display: none;
+  }
+
+  .wmd-spacer2 {
+    left: 125px !important;
+  }
+
+  .wmd-spacer3 {
+    left: 250px !important;
+  }
+
+  $pos_left: 25;
+  //move numbered, bullet list, heading, horizontal rule, undo and redo buttons
+  $button-list: 9 10 11 12 14 15;
+  @each $button_idx in $button-list {
+    .wmd-button:nth-child(#{$button_idx}) {
+      left: unquote(($pos_left * ($button_idx - 3)) + 'px ' + !important);
+    }
+  }
+}
+
+.discussion-body .reply-post-control, .discussion-module .reply-post-control {
+  margin-top: 20px;
 }

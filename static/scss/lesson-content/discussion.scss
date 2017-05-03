@@ -26,6 +26,7 @@
 
   .inline-threads {
     clear: both;
+    border: none !important;
   }
 
   .forum-nav-sort-control {
@@ -83,9 +84,13 @@
   }
 
   .thread-content-wrapper, .new-post-article {
-    h1.post-title {
+    .post-title {
       color: $mckinsey-academy-turquoise;
       font-weight: 700;
+    }
+
+    .post-body {
+      max-width: none !important;
     }
 
     .forum-new-post-form, .edit-post-form {
@@ -164,7 +169,7 @@
         font-size: 12px;
         margin: 20px 0px 0px;
         font-style: italic !important;
-        color: $mckinsey-academy-black;
+        color: $mckinsey-academy-black !important;
         background-color: $pure-white;
       }
     }
@@ -245,7 +250,13 @@
   }
 
   .forum-nav-thread {
+    border-left: 1px solid $comment-background-color;
+    border-right: 1px solid $comment-background-color;
     border-bottom: 1px solid $comment-background-color;
+
+    &:first-child {
+      border-top: 1px solid $comment-background-color;
+    }
   }
 
   .forum-nav-thread.never-read {
@@ -622,10 +633,6 @@ body > .tooltip {
 #course-lessons .discussion-module {
   padding: 20px;
   margin: 20px 0;
-
-  div {
-    line-height: 1;
-  }
 }
 
 .discussion-show {
@@ -670,26 +677,8 @@ body > .tooltip {
   padding-top: 10px;
 }
 
-#course-lessons .discussion-module .submit,
-#course-lessons .discussion-module .discussion-submit-post {
-  margin: 15px 0 0 15px !important;
-}
-
 #course-lessons .discussion-module .forum-nav-thread-list {
   overflow-y: inherit;
-}
-
-#course-lessons .discussion-module .forum-nav-thread .forum-nav-thread-link {
-  width: 100% !important;
-}
-
-#course-lessons .discussion-module .forum-nav-thread .forum-nav-thread-link {
-  display: table;
-  border: none;
-}
-
-#course-lessons .discussion-module .forum-nav-thread a.forum-nav-thread-link div {
-  display: table-cell;
 }
 
 #course-lessons .discussion-module .thread-main-wrapper {
