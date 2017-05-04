@@ -14,16 +14,7 @@
   }
 }
 
-#course-lessons .discussion-module {
-  width: 100%;
-
-  form.edit-post-form {
-    // We don't want topics displayed in the edit form.
-    .topic-wrapper {
-      display: none;
-    }
-  }
-
+.lesson-content .discussion-module {
   .inline-threads {
     clear: both;
     border: none !important;
@@ -44,8 +35,20 @@
   }
 
   .forum-nav-thread-wrapper-0 {
-     width: 30px;
+    width: 30px;
   }
+}
+
+#course-lessons .discussion-module {
+  width: 100%;
+
+  form.edit-post-form {
+    // We don't want topics displayed in the edit form.
+    .topic-wrapper {
+      display: none;
+    }
+  }
+
 }
 
 #course-group-work .discussion-module {
@@ -660,28 +663,28 @@ body > .tooltip {
   box-shadow: none;
 }
 
-#course-lessons .new-post-btn,
-#course-lessons .all-posts-btn,
-#course-lessons .add-post-cancel {
+.lesson-content .new-post-btn,
+.lesson-content .all-posts-btn,
+.lesson-content .add-post-cancel {
   background: transparent !important;
   box-shadow: none !important;
   color: #0075b4 !important;
 }
 
-#course-lessons .all-posts-btn {
+.lesson-content .all-posts-btn {
   font-size: 1.2rem;
   padding: 0px !important;
 }
 
-#course-lessons .discussion-module .post-header-content {
+.lesson-content .discussion-module .post-header-content {
   padding-top: 10px;
 }
 
-#course-lessons .discussion-module .forum-nav-thread-list {
+.lesson-content .discussion-module .forum-nav-thread-list {
   overflow-y: inherit;
 }
 
-#course-lessons .discussion-module .thread-main-wrapper {
+.lesson-content .discussion-module .thread-main-wrapper {
   border: 1px solid $mckinsey-grey;
 }
 
