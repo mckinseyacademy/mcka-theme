@@ -551,26 +551,6 @@ def get_course_social_metrics(course_id, organization_id=None):
 
 
 @api_error_protect
-def get_social_enagement_leaderboard(course_id, count, **kwargs):
-    """
-    Get social engagement leaderboard for given course and user's position in leaderboard
-    """
-    qs_params = {"count": count}
-    qs_params.update(kwargs)
-
-    response = GET(
-        '{}/{}/{}/metrics/social/leaders/?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            urlencode(qs_params)
-        )
-    )
-
-    return JP.from_json(response.read())
-
-
-@api_error_protect
 def get_course_time_series_metrics(course_id, start_date, end_date, time_series_object=course_models.CourseTimeSeriesMetrics, *args, **kwargs):
     ''' a list of Metrics for the specified Course in time series format '''
     qs_params = {
@@ -828,7 +808,7 @@ def get_course_details_metrics_grades_all_users(course_id, count):
 def get_course_details_metrics_all_users(course_id, organization_id = ''):
 
     response = GET(
-        '{}/{}/{}/metrics?metrics_required=users_completed&organization={}'.format(
+        '{}/{}/{}/metrics?organization={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
@@ -843,7 +823,7 @@ def get_course_details_metrics_all_users(course_id, organization_id = ''):
 def get_course_details_metrics_filtered_by_groups(course_id, group_ids, organization_id = ''):
 
     response = GET(
-        '{}/{}/{}/metrics/?metrics_required=users_completed&groups={}&organization={}'.format(
+        '{}/{}/{}/metrics/?groups={}&organization={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
