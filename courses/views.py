@@ -40,6 +40,7 @@ from .controller import get_progress_leaders, get_proficiency_leaders, get_socia
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location, createProgressObjects, _remove_duplicate_grader
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user, check_course_shell_access
+from util.data_sanitizing import sanitize_data, clean_xss_characters
 
 # Create your views here.
 from util.query_manager import get_object_or_none
@@ -182,7 +183,8 @@ def course_cohort(request, course_id):
     if ta_user and hasattr(ta_user, 'to_json'):
         if not ta_user.title:
             ta_user.title = ''
-        ta_user_json = ta_user.to_json()
+        ta_user_data = sanitize_data(data=ta_user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
+        ta_user_json = json.dumps(ta_user_data)
     ta_user_id = ta_user.id if ta_user else None
 
     metrics.groups_users = []
@@ -198,14 +200,18 @@ def course_cohort(request, course_id):
                 if user.city and user.city != '' and ta_user_id != user.id:
                     if not user.title:
                         user.title = ''
-                    metrics.groups_users.append(user.to_dict())
+                    # Cleaning user data for any malicious properties
+                    # as user data is rendered on template with `safe` tag
+                    user_data = sanitize_data(data=user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
+                    metrics.groups_users.append(user_data)
     metrics.groups_users = json.dumps(metrics.groups_users)
 
     metrics.cities = []
     cities = course_api.get_course_metrics_by_city(course_id)
     for city in cities:
         if city.city != '':
-            metrics.cities.append({'city': city.city, 'count': city.count})
+            city_name = clean_xss_characters(city.city)
+            metrics.cities.append({'city': city_name, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
     user_roles = request.user.get_roles_on_course(course_id)
