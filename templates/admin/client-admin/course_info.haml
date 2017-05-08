@@ -44,9 +44,9 @@
       %h2= _("FORUM INFORMATION")
       %ul
         %li= _("Active discussions:")
-          %b= metrics.thread_stats.num_active_threads
+          %b= metrics.num_active_threads
         %li= _("Threads:")
-          %b= metrics.thread_stats.num_threads
+          %b= metrics.num_threads
     %hr
     - if user.is_client_admin
       %h2= _("STATUS")

@@ -36,16 +36,8 @@ from .models import LessonNotesItem, FeatureFlags
 from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, group_project_reviews, add_months_to_date, progress_update_handler
-from .controller import get_progress_leaders, get_proficiency_leaders, average_progress, choose_random_ta
-from .controller import (
-    get_group_project_for_user_course,
-    get_group_project_for_workgroup_course,
-    group_project_location,
-    createProgressObjects,
-    _remove_duplicate_grader,
-    get_user_social_metrics,
-    get_social_leaders,
-)
+from .controller import get_progress_leaders, get_proficiency_leaders, get_social_metrics, average_progress, choose_random_ta
+from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location, createProgressObjects, _remove_duplicate_grader
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user, check_course_shell_access
 
@@ -83,7 +75,12 @@ def course_landing_page(request, course_id):
     load_lesson_estimated_time(course)
 
     feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
-    social = get_user_social_metrics(request.user.id, course_id)
+    social = get_social_metrics(
+        course_id,
+        request.user.id,
+        single_user=True,
+        is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
+    )
     gradebook = inject_gradebook_info(request.user.id, course)
     graded_items_count = sum(len(graded) for graded in course.graded_items().values())
 
@@ -166,9 +163,15 @@ def course_cohort(request, course_id):
     if feature_flags and not feature_flags.cohort_map:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
+    course = load_course(course_id, request=request)
+
     proficiency = get_proficiency_leaders(course_id, request.user.id)
     completions = get_progress_leaders(course_id, request.user.id)
-    social = get_social_leaders(course_id, request.user.id)
+    social = get_social_metrics(
+        course_id,
+        request.user.id,
+        is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
+    )
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
@@ -560,7 +563,12 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
-    social = get_user_social_metrics(user_id, course_id, include_stats=True)
+    social = get_social_metrics(
+        course_id,
+        user_id,
+        single_user=True,
+        is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
+    )
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
     course.group_work_enabled = feature_flags.group_work if feature_flags else True
     course_run = load_static_tabs(course_id, name="course run")

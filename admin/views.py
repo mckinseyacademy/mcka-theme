@@ -294,9 +294,7 @@ def client_admin_home(request, client_id):
         for course in courses:
             if course['id'] in courses_list:
                 course = _prepare_course_display(course)
-                course["metrics"] = course_api.get_course_metrics(
-                    course["id"], organization=client_id, metrics_required='users_started'
-                )
+                course["metrics"] = course_api.get_course_metrics(course["id"], organization=client_id)
                 course["metrics"].users_completed, course["metrics"].percent_completed = get_organizations_users_completion(client_id, course["id"], course["metrics"].users_enrolled)
                 if course["start"]:
                     course["start"] = parsedate(course["start"]).replace(tzinfo=None)
@@ -364,9 +362,7 @@ def client_admin_program_detail(request, client_id):
 @client_admin_access
 def client_admin_course(request, client_id, course_id):
     course = load_course(course_id)
-    metrics = course_api.get_course_metrics(
-        course_id, organization=client_id, metrics_required='users_started,thread_stats'
-    )
+    metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
     

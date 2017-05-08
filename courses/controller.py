@@ -6,7 +6,6 @@ import random
 from datetime import datetime
 import re
 import json
-import logging
 
 from django.conf import settings
 from django.core.cache import cache
@@ -23,8 +22,6 @@ from api_client.api_error import ApiError
 from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
 from lib.util import PriorIdConvert
 from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
-
-log = logging.getLogger(__name__)
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -513,8 +510,6 @@ def tailor_leader_list(leaders):
         leader.rank = rank
         if hasattr(leader, 'grade'):
             leader.grade_display_value = round_to_int(100 * leader.grade)
-        if hasattr(leader, 'score'):
-            leader.points = leader.score
         if leader.avatar_url is None:
             leader.avatar_url = user_models.UserResponse.default_image_url()
 
@@ -534,64 +529,232 @@ def get_course_social_metrics(course_id):
     return course_api.get_course_social_metrics(course_id)
 
 
-def get_user_social_metrics(user_id, course_id, include_stats=False):
+def _get_user_course_social_metrics(user_id, course_id):
     """
-    :param course_id:
-    :param user_id:
-    :param include_stats: a boolean value to indicate if we needs social stats also
-        social stats contains a dict with these keys
-        num_threads, num_thread_followers, num_replies, num_flagged, num_comments, num_threads_read,
-        num_downvotes, num_upvotes, num_comments_generated
-    :return: a dict having user's social metrics for given course
+    Returns social metrics against a user with given user_id in a course.
     """
-    data = {'points': 0, 'course_avg': 0, 'metrics': {}}
-    try:
-        metrics = user_api.get_course_social_metrics(user_id, course_id, include_stats)
-        data = {
-            'points': metrics.score,
-            'course_avg': round_to_int_bump_zero(metrics.course_avg),
-            'metrics': getattr(metrics, 'stats', None)
+    return user_api.get_course_social_metrics(user_id, course_id)
+
+
+def _get_course_social_avg_cache_key(course_id):
+    """
+    Returns cache key string used to store and retrieve course average from cache
+    """
+    return "cached_course_social_avg_%s" % course_id
+
+
+def _get_cached_course_social_avg(course_id):
+    """
+    Returns cached value of course average against course ID
+    """
+    return cache.get(_get_course_social_avg_cache_key(course_id))
+
+
+def _set_course_social_avg_cache(course_id, course_avg):
+    """
+    Cache course average for one hour against course ID.
+    """
+    cache.set(_get_course_social_avg_cache_key(course_id), course_avg, 3600)
+
+
+def _get_user_and_total_score_from_course_metrics(course_metrics):
+    """
+    Calculates and Returns total social score for each user in course and total points for all users
+    """
+    point_sum = 0
+    user_scores = []
+    for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
+        user = {
+            "id": u_id,
+            "points": social_total(user_metrics),
+            "metrics": user_metrics,
         }
-    except ApiError as error:
-        log.exception(
-            u"Error getting user social metrics. course_id=%s, user_id=%s, include_stats=%s, error=%s",
-            course_id,
-            user_id,
-            include_stats,
-            error,
-        )
-    return data
+        point_sum += user["points"]
+        user_scores.append(user)
+
+    return user_scores, point_sum
 
 
-def get_social_leaders(course_id, user_id, count=3):
+def _get_user_with_social_metrics(user_id, course_id, users_with_social_metrics):
     """
-    :param course_id:
-    :param user_id:
-    :param count:
-    :return: returns course social leaderboard upto to limit given in count and rank of given user in leaderboard
+    Returns user if found in users list (with social metrics)
+    else fetches social metrics for that user and returns it.
     """
-    data = {'points': 0, 'course_avg': 0, 'position': 0, 'leaders': []}
-    try:
-        metrics = course_api.get_social_enagement_leaderboard(course_id, count, user_id=user_id)
-        tailor_leader_list(metrics.leaders)
-        data = {
-            'points': metrics.score,
-            'course_avg': round_to_int_bump_zero(metrics.course_avg),
-            'position': metrics.position,
-            'leaders': metrics.leaders
+    user = next((su for su in users_with_social_metrics if int(su["id"]) == int(user_id)), None)
+
+    if user is None:
+        user_metrics = _get_user_course_social_metrics(user_id, course_id)
+        user = {
+            "id": user_id,
+            "points": social_total(user_metrics),
+            "metrics": user_metrics,
         }
-    except ApiError as error:
-        log.exception(
-            u"Error getting social engagement leaderboard. course_id=%s, user_id=%s, count=%s, error=%s",
-            course_id,
-            user_id,
-            count,
-            error,
-        )
-    return data
+    return user
 
 
+def _get_leaders(sorted_users):
+    """
+    Returns First 3 (sorted by social score) users as leaders
 
+    Arguments:
+        sorted_users: List of users sorted by social score
+
+    Returns:
+        list (size 3) of users (as leaders)
+    """
+    leader_ids = [sorted_user["id"] for sorted_user in sorted_users[:3]]
+    additional_fields = ["avatar_url", "title"]
+
+    leader_dict = {
+        u.id: u for u in user_api.get_users(ids=leader_ids, fields=additional_fields)
+    } if len(leader_ids) > 0 else {}
+
+    leaders = []
+    for leader_score in sorted_users[:3]:
+        leader = leader_dict[int(leader_score["id"])]
+        leader.points = leader_score["points"]
+        leader.rank = leader_score["rank"]
+        leader.avatar_url = leader.image_url(size=48)
+        leaders.append(leader)
+    return leaders
+
+
+def _get_user_course_social_metrics(user_id, course_id):
+    """
+    Returns social metrics against a user with given user_id in a course.
+    """
+    return user_api.get_course_social_metrics(user_id, course_id)
+
+
+def _get_course_social_avg_cache_key(course_id):
+    """
+    Returns cache key string used to store and retrieve course average from cache
+    """
+    return "cached_course_social_avg_%s" % course_id
+
+
+def _get_cached_course_social_avg(course_id):
+    """
+    Returns cached value of course average against course ID
+    """
+    return cache.get(_get_course_social_avg_cache_key(course_id))
+
+
+def _set_course_social_avg_cache(course_id, course_avg):
+    """
+    Cache course average for one hour against course ID.
+    """
+    cache.set(_get_course_social_avg_cache_key(course_id), course_avg, 3600)
+
+
+def _get_user_and_total_score_from_course_metrics(course_metrics):
+    """
+    Calculates and Returns total social score for each user in course and total points for all users
+    """
+    point_sum = 0
+    user_scores = []
+    for u_id, user_metrics in course_metrics.users.__dict__.iteritems():
+        user = {
+            "id": u_id,
+            "points": social_total(user_metrics),
+            "metrics": user_metrics,
+        }
+        point_sum += user["points"]
+        user_scores.append(user)
+
+    return user_scores, point_sum
+
+
+def _get_user_with_social_metrics(user_id, course_id, users_with_social_metrics):
+    """
+    Returns user if found in users list (with social metrics)
+    else fetches social metrics for that user and returns it.
+    """
+    user = next((su for su in users_with_social_metrics if int(su["id"]) == int(user_id)), None)
+
+    if user is None:
+        user_metrics = _get_user_course_social_metrics(user_id, course_id)
+        user = {
+            "id": user_id,
+            "points": social_total(user_metrics),
+            "metrics": user_metrics,
+        }
+    return user
+
+
+def _get_leaders(sorted_users):
+    """
+    Returns First 3 (sorted by social score) users as leaders
+
+    Arguments:
+        sorted_users: List of users sorted by social score
+
+    Returns:
+        list (size 3) of users (as leaders)
+    """
+    leader_ids = [sorted_user["id"] for sorted_user in sorted_users[:3]]
+    additional_fields = ["avatar_url", "title"]
+
+    leader_dict = {
+        u.id: u for u in user_api.get_users(ids=leader_ids, fields=additional_fields)
+    } if len(leader_ids) > 0 else {}
+
+    leaders = []
+    for leader_score in sorted_users[:3]:
+        leader = leader_dict[int(leader_score["id"])]
+        leader.points = leader_score["points"]
+        leader.rank = leader_score["rank"]
+        leader.avatar_url = leader.image_url(size=48)
+        leaders.append(leader)
+    return leaders
+
+
+def get_social_metrics(course_id, user_id, single_user=False, is_cohort_avg_enabled=True):
+    ''' returns social engagement points and leaders '''
+    course_avg = None
+    points = 0
+    position = None
+    user_metrics = None
+    leaders = []
+
+    if not is_cohort_avg_enabled:
+        user_metrics = _get_user_course_social_metrics(user_id, course_id)
+        points = social_total(user_metrics)
+    else:
+        course_avg = _get_cached_course_social_avg(course_id)
+        if course_avg and single_user:
+            user_metrics = _get_user_course_social_metrics(user_id, course_id)
+            points = social_total(user_metrics)
+        else:
+            course_metrics = get_course_social_metrics(course_id)
+
+            total_enrollments = course_metrics.total_enrollments
+            user_scores, point_sum = _get_user_and_total_score_from_course_metrics(course_metrics)
+
+            course_avg = float(point_sum) / total_enrollments if total_enrollments > 0 else 0
+            course_avg = round_to_int_bump_zero(course_avg)
+            _set_course_social_avg_cache(course_id, course_avg)
+
+            # sort by social score
+            sorted_users = sorted(user_scores, key=lambda u: u["points"], reverse=True)
+
+            # assign rank
+            for rank, ranked_user in enumerate(sorted_users, 1):
+                ranked_user["rank"] = rank
+
+            user = _get_user_with_social_metrics(user_id, course_id, sorted_users)
+            points = user.get("points", 0)
+            position = user.get("rank", None)
+            user_metrics = user.get("metrics", {})
+            leaders = _get_leaders(sorted_users)
+
+    return {
+        'points': points,
+        'position': position,
+        'metrics': user_metrics,
+        'course_avg': course_avg,
+        'leaders': leaders
+    }
 
 def get_ta_users(course_id):
     role = USER_ROLES.TA

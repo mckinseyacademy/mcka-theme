@@ -12,7 +12,7 @@ from .models import ApiToken
 from lib.authorization import permission_group_required
 from api_client.group_api import PERMISSION_GROUPS
 from courses.user_courses import standard_data
-from courses.controller import round_to_int, Proficiency, get_user_social_metrics, average_progress, load_static_tabs
+from courses.controller import round_to_int, Proficiency, get_social_metrics, average_progress, load_static_tabs
 from admin.models import Client
 
 @require_POST
@@ -49,7 +49,7 @@ def user_course(request):
     course = standard_data(request).get("course", None)
     overview = course_api.get_course_overview(course.id)
     proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
-    social = get_user_social_metrics(request.user.id, course.id)
+    social = get_social_metrics(course.id, request.user.id)
     article = load_static_tabs(course.id, "article")
 
     data = {
