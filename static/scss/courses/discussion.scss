@@ -216,8 +216,13 @@ header .course-tabs li {
         padding: 4px !important;
       }
 
+      .forum-nav-thread-wrapper-0 {
+        align-self: auto !important;
+      }
+
       .forum-nav-thread-wrapper-1 {
         max-width: none !important;
+        -ms-overflow-y: hidden;
       }
 
       .forum-nav-thread-wrapper-2 {
@@ -514,6 +519,7 @@ header .course-tabs li {
     min-height: inherit !important;
 
     .forum-nav-thread-wrapper-0 {
+      align-self: auto !important;
       .icon-question, .icon-comments, .icon-ok {
         color: $mckinsey-academy-discussion-icon-gray;
       }
@@ -521,6 +527,7 @@ header .course-tabs li {
 
     .forum-nav-thread-wrapper-1 {
       padding-left: 5px;
+      -ms-overflow-y: hidden;
     }
 
     .post-label-by-staff {
@@ -630,6 +637,7 @@ header .course-tabs li {
   .forum-nav-thread-wrapper-1{
     -ms-flex-positive: 1;
     -ms-flex: 1;
+    -ms-overflow-y: hidden;
   }
 
 }
