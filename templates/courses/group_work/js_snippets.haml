@@ -98,6 +98,8 @@
     };
 
     lesson_content.xblock(lesson_data);
+    // we need this to add some browser specific CSS rules
+    lesson_content.attr( "data-useragent", navigator.userAgent);
 
     {% if select_stage %}
     $(document).on('activity_initialized', function() {

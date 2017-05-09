@@ -613,3 +613,53 @@ header .course-tabs li {
 .discussion-body .reply-post-control, .discussion-module .reply-post-control {
   margin-top: 20px;
 }
+
+#course-discussion[data-useragent*='MSIE 10.0'] {
+  .forum-nav {
+    float: left;
+  }
+
+  #main {
+    float: right;
+  }
+
+  .forum-nav-thread-link {
+    display: -ms-flexbox;
+  }
+
+  .forum-nav-thread-wrapper-1{
+    -ms-flex-positive: 1;
+    -ms-flex: 1;
+  }
+
+}
+
+.lesson-content[data-useragent*='MSIE 10.0'] {
+  .inline-discussion {
+
+    .forum-nav-thread-link {
+      display: -ms-flexbox;
+    }
+
+    .forum-nav-thread-wrapper-1 {
+      min-width: 590px;
+    }
+
+    .forum-nav-thread-wrapper-2 {
+      min-width: 50px;
+    }
+  }
+}
+
+.lesson-content[data-useragent*='MSIE 9.0'] {
+  .inline-discussion {
+    .forum-nav-thread-link {
+      display: table-cell !important;
+    }
+
+    .forum-nav-thread-wrapper-1 {
+      min-width: 554px;
+    }
+
+  }
+}

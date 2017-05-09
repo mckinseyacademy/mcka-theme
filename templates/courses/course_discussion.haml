@@ -61,6 +61,8 @@
             $('.discussion-body').prepend($("#discussion-ta-template").html());
           }
       });
+      // we need this to add some browser specific CSS rules
+      $('#course-discussion').attr( "data-useragent", navigator.userAgent);
     })
   - if mcka_ta and not course.ended
     %script#discussion-ta-template{type: "text/template"}
