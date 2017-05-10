@@ -1630,15 +1630,18 @@ def _enroll_participants(participants, request, reg_status):
                 validate_email(user_email)
             except ValidationError:
                 check_errors.append({'reason': 'Valid e-mail is required', 'activity': 'Registering Participant'})
-            #Check if email already exist
-            check_user_email = user_api.get_user_by_email(user_email)
-            if check_user_email['count'] == 1:
-                check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
             else:
-                #Check if username already exist
-                check_user_username = user_api.get_user_by_username(username)
-                if check_user_username['count'] == 1:
-                    check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
+                # run through API only if valid email is given as API breaks on wrong email
+                
+                # Check if email already exist
+                check_user_email = user_api.get_user_by_email(user_email)
+                if check_user_email['count'] == 1:
+                    check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
+                else:
+                    #Check if username already exist
+                    check_user_username = user_api.get_user_by_username(username)
+                    if check_user_username['count'] == 1:
+                        check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
             #Check if client exist
             try: 
                 client = Client.fetch(client_id)
