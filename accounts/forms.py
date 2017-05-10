@@ -19,7 +19,7 @@ from api_client.api_error import ApiError
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
 from admin.models import CourseRun
-from util.data_sanitizing import AlphanumericValidator, UsernameValidator, AlphanumericWithAccentedChars
+from util.validators import AlphanumericValidator, UsernameValidator, AlphanumericWithAccentedChars
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class

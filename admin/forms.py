@@ -17,7 +17,7 @@ from api_client import course_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonObjectWithImage
-from util.data_sanitizing import UsernameValidator, AlphanumericWithAccentedChars
+from util.validators import UsernameValidator, AlphanumericWithAccentedChars
 
 from django.forms import CharField
 

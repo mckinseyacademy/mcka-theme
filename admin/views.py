@@ -80,7 +80,8 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
-from util.data_sanitizing import sanitize_data, AlphanumericValidator
+from util.data_sanitizing import sanitize_data
+from util.validators import AlphanumericValidator
 
 from rest_framework.views import APIView
 from rest_framework.response import Response

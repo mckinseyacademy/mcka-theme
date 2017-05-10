@@ -7,37 +7,9 @@ import unicodedata
 
 from django.conf import settings
 from django.utils.html import escape
-from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as _
+
 
 _logger = logging.getLogger(__name__)
-
-
-class UsernameValidator(RegexValidator):
-    """
-    Allows letters, numbers, underscores and hyphens in accordance with
-    the username validation used at EdX platform API
-    """
-    regex = r'^[a-zA-Z0-9_-]+\Z'
-    message = _("Username can only consist of letters, numbers underscores and hyphens, with no spaces.")
-
-
-class AlphanumericValidator(RegexValidator):
-    """
-    Validates that given value is alphanumeric characters with hyphens,
-    dots, underscore and spaces
-    """
-    regex = r'^[a-zA-Z0-9-_\. ]+\Z'
-    message = _("Enter a valid value consisting of letters, numbers, underscores, dots, hyphens or spaces.")
-
-
-class AlphanumericWithAccentedChars(AlphanumericValidator):
-    """
-    Extends AlphanumericValidator to include accented characters
-    """
-    def __call__(self, value):
-        value = remove_diacritics(value)
-        super(AlphanumericWithAccentedChars, self).__call__(value)
 
 
 def remove_diacritics(text):
