@@ -649,25 +649,27 @@ header .course-tabs li {
       display: -ms-flexbox;
     }
 
-    .forum-nav-thread-wrapper-1 {
-      min-width: 590px;
-    }
-
-    .forum-nav-thread-wrapper-2 {
-      min-width: 50px;
-    }
   }
 }
 
 .lesson-content[data-useragent*='MSIE 9.0'] {
   .inline-discussion {
     .forum-nav-thread-link {
-      display: table-cell !important;
+      display: block !important;
+      width: 100%;
     }
+  }
+}
+
+.lesson-content[data-useragent*='MSIE 10.0'], .lesson-content[data-useragent*='MSIE 9.0'] {
+  .inline-discussion {
 
     .forum-nav-thread-wrapper-1 {
-      min-width: 554px;
+      min-width: calc(100% - 125px);
     }
 
+    .forum-nav-thread-wrapper-2 {
+      min-width: 50px;
+    }
   }
 }
