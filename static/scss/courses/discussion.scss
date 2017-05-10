@@ -263,11 +263,6 @@ header .course-tabs li {
     .ask-ta {
       padding: 10px;
       background-color: $pure-white;
-      border: 1px solid #aaa;
-      border-bottom: none;
-      position: absolute;
-      top: -78px;
-      width: calc(33.33333% - 1rem);
       margin-left: 7px;
 
       .group-member {
@@ -667,5 +662,12 @@ header .course-tabs li {
     .forum-nav-thread-wrapper-2 {
       min-width: 50px;
     }
+  }
+}
+
+/* breadcrumbs */
+.page-header {
+  .page-header-main {
+    max-width: 55% !important;
   }
 }
