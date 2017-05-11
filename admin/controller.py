@@ -40,7 +40,8 @@ from lib.util import DottableDict
 from api_client.user_api import USER_ROLES
 from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
-from util.data_sanitizing import sanitize_data, UsernameValidator, AlphanumericWithAccentedChars
+from util.data_sanitizing import sanitize_data
+from util.validators import validate_first_name, validate_last_name
 
 import threading
 import Queue
@@ -1547,11 +1548,8 @@ def _process_line_register_participants_csv(user_line):
         if len(username) > 30:
             username = username[:29]
 
-        # validate for invalid input for first and last name
-        alphanum_validator = AlphanumericWithAccentedChars()
-
-        alphanum_validator(fields[0])
-        alphanum_validator(fields[1])
+        validate_first_name(fields[0])
+        validate_last_name(fields[1])
 
         user_info = {
             "first_name": fields[0],
@@ -1565,7 +1563,7 @@ def _process_line_register_participants_csv(user_line):
             "password": settings.INITIAL_PASSWORD,
         }
     except ValidationError as e:
-        user_info = {'error': _("For first name and last name, {}".format(e.message))}
+        user_info = {'error': e.message}
     except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
@@ -1632,15 +1630,18 @@ def _enroll_participants(participants, request, reg_status):
                 validate_email(user_email)
             except ValidationError:
                 check_errors.append({'reason': 'Valid e-mail is required', 'activity': 'Registering Participant'})
-            #Check if email already exist
-            check_user_email = user_api.get_user_by_email(user_email)
-            if check_user_email['count'] == 1:
-                check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
             else:
-                #Check if username already exist
-                check_user_username = user_api.get_user_by_username(username)
-                if check_user_username['count'] == 1:
-                    check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
+                # run through API only if valid email is given as API breaks on wrong email
+                
+                # Check if email already exist
+                check_user_email = user_api.get_user_by_email(user_email)
+                if check_user_email['count'] == 1:
+                    check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
+                else:
+                    #Check if username already exist
+                    check_user_username = user_api.get_user_by_username(username)
+                    if check_user_username['count'] == 1:
+                        check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
             #Check if client exist
             try: 
                 client = Client.fetch(client_id)
