@@ -59,3 +59,6 @@ def validate_last_name(last_name):
     validator = AlphanumericWithAccentedChars(message=message)
 
     validator(last_name)
+
+
+alphanum_accented_validator = AlphanumericWithAccentedChars()
