@@ -585,10 +585,12 @@
 }
 
 .modal .discussion-alert-wrapper button {
-  &, &:hover, &:focus {
-    border-radius: 5px;
-    color: #0075b4;
-    text-shadow: none;
+  border-radius: 5px;
+  color: #0075b4;
+  text-shadow: none;
+
+  &:hover {
+    color: $pure-white;
   }
 }
 
