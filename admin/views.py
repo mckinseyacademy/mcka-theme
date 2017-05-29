@@ -68,7 +68,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, _validate_company_permissions, construct_users_list
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, construct_users_list
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -3419,6 +3419,15 @@ class participants_list_api(APIView):
     def post(self, request):
         post_data = json.loads(request.body)
         form = CreateNewParticipant(post_data.copy())
+
+        # ToDo: drop need of this mapping by supplying groups in the form
+        permissions_groups = {
+            'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+            'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+            'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+            'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
+        }
+
         if form.is_valid():
             # Applying validation for `new_company_name` here as it's not a form field
             if post_data.get('new_company_name'):
@@ -3428,6 +3437,23 @@ class participants_list_api(APIView):
                 except ValidationError:
                     return Response({'status': 'error', 'type': 'validation_error',
                                      'message': 'Company name can only contain alphanumeric characters'})
+
+            requester_permissions = Permissions(user_id=request.user.id)
+
+            # permission group to assign for the user being created
+            user_permission_group = post_data.get('company_permissions')
+
+            # check if requester has correct permissions for granting roles
+            if user_permission_group and user_permission_group in permissions_groups:
+                user_permission_group = permissions_groups[user_permission_group]
+                if not requester_permissions.has_grant_rights(user_permission_group):
+                    return Response({'status': 'error', 'type': 'validation_error',
+                                'message': "Permission Error: You don't have permissions to grant this role"})
+
+            if len(post_data.get('company_permissions_list', [])) and not \
+                    requester_permissions.has_grant_rights(PERMISSION_GROUPS.COMPANY_ADMIN):
+                        return Response({'status': 'error', 'type': 'validation_error',
+                                'message': "Permission Error: You don't have permissions to grant this role"})
 
             filterUsers = {}
             existing_users_length = 0
@@ -3454,12 +3480,7 @@ class participants_list_api(APIView):
                         'assistant' : USER_ROLES.TA,
                         'observer' : USER_ROLES.OBSERVER
                     }
-                    permissions_groups = {
-                        'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
-                        'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
-                        'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
-                        'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
-                    }
+
                     if data.get('new_company_name', None):
 
                         try:
@@ -3493,18 +3514,12 @@ class participants_list_api(APIView):
                         permissions = Permissions(user_data['id'])
                     if len(courses_permissions_list) > 0:
                         permissions.update_courses_roles_list(courses_permissions_list)
-                    if data.get('company_permissions', None):
-                        requester_permissions=Permissions(request.user.id).current_permissions
-                        if data['company_permissions'] in permissions_groups and _validate_company_permissions(permissions_groups[data['company_permissions']],requester_permissions):
-                            permissions.add_permission(permissions_groups[data['company_permissions']])
-                    if len(data.get('company_permissions_list', [])):
-                        try:
-                            requester_permissions
-                        except NameError:
-                            requester_permissions=Permissions(request.user.id).current_permissions
-                        if _validate_company_permissions([PERMISSION_GROUPS.COMPANY_ADMIN], requester_permissions):
-                            permissions.add_company_admin_permissions(data.get('company_permissions_list', []))
 
+                    if user_permission_group:
+                        permissions.add_permission(user_permission_group)
+
+                    if len(data.get('company_permissions_list', [])):
+                        permissions.add_company_admin_permissions(data.get('company_permissions_list', []))
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
                 return Response({'status':'ok', 'message':'Successfully added new user!', 'user_id': user_data['id']})
