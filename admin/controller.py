@@ -2027,15 +2027,6 @@ def student_list_chunks_tracker(data, client_id, activation_link):
                 "file_name":file_name}
 
 
-def _validate_company_permissions(new_user_permisions, creator_permissions):
-    if PERMISSION_GROUPS.MCKA_ADMIN in creator_permissions:
-        return True
-    elif PERMISSION_GROUPS.MCKA_SUBADMIN in creator_permissions and PERMISSION_GROUPS.MCKA_ADMIN not in new_user_permisions:
-        return True
-    elif PERMISSION_GROUPS.INTERNAL_ADMIN in creator_permissions and PERMISSION_GROUPS.INTERNAL_ADMIN in new_user_permisions:
-        return True
-    return False
-
 def construct_users_list(enrolled_users, registration_requests):
     '''
     Returns users list of dictionaries with activation and enrollment status

@@ -15,6 +15,19 @@ from django.conf import settings
 from api_client.group_api import TAG_GROUPS
 
 
+# map of role granting rights according to user type
+ROLE_GRANT_RIGHTS = {
+    PERMISSION_GROUPS.MCKA_ADMIN: [
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
+    ],
+    PERMISSION_GROUPS.MCKA_SUBADMIN: [
+        PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
+    ],
+    PERMISSION_GROUPS.INTERNAL_ADMIN: [PERMISSION_GROUPS.INTERNAL_ADMIN]
+}
+
+
 class PermissionSaveError(Exception):
     pass
 
@@ -274,6 +287,26 @@ class Permissions(object):
                 user_statuses["main_company"].append(organizations_list[0])
                 user_statuses["company_ids"].append(int(organizations_list[0].id))
         return user_statuses
+
+    def has_grant_rights(self, role_to_grant):
+        """
+        Checks whether a user can grant access for a particular role
+
+        Args:
+            role_to_grant (str): name of the role
+        """
+
+        # user types which can assign this role
+        can_assign_roles = [
+            role
+            for role, groups in ROLE_GRANT_RIGHTS.items()
+            if role_to_grant in groups
+        ]
+
+        if set(self.current_permissions).intersection(can_assign_roles):
+            return True
+
+        return False
 
 
 class SlimAddingPermissions(object):
