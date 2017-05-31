@@ -1550,6 +1550,7 @@ def _process_line_register_participants_csv(user_line):
 
         validate_first_name(fields[0])
         validate_last_name(fields[1])
+        validate_email(fields[2])
 
         user_info = {
             "first_name": fields[0],
