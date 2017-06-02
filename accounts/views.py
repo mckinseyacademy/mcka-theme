@@ -24,6 +24,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.forms.widgets import HiddenInput
+from django.views.decorators.cache import never_cache
 
 from courses.models import FeatureFlags
 from api_client import user_api, course_api
@@ -798,6 +799,7 @@ def protected_home(request):
     return home(request)
 
 @login_required
+@never_cache
 def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
