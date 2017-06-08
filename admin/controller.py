@@ -41,6 +41,7 @@ from api_client.user_api import USER_ROLES
 from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
 from util.data_sanitizing import sanitize_data
+from util.validators import validate_first_name, validate_last_name
 
 import threading
 import Queue
@@ -1547,6 +1548,10 @@ def _process_line_register_participants_csv(user_line):
         if len(username) > 30:
             username = username[:29]
 
+        validate_first_name(fields[0])
+        validate_last_name(fields[1])
+        validate_email(fields[2])
+
         user_info = {
             "first_name": fields[0],
             "last_name": fields[1],
@@ -1558,7 +1563,8 @@ def _process_line_register_participants_csv(user_line):
             "is_active": False,
             "password": settings.INITIAL_PASSWORD,
         }
-
+    except ValidationError as e:
+        user_info = {'error': e.message}
     except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
@@ -1625,15 +1631,18 @@ def _enroll_participants(participants, request, reg_status):
                 validate_email(user_email)
             except ValidationError:
                 check_errors.append({'reason': 'Valid e-mail is required', 'activity': 'Registering Participant'})
-            #Check if email already exist
-            check_user_email = user_api.get_user_by_email(user_email)
-            if check_user_email['count'] == 1:
-                check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
             else:
-                #Check if username already exist
-                check_user_username = user_api.get_user_by_username(username)
-                if check_user_username['count'] == 1:
-                    check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
+                # run through API only if valid email is given as API breaks on wrong email
+                
+                # Check if email already exist
+                check_user_email = user_api.get_user_by_email(user_email)
+                if check_user_email['count'] == 1:
+                    check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
+                else:
+                    #Check if username already exist
+                    check_user_username = user_api.get_user_by_username(username)
+                    if check_user_username['count'] == 1:
+                        check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
             #Check if client exist
             try: 
                 client = Client.fetch(client_id)
@@ -2017,15 +2026,6 @@ def student_list_chunks_tracker(data, client_id, activation_link):
         return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size, "element_count": len(user_list), "status": "csv_task_created", 
                 "file_name":file_name}
 
-
-def _validate_company_permissions(new_user_permisions, creator_permissions):
-    if PERMISSION_GROUPS.MCKA_ADMIN in creator_permissions:
-        return True
-    elif PERMISSION_GROUPS.MCKA_SUBADMIN in creator_permissions and PERMISSION_GROUPS.MCKA_ADMIN not in new_user_permisions:
-        return True
-    elif PERMISSION_GROUPS.INTERNAL_ADMIN in creator_permissions and PERMISSION_GROUPS.INTERNAL_ADMIN in new_user_permisions:
-        return True
-    return False
 
 def construct_users_list(enrolled_users, registration_requests):
     '''

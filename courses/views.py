@@ -40,8 +40,10 @@ from .controller import get_progress_leaders, get_proficiency_leaders, get_socia
 from .controller import get_group_project_for_user_course, get_group_project_for_workgroup_course, group_project_location, createProgressObjects, _remove_duplicate_grader
 from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
 from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user, check_course_shell_access
+from util.data_sanitizing import sanitize_data, clean_xss_characters
 
 # Create your views here.
+from util.query_manager import get_object_or_none
 
 _progress_bar_dictionary = {
     "normal": "#b1c2cc",
@@ -72,7 +74,14 @@ def course_landing_page(request, course_id):
     course = standard_data(request).get("course", None)
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
     load_lesson_estimated_time(course)
-    social = get_social_metrics(course_id, request.user.id, single_user=True)
+
+    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
+    social = get_social_metrics(
+        course_id,
+        request.user.id,
+        single_user=True,
+        is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
+    )
     gradebook = inject_gradebook_info(request.user.id, course)
     graded_items_count = sum(len(graded) for graded in course.graded_items().values())
 
@@ -151,7 +160,7 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
     if feature_flags and not feature_flags.cohort_map:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
@@ -159,7 +168,11 @@ def course_cohort(request, course_id):
 
     proficiency = get_proficiency_leaders(course_id, request.user.id)
     completions = get_progress_leaders(course_id, request.user.id)
-    social = get_social_metrics(course_id, request.user.id)
+    social = get_social_metrics(
+        course_id,
+        request.user.id,
+        is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
+    )
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
@@ -170,7 +183,8 @@ def course_cohort(request, course_id):
     if ta_user and hasattr(ta_user, 'to_json'):
         if not ta_user.title:
             ta_user.title = ''
-        ta_user_json = ta_user.to_json()
+        ta_user_data = sanitize_data(data=ta_user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
+        ta_user_json = json.dumps(ta_user_data)
     ta_user_id = ta_user.id if ta_user else None
 
     metrics.groups_users = []
@@ -186,14 +200,18 @@ def course_cohort(request, course_id):
                 if user.city and user.city != '' and ta_user_id != user.id:
                     if not user.title:
                         user.title = ''
-                    metrics.groups_users.append(user.to_dict())
+                    # Cleaning user data for any malicious properties
+                    # as user data is rendered on template with `safe` tag
+                    user_data = sanitize_data(data=user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
+                    metrics.groups_users.append(user_data)
     metrics.groups_users = json.dumps(metrics.groups_users)
 
     metrics.cities = []
     cities = course_api.get_course_metrics_by_city(course_id)
     for city in cities:
         if city.city != '':
-            metrics.cities.append({'city': city.city, 'count': city.count})
+            city_name = clean_xss_characters(city.city)
+            metrics.cities.append({'city': city_name, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
     user_roles = request.user.get_roles_on_course(course_id)
@@ -545,20 +563,20 @@ def _course_progress_for_user(request, course_id, user_id):
     return render(request, 'courses/course_progress.haml', data)
 
 def _course_progress_for_user_v2(request, course_id, user_id):
-    feature_flags = FeatureFlags.objects.filter(course_id=course_id)
-    if len(feature_flags) > 0:
-        feature_flags = feature_flags[0]
-    else:
-        feature_flags = None
+    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
     if feature_flags and not feature_flags.progress_page:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
-    social = get_social_metrics(course_id, user_id, single_user=True)
+    social = get_social_metrics(
+        course_id,
+        user_id,
+        single_user=True,
+        is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
+    )
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
-    feature_flags = FeatureFlags.objects.get(course_id=course_id)
-    course.group_work_enabled = feature_flags.group_work
+    course.group_work_enabled = feature_flags.group_work if feature_flags else True
     course_run = load_static_tabs(course_id, name="course run")
 
     if course_run:
@@ -1119,6 +1137,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.notifications = request.POST.get('notifications', None) == 'on'
     feature_flags.branding = request.POST.get('branding', None) == 'on'
     feature_flags.resources = request.POST.get('resources', None) == 'on'
+    feature_flags.cohort_avg = request.POST.get('cohort_avg', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(

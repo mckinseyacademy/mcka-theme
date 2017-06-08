@@ -19,6 +19,9 @@ This document will make the assumptions that:
 * You wish to use a basic development server for this environment on port 3000.
 * You will be using a Vagrant VM-based devstack.
 
+This document referes to `lms.env.json`, `lms.auth.json`, `cms.env.json` and `cms.auth.json` files. THey are located in
+`edxapp` user home directory (one level above `edx-platform`  directory), which is normally located at `/edx/app/edxapp`.
+
 ## Step 1 - Set up the Solutions Devstack
 
 While it is possible to create a development environment on your machine, it is highly recommended to use a vagrant 
@@ -36,61 +39,7 @@ should point to. It will also work for the guest instance, since the guest insta
         127.0.0.1   apros.mcka.local
         127.0.0.1   lms.mcka.local
         127.0.0.1   cms.mcka.local
-
-### Create a user to run Apros under
-
-Just as `edxapp` is used to run the LMS and CMS, you will want a separate user with its own Python Virtual Environment
-and Ruby Version Manager to run Apros under.
-
-Log into the vagrant instance with `vagrant ssh`. From the vagrant user's prompt, run:
-
-    # Make sure our links to all downloads are up to date.
-    sudo apt-get update
-    # Needed for RVM.
-    sudo apt-get install -y gawk libreadline6-dev libyaml-dev sqlite3 autoconf libgdbm-dev \
-        libncurses5-dev automake libtool libffi-dev libsqlite3-dev bison
         
-If this is your first time creating this VM (that is, you haven't already modified your vagrant file as specified 
-in the next section), do the following:
-
-    sudo useradd apros --home /edx/app/apros --gid www-data --create-home --shell /bin/bash 
-
-Otherwise, do this:
-
-    sudo useradd apros --home /edx/app/apros --gid www-data --shell /bin/bash
-    sudo cp -r /etc/skel/. /edx/app/apros/
-    sudo chown apros:www-data /edx/app/apros
-
-Next, run:
-
-    sudo su - apros # The prompt should now say you're logged in as apros@
-    mkdir venvs
-    virtualenv venvs/mcka_apros
-    # Standard warnings about curling to bash apply.
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-    bash <(curl -sSL https://get.rvm.io) stable
-    # This will automatically be sourced on the next login.
-    source /edx/app/apros/.rvm/scripts/rvm
-    # If this fails for some reason, it should give you a list of 
-    # things to install with apt.
-    rvm install ruby-1.9.3 --autolibs=read-fail
-    rvm use 1.9.3 --default
-    
-
-Edit the user's .bashrc file in your favorite editor. Add the lines:
-
-    source ~/venvs/mcka_apros/bin/activate  # Use the Apros Python environment.
-    source ~/.rvm/scripts/rvm # Load RVM into a shell session *as a function*
-
-
-...at the top, before anything else. After the line `[ -z "$PS1" ] && return` add:
-
-    cd ~/mcka_apros
-
-Finally, exit this user's shell. We'll be loading back into it later.
-
-Do not worry that the directory `mcka_apros` does not exist. It will be created in the next section.
-
 ### Clone the Apros repository
 
 Make sure you clone it **in the same directory as the Vagrantfile**. Run:
@@ -100,6 +49,9 @@ Make sure you clone it **in the same directory as the Vagrantfile**. Run:
 or
 
     git clone https://github.com/mckinseyacademy/mcka_apros.git
+    
+**Note:** if you absolutely want Apros source code to be in some other directory as Vagrantfile, it is achievable - just
+replace `:repo => "mcka_apros"` with `:repo => "full path to Apros source code"` when instructed in the next section.
 
 ### Modify the VagrantFile
 
@@ -113,6 +65,7 @@ or
   [here for linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user).
   The guide for mac has some extra tips you may be able to backport to your Linux installation. Several Apros features do
   not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS.
+  One last thing: [example script](iptables_config.sh) for iptables-based routing is available.
 
 * Share Apros root folder with the VM by adding the following line to the `MOUNT_DIRS` hash in Vagrantfile:
 
@@ -123,33 +76,35 @@ or
         ...
     }
     ```
+    *Note:* `:local => ...` part is important - we want Apros source code in `mcka_apros` directory under apros user's
+    home directory - provisioning script makes an assumption that it can find Apros source code there.
+    
+* At the bottom of the file,  just after `config.vm.provision "shell", inline: $script, args: rel` add the following line
+
+    ```ruby
+    config.vm.provision "apros", type: "shell", path: "<path_to_mcka_apros_directory>/docs/provision_script.sh"
+    ```
+    `path_to_mcka_apros_directory` might be absolute or relative. If you've checked out mcka_apros into the same 
+    directory as Vagrantfile, it should be `mcka_apros/docs/provision_script.sh`.
 
 * Reload vagrant config with `vagrant reload`, log in into vagrant box using `vagrant ssh`. If the vagrant instance was
  not running, use `vagrant up` instead of `vagrant reload`.
-
-## Step 2 - Setup Apros Environment
-
-After following the previous instructions, you should be able to jump right into the codebase at any time by running:
-
-    vagrant ssh
-    sudo su apros
-    
-We'll do Apros's configuration as this user.
-
-### Install Python requirements
-Apros's requirements are handled in a requirements.txt file. To install the requirements, run:
  
-    pip install -r requirements.txt
+* Run apros provision script with `vagrant provision --provision-with apros`
 
+The script will do the following:
 
-### Install Other requirements
-We require SASS to be used to build assets
+* Setup required system packages
+* Install Nginx and configure "apros" site
+* Create databases required for Apros
+* Create `apros` user
+* Create virtualenv and setup python requirements
+* Install ruby 1.9.3, create ruby env
+* Update `apros` ~/.bashrc to automatically activate apros virtualenv and rubyenv and jump to mcka_apros folder
 
-    gem install sass --version 3.3.14
+If something goes wrong instructions to install everything manually are available at [Appendix E][appendix-e].
 
-Notes:
-* Sass 3.4+ is not compatible - see https://github.com/zurb/foundation-rails/pull/96
-
+[appendix-e]: #appendix-e-manual-apros-environment-provisioning
 
 ### Override Specific Settings
 
@@ -175,13 +130,12 @@ _Sqlite is sometimes easier to operate with than mySql, but this is purely a cho
 stick with MySql if you want to remain as close to the production environment as desired._
 
 **If you want to use MySQL, you will need to create a MySQL database with users and permissions according to the 
-`settings.py` file, or ones of your own creation in `local_settings.py`.** To
-create the default databases, run:
-
-    mysqladmin -u root create mcka_apros
-    mysqladmin -u root create edx
+`settings.py` file, or ones of your own creation in `local_settings.py`.** The default databases are created by the 
+provisioning script, so if you haven't done any modifications it is safe to skip this step.
 
 #### Configure the name to use for the LMS instance, like this:
+
+Put the following into `mcka_apros/mcka_apros/local_settings.py`
 
     API_SERVER_ADDRESS = 'http://lms.mcka.local'
     LMS_BASE_DOMAIN='mcka.local'
@@ -205,24 +159,9 @@ For security purposes, browsers have very rigid rules on how they'll handle shar
 In order to make sure that Apros is able to load remote resources from the LMS (such as assets and the content of XBlocks),
 you will need to set up a reverse proxy server.
 
-As the `vagrant` user, run:
-
-    sudo apt-get -y install nginx
-
-Create a file at `/etc/nginx/sites-available/mcka_apros` with [these contents][example-nginx-config]. **Note these rules aren't *precisely* like production.** If you need to precompile assets for pipelining, see [Appendix C][appendix-c].
-
-[example-nginx-config]: mcka_apros_production
-[nginx_ensite]: https://github.com/perusio/nginx_ensite
-[apros-ansible-config]: https://github.com/open-craft/ansible-private/blob/master/roles/mckinsey_apros/templates/edx/app/nginx/sites-available/mcka_apros.j2
-
-Enable this new virtual host with:
-
-    sudo ln -s /etc/nginx/sites-{available,enabled}/mcka_apros
-    sudo service nginx restart
-    
-
-[example-config]: mcka_apros
-[appendix-c]: #appendix-c-complete-production-routing
+Provisioning script installs and configures reverse proxy using [example config][example-nginx-config]. 
+**Note these rules aren't *precisely* like production.** 
+If you need to precompile assets for pipelining, see [Appendix C][appendix-c].
     
 ## Step 4 - Start the LMS and forum services
 
@@ -236,10 +175,9 @@ As the `vagrant` user:
     sudo su edxapp                   # switch to the edxapp user
     cd /edx/app/edxapp/edx-platform  # where the lms lives; you should be here already
 
-    # Run the migrations. We can't use paver update_db here as solutions and
-    upstream have conflicting migrations.
-    ./manage.py lms migrate --settings=devstack --merge
-    ./manage.py cms migrate --settings=devstack --merge
+    # Run the migrations. We can't use paver update_db here as solutions and upstream have conflicting migrations
+    ./manage.py lms migrate --settings=devstack
+    ./manage.py cms migrate --settings=devstack
 
     # Start the LMS
     paver devstack lms
@@ -393,3 +331,111 @@ MOUNT_DIRS = {
 ```
 
 You will then be able to access this directory as the edxapp user from `~/xblocks` within the VM, and install them from there while editing them from whatever virtualenvs you like on the host.
+
+## Appendix E: Manual Apros environment provisioning
+
+### Create a user to run Apros under
+
+Just as `edxapp` is used to run the LMS and CMS, you will want a separate user with its own Python Virtual Environment
+and Ruby Version Manager to run Apros under.
+
+Log into the vagrant instance with `vagrant ssh`. From the vagrant user's prompt, run:
+
+    # Make sure our links to all downloads are up to date.
+    sudo apt-get update
+    # Needed for RVM.
+    sudo apt-get install -y gawk libreadline6-dev libyaml-dev sqlite3 autoconf libgdbm-dev \
+        libncurses5-dev automake libtool libffi-dev libsqlite3-dev bison
+        
+If this is your first time creating this VM (that is, you haven't already modified your vagrant file as specified 
+in the next section), do the following:
+
+    sudo useradd apros --home /edx/app/apros --gid www-data --create-home --shell /bin/bash 
+
+Otherwise, do this:
+
+    sudo useradd apros --home /edx/app/apros --gid www-data --shell /bin/bash
+    sudo cp -r /etc/skel/. /edx/app/apros/
+    sudo chown apros:www-data /edx/app/apros
+
+Next, run:
+
+    sudo su - apros # The prompt should now say you're logged in as apros@
+    mkdir venvs
+    virtualenv venvs/mcka_apros
+    # Standard warnings about curling to bash apply.
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+    bash <(curl -sSL https://get.rvm.io) stable
+    # This will automatically be sourced on the next login.
+    source /edx/app/apros/.rvm/scripts/rvm
+    # If this fails for some reason, it should give you a list of 
+    # things to install with apt.
+    rvm install ruby-1.9.3 --autolibs=read-fail
+    rvm use 1.9.3 --default
+    
+
+Edit the user's .bashrc file in your favorite editor. Add the lines:
+
+    source ~/venvs/mcka_apros/bin/activate  # Use the Apros Python environment.
+    source ~/.rvm/scripts/rvm # Load RVM into a shell session *as a function*
+
+
+...at the top, before anything else. After the line `[ -z "$PS1" ] && return` add:
+
+    cd ~/mcka_apros
+
+Finally, exit this user's shell. We'll be loading back into it later.
+
+Do not worry that the directory `mcka_apros` does not exist. It will be created in the next section.
+
+### Setup Apros Environment
+
+After following the previous instructions, you should be able to jump right into the codebase at any time by running:
+
+    vagrant ssh
+    sudo su apros
+    
+We'll do Apros's configuration as this user.
+
+### Install Python requirements
+Apros's requirements are handled in a requirements.txt file. To install the requirements, run:
+ 
+    pip install -r requirements.txt
+
+
+### Install Other requirements
+We require SASS to be used to build assets
+
+    gem install sass --version 3.3.14
+
+Notes:
+* Sass 3.4+ is not compatible - see https://github.com/zurb/foundation-rails/pull/96
+
+### Creating default databases
+
+To create the default databases, run:
+
+    mysqladmin -u root create mcka_apros
+    mysqladmin -u root create edx
+
+
+### Set up the reverse proxy server
+
+As the `vagrant` user, run:
+
+    sudo apt-get -y install nginx
+
+Create a file at `/etc/nginx/sites-available/mcka_apros` with [these contents][example-nginx-config]. 
+**Note these rules aren't *precisely* like production.** 
+If you need to precompile assets for pipelining, see [Appendix C][appendix-c].
+
+[example-nginx-config]: mcka_apros_production
+
+Enable this new virtual host with:
+
+    sudo ln -s /etc/nginx/sites-{available,enabled}/mcka_apros
+    sudo service nginx restart
+    
+
+[example-config]: mcka_apros
+[appendix-c]: #appendix-c-complete-production-routing

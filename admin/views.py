@@ -17,7 +17,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render, redirect, get_object_or_404
@@ -68,7 +68,7 @@ from .controller import (
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, _validate_company_permissions, construct_users_list
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, construct_users_list
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -81,6 +81,7 @@ from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnatt
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 from util.data_sanitizing import sanitize_data
+from util.validators import AlphanumericValidator
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -3418,37 +3419,68 @@ class participants_list_api(APIView):
     def post(self, request):
         post_data = json.loads(request.body)
         form = CreateNewParticipant(post_data.copy())
+
+        # ToDo: drop need of this mapping by supplying groups in the form
+        permissions_groups = {
+            'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
+            'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
+            'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
+            'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
+        }
+
         if form.is_valid():
+            # Applying validation for `new_company_name` here as it's not a form field
+            if post_data.get('new_company_name'):
+                alphanum_validator = AlphanumericValidator()
+                try:
+                    alphanum_validator(post_data.get('new_company_name'))
+                except ValidationError:
+                    return Response({'status': 'error', 'type': 'validation_error',
+                                     'message': 'Company name can only contain alphanumeric characters'})
+
+            requester_permissions = Permissions(user_id=request.user.id)
+
+            # permission group to assign for the user being created
+            user_permission_group = post_data.get('company_permissions')
+
+            # check if requester has correct permissions for granting roles
+            if user_permission_group and user_permission_group in permissions_groups:
+                user_permission_group = permissions_groups[user_permission_group]
+                if not requester_permissions.has_grant_rights(user_permission_group):
+                    return Response({'status': 'error', 'type': 'validation_error',
+                                'message': "Permission Error: You don't have permissions to grant this role"})
+
+            if len(post_data.get('company_permissions_list', [])) and not \
+                    requester_permissions.has_grant_rights(PERMISSION_GROUPS.COMPANY_ADMIN):
+                        return Response({'status': 'error', 'type': 'validation_error',
+                                'message': "Permission Error: You don't have permissions to grant this role"})
+
             filterUsers = {}
             existing_users_length = 0
-            if post_data['email']:
-                filterUsers = {'email' : post_data['email']}
+            if form.cleaned_data['email']:
+                filterUsers = {'email': form.cleaned_data['email']}
                 existing_users = user_api.get_filtered_users(filterUsers)
                 existing_users_length += int(existing_users['count'])
             if (existing_users_length > 0):
                 return Response({'status':'error', 'type': 'user_exist', 'message':'User with that email already exists!'})
             else:
                 data = post_data
+                cleaned_data = form.cleaned_data
                 try:
-                    if len(data['email']) > 30:
-                        data['username'] = data['email'][:29]
+                    if len(cleaned_data['email']) > 30:
+                        cleaned_data['username'] = cleaned_data['email'][:29]
                     else:
-                        data['username'] = data['email']
-                    data['username'] = re.sub(r'\W', '', data['username'])
-                    data['password'] = settings.INITIAL_PASSWORD
-                    data['is_active'] = False
-                    user = user_api.register_user(data)
+                        cleaned_data['username'] = cleaned_data['email']
+                    cleaned_data['username'] = re.sub(r'\W', '', cleaned_data['username'])
+                    cleaned_data['password'] = settings.INITIAL_PASSWORD
+                    cleaned_data['is_active'] = False
+                    user = user_api.register_user(cleaned_data)
                     user_data = vars(user)
                     roles = {
                         'assistant' : USER_ROLES.TA,
                         'observer' : USER_ROLES.OBSERVER
                     }
-                    permissions_groups = {
-                        'uber_admin': PERMISSION_GROUPS.MCKA_ADMIN,
-                        'internal_admin': PERMISSION_GROUPS.INTERNAL_ADMIN,
-                        'company_admin': PERMISSION_GROUPS.CLIENT_ADMIN,
-                        'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
-                    }
+
                     if data.get('new_company_name', None):
 
                         try:
@@ -3482,18 +3514,12 @@ class participants_list_api(APIView):
                         permissions = Permissions(user_data['id'])
                     if len(courses_permissions_list) > 0:
                         permissions.update_courses_roles_list(courses_permissions_list)
-                    if data.get('company_permissions', None):
-                        requester_permissions=Permissions(request.user.id).current_permissions
-                        if data['company_permissions'] in permissions_groups and _validate_company_permissions(permissions_groups[data['company_permissions']],requester_permissions):
-                            permissions.add_permission(permissions_groups[data['company_permissions']])
-                    if len(data.get('company_permissions_list', [])):
-                        try:
-                            requester_permissions
-                        except NameError:
-                            requester_permissions=Permissions(request.user.id).current_permissions
-                        if _validate_company_permissions([PERMISSION_GROUPS.COMPANY_ADMIN], requester_permissions):
-                            permissions.add_company_admin_permissions(data.get('company_permissions_list', []))
 
+                    if user_permission_group:
+                        permissions.add_permission(user_permission_group)
+
+                    if len(data.get('company_permissions_list', [])):
+                        permissions.add_company_admin_permissions(data.get('company_permissions_list', []))
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
                 return Response({'status':'ok', 'message':'Successfully added new user!', 'user_id': user_data['id']})
@@ -3591,17 +3617,27 @@ class participant_details_api(APIView):
     def post(self, request, user_id, format=None):
         form = EditExistingUserForm(request.POST.copy())
         if form.is_valid():
+            cleaned_data = form.cleaned_data
+
+            # validate new company name
+            if request.POST.get('new_company_name'):
+                alphanum_validator = AlphanumericValidator()
+                try:
+                    alphanum_validator(request.POST.get('new_company_name'))
+                except ValidationError:
+                    return Response({'status': 'error', 'type': 'validation_error',
+                                     'message': 'Company name can only contain alphanumeric characters'})
             filterUsers = {}
             existing_users_length = 0
-            if request.POST['username']:
-                filterUsers = {'username' : request.POST['username']}
+            if cleaned_data.get('username'):
+                filterUsers = {'username' : cleaned_data.get('username')}
                 existing_users = user_api.get_filtered_users(filterUsers)
                 existing_users_length += int(existing_users['count'])
                 for user in existing_users['results']:
                     if int(user['id']) == int(user_id):
                         existing_users_length -= 1
-            if request.POST['email']:
-                filterUsers = {'email' : request.POST['email']}
+            if cleaned_data.get('email'):
+                filterUsers = {'email' : cleaned_data.get('email')}
                 existing_users = user_api.get_filtered_users(filterUsers)
                 existing_users_length += int(existing_users['count'])
                 for user in existing_users['results']:
@@ -4179,6 +4215,11 @@ def course_learner_dashboard_discover_create_edit(request, course_id, discovery_
             })
 
             return HttpResponseRedirect(url_list)
+        else:
+            return HttpResponse(
+                content=json.dumps({'errors': form.errors}),
+                content_type='application/json'
+            )
 
     elif request.method == 'DELETE' and discovery:
         discovery.delete()

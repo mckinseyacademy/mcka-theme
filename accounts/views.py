@@ -24,6 +24,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.forms.widgets import HiddenInput
+from django.views.decorators.cache import never_cache
 
 from courses.models import FeatureFlags
 from api_client import user_api, course_api
@@ -357,18 +358,19 @@ def activate(request, activation_code, registration=None):
             initial_data["company"] = company.display_name
 
     except:
-        user_data = None
-        error = _("Invalid Activation Code")
+        return render(request, 'accounts/incorrect_activation_code.haml')
 
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()
 
         # email should never be changed
         user_data["email"] = user.email
-        form = ActivationForm(user_data, initial=initial_data)  # A form bound to the POST data
+        form = ActivationForm(
+            user_data, initial=initial_data
+        )
         if form.is_valid():  # All validation rules pass
             try:
-                user_activation_with_data(user.id, user_data, activation_record)
+                user_activation_with_data(user.id, form.cleaned_data, activation_record)
 
                 # Redirect after POST
                 return HttpResponseRedirect(
@@ -796,6 +798,7 @@ def protected_home(request):
     return home(request)
 
 @login_required
+@never_cache
 def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
@@ -948,8 +951,8 @@ def edit_fullname(request):
         if form.is_valid():
             try:
                 user_api.update_user_information(request.user.id, {
-                    'first_name': form.data['first_name'],
-                    'last_name': form.data['last_name']
+                    'first_name': form.cleaned_data['first_name'],
+                    'last_name': form.cleaned_data['last_name']
                 })
             except ApiError as err:
                 error = err.message
@@ -973,7 +976,7 @@ def edit_title(request):
         if form.is_valid():
             try:
                 user_api.update_user_information(request.user.id, {
-                    'title': form.data['title']
+                    'title': form.cleaned_data['title']
                 })
             except ApiError as err:
                 error = err.message

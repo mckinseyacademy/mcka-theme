@@ -1,10 +1,28 @@
-""" generic data clean functions """
+# -*- coding: utf-8 -*-
+
+""" generic data clean utilities """
 
 import logging
+import unicodedata
 
 from django.conf import settings
+from django.utils.html import escape
+
 
 _logger = logging.getLogger(__name__)
+
+
+def remove_diacritics(text):
+    """
+    Return a string with all diacritics (aka non-spacing marks) removed
+
+    For example "Héllô" will become "Hello"
+    Useful for comparing strings in an accent-insensitive fashion
+    """
+    text = text if isinstance(text, unicode) else unicode(text, encoding='utf-8')
+
+    normalized = unicodedata.normalize("NFKD", text)
+    return "".join(c for c in normalized if unicodedata.category(c) != "Mn")
 
 
 def remove_characters(value, char_blacklist):
@@ -14,7 +32,7 @@ def remove_characters(value, char_blacklist):
     remove_chars_map = dict((ord(char), None) for char in char_blacklist)
 
     # encode strings to unicode for consistency
-    value = value if isinstance(value, unicode) else unicode(value)
+    value = value if isinstance(value, unicode) else unicode(value, encoding='utf-8')
 
     return value.translate(remove_chars_map)
 
@@ -30,8 +48,7 @@ def clean_xss_characters(value):
     """
     Remove XSS related characters from passed string
     """
-    # ToDo: implementation
-    return value
+    return escape(value)
 
 
 def apply_clean_methods(value, methods=()):

@@ -75,10 +75,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.session_timeout.SessionTimeout',
     'accounts.middleware.thread_local.ThreadLocal',
     'main.middleware.allow_embed_url.AllowEmbedUrlMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',      # explicitly add this, otherwise this doesn't seem to appear on AWS environments
     'accounts.middleware.ajax_redirect.AjaxRedirect',
     'lib.middleware.handle_prior_ids.PriorIdRequest',
@@ -162,6 +162,9 @@ SESSION_COOKIE_NAME = 'apros_sessionid'
 CSRF_COOKIE_NAME = 'apros_csrftoken'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_TIMEOUT_SECONDS = 300
+
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
 
 # LMS
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'

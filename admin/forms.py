@@ -17,6 +17,7 @@ from api_client import course_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonObjectWithImage
+from util.validators import UsernameValidator, AlphanumericWithAccentedChars, alphanum_accented_validator
 
 from django.forms import CharField
 
@@ -233,23 +234,23 @@ class CreateAccessKeyForm(forms.ModelForm):
         }
 
 class EditExistingUserForm(forms.Form):
-    first_name = forms.CharField(required=True, widget=forms.TextInput())
-    last_name = forms.CharField(required=True, widget=forms.TextInput())
-    username = forms.CharField(required=False, widget=forms.TextInput())
+    first_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
+    last_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
+    username = forms.CharField(required=False, widget=forms.TextInput(), validators=[UsernameValidator()])
     email = forms.EmailField(required=True, widget=forms.TextInput())
     company = forms.CharField(required=True, widget=forms.TextInput())
     gender = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False, widget=forms.TextInput())
-    city = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
 
 class CreateNewParticipant(forms.Form):
-    first_name = forms.CharField(required=True, widget=forms.TextInput())
-    last_name = forms.CharField(required=True, widget=forms.TextInput())
+    first_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
+    last_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
     email = forms.EmailField(required=True, widget=forms.TextInput())
     company = forms.CharField(required=True, widget=forms.TextInput())
     gender = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False, widget=forms.TextInput())
-    city = forms.CharField(required=False, widget=forms.TextInput())
+    city = forms.CharField(required=False, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
 
 class DashboardAdminQuickFilterForm(forms.ModelForm):
 
@@ -305,6 +306,34 @@ class DiscoveryContentCreateForm(forms.ModelForm):
             'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
             'link': forms.TextInput(attrs={'type': 'url'}),
         }
+
+    def clean_title(self):
+        """
+        Applies alphanumeric validation on title text
+        """
+        title = self.cleaned_data.get('title')
+
+        try:
+            alphanum_accented_validator(title)
+        except ValidationError as e:
+            e.message = _('Title: {}'.format(e.message))
+            raise
+
+        return title
+
+    def clean_author(self):
+        """
+        Applies alphanumeric validation on author name
+        """
+        author = self.cleaned_data.get('author')
+
+        try:
+            alphanum_accented_validator(author)
+        except ValidationError as e:
+            e.message = _('Author: {}'.format(e.message))
+            raise
+
+        return author
 
 
 class LearnerDashboardBrandingForm(forms.ModelForm):

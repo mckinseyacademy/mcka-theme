@@ -7,6 +7,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 from django.core.validators import validate_email, RegexValidator
+from django.core.exceptions import ValidationError
 
 from api_client import user_api
 from django.utils.html import format_html
@@ -18,6 +19,7 @@ from api_client.api_error import ApiError
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
 from admin.models import CourseRun
+from util.validators import AlphanumericValidator, UsernameValidator, AlphanumericWithAccentedChars
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -361,13 +363,21 @@ class LoginForm(NoSuffixLabelForm):
 class BaseRegistrationForm(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
-    username = forms.CharField(max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
+    username = forms.CharField(
+        max_length=255,
+        label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'),
+        validators=[UsernameValidator()]
+    )
     password = forms.CharField(widget=forms.PasswordInput(),
         label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
-    title = forms.CharField(max_length=255, required=False)
-    city = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}), label=mark_safe('City <span class="required-field"></span>'))
+    title = forms.CharField(max_length=255, required=False, validators=[AlphanumericWithAccentedChars()])
+    city = forms.CharField(
+        max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}),
+        label=mark_safe('City <span class="required-field"></span>'),
+        validators=[AlphanumericWithAccentedChars()]
+    )
     country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=False)
     accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
 
@@ -412,6 +422,19 @@ class FinalizeRegistrationForm(BaseRegistrationForm):
 
 class FpasswordForm(forms.Form):
     email = forms.EmailField(label=_("Email"), max_length=254)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        users = user_api.get_users(fields=['is_active'], email=email)
+
+        # only activated users can reset passwords
+        if users and not (users[0].get('is_active')):
+            raise ValidationError(
+                _('The account associated with this email is not activated yet'),
+                code='not_active'
+            )
+
+        return email
 
     def save(self, domain_override=None,
              subject_template_name='registration/password_reset_subject.txt',
@@ -482,12 +505,12 @@ class UploadProfileImageForm(forms.Form):
 
 class EditFullNameForm(forms.Form):
     ''' edit user full name '''
-    first_name = forms.CharField(max_length=30, label='First Name')
-    last_name = forms.CharField(max_length=30, label='Last Name')
+    first_name = forms.CharField(max_length=30, label='First Name', validators=[AlphanumericWithAccentedChars()])
+    last_name = forms.CharField(max_length=30, label='Last Name', validators=[AlphanumericWithAccentedChars()])
 
 class EditTitleForm(forms.Form):
     ''' edit user title '''
-    title = forms.CharField(max_length=255, label='', required=False)
+    title = forms.CharField(max_length=255, label='', required=False, validators=[AlphanumericWithAccentedChars()])
 
 class BaseRegistrationFormV2(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
