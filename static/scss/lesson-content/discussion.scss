@@ -14,6 +14,31 @@
   }
 }
 
+.lesson-content .discussion-module {
+  .inline-threads {
+    clear: both;
+    border: none !important;
+  }
+
+  .forum-nav-sort-control {
+    padding-right: 22px;
+  }
+
+  .forum-nav-sort-control, .forum-nav-filter-main-control {
+    margin: 0px;
+    height: auto;
+    width: auto;
+  }
+
+  .thread-preview-body {
+    white-space: normal !important;
+  }
+
+  .forum-nav-thread-wrapper-0 {
+    width: 30px;
+  }
+}
+
 #course-lessons .discussion-module {
   width: 100%;
 
@@ -24,14 +49,6 @@
     }
   }
 
-  .forum-new-post-form {
-    .field-label {
-      width: 55%;
-    }
-    .field-help {
-      width: 45%;
-    }
-  }
 }
 
 #course-group-work .discussion-module {
@@ -66,12 +83,17 @@
 
   .wmd-input {
     background-color: $pure-white;
+    margin: 0px;
   }
 
   .thread-content-wrapper, .new-post-article {
-    h1.post-title {
+    .post-title {
       color: $mckinsey-academy-turquoise;
       font-weight: 700;
+    }
+
+    .post-body {
+      max-width: none !important;
     }
 
     .forum-new-post-form, .edit-post-form {
@@ -150,7 +172,7 @@
         font-size: 12px;
         margin: 20px 0px 0px;
         font-style: italic !important;
-        color: $mckinsey-academy-black;
+        color: $mckinsey-academy-black !important;
         background-color: $pure-white;
       }
     }
@@ -224,16 +246,20 @@
   }
 
   .response-count {
-    float: left;
-    margin-top: 20px;
-    padding: 0 30px;
+    float: right;
+    margin-top: 5px;
     color: $response-count-color;
     font-size: 14px;
   }
 
   .forum-nav-thread {
+    border-left: 1px solid $comment-background-color;
+    border-right: 1px solid $comment-background-color;
     border-bottom: 1px solid $comment-background-color;
-    background-color: $forum-thread-background-color;
+
+    &:first-child {
+      border-top: 1px solid $comment-background-color;
+    }
   }
 
   .forum-nav-thread.never-read {
@@ -301,7 +327,7 @@
   }
 
   .discussion-article, .new-post-article {
-    .post-update, .submit,
+    .post-update,
     a.post-cancel, a.cancel {
       &, &:visited, &:hover, &:focus {
         margin: 15px 0px;
@@ -411,11 +437,11 @@
     position: relative;
     padding: 0;
     margin: 0;
-    width: 70px;
+    width: 80px;
     display: inline-block;
 
     &:before {
-      width: 70px;
+      width: 80px;
       content: "McKinsey TA";
       text-transform: uppercase;
       color: white;
@@ -431,6 +457,10 @@
   .home-header {
 
     border-bottom: none;
+
+    .home-title{
+      display: none;
+    }
 
     .label {
       @include font-spec(22px, normal, 24);
@@ -459,6 +489,7 @@
 
   .home-helpgrid {
     box-shadow: none;
+    margin-right: 5px;
   }
 
   .helpgrid-row {
@@ -554,10 +585,12 @@
 }
 
 .modal .discussion-alert-wrapper button {
-  &, &:hover, &:focus {
-    border-radius: 5px;
-    color: white;
-    text-shadow: none;
+  border-radius: 5px;
+  color: #0075b4;
+  text-shadow: none;
+
+  &:hover {
+    color: $pure-white;
   }
 }
 
@@ -599,4 +632,64 @@ body > .tooltip {
       background-image: url("/static/image/lesson-content/discussion/close_button.png");
       opacity: 0.7;
     }
+}
+
+#course-group-work .discussion-module,
+#course-lessons .discussion-module {
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.discussion-show {
+  padding-top: 0.7rem !important;
+  margin-top: 4px !important;
+  line-height: normal !important;
+
+  font-size: 13px !important;
+  font-weight: bold !important;
+}
+
+.is-hidden {
+  display: none;
+}
+
+.sr, .sr-only {
+  display: none;
+}
+
+.lesson-content .wmd-button {
+  position: absolute;
+  background: none;
+  padding-left: 0px;
+  padding-top: 0px;
+  box-shadow: none;
+}
+
+.lesson-content .new-post-btn,
+.lesson-content .all-posts-btn,
+.lesson-content .add-post-cancel {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0075b4 !important;
+}
+
+.lesson-content .all-posts-btn {
+  font-size: 1.2rem;
+  padding: 0px !important;
+}
+
+.lesson-content .discussion-module .post-header-content {
+  padding-top: 10px;
+}
+
+.lesson-content .discussion-module .forum-nav-thread-list {
+  overflow-y: inherit;
+}
+
+.lesson-content .discussion-module .thread-main-wrapper {
+  border: 1px solid $mckinsey-grey;
+}
+
+.row.collapse {
+  display: block;
 }

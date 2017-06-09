@@ -864,6 +864,8 @@ def infer_page_navigation(request, course_id, page_id):
 
                 if ta_grading_group:
                     redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
+            if group_project and not group_project.is_v2: # for group project v1
+                redirect_url = "/courses/{}/group_work".format(course_id)
 
             if final_target_id not in (chapter_id, vertical_id):
                 redirect_url += '?activate_block_id={final_target_id}'.format(final_target_id=final_target_id)

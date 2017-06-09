@@ -54,6 +54,8 @@
       // The hash corresponds to the ooyala player JS library script.
       lesson_content.data('loaded_resource_hashes', ['207f215b40019e34c7c46cb5b46b140e']);
       lesson_content.xblock(lesson_data);
+      // we need this to add some browser specific CSS rules
+      lesson_content.attr( "data-useragent", navigator.userAgent);
 
       $('#course-group-work .lesson-module-status').on('click', function(){
         $('#' + $(this).data('activate')).click();

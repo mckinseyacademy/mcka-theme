@@ -27,7 +27,7 @@ class UserResponse(JsonObjectWithImage):
         if hasattr(self, "full_name"):
             return self.full_name
 
-        return "{} {}".format(self.first_name, self.last_name)
+        return u"{} {}".format(self.first_name, self.last_name)
 
     def to_json(self):
         ''' return UserResponse object as json '''
