@@ -305,28 +305,6 @@ CURRENT_ROLE = (
         (u'Other', u'Other (please describe below)'),
     )
 
-BANNED_EMAILS = [
-  "aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com",
-  "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com",
-  "live.com", "sbcglobal.net", "verizon.net", "yahoo.com", "yahoo.co.uk",
-  "email.com", "games.com", "gmx.net", "hush.com", "hushmail.com", "icloud.com", "inbox.com",
-  "lavabit.com", "love.com", "outlook.com", "pobox.com", "rocketmail.com",
-  "safe-mail.net", "wow.com", "ygm.com", "ymail.com", "zoho.com", "fastmail.fm", "yandex.com",
-  "bellsouth.net", "charter.net", "comcast.net", "cox.net", "earthlink.net", "juno.com",
-  "btinternet.com", "virginmedia.com", "blueyonder.co.uk", "freeserve.co.uk", "live.co.uk",
-  "ntlworld.com", "o2.co.uk", "orange.net", "sky.com", "talktalk.co.uk", "tiscali.co.uk",
-  "sina.com", "qq.com", "naver.com", "hanmail.net", "daum.net", "nate.com", "yahoo.co.jp",
-  "yahoo.co.kr", "yahoo.co.id", "yahoo.co.in", "yahoo.com.sg", "yahoo.com.ph",
-  "hotmail.fr", "live.fr", "laposte.net", "yahoo.fr", "wanadoo.fr", "orange.fr", "gmx.fr",
-  "sfr.fr", "neuf.fr", "free.fr", "virgin.net", "wanadoo.co.uk", "bt.com",
-  "gmx.de", "hotmail.de", "live.de", "online.de", "t-online.de", "web.de", "yahoo.de",
-  "mail.ru", "rambler.ru", "yandex.ru", "ya.ru", "list.ru", "hotmail.com.mx", "prodigy.net.mx", "msn.com",
-  "hotmail.be", "live.be", "skynet.be", "voo.be", "tvcablenet.be", "telenet.be",
-  "hotmail.com.ar", "live.com.ar", "yahoo.com.ar", "fibertel.com.ar", "speedy.com.ar", "arnet.com.ar",
-  "hotmail.com", "gmail.com", "yahoo.com.mx", "live.com.mx", "yahoo.com", "hotmail.es", "live.com",
-  "yahoo.com.br", "hotmail.com.br", "outlook.com.br", "uol.com.br", "bol.com.br", "terra.com.br",
-  "ig.com.br", "itelefonica.com.br", "r7.com", "zipmail.com.br", "globo.com", "globomail.com", "oi.com.br"
-]
 
 class UserNameInput(forms.TextInput):
     input_type = 'text'
@@ -603,10 +581,6 @@ class PublicRegistrationForm(forms.ModelForm):
                     max=70
                 )
             )
-
-        for mail in BANNED_EMAILS:
-            if mail in company_email.lower():
-                raise forms.ValidationError("Email you provided is not allowed.")
 
         course_run = CourseRun.objects.filter(name=self.course_run_name)
         users = PublicRegistrationRequest.objects.filter(course_run=course_run)
