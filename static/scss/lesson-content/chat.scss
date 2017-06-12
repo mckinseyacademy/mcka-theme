@@ -1,4 +1,139 @@
 .lesson-content .chat-block {
   // Limit height of the block to available screen size (leave 250px for the header).
   max-height: calc(100vh - 250px);
+  background: $chat-bg-color;
+  border: 5px solid $chat-border-color;
+
+  .subject p::before {
+    content: "Situation:\00a0";
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  .notice {
+    background: $chat-notice-bg-color;
+    color: $chat-notice-text-color;
+  }
+
+  // Correct notice icon
+  .notice.correct::before {
+    color: $chat-correct-notice-color;
+  }
+
+  // Incorrect notice icon
+  .notice.incorrect::before {
+    color: $chat-incorrect-notice-color;
+  }
+
+  .notice p::before {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  // Correct notice before text
+  .notice.correct p::before {
+    color: $chat-correct-notice-color;
+    content: "Correct!\00a0";
+  }
+
+  // Incorrect notice before text
+  .notice.incorrect p::before {
+    color: $chat-incorrect-notice-color;
+    content: "Incorrect!\00a0";
+  }
+
+  .message.bot {
+    margin-left: 20px;
+  }
+
+  .message.user {
+    margin-right: 20px;
+  }
+
+  .message-body p {
+    font-style: italic;
+  }
+
+  .user .message-body p {
+    background: $chat-user-message-bg-color;
+    color: $chat-user-message-text-color;
+    font-weight: bold;
+  }
+
+  .user .message-body::before {
+    border-color: transparent transparent $chat-user-message-bg-color $chat-user-message-bg-color;
+    border-style: solid;
+    border-width: 12px;
+    bottom: 0px;
+    content: '';
+    display:block;
+    position: absolute;
+    right: -16px;
+    width: 0;
+  }
+  
+  .user .message-body::after {
+    border-color: transparent transparent $chat-bg-color $chat-bg-color;
+    border-style: solid;
+    border-width: 12px;
+    border-radius: 50%;
+    content: '';
+    display:block;
+    position: absolute;
+    bottom: 1px;
+    right: -24px;
+    width: 0;
+  }
+
+  .bot .message-body::before {
+    border-color: transparent $chat-bot-message-bg-color $chat-bot-message-bg-color transparent;
+    border-style: solid;
+    border-width: 12px;
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 1px;
+    left: -16px;
+    width: 0;
+  }
+  
+  .bot .message-body::after {
+    border-color: transparent $chat-bg-color $chat-bg-color transparent;
+    border-style: solid;
+    border-width: 12px;
+    border-radius: 50%;
+    bottom: 1px;
+    content: '';
+    display:block;
+    position: absolute;
+    left: -24px;
+    width: 0;
+  }
+
+  .bot .message-body p {
+    background: $chat-bot-message-bg-color;
+    color: $chat-bot-message-text-color;
+  }
+
+  .response-button {
+    button {
+      background: $chat-button-bg-color;
+      color: $chat-button-text-color;
+      border: none;
+      box-shadow: none;
+      padding: 20px 10px;
+      font-weight: bold;
+      text-shadow: none;
+      outline: 0;
+      border-radius: 10px;
+      width: 95%;
+      margin: 0 auto;
+
+      &:hover, &:active, &:focus {
+        background: $chat-button-hover-bg-color;
+        font-weight: bold;
+        padding: 20px 10px;
+      }
+    }
+  }
 }
