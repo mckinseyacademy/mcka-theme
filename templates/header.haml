@@ -54,7 +54,7 @@
           .client-logo
             %img{src: "#{client_customization.client_logo}"}
         .row.collapse
-          .medium-5.columns
+          .medium-5.columns.course_info
             .program-menu
               %a{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
                 %i.fa.fa-th-large{style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
