@@ -49,6 +49,7 @@ class FeatureFlags(db_models.Model):
     branding = db_models.BooleanField(default=True)
     resources = db_models.BooleanField(default=True)
     cohort_avg = db_models.BooleanField(default=True)
+    certificates = db_models.BooleanField(default=False)
 
     def as_json(self):
         return dict(

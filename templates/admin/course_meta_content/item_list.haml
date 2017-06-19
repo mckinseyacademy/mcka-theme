@@ -97,3 +97,9 @@
           - else
             %input#cohort_avg{type: 'checkbox', name: 'cohort_avg'}
           %label{for: 'cohort_avg'} Cohort Average
+        %li
+          - if feature_flags.certificates
+            %input#certificates{type: 'checkbox', name: 'certificates', checked: None}
+          - else
+            %input#certificates{type: 'checkbox', name: 'certificates'}
+          %label{for: 'certificates'} Certificates
