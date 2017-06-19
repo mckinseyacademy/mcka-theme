@@ -8,7 +8,7 @@
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
           - if companyCourseDeatilsPage
-            %a{:href => '/admin/companies/#{companyId}', :target => '_self'}> 
+            %a{:href => '/admin/companies/#{companyId}', :target => '_self'}>
               < Back to ={companyName}
           - else
             %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
@@ -16,7 +16,7 @@
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
                     .courseDetailsNameAndId
-                      ={name}  
+                      ={name}
                       ={id}
                     .courseDetailsTags
                       - for tag in tags
@@ -52,12 +52,17 @@
                 - if request.resolver_match.url_name == 'course_details'
                   .courseStatsButton.large-4.columns
                     %a{:href => 'learner_dashboard'}>  LEARNER DASHBOARD
-                  / .courseDiscoverContentButton.large-3.columns
-                  /   %p DISCOVER CONTENT
-                  / .courseFeatureFlaggingButton.large-3.columns
-                  /   %p FEATURE FLAGGING  
-                  / .courseCommunicationsButton.large-2.columns
-                  /   %p COMMUNICATIONS 
+
+                  .courseStatsButton.large-4.columns
+                    - if certificates_status == certificates_statuses.available
+                      %form#generate-certificate-form{action: "{% url 'generate_course_certificates' id %}", method: 'POST'}
+                        - csrf_token
+                        %input{type: 'hidden', name: 'course_end', value: '{{end}}'}
+                        %button{type: 'submit'}>  Generate Certificates
+                    - elif certificates_status == certificates_statuses.generating
+                       %a.disabled{:href => '#'}>  Generating Certificates
+                    - elif certificates_status == certificates_statuses.generated
+                       %a.disabled{:href => '#'}>  Certificates Generated
                 %hr
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
@@ -98,7 +103,7 @@
                 #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
                 #courseDetailsTimelineTopic.courseDetailsTopic
                   Cohort Timeline
-                #course-details-timeline-wrapper  
+                #course-details-timeline-wrapper
                   %svg#course-details-timeline
   #courseDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
     %h2.courseModalTitle
@@ -137,9 +142,9 @@
             %i.fa.fa-trash-o.removeTemplate{:data-title => "Remove selected template"}
           .templateNameValue
             %select{:name => 'template_id'}
-              %option{:value => "none"} None 
+              %option{:value => "none"} None
               - for template in template_list
-                %option{:value => "#{template.pk}"} 
+                %option{:value => "#{template.pk}"}
                   =template.title
       .row
         .large-12.columns.emailSubject

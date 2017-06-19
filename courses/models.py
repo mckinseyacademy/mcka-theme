@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-from django.utils import timezone
 from django.db import models as db_models
 
 class LessonNotesItem(db_models.Model):

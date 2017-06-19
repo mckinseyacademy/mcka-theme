@@ -49,32 +49,35 @@ from courses.controller import (
     social_total, round_to_int_bump_zero, round_to_int, create_tile_progress_data
 )
 from courses.models import FeatureFlags
+from certificates.models import CertificateStatus
 from license import controller as license_controller
 from main.models import CuratedContentItem
 from .models import (
     Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings, 
-    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails, 
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings,
+    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails,
     CompanyContact, Tag, LearnerDashboardBranding, CourseRun
 )
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
-    upload_student_list_threaded, mass_student_enroll_threaded, enroll_participants_threaded, generate_course_report, 
-    get_organizations_users_completion, get_course_analytics_progress_data, get_contacts_for_client, get_admin_users, 
+    upload_student_list_threaded, mass_student_enroll_threaded, enroll_participants_threaded, generate_course_report,
+    get_organizations_users_completion, get_course_analytics_progress_data, get_contacts_for_client, get_admin_users,
     get_program_data_for_report, MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data,
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles,
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
-    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, construct_users_list
+    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids,
+    check_if_course_is_internal, check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list,
+    construct_users_list
 )
+from certificates.controller import get_course_certificates_status
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, MassParticipantsEnrollListForm, 
-    EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm, 
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, MassParticipantsEnrollListForm,
+    EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm,
     CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm
 )
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
@@ -93,7 +96,7 @@ from django.forms.models import model_to_dict
 
 from s3 import get_files_urls, push_file_to_s3
 
-# TO-DO: DECORATOR TO CHECK LEARNER DASHBOARD FEATURE IS ON. 
+# TO-DO: DECORATOR TO CHECK LEARNER DASHBOARD FEATURE IS ON.
 # ADD TO LD VIEWS ONCE TESTING IS COMPLETE.
 def check_learner_dashboard_flag(func):
     @functools.wraps(func)
@@ -319,7 +322,7 @@ def client_admin_home(request, client_id):
             data,
         )
 
-    else: 
+    else:
         courses_list = []
         for course in courses:
             courses_list.append(course['id'])
@@ -366,7 +369,7 @@ def client_admin_course(request, client_id, course_id):
     metrics = course_api.get_course_metrics(course_id, organization=client_id)
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id, metrics.users_enrolled)
     cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
-    
+
     data = {
         'client_id': client_id,
         'course_id': course_id,
@@ -627,9 +630,9 @@ class participant_details_courses_unenroll_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id, course_id, format=None):
-        
+
         try:
-            # TO-DO: Change with actual enroll once provided by EDX. 
+            # TO-DO: Change with actual enroll once provided by EDX.
             # Sets to Observer for now.
             response = unenroll_participant(course_id, user_id)
             return HttpResponse(
@@ -639,7 +642,7 @@ class participant_details_courses_unenroll_api(APIView):
         except ApiError as err:
             error = err.message
             return HttpResponseServerError(
-                {'status': 'error', 'message': error}, 
+                {'status': 'error', 'message': error},
                 content_type='application/json'
             )
 
@@ -835,9 +838,9 @@ class courses_list_api(APIView):
                         course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
                     for data in course:
                         if course.get(data) is None:
-                            course[data] = "-"   
+                            course[data] = "-"
                     courses.append(course)
-            return Response(courses)  
+            return Response(courses)
         else:
             for course in allCourses:
                 if course['start'] is not None:
@@ -848,7 +851,7 @@ class courses_list_api(APIView):
                     course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
                 for data in course:
                     if course.get(data) is None:
-                        course[data] = "-"     
+                        course[data] = "-"
             return Response(allCourses)
 
 
@@ -866,10 +869,13 @@ def course_details(request, course_id):
     if course['start'] is not None:
         course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
     if course['end'] is not None:
-        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y") 
+        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")
+
+        course['certificates_status'] = get_course_certificates_status(course_id, parsedate(course['end']))
+        course['certificates_statuses'] = CertificateStatus()
     for data in course:
         if course.get(data) is None:
-            course[data] = "-"  
+            course[data] = "-"
 
     qs_params = {'fields': 'id', 'page_size': 0}
     course_all_users = course_api.get_course_details_users(course_id, qs_params)
@@ -930,7 +936,7 @@ def course_details(request, course_id):
 
     list_of_email_templates = EmailTemplate.objects.all()
     course['template_list'] = []
-    for email_template in list_of_email_templates:    
+    for email_template in list_of_email_templates:
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
     course_tags = Tag.course_tags(course_id)
@@ -950,7 +956,7 @@ class course_details_stats_api(APIView):
     def get(self, request, course_id, format=None):
 
         company_id = request.GET.get('company_id', None)
-        
+
         course_stats = get_course_social_engagement(course_id, company_id)
         return Response(course_stats)
 
@@ -965,7 +971,7 @@ def download_course_stats(request, course_id):
 
     course_social_engagement = get_course_social_engagement(course_id, company_id)
     course_engagement_summary = get_course_engagement_summary(course_id, company_id)
-    
+
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + course_name + '_stats.csv"'
 
@@ -983,26 +989,30 @@ def download_course_stats(request, course_id):
     writer.writerow(['Social Engagement', '#'])
     for stat in course_social_engagement:
         writer.writerow([stat['name'], stat['value']])
-    
+
     return response
 
 
 class course_details_engagement_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
-    def get(self, request, course_id, format=None): 
+    def get(self, request, course_id, format=None):
+        """
+        Returns course engagement summary for the specified course
+        """
+        company_id = request.GET.get('company_id', None)
 
-        company_id = request.GET.get('company_id', None)     
-        
         course_stats = get_course_engagement_summary(course_id, company_id)
-        
+
         return Response(course_stats)
 
 
 class course_details_cohort_timeline_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id):
-
+        """
+        Returns participants progress details for the specified course
+        """
         company_id = request.GET.get('company_id', None)
 
         course = load_course(course_id)
@@ -1024,7 +1034,9 @@ class course_details_performance_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id, format=None):
-        
+        """
+        Returns participants performance details for the specified course
+        """
         course_users_simple = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'})}
         course_users_ids = [str(user) for user in course_users_simple]
         roles = course_api.get_users_filtered_by_role(course_id)
@@ -1111,7 +1123,7 @@ class course_details_api(APIView):
                         break
                 if user:
                     course_participant['progress'] = '{:03d}'.format(round_to_int(user['completions']))
-                else: 
+                else:
                     course_participant['progress'] = "000"
                 course_participant['proficiency'] = None
                 for grade in course_grades['leaders']:
@@ -1146,7 +1158,7 @@ class course_details_api(APIView):
     def post(self, request, course_id=None, format=None):
         data = json.loads(request.body)
         if (data['type'] == 'status_check'):
-            batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])      
+            batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])
             BatchOperationStatus.clean_old()
             if len(batch_status) > 0:
                 batch_status = batch_status[0]
@@ -1157,8 +1169,8 @@ class course_details_api(APIView):
                         error_list.append({'id': b_error.user_id, 'message': b_error.error})
                 return Response({'status':'ok', 'values':{'selected': batch_status.attempted, 'successful': batch_status.succeded, 'failed': batch_status.failed}, 'error_list':error_list})
             return Response({'status':'error', 'message': 'No such task!'})
-        
-        else:        
+
+        else:
             batch_status = BatchOperationStatus.create();
             task_id = batch_status.task_key
             course_bulk_actions(course_id, data, batch_status)
@@ -1447,7 +1459,7 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
         if detail_view == "courses":
             for program in data["programs"]:
                 program.courses = program.fetch_courses()
-    
+
     if detail_view == "courses_without_programs":
         data["students"] = client.fetch_students_by_enrolled()
         # convert all of the date strings to SHORT FORMAT
@@ -2109,7 +2121,7 @@ def import_participants(request):
             reg_status = UserRegistrationBatch.create();
             import_participants_threaded(
                 request.FILES['student_list'],
-                request, 
+                request,
                 reg_status
             )
             return HttpResponse(
@@ -2127,7 +2139,7 @@ def enroll_participants_from_csv(request):
             reg_status = UserRegistrationBatch.create();
             enroll_participants_threaded(
                 request.FILES['student_enroll_list'],
-                request, 
+                request,
                 reg_status
             )
             return HttpResponse(
@@ -2180,7 +2192,7 @@ def import_participants_check(request, task_key):
                 content_type='application/json'
             )
 
-    
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_activation_links_by_task_key(request):
 
@@ -2200,7 +2212,7 @@ def download_activation_links_by_task_key(request):
         user_data = user_api.get_user(user_id=user_id)
         company_id = vars(user_api.get_user_organizations(user_id)[0])['id']
         activation_records = [UserActivation.get_user_activation(user=user_data)]
-    
+
     if res_type == 'csv':
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
@@ -2221,11 +2233,11 @@ def download_activation_links_by_task_key(request):
             activation_full = "{}/{}".format(uri_head, user['activation_key'])
             if user_id:
                 user = vars(user_data)
-            activation_records_data.append([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])      
+            activation_records_data.append([user['email'], user['first_name'], user['last_name'], user.get('company_id', company_id), activation_full])
 
-            if res_type == 'json': 
+            if res_type == 'json':
                 response = HttpResponse(
-                    json.dumps({"records": activation_records_data}), 
+                    json.dumps({"records": activation_records_data}),
                     content_type='application/json'
                 )
             if res_type == 'html':
@@ -2234,7 +2246,7 @@ def download_activation_links_by_task_key(request):
                     {'records': activation_records_data})
 
     return response
-    
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
@@ -2253,7 +2265,7 @@ def mass_student_enroll(request, client_id):
                 client_id,
                 program_id,
                 course_id,
-                request, 
+                request,
                 reg_status
             )
             return HttpResponse(
@@ -2271,7 +2283,7 @@ def mass_student_enroll(request, client_id):
             "form": form,
             "users": users,
             "client_id": client_id,
-            "programs": programs, 
+            "programs": programs,
             "error": error,
         }
 
@@ -3333,7 +3345,7 @@ def workgroup_list(request, restrict_to_programs_ids=None):
             course.name = (course.name[:max_string_length] + '...') if len(course.name) > max_string_length else course.name
     else:
         courses = []
-        
+
     data = {
         "principal_name": _("Group Work"),
         "principal_name_plural": _("Group Work"),
@@ -3365,7 +3377,7 @@ def participants_list(request):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def participant_password_reset(request, user_id):
-    try: 
+    try:
         user = user_api.get_user(user_id)
         send_password_reset_email(request.META.get('HTTP_HOST'), user, request.is_secure())
         messages.success(request, 'Password Reset Email successfully sent.')
@@ -3574,12 +3586,12 @@ class participant_details_api(APIView):
             else:
                 selectedUser['location'] = selectedUser['city'] + ', ' + selectedUser['country']
             selectedUser['mcka_permissions'] = selectedUserPermissions.current_permissions
-            
+
             nice_permissions = {
                 PERMISSION_GROUPS.MCKA_ADMIN : "Uber admin",
                 PERMISSION_GROUPS.INTERNAL_ADMIN : "Internal admin",
                 PERMISSION_GROUPS.CLIENT_ADMIN : "Client admin",
-                PERMISSION_GROUPS.MCKA_SUBADMIN : "Course ops admin" 
+                PERMISSION_GROUPS.MCKA_SUBADMIN : "Course ops admin"
             }
             nice_perms = []
             for perm in selectedUser['mcka_permissions']:
@@ -3700,7 +3712,7 @@ class manage_user_company_api(APIView):
             if selectedUser is not None:
                 selectedUser = selectedUser.to_dict()
             else:
-                return Response({'status':'ok', 'message':"Can't find user in database"}) 
+                return Response({'status':'ok', 'message':"Can't find user in database"})
             userOrganizations = user_api.get_user_organizations(user_id)
             userOrganizationsList =[]
             for organization in userOrganizations:
@@ -3777,7 +3789,7 @@ class participant_course_manage_api(APIView):
         else:
             return Response({'status':'error', 'message':'There is a problem with selected user role on new course!'})
 
-      
+
 class participant_details_active_courses_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
@@ -3788,7 +3800,7 @@ class participant_details_active_courses_api(APIView):
         if include_slow_fields == 'false':
             active_courses, course_history = get_user_courses_helper(user_id, request)
             return Response(active_courses)
-        elif include_slow_fields == 'true':  
+        elif include_slow_fields == 'true':
             fetch_courses =[]
             for course_id in request.GET['ids'].split(','):
                 user_course = {}
@@ -3799,8 +3811,8 @@ class participant_details_active_courses_api(APIView):
                 user_course['progress'] = '{:03d}'.format(int(course_data.user_progress))
                 proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
                 user_course['proficiency'] = '{:03d}'.format(round_to_int(proficiency.user_grade_value * 100))
-                fetch_courses.append(user_course)   
-            return Response(fetch_courses) 
+                fetch_courses.append(user_course)
+            return Response(fetch_courses)
 
         return Response({})
 
@@ -3809,7 +3821,7 @@ class participant_details_active_courses_api(APIView):
 def download_active_courses_stats(request, user_id):
 
     active_courses, course_history = get_user_courses_helper(user_id, request)
-    
+
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="active_courses_stats.csv"'
 
@@ -3823,7 +3835,7 @@ def download_active_courses_stats(request, user_id):
         proficiency = course_api.get_course_metrics_grades(course['id'], user_id=user_id, grade_object_type=Proficiency)
         course['proficiency'] = '{:d}%'.format(round_to_int(proficiency.user_grade_value * 100))
         writer.writerow([course['name'], course['id'], course['program'], course['progress'], course['proficiency'], course['status']])
-    
+
     return response
 
 
@@ -3836,9 +3848,9 @@ class participant_details_course_edit_status_api(APIView):
         if params['currentRoles']:
             current_roles = str(params['currentRoles'][0])
         data = {
-            'user_id': user_id, 
-            'course_id': course_id, 
-            'current_roles': current_roles, 
+            'user_id': user_id,
+            'course_id': course_id,
+            'current_roles': current_roles,
             'status': ''
         }
         return HttpResponse(render(request, 'admin/participants/participant_edit_status.haml', data))
@@ -3875,7 +3887,7 @@ class participant_details_course_history_api(APIView):
 
                 user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
 
-        return Response(course_history) 
+        return Response(course_history)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
@@ -3896,7 +3908,7 @@ def download_course_history_stats(request, user_id):
                     user_course['completed'] = 'No'
                     user_course['grade'] = 0
             user_course['end'] = parsedate(user_course['end']).strftime("%Y/%m/%d")
-    
+
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="course_history_stats.csv"'
 
@@ -3904,7 +3916,7 @@ def download_course_history_stats(request, user_id):
     writer.writerow(['Course', 'Course ID', 'Program', 'Completed', 'Grade', 'Status', 'End Date'])
     for course in course_history:
         writer.writerow([course['name'], course['id'], course['program'], course['completed'], course['grade'], course['status'], course['end']])
-    
+
     return response
 
 
@@ -4140,7 +4152,7 @@ def client_admin_branding_settings_create_edit(request, client_id, course_id):
                 'course_id': course_id,
             })
             return HttpResponseRedirect(url)
-    
+
     else:
         form = BrandingSettingsForm(instance=instance)
 
@@ -4189,7 +4201,7 @@ def course_learner_dashboard_discover_create_edit(request, course_id, discovery_
 
     try:
         learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
-    except: 
+    except:
         return render(request, '404.haml')
 
     if discovery_id:
@@ -4231,7 +4243,7 @@ def course_learner_dashboard_discover_create_edit(request, course_id, discovery_
         return HttpResponseRedirect(redirect_url)
 
     else:
-        form = DiscoveryContentCreateForm(instance=discovery)        
+        form = DiscoveryContentCreateForm(instance=discovery)
 
     data = {
         'url': url,
@@ -4295,10 +4307,10 @@ def course_learner_dashboard_discover_reorder(request, course_id):
 
 class email_templates_get_and_post_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-    def get(self, request, format=None):   
+    def get(self, request, format=None):
         list_of_email_templates = EmailTemplate.objects.all().order_by('title')
         templates = []
-        for email_template in list_of_email_templates:    
+        for email_template in list_of_email_templates:
             templates.append({'pk':email_template.pk, 'title':email_template.title, 'subject':email_template.subject, 'body': email_template.body})
         return Response(templates)
 
@@ -4308,7 +4320,7 @@ class email_templates_get_and_post_api(APIView):
         subject = request.DATA.get('subject', None)
         body = request.DATA.get('body', None)
         if title and subject and body:
-            email_template = EmailTemplate.create(title=title, subject=subject, body=body)   
+            email_template = EmailTemplate.create(title=title, subject=subject, body=body)
             email_template.save()
             return Response({'status':'ok', 'message':'Successfully added new email template!', 'data': \
                 {'pk':email_template.pk,'title':email_template.title, 'subject':email_template.subject, 'body':email_template.body}})
@@ -4329,14 +4341,14 @@ class email_templates_put_and_delete_api(APIView):
             else:
                 return Response({'status':'error', 'message':"Can't find email template key!"})
         else:
-            return Response({'status':'error', 'message':'Missing email template key!'}) 
+            return Response({'status':'error', 'message':'Missing email template key!'})
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def delete(self, request, pk, format=None):
         if pk:
             selected_template = EmailTemplate.objects.filter(pk=pk)
             if len(selected_template) > 0:
-                selected_template = selected_template[0]           
+                selected_template = selected_template[0]
                 selected_template.delete()
                 return Response({'status':'ok', 'message':'Successfully deleted email template!', 'pk': pk})
             else:
@@ -4349,7 +4361,7 @@ class email_templates_put_and_delete_api(APIView):
         if pk:
             selected_template = EmailTemplate.objects.filter(pk=pk)
             if len(selected_template) > 0:
-                selected_template = selected_template[0]           
+                selected_template = selected_template[0]
                 title = request.DATA.get('title', None)
                 subject = request.DATA.get('subject', None)
                 body = request.DATA.get('body', None)
@@ -4384,7 +4396,7 @@ class email_send_api(APIView):
 class users_company_admin_get_post_put_delete_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-    def get(self, request, user_id, format=None):   
+    def get(self, request, user_id, format=None):
         user_permissions = Permissions(user_id)
         response_dict = {}
         user_data = user_permissions.get_all_user_organizations_with_permissions()
@@ -4583,7 +4595,7 @@ def company_details(request, company_id):
     data = {
         'company': company,
         'contacts': contacts,
-        'invoicing': invoicing, 
+        'invoicing': invoicing,
         'companyAdminFlag': companyAdminFlag
     }
 
@@ -4603,7 +4615,7 @@ class company_courses_api(APIView):
                 company_ids.append(int(user_org.id))
             if int(company_id) not in company_ids:
                 return permission_denied(request)
-        
+
         company_courses = organization_api.get_organizations_courses(company_id)
         courses = []
         for company_course in company_courses:
@@ -4619,7 +4631,7 @@ class company_courses_api(APIView):
             course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
             if company_course['end'] is not None:
                 end = parsedate(company_course['end'])
-                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y") 
+                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
             else:
                 course['end'] = '-'
             course['cohort'] = '-'
@@ -4791,7 +4803,7 @@ def course_learner_dashboard_tile(request, course_id, learner_dashboard_id, tile
                 create_tile_progress_data(tile)
 
             redirect_url = reverse(
-                'course_learner_dashboard', 
+                'course_learner_dashboard',
                 kwargs={'course_id': course_id}
             )
             return HttpResponseRedirect(redirect_url)
@@ -4799,7 +4811,7 @@ def course_learner_dashboard_tile(request, course_id, learner_dashboard_id, tile
     elif request.method == 'DELETE':
         instance.delete()
         redirect_url = reverse(
-            'course_learner_dashboard', 
+            'course_learner_dashboard',
             kwargs={'course_id': course_id}
         )
         return HttpResponseRedirect(redirect_url)
@@ -4848,7 +4860,7 @@ def course_learner_dashboard_discover(request, course_id, learner_dashboard_id, 
 
     try:
         instance = LearnerDashboardDiscovery.objects.get(id=discovery_id)
-    except: 
+    except:
         instance = None
 
     if request.method == 'POST':
@@ -4868,11 +4880,11 @@ def course_learner_dashboard_discover(request, course_id, learner_dashboard_id, 
         redirect_url = reverse(
             'course_learner_dashboard',
             kwargs={'course_id': course_id}
-        )        
+        )
         return HttpResponseRedirect(redirect_url)
 
     else:
-        form = DiscoveryContentCreateForm(instance=instance)        
+        form = DiscoveryContentCreateForm(instance=instance)
 
     data = {
         'error': error,
@@ -4965,10 +4977,10 @@ def company_course_details(request, company_id, course_id):
     if course['start'] is not None:
         course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
     if course['end'] is not None:
-        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y") 
+        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")
     for data in course:
         if course.get(data) is None:
-            course[data] = "-"  
+            course[data] = "-"
 
     qs_params = {'fields': 'id'}
     course_all_users = course_api.get_course_details_users(course_id=course_id)
@@ -4994,7 +5006,7 @@ def company_course_details(request, company_id, course_id):
     for group in permissions_groups:
         group_ids += str(group.id) + ','
     group_ids = group_ids[:-1]
-    
+
     course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
     course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, group_ids, company_id)
     course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
@@ -5032,7 +5044,7 @@ def company_course_details(request, company_id, course_id):
 
     list_of_email_templates = EmailTemplate.objects.all()
     course['template_list'] = []
-    for email_template in list_of_email_templates:    
+    for email_template in list_of_email_templates:
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
     course_tags = Tag.course_tags(course_id)
@@ -5064,7 +5076,7 @@ class company_info_api(APIView):
                 company_ids.append(int(user_org.id))
             if int(company_id) not in company_ids:
                 return permission_denied(request)
-        
+
         flag = request.GET.get('flag', None)
         response = {}
         if flag == 'contacts':
@@ -5126,7 +5138,7 @@ class company_info_api(APIView):
                 response['invoicing']['postal_code'] = '-'
                 response['invoicing']['country'] = '-'
                 response['invoicing']['po'] = '-'
-        
+
         return Response(response)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
@@ -5214,7 +5226,7 @@ def download_company_info(request, company_id):
     participants = user_api.get_filtered_users(requestParams)
     numberParticipants = participants['count']
     activeCourses = '-'
-    
+
     invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
     invoicing = {}
     if len(invoicingDetails):

@@ -50,6 +50,7 @@ DEFAULT_APPS = (
 THIRD_PARTY_APPS = (
     'debug_toolbar',
     'django_assets',
+    'djcelery',
 )
 
 LOCAL_APPS = (
@@ -65,6 +66,7 @@ LOCAL_APPS = (
     'heartbeat',
     'public_api',
     'rest_framework',
+    'certificates',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -238,6 +240,8 @@ APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
 MCKINSEY_EMAIL_DOMAIN = "@mckinsey.com"
 
+CERTIFICATES_EMAIL_SUBJECT = "Congratulations! Your certificate has been generated"
+
 # Date formatting rules
 DATE_DISPLAY_FORMAT = "%B %d, %Y"
 SHORT_DATE_FORMAT = "%m/%d/%Y"
@@ -255,6 +259,13 @@ SOCIAL_METRIC_POINTS = {
 ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
 
 API_SERVER_PREFIX = '/'.join(['api', 'server'])
+
+BROKER_URL = "amqp://myuser:mypassword@localhost:5672/myvhost"
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
 
 # Api locations
 COURSEWARE_API = '/'.join([API_SERVER_PREFIX, 'courses'])

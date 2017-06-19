@@ -149,7 +149,7 @@ def get_course_tab(course_id, name=None, tab_id=None):
     response = GET('{}/{}/{}/static_tabs/{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
-        course_id, 
+        course_id,
         query)
     )
     array = JP.from_json(response.read(), course_models.CourseTab)
@@ -818,6 +818,22 @@ def get_course_details_metrics_filtered_by_groups(course_id, group_ids, organiza
             course_id,
             group_ids,
             organization_id
+        )
+    )
+
+    return json.loads(response.read())
+
+
+@api_error_protect
+def get_course_passed_users_id_list(course_id):
+    """
+    Returns list of user ids of course passing users
+    """
+    response = GET(
+        '{}/{}/{}/users/passed'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id
         )
     )
 
