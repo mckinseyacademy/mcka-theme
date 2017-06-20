@@ -148,7 +148,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
             if remote_session_key not in existing_session_keys:
                 http_error = HTTPError("http://irrelevant", 404, "Session not found", None, None)
                 raise ApiError(http_error, "get_session", None)
-            return mock.Mock(user_id=existing_user.id)
+            return mock.Mock(user_id=existing_user.id, token='123')
 
         self.user_api.authenticate.return_value = self._make_auth_response(existing_user)
         self.user_api.get_session.side_effect = _get_session
@@ -237,7 +237,13 @@ class AccessLandingTests(TestCase, ApplyPatchMixin):
         request = self.factory.get('/access/1234')
         request.user = RemoteUser.objects.create_user(username='johndoe', email='john@doe.org', password='password')
         request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
+
+        self.apply_patch('accounts.views.set_current_course_for_user')
+        patched_add_message = self.apply_patch('accounts.views.messages.add_message')
+        patched_add_message.return_value = []
+
         response = access_key(request, 1234)
+
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.mock_client.add_user.called)
 
@@ -440,21 +446,18 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         self.assertEqual(response['Location'], 'http://testserver/auth/complete/tpa-saml/')
 
         # Then the user should be registered:
-        expected_username = 'myself' if not with_existing_user else 'myself1'
+        expected_username = u'myself' if not with_existing_user else u'myself1'
         mock_register_user.assert_called_once_with({
             'username': expected_username,
-            'city': 'Gotham',
-            'title': '',
-            'country': '',
-            'company': 'TestCo',
+            'city': u'New York',
+            'title': u'',
+            'country': u'',
+            'company': u'TestCo',
             'is_active': True,
-            'year_of_birth': '',
-            'level_of_education': '',
-            'full_name': 'Me Myself And I',
-            'gender': '',
+            'full_name': u'Me Myself And I',
             'accept_terms': True,
             'password': 'MDAwMA==',
-            'email': 'myself@testshib.org',
+            'email': u'myself@testshib.org',
         })
 
     def test_sso_missing_access_key(self):
@@ -504,6 +507,7 @@ class TestProcessAccessKey(TestCase, ApplyPatchMixin):
 
     @classmethod
     def setUpClass(cls):
+        super(TestProcessAccessKey, cls).setUpClass()
         cls.program = _make_program()
 
     def setUp(self):

@@ -3,10 +3,10 @@ from accounts.views import home
 from django.core.urlresolvers import reverse
 from main.middleware.allow_embed_url import AllowEmbedUrlMiddleware
 
-ALLOW_EMBED_URL = 'example.com'
+ALLOW_EMBED_URL = 'https://example.com'
 
 class AllowEmbedUrlTest(TestCase):
-        
+
     @override_settings(ALLOW_EMBED_URL=ALLOW_EMBED_URL)
     def test_details(self):
 

@@ -20,7 +20,7 @@ class AllowEmbedUrlMiddleware(object):
                 if referer_url.find(allowed_host) != -1:
                     self.is_scorm_shell = True
                     break
-        
+
     def process_response(self, request, response):
         if self.is_scorm_shell:
             response['Content-Security-Policy'] = 'frame-ancestors ' + settings.ALLOW_EMBED_URL

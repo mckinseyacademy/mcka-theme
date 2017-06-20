@@ -254,10 +254,12 @@ def enroll_student_in_course_without_program(user, course_id):
     return EnrollStudentInCourseResult(course_id, enrolled, new_enrollment, message)
 
 
-def send_password_reset_email(domain, user, use_https, 
-                            subject_template_name='registration/password_reset_subject.txt',
-                            email_template_name='registration/password_reset_email.html',
-                            from_email=settings.APROS_EMAIL_SENDER):
+def send_password_reset_email(
+    domain, user, use_https,
+    subject_template_name='registration/password_reset_subject.txt',
+    email_template_name='registration/password_reset_email.html',
+    from_email=settings.APROS_EMAIL_SENDER
+):
 
     uid = urlsafe_base64_encode(force_bytes(user.id))
 
