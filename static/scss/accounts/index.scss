@@ -1,3 +1,14 @@
+.login-form{
+  .button[type="submit"]{
+    white-space: pre-line;
+  }
+  .help {
+    @media only screen and (max-width: 767px) {
+      border-left: 0 !important;
+      min-height: 0 !important;
+    }
+  }
+}
 .login-form, .registration-form, .reset-password-form{
   margin-top: rem-calc(48);
   padding: rem-calc(20);
