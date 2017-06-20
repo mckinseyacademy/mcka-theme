@@ -34,36 +34,59 @@
 
     a {
       color: $pure-white;
-      &:hover{
+      &:hover {
         color: $mckinsey-academy-blue-gray;
       }
     }
   }
-
+  .course_info, .course_nav{
+    width: 100%;
+    @media only screen and (min-width: 768px){
+      width: 42%;
+    }
+  }
+  .course_info{
+    .program-name, .course-name{
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
   .course_nav {
     @include clearfix;
-
     .course-tabs {
-      float: right;
+      float: none;
       margin: 0;
       list-style-type: none;
+      text-align: center;
+      @media only screen and (min-width: 768px){
+        float: right;
+      }
 
       li {
-        float: left;
-        margin-right: 18px;
+        display: inline-block;
+        margin-right: 12px;
         position: relative;
         line-height: $program-bar-height;
-
+        @media only screen and (min-width: 1024px){
+          margin-right: 18px;
+        }
         a, a:visited {
           color: $pure-white;
           text-decoration: none;
           padding: 10px 0;
-          i { @include font-spec(22px); }
+          i {
+            @include font-spec(22px);
+          }
 
           .lesson-progress-bar {
             margin-top: 6px;
             height: 6px;
-            .bar { height: 6px; }
+            .bar {
+              height: 6px;
+            }
           }
 
           &[disabled] {
@@ -94,7 +117,9 @@
             padding: 10px 0;
             width: 235px;
             border-bottom: 1px solid $almost-white;
-            &:last-child { border-bottom: none; }
+            &:last-child {
+              border-bottom: none;
+            }
           }
 
           a, a:visited {
@@ -105,17 +130,21 @@
             color: $mckinsey-orange;
           }
 
-          a.done{
+          a.done {
             color: $mckinsey-academy-black;
           }
 
-          a:hover { color: $mckinsey-academy-blue-gray; }
+          a:hover {
+            color: $mckinsey-academy-blue-gray;
+          }
 
           &#lessons-content {
             color: $mckinsey-academy-black;
 
             a, a:visited {
-              i.fa { @include font-spec(16); }
+              i.fa {
+                @include font-spec(16);
+              }
             }
           }
 
@@ -143,14 +172,16 @@
       margin: $program-bar-topbottom-margin 10px;
       cursor: pointer;
       color: $pure-white;
-      &:hover { color: $mckinsey-academy-blue-gray; }
+      &:hover {
+        color: $mckinsey-academy-blue-gray;
+      }
     }
   }
 
   .program-menu-content {
     color: $mckinsey-blue;
     display: none;
-    &.open{
+    &.open {
       display: block;
     }
 
@@ -167,9 +198,9 @@
     .program-title {
       margin: 12px 20px 0;
       @include font-spec(12, bold);
-      
-      span{
-          text-transform: uppercase;
+
+      span {
+        text-transform: uppercase;
       }
     }
 
@@ -195,7 +226,7 @@
     }
 
     a.course-name {
-      &:hover{
+      &:hover {
         color: $mckinsey-academy-blue-gray;
       }
     }
@@ -205,7 +236,7 @@
       font-style: italic;
       color: $mckinsey-dark-grey;
 
-      &.complete{
+      &.complete {
         color: $mckinsey-green;
       }
     }
@@ -213,10 +244,10 @@
     ul {
       margin: 0 12px;
       list-style: none;
-      li{
+      li {
         padding: 0 8px 8px;
         border-top: 1px solid $almost-white;
-        &:first-child{
+        &:first-child {
           border-top: none;
           margin-top: 0;
         }
