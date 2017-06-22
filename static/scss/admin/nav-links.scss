@@ -73,7 +73,8 @@
           position: relative;
 
           input[name='client_logo'],
-          input[name='client_background'] {
+          input[name='client_background'],
+          input[name='global_client_logo'] {
             position: absolute;
             top: 0;
             right: 35px;
