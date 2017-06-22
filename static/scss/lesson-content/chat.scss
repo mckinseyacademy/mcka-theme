@@ -1,6 +1,7 @@
 .lesson-content .chat-block {
   // Limit height of the block to available screen size (leave 250px for the header).
   max-height: calc(100vh - 250px);
+  overflow-y: auto;
   background: $chat-bg-color;
   border: 5px solid $chat-border-color;
 
