@@ -388,6 +388,8 @@ class ClientCustomization(db_models.Model):
     identity_provider = db_models.CharField(blank=True, max_length=200)
     client_background = db_models.CharField(max_length=200)
     client_background_css = db_models.CharField(max_length=200)
+    global_client_logo = db_models.CharField(max_length=200, blank=True)
+    hex_background_main_navigation = db_models.CharField(max_length=7, blank=True)
 
 class CompanyInvoicingDetails(db_models.Model):
     company_id = db_models.IntegerField(unique=True, db_index=True)

@@ -63,6 +63,13 @@
             %a.button.radius.tiny.upload_logo Upload Background
             %input{type: 'file', name: 'client_background'}
           %li
+            %label.nav2.selected Upload global client logo:
+            %a.button.radius.tiny.upload_logo Upload Global Logo
+            %input{type: 'file', name: 'global_client_logo'}
+          %li
+            %label.nav2.selected Hex # for background main navigation:
+            %input{type: 'text', name: 'hex_background_main_navigation', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_background_main_navigation}"}
+          %li
             %label.nav2.selected CSS for background image:
             %input{type: 'text', name: 'client_background_css', placeholder: 'enter css', maxlength: "200", value: "#{customization.client_background_css}"}
           %li
