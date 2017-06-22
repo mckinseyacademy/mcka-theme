@@ -443,7 +443,7 @@ TILE_TITLE_COLOR = "#3384CA"
 TILE_NOTE_COLOR = "#868685"
 TILE_BACKGROUND_COLOR = "#FFFFFF"
 
-# Characters added here will not be included in CSV exports data
+# Characters added here will be cleaned in CSV exports data
 CSV_CHARACTERS_BLACKLIST = [
     '+',
     '-',
@@ -463,6 +463,13 @@ CSV_CHARACTERS_BLACKLIST = [
     '*'
 ]
 
+# Controls how CSV formula injection characters are cleaned
+# possible values are 'prepend', 'remove'
+#
+# prepend: Prepends apostrophe to value
+# remove: Removes all the occurrences of blacklist characters
+FORMULA_CLEAN_STRATEGY = 'prepend'
+
 # Properties to clean
 USER_PROPERTIES_TO_CLEAN = [
     'first_name',
@@ -480,10 +487,14 @@ COMPANY_PROPERTIES_TO_CLEAN = [
     'address2',
     'city',
     'state',
-    'country'
+    'country',
+    'postal_code',
+    'po',  # purchase order number
 ]
 
 CONTACT_PROPERTIES_TO_CLEAN = [
     'full_name',
-    'title'
+    'title',
+    'email',
+    'phone',
 ]

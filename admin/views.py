@@ -80,7 +80,7 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
-from util.data_sanitizing import sanitize_data
+from util.data_sanitizing import sanitize_data, clean_formula_characters
 from util.validators import AlphanumericValidator
 
 from rest_framework.views import APIView
@@ -5272,11 +5272,17 @@ def download_company_info(request, company_id):
             contacts.append(contact)
 
     contacts = [
-        sanitize_data(data=contact, props_to_clean=settings.CONTACT_PROPERTIES_TO_CLEAN)
+        sanitize_data(
+            data=contact, props_to_clean=settings.CONTACT_PROPERTIES_TO_CLEAN,
+            clean_methods=(clean_formula_characters,)
+        )
         for contact in contacts
     ]
 
-    invoicing = sanitize_data(data=invoicing, props_to_clean=settings.COMPANY_PROPERTIES_TO_CLEAN)
+    invoicing = sanitize_data(
+        data=invoicing, props_to_clean=settings.COMPANY_PROPERTIES_TO_CLEAN,
+        clean_methods=(clean_formula_characters, )
+    )
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + name.replace(' ', '_') + '_info.csv"'
