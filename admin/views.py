@@ -2842,7 +2842,7 @@ def groupwork_dashboard_companies(request, restrict_to_programs_ids=None):
     )
 
     data = [
-        _make_select_option_response(item.id, item.display_name, item.id not in accessible_clients) for item in all_clients
+        _make_select_option_response(item.id, clean_xss_characters(item.display_name), item.id not in accessible_clients) for item in all_clients
     ]
     return HttpResponse(json.dumps(data), content_type="application/json")
 
