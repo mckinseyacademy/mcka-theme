@@ -273,6 +273,7 @@ PROGRESS_IGNORE_COMPONENTS = [
     'discussion-course',
     'group-project',
     'discussion-forum',
+    'eoc-journal',
 
     # GP v2 categories
     'gp-v2-project',
