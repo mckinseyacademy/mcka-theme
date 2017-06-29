@@ -116,6 +116,12 @@ server {
     try_files $uri @proxy_to_lms_app;
   }
 
+  # pass requests for course uploads to the LMS
+
+  location /assets/courseware/v1/ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
   # serve generated static content from cache
 
   location ~ /static/(?P<file>.*) {
