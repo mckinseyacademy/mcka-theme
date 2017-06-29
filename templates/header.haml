@@ -3,6 +3,13 @@
     .large-12.columns
       - block header_home
         %a.logo{href: "/"}
+          -if request.user.is_authenticated
+            -if branding and branding.logo_image
+              %img.header-logo-img{src: "/company_images/#{branding.logo_image}"}
+            -else
+              %img{src: "/static/image/mckinsey-academy-logo.png", srcset: "/static/image/mckinsey-academy-logo@2x.png 2x"}
+          -else
+            %img{src: "/static/image/mckinsey&academy.png", srcset: "/static/image/mckinsey&academy@2x.png 2x"}
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu
         %nav{role: 'navigation'}
