@@ -13,7 +13,7 @@ function DashboardCommon(gp_placeholder, lesson_data_base){
     function make_option(value, text) {
         var option = $("<option>");
         option.val(value);
-        option.html(text);
+        option.text(text);
         return option;
     }
 
