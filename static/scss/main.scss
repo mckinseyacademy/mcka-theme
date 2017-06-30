@@ -31,9 +31,8 @@ body{
       .logo{
         line-height: 48px;
         background: none;
-
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-          background-image: url(/static/image/mckinsey-academy@2x.png);
+        img{
+          max-height: 48px;
         }
       }
     }
