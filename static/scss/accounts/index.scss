@@ -2,8 +2,11 @@
   .button[type="submit"]{
     white-space: pre-line;
   }
+  input:not([type="submit"]){
+    max-width: 430px;
+  }
   .help {
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 548px) {
       border-left: 0 !important;
       min-height: 0 !important;
     }
