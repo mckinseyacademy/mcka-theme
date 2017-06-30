@@ -70,10 +70,6 @@ header[role=banner].background-blue {
     height: 48px;
     margin: 0 auto;
     display: block;
-
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      background-image: url(/static/image/mckinsey&academy@2x.png);
-    }
   }
 
   .admin-logo {
