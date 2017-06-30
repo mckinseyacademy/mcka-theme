@@ -4,8 +4,8 @@
       - block header_home
         %a.logo{href: "/"}
           -if request.user.is_authenticated
-            -if branding and branding.logo_image
-              %img.header-logo-img{src: "/company_images/#{branding.logo_image}"}
+            -if client_customization and client_customization.global_client_logo
+              %img.header-logo-img{src: "#{client_customization.global_client_logo}"}
             -else
               %img{src: "/static/image/mckinsey-academy-logo.png", srcset: "/static/image/mckinsey-academy-logo@2x.png 2x"}
           -else
