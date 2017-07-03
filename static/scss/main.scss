@@ -664,6 +664,7 @@ i.status {
   }
 
   .lesson-item-name {
+    text-align: left;
     margin-left: 18px;
     @include font-spec(12, 500, 16);
 
