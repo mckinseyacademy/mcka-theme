@@ -176,6 +176,9 @@
         color: $mckinsey-academy-blue-gray;
       }
     }
+    [data-tooltip]:after{
+      right: auto;
+    }
   }
 
   .program-menu-content {
@@ -183,6 +186,15 @@
     display: none;
     &.open {
       display: block;
+      max-height: 95vh;
+      overflow: auto;
+      width: 98% !important;
+      .indent{
+        padding-left: 0;
+        .courses{
+          margin: 0;
+        }
+      }
     }
 
     // The next few items are marked as !important to prevent the foundation dropdown code from re-positioning the dropdown - it's goping where we want it to go
