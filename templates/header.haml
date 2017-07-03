@@ -1,8 +1,16 @@
-%header.background-blue{role: 'banner'}
+%header.background-blue{style: "{% if client_customization and client_customization.hex_background_main_navigation %}background-color:#{client_customization.hex_background_main_navigation};{% endif %}" , role: 'banner'}
   .row.collapse.main-nav
     .large-12.columns
       - block header_home
-        %a.logo{href: "/"}
+        -if request.user.is_authenticated
+          -if client_customization and client_customization.global_client_logo
+            %img.header-logo-img{src: "#{client_customization.global_client_logo}"}
+          -else
+            %a.logo{href: "/"}
+              %img{src: "/static/image/mckinsey-academy-logo.png", srcset: "/static/image/mckinsey-academy-logo@2x.png 2x"}
+        -else
+          %a.logo{href: "/"}
+            %img{src: "/static/image/mckinsey&academy.png", srcset: "/static/image/mckinsey&academy@2x.png 2x"}
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu
         %nav{role: 'navigation'}
@@ -49,7 +57,7 @@
             #profile-container{data-dropdown-content: "true"}
   - block program_bar
     - if program and course and course.started
-      .program-bar.background-alt-blue{style: "{% if client_customization and client_customization.hex_background_bar %}background-color:#{client_customization.hex_background_bar};{% endif %} {% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %}"}
+      .program-bar.background-alt-blue
         - if client_customization.client_logo
           .client-logo
             %img{src: "#{client_customization.client_logo}"}

@@ -29,11 +29,10 @@ body{
     }
     header[role=banner].background-blue{
       .logo{
-        background: url(/static/image/mckinsey-academy.png) no-repeat 0 center;
-        background-size: 100%;
-
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-          background-image: url(/static/image/mckinsey-academy@2x.png);
+        line-height: 48px;
+        background: none;
+        img{
+          max-height: 48px;
         }
       }
     }
