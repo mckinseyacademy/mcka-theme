@@ -264,6 +264,13 @@ header[role=banner].background-blue {
     right: 0 !important;
     left: auto !important;
     z-index: 10;
+    @media only screen
+    and (max-width: 767px){
+      width: 220px !important;
+      max-height: calc(100vh - 50px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
   }
 
  @import './program-bar';
