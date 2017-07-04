@@ -57,7 +57,7 @@
             #profile-container{data-dropdown-content: "true"}
   - block program_bar
     - if program and course and course.started
-      .program-bar.background-alt-blue
+      .program-bar.background-alt-blue{style: "{% if client_customization and client_customization.hex_background_bar %}background-color:#{client_customization.hex_background_bar};{% endif %}"}
         - if client_customization.client_logo
           .client-logo
             %img{src: "#{client_customization.client_logo}"}
