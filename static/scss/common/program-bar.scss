@@ -186,7 +186,8 @@
     display: none;
     &.open {
       display: block;
-      max-height: 95vh;
+      max-height: calc(100vh - 140px);
+      height: auto !important;
       overflow: auto;
       width: 95% !important;
       max-width: 300px !important;
