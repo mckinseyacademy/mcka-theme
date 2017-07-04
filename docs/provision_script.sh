@@ -2,7 +2,7 @@ sudo sh -c 'apt-get update -qq ; true'   # suppressing errors due to expired key
 sudo apt-get install -y gawk libreadline6-dev libyaml-dev sqlite3 autoconf libgdbm-dev libncurses5-dev automake libtool libffi-dev libsqlite3-dev bison libgmp-dev libgmp-dev
 
 sudo apt-get -y install nginx
-sudo cp /edx/app/apros/mcka_apros/docs/mcka_apros /etc/nginx/sites-available/mcka_apros
+sudo cp /edx/app/apros/mcka_apros/docs/mcka_apros_production /etc/nginx/sites-available/mcka_apros_production
 sudo ln -s /etc/nginx/sites-{available,enabled}/mcka_apros
 sudo service nginx restart
 
