@@ -188,7 +188,8 @@
       display: block;
       max-height: 95vh;
       overflow: auto;
-      width: 98% !important;
+      width: 95% !important;
+      max-width: 300px !important;
       .indent{
         padding-left: 0;
         .courses{
