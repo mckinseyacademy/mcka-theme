@@ -2,6 +2,8 @@ from django.conf.urls import patterns, url
 from admin import views
 from admin import cache as cache_views
 from admin import s3 as s3views
+from certificates import views as certificate_views
+
 
 urlpatterns = patterns(
     'admin',
@@ -51,7 +53,7 @@ urlpatterns = patterns(
     url(r'^client-admin/programs', views.client_admin_program_detail, name='client_admin_program_detail'),
     url(r'^client-admin/contact', views.client_admin_contact, name='client_admin_contact'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
-    
+
     url(r'^api/courses/(?P<course_id>.*)/stats/$', views.course_details_stats_api.as_view(), name='course_details_stats_api'),
     url(r'^api/courses/(?P<course_id>.*)/engagement/$', views.course_details_engagement_api.as_view(), name='course_details_engagement_api'),
     url(r'^api/courses/(?P<course_id>.*)/performance/$', views.course_details_performance_api.as_view(), name='course_details_performance_api'),
@@ -97,7 +99,7 @@ urlpatterns = patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/nav_links', views.client_detail_nav_links, name='client_detail_nav_links'),
     url(r'^clients/(?P<client_id>[0-9]+)/customization', views.client_detail_customization, name='client_detail_customization'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/create', views.create_access_key, name='create_access_key'),
-    url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create-api', views.create_course_access_key_api.as_view(), name='create_course_access_key_api'),    
+    url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create-api', views.create_course_access_key_api.as_view(), name='create_course_access_key_api'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/course-create', views.create_course_access_key, name='create_course_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/(?P<access_key_id>[0-9]+)/share', views.share_access_key, name='share_access_key'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys', views.access_key_list, name='access_key_list'),
@@ -188,5 +190,10 @@ urlpatterns = patterns(
 
     url(r'^api/email-templates$', views.email_templates_get_and_post_api.as_view(), name='email_templates_get_and_post_api'),
     url(r'^api/email-templates/(?P<pk>[0-9]+)$', views.email_templates_put_and_delete_api.as_view(), name='email_templates_put_and_delete_api'),
-    url(r'^api/email', views.email_send_api.as_view(), name='email_send_api')
+    url(r'^api/email', views.email_send_api.as_view(), name='email_send_api'),
+    url(r'^certificates/template_assets$', certificate_views.certificate_template_assets, name='certificate_template_assets'),
+    url(r'^certificates/templates$', certificate_views.certificate_templates, name='certificate_templates'),
+    url(r'^certificates/templates/new$', certificate_views.new_certificate_template, name='new_certificate_template'),
+    url(r'^certificates/templates/(?P<template_id>\d+)/edit$', certificate_views.edit_certificate_template, name='edit_certificate_template'),
+
 )

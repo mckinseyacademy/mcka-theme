@@ -9,7 +9,11 @@ from django.db import IntegrityError
 from courses.models import FeatureFlags
 from courses.tests import MockCourseAPI
 
-from ..models import UserCourseCertificate, CourseCertificateStatus
+from ..models import (
+    UserCourseCertificate,
+    CourseCertificateStatus,
+    CertificateTemplate,
+)
 
 
 class CourseCertificateStatusModelTest(TestCase):
@@ -61,4 +65,32 @@ class UserCourseCertificateModelTest(TestCase):
             certificate = UserCourseCertificate.objects.create(
                 course_id=self.course_id,
                 user_id=self.user.id
+            )
+
+
+class CertificateTemplateModelTest(TestCase):
+    """
+    Test the Certificate Template Model.
+    """
+    def setUp(self):
+        """
+        Setup Certificate Template model test
+        """
+        super(CertificateTemplateModelTest, self).setUp()
+        self.course_id = 'test/course/302'
+        self.template = '<p>dummy</p>'
+
+    def test_certificate_template_course_uniqueness(self):
+        """
+        Test  certificate template uniqueness on course
+        """
+        certificate = CertificateTemplate.objects.create(
+            course_id=self.course_id,
+            template=self.template
+        )
+
+        with self.assertRaises(IntegrityError):
+            certificate = CertificateTemplate.objects.create(
+                course_id=self.course_id,
+                template=self.template
             )

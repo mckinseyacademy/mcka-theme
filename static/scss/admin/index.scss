@@ -1,5 +1,5 @@
 #admin-body {
-  
+
   margin-top: 0px;
   padding-top: $header-bar-height;
 
@@ -617,4 +617,5 @@
   @import './admin-companies';
   @import './admin-common';
   @import './admin-learner-dashboard';
+  @import './admin-certificates';
 }

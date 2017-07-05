@@ -1,0 +1,40 @@
+- extends "admin/admin_layout.haml"
+
+- load staticfiles
+- block custom_js
+  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
+
+- block content
+  #mainCertificatesTemplateListContainer
+    #certificatesTemplateListTitle
+      %p Certificate Template
+    #certificateTemplateCreateButton
+      %a.button.small.radius{href: "{% url 'new_certificate_template' %}"}
+        Create Template
+
+      %a.button.small.radius{href: "{% url 'certificate_template_assets' %}"}
+        Create Template Asset
+
+    #certificatesTemplateListText
+    %hr
+    #mainCertificatesTemplateListGridContainer
+      #mainCertificatesTemplateListGridWrapper
+        #certificatesTemplateListViewGridBlock
+          %table
+            %thead
+              %tr
+                %th Name
+                %th Description
+                %th Course Id
+                %th Template
+                %th
+            %tbody
+              - for certificate_template in certificate_templates
+                  %tr
+                    %td= certificate_template.name
+                    %td= certificate_template.description
+                    %td= certificate_template.course_id
+                    %td= certificate_template.template
+                    %td
+                      %a{href: "{% url 'edit_certificate_template' certificate_template.id %}"}
+                        Edit

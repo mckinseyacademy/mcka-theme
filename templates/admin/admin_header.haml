@@ -13,7 +13,7 @@
     %ul
       - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
         %li
-          %a{href: '/admin/courses/'}= _("Courses")  
+          %a{href: '/admin/courses/'}= _("Courses")
 
       - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
         %li
@@ -33,7 +33,11 @@
       - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
         %li
           %a{href: '/admin/course-meta-content'}= _("Course Content")
-     
+
+      - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
+        %li
+          %a{href: '{% url "certificate_templates" %}'}= _("Certificates")
+
       - if user.is_internal_admin
         %li
           %a{href: '/admin'}= _("Customization")

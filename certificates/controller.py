@@ -11,11 +11,17 @@ from django.template import loader
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from courses.models import FeatureFlags
 from api_client import course_api, user_api
 
-from .models import CourseCertificateStatus, CertificateStatus, UserCourseCertificate
+from .models import (
+    CourseCertificateStatus,
+    CertificateStatus,
+    UserCourseCertificate,
+    CertificateTemplate
+)
 
 
 def get_course_certificates_status(course_id, course_end_date):
@@ -96,3 +102,36 @@ def send_certificate_generation_email(course_id, user, certificate_uuid, base_do
     )
     email.attach_alternative(email_html, "text/html")
     email.send(fail_silently=False)
+
+
+def get_certificate_template(course_id):
+    """
+    Retrieves the certificate template based on course_id
+    """
+    try:
+        template = CertificateTemplate.objects.get(
+            course_id=course_id,
+        )
+    except CertificateTemplate.DoesNotExist:
+        return None
+
+    return template
+
+
+def get_courses_choice_list():
+    """
+    Returns list of all courses for course choices in certificate template
+    """
+    courses = course_api.get_course_list()
+    return [(course.id, course.name) for course in courses]
+
+
+def get_template_asset_path(asset_id, asset_name):
+    """
+    Helper method to build template asset path from asset id and name
+    """
+    return os.path.join(
+        settings.BASE_CERTIFICATE_TEMPLATE_ASSET_PATH,
+        asset_id,
+        asset_name
+    )

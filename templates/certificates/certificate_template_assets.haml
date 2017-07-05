@@ -1,0 +1,33 @@
+- extends "admin/admin_layout.haml"
+
+- load staticfiles
+- block custom_js
+  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
+
+- block content
+  #mainCertificatesTemplateListContainer
+    #certificatesTemplateListTitle
+      %p Template Assets
+    #certificatesTemplateListText
+    %hr
+    #mainCertificatesTemplateListGridContainer
+      #mainCertificatesTemplateListGridWrapper
+        #certificatesTemplateListViewGridBlock
+          %h4 New Template Asset
+          %form{:enctype => "multipart/form-data", :method => "post"}
+            - csrf_token
+            = form.as_p
+            %button{:type => "submit"} Upload
+          %br
+          %br
+          %table
+            %thead
+              %tr
+                %th Path
+                %th Description
+            %tbody
+              - for certificate_template_asset in certificate_template_assets
+                  %tr
+                    %td= certificate_template_asset.asset
+                    %td= certificate_template_asset.description
+

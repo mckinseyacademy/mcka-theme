@@ -60,5 +60,6 @@ class FeatureFlags(db_models.Model):
             progress_page = self.progress_page,
             notifications = self.notifications,
             branding = self.branding,
-            resources = self.resources
+            resources = self.resources,
+            certificates = self.certificates
         )
