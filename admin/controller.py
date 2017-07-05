@@ -980,6 +980,19 @@ def get_accessible_programs(user, restrict_to_programs_ids):
     return programs
 
 
+def get_ta_accessible_course_ids(ta_user):
+    """
+    Get ids of courses a TA can access
+    """
+    user_roles = user_api.get_user_roles(ta_user.id)
+
+    return [
+        role.course_id
+        for role in user_roles
+        if USER_ROLES.TA == role.role
+    ]
+
+
 def get_accessible_courses(user):
     """ Returns all available courses for the provided user """
 

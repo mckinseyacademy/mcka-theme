@@ -68,7 +68,7 @@ from .controller import (
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles,
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
+    _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
     check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, construct_users_list,
     InternalAdminCoursePermission
 )
@@ -3101,6 +3101,13 @@ def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, re
     ''' handles requests for login form and their submission '''
 
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
+
+    user = request.user
+
+    # ensure TA user can only access an assigned course
+    if not any([user.is_client_admin, user.is_mcka_admin, user.is_internal_admin, user.is_mcka_subadmin]) \
+            and course_id not in get_ta_accessible_course_ids(user):
+        raise PermissionDenied()
 
     selected_project_id = request.GET.get("project_id", None)
     course = load_course(course_id, request=request)
