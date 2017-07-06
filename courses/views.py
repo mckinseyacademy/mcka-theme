@@ -19,7 +19,7 @@ from django.template import loader, RequestContext
 
 from admin.controller import load_course
 from admin.models import (
-    WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery, 
+    WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery,
     BrandingSettings, TileBookmark, LearnerDashboardTileProgress, LearnerDashboardBranding
     )
 from admin.views import checked_course_access, AccessChecker
@@ -1110,7 +1110,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
         'calendar_enabled': True if calendar_items else False,
         'today': datetime.now(),
         'course_id': learner_dashboard.course_id
-    }        
+    }
 
     if feature_flags and feature_flags.branding:
         try:
@@ -1138,6 +1138,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.branding = request.POST.get('branding', None) == 'on'
     feature_flags.resources = request.POST.get('resources', None) == 'on'
     feature_flags.cohort_avg = request.POST.get('cohort_avg', None) == 'on'
+    feature_flags.certificates = request.POST.get('certificates', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(
@@ -1280,7 +1281,7 @@ def course_learner_dashboard_calendar(request, learner_dashboard_id):
         return HttpResponse(json.dumps({'html': html}), content_type="application/json")
     else:
         return HttpResponse(status=404)
- 
+
 def check_tile_type(element):
 
     if element.milestone.tile_type == "2" or element.milestone.tile_type == "3" or element.milestone.tile_type == "5":
@@ -1336,7 +1337,7 @@ def get_user_complete_gradebook_json(request, course_id):
         data = {"user_gradebook": user_grades}
     else:
        data = {"user_gradebook": None}
-    
+
     return HttpResponse(
         json.dumps(data),
         content_type='application/json'

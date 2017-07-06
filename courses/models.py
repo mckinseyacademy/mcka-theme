@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-from django.utils import timezone
 from django.db import models as db_models
 
 class LessonNotesItem(db_models.Model):
@@ -49,6 +47,7 @@ class FeatureFlags(db_models.Model):
     branding = db_models.BooleanField(default=True)
     resources = db_models.BooleanField(default=True)
     cohort_avg = db_models.BooleanField(default=True)
+    certificates = db_models.BooleanField(default=False)
 
     def as_json(self):
         return dict(

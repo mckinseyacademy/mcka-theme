@@ -32,7 +32,7 @@ from .models import (
 )
 
 from lib.mail import (
-    sendMultipleEmails, email_add_active_student, email_add_inactive_student, 
+    sendMultipleEmails, email_add_active_student, email_add_inactive_student,
     email_add_single_new_user, create_multiple_emails
     )
 from lib.util import DottableDict
@@ -120,7 +120,7 @@ def mass_student_enroll_threaded(student_list, client_id, program_id, course_id,
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
-    process_mass_student_enroll_list(student_list, client_id, program_id, course_id, request, reg_status)  
+    process_mass_student_enroll_list(student_list, client_id, program_id, course_id, request, reg_status)
 
 def _find_group_project_v2_blocks_in_chapter(chapter):
     return (
@@ -482,13 +482,13 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     failure["reason"],
                     user_dict["email"],
                 ))
-            try: 
+            try:
                 # Enroll into program
-                if not user: 
+                if not user:
                     user = user_api.get_users(email=user_dict["email"])[0]
 
                 if (user.id in company_users_ids and failure) or not failure:
-                    try:    
+                    try:
                         program.add_user(client_id, user.id)
                     except Exception as e:
                         user_error.append(_("{}: {} - {}").format(
@@ -498,13 +498,13 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                         ))
                     try:
                         enroll_user_in_course(user.id, course_id)
-                    except Exception as e: 
+                    except Exception as e:
                         user_error.append(_("{}: {} - {}").format(
                             "User course enrollment",
                             e.message,
                             user_dict["email"],
                         ))
-            except Exception as e: 
+            except Exception as e:
                 reason = e.message if e.message else _("Enrolling student error")
                 user_error.append(_("Error enrolling student: {} - {}").format(
                     reason,
@@ -527,7 +527,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
         else:
             #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
-            reg_status.save() 
+            reg_status.save()
 
 
 @postpone
@@ -926,7 +926,7 @@ def get_admin_users(organizations, org_id, ADMINISTRATIVE):
 
 def get_program_data_for_report(client_id, program_id=None):
     programs = Client.fetch(client_id).fetch_programs()
-    
+
     if len(programs) > 0:
         program = next((p for p in programs if p.id == program_id), programs[0])
         program_courses = program.fetch_courses()
@@ -1216,7 +1216,7 @@ def get_course_engagement_summary(course_id, company_id):
     roles_ids = [str(user.id) for user in roles]
     for role_id in roles_ids:
         if role_id in course_users_ids: course_users_ids.remove(role_id)
-        
+
     course_users = []
     for user in course_users_simple:
         if str(user['id']) in course_users_ids:
@@ -1287,7 +1287,7 @@ def course_bulk_action(course_id, data, batch_status):
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
-                    batch_status.save()    
+                    batch_status.save()
                     BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
             elif (status['status']=='success'):
                 if batch_status is not None:
@@ -1302,12 +1302,12 @@ def course_bulk_action(course_id, data, batch_status):
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
-                    batch_status.save()    
+                    batch_status.save()
                     BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
-                    batch_status.save()    
+                    batch_status.save()
     elif (data['type'] == 'enroll_participants'):
         if batch_status is not None:
             batch_status.attempted = len(data['list_of_items'])
@@ -1317,12 +1317,12 @@ def course_bulk_action(course_id, data, batch_status):
             if (status['status']=='error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
-                    batch_status.save()    
+                    batch_status.save()
                     BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
             elif (status['status']=='success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
-                    batch_status.save()    
+                    batch_status.save()
 
 
 def _enroll_participant_with_status(course_id, user_id, status):
@@ -1333,7 +1333,7 @@ def _enroll_participant_with_status(course_id, user_id, status):
     failure = None
     try:
         user_api.enroll_user_in_course(user_id, course_id)
-    except ApiError as e: 
+    except ApiError as e:
         failure = {
             "status": 'error',
             "message": e.message
@@ -1354,7 +1354,7 @@ def _enroll_participant_with_status(course_id, user_id, status):
 
     return {'status':'success'}
 
-         
+
 def unenroll_participant(course_id, user_id):
     try:
         permissions = Permissions(user_id)
@@ -1417,7 +1417,7 @@ def get_user_courses_helper(user_id, request):
         user_course['start'] = course['start']
         if course['end'] is not None:
             user_course['end'] = course['end']
-        else: 
+        else:
             user_course['end'] = '-'
         user_courses.append(user_course)
     user_roles = user_api.get_user_roles(user_id)
@@ -1435,14 +1435,14 @@ def get_user_courses_helper(user_id, request):
             user_course['start'] = course['start']
             if course['end'] is not None:
                 user_course['end'] = course['end']
-            else: 
+            else:
                 user_course['end'] = '-'
             if vars(role)['role'] == 'observer':
                 user_course['status'] = 'Observer'
             if vars(role)['role'] == 'assistant':
                 user_course['status'] = 'TA'
             user_course['unenroll'] = 'Unenroll'
-            user_courses.append(user_course)       
+            user_courses.append(user_course)
         else:
             user_course = (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id']).next()
             if user_course['status'] != 'TA':
@@ -1456,7 +1456,7 @@ def get_user_courses_helper(user_id, request):
         user_courses = [course for course in user_courses if course['id'] in internal_ids]
 
     active_courses = []
-    course_history = []    
+    course_history = []
     for user_course in user_courses:
         if timezone.now() >= parsedate(user_course['start']):
             if user_course['end'] == '-':
@@ -1467,10 +1467,10 @@ def get_user_courses_helper(user_id, request):
                 course_history.append(user_course)
 
     return active_courses, course_history
-    
+
 def get_course_progress(course_id, exclude_users, company_id=None):
     '''
-    Helper method for calculating user pogress on course. 
+    Helper method for calculating user pogress on course.
     Returns dictionary of users with user_id and progress.
     Can be filtered with exclude_users array.
     '''
@@ -1495,13 +1495,13 @@ def import_participants_threaded(student_list, request, reg_status):
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
-    process_import_participants_list(student_list, request, reg_status)  
+    process_import_participants_list(student_list, request, reg_status)
 
 def enroll_participants_threaded(student_list, request, reg_status):
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
-    process_enroll_participants_list(student_list, request, reg_status) 
+    process_enroll_participants_list(student_list, request, reg_status)
 
 
 @postpone
@@ -1633,7 +1633,7 @@ def _enroll_participants(participants, request, reg_status):
                 check_errors.append({'reason': 'Valid e-mail is required', 'activity': 'Registering Participant'})
             else:
                 # run through API only if valid email is given as API breaks on wrong email
-                
+
                 # Check if email already exist
                 check_user_email = user_api.get_user_by_email(user_email)
                 if check_user_email['count'] == 1:
@@ -1644,12 +1644,12 @@ def _enroll_participants(participants, request, reg_status):
                     if check_user_username['count'] == 1:
                         check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
             #Check if client exist
-            try: 
+            try:
                 client = Client.fetch(client_id)
             except ApiError as e:
                 if e.message == 'NOT FOUND':
                     check_errors.append({'reason': "Company doesn't exist", 'activity': 'Enrolling Participant in Company'})
-                else: 
+                else:
                     check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Company'})
             #Check if course exist
             try:
@@ -1657,7 +1657,7 @@ def _enroll_participants(participants, request, reg_status):
             except ApiError as e:
                 if e.message == 'NOT FOUND':
                     check_errors.append({'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
-                else: 
+                else:
                     check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
             #For Internal Admin Check if Course Is Internal
             if internalAdminFlag:
@@ -1675,7 +1675,7 @@ def _enroll_participants(participants, request, reg_status):
                         email
                     ))
             else:
-                try:               
+                try:
                     #Register Participant
                     try:
                         user = user_api.register_user(user_dict)
@@ -1694,7 +1694,7 @@ def _enroll_participants(participants, request, reg_status):
                     #Enroll Participant in Course
                     try:
                         user_api.enroll_user_in_course(user.id, course_id)
-                    except ApiError as e: 
+                    except ApiError as e:
                         raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
                     #Set Participant Status on Course
                     try:
@@ -1703,7 +1703,7 @@ def _enroll_participants(participants, request, reg_status):
                             permissions.add_course_role(course_id,permissonsMap[status])
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), "Setting Participant's Status")
-                except ValueError as e: 
+                except ValueError as e:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
                         e.args[0],
                         e.args[1],
@@ -1723,7 +1723,7 @@ def _enroll_participants(participants, request, reg_status):
             reg_status.save()
         else:
             reg_status.succeded = reg_status.succeded + 1
-            reg_status.save() 
+            reg_status.save()
 
 
 def _just_enroll_participants(participants, request, reg_status):
@@ -1786,7 +1786,7 @@ def _just_enroll_participants(participants, request, reg_status):
                         email
                     ))
             else:
-                try:    
+                try:
                     #Enroll Participant in Course
                     try:
                         user_api.enroll_user_in_course(user_data["results"][0]["id"], course_id)
@@ -1819,7 +1819,7 @@ def _just_enroll_participants(participants, request, reg_status):
             reg_status.save()
         else:
             reg_status.succeded = reg_status.succeded + 1
-            reg_status.save() 
+            reg_status.save()
 
 
 def _send_activation_email_to_single_new_user(activation_record, user, absolute_uri):
@@ -1888,7 +1888,7 @@ def _parse_email_text_template(text_body, optional_data=None):
                         elif  keyword == "SOCIAL_ENGAGEMENT":
                             social_engagement_data = user_api.get_course_social_metrics(user["id"], optional_data["course_id"])
                             if social_engagement_data:
-                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(social_engagement_data.num_threads, 
+                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(social_engagement_data.num_threads,
                                     social_engagement_data.num_comments, social_engagement_data.num_replies)
                         elif  keyword == "COMPANY":
                             constructed_vars[keyword.lower()] = user["organization_name"]
@@ -1994,7 +1994,7 @@ def student_list_chunks_tracker(data, client_id, activation_link):
                     additional_fields = ["title","city","country","first_name","last_name"]
                     user_list = user_api.get_users(ids=users_ids,fields=additional_fields)
                 user_strings = [_formatted_user_array(get_user_with_activation(user, activation_link)) for user in user_list]
-                return {"task_id": data["task_id"], "chunk_count": chunk_count, "chunk_request": chunk_request+1, 
+                return {"task_id": data["task_id"], "chunk_count": chunk_count, "chunk_request": chunk_request+1,
                         "chunk_size": cached_student_progress.get("chunk_size", default_chunk_size), "file_name": cached_student_progress.get("file_name", "download.csv"),
                         "element_count": cached_student_progress.get("element_count", 0), "data": user_strings, "status": "csv_chunk_sent"}
             else:
@@ -2023,7 +2023,7 @@ def student_list_chunks_tracker(data, client_id, activation_link):
         else:
             return {"status": "error", "message": "There are no users in organization!"}
 
-        return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size, "element_count": len(user_list), "status": "csv_task_created", 
+        return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size, "element_count": len(user_list), "status": "csv_task_created",
                 "file_name":file_name}
 
 

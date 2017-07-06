@@ -86,7 +86,7 @@ class Proficiency(JsonObject):
 
     def pass_rate_display(self, users_with_roles):
         pass_users = 0
-        for user_grade in self.leaders: 
+        for user_grade in self.leaders:
             if str(user_grade.id) not in users_with_roles:
                 if user_grade.user_grade_value >= 0.7:
                     pass_users += 1
@@ -95,7 +95,7 @@ class Proficiency(JsonObject):
 
     def pass_rate_display_for_company(self, users_with_roles, company_ids):
         pass_users = 0
-        for user_grade in self.leaders: 
+        for user_grade in self.leaders:
             if user_grade.id in company_ids:
                 if str(user_grade.id) not in users_with_roles:
                     if user_grade.user_grade_value >= 0.7:
@@ -105,7 +105,7 @@ class Proficiency(JsonObject):
 
     def course_proficiency(self, users_with_roles):
         course_proficiency_sum = 0
-        for user_grade in self.leaders: 
+        for user_grade in self.leaders:
             if str(user_grade.id) not in users_with_roles:
                 user_proficiency = float(user_grade.user_grade_value)*100
                 course_proficiency_sum += user_proficiency
@@ -113,7 +113,7 @@ class Proficiency(JsonObject):
 
     def course_proficiency_for_company(self, users_with_roles, company_ids):
         course_proficiency_sum = 0
-        for user_grade in self.leaders: 
+        for user_grade in self.leaders:
             if user_grade.id in company_ids:
                 if str(user_grade.id) not in users_with_roles:
                     user_proficiency = float(user_grade.user_grade_value)*100
@@ -168,7 +168,7 @@ def build_page_info_for_course(
     Returns course structure and user's status within course
         course_api_impl - optional api client module to use (useful in mocks)
     '''
-    
+
     course = copy.deepcopy(load_course(course_id, MINIMAL_COURSE_DEPTH, course_api_impl, request=request))
 
     # something sensible if we fail...
@@ -248,7 +248,7 @@ def get_chapter_and_target_by_location(request, course_id, location_id, course_a
     # If the course doesn't exist
     if nav == None:
         return None, None, None
-        
+
     return nav.chapter, nav.vertical, nav.final_target_id
 
 def locate_chapter_page(
@@ -320,13 +320,13 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
     Returns correct group and project information for the user for this course
     '''
     # Find the user_group(s) with which this user is associated
-    
+
     if workgroup_id:
         workgroup = workgroup_api.get_workgroup(workgroup_id, workgroup_models.Workgroup)
         workgroup.project = project_api.get_project_url_by_id(workgroup.project)
         user_workgroups = [workgroup]
     else:
-        user_workgroups = user_api.get_user_workgroups(user_id, course.id) 
+        user_workgroups = user_api.get_user_workgroups(user_id, course.id)
 
     if len(user_workgroups) < 1:
         return None, None
@@ -385,13 +385,13 @@ def group_project_location(group_project, sequential_id=None):
     return activity, usage_id
 
 def load_static_tabs(course_id, name=None):
-    if name: 
+    if name:
         static_tabs = get_static_tab_context(course_id)
         if static_tabs is None:
             static_tabs = load_static_tabs_api(course_id, None)
         static_tab = get_static_tab_context(course_id, name)
         if getattr(static_tab, 'content', None) is None and getattr(static_tab, 'name', None):
-            try: 
+            try:
                 static_tab = course_api.get_course_tab(course_id, tab_id=static_tab.id)
                 set_static_tab_context(course_id, static_tab, static_tab.name.lower())
             except ApiError as e:
@@ -919,15 +919,15 @@ def calculate_user_course_progress(user_id, course, completions):
 
 
 def calculate_user_lesson_progress(user_id, course, chapter_id, completions):
-    
+
     completed_ids = [result.content_id for result in completions]
     component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
-    
+
     for lesson in course.chapters:
         if lesson.id == chapter_id:
             lesson.progress = 0
             lesson_component_ids = course.lesson_component_ids(
-                lesson.id, 
+                lesson.id,
                 completed_ids,
                 settings.PROGRESS_IGNORE_COMPONENTS,
             )
@@ -967,7 +967,7 @@ def calculate_user_module_progress(user_id, course, chapter_id, page_id, complet
 
 
 def get_course_object(user_id, course_id):
-    
+
     courses = user_api.get_user_courses(user_id)
     course = [c for c in courses if c.id == course_id]
     if course:
@@ -1013,7 +1013,7 @@ def strip_tile_link(link):
     try:
         substring = re.search('/courses/(.*)/lessons/', link)
         course_id = substring.group(1)
-    except: 
+    except:
         stripped_link = {
             'course_id': link.replace("/courses/", ""),
             'lesson_id': None,
