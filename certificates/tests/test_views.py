@@ -1,6 +1,7 @@
 """
 Tests for certificates django views
 """
+import os
 import uuid
 import ddt
 import datetime
@@ -10,14 +11,23 @@ from mock import patch
 
 from django.test import TestCase
 from django.test.client import Client
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.utils.decorators import available_attrs
 
 from courses.tests import MockCourseAPI
 from accounts.tests import ApplyPatchMixin
 from courses.models import FeatureFlags
 
-from ..models import UserCourseCertificate, CertificateStatus, CourseCertificateStatus
+from ..models import (
+    UserCourseCertificate,
+    CertificateStatus,
+    CourseCertificateStatus,
+    CertificateTemplateAsset,
+    CertificateTemplate
+)
+from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm
 
 
 def _fake_permission_group_required(*group_names):
@@ -48,17 +58,46 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         """
         super(CertificateViewTest, self).setUp()
         self.client = Client()
-        self.course_id = 'test/course/302'
-        self.course = MockCourseAPI.get_course(self.course_id)
+        self.courses = [
+            ('abc/123/test', 'Abc Course'),
+            ('xyz/334/dummy', 'Xyz Course'),
+            ('ggg/667/dummy', 'GGG Course')
+        ]
+        self.course = MockCourseAPI.get_course(self.courses[0][0])
         self.user = DottableDict({
             "id": 2,
             "email": "ecommerce_worker@fake.email",
-            "username": "ecommerce_worker"
+            "username": "ecommerce_worker",
+            "full_name": "Ecommerce worker"
         })
         self.user_course_certificate = UserCourseCertificate.objects.create(
-            course_id = self.course_id,
+            course_id = self.courses[0][0],
             user_id = self.user.id
         )
+        self.template_asset_post_data = { 'description': 'dumy description' }
+        self.stylesheet = SimpleUploadedFile('style.css', 'dummy content', content_type='text/css')
+        self.template_asset_file_data = { 'asset': self.stylesheet }
+        self.template_assets = [
+            CertificateTemplateAssetForm(self.template_asset_post_data, self.template_asset_file_data).save()
+        ]
+
+        self.templates = []
+        self.template_post_data = {
+            'name': 'test',
+            'description': 'dummy',
+            'template':'<p>dummy template</p>',
+            'course_id': self.courses[2][0]
+        }
+        for x in xrange(2):
+            self.templates.append(
+                CertificateTemplate.objects.create(
+                    name='test',
+                    description='dummy',
+                    template='<p>dummy template</p>',
+                    course_id=self.courses[x][0]
+                )
+
+            )
 
     def _apply_patch(self):
         """
@@ -68,6 +107,15 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         user_api.get_user.return_value = self.user
         course_api = self.apply_patch('certificates.views.course_api')
         course_api.get_user.return_value = self.course
+
+    def _apply_get_courses_choice_list_patch(self):
+        """
+        Helper method to patch get_courses_choice_list_patch method
+        """
+
+        get_courses_choice_list = self.apply_patch('certificates.forms.get_courses_choice_list')
+        get_courses_choice_list.return_value = self.courses
+
 
     def _get_course_certificate_status(self, course_id):
         """
@@ -120,12 +168,11 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         """
         generate_certificate_url = reverse(
             'generate_course_certificates',
-            args=(self.course_id, )
+            args=(self.courses[0][0], )
         )
-        features = FeatureFlags.objects.create(course_id=self.course_id, certificates=certs_feature_flag)
+        features = FeatureFlags.objects.create(course_id=self.courses[0][0], certificates=certs_feature_flag)
         data = {'course_end': course_end_date}
-        expected_url=reverse('course_details', kwargs={'course_id': self.course_id})
-
+        expected_url=reverse('course_details', kwargs={'course_id': self.courses[0][0]})
 
         response = self.client.post(generate_certificate_url, data)
 
@@ -135,10 +182,171 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
             status_code=302,
             target_status_code=302
         )
-        course_certificate_status = self._get_course_certificate_status(self.course_id)
+        course_certificate_status = self._get_course_certificate_status(self.courses[0][0])
 
         if certs_feature_flag and course_end_date < datetime.datetime.now():
             self.assertIsNotNone(course_certificate_status)
             self.assertEqual(course_certificate_status.status, CertificateStatus.generating)
         else:
             self.assertIsNone(course_certificate_status)
+
+    def test_certificate_template_assets_get(self):
+        """
+        Test get certificate template assets view
+        """
+        response = self.client.get(reverse('certificate_template_assets'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateAssetForm)
+        self.assertEqual(
+            len(response.context['certificate_template_assets']),
+            len(self.template_assets)
+        )
+
+    def test_certificate_template_assets_post_valid(self):
+        """
+        Test post certificate template assets view with valid data
+        """
+        test_file_path = os.path.join(settings.BASE_DIR, 'admin/test_data/test_user_list.csv')
+        with open(test_file_path) as test_file_content:
+            data = { 'asset': test_file_content }
+            response = self.client.post(reverse('certificate_template_assets'), data)
+
+        self.assertRedirects(
+            response,
+            expected_url=reverse('certificate_template_assets'),
+            status_code=302,
+            target_status_code=200
+        )
+        certificate_template_assets = CertificateTemplateAsset.objects.all()
+        self.assertEqual(len(certificate_template_assets), len(self.template_assets) + 1)
+
+    def test_certificate_template_assets_post_invalid(self):
+        """
+        Test post certificate template assets view with invalid data
+        """
+        response = self.client.post(reverse('certificate_template_assets'), self.template_asset_post_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateAssetForm)
+        self.assertEqual(
+            len(response.context['certificate_template_assets']),
+            len(self.template_assets)
+        )
+        self.assertTrue(response.context['form'].errors)
+
+    def test_certificate_templates(self):
+        """
+        Test get certificate templates view
+        """
+        response = self.client.get(reverse('certificate_templates'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            len(response.context['certificate_templates']),
+            len(self.templates)
+        )
+
+    def test_new_certificate_template_get(self):
+        """
+        Test get new certificate template view
+        """
+        response = self.client.get(reverse('new_certificate_template'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+
+    def test_new_certificate_template_post_valid(self):
+        """
+        Test post new certificate template view with valid data
+        """
+        self._apply_get_courses_choice_list_patch()
+        response = self.client.post(reverse('new_certificate_template'), self.template_post_data)
+
+        self.assertRedirects(
+            response,
+            expected_url=reverse('certificate_templates'),
+            status_code=302,
+            target_status_code=200
+        )
+        certificate_templates = CertificateTemplate.objects.all()
+        self.assertEqual(len(certificate_templates), len(self.templates) + 1)
+
+    def test_new_certificate_template_post_invalid(self):
+        """
+        Test post new certificate template view with invalid data
+        """
+        response = self.client.post(reverse('new_certificate_template'), self.template_post_data)
+        self.assertEqual(response.status_code, 200)
+        certificate_templates = CertificateTemplate.objects.all()
+        self.assertEqual(len(certificate_templates), len(self.templates))
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+
+    def test_edit_certificate_template_get(self):
+        """
+        Test get edit certificate template view
+        """
+        response = self.client.get(
+            reverse('edit_certificate_template', kwargs={'template_id': self.templates[0].id})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+        self.assertEqual(response.context['form'].initial['course_id'], self.templates[0].course_id)
+
+    def test_edit_certificate_template_post_valid(self):
+        """
+        Test post edit certificate template view with valid data
+        """
+        self._apply_get_courses_choice_list_patch()
+        new_template_description = 'updated description'
+        self.template_post_data['description'] = new_template_description
+        response = self.client.post(
+            reverse('edit_certificate_template', kwargs={'template_id': self.templates[0].id}),
+            self.template_post_data
+        )
+
+        self.assertRedirects(
+            response,
+            expected_url=reverse('certificate_templates'),
+            status_code=302,
+            target_status_code=200
+        )
+        certificate_template = CertificateTemplate.objects.get(id=self.templates[0].id)
+        self.assertEqual(certificate_template.description, new_template_description)
+
+    def test_edit_certificate_template_post_invalid(self):
+        """
+        Test post edit certificate template view with invalid data
+        """
+        response = self.client.post(
+            reverse('edit_certificate_template', kwargs={'template_id': self.templates[0].id}),
+            self.template_asset_post_data
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+
+    def test_load_template_asset(self):
+        """
+        Test load template asset view
+        """
+        response = self.client.get(
+            reverse(
+                'load_template_asset',
+                kwargs={'asset_id': self.template_assets[0].id, 'asset_name': self.stylesheet.name}
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(
+            response.get('Content-Disposition'),
+            'attachment; filename={}'.format(self.stylesheet.name)
+        )
+
+    def test_load_template_asset_invalid_path(self):
+        """
+        Test load template asset view with invalid path
+        """
+        response = self.client.get(
+            reverse(
+                'load_template_asset',
+                kwargs={'asset_id': 999, 'asset_name': 'dummy.txt'}
+            )
+        )
+        self.assertEqual(response.status_code, 404)

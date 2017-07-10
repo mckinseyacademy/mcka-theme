@@ -868,6 +868,8 @@ def course_details(request, course_id):
     course = course_api.get_course_details(course_id)
     if course['start'] is not None:
         course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+
+    course['certificates_status'] = CertificateStatus.notavailable
     if course['end'] is not None:
         course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")
 

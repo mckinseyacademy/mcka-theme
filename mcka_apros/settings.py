@@ -155,6 +155,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/gen"),
 )
 
+BASE_CERTIFICATE_TEMPLATE_ASSET_PATH = 'certificates/template_assets/'
+
 #Handle session is not Json Serializable
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 

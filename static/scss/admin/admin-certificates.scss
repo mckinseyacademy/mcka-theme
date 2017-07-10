@@ -1,0 +1,90 @@
+#mainCertificatesTemplateListContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+}
+
+#mainCertificatesTemplateListGridContainer
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	display: table;
+}
+
+.generateCourseCertButton {
+	margin-top: -10px;
+	float: right;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+#certificatesTemplateListTitle
+{
+	float: left;
+
+	p
+	{
+		font-size: xx-large;
+		margin-bottom: 20px;
+	}
+}
+
+#certificateTemplateCreateButton
+{
+	float: right;
+}
+
+#certificatesTemplateListText
+{
+	clear: both;
+}
+
+#mainCertificatesTemplateListGridWrapper
+{
+	margin-left: auto;
+	margin-right: auto;
+
+	.bbGrid-search-bar
+	{
+		float: none !important;
+	    display: table;
+	    min-width: 60%;
+	    margin-left: auto;
+	    margin-right: auto;
+
+	    .bbGrid-pager
+	    {
+	   		float: left !important;
+	    }
+	}
+}
+
+#certificatesTemplateListViewGridBlock
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+	min-width: 60%;
+	display: table;
+	position: relative;
+
+	.bbGrid-container
+	{
+		max-height: 28.8em;
+		overflow-y: scroll;
+		min-width: 100%;
+	}
+
+	.bbGrid-grid
+	{
+		&.table
+		{
+			margin-left: auto;
+			margin-right: auto;
+			min-width: 100%;
+		}
+	}
+}
+

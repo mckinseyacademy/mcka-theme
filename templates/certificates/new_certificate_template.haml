@@ -1,0 +1,19 @@
+- extends "admin/admin_layout.haml"
+
+- load staticfiles
+- block custom_js
+  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
+
+- block content
+  #mainCertificatesTemplateListContainer
+    #certificatesTemplateListTitle
+      %p New Certificate
+    #certificatesTemplateListText
+    %hr
+    #mainCertificatesTemplateListGridContainer
+      #mainCertificatesTemplateListGridWrapper
+        #certificatesTemplateListViewGridBlock
+          %form{:enctype => "multipart/form-data", :method => "post"}
+            - csrf_token
+            = form.as_p
+            %button{:type => "submit"} Save

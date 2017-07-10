@@ -58,11 +58,11 @@
                       %form#generate-certificate-form{action: "{% url 'generate_course_certificates' id %}", method: 'POST'}
                         - csrf_token
                         %input{type: 'hidden', name: 'course_end', value: '{{end}}'}
-                        %button{type: 'submit'}>  Generate Certificates
+                        %button.generateCourseCertButton{type: 'submit'}>  Generate Certificates
                     - elif certificates_status == certificates_statuses.generating
-                       %a.disabled{:href => '#'}>  Generating Certificates
+                       %button.generateCourseCertButton.disabled  Generating Certificates
                     - elif certificates_status == certificates_statuses.generated
-                       %a.disabled{:href => '#'}>  Certificates Generated
+                       %button.generateCourseCertButton.disabled  Certificates Generated
                 %hr
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
