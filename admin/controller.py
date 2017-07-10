@@ -12,6 +12,8 @@ from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.conf import settings
 
+from rest_framework import permissions
+
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from admin.models import Program
 from courses.models import FeatureFlags
@@ -2057,3 +2059,16 @@ def construct_users_list(enrolled_users, registration_requests):
 
     return full_users_list
 
+
+class InternalAdminCoursePermission(permissions.BasePermission):
+    """
+    Permission check that an internal admin can only access
+    the courses tagged as `internal`
+    """
+    def has_permission(self, request, view):
+        """
+        Implements the actual permission check
+        """
+        course_id = view.kwargs.get('course_id')
+
+        return not (request.user.is_internal_admin and not check_if_course_is_internal(course_id))

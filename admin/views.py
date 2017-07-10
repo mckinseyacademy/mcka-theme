@@ -68,9 +68,9 @@ from .controller import (
     get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles,
     get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids,
-    check_if_course_is_internal, check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list,
-    construct_users_list
+    _enroll_participant_with_status, get_accessible_courses, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
+    check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, construct_users_list,
+    InternalAdminCoursePermission
 )
 from certificates.controller import get_course_certificates_status
 from .forms import (
@@ -83,7 +83,7 @@ from .forms import (
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
-from util.data_sanitizing import sanitize_data, clean_formula_characters
+from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
 from util.validators import AlphanumericValidator
 
 from rest_framework.views import APIView
@@ -5389,9 +5389,11 @@ class tags_list_api(APIView):
         response['status'] = 'ok'
         return Response(response)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request):
-
+        """
+        Post request handler for Tags
+        """
         tag_name = request.DATA.get('name', None)
         tag_data = {}
         if tag_name:
@@ -5441,10 +5443,13 @@ class tag_details_api(APIView):
 
 
 class course_details_tags_api(APIView):
+    permission_classes = (InternalAdminCoursePermission, )
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, course_id):
-
+        """
+        Post request handler for Adding tags to courses
+        """
         tag_id = request.DATA.get('tag_id', None)
         if tag_id:
             tag = Tag.fetch(tag_id)
@@ -5464,7 +5469,9 @@ class course_details_tags_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def delete(self, request, course_id):
-
+        """
+        Removes tags from from the course
+        """
         tag_id = request.GET.get('tag_id', None)
         if tag_id:
             tag = Tag.fetch(tag_id)
