@@ -15,4 +15,4 @@ class CertificatesConfig(AppConfig):
         """
         Initialize certificates app and import certificate tasks
         """
-        import certificates.tasks
+        import certificates.tasks # pylint: disable=unused-variable

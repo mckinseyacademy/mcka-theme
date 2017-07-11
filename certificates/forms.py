@@ -3,11 +3,10 @@ Forms related to Certificates models
 """
 from django import forms
 
-from api_client import course_api
+from util.validators import AlphanumericWithAccentedChars
 
 from .models import CertificateTemplateAsset, CertificateTemplate
 from .controller import get_courses_choice_list
-from util.validators import AlphanumericWithAccentedChars
 
 
 class CertificateTemplateAssetForm(forms.ModelForm):
@@ -16,13 +15,16 @@ class CertificateTemplateAssetForm(forms.ModelForm):
     """
     def __init__(self, *args, **kwargs):
         """
-        Initializer for certificate template asset form, adding description validator
+        Initializer for certificate template asset form
+        adding validator for description field
         """
         super(CertificateTemplateAssetForm, self).__init__(*args, **kwargs)
-        self.fields['description'].validators.append(AlphanumericWithAccentedChars())
+        self.fields['description'].validators.append(
+            AlphanumericWithAccentedChars()
+        )
 
 
-    class Meta:
+    class Meta(object):
         """
         Form meta class to set model meta options
         """
@@ -43,9 +45,11 @@ class CertificateTemplateForm(forms.ModelForm):
             choices=get_courses_choice_list()
         )
         self.fields['name'].validators.append(AlphanumericWithAccentedChars())
-        self.fields['description'].validators.append(AlphanumericWithAccentedChars())
+        self.fields['description'].validators.append(
+            AlphanumericWithAccentedChars()
+        )
 
-    class Meta:
+    class Meta(object):
         """
         Form meta class to set model meta options
         """

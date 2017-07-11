@@ -17,25 +17,29 @@ class CertificateTemplateAssetFormTest(TestCase):
         Setup Certificate Template Asset form test
         """
         super(CertificateTemplateAssetFormTest, self).setUp()
-        self.post_data = { 'description': 'dumy description' }
-        self.stylesheet = SimpleUploadedFile('style.css', 'dummy content', content_type='text/css')
-        self.file_data = { 'asset': self.stylesheet }
+        self.post_data = {'description': 'dumy description'}
+        self.stylesheet = SimpleUploadedFile(
+            'style.css',
+            'dummy content',
+            content_type='text/css'
+        )
+        self.file_data = {'asset': self.stylesheet}
 
-    def test_certificate_template_asset_form_valid(self):
+    def test_template_asset_form_valid(self):
         """
         Test certificate template asset form with valid data
         """
         form = CertificateTemplateAssetForm(self.post_data, self.file_data)
         self.assertTrue(form.is_valid())
 
-    def test_certificate_template_asset_form_invalid(self):
+    def test_template_asset_form_invalid(self):
         """
         Test certificate template asset form with invalid data
         """
         form = CertificateTemplateAssetForm(self.post_data)
         self.assertFalse(form.is_valid())
 
-    def test_certificate_template_asset_form_with_pen_test_invalid_data(self):
+    def test_template_asset_form_penetration(self):
         """
         Test certificate template asset form with  pen test invalid data
         """
@@ -53,7 +57,9 @@ class CertificateTemplateFormTest(TestCase, ApplyPatchMixin):
         Setup Certificate Template form test
         """
         super(CertificateTemplateFormTest, self).setUp()
-        self.courses = [('abc/123/test', 'Abc Course'), ('xyz/334/dummy', 'Xyz Course')]
+        self.courses = [
+            ('abc/123/test', 'Abc Course'), ('xyz/334/dummy', 'Xyz Course')
+        ]
         self.post_data = {
             'name': 'test',
             'description': 'dummy',
@@ -61,29 +67,31 @@ class CertificateTemplateFormTest(TestCase, ApplyPatchMixin):
             'course_id': self.courses[0][0]
         }
 
-    def _apply_get_courses_choice_list_patch(self):
+    def _apply_courses_choice_list_patch(self):
         """
         Helper method to patch get_courses_choice_list_patch method
         """
-        get_courses_choice_list = self.apply_patch('certificates.forms.get_courses_choice_list')
+        get_courses_choice_list = self.apply_patch(
+            'certificates.forms.get_courses_choice_list'
+        )
         get_courses_choice_list.return_value = self.courses
 
-    def test_certificate_template_form_valid(self):
+    def test_template_form_valid(self):
         """
         Test certificate template form with valid data
         """
-        self._apply_get_courses_choice_list_patch()
+        self._apply_courses_choice_list_patch()
         form = CertificateTemplateForm(self.post_data)
         self.assertTrue(form.is_valid())
 
-    def test_certificate_template_form_invalid(self):
+    def test_template_form_invalid(self):
         """
         Test certificate template form with invalid data
         """
         form = CertificateTemplateForm(self.post_data)
         self.assertFalse(form.is_valid())
 
-    def test_certificate_template_form_with_pen_test_invalid_data(self):
+    def test_template_form_penetration(self):
         """
         Test certificate template form with  pen test invalid data
         """

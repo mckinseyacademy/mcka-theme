@@ -1,8 +1,6 @@
 """
 Tests for certificates tasks
 """
-import uuid
-
 from lib.util import DottableDict
 
 from django.core import mail
@@ -10,8 +8,40 @@ from django.test import TestCase, override_settings
 
 from accounts.tests import ApplyPatchMixin
 
-from ..models import CertificateStatus, UserCourseCertificate, CourseCertificateStatus
+from ..models import (
+    CertificateStatus,
+    UserCourseCertificate,
+    CourseCertificateStatus
+)
 from ..tasks import generate_course_certificates_task
+
+
+def mock_passed_users_list():
+    """
+    Helper method to mock passed users list
+    """
+    return [
+        DottableDict({
+            "id": 2,
+            "email": "ecommerce_worker@fake.email",
+            "username": "ecommerce_worker"
+        }),
+        DottableDict({
+            "id": 5,
+            "email": "honor@example.com",
+            "username": "honor"
+        }),
+        DottableDict({
+            "id": 6,
+            "email": "audit@example.com",
+            "username": "audit"
+        }),
+        DottableDict({
+            "id": 8,
+            "email": "verified@example.com",
+            "username": "verified"
+        })
+    ]
 
 
 class CertificateTaskTest(TestCase, ApplyPatchMixin):
@@ -24,29 +54,8 @@ class CertificateTaskTest(TestCase, ApplyPatchMixin):
         """
         super(CertificateTaskTest, self).setUp()
         self.course_id = 'test/course/302'
-        self.passed_user_ids = [2,5,6,8]
-        self.passed_users = [
-            DottableDict({
-                "id": 2,
-                "email": "ecommerce_worker@fake.email",
-                "username": "ecommerce_worker"
-            }),
-            DottableDict({
-                "id": 5,
-                "email": "honor@example.com",
-                "username": "honor"
-            }),
-            DottableDict({
-                "id": 6,
-                "email": "audit@example.com",
-                "username": "audit"
-            }),
-            DottableDict({
-                "id": 8,
-                "email": "verified@example.com",
-                "username": "verified"
-            })
-        ]
+        self.passed_user_ids = [2, 5, 6, 8]
+        self.passed_users = mock_passed_users_list()
 
     def _apply_course_and_user_api_patch(self):
         """
@@ -79,13 +88,22 @@ class CertificateTaskTest(TestCase, ApplyPatchMixin):
             self.assertIn(user.email, sent_emails_addresses)
 
         # test if certificate entries added to database
-        generated_certificates = UserCourseCertificate.objects.filter(course_id=self.course_id)
+        generated_certificates = UserCourseCertificate.objects.filter(
+            course_id=self.course_id
+        )
         self.assertEqual(len(generated_certificates), len(self.passed_users))
         for user in self.passed_users:
             self.assertEqual(
-                UserCourseCertificate.objects.filter(course_id=self.course_id, user_id=user.id).count(),
+                UserCourseCertificate.objects.filter(
+                    course_id=self.course_id, user_id=user.id
+                ).count(),
                 1
             )
 
-        course_certificate_status = CourseCertificateStatus.objects.get(course_id=self.course_id)
-        self.assertEqual(course_certificate_status.status, CertificateStatus.generated)
+        course_certificate_status = CourseCertificateStatus.objects.get(
+            course_id=self.course_id
+        )
+        self.assertEqual(
+            course_certificate_status.status,
+            CertificateStatus.generated
+        )

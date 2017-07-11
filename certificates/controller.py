@@ -11,7 +11,6 @@ from django.template import loader
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 from courses.models import FeatureFlags
 from api_client import course_api, user_api
@@ -31,7 +30,9 @@ def get_course_certificates_status(course_id, course_end_date):
     features = FeatureFlags.objects.get(course_id=course_id)
     if features.certificates and course_end_date <= datetime.now():
         try:
-            course_certificate_status = CourseCertificateStatus.objects.get(course_id=course_id)
+            course_certificate_status = CourseCertificateStatus.objects.get(
+                course_id=course_id
+            )
             return course_certificate_status.status
         except CourseCertificateStatus.DoesNotExist:
             return CertificateStatus.available
@@ -43,12 +44,15 @@ def get_course_passed_users(course_id):
     """
     Returns list of users who have passed the course
     """
-    # TODO: this is a temporary measure until we finalize what user data is needed in
-    # certificate email. Once we finalize then get_course_passed_users_id_list api
-    # should return passed users info not just ids, so we don't need to make seperate
-    # api call to get passed users info.
+    # TODO: this is a temporary measure until we finalize what user data is
+    # needed in certificate email. Once we finalize then
+    # get_course_passed_users_id_list api should return passed users info not
+    # just ids, so we don't need to make seperate api call to get passed users
+    # info.
 
-    passed_user_ids = map(str, course_api.get_course_passed_users_id_list(course_id))
+    passed_user_ids = map(
+        str, course_api.get_course_passed_users_id_list(course_id)
+    )
     passed_users = user_api.get_users(ids=passed_user_ids)
 
     return passed_users
@@ -78,7 +82,12 @@ def get_certificate_url(base_domain, certificate_uuid):
     return  urlparse.urljoin(base_domain, certificate_path)
 
 
-def send_certificate_generation_email(course_id, user, certificate_uuid, base_domain):
+def send_certificate_generation_email(
+        course_id, # pylint: disable=unused-argument
+        user,
+        certificate_uuid,
+        base_domain
+    ):
     """
     Send certificate generated email notification
     """
@@ -98,7 +107,7 @@ def send_certificate_generation_email(course_id, user, certificate_uuid, base_do
         email_plain,
         settings.APROS_EMAIL_SENDER,
         [user.email],
-        headers = { 'Reply-To': settings.APROS_EMAIL_SENDER }
+        headers={'Reply-To': settings.APROS_EMAIL_SENDER}
     )
     email.attach_alternative(email_html, "text/html")
     email.send(fail_silently=False)

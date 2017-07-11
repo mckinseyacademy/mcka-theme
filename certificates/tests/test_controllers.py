@@ -12,8 +12,9 @@ from django.test import TestCase
 from django.conf import settings
 
 from courses.models import FeatureFlags
-from courses.tests import MockCourseAPI
 from accounts.tests import ApplyPatchMixin
+from .test_tasks import mock_passed_users_list
+from .test_views import GENERATE_CERTIFICATES_TASK_DATA
 from ..controller import (
     get_course_certificates_status,
     get_course_passed_users,
@@ -23,7 +24,26 @@ from ..controller import (
     get_courses_choice_list,
     get_template_asset_path,
 )
-from ..models import CertificateStatus, UserCourseCertificate, CertificateTemplate
+from ..models import (
+    CertificateStatus,
+    UserCourseCertificate,
+    CertificateTemplate
+)
+
+
+def _get_user_course_certificate(course_id, user_id):
+    """
+    Returns user course certificate given course and user id
+    """
+    try:
+        certificate = UserCourseCertificate.objects.get(
+            course_id=course_id,
+            user_id=user_id
+        )
+    except UserCourseCertificate.DoesNotExist:
+        certificate = None
+
+    return certificate
 
 
 @ddt.ddt
@@ -37,29 +57,8 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
         """
         super(CertificateControllerTest, self).setUp()
         self.course_id = 'test/course/302'
-        self.passed_user_ids = [2,5,6,8]
-        self.passed_users = [
-            DottableDict({
-                "id": 2,
-                "email": "ecommerce_worker@fake.email",
-                "username": "ecommerce_worker"
-            }),
-            DottableDict({
-                "id": 5,
-                "email": "honor@example.com",
-                "username": "honor"
-            }),
-            DottableDict({
-                "id": 6,
-                "email": "audit@example.com",
-                "username": "audit"
-            }),
-            DottableDict({
-                "id": 8,
-                "email": "verified@example.com",
-                "username": "verified"
-            })
-        ]
+        self.passed_user_ids = [2, 5, 6, 8]
+        self.passed_users = mock_passed_users_list()
 
         self.courses = [
             DottableDict({
@@ -81,41 +80,33 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
             course_id=self.course_id
         )
 
-    def _get_user_course_certificate(self, course_id, user_id):
-        """
-        Returns user course certificate given course and user id
-        """
-        try:
-            certificate = UserCourseCertificate.objects.get(
-                course_id=course_id,
-                user_id=user_id
-            )
-        except UserCourseCertificate.DoesNotExist:
-            certificate = None
-
-        return certificate
-
-    @ddt.data(
-        (True, datetime.datetime.now() + datetime.timedelta(days=4)),
-        (False, datetime.datetime.now() - datetime.timedelta(days=4)),
-        (False, datetime.datetime.now() + datetime.timedelta(days=4)),
-        (True, datetime.datetime.now() - datetime.timedelta(days=4)),
-    )
+    @ddt.data(*GENERATE_CERTIFICATES_TASK_DATA)
     @ddt.unpack
-    def test_get_course_certificates_status(self, certs_feature_flag, course_end_date):
+    def test_get_course_certificates_status(
+            self, certs_feature_flag, course_end_date
+        ):
         """
         Test course certificates status
         """
-        features = FeatureFlags.objects.create(course_id=self.course_id, certificates=certs_feature_flag)
+        FeatureFlags.objects.create(
+            course_id=self.course_id,
+            certificates=certs_feature_flag
+        )
 
         course_certificates_status = get_course_certificates_status(
             self.course_id,
             course_end_date
         )
         if certs_feature_flag and course_end_date < datetime.datetime.now():
-            self.assertEqual(course_certificates_status, CertificateStatus.available)
+            self.assertEqual(
+                course_certificates_status,
+                CertificateStatus.available
+            )
         else:
-            self.assertEqual(course_certificates_status, CertificateStatus.notavailable)
+            self.assertEqual(
+                course_certificates_status,
+                CertificateStatus.notavailable
+            )
 
     def test_send_certificate_generation_email(self):
         """
@@ -152,17 +143,18 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
         """
         user = self.passed_users[0]
 
-        certificate = self._get_user_course_certificate(self.course_id, user.id)
+        certificate = _get_user_course_certificate(self.course_id, user.id)
 
         self.assertIsNone(certificate)
 
         generate_user_course_certificate(self.course_id, user)
 
-        certificate = self._get_user_course_certificate(self.course_id, user.id)
+        certificate = _get_user_course_certificate(self.course_id, user.id)
 
         self.assertIsNotNone(certificate)
         self.assertTrue(
-            certificate.course_id == self.course_id and certificate.user_id == user.id
+            certificate.course_id == self.course_id and
+            certificate.user_id == user.id
         )
 
     def test_get_certificate_template(self):
@@ -184,7 +176,10 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
         course_api.get_course_list.return_value = self.courses
 
         courses = get_courses_choice_list()
-        self.assertEqual(courses, [(course.id, course.name) for course in self.courses])
+        self.assertEqual(
+            courses,
+            [(course.id, course.name) for course in self.courses]
+        )
 
     def test_get_template_asset_path(self):
         """

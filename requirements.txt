@@ -29,3 +29,13 @@ pytz==2015.2
 -e git+https://github.com/edx/edx-notifications.git@0.5.0#egg=edx-notifications
 djangorestframework==2.3.14
 django-upload-validator
+
+# pylint plugins for django and celery
+pylint-celery==0.3
+pylint-django==0.7.2
+
+# pylint dependencies
+astroid==1.5.3
+isort==4.2.15
+
+pylint==1.7.2

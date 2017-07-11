@@ -3,9 +3,9 @@ Tests for certificates django views
 """
 import os
 import uuid
-import ddt
 import datetime
 from functools import wraps
+import ddt
 from lib.util import DottableDict
 from mock import patch
 
@@ -17,8 +17,8 @@ from django.conf import settings
 from django.utils.decorators import available_attrs
 
 from courses.tests import MockCourseAPI
-from accounts.tests import ApplyPatchMixin
 from courses.models import FeatureFlags
+from accounts.tests import ApplyPatchMixin
 
 from ..models import (
     UserCourseCertificate,
@@ -30,7 +30,30 @@ from ..models import (
 from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm
 
 
-def _fake_permission_group_required(*group_names):
+GENERATE_CERTIFICATES_TASK_DATA = [
+    (True, datetime.datetime.now() + datetime.timedelta(days=4)),
+    (False, datetime.datetime.now() - datetime.timedelta(days=4)),
+    (False, datetime.datetime.now() + datetime.timedelta(days=4)),
+    (True, datetime.datetime.now() - datetime.timedelta(days=4)),
+]
+
+
+def _get_course_certificate_status(course_id):
+    """
+    Returns user course certificate given course and user id
+    """
+    course_certificate_status = None
+    try:
+        course_certificate_status = CourseCertificateStatus.objects.get(
+            course_id=course_id
+        )
+    except CourseCertificateStatus.DoesNotExist:
+        pass
+
+    return course_certificate_status
+
+
+def _fake_permission_group_required(*group_names):  # pylint: disable=unused-argument
     """
     Fake method for permission_group_required method
     """
@@ -41,7 +64,7 @@ def _fake_permission_group_required(*group_names):
     return decorator
 
 
-permission_patcher = patch(
+permission_patcher = patch(  # pylint: disable=invalid-name
     'lib.authorization.permission_group_required',
     _fake_permission_group_required
 ).start()
@@ -71,14 +94,21 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
             "full_name": "Ecommerce worker"
         })
         self.user_course_certificate = UserCourseCertificate.objects.create(
-            course_id = self.courses[0][0],
-            user_id = self.user.id
+            course_id=self.courses[0][0],
+            user_id=self.user.id
         )
-        self.template_asset_post_data = { 'description': 'dumy description' }
-        self.stylesheet = SimpleUploadedFile('style.css', 'dummy content', content_type='text/css')
-        self.template_asset_file_data = { 'asset': self.stylesheet }
+        self.template_asset_post_data = {'description': 'dumy description'}
+        self.stylesheet = SimpleUploadedFile(
+            'styles.css',
+            'dummy content',
+            content_type='text/css'
+        )
+        self.template_asset_file_data = {'asset': self.stylesheet}
         self.template_assets = [
-            CertificateTemplateAssetForm(self.template_asset_post_data, self.template_asset_file_data).save()
+            CertificateTemplateAssetForm(
+                self.template_asset_post_data,
+                self.template_asset_file_data
+            ).save()
         ]
 
         self.templates = []
@@ -113,23 +143,10 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         Helper method to patch get_courses_choice_list_patch method
         """
 
-        get_courses_choice_list = self.apply_patch('certificates.forms.get_courses_choice_list')
+        get_courses_choice_list = self.apply_patch(
+            'certificates.forms.get_courses_choice_list'
+        )
         get_courses_choice_list.return_value = self.courses
-
-
-    def _get_course_certificate_status(self, course_id):
-        """
-        Returns user course certificate given course and user id
-        """
-        course_certificate_status = None
-        try:
-            course_certificate_status = CourseCertificateStatus.objects.get(
-                course_id=course_id
-            )
-        except CourseCertificateStatus.DoesNotExist:
-            pass
-
-        return course_certificate_status
 
     def test_get_certificate_by_uuid_invalid_uuid(self):
         """
@@ -155,14 +172,11 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         response = self.client.get(valid_certificate_url)
         self.assertEqual(response.status_code, 200)
 
-    @ddt.data(
-        (True, datetime.datetime.now() + datetime.timedelta(days=4)),
-        (False, datetime.datetime.now() - datetime.timedelta(days=4)),
-        (False, datetime.datetime.now() + datetime.timedelta(days=4)),
-        (True, datetime.datetime.now() - datetime.timedelta(days=4)),
-    )
+    @ddt.data(*GENERATE_CERTIFICATES_TASK_DATA)
     @ddt.unpack
-    def test_generate_course_certificates(self, certs_feature_flag, course_end_date):
+    def test_generate_course_certificates(
+            self, certs_feature_flag, course_end_date
+        ):
         """
         Test generate course certificates view
         """
@@ -170,9 +184,15 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
             'generate_course_certificates',
             args=(self.courses[0][0], )
         )
-        features = FeatureFlags.objects.create(course_id=self.courses[0][0], certificates=certs_feature_flag)
+        FeatureFlags.objects.create(
+            course_id=self.courses[0][0],
+            certificates=certs_feature_flag
+        )
         data = {'course_end': course_end_date}
-        expected_url=reverse('course_details', kwargs={'course_id': self.courses[0][0]})
+        expected_url = reverse(
+            'course_details',
+            kwargs={'course_id': self.courses[0][0]}
+        )
 
         response = self.client.post(generate_certificate_url, data)
 
@@ -182,11 +202,16 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
             status_code=302,
             target_status_code=302
         )
-        course_certificate_status = self._get_course_certificate_status(self.courses[0][0])
+        course_certificate_status = _get_course_certificate_status(
+            self.courses[0][0]
+        )
 
         if certs_feature_flag and course_end_date < datetime.datetime.now():
             self.assertIsNotNone(course_certificate_status)
-            self.assertEqual(course_certificate_status.status, CertificateStatus.generating)
+            self.assertEqual(
+                course_certificate_status.status,
+                CertificateStatus.generating
+            )
         else:
             self.assertIsNone(course_certificate_status)
 
@@ -196,20 +221,29 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         """
         response = self.client.get(reverse('certificate_template_assets'))
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response.context['form'], CertificateTemplateAssetForm)
+        self.assertIsInstance(
+            response.context['form'],
+            CertificateTemplateAssetForm
+        )
         self.assertEqual(
             len(response.context['certificate_template_assets']),
             len(self.template_assets)
         )
 
-    def test_certificate_template_assets_post_valid(self):
+    def test_template_assets_post_valid(self):
         """
         Test post certificate template assets view with valid data
         """
-        test_file_path = os.path.join(settings.BASE_DIR, 'admin/test_data/test_user_list.csv')
+        test_file_path = os.path.join(
+            settings.BASE_DIR,
+            'admin/test_data/test_user_list.csv'
+        )
         with open(test_file_path) as test_file_content:
-            data = { 'asset': test_file_content }
-            response = self.client.post(reverse('certificate_template_assets'), data)
+            data = {'asset': test_file_content}
+            response = self.client.post(
+                reverse('certificate_template_assets'),
+                data
+            )
 
         self.assertRedirects(
             response,
@@ -218,16 +252,25 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
             target_status_code=200
         )
         certificate_template_assets = CertificateTemplateAsset.objects.all()
-        self.assertEqual(len(certificate_template_assets), len(self.template_assets) + 1)
+        self.assertEqual(
+            len(certificate_template_assets),
+            len(self.template_assets) + 1
+        )
 
-    def test_certificate_template_assets_post_invalid(self):
+    def test_template_assets_post_invalid(self):
         """
         Test post certificate template assets view with invalid data
         """
-        response = self.client.post(reverse('certificate_template_assets'), self.template_asset_post_data)
+        response = self.client.post(
+            reverse('certificate_template_assets'),
+            self.template_asset_post_data
+        )
 
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response.context['form'], CertificateTemplateAssetForm)
+        self.assertIsInstance(
+            response.context['form'],
+            CertificateTemplateAssetForm
+        )
         self.assertEqual(
             len(response.context['certificate_template_assets']),
             len(self.template_assets)
@@ -259,7 +302,10 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         Test post new certificate template view with valid data
         """
         self._apply_get_courses_choice_list_patch()
-        response = self.client.post(reverse('new_certificate_template'), self.template_post_data)
+        response = self.client.post(
+            reverse('new_certificate_template'),
+            self.template_post_data
+        )
 
         self.assertRedirects(
             response,
@@ -270,11 +316,14 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         certificate_templates = CertificateTemplate.objects.all()
         self.assertEqual(len(certificate_templates), len(self.templates) + 1)
 
-    def test_new_certificate_template_post_invalid(self):
+    def test_new_template_post_invalid(self):
         """
         Test post new certificate template view with invalid data
         """
-        response = self.client.post(reverse('new_certificate_template'), self.template_post_data)
+        response = self.client.post(
+            reverse('new_certificate_template'),
+            self.template_post_data
+        )
         self.assertEqual(response.status_code, 200)
         certificate_templates = CertificateTemplate.objects.all()
         self.assertEqual(len(certificate_templates), len(self.templates))
@@ -285,11 +334,17 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         Test get edit certificate template view
         """
         response = self.client.get(
-            reverse('edit_certificate_template', kwargs={'template_id': self.templates[0].id})
+            reverse(
+                'edit_certificate_template',
+                kwargs={'template_id': self.templates[0].id}
+            )
         )
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.context['form'], CertificateTemplateForm)
-        self.assertEqual(response.context['form'].initial['course_id'], self.templates[0].course_id)
+        self.assertEqual(
+            response.context['form'].initial['course_id'],
+            self.templates[0].course_id
+        )
 
     def test_edit_certificate_template_post_valid(self):
         """
@@ -299,7 +354,10 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         new_template_description = 'updated description'
         self.template_post_data['description'] = new_template_description
         response = self.client.post(
-            reverse('edit_certificate_template', kwargs={'template_id': self.templates[0].id}),
+            reverse(
+                'edit_certificate_template',
+                kwargs={'template_id': self.templates[0].id}
+            ),
             self.template_post_data
         )
 
@@ -309,15 +367,22 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
             status_code=302,
             target_status_code=200
         )
-        certificate_template = CertificateTemplate.objects.get(id=self.templates[0].id)
-        self.assertEqual(certificate_template.description, new_template_description)
+        certificate_template = CertificateTemplate.objects.get(
+            id=self.templates[0].id
+        )
+        self.assertEqual(
+            certificate_template.description, new_template_description
+        )
 
-    def test_edit_certificate_template_post_invalid(self):
+    def test_edit_template_post_invalid(self):
         """
         Test post edit certificate template view with invalid data
         """
         response = self.client.post(
-            reverse('edit_certificate_template', kwargs={'template_id': self.templates[0].id}),
+            reverse(
+                'edit_certificate_template',
+                kwargs={'template_id': self.templates[0].id}
+            ),
             self.template_asset_post_data
         )
         self.assertEqual(response.status_code, 200)
@@ -330,7 +395,10 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         response = self.client.get(
             reverse(
                 'load_template_asset',
-                kwargs={'asset_id': self.template_assets[0].id, 'asset_name': self.stylesheet.name}
+                kwargs={
+                    'asset_id': self.template_assets[0].id,
+                    'asset_name': self.stylesheet.name
+                }
             )
         )
         self.assertEqual(response.status_code, 200)
