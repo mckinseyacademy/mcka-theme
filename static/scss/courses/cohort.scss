@@ -171,6 +171,87 @@
         }
       }
     }
+    .leaderboards-list{
+      margin: 10px 0;
+      padding: 0;
+      list-style: none;
+      @media only screen and (min-width: 768px) {
+        text-align: center;
+      }
+      li {
+        display: inline-block;
+        vertical-align: top;
+        padding: 0 10px;
+        max-width: 33.33%;
+        margin-left: -4px;
+        width: 100%;
+        border-right: 1px solid $almost-white;
+        @media only screen and (max-width: 767px) {
+          display: block;
+          margin-left: 0;
+          max-width: none;
+          border-right: 0;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+          border-bottom: 1px solid $almost-white;
+        }
+        &:first-child{padding-left: 5px}
+        &:last-child{border-right: 0}
+        .rank {
+          text-align: center;
+          margin: 20px 0 30px;
+          @include font-spec(18, normal, 24);
+          span {
+            @include font-spec(24, bold, 0);
+          }
+        }
+
+        .user {
+          padding: 10px 10px 0 10px;
+          border-top: 1px solid $almost-white;
+          @include clearfix;
+
+          .avatar {
+            width: 40px;
+            height: 40px;
+            float: left;
+            margin-right: 10px;
+          }
+
+          .info {
+            margin-left: 60px;
+            min-height: 75px;
+            text-align: left;
+
+            .person-rank {
+              color: $mckinsey-academy-blue-gray;
+              white-space: nowrap;
+              @include font-spec(18, bold, 24);
+
+              span {
+                color: $mckinsey-academy-black;
+                @include font-spec(24, bold, 24);
+              }
+            }
+          }
+
+          &.dummy {
+            color: $mckinsey-grey;
+            .person-title,
+            .person-username,
+            .person-fullname,
+            .person-rank,
+            .person-rank span {
+              color: $mckinsey-grey;
+              white-space: nowrap;
+            }
+          }
+        }
+        .header{
+          text-align: left;
+        }
+      }
+    }
   }
 
   .user-content {

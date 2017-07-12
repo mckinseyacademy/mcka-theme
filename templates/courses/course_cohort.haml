@@ -36,211 +36,195 @@
     .leaderboard-header
       %h1 Leaderboards
     .leaderboards
-      %table
-        %colgroup
-          %col{'style': "width:33%"}
-          %col{'style': "width:33%"}
-          %col{'style': "width:34%"}
-        %tbody
-          %tr
-            - if proficiency
-              %td
-                .header
-                  .label-5 Proficiency:
-                  .label-4 cohort average = ={proficiency.course_average_display}
-                  - if is_observer
-                   .rank As an Observer you will not appear on the proficiency leaderboard
-                  - elif proficiency.user_position and proficiency.user_grade_value
-                   .rank your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span>
-                  - else
-                    .rank your proficiency position <br> will be displayed here
-
-            - if feature_flags.progress_page
-              %td
-                .header
-                  .label-5 Progress:
-                  .label-4 cohort average = ={completions.course_average_display}%
-                  - if is_observer
-                   .rank As an Observer you will not appear on the progress leaderboard
-                  - elif completions.position and completions.user_progress_value
-                    .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
-                  - else
-                    .rank your progress position <br> will be displayed here
-
-            - if social
-              %td
-                .header
-                  .label-5 Engagement:
-                  .label-4 cohort average = ={social.course_avg} points
-                  - if is_observer
-                   .rank As an Observer you will not appear on the engagement leaderboard
-                  - elif social.position
-                    .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
-                  - else
-                    .rank your engagement position <br> will be displayed here
-
-          %tr
-            - if proficiency
-              %td
-                - if proficiency.has_leaders and  proficiency.leaders.0
-                  .user
-                    %img.avatar{src: '={proficiency.leaders.0.avatar_url}', title: '={proficiency.leaders.0.username}'}
-                    .info
-                      .person-name ={proficiency.leaders.0.username}
-                      - if proficiency.leaders.0.title
-                        .person-title ={proficiency.leaders.0.title}
-                      .person-rank #={proficiency.leaders.0.rank} <span>={proficiency.leaders.0.grade_display_value}</span>
-                - else
-                  .user.dummy
-                    %img.avatar{src: '/static/image/empty_avatar.png'}
-                    .info
-                      .person-name username
-                      .person-title title
-                      .person-rank #={leaderboard_ranks.0}
-                        %span 100
-            %td
-              - if completions.has_leaders and completions.leaders.0
-                .user
-                  %img.avatar{src: '={completions.leaders.0.avatar_url}', title: '={completions.leaders.0.username}'}
-                  .info
-                    .person-name ={completions.leaders.0.username}
-                    - if completions.leaders.0.title
-                      .person-title ={completions.leaders.0.title}
-                    .person-rank #={completions.leaders.0.rank} <span>={completions.leaders.0.user_progress_display}%</span>
+      %ul.leaderboards-list
+        - if proficiency
+          %li
+            .header
+              .label-5 Proficiency:
+              .label-4 cohort average = ={proficiency.course_average_display}
+              - if is_observer
+                .rank As an Observer you will not appear on the proficiency leaderboard
+              - elif proficiency.user_position and proficiency.user_grade_value
+                .rank your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span>
               - else
-                .user.dummy
-                  %img.avatar{src: '/static/image/empty_avatar.png'}
+                .rank your proficiency position <br> will be displayed here
+
+            - if proficiency.has_leaders and  proficiency.leaders.0
+              .user
+                %img.avatar{src: '={proficiency.leaders.0.avatar_url}', title: '={proficiency.leaders.0.username}'}
                   .info
-                    .person-name username
-                    .person-title title
-                    .person-rank #={leaderboard_ranks.0}
-                      %span 100%
-            - if social
-              %td
-                - if social.leaders and social.leaders.0
-                  .user
-                    %img.avatar{src: '={social.leaders.0.avatar_url}', title: '={social.leaders.0.username}'}
-                    .info
-                      .person-name ={social.leaders.0.username}
-                      - if social.leaders.0.title
-                        .person-title ={social.leaders.0.title}
-                      .person-rank #={social.leaders.0.rank} <span>={social.leaders.0.points} pts.</span>
-                - else
-                  .user.dummy
-                    %img.avatar{src: '/static/image/empty_avatar.png'}
-                    .info
-                      .person-name username
-                      .person-title title
-                      .person-rank #={leaderboard_ranks.0}
-                        %span 100 pts.
-          %tr
-            - if proficiency
-              %td
-                - if proficiency.has_leaders and  proficiency.leaders.1
-                  .user
-                    %img.avatar{src: '={proficiency.leaders.1.avatar_url}', title: '={proficiency.leaders.1.username}'}
-                    .info
-                      .person-name ={proficiency.leaders.1.username}
-                      - if proficiency.leaders.1.title
-                        .person-title ={proficiency.leaders.1.title}
-                      .person-rank #={proficiency.leaders.1.rank} <span>={proficiency.leaders.1.grade_display_value}</span>
-                - else
-                  .user.dummy
-                    %img.avatar{src: '/static/image/empty_avatar.png'}
-                    .info
-                      .person-name username
-                      .person-title title
-                      .person-rank #={leaderboard_ranks.1}
-                        %span 100
-            %td
-              - if completions.has_leaders and completions.leaders.1
-                .user
-                  %img.avatar{src: '={completions.leaders.1.avatar_url}', title: '={completions.leaders.1.username}'}
-                  .info
-                    .person-name ={completions.leaders.1.username}
-                    - if completions.leaders.1.title
-                      .person-title ={completions.leaders.1.title}
-                    .person-rank #={completions.leaders.1.rank} <span>={completions.leaders.1.user_progress_display}%</span>
+                    .person-name ={proficiency.leaders.0.username}
+                    - if proficiency.leaders.0.title
+                      .person-title ={proficiency.leaders.0.title}
+                    .person-rank #={proficiency.leaders.0.rank} <span>={proficiency.leaders.0.grade_display_value}</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.0}
+                    %span 100
+
+            - if proficiency.has_leaders and  proficiency.leaders.1
+              .user
+                %img.avatar{src: '={proficiency.leaders.1.avatar_url}', title: '={proficiency.leaders.1.username}'}
+                .info
+                  .person-name ={proficiency.leaders.1.username}
+                  - if proficiency.leaders.1.title
+                    .person-title ={proficiency.leaders.1.title}
+                  .person-rank #={proficiency.leaders.1.rank} <span>={proficiency.leaders.1.grade_display_value}</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.1}
+                    %span 100
+
+            - if proficiency.has_leaders and  proficiency.leaders.2
+              .user
+                %img.avatar{src: '={proficiency.leaders.2.avatar_url}', title: '={proficiency.leaders.2.username}'}
+                .info
+                  .person-name ={proficiency.leaders.2.username}
+                  - if proficiency.leaders.2.title
+                    .person-title ={proficiency.leaders.2.title}
+                  .person-rank #={proficiency.leaders.2.rank} <span>={proficiency.leaders.2.grade_display_value}</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.2}
+                    %span 100
+
+        - if feature_flags.progress_page
+          %li
+            .header
+              .label-5 Progress:
+              .label-4 cohort average = ={completions.course_average_display}%
+              - if is_observer
+                .rank As an Observer you will not appear on the progress leaderboard
+              - elif completions.position and completions.user_progress_value
+                .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
               - else
-                .user.dummy
-                  %img.avatar{src: '/static/image/empty_avatar.png'}
-                  .info
-                    .person-name username
-                    .person-title title
-                    .person-rank #={leaderboard_ranks.1}
-                      %span 100%
-            - if social
-              %td
-                - if social.leaders and social.leaders.1
-                  .user
-                    %img.avatar{src: '={social.leaders.1.avatar_url}', title: '={social.leaders.1.username}'}
-                    .info
-                      .person-name ={social.leaders.1.username}
-                      - if social.leaders.1.title
-                        .person-title ={social.leaders.1.title}
-                      .person-rank #={social.leaders.1.rank} <span>={social.leaders.1.points} pts.</span>
-                - else
-                  .user.dummy
-                    %img.avatar{src: '/static/image/empty_avatar.png'}
-                    .info
-                      .person-name username
-                      .person-title title
-                      .person-rank #={leaderboard_ranks.1}
-                        %span 100 pts.
-          %tr
-            - if proficiency
-              %td
-                - if proficiency.has_leaders and  proficiency.leaders.2
-                  .user
-                    %img.avatar{src: '={proficiency.leaders.2.avatar_url}', title: '={proficiency.leaders.2.username}'}
-                    .info
-                      .person-name ={proficiency.leaders.2.username}
-                      - if proficiency.leaders.2.title
-                        .person-title ={proficiency.leaders.2.title}
-                      .person-rank #={proficiency.leaders.2.rank} <span>={proficiency.leaders.2.grade_display_value}</span>
-                - else
-                  .user.dummy
-                    %img.avatar{src: '/static/image/empty_avatar.png'}
-                    .info
-                      .person-name username
-                      .person-title title
-                      .person-rank #={leaderboard_ranks.2}
-                        %span 100
-            %td
-              - if completions.has_leaders and completions.leaders.2
-                .user
-                  %img.avatar{src: '={completions.leaders.2.avatar_url}', title: '={completions.leaders.2.username}'}
-                  .info
-                    .person-name ={completions.leaders.2.username}
-                    - if completions.leaders.2.title
-                      .person-title ={completions.leaders.2.title}
-                    .person-rank #={completions.leaders.2.rank} <span>={completions.leaders.2.user_progress_display}%</span>
+                .rank your progress position <br> will be displayed here
+
+            - if completions.has_leaders and completions.leaders.0
+              .user
+                %img.avatar{src: '={completions.leaders.0.avatar_url}', title: '={completions.leaders.0.username}'}
+                .info
+                  .person-name ={completions.leaders.0.username}
+                  - if completions.leaders.0.title
+                    .person-title ={completions.leaders.0.title}
+                  .person-rank #={completions.leaders.0.rank} <span>={completions.leaders.0.user_progress_display}%</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.0}
+                    %span 100%
+
+            - if completions.has_leaders and completions.leaders.1
+              .user
+                %img.avatar{src: '={completions.leaders.1.avatar_url}', title: '={completions.leaders.1.username}'}
+                .info
+                  .person-name ={completions.leaders.1.username}
+                  - if completions.leaders.1.title
+                    .person-title ={completions.leaders.1.title}
+                  .person-rank #={completions.leaders.1.rank} <span>={completions.leaders.1.user_progress_display}%</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.1}
+                    %span 100%
+
+            - if completions.has_leaders and completions.leaders.2
+              .user
+                %img.avatar{src: '={completions.leaders.2.avatar_url}', title: '={completions.leaders.2.username}'}
+                .info
+                  .person-name ={completions.leaders.2.username}
+                  - if completions.leaders.2.title
+                    .person-title ={completions.leaders.2.title}
+                  .person-rank #={completions.leaders.2.rank} <span>={completions.leaders.2.user_progress_display}%</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.2}
+                    %span 100%
+
+        - if social
+          %li
+            .header
+              .label-5 Engagement:
+              .label-4 cohort average = ={social.course_avg} points
+              - if is_observer
+               .rank As an Observer you will not appear on the engagement leaderboard
+              - elif social.position
+                .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
               - else
-                .user.dummy
-                  %img.avatar{src: '/static/image/empty_avatar.png'}
-                  .info
-                    .person-name username
-                    .person-title title
-                    .person-rank #={leaderboard_ranks.2}
-                      %span 100%
-            - if social
-              %td
-                - if social.leaders and social.leaders.2
-                  .user
-                    %img.avatar{src: '={social.leaders.2.avatar_url}', title: '={social.leaders.2.username}'}
-                    .info
-                      .person-name ={social.leaders.2.username}
-                      - if social.leaders.2.title
-                        .person-title ={social.leaders.2.title}
-                      .person-rank #={social.leaders.2.rank} <span>={social.leaders.2.points} pts.</span>
-                - else
-                  .user.dummy
-                    %img.avatar{src: '/static/image/empty_avatar.png'}
-                    .info
-                      .person-name username
-                      .person-title title
-                      .person-rank #={leaderboard_ranks.2}
-                        %span 100 pts.
+                .rank your engagement position <br> will be displayed here
+
+            - if social.leaders and social.leaders.0
+              .user
+                %img.avatar{src: '={social.leaders.0.avatar_url}', title: '={social.leaders.0.username}'}
+                .info
+                  .person-name ={social.leaders.0.username}
+                  - if social.leaders.0.title
+                    .person-title ={social.leaders.0.title}
+                  .person-rank #={social.leaders.0.rank} <span>={social.leaders.0.points} pts.</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.0}
+                    %span 100 pts.
+
+            - if social.leaders and social.leaders.1
+              .user
+                %img.avatar{src: '={social.leaders.1.avatar_url}', title: '={social.leaders.1.username}'}
+                .info
+                  .person-name ={social.leaders.1.username}
+                  - if social.leaders.1.title
+                    .person-title ={social.leaders.1.title}
+                  .person-rank #={social.leaders.1.rank} <span>={social.leaders.1.points} pts.</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.1}
+                    %span 100 pts.
+
+            - if social.leaders and social.leaders.2
+              .user
+                %img.avatar{src: '={social.leaders.2.avatar_url}', title: '={social.leaders.2.username}'}
+                .info
+                  .person-name ={social.leaders.2.username}
+                  - if social.leaders.2.title
+                    .person-title ={social.leaders.2.title}
+                  .person-rank #={social.leaders.2.rank} <span>={social.leaders.2.points} pts.</span>
+            - else
+              .user.dummy
+                %img.avatar{src: '/static/image/empty_avatar.png'}
+                .info
+                  .person-name username
+                  .person-title title
+                  .person-rank #={leaderboard_ranks.2}
+                    %span 100 pts.
 
     %hr.hidden
     .user-content.hidden
