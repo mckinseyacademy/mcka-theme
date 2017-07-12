@@ -35,6 +35,7 @@ class LessonNotesItem(db_models.Model):
             updated_at = self.updated_at.isoformat(),
         )
 
+
 class FeatureFlags(db_models.Model):
     course_id = db_models.CharField(max_length=200, unique=False, db_index=True)
     group_work = db_models.BooleanField(default=True)
@@ -48,6 +49,7 @@ class FeatureFlags(db_models.Model):
     resources = db_models.BooleanField(default=True)
     cohort_avg = db_models.BooleanField(default=True)
     certificates = db_models.BooleanField(default=False)
+    engagement = db_models.BooleanField(default=True)
 
     def as_json(self):
         return dict(
@@ -61,5 +63,6 @@ class FeatureFlags(db_models.Model):
             notifications = self.notifications,
             branding = self.branding,
             resources = self.resources,
-            certificates = self.certificates
+            certificates = self.certificates,
+            engagement=self.engagement,
         )
