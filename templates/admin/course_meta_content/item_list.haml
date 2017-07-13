@@ -103,3 +103,9 @@
           - else
             %input#certificates{type: 'checkbox', name: 'certificates'}
           %label{for: 'certificates'} Certificates
+        %li
+          - if feature_flags.engagement
+            %input#engagement{type: 'checkbox', name: 'engagement', checked: None}
+          - else
+            %input#engagement{type: 'checkbox', name: 'engagement'}
+          %label{for: 'engagement'} Engagement

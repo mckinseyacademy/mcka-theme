@@ -166,13 +166,18 @@ def course_cohort(request, course_id):
 
     course = load_course(course_id, request=request)
 
-    proficiency = get_proficiency_leaders(course_id, request.user.id)
+    proficiency = get_proficiency_leaders(course_id, request.user.id) if feature_flags \
+        and feature_flags.proficiency else None
+
     completions = get_progress_leaders(course_id, request.user.id)
-    social = get_social_metrics(
+
+    # Social (aka Engagement) section is retrieved/displayed only if
+    # both of `Discussions` and `Engagement` flags are enabled
+    social_metrics = get_social_metrics(
         course_id,
         request.user.id,
         is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
-    )
+    ) if feature_flags and (feature_flags.discussions and feature_flags.engagement) else None
 
     metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
@@ -220,7 +225,7 @@ def course_cohort(request, course_id):
     data = {
         'proficiency': proficiency,
         'completions': completions,
-        'social': social,
+        'social': social_metrics,
         'metrics': metrics,
         'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
@@ -1139,6 +1144,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.resources = request.POST.get('resources', None) == 'on'
     feature_flags.cohort_avg = request.POST.get('cohort_avg', None) == 'on'
     feature_flags.certificates = request.POST.get('certificates', None) == 'on'
+    feature_flags.engagement = request.POST.get('engagement', None) == 'on'
     feature_flags.save()
 
     return HttpResponse(
