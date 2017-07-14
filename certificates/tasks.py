@@ -2,7 +2,7 @@
 Backgroud tasks related to certificates
 """
 
-from celery.decorators import task
+from celery.decorators import task  # pylint: disable=no-name-in-module, import-error
 from celery.utils.log import get_task_logger
 
 from .controller import (
@@ -12,7 +12,7 @@ from .controller import (
 )
 from .models import CourseCertificateStatus, CertificateStatus
 
-logger = get_task_logger(__name__)
+logger = get_task_logger(__name__)  # pylint: disable=invalid-name
 
 
 @task(name="certificates.generate_course_certificates_task")
@@ -33,7 +33,7 @@ def generate_course_certificates_task(course_id, base_domain):
                 )
                 certificate.email_sent = True
                 certificate.save()
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-except
                 logger.exception(
                     'An error occurred while generating certificate: %s',
                     ex.message

@@ -7,13 +7,8 @@ from django.test import TestCase
 from django.db import IntegrityError
 
 from courses.models import FeatureFlags
-from courses.tests import MockCourseAPI
 
-from ..models import (
-    UserCourseCertificate,
-    CourseCertificateStatus,
-    CertificateTemplate,
-)
+from ..models import UserCourseCertificate, CertificateTemplate
 
 
 class CourseCertificateStatusModelTest(TestCase):
@@ -27,11 +22,10 @@ class CourseCertificateStatusModelTest(TestCase):
         super(CourseCertificateStatusModelTest, self).setUp()
         self.course_id = 'test/course/302'
 
-    def test_course_certificate_disabled_by_default(self):
+    def test_course_certificate_feature(self):
         """
         Test if certificates are disabled by default for course
         """
-        course = MockCourseAPI.get_course(self.course_id)
         feature_flags = FeatureFlags.objects.create(course_id=self.course_id)
         self.assertFalse(feature_flags.certificates)
 
@@ -52,17 +46,17 @@ class UserCourseCertificateModelTest(TestCase):
             "username": "ecommerce_worker"
         })
 
-    def test_user_course_certificate_uniqueness(self):
+    def test_certificate_uniqueness(self):
         """
         Test user course certificate uniqueness on course_id and user_id
         """
-        certificate = UserCourseCertificate.objects.create(
+        UserCourseCertificate.objects.create(
             course_id=self.course_id,
             user_id=self.user.id
         )
 
         with self.assertRaises(IntegrityError):
-            certificate = UserCourseCertificate.objects.create(
+            UserCourseCertificate.objects.create(
                 course_id=self.course_id,
                 user_id=self.user.id
             )
@@ -80,17 +74,17 @@ class CertificateTemplateModelTest(TestCase):
         self.course_id = 'test/course/302'
         self.template = '<p>dummy</p>'
 
-    def test_certificate_template_course_uniqueness(self):
+    def test_template_course_uniqueness(self):
         """
         Test  certificate template uniqueness on course
         """
-        certificate = CertificateTemplate.objects.create(
+        CertificateTemplate.objects.create(
             course_id=self.course_id,
             template=self.template
         )
 
         with self.assertRaises(IntegrityError):
-            certificate = CertificateTemplate.objects.create(
+            CertificateTemplate.objects.create(
                 course_id=self.course_id,
                 template=self.template
             )

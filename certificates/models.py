@@ -1,10 +1,8 @@
 """
 Django models for course certificates and related code
 """
-import os
-import uuid
+import uuid  # pylint: disable=unused-import
 
-from django.conf import settings
 from django.db import models
 from upload_validator import FileTypeValidator
 
@@ -14,7 +12,8 @@ def template_assets_path(instance, filename):
     Returns the certificate template asset file path.
 
     Arguments:
-            instance (CertificateTemplateAsset): An instance of CertificateTemplateAsset class
+            instance (CertificateTemplateAsset): An instance of
+                                                 CertificateTemplateAsset class
             filename (string): Name of the template asset file
     """
     from .controller import get_template_asset_path
@@ -36,13 +35,16 @@ class CourseCertificateStatus(models.Model):
     Model for course certificates generation status
     """
     course_id = models.CharField(max_length=200, unique=True)
-    status = models.CharField(max_length=32, default=CertificateStatus.available)
+    status = models.CharField(
+        max_length=32,
+        default=CertificateStatus.available
+    )
 
     def as_json(self):
         return dict(
-            id = self.id,
-            course_id = self.course_id,
-            status = self.status,
+            id=self.id,
+            course_id=self.course_id,
+            status=self.status,
         )
 
 
@@ -50,7 +52,7 @@ class UserCourseCertificate(models.Model):
     """
     Model for generated certificates
     """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # pylint: disable=invalid-name
     user_id = models.IntegerField(unique=False)
     course_id = models.CharField(max_length=200, unique=False)
     email_sent = models.BooleanField(default=False)
@@ -60,10 +62,10 @@ class UserCourseCertificate(models.Model):
         """
         User course certificate model property to get unhyphenated uuid
         """
-        return self.id.hex
+        return self.id.hex # pylint: disable=no-member
 
 
-    class Meta:
+    class Meta(object):
         """
         Meta class to set model meta options
         """
@@ -98,7 +100,7 @@ class CertificateTemplateAsset(models.Model):
     asset = models.FileField(
         max_length=255,
         upload_to=template_assets_path,
-        validators = [
+        validators=[
             FileTypeValidator(
                 allowed_types=[
                     'image/jpeg',
@@ -114,7 +116,7 @@ class CertificateTemplateAsset(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         """
         save the certificate template asset
         """

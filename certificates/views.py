@@ -1,7 +1,6 @@
 """
 Views for Certificates djangoapp.
 """
-import os
 import urllib
 
 from mimetypes import MimeTypes
@@ -9,21 +8,17 @@ from lib.authorization import permission_group_required
 from dateutil.parser import parse as parsedate
 
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.http import Http404, HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.files.storage import default_storage
-from django.conf import settings
 from django.template import RequestContext, Template
 
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import user_api, course_api
-from admin.views import AccessChecker
 
 from .controller import (
     get_course_certificates_status,
-    get_course_passed_users,
     get_certificate_template,
     get_template_asset_path,
 
@@ -39,7 +34,11 @@ from .tasks import generate_course_certificates_task
 from .forms import CertificateTemplateAssetForm, CertificateTemplateForm
 
 @require_POST
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def generate_course_certificates(request, course_id):
     """
     Generates certificates for the specified course
@@ -50,9 +49,9 @@ def generate_course_certificates(request, course_id):
         parsedate(course_end)
     )
     if certificates_status == CertificateStatus.available:
-        course_certificate_status = CourseCertificateStatus.objects.create(
+        CourseCertificateStatus.objects.create(
             course_id=course_id,
-            status = CertificateStatus.generating
+            status=CertificateStatus.generating
         )
 
         base_domain = request.build_absolute_uri('/')
@@ -83,10 +82,18 @@ def get_certificate_by_uuid(request, certificate_uuid):
         context = RequestContext(request, context)
         return HttpResponse(template.render(context))
 
-    return render(request, "certificates/default_cetificate_template.haml", context)
+    return render(
+        request,
+        "certificates/default_cetificate_template.haml",
+        context
+    )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def certificate_template_assets(request):
     """
     View for creating and listing certificate template assets
@@ -100,27 +107,35 @@ def certificate_template_assets(request):
     else:
         form = CertificateTemplateAssetForm()
 
-    certificate_template_assets = CertificateTemplateAsset.objects.all()
+    template_assets = CertificateTemplateAsset.objects.all()
 
     return render(request, 'certificates/certificate_template_assets.haml', {
         'form': form,
-        'certificate_template_assets': certificate_template_assets,
+        'certificate_template_assets': template_assets,
     })
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def certificate_templates(request):
     """
     View to list all certificate templates
     """
-    certificate_templates = CertificateTemplate.objects.all()
+    templates = CertificateTemplate.objects.all()
 
     return render(request, 'certificates/certificate_templates.haml', {
-        'certificate_templates': certificate_templates,
+        'certificate_templates': templates,
     })
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def new_certificate_template(request):
     """
     View for creating new certificate template
@@ -139,14 +154,21 @@ def new_certificate_template(request):
     })
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def edit_certificate_template(request, template_id):
     """
     View for editing certificate template
     """
     certificate_template = CertificateTemplate.objects.get(id=template_id)
     if request.method == 'POST':
-        form = CertificateTemplateForm(request.POST, instance=certificate_template)
+        form = CertificateTemplateForm(
+            request.POST,
+            instance=certificate_template
+        )
 
         if form.is_valid():
             form.save()
@@ -159,7 +181,7 @@ def edit_certificate_template(request, template_id):
     })
 
 
-def load_template_asset(request, asset_id, asset_name):
+def load_template_asset(request, asset_id, asset_name): # pylint: disable=unused-argument
     """
     View to locate and return template asset file
     """
@@ -170,10 +192,12 @@ def load_template_asset(request, asset_id, asset_name):
         mime = MimeTypes()
         url = urllib.pathname2url(asset_path)
         mime_type = mime.guess_type(url)
-        response =  HttpResponse(
+        response = HttpResponse(
             asset, content_type=mime_type[0]
         )
-        response['Content-Disposition'] = 'attachment; filename={}'.format(asset_name)
+        response['Content-Disposition'] = 'attachment; filename={}'.format(
+            asset_name
+        )
 
         return response
 
