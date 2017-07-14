@@ -7,7 +7,7 @@ from celery.utils.log import get_task_logger
 
 from .controller import (
     generate_user_course_certificate,
-    get_course_passed_users,
+    get_course_passed_users_list,
     send_certificate_generation_email
 )
 from .models import CourseCertificateStatus, CertificateStatus
@@ -20,7 +20,7 @@ def generate_course_certificates_task(course_id, base_domain):
     """
     Generates user course certificate and sends email
     """
-    passed_users = get_course_passed_users(course_id)
+    passed_users = get_course_passed_users_list(course_id)
     for user in passed_users:
         certificate = generate_user_course_certificate(course_id, user)
         if certificate:

@@ -17,7 +17,7 @@ from .test_tasks import mock_passed_users_list
 from .test_views import GENERATE_CERTIFICATES_TASK_DATA
 from ..controller import (
     get_course_certificates_status,
-    get_course_passed_users,
+    get_course_passed_users_list,
     generate_user_course_certificate,
     send_certificate_generation_email,
     get_certificate_template,
@@ -59,6 +59,11 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
         self.course_id = 'test/course/302'
         self.passed_user_ids = [2, 5, 6, 8]
         self.passed_users = mock_passed_users_list()
+
+        self.paginated_passed_users = DottableDict({
+            "results": self.passed_users,
+            "num_pages": 1
+        })
 
         self.courses = [
             DottableDict({
@@ -124,17 +129,14 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(self.passed_users[0].email, mail.outbox[0].to[0])
 
-    def test_get_course_passed_users(self):
+    def test_get_course_passed_users_list(self):
         """
         Test course passed users list get
         """
         course_api = self.apply_patch('certificates.controller.course_api')
-        course_api.get_course_passed_users_id_list.return_value = self.passed_user_ids
+        course_api.get_course_passed_users.return_value = self.paginated_passed_users
 
-        user_api = self.apply_patch('certificates.controller.user_api')
-        user_api.get_users.return_value = self.passed_users
-
-        returned_passed_users = get_course_passed_users(self.course_id)
+        returned_passed_users = get_course_passed_users_list(self.course_id)
         self.assertEqual(returned_passed_users, self.passed_users)
 
     def test_generate_course_certificate(self):
