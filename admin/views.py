@@ -9,6 +9,8 @@ from datetime import datetime
 from urllib import quote as urlquote, urlencode
 from operator import attrgetter
 from smtplib import SMTPException
+from collections import OrderedDict
+
 
 import operator
 import re
@@ -28,6 +30,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
+from django.core.cache import cache
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course
@@ -70,7 +73,7 @@ from .controller import (
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids, validate_company_display_name, get_internal_courses_ids, check_if_course_is_internal,
     check_if_user_is_internal, student_list_chunks_tracker, get_internal_courses_list, construct_users_list,
-    InternalAdminCoursePermission
+    InternalAdminCoursePermission, CourseParticipantStats
 )
 from certificates.controller import get_course_certificates_status
 from .forms import (
@@ -80,12 +83,14 @@ from .forms import (
     EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm,
     CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm
 )
+from .tasks import course_participants_data_retrieval_task
 from accounts.helpers import get_user_activation_links, get_complete_country_name
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
 from util.validators import AlphanumericValidator
+from util.csv_helpers import CSVWriter
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -1075,102 +1080,56 @@ class course_details_performance_api(APIView):
         ]
         return Response(course_stats)
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                        PERMISSION_GROUPS.MCKA_SUBADMIN)
+def download_participants_stats(request, course_id, task_key):
+    """
+    Serves CSV file of course participant stats
+    """
+    participants = cache.get('participants-list-' + task_key, [])
+
+    fields = OrderedDict([
+        ("First name", "first_name"),
+        ("Last name", "last_name"),
+        ("Username", "username"),
+        ("Email", "email"),
+        ("Company", "organizations_display_name"),
+        ("Status", "custom_user_status"),
+        ("Activated", "custom_activated"),
+        ("Last login", "custom_last_login"),
+        ("Progress", "progress"),
+        ("Proficiency", "proficiency"),
+        ("Activation Link", "activation_link"),
+        ("Country", "country"),
+    ])
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = "attachment; filename={}_participants.csv".format(course_id)
+
+    csv_writer = CSVWriter(response, fields, participants)
+    response = csv_writer.write_csv()
+
+    return response
+
+
 class course_details_api(APIView):
+    # ToDo: Remove company admin permissions 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id=None, format=None):
-        if (course_id):
-            permissonsMap = {
-            'assistant':'TA',
-            'instructor': 'Instructor',
-            'staff':'Staff',
-            'observer':'Observer'
-            }
-            count = request.GET.get('count', None)
-            course_grades = course_api.get_course_details_metrics_grades_all_users(course_id, count)
-            allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
-
-            user_activation_links = self._participants_activation_urls(allCourseParticipants)
-
-            course_progress = course_api.get_course_details_completions_all_users(course_id=course_id)
-            for course_participant in allCourseParticipants['results']:
-                # add in user activation link
-                course_participant['activation_link'] = user_activation_links.get(course_participant['id'], '')
-
-                # transform to complete country name
-                if course_participant.get('country'):
-                    course_participant['country'] = get_complete_country_name(course_participant.get('country'))
-
-                if len(course_participant['organizations'] ) == 0:
-                    course_participant['organizations'] = [{'display_name': 'No company'}]
-                    course_participant['organizations_display_name'] = 'No company'
-                else:
-                    course_participant['organizations_display_name'] = course_participant['organizations'][0]['display_name']
-                if len(course_participant['roles']) != 0:
-                    if 'assistant' in course_participant['roles']:
-                        course_participant['custom_user_status'] = permissonsMap['assistant']
-                    elif 'observer' in course_participant['roles']:
-                        course_participant['custom_user_status'] = permissonsMap['observer']
-                    elif 'staff' in course_participant['roles']:
-                        course_participant['custom_user_status'] = permissonsMap['staff']
-                    elif 'instructor' in course_participant['roles']:
-                        course_participant['custom_user_status'] = permissonsMap['instructor']
-                else:
-                    course_participant['custom_user_status'] = 'Active'
-                if course_participant['is_active']:
-                        course_participant['custom_activated'] = 'Yes'
-                else:
-                    course_participant['custom_activated'] = 'No'
-                if 'last_login' in course_participant:
-                    if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
-                        last_login = parsedate(course_participant['last_login'])
-                        course_participant['custom_last_login'] = last_login.strftime("%Y/%m/%d") + ',' + last_login.strftime("%m/%d/%Y")
-                    else:
-                        course_participant['custom_last_login'] = '-'
-                else:
-                    course_participant['custom_last_login'] = '-'
-                user = None
-                for progress in course_progress['leaders']:
-                    if progress['id'] == course_participant['id']:
-                        user = progress
-                        course_progress['leaders'].remove(progress)
-                        break
-                if user:
-                    course_participant['progress'] = '{:03d}'.format(round_to_int(user['completions']))
-                else:
-                    course_participant['progress'] = "000"
-                course_participant['proficiency'] = None
-                for grade in course_grades['leaders']:
-                    if grade['id'] == course_participant['id']:
-                        course_participant['proficiency'] = float(grade['grade'])*100
-                        course_grades['leaders'].remove(grade)
-                        break
-                if not course_participant['proficiency']:
-                    course_participant['proficiency'] = "000"
-                else:
-                    course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency']))
-
-                course_participant['number_of_assessments'] = 0
-                course_participant['number_of_groupworks'] = 0
-                course_participant['groupworks'] = []
-                course_participant['assessments'] = []
-                if allCourseParticipants['count'] > 0:
-                    if course_participant['grades']['section_breakdown']:
-                        for user_grade in course_participant['grades']['section_breakdown']:
-                            data = user_grade
-                            data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent'])*100))
-                            if 'assessment' in user_grade['category'].lower():
-                                course_participant['number_of_assessments'] += 1
-                                course_participant['assessments'].append(data)
-                            if 'group_project' in user_grade['category'].lower():
-                                course_participant['number_of_groupworks'] += 1
-                                course_participant['groupworks'].append(data)
+        if course_id:
+            course_participants_stats = CourseParticipantStats(
+                course_id=course_id, base_url=request.build_absolute_uri()
+            )
+            allCourseParticipants = course_participants_stats.get_participants_data(request.GET)
             return Response(allCourseParticipants)
         else:
             return Response({})
+
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, course_id=None, format=None):
         data = json.loads(request.body)
-        if (data['type'] == 'status_check'):
+        if data['type'] == 'status_check':
             batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])
             BatchOperationStatus.clean_old()
             if len(batch_status) > 0:
@@ -1184,23 +1143,20 @@ class course_details_api(APIView):
             return Response({'status':'error', 'message': 'No such task!'})
 
         else:
-            batch_status = BatchOperationStatus.create();
+            batch_status = BatchOperationStatus.create()
             task_id = batch_status.task_key
-            course_bulk_actions(course_id, data, batch_status)
+            base_url = request.build_absolute_uri()
+
+            # All new bulk actions are now handled by celery worker
+            # while older functionality is still threaded tasks
+            if data.get('type') == 'participants_csv_data':
+                course_participants_data_retrieval_task.delay(
+                    course_id, task_id, base_url
+                )
+            else:
+                course_bulk_actions(course_id, data, batch_status, request)
+
             return Response({'status':'ok', 'data': data, 'task_id': task_id})
-
-    def _participants_activation_urls(self, participants_data):
-        """
-        Gets activation urls for participants records
-        """
-        user_ids = [
-            result.get('id')
-            for result in participants_data['results']
-        ]
-
-        return get_user_activation_links(
-            user_ids, base_url=self.request.build_absolute_uri()
-        )
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)

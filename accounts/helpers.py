@@ -5,7 +5,6 @@ from urlparse import urljoin
 
 from django.core.urlresolvers import reverse
 
-from .forms import COUNTRY_CHOICES
 from .models import UserActivation
 
 
@@ -61,6 +60,8 @@ def create_activation_url(activation_code, base_url=''):
 
 
 def get_complete_country_name(shorter_name):
+    from .forms import COUNTRY_CHOICES  # for breaking cyclic import
+
     """
     Transforms shorter country names to complete one
     e.g; `mn` to `Mongolia`
