@@ -2,12 +2,6 @@
   background: $chat-bg-color;
   border: 5px solid $chat-border-color;
 
-  .subject p::before {
-    content: "Situation:\00a0";
-    font-weight: bold;
-    text-transform: capitalize;
-  }
-
   .notice {
     background: $chat-notice-bg-color;
     color: $chat-notice-text-color;
@@ -26,18 +20,6 @@
   .notice p::before {
     font-weight: bold;
     text-transform: uppercase;
-  }
-
-  // Correct notice before text
-  .notice.correct p::before {
-    color: $chat-correct-notice-color;
-    content: "Correct!\00a0";
-  }
-
-  // Incorrect notice before text
-  .notice.incorrect p::before {
-    color: $chat-incorrect-notice-color;
-    content: "Incorrect!\00a0";
   }
 
   .message.bot {
