@@ -13,9 +13,9 @@ from api_client.api_error import ApiError
 from api_client.course_models import CourseListCourse
 from api_client.organization_models import Organization
 from api_client.user_models import AuthenticationResponse, UserResponse
-from .forms import ActivationForm, FinalizeRegistrationForm
-from .models import UserActivation, RemoteUser
-from .views import access_key, MISSING_ACCESS_KEY_ERROR, _cleanup_username as cleanup_username, login
+from accounts.forms import ActivationForm, FinalizeRegistrationForm
+from accounts.models import UserActivation, RemoteUser
+from accounts.views import access_key, MISSING_ACCESS_KEY_ERROR, _cleanup_username as cleanup_username, login
 from admin.models import AccessKey, ClientCustomization, Program
 from mock import patch, Mock
 import uuid

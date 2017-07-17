@@ -80,6 +80,7 @@ from .forms import (
     EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm,
     CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm
 )
+from accounts.helpers import get_user_activation_links, get_complete_country_name
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
@@ -1087,8 +1088,18 @@ class course_details_api(APIView):
             count = request.GET.get('count', None)
             course_grades = course_api.get_course_details_metrics_grades_all_users(course_id, count)
             allCourseParticipants = course_api.get_course_details_users(course_id, request.GET)
+
+            user_activation_links = self._participants_activation_urls(allCourseParticipants)
+
             course_progress = course_api.get_course_details_completions_all_users(course_id=course_id)
             for course_participant in allCourseParticipants['results']:
+                # add in user activation link
+                course_participant['activation_link'] = user_activation_links.get(course_participant['id'], '')
+
+                # transform to complete country name
+                if course_participant.get('country'):
+                    course_participant['country'] = get_complete_country_name(course_participant.get('country'))
+
                 if len(course_participant['organizations'] ) == 0:
                     course_participant['organizations'] = [{'display_name': 'No company'}]
                     course_participant['organizations_display_name'] = 'No company'
@@ -1177,6 +1188,19 @@ class course_details_api(APIView):
             task_id = batch_status.task_key
             course_bulk_actions(course_id, data, batch_status)
             return Response({'status':'ok', 'data': data, 'task_id': task_id})
+
+    def _participants_activation_urls(self, participants_data):
+        """
+        Gets activation urls for participants records
+        """
+        user_ids = [
+            result.get('id')
+            for result in participants_data['results']
+        ]
+
+        return get_user_activation_links(
+            user_ids, base_url=self.request.build_absolute_uri()
+        )
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)

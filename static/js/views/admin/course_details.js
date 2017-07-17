@@ -52,7 +52,17 @@
         if (value == '-')
           return value;
         return '' + parseInt(value) + '%'; 
-      }}
+      }},
+      { title: 'Activation Link', index: true, name: 'activation_link', actions: function (id, attributes) {
+        var value = attributes['activation_link'];
+        
+        if(value != '')
+            value = '<a href="' + value + '">' + value + '</a>';
+
+        return value;
+      }},
+      { title: 'Username', index: true, name: 'username' },
+      { title: 'Country', index: true, name: 'country' }
     ],
     initialize: function(){
       InitializeTooltipOnPage();

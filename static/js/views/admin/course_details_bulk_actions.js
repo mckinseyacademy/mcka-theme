@@ -385,6 +385,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           var last_login = selectedModel.attributes.custom_last_login.split(',')[1];
           var progress = '' + parseInt(selectedModel.attributes.progress) + '%';
           var proficiency = '' + parseInt(selectedModel.attributes.proficiency) + '%';
+          var activation_link = selectedModel.attributes.activation_link;
           var item =
           { 
             'id': id,
@@ -398,6 +399,8 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             'Last login': last_login,
             'Progress': progress,
             'Proficiency': proficiency,
+            'Activation Link': activation_link,
+            'Country': selectedModel.attributes.country
           };
           items.push(item);
         }
