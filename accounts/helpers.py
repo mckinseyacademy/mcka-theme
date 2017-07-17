@@ -2,6 +2,7 @@
 helper methods/utils related to accounts
 """
 from urlparse import urljoin
+from user_agents import parse
 
 from django.core.urlresolvers import reverse
 
@@ -70,4 +71,17 @@ def get_complete_country_name(shorter_name):
     return dict(COUNTRY_CHOICES).get(
         shorter_name.upper(), shorter_name
     )
+
+
+def is_mobile_user_agent(request):
+    """
+    Helper method to check if request user agent is mobile
+    """
+    if not hasattr(request, 'META'):
+        return False
+
+    ua_string = request.META.get('HTTP_USER_AGENT', '')
+    user_agent = parse(ua_string)
+
+    return user_agent.is_mobile
 

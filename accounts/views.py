@@ -42,6 +42,7 @@ from .controller import (
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
     send_warning_email_to_admin
 )
+from .helpers import is_mobile_user_agent
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
     EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2, PublicRegistrationForm
@@ -790,6 +791,13 @@ def home(request):
             tileset = landing_tiles[tile]
             cells.append(tileset.pop(random.randrange(len(tileset))))
 
+    # if mobile device then display login button on the basis of
+    # `LOGIN_BUTTON_FOR_MOBILE_ENABLED` setting
+    data.update({'is_login_button_enabled': True})
+    if is_mobile_user_agent(request):
+        data.update(
+            {'is_login_button_enabled': settings.LOGIN_BUTTON_FOR_MOBILE_ENABLED}
+        )
     data.update({"user": request.user, "cells": cells})
     return render(request, 'home/landing.haml', data)
 
