@@ -13,7 +13,7 @@ from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
 
 from courses.models import FeatureFlags
-from api_client import course_api, user_api
+from api_client import course_api
 
 from .models import (
     CourseCertificateStatus,
@@ -40,22 +40,20 @@ def get_course_certificates_status(course_id, course_end_date):
     return CertificateStatus.notavailable
 
 
-def get_course_passed_users(course_id):
+def get_course_passed_users_list(course_id):
     """
-    Returns list of users who have passed the course
+    Returns list of all users who have passed the course
     """
-    # TODO: this is a temporary measure until we finalize what user data is
-    # needed in certificate email. Once we finalize then
-    # get_course_passed_users_id_list api should return passed users info not
-    # just ids, so we don't need to make seperate api call to get passed users
-    # info.
+    passed_users_result_set = []
+    passed_users_page_one = course_api.get_course_passed_users(course_id)
 
-    passed_user_ids = map(
-        str, course_api.get_course_passed_users_id_list(course_id)
-    )
-    passed_users = user_api.get_users(ids=passed_user_ids)
+    passed_users_result_set.extend(passed_users_page_one.results)
+    for page_num in xrange(2, passed_users_page_one.num_pages + 1):
+        passed_users_result_set.extend(
+            course_api.get_course_passed_users(course_id, page_num).results
+        )
 
-    return passed_users
+    return passed_users_result_set
 
 
 def generate_user_course_certificate(course_id, user):

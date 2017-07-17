@@ -56,15 +56,17 @@ class CertificateTaskTest(TestCase, ApplyPatchMixin):
         self.course_id = 'test/course/302'
         self.passed_user_ids = [2, 5, 6, 8]
         self.passed_users = mock_passed_users_list()
+        self.paginated_passed_users = DottableDict({
+            "results": self.passed_users,
+            "num_pages": 1
+        })
 
     def _apply_course_and_user_api_patch(self):
         """
         Helper method to patch user and course api
         """
         course_api = self.apply_patch('certificates.controller.course_api')
-        course_api.get_course_passed_users_id_list.return_value = self.passed_user_ids
-        user_api = self.apply_patch('certificates.controller.user_api')
-        user_api.get_users.return_value = self.passed_users
+        course_api.get_course_passed_users.return_value = self.paginated_passed_users
 
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_generate_course_certificates_task(self):

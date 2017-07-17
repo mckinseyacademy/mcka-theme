@@ -11,7 +11,7 @@ from .json_object import JsonObject
 from .json_requests import GET, POST, DELETE
 
 from .group_models import GroupInfo
-from . import course_models
+from . import course_models, user_models
 
 import json
 
@@ -825,19 +825,24 @@ def get_course_details_metrics_filtered_by_groups(course_id, group_ids, organiza
 
 
 @api_error_protect
-def get_course_passed_users_id_list(course_id):
+def get_course_passed_users(course_id, page_num=1, page_size=100):
     """
-    Returns list of user ids of course passing users
+    Returns paginated list of course passing users
     """
+    qs_params = {
+        "page_size": page_size,
+        "page": page_num,
+    }
     response = GET(
-        '{}/{}/{}/users/passed'.format(
+        '{}/{}/{}/users/passed?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
-            course_id
+            course_id,
+            urlencode(qs_params)
         )
     )
 
-    return json.loads(response.read())
+    return JP.from_json(response.read(), user_models.UserListResponse)
 
 
 @api_error_protect
