@@ -1,22 +1,23 @@
-- if course.current_lesson.previous_module
-  %a.page-to.previous{href: "#{course.current_lesson.previous_module.navigation_url}"}
-    %i.fa.fa-chevron-left
-    .mcka-tooltip
-      %p.style-4
-        Lesson ={course.current_lesson.previous_module.lesson_index}:
-        Module ={course.current_lesson.previous_module.index} of ={course.current_lesson.previous_module.lesson_count}
-      .vertical-index= course.current_lesson.previous_module.name
-- else
-  %a.page-to.previous
-    %i.fa.fa-chevron-left
-- if course.current_lesson.next_module
-  %a.page-to.next{href: "#{course.current_lesson.next_module.navigation_url}"}
-    %i.fa.fa-chevron-right
-    .mcka-tooltip
-      %p.style-4
-        Lesson ={course.current_lesson.next_module.lesson_index}:
-        Module ={course.current_lesson.next_module.index} of ={course.current_lesson.next_module.lesson_count}
-      .vertical-index= course.current_lesson.next_module.name
-- else
-  %a.page-to.next
-    %i.fa.fa-chevron-right
+%div.controls
+  - if course.current_lesson.previous_module
+    %a.page-to.previous{href: "#{course.current_lesson.previous_module.navigation_url}"}
+      %i.fa.fa-chevron-left
+      .mcka-tooltip
+        %p.style-4
+          Lesson ={course.current_lesson.previous_module.lesson_index}:
+          Module ={course.current_lesson.previous_module.index} of ={course.current_lesson.previous_module.lesson_count}
+        .vertical-index= course.current_lesson.previous_module.name
+  - else
+    %a.page-to.previous
+      %i.fa.fa-chevron-left
+  - if course.current_lesson.next_module
+    %a.page-to.next{href: "#{course.current_lesson.next_module.navigation_url}"}
+      %i.fa.fa-chevron-right
+      .mcka-tooltip
+        %p.style-4
+          Lesson ={course.current_lesson.next_module.lesson_index}:
+          Module ={course.current_lesson.next_module.index} of ={course.current_lesson.next_module.lesson_count}
+        .vertical-index= course.current_lesson.next_module.name
+  - else
+    %a.page-to.next
+      %i.fa.fa-chevron-right
