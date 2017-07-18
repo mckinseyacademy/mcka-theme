@@ -42,7 +42,7 @@ from .controller import (
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
     send_warning_email_to_admin
 )
-from .helpers import is_mobile_user_agent
+from util.user_agent_helpers import is_mobile_user_agent
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
     EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2, PublicRegistrationForm
