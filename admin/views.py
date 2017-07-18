@@ -4580,6 +4580,7 @@ def company_details(request, company_id):
         invoicing['postal_code'] = invoicingDetails[0].postal_code
         invoicing['country'] = invoicingDetails[0].country
         invoicing['po'] = invoicingDetails[0].po
+        invoicing['identity_provider'] = invoicingDetails[0].identity_provider
         for key,value in invoicing.items():
             if invoicing[key].strip() == '':
                 invoicing[key] = '-'
@@ -4593,6 +4594,7 @@ def company_details(request, company_id):
         invoicing['postal_code'] = '-'
         invoicing['country'] = '-'
         invoicing['po'] = '-'
+        invoicing['identity_provider'] = '-'
 
     contacts= []
     companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
@@ -5158,6 +5160,7 @@ class company_info_api(APIView):
                 response['invoicing']['postal_code'] = invoicingDetails[0].postal_code
                 response['invoicing']['country'] = invoicingDetails[0].country
                 response['invoicing']['po'] = invoicingDetails[0].po
+                response['invoicing']['identity_provider'] = invoicingDetails[0].identity_provider
                 for key,value in response['invoicing'].items():
                     if response['invoicing'][key].strip() == '':
                         response['invoicing'][key] = '-'
@@ -5171,6 +5174,7 @@ class company_info_api(APIView):
                 response['invoicing']['postal_code'] = '-'
                 response['invoicing']['country'] = '-'
                 response['invoicing']['po'] = '-'
+                response['invoicing']['identity_provider'] = '-'
 
         return Response(response)
 
@@ -5223,6 +5227,7 @@ class company_info_api(APIView):
                 invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
                 invoicingDetails.country = data['invoicing'][0]['country_fullname'].strip()
                 invoicingDetails.po = data['invoicing'][0]['po'].strip()
+                invoicingDetails.identity_provider = data['invoicing'][0]['identity_provider'].strip()
                 invoicingDetails.save()
             else:
                 invoicingDetails = CompanyInvoicingDetails.objects.create(company_id=int(company_id))
@@ -5235,6 +5240,7 @@ class company_info_api(APIView):
                 invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
                 invoicingDetails.country = data['invoicing'][0]['country_fullname'].strip()
                 invoicingDetails.po = data['invoicing'][0]['po'].strip()
+                invoicingDetails.identity_provider = data['invoicing'][0]['identity_provider'].strip()
                 invoicingDetails.save()
         response['flag'] = flag
         return Response(response)
@@ -5272,6 +5278,7 @@ def download_company_info(request, company_id):
         invoicing['postal_code'] = invoicingDetails[0].postal_code
         invoicing['country'] = invoicingDetails[0].country
         invoicing['po'] = invoicingDetails[0].po
+        invoicing['identity_provider'] = invoicingDetails[0].identity_provider
         for key,value in invoicing.items():
             if invoicing[key].strip() == '':
                 invoicing[key] = '-'
@@ -5285,6 +5292,7 @@ def download_company_info(request, company_id):
         invoicing['postal_code'] = '-'
         invoicing['country'] = '-'
         invoicing['po'] = '-'
+        invoicing['identity_provider'] = '-'
 
     contacts= []
     companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
@@ -5343,6 +5351,7 @@ def download_company_info(request, company_id):
     writer.writerow(['Title', invoicing['title']])
     writer.writerow(['Invoicing address', invoicing['address1'], invoicing['address2'], invoicing['city'], invoicing['state'], invoicing['postal_code'], invoicing['country'].encode("utf-8")])
     writer.writerow(['PO #', invoicing['po']])
+    writer.writerow(['Identity Provider #', invoicing['identity_provider']])
     writer.writerow([])
     writer.writerow(['CONTACTS'])
     for contact in contacts:

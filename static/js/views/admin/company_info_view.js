@@ -126,6 +126,7 @@
             invoicingContainer.find('.cityStatePostalText').text(cityStatePostalText);
             invoicingContainer.find('.countryText').text(invoicing['country']);
             invoicingContainer.find('.poText').text(invoicing['po']);
+            invoicingContainer.find('.ipText').text(invoicing['identity_provider']);
 
             $.each(invoicing, function(key,value) {
               if (value == '-')

@@ -504,6 +504,7 @@ COMPANY_PROPERTIES_TO_CLEAN = [
     'country',
     'postal_code',
     'po',  # purchase order number
+    'identity_provider',
 ]
 
 CONTACT_PROPERTIES_TO_CLEAN = [
