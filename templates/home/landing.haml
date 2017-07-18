@@ -21,7 +21,8 @@
           %h3 For Participants:
           %p
             If you are an enrolled participant, please log in below to access your McKinsey Academy learning experience
-          %a.login-btn{:href => "/accounts/login"} Log in
+          - if is_login_button_enabled
+            %a.login-btn{:href => "/accounts/login"} Log in
 
 - block general_modal
   #generalModal.reveal-modal.small{'data-reveal': ''}

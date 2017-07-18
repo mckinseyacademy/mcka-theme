@@ -70,4 +70,3 @@ def get_complete_country_name(shorter_name):
     return dict(COUNTRY_CHOICES).get(
         shorter_name.upper(), shorter_name
     )
-

@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from accounts.models import UserActivation
 from accounts.helpers import (
     get_user_activation_links, create_activation_url, TestUser,
-    get_complete_country_name
+    get_complete_country_name,
 )
 
 
