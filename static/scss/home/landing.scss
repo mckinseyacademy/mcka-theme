@@ -279,9 +279,6 @@
         @include font-spec(16, 600);
         min-width: 100px;
         box-sizing: border-box;
-        &.login-btn {
-          display: none;
-        }
     }
 }
 
