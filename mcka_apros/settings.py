@@ -262,7 +262,6 @@ ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
 
 API_SERVER_PREFIX = '/'.join(['api', 'server'])
 
-BROKER_URL = "amqp://myuser:mypassword@localhost:5672/myvhost"
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

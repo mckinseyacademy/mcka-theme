@@ -441,3 +441,13 @@ Enable this new virtual host with:
 
 [example-config]: mcka_apros
 [appendix-c]: #appendix-c-complete-production-routing
+
+## Appendix F: Celery Configuration
+We are using celery for background tasks processing it requires RabbitMQ as broker. To configure celery on dev environment set `BROKER_URL` in your `local_settings.py` with specified username, password and host and then start celery worker using command:
+
+    ./manage.py celery worker --loglevel=info
+
+if want to avoid setting up RabbitMQ and running celery workers, you can directly execute the tasks when you queue them by adding following line in your `local_settings.py` file
+
+    CELERY_ALWAYS_EAGER = True
+
