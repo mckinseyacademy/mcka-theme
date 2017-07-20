@@ -40,3 +40,6 @@ isort==4.2.15
 
 pylint==1.7.2
 user-agents==1.1.0
+
+# Release utils for the edx release pipeline
+edx-django-release-util==0.3.1
