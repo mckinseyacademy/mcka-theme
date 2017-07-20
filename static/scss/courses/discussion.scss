@@ -93,8 +93,25 @@ header .course-tabs li {
     display: inline-block;
     vertical-align: text-bottom;
 
+    @media only screen and (max-width: 767px){
+      float: none;
+      text-align: left;
+      display: block;
+    }
+
     .form-actions {
       display: inline-block;
+      text-align: center;
+      @media only screen and (max-width: 767px){
+        display: block;
+      }
+      button{
+        @media only screen and (max-width: 767px){
+          width: 100%;
+          float: none;
+          max-width: 320px;
+        }
+      }
     }
 
     .form-actions > * {
@@ -114,10 +131,19 @@ header .course-tabs li {
     .forum-search {
       margin-left: 20px;
       display: inline-block;
+      @media only screen and (max-width: 767px){
+        display: block;
+        margin-left: 0;
+        max-width: 320px;
+        margin: auto;
+      }
 
       .field-input {
         display: inline-block;
         height: auto !important;
+        @media only screen and (max-width: 767px){
+          width: calc(100% - 82px);
+        }
       }
 
       .search-btn {
@@ -310,6 +336,14 @@ header .course-tabs li {
     .responses {
       margin-bottom: 1.42857rem;
     }
+    #main{
+      .discussion-article{
+        padding: 15px;
+        .home-helpgrid{
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   .comments {
@@ -488,6 +522,20 @@ header .course-tabs li {
 
   .forum-nav {
     position: relative !important;
+    overflow: auto;
+    height: 100% !important;
+
+    @media only screen and (max-width: 767px){
+      margin-bottom: 20px;
+      height: auto !important;
+      max-height: 300px;
+    }
+    .forum-nav-browse-menu{
+      overflow: auto;
+      @media only screen and (max-width: 767px){
+        height: auto !important;
+      }
+    }
   }
 }
 
