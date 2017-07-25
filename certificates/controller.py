@@ -27,7 +27,11 @@ def get_course_certificates_status(course_id, course_end_date):
     """
     Returns course certificates status given course id and course end date
     """
-    features = FeatureFlags.objects.get(course_id=course_id)
+    try:
+        features = FeatureFlags.objects.get(course_id=course_id)
+    except FeatureFlags.DoesNotExist:
+        return CertificateStatus.notavailable
+
     if features.certificates and course_end_date <= datetime.now():
         try:
             course_certificate_status = CourseCertificateStatus.objects.get(
