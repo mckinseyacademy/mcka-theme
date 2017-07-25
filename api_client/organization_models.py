@@ -126,6 +126,17 @@ class Organization(JsonObjectWithImage):
 
         return image_url
 
+    def _strip_proxy_image_url(self, profileImageUrl):
+        if profileImageUrl[:10] == '/accounts/':
+            profileImageUrl = profileImageUrl.replace('/accounts/', '')
+        return profileImageUrl
+
+    def have_size(self, size):
+        test_path = self._strip_proxy_image_url(
+            self._get_specific_size_url(size)
+        )
+        return default_storage.exists(test_path)
+
     @classmethod
     def get_image_sizes(cls):
         return settings.COMPANY_GENERATE_IMAGE_SIZES

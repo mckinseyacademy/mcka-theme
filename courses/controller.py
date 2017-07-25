@@ -337,7 +337,7 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
     project_group = user_workgroups[0]
 
     user_ids = [str(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
-    additional_fields = ["title", "first_name", "last_name", "avatar_url"]
+    additional_fields = ["title", "first_name", "last_name", "profile_image"]
     project_group.members = user_api.get_users(ids=user_ids,fields=additional_fields)
 
     the_user_project = Project.fetch_from_url(project_group.project)
@@ -353,7 +353,7 @@ def get_group_project_for_workgroup_course(workgroup_id, course):
     '''
     workgroup = WorkGroup.fetch(workgroup_id)
     user_ids = [str(user.id) for user in workgroup.users]
-    additional_fields = ["title", "first_name", "last_name", "avatar_url"]
+    additional_fields = ["title", "first_name", "last_name", "profile_image"]
     workgroup.members = user_api.get_users(ids=user_ids,fields=additional_fields)
     project = Project.fetch(workgroup.project)
     group_project = [proj for proj in course.group_projects if proj.id == project.content_id][0]
@@ -515,8 +515,8 @@ def tailor_leader_list(leaders):
             leader.grade_display_value = round_to_int(100 * leader.grade)
         if hasattr(leader, 'score'):
             leader.points = leader.score
-        if leader.avatar_url is None:
-            leader.avatar_url = user_models.UserResponse.default_image_url()
+
+        user_models.UserResponse.profile_image_urls(leader.profile_image)
 
 def social_total(social_metrics):
     social_total = 0
@@ -594,7 +594,7 @@ def get_social_leaders(course_id, user_id, count=3):
 def get_ta_users(course_id):
     role = USER_ROLES.TA
     ta_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
-    additional_fields = ["title", "avatar_url", "city", "full_name"]
+    additional_fields = ["title", "profile_image", "city", "full_name"]
     ta_users = user_api.get_users(ids=ta_users_base,fields=additional_fields) if len(ta_users_base) > 0 else []
     return ta_users
 

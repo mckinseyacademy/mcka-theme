@@ -419,10 +419,9 @@ def client_admin_course_participants(request, client_id, course_id):
         course_proficiency = organization_api.get_users_by_enrolled(client_id, course_id=course_id, include_complete_status=True, include_grades=True)
         user_grade_lookup = {str(u.id):[round_to_int(100 * u.grade), u.complete_status] for u in course_proficiency}
 
-        additional_fields = ["full_name", "title", "avatar_url"]
+        additional_fields = ["full_name", "title", "profile_image"]
         students = user_api.get_users(ids=users_ids, fields=additional_fields)
         for student in students:
-            student.avatar_url = student.image_url(size=48)
             student.progress = get_user_metrics_from_lookup(str(student.id), user_progress_lookup)
             student.proficiency, student.completed = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
 
@@ -470,7 +469,7 @@ def client_admin_download_course_report(request, client_id, course_id):
     course_proficiency = organization_api.get_users_by_enrolled(client_id, course_id=course_id, include_complete_status=True, include_grades=True)
     user_grade_lookup = {str(u.id):[round_to_int(100 * u.grade), u.complete_status] for u in course_proficiency}
 
-    additional_fields = ["full_name", "title", "avatar_url"]
+    additional_fields = ["full_name", "title"]
     students = user_api.get_users(ids=users_ids, fields=additional_fields)
     for student in students:
         student.progress = get_user_metrics_from_lookup(str(student.id), user_progress_lookup)
@@ -782,7 +781,6 @@ def client_admin_email_not_started(request, client_id, course_id):
 def client_admin_user_progress(request, client_id, course_id, user_id, restrict_to_courses_ids=None):
     userCourses = user_api.get_user_courses(user_id)
     student = user_api.get_user(user_id)
-    student.avatar_url = student.image_url(size=48)
     courses = []
     grades = {grade.course_id: grade for grade in user_api.get_user_grades(user_id)}
     for courseName in userCourses:
@@ -3135,7 +3133,7 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
 
     workgroup = WorkGroup.fetch(workgroup_id)
-    additional_fields = ["avatar_url"]
+    additional_fields = ["profile_image"]
     user_ids = set(u.id for u in workgroup.users)
     if restrict_to_users_ids is not None:
         user_ids &= restrict_to_users_ids

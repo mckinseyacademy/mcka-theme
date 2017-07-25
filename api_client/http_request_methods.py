@@ -36,9 +36,13 @@ def _get_auth_based_request_kwargs(auth, **kwargs):
         dict: dictionary of kwargs
     """
     kwargs['headers'] = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Accept': 'application/json'
     }
+
+    if 'content_type' in kwargs:
+        kwargs['headers']['Content-Type'] = kwargs['content_type']
+        del kwargs['content_type']
+
     kwargs['timeout'] = TIMEOUT
 
     if auth == API_KEY_AUTH:
@@ -82,7 +86,7 @@ def POST(url, data, auth=API_KEY_AUTH, **kwargs):
     """
     response = requests.post(
         url,
-        data=json.dumps(data),
+        data=data,
         **_get_auth_based_request_kwargs(auth, **kwargs)
     )
     response.raise_for_status()
@@ -103,7 +107,7 @@ def PUT(url, data, auth=API_KEY_AUTH, **kwargs):
     """
     response = requests.put(
         url,
-        data=json.dumps(data),
+        data=data,
         **_get_auth_based_request_kwargs(auth, **kwargs)
     )
     response.raise_for_status()

@@ -1,6 +1,9 @@
 ''' Objects for users / authentication built from json responses from API '''
 import hashlib
 import json
+from urlparse import urljoin
+
+from django.conf import settings
 
 from .json_object import JsonObject, JsonObjectWithImage
 
@@ -15,6 +18,22 @@ class UserResponse(JsonObjectWithImage):
     ''' object representing a user from api json response '''
     required_fields = ["email", "username"]
     date_fields = ["created"]
+
+    @property
+    def image_url_full(self):
+        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_full)
+
+    @property
+    def image_url_large(self):
+        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_large)
+
+    @property
+    def image_url_medium(self):
+        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_medium)
+
+    @property
+    def image_url_small(self):
+        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_small)
 
     def get(self, attr):
         if hasattr(self, attr):
@@ -39,9 +58,13 @@ class UserResponse(JsonObjectWithImage):
         user = {}
         for field, value in self.__dict__.iteritems():
             if field not in unserializable_fields:
-                if field == 'avatar_url':
-                    setattr(self, 'avatar_url', self.image_url(size=48))
-                user[field] = self.get(field)
+                if field == 'profile_image':
+                    user['image_url_full'] = self.image_url_full
+                    user['image_url_large'] = self.image_url_large
+                    user['image_url_medium'] = self.image_url_medium
+                    user['image_url_small'] = self.image_url_small
+                else:
+                    user[field] = self.get(field)
         return user
 
 

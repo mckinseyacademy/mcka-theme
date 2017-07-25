@@ -5,6 +5,7 @@ import datetime
 import os
 import StringIO
 import string
+import urlparse
 
 from django.conf import settings
 from django.core.files.storage import default_storage
@@ -150,77 +151,9 @@ class JsonObject(Objectifier):
 
 class JsonObjectWithImage(JsonObject):
 
-    def image_url(self, size=48, path='absolute'):
-        '''
-        Return default avatar unless the user has one
-
-        Specify size=None if you want the original image
-        '''
-        try:
-            if hasattr(self, 'avatar_url') and self.avatar_url is not None:
-                usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size] if size else None
-                best_image_size = min(usable_sizes) if usable_sizes else None
-
-                # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
-                if best_image_size and size == best_image_size and not self.have_size(size):
-                    self._clean_and_resize_images()
-
-                image_url = self.avatar_url
-                if best_image_size and self.have_size(best_image_size):
-                    image_url = self._get_specific_size_url(best_image_size)
-
-                if not default_storage.exists(self._strip_proxy_image_url(image_url)):
-                    image_url = JsonObjectWithImage.default_image_url()
-                elif path == 'absolute' and settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
-                    image_url = default_storage.url(
-                        self._strip_proxy_image_url(image_url)
-                    )
-            else:
-                image_url = JsonObjectWithImage.default_image_url()
-        except:
-            image_url = JsonObjectWithImage.default_image_url()
-        return image_url
-
     @classmethod
     def default_image_url(cls):
-        return "/static/image/empty_avatar.png"
-
-    def _strip_proxy_image_url(self, profileImageUrl):
-        if profileImageUrl[:10] == '/accounts/':
-            profileImageUrl = profileImageUrl.replace('/accounts/', '')
-        return profileImageUrl
-
-    def have_size(self, size):
-        test_path = self._strip_proxy_image_url(
-            self._get_specific_size_url(size)
-        )
-        return default_storage.exists(test_path)
-
-    def delete_size(self, size):
-        delete_path = self._strip_proxy_image_url(
-            self._get_specific_size_url(size)
-        )
-        default_storage.delete(delete_path)
-
-    def _get_specific_size_url(self, size):
-        return "{}-{}.jpg".format(os.path.splitext(self.avatar_url)[0], size)
-
-    def _clean_and_resize_images(self):
-        for delete_size in settings.REMOVE_IMAGE_SIZES:
-            if self.have_size(delete_size):
-                self.delete_size(delete_size)
-
-        image_path = self._strip_proxy_image_url(self.avatar_url)
-        if default_storage.exists(image_path):
-            from PIL import Image
-            original_image = Image.open(
-                default_storage.open(image_path)
-            )
-            self.save_profile_image(original_image, image_path)
-
-    @classmethod
-    def get_image_sizes(cls):
-        return settings.PROFILE_GENERATE_IMAGE_SIZES
+        return urlparse.urljoin(settings.API_SERVER_ADDRESS, 'static/images/profiles/default_500.png')
 
     @classmethod
     def save_profile_image(cls, cropped_example, image_url, new_image_url=None):
@@ -246,36 +179,27 @@ class JsonObjectWithImage(JsonObject):
             pass
         cls._save_image(cropped_example, new_image_url)
 
-        # And save special sizes to generate
-        for generate_size in cls.get_image_sizes():
-            gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size[0])
-            old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size[0])
-            cropped_image = cls._rescale_image(cropped_example, generate_size[0], generate_size[1])
-            try:
-                default_storage.delete(old_gen_image_url)
-            except:
-                pass
-            cls._save_image(cropped_image, gen_image_url)
-
     @classmethod
-    def _rescale_image(cls, img, width, height, force=True):
-        """Rescale the given image, optionally cropping it to make sure the result image has the specified width and height."""
-        from PIL import Image as pil
-        from cStringIO import StringIO as csio
-
-        max_width = width
-        max_height = height
-        if not force:
-            img.thumbnail((max_width, max_height), pil.ANTIALIAS)
+    def profile_image_urls(cls, profile_image):
+        if hasattr(profile_image, 'image_url_full'):
+            profile_image.image_url_full = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_full)
         else:
-            from PIL import ImageOps
-            img = ImageOps.fit(img, (max_width, max_height,), method=pil.ANTIALIAS)
-        tmp = csio()
-        img.convert('RGB').save(tmp, 'JPEG')
-        output_data = img
-        tmp.close()
+            profile_image.image_url_full = cls.default_image_url()
 
-        return output_data
+        if hasattr(profile_image, 'image_url_large'):
+            profile_image.image_url_large = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_large)
+        else:
+            profile_image.image_url_large = cls.default_image_url()
+
+        if hasattr(profile_image, 'image_url_medium'):
+            profile_image.image_url_medium = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_medium)
+        else:
+            profile_image.image_url_medium = cls.default_image_url()
+
+        if hasattr(profile_image, 'image_url_small'):
+            profile_image.image_url_small = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_small)
+        else:
+            profile_image.image_url_small = cls.default_image_url()
 
     @classmethod
     def _save_image(cls, image_data, image_url):

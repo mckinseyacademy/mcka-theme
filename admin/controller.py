@@ -891,7 +891,7 @@ def get_contacts_for_client(client_id):
     groups = Client.fetch_contact_groups(client_id)
 
     contacts = []
-    fields = ['phone', 'full_name', 'title', 'avatar_url']
+    fields = ['phone', 'full_name', 'title', 'profile_image']
 
     for group in groups:
         if group.type == "contact_group":
