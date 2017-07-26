@@ -720,6 +720,9 @@ span.xns-counter.multi-digit {
   top: 48px;
   width: 340px;
   display: none;
+  @media only screen and (max-width: 767px) {
+    width: 320px;
+  }
 }
 .xns-pane-all .xns-item-body .xns-date {
     /* hide dates when viewing all notifications */
@@ -730,15 +733,8 @@ span.xns-counter.multi-digit {
   border-radius: 0 0 3px 3px;
   padding: 0px 0px 20px 10px;
   position: relative;
-  max-height: 490px;
-
-  .xns-list-header {
-  }
-
-  .xns-list-body {
-    overflow: auto;
-    height: 442px;
-  }
+  max-height: calc(100vh - 150px);
+  overflow: auto;
 
   .xns-item {
     position: relative;
