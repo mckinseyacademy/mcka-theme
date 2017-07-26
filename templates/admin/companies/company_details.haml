@@ -67,6 +67,9 @@
                 .large-6.columns
                   %label.poLabel PO#
                   %p.poText ={invoicing.po}
+                .large-6.columns
+                  %label.ipLabel Identity Provider
+                  %p.ipText ={invoicing.identity_provider}
             #companyInfoInvoicingDetailsEdit
               %form.companyInfoInvoicingDetailsEditForm
                 .row 
@@ -127,6 +130,11 @@
                     -else
                       %input.poInput{:type => "text", :value => '#{invoicing.po}', :name => "po" }
                   .large-6.columns
+                    %label.poLabel Identity Provider
+                    -if invoicing.identity_provider == '-'
+                      %input.ipInput{:type => "text", :name => "identity_provider" }
+                    -else
+                      %input.ipInput{:type => "text", :value => '#{invoicing.identity_provider}', :name => "identity_provider" }
                 .row 
                   .large-12.columns
                     .button.small.radius.disabled.invoicingDetailsSaveButton Save Changes

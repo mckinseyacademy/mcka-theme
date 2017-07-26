@@ -402,6 +402,8 @@ class CompanyInvoicingDetails(db_models.Model):
     postal_code = db_models.CharField(max_length=200, blank=True)
     country = db_models.CharField(max_length=200, blank=True)
     po = db_models.CharField(max_length=200, blank=True)
+    identity_provider = db_models.CharField(blank=True, max_length=200)
+
 
 class CompanyContact(db_models.Model):
     class Meta:
