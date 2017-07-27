@@ -251,7 +251,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           });
           $('#courseDetailsMainModal').foundation('reveal', 'open');
         }
-      }); 
+      });
       $('#courseBulkActionsMainContainer').on('click','.bulkEnrollInNewCourse',function()
       {
         if ($(this).hasClass('disabled'))
@@ -366,9 +366,72 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           });
           $('#courseDetailsMainModal').foundation('reveal', 'open');
         }
-      }); 
+      });
+      /* utility function for modal attributes update */
+      function updateModalAttrs(title, status, saveButtonText) {
+          $('#courseDetailsMainModal').find('.courseModalTitle').text(title);
+          $('#courseDetailsMainModal').find('.courseModalStatus').text(status);
+      }
+      /* utility function for modal save button attributes update */
+      function updateSaveButtonAttrs(text, disabled, dataurl){
+        var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
+
+        if(text)
+          saveButton.text(text);
+        if(disabled){
+          saveButton.attr('disabled', 'disabled');
+          saveButton.addClass('disabled');
+        }
+        if(dataurl)
+          saveButton.attr('data-download-url', dataurl);
+      }
+      /**
+       * Initiates a chunked downloader and its periodical status check
+      */
+      function chunkedCSVDownloader(){
+          var courseId = $("#courseDetailsDataWrapper").attr("data-id");
+          var url = ApiUrls.courses_list + '/' + courseId;
+          var dictionaryToSend = {type:'participants_csv_data',course_id: courseId};
+        
+          updateModalAttrs('Download Participants', 'Progress : 0%');
+          updateSaveButtonAttrs('Download CSV File', true, null);
+
+          var options = {
+            url: url,
+            data: JSON.stringify(dictionaryToSend),
+            processData: false,
+            type: "POST",
+            dataType: "json"
+          };
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+        
+          $.ajax(options)
+          .done(function(data) {
+            if (data['status'] == 'ok'){
+              updateSaveButtonAttrs(null, null, '/admin/courses/' + courseId + '/download_participants_stats/' + data['task_id']);
+              statusUpdaterIntervalId = _this.courses_details_view.csvDownloadStatus(
+                url, '#courseDetailsMainModal .courseModalStatus',
+                data['task_id'], _this, courseId
+              );
+            }
+          })
+          .fail(function(data) {
+            console.log("Ajax failed to fetch data");
+            console.log(data);
+          })
+        
+          $('#courseDetailsMainModal').foundation('reveal', 'open');
+      }
+
+      
       $('#courseBulkActionsMainContainer').on('click','.bulkExportStats',function()
       {
+        if($(this).hasClass('chunked-download')){
+            // transfer control to chunked-downloader in case of select-all
+            chunkedCSVDownloader(this);
+            return;
+        }
+
         if ($(this).hasClass('disabled'))
         {
           return;
@@ -387,9 +450,9 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           var proficiency = '' + parseInt(selectedModel.attributes.proficiency) + '%';
           var activation_link = selectedModel.attributes.activation_link;
           var item =
-          { 
+          {
             'id': id,
-            'First name': selectedModel.attributes.first_name, 
+            'First name': selectedModel.attributes.first_name,
             'Last name': selectedModel.attributes.last_name,
             'Username': selectedModel.attributes.username,
             'Email': selectedModel.attributes.email,
@@ -422,11 +485,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
                 }
                 else
                 {
-                  items[j][label] = '' + parseInt('000') + '%';   
+                  items[j][label] = '' + parseInt('000') + '%';
                 }
               }
             }
-            break;  
+            break;
           }
         }
 
@@ -447,11 +510,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
                 }
                 else
                 {
-                  items[j][label] = '' + parseInt('000') + '%';   
+                  items[j][label] = '' + parseInt('000') + '%';
                 }
               }
             }
-            break;  
+            break;
           }
         }
 
@@ -466,6 +529,17 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
 
       });
     },
+    /** Called back when CSV generation is completed */
+    csvDownloadCallback: function functionName(_this, data) {
+      var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
+      saveButton.removeAttr('disabled');
+      saveButton.removeClass('disabled');
+
+      saveButton.on('click', function(){
+        window.location.href = saveButton.attr('data-download-url');
+        $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
+      });
+    },
     createConfirmationScreenOnCourseDetails: function(_this, course_id) {
       if ($(this).hasClass('disabled'))
         return;
@@ -475,7 +549,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       $('#courseDetailsMainModal').find('.courseModalStatus').empty();
       $('#courseDetailsMainModal').find('.courseModalDescription').text('What would you like to do now?');
       $('#courseDetailsMainModal').find('.courseModalContent').html(
-        '<a href="#" target="_blank">Send Course Intro Email</a><br><br>' + 
+        '<a href="#" target="_blank">Send Course Intro Email</a><br><br>' +
         '<a href="/admin/courses/'+course_id+'" target="_blank">Go to '+course_id+' Course</a><br><br>' +
         '<a href="#" class="enrollThisUsersInNewCourse">Enroll this list in another course</a><br><br>'
       );
@@ -540,7 +614,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           CreateNicePopup("Email Success!", 'Successfully sent email!');
           modal.foundation('reveal', 'close');
         }
-          
+
       });
 
       modal.on('closed.fndtn.reveal', function(){
@@ -566,7 +640,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         {
           user_data = bbgrid_table.collection.get(selectedRowsIds[i]).attributes;
           to_email_list.push(user_data.email);
-          var user_stats = {"id": user_data.id, "progress": user_data.progress, "proficiency": user_data.proficiency, "email": user_data.email, 
+          var user_stats = {"id": user_data.id, "progress": user_data.progress, "proficiency": user_data.proficiency, "email": user_data.email,
                             "organization_name":user_data.organizations_display_name, "first_name": user_data.first_name, "last_name": user_data.last_name};
           student_list.push(user_stats);
         }
@@ -578,11 +652,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       });
       controlButtonContainer.on('click', '.previewEmail', function(e)
       {
-        
+
         var email = CreatNicePrompt("Preview Email!","Please enter preview email!");
         $(document).one("dynamic_prompt_confirmed", function(e, email)
         {
-          if (email != null) 
+          if (email != null)
           {
             var sender = modal.find('.fromEmailValue input').val();
             var body = tinymce.get('email_editor').getContent();
@@ -601,7 +675,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         var subject = modal.find('.emailSubjectValue input').val();
         var title = prompt("Please enter new template name!", subject);
         var body = tinymce.get('email_editor').getContent();
-        if (title != null) 
+        if (title != null)
         {
           EmailTemplatesManager('POST', "", title, subject, body);
         }
@@ -616,7 +690,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           var title = select.find('option[value="'+selected_pk+'"]').text().trim();
           title = prompt("Please enter updated template name or leave the old one!", title);
           var body = tinymce.get('email_editor').getContent();
-          if (title != null) 
+          if (title != null)
           {
             EmailTemplatesManager('PUT', selected_pk, title, subject, body);
           }

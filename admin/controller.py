@@ -20,6 +20,7 @@ from courses.models import FeatureFlags
 from api_client.api_error import ApiError
 from api_client import user_api, group_api, course_api, course_models, organization_api, project_api, user_models, workgroup_api
 from accounts.models import UserActivation
+from accounts.helpers import get_user_activation_links, get_complete_country_name
 from datetime import datetime
 from pytz import UTC
 from api_client.project_models import Project
@@ -1283,16 +1284,16 @@ def get_course_engagement_summary(course_id, company_id):
     return course_stats
 
 
-def course_bulk_actions(course_id, data, batch_status):
+def course_bulk_actions(course_id, data, batch_status, request):
     batch_status.clean_old()
     _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
     _thread.daemon = True # so we can exit
     _thread.start()
-    course_bulk_action(course_id, data, batch_status)
+    course_bulk_action(course_id, data, batch_status, request)
 
 
 @postpone
-def course_bulk_action(course_id, data, batch_status):
+def course_bulk_action(course_id, data, batch_status, request):
     if (data['type'] == 'status_change'):
         if batch_status is not None:
             batch_status.attempted = len(data['list_of_items'])
@@ -2071,6 +2072,143 @@ def construct_users_list(enrolled_users, registration_requests):
         full_user_row = {}
 
     return full_users_list
+
+
+class CourseParticipantStats(object):
+    """
+    Utility for handling stats retrieval of course participants
+    """
+    permission_map = {
+        'assistant': 'TA',
+        'instructor': 'Instructor',
+        'staff': 'Staff',
+        'observer': 'Observer'
+    }
+
+    def __init__(self, course_id, base_url):
+        self.course_id = course_id
+        self.base_url = base_url
+        self.request_params = {}
+
+    def get_participants_data(self, request_params):
+        """
+        Public method for retrieving participants data
+        based on `request_params`
+        """
+        self.request_params = request_params
+        grades, participants, progress = self._retrieve_api_data()
+
+        return self._process_results(participants, grades, progress)
+
+    def _retrieve_api_data(self):
+        """
+        Calls course api to get the stats
+        """
+        course_grades = course_api.get_course_details_metrics_grades_all_users(
+            self.course_id, self.request_params.get('count', None)
+        )
+        course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
+        course_progress = course_api.get_course_details_completions_all_users(course_id=self.course_id)
+
+        return course_grades, course_participants, course_progress
+
+    def _process_results(self, participants, course_grades, course_progress):
+        """
+        Integrates and process results set
+        """
+        participants_activation_links = self._participants_activation_urls(participants)
+
+        for course_participant in participants['results']:
+            # add in user activation link
+            course_participant['activation_link'] = participants_activation_links.get(course_participant['id'], '')
+
+            # transform to complete country name
+            if course_participant.get('country'):
+                course_participant['country'] = get_complete_country_name(course_participant.get('country'))
+
+            if len(course_participant['organizations']) == 0:
+                course_participant['organizations'] = [{'display_name': 'No company'}]
+                course_participant['organizations_display_name'] = 'No company'
+            else:
+                course_participant['organizations_display_name'] = course_participant['organizations'][0][
+                    'display_name']
+            if len(course_participant['roles']) != 0:
+                if 'assistant' in course_participant['roles']:
+                    course_participant['custom_user_status'] = self.permission_map['assistant']
+                elif 'observer' in course_participant['roles']:
+                    course_participant['custom_user_status'] = self.permission_map['observer']
+                elif 'staff' in course_participant['roles']:
+                    course_participant['custom_user_status'] = self.permission_map['staff']
+                elif 'instructor' in course_participant['roles']:
+                    course_participant['custom_user_status'] = self.permission_map['instructor']
+            else:
+                course_participant['custom_user_status'] = 'Active'
+            if course_participant['is_active']:
+                course_participant['custom_activated'] = 'Yes'
+            else:
+                course_participant['custom_activated'] = 'No'
+            if 'last_login' in course_participant:
+                if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
+                    last_login = parsedate(course_participant['last_login'])
+                    course_participant['custom_last_login'] = last_login.strftime(
+                        "%Y/%m/%d") + ',' + last_login.strftime(
+                        "%m/%d/%Y")
+                else:
+                    course_participant['custom_last_login'] = '-'
+            else:
+                course_participant['custom_last_login'] = '-'
+            user = None
+            for progress in course_progress['leaders']:
+                if progress['id'] == course_participant['id']:
+                    user = progress
+                    course_progress['leaders'].remove(progress)
+                    break
+            if user:
+                course_participant['progress'] = '{:03d}'.format(round_to_int(user['completions']))
+            else:
+                course_participant['progress'] = "000"
+            course_participant['proficiency'] = None
+            for grade in course_grades['leaders']:
+                if grade['id'] == course_participant['id']:
+                    course_participant['proficiency'] = float(grade['grade']) * 100
+                    course_grades['leaders'].remove(grade)
+                    break
+            if not course_participant['proficiency']:
+                course_participant['proficiency'] = "000"
+            else:
+                course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency']))
+
+            course_participant['number_of_assessments'] = 0
+            course_participant['number_of_groupworks'] = 0
+            course_participant['groupworks'] = []
+            course_participant['assessments'] = []
+            if participants['count'] > 0:
+                if course_participant['grades']['section_breakdown']:
+                    for user_grade in course_participant['grades']['section_breakdown']:
+                        data = user_grade
+                        data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent']) * 100))
+                        if 'assessment' in user_grade['category'].lower():
+                            course_participant['number_of_assessments'] += 1
+                            course_participant['assessments'].append(data)
+                        if 'group_project' in user_grade['category'].lower():
+                            course_participant['number_of_groupworks'] += 1
+
+                            course_participant['groupworks'].append(data)
+
+        return participants
+
+    def _participants_activation_urls(self, participants_data):
+        """
+        Gets activation urls for participants records
+        """
+        user_ids = [
+            result.get('id')
+            for result in participants_data['results']
+        ]
+
+        return get_user_activation_links(
+            user_ids, base_url=self.base_url
+        )
 
 
 class InternalAdminCoursePermission(permissions.BasePermission):

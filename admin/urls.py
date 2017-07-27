@@ -62,6 +62,10 @@ urlpatterns = patterns(
     url(r'^api/courses/(?P<course_id>.+)$', views.course_details_api.as_view(), name='course_details_api'),
     url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
     url(r'^courses/(?P<course_id>.*)/download_course_stats/$', views.download_course_stats, name='download_course_stats'),
+    url(
+        r'^courses/(?P<course_id>.*)/download_participants_stats/(?P<task_key>[0-9a-f]{40})$',
+        views.download_participants_stats, name='download_participants_stats'
+    ),
     url(r'^courses/(?P<course_id>.*)/$', views.course_details, name='course_details'),
     url(r'^courses/$', views.courses_list, name='courses_list'),
 
