@@ -72,7 +72,9 @@ def course_landing_page(request, course_id):
 
     static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(
+        course_id, user_id=request.user.id, skipleaders=True, grade_object_type=Proficiency
+    )
     load_lesson_estimated_time(course)
 
     feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
@@ -580,7 +582,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         single_user=True,
         is_cohort_avg_enabled=feature_flags.cohort_avg if feature_flags else True
     )
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(
+        course_id, user_id=user_id, skipleaders=True, grade_object_type=Proficiency
+    )
     course.group_work_enabled = feature_flags.group_work if feature_flags else True
     course_run = load_static_tabs(course_id, name="course run")
 
@@ -1310,7 +1314,9 @@ def get_user_progress_json(request, course_id):
 
 @login_required
 def get_user_gradebook_json(request, course_id):
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id=request.user.id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(
+        course_id, user_id=request.user.id, skipleaders=True, grade_object_type=Proficiency
+    )
     if proficiency:
         data = {"proficiency": {"user_grade_value": proficiency.user_grade_value }}
     else:

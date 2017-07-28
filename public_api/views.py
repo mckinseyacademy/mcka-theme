@@ -48,7 +48,9 @@ def course(request, course_id):
 def user_course(request):
     course = standard_data(request).get("course", None)
     overview = course_api.get_course_overview(course.id)
-    proficiency = course_api.get_course_metrics_grades(course.id, user_id=request.user.id, grade_object_type=Proficiency)
+    proficiency = course_api.get_course_metrics_grades(
+        course.id, user_id=request.user.id, skipleaders=True, grade_object_type=Proficiency
+    )
     social = get_social_metrics(course.id, request.user.id)
     article = load_static_tabs(course.id, "article")
 
