@@ -191,7 +191,10 @@ def get_course(course_id, depth=3):
         chapter.is_released = True
 
         for sequential in chapter.sequentials:
-            sequential.pages = [content_child for content_child in sequential.children if content_child.category == "vertical"]
+            pages = []
+            if hasattr(sequential, 'children'):
+                pages = [content_child for content_child in sequential.children if content_child.category == "vertical"]
+            sequential.pages = pages
 
     return course
 
