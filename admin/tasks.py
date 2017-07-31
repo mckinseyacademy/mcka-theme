@@ -4,6 +4,7 @@ Celery tasks related to admin app
 from django.core.cache import cache
 
 from celery import shared_task
+from celery.utils.log import get_task_logger
 
 from util.query_manager import get_object_or_none
 
@@ -11,7 +12,10 @@ from .controller import CourseParticipantStats
 from .models import BatchOperationStatus
 
 
-@shared_task(name="admin.download_participants_csv_data")
+logger = get_task_logger(__name__)  # pylint: disable=invalid-name
+
+
+@shared_task
 def course_participants_data_retrieval_task(course_id, task_id, base_url):
     """
     Retrieves course participants' data using API
@@ -29,6 +33,8 @@ def course_participants_data_retrieval_task(course_id, task_id, base_url):
     course_participants_stats = CourseParticipantStats(course_id, base_url)
     batch_status = get_object_or_none(BatchOperationStatus, task_key=task_id)
 
+    logger.info('Starting - Participants data retrieval task for course: {}'.format(course_id))
+
     while True:
         participants_stats = course_participants_stats.get_participants_data(api_params)
         participants_data.extend(participants_stats.get('results'))
@@ -43,6 +49,11 @@ def course_participants_data_retrieval_task(course_id, task_id, base_url):
             batch_status.attempted = percentage_fetched  # attempted tracks percentage
             batch_status.save()
 
+            logger.info(
+                'Progress {}% - Participants data retrieval task for course: {}'
+                .format(percentage_fetched, course_id)
+            )
+
         if not participants_stats.get('next'):
             break
 
@@ -51,3 +62,5 @@ def course_participants_data_retrieval_task(course_id, task_id, base_url):
 
     batch_status.succeded = 1
     batch_status.save()
+
+    logger.info('Finished - Participants data retrieval task for course: {}'.format(course_id))
