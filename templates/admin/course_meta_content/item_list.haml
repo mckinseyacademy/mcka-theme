@@ -42,7 +42,7 @@
           - else
             %input#discussions{type: 'checkbox', name: 'discussions'}
           %label{for: 'discussions'} Discussions
-          %p.style-6 Note: If you disable the discussion page, notifications coming from existing lesson inline discussion modules in the course will redirect the user to the course home page. It is suggested that lesson inline discussion modules are not present in courses without discussions enabled.
+          %p.style-6 Note: If you disable the discussion page, notifications coming from existing lesson inline discussion modules in the course will redirect the user to the course home page. It is suggested that lesson inline discussion modules are not present in courses without discussions enabled. It will also disable Engagement section from Leaderboard even if 'Engagement' flag is enabled.
         %li
           - if feature_flags.group_work
             %input#group_work{type: 'checkbox', name: 'group_work', checked: None}
@@ -61,12 +61,14 @@
           - else
             %input#cohort_map{type: 'checkbox', name: 'proficiency'}
           %label{for: 'proficiency'} Proficiency
+          %p.style-6 Note: If you disable 'Proficiency', it will hide proficiency section from course landing, progress page and from leaderboard on cohort page.
         %li
           - if feature_flags.progress_page
             %input#cohort_map{type: 'checkbox', name: 'progress_page', checked: None}
           - else
             %input#cohort_map{type: 'checkbox', name: 'progress_page'}
           %label{for: 'progress_page'} Progress Page
+          %p.style-6 Note: If you disable 'Progress Page', it will hide progress page icon from secondary navigation and progress section from leaderboard on cohort page.
         %li
           - if feature_flags.notifications
             %input#cohort_map{type: 'checkbox', name: 'notifications', checked: None}
@@ -109,3 +111,4 @@
           - else
             %input#engagement{type: 'checkbox', name: 'engagement'}
           %label{for: 'engagement'} Engagement
+          %p.style-6 Note: If you disable 'Engagement', it will hide Engagement section from leaderboard.
