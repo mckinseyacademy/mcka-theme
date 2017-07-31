@@ -3,19 +3,17 @@ Celery tasks related to admin app
 """
 from django.core.cache import cache
 
-from celery import shared_task
+from celery.decorators import task
 from celery.utils.log import get_task_logger
-
-from util.query_manager import get_object_or_none
 
 from .controller import CourseParticipantStats
 from .models import BatchOperationStatus
 
 
-logger = get_task_logger(__name__)  # pylint: disable=invalid-name
+logger = get_task_logger(__name__)
 
 
-@shared_task
+@task(name='admin.course_participants_data_retrieval_task')
 def course_participants_data_retrieval_task(course_id, task_id, base_url):
     """
     Retrieves course participants' data using API
@@ -31,7 +29,7 @@ def course_participants_data_retrieval_task(course_id, task_id, base_url):
     fetched = 0
 
     course_participants_stats = CourseParticipantStats(course_id, base_url)
-    batch_status = get_object_or_none(BatchOperationStatus, task_key=task_id)
+    batch_status = BatchOperationStatus.objects.create(task_key=task_id)
 
     logger.info('Starting - Participants data retrieval task for course: {}'.format(course_id))
 
@@ -57,10 +55,9 @@ def course_participants_data_retrieval_task(course_id, task_id, base_url):
         if not participants_stats.get('next'):
             break
 
-    # cached for download csv request later
-    cache.set('participants-list-' + batch_status.task_key, participants_data)
-
     batch_status.succeded = 1
     batch_status.save()
 
     logger.info('Finished - Participants data retrieval task for course: {}'.format(course_id))
+
+    return participants_data

@@ -1083,11 +1083,13 @@ class course_details_performance_api(APIView):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                         PERMISSION_GROUPS.MCKA_SUBADMIN)
-def download_participants_stats(request, course_id, task_key):
+def download_participants_stats(request, course_id, task_id):
     """
     Serves CSV file of course participant stats
     """
-    participants = cache.get('participants-list-' + task_key, [])
+    # get data from celery result backend
+    participants_data = course_participants_data_retrieval_task.AsyncResult(task_id)
+    participants = participants_data.get() if participants_data.ready() else []
 
     fields = OrderedDict([
         ("First name", "first_name"),
@@ -1143,17 +1145,17 @@ class course_details_api(APIView):
             return Response({'status':'error', 'message': 'No such task!'})
 
         else:
-            batch_status = BatchOperationStatus.create()
-            task_id = batch_status.task_key
-            base_url = request.build_absolute_uri()
-
             # All new bulk actions are now handled by celery worker
             # while older functionality is still threaded tasks
             if data.get('type') == 'participants_csv_data':
-                course_participants_data_retrieval_task.delay(
-                    course_id, task_id, base_url
-                )
+                base_url = request.build_absolute_uri()
+
+                task_id = course_participants_data_retrieval_task.delay(
+                    course_id=course_id, base_url=base_url
+                ).task_id
             else:
+                batch_status = BatchOperationStatus.create()
+                task_id = batch_status.task_key
                 course_bulk_actions(course_id, data, batch_status, request)
 
             return Response({'status':'ok', 'data': data, 'task_id': task_id})
