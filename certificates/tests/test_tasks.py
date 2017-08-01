@@ -6,7 +6,7 @@ from lib.util import DottableDict
 from django.core import mail
 from django.test import TestCase, override_settings
 
-from accounts.tests import ApplyPatchMixin
+from accounts.tests.tests import ApplyPatchMixin
 
 from ..models import (
     CertificateStatus,
@@ -24,22 +24,26 @@ def mock_passed_users_list():
         DottableDict({
             "id": 2,
             "email": "ecommerce_worker@fake.email",
-            "username": "ecommerce_worker"
+            "username": "ecommerce_worker",
+            "complete_status": True
         }),
         DottableDict({
             "id": 5,
             "email": "honor@example.com",
-            "username": "honor"
+            "username": "honor",
+            "complete_status": True
         }),
         DottableDict({
             "id": 6,
             "email": "audit@example.com",
-            "username": "audit"
+            "username": "audit",
+            "complete_status": True
         }),
         DottableDict({
             "id": 8,
             "email": "verified@example.com",
-            "username": "verified"
+            "username": "verified",
+            "complete_status": False
         })
     ]
 
@@ -56,12 +60,13 @@ class CertificateTaskTest(TestCase, ApplyPatchMixin):
         self.course_id = 'test/course/302'
         self.passed_user_ids = [2, 5, 6, 8]
         self.passed_users = mock_passed_users_list()
+        self.course_completed_passed_users = self.passed_users[:3]
         self.paginated_passed_users = DottableDict({
             "results": self.passed_users,
             "num_pages": 1
         })
 
-    def _apply_course_and_user_api_patch(self):
+    def _apply_course_passed_users_api_patch(self):
         """
         Helper method to patch user and course api
         """
@@ -73,7 +78,7 @@ class CertificateTaskTest(TestCase, ApplyPatchMixin):
         """
         Test generate course certificates task
         """
-        self._apply_course_and_user_api_patch()
+        self._apply_course_passed_users_api_patch()
         CourseCertificateStatus.objects.create(
             course_id=self.course_id,
             status=CertificateStatus.generating
@@ -84,17 +89,17 @@ class CertificateTaskTest(TestCase, ApplyPatchMixin):
         generate_course_certificates_task.delay(self.course_id, base_domain)
 
         # test if emails sent to all passed users
-        self.assertEqual(len(mail.outbox), len(self.passed_users))
+        self.assertEqual(len(mail.outbox), len(self.course_completed_passed_users))
         sent_emails_addresses = [email.to[0] for email in mail.outbox]
-        for user in self.passed_users:
+        for user in self.course_completed_passed_users:
             self.assertIn(user.email, sent_emails_addresses)
 
         # test if certificate entries added to database
         generated_certificates = UserCourseCertificate.objects.filter(
             course_id=self.course_id
         )
-        self.assertEqual(len(generated_certificates), len(self.passed_users))
-        for user in self.passed_users:
+        self.assertEqual(len(generated_certificates), len(self.course_completed_passed_users))
+        for user in self.course_completed_passed_users:
             self.assertEqual(
                 UserCourseCertificate.objects.filter(
                     course_id=self.course_id, user_id=user.id

@@ -18,7 +18,7 @@ from django.utils.decorators import available_attrs
 
 from courses.tests import MockCourseAPI
 from courses.models import FeatureFlags
-from accounts.tests import ApplyPatchMixin
+from accounts.tests.tests import ApplyPatchMixin
 
 from ..models import (
     UserCourseCertificate,

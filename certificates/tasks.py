@@ -22,8 +22,8 @@ def generate_course_certificates_task(course_id, base_domain):
     """
     passed_users = get_course_passed_users_list(course_id)
     for user in passed_users:
-        certificate = generate_user_course_certificate(course_id, user)
-        if certificate:
+        if user.complete_status:
+            certificate = generate_user_course_certificate(course_id, user)
             try:
                 send_certificate_generation_email(
                     course_id,

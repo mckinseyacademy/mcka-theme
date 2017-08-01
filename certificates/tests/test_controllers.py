@@ -12,7 +12,7 @@ from django.test import TestCase
 from django.conf import settings
 
 from courses.models import FeatureFlags
-from accounts.tests import ApplyPatchMixin
+from accounts.tests.tests import ApplyPatchMixin
 from .test_tasks import mock_passed_users_list
 from .test_views import GENERATE_CERTIFICATES_TASK_DATA
 from ..controller import (
@@ -93,6 +93,16 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
         """
         Test course certificates status
         """
+        # if feature flags not exist
+        course_certificates_status = get_course_certificates_status(
+            self.course_id,
+            course_end_date
+        )
+        self.assertEqual(
+            course_certificates_status,
+            CertificateStatus.notavailable
+        )
+
         FeatureFlags.objects.create(
             course_id=self.course_id,
             certificates=certs_feature_flag
