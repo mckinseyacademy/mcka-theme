@@ -89,7 +89,7 @@ from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnatt
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
-from util.validators import AlphanumericValidator
+from util.validators import AlphanumericValidator, alphanum_accented_validator
 from util.csv_helpers import CSVWriter
 
 from rest_framework.views import APIView
@@ -4497,6 +4497,11 @@ class create_new_company_api(APIView):
 
         if company_display_name:
             company_name = company_display_name.lower().replace(" ", "_")
+            # applying input validation
+            try:
+                alphanum_accented_validator(company_name)
+            except ValidationError as e:
+                return Response({'status': 'error', 'message': e.message})
             try:
                 organization_api.create_organization(organization_name=company_name, organization_data={"display_name": company_display_name})
             except ApiError:
@@ -5403,6 +5408,11 @@ class tags_list_api(APIView):
         tag_name = request.DATA.get('name', None)
         tag_data = {}
         if tag_name:
+            try:
+                alphanum_accented_validator(tag_name)
+            except ValidationError as e:
+                return Response({'status': 'error', 'message': e.message})
+            
             tags = Tag.fetch_all()
             for tag in tags:
                 if tag.name.lower() == tag_name.lower():
