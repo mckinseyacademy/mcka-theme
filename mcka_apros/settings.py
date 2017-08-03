@@ -516,3 +516,7 @@ CONTACT_PROPERTIES_TO_CLEAN = [
     'email',
     'phone',
 ]
+
+COURSE_PROPERTIES_TO_CLEAN = [
+    'name',
+]

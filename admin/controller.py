@@ -43,7 +43,7 @@ from lib.util import DottableDict
 from api_client.user_api import USER_ROLES
 from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS
 from .permissions import Permissions, SlimAddingPermissions
-from util.data_sanitizing import sanitize_data
+from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.validators import validate_first_name, validate_last_name
 
 import threading
@@ -1470,6 +1470,13 @@ def get_user_courses_helper(user_id, request):
     if request.user.is_internal_admin:
         internal_ids = get_internal_courses_ids()
         user_courses = [course for course in user_courses if course['id'] in internal_ids]
+
+    # xss cleaning of course properties
+    for course in user_courses:
+        sanitize_data(
+            data=course, props_to_clean=settings.COURSE_PROPERTIES_TO_CLEAN,
+            clean_methods=(clean_xss_characters,)
+        )
 
     active_courses = []
     course_history = []
