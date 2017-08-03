@@ -4454,7 +4454,7 @@ class users_company_admin_get_post_put_delete_api(APIView):
         return Response(response_dict)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN,)
 def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
