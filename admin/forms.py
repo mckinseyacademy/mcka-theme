@@ -109,6 +109,15 @@ class CuratedContentItemForm(forms.ModelForm):
             'display_date', 'created_at'
         ]
 
+    def clean_title(self):
+        """
+        Applies alphanumeric validation on title text
+        """
+        title = self.cleaned_data.get('title')
+        alphanum_accented_validator(title)
+
+        return title
+
 
 class BasePermissionForm(forms.Form):
     ''' edit roles for a single user '''
