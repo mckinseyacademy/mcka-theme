@@ -828,8 +828,14 @@ class courses_list_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, format=None):
-
         allCourses = course_api.get_courses_list(request.GET)
+
+        # xss cleaning of course properties
+        for course in allCourses:
+            sanitize_data(
+                data=course, props_to_clean=settings.COURSE_PROPERTIES_TO_CLEAN,
+                clean_methods=(clean_xss_characters,)
+            )
 
         if request.user.is_internal_admin:
             courses = []
@@ -4613,7 +4619,7 @@ class company_courses_api(APIView):
         courses = []
         for company_course in company_courses:
             course = {}
-            course['name'] = company_course['name']
+            course['name'] = clean_xss_characters(company_course['name'])
             course['id'] = company_course['id']
             course['participants'] = len(company_course['enrolled_users'])
             course_roles = course_api.get_users_filtered_by_role(company_course['id'])

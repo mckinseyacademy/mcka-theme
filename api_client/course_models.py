@@ -6,6 +6,8 @@ import json
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
+from util.data_sanitizing import sanitize_data, clean_xss_characters
+
 from .json_object import CategorisedJsonObject, JsonObject, DataOnly
 
 # Create your models here.
@@ -407,6 +409,16 @@ class Course(CategorisedJsonObject):
                         graded_items["group_activities"].append(activity)
 
         return graded_items
+
+    def _validate_fields(self, dictionary):
+        super(Course, self)._validate_fields(dictionary)
+
+        # applying xss data cleaning
+        sanitize_data(
+            data=dictionary, props_to_clean=settings.COURSE_PROPERTIES_TO_CLEAN,
+            clean_methods=(clean_xss_characters,)
+        )
+
 
 class CourseListCourse(JsonObject):
     required_fields = ["course_id", "display_name", ]
