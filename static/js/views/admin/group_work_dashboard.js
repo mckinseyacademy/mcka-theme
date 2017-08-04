@@ -76,7 +76,7 @@ function group_work_dashboard(dashboard_configuration) {
 
         $(outline_component_selector).empty();
         if (selected_option.length) {
-            $(outline_component_selector).html(selected_option.text());
+            $(outline_component_selector).text(selected_option.text());
         } else {
             $(outline_component_selector).append($("<i class='fa fa-spin fa-spinner'></i>"));
         }
