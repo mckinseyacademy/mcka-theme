@@ -214,7 +214,15 @@
         cache: false,
         headers: { 'X-CSRFToken': $.cookie('apros_csrftoken')},
         success: function (data, status) 
-        { 
+        {
+          if(data['errors']){
+            var errors = '';
+            for(var i in data['errors']){
+              errors +=  '\n' + data['errors'][i];
+            }
+            alert('Please correct following errors:' + errors);
+            return;
+          }
           if (data['flag'] == 'invoicing')
           {
             _this.refreshData(flag);

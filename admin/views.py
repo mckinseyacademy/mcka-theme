@@ -30,6 +30,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
+from django.core.validators import validate_email
 from django.core.cache import cache
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
@@ -89,7 +90,10 @@ from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnatt
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 from .permissions import Permissions, PermissionSaveError
 from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
-from util.validators import AlphanumericValidator, alphanum_accented_validator
+from util.validators import (
+    AlphanumericValidator, alphanum_accented_validator,
+    PhoneNumberValidator
+)
 from util.csv_helpers import CSVWriter
 
 from rest_framework.views import APIView
@@ -5160,7 +5164,7 @@ class company_info_api(APIView):
                 return permission_denied(request)
 
         flag = request.GET.get('flag', None)
-        response = {}
+        response = {'flag': flag}
         data = json.loads(request.body)
 
         if flag == 'contacts':
@@ -5169,14 +5173,28 @@ class company_info_api(APIView):
                 for contact in data['contacts']:
                     companyContact = CompanyContact.objects.filter(company_id=int(company_id), contact_type=contact['type_id'])
                     companyContact = companyContact[0]
+
+                    errors = self._validate_contact(contact)
+
+                    if errors:
+                        response.update({'errors': errors})
+                        return Response(response)
+
                     companyContact.full_name = contact['full_name']
-                    companyContact.title = contact['title']
+                    companyContact.title =  contact['title']
                     companyContact.email = contact['email']
                     companyContact.phone = contact['phone']
                     companyContact.save()
             else:
                 for contact in data['contacts']:
                     companyContact = CompanyContact.objects.create(company_id=int(company_id), contact_type=contact['type_id'])
+
+                    errors = self._validate_contact(contact)
+
+                    if errors:
+                        response.update({'errors': errors})
+                        return Response(response)
+
                     companyContact.full_name = contact['full_name']
                     companyContact.title = contact['title']
                     companyContact.email = contact['email']
@@ -5185,34 +5203,75 @@ class company_info_api(APIView):
 
         elif flag == 'invoicing':
             invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
+
+            errors = self._validate_inputs(
+                fields={
+                    'Full Name': data['invoicing'][0]['full_name'].strip(),
+                    'Title': data['invoicing'][0]['title'].strip()
+                },
+                validator=alphanum_accented_validator
+            )
+
+            if errors:
+                response.update({'errors': errors})
+                return Response(response)
+
             if len(invoicingDetails) > 0:
                 invoicingDetails = invoicingDetails[0]
-                invoicingDetails.full_name = data['invoicing'][0]['full_name'].strip()
-                invoicingDetails.title = data['invoicing'][0]['title'].strip()
-                invoicingDetails.address1 = data['invoicing'][0]['address1'].strip()
-                invoicingDetails.address2 = data['invoicing'][0]['address2'].strip()
-                invoicingDetails.city = data['invoicing'][0]['city'].strip()
-                invoicingDetails.state = data['invoicing'][0]['state'].strip()
-                invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
-                invoicingDetails.country = data['invoicing'][0]['country_fullname'].strip()
-                invoicingDetails.po = data['invoicing'][0]['po'].strip()
-                invoicingDetails.identity_provider = data['invoicing'][0]['identity_provider'].strip()
-                invoicingDetails.save()
             else:
                 invoicingDetails = CompanyInvoicingDetails.objects.create(company_id=int(company_id))
-                invoicingDetails.full_name = data['invoicing'][0]['full_name'].strip()
-                invoicingDetails.title = data['invoicing'][0]['title'].strip()
-                invoicingDetails.address1 = data['invoicing'][0]['address1'].strip()
-                invoicingDetails.address2 = data['invoicing'][0]['address2'].strip()
-                invoicingDetails.city = data['invoicing'][0]['city'].strip()
-                invoicingDetails.state = data['invoicing'][0]['state'].strip()
-                invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
-                invoicingDetails.country = data['invoicing'][0]['country_fullname'].strip()
-                invoicingDetails.po = data['invoicing'][0]['po'].strip()
-                invoicingDetails.identity_provider = data['invoicing'][0]['identity_provider'].strip()
-                invoicingDetails.save()
-        response['flag'] = flag
+
+            invoicingDetails.full_name = data['invoicing'][0]['full_name'].strip()
+            invoicingDetails.title = data['invoicing'][0]['title'].strip()
+            invoicingDetails.address1 = data['invoicing'][0]['address1'].strip()
+            invoicingDetails.address2 = data['invoicing'][0]['address2'].strip()
+            invoicingDetails.city = data['invoicing'][0]['city'].strip()
+            invoicingDetails.state = data['invoicing'][0]['state'].strip()
+            invoicingDetails.postal_code = data['invoicing'][0]['postal_code'].strip()
+            invoicingDetails.country = data['invoicing'][0]['country_fullname'].strip()
+            invoicingDetails.po = data['invoicing'][0]['po'].strip()
+            invoicingDetails.identity_provider = data['invoicing'][0]['identity_provider'].strip()
+            invoicingDetails.save()
+
         return Response(response)
+
+    def _validate_contact(self, contact):
+        """
+        Validates a company contact
+        """
+        alphanum_errors = self._validate_inputs(
+            fields={'Full Name': contact['full_name'], 'Title': contact['title']},
+            validator=alphanum_accented_validator
+        )
+
+        email_error = self._validate_inputs(
+            fields={'Email': contact['email']},
+            validator=validate_email
+        )
+
+        phone_error = self._validate_inputs(
+            fields={'Phone': contact['phone']},
+            validator=PhoneNumberValidator()
+        )
+
+        errors = alphanum_errors + email_error + phone_error
+
+        return errors
+
+    def _validate_inputs(self, fields, validator):
+        """
+        Helper function for running validations on company fields
+        """
+        errors = []
+
+        for field, value in fields.items():
+            try:
+                validator(value)
+            except ValidationError as e:
+                message = '{}: {}'.format(field, e.message)
+                errors.append(message)
+
+        return errors
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)

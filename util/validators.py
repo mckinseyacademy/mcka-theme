@@ -35,6 +35,31 @@ class AlphanumericWithAccentedChars(AlphanumericValidator):
         super(AlphanumericWithAccentedChars, self).__call__(value)
 
 
+class PhoneNumberValidator(RegexValidator):
+    """
+    Validates phone numbers
+    based on regex from https://stackoverflow.com/a/20971688
+
+    acceptable matches:
+    - (+351) 282 43 50 50
+    - 90191919908
+    - 555-8909
+    - 001 6867684
+    - 001 6867684x1
+    - 1 (234) 567-8901
+    - 1-234-567-8901 x1234
+    - 1-234-567-8901 ext1234
+    - 1-234 567.89/01 ext.1234
+    - 1(234)5678901x1234
+    - (123)8575973
+    - (0055)(123)8575973
+    """
+    regex = r'^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?)' \
+            r'{0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$'
+
+    message = _("Enter a valid phone number")
+
+
 def validate_first_name(first_name):
     """
     Validates Participant first name according to first name validation rules
