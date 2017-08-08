@@ -37,7 +37,7 @@
         %p= overview.about
     %hr
     .row.collapse
-      .large-7.columns.col-left
+      .medium-7.columns.col-left
         .video-preview
           #mk_overview_player.thumb
             - if overview.video
@@ -48,6 +48,11 @@
             %i.fa.fa-play-circle
             %span Course Overview
             %time.label-2 2:08
+      .medium-5.columns.col-right
+        .sub-1 WHAT YOU WILL LEARN
+        - autoescape off
+          %p= overview.what_you_will_learn
+      .medium-7
         %hr
         .faculty
           .sub-1 Faculty
@@ -64,7 +69,3 @@
               %p.style-3
                 - autoescape off
                   = teacher.bio
-      .large-5.columns.col-right
-        .sub-1 WHAT YOU WILL LEARN
-        - autoescape off
-          %p= overview.what_you_will_learn
