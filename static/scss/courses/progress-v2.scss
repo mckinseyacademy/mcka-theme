@@ -186,4 +186,9 @@
       margin-right: rem-calc(12);
     }
   }
+  .course-page{
+    min-width: 580px;
+    overflow: auto;
+    float: none;
+  }
 }
