@@ -198,7 +198,10 @@
   margin-top: rem-calc(15);
   .oo-player-container{
     .oo-player{
-      @media only screen and (max-width: 767px) {
+      @media only screen and (max-width: 768px) {
+        width: 100% !important;
+      }
+      @media only screen and (max-width: 320px) {
         width: calc(100% - 40px) !important;
       }
     }
@@ -209,9 +212,13 @@
     width: 100%;
     display: block;
     margin-top: 20px;
+    margin-bottom: 10px;
   }
   table{
     td{
+      @media only screen and (max-width: 767px){
+        padding: .64286rem 0 !important;
+      }
       @media only screen and (max-width: 767px){
         display: block !important;
       }
