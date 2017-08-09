@@ -51,7 +51,7 @@
       left: 0;
       right: 0;
       background: #fff;
-      z-index: 0;
+      z-index: 10002;
       box-shadow: 0px -4px 5px $almost-white;
     }
   }
@@ -196,6 +196,32 @@
 
 #course-lessons {
   margin-top: rem-calc(15);
+  .oo-player-container{
+    .oo-player{
+      @media only screen and (max-width: 767px) {
+        width: calc(100% - 40px) !important;
+      }
+    }
+  }
+  font{
+    font-size: 0;
+    border-top: 1px solid #ccc;
+    width: 100%;
+    display: block;
+    margin-top: 20px;
+  }
+  table{
+    td{
+      @media only screen and (max-width: 767px){
+        display: block !important;
+      }
+      #ooyalaplayer2{
+        @media only screen and (max-width: 767px){
+          width: 100% !important;
+        }
+      }
+    }
+  }
 }
 
 .lesson-modules-modal {
