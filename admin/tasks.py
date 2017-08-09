@@ -21,14 +21,16 @@ def course_participants_data_retrieval_task(course_id, task_id, base_url):
     results are set in cache, batch status is updated on each successful retrieval
     """
     api_params = {
-        'page': 1, 'per_page': 100, 'count': 0,
-        'page_size': 100, 'additional_fields': "grades,roles,organizations",
+        'page': 1, 'per_page': 100, 'page_size': 100,
+        'additional_fields': "grades,roles,organizations",
     }
 
     participants_data = []
     fetched = 0
 
-    course_participants_stats = CourseParticipantStats(course_id, base_url)
+    course_participants_stats = CourseParticipantStats(
+        course_id, base_url, CourseParticipantStats.participant_record_parser
+    )
     batch_status = BatchOperationStatus.objects.create(task_key=task_id)
 
     logger.info('Starting - Participants data retrieval task for course: {}'.format(course_id))

@@ -9,7 +9,7 @@ from datetime import datetime
 from urllib import quote as urlquote, urlencode
 from operator import attrgetter
 from smtplib import SMTPException
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 
 import operator
@@ -1101,6 +1101,25 @@ def download_participants_stats(request, course_id, task_id):
     participants_data = course_participants_data_retrieval_task.AsyncResult(task_id)
     participants = participants_data.get() if participants_data.ready() else []
 
+    groupworks, assesments = defaultdict(), defaultdict()
+
+    # custom processing is needed for groupworks and assesments data
+    # as csv column names are also dynamic for them
+    for participant in participants:
+        for groupwork in participant.get('groupworks'):
+            label = groupwork.get('label')
+            key = 'GW_{}'.format(label)
+
+            groupworks[key] = 'Group Work: ' + label
+            participant[key] = '{}%'.format(groupwork.get('percent'))
+
+        for assesment in participant.get('assessments'):
+            label = assesment.get('label')
+            key = 'AS_{}'.format(label)
+
+            assesments[key] = 'Assessment: ' + label
+            participant[key] = '{}%'.format(assesment.get('percent'))
+
     fields = OrderedDict([
         ("First name", "first_name"),
         ("Last name", "last_name"),
@@ -1115,6 +1134,10 @@ def download_participants_stats(request, course_id, task_id):
         ("Activation Link", "activation_link"),
         ("Country", "country"),
     ])
+
+    # update fields with groupworks/assignments data
+    for label, title in (groupworks.items() + assesments.items()):
+        fields.update({title: label})
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = "attachment; filename={}_participants.csv".format(course_id)

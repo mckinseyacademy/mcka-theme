@@ -2092,10 +2092,11 @@ class CourseParticipantStats(object):
         'observer': 'Observer'
     }
 
-    def __init__(self, course_id, base_url):
+    def __init__(self, course_id, base_url, record_parser=None):
         self.course_id = course_id
         self.base_url = base_url
         self.request_params = {}
+        self.record_parser = record_parser
 
     def get_participants_data(self, request_params):
         """
@@ -2111,10 +2112,10 @@ class CourseParticipantStats(object):
         """
         Calls course api to get the stats
         """
-        course_grades = course_api.get_course_details_metrics_grades_all_users(
-            self.course_id, self.request_params.get('count', None)
-        )
         course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
+        course_grades = course_api.get_course_details_metrics_grades_all_users(
+            self.course_id, self.request_params.get('count') or course_participants.get('count', 0)
+        )
         course_progress = course_api.get_course_details_completions_all_users(course_id=self.course_id)
 
         return course_grades, course_participants, course_progress
@@ -2202,6 +2203,10 @@ class CourseParticipantStats(object):
 
                             course_participant['groupworks'].append(data)
 
+            # if a record parser is supplied, pass record through it
+            if self.record_parser:
+                self.record_parser(course_participant)
+
         return participants
 
     def _participants_activation_urls(self, participants_data):
@@ -2216,6 +2221,24 @@ class CourseParticipantStats(object):
         return get_user_activation_links(
             user_ids, base_url=self.base_url
         )
+
+    @staticmethod
+    def participant_record_parser(participant_data):
+        """
+        additional parsing/transforming of participant data
+        """
+        last_login = participant_data['custom_last_login']
+        if last_login != '-':
+            try:
+                last_login = last_login.split(',')[1]
+            except IndexError:
+                last_login = last_login[0]
+
+        participant_data.update({
+            'proficiency': '{}%'.format(participant_data.get('proficiency')),
+            'progress': '{}%'.format(participant_data.get('progress')),
+            'custom_last_login': last_login
+        })
 
 
 class InternalAdminCoursePermission(permissions.BasePermission):
