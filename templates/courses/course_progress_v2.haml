@@ -13,7 +13,7 @@
 
 -block content
   %article#course-progress-v2.row
-    .medium-10.medium-centered.columns.course-page
+    .medium-11.large-10.medium-centered.columns.course-page
       %h1 Dashboard for '={progress_user.username}'
       .label-5 PROGRESS
       %p.style-6 You are ={course.user_progress}% of the way through the course based on completion of modules within lessons. The cohort average is ={average_progress}%.
@@ -92,7 +92,7 @@
         - else
           %p.style-6 Note: "weeks" begin Tuesday and end the following Monday
     - if feature_flags.proficiency and graded_items_count > 0
-      .medium-10.medium-centered.columns.course-page
+      .medium-11.large-10.medium-centered.columns.course-page
         .label-5 PROFICIENCY
         %p.style-6 Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%.
         %table
