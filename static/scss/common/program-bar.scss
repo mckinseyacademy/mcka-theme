@@ -186,93 +186,6 @@
     }
   }
 
-  .program-menu-content {
-    color: $mckinsey-blue;
-    display: none;
-    &.open {
-      display: block;
-      max-height: calc(100vh - 140px);
-      height: auto !important;
-      overflow: auto;
-      width: 95% !important;
-      max-width: 300px !important;
-      .indent{
-        padding-left: 0;
-        .courses{
-          margin: 0;
-        }
-      }
-    }
-
-    // The next few items are marked as !important to prevent the foundation dropdown code from re-positioning the dropdown - it's goping where we want it to go
-    position: absolute !important;
-    left: 0 !important;
-    top: $program-bar-height !important;
-    left: auto !important;
-    z-index: 10000;
-    width: 275px;
-    background-color: $pure-white;
-    @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
-
-    .program-title {
-      margin: 12px 20px 0;
-      @include font-spec(12, bold);
-
-      span {
-        text-transform: uppercase;
-      }
-    }
-
-    .courses {
-      max-height: rem-calc(350);
-      overflow: auto;
-    }
-
-    a.course-name, .course-name {
-      @include font-spec(12, bold);
-      padding: 5px 0;
-      color: $pure-black;
-      display: block;
-      line-height: rem-calc(14);
-
-      &.unavailable {
-        color: $mckinsey-dark-grey;
-      }
-
-      &.current {
-        color: $mckinsey-orange;
-      }
-    }
-
-    a.course-name {
-      &:hover {
-        color: $mckinsey-academy-blue-gray;
-      }
-    }
-
-    .status {
-      @include font-spec(10, semibold);
-      font-style: italic;
-      color: $mckinsey-dark-grey;
-
-      &.complete {
-        color: $mckinsey-green;
-      }
-    }
-
-    ul {
-      margin: 0 12px;
-      list-style: none;
-      li {
-        padding: 0 8px 8px;
-        border-top: 1px solid $almost-white;
-        &:first-child {
-          border-top: none;
-          margin-top: 0;
-        }
-      }
-    }
-  }
 
   .program-logo-img {
     height: 48px;
@@ -282,5 +195,93 @@
     border-color: $mckinsey-grey;
     margin-top: 10px;
     padding-left: 15px;
+  }
+}
+
+.program-menu-content {
+  color: $mckinsey-blue;
+  display: none;
+  &.open {
+    display: block;
+    max-height: calc(100vh - 140px);
+    height: auto !important;
+    overflow: auto;
+    width: 95% !important;
+    max-width: 300px !important;
+    .indent{
+      padding-left: 0;
+      .courses{
+        margin: 0;
+      }
+    }
+  }
+
+  // The next few items are marked as !important to prevent the foundation dropdown code from re-positioning the dropdown - it's goping where we want it to go
+  position: absolute !important;
+  left: 0 !important;
+  top: $program-bar-height !important;
+  left: auto !important;
+  z-index: 10000;
+  width: 275px;
+  background-color: $pure-white;
+  @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
+
+  .program-title {
+    margin: 12px 20px 0;
+    @include font-spec(12, bold);
+
+    span {
+      text-transform: uppercase;
+    }
+  }
+
+  .courses {
+    max-height: rem-calc(350);
+    overflow: auto;
+  }
+
+  a.course-name, .course-name {
+    @include font-spec(12, bold);
+    padding: 5px 0;
+    color: $pure-black;
+    display: block;
+    line-height: rem-calc(14);
+
+    &.unavailable {
+      color: $mckinsey-dark-grey;
+    }
+
+    &.current {
+      color: $mckinsey-orange;
+    }
+  }
+
+  a.course-name {
+    &:hover {
+      color: $mckinsey-academy-blue-gray;
+    }
+  }
+
+  .status {
+    @include font-spec(10, semibold);
+    font-style: italic;
+    color: $mckinsey-dark-grey;
+
+    &.complete {
+      color: $mckinsey-green;
+    }
+  }
+
+  ul {
+    margin: 0 12px;
+    list-style: none;
+    li {
+      padding: 0 8px 8px;
+      border-top: 1px solid $almost-white;
+      &:first-child {
+        border-top: none;
+        margin-top: 0;
+      }
+    }
   }
 }
