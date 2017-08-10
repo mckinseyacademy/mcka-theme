@@ -25,6 +25,11 @@
                     a:visited{
                         color: #b1c2cc;
                     }
+                    &.right{
+                        .program-menu-content{
+                            right: 0;
+                        }
+                    }
                 }
             }
         }
@@ -111,7 +116,7 @@ body.learner-dashboard-view{
             }
             .panel-program:hover{
                 opacity: 0.8 ;
-                filter: alpha(opacity=80); 
+                filter: alpha(opacity=80);
             }
         }
     }
@@ -145,7 +150,7 @@ body.learner-dashboard-view{
             font-size: 18px;
         }
         p:hover{
-            color: #b1c2cc !important; 
+            color: #b1c2cc !important;
         }
         .title-font{
             font-size: 18px;
@@ -209,7 +214,7 @@ body.learner-dashboard-view{
     }
 
     #over-calendar-right{
-        margin-left: 1020px; 
+        margin-left: 1020px;
     }
 
     #row-full-calendar {
@@ -364,7 +369,7 @@ body.learner-dashboard-view{
     position: absolute;
     z-index: 200;
     margin-top: 40px;
-    width: 1100px; 
+    width: 1100px;
     height: 283px;
 
     .highcharts-tooltip {
