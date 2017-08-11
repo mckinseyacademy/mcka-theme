@@ -9,7 +9,7 @@ from datetime import datetime
 from urllib import quote as urlquote, urlencode
 from operator import attrgetter
 from smtplib import SMTPException
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict
 
 
 import operator
@@ -1101,7 +1101,7 @@ def download_participants_stats(request, course_id, task_id):
     participants_data = course_participants_data_retrieval_task.AsyncResult(task_id)
     participants = participants_data.get() if participants_data.ready() else []
 
-    groupworks, assesments = defaultdict(), defaultdict()
+    groupworks, assesments = OrderedDict(), OrderedDict()
 
     # custom processing is needed for groupworks and assesments data
     # as csv column names are also dynamic for them
@@ -1110,34 +1110,38 @@ def download_participants_stats(request, course_id, task_id):
             label = groupwork.get('label')
             key = 'GW_{}'.format(label)
 
-            groupworks[key] = 'Group Work: ' + label
+            if key not in groupworks:
+                groupworks[key] = 'Group Work: ' + label
+
             participant[key] = '{}%'.format(groupwork.get('percent'))
 
         for assesment in participant.get('assessments'):
             label = assesment.get('label')
             key = 'AS_{}'.format(label)
 
-            assesments[key] = 'Assessment: ' + label
+            if key not in assesments:
+                assesments[key] = 'Assessment: ' + label
+
             participant[key] = '{}%'.format(assesment.get('percent'))
 
     fields = OrderedDict([
-        ("First name", "first_name"),
-        ("Last name", "last_name"),
-        ("Username", "username"),
-        ("Email", "email"),
-        ("Company", "organizations_display_name"),
-        ("Status", "custom_user_status"),
-        ("Activated", "custom_activated"),
-        ("Last login", "custom_last_login"),
-        ("Progress", "progress"),
-        ("Proficiency", "proficiency"),
-        ("Activation Link", "activation_link"),
-        ("Country", "country"),
+        ("First name", ("first_name", '')),
+        ("Last name", ("last_name", '')),
+        ("Username", ("username", '')),
+        ("Email", ("email", '')),
+        ("Company", ("organizations_display_name",'')),
+        ("Status", ("custom_user_status", '')),
+        ("Activated", ("custom_activated", '')),
+        ("Last login", ("custom_last_login", '')),
+        ("Progress", ("progress", '')),
+        ("Proficiency", ("proficiency", '')),
+        ("Activation Link", ("activation_link", '')),
+        ("Country", ("country", '')),
     ])
 
     # update fields with groupworks/assignments data
     for label, title in (groupworks.items() + assesments.items()):
-        fields.update({title: label})
+        fields.update({title: (label, '0%')})
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = "attachment; filename={}_participants.csv".format(course_id)
@@ -1182,9 +1186,10 @@ class course_details_api(APIView):
             # while older functionality is still threaded tasks
             if data.get('type') == 'participants_csv_data':
                 base_url = request.build_absolute_uri()
+                company_id = data.get('company_id')
 
                 task_id = course_participants_data_retrieval_task.delay(
-                    course_id=course_id, base_url=base_url
+                    course_id=course_id, company_id=company_id, base_url=base_url
                 ).task_id
             else:
                 batch_status = BatchOperationStatus.create()

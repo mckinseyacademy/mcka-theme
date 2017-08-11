@@ -392,6 +392,13 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           var courseId = $("#courseDetailsDataWrapper").attr("data-id");
           var url = ApiUrls.courses_list + '/' + courseId;
           var dictionaryToSend = {type:'participants_csv_data',course_id: courseId};
+          
+          // if company page; pass in company id
+          var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+          if (companyPageFlag == 'True'){
+            var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+            dictionaryToSend['company_id'] = companyId;
+          }
         
           updateModalAttrs('Download Participants', 'Progress : 0%');
           updateSaveButtonAttrs('Download CSV File', true, null);

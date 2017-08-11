@@ -38,7 +38,7 @@ class TestCSVWriter(unittest.TestCase):
             {'name': 'test2', 'tech': 'Python'}
         ]
 
-        fields = OrderedDict([('Name', 'name'), ('Technology', 'tech')])
+        fields = OrderedDict([('Name', ('name', '')), ('Technology', ('tech', ''))])
 
         csv_writer = CSVWriter(self.csv_file, fields, test_data)
         csv_file = csv_writer.write_csv()
