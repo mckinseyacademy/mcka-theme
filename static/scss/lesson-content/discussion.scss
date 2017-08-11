@@ -14,6 +14,23 @@
   }
 }
 
+#course-lessons .discussion-module{
+  .discussion-module-header{
+    @media only screen and
+    (max-width: 767px){
+      float: none;
+      width: 100%;
+    }
+  }
+  .discussion-show{
+    @media only screen and
+    (max-width: 767px){
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+}
+
 .lesson-content .discussion-module {
   .inline-threads {
     clear: both;
@@ -97,7 +114,6 @@
     }
 
     .forum-new-post-form, .edit-post-form {
-      min-width: 700px;
 
       input.field-input {
         margin-bottom: 0px;
@@ -638,6 +654,10 @@ body > .tooltip {
 #course-lessons .discussion-module {
   padding: 20px;
   margin: 20px 0;
+  @media only screen and
+  (max-width: 767px){
+    padding: 10px;
+  }
 }
 
 .discussion-show {
