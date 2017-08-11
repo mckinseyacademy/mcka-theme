@@ -207,12 +207,9 @@
     }
   }
   font{
-    font-size: 0;
-    border-top: 1px solid #ccc;
-    width: 100%;
     display: block;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    overflow: hidden;
+    padding-top: 10px;
   }
   table{
     td{
