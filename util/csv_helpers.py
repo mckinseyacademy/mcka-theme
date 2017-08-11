@@ -14,7 +14,7 @@ class CSVWriter(object):
         """
         Args:
             csv_file: any writable object, (files or http responses etc)
-            fields: ordered dict of the form {field_title: field_key}
+            fields: ordered dict of the form {field_title: (field_key, default_value)}
             data: the data to write; list of dicts
         """
         self.csv_file = csv_file
@@ -32,8 +32,8 @@ class CSVWriter(object):
 
         for record in self.data:
             row = [
-                record.get(field, '')
-                for field in self.fields.values()
+                record.get(field, default_value)
+                for field, default_value in self.fields.values()
             ]
 
             writer.writerow(row)

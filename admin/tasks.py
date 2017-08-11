@@ -14,16 +14,20 @@ logger = get_task_logger(__name__)
 
 
 @task(name='admin.course_participants_data_retrieval_task')
-def course_participants_data_retrieval_task(course_id, task_id, base_url):
+def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url):
     """
     Retrieves course participants' data using API
 
-    results are set in cache, batch status is updated on each successful retrieval
+    results are set in celery result backend, batch status is updated on each successful retrieval
     """
     api_params = {
         'page': 1, 'per_page': 100, 'page_size': 100,
         'additional_fields': "grades,roles,organizations",
     }
+
+    # for company, keep data retrieval to company participants
+    if company_id:
+        api_params.update({'organizations': company_id})
 
     participants_data = []
     fetched = 0

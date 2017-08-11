@@ -57,7 +57,7 @@
         var value = attributes['activation_link'];
         
         if(value != '')
-            value = '<a href="' + value + '">' + value + '</a>';
+            value = '<a href="' + value + '">' + 'Activation Link' + '</a>';
 
         return value;
       }},
