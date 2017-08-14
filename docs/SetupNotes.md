@@ -105,6 +105,8 @@ Put the following into `mcka_apros/mcka_apros/local_settings.py`
     EDX_API_KEY = 'edx_api_key'
     SESSION_COOKIE_SECURE = False
     ALLOWED_HOSTS = ['apros.mcka.local']
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+    SESSION_TIMEOUT_SECONDS = 300000
 
 Details: 
 * `API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
