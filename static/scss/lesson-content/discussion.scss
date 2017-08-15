@@ -14,23 +14,6 @@
   }
 }
 
-#course-lessons .discussion-module{
-  .discussion-module-header{
-    @media only screen and
-    (max-width: 767px){
-      float: none;
-      width: 100%;
-    }
-  }
-  .discussion-show{
-    @media only screen and
-    (max-width: 767px){
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  }
-}
-
 .lesson-content .discussion-module {
   .inline-threads {
     clear: both;
@@ -712,4 +695,114 @@ body > .tooltip {
 
 .row.collapse {
   display: block;
+}
+
+.discussion-module{
+  .discussion-module-header{
+    @media only screen and
+    (max-width: 767px){
+      float: none !important;
+      width: 100% !important;
+    }
+  }
+  .discussion-show{
+    @media only screen and
+    (max-width: 767px){
+      width: 100%;
+      margin-bottom: 10px !important;
+    }
+  }
+  .new-post-article{
+    .forum-new-post-form{
+      @media only screen and
+      (max-width: 767px){
+        padding: 15px 10px;
+      }
+      .thread-title,
+      .add-post-cancel,
+      .field-help{
+        @media only screen and
+        (max-width: 767px){
+          display: none !important;
+          visibility: hidden;
+        }
+      }
+      .field-label-text{
+        @media only screen and
+        (max-width: 767px){
+          margin-bottom: 10px !important;
+          display: block;
+        }
+      }
+      .field-input{
+        @media only screen and
+        (max-width: 767px){
+          width: 100% !important;
+        }
+      }
+      .post-options{
+        @media only screen and
+        (max-width: 767px){
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+    .wmd-button-row{
+      @media only screen and
+      (max-width: 767px){
+        display: none !important;
+        visibility: hidden;
+      }
+    }
+  }
+  fieldset.field-input{
+    width: 100% !important;
+    .post-type-label{
+      @media only screen and
+      (max-width: 767px){
+        float: left;
+        padding: 0 15px;
+        &[for*="question"]{
+          border-radius: 3px 0 0 3px;
+        }
+        &[for*="discussion"]{
+          border-radius: 0 3px 3px 0;
+          border-left: 0;
+        }
+      }
+      &:focus, &:active{
+        outline: 0;
+        box-shadow: none;
+      }
+    }
+  }
+  .wmd-panel{
+    @media only screen and
+    (max-width: 767px){
+      min-width: auto !important;
+    }
+  }
+  .wmd-preview-container{
+    @media only screen and
+    (max-width: 767px){
+      display: none !important;
+    }
+  }
+  button.submit{
+    @media only screen and
+    (max-width: 767px){
+      margin-top: 15px !important;
+    }
+  }
+  .post-type-input{
+    &:checked{
+      &+.post-type-label{
+        @media only screen and
+        (max-width: 767px){
+          background-color: $primary-color !important;
+          color: $pure-white !important;
+        }
+      }
+    }
+  }
 }
