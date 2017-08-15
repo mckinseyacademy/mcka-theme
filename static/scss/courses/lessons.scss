@@ -207,7 +207,9 @@
   @import "./lesson_notes";
 }
 
-#course-lessons {
+#course-lessons,
+#course-resources,
+#course-group-work {
   margin-top: rem-calc(15);
   .oo-player-container{
     .oo-player{
@@ -219,6 +221,7 @@
       }
     }
   }
+
   font{
     display: block;
     overflow: hidden;
@@ -264,5 +267,14 @@
         border-bottom: none;
       }
     }
+  }
+}
+
+#ooyalaplayer2{
+  @media only screen and (max-width: 768px) {
+    width: 100% !important;
+  }
+  @media only screen and (max-width: 320px) {
+    width: calc(100% - 40px) !important;
   }
 }
