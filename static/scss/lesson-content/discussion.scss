@@ -762,6 +762,7 @@ body > .tooltip {
       (max-width: 767px){
         float: left;
         padding: 0 15px;
+        width: 50%;
         &[for*="question"]{
           border-radius: 3px 0 0 3px;
         }
