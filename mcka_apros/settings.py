@@ -69,6 +69,7 @@ LOCAL_APPS = (
     'public_api',
     'rest_framework',
     'certificates',
+    'mobile_app_associations',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS

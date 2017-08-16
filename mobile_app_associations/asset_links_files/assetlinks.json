@@ -1,0 +1,14 @@
+[
+   {
+      "relation":[
+         "delegate_permission/common.handle_all_urls"
+      ],
+      "target":{
+         "namespace":"android_app",
+         "package_name":"com.pique.mobile",
+         "sha256_cert_fingerprints":[
+            "97:F8:BC:0C:32:A6:64:C4:DA:DF:CE:E1:99:C3:A6:08:8B:25:80:B8:13:FA:F9:81:66:E5:A9:22:A7:1A:1D:BB"
+         ]
+      }
+   }
+]
