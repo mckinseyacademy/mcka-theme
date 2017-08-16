@@ -450,7 +450,18 @@ def get_course_completions(course_id, user_id=None, page_size=0):
 
 @api_error_protect
 def get_course_metrics(course_id, *args, **kwargs):
-    ''' retrieves course metrics '''
+    """
+    retrieves course metrics
+    `metrics_required` param can be passed to course metrics api to get additional metrics
+    possible values for `metrics_required param` are
+    ``` users_started,modules_completed,users_completed,thread_stats ```
+    :param course_id:
+    :param args:
+    :param kwargs:
+    :return: course metrics objects having these possible course metrics
+        grade_cutoffs, users_enrolled, users_started, users_not_started, modules_completed,users_completed
+        and thread_stats. where thread_stats has num_active_threads and num_threads
+    """
 
     qs_params = {}
 
