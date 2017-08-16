@@ -230,12 +230,11 @@
   table{
     td{
       @media only screen and (max-width: 767px){
+        display: block !important;
+        width: auto;
         padding: .64286rem 0 !important;
       }
-      @media only screen and (max-width: 767px){
-        display: block !important;
-      }
-      #ooyalaplayer2{
+      [id*="ooyalaplayer"]{
         @media only screen and (max-width: 767px){
           width: 100% !important;
         }
@@ -270,7 +269,7 @@
   }
 }
 
-#ooyalaplayer2{
+[id*="ooyalaplayer"]{
   @media only screen and (max-width: 768px) {
     width: 100% !important;
   }
