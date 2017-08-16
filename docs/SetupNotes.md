@@ -73,7 +73,9 @@ If you had to modify the Vagrantfile, reload your vagrant config with `vagrant r
 
 ### Provision Apros
 
-Run the apros provision script on your host with `vagrant provision --provision-with apros`
+Uncomment the `config.vm.provision "apros" ...` line from the end of the `Vagrantfile`.
+
+Then run the apros provision script on your host with `vagrant provision --provision-with apros`
 
 The script will do the following:
 
