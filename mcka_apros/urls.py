@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'^certificates/', include('certificates.urls'), name='certificates'),
     url(r'^admin/', include('admin.urls'), name='admin'),
     url(r'^heartbeat$', include('heartbeat.urls'), name='heartbeat'),
+    url(r'^.well-known/', include('mobile_app_associations.urls'), name='mobile_app_associations'),
     url(r'^mcka-api/v1/', include('public_api.urls'), name='public_api'),
     url(r'^api/', include('edx_notifications.server.api.urls_mock')),
     url(r'^notification_redir$', 'main.views.notification_redir'),
