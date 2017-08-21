@@ -639,7 +639,7 @@ body > .tooltip {
   margin: 20px 0;
   @media only screen and
   (max-width: 767px){
-    padding: 10px;
+    padding: 10px 15px 0 15px;
   }
 }
 
@@ -697,109 +697,181 @@ body > .tooltip {
   display: block;
 }
 
-.discussion-module{
-  .discussion-module-header{
-    @media only screen and
-    (max-width: 767px){
+@media only screen and
+(max-width: 767px){
+  .discussion-module{
+    border-radius: 4px !important;
+    .discussion-module-header{
       float: none !important;
       width: 100% !important;
-    }
-  }
-  .discussion-show{
-    @media only screen and
-    (max-width: 767px){
-      width: 100%;
-      margin-bottom: 10px !important;
-    }
-  }
-  .new-post-article{
-    .forum-new-post-form{
-      @media only screen and
-      (max-width: 767px){
-        padding: 15px 10px;
+      .discussion-module-title{
+        color: $mckinsey-dark-blue;
+        margin-bottom: 15px !important;
+        font-weight: 600;
+        @include font-spec(15, 600);
       }
-      .thread-title,
-      .add-post-cancel,
-      .field-help{
-        @media only screen and
-        (max-width: 767px){
+    }
+    .add_post_btn_container{
+      height: 5px !important;
+    }
+    .inline-threads{
+      margin-left: -15px;
+      margin-right: -15px;
+      border: 0 !important;
+      .forum-nav-thread{
+        position: relative;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        &:last-child{
+          border-bottom: 0 !important;
+          border-radius: 0 0 4px 4px !important;
+        }
+        .forum-nav-thread-wrapper-0{
+          display: none;
+        }
+        .forum-nav-thread-wrapper-1{
+          max-width: none;
+          padding: 0;
+          margin: 0;
+        }
+        .forum-nav-thread-wrapper-2{
+          min-width: 30px;
+        }
+        .forum-nav-thread-link{
+          border:  0 !important;
+          padding: 20px 15px !important;
+          .forum-nav-thread-wrapper-1{
+
+          }
+        }
+        .forum-nav-thread-title{
+          @include font-spec(15, 600);
+          color: $mckinsey-dark-blue;
+        }
+        .forum-nav-thread-comments-count{
+          background-color: $mckinsey-bubble-gray !important;
+          border-radius: 50%;
+          color: $pure-white;
+          padding: 3px !important;
+          width: 26px;
+          height: 24px;
+          position: absolute;
+          right: 15px;
+          top: 15px;
+          &:after{
+            right: auto;
+            left: 1px;
+            border-width: 0 7px 7px 0;
+            transform: skewX(130deg);
+            border-color: transparent $mckinsey-bubble-gray transparent transparent;
+          }
+        }
+      }
+      .posted-details{
+        font-size: 12px;
+        color: $mckinsey-bubble-gray;
+        .username{
+          font-size: 12px;
+          color: $mckinsey-light-blue;
+        }
+      }
+      .thread-preview-body{
+        font-size: 12px;
+        color: $mckinsey-dark-blue;
+        p{
+          line-height: 20px;
+          font-size: 12px;
+        }
+      }
+      .forum-nav-thread-labels{
+        display: none;
+      }
+      .group-visibility-label{
+        color: $mckinsey-bubble-gray !important;
+      }
+    }
+    .inline-discussion-topic{
+      font-size: 13px !important;
+      color: $mckinsey-dark-blue;
+      .inline-discussion-topic-title{
+        font-weight: 600 !important;
+      }
+    }
+    .discussion-show{
+      width: 100%;
+      margin-bottom: 20px !important;
+      &.shown{
+        display: none;
+      }
+    }
+    .new-post-btn{
+      position: fixed !important;
+      bottom: -10px;
+      z-index: 10005;
+      margin-left: 0 !important;
+      left: calc(50% - 54px);
+      border-radius: 100px !important;
+      background-color: $mckinsey-light-blue !important;
+      color: $pure-white !important;
+      padding: 0 20px !important;
+      font-weight: 600 !important;
+    }
+    .new-post-article{
+      .forum-new-post-form{
+        padding: 15px 10px;
+        .thread-title,
+        .add-post-cancel,
+        .field-help{
           display: none !important;
           visibility: hidden;
         }
-      }
-      .field-label-text{
-        @media only screen and
-        (max-width: 767px){
+        .field-label-text{
           margin-bottom: 10px !important;
           display: block;
         }
-      }
-      .field-input{
-        @media only screen and
-        (max-width: 767px){
+        .field-input{
           width: 100% !important;
         }
-      }
-      .post-options{
-        @media only screen and
-        (max-width: 767px){
+        .post-options{
           margin-bottom: 0 !important;
         }
       }
-    }
-    .wmd-button-row{
-      @media only screen and
-      (max-width: 767px){
+      .wmd-button-row{
         display: none !important;
         visibility: hidden;
       }
     }
-  }
-  fieldset.field-input{
-    width: 100% !important;
-    .post-type-label{
-      @media only screen and
-      (max-width: 767px){
+    fieldset.field-input{
+      width: 100% !important;
+      .post-type-label{
         float: left;
         padding: 0 15px;
         width: 50%;
         &[for*="question"]{
           border-radius: 3px 0 0 3px;
+          &[for*="discussion"]{
+            border-radius: 0 3px 3px 0;
+            border-left: 0;
+          }
         }
-        &[for*="discussion"]{
-          border-radius: 0 3px 3px 0;
-          border-left: 0;
+        &:focus, &:active{
+          outline: 0;
+          box-shadow: none;
         }
-      }
-      &:focus, &:active{
-        outline: 0;
-        box-shadow: none;
       }
     }
-  }
-  .wmd-panel{
-    @media only screen and
-    (max-width: 767px){
+    .wmd-panel{
       min-width: auto !important;
     }
-  }
-  .wmd-preview-container{
-    @media only screen and
-    (max-width: 767px){
+    .wmd-preview-container{
       display: none !important;
     }
-  }
-  button.submit{
-    @media only screen and
-    (max-width: 767px){
+    button.submit{
       margin-top: 15px !important;
     }
-  }
-  .post-type-input{
-    &:checked{
-      &+.post-type-label{
-        @media only screen and
-        (max-width: 767px){
+    .post-type-input{
+      &:checked{
+        &+.post-type-label{
           background-color: $primary-color !important;
           color: $pure-white !important;
         }
