@@ -92,13 +92,13 @@
       line-height: 54px;
       height: auto;
       bottom: 4px;
+      color: $mckinsey-medium-gray;
     }
 
     .fa{
       -webkit-text-stroke: 2px $pure-white;
       @media only screen and
       (max-width: 767px){
-        color: $mckinsey-light-blue;
         @include font-spec(24);
       }
     }
@@ -155,6 +155,7 @@
       @media only screen and
       (max-width: 767px){
         background-color: transparent;
+        color: $mckinsey-light-blue;
       }
 
       &:hover:not(.disabled) {
