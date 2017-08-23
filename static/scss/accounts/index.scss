@@ -2,7 +2,7 @@
   .button[type="submit"]{
     white-space: pre-line;
   }
-  input:not([type="submit"]){
+  input:not([type="submit"]), select{
     max-width: 430px;
   }
   .help {
@@ -128,11 +128,18 @@
   #id_accept_terms {
     position: relative;
     margin: 0;
-    top: -26px;
+    top: -24px;
+    @media only screen and
+    (max-width: 400px){
+      top: -40px;
+    }
   }
 
   label[for=id_accept_terms] {
-    text-indent: 20px;
+    padding-left: 20px;
+    @media #{$screen} and (min-width: #{upper-bound($small-range)}) {
+      white-space: nowrap;
+    }
   }
 
   input[submit] {
