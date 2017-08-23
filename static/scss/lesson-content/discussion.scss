@@ -637,8 +637,7 @@ body > .tooltip {
 #course-lessons .discussion-module {
   padding: 20px;
   margin: 20px 0;
-  @media only screen and
-  (max-width: 767px){
+  @include mobile {
     padding: 15px;
   }
 }
@@ -697,8 +696,7 @@ body > .tooltip {
   display: block;
 }
 
-@media only screen and
-(max-width: 767px){
+@include mobile {
   .discussion-module{
     border-radius: 4px !important;
     .discussion-module-header{
@@ -785,7 +783,7 @@ body > .tooltip {
           box-shadow: none !important;
           margin-top: 2px !important;
           .discussion-response{
-            min-height: 75px !important;
+            min-height: 0 !important;
             background-color: transparent !important;
             padding: 10px 0 10px 15px !important;
             .response-body{
@@ -806,7 +804,8 @@ body > .tooltip {
           > li{
             position: relative;
             border-left: 16px solid $mckinsey-academy-light-gray !important;
-            padding: 10px 0 10px 10px !important;
+            padding: 10px 0 0 10px !important;
+            border-top: 0 !important;
             &:before{
               content: "\f149";
               position: absolute;
@@ -837,6 +836,10 @@ body > .tooltip {
                   resize: none;
                 }
               }
+            }
+            > .discussion-comment{
+              padding-bottom: 10px !important;
+              border-bottom: 1px solid $mckinsey-academy-light-gray !important;
             }
           }
           .comment-actions-list{

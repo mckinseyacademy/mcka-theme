@@ -54,6 +54,18 @@
     line-height: rem-calc($line-spacing);
   }
 
+@mixin mobile {
+  @media (max-width: 54.785rem){
+    @content;
+  }
+}
+
+@mixin mobilei5 {
+  @media (max-width: 14rem){
+    @content;
+  }
+}
+
 @mixin rounded($radius: 0.5em) {
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
