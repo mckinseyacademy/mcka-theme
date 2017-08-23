@@ -33,12 +33,10 @@ Follow the directions on the [Solutions wiki][solutions-wiki] to set up an *edx-
 
 ### Set up the Host System to Recognize the Hostnames
 
-* Add the following lines to host system `/etc/hosts`. This will allow your host machine to know where the domain names 
+* Add the following line to your host system's `/etc/hosts`. This will allow your host machine to know where the domain names 
 should point to. It will also work for the guest instance, since the guest instance trusts the host's name lookups.
         
-        127.0.0.1   apros.mcka.local
-        127.0.0.1   lms.mcka.local
-        127.0.0.1   cms.mcka.local
+        192.168.33.10   apros.mcka.local lms.mcka.local cms.mcka.local
         
 ### Clone the Apros repository
 
@@ -49,25 +47,12 @@ Make sure you clone it **in the same directory as the Vagrantfile**. Run:
 or
 
     git clone https://github.com/mckinseyacademy/mcka_apros.git
-    
-**Note:** if you absolutely want Apros source code to be in some other directory as Vagrantfile, it is achievable - just
-replace `:repo => "mcka_apros"` with `:repo => "full path to Apros source code"` when instructed in the next section.
 
-### Modify the VagrantFile
+**Note:** The mcka_apros directory may already exist, and should be empty before you run this command. That is normal.
 
-* Look for the port forwarding section of the Vagrant file, and add this line:
-  
-        config.vm.network :forwarded_port, guest: 80, host: 8080
+### Modify the VagrantFile (Usually not necessary)
 
-  You will want to *forward port 80 on your host machine to port 8080, because of the privileged port restrictions*.
-  The method for this differs from OS to OS, but some guides are available 
-  [here for mac](https://www.danpurdy.co.uk/web-development/osx-yosemite-port-forwarding-for-vagrant/) and 
-  [here for linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user).
-  The guide for mac has some extra tips you may be able to backport to your Linux installation. Several Apros features do
-  not work quite correctly without being on Port 80 due to the way session IDs are handled between it and the LMS.
-  One last thing: [example script](iptables_config.sh) for iptables-based routing is available.
-
-* Share Apros root folder with the VM by adding the following line to the `MOUNT_DIRS` hash in Vagrantfile:
+If you are using the recommended Vagrantfile (from the Solutions devstack instructions), it will already be setup to work with Apros, so you can skip this section. Specifically, it should share the "mcka_apros" folder into the VM at `/edx/app/apros/mcka_apros`:
 
     ```ruby
     MOUNT_DIRS = {
@@ -76,21 +61,21 @@ replace `:repo => "mcka_apros"` with `:repo => "full path to Apros source code"`
         ...
     }
     ```
-    *Note:* `:local => ...` part is important - we want Apros source code in `mcka_apros` directory under apros user's
-    home directory - provisioning script makes an assumption that it can find Apros source code there.
     
-* At the bottom of the file,  just after `config.vm.provision "shell", inline: $script, args: rel` add the following line
+    and it should have an "apros" provisioner defined:
 
     ```ruby
     config.vm.provision "apros", type: "shell", path: "<path_to_mcka_apros_directory>/docs/provision_script.sh"
     ```
-    `path_to_mcka_apros_directory` might be absolute or relative. If you've checked out mcka_apros into the same 
-    directory as Vagrantfile, it should be `mcka_apros/docs/provision_script.sh`.
+    )
 
-* Reload vagrant config with `vagrant reload`, log in into vagrant box using `vagrant ssh`. If the vagrant instance was
- not running, use `vagrant up` instead of `vagrant reload`.
- 
-* Run apros provision script with `vagrant provision --provision-with apros`
+If you had to modify the Vagrantfile, reload your vagrant config with `vagrant reload`.
+
+### Provision Apros
+
+Uncomment the `config.vm.provision "apros" ...` line from the end of the `Vagrantfile`.
+
+Then run the apros provision script on your host with `vagrant provision --provision-with apros`
 
 The script will do the following:
 
@@ -112,27 +97,6 @@ The McKinsey Academy application hosts it's `settings.py` file within the mcka_a
 within the same-named `mcka_apros` repository root folder). Alongside this file, create a new file 
 named `local_settings.py`.
 
-#### Set up the database
-
-**If you'd like to use Sqlite instead of MySQL, add the following lines**:
-
-    import os
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-
-_Sqlite is sometimes easier to operate with than mySql, but this is purely a choice for the developer. It may be wise to
-stick with MySql if you want to remain as close to the production environment as desired._
-
-**If you want to use MySQL, you will need to create a MySQL database with users and permissions according to the 
-`settings.py` file, or ones of your own creation in `local_settings.py`.** The default databases are created by the 
-provisioning script, so if you haven't done any modifications it is safe to skip this step.
-
 #### Configure the name to use for the LMS instance, like this:
 
 Put the following into `mcka_apros/mcka_apros/local_settings.py`
@@ -142,30 +106,30 @@ Put the following into `mcka_apros/mcka_apros/local_settings.py`
     LMS_SUB_DOMAIN='apros'
     EDX_API_KEY = 'edx_api_key'
     SESSION_COOKIE_SECURE = False
+    ALLOWED_HOSTS = ['apros.mcka.local']
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+    SESSION_TIMEOUT_SECONDS = 300000
 
-`API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
-`LMS_BASE_DOMAIN` This is the base domain users will fetch LMS assets from.
-`LMS_SUB_DOMAIN` is the subdomain for the LMS system that users will fetch assets from-- note that it's the same as apros because we use NginX's reverse proxying to do a bit of magic later in the configuration.
-`EDX_API_KEY` is the api key used for accessing the LMS API.
-`SESSION_COOKIE_SECURE` to `False` allows cookies to work with HTTP setup.
+Details: 
+* `API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
+* `LMS_BASE_DOMAIN` This is the base domain users will fetch LMS assets from.
+* `LMS_SUB_DOMAIN` is the subdomain for the LMS system that users will fetch assets from-- note that it's the same as apros because we use NginX's reverse proxying to do a bit of magic later in the configuration.
+* `EDX_API_KEY` is the api key used for accessing the LMS API.
+* `SESSION_COOKIE_SECURE` to `False` allows cookies to work with HTTP setup.
 
-##### Configure the `EDX_API_KEY` in `lms.auth.json` file, like this:
+##### Configure the `EDX_API_KEY` in `lms.auth.json`
 
-    EDX_API_KEY = 'edx_api_key'
+Edit `/edx/app/edxapp/lms.auth.json` and change 
 
-`EDX_API_KEY` in `lms.auth.json` and `local_settings.py` should match for apros to be able to communicate with the LMS API.
+    "EDX_API_KEY": "PUT_YOUR_API_KEY_HERE",
 
-## Step 3 - Set up the reverse proxy server
+to
 
-For security purposes, browsers have very rigid rules on how they'll handle sharing of content between domains and ports. 
-In order to make sure that Apros is able to load remote resources from the LMS (such as assets and the content of XBlocks),
-you will need to set up a reverse proxy server.
+    "EDX_API_KEY": "edx_api_key",
 
-Provisioning script installs and configures reverse proxy using [example config][example-nginx-config]. 
-**Note these rules aren't *precisely* like production.** 
-If you need to precompile assets for pipelining, see [Appendix C][appendix-c].
-    
-## Step 4 - Start the LMS and forum services
+Explanation: `EDX_API_KEY` in `lms.auth.json` and `local_settings.py` must match for apros to be able to communicate with the LMS API.
+ 
+## Start the LMS and forum services
 
 These services need to be running for Apros to work. Start them and leave them
 running before moving on to the next step.
@@ -174,22 +138,22 @@ running before moving on to the next step.
 
 As the `vagrant` user:
 
-    sudo su edxapp                   # switch to the edxapp user
-    cd /edx/app/edxapp/edx-platform  # where the lms lives; you should be here already
+    sudo su edxapp                   # switch to the edxapp user (this will also cd to /edx/app/edxapp/edx-platform)
 
-    # Run the migrations. We can't use paver update_db here as solutions and upstream have conflicting migrations
+    # Optional: Run the migrations. This is usually not necessary since the Solutions Devstack
+    # Setup Guide already told you to run these migrations.
     ./manage.py lms migrate --settings=devstack
     ./manage.py cms migrate --settings=devstack
 
     # Start the LMS
-    paver devstack lms
+    # Omit --fast if you have updated edx-platform since the last time you ran it without --fast, to rebuild static assets
+    paver devstack lms --fast
 
 ### To start the forum:
 
 As the `vagrant` user:
 
-    sudo su forum                          # switch to the forum user
-    cd /edx/app/forum/cs_comments_service  # where the forum lives; you should be here already
+    sudo su forum                          # switch to the forum user (this will also cd to /edx/app/forum/cs_comments_service)
     bundle install                         # install ruby dependencies
     ruby app.rb -p 18080                   # start the forum
 
@@ -197,10 +161,10 @@ As the `vagrant` user:
 
 #### Set up the database and seed data
 
-To begin setting up Apros, **make sure that the LMS and forum/comment service are running**. Then, run the following commands as the `apros` user:
+To begin setting up Apros, **make sure that the LMS and forum/comment service are running**. Then, as the `vagrant` user:
 
+    sudo su apros
     ./manage.py migrate
-    mkdir /edx/app/apros/mcka_apros/static/gen
     ./manage.py load_seed_data
 
 This will build the Apros database and load seed data into the LMS database, including [preconfigured users][load-seed-data].
@@ -224,6 +188,8 @@ At this point, everything should be in place, and you should be able to start Ap
 [load-seed-data]: https://github.com/mckinseyacademy/mcka_apros/blob/master/main/management/commands/load_seed_data.py#L36-L55
 
 ## After you're done
+
+You should now be able to access apros at http://apros.mcka.local/ .
 
 See [Initial configuration][initial-configuration] for details on configuring Apros programs, clients and students.
 
