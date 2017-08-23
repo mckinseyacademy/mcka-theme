@@ -4257,11 +4257,6 @@ def course_learner_dashboard_discover_create_edit(request, course_id, discovery_
             })
 
             return HttpResponseRedirect(url_list)
-        else:
-            return HttpResponse(
-                content=json.dumps({'errors': form.errors}),
-                content_type='application/json'
-            )
 
     elif request.method == 'DELETE' and discovery:
         discovery.delete()

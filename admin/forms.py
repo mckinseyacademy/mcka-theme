@@ -316,34 +316,6 @@ class DiscoveryContentCreateForm(forms.ModelForm):
             'link': forms.TextInput(attrs={'type': 'url'}),
         }
 
-    def clean_title(self):
-        """
-        Applies alphanumeric validation on title text
-        """
-        title = self.cleaned_data.get('title')
-
-        try:
-            alphanum_accented_validator(title)
-        except ValidationError as e:
-            e.message = _('Title: {}'.format(e.message))
-            raise
-
-        return title
-
-    def clean_author(self):
-        """
-        Applies alphanumeric validation on author name
-        """
-        author = self.cleaned_data.get('author')
-
-        try:
-            alphanum_accented_validator(author)
-        except ValidationError as e:
-            e.message = _('Author: {}'.format(e.message))
-            raise
-
-        return author
-
 
 class LearnerDashboardBrandingForm(forms.ModelForm):
 

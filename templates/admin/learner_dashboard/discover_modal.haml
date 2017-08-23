@@ -34,31 +34,3 @@
   %input#formSubmit.button.radius.small{type: "submit", value: "Save", disabled: "True"}
 
   %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
-
-
-%script
-  $(document).ready(function(){
-    /* submit form via Ajax so feedback could be displayed on modal window */
-    $('.modal_form').on('submit', function(e){
-      e.preventDefault();
-
-      $.ajax({
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        method: $(this).attr('method') || 'GET',
-        success: function(data) {
-          if(data.redirect){
-            window.location = data.redirect;
-          }else if(data.errors){
-            var errors = data.errors;
-            var errHtml = '';
-            for(var error in errors){
-              errHtml +=  '<li>' + errors[error] + '</li>';
-            }
-            $('.error').html(errHtml);
-          }
-        },
-      });
-
-    });
-  });
