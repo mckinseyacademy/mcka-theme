@@ -116,6 +116,93 @@ ul.faculty {
   }
 }
 
+@media #{$small-only} {
+  #privacy-page {
+    #cookieTable {
+      margin-top: 20px;
+      thead {
+        display: none;
+      }
+      td {
+        font-size: 12px;
+        position: relative;
+        display: block;
+        padding: 12px 10px 12px 130px;
+
+        &:before {
+          position: absolute;
+          left: 12px;
+          top: 12px;
+          font-size: 13px;
+          font-weight: 600;
+        }
+        &:nth-child(1) {
+          &:before {
+            content: "Cookie";
+          }
+        }
+        &:nth-child(2) {
+          &:before {
+            content: "Cookie Purpose";
+          }
+        }
+        &:nth-child(3) {
+          &:before {
+            content: "Nature of the \A Cookies";
+            white-space: pre;
+          }
+        }
+        &:nth-child(4) {
+          &:before {
+            content: "Cookie Type";
+          }
+        }
+        &:nth-child(5) {
+          &:before {
+            content: "Approval Method";
+          }
+        }
+      }
+    }
+    #retention {
+      margin-top: 10px;
+      thead {
+        display: none;
+      }
+      td {
+        position: relative;
+        font-size: 12px;
+        display: block;
+        padding: 12px 10px 12px 130px;
+
+        &:before {
+          position: absolute;
+          left: 12px;
+          top: 12px;
+          font-size: 13px;
+          font-weight: 600;
+        }
+        &:nth-child(1) {
+          &:before {
+            content: "System";
+          }
+        }
+        &:nth-child(2) {
+          &:before {
+            content: "Data Retention \APurpose";
+            white-space: pre;
+          }
+        }
+        &:nth-child(3) {
+          &:before {
+            content: "Retention Period";
+          }
+        }
+      }
+    }
+  }
+}
+
 @import './about';
 @import './programs';
 @import './contact';
