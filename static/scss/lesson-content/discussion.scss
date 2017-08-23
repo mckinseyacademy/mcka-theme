@@ -637,9 +637,8 @@ body > .tooltip {
 #course-lessons .discussion-module {
   padding: 20px;
   margin: 20px 0;
-  @media only screen and
-  (max-width: 767px){
-    padding: 10px 15px 0 15px;
+  @include mobile {
+    padding: 15px;
   }
 }
 
@@ -697,8 +696,7 @@ body > .tooltip {
   display: block;
 }
 
-@media only screen and
-(max-width: 767px){
+@include mobile {
   .discussion-module{
     border-radius: 4px !important;
     .discussion-module-header{
@@ -709,6 +707,177 @@ body > .tooltip {
         margin-bottom: 15px !important;
         font-weight: 600;
         @include font-spec(15, 600);
+      }
+    }
+    .forum-nav-bar{
+      border-bottom: 1px solid $mckinsey-academy-light-gray;
+      border-top: 1px solid $mckinsey-academy-light-gray;
+      .all-posts-btn{
+        margin-bottom: 0;
+        font-weight: 600 !important;
+        color: $mckinsey-light-blue !important;
+        width: 100%;
+        .fa{
+          &:before{
+            content: "\f053";
+          }
+        }
+      }
+    }
+    .forum-content{
+      padding: 0 10px;
+      .thread-main-wrapper{
+        border: 0;
+        box-shadow: none !important;
+        .discussion-post{
+          position: relative;
+          .post-header-content{
+            max-width: none;
+            width: calc(100% - 30px);
+            .post-title{
+              @include font-spec(15);
+              font-weight: 600 !important;
+              line-height: normal;
+              color: $mckinsey-dark-blue !important;
+            }
+            .posted-details{
+              font-size: 12px;
+              .username{
+                color: $mckinsey-light-blue !important;
+                font-size: 12px;
+              }
+            }
+          }
+          .post-body{
+            width: calc(100% - 30px);
+            p{
+              font-size: 12px;
+              color: $mckinsey-dark-blue;
+            }
+          }
+          .group-visibility-label{
+            margin-top: 10px !important;
+            padding-bottom: 15px;
+            border-bottom: 1px solid $mckinsey-academy-light-gray;
+          }
+          .post-header-actions{
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+        }
+      }
+      .response-btn-count-wrapper{
+        display:  none !important;
+        visibility: hidden !important;
+      }
+      .responses{
+        padding: 0 !important;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        > li{
+          background-color: transparent !important;
+          border: 0 !important;
+          border-left: 3px solid $mckinsey-academy-light-gray !important;
+          box-shadow: none !important;
+          margin-top: 2px !important;
+          .discussion-response{
+            min-height: 0 !important;
+            background-color: transparent !important;
+            padding: 10px 0 10px 15px !important;
+            .response-body{
+              p{
+                font-size: 12px;
+              }
+            }
+          }
+          &:first-child{
+            .discussion-response{
+              padding: 0 0 10px 15px !important;
+            }
+          }
+        }
+        .comments{
+          background-color: transparent !important;
+          box-shadow: none !important;
+          > li{
+            position: relative;
+            border-left: 16px solid $mckinsey-academy-light-gray !important;
+            padding: 10px 0 0 10px !important;
+            border-top: 0 !important;
+            &:before{
+              content: "\f149";
+              position: absolute;
+              font-family: 'FontAwesome';
+              left: -13px;
+              top: 50%;
+              transform: rotate(180deg) translateY(-50%);
+              line-height: 0;
+              color: $pure-white;
+            }
+            &:last-child{
+              border-left: 0 !important;
+              border-bottom: 1px solid $mckinsey-academy-light-gray !important;
+              &:before{
+                display: none;
+                visibility: hidden;
+              }
+            }
+            &.new-comment{
+              padding: 0 10px !important;
+              form{
+                padding: 0 !important;
+                textarea{
+                  margin-left: 10px !important;
+                  font-size: 13px;
+                  border: 0;
+                  box-shadow: none;
+                  resize: none;
+                }
+              }
+            }
+            > .discussion-comment{
+              padding-bottom: 10px !important;
+              border-bottom: 1px solid $mckinsey-academy-light-gray !important;
+            }
+          }
+          .comment-actions-list{
+            right: 0 !important;
+          }
+          .response-body{
+            font-size: 12px;
+            p{
+              font-size: 12px;
+            }
+          }
+          .posted-details{
+            display: none;
+          }
+        }
+        .response-header-content{
+          .username{
+            font-size: 13px;
+            color: $mckinsey-light-blue;
+            font-weight: 600;
+          }
+          .posted-details{
+            display: none;
+          }
+        }
+      }
+      .response-pagination{
+        display: none !important;
+      }
+      .discussion-reply-new{
+        h4{
+          font-size: 15px;
+          color: $mckinsey-dark-blue;
+          font-weight: 600;
+        }
+      }
+      button[class*="submit"]{
+        background-color: $mckinsey-light-blue !important;
       }
     }
     .add_post_btn_container{
@@ -799,7 +968,7 @@ body > .tooltip {
     }
     .discussion-show{
       width: 100%;
-      margin-bottom: 20px !important;
+      margin-bottom: 10px !important;
       &.shown{
         display: none;
       }
@@ -817,28 +986,24 @@ body > .tooltip {
       font-weight: 600 !important;
     }
     .new-post-article{
-      .forum-new-post-form{
+      .forum-new-post-form {
         padding: 15px 10px;
         .thread-title,
         .add-post-cancel,
-        .field-help{
+        .field-help {
           display: none !important;
           visibility: hidden;
         }
-        .field-label-text{
+        .field-label-text {
           margin-bottom: 10px !important;
           display: block;
         }
-        .field-input{
+        .field-input {
           width: 100% !important;
         }
-        .post-options{
+        .post-options {
           margin-bottom: 0 !important;
         }
-      }
-      .wmd-button-row{
-        display: none !important;
-        visibility: hidden;
       }
     }
     fieldset.field-input{
@@ -876,6 +1041,15 @@ body > .tooltip {
           color: $pure-white !important;
         }
       }
+    }
+    .wmd-button-row{
+      display: none !important;
+      visibility: hidden !important;
+    }
+    .inline-thread{
+      border: 0 !important;
+      margin-left: -15px;
+      margin-right: -15px;
     }
   }
 }

@@ -6,3 +6,7 @@ $program-bar-height: 48px;
 $program-bar-height-mobile: 96px;
 $program-menu-size: 20px;
 $program-bar-topbottom-margin: ($program-bar-height - $program-menu-size)/2;
+
+// Breakpoints
+
+$mobile: 'only screen and (max-width: 767px)';
