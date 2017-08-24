@@ -638,7 +638,7 @@ body > .tooltip {
   padding: 20px;
   margin: 20px 0;
   @include mobile {
-    padding: 15px;
+    padding: 15px 15px 0;
   }
 }
 
@@ -765,6 +765,16 @@ body > .tooltip {
             position: absolute;
             right: 0;
             top: 0;
+            .action-follow{
+              border-color: $mckinsey-light-blue !important;
+              .action-label{
+                color: $mckinsey-light-blue;
+              }
+              .action-icon{
+                border-color: $mckinsey-light-blue !important;
+                background-color: $mckinsey-light-blue;
+              }
+            }
           }
         }
       }
@@ -806,6 +816,7 @@ body > .tooltip {
             border-left: 16px solid $mckinsey-academy-light-gray !important;
             padding: 10px 0 0 10px !important;
             border-top: 0 !important;
+            margin-bottom: 1px;
             &:before{
               content: "\f149";
               position: absolute;
@@ -818,16 +829,16 @@ body > .tooltip {
             }
             &:last-child{
               border-left: 0 !important;
-              border-bottom: 1px solid $mckinsey-academy-light-gray !important;
               &:before{
                 display: none;
                 visibility: hidden;
               }
             }
             &.new-comment{
-              padding: 0 10px !important;
+              padding: 0 0 0 10px !important;
               form{
                 padding: 0 !important;
+                border-bottom: 1px solid $mckinsey-academy-light-gray !important;
                 textarea{
                   margin-left: 10px !important;
                   font-size: 13px;
@@ -874,10 +885,15 @@ body > .tooltip {
           font-size: 15px;
           color: $mckinsey-dark-blue;
           font-weight: 600;
+          margin-top: 15px;
         }
       }
       button[class*="submit"]{
         background-color: $mckinsey-light-blue !important;
+        border-radius: 100px !important;
+        padding: 0 28px !important;
+        line-height: 35px !important;
+        font-weight: 600 !important;
       }
     }
     .add_post_btn_container{
@@ -968,7 +984,7 @@ body > .tooltip {
     }
     .discussion-show{
       width: 100%;
-      margin-bottom: 10px !important;
+      margin-bottom: 20px !important;
       &.shown{
         display: none;
       }
@@ -986,6 +1002,9 @@ body > .tooltip {
       font-weight: 600 !important;
     }
     .new-post-article{
+      border: 0;
+      margin-left: -16px;
+      margin-right: -16px;
       .forum-new-post-form {
         padding: 15px 10px;
         .thread-title,
@@ -1004,24 +1023,93 @@ body > .tooltip {
         .post-options {
           margin-bottom: 0 !important;
         }
+        .forum-new-post-form-wrapper{
+          > .post-field{
+            .field-label-text{
+              display: none !important;
+            }
+          }
+          .post-field{
+            margin-bottom: 20px;
+            .post-type-label{
+              .fa{
+                display: none;
+                visibility: hidden;
+              }
+            }
+          }
+          ~ .post-field{
+            .field-label{
+              position: relative;
+              .field-label-text{
+                position: absolute;
+                top: 13px;
+                margin: 0;
+                left: 2px;
+                font-weight: normal !important;
+                color: $mckinsey-medium-gray;
+              }
+              input[type="text"]{
+                background-color: transparent;
+                box-shadow: none;
+                border-radius: 0;
+                border-left: 0;
+                border-right: 0;
+                padding-left: 38px;
+                font-size: 12px;
+                color: $mckinsey-dark-blue;
+              }
+            }
+          }
+        }
+        textarea, .field-label-text-full{
+          font-size: 12px;
+          color: $mckinsey-dark-blue;
+        }
+        button{
+          background-color: $mckinsey-light-blue !important;
+          padding: 0 28px !important;
+          font-weight: 600 !important;
+          border-radius: 100px !important;
+        }
+        .post-option{
+          .fa{
+            color: $mckinsey-light-blue;
+          }
+        }
       }
     }
     fieldset.field-input{
       width: 100% !important;
+      text-align: center;
       .post-type-label{
-        float: left;
+        display: inline-block;
         padding: 0 15px;
         width: 50%;
+        max-width: 125px;
+        line-height: 24px;
+        height: 25px;
+        font-weight: normal;
+        font-size: 12px;
+        vertical-align: top;
+        float: none !important;
+        color: $mckinsey-light-blue;
         &[for*="question"]{
-          border-radius: 3px 0 0 3px;
+          border-radius: 4px 0 0 4px;
           &[for*="discussion"]{
-            border-radius: 0 3px 3px 0;
+            border-radius: 0 4px 4px 0;
             border-left: 0;
           }
         }
         &:focus, &:active{
           outline: 0;
           box-shadow: none;
+        }
+      }
+      .post-type-label{
+        &:last-child{
+          border-radius: 0 4px 4px 0 !important;
+          margin-left: -4px !important;
         }
       }
     }
@@ -1031,16 +1119,8 @@ body > .tooltip {
     .wmd-preview-container{
       display: none !important;
     }
-    button.submit{
+    button.submit {
       margin-top: 15px !important;
-    }
-    .post-type-input{
-      &:checked{
-        &+.post-type-label{
-          background-color: $primary-color !important;
-          color: $pure-white !important;
-        }
-      }
     }
     .wmd-button-row{
       display: none !important;
@@ -1050,6 +1130,16 @@ body > .tooltip {
       border: 0 !important;
       margin-left: -15px;
       margin-right: -15px;
+    }
+    .post-type-input{
+      &:checked{
+        &+.post-type-label{
+          background-color: $mckinsey-light-blue !important;
+          color: $pure-white !important;
+          box-shadow: none !important;
+        }
+      }
+
     }
   }
 }
