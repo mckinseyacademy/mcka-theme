@@ -1002,9 +1002,9 @@ body > .tooltip {
       font-weight: 600 !important;
     }
     .new-post-article{
-      border: 0;
-      margin-left: -16px;
-      margin-right: -16px;
+      border: 0 !important;
+      margin-left: -10px;
+      margin-right: -10px;
       .forum-new-post-form {
         padding: 15px 10px;
         .thread-title,
@@ -1046,8 +1046,9 @@ body > .tooltip {
                 top: 13px;
                 margin: 0;
                 left: 2px;
-                font-weight: normal !important;
-                color: $mckinsey-medium-gray;
+                font-weight: 600 !important;
+                font-size: 12px;
+                color: $mckinsey-dark-blue;
               }
               input[type="text"]{
                 background-color: transparent;
@@ -1076,6 +1077,11 @@ body > .tooltip {
           .fa{
             color: $mckinsey-light-blue;
           }
+        }
+        .post-topic{
+          padding: 0 15px 0 5px;
+          font-size: 12px;
+          color: $mckinsey-dark-blue;
         }
       }
     }
@@ -1346,7 +1352,7 @@ body > .tooltip {
         .discussion-article{
           padding: 15px 0 !important;
           .discussion-post{
-            padding: 10px !important;
+            padding: 10px 5px !important;
           }
           .discussion-reply-new{
             padding: 0 !important;
