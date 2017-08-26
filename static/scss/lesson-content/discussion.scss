@@ -1007,6 +1007,7 @@ body > .tooltip {
       margin-right: -10px;
       .forum-new-post-form {
         padding: 15px 10px;
+        min-width: auto !important;
         .thread-title,
         .add-post-cancel,
         .field-help {
@@ -1163,6 +1164,7 @@ body > .tooltip {
     .page-header{
       .page-header-main{
         margin-bottom: 10px;
+        max-width: none !important;
         .all-topics{
           background-color: transparent !important;
           color: $mckinsey-dark-blue;
