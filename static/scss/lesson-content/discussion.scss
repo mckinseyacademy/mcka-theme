@@ -725,7 +725,7 @@ body > .tooltip {
       }
     }
     .forum-content{
-      padding: 0 10px;
+      padding: 0;
       .thread-main-wrapper{
         border: 0;
         box-shadow: none !important;
@@ -1131,7 +1131,6 @@ body > .tooltip {
           border-bottom: 0;
           background-color: $pure-white;
           padding: 10px 10px 0;
-          box-shadow: inset 0px -1px 3px $mckinsey-medium-gray;
           form{
             padding: 0;
             border-bottom: 0;
@@ -1151,7 +1150,6 @@ body > .tooltip {
             }
           }
           .forum-nav-browse-menu{
-            max-height: 300px;
             margin-top: 5px;
             li{
               .forum-nav-browse-title{
@@ -1271,7 +1269,14 @@ body > .tooltip {
               background-color: $mckinsey-light-blue;
             }
           }
+          &.view-discussion-home{
+            display: none;
+          }
         }
+      }
+      .discussion-column{
+        border: 0;
+        min-height: 0;
       }
     }
     .action-button{
