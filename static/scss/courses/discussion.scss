@@ -93,7 +93,7 @@ header .course-tabs li {
     display: inline-block;
     vertical-align: text-bottom;
 
-    @media only screen and (max-width: 767px){
+    @include mobile{
       float: none;
       text-align: left;
       display: block;
@@ -102,11 +102,11 @@ header .course-tabs li {
     .form-actions {
       display: inline-block;
       text-align: center;
-      @media only screen and (max-width: 767px){
+      @include mobile{
         display: block;
       }
       button{
-        @media only screen and (max-width: 767px){
+        @include mobile{
           width: 100%;
           float: none;
           max-width: 320px;
@@ -131,7 +131,7 @@ header .course-tabs li {
     .forum-search {
       margin-left: 20px;
       display: inline-block;
-      @media only screen and (max-width: 767px){
+      @include mobile{
         display: block;
         margin-left: 0;
         max-width: 320px;
@@ -141,7 +141,7 @@ header .course-tabs li {
       .field-input {
         display: inline-block;
         height: auto !important;
-        @media only screen and (max-width: 767px){
+        @include mobile{
           width: calc(100% - 82px);
         }
       }
@@ -525,14 +525,14 @@ header .course-tabs li {
     overflow: auto;
     height: 100% !important;
 
-    @media only screen and (max-width: 767px){
+    @include mobile{
       margin-bottom: 20px;
       height: auto !important;
       max-height: 300px;
     }
     .forum-nav-browse-menu{
       overflow: auto;
-      @media only screen and (max-width: 767px){
+      @include mobile{
         height: auto !important;
       }
     }

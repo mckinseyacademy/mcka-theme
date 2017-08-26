@@ -697,7 +697,7 @@ body > .tooltip {
 }
 
 @include mobile {
-  .discussion-module{
+  .discussion-module, .discussion-body{
     border-radius: 4px !important;
     .discussion-module-header{
       float: none !important;
@@ -725,7 +725,7 @@ body > .tooltip {
       }
     }
     .forum-content{
-      padding: 0 10px;
+      padding: 0;
       .thread-main-wrapper{
         border: 0;
         box-shadow: none !important;
@@ -1140,6 +1140,237 @@ body > .tooltip {
         }
       }
 
+    }
+  }
+  #discussion-container{
+    .search-btn,
+    .new-post-btn,
+    .control-button,
+    .btn-brand{
+      border-radius: 100px !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      padding: 0 28px !important;
+      background-color: $mckinsey-light-blue !important;
+      color: $pure-white !important;
+    }
+    .page-header{
+      .page-header-main{
+        margin-bottom: 10px;
+        .all-topics{
+          background-color: transparent !important;
+          color: $mckinsey-dark-blue;
+          font-weight: 600 !important;
+          span{
+            color: $mckinsey-light-blue !important;
+          }
+          @include font-spec(15);
+        }
+      }
+      .page-header-secondary{
+        text-align: center;
+        margin-bottom: 20px;
+        .form-actions{
+          display: inline-block !important;
+          width: 34%;
+          max-width: 125px;
+          button{
+            border-radius: 100px !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            padding: 0 !important;
+            height: 35px !important;
+            line-height: 35px;
+            margin-bottom: 0;
+            min-width: 95px;
+          }
+        }
+        .forum-search{
+          display: inline-block !important;
+          width: 64%;
+          vertical-align: top;
+          max-width: 320px;
+          input{
+            border-radius: 100px;
+            line-height: 34px;
+            box-shadow: none;
+            width: calc(100% - 50px) !important;
+            padding: 0 20px 0 15px;
+            box-sizing: border-box;
+            font-size: 12px;
+            margin-bottom: 0;
+          }
+          .search-btn{
+            height: 36px;
+            border-radius: 0 100px 100px 0 !important;
+            margin-left: -25px;
+            border: 0;
+            padding: 0 !important;
+            vertical-align: top;
+            min-width: 70px;
+          }
+        }
+      }
+    }
+    .page-content{
+      .forum-nav{
+        border: 1px solid $mckinsey-academy-light-gray;
+        border-radius: 4px !important;
+        max-height: none !important;
+        .forum-nav-browse-menu-wrapper{
+          border-bottom: 0;
+          background-color: $pure-white;
+          padding: 10px 10px 0;
+          form{
+            padding: 0;
+            border-bottom: 0;
+            margin-left: -1px;
+            margin-right: -1px;
+            .forum-nav-browse-filter-input{
+              height: 35px !important;
+              border: 1px solid $mckinsey-academy-light-gray;
+              padding: 0 15px;
+              font-size: 12px !important;
+              border-radius: 4px !important;
+              ~.fa{
+                color: $mckinsey-bubble-gray;
+                font-size: 15px;
+                top: 16px;
+              }
+            }
+          }
+          .forum-nav-browse-menu{
+            margin-top: 5px;
+            li{
+              .forum-nav-browse-title{
+                font-size: 12px;
+                font-weight: 600;
+                color: $mckinsey-dark-blue;
+              }
+              &:last-child{
+                ul {
+                  li{
+                    &:last-child{
+                      span{
+                        border-bottom: 0;
+                      }
+                    }
+                  }
+                }
+              }
+              ul{
+                li{
+                  .forum-nav-browse-title{
+                    font-weight: normal;
+                  }
+                }
+              }
+              .fa{
+                color: $mckinsey-light-blue;
+              }
+            }
+          }
+        }
+        .forum-nav-refine-bar{
+          padding: 5px 10px;
+          background-color: $mckinsey-light-blue;
+          border-bottom: 0;
+          label{
+            select{
+              height: 25px;
+              @include font-spec(12);
+              padding: 0 10px;
+              &.forum-nav-sort-control{
+                padding-right: 15px;
+              }
+              &:focus{
+                outline: 0;
+              }
+              option{
+                padding: 10px;
+                &:hover{
+                  background-color: $mckinsey-light-blue;
+                  color: $pure-white;
+                }
+              }
+            }
+          }
+        }
+        .forum-nav-thread-list{
+          height: auto !important;
+          li{
+            background-color: $pure-white;
+            border: 0;
+            border-bottom: 1px solid $mckinsey-academy-light-gray;
+            &:focus{
+              outline: none;
+            }
+            .is-active{
+
+            }
+            .fa{
+              color: $mckinsey-bubble-gray;
+              &.fa-star{
+                color: $mckinsey-light-blue;
+              }
+            }
+            .forum-nav-thread-comments-count{
+              background-color: $mckinsey-bubble-gray;
+              color: $pure-white;
+              border-radius: 50%;
+              right: 5px;
+              padding: 0;
+              height: 19px;
+              line-height: 19px;
+              &:after{
+                border-width: 0 7px 7px 0;
+                border-color: transparent #a0a9b9 transparent transparent;
+                transform: skewX(130deg);
+                left: 1px;
+                right: auto;
+              }
+            }
+            .forum-nav-thread-title{
+              font-weight: 600;
+              font-size: 12px;
+              color: $mckinsey-dark-blue;
+            }
+            .post-label{
+              border: 0 !important;
+              background-color: transparent !important;
+            }
+          }
+        }
+      }
+      #main{
+        .discussion-article{
+          padding: 15px 0 !important;
+          .discussion-post{
+            padding: 10px !important;
+          }
+          .discussion-reply-new{
+            padding: 0 !important;
+          }
+          .responses{
+            margin-bottom: 0 !important;
+          }
+          .action-follow{
+            .action-icon{
+              background-color: $mckinsey-light-blue;
+            }
+          }
+          &.view-discussion-home{
+            display: none;
+          }
+        }
+      }
+      .discussion-column{
+        border: 0;
+        min-height: 0;
+      }
+    }
+    .action-button{
+      background-color: transparent !important;
     }
   }
 }
