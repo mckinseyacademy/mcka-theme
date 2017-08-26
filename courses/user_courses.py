@@ -1,3 +1,4 @@
+from __future__ import division
 import functools
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
@@ -241,7 +242,7 @@ def _get_course_progress_data(course, user_id):
 def load_course_progress(course, user_id):
     actual_completions_len, component_ids_len = _get_course_progress_data(course, user_id)
     try:
-        course.user_progress = round_to_int(float(100 * actual_completions_len)/component_ids_len)
+        course.user_progress = round_to_int(100 * actual_completions_len / component_ids_len)
     except ZeroDivisionError:
         course.user_progress = 0
 
