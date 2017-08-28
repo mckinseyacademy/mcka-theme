@@ -417,3 +417,16 @@ if want to avoid setting up RabbitMQ and running celery workers, you can directl
 
     CELERY_ALWAYS_EAGER = True
 
+## Appendix G: Running Tests
+First install requirements for running tests:
+
+    pip install -r test-requirements.txt
+
+To run tests enter this command:
+
+    python manage.py test <test module to run>
+
+To find coverage of tests, enter these commands:
+
+    coverage run --source='.' manage.py test <test module to run>
+    coverage report
