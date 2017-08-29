@@ -37,6 +37,15 @@
   .forum-nav-thread-wrapper-0 {
     width: 30px;
   }
+  .inline-discussion{
+    .new-post-article{
+      .forum-new-post-form{
+        button.submit{
+          margin-top: 15px !important;
+        }
+      }
+    }
+  }
 }
 
 #course-lessons .discussion-module {
@@ -709,6 +718,15 @@ body > .tooltip {
         @include font-spec(15, 600);
       }
     }
+    .inline-discussion{
+      .new-post-article{
+        .forum-new-post-form{
+          button.submit{
+            margin-top: 15px !important;
+          }
+        }
+      }
+    }
     .forum-nav-bar{
       border-bottom: 1px solid $mckinsey-academy-light-gray;
       border-top: 1px solid $mckinsey-academy-light-gray;
@@ -1044,7 +1062,7 @@ body > .tooltip {
               position: relative;
               .field-label-text{
                 position: absolute;
-                top: 13px;
+                top: 15px;
                 margin: 0;
                 left: 2px;
                 font-weight: 600 !important;
@@ -1125,9 +1143,6 @@ body > .tooltip {
     }
     .wmd-preview-container{
       display: none !important;
-    }
-    button.submit {
-      margin-top: 15px !important;
     }
     .wmd-button-row{
       display: none !important;
@@ -1378,7 +1393,7 @@ body > .tooltip {
       }
     }
     .action-button{
-      background-color: transparent !important;
+      background-color: $pure-white !important;
     }
   }
 }
