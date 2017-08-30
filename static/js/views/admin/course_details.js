@@ -107,11 +107,13 @@
         collection: this.collection.fullCollection,
         onRowClick: function()
         {
-          // for select-all bind export stats functionality to a chunked downloader
+          // for select-all bind export csv functionalities to a backend downloader
           if($('.bbGrid-grid-head-holder input[type=checkbox]:first').is(':checked')){
-            $('a.bulkExportStats').addClass('chunked-download');
+            $('a.bulkExportStats').addClass('allselected');
+            $('a.bulkExportNotifData').addClass('allselected');
           }else{
-            $('a.bulkExportStats').removeClass('chunked-download');
+            $('a.bulkExportStats').removeClass('allselected');
+            $('a.bulkExportNotifData').removeClass('allselected');
           }
 
           if (this.selectedRows.length > 0)

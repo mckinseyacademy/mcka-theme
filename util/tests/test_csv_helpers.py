@@ -6,8 +6,9 @@ import unittest
 import csv
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.http import HttpResponse
 
-from util.csv_helpers import CSVWriter
+from util.csv_helpers import CSVWriter, csv_file_response
 
 
 class TestCSVWriter(unittest.TestCase):
@@ -53,3 +54,32 @@ class TestCSVWriter(unittest.TestCase):
         data_values = [t.values() for t in test_data]
         for row in reader:
             self.assertTrue(row.values() in data_values)
+
+
+class TestCSVHttpResponse(unittest.TestCase):
+    def test_csv_file_response(self):
+        """
+        Tests csv file response
+        """
+        test_data = [
+            {'name': 'test1', 'tech': 'Django'},
+            {'name': 'test2', 'tech': 'Python'}
+        ]
+
+        fields = OrderedDict([('Name', ('name', '')), ('Technology', ('tech', ''))])
+
+        response = csv_file_response(
+            file_name='test_file', fields=fields,
+            data=test_data, header=False
+        )
+
+        reader = csv.DictReader(response)
+
+        # test it's an Http response
+        self.assertIsInstance(response, HttpResponse)
+
+        # test rows values are written and identical
+        test_values = [d for t in test_data for d in t.values()]
+        response_values = [d for row in reader for v in row.itervalues() for d in v]
+
+        self.assertItemsEqual(test_values, response_values)

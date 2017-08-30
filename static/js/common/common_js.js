@@ -440,8 +440,11 @@ function convertArrayOfObjectsToCSV(args) {
   keys = Object.keys(data[0]);
 
   result = '';
-  result += keys.join(columnDelimiter);
-  result += lineDelimiter;
+  
+  if(args.header) {
+      result += keys.join(columnDelimiter);
+      result += lineDelimiter;
+  }
 
   data.forEach(function(item) {
       ctr = 0;
@@ -461,7 +464,8 @@ function convertArrayOfObjectsToCSV(args) {
 function downloadCSV(args) {  
   var data, filename, link;
   var csv = convertArrayOfObjectsToCSV({
-      data: args.data
+      data: args.data,
+      header: 'header' in args? args.header: true // by-default header row is always written
   });
   if (csv == null) return;
   filename = args.filename || 'export.csv';

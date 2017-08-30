@@ -386,12 +386,12 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           saveButton.attr('data-download-url', dataurl);
       }
       /**
-       * Initiates a chunked downloader and its periodical status check
+       * Initiates a backend background task and its periodical status check
       */
-      function chunkedCSVDownloader(){
+      function backendCSVDownloader(params){
           var courseId = $("#courseDetailsDataWrapper").attr("data-id");
           var url = ApiUrls.courses_list + '/' + courseId;
-          var dictionaryToSend = {type:'participants_csv_data',course_id: courseId};
+          var dictionaryToSend = {type:params.type, course_id: courseId};
           
           // if company page; pass in company id
           var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
@@ -400,7 +400,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             dictionaryToSend['company_id'] = companyId;
           }
         
-          updateModalAttrs('Download Participants', 'Progress : 0%');
+          updateModalAttrs(params.modalTitle || 'Download', 'Progress : 0%');
           updateSaveButtonAttrs('Download CSV File', true, null);
 
           var options = {
@@ -415,7 +415,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           $.ajax(options)
           .done(function(data) {
             if (data['status'] == 'ok'){
-              updateSaveButtonAttrs(null, null, '/admin/courses/' + courseId + '/download_participants_stats/' + data['task_id']);
+              updateSaveButtonAttrs(null, null, params.downloadLink + data['task_id'] + '/?' + params.linkParams);
               statusUpdaterIntervalId = _this.courses_details_view.csvDownloadStatus(
                 url, '#courseDetailsMainModal .courseModalStatus',
                 data['task_id'], _this, courseId
@@ -429,13 +429,55 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         
           $('#courseDetailsMainModal').foundation('reveal', 'open');
       }
+      $('#courseBulkActionsMainContainer').on('click','.bulkExportNotifData',function(){
+        if ($(this).hasClass('disabled'))
+          return;
 
+        var courseId = $("#courseDetailsDataWrapper").attr("data-id");
+        var filename = '' + $('#courseDetailsDataWrapper').attr('data-name')
+                .replace(/ /g,'_') + '_push_notification_data.csv';
+
+        if($(this).hasClass('allselected')){
+            // transfer control to backend downloader in case of select-all
+            backendCSVDownloader({
+              type: 'push_notifications_data', modalTitle: 'Download Notifications CSV',
+              downloadLink: '/admin/download_task_generated_csv/',
+              linkParams: 'task_name=push_notifications_data&file_name=' + filename
+            });
+            return;
+        }
+
+        var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
+
+        var items = [];
+        for (selectedRowsIndex in selectedRowsIds) {
+          var id = selectedRowsIds[selectedRowsIndex];
+
+          var item = {
+            'attribute_type': 'named_user',
+            'attribute': id
+          };
+          items.push(item);
+        }
+
+
+        downloadCSV({data: items, filename: filename, header: false});
+
+      });
       
       $('#courseBulkActionsMainContainer').on('click','.bulkExportStats',function()
       {
-        if($(this).hasClass('chunked-download')){
-            // transfer control to chunked-downloader in case of select-all
-            chunkedCSVDownloader(this);
+        var courseId = $("#courseDetailsDataWrapper").attr("data-id");
+        var filename = '' + $('#courseDetailsDataWrapper').attr('data-name').replace(/ /g,'_') + '_users_stats.csv';
+
+        
+        if($(this).hasClass('allselected')){
+            // transfer control to backend downloader in case of select-all
+            backendCSVDownloader({
+              type: 'participants_csv_data', modalTitle: 'Download Participants',
+              downloadLink: '/admin/download_task_generated_csv/',
+              linkParams: 'task_name=participants_stats&file_name=' + filename
+            });
             return;
         }
 
@@ -529,8 +571,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         {
           delete items[j]['id'];
         }
-
-        var filename = '' + $('#courseDetailsDataWrapper').attr('data-name').replace(/ /g,'_') + '_users_stats.csv';
 
         downloadCSV({data: items, filename: filename});
 
