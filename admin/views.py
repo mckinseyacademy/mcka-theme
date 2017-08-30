@@ -4686,6 +4686,11 @@ class company_courses_api(APIView):
             for user in company_course['enrolled_users']:
                 if any(role.id == user for role in course_roles):
                     course['participants'] = course['participants'] - 1
+
+            #  Skip courses having no active participant
+            if not course['participants']:
+                continue
+
             start = parsedate(company_course['start'])
             course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
             if company_course['end'] is not None:
