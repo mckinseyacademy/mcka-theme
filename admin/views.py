@@ -1221,6 +1221,10 @@ class course_details_api(APIView):
             return Response({'status':'error', 'message': 'No such task!'})
 
         else:
+            # if course_id is not in params; use the one passed in url
+            if not data.get('course_id') and course_id:
+                data.update({'course_id': course_id})
+
             # run the related task in the background
             task_id = BulkTaskRunner(request=request, params=data, task_name=data.get('type')).execute_task()
 
