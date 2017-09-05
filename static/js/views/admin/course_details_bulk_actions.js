@@ -390,7 +390,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       */
       function backendCSVDownloader(params){
           var courseId = $("#courseDetailsDataWrapper").attr("data-id");
-          var url = ApiUrls.courses_list + '/' + courseId;
+          var url = ApiUrls.admin_bulk_task; 
           var dictionaryToSend = {type:params.type, course_id: courseId};
           
           // if company page; pass in company id
@@ -413,8 +413,8 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
         
           $.ajax(options)
-          .done(function(data) {
-            if (data['status'] == 'ok'){
+          .done(function(data, textStatus, xhr) {
+            if (xhr.status === 201){
               updateSaveButtonAttrs(null, null, params.downloadLink + data['task_id'] + '/?' + params.linkParams);
               statusUpdaterIntervalId = _this.courses_details_view.csvDownloadStatus(
                 url, '#courseDetailsMainModal .courseModalStatus',
@@ -565,11 +565,6 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             }
             break;
           }
-        }
-
-        for(var j=0; j < items.length; j++)
-        {
-          delete items[j]['id'];
         }
 
         downloadCSV({data: items, filename: filename});

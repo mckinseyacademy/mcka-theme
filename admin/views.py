@@ -1124,6 +1124,7 @@ def get_participants_stats_csv_data(task_id):
             participant[key] = '{}%'.format(assesment.get('percent'))
 
     fields = OrderedDict([
+        ("ID", ("id", '')),
         ("First name", ("first_name", '')),
         ("Last name", ("last_name", '')),
         ("Username", ("username", '')),
@@ -1190,6 +1191,62 @@ def download_task_generated_csv(request, task_id):
         file_name=file_name, fields=csv_data.get('fields'),
         data=csv_data.get('data'), header=csv_data.get('header')
     )
+
+
+class BulkTaskAPI(APIView):
+    """
+    Endpoint for interacting with background tasks
+    """
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request):
+        """
+        Returns status of a task
+        """
+        response = dict(total=0, progress=0, successful=0, completed=0, failed=0)
+        task_id = request.GET.get('task_id')
+        state, info = BulkTaskRunner.get_task_state(task_id=task_id)
+
+        if state == 'PROGRESS':
+            response.update({'progress': info.get('percentage')})
+        elif state == 'SUCCESS':
+            if isinstance(info, dict):
+                response.update({
+                    'total': info.get('total'),
+                    'successful': info.get('successful')
+                })
+
+            response.update({
+                'completed': 1, 'progress': '100'
+            })
+        elif state == 'FAILURE':
+            response.update({'failed': 1})
+
+        return Response({'values': response}, status=status.HTTP_200_OK)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request):
+        """
+        Creates new task based on task name
+
+        Returns:
+            task_id(integer): id of the created task
+        """
+        try:
+            data = json.loads(request.body)
+        except:
+            data = request.POST
+
+        # run the related task in the background
+        try:
+            task_id = BulkTaskRunner(request=request, params=data, task_name=data.get('type')).execute_task()
+        except Exception as e:
+            return Response({'errors': e.message}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'data': data, 'task_id': task_id}, status=status.HTTP_201_CREATED)
+
 
 class course_details_api(APIView):
     # ToDo: Remove company admin permissions 

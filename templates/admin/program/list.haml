@@ -1,8 +1,39 @@
 - extends "admin/list_layout.haml"
+
 - block principal_message
   %p= _("McKinsey Academy programs are a set of recommended courses, often tailored to specific clients")
+  %a.button.radius.small{"id": "program-association"}
+    = _("User Program Association")
 - block principal_list_message
   %p= _("Here are the programs that we already have in the system")
+
+  #courseDetailsMainModal.reveal-modal.medium{'data-reveal': None}
+    %h2.title.courseModalTitle
+      = _("Associate Users with Program")
+    %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
+    .progress.courseModalStatus
+    %hr
+    .courseModalDescription
+    .courseModalContent
+      %form{id: "association_form", action: "/admin/api/admin_bulk_task", method: "POST", enctype: "multipart/form-data"}
+        - csrf_token
+        %input{type: 'hidden', name: 'type', value: 'user_program_association'}
+        %label
+          =_("Program")
+        %select{name: 'program_id'}
+          - for principal in principals
+            %option{value: "#{principal.id}"}
+              = principal.display_name
+        %label
+          =_("Participants CSV")
+        %input{id: "participants_csv_file", type: 'file', name: 'participants_file'}
+    .courseModalControl
+      .button.submit.saveChanges
+        = _("Submit")
+
+    %a{'class': "close-reveal-modal fa fa-times-circle"}
+
+
 - block principal_list
   %ul
     - for principal in principals
@@ -17,3 +48,65 @@
           %span><
             = principal.name
           )
+
+- block js_snippets
+  :javascript
+    function resetModal(keepFeedback){
+      var form = $('form#association_form');
+      if(!keepFeedback)
+        $('.courseModalDescription').text("");
+      $('.progress').text('');
+      $('i.loadingIcon').addClass('hidden');
+      $('.submit').removeClass('disabled');
+      $('.submit').removeAttr('disabled');
+      form[0].reset();
+    }
+
+    $('#program-association').on('click', function(){
+      resetModal();
+
+      $('.submit').on('click', function(){
+        if($(this).hasClass('disabled'))
+          return;
+
+        if ($("#participants_csv_file")[0].files.length == 0){
+          $('.courseModalDescription').text("Please select a file first.");
+          return;
+        }
+
+        var form = $('form#association_form');
+        $(this).attr('disabled', 'disabled');
+        $(this).addClass('disabled');
+
+        $('i.loadingIcon').removeClass('hidden');
+        $('.progress').text('Progress: 0%');
+
+        var options = {
+          url     : form.attr('action'),
+          type    : 'POST',
+          contentType: false,
+          processData: false,
+          dataType: 'text',
+          cache: false,
+          success:function(data, textStatus, xhr) {
+            data = JSON.parse(data);
+            if (xhr.status === 201){
+              checkTaskStatus(data.task_id, $('.progress'), $('i.loadingIcon'), function(data){
+                var status = data.values.successful + ' of ' + data.values.total + ' Users have been successfully associated with the program.'
+                $('.courseModalDescription').text(status);
+                resetModal(true);
+              });
+            }
+          },
+          error: function(xhr){
+            data = $.parseJSON(xhr.responseText);
+            $('.courseModalDescription').text(data.errors);
+            resetModal(true);
+          }
+        }
+        form.ajaxSubmit(options);
+    });
+
+      $('#courseDetailsMainModal').foundation('reveal', 'open');
+    });
+

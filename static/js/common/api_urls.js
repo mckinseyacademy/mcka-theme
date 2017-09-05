@@ -30,5 +30,6 @@ var ApiUrls = {
   email_templates: '/admin/api/email-templates',
   email: '/admin/api/email',
   company: '/admin/api/companies/',
-  tags: '/admin/api/tags'
+  tags: '/admin/api/tags',
+  admin_bulk_task: '/admin/api/admin_bulk_task/'
 }

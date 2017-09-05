@@ -1,16 +1,14 @@
 """
 Celery tasks related to admin app
 """
-from django.core.cache import cache
-
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 
 from api_client import course_api
+from api_client import group_api
+from api_client.api_error import ApiError
 
 from .controller import CourseParticipantStats
-from .models import BatchOperationStatus
-
 
 logger = get_task_logger(__name__)
 
@@ -39,7 +37,6 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     course_participants_stats = CourseParticipantStats(
         course_id, base_url, CourseParticipantStats.participant_record_parser
     )
-    batch_status = BatchOperationStatus.objects.create(task_key=task_id)
 
     logger.info('Starting - {}'.format(task_log_msg))
 
@@ -51,22 +48,18 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         fetched += len(participants_stats.get('results'))
         percentage_fetched = (100.0 / (total or 1)) * fetched
 
+        course_participants_data_retrieval_task.update_state(
+            task_id=task_id, state='PROGRESS', meta={'percentage': int(percentage_fetched)})
+
         api_params['page'] += 1
 
-        if batch_status is not None:
-            batch_status.attempted = percentage_fetched  # attempted tracks percentage
-            batch_status.save()
-
-            logger.info(
-                'Progress {}% - {}'
-                .format(percentage_fetched, task_log_msg)
-            )
+        logger.info(
+            'Progress {}% - {}'
+            .format(percentage_fetched, task_log_msg)
+        )
 
         if not participants_stats.get('next'):
             break
-
-    batch_status.succeded = 1
-    batch_status.save()
 
     logger.info('Finished - {}'.format(task_log_msg))
 
@@ -92,8 +85,6 @@ def participants_notifications_data_task(course_id, company_id, task_id):
     participants_data = []
     fetched = 0
 
-    batch_status = BatchOperationStatus.objects.create(task_key=task_id)
-
     logger.info('Starting - {}'.format(task_log_msg))
 
     while True:
@@ -105,23 +96,49 @@ def participants_notifications_data_task(course_id, company_id, task_id):
         fetched += len(course_participants.get('results'))
         percentage_fetched = (100.0 / (total or 1)) * fetched
 
+        participants_notifications_data_task.update_state(
+            task_id=task_id, state='PROGRESS', meta={'percentage': int(percentage_fetched)})
+
         api_params['page'] += 1
 
-        if batch_status is not None:
-            batch_status.attempted = percentage_fetched  # attempted tracks percentage
-            batch_status.save()
-
-            logger.info(
-                'Progress {}% - {}'
-                .format(percentage_fetched, task_log_msg)
-            )
+        logger.info(
+            'Progress {}% - {}'
+            .format(percentage_fetched, task_log_msg)
+        )
 
         if not course_participants.get('next'):
             break
 
-    batch_status.succeded = 1
-    batch_status.save()
-
     logger.info('Finished - {}'.format(task_log_msg))
 
     return participants_data
+
+
+@task(name='admin.users_program_association_task')
+def users_program_association_task(program_id, user_ids, task_id):
+    """
+    Associate users with a program
+
+    Returns:
+        (dict): total and successfully added users
+    """
+    total = len(user_ids)
+    added = 0
+    failed = 0
+
+    for user_id in user_ids:
+        try:
+            group_api.add_user_to_group(user_id, program_id)
+            added += 1
+        except ApiError as e:
+            failed += 1
+        finally:
+            percentage = (100.0 / (total or 1)) * (added + failed)
+
+            # ToDo: Look into updating progress in batches to
+            # reduce DB hits for state updates
+            users_program_association_task.update_state(
+                task_id=task_id, state='PROGRESS', meta={'percentage': int(percentage)}
+            )
+
+    return {'successful': added, 'total': total}

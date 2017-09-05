@@ -1,5 +1,5 @@
 import datetime
-import controller
+import admin.controller as controller
 import tempfile
 import os
 import math
@@ -10,9 +10,9 @@ from django.test.client import Client, RequestFactory
 from django.core.urlresolvers import resolve
 
 from lib.util import DottableDict
-from .forms import ClientForm, ProgramForm, CreateAccessKeyForm, ShareAccessKeyForm, MultiEmailField
-from .models import Program
-from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
+from admin.forms import ClientForm, ProgramForm, CreateAccessKeyForm, ShareAccessKeyForm, MultiEmailField
+from admin.models import Program
+from admin.review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -572,15 +572,15 @@ class AdminControllerTests(TestCase):
         self.assertFalse("city" in user_info)
         self.assertFalse("country" in user_info)
 
-    def test__build_student_list_from_file(self):
+    def test_build_student_list_from_file(self):
         # build temp file to fake stream to student list
         user_objects = []
         c = RequestFactory()
-        test_file_path = os.path.join(BASE_DIR, 'admin/test_data/test_user_list.csv')
+        test_file_path = os.path.join(BASE_DIR, 'test_data/test_user_list.csv')
         with open(test_file_path) as test_file_content:
             request = c.post('/admin/clients/12345/upload_student_list', {'student_list': test_file_content})
 
-        user_objects = controller._build_student_list_from_file(request.FILES['student_list'])
+        user_objects = controller.build_student_list_from_file(request.FILES['student_list'])
         self.assertEqual(len(user_objects), 4)
 
         self.assertEqual(user_objects[0]["email"], "email1@testorg.org")

@@ -435,18 +435,16 @@
       var interval_id = setInterval(function(){
         var options = {
             url: url,
-            data: JSON.stringify({'type': 'status_check', 'task_id':task_id}),
-            processData: false,
-            type: "POST",
-            dataType: "json"
+            data: {'task_id':task_id},
+            type: "GET"
         };
         options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
         $.ajax(options)
-        .done(function(data) {
-          if (data['status'] == 'ok')
+        .done(function(data, textStatus, xhr) {
+          if (xhr.status === 200)
           {
-            $(status_element).text('Progress: '+ data['values'].selected + '%');
-            if (data['values'].successful == 1)
+            $(status_element).text('Progress: '+ data['values'].progress + '%');
+            if (data['values'].completed == 1)
             {
               $(status_element).parent().find('.loadingIcon').addClass('hidden');
               clearInterval(interval_id);

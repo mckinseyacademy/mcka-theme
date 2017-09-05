@@ -360,7 +360,7 @@ def _process_line_proposed(user_line):
     return user_info
 
 
-def _build_student_list_from_file(file_stream, parse_method=_process_line):
+def build_student_list_from_file(file_stream, parse_method=_process_line):
     # Don't need to read into a tmep file if small enough
     user_objects = []
     with tempfile.TemporaryFile() as temp_file:
@@ -536,7 +536,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
 @postpone
 def process_uploaded_student_list(file_stream, client_id, activation_link_head, reg_status=None):
     # 1) Build user list
-    user_list = _build_student_list_from_file(file_stream)
+    user_list = build_student_list_from_file(file_stream)
     if reg_status is not None:
         reg_status.attempted = len(user_list)
         reg_status.save()
@@ -553,7 +553,7 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head, 
 @postpone
 def process_mass_student_enroll_list(file_stream, client_id, program_id, course_id, request, reg_status=None):
     # 1) Build user list
-    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_proposed)
+    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_proposed)
     if reg_status is not None:
         reg_status.attempted = len(user_list)
         reg_status.save()
@@ -1530,7 +1530,7 @@ def enroll_participants_threaded(student_list, request, reg_status):
 @postpone
 def process_import_participants_list(file_stream, request, reg_status=None):
     # 1) Build user list
-    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
+    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
     if reg_status is not None:
         reg_status.attempted = len(user_list)
         reg_status.save()
@@ -1547,7 +1547,7 @@ def process_import_participants_list(file_stream, request, reg_status=None):
 @postpone
 def process_enroll_participants_list(file_stream, request, reg_status=None):
     # 1) Build user list
-    user_list = _build_student_list_from_file(file_stream, parse_method=_process_line_enroll_participants_csv)
+    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_enroll_participants_csv)
     if reg_status is not None:
         reg_status.attempted = len(user_list)
         reg_status.save()
@@ -2239,6 +2239,22 @@ class CourseParticipantStats(object):
             'progress': '{}%'.format(participant_data.get('progress')),
             'custom_last_login': last_login
         })
+
+
+def participant_csv_line_id_extractor(user_line):
+    """
+    Returns user id from the csv record of particpants
+    assuming it's in first cell
+    """
+    fields = user_line.strip().split(',')
+
+    if fields:
+        try:
+            user_id = int(fields[0])
+        except ValueError:
+            pass
+        else:
+            return user_id
 
 
 class InternalAdminCoursePermission(permissions.BasePermission):

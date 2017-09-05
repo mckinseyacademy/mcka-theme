@@ -29,7 +29,7 @@ class CSVWriter(object):
         """
         Writes rows and returns the written file
         """
-        writer = csv.writer(self.csv_file, quoting=csv.QUOTE_ALL)
+        writer = csv.writer(self.csv_file)
 
         # write the header row
         if self.header:

@@ -185,6 +185,8 @@ urlpatterns = patterns(
     url(r'^api/tags/(?P<tag_id>[0-9]+)', views.tag_details_api.as_view(), name='tag_details_api'),
     url(r'^api/tags$', views.tags_list_api.as_view(), name='tags_list_api'),
 
+    url(r'^api/admin_bulk_task', views.BulkTaskAPI.as_view(), name='bulk_task_api'),
+
     url(r'^permissions/(?P<user_id>[0-9]+)/edit', views.edit_permissions, name='edit_permissions'),
     url(r'^permissions', views.permissions, name='permissions'),
 
