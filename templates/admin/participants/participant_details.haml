@@ -242,9 +242,18 @@
                 - if gender == 'M' 
                   %option{:value => "M", :selected => 'True'} Male
                   %option{:value => "F"} Female
-                - else
+                  %option{:value => ""} N/A
+
+                - elif gender == 'F'
                   %option{:value => "M"} Male
                   %option{:value => "F", :selected => 'True'} Female
+                  %option{:value => ""} N/A
+
+                - else
+                  %option{:value => "M"} Male
+                  %option{:value => "F"} Female
+                  %option{:value => "", :selected => 'True'} N/A
+
         %hr
         - if user.is_mcka_admin or user.is_mcka_subadmin
           .companyAdminRolesContainer

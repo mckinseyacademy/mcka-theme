@@ -252,6 +252,7 @@ class EditExistingUserForm(forms.Form):
     country = forms.CharField(required=False, widget=forms.TextInput())
     city = forms.CharField(required=False, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
 
+
 class CreateNewParticipant(forms.Form):
     first_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
     last_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
@@ -260,6 +261,7 @@ class CreateNewParticipant(forms.Form):
     gender = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False, widget=forms.TextInput())
     city = forms.CharField(required=False, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
+
 
 class DashboardAdminQuickFilterForm(forms.ModelForm):
 

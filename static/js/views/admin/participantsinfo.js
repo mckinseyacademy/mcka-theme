@@ -138,7 +138,11 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             '<i class="fa fa-times removeItem large-2" aria-hidden="true"></i>'+
           '</div>'+         
         '</div>';
-        $('#country_edit').countrySelect();
+        $('#country_edit').countrySelect({
+            defaultCountry: "null",  // set country empty by default on form initialization
+            preferredCountries: ["null"]  // put empty country on top of list in drop down
+        });
+
         GetAutocompleteSource(ApiUrls.participant_organization_get_api(), this, 'organization_source');
         GetAutocompleteSource(ApiUrls.participant_courses_get_api(), this, 'course_source');
         var _this = this;
@@ -153,7 +157,6 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             else
                 InitializeAutocompleteInput(ApiUrls.participant_organization_get_api(), '#add_a_participant .participantCompanyValue input');
             var mainContainer = $('#add_a_participant');        
-            $("#country_edit").countrySelect("selectCountry", 'us');
             mainContainer.find('.adminAnotherCompanyAllWrapper').empty();
             mainContainer.find('.adminCourseAllWrapper').empty();
             mainContainer.find('.errorContainer').empty();
@@ -231,7 +234,11 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                     var value = input.val().trim();
                     if (value)
                         data[input.attr("name")] = value;
-                    if (input.attr("name") == 'company')
+
+                    if (input.attr("name") == 'country' && data[input.attr("name")] == 'null')
+                        data[input.attr("name")] = null;
+
+                    else if (input.attr("name") == 'company')
                     {
                         if (input.attr('data-id').length)
                             data[input.attr("name")] = input.attr('data-id');
@@ -250,7 +257,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                 $.each($("#add_a_participant form").find('select'), function(i, v){
                     var input = $(v);
                     if (input.val())
-                        data[input.attr("name")] = input.val().trim();   
+                        data[input.attr("name")] = input.val().trim();
                 });
 
                 delete data["undefined"];

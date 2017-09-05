@@ -8,8 +8,12 @@
       var _this=this;
       var _options=options;
       _this.enroll_user_in_course_function();
-      _this.setLocationTooltip(); 
-      $('#country_edit').countrySelect();
+      _this.setLocationTooltip();
+      $('#country_edit').countrySelect({
+        defaultCountry: "null",  // set country empty by default on form initialization
+        preferredCountries: ["null"]  // put empty country on top of list in drop down
+
+      });
       InitializeAutocompleteInput(options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
       $('#participantDetailsWrapper').find('.newCompanyCreationPopup').hide();
       $(document).on('autocomplete_found', function(event, input)
@@ -47,7 +51,7 @@
           if (_this.check_if_country_exist(country))
             $("#country_edit").countrySelect("selectCountry", country);
           else
-            $("#country_edit").countrySelect("selectCountry", 'us');
+            $("#country_edit").countrySelect("selectCountry", 'null');
         }
       });
       $('#participantDetailsWrapper').find('.companyAdminRolesContainer').on("focus", "input", function(){
@@ -104,7 +108,6 @@
           $.each($("form").find(':input'), function(i, v){
             var input = $(v);
             data[input.attr("name")] = input.val().trim();
-
             if (input.attr("name") == "username" && data[input.attr("name")].length == 0)
             {
               validation_message += "Username can't be empty! ";
@@ -126,6 +129,10 @@
               validation_fail = true;
             }
 
+            if (input.attr("name") == 'country' && data[input.attr("name")] == 'null')
+            {
+              data[input.attr("name")] = '';
+            }
             if (input.attr("name") == 'company')
             {
               if (input.attr('data-id').length)
@@ -185,7 +192,7 @@
             cache: false,
             success: function (data, status) {
                 if (data['status'] == "ok") {
-                  _this.setLocationTooltip(); 
+                  _this.setLocationTooltip();
                   _this.update_participant_field_data();
                   InitializeAutocompleteInput(_options.url, 'form.participantDetailsEditForm .participantCompanyValue input');
                   var company = $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantCompanyValue input');
@@ -244,16 +251,19 @@
       var genderAbbreviation = edit.find('.participantGenderValue select').val();
       if (genderAbbreviation == 'M')
         details.find('.participantGenderValue').text('Male');
-      if (genderAbbreviation == 'F')
+      else if (genderAbbreviation == 'F')
         details.find('.participantGenderValue').text('Female');
+      else
+        details.find('.participantGenderValue').text('');
+
       var city = edit.find('.participantCityValue input').val().trim();
       var country = edit.find('#country_edit_code').val().trim().toUpperCase();
       combinedLocation = city + ', ' + country;
-      if (city === "" && country != "")
+      if (city === "" && (country != "" || country != 'NULL'))
         combinedLocation = country;
-      else if (country === "" && city != "")
+      else if ((country === "" || country === "NULL") && city != "")
         combinedLocation = city;
-      else if (city === "" && country === "")
+      else if (city === "" && (country === "" || country === "NULL"))
         combinedLocation = "N/A";
       
       details.find('.participantLocationValue').text(combinedLocation);
@@ -273,8 +283,11 @@
       var fullGender = details.find('.participantGenderValue').text().trim();
       if (fullGender == 'Female')
         edit.find('.participantGenderValue select').val('F');
-      if (fullGender == 'Male')
+      else if (fullGender == 'Male')
         edit.find('.participantGenderValue select').val('M');
+      else
+        edit.find('.participantGenderValue select').val('');
+
       var locationText = details.find('.participantLocationValue').text();
       if (locationText.indexOf(',') > -1)
       {
@@ -284,16 +297,18 @@
         if(_this.check_if_country_exist(selected_country))
           $("#country_edit").countrySelect("selectCountry", selected_country);
         else
-          $("#country_edit").countrySelect("selectCountry", 'us');
+          $("#country_edit").countrySelect("selectCountry", 'null');
       }
     },
     setLocationTooltip: function()
     {
       var details = $('#participantDetailsWrapper').find('.participantDetailsWrapper');
       var locationText = details.find('.participantLocationValue').text().trim();
+      var tooltipText = locationText;
+
       if ((locationText.indexOf(',') > -1) || (locationText.length == 2))
       {
-        var tooltipText = '';
+        tooltipText = '';
         var name = '';
         if (locationText.length == 2)
         {
@@ -304,6 +319,7 @@
           tooltipText = locationText.split(',')[0].trim();
           name = locationText.split(',')[1].trim().toLowerCase();
         }
+
         var selectableCountries = $.fn['countrySelect'].getCountryData();
         for (var i = 0; i<selectableCountries.length;i++)
         { 
@@ -313,8 +329,9 @@
             break;
           }  
         }
-        $('#participantDetailsWrapper').find('.participantDetailsWrapper .participantLocationValue').attr('title', tooltipText);
       }
+      $('#participantDetailsWrapper').find('.participantDetailsWrapper .participantLocationValue').attr('title', tooltipText);
+
     },
     check_if_country_exist: function(name)
     {
