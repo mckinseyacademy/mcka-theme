@@ -151,7 +151,7 @@ class AccessChecker(object):
     @staticmethod
     def get_organization_for_user(user):
         try:
-            return user_api.get_user_organizations(user.id, organization_object=Client)[0]
+            return user_api.get_user_organizations(user.id, parse_object=Client)[0]
         except IndexError:
             return None
 
@@ -159,7 +159,7 @@ class AccessChecker(object):
     def get_clients_user_has_access_to(user):
         if user.is_mcka_admin or user.is_mcka_subadmin:
             return Client.list()
-        return user_api.get_user_organizations(user.id, organization_object=Client)
+        return user_api.get_user_organizations(user.id, parse_object=Client)
 
     @staticmethod
     def get_courses_for_organization(org):

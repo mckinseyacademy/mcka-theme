@@ -79,16 +79,13 @@ def course_landing_page(request, course_id):
         redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
         return HttpResponseRedirect(redirect_url)
 
-    static_tabs = load_static_tabs(course_id)
     course = standard_data(request).get("course", None)
     proficiency = course_api.get_course_metrics_grades(
         course_id, user_id=request.user.id, skipleaders=True, grade_object_type=Proficiency
     )
     load_lesson_estimated_time(course)
 
-    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
     social = get_user_social_metrics(request.user.id, course_id)
-    gradebook = inject_gradebook_info(request.user.id, course)
     graded_items_count = sum(len(graded) for graded in course.graded_items().values())
 
     data = {

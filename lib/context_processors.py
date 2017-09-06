@@ -10,12 +10,8 @@ import logging
 
 log = logging.getLogger(__name__)
 
-def user_program_data(request):
-    ''' Makes user and program info available to all templates '''
 
-    data = standard_data(request)
-
-    # add in edx-notifications context
+def add_edx_notification_context(data):
     data.update({
         "refresh_watcher": {
             "name": "short-poll",
@@ -35,6 +31,19 @@ def user_program_data(request):
         },
     })
 
+    data = get_notifications_widget_context(data)
+
+    return data
+
+
+def user_program_data(request):
+    ''' Makes user and program info available to all templates '''
+
+    data = standard_data(request)
+
+    # add in edx-notifications context
+    data = add_edx_notification_context(data)
+
     if 'course' in data and data['course']:
         if data['course'].id:
             (features, created) = FeatureFlags.objects.get_or_create(course_id=data['course'].id)
@@ -43,9 +52,9 @@ def user_program_data(request):
                 'namespace': data['course'].id,
                 'feature_flags': features,
             })
-    data = get_notifications_widget_context(data)
 
     return data
+
 
 def settings_data(request):
     ''' makes global settings available to all templates '''

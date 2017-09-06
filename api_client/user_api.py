@@ -14,6 +14,10 @@ from .json_requests import GET, POST, PUT, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
 
+from api_data_manager.decorators import user_api_cache_wrapper
+from api_data_manager.user_data import USER_PROPERTIES
+from api_data_manager.signals import user_data_updated
+
 AUTH_API = getattr(settings, 'AUTH_API', 'api/server/sessions')
 USER_API = getattr(settings, 'USER_API', 'api/server/users')
 GROUP_API = getattr(settings, 'GROUP_API', 'api/server/groups')
@@ -31,6 +35,7 @@ VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "cou
 def _clean_user_keys(user_hash):
     return {user_key: user_hash[user_key] for user_key in VALID_USER_KEYS if user_key in user_hash}
 
+
 @api_error_protect
 def authenticate(username, password, remote_session_key=None):
     ''' authenticate to the API server '''
@@ -45,6 +50,11 @@ def authenticate(username, password, remote_session_key=None):
     return JP.from_json(response.read(), user_models.AuthenticationResponse)
 
 @api_error_protect
+@user_api_cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=user_models.UserResponse,
+    property_name=USER_PROPERTIES.PROFILE,
+)
 def get_user(user_id):
     ''' get specified user '''
     # NB - trailing slash causes only a small amount of fields to get output
@@ -54,7 +64,7 @@ def get_user(user_id):
             settings.API_SERVER_ADDRESS, USER_API, user_id
         )
     )
-    return JP.from_json(response.read(), user_models.UserResponse)
+    return response.read()
 
 @api_error_protect
 def get_user_dict(user_id):
@@ -189,6 +199,10 @@ def _update_user(user_id, user_hash):
         '{}/{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API, user_id),
         user_hash
     )
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.PROFILE
+    )
     return JP.from_json(response.read())
 
 @api_error_protect
@@ -201,7 +215,22 @@ def activate_user(user_id):
     ''' activate the given user on the openedx server '''
     return _update_user(user_id, {"is_active": True})
 
+
+def set_fake_course_completion(courses):
+    # TODO: Faking status for now, need to remove somehow
+    for course in courses:
+        course.percent_complete = 25
+
+    return courses
+
+
 @api_error_protect
+@user_api_cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=course_models.Course,
+    property_name=USER_PROPERTIES.COURSES,
+    post_process_method=set_fake_course_completion
+)
 def get_user_courses(user_id):
     ''' get the user's summary for their courses '''
     response = GET(
@@ -211,10 +240,7 @@ def get_user_courses(user_id):
             user_id
         )
     )
-    courses = JP.from_json(response.read(), course_models.Course)
-    # TODO: Faking status for now, need to remove somehow
-    for course in courses:
-        course.percent_complete = 25
+    courses = response.read()
 
     return courses
 
@@ -276,7 +302,12 @@ def delete_user_role(user_id, course_id, role):
 
 
 @api_error_protect
-def get_user_groups(user_id, group_type=None, group_object=GroupInfo, *args, **kwargs):
+@user_api_cache_wrapper(
+    parse_method=JP.from_dictionary,
+    parse_object=GroupInfo,
+    property_name=USER_PROPERTIES.GROUPS
+)
+def get_user_groups(user_id, group_type=None, parse_object=None, *args, **kwargs):
     ''' get the groups in which this user is a member '''
     qs_params = {}
     qs_params.update(kwargs)
@@ -297,7 +328,8 @@ def get_user_groups(user_id, group_type=None, group_object=GroupInfo, *args, **k
 
     groups_json = json.loads(response.read())
 
-    return JP.from_dictionary(groups_json["groups"], group_object)
+    return groups_json["groups"]
+
 
 @api_error_protect
 def enroll_user_in_course(user_id, course_id):
@@ -312,7 +344,11 @@ def enroll_user_in_course(user_id, course_id):
         data
     )
 
-    courses = JP.from_json(response.read(), course_models.Course)
+    # trigger event that data is updated for this user
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.COURSES
+    )
 
 @api_error_protect
 def unenroll_user_from_course(user_id, course_id):
@@ -325,6 +361,13 @@ def unenroll_user_from_course(user_id, course_id):
             course_id
         )
     )
+
+    # trigger event that data is updated for this user
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.COURSES
+    )
+
     return (response.code == 204)
 
 @api_error_protect
@@ -437,7 +480,13 @@ def set_user_preferences(user_id, preference_dictionary):
         preference_dictionary
     )
 
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.PREFERENCES
+    )
+
     return True
+
 
 @api_error_protect
 def delete_user_preference(user_id, preference_key):
@@ -451,9 +500,20 @@ def delete_user_preference(user_id, preference_key):
         )
     )
 
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.PREFERENCES
+    )
+
     return True
 
+
 @api_error_protect
+@user_api_cache_wrapper(
+    parse_method=json.loads,
+    parse_object=None,
+    property_name=USER_PROPERTIES.PREFERENCES
+)
 def get_user_preferences(user_id):
     ''' sets users preferences information '''
     response = GET(
@@ -465,11 +525,16 @@ def get_user_preferences(user_id):
     )
 
     # Note that we return plain dictionary here - makes more sense 'cos we set a dictionary
-    return json.loads(response.read())
+    return response.read()
 
 
 @api_error_protect
-def get_user_organizations(user_id, organization_object=organization_models.Organization):
+@user_api_cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=organization_models.Organization,
+    property_name=USER_PROPERTIES.ORGANIZATIONS
+)
+def get_user_organizations(user_id, parse_object=None):
     ''' return organizations with which the user is associated '''
     response = GET(
         '{}/{}/{}/organizations/?page_size=0'.format(
@@ -479,7 +544,8 @@ def get_user_organizations(user_id, organization_object=organization_models.Orga
         )
     )
 
-    return JP.from_json(response.read(), organization_object)
+    return response.read()
+
 
 @api_error_protect
 def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_models.Workgroup):
@@ -566,6 +632,10 @@ ERROR_CODE_MESSAGES.update(USER_ERROR_CODE_MESSAGES)
 
 
 @api_error_protect
+@user_api_cache_wrapper(
+    parse_method=json.loads,
+    property_name=USER_PROPERTIES.COURSES,
+)
 def get_courses_from_user(user_id):
 
     response = GET('{}/{}/{}/courses'.format(
@@ -574,7 +644,7 @@ def get_courses_from_user(user_id):
         user_id)
     )
 
-    return json.loads(response.read())
+    return response.read()
 
 @api_error_protect
 def get_user_full_gradebook(user_id, course_id):
@@ -588,7 +658,7 @@ def get_user_full_gradebook(user_id, course_id):
         )
     )
 
-    return json.loads(response.read())
+    return response.read()
 
 
 @api_error_protect

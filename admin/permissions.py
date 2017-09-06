@@ -401,7 +401,7 @@ class InternalAdminRoleManager(object):
         if action not in cls._role_actions_map:
             cls._logger.info("Unknown role action %s - skipping", action)
 
-        organizations = user_api.get_user_organizations(user_id, organization_object=Client)
+        organizations = user_api.get_user_organizations(user_id, parse_object=Client)
         course_ids = set()
         for org in organizations:
             for program in org.fetch_programs():

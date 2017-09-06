@@ -3,8 +3,15 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from urllib import urlencode
 
+from functools import wraps
+from django.utils.decorators import available_attrs
+
 from lib.util import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
+from api_data_manager.group_data import GROUP_PROPERTIES
+from api_data_manager.user_data import USER_PROPERTIES
+from api_data_manager.signals import user_data_updated, group_data_updated
+from api_data_manager.decorators import group_api_cache_wrapper
 
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
@@ -34,6 +41,7 @@ TAG_GROUPS = DottableDict(
     INTERNAL='tag:internal',
     COMMON='tag',
 )
+
 
 @api_error_protect
 def get_groups_of_type(group_type, group_object=JsonObject, *args, **kwargs):
@@ -135,6 +143,13 @@ def update_group(group_id, group_name, group_type, group_data=None, group_object
 @api_error_protect
 def add_user_to_group(user_id, group_id, group_object=JsonObject):
     ''' adds user to group '''
+
+    # trigger event that data is updated for this user
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.GROUPS
+    )
+
     data = {"user_id": user_id}
     response = POST(
         '{}/{}/{}/users'.format(
@@ -159,6 +174,12 @@ def add_course_to_group(course_id, group_id, group_object=JsonObject):
             group_id,
         ),
         data
+    )
+
+    # trigger event that data is updated for this group
+    group_data_updated.send(
+        sender=__name__, group_ids=[group_id],
+        data_type=GROUP_PROPERTIES.COURSES
     )
 
     return JP.from_json(response.read(), group_object)
@@ -202,6 +223,12 @@ def get_users_in_group(group_id):
 def remove_user_from_group(user_id, group_id):
     ''' remove user association with a specific group '''
 
+    # trigger event that data is updated for this user
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.GROUPS
+    )
+
     response = DELETE(
         '{}/{}/{}/users/{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -226,9 +253,20 @@ def remove_course_from_group(course_id, group_id, group_object=JsonObject):
         )
     )
 
+    # trigger event that data is updated for this group
+    group_data_updated.send(
+        sender=__name__, group_ids=[group_id],
+        data_type=GROUP_PROPERTIES.COURSES
+    )
+
     return (response.code == 204)
 
 @api_error_protect
+@group_api_cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=course_models.CourseListCourse,
+    property_name=GROUP_PROPERTIES.COURSES
+)
 def get_courses_in_group(group_id):
     ''' get list of courses associated with a specific group '''
     response = GET(
@@ -239,8 +277,7 @@ def get_courses_in_group(group_id):
         )
     )
 
-    courses_list = JP.from_json(response.read(), course_models.CourseListCourse)
-    return courses_list
+    return response.read()
 
 
 @api_error_protect

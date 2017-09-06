@@ -26,6 +26,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.forms.widgets import HiddenInput
 from django.views.decorators.cache import never_cache
+from django.template.loader import render_to_string
 
 from courses.models import FeatureFlags
 from api_client import user_api, course_api
@@ -39,6 +40,7 @@ from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
     CURRENT_PROGRAM, set_current_course_for_user
+from lib.context_processors import add_edx_notification_context
 
 from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
 from .controller import (
@@ -132,24 +134,19 @@ def _build_sso_redirect_url(provider, next):
 
 def _get_redirect_to_current_course(request):
     course_id = get_current_course_for_user(request)
-    program = get_current_program_for_user(request)
     future_start_date = False
-    if program:
-        if course_id is not None:
+
+    if course_id:
+        course = course_api.get_course(course_id=course_id, depth=0)
+        if hasattr(course, 'start'):
+            future_start_date = is_future_start(course.start)
+        else:
+            program = get_current_program_for_user(request)
+
             for program_course in program.courses:
                 if program_course.id == course_id:
-                    '''
-                    THERE IS A PLACE FOR IMPROVEMENT HERE
-                    IF user course object had start/due date, we
-                    would do one less API call
-                    '''
-                    full_course_object = load_course(course_id)
-                    if hasattr(full_course_object, 'start'):
-                        future_start_date = is_future_start(full_course_object.start)
-                    elif hasattr(program, 'start_date') and future_start_date is False:
+                    if hasattr(program, 'start_date') and future_start_date is False:
                         future_start_date = is_future_start(program.start_date)
-        elif hasattr(program, 'start_date'):
-            future_start_date = is_future_start(program.start_date)
 
     if course_id and not future_start_date:
         return reverse('course_landing_page', kwargs=dict(course_id=course_id))
@@ -819,7 +816,13 @@ def user_profile(request):
         "user": user
     }
 
-    return render(request, 'accounts/user_profile.haml', user_data)
+    user_data = add_edx_notification_context(user_data)
+
+    # using render_to_string to avoid Context evaluation
+    content = render_to_string('accounts/user_profile.haml', user_data)
+
+    return HttpResponse(content)
+
 
 @login_required
 def user_profile_image_edit(request):

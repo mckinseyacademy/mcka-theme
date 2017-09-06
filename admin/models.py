@@ -75,11 +75,11 @@ class Program(BaseGroupModel):
 
     @classmethod
     def user_programs_with_course(cls, user_id, course_id):
-        return user_api.get_user_groups(user_id, group_type=cls.group_type, group_object=cls, course=course_id)
+        return user_api.get_user_groups(user_id, group_type=cls.group_type, parse_object=cls, course=course_id)
 
     @classmethod
     def user_program_list(cls, user_id):
-        return user_api.get_user_groups(user_id, group_type=cls.group_type, group_object=cls)
+        return user_api.get_user_groups(user_id, group_type=cls.group_type, parse_object=cls)
 
     @classmethod
     def no_program(cls):
