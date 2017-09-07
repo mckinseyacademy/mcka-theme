@@ -259,12 +259,12 @@
       var city = edit.find('.participantCityValue input').val().trim();
       var country = edit.find('#country_edit_code').val().trim().toUpperCase();
       combinedLocation = city + ', ' + country;
-      if (city === "" && (country != "" || country != 'NULL'))
+      if (city === "" && (country != "" && country != 'NULL'))
         combinedLocation = country;
       else if ((country === "" || country === "NULL") && city != "")
         combinedLocation = city;
       else if (city === "" && (country === "" || country === "NULL"))
-        combinedLocation = "N/A";
+        combinedLocation = "—";
       
       details.find('.participantLocationValue').text(combinedLocation);
       $('#participantsTopDetailsContainer').find('.participantFullName').text(edit.find('.participantFirstNameValue input').val() + ' ' + edit.find('.participantLastNameValue input').val());
