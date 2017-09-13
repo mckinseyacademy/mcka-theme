@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
+from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
 
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
@@ -732,6 +732,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
     ''' go to given page within given chapter within given course '''
     course = load_course(course_id, request=request)
     current_sequential = course.get_current_sequential(chapter_id, page_id)
+    if not current_sequential:
+        raise Http404()
 
     # Load the current program for this user
     program = get_current_program_for_user(request)

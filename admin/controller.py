@@ -134,7 +134,7 @@ def _find_group_project_v2_blocks_in_chapter(chapter):
         if xblock.category == GROUP_PROJECT_V2_CATEGORY
     )
 
-def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api):
+def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, user=None):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
@@ -158,8 +158,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
         return (not is_discussion_chapter(chapter) and
                 not is_group_project_chapter(chapter) and
                 not is_group_project_v2_chapter(chapter))
-
-    course = course_api_impl.get_course(course_id, depth)
+    course = course_api_impl.get_course(course_id, depth, user=user)
 
     # Find group projects
     course.group_projects = []
@@ -218,10 +217,12 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
     if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth", 0) >= depth:
         return course_context["course_content"]
 
+    user = request.user if request else None
+
     # See if we will cache courseware on the user's session
     if not getattr(settings, 'USE_SESSION_COURSEWARE_CACHING', False) or not request or not request.session:
         # simple path: load and return
-        return _load_course(course_id, depth, course_api_impl)
+        return _load_course(course_id, depth, course_api_impl, user=user)
 
     course = None
     if 'course_cache' in request.session:
@@ -240,7 +241,7 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
 
     if not course:
         # actually go to the API to fetch
-        course = _load_course(course_id, depth, course_api_impl)
+        course = _load_course(course_id, depth, course_api_impl, user=user)
 
         # if we have fetched the course, let's put it in the session cache
         if course:
