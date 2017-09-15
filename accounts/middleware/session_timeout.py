@@ -16,7 +16,7 @@ class SessionTimeout(object):
 
         if timeout and last_touch:
             time = datetime.now() - last_touch
-            if time > timedelta(seconds=settings.SESSION_TIMEOUT_SECONDS):
+            if time > timedelta(seconds=604800):
                 del request.session['last_touch']
                 logout(request)
                 return
