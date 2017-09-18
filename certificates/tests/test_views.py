@@ -6,7 +6,7 @@ import uuid
 import datetime
 from functools import wraps
 import ddt
-from lib.util import DottableDict
+from lib.utils import DottableDict
 from mock import patch
 
 from django.test import TestCase

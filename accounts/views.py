@@ -48,7 +48,7 @@ from .controller import (
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
     send_warning_email_to_admin
 )
-from util.user_agent_helpers import is_mobile_user_agent
+from util.user_agent_helpers import is_mobile_user_agent, is_ios, is_android, is_supported_mobile_device
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
     EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2, PublicRegistrationForm
@@ -76,6 +76,42 @@ SSO_AUTH_ENTRY = 'apros'
 MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
                              "in order to create a new account.")
 CANT_PROCESS_ACCESS_KEY = _("There was an error enrolling you in a course using the registration key you provided")
+
+COMPANIES_MOBILE_APPS_MAP = {
+    'mckinsey_and_company_ff': {
+        'android': 'https://play.google.com/store/apps/details?id=com.facebook.katana&hl=en',
+        'ios': 'https://itunes.apple.com/pk/app/facebook/id284882215?mt=8',
+        'tagline': 'Unlocking Leadership Potential',
+        'background_image': '/static/image/mobile_popup/mcka_bg.png',
+        'logo_image': '/static/image/mobile_popup/mcka_logo',
+        'mobile_image': '/static/image/mobile_popup/mcka_devce'
+    },
+    'mckinsey_rts': {
+        'android': 'https://play.google.com/store/apps/details?id=com.twitter.android&hl=en',
+        'ios': 'https://itunes.apple.com/pk/app/twitter/id333903271?mt=8',
+        'tagline': '',
+        'background_image': '/static/image/mobile_popup/rts_bg.png',
+        'logo_image': '/static/image/mobile_popup/rts_logo',
+        'mobile_image': '/static/image/mobile_popup/rts_device'
+    },
+    'rts_cst': {
+        'android': 'https://play.google.com/store/apps/details?id=com.twitter.android&hl=en',
+        'ios': 'https://itunes.apple.com/pk/app/twitter/id333903271?mt=8',
+        'tagline': '',
+        'background_image': '/static/image/mobile_popup/rts_bg.png',
+        'logo_image': '/static/image/mobile_popup/rts_logo',
+        'mobile_image': '/static/image/mobile_popup/rts_device'
+    },
+    'chemours': {
+        'android': 'https://play.google.com/store/apps/details?id=com.twitter.android&hl=en',
+        'ios': 'https://itunes.apple.com/pk/app/twitter/id333903271?mt=8',
+        'tagline': '',
+        'background_image': '/static/image/mobile_popup/rts_bg.png',
+        'logo_image': '/static/image/mobile_popup/rts_logo',
+        'mobile_image': '/static/image/mobile_popup/rts_device'
+    }
+}
+
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
@@ -232,6 +268,7 @@ def login(request):
         if re.search('msie [1-8]\.', ua):
             return HttpResponseRedirect('/')
 
+    data = {}
     form = None
     sso_login_form = None
     login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
@@ -289,6 +326,23 @@ def login(request):
         )
         # set focus to password field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
+        # try:
+        #     users = user_api.get_users(username=request.GET['username'])
+        #     companies = user_api.get_user_organizations(users[0].id) if users else None
+        #     if companies and companies[0].name in COMPANIES_MOBILE_APPS_MAP:
+        #         data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP[companies[0].name]
+        #     else:
+        #         data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP['mckinsey_and_company_ff']
+        # except ApiError:
+        #     pass
+        data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP['chemours']
+        if is_supported_mobile_device(request) and data['company_mobile_app_map']:
+            data["show_app_link_popup"] = True
+            if is_ios(request):
+                data["mobile_device"] = "ios"
+            elif is_android(request):
+                data["mobile_device"] = "android"
+
     elif 'reset' in request.GET:
         form = LoginForm()
         # set focus to username field
@@ -299,14 +353,13 @@ def login(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
-    data = {
-        "user": None,
-        "form": form or LoginForm(),
-        "sso_login_form": sso_login_form or SSOLoginForm(),
-        "login_mode": login_mode,
-        "error": error,
-        "login_label": _("Log in to my McKinsey Academy account & access my courses"),
-    }
+    data["user"] = None
+    data["form"] = form or LoginForm()
+    data["sso_login_form"] = sso_login_form or SSOLoginForm()
+    data["login_mode"] = login_mode
+    data["error"] = error
+    data["login_label"] = _("Log in to my McKinsey Academy account & access my courses")
+
     response = render(request, 'accounts/login.haml', data)
 
     _append_login_mode_cookie(response, login_mode)

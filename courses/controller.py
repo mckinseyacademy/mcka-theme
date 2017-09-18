@@ -21,7 +21,7 @@ from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES, workgroup_models
 from api_client.api_error import ApiError
 from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
-from lib.util import PriorIdConvert
+from lib.utils import PriorIdConvert
 from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
 
 log = logging.getLogger(__name__)

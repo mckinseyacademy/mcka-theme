@@ -1,7 +1,7 @@
 """
 Tests for certificates django models
 """
-from lib.util import DottableDict
+from lib.utils import DottableDict
 
 from django.test import TestCase
 from django.db import IntegrityError

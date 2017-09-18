@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
-from lib.util import DottableDict
+from lib.utils import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
 from .json_object import JsonParser as JP

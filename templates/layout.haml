@@ -104,6 +104,10 @@
             ga('send', 'pageview');
         }
         
+        - if track_mobile_login and request.user.is_authenticated
+          ga('send', 'event', 'Mobile Login', 'login', '{{track_mobile_login}}', {
+            'username': '{{request.user.username}}',
+          });
 
     /[if lt IE 9]
       %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}

@@ -4,7 +4,7 @@ from api_client import(
     course_models
 )
 from api_client.json_object import JsonObject
-from lib.util import DottableDict
+from lib.utils import DottableDict
 from license import controller as license_controller
 from django.conf import settings
 

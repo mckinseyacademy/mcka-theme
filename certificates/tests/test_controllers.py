@@ -5,7 +5,7 @@ import os
 import uuid
 import datetime
 import ddt
-from lib.util import DottableDict
+from lib.utils import DottableDict
 
 from django.core import mail
 from django.test import TestCase

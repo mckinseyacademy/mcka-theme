@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 
-from lib.util import PriorIdConvert
+from lib.utils import PriorIdConvert
 
 CONVERT_SEGMENTS = [
     "slashes",

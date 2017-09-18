@@ -5,7 +5,7 @@ import copy
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-from lib.util import DottableDict
+from lib.utils import DottableDict
 from api_client.project_models import Project
 from api_client import course_api, user_api, group_api
 from api_client.organization_models import Organization

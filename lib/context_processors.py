@@ -5,6 +5,7 @@ from courses.user_courses import standard_data
 from courses.models import FeatureFlags
 
 from edx_notifications.server.web.utils import get_notifications_widget_context
+from util.user_agent_helpers import is_mobile_user_agent, is_ios, is_android
 
 import logging
 
@@ -78,5 +79,19 @@ def settings_data(request):
         "mapbox_map_id": settings.MAPBOX_API['map_id'],
         "apros_features": settings.FEATURES,
     }
+
+    return data
+
+
+def mobile_login_data(request):
+    """
+    Make mobile login data available to all templates
+    """
+    data = dict()
+    if is_mobile_user_agent(request) and request.META.get('HTTP_REFERER') and '/login/' in request.META.get('HTTP_REFERER'):
+        if is_android(request):
+            data['track_mobile_login'] = 'Android'
+        elif is_ios(request):
+            data['track_mobile_login'] = 'iOS'
 
     return data
