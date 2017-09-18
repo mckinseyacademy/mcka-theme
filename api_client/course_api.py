@@ -450,7 +450,18 @@ def get_course_completions(course_id, user_id=None, page_size=0):
 
 @api_error_protect
 def get_course_metrics(course_id, *args, **kwargs):
-    ''' retrieves course metrics '''
+    """
+    retrieves course metrics
+    `metrics_required` param can be passed to course metrics api to get additional metrics
+    possible values for `metrics_required param` are
+    ``` users_started,modules_completed,users_completed,thread_stats ```
+    :param course_id:
+    :param args:
+    :param kwargs:
+    :return: course metrics objects having these possible course metrics
+        grade_cutoffs, users_enrolled, users_started, users_not_started, modules_completed,users_completed
+        and thread_stats. where thread_stats has num_active_threads and num_threads
+    """
 
     qs_params = {}
 
@@ -534,6 +545,26 @@ def get_course_social_metrics(course_id, organization_id=None):
 
     response = GET(
         '{}/{}/{}/metrics/social/?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            COURSEWARE_API,
+            course_id,
+            urlencode(qs_params)
+        )
+    )
+
+    return JP.from_json(response.read())
+
+
+@api_error_protect
+def get_social_enagement_leaderboard(course_id, count, **kwargs):
+    """
+    Get social engagement leaderboard for given course and user's position in leaderboard
+    """
+    qs_params = {"count": count}
+    qs_params.update(kwargs)
+
+    response = GET(
+        '{}/{}/{}/metrics/social/leaders/?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
@@ -802,7 +833,7 @@ def get_course_details_metrics_grades_all_users(course_id, count):
 def get_course_details_metrics_all_users(course_id, organization_id = ''):
 
     response = GET(
-        '{}/{}/{}/metrics?organization={}'.format(
+        '{}/{}/{}/metrics?metrics_required=users_completed&organization={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
@@ -817,7 +848,7 @@ def get_course_details_metrics_all_users(course_id, organization_id = ''):
 def get_course_details_metrics_filtered_by_groups(course_id, group_ids, organization_id = ''):
 
     response = GET(
-        '{}/{}/{}/metrics/?groups={}&organization={}'.format(
+        '{}/{}/{}/metrics/?metrics_required=users_completed&groups={}&organization={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,

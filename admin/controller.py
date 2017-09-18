@@ -805,7 +805,7 @@ def get_organizations_users_completion(client_id, course_id, users_enrolled):
 
 
 def get_course_metrics_for_organization(course_id, client_id):
-    metrics = course_api.get_course_metrics(course_id, organization=client_id)
+    metrics = course_api.get_course_metrics(course_id, organization=client_id, metrics_required='users_started')
     org_metrics = organization_api.get_grade_complete_count(client_id, courses=course_id)
     metrics.users_grade_complete_count = org_metrics.users_grade_complete_count
     metrics.users_grade_average = org_metrics.users_grade_average
