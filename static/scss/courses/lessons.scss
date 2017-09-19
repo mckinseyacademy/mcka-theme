@@ -267,6 +267,10 @@
       }
       &.survey-option{
         padding: 8px 10px !important;
+        input{
+          height: 20px;
+          vertical-align: middle;
+        }
       }
     }
   }
