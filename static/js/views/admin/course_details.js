@@ -377,7 +377,7 @@
                 {
                   return '<i class="fa fa-exclamation-triangle"></i>'
                 }
-                if(attributes.groupworks.length == 0){
+                if(attributes.groupworks.length == 0 || groupworkIndex >= attributes.groupworks.length){
                   return '' + parseInt('000') + '%';
                 }
                 var value = attributes.groupworks[groupworkIndex].percent;
@@ -410,7 +410,7 @@
                 {
                   return '<i class="fa fa-exclamation-triangle"></i>'
                 }
-                if(attributes.assessments.length == 0){
+                if(attributes.assessments.length == 0 || assessmentIndex >= attributes.assessments.length){
                   return '' + parseInt('000') + '%';
                 }
                 var value = attributes.assessments[assessmentIndex].percent;
