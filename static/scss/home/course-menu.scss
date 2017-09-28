@@ -13,8 +13,18 @@
       margin-top: rem-calc(-35/2);
       z-index: 2;
       @include font-spec(35);
-      &.nav-left { left: -45px; }
-      &.nav-right { right: -45px; }
+      &.nav-left {
+        left: -45px;
+        @include mobile{
+          left: -36px;
+        }
+      }
+      &.nav-right {
+        right: -45px;
+        @include mobile{
+          right: -36px;
+        }
+      }
 
       &.disabled {
         color: $almost-white;
@@ -28,18 +38,29 @@
       margin: 0;
       white-space: nowrap;
 
+      @include mobile{
+        display: block;
+      }
+
       li {
         position: relative;
         display: inline-block;
         vertical-align: top;
         margin-right: 17px;
         white-space: normal;
+        @include mobile{
+          width: 230px;
+        }
+
         &:last-child { margin-right: none; }
 
         a {
           display: block;
           width: 140px;
           height: 180px;
+          @include mobile{
+            width: 100%;
+          }
         }
 
         .bookmark {
@@ -55,6 +76,9 @@
           height: 180px;
           padding: 10px;
           @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
+          @include mobile{
+            width: 100%;
+          }
         }
 
         .front .name {
@@ -80,6 +104,10 @@
           &.complete { color: $mckinsey-green; }
         }
       }
+    }
+
+    @include mobile{
+      width: 230px !important;
     }
 
     @media #{$screen} and (max-width: #{upper-bound($medium-range)}) {

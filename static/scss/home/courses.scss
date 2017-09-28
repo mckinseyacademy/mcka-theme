@@ -1,7 +1,12 @@
 #home-courses {
   padding-top: 30px;
   .sub-title { margin-bottom: 10px; }
-  .large-10 > hr { margin: 20px -20px; }
+  .large-10 > hr {
+    margin: 20px -20px;
+    @include mobile{
+      margin: 20px -15px;
+    }
+  }
 
   .course-quote {
     text-align: center;
@@ -12,6 +17,9 @@
       padding: 0 100px;
       border: none;
       quotes: "\201C""\201D""\2018""\2019";
+      @include mobile{
+        padding: 0 50px;
+      }
 
       &:before, &:after {
         font-family: Georgia;

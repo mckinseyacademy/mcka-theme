@@ -55,7 +55,7 @@
   }
 
 @mixin mobile {
-  @media (max-width: 54.785rem){
+  @media (max-width: 767px){
     @content;
   }
 }
