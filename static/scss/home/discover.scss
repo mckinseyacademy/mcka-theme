@@ -5,12 +5,21 @@
 
   .wrapper {
     display: table-row;
-
+    @include mobile{
+      display: block;
+    }
     section {
       display: table-cell;
       padding: 0 10px;
       width: percentage(1/3);
       border-right: 1px solid $almost-white;
+      @include mobile{
+        width: 100%;
+        display: block;
+        border-right: 0;
+        margin-bottom: 20px;
+      }
+
       &:first-of-type { padding-left: 0; }
 
       &:last-of-type {
@@ -19,8 +28,18 @@
       }
 
       &.infographic {
-        .infographic-holder img {
-          width: 100%;
+        .infographic-holder{
+          @include mobile{
+            margin-bottom: 20px;
+          }
+          img {
+            width: 100%;
+          }
+        }
+        hr{
+          @include mobile{
+            display: none;
+          }
         }
       }
 
@@ -30,6 +49,9 @@
 
       .label-6 {
         margin-bottom: 20px;
+        @include mobile{
+          text-align: center;
+        }
       }
 
       ul {
