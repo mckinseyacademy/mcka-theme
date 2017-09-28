@@ -43,3 +43,5 @@ user-agents==1.1.0
 
 # Release utils for the edx release pipeline
 edx-django-release-util==0.3.1
+
+requests==2.18.4
