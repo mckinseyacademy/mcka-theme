@@ -171,15 +171,16 @@ def get_course_news(course_id):
 
 
 @api_error_protect
-def get_course(course_id, depth=3):
+def get_course(course_id, depth=3, user=None):
     '''
     Retrieves course structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}?depth={}'.format(
+    response = GET('{}/{}/{}?depth={}{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
-        depth)
+        depth,
+        '&username={}'.format(user.username) if user else '')
     )
 
     # Load the depth from the API

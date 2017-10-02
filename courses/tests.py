@@ -360,7 +360,7 @@ class MockCourseAPI(object):
         return course_models.Course(dictionary=course_dictionary)
 
     @staticmethod
-    def get_course(course_id, depth = 3):
+    def get_course(course_id, depth = 3, user=None):
         return MockCourseAPI._get_course(course_id, 0)
 
     @staticmethod
@@ -396,7 +396,7 @@ class MockCourseAPI(object):
 class OtherMockCourseAPI(MockCourseAPI):
 
     @staticmethod
-    def get_course(course_id, depth = 3):
+    def get_course(course_id, depth = 3, user=None):
         return OtherMockCourseAPI._get_course(course_id, course_id)
 
 class MockUserAPI(object):
