@@ -8,8 +8,8 @@ from api_client.api_error import api_error_protect
 from .json_requests import TIMEOUT
 
 
-API_KEY_AUTH = 1
-SESSION_AUTH = 2
+API_KEY_AUTH = 'api_key_auth'
+SESSION_AUTH = 'session_auth'
 
 
 def _get_cookies():
@@ -43,8 +43,7 @@ def _get_auth_based_request_kwargs(auth, **kwargs):
 
     if auth == API_KEY_AUTH:
         kwargs['headers'].update({'X-Edx-Api-Key': settings.EDX_API_KEY})
-
-    if auth == SESSION_AUTH:
+    elif auth == SESSION_AUTH:
         cookies = _get_cookies()
         kwargs['cookies'] = cookies
         kwargs['headers'].update({'X-CSRFToken': cookies['csrftoken']})
@@ -113,7 +112,7 @@ def PUT(url, data, auth=API_KEY_AUTH, **kwargs):
 
 
 @api_error_protect
-def DELET(url, auth=API_KEY_AUTH, **kwargs):
+def DELETE(url, auth=API_KEY_AUTH, **kwargs):
     """
     Helper method to send DELETE request to given url with given auth type
 
