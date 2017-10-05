@@ -47,6 +47,7 @@ from api_client.api_error import ApiError
 from api_client.organization_models import Organization
 from api_client.project_models import Project
 from api_client.workgroup_models import Submission
+from api_client.platform_api import get_course_advanced_settings
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
@@ -1323,11 +1324,21 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
 
+    has_advanced_settings_permissions = True
+    mobile_available = False
+    try:
+        course_advanced_settings = get_course_advanced_settings(course_id)
+        mobile_available = course_advanced_settings['mobile_available']['value']
+    except ApiError:
+        has_advanced_settings_permissions = False
+
     items = CuratedContentItem.objects.filter(course_id=course_id).order_by('sequence')
     data = {
         "course_id": urlquote(course_id),
         "items": items,
         "feature_flags": features,
+        "has_advanced_settings_permissions": has_advanced_settings_permissions,
+        "mobile_available": mobile_available,
     }
 
     return render(

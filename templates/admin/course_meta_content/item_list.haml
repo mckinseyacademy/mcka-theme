@@ -105,6 +105,14 @@
           - else
             %input#certificates{type: 'checkbox', name: 'certificates'}
           %label{for: 'certificates'} Certificates
+        - if has_advanced_settings_permissions
+          %li
+            - if mobile_available
+              %input#mobile_available{type: 'hidden', name: 'mobile_available', value: 'off'}
+              %input#mobile_available{type: 'checkbox', name: 'mobile_available', checked: None}
+            - else
+              %input#mobile_available{type: 'checkbox', name: 'mobile_available'}
+            %label{for: 'mobile_available'} Mobile Available
         %li
           - if feature_flags.engagement
             %input#engagement{type: 'checkbox', name: 'engagement', checked: None}

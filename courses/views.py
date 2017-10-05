@@ -24,6 +24,7 @@ from admin.models import (
     )
 from admin.views import checked_course_access, AccessChecker
 from api_client import course_api, user_api, workgroup_api
+from api_client.platform_api import update_course_mobile_available_status
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
@@ -1148,6 +1149,10 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.certificates = request.POST.get('certificates', None) == 'on'
     feature_flags.engagement = request.POST.get('engagement', None) == 'on'
     feature_flags.save()
+
+    if request.POST.get('mobile_available', None) is not None:
+        mobile_available_status = request.POST.get('mobile_available') == 'on'
+        update_course_mobile_available_status(course_id, mobile_available_status)
 
     return HttpResponse(
         json.dumps(feature_flags.as_json()),
