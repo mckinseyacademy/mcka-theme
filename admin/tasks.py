@@ -70,28 +70,30 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         if not participants_stats.get('next'):
             break
 
-    groupworks, assesments = OrderedDict(), OrderedDict()
+    groupworks, assessments, lesson_completions = OrderedDict(), OrderedDict(), OrderedDict()
 
-    # custom processing is needed for groupworks and assesments data
+    # custom processing is needed for groupworks and assessments data
     # as csv column names are also dynamic for them
     for participant in participants_data:
         for groupwork in participant.get('groupworks'):
             label = groupwork.get('label')
             key = 'GW_{}'.format(label)
-
             if key not in groupworks:
                 groupworks[key] = 'Group Work: ' + label
-
             participant[key] = '{}%'.format(groupwork.get('percent'))
 
         for assesment in participant.get('assessments'):
             label = assesment.get('label')
             key = 'AS_{}'.format(label)
-
-            if key not in assesments:
-                assesments[key] = 'Assessment: ' + label
-
+            if key not in assessments:
+                assessments[key] = 'Assessment: ' + label
             participant[key] = '{}%'.format(assesment.get('percent'))
+
+        for lesson_number, completion in sorted(participant['lesson_completions'].iteritems()):
+            key = 'PRG_{}'.format(lesson_number)
+            if key not in lesson_completions:
+                lesson_completions[key] = 'Lesson {} Progress'.format(lesson_number)
+            participant[key] = '{}%'.format(completion)
 
     fields = OrderedDict([
         ("ID", ("id", '')),
@@ -110,8 +112,8 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     ])
 
     # update fields with groupworks/assignments data
-    for label, title in (groupworks.items() + assesments.items()):
-        fields.update({title: (label, '0%')})
+    for label, title in groupworks.items() + assessments.items() + lesson_completions.items():
+        fields[title] = (label, '0%')
 
     file_name = '{}_user_stats.csv'.format(course_id.replace('/', '_'))
 

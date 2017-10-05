@@ -159,6 +159,24 @@ As the `vagrant` user:
 
 ## Step 5 - Start Apros
 
+#### Configure the OAuth2 Client
+
+1. Log into http://lms.mcka.local/ as a user with superuser permissions.
+2. Visit http://lms.mcka.local/admin/oauth2_provider/application/ and select 
+   "Add Application" from the upper right corner.
+3. Configure a new application with the following values:
+   * Client id -- Leave as default, but take note of this value
+   * User -- Any user with staff permissions ("staff" is a good choice)
+   * Redirect uris -- Leave blank
+   * Client type -- Confidential
+   * Authorization grant type -- Client credentials
+   * Client secret -- Leave as default, but take note of this value
+   * Name -- Apros Client Credentials
+4. Hit save.
+5. Update `mcka_apros/local_settings.py with `OAUTH2_OPENEDX_CLIENT_ID` and 
+   `OAUTH2_OPENEDX_CLIENT_SECRET` set to the Client id and Client secret values
+   from the application configured in step 3.
+
 #### Set up the database and seed data
 
 To begin setting up Apros, **make sure that the LMS and forum/comment service are running**. Then, as the `vagrant` user:

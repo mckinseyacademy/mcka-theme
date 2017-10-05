@@ -18,7 +18,17 @@ from accounts.middleware.thread_local import set_course_context, get_course_cont
 from admin.models import Program
 from courses.models import FeatureFlags
 from api_client.api_error import ApiError
-from api_client import user_api, group_api, course_api, course_models, organization_api, project_api, user_models, workgroup_api
+from api_client import (
+    course_api,
+    course_models,
+    group_api,
+    oauth2_requests,
+    organization_api,
+    project_api,
+    user_api,
+    user_models,
+    workgroup_api
+)
 from accounts.models import UserActivation
 from accounts.helpers import get_user_activation_links, get_complete_country_name
 from datetime import datetime
@@ -2105,9 +2115,9 @@ class CourseParticipantStats(object):
         based on `request_params`
         """
         self.request_params = request_params
-        grades, participants, progress = self._retrieve_api_data()
+        grades, participants, progress, lesson_completion = self._retrieve_api_data()
 
-        return self._process_results(participants, grades, progress)
+        return self._process_results(participants, grades, progress, lesson_completion)
 
     def _retrieve_api_data(self):
         """
@@ -2118,14 +2128,53 @@ class CourseParticipantStats(object):
             self.course_id, self.request_params.get('count') or course_participants.get('count', 0)
         )
         course_progress = course_api.get_course_details_completions_all_users(course_id=self.course_id)
+        lesson_completions = self._get_lesson_completions(course_participants)
+        return course_grades, course_participants, course_progress, lesson_completions
 
-        return course_grades, course_participants, course_progress
+    def _get_lesson_completions(self, course_participants):
+        """
+        Returns completion data for all participants in the course.
+        """
+        oauth2_session = oauth2_requests.get_oauth2_session()
+        lesson_completions = {}
+        for user in course_participants['results']:
+            lesson_completions[user['id']] = course_api.get_user_lesson_completion(
+                user['username'],
+                self.course_id,
+                oauth2_session
+            )
+        return lesson_completions
 
-    def _process_results(self, participants, course_grades, course_progress):
+    def _get_lesson_mapping(self, user):
+        """
+        Return a mapping of lesson ids to numbers
+        """
+        course = _load_course(self.course_id, user=user)
+        lesson_mapping = {}
+        for idx, chapter in enumerate(course.chapters):
+            lesson_mapping[chapter.id] = idx + 1
+        return lesson_mapping
+
+    def _get_normal_user(self, participants):
+        """
+        Return an enrolled user with no special role, if one exists in the course.
+
+        Otherwise return any enrolled user.  If there are no enrolled users, 
+        return None.
+        """
+        users = participants['results']
+        for user in users:
+            if user['roles'] == []:
+                return user
+        if len(users) > 0:
+            return users[0]
+
+    def _process_results(self, participants, course_grades, course_progress, lesson_completions):
         """
         Integrates and process results set
         """
         participants_activation_links = self._participants_activation_urls(participants)
+        lesson_mapping = self._get_lesson_mapping(self._get_normal_user(participants))
 
         for course_participant in participants['results']:
             # add in user activation link
@@ -2207,7 +2256,14 @@ class CourseParticipantStats(object):
             # if a record parser is supplied, pass record through it
             if self.record_parser:
                 self.record_parser(course_participant)
-
+            course_participant['lesson_completions'] = {}
+            lesson_completion = lesson_completions[course_participant['id']]
+            for lesson in lesson_completion['chapter']:
+                completion_percentage = round_to_int(float(lesson['completion']['ratio']) * 100)
+                block_key = lesson['block_key']
+                if block_key in lesson_mapping:
+                    lesson_number = lesson_mapping[block_key]
+                    course_participant['lesson_completions'][lesson_number] = completion_percentage
         return participants
 
     def _participants_activation_urls(self, participants_data):

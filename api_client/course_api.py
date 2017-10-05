@@ -1,25 +1,24 @@
 ''' API calls with respect to courses '''
-from functools import wraps
-from django.utils.decorators import available_attrs
 
-from django.conf import settings
+import json
 from urllib import urlencode
 
-from api_error import api_error_protect
-
-from .json_object import CategorisedJsonParser
-from .json_object import CategorisedJsonObject
-from .json_object import JsonParser as JP
-from .json_object import JsonObject
-from .json_requests import GET, POST, DELETE
+from django.conf import settings
 
 from api_data_manager.course_data import COURSE_PROPERTIES
 from api_data_manager.decorators import course_api__cache_wrapper
 
+from .api_error import api_error_protect
+from . import course_models
 from .group_models import GroupInfo
-from . import course_models, user_models
+from .json_object import CategorisedJsonParser
+from .json_object import CategorisedJsonObject
+from .json_object import JsonParser as JP
+from .json_object import JsonObject
+from .json_requests import GET, POST
+from .oauth2_requests import get_oauth2_session
+from . import user_models
 
-import json
 
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
 
@@ -443,6 +442,20 @@ def get_course_content_groups(course_id, content_id):
     )
 
     return JP.from_json(response.read(), course_models.CourseContentGroup)
+
+
+@api_error_protect
+def get_user_lesson_completion(username, course_id, edx_oauth2_session=None):
+    ''' Query the LMS for completion data. '''
+    if not edx_oauth2_session:
+        edx_oauth2_session = get_oauth2_session()
+    url = '{}/api/completion/v0/course/{}/?username={}&requested_fields=chapter'.format(
+        settings.API_SERVER_ADDRESS,
+        course_id,
+        username
+    )
+    response = edx_oauth2_session.get(url)
+    return response.json()
 
 
 @api_error_protect
