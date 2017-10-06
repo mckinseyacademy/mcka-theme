@@ -1,22 +1,15 @@
 {
-   "applinks":{
-      "apps":[
+  "applinks": {
+    "apps": [
 
-      ],
-      "details":[
-         {
-            "appID":"9JA89QQLNQ.com.apple.wwdc",
-            "paths":[
-               "/wwdc/news/",
-               "/videos/wwdc/2015/*"
-            ]
-         },
-         {
-            "appID":"ABCD1234.com.apple.wwdc",
-            "paths":[
-               "*"
-            ]
-         }
-      ]
-   }
+    ],
+    "details": [
+      {
+        "appID": "FN75PC35CY.com.mckinsey.Pique",
+        "paths": [
+          "*"
+        ]
+      }
+    ]
+  }
 }
