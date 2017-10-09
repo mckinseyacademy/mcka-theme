@@ -21,10 +21,6 @@ function checkTaskStatus(taskId, progressElement, loadingImage, callback){
 
               callback(data);
             }
-            if (data['error_list'].length > 0)
-            {
-              console.log(data['error_list']);
-            }
           }
         })
         .fail(function(data) {

@@ -1,12 +1,18 @@
 """
 Celery tasks related to admin app
 """
+from collections import OrderedDict
+
+from django.core.files.storage import default_storage
+
 from celery.decorators import task
 from celery.utils.log import get_task_logger
+from celery import states as celery_states
 
 from api_client import course_api
 from api_client import group_api
 from api_client.api_error import ApiError
+from util.csv_helpers import CSVWriter
 
 from .controller import CourseParticipantStats
 
@@ -61,9 +67,68 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         if not participants_stats.get('next'):
             break
 
+    groupworks, assesments = OrderedDict(), OrderedDict()
+
+    # custom processing is needed for groupworks and assesments data
+    # as csv column names are also dynamic for them
+    for participant in participants_data:
+        for groupwork in participant.get('groupworks'):
+            label = groupwork.get('label')
+            key = 'GW_{}'.format(label)
+
+            if key not in groupworks:
+                groupworks[key] = 'Group Work: ' + label
+
+            participant[key] = '{}%'.format(groupwork.get('percent'))
+
+        for assesment in participant.get('assessments'):
+            label = assesment.get('label')
+            key = 'AS_{}'.format(label)
+
+            if key not in assesments:
+                assesments[key] = 'Assessment: ' + label
+
+            participant[key] = '{}%'.format(assesment.get('percent'))
+
+    fields = OrderedDict([
+        ("ID", ("id", '')),
+        ("First name", ("first_name", '')),
+        ("Last name", ("last_name", '')),
+        ("Username", ("username", '')),
+        ("Email", ("email", '')),
+        ("Company", ("organizations_display_name", '')),
+        ("Status", ("custom_user_status", '')),
+        ("Activated", ("custom_activated", '')),
+        ("Last login", ("custom_last_login", '')),
+        ("Progress", ("progress", '')),
+        ("Proficiency", ("proficiency", '')),
+        ("Activation Link", ("activation_link", '')),
+        ("Country", ("country", '')),
+    ])
+
+    # update fields with groupworks/assignments data
+    for label, title in (groupworks.items() + assesments.items()):
+        fields.update({title: (label, '0%')})
+
+    file_path = 'csv_exports/{}_user_stats.csv'.format(task_id)
+
+    try:
+        csv_file = default_storage.open(file_path, 'w')
+    except:
+        course_participants_data_retrieval_task.update_state(
+            task_id=task_id, state=celery_states.FAILURE
+        )
+    else:
+        writer = CSVWriter(csv_file, fields, participants_data)
+        writer.write_csv()
+
+        file_path = default_storage.url(file_path)
+
+        csv_file.close()
+
     logger.info('Finished - {}'.format(task_log_msg))
 
-    return participants_data
+    return file_path
 
 
 @task(name='admin.course_notifications_data_retrieval_task')

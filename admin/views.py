@@ -1184,7 +1184,9 @@ def download_task_generated_csv(request, task_id):
         raise Http404
 
     if task_name == 'participants_stats':
-        csv_data = get_participants_stats_csv_data(task_id)
+        # get csv url from celery result backend
+        csv_url = BulkTaskRunner.get_task_result(task_id)
+        return HttpResponseRedirect(redirect_to=csv_url)
     elif task_name == 'push_notifications_data':
         csv_data = get_notifications_csv_data(task_id)
     else:
