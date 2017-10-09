@@ -54,8 +54,8 @@ Apros.models.City = Backbone.Model.extend({
       properties: {
         popup: '<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name + '</div><div class="person-title">' + user.title + '</div>',
         icon: {
-          iconUrl: user.avatar_url,
-          iconRetinaUrl: user.avatar_url,
+          iconUrl: user.image_url_small,
+          iconRetinaUrl: user.image_url_small,
           iconSize: [size, size],
           iconAnchor: [-8 * idx, (size / 2 * idx) + size],
           className: className

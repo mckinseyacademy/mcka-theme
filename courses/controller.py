@@ -516,7 +516,6 @@ def tailor_leader_list(leaders):
         if hasattr(leader, 'score'):
             leader.points = leader.score
 
-        user_models.UserResponse.profile_image_urls(leader.profile_image)
 
 def social_total(social_metrics):
     social_total = 0

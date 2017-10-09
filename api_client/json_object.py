@@ -153,7 +153,7 @@ class JsonObjectWithImage(JsonObject):
 
     @classmethod
     def default_image_url(cls):
-        return urlparse.urljoin(settings.API_SERVER_ADDRESS, 'static/images/profiles/default_500.png')
+        return "/static/image/empty_avatar.png"
 
     @classmethod
     def save_profile_image(cls, cropped_example, image_url, new_image_url=None):
@@ -178,28 +178,6 @@ class JsonObjectWithImage(JsonObject):
         except:
             pass
         cls._save_image(cropped_example, new_image_url)
-
-    @classmethod
-    def profile_image_urls(cls, profile_image):
-        if hasattr(profile_image, 'image_url_full'):
-            profile_image.image_url_full = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_full)
-        else:
-            profile_image.image_url_full = cls.default_image_url()
-
-        if hasattr(profile_image, 'image_url_large'):
-            profile_image.image_url_large = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_large)
-        else:
-            profile_image.image_url_large = cls.default_image_url()
-
-        if hasattr(profile_image, 'image_url_medium'):
-            profile_image.image_url_medium = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_medium)
-        else:
-            profile_image.image_url_medium = cls.default_image_url()
-
-        if hasattr(profile_image, 'image_url_small'):
-            profile_image.image_url_small = urlparse.urljoin(settings.API_SERVER_ADDRESS, profile_image.image_url_small)
-        else:
-            profile_image.image_url_small = cls.default_image_url()
 
     @classmethod
     def _save_image(cls, image_data, image_url):
