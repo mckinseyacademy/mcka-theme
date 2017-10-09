@@ -30,7 +30,7 @@
       #participantsTopDetailsContainer
         .row
           .large-2.columns
-            .participantImage{ :style => 'background-image:url("={avatar_url}")'}
+            .participantImage{ :style => 'background-image:url("={image_url_large}")'}
           .large-5.columns
             .participantNameAndLogin
               .participantFullName
@@ -116,7 +116,7 @@
                 %a.disabledATag{:href => '/admin/companies/#{company_id}', :data-id => '#{company_id}'}>
                   ={company_name}
               - else
-                %a{:href => '/admin/companies/#{company_id}', :target => '_self', :data-id => '#{company_id}'}> 
+                %a{:href => '/admin/companies/#{company_id}', :target => '_self', :data-id => '#{company_id}'}>
                   ={company_name}
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
@@ -239,7 +239,7 @@
               Gender
             .participantGenderValue
               %select{:name => "gender"}
-                - if gender == 'M' 
+                - if gender == 'M'
                   %option{:value => "M", :selected => 'True'} Male
                   %option{:value => "F"} Female
                   %option{:value => ""} N/A

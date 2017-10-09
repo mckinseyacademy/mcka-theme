@@ -12,6 +12,7 @@ import math
 import logging
 import string
 import re
+import StringIO
 
 from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
@@ -30,6 +31,9 @@ from courses.models import FeatureFlags
 from api_client import user_api, course_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
+from api_client import platform_api
+from api_client import http_request_methods
+
 from admin.models import Client, Program, LearnerDashboard, CourseRun
 from admin.controller import load_course
 from admin.models import AccessKey, ClientCustomization
@@ -60,7 +64,7 @@ from admin.views import ajaxify_http_redirects
 
 log = logging.getLogger(__name__)
 
-VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "password", "is_active", "title", "avatar_url"]
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "password", "is_active", "title", "profile_image"]
 USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]")
 
 LOGIN_MODE_COOKIE = 'login_mode'
@@ -811,7 +815,7 @@ def user_profile(request):
     ''' gets user_profile information in html snippet '''
     user = user_api.get_user(request.user.id)
     user_data = {
-        "user_image_url": user.image_url(size=160, path='absolute'),
+        "user_image_url": user.image_url_large,
         "user": user
     }
 
@@ -827,32 +831,35 @@ def user_profile_image_edit(request):
         x2Position = request.POST.get('x2-position')
         y1Position = request.POST.get('y1-position')
         y2Position = request.POST.get('y2-position')
-        profileImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2]
-        avatar_url = user_api.get_user(user_id).image_url(size=None, path='relative')
+        image_url = request.POST.get('upload-image-url')
 
         from PIL import Image
         from django.core.files.storage import default_storage
         from django.core.files.base import ContentFile
 
-        image_url = _get_stored_image_url(request, profileImageUrl)
-        if avatar_url != JsonObjectWithImage.default_image_url():
-            avatar_url = _get_stored_image_url(request, avatar_url)
+        left = int(x1Position)
+        top = int(y1Position)
+        right = int(x2Position)
+        bottom = int(y2Position)
+        if settings.API_SERVER_ADDRESS in request.POST.get('upload-image-url'):
+            response = http_request_methods.GET(image_url)
+            image = StringIO.StringIO(response.content)
+        else:
+            image_url = urlparse.urlparse(image_url)[2]
+            temp_image_url = _get_stored_image_url(request, image_url)
+            image = default_storage.open(temp_image_url)
+        original = Image.open(image)
+        width, height = original.size   # Get dimensions
+        cropped_example = original.crop((left, top, right, bottom))
+        avatar_image_io = StringIO.StringIO()
+        cropped_example.convert('RGB').save(avatar_image_io, format='JPEG')
+        avatar_image_io.seek(0)
+        avatar_file_data = {'file': ('avatar.jpg', avatar_image_io, 'image/jpeg')}
+        response = platform_api.update_user_profile_image(
+            request.user.username,
+            avatar_file_data
+        )
 
-        if default_storage.exists(image_url):
-
-            original = Image.open(default_storage.open(image_url))
-
-            width, height = original.size   # Get dimensions
-            left = int(x1Position)
-            top = int(y1Position)
-            right = int(x2Position)
-            bottom = int(y2Position)
-            cropped_example = original.crop((left, top, right, bottom))
-            new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
-            JsonObjectWithImage.save_profile_image(cropped_example, avatar_url, new_image_url=new_image_url)
-            user_api.update_user_information(user_id, {'avatar_url': '/accounts/' + new_image_url})
-            request.user.avatar_url = '/accounts/' + new_image_url
-            request.user.save()
         RemoteUser.remove_from_cache(user_id)
 
         # delete user profile images from TEMP_IMAGE_FOLDER
@@ -871,7 +878,7 @@ def change_profile_image(request, user_id, template='change_profile_image', user
     if user_profile_image:
         profile_image = user_profile_image
     else:
-        profile_image = user.image_url(size=None, path='absolute')
+        profile_image = user.image_url_full
 
     if '?' in profile_image:
         profile_image = profile_image + '&' + format(datetime.datetime.now(), u'U')
@@ -907,16 +914,16 @@ def upload_profile_image(request, user_id):
 
             temp_image = request.FILES['profile_image']
             allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
-            avatar_url = request.user.avatar_url
+            profile_image_url = request.user.image_url_full
 
             if temp_image.content_type in allowed_types:
                 temp_image_url = settings.TEMP_IMAGE_FOLDER + 'profile_image-{}-{}.jpg'.format(user_id, datetime.datetime.now().strftime("%s"))
                 JsonObjectWithImage.save_profile_image(Image.open(temp_image), 'images/' + temp_image_url)
-                avatar_url = '/accounts/images/' + temp_image_url
+                profile_image_url = '/accounts/images/' + temp_image_url
             else:
                 error = "Error uploading file. Please try again and be sure to use an accepted file format."
 
-            return HttpResponse(change_profile_image(request, request.user.id, template='change_profile_image', user_profile_image=avatar_url, error=error), content_type='text/html')
+            return HttpResponse(change_profile_image(request, request.user.id, template='change_profile_image', user_profile_image=profile_image_url, error=error), content_type='text/html')
         else:
             error = "Error uploading file. Please try again and be sure to use an accepted file format."
             return HttpResponse(change_profile_image(request, request.user.id, template='change_profile_image', error=error), content_type='text/html')

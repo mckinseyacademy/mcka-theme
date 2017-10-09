@@ -53,7 +53,7 @@
             .user-name= user.username
             %i.fa.fa-sort-desc
             .user-image
-              %img{src: "#{user.image_url}", alt: "#{user.username}"}
+              %img{src: "#{user.image_url_small}", alt: "#{user.username}"}
             #profile-container{data-dropdown-content: "true"}
   - block program_bar
     - if program and course and course.started

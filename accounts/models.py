@@ -20,9 +20,6 @@ from api_client import user_api
 
 class RemoteUser(AbstractUser):
     ''' user object that exists only in cache '''
-    avatar_url = None
-    avatar_url_absolute = None
-
     session_key = db_models.CharField('session_key', max_length=255, unique=True)
 
     def update_response_fields(self, user_response, session_key=None):
@@ -32,16 +29,11 @@ class RemoteUser(AbstractUser):
         self.email = user_response.email
         self.username = user_response.username
         self.id = user_response.id
-        self.avatar_url = user_response.image_url()
-        self.avatar_url_relative = user_response.image_url(path='relative')
+        self.image_url_full = user_response.image_url_full
+        self.image_url_large = user_response.image_url_large
+        self.image_url_medium = user_response.image_url_medium
+        self.image_url_small = user_response.image_url_small
         self.is_staff = user_response.is_staff
-
-    def image_url(self):
-        ''' get image URL for user '''
-        return self.avatar_url
-
-    #USERNAME_FIELD = "username"
-    #REQUIRED_FIELDS = ["session_key"]
 
     def save(self, **kwargs):
         '''
@@ -68,15 +60,6 @@ class RemoteUser(AbstractUser):
     def remove_from_cache(user_id):
         ''' remove user from cache when tearing down session '''
         cache.delete('user_' + str(user_id))
-
-#    def is_authenticated(self):
-#        return True
-
-#    def get_full_name(self):
-#        return self.username
-
-#    def get_short_name(self):
-#        return self.username
 
     @cached_property
     def is_mcka_admin(self):
@@ -143,7 +126,7 @@ class UserActivation(db_models.Model):
 
     @classmethod
     def user_activation_by_task_key(cls, user, task_key, company_id):
-        activation_record = cls.objects.create(user_id=user.id, activation_key=cls.generate_activation_key(user.email), task_key=task_key, 
+        activation_record = cls.objects.create(user_id=user.id, activation_key=cls.generate_activation_key(user.email), task_key=task_key,
             first_name=user.first_name, last_name=user.last_name, email=user.email, company_id=company_id)
         activation_record.save()
         return activation_record

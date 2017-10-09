@@ -49,8 +49,7 @@
             %tr.student{id: "#{student.id}"}
               %td
                 %div.user-image
-                  -if student.avatar_url
-                    %img{src: "#{student.avatar_url}"}
+                  %img{src: "#{student.image_url_medium}"}
               %td
                 %a.show-user-progress{'data-link': '/admin/client-admin/#{client_id}/courses/#{course_id}/users/#{student.id}/progress', 'data-userid': '#{student.id}'}
                   %i.fa.fa-caret-right.collapse-arrow
