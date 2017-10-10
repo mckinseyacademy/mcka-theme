@@ -19,21 +19,30 @@ class UserResponse(JsonObjectWithImage):
     required_fields = ["email", "username"]
     date_fields = ["created"]
 
+    def _get_profile_image_absolute_url(self, size_name):
+        if self.profile_image.has_image and settings.DEBUG:
+            return urljoin(
+                settings.API_SERVER_ADDRESS,
+                getattr(self.profile_image, size_name)
+            )
+
+        return getattr(self.profile_image, size_name)
+
     @property
     def image_url_full(self):
-        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_full)
+        return self._get_profile_image_absolute_url('image_url_full')
 
     @property
     def image_url_large(self):
-        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_large)
+        return self._get_profile_image_absolute_url('image_url_large')
 
     @property
     def image_url_medium(self):
-        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_medium)
+        return self._get_profile_image_absolute_url('image_url_medium')
 
     @property
     def image_url_small(self):
-        return urljoin(settings.API_SERVER_ADDRESS, self.profile_image.image_url_small)
+        return self._get_profile_image_absolute_url('image_url_small')
 
     def get(self, attr):
         if hasattr(self, attr):
