@@ -573,6 +573,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
     },
     /** Called back when CSV generation is completed */
     csvDownloadCallback: function functionName(_this, data) {
+      if(data['values'].failed == 1){
+        $('#courseDetailsMainModal').find('.courseModalContent')
+            .text('Task failed to execute. Please retry later.');
+        return;
+      }
       var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
       saveButton.removeAttr('disabled');
       saveButton.removeClass('disabled');
