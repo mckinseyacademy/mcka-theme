@@ -444,12 +444,12 @@
           if (xhr.status === 200)
           {
             $(status_element).text('Progress: '+ data['values'].progress + '%');
-            if (data['values'].completed == 1)
+            if (data['values'].completed == 1 || data['values'].failed == 1)
             {
               $(status_element).parent().find('.loadingIcon').addClass('hidden');
               clearInterval(interval_id);
 
-              _this.csvDownloadCallback(_this, _data);
+              _this.csvDownloadCallback(_this, data);
             }
           }
         })

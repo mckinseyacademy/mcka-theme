@@ -1,13 +1,18 @@
 """
 Celery tasks related to admin app
 """
+import os
 from collections import OrderedDict
 
+from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files import File
 from django.core.files.storage import default_storage
 
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from celery import states as celery_states
+from celery.exceptions import Ignore
 
 from api_client import course_api
 from api_client import group_api
@@ -19,7 +24,7 @@ from .controller import CourseParticipantStats
 logger = get_task_logger(__name__)
 
 
-@task(name='admin.course_participants_data_retrieval_task')
+@task(name='admin.course_participants_data_retrieval_task', max_retries=3)
 def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url):
     """
     Retrieves course participants' data using API
@@ -110,25 +115,51 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     for label, title in (groupworks.items() + assesments.items()):
         fields.update({title: (label, '0%')})
 
-    file_path = 'csv_exports/{}_user_stats.csv'.format(task_id)
+    # write to a local CSV file
+    file_name = '{}_user_stats.csv'.format(course_id.replace('/', '_'))
+    local_file_path = os.path.join(settings.BASE_DIR, file_name)
 
     try:
-        csv_file = default_storage.open(file_path, 'w')
-    except:
+        f = open(local_file_path, 'w+')
+        csv_file = File(f)
+    except IOError as e:
         course_participants_data_retrieval_task.update_state(
             task_id=task_id, state=celery_states.FAILURE
         )
+        logger.error('Failed creating CSV file - {}'.format(e.message))
+        raise Ignore()
     else:
         writer = CSVWriter(csv_file, fields, participants_data)
         writer.write_csv()
+        csv_file.seek(0)
 
-        file_path = default_storage.url(file_path)
+    logger.info('Created temp CSV file - {}'.format(task_log_msg))
 
+    storage_path = 'csv_exports/{}'.format(file_name)
+
+    try:
+        storage_path = default_storage.save(storage_path, ContentFile(csv_file.read()))
+    except Exception as e:
+        course_participants_data_retrieval_task.update_state(
+            task_id=task_id, state=celery_states.FAILURE
+        )
+        logger.error('Failed saving CSV to S3 - {}'.format(e.message))
+        raise course_participants_data_retrieval_task.retry(exc=e)
+    else:
+        logger.error('Saved CSV to S3 - {}'.format(task_log_msg))
+
+        storage_url = default_storage.url(storage_path)
         csv_file.close()
+
+        try:
+            os.remove(local_file_path)
+            logger.info('Removed temp file - {}'.format(task_log_msg))
+        except IOError:
+            pass
 
     logger.info('Finished - {}'.format(task_log_msg))
 
-    return file_path
+    return storage_url
 
 
 @task(name='admin.course_notifications_data_retrieval_task')
