@@ -310,3 +310,23 @@
     width: calc(100% - 40px) !important;
   }
 }
+
+[class*="step-builder"]{
+  .choices{
+    .choices-list{
+      label{
+        @include mobile {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .submit{
+    input[type="button"]{
+      @include mobile{
+        padding-right: 1rem;
+        padding-left: 1rem;
+      }
+    }
+  }
+}
