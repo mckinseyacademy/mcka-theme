@@ -330,3 +330,12 @@
     }
   }
 }
+
+.poll-result{
+  input[type="radio"]{
+    @include mobile{
+      height: 20px;
+      vertical-align: middle;
+    }
+  }
+}
