@@ -1,15 +1,16 @@
 {
-  "applinks": {
-    "apps": [
+   "applinks":{
+      "apps":[
 
-    ],
-    "details": [
-      {
-        "appID": "FN75PC35CY.com.mckinsey.Pique",
-        "paths": [
-          "*"
-        ]
-      }
-    ]
-  }
+      ],
+      "details":[
+         {
+            "appID":"FN75PC35CY.com.mckinsey.Pique",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         }
+      ]
+   }
 }
