@@ -1,0 +1,8 @@
+<vertical display_name="Problem builder2">
+  <problem-builder url_name="3f21285e4e19494393c09c385012afb1" xblock-family="xblock.v1">
+    <pb-completion url_name="87b25ab7881a4301881672c2f8048adb" xblock-family="xblock.v1"/>
+  </problem-builder>
+  <problem-builder url_name="fce66bf85b904bb3b41cef2112046bd8" xblock-family="xblock.v1" display_submit="false">
+    <pb-answer-recap url_name="cd5eac848b784c4682facb0272aa2908" xblock-family="xblock.v1" name="940b45b"/>
+  </problem-builder>
+</vertical>

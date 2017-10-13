@@ -1,0 +1,120 @@
+{
+    "course/2017_1": {
+        "advanced_modules": [
+            "image-explorer", 
+            "mentoring", 
+            "mentoring-dataexport", 
+            "ooyala-player", 
+            "adventure", 
+            "drag-and-drop-v2", 
+            "discussion-course", 
+            "discussion-forum", 
+            "adventures", 
+            "poll", 
+            "group-project", 
+            "problem-builder", 
+            "step-builder", 
+            "gp-v2-project", 
+            "survey", 
+            "diagnostic-feedback", 
+            "eoc-journal", 
+            "chat"
+        ], 
+        "cert_html_view_enabled": true, 
+        "course_image": "RTS_IMP_PHOTO_DD.png", 
+        "discussion_topics": {
+            "General": {
+                "id": "i4x-Arbisoft-arb001-course-2017_1"
+            }
+        }, 
+        "display_name": "Ficus test course", 
+        "graceperiod": "", 
+        "instructor_info": {
+            "instructors": []
+        }, 
+        "language": "en", 
+        "learning_info": [], 
+        "minimum_grade_credit": 0.8, 
+        "start": "2017-01-01T00:00:00Z", 
+        "tabs": [
+            {
+                "course_staff_only": false, 
+                "name": "Home", 
+                "type": "course_info"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Course", 
+                "type": "courseware"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Discussion", 
+                "type": "discussion"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Wiki", 
+                "type": "wiki"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Progress", 
+                "type": "progress"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Estimated Time", 
+                "type": "static_tab", 
+                "url_slug": "2f1779cdeedc47fe82819d21673b558f"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Lesson1", 
+                "type": "static_tab", 
+                "url_slug": "76cab648e2de4ab7a58c499b63a07e98"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Lesson2", 
+                "type": "static_tab", 
+                "url_slug": "3e6ed82c654d445fa3003019c03c3a5e"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Lesson3", 
+                "type": "static_tab", 
+                "url_slug": "c10116ddde574206a5af8f04420c9756"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Lesson4", 
+                "type": "static_tab", 
+                "url_slug": "9ebe20f463d147d385966002a368c998"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Lesson5", 
+                "type": "static_tab", 
+                "url_slug": "caba0fe942ae45438f9719a998bfe021"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Lesson6", 
+                "type": "static_tab", 
+                "url_slug": "179d11d39eea4cf5a9b984d3ca99ebe2"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Textbooks", 
+                "type": "textbooks"
+            }, 
+            {
+                "course_staff_only": false, 
+                "name": "Resources", 
+                "type": "static_tab", 
+                "url_slug": "758ffa29db344730ad828c14dad92770"
+            }
+        ]
+    }
+}

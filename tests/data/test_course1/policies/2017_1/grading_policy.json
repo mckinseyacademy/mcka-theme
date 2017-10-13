@@ -1,0 +1,21 @@
+{
+    "GRADER": [
+        {
+            "drop_count": 0, 
+            "min_count": 1, 
+            "short_label": "HW", 
+            "type": "Assessment", 
+            "weight": 0.2
+        }, 
+        {
+            "drop_count": 0, 
+            "min_count": 1, 
+            "short_label": "GW", 
+            "type": "Group_Project_TEAM", 
+            "weight": 0.8
+        }
+    ], 
+    "GRADE_CUTOFFS": {
+        "Pass": 0.7
+    }
+}

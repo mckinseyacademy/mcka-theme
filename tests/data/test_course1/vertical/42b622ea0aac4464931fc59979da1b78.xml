@@ -1,0 +1,185 @@
+<vertical display_name="Group work">
+  <gp-v2-project url_name="f9be55388ad14a18a57ba41b1783b36b" xblock-family="xblock.v1">
+    <gp-v2-activity url_name="61321852ee124526bc693134c330e34f" xblock-family="xblock.v1" weight="100.0" group_reviews_required_count="0" display_name="Kickoff">
+      <gp-v2-stage-basic url_name="71f2939bc5fa49d58ba30025a86952c9" xblock-family="xblock.v1" display_name="overview">
+        <gp-v2-resource url_name="6d0404ba2e864007b8fd5ad82b688943" xblock-family="xblock.v1" display_name="Kickoff deliverable" description="Instructions and deliverable to complete and upload for the Kickoff activity" resource_location="/static/Link_to_RTS_IMP_PDA_Tool.pdf"/>
+        <html url_name="a0a4f7cf1cf54b1a9b3bc3b4988fda66"/>
+      </gp-v2-stage-basic>
+      <gp-v2-stage-basic url_name="dd567788f5774642825f3d89ec31cb85" xblock-family="xblock.v1" display_name="Meet your team">
+        <html url_name="6a36ec9f0baa493b81e8b23623ef14ed"/>
+        <gp-v2-project-team url_name="87655ca669144a40a4688b02998e6752" xblock-family="xblock.v1"/>
+      </gp-v2-stage-basic>
+      <gp-v2-stage-submission url_name="15dd532e07664d9489abf748b8c7074f" xblock-family="xblock.v1" close_date="2018-12-08T00:00:00.000000" display_name="Upload Kickoff deliverable">
+        <html url_name="9c6202d687d44dc08f386675d2998907"/>
+        <gp-v2-submission url_name="e4437445da5848e68e84c3cb8dba31ac" xblock-family="xblock.v1" display_name="Kickoff deliverable" description="Completed deliverable for the Kickoff activity" upload_id="Kickoff_deliverable"/>
+        <gp-v2-static-submissions url_name="bb621d3641de427dad8782d0c77d9efd" xblock-family="xblock.v1"/>
+      </gp-v2-stage-submission>
+      <gp-v2-stage-completion url_name="ce32b769c0ca4899a39c5baf263f4ed9" xblock-family="xblock.v1"/>
+      <gp-v2-stage-basic url_name="d4494122d908461e98bdc2a8e85095ec" xblock-family="xblock.v1" display_name="FAQ">
+        <html url_name="818eea7ca12f4c86a661e08cf78262a7"/>
+      </gp-v2-stage-basic>
+      <gp-v2-stage-peer-review url_name="112fd1f97a5a4dd9a8f7e3d3b6b106a3" xblock-family="xblock.v1" display_name="TA Grading" open_date="">
+        <html url_name="4748e825c6c8418588e53a6b07eb6ba7"/>
+        <gp-v2-group-selector url_name="35e38496dbce42b38bd5b0b33c29c386" xblock-family="xblock.v1"/>
+        <gp-v2-static-grade-rubric url_name="3d8a405ab6f84730b82d78463ec72060" xblock-family="xblock.v1"/>
+        <gp-v2-review-question url_name="8114113483e345dfbf3a5b42bfcedd14" xblock-family="xblock.v1" required="true" grade="true" title="How do you rate this students performance?" question_id="48426fb3fe76f486d1cf0490124eddab9447b1b6">
+          <ns0:question_content xmlns:ns0="http://code.edx.org/xblock/option">&lt;select&gt;
+              &lt;option value=""&gt;Grade&lt;/option&gt;
+              &lt;option value="0"&gt;0&lt;/option&gt;
+              &lt;option value="5"&gt;5&lt;/option&gt;
+              &lt;option value="10"&gt;10&lt;/option&gt;
+              &lt;option value="15"&gt;15&lt;/option&gt;
+              &lt;option value="20"&gt;20&lt;/option&gt;
+              &lt;option value="25"&gt;25&lt;/option&gt;
+              &lt;option value="30"&gt;30&lt;/option&gt;
+              &lt;option value="35"&gt;35&lt;/option&gt;
+              &lt;option value="40"&gt;40&lt;/option&gt;
+              &lt;option value="45"&gt;45&lt;/option&gt;
+              &lt;option value="50"&gt;50&lt;/option&gt;
+              &lt;option value="55"&gt;55&lt;/option&gt;
+              &lt;option value="60"&gt;60&lt;/option&gt;
+              &lt;option value="65"&gt;65&lt;/option&gt;
+              &lt;option value="70"&gt;70&lt;/option&gt;
+              &lt;option value="75"&gt;75&lt;/option&gt;
+              &lt;option value="80"&gt;80&lt;/option&gt;
+              &lt;option value="85"&gt;85&lt;/option&gt;
+              &lt;option value="90"&gt;90&lt;/option&gt;
+              &lt;option value="95"&gt;95&lt;/option&gt;
+              &lt;option value="100"&gt;100&lt;/option&gt;
+            &lt;/select&gt;</ns0:question_content>
+        </gp-v2-review-question>
+        <gp-v2-review-question url_name="78a7472442194734b0b3a2535627b95e" xblock-family="xblock.v1" required="true" title="Please comment on his/her performance" question_id="8acc1b41c246e0e5644aa663d7a8e0daa78a959c">
+          <ns1:question_content xmlns:ns1="http://code.edx.org/xblock/option">&lt;textarea/&gt;</ns1:question_content>
+        </gp-v2-review-question>
+        <gp-v2-review-question url_name="3f020f88f9a7476fbdbdf284a5357327" xblock-family="xblock.v1" required="true" grade="true" title="Rate his/her skills" question_id="3029c92d3135086e90556c0d03c91441251a83db">
+          <ns2:question_content xmlns:ns2="http://code.edx.org/xblock/option">&lt;select&gt;
+              &lt;option value=""&gt;Grade&lt;/option&gt;
+              &lt;option value="0"&gt;0&lt;/option&gt;
+              &lt;option value="5"&gt;5&lt;/option&gt;
+              &lt;option value="10"&gt;10&lt;/option&gt;
+              &lt;option value="15"&gt;15&lt;/option&gt;
+              &lt;option value="20"&gt;20&lt;/option&gt;
+              &lt;option value="25"&gt;25&lt;/option&gt;
+              &lt;option value="30"&gt;30&lt;/option&gt;
+              &lt;option value="35"&gt;35&lt;/option&gt;
+              &lt;option value="40"&gt;40&lt;/option&gt;
+              &lt;option value="45"&gt;45&lt;/option&gt;
+              &lt;option value="50"&gt;50&lt;/option&gt;
+              &lt;option value="55"&gt;55&lt;/option&gt;
+              &lt;option value="60"&gt;60&lt;/option&gt;
+              &lt;option value="65"&gt;65&lt;/option&gt;
+              &lt;option value="70"&gt;70&lt;/option&gt;
+              &lt;option value="75"&gt;75&lt;/option&gt;
+              &lt;option value="80"&gt;80&lt;/option&gt;
+              &lt;option value="85"&gt;85&lt;/option&gt;
+              &lt;option value="90"&gt;90&lt;/option&gt;
+              &lt;option value="95"&gt;95&lt;/option&gt;
+              &lt;option value="100"&gt;100&lt;/option&gt;
+            &lt;/select&gt;</ns2:question_content>
+        </gp-v2-review-question>
+      </gp-v2-stage-peer-review>
+      <gp-v2-stage-grade-display url_name="e8795a61854a4600bf3b420318ff9fc5" xblock-family="xblock.v1" display_name="TA feedback">
+        <gp-v2-group-assessment url_name="a48e72f8c70d4b06b5826f8f49b272b2" xblock-family="xblock.v1" show_mean="true" question_id="48426fb3fe76f486d1cf0490124eddab9447b1b6"/>
+        <gp-v2-group-assessment url_name="827978bc08df4581a920d96838697fc7" xblock-family="xblock.v1" question_id="8acc1b41c246e0e5644aa663d7a8e0daa78a959c"/>
+        <gp-v2-group-assessment url_name="69fa1b2a46b546939103b83adc893849" xblock-family="xblock.v1" show_mean="true" question_id="3029c92d3135086e90556c0d03c91441251a83db"/>
+      </gp-v2-stage-grade-display>
+    </gp-v2-activity>
+    <gp-v2-activity url_name="6480124998df433aa7f46edcd0054c49" xblock-family="xblock.v1" display_name="Plan a coaching session">
+      <gp-v2-stage-basic url_name="d3a97f46509b40dcab609dc6843a7d2e" xblock-family="xblock.v1" display_name="Overview">
+        <gp-v2-resource url_name="71a1dd370f054de1b7085afb9ddbb6b5" xblock-family="xblock.v1" display_name="Plan a coaching session Activity Guide" description="Primary group work assignment, instructions and deliverable for groups to upload and complete" resource_location="/static/Link_to_RTS_IMP_PDA_Tool.pdf"/>
+        <html url_name="2715c30952ee4730b78db65c7bedd3b5"/>
+      </gp-v2-stage-basic>
+      <gp-v2-stage-completion url_name="97b81fd055c043c3be6591dd6ae76d98" xblock-family="xblock.v1" display_name="Meeting pre-work (completed individually)">
+        <html url_name="8cdf7a7e54b94a42a757134857a3f543"/>
+      </gp-v2-stage-completion>
+      <gp-v2-stage-submission url_name="501a20e9bd4f429da06159fa5e7aadd1" xblock-family="xblock.v1" display_name="Upload Plan a coaching session  Activity Guide">
+        <html url_name="474a4a3ef6e64dc3af14f464ec480d88"/>
+        <gp-v2-submission url_name="fa3dfa7ee3c9490797db93e07efb0bab" xblock-family="xblock.v1" display_name="Plan a coaching session activity guide" upload_id="Plan_a_coaching_session_activity_guide"/>
+        <gp-v2-static-submissions url_name="a0f1b10ddfab4652868dca91a78a4782" xblock-family="xblock.v1"/>
+      </gp-v2-stage-submission>
+      <gp-v2-stage-peer-review url_name="ad4adeb6fdea40e0b9a45f772fd58bc0" xblock-family="xblock.v1" display_name="Peer Grading">
+        <gp-v2-group-selector url_name="8a9adac12fd543d19f727ab7e6b9f184" xblock-family="xblock.v1"/>
+        <gp-v2-review-question url_name="a38c381eea2e444394f27615fcceba7b" xblock-family="xblock.v1" required="true" grade="true" title="What is his score?" question_id="7cc5d0f593cb7ff7d618299e92e8ea80e0ca3ed2">
+          <ns3:question_content xmlns:ns3="http://code.edx.org/xblock/option">&lt;select&gt;
+              &lt;option value=""&gt;Grade&lt;/option&gt;
+              &lt;option value="0"&gt;0&lt;/option&gt;
+              &lt;option value="5"&gt;5&lt;/option&gt;
+              &lt;option value="10"&gt;10&lt;/option&gt;
+              &lt;option value="15"&gt;15&lt;/option&gt;
+              &lt;option value="20"&gt;20&lt;/option&gt;
+              &lt;option value="25"&gt;25&lt;/option&gt;
+              &lt;option value="30"&gt;30&lt;/option&gt;
+              &lt;option value="35"&gt;35&lt;/option&gt;
+              &lt;option value="40"&gt;40&lt;/option&gt;
+              &lt;option value="45"&gt;45&lt;/option&gt;
+              &lt;option value="50"&gt;50&lt;/option&gt;
+              &lt;option value="55"&gt;55&lt;/option&gt;
+              &lt;option value="60"&gt;60&lt;/option&gt;
+              &lt;option value="65"&gt;65&lt;/option&gt;
+              &lt;option value="70"&gt;70&lt;/option&gt;
+              &lt;option value="75"&gt;75&lt;/option&gt;
+              &lt;option value="80"&gt;80&lt;/option&gt;
+              &lt;option value="85"&gt;85&lt;/option&gt;
+              &lt;option value="90"&gt;90&lt;/option&gt;
+              &lt;option value="95"&gt;95&lt;/option&gt;
+              &lt;option value="100"&gt;100&lt;/option&gt;
+            &lt;/select&gt;</ns3:question_content>
+        </gp-v2-review-question>
+        <gp-v2-review-question url_name="bd8cba013f264055a87be545c84d0958" xblock-family="xblock.v1" required="true" title="Comments Please?" question_id="69fdef5a3cbe872682d81c0eb7ae31d74c1a06a0">
+          <ns4:question_content xmlns:ns4="http://code.edx.org/xblock/option">&lt;textarea/&gt;</ns4:question_content>
+        </gp-v2-review-question>
+      </gp-v2-stage-peer-review>
+      <gp-v2-stage-grade-display url_name="131df5d22cfc4385bafccc50f5d673f2" xblock-family="xblock.v1" display_name="Grade Display">
+        <html url_name="b2bb587d01454883aff66c161ac498b9"/>
+        <gp-v2-group-assessment url_name="bf690e1d2a314841b0a89684f40bec22" xblock-family="xblock.v1" show_mean="true" question_id="7cc5d0f593cb7ff7d618299e92e8ea80e0ca3ed2"/>
+        <gp-v2-group-assessment url_name="9e1e6c9fafd94b30bde2c7c212c4dc00" xblock-family="xblock.v1" question_id="69fdef5a3cbe872682d81c0eb7ae31d74c1a06a0"/>
+      </gp-v2-stage-grade-display>
+      <gp-v2-stage-team-evaluation url_name="c4f9aa59347b4cab87c3401f8cb075b9" xblock-family="xblock.v1" display_name="Evaluate your teammates">
+        <html url_name="89e05bc057fe4aa59ab111f513fbcc3a"/>
+        <gp-v2-peer-selector url_name="25efaf6a97ca4589aaf22d176d6b038d" xblock-family="xblock.v1"/>
+        <gp-v2-review-question url_name="e874ce86fd99434ba86fce1d6d627992" xblock-family="xblock.v1" required="true" grade="false" title="Numeric value?" question_id="9a4884a0c47c8afbf84905d597d9a655fa3b76d8">
+          <ns5:question_content xmlns:ns5="http://code.edx.org/xblock/option">&lt;select&gt;
+              &lt;option value=""&gt;Grade&lt;/option&gt;
+              &lt;option value="0"&gt;0&lt;/option&gt;
+              &lt;option value="5"&gt;5&lt;/option&gt;
+              &lt;option value="10"&gt;10&lt;/option&gt;
+              &lt;option value="15"&gt;15&lt;/option&gt;
+              &lt;option value="20"&gt;20&lt;/option&gt;
+              &lt;option value="25"&gt;25&lt;/option&gt;
+              &lt;option value="30"&gt;30&lt;/option&gt;
+              &lt;option value="35"&gt;35&lt;/option&gt;
+              &lt;option value="40"&gt;40&lt;/option&gt;
+              &lt;option value="45"&gt;45&lt;/option&gt;
+              &lt;option value="50"&gt;50&lt;/option&gt;
+              &lt;option value="55"&gt;55&lt;/option&gt;
+              &lt;option value="60"&gt;60&lt;/option&gt;
+              &lt;option value="65"&gt;65&lt;/option&gt;
+              &lt;option value="70"&gt;70&lt;/option&gt;
+              &lt;option value="75"&gt;75&lt;/option&gt;
+              &lt;option value="80"&gt;80&lt;/option&gt;
+              &lt;option value="85"&gt;85&lt;/option&gt;
+              &lt;option value="90"&gt;90&lt;/option&gt;
+              &lt;option value="95"&gt;95&lt;/option&gt;
+              &lt;option value="100"&gt;100&lt;/option&gt;
+            &lt;/select&gt;</ns5:question_content>
+        </gp-v2-review-question>
+        <gp-v2-review-question url_name="c95447a13c1347c289777776f087ce1c" xblock-family="xblock.v1" required="true" title="comments?" question_id="27336db2559f68a3a1f48a0603d5ce0c2ad5530a">
+          <ns6:question_content xmlns:ns6="http://code.edx.org/xblock/option">&lt;textarea/&gt;</ns6:question_content>
+        </gp-v2-review-question>
+      </gp-v2-stage-team-evaluation>
+      <gp-v2-stage-evaluation-display url_name="203f7528ec364b7095b365c34a394215" xblock-family="xblock.v1" display_name="Team evaluation">
+        <html url_name="94547d9f97614443b5347a9ff8a6b30d"/>
+        <gp-v2-peer-assessment url_name="1f944dfc8da64694a5cba4fba4522217" xblock-family="xblock.v1" show_mean="true" question_id="9a4884a0c47c8afbf84905d597d9a655fa3b76d8"/>
+        <gp-v2-peer-assessment url_name="c33d05e12cfe4691bec874302a974389" xblock-family="xblock.v1" question_id="27336db2559f68a3a1f48a0603d5ce0c2ad5530a"/>
+      </gp-v2-stage-evaluation-display>
+    </gp-v2-activity>
+    <gp-v2-navigator url_name="64e3bd3a177f4ebdabab55fd049677f4" xblock-family="xblock.v1">
+      <gp-v2-navigator-navigation url_name="916a7f9b3270471f886034513c740f17" xblock-family="xblock.v1"/>
+      <gp-v2-navigator-resources url_name="0ebb8827818e468f83b385bf5e14919f" xblock-family="xblock.v1"/>
+      <gp-v2-navigator-submissions url_name="f08c1abf74af43c98fc2b3bbbfaf3549" xblock-family="xblock.v1"/>
+      <gp-v2-navigator-ask-ta url_name="2ec0435c58374e5587ada702f7d18227" xblock-family="xblock.v1"/>
+      <gp-v2-navigator-private-discussion url_name="aeac09ef2bb344a98aa5c81c97037ccf" xblock-family="xblock.v1"/>
+    </gp-v2-navigator>
+    <discussion-forum url_name="067240f520554338a5e8c6814ab849a9" xblock-family="xblock.v1"/>
+  </gp-v2-project>
+</vertical>
