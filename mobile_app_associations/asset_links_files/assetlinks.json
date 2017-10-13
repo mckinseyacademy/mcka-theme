@@ -1,14 +1,54 @@
-[
-   {
-      "relation":[
-         "delegate_permission/common.handle_all_urls"
-      ],
-      "target":{
-         "namespace":"android_app",
-         "package_name":"com.pique.mobile",
-         "sha256_cert_fingerprints":[
-            "97:F8:BC:0C:32:A6:64:C4:DA:DF:CE:E1:99:C3:A6:08:8B:25:80:B8:13:FA:F9:81:66:E5:A9:22:A7:1A:1D:BB"
-         ]
-      }
-   }
-]
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.mckinseyacademy.android.debug",
+    "sha256_cert_fingerprints":
+    ["5E:84:50:47:46:BA:3D:6A:DE:30:83:A3:78:44:69:26:51:6E:AF:86:88:33:C2:29:6D:4A:E5:8F:C3:CB:14:76"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.mckinseyacademy.android.stage",
+    "sha256_cert_fingerprints":
+    ["5E:84:50:47:46:BA:3D:6A:DE:30:83:A3:78:44:69:26:51:6E:AF:86:88:33:C2:29:6D:4A:E5:8F:C3:CB:14:76"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.mckinseyacademy.android",
+    "sha256_cert_fingerprints":
+    ["A2:A6:50:68:52:15:FB:4D:35:E4:1D:14:A6:D8:B6:21:11:28:0A:59:90:73:C1:26:E7:FD:BC:A7:BC:19:F5:AE"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.rtsacademy.android.debug",
+    "sha256_cert_fingerprints":
+    ["5E:84:50:47:46:BA:3D:6A:DE:30:83:A3:78:44:69:26:51:6E:AF:86:88:33:C2:29:6D:4A:E5:8F:C3:CB:14:76"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.rtsacademy.android.stage",
+    "sha256_cert_fingerprints":
+    ["5E:84:50:47:46:BA:3D:6A:DE:30:83:A3:78:44:69:26:51:6E:AF:86:88:33:C2:29:6D:4A:E5:8F:C3:CB:14:76"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.rtsacademy.android",
+    "sha256_cert_fingerprints":
+    ["A2:A6:50:68:52:15:FB:4D:35:E4:1D:14:A6:D8:B6:21:11:28:0A:59:90:73:C1:26:E7:FD:BC:A7:BC:19:F5:AE"]
+  }
+}]
