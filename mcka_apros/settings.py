@@ -70,6 +70,7 @@ LOCAL_APPS = (
     'rest_framework',
     'certificates',
     'mobile_app_associations',
+    'api_data_manager',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -520,3 +521,14 @@ CONTACT_PROPERTIES_TO_CLEAN = [
 COURSE_PROPERTIES_TO_CLEAN = [
     'name',
 ]
+
+# Cache timeout settings
+CACHE_TIMEOUTS = {
+    'user_data': (60 * 1) * 10,  # 10 minutes
+    'course_data': (60 * 1) * 10,  # 10 minutes
+    'group_data': (60 * 1) * 10,  # 10 minutes
+}
+
+
+# default course depth to fetch from API
+COURSE_DEFAULT_DEPTH = 3

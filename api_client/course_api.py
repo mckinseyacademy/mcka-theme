@@ -1,4 +1,7 @@
 ''' API calls with respect to courses '''
+from functools import wraps
+from django.utils.decorators import available_attrs
+
 from django.conf import settings
 from urllib import urlencode
 
@@ -9,6 +12,9 @@ from .json_object import CategorisedJsonObject
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
 from .json_requests import GET, POST, DELETE
+
+from api_data_manager.course_data import COURSE_PROPERTIES
+from api_data_manager.decorators import course_api__cache_wrapper
 
 from .group_models import GroupInfo
 from . import course_models, user_models
@@ -121,7 +127,18 @@ def get_course_overview(course_id):
     return overview
 
 
+def tabs_post_process(tabs):
+    tab_array = tabs.tabs
+    return {tab.name.lower(): tab for tab in tab_array}
+
+
 @api_error_protect
+@course_api__cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=course_models.CourseTabs,
+    property_name=COURSE_PROPERTIES.TABS,
+    post_process_method=tabs_post_process,
+)
 def get_course_tabs(course_id, details=True):
     '''
     Returns map of tab content key'd on "name" attribute
@@ -136,8 +153,7 @@ def get_course_tabs(course_id, details=True):
         param)
     )
 
-    tab_array = JP.from_json(response.read(), course_models.CourseTabs).tabs
-    return {tab.name.lower(): tab for tab in tab_array}
+    return response.read()
 
 
 @api_error_protect
@@ -170,27 +186,14 @@ def get_course_news(course_id):
     return JP.from_json(response.read()).postings
 
 
-@api_error_protect
-def get_course(course_id, depth=3, user=None):
-    '''
-    Retrieves course structure information from the API for specified course
-    '''
-    response = GET('{}/{}/{}?depth={}{}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id,
-        depth,
-        '&username={}'.format(user.username) if user else '')
-    )
-
-    # Load the depth from the API
-    course = CJP.from_json(response.read())
+def course_detail_processing(course):
     course.chapters = []
     if hasattr(course, 'content'):
         course.chapters = [content_module for content_module in course.content if content_module.category == "chapter"]
 
     for chapter in course.chapters:
-        chapter.sequentials = [content_child for content_child in chapter.children if content_child.category == "sequential"]
+        chapter.sequentials = [content_child for content_child in chapter.children if
+                               content_child.category == "sequential"]
         chapter.is_released = True
 
         for sequential in chapter.sequentials:
@@ -200,6 +203,29 @@ def get_course(course_id, depth=3, user=None):
             sequential.pages = pages
 
     return course
+
+
+@api_error_protect
+@course_api__cache_wrapper(
+    parse_method=CJP.from_json,
+    parse_object=None,
+    property_name=COURSE_PROPERTIES.DETAIL,
+    post_process_method=course_detail_processing
+)
+def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
+    '''
+    Retrieves course structure information from the API for specified course
+    '''
+    response = GET('{}/{}/{}?depth={}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        depth)
+    )
+
+    # Load the depth from the API
+    return response.read()
+
 
 @api_error_protect
 def get_course_shallow(course_id):

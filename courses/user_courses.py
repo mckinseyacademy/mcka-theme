@@ -44,28 +44,25 @@ def get_current_course_for_user(request):
 
     return course_id
 
-def set_current_program_for_user(request, program):
+
+def set_current_program_for_user(request, program, update_api=True):
     prev_program = request.session.get(CURRENT_PROGRAM, None)
     if prev_program is None or (prev_program.id != program.id):
         request.session[CURRENT_PROGRAM] = program
         request.session[CURRENT_PROGRAM_ID] = program.id
-        user_api.set_user_preferences(
-            request.user.id,
-            {
-                CURRENT_PROGRAM_ID: str(program.id),
-            }
-        )
+
+        if update_api:
+            user_api.set_user_preferences(
+                request.user.id,
+                {
+                    CURRENT_PROGRAM_ID: str(program.id),
+                }
+            )
 
 def set_current_course_for_user(request, course_id):
     prev_course_id = request.session.get(CURRENT_COURSE_ID, None)
     if prev_course_id != course_id:
         request.session[CURRENT_COURSE_ID] = course_id
-        user_api.set_user_preferences(
-            request.user.id,
-            {
-                CURRENT_COURSE_ID: course_id,
-            }
-        )
 
         # Additionally set the current program for this user
         current_program = None
@@ -79,8 +76,16 @@ def set_current_course_for_user(request, course_id):
             # Fake program
             current_program = Program.no_program()
 
+        user_api.set_user_preferences(
+            request.user.id,
+            {
+                CURRENT_COURSE_ID: course_id,
+                CURRENT_PROGRAM_ID: str(current_program.id),
+            }
+        )
+
         _load_intersecting_program_courses(current_program, courses)
-        set_current_program_for_user(request, current_program)
+        set_current_program_for_user(request, current_program, update_api=False)
 
 def clear_current_course_for_user(request):
     request.session[CURRENT_COURSE_ID] = None
@@ -119,7 +124,7 @@ def get_current_program_for_user(request):
 
         if program:
             _load_intersecting_program_courses(program, user_api.get_user_courses(request.user.id))
-            set_current_program_for_user(request, program)
+            set_current_program_for_user(request, program, update_api=False)
 
     # Return the program to the caller
     return program

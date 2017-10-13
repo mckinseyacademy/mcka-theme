@@ -11,7 +11,11 @@ from .json_object import JsonParser as JP
 from .json_object import JsonObject, JsonObjectWithImage
 from .json_requests import GET, POST, DELETE, PATCH
 
+from api_data_manager.user_data import USER_PROPERTIES
+from api_data_manager.signals import user_data_updated
+
 ORGANIZATION_API = getattr(settings, 'ORGANIZATION_API', 'api/server/organizations')
+
 
 @api_error_protect
 def create_organization(organization_name, organization_data=None, organization_object=JsonObjectWithImage):
@@ -170,6 +174,13 @@ def update_organization(organization_id, organization_data, organization_object=
 @api_error_protect
 def add_user_to_organization(organization_id, user_id):
     ''' Add the specified user to the given organization '''
+
+    # trigger event that data is updated for this user
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.ORGANIZATIONS
+    )
+
     data = {
         "id": user_id,
     }
@@ -183,6 +194,14 @@ def add_user_to_organization(organization_id, user_id):
 
 @api_error_protect
 def remove_users_from_organization(organization_id, user_ids):
+
+    # trigger event that data is updated for this user
+    update_user_ids = user_ids if isinstance(user_ids, list) else [user_ids]
+    user_data_updated.send(
+        sender=__name__, user_ids=update_user_ids,
+        data_type=USER_PROPERTIES.ORGANIZATIONS
+    )
+
     qs_params = {}
     if isinstance(user_ids, list):
         qs_params['users'] = ",".join(user_ids)
