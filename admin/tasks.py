@@ -1,12 +1,10 @@
 """
 Celery tasks related to admin app
 """
-import os
 from collections import OrderedDict
+from tempfile import TemporaryFile
 
-from django.conf import settings
 from django.core.files.base import ContentFile
-from django.core.files import File
 from django.core.files.storage import default_storage
 
 from celery.decorators import task
@@ -115,33 +113,30 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     for label, title in (groupworks.items() + assesments.items()):
         fields.update({title: (label, '0%')})
 
-    # write to a local CSV file
     file_name = '{}_user_stats.csv'.format(course_id.replace('/', '_'))
-    local_file_path = os.path.join(settings.BASE_DIR, file_name)
 
     try:
-        f = open(local_file_path, 'w+')
-        csv_file = File(f)
-    except IOError as e:
+        temp_csv_file = TemporaryFile()
+    except Exception as e:
         course_participants_data_retrieval_task.update_state(
             task_id=task_id, state=celery_states.FAILURE
         )
-        logger.error('Failed creating CSV file - {}'.format(e.message))
+        logger.error('Failed creating temp CSV file - {}'.format(e.message))
         raise Ignore()
     else:
-        writer = CSVWriter(csv_file, fields, participants_data)
+        writer = CSVWriter(temp_csv_file, fields, participants_data)
         writer.write_csv()
-        csv_file.seek(0)
+        temp_csv_file.seek(0)
 
     logger.info('Created temp CSV file - {}'.format(task_log_msg))
 
     storage_path = 'csv_exports/{}'.format(file_name)
 
     try:
-        storage_path = default_storage.save(storage_path, ContentFile(csv_file.read()))
+        storage_path = default_storage.save(storage_path, ContentFile(temp_csv_file.read()))
     except Exception as e:
         course_participants_data_retrieval_task.update_state(
-            task_id=task_id, state=celery_states.FAILURE
+            task_id=task_id, state=celery_states.RETRY
         )
         logger.error('Failed saving CSV to S3 - {}'.format(e.message))
         raise course_participants_data_retrieval_task.retry(exc=e)
@@ -149,13 +144,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         logger.error('Saved CSV to S3 - {}'.format(task_log_msg))
 
         storage_url = default_storage.url(storage_path)
-        csv_file.close()
-
-        try:
-            os.remove(local_file_path)
-            logger.info('Removed temp file - {}'.format(task_log_msg))
-        except IOError:
-            pass
+        temp_csv_file.close()
 
     logger.info('Finished - {}'.format(task_log_msg))
 
