@@ -3710,7 +3710,7 @@ class participant_details_api(APIView):
                 selectedUser['country'] = selectedUser['country'].strip().upper()
             if selectedUser['city'] == '' and selectedUser['country'] == '':
                 selectedUser['location'] = 'N/A'
-            elif selectedUser['country'] == '':
+            elif selectedUser['country'] in ('', None):
                 selectedUser['location'] = selectedUser['city']
             elif selectedUser['city'] == '':
                 selectedUser['location'] = selectedUser['country']
