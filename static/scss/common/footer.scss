@@ -27,4 +27,7 @@ footer[role=contentinfo]{
       }
     }
   }
+  @include mobile{
+    margin-bottom: 50px;
+  }
 }
