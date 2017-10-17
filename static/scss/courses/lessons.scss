@@ -159,8 +159,9 @@
       }
 
       &.disabled {
-        background-color: $mckinsey-academy-blue-gray;
+        background-color: transparent;
         pointer-events: none;
+        color: $mckinsey-dark-grey;
       }
 
       .go-to-next {
@@ -332,10 +333,16 @@
 }
 
 .poll-result{
-  input[type="radio"]{
+  .poll-result-input-container{
     @include mobile{
-      height: 20px;
-      vertical-align: middle;
+      width: 24px;
+      text-align: center;
+    }
+    input[type="radio"]{
+      @include mobile{
+        height: 20px;
+        vertical-align: middle;
+      }
     }
   }
 }
