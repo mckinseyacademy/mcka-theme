@@ -2,7 +2,7 @@
 Generic CSV related methods
 """
 
-import csv
+import unicodecsv as csv
 
 from django.http import HttpResponse
 
