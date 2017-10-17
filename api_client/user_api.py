@@ -3,7 +3,7 @@ from urllib2 import HTTPError
 from urllib import urlencode
 import copy
 import json
-from lib.util import DottableDict
+from lib.utils import DottableDict
 
 from django.conf import settings
 from django.utils.translation import ugettext as _

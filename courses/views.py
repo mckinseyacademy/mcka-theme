@@ -30,7 +30,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from api_client.workgroup_models import Submission
 from lib.authorization import permission_group_required
-from lib.util import DottableDict
+from lib.utils import DottableDict
 from main.models import CuratedContentItem
 
 from .models import LessonNotesItem, FeatureFlags

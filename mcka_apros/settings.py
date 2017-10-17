@@ -389,6 +389,7 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
     'lib.context_processors.user_program_data',
     'lib.context_processors.settings_data',
+    'lib.context_processors.mobile_login_data',
 )
 
 try:

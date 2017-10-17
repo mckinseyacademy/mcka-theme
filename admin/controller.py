@@ -38,7 +38,7 @@ from lib.mail import (
     sendMultipleEmails, email_add_active_student, email_add_inactive_student,
     email_add_single_new_user, create_multiple_emails
     )
-from lib.util import DottableDict
+from lib.utils import DottableDict
 
 from api_client.user_api import USER_ROLES
 from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS

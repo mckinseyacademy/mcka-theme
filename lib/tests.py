@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
 
-from .util import PriorIdConvert
+from .utils import PriorIdConvert
 from middleware.handle_prior_ids import PriorIdRequest
 
 class PriorIdsTest(TestCase):

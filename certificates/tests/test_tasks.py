@@ -1,7 +1,7 @@
 """
 Tests for certificates tasks
 """
-from lib.util import DottableDict
+from lib.utils import DottableDict
 
 from django.core import mail
 from django.test import TestCase, override_settings

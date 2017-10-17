@@ -9,7 +9,7 @@ from django.test import TestCase
 from django.test.client import Client, RequestFactory
 from django.core.urlresolvers import resolve
 
-from lib.util import DottableDict
+from lib.utils import DottableDict
 from admin.forms import ClientForm, ProgramForm, CreateAccessKeyForm, ShareAccessKeyForm, MultiEmailField
 from admin.models import Program
 from admin.review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError

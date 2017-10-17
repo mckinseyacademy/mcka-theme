@@ -3,7 +3,7 @@ import json
 from django.core.cache import cache
 
 from .common import DataManager
-from lib.util import DottableDict
+from lib.utils import DottableDict
 
 from django.conf import settings
 
