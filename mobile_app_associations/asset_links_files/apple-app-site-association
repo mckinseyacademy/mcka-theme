@@ -5,7 +5,42 @@
       ],
       "details":[
          {
+            "appID":"FN75PC35CY.com.mckinsey.Pique.QA",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
+            "appID":"FN75PC35CY.com.mckinsey.MCKA.QA",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
+            "appID":"FN75PC35CY.com.mckinsey.MCKA",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
+            "appID":"FN75PC35CY.com.mckinsey.MCKA.Stage",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
             "appID":"FN75PC35CY.com.mckinsey.Pique",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
+            "appID":"FN75PC35CY.com.mckinsey.Pique.Stage",
             "paths":[
                "NOT /accounts/activate/*",
                "*"
