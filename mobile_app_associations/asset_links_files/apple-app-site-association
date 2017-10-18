@@ -45,6 +45,34 @@
                "NOT /accounts/activate/*",
                "*"
             ]
+         },
+{
+            "appID":"2FLRSSAJ72.com.mckinsey.internal.rts-academy-dev",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
+            "appID":"2FLRSSAJ72.com.mckinsey.internal.rts-academy",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
+            "appID":"2FLRSSAJ72.com.mckacademy.rts-academy",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
+         },
+{
+            "appID":"2FLRSSAJ72.com.mckinsey.rts-academy",
+            "paths":[
+               "NOT /accounts/activate/*",
+               "*"
+            ]
          }
       ]
    }
