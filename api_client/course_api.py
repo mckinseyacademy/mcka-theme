@@ -463,11 +463,11 @@ def get_course_completions(course_id, user_id=None, page_size=0):
         response = GET(url)
         data = json.loads(response.read())
         pages = data['num_pages']
-        for x in range(0, pages):
+        for _ in range(0, pages):
             result = data['results']
             results.extend(result)
             if data['next']:
-                response =  GET(data['next'])
+                response = GET(data['next'])
                 data = json.loads(response.read())
         return JP.from_json(json.dumps(results))
     else:

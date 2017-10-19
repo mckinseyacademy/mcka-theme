@@ -213,6 +213,17 @@ LOCAL_MOCK_API_FILES = [
 # Set this on OpenEdx server, and within production environment to whichever value is desired
 EDX_API_KEY = 'test_api_key'
 
+# OAuth2 Client Credentials
+# * These are the values for client_id and client_secret defined in the LMS in 
+#   /admin/oauth2_provider/application/
+# * The application should have a visibility of "confidential"
+# * The application should use the "Client Credentials" workflow.
+# * The application should be belong to a user with `staff` access. (Preferably
+#   one that's only used for oauth connections).
+# * These values can be overridden to the appropriate value in local_settings.py.
+OAUTH2_OPENEDX_CLIENT_ID = 'open'
+OAUTH2_OPENEDX_CLIENT_SECRET = 'sesame'
+
 # edX LMS shared secret used to validate provider data during SSO logins
 EDX_SSO_DATA_HMAC_KEY = '1private_apros_key'
 

@@ -1,33 +1,48 @@
+'''
+Error handling for the API client.
+'''
+
+import functools
 import inspect
 import json
-import functools
+import logging
 from urllib2 import HTTPError as Urllib2HTTPError
-from requests.exceptions import HTTPError as RequestsHTTPError
 
 from django.utils.translation import ugettext as _
+from requests.exceptions import HTTPError as RequestsHTTPError
 
 
 ERROR_CODE_MESSAGES = {}
 
+log = logging.getLogger(__name__)
+
 
 class ApiError(Exception):
+    '''
+    Exception to be thrown when the Api returns an Http error
+    '''
+
     code = 1000  # 1000 represents client-side error, or unknown code
     message = _("Unknown error calling API")
     content_dictionary = {}
     http_error = None
 
-    '''
-    Exception to be thrown when the Api returns an Http error
-    '''
-
     def __init__(self, thrown_error, function_name, error_code_messages=None, **call_context):
-        # store the code and
+        if isinstance(thrown_error, Urllib2HTTPError):
+            code = thrown_error.code
+            reason = thrown_error.reason
+            body = thrown_error.read()
+        elif isinstance(thrown_error, RequestsHTTPError):
+            code = thrown_error.response.status_code
+            reason = thrown_error.response.reason
+            body = thrown_error.response.text
+
         self.http_error = thrown_error
-        self.code = thrown_error.code if hasattr(thrown_error, 'code') else thrown_error.response.status_code
+        self.code = code
 
         self.context = call_context
         self.function_name = function_name
-        self.message = thrown_error.reason if hasattr(thrown_error, 'reason') else thrown_error.response.reason
+        self.message = reason
 
         # does the code have a known reason to be incorrect
         if error_code_messages and self.code in error_code_messages:
@@ -35,8 +50,8 @@ class ApiError(Exception):
 
         # Look in response content for specific message from api response
         try:
-            self.content_dictionary = json.loads(thrown_error.read())
-        except:
+            self.content_dictionary = json.loads(body)
+        except ValueError:
             self.content_dictionary = {}
 
         if "message" in self.content_dictionary:
@@ -83,6 +98,6 @@ def api_error_protect(func):
                 ERROR_CODE_MESSAGES.get(func.__name__, None),
                 **call_context
             )
-            print "Error calling {}: {}".format(func, api_error)
+            log.error("Error calling {}: {}".format(func, api_error))
             raise api_error
     return call_api_method
