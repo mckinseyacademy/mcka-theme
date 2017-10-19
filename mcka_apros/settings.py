@@ -173,6 +173,7 @@ SESSION_TIMEOUT_SECONDS = 300
 
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 # LMS
 LMS_BASE_DOMAIN = 'mckinseyacademy.com'
