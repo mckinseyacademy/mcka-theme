@@ -1,0 +1,110 @@
+{
+    "Link_to_RTS_IMP_PDA_Tool.pdf": {
+        "contentType": "application/pdf", 
+        "content_son": {
+            "category": "asset", 
+            "course": "arb001", 
+            "name": "Link_to_RTS_IMP_PDA_Tool.pdf", 
+            "org": "Arbisoft", 
+            "revision": null, 
+            "tag": "c4x"
+        }, 
+        "displayname": "Link to RTS_IMP_PDA_Tool.pdf", 
+        "filename": "/c4x/Arbisoft/arb001/asset/Link_to_RTS_IMP_PDA_Tool.pdf", 
+        "import_path": null, 
+        "locked": false, 
+        "thumbnail_location": null
+    }, 
+    "RTS_IMP_AboveLine.png": {
+        "contentType": "image/png", 
+        "content_son": {
+            "category": "asset", 
+            "course": "arb001", 
+            "name": "RTS_IMP_AboveLine.png", 
+            "org": "Arbisoft", 
+            "revision": null, 
+            "tag": "c4x"
+        }, 
+        "displayname": "RTS_IMP_AboveLine.png", 
+        "filename": "/c4x/Arbisoft/arb001/asset/RTS_IMP_AboveLine.png", 
+        "import_path": null, 
+        "locked": false, 
+        "thumbnail_location": [
+            "c4x", 
+            "Arbisoft", 
+            "arb001", 
+            "thumbnail", 
+            "RTS_IMP_AboveLine-png.jpg", 
+            null
+        ]
+    }, 
+    "RTS_IMP_PHOTO_DD.png": {
+        "contentType": "image/png", 
+        "content_son": {
+            "category": "asset", 
+            "course": "arb001", 
+            "name": "RTS_IMP_PHOTO_DD.png", 
+            "org": "Arbisoft", 
+            "revision": null, 
+            "tag": "c4x"
+        }, 
+        "displayname": "RTS_IMP_PHOTO_DD.png", 
+        "filename": "/c4x/Arbisoft/arb001/asset/RTS_IMP_PHOTO_DD.png", 
+        "import_path": null, 
+        "locked": false, 
+        "thumbnail_location": [
+            "c4x", 
+            "Arbisoft", 
+            "arb001", 
+            "thumbnail", 
+            "RTS_IMP_PHOTO_DD-png.jpg", 
+            null
+        ]
+    }, 
+    "RTS_IMP_Strong.png": {
+        "contentType": "image/png", 
+        "content_son": {
+            "category": "asset", 
+            "course": "arb001", 
+            "name": "RTS_IMP_Strong.png", 
+            "org": "Arbisoft", 
+            "revision": null, 
+            "tag": "c4x"
+        }, 
+        "displayname": "RTS_IMP_Strong.png", 
+        "filename": "/c4x/Arbisoft/arb001/asset/RTS_IMP_Strong.png", 
+        "import_path": null, 
+        "locked": false, 
+        "thumbnail_location": [
+            "c4x", 
+            "Arbisoft", 
+            "arb001", 
+            "thumbnail", 
+            "RTS_IMP_Strong-png.jpg", 
+            null
+        ]
+    }, 
+    "STRAT_L8_StrategicOptions.png": {
+        "contentType": "image/png", 
+        "content_son": {
+            "category": "asset", 
+            "course": "arb001", 
+            "name": "STRAT_L8_StrategicOptions.png", 
+            "org": "Arbisoft", 
+            "revision": null, 
+            "tag": "c4x"
+        }, 
+        "displayname": "STRAT_L8_StrategicOptions.png", 
+        "filename": "/c4x/Arbisoft/arb001/asset/STRAT_L8_StrategicOptions.png", 
+        "import_path": null, 
+        "locked": false, 
+        "thumbnail_location": [
+            "c4x", 
+            "Arbisoft", 
+            "arb001", 
+            "thumbnail", 
+            "STRAT_L8_StrategicOptions-png.jpg", 
+            null
+        ]
+    }
+}

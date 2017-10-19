@@ -1,0 +1,30 @@
+<vertical display_name="Problem builder1">
+  <problem-builder url_name="81c6f322286e47b29da55bc7bb7d1c68" xblock-family="xblock.v1" display_name="">
+    <pb-answer url_name="bdaead4ddf8248239470bfa05bdae8c4" xblock-family="xblock.v1" show_title="false" display_name="Enter your thoughts" question="Please Enter your thoughts" name="940b45b" min_characters="0"/>
+    <pb-message url_name="1164efd4a2ac404e84c17226b717055f" xblock-family="xblock.v1" type="completed">Great job!</pb-message>
+  </problem-builder>
+  <problem-builder url_name="8837f329161c4ee297f52b8e9cd4fecf" xblock-family="xblock.v1" display_name="">
+    <pb-mcq url_name="ad6fe26ce000490fb5fff3b52f17e391" xblock-family="xblock.v1" question="Choose one correct answer" correct_choices="[&#10;  &quot;f47eef6&quot;&#10;]">
+      <pb-choice url_name="df5fbbfc868348448252798f87d4ac66" xblock-family="xblock.v1" value="f47eef6">a</pb-choice>
+      <pb-choice url_name="b94aa9a0298b4f9d8efc02433c970183" xblock-family="xblock.v1" value="e433386">b</pb-choice>
+      <pb-choice url_name="7e93363f66534ac89ce1aeffe542cf7c" xblock-family="xblock.v1" value="00b57ec">c</pb-choice>
+      <pb-tip url_name="8e14f6bf5c7f440d8e52bb0c49c091bf" xblock-family="xblock.v1" values="[&#10;  &quot;f47eef6&quot;&#10;]">correct&lt;img src="https://integration.mckinsey.edx.org/c4x/Arbisoft/arb001/asset/RTS_IMP_AboveLine.png" width="50" height="50"&gt;</pb-tip>
+      <pb-tip url_name="a38c7f8378d3477280fadba9d7decf93" xblock-family="xblock.v1" values="[&#10;  &quot;00b57ec&quot;,&#10;  &quot;e433386&quot;&#10;]">incorrect&lt;img src="https://integration.mckinsey.edx.org/c4x/Arbisoft/arb001/asset/RTS_IMP_AboveLine.png" width="50" height="50"&gt;</pb-tip>
+    </pb-mcq>
+    <pb-message url_name="e5a50ee19155491dae53b259a13f7d49" xblock-family="xblock.v1" type="completed">Great job!</pb-message>
+    <pb-message url_name="c521f3b32ed248f093991e206654e0b2" xblock-family="xblock.v1" type="incomplete">Not quite! You can try again, though.</pb-message>
+  </problem-builder>
+  <problem-builder url_name="c2e37a8f23b248c9a1800f7d6596dc06" xblock-family="xblock.v1" display_name="">
+    <html url_name="346766410c9c47be92dec92a90e1477b"/>
+    <pb-mrq url_name="d03d17df243c4173ad4ef6fe6feca7f3" xblock-family="xblock.v1" required_choices="[&#10;  &quot;f348143&quot;,&#10;  &quot;766dd27&quot;&#10;]" question="&lt;p&gt;Choose &lt;br&gt;&lt;i&gt;the&lt;/i&gt;&lt;br&gt; &lt;i&gt;&lt;b&gt;correct&lt;/b&gt;&lt;/i&gt; &lt;br&gt;answers">
+      <pb-choice url_name="377a9b37b5b1436ba8fa1a255a16f8ad" xblock-family="xblock.v1" value="f348143">&lt;img src="/static/RTS_IMP_AboveLine.png" width="100" height="100"/&gt;</pb-choice>
+      <pb-choice url_name="4ad2fc671f7b43f3ae986516d13aa912" xblock-family="xblock.v1" value="0ad1cd8">&lt;img src="/static/RTS_IMP_Strong.png" width="100" height="100"/&gt;</pb-choice>
+      <pb-choice url_name="b02426c399124a63899bfe7b8898e049" xblock-family="xblock.v1" value="766dd27">C</pb-choice>
+      <pb-choice url_name="12da1eaa60104f4682d6ab9dc4841a02" xblock-family="xblock.v1" value="6bfde26">D</pb-choice>
+      <pb-tip url_name="8196c6d1d9264a0980c495a9c55796be" xblock-family="xblock.v1" values="[&#10;  &quot;766dd27&quot;,&#10;  &quot;f348143&quot;&#10;]">correct</pb-tip>
+      <pb-tip url_name="d9c8207cabcd49c191b9b1b8564360a0" xblock-family="xblock.v1" values="[&#10;  &quot;6bfde26&quot;,&#10;  &quot;0ad1cd8&quot;&#10;]">not really</pb-tip>
+    </pb-mrq>
+    <pb-message url_name="f43edbda7aa5404db1576e70cacdfb0b" xblock-family="xblock.v1" type="completed">Great job!</pb-message>
+    <pb-message url_name="341723c773d343118ca4a1cd545b9b2d" xblock-family="xblock.v1" type="incomplete">Not quite! You can try again, though.</pb-message>
+  </problem-builder>
+</vertical>
