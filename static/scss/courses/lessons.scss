@@ -159,9 +159,12 @@
       }
 
       &.disabled {
-        background-color: transparent;
+        background-color: $mckinsey-academy-blue-gray;
         pointer-events: none;
-        color: $mckinsey-dark-grey;
+        @include mobile{
+          color: $mckinsey-dark-grey;
+          background-color: transparent;
+        }
       }
 
       .go-to-next {
