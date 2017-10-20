@@ -20,7 +20,7 @@
           %ul.users
             - for user in users
               %li
-                %img{src: "#{user.image_url}"}
+                %img{src: "#{user.image_url_medium}"}
                 %span= user.username
                 (
                 %a><{href: "mailto:{{user.email}}"}
