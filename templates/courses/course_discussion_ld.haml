@@ -31,7 +31,7 @@
 
 - block footer
   - include 'footer_ld.haml'
-  
+
 - block js_snippets
   %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
   %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
@@ -65,7 +65,7 @@
     %script#discussion-ta-template{type: "text/template"}
       .ask-ta
         .group-member
-          %img.avatar{:src => "#{mcka_ta.image_url}" }
+          %img.avatar{:src => "#{mcka_ta.image_url_medium}" }
             .person-info
               .person-username= mcka_ta.username
               .person-fullname= mcka_ta.formatted_name
