@@ -120,3 +120,10 @@
             %input#engagement{type: 'checkbox', name: 'engagement'}
           %label{for: 'engagement'} Engagement
           %p.style-6 Note: If you disable 'Engagement', it will hide Engagement section from leaderboard.
+        %li
+          - if feature_flags.discover
+            %input#discover{type: 'checkbox', name: 'discover', checked: None}
+          - else
+            %input#discover{type: 'checkbox', name: 'discover'}
+          %label{for: 'discover'} Discover
+          %p.style-6 Note: If you disable the 'Discover', it will hide Discover section from course main page.

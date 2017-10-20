@@ -16,9 +16,10 @@
         %hr
         - if course.ended
           - include "courses/content_page/course_final_grade.haml"
-        - else
-          - include "courses/content_page/course_discover.haml"
-        %hr
+        -else
+          - if discover_flag
+            - include "courses/content_page/course_discover.haml"
+            %hr
         %article.course-quote
           %blockquote= quote.body
           .attribution
