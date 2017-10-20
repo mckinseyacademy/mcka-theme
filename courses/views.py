@@ -1145,6 +1145,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.cohort_avg = request.POST.get('cohort_avg', None) == 'on'
     feature_flags.certificates = request.POST.get('certificates', None) == 'on'
     feature_flags.engagement = request.POST.get('engagement', None) == 'on'
+    feature_flags.discover = request.POST.get('discover', None) == 'on'
     feature_flags.save()
 
     if request.POST.get('mobile_available', None) is not None:

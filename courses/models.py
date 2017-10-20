@@ -50,6 +50,7 @@ class FeatureFlags(db_models.Model):
     cohort_avg = db_models.BooleanField(default=True)
     certificates = db_models.BooleanField(default=False)
     engagement = db_models.BooleanField(default=True)
+    discover = db_models.BooleanField(default=True)
 
     def as_json(self):
         return dict(
@@ -65,4 +66,5 @@ class FeatureFlags(db_models.Model):
             resources = self.resources,
             certificates = self.certificates,
             engagement=self.engagement,
+            discover=self.discover,
         )

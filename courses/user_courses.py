@@ -258,6 +258,7 @@ def standard_data(request):
     branding = None
     feature_flags = None
     learner_dashboard_flag = False
+    discover_flag = False
     programs = None
 
     # have we already fetched this before and attached it to the current request?
@@ -284,8 +285,10 @@ def standard_data(request):
             try:
                 feature_flags = FeatureFlags.objects.get(course_id=course_id)
                 learner_dashboard_flag = feature_flags.learner_dashboard
+                discover_flag = feature_flags.discover
             except:
                 learner_dashboard_flag = False
+                discover_flag = False
 
             lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             module_id = request.resolver_match.kwargs.get('page_id', None)
@@ -340,7 +343,8 @@ def standard_data(request):
         "client_customization": client_customization,
         "client_nav_links": client_nav_links,
         "branding": branding,
-        "learner_dashboard_flag": learner_dashboard_flag
+        "learner_dashboard_flag": learner_dashboard_flag,
+        "discover_flag": discover_flag
     }
 
     # point to this data from the request object, just in case we re-enter this method somewhere
