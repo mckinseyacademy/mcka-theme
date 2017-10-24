@@ -46,8 +46,8 @@ from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistr
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin
-)
+    send_warning_email_to_admin,
+    has_mobile_ready_course)
 from util.user_agent_helpers import is_mobile_user_agent, is_ios, is_android, is_supported_mobile_device
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -326,17 +326,14 @@ def login(request):
         )
         # set focus to password field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
-        # try:
-        #     users = user_api.get_users(username=request.GET['username'])
-        #     companies = user_api.get_user_organizations(users[0].id) if users else None
-        #     if companies and companies[0].name in COMPANIES_MOBILE_APPS_MAP:
-        #         data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP[companies[0].name]
-        #     else:
-        #         data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP['mckinsey_and_company_ff']
-        # except ApiError:
-        #     pass
-        data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP['chemours']
-        if is_supported_mobile_device(request) and data['company_mobile_app_map']:
+        try:
+            users = user_api.get_users(username=request.GET['username'])
+            if users and has_mobile_ready_course(users[0].id):
+                data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP['chemours']
+        except ApiError:
+            pass
+
+        if is_supported_mobile_device(request) and 'company_mobile_app_map' in data:
             data["show_app_link_popup"] = True
             if is_ios(request):
                 data["mobile_device"] = "ios"

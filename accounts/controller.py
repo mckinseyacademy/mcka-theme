@@ -14,6 +14,7 @@ from django.utils.html import strip_tags
 
 from admin.controller import _send_activation_email_to_single_new_user, enroll_user_in_course
 from admin.models import Program, LearnerDashboard, Client
+from api_client.user_api import get_user_courses_progress
 from courses.user_courses import get_current_course_for_user
 from courses.models import FeatureFlags
 
@@ -451,3 +452,15 @@ def send_warning_email_to_admin(course_run):
         headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
     email.attach_alternative(email_html, 'text/html')
     email.send(fail_silently=False)
+
+
+def has_mobile_ready_course(user_id):
+    """
+    Returns boolean based on if user has any mobile ready course
+    """
+    qs_params = dict(mobile_only=True)
+    # TODO:  Request a dedicated API to get if user has a mobile-ready course
+    #        and use that API instead of using progress api.
+    response = get_user_courses_progress(user_id, qs_params)
+
+    return True if len(response) else False
