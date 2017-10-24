@@ -145,7 +145,7 @@
         $(".with-program .login-btn").attr("href", "javascript:void(0)");
       });
     
-  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "{% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"}
+  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "ltr {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"}
     - block help_context
 
     -# Header

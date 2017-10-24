@@ -1,0 +1,32 @@
+.lesson-content .xblock--drag-and-drop .popup {
+    background-color: #66a5b5;
+}
+
+.lesson-content .xblock--drag-and-drop .popup.popup-incorrect {
+    background-color: #66a5b5;
+}
+
+.lesson-content .xblock--drag-and-drop .problem-progress {
+    display: none;
+}
+
+.lesson-content .xblock--drag-and-drop .feedback p {
+    border: none;
+}
+
+.lesson-content input[type="button"]:disabled, .lesson-content button:disabled {
+    background-color: transparent;
+}
+
+/* Styles for mobile */
+@media screen and (max-width: 480px) {
+
+    .lesson-content .xblock--drag-and-drop .popup {
+        background-color: #fff;
+    }
+
+    .lesson-content .xblock--drag-and-drop .popup.popup-incorrect {
+        background-color: #fff;
+    }
+
+}
