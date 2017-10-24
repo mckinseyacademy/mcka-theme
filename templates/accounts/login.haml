@@ -73,14 +73,9 @@
         %p.tagline
           = company_mobile_app_map.tagline
         .downlaods
-          - if mobile_device == 'ios'
-            .store.apple
-              %a#ios_download_link{:href => "#{company_mobile_app_map.ios}", 'data-username': "#{request.GET.username}"}
-                %img{:alt => "", :src => "/static/image/mobile_popup/Badge.iOSAppStore.png", :srcset => "/static/image/mobile_popup/Badge.iOSAppStore.png 1x, /static/image/mobile_popup/Badge.iOSAppStore@2x.png 2x, /static/image/mobile_popup/Badge.iOSAppStore@3x.png 3x"}
-          - elif mobile_device == 'android'
-            .store.android
-              %a#android_download_link{:href => "#{company_mobile_app_map.android}", 'data-username': "#{request.GET.username}"}
-                %img{:alt => "", :src => "/static/image/mobile_popup/Badge.PlayStore.png", :srcset => "/static/image/mobile_popup/Badge.PlayStore.png 1x, /static/image/mobile_popup/Badge.PlayStore@2x.png 2x, /static/image/mobile_popup/Badge.PlayStore@3x.png 3x"}
+          .store.apple
+            %a#ios_download_link{:href => "#{company_mobile_app_map.ios}", 'data-username': "#{request.GET.username}"}
+              %img{:alt => "", :src => "/static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}.png", :srcset => "/static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}.png 1x, /static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}@2x.png 2x, /static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}@3x.png 3x"}
           %p.close-popup-tagline
             %a.close-reveal-modal{"aria-label" => "Close"} Continue to web login
         .mobile-screen

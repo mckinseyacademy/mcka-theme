@@ -194,8 +194,12 @@
   min-height: 100vh;
   background-size: cover !important;
   top: -48px;
+  padding: 0 !important;
+  max-height: 100vh;
 }
-
+.mobile-container{
+  padding: 0 20px;
+}
 .logo{
   text-align: center;
   margin: 35px 0 0;
@@ -209,7 +213,7 @@
   text-align: center;
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: #FFF;
   margin: 0 0 10px 0;
 }
 .close-popup-tagline {
@@ -220,7 +224,7 @@
   position: relative !important;
   font-size: 16px !important;
   font-weight: 500 !important;
-  color: #fff !important;
+  color: #FFF !important;
 }
 
 .downlaods{
@@ -238,11 +242,8 @@
 }
 
 .mobile-screen{
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   width: 100%;
-  bottom: -10px;
+  bottom: -1px;
 }
 .mobile-screen img{
   width: 100%;

@@ -46,9 +46,9 @@ from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistr
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin,
-    has_mobile_ready_course)
-from util.user_agent_helpers import is_mobile_user_agent, is_ios, is_android, is_supported_mobile_device
+    send_warning_email_to_admin, get_mobile_app_download_popup_data
+)
+from util.user_agent_helpers import is_mobile_user_agent
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
     EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2, PublicRegistrationForm
@@ -76,41 +76,6 @@ SSO_AUTH_ENTRY = 'apros'
 MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
                              "in order to create a new account.")
 CANT_PROCESS_ACCESS_KEY = _("There was an error enrolling you in a course using the registration key you provided")
-
-COMPANIES_MOBILE_APPS_MAP = {
-    'mckinsey_and_company_ff': {
-        'android': 'https://play.google.com/store/apps/details?id=com.facebook.katana&hl=en',
-        'ios': 'https://itunes.apple.com/pk/app/facebook/id284882215?mt=8',
-        'tagline': 'Unlocking Leadership Potential',
-        'background_image': '/static/image/mobile_popup/mcka_bg.png',
-        'logo_image': '/static/image/mobile_popup/mcka_logo',
-        'mobile_image': '/static/image/mobile_popup/mcka_devce'
-    },
-    'mckinsey_rts': {
-        'android': 'https://play.google.com/store/apps/details?id=com.twitter.android&hl=en',
-        'ios': 'https://itunes.apple.com/pk/app/twitter/id333903271?mt=8',
-        'tagline': '',
-        'background_image': '/static/image/mobile_popup/rts_bg.png',
-        'logo_image': '/static/image/mobile_popup/rts_logo',
-        'mobile_image': '/static/image/mobile_popup/rts_device'
-    },
-    'rts_cst': {
-        'android': 'https://play.google.com/store/apps/details?id=com.twitter.android&hl=en',
-        'ios': 'https://itunes.apple.com/pk/app/twitter/id333903271?mt=8',
-        'tagline': '',
-        'background_image': '/static/image/mobile_popup/rts_bg.png',
-        'logo_image': '/static/image/mobile_popup/rts_logo',
-        'mobile_image': '/static/image/mobile_popup/rts_device'
-    },
-    'chemours': {
-        'android': 'https://play.google.com/store/apps/details?id=com.twitter.android&hl=en',
-        'ios': 'https://itunes.apple.com/pk/app/twitter/id333903271?mt=8',
-        'tagline': '',
-        'background_image': '/static/image/mobile_popup/rts_bg.png',
-        'logo_image': '/static/image/mobile_popup/rts_logo',
-        'mobile_image': '/static/image/mobile_popup/rts_device'
-    }
-}
 
 
 def _get_qs_value_from_url(value_name, url):
@@ -326,20 +291,8 @@ def login(request):
         )
         # set focus to password field
         form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
-        try:
-            users = user_api.get_users(username=request.GET['username'])
-            if users and has_mobile_ready_course(users[0].id):
-                data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP['chemours']
-        except ApiError:
-            pass
-
-        if is_supported_mobile_device(request) and 'company_mobile_app_map' in data:
-            data["show_app_link_popup"] = True
-            if is_ios(request):
-                data["mobile_device"] = "ios"
-            elif is_android(request):
-                data["mobile_device"] = "android"
-
+        mobile_popup_data = get_mobile_app_download_popup_data(request)
+        data.update(mobile_popup_data)
     elif 'reset' in request.GET:
         form = LoginForm()
         # set focus to username field
