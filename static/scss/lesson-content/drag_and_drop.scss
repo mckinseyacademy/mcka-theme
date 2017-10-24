@@ -23,6 +23,9 @@
 
     .lesson-content .xblock--drag-and-drop .popup {
         background-color: #fff;
+        max-height: calc(100vh - 210px);
+        top: 150px;
+        transform: translateX(-50%);
     }
 
     .lesson-content .xblock--drag-and-drop .popup.popup-incorrect {
