@@ -695,3 +695,18 @@ def get_filtered_participants_list(qs_params= ''):
     )
 
     return json.loads(response.read())
+
+
+@api_error_protect
+def get_user_courses_progress(user_id, qs_params=''):
+    """
+    Returns user course progress for the given user id
+    """
+    response = GET('{}/{}/{}/courses/progress?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
+        urlencode(qs_params))
+    )
+
+    return json.loads(response.read())
