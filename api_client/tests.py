@@ -1,12 +1,26 @@
 ''' Tests for api_client calls '''
-from datetime import datetime
-from django.test import TestCase
-from .json_object import JsonParser as JP, DataOnly, JsonObject, MissingRequiredFieldError, CategorisedJsonParser, CategorisedJsonObject
-from .user_models import UserResponse, AuthenticationResponse
-from .course_models import Course, Chapter
-from .group_models import GroupInfo
 
 import collections
+from datetime import datetime
+import time
+
+import ddt
+from django.test import TestCase, override_settings
+
+from .json_object import (
+    JsonParser as JP,
+    DataOnly,
+    JsonObject,
+    MissingRequiredFieldError,
+    CategorisedJsonParser,
+    CategorisedJsonObject,
+)
+from .api_error import ApiError
+from .course_models import Course, Chapter
+from .group_models import GroupInfo
+from .user_api import get_user_by_username, enroll_user_in_course
+from .user_models import UserResponse, AuthenticationResponse
+
 
 # disable no-member 'cos the members are getting created from the json
 # and some others that we don't care about for tests
@@ -255,7 +269,7 @@ class JsonObjectTest(TestCase):
     def test_groups(self):
         output = JP.from_json('[{"name": "super_admin","id":1234,"uri": "/api/users/14/groups/1234"},{"name": "sub_admin","id":1357,"uri": "/api/users/14/groups/1357"},{"name": "company_admin","id":5678,"uri": "/api/users/14/groups/5678"},{"name": "arbitrary_group","id":2468,"uri": "/api/users/14/groups/2468"}]')
 
-        self.assertTrue(len(output)==4)
+        self.assertTrue(len(output) == 4)
         self.assertTrue(output[0].name == "super_admin")
 
     def test_untouched_class(self):
@@ -375,25 +389,25 @@ class CategorisedJsonParserTest(TestCase):
 
         self.assertTrue(isinstance(output, OneLevelCategorised))
         self.assertTrue(output.has_correct_category())
-        
+
         self.assertTrue(isinstance(output.children[0], TwoLevelCategorised))
         self.assertTrue(output.children[0].has_correct_category())
-        
+
         self.assertTrue(isinstance(output.children[0].child, ThreeLevelCategorised))
         self.assertTrue(output.children[0].child.has_correct_category())
-        
+
         self.assertTrue(isinstance(output.children[0].child.children[0], FourLevelCategorised))
         self.assertTrue(output.children[0].child.children[0].has_correct_category())
-        
+
         self.assertTrue(isinstance(output.children[1], ThreeLevelCategorised))
         self.assertTrue(output.children[1].has_correct_category())
-        
+
         self.assertTrue(isinstance(output.children[1].children[0], FourLevelCategorised))
         self.assertTrue(output.children[1].children[0].has_correct_category())
-        
+
         self.assertTrue(isinstance(output.children[1].children[1], FourLevelCategorised))
         self.assertTrue(output.children[1].children[1].has_correct_category())
-        
+
         self.assertTrue(isinstance(output.children[2], FourLevelCategorised))
         self.assertTrue(output.children[2].has_correct_category())
 
@@ -422,12 +436,5 @@ class TestGroupInfoTest(TestCase):
 
         self.assertEqual(test_info.name, "Maggie")
         self.assertEqual(test_info.display_name, "Maggie")
-        self.assertEqual(test_info.start_date, datetime(2014,1,1))
-        self.assertEqual(test_info.end_date, datetime(2014,12,3))
-
-class HelpMeTest(TestCase):
-
-    def test_me(self):
-        test_json = '{"uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/users", "enrollments": [{"id": 1, "email": "honor@example.com", "username": "honor"}, {"id": 2, "email": "audit@example.com", "username": "audit"}, {"id": 3, "email": "verified@example.com", "username": "verified"}, {"id": 4, "email": "staff@example.com", "username": "staff"}, {"id": 5, "email": "dino@extensionengine.com", "username": "215130"}]}'
-        test_json = '{"uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/users", "enrollments": [{"id": 1, "email": "honor@example.com", "username": "honor"}, {"id": 2, "email": "audit@example.com", "username": "audit"}, {"id": 3, "email": "verified@example.com", "username": "verified"}, {"id": 4, "email": "staff@example.com", "username": "staff"}, {"id": 5, "email": "dino@extensionengine.com", "username": "215130"}]}'
-        output = JP.from_json(test_json)
+        self.assertEqual(test_info.start_date, datetime(2014, 1, 1))
+        self.assertEqual(test_info.end_date, datetime(2014, 12, 3))
