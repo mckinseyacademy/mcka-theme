@@ -20,12 +20,12 @@
           - if discover_flag
             - include "courses/content_page/course_discover.haml"
             %hr
-        %article.course-quote
-          %blockquote= quote.body
-          .attribution
-            %img{src: "#{quote.thumbnail_url}"}
-            .person-name= quote.byline
-            .person-title= quote.byline_title
+            %article.course-quote
+              %blockquote= quote.body
+              .attribution
+                %img{src: "#{quote.thumbnail_url}"}
+                .person-name= quote.byline
+                .person-title= quote.byline_title
 
   #beta_visualizations.reveal-modal.large{'data-reveal': None}
     .close-reveal-modal
