@@ -20,9 +20,34 @@ from courses.models import FeatureFlags
 
 from api_client import user_api, third_party_auth_api, organization_api, course_api
 from api_client.api_error import ApiError
+from util.user_agent_helpers import is_ios, is_supported_mobile_device
 
 from license import controller as license_controller
 from .models import UserPasswordReset, UserActivation
+
+
+COMPANIES_MOBILE_APPS_MAP = {
+    # Mckinsey and Company FF
+    17: {
+        'android': '#',
+        'ios': 'https://dappservices.mckinsey.com/mifs/asfV3x/appstore?appid=3507',
+        'tagline': '',
+        'background_image': '/static/image/mobile_popup/rts_bg.png',
+        'logo_image': '/static/image/mobile_popup/rts_logo',
+        'mobile_image': '/static/image/mobile_popup/rts_device',
+        'download_banner_image': 'mobile_iron_badge'
+    },
+    # Chemours
+    153: {
+        'android': '#',
+        'ios': '#',
+        'tagline': '',
+        'background_image': '/static/image/mobile_popup/rts_bg.png',
+        'logo_image': '/static/image/mobile_popup/rts_logo',
+        'mobile_image': '/static/image/mobile_popup/rts_device',
+        'download_banner_image': 'Badge.iOSAppStore'
+    }
+}
 
 
 class ActivationError(Exception):
@@ -464,3 +489,20 @@ def has_mobile_ready_course(user_id):
     response = get_user_courses_progress(user_id, qs_params)
 
     return True if len(response) else False
+
+
+def get_mobile_app_download_popup_data(request):
+    mobile_popup_data = dict()
+    try:
+        users = user_api.get_users(username=request.GET['username'])
+        if users and has_mobile_ready_course(users[0].id):
+            companies = user_api.get_user_organizations(users[0].id)
+            if companies and companies[0].id in COMPANIES_MOBILE_APPS_MAP:
+                mobile_popup_data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP[companies[0].id]
+    except ApiError:
+        pass
+
+    if is_supported_mobile_device(request) and 'company_mobile_app_map' in mobile_popup_data:
+        mobile_popup_data["show_app_link_popup"] = True
+
+    return mobile_popup_data
