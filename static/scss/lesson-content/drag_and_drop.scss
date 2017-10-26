@@ -18,6 +18,14 @@
     background-color: transparent;
 }
 
+.xblock--drag-and-drop{
+    .target-img{
+        @include mobile{
+            max-width: 100% !important;
+        }
+    }
+}
+
 /* Styles for mobile */
 @media screen and (max-width: 480px) {
 
