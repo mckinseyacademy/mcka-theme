@@ -214,7 +214,7 @@ LOCAL_MOCK_API_FILES = [
 EDX_API_KEY = 'test_api_key'
 
 # OAuth2 Client Credentials
-# * These are the values for client_id and client_secret defined in the LMS in 
+# * These are the values for client_id and client_secret defined in the LMS in
 #   /admin/oauth2_provider/application/
 # * The application should have a visibility of "confidential"
 # * The application should use the "Client Credentials" workflow.
@@ -283,7 +283,7 @@ CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-
+BROKER_TRANSPORT_OPTIONS = {'confirm_publish': True}
 
 # Api locations
 COURSEWARE_API = '/'.join([API_SERVER_PREFIX, 'courses'])
