@@ -8,7 +8,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://qa.mckinsey.edx.org/*"
             ]
          },
          {
@@ -16,7 +16,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://qa.mckinsey.edx.org/*"
             ]
          },
          {
@@ -24,7 +24,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://mckinseyacademy.com/*"
             ]
          },
          {
@@ -32,7 +32,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://stage.mckinsey.edx.org/*"
             ]
          },
          {
@@ -40,7 +40,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://mckinseyacademy.com/*"
             ]
          },
          {
@@ -48,7 +48,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://stage.mckinsey.edx.org/*"
             ]
          },
          {
@@ -56,7 +56,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://stage.mckinsey.edx.org/*"
             ]
          },
          {
@@ -64,7 +64,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://mckinseyacademy.com/*"
             ]
          },
          {
@@ -72,7 +72,7 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://stage.mckinsey.edx.org/*"
             ]
          },
          {
@@ -80,7 +80,39 @@
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
-               "*"
+               "https://mckinseyacademy.com/*"
+            ]
+         },
+         {
+            "appID": "2FLRSSAJ72.com.mckinsey.internal.mck-academy-dev",
+            "paths": [
+               "NOT /accounts/activate/*",
+               "NOT /accounts/password/reset/*",
+               "https://stage.mckinsey.edx.org/*"
+            ]
+         },
+         {
+            "appID": "2FLRSSAJ72.com.mckinsey.internal.mck-academy",
+            "paths": [
+               "NOT /accounts/activate/*",
+               "NOT /accounts/password/reset/*",
+               "https://mckinseyacademy.com/*"
+            ]
+         },
+         {
+            "appID": "2FLRSSAJ72.com.mckacademy.mck-academy",
+            "paths": [
+               "NOT /accounts/activate/*",
+               "NOT /accounts/password/reset/*",
+               "https://stage.mckinsey.edx.org/*"
+            ]
+         },
+         {
+            "appID": "2FLRSSAJ72.com.mckinsey.mck-academy",
+            "paths": [
+               "NOT /accounts/activate/*",
+               "NOT /accounts/password/reset/*",
+               "https://mckinseyacademy.com/*"
             ]
          }
       ]
