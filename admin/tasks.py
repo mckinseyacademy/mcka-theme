@@ -6,8 +6,6 @@ from tempfile import TemporaryFile
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.core.mail import send_mail
-from django.conf import settings
 
 from celery.decorators import task
 from celery.utils.log import get_task_logger
@@ -31,15 +29,6 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
 
     results are set in celery result backend, batch status is updated on each successful retrieval
     """
-
-    send_mail(
-        'course_participants_data_retrieval_task',
-        'course_participants_data_retrieval_task Started.',
-        settings.APROS_EMAIL_SENDER,
-        ['muhammad.saqib@arbisoft.com'],
-        fail_silently=False,
-    )
-
     api_params = {
         'page': 1, 'per_page': 100, 'page_size': 100,
         'additional_fields': "grades,roles,organizations",
