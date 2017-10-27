@@ -14,10 +14,6 @@
     border: none;
 }
 
-.lesson-content input[type="button"]:disabled, .lesson-content button:disabled {
-    background-color: transparent;
-}
-
 .xblock--drag-and-drop{
     .target-img{
         @include mobile{
