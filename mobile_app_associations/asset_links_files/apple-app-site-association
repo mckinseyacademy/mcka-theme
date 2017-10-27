@@ -76,7 +76,7 @@
             ]
          },
          {
-            "appID": "2FLRSSAJ72.com.mckinsey.rts-academy",
+            "appID": "2FLRSSAJ72.com.mckinsey.rts-academy-learning",
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
