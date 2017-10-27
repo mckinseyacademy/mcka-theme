@@ -40,7 +40,7 @@ COMPANIES_MOBILE_APPS_MAP = {
     # Chemours
     153: {
         'android': '#',
-        'ios': '#',
+        'ios': 'https://itunes.apple.com/us/app/rts-academy/id1299877239',
         'tagline': '',
         'background_image': '/static/image/mobile_popup/rts_bg.png',
         'logo_image': '/static/image/mobile_popup/rts_logo',
