@@ -14,7 +14,7 @@
     border: none;
 }
 
-.lesson-content input[type="button"]:disabled, .lesson-content button:disabled {
+.lesson-content .xblock--drag-and-drop button:disabled {
     background-color: transparent;
 }
 
