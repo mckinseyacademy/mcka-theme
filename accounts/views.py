@@ -822,7 +822,7 @@ def user_profile(request):
     user_data = add_edx_notification_context(user_data)
 
     # using render_to_string to avoid Context evaluation
-    content = render_to_string('accounts/user_profile.haml', user_data)
+    content = render_to_string('accounts/user_profile.haml', user_data, request=request)
 
     return HttpResponse(content)
 
