@@ -215,11 +215,12 @@ def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
     '''
     Retrieves course structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}?depth={}'.format(
+    response = GET('{}/{}/{}?depth={}{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
-        depth)
+        depth,
+        '&username={}'.format(user.username) if user else '')
     )
 
     # Load the depth from the API
