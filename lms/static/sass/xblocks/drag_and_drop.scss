@@ -1,0 +1,112 @@
+// Overrides for Drag and Drop v2:
+@import '../base/variables';
+
+@mixin dnd-mobile-only {
+    @media screen and (max-width: 480px) { // Match the breakpoint used in the drag and drop XBlock's own CSS
+        @content;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Overrides that we want on Apros (desktop + mobile web) and native apps (webviews):
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+.themed-xblock.xblock--drag-and-drop {
+    // Hide the text at the top that says e.g. "1 point possible (ungraded)" (MCKIN-6169)
+    .problem-progress {
+        display: none;
+    }
+    // Don't display a border around the feedback text that appears below the drag and drop exercise (MCKIN-6169)
+    .feedback p {
+        border: none;
+    }
+    // Remove the grey background from disabled "reset" button
+    .sidebar-buttons button:disabled {
+        background-color: transparent;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Overrides that we want on Apros (desktop + mobile web) only:
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+.lesson-content .themed-xblock.xblock--drag-and-drop // .lesson-content is specific to Apros
+{
+    // In Apros, the popups should always have a turquiose color, whether they're right or wrong (MCKIN-6169)
+    .popup, .popup.popup-incorrect {
+        background-color: $mckinsey-academy-turquoise;
+    }
+    
+    // Apros mobile web overrides:
+    @include dnd-mobile-only {
+        // Fix positioning of feedback popups in Apros mobile web (https://github.com/mckinseyacademy/mcka_apros/pull/1715):
+        // Without this fix, they overlap with the apros header
+        .popup {
+            max-height: calc(100vh - 210px);
+            top: 150px;
+            transform: translateX(-50%);
+        }
+        // Feedback popups should always be white on mobile web:
+        .popup, .popup.popup-incorrect {
+            background-color: #fff;
+        }
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Overrides that we want in the native mobile apps (webviews) only:
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@include dnd-mobile-only { .course-wrapper.chromeless .themed-xblock.xblock--drag-and-drop {
+    // For the native mobile apps, there are some style overrides:
+    // TBD - what MCKIN ticket were these for?
+    .drag-container {
+        background-color: #f7f7f7;
+        padding: 15px;
+    }
+
+    .drag-container .item-bank {
+        border: 0;
+    }
+
+    // Give the draggables a white background and blue text:
+    .option {
+        margin: 5px 7px 5px 0;
+        background-color: #fff;
+        font-weight: 600;
+        color: #193c56
+    }
+
+    .popup .popup-header-icon {
+        height: 32px;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .popup .popup-header-icon span:before {
+        content: "\f058";
+        position: absolute;
+        left: 50%;
+        top: 7px;
+        transform: translateX(-50%);
+        width: 26px;
+        height: 26px;
+        color: #629a2c;
+        font-family: 'FontAwesome';
+    }
+
+    .popup .popup-content p {
+        color: #629a2c;
+    }
+
+    .popup .popup-content.popup-content-incorrect p {
+        color: #ff143e;
+    }
+
+    .popup button[class*="close"] span {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .popup .popup-header-icon-incorrect span:before {
+        content: "\f06a";
+        color: #ff143d;
+    }
+}}
