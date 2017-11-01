@@ -4,7 +4,7 @@ Tests for certificates django forms
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from accounts.tests.tests import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin
 
 from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm
 

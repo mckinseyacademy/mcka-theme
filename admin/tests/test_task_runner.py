@@ -7,7 +7,7 @@ from celery.states import ALL_STATES
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 
-from accounts.tests.tests import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin
 from admin.bulk_task_runner import BulkTaskRunner
 
 

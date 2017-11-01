@@ -12,7 +12,7 @@ from django.test import TestCase
 from django.conf import settings
 
 from courses.models import FeatureFlags
-from accounts.tests.tests import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin
 from .test_tasks import mock_passed_users_list
 from .test_views import GENERATE_CERTIFICATES_TASK_DATA
 from ..controller import (

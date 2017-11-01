@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 
 from lib.authorization import permission_groups_map
-from accounts.tests.tests import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
 from .test_task_runner import mocked_task

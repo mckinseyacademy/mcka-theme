@@ -9,7 +9,7 @@ from django.core import mail
 from django.core.urlresolvers import reverse
 
 from api_client.user_models import UserResponse
-from accounts.tests.tests import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin
 
 
 class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):

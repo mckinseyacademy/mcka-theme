@@ -3,14 +3,14 @@ Tests for helpers.py module
 """
 from ddt import ddt, data
 
-from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.test import TestCase
 
-from accounts.models import UserActivation
 from accounts.helpers import (
     get_user_activation_links, create_activation_url, TestUser,
     get_complete_country_name,
 )
+from accounts.models import UserActivation
 
 
 @ddt
@@ -18,6 +18,7 @@ class AccountActivationHelpersTest(TestCase):
     """
     Test cases for activation related helper methods
     """
+
     def setUp(self):
         """
         Sets up the test case
