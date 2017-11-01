@@ -28,21 +28,23 @@ class ApiError(Exception):
     http_error = None
 
     def __init__(self, thrown_error, function_name, error_code_messages=None, **call_context):
-        if isinstance(thrown_error, Urllib2HTTPError):
-            code = thrown_error.code
-            reason = thrown_error.reason
-            body = thrown_error.read()
-        elif isinstance(thrown_error, RequestsHTTPError):
-            code = thrown_error.response.status_code
-            reason = thrown_error.response.reason
+        if isinstance(thrown_error, RequestsHTTPError):
+            self.code = thrown_error.response.status_code
+            self.message = thrown_error.response.reason
             body = thrown_error.response.text
+        else:
+            # An Urllib2HTTPError or a mock of that
+            self.code = thrown_error.code
+            self.message = thrown_error.reason
+            try:
+                body = thrown_error.read()
+            except AttributeError:
+                body = ''
 
         self.http_error = thrown_error
-        self.code = code
 
         self.context = call_context
         self.function_name = function_name
-        self.message = reason
 
         # does the code have a known reason to be incorrect
         if error_code_messages and self.code in error_code_messages:
@@ -51,7 +53,7 @@ class ApiError(Exception):
         # Look in response content for specific message from api response
         try:
             self.content_dictionary = json.loads(body)
-        except ValueError:
+        except (ValueError, TypeError):
             self.content_dictionary = {}
 
         if "message" in self.content_dictionary:
