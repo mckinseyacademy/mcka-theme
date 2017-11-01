@@ -15,12 +15,13 @@ class TestUser(object):
     id = None
     email = None
 
-    def __init__(self, user_id, email):
+    def __init__(self, user_id, email, username='test_user'):
         """
         the plain, old class initializer
         """
         self.id = user_id
         self.email = email
+        self.username = username
 
 
 def get_user_activation_links(user_ids, base_url=''):
