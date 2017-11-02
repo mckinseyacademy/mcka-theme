@@ -20,7 +20,7 @@ def user_api_cache_wrapper(parse_method, property_name, parse_object=None, post_
 
             if not user_id:
                 raise ValueError('User Id is not passed')
-            
+
             cache_identifiers = []
             skip_caching = False
 
@@ -103,7 +103,7 @@ def course_api__cache_wrapper(parse_method, parse_object, property_name, post_pr
             data_property = property_name
 
             try:
-                course_id=args[0]
+                course_id = args[0]
             except IndexError:
                 course_id = kwargs.get('course_id')
 
@@ -119,7 +119,15 @@ def course_api__cache_wrapper(parse_method, parse_object, property_name, post_pr
                     except IndexError:
                         tree_depth = COURSE_DEFAULT_DEPTH
 
-                data_property = '{}_{}'.format(data_property, tree_depth)
+                # Sometimes this API retrieves different course trees for different users
+                # (e.g. staff users can see staff-only sections)
+                try:
+                    user = args[2]
+                except IndexError:
+                    user = kwargs.get('user')
+                user_id = user.id if user else 'generic'
+
+                data_property = '{}_{}_{}'.format(data_property, tree_depth, user_id)
 
             course_data_manager = CourseDataManager(course_id)
 
