@@ -49,4 +49,4 @@ requests==2.18.4
 unicodecsv==0.14.1
 
 # libsass for sass asset compilation
-libsass==0.10.0
+libsass==0.9.3
