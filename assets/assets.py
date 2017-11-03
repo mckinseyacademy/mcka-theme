@@ -99,7 +99,7 @@ register('js_all', JS)
 
 SCSS_CORE = Bundle(
     'scss/core.scss',
-    filters='sassc',
+    filters='sass',
     output='gen/core.css',
     depends=('scss/**/*.scss')
 )
@@ -115,7 +115,7 @@ register('css_core', CSS_CORE)
 # Applicaiton CSS
 SCSS_APP = Bundle(
     'scss/app.scss',
-    filters='sassc',
+    filters='sass',
     output='gen/app.css',
     depends=('scss/**/*.scss')
 )
@@ -131,7 +131,7 @@ register('css_app', CSS_APP)
 # Admin CSS
 SCSS_ADMIN = Bundle(
     'scss/admin.scss',
-    filters='sassc',
+    filters='sass',
     output='gen/admin.css',
     depends=('scss/**/*.scss')
 )
@@ -147,7 +147,7 @@ register('css_admin', CSS_ADMIN)
 # IE8 Overries
 SCSS_IE8 = Bundle(
     'scss/ie8.scss',
-    filters='sassc',
+    filters='sass',
     output='gen/ie8.css',
     depends=('scss/**/*.scss')
 )
