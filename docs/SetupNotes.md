@@ -84,7 +84,8 @@ The script will do the following:
 * Create databases required for Apros
 * Create `apros` user
 * Create virtualenv and setup python requirements
-* Update `apros` ~/.bashrc to automatically activate apros virtualenv and jump to mcka_apros folder
+* Install ruby 1.9.3, create ruby env
+* Update `apros` ~/.bashrc to automatically activate apros virtualenv and rubyenv and jump to mcka_apros folder
 
 If something goes wrong instructions to install everything manually are available at [Appendix E][appendix-e].
 
@@ -349,11 +350,20 @@ Next, run:
     mkdir venvs
     virtualenv venvs/mcka_apros
     # Standard warnings about curling to bash apply.
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+    bash <(curl -sSL https://get.rvm.io) stable
+    # This will automatically be sourced on the next login.
+    source /edx/app/apros/.rvm/scripts/rvm
+    # If this fails for some reason, it should give you a list of 
+    # things to install with apt.
+    rvm install ruby-1.9.3 --autolibs=read-fail
+    rvm use 1.9.3 --default
     
 
 Edit the user's .bashrc file in your favorite editor. Add the lines:
 
     source ~/venvs/mcka_apros/bin/activate  # Use the Apros Python environment.
+    source ~/.rvm/scripts/rvm # Load RVM into a shell session *as a function*
 
 
 ...at the top, before anything else. After the line `[ -z "$PS1" ] && return` add:
@@ -378,6 +388,14 @@ Apros's requirements are handled in a requirements.txt file. To install the requ
  
     pip install -r requirements.txt
 
+
+### Install Other requirements
+We require SASS to be used to build assets
+
+    gem install sass --version 3.3.14
+
+Notes:
+* Sass 3.4+ is not compatible - see https://github.com/zurb/foundation-rails/pull/96
 
 ### Creating default databases
 
