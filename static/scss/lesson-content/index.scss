@@ -60,6 +60,9 @@
     border-style: none;
     padding: 0;
     margin: 0;
+    legend{
+      max-width: 100%;
+    }
   }
 
 }
