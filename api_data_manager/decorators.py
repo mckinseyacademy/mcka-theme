@@ -121,11 +121,16 @@ def course_api__cache_wrapper(parse_method, parse_object, property_name, post_pr
 
                 # Sometimes this API retrieves different course trees for different users
                 # (e.g. staff users can see staff-only sections)
+                user_id = 'generic'
                 try:
                     user = args[2]
                 except IndexError:
                     user = kwargs.get('user')
-                user_id = user.id if user else 'generic'
+                if user:  # User may be an object or a dict.
+                    try:
+                        user_id = user.id
+                    except AttributeError:
+                        user_id = user['id']
 
                 data_property = '{}_{}_{}'.format(data_property, tree_depth, user_id)
 

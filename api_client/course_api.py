@@ -214,13 +214,22 @@ def course_detail_processing(course):
 def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
     '''
     Retrieves course structure information from the API for specified course
+    and user. (e.g. staff may see more content than students)
     '''
+    username = None
+    if user:
+        # user was passed; it could be a dict or an object.
+        try:
+            username = user.username
+        except AttributeError:
+            username = user.get('username')
+
     response = GET('{}/{}/{}?depth={}{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
         depth,
-        '&username={}'.format(user.username) if user else '')
+        '&username={}'.format(username) if username else '')
     )
 
     # Load the depth from the API
