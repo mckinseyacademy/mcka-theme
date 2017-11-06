@@ -30,8 +30,10 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     results are set in celery result backend, batch status is updated on each successful retrieval
     """
     api_params = {
-        'page': 1, 'per_page': 100, 'page_size': 100,
-        'additional_fields': "grades,roles,organizations",
+        'page': 1,
+        'per_page': 100,
+        'page_size': 100,
+        'additional_fields': "grades,roles,organizations,lesson_completions",
     }
     task_log_msg = "Participants data retrieval task for course: {}".format(course_id)
 
@@ -82,14 +84,14 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
                 groupworks[key] = 'Group Work: ' + label
             participant[key] = '{}%'.format(groupwork.get('percent'))
 
-        for assesment in participant.get('assessments'):
-            label = assesment.get('label')
+        for assessment in participant.get('assessments'):
+            label = assessment.get('label')
             key = 'AS_{}'.format(label)
             if key not in assessments:
                 assessments[key] = 'Assessment: ' + label
-            participant[key] = '{}%'.format(assesment.get('percent'))
+            participant[key] = '{}%'.format(assessment.get('percent'))
 
-        for lesson_number, completion in sorted(participant['lesson_completions'].iteritems()):
+        for lesson_number, completion in sorted(participant.get('lesson_completions', {}).iteritems()):
             key = 'PRG_{}'.format(lesson_number)
             if key not in lesson_completions:
                 lesson_completions[key] = 'Lesson {} Progress'.format(lesson_number)

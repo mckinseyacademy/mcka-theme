@@ -433,7 +433,6 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
-            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save()
 
@@ -539,7 +538,6 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
-            #print "\nActivation Email for {}:\n".format(user.email), generate_email_text_for_user_activation(activation_record, activation_link_head), "\n\n"
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save()
 
@@ -2104,6 +2102,7 @@ class CourseParticipantStats(object):
     }
 
     def __init__(self, course_id, base_url, record_parser=None):
+        self._additional_fields = None
         self.course_id = course_id
         self.base_url = base_url
         self.request_params = {}
@@ -2118,6 +2117,10 @@ class CourseParticipantStats(object):
         grades, participants, progress, lesson_completion = self._retrieve_api_data()
 
         return self._process_results(participants, grades, progress, lesson_completion)
+
+    @property
+    def additional_fields(self):
+        return self.request_params.get('additional_fields', '').split(',')
 
     def _retrieve_api_data(self):
         """
@@ -2135,6 +2138,8 @@ class CourseParticipantStats(object):
         """
         Returns completion data for all participants in the course.
         """
+        if 'lesson_completions' not in self.additional_fields:
+            return None
         oauth2_session = oauth2_requests.get_oauth2_session()
         lesson_completions = {}
         for user in course_participants['results']:
@@ -2169,12 +2174,13 @@ class CourseParticipantStats(object):
         if len(users) > 0:
             return users[0]
 
-    def _process_results(self, participants, course_grades, course_progress, lesson_completions):
+    def _process_results(self, participants, course_grades, course_progress, lesson_completions=None):
         """
         Integrates and process results set
         """
         participants_activation_links = self._participants_activation_urls(participants)
-        lesson_mapping = self._get_lesson_mapping(self._get_normal_user(participants))
+        if lesson_completions is not None:
+            lesson_mapping = self._get_lesson_mapping(self._get_normal_user(participants))
 
         for course_participant in participants['results']:
             # add in user activation link
@@ -2256,14 +2262,15 @@ class CourseParticipantStats(object):
             # if a record parser is supplied, pass record through it
             if self.record_parser:
                 self.record_parser(course_participant)
-            course_participant['lesson_completions'] = {}
-            lesson_completion = lesson_completions[course_participant['id']]
-            for lesson in lesson_completion['chapter']:
-                completion_percentage = round_to_int(float(lesson['completion']['ratio']) * 100)
-                block_key = lesson['block_key']
-                if block_key in lesson_mapping:
-                    lesson_number = lesson_mapping[block_key]
-                    course_participant['lesson_completions'][lesson_number] = completion_percentage
+            if lesson_completions is not None:
+                course_participant['lesson_completions'] = {}
+                lesson_completion = lesson_completions[course_participant['id']]
+                for lesson in lesson_completion['chapter']:
+                    completion_percentage = round_to_int(float(lesson['completion']['ratio']) * 100)
+                    block_key = lesson['block_key']
+                    if block_key in lesson_mapping:
+                        lesson_number = lesson_mapping[block_key]
+                        course_participant['lesson_completions'][lesson_number] = completion_percentage
         return participants
 
     def _participants_activation_urls(self, participants_data):
