@@ -1254,7 +1254,7 @@ class BulkTaskAPI(APIView):
 
 
 class course_details_api(APIView):
-    # ToDo: Remove company admin permissions 
+    # ToDo: Remove company admin permissions
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request, course_id=None, format=None):
         if course_id:
@@ -5603,7 +5603,7 @@ class tags_list_api(APIView):
                 alphanum_accented_validator(tag_name)
             except ValidationError as e:
                 return Response({'status': 'error', 'message': e.message})
-            
+
             tags = Tag.fetch_all()
             for tag in tags:
                 if tag.name.lower() == tag_name.lower():

@@ -1,4 +1,5 @@
 """ Tests for admin app celery tasks """
+import unicodecsv as csv
 
 from django.test import TestCase, override_settings
 
@@ -16,11 +17,37 @@ class MockParticipantsStats(object):
     """
     count = 0
     participant_data = [
-        {'id': 'user_1'},
-        {'id': 'user_2'},
-        {'id': 'user_3'},
-        {'id': 'user_4'},
-        {'id': 'user_5'},
+        {
+            'id': 'user_1',
+            'groupworks': [{'label': 'xyz', 'percent': '98'}],
+            'assessments': [{'label': 'xyz', 'percent': '95'}],
+            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+        },
+        {
+            'id': 'user_2',
+            'groupworks': [{'label': 'xyz', 'percent': '98'}],
+            'assessments': [{'label': 'xyz', 'percent': '95'}],
+            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+        },
+        {
+            'id': 'user_3',
+            'groupworks': [{'label': 'xyz', 'percent': '98'}],
+            'assessments': [{'label': 'xyz', 'percent': '95'}],
+            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+        },
+        {
+            'id': 'user_4',
+            'groupworks': [{'label': 'xyz', 'percent': '98'}],
+            'assessments': [{'label': 'xyz', 'percent': '95'}],
+            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+        },
+        {
+            'id': 'user_5',
+            'groupworks': [{'label': 'xyz', 'percent': '98'}],
+            'assessments': [{'label': 'xyz', 'percent': '95'}],
+            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+        },
+
     ]
 
     def __init__(self, *args, **kwargs):
@@ -53,12 +80,15 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
         """
         self.apply_patch('admin.tasks.CourseParticipantStats', new=MockParticipantsStats)
 
+        test_course_id = 'abc'
+        file_name = '{}_user_stats'.format(test_course_id)
+
         result = course_participants_data_retrieval_task(
-            course_id='abc', company_id=None, base_url='http://url.xyz',
+            course_id=test_course_id, company_id=None, base_url='http://url.xyz',
             task_id='xyz'
         )
 
-        self.assertEqual(result, MockParticipantsStats.participant_data)
+        self.assertIn(file_name, result)
 
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_participants_notifications_data_task(self):
