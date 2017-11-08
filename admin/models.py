@@ -151,10 +151,8 @@ class Tag(BaseGroupModel):
 
     @classmethod
     def course_tags(cls, course_id):
-        tags = []
-        for tag_type in TAG_GROUPS:
-            cls.group_type = TAG_GROUPS[tag_type]
-            tags.extend(course_api.get_course_groups(course_id=course_id, group_type=cls.group_type))
+        group_type = ",".join(TAG_GROUPS.values())
+        tags = course_api.get_course_groups(course_id=course_id, group_type=group_type)
         return tags
 
 
@@ -272,7 +270,11 @@ class WorkGroupActivityXBlock(JsonObject):
         return course_api.get_module_details(uri, cls.required_fields, cls)
 
     @classmethod
-    def fetch_from_activity(cls, course_id, activity_id):
+    def fetch_from_activity(cls, course_id, activity_id, is_v2_project=False):
+        # v2 projects contain activities of v2 category so skip two calls
+        if is_v2_project:
+            return course_api.get_course_content_detail(course_id, activity_id, cls.required_fields, cls)
+
         activity = course_api.get_course_content_detail(course_id, activity_id)
         if activity.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY:
             return course_api.get_module_details(activity.uri, cls.required_fields, cls)

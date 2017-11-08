@@ -91,7 +91,7 @@ class GroupProject(object):
     def activities(self):
         for activity in self._activities:
             if not hasattr(activity, 'xblock'):
-                activity.xblock = WorkGroupActivityXBlock.fetch_from_activity(self.course_id, activity.id)
+                activity.xblock = WorkGroupActivityXBlock.fetch_from_activity(self.course_id, activity.id, self.is_v2)
 
             if self.is_v2:
                 activity.due = activity.xblock.due_date

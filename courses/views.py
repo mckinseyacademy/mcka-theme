@@ -47,8 +47,9 @@ from .controller import (
     get_user_social_metrics,
     get_social_leaders,
 )
-from .user_courses import check_user_course_access, standard_data, load_course_progress, check_company_admin_user_access
-from .user_courses import get_current_course_for_user, set_current_course_for_user, get_current_program_for_user, check_course_shell_access
+from .user_courses import check_user_course_access, standard_data, load_course_progress,\
+    check_company_admin_user_access, get_current_course_for_user,\
+    set_current_course_for_user, get_current_program_for_user, check_course_shell_access
 from util.data_sanitizing import sanitize_data, clean_xss_characters
 
 # Create your views here.
@@ -160,14 +161,13 @@ def course_news(request, course_id):
 
     return render(request, 'courses/course_news.haml', data)
 
+
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
     feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
     if feature_flags and not feature_flags.cohort_map:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
-
-    course = load_course(course_id, request=request)
 
     proficiency = get_proficiency_leaders(course_id, request.user.id) if feature_flags \
         and feature_flags.proficiency else None
@@ -185,7 +185,8 @@ def course_cohort(request, course_id):
     metrics.group_enrolled = 0
 
     ta_user_json = json.dumps({})
-    ta_user = choose_random_ta(course_id)
+    course_role_users = course_api.get_users_filtered_by_role(course_id)
+    ta_user = choose_random_ta(course_id, course_role_users)
     if ta_user and hasattr(ta_user, 'to_json'):
         if not ta_user.title:
             ta_user.title = ''
@@ -194,7 +195,7 @@ def course_cohort(request, course_id):
     ta_user_id = ta_user.id if ta_user else None
 
     metrics.groups_users = []
-    if len(workgroups) > 0:
+    if workgroups:
         workgroup = workgroup_api.get_workgroup(workgroups[0].id)
         metrics.group_enrolled = len(workgroup.users)
         if workgroup.users > 0:
@@ -203,7 +204,7 @@ def course_cohort(request, course_id):
             user_dict = {u.id : u for u in user_api.get_users(ids=user_ids,fields=additional_fields)}
             for student in workgroup.users:
                 user = user_dict[student.id]
-                if user.city and user.city != '' and ta_user_id != user.id:
+                if user.city and ta_user_id != user.id:
                     if not user.title:
                         user.title = ''
                     # Cleaning user data for any malicious properties
@@ -220,8 +221,10 @@ def course_cohort(request, course_id):
             metrics.cities.append({'city': city_name, 'count': city.count})
     metrics.cities = json.dumps(metrics.cities)
 
-    user_roles = request.user.get_roles_on_course(course_id)
-    is_observer = (len([r for r in user_roles if r.role==USER_ROLES.OBSERVER]) > 0)
+    user_observer_roles = [role_user.role == USER_ROLES.OBSERVER and role_user.id == request.user.id
+                           for role_user in course_role_users]
+
+    is_observer = any(user_observer_roles)
 
     data = {
         'proficiency': proficiency,
@@ -230,10 +233,12 @@ def course_cohort(request, course_id):
         'metrics': metrics,
         'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
-        'leaderboard_ranks': [1,2,3],
+        'leaderboard_ranks': [1, 2, 3],
         'is_observer': is_observer,
     }
+
     return render(request, 'courses/course_cohort.haml', data)
+
 
 def _render_group_work(request, course, project_group, group_project, learner_dashboard_id=None, flag_branding=None):
 
@@ -601,13 +606,6 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     if graders_weight_sum > 100:
         _remove_duplicate_grader(graders)
-
-    # add module completion
-    completions = course_api.get_course_completions(course.id, user_id)
-    completed_ids = [result.content_id for result in completions]
-    for lesson in course.chapters:
-        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
-                                                           settings.PROGRESS_IGNORE_COMPONENTS)
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)

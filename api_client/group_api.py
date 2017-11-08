@@ -3,9 +3,6 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from urllib import urlencode
 
-from functools import wraps
-from django.utils.decorators import available_attrs
-
 from lib.utils import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from api_data_manager.group_data import GROUP_PROPERTIES

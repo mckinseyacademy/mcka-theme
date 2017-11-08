@@ -877,11 +877,11 @@ class courses_list_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_details(request, course_id):
 
-    internalAdminFlag = False
+    internal_admin_flag = False
     if request.user.is_internal_admin:
-        internalAdminFlag = True
+        internal_admin_flag = True
         internal_flag = check_if_course_is_internal(course_id)
-        if internal_flag == False:
+        if not internal_flag:
             return permission_denied(request)
 
     course = course_api.get_course_details(course_id)
@@ -898,62 +898,20 @@ def course_details(request, course_id):
         if course.get(data) is None:
             course[data] = "-"
 
-    qs_params = {'fields': 'id', 'page_size': 0}
-    course_all_users = course_api.get_course_details_users(course_id, qs_params)
-    #ensure that there is one user with created gradebook
-    user_gradebook = user_api.get_user_gradebook(course_all_users[0]['id'], course_id)
-    count_all_users = len(course_all_users)
-    course['count'] = count_all_users
+    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course_id)
+    course['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
+    course['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
 
-    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
-    list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
+    course_completed_active_users = course_metrics_active_users['users_completed']
+    course['users_enrolled'] = course_metrics_active_users['users_enrolled']
+    pass_users = course_metrics_active_users['users_passed']
 
-    course_users_ids = [str(user['id']) for user in course_all_users]
-    for user_id in list_of_user_roles['ids']:
-        if user_id in course_users_ids:
-            course_users_ids.remove(user_id)
-
-    #deleting unused data
-    del course_all_users
-
-    #number of active participants = all users - number of users with roles
-    course['users_enrolled'] = len(course_users_ids)
-
-    permissions_groups = group_api.get_groups_of_type('permission')
-    group_ids = ''
-    for group in permissions_groups:
-        group_ids += str(group.id) + ','
-    group_ids = group_ids[:-1]
-
-    course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id)
-    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, group_ids)
-    course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
-    try:
-        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
-    except ZeroDivisionError:
-        course['completed'] = 0
-
-    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=count_all_users)
-    pass_users = course_pass.pass_rate_display(list_of_user_roles['ids'])
-    try:
+    if course['users_enrolled']:
         course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
-    except ZeroDivisionError:
+        course['completed'] = round_to_int_bump_zero(100 * course_completed_active_users / course['users_enrolled'])
+    else:
         course['passed'] = 0
-
-    course_progress = 0
-    course_proficiency = 0
-    users_progress = get_course_progress(course_id, list_of_user_roles['ids'])
-    for user in users_progress:
-        course_progress += user['progress']
-    course_proficiency = course_pass.course_proficiency(list_of_user_roles['ids'])
-    try:
-        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
-    except ZeroDivisionError:
-        course['average_progress'] = 0
-    try:
-        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])
-    except ZeroDivisionError:
-        course['proficiency'] = 0
+        course['completed'] = 0
 
     list_of_email_templates = EmailTemplate.objects.all()
     course['template_list'] = []
@@ -961,15 +919,13 @@ def course_details(request, course_id):
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
     course_tags = Tag.course_tags(course_id)
-    course['tags'] = []
-    for tag in course_tags:
-        course['tags'].append(vars(tag))
+    course['tags'] = [vars(tag) for tag in course_tags]
 
-    companyAdminFlag = False
-    course['internalAdminFlag'] = internalAdminFlag
-    course['companyAdminFlag'] = companyAdminFlag
+    course['internalAdminFlag'] = internal_admin_flag
+    course['companyAdminFlag'] = False
 
     return render(request, 'admin/courses/course_details.haml', course)
+
 
 class course_details_stats_api(APIView):
 
@@ -5102,9 +5058,9 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN)
 def company_course_details(request, company_id, course_id):
 
-    companyAdminFlag = False
+    company_admin_flag = False
     if request.user.is_company_admin:
-        companyAdminFlag = True
+        company_admin_flag = True
         user_permissions = Permissions(request.user.id)
         user_organizations = user_permissions.get_all_user_organizations_with_permissions()[PERMISSION_GROUPS.COMPANY_ADMIN]
         company_ids = []
@@ -5122,65 +5078,21 @@ def company_course_details(request, company_id, course_id):
         if course.get(data) is None:
             course[data] = "-"
 
-    qs_params = {'fields': 'id'}
-    course_all_users = course_api.get_course_details_users(course_id=course_id)
-    count_all_users = course_all_users['count']
-    course['count'] = count_all_users
-    #delete unused data
-    del course_all_users
-    company_ids = organization_api.get_organization_user_ids_on_course(company_id, course_id)
-    user_gradebook = user_api.get_user_gradebook(company_ids[0], course_id)
-    count_company_users = len(company_ids)
+    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
+    course['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
+    course_proficiency = course_metrics_active_users['avg_grade']
+    course['proficiency'] = round_to_int_bump_zero(float(course_proficiency) * 100)
 
-    permissionsFilter = ['observer','assistant', 'staff', 'instructor']
-    list_of_user_roles = get_course_users_roles(course_id, permissionsFilter)
+    course['users_enrolled'] = course_metrics_active_users['users_enrolled']
+    course_completed_users = course_metrics_active_users['users_completed']
+    pass_users = course_metrics_active_users['users_passed']
 
-    for user_id in list_of_user_roles['ids']:
-        if int(user_id) in company_ids:
-            count_company_users -= 1
-
-    course['users_enrolled'] = count_company_users
-
-    permissions_groups = group_api.get_groups_of_type('permission')
-    group_ids = ''
-    for group in permissions_groups:
-        group_ids += str(group.id) + ','
-    group_ids = group_ids[:-1]
-
-    course_metrics_all_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
-    course_metrics_filtered_users = course_api.get_course_details_metrics_filtered_by_groups(course_id, group_ids, company_id)
-    course_completed_users = course_metrics_all_users['users_completed'] - course_metrics_filtered_users['users_completed']
-
-    try:
-        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
-    except ZeroDivisionError:
-        course['completed'] = 0
-
-    course_pass = course_api.get_course_metrics_grades(course_id, grade_object_type=Proficiency, count=count_all_users)
-    pass_users = course_pass.pass_rate_display_for_company(list_of_user_roles['ids'], company_ids)
-
-    try:
+    if course['users_enrolled']:
         course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
-    except ZeroDivisionError:
+        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
+    else:
         course['passed'] = 0
-
-    course_progress = 0
-    course_proficiency = 0
-
-    users_progress = get_course_progress(course_id, list_of_user_roles['ids'], company_id=company_id)
-
-    for user in users_progress:
-        course_progress += user['progress']
-
-    course_proficiency = course_pass.course_proficiency_for_company(list_of_user_roles['ids'], company_ids)
-    try:
-        course['average_progress'] = round_to_int_bump_zero(float(course_progress)/course['users_enrolled'])
-    except ZeroDivisionError:
-        course['average_progress'] = 0
-    try:
-        course['proficiency'] = round_to_int_bump_zero(float(course_proficiency)/course['users_enrolled'])
-    except ZeroDivisionError:
-        course['proficiency'] = 0
+        course['completed'] = 0
 
     list_of_email_templates = EmailTemplate.objects.all()
     course['template_list'] = []
@@ -5188,18 +5100,13 @@ def company_course_details(request, company_id, course_id):
         course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
 
     course_tags = Tag.course_tags(course_id)
-    course['tags'] = []
-    for tag in course_tags:
-        course['tags'].append(vars(tag))
+    course['tags'] = [vars(tag) for tag in course_tags]
 
-    course['companyAdminFlag'] = companyAdminFlag
+    course['companyAdminFlag'] = company_admin_flag
     course['companyCourseDeatilsPage'] = True
     course['companyId'] = company_id
     course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
-    internalAdminFlag = False
-    if request.user.is_internal_admin:
-        internalAdminFlag = True
-    course['internalAdminFlag'] = internalAdminFlag
+    course['internalAdminFlag'] = bool(request.user.is_internal_admin)
     return render(request, 'admin/courses/course_details.haml', course)
 
 

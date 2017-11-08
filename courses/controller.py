@@ -590,19 +590,19 @@ def get_social_leaders(course_id, user_id, count=3):
     return data
 
 
-def get_ta_users(course_id):
+def get_ta_users(course_id, course_role_users=None):
     role = USER_ROLES.TA
-    ta_users_base = [str(user.id) for user in course_api.get_users_filtered_by_role(course_id) if user.role == role]
+    role_users = course_role_users or course_api.get_users_filtered_by_role(course_id)
+    ta_users_base = [str(user.id) for user in role_users if user.role == role]
     additional_fields = ["title", "profile_image", "city", "full_name"]
-    ta_users = user_api.get_users(ids=ta_users_base,fields=additional_fields) if len(ta_users_base) > 0 else []
+    ta_users = user_api.get_users(ids=ta_users_base,fields=additional_fields) if ta_users_base else []
     return ta_users
 
-def choose_random_ta(course_id):
-    ta_users = [u for u in get_ta_users(course_id) if u.city]
-    ta_user = None
-    if len(ta_users) > 0:
-        ta_user = random.choice(ta_users)
-    return ta_user
+
+def choose_random_ta(course_id, course_role_users=None):
+    ta_users = [user for user in get_ta_users(course_id, course_role_users) if user.city]
+    return random.choice(ta_users) if ta_users else None
+
 
 def load_lesson_estimated_time(course):
     estimated_time = load_static_tabs(course.id, name="estimated time")

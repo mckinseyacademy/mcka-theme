@@ -246,10 +246,19 @@ def load_course_progress(course, user_id):
     except ZeroDivisionError:
         course.user_progress = 0
 
+
 def return_course_completions_stats(course, user_id):
     return _get_course_progress_data(course, user_id)
 
+
+STANDARD_DATA_FEATURES = {
+    "course_progress": True,
+}
+
+
 def standard_data(request):
+    features_to_include = getattr(request, 'standard_data_features', STANDARD_DATA_FEATURES)
+
     ''' Makes user and program info available to all templates '''
     course = None
     program = None
@@ -272,7 +281,7 @@ def standard_data(request):
         # in subsequent calls
         try:
             course_id = get_current_course_for_user(request)
-            if not course_id is None:
+            if course_id is not None:
                 course = load_course(course_id, request=request)
                 if not course.started:
                     raise CourseAccessDeniedError(course_id, request.user.id)
@@ -293,6 +302,7 @@ def standard_data(request):
 
             lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             module_id = request.resolver_match.kwargs.get('page_id', None)
+
             if module_id is None or lesson_id is None:
                 course_id, lesson_id, page_id = locate_chapter_page(
                     request, request.user.id, course_id, None)
@@ -301,14 +311,16 @@ def standard_data(request):
             # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
             _inject_formatted_data(program, course, None, load_static_tabs(course_id))
 
-            # Inject course progress for nav header
-            load_course_progress(course, request.user.id)
+            if features_to_include['course_progress']:
+                # Inject course progress for nav header
+                load_course_progress(course, request.user.id)
+
         elif program and program.courses:
             upcoming_course = program.courses[0]
 
         organizations = user_api.get_user_organizations(request.user.id)
 
-        if len(organizations) > 0:
+        if organizations:
             organization = organizations[0]
             try:
                 client_customization = ClientCustomization.objects.get(client_id=organization.id)

@@ -567,7 +567,6 @@ def get_course_metrics_grades(course_id, grade_object_type=JsonObject, **kwargs)
 
     return JP.from_json(response.read(), grade_object_type)
 
-
 @api_error_protect
 def get_course_metrics_completions(course_id, completions_object_type=JsonObject, **kwargs):
     ''' retrieves users who are leading in terms of  course module completions '''
@@ -836,14 +835,16 @@ def get_course_details_metrics_social(course_id, qs_params = ''):
 
 
 @api_error_protect
-def get_course_details_completions_leaders(course_id, organization_id = ''):
+def get_course_details_completions_leaders(course_id, organization_id='', **kwargs):
+    qs_params = {"organizations": organization_id}
+    qs_params.update(kwargs)
 
     response = GET(
-        '{}/{}/{}/metrics/completions/leaders?organizations={}'.format(
+        '{}/{}/{}/metrics/completions/leaders?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
-            organization_id
+            urlencode(qs_params),
         )
     )
 
@@ -880,10 +881,11 @@ def get_course_details_metrics_grades_all_users(course_id, count):
 
 
 @api_error_protect
-def get_course_details_metrics_all_users(course_id, organization_id = ''):
+def get_course_details_metrics_all_users(course_id, organization_id=''):
 
     response = GET(
-        '{}/{}/{}/metrics?metrics_required=users_completed&organization={}'.format(
+        '{}/{}/{}/metrics?metrics_required=users_completed,users_passed,avg_grade,avg_progress'
+        '&organization={}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
