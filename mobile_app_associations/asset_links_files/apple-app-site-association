@@ -68,7 +68,7 @@
             ]
          },
          {
-            "appID": "2FLRSSAJ72.com.mckacademy.rts-academy",
+            "appID": "FN75PC35CY.com.mckacademy.rts-academy",
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
@@ -100,7 +100,7 @@
             ]
          },
          {
-            "appID": "2FLRSSAJ72.com.mckacademy.mck-academy",
+            "appID": "FN75PC35CY.com.mckacademy.mck-academy",
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
