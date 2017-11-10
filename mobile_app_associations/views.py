@@ -14,7 +14,4 @@ def ios_site_association_file(request): # pylint: disable=unused-argument
     """
     View to return iOS app association file
     """
-    return get_app_association_file_response(
-        'apple-app-site-association',
-        content_type='application/pkcs7-mime'
-    )
+    return get_app_association_file_response('apple-app-site-association')
