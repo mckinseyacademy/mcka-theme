@@ -87,6 +87,8 @@ def course_landing_page(request, course_id):
     load_lesson_estimated_time(course)
 
     social = get_user_social_metrics(request.user.id, course_id)
+    # add in all the grading information
+    gradebook = inject_gradebook_info(request.user.id, course)
     graded_items_count = sum(len(graded) for graded in course.graded_items().values())
 
     data = {
