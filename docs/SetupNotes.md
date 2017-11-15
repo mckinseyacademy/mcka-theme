@@ -128,7 +128,18 @@ to
     "EDX_API_KEY": "edx_api_key",
 
 Explanation: `EDX_API_KEY` in `lms.auth.json` and `local_settings.py` must match for apros to be able to communicate with the LMS API.
- 
+
+##### Configure the `MEDIA_ROOT` and Disable Parental Consent in `lms/envs/private.py`
+
+Create a new file `/edx/app/edxapp/edx-platform/lms/envs/private.py`.  
+This is a git-ignored file that can be used to override settings for a local instance.  
+Add the following two lines:
+
+    MEDIA_ROOT = "/edx/var/edxapp/media"
+    PARENTAL_CONSENT_AGE_LIMIT = None
+
+These two settings are required to make profile images work in Apros. The age limit image checks must be disabled as Apros doesn't record age in user profiles.
+
 ## Start the LMS and forum services
 
 These services need to be running for Apros to work. Start them and leave them
