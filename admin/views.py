@@ -3069,7 +3069,7 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
 #@checked_user_access  # note this decorator changes method signature by adding restrict_to_users_ids parameter
 def group_work_status(request, course_id, group_id=None, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
-    wcd = WorkgroupCompletionData(course_id, group_id, restrict_to_users_ids)
+    wcd = WorkgroupCompletionData(course_id, group_id, restrict_to_users_ids, request=request)
     data = wcd.build_report_data()
     data.update({'selected_client_tab':'group_work_status'})
 
@@ -3128,7 +3128,7 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
 def workgroup_course_assignments(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     selected_project_id = request.GET.get("project_id", None)
-    course = load_course(course_id)
+    course = load_course(course_id, request=request)
 
     students, companies = getStudentsWithCompanies(course, restrict_to_users_ids)
 

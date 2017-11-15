@@ -97,9 +97,9 @@ class WorkgroupCompletionData(object):
             self.stage_blocks[uri] = WorkGroupV2StageXBlock.fetch_from_uri(uri)
         return self.stage_blocks[uri]
 
-    def __init__(self, course_id, group_id=None, restrict_to_users_ids=None):
+    def __init__(self, course_id, group_id=None, restrict_to_users_ids=None, request=None):
         self.activity_xblocks = {}
-        self.course = load_course(course_id, depth=GROUP_WORK_REPORT_DEPTH)
+        self.course = load_course(course_id, depth=GROUP_WORK_REPORT_DEPTH, request=request)
         self.restrict_to_users_ids = restrict_to_users_ids
         self.group_project_lookup = {gp.id: gp for gp in self.course.group_projects}
 
