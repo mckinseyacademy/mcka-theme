@@ -3054,7 +3054,7 @@ def download_group_projects_report(request, course_id, restrict_to_courses_ids=N
     )
 
     response = HttpResponse(
-        generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids),
+        generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids, request=request),
         content_type='text/csv'
     )
 
