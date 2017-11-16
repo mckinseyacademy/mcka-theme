@@ -495,13 +495,13 @@ class WorkgroupCompletionData(object):
         return result
 
 
-def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None):
+def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None, request=None):
     output_lines = []
 
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    wcd = WorkgroupCompletionData(course_id, restrict_to_users_ids=restrict_to_users_ids)
+    wcd = WorkgroupCompletionData(course_id, restrict_to_users_ids=restrict_to_users_ids, request=request)
 
     # column structure:
     # Group
