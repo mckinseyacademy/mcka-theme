@@ -216,6 +216,7 @@ def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
     Retrieves course structure information from the API for specified course
     and user. (e.g. staff may see more content than students)
     '''
+    edx_oauth2_session = get_oauth2_session()
     username = None
     if user:
         # user was passed; it could be a dict or an object.
@@ -224,16 +225,18 @@ def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
         except AttributeError:
             username = user.get('username')
 
-    response = GET('{}/{}/{}?depth={}{}'.format(
+    url = '{}/{}/{}?depth={}{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
         depth,
-        '&username={}'.format(username) if username else '')
+        '&username={}'.format(username) if username else ''
     )
 
+    response = edx_oauth2_session.get(url=url)
+
     # Load the depth from the API
-    return response.read()
+    return response.content
 
 
 @api_error_protect
@@ -721,14 +724,17 @@ def get_courses_list(getParameters):
 
 @api_error_protect
 def get_course_details(course_id):
+    edx_oauth2_session = get_oauth2_session()
 
-    response = GET('{}/{}/{}'.format(
+    url = '{}/{}/{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
-        course_id)
+        course_id
     )
 
-    return json.loads(response.read())
+    response = edx_oauth2_session.get(url)
+
+    return response.json()
 
 
 @api_error_protect
