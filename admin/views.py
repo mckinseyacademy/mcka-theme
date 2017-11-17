@@ -1583,7 +1583,6 @@ def client_detail_customization(request, client_id):
 
             for upload in request.FILES:
                 temp_image = request.FILES[upload]
-                upload_mobile_app_logo(request, client_id)
                 if temp_image.content_type in allowed_types:
                     extension = os.path.splitext(temp_image.name)[1]
                     temp_url = 'images/{}-{}-{}{}'.format(upload, client_id, datetime.now().strftime("%s"), extension)

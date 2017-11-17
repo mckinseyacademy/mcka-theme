@@ -1,60 +1,27 @@
+import os, re, json, datetime
 from collections import namedtuple
-from django.contrib import messages
-import os, re, urllib, json, datetime
 
+from django.contrib import messages
 from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.template import loader
 from django.utils.encoding import force_bytes
 from django.utils.translation import ugettext as _
 from django.utils.http import urlsafe_base64_encode
-from django.core.urlresolvers import reverse
-from django.template import loader
-from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
-from email.MIMEImage import MIMEImage
 from django.utils.html import strip_tags
+from email.MIMEImage import MIMEImage
 
-from admin.controller import _send_activation_email_to_single_new_user, enroll_user_in_course
-from admin.models import Program, LearnerDashboard, Client
-from api_client.user_api import get_user_courses_progress
-from courses.user_courses import get_current_course_for_user
-from courses.models import FeatureFlags
+from admin.controller import enroll_user_in_course
+from admin.models import Program, Client
 
 from api_client import user_api, third_party_auth_api, organization_api, course_api, mobileapp_api
 from api_client.api_error import ApiError
-from util.user_agent_helpers import is_ios, is_supported_mobile_device
-
+from mobile_apps.constants import MOBILE_APP_DEPLOYMENT_MECHANISMS
 from license import controller as license_controller
+
 from .models import UserPasswordReset, UserActivation
 
-
-COMPANIES_MOBILE_APPS_MAP = {
-    # Mckinsey and Company FF
-    17: {
-        'android': '#',
-        'ios': 'https://dappservices.mckinsey.com/mifs/asfV3x/appstore?appid=3507',
-        'tagline': '',
-        'background_image': '/static/image/mobile_popup/rts_bg.png',
-        'logo_image': '/static/image/mobile_popup/rts_logo',
-        'mobile_image': '/static/image/mobile_popup/rts_device',
-        'download_banner_image': 'mobile_iron_badge'
-    },
-    # Chemours
-    153: {
-        'android': '#',
-        'ios': 'https://itunes.apple.com/us/app/rts-academy/id1299877239',
-        'tagline': '',
-        'background_image': '/static/image/mobile_popup/rts_bg.png',
-        'logo_image': '/static/image/mobile_popup/rts_logo',
-        'mobile_image': '/static/image/mobile_popup/rts_device',
-        'download_banner_image': 'Badge.iOSAppStore'
-    }
-}
-
-MOBILE_APP_DEPLOYMENT_MECHANISMS = {
-    'public_store': 1,
-    'enterprise': 2,
-    'ota': 3,
-    'other': 4,
-    }
 
 class ActivationError(Exception):
     '''
@@ -483,35 +450,6 @@ def send_warning_email_to_admin(course_run):
         headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
     email.attach_alternative(email_html, 'text/html')
     email.send(fail_silently=False)
-
-
-def has_mobile_ready_course(user_id):
-    """
-    Returns boolean based on if user has any mobile ready course
-    """
-    qs_params = dict(mobile_only=True)
-    # TODO:  Request a dedicated API to get if user has a mobile-ready course
-    #        and use that API instead of using progress api.
-    response = get_user_courses_progress(user_id, qs_params)
-
-    return True if len(response) else False
-
-
-def get_mobile_app_download_popup_data(request):
-    mobile_popup_data = dict()
-    try:
-        users = user_api.get_users(username=request.GET['username'])
-        if users and has_mobile_ready_course(users[0].id):
-            companies = user_api.get_user_organizations(users[0].id)
-            if companies and companies[0].id in COMPANIES_MOBILE_APPS_MAP:
-                mobile_popup_data['company_mobile_app_map'] = COMPANIES_MOBILE_APPS_MAP[companies[0].id]
-    except ApiError:
-        pass
-
-    if is_supported_mobile_device(request) and 'company_mobile_app_map' in mobile_popup_data:
-        mobile_popup_data["show_app_link_popup"] = True
-
-    return mobile_popup_data
 
 
 def append_user_mobile_app_id_cookie(response, user_id):
