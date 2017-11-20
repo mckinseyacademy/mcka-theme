@@ -545,3 +545,12 @@ CACHE_TIMEOUTS = {
 
 # default course depth to fetch from API
 COURSE_DEFAULT_DEPTH = 3
+
+# These URL prefixes are safe for Oauth2 communication
+OAUTH2_SAFE_URL_PREFIXES = [
+    'https://',
+    'http://localhost:',
+    'http://localhost/',
+    'http://127.0.0.1:',
+    'http://127.0.0.1/'
+]

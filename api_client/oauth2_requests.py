@@ -25,10 +25,10 @@ def is_secure_transport(uri):
     any network).
     """
     uri_lower = uri.lower()
-    safe_prefixes = ['https://', 'http://localhost:', 'http://localhost/', 'http://127.0.0.1:', 'http://127.0.0.1/']
+    safe_prefixes = settings.OAUTH2_SAFE_URL_PREFIXES
     if settings.DEBUG:
         safe_prefixes.append('http://lms.mcka.local/')  # Used on devstacks
-    return any(uri.startswith(prefix) for prefix in safe_prefixes)
+    return any(uri_lower.startswith(prefix) for prefix in safe_prefixes)
 
 
 def get_oauth2_session():

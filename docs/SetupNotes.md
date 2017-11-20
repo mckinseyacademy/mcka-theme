@@ -453,9 +453,9 @@ First install requirements for running tests:
 
 To run tests enter this command:
 
-    python manage.py test <test module to run>
+    python manage.py test <test module to run> --settings=mcka_apros.test_settings
 
 To find coverage of tests, enter these commands:
 
-    coverage run --source='.' manage.py test <test module to run>
+    coverage run --source='.' manage.py test <test module to run> --settings=mcka_apros.test_settings
     coverage report
