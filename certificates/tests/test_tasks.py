@@ -6,7 +6,7 @@ from lib.utils import DottableDict
 from django.core import mail
 from django.test import TestCase, override_settings
 
-from accounts.tests.tests import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin
 
 from ..models import (
     CertificateStatus,

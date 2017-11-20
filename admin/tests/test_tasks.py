@@ -3,7 +3,7 @@ import unicodecsv as csv
 
 from django.test import TestCase, override_settings
 
-from accounts.tests.tests import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin
 from admin.tasks import (
     course_participants_data_retrieval_task,
     participants_notifications_data_task,
