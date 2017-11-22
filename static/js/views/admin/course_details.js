@@ -87,7 +87,6 @@
       var multiSelectFlag = true;
       if (companyAdminFlag == 'True')
       {
-        multiSelectFlag = false;
         var index = 0;
         for (var i=0; i < _this.generatedGridColumns.length; i++)
         {

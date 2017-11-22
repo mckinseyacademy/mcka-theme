@@ -1160,7 +1160,7 @@ class BulkTaskAPI(APIView):
     """
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def get(self, request):
         """
         Returns status of a task
@@ -1187,7 +1187,7 @@ class BulkTaskAPI(APIView):
         return Response({'values': response}, status=status.HTTP_200_OK)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
     def post(self, request):
         """
         Creates new task based on task name
@@ -1199,6 +1199,9 @@ class BulkTaskAPI(APIView):
             data = json.loads(request.body)
         except:
             data = request.POST
+
+        if request.user.is_company_admin and data.get('type') != 'participants_csv_data':
+            return Response({'errors': "FORBIDDEN"}, status=status.HTTP_403_FORBIDDEN)
 
         # run the related task in the background
         try:

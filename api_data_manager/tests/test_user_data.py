@@ -12,5 +12,4 @@ class TestUserDataManager(TestCase):
         pass
 
     def test_user_groups(self):
-        data = user_api.get_user_groups(6, parse_object=None)
-        UserDataManager.flush_cache()
+        pass

@@ -67,6 +67,9 @@
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
                 - if user.is_company_admin
+                  #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
+                    .bulkButtonWrapper
+                      %a.button.bulkExportStats.bulkButton.disabled{:href => "#"} Export stats
                 - else
                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                     .bulkButtonWrapper
