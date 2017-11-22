@@ -97,7 +97,7 @@ def group_api_cache_wrapper(parse_method, parse_object, property_name, post_proc
     return decorator
 
 
-def course_api__cache_wrapper(parse_method, parse_object, property_name, post_process_method=None):
+def course_api_cache_wrapper(parse_method, parse_object, property_name, post_process_method=None):
     def decorator(view_fn):
         def _wrapped_view(*args, **kwargs):
             data_property = property_name
@@ -121,18 +121,23 @@ def course_api__cache_wrapper(parse_method, parse_object, property_name, post_pr
 
                 # Sometimes this API retrieves different course trees for different users
                 # (e.g. staff users can see staff-only sections)
-                user_id = 'generic'
+                # For the sake of optimization, as course details api is a heavy call, for now
+                # the cache maintains JUST TWO type of responses of course details API
+                # one for staff users and one for all normal users
+                # change this implementation if we need to get per-user course tree
+                user_type = 'generic'
                 try:
                     user = args[2]
                 except IndexError:
                     user = kwargs.get('user')
+
                 if user:  # User may be an object or a dict.
                     try:
-                        user_id = user.id
+                        user_type = 'staff' if user.is_staff else 'generic'
                     except AttributeError:
-                        user_id = user['id']
+                        user_type = 'staff' if user.get('is_staff') else 'generic'
 
-                data_property = '{}_{}_{}'.format(data_property, tree_depth, user_id)
+                data_property = '{}_{}_{}'.format(data_property, tree_depth, user_type)
 
             course_data_manager = CourseDataManager(course_id)
 
