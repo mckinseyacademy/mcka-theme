@@ -449,6 +449,7 @@ class TestCourseApi(TestCase):
     COURSE_ID = 'test/course/1'
     DEPTH = 10
     TEST_USER = TestUser(11, 'user1@example.com', 'example_user_1')
+    STAFF_USER = TestUser(12, 'staff@example.com', 'staff_user_1', is_staff=True)
     USER_DICT = dict(id=11, email='user1@example.com', username='example_user_1')
 
     def setUp(self):
@@ -457,8 +458,7 @@ class TestCourseApi(TestCase):
         """
         super(TestCourseApi, self).setUp()
 
-        # User2 gets an empty course (no chapters)
-        self.user2 = TestUser(12, 'user2@example.com', 'example_user_2')
+        # normal users get empty course response
         self.empty_course_response = '''{
             "category":"course",
             "end":null,
@@ -474,7 +474,7 @@ class TestCourseApi(TestCase):
             "course_image_url":"/c4x/test/course/asset/logo.png"
         }'''
 
-        # Everyone else gets a course with a chapter
+        # Staff user gets a course with a chapter
         self.course_response = '''{
             "category":"course",
             "end":null,
@@ -528,12 +528,12 @@ class TestCourseApi(TestCase):
         Stub out the courseware API
         """
         def courseware_response(request, uri, headers):  # pylint: disable=unused-argument
-            # self.user2 gets the "empty course"
-            if self.user2.username in uri:
-                return (200, headers, self.empty_course_response)
+            # staff user gets the course with 1 chapter
+            if self.STAFF_USER.username in uri:
+                return (200, headers, self.course_response)
 
-            # Everyone else gets the course with 1 chapter
-            return (200, headers, self.course_response)
+            # Everyone else gets the "empty course"
+            return (200, headers, self.empty_course_response)
 
         httpretty.register_uri(
             httpretty.GET,
@@ -567,7 +567,7 @@ class TestCourseApi(TestCase):
         """
         self._setup_courseware_response()
         course = get_course(*args, **kwargs)
-        self.assertEquals(len(course.chapters), 1)
+        self.assertEquals(len(course.chapters), 0)
 
     @httpretty.activate
     def test_get_course_different_users(self):
@@ -575,8 +575,8 @@ class TestCourseApi(TestCase):
         Ensure that get_course can return different content for different users.
         """
         self._setup_courseware_response()
-        course1 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.TEST_USER)
-        course2 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.user2)
+        course1 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.STAFF_USER)
+        course2 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.TEST_USER)
 
         self.assertNotEqual(course1, course2)
         self.assertEquals(len(course1.chapters), 1)

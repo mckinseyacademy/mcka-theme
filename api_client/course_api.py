@@ -6,7 +6,7 @@ from urllib import urlencode
 from django.conf import settings
 
 from api_data_manager.course_data import COURSE_PROPERTIES
-from api_data_manager.decorators import course_api__cache_wrapper
+from api_data_manager.decorators import course_api_cache_wrapper
 
 from .api_error import api_error_protect
 from . import course_models
@@ -132,7 +132,7 @@ def tabs_post_process(tabs):
 
 
 @api_error_protect
-@course_api__cache_wrapper(
+@course_api_cache_wrapper(
     parse_method=JP.from_json,
     parse_object=course_models.CourseTabs,
     property_name=COURSE_PROPERTIES.TABS,
@@ -205,7 +205,7 @@ def course_detail_processing(course):
 
 
 @api_error_protect
-@course_api__cache_wrapper(
+@course_api_cache_wrapper(
     parse_method=CJP.from_json,
     parse_object=None,
     property_name=COURSE_PROPERTIES.DETAIL,
@@ -215,6 +215,9 @@ def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
     '''
     Retrieves course structure information from the API for specified course
     and user. (e.g. staff may see more content than students)
+
+    Refer to `course_api_cache_wrapper` for cache implementation as it reduces
+    the API calls by limiting it to staff/non-staff user types
     '''
     edx_oauth2_session = get_oauth2_session()
     username = None
