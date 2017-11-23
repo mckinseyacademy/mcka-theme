@@ -46,7 +46,7 @@ from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistr
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin, get_mobile_app_download_popup_data
+    send_warning_email_to_admin, get_mobile_app_download_popup_data, append_user_mobile_app_id_cookie
 )
 from util.user_agent_helpers import is_mobile_user_agent
 from .forms import (
@@ -253,6 +253,7 @@ def login(request):
                     if user:
                         response = _process_authenticated_user(request, user)
                         _append_login_mode_cookie(response, login_mode)
+                        append_user_mobile_app_id_cookie(response, user.id)
                         return response
 
                 except ApiError as err:
@@ -278,6 +279,7 @@ def login(request):
             if user:
                 response = _process_authenticated_user(request, user)
                 _append_login_mode_cookie(response, login_mode)
+                append_user_mobile_app_id_cookie(response, user.id)
                 return response
         except ApiError as err:
             error = err.message

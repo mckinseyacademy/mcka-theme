@@ -95,3 +95,17 @@ def mobile_login_data(request):
             data['track_mobile_login'] = 'iOS'
 
     return data
+
+
+def set_mobile_app_id(request):
+    """
+    Make android and ios app id available to all templates
+    """
+    data = dict()
+    if is_mobile_user_agent(request):
+        if is_android(request):
+            data['android_app_id'] = request.COOKIES.get('android_app_id')
+        elif is_ios(request):
+            data['ios_app_id'] = request.COOKIES.get('ios_app_id')
+
+    return data

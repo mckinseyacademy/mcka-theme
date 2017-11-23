@@ -18,7 +18,7 @@ from api_client.user_api import get_user_courses_progress
 from courses.user_courses import get_current_course_for_user
 from courses.models import FeatureFlags
 
-from api_client import user_api, third_party_auth_api, organization_api, course_api
+from api_client import user_api, third_party_auth_api, organization_api, course_api, mobile_api_user
 from api_client.api_error import ApiError
 from util.user_agent_helpers import is_ios, is_supported_mobile_device
 
@@ -506,3 +506,42 @@ def get_mobile_app_download_popup_data(request):
         mobile_popup_data["show_app_link_popup"] = True
 
     return mobile_popup_data
+
+
+def append_user_mobile_app_id_cookie(response, user_id):
+
+    organizations = user_api.get_user_organizations(user_id)
+
+    if len(organizations) > 0:
+        ios_app_id, android_app_id = get_mobile_app_id(organizations[0])
+
+ # we will get ios and android id
+        response.set_cookie(
+            'ios_app_id',
+            ios_app_id,
+            domain=settings.LMS_SESSION_COOKIE_DOMAIN,
+        )
+
+        response.set_cookie(
+            'android_app_id',
+            android_app_id,
+            domain=settings.LMS_SESSION_COOKIE_DOMAIN,
+        )
+
+    return response
+
+
+def get_mobile_app_id(organization):
+
+    ios_app_id = None
+    android_app_id = None
+
+    try:
+        mobile_id = mobile_api_user.get_mobile_apps({"organization_id": organization.id})
+        results = mobile_id['results'][0]
+        ios_app_id = results['ios_app_id']
+        android_app_id = results['android_app_id']
+    except ApiError:
+        pass
+
+    return ios_app_id, android_app_id

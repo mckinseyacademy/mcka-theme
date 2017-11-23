@@ -6,6 +6,7 @@
     %meta{charset: "utf-8"}
     %meta{'http-equiv': "X-UA-Compatible", content: "IE=edge"}
     %meta{name: "viewport", content: "width=device-width, maximum-scale=1, user-scalable=no"}
+    %meta{name: "MCKA", content: "app-id={{ios_app_id}}"}
     - block meta
     - block page_title
       %title= _("McKinsey Academy")
@@ -131,7 +132,6 @@
       %script{src: "/static/js/vendor/underscore.js"}
       %script{src: "/static/js/vendor/backbone.js"}
       %script{src: "/static/js/vendor/date.js"}
-
     -# custom js libs
     - block custom_js
 
@@ -247,10 +247,10 @@
         {% assets "js_all" %}
           %script{src: "{{ ASSET_URL }}"}
         {% endassets %}
-
     -# JS - custom snippets
     - block js_snippets
 
     -# Init Foundation
     - block foundation_js_init
       %script $(document).foundation();
+
