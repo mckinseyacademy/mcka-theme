@@ -509,13 +509,15 @@ def get_mobile_app_download_popup_data(request):
 
 
 def append_user_mobile_app_id_cookie(response, user_id):
-
+    """
+    Returns response by setting android_app_id and ios_app_id cookie.
+    """
     organizations = user_api.get_user_organizations(user_id)
 
     if len(organizations) > 0:
+        # we will get ios and android id
         ios_app_id, android_app_id = get_mobile_app_id(organizations[0])
 
- # we will get ios and android id
         response.set_cookie(
             'ios_app_id',
             ios_app_id,
@@ -532,7 +534,9 @@ def append_user_mobile_app_id_cookie(response, user_id):
 
 
 def get_mobile_app_id(organization):
-
+    """
+    Returns user ios_app_id and android app id based on organization
+    """
     ios_app_id = None
     android_app_id = None
 
