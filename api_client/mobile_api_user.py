@@ -1,7 +1,7 @@
-# Api calls related to mobileapps
+""" Api calls related to mobileapps"""
 
-from django.conf import settings
 from urllib import urlencode
+from django.conf import settings
 
 from .api_error import api_error_protect
 from .oauth2_requests import get_oauth2_session

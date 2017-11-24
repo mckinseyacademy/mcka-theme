@@ -539,13 +539,18 @@ def get_mobile_app_id(organization):
     """
     ios_app_id = None
     android_app_id = None
+    mobile_id = None
 
     try:
         mobile_id = mobile_api_user.get_mobile_apps({"organization_id": organization.id})
+    except ApiError:
+        pass
+
+    try:
         results = mobile_id['results'][0]
         ios_app_id = results['ios_app_id']
         android_app_id = results['android_app_id']
-    except ApiError:
+    except IndexError:
         pass
 
     return ios_app_id, android_app_id
