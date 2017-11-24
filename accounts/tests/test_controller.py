@@ -207,24 +207,46 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         super(MobileIdAppendInCookieTest, self).setUp()
         self.ios_app_id = '1234'
         self.android_app_id = '5678'
-        self.mobile_app_id = (self.ios_app_id, self.android_app_id)
+        self.mobile_app_id = {'ios_app_id': self.ios_app_id, 'android_app_id': self.android_app_id}
+        self.user_organizations = [
+            {
+                "url": "http://0.0.0.0:8000/api/server/organizations/1/",
+                "id": 1,
+                "name": "mckinsey_and_company",
+                "display_name": "McKinsey and Company",
+                "contact_name": "McKinsey and Company",
+                "contact_email": "company@mckinseyacademy.com",
+            }
+        ]
 
         self.get_user_organizations = self.apply_patch(
             'api_client.user_api.get_user_organizations'
         )
 
-        self.get_mobile_app_id = self.apply_patch(
-            'accounts.controller.get_mobile_app_id'
+        self.get_mobile_apps_id = self.apply_patch(
+            'accounts.controller.get_mobile_apps_id'
         )
 
-    def test_has_mobile_app_id(self):
+    def test_has_mobile_apps_id(self):
         """
-        Tests append_user_mobile_app_id_cookie helper method when user login
+        Tests append_user_mobile_app_id_cookie helper method when user login and has organization
         """
         user_id = 4
-        self.get_user_organizations.return_value = [{}]
-        self.get_mobile_app_id.return_value = self.mobile_app_id
+        self.get_user_organizations.return_value = self.user_organizations
+        self.get_mobile_apps_id.return_value = self.mobile_app_id
 
         result = append_user_mobile_app_id_cookie(HttpResponseBase(), user_id)
         self.assertEqual(result.cookies.get('ios_app_id').value, self.ios_app_id)
         self.assertEqual(result.cookies.get('android_app_id').value, self.android_app_id)
+
+    def test_has_not_mobile_apps_id(self):
+        """
+        Tests append_user_mobile_app_id_cookie helper method when user login and has no organization
+        """
+        user_id = 4
+        self.get_user_organizations.return_value = []
+        self.get_mobile_apps_id.return_value = self.mobile_app_id
+        result = append_user_mobile_app_id_cookie(HttpResponseBase(), user_id)
+
+        self.assertIsNone(result.cookies.get('ios_app_id'))
+        self.assertIsNone(result.cookies.get('android_app_id'))

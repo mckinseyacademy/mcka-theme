@@ -516,24 +516,24 @@ def append_user_mobile_app_id_cookie(response, user_id):
 
     if len(organizations) > 0:
         # we will get ios and android id
-        ios_app_id, android_app_id = get_mobile_app_id(organizations[0])
+        data = get_mobile_apps_id(organizations[0])
 
         response.set_cookie(
             'ios_app_id',
-            ios_app_id,
+            data['ios_app_id'],
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
 
         response.set_cookie(
             'android_app_id',
-            android_app_id,
+            data['android_app_id'],
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
 
     return response
 
 
-def get_mobile_app_id(organization):
+def get_mobile_apps_id(organization):
     """
     Returns user ios_app_id and android app id based on organization
     """
@@ -544,13 +544,13 @@ def get_mobile_app_id(organization):
     try:
         mobile_id = mobile_api_user.get_mobile_apps({"organization_id": organization.id})
     except ApiError:
-        pass
+        return {'ios_app_id': ios_app_id,
+                'android_app_id': android_app_id}
 
-    try:
+    if mobile_id.get('results'):
         results = mobile_id['results'][0]
         ios_app_id = results['ios_app_id']
         android_app_id = results['android_app_id']
-    except IndexError:
-        pass
 
-    return ios_app_id, android_app_id
+    return {'ios_app_id': ios_app_id,
+            'android_app_id': android_app_id}
