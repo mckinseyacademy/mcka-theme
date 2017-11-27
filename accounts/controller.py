@@ -18,7 +18,7 @@ from api_client.user_api import get_user_courses_progress
 from courses.user_courses import get_current_course_for_user
 from courses.models import FeatureFlags
 
-from api_client import user_api, third_party_auth_api, organization_api, course_api, mobile_api_user
+from api_client import user_api, third_party_auth_api, organization_api, course_api, mobileapp_api
 from api_client.api_error import ApiError
 from util.user_agent_helpers import is_ios, is_supported_mobile_device
 
@@ -542,7 +542,7 @@ def get_mobile_apps_id(organization):
     mobile_id = None
 
     try:
-        mobile_id = mobile_api_user.get_mobile_apps({"organization_id": organization.id})
+        mobile_id = mobileapp_api.get_mobile_apps({"organization_ids": organization.id})
     except ApiError:
         return {'ios_app_id': ios_app_id,
                 'android_app_id': android_app_id}
