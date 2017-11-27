@@ -1,4 +1,5 @@
 import re
+import logging
 from django.conf import settings
 
 from courses.user_courses import standard_data
@@ -7,7 +8,6 @@ from courses.models import FeatureFlags
 from edx_notifications.server.web.utils import get_notifications_widget_context
 from util.user_agent_helpers import is_mobile_user_agent, is_ios, is_android
 
-import logging
 
 log = logging.getLogger(__name__)
 
@@ -88,10 +88,25 @@ def mobile_login_data(request):
     Make mobile login data available to all templates
     """
     data = dict()
-    if is_mobile_user_agent(request) and request.META.get('HTTP_REFERER') and '/login/' in request.META.get('HTTP_REFERER'):
+    if is_mobile_user_agent(request) and request.META.get('HTTP_REFERER')\
+            and '/login/' in request.META.get('HTTP_REFERER'):
         if is_android(request):
             data['track_mobile_login'] = 'Android'
         elif is_ios(request):
             data['track_mobile_login'] = 'iOS'
+
+    return data
+
+
+def set_mobile_app_id(request):
+    """
+    Make android and ios app id available to all templates
+    """
+    data = dict()
+    if is_mobile_user_agent(request):
+        if is_android(request):
+            data['android_app_id'] = request.COOKIES.get('android_app_id')
+        elif is_ios(request):
+            data['ios_app_id'] = request.COOKIES.get('ios_app_id')
 
     return data
