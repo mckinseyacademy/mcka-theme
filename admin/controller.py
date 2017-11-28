@@ -12,11 +12,8 @@ from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.conf import settings
 
-from rest_framework import permissions
-
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from admin.models import Program
-from courses.models import FeatureFlags
 from api_client.api_error import ApiError
 from api_client import (
     course_api,
@@ -34,7 +31,6 @@ from accounts.helpers import get_user_activation_links, get_complete_country_nam
 from datetime import datetime
 from pytz import UTC
 from api_client.project_models import Project
-from api_client.user_api import USER_ROLES
 
 from license import controller as license_controller
 
@@ -59,10 +55,7 @@ from util.validators import validate_first_name, validate_last_name
 import threading
 import Queue
 import atexit
-from random import randint
 
-import json
-import csv
 from django.core.validators import validate_email, ValidationError
 from django.core.cache import cache
 
@@ -2319,17 +2312,3 @@ def participant_csv_line_id_extractor(user_line):
             pass
         else:
             return user_id
-
-
-class InternalAdminCoursePermission(permissions.BasePermission):
-    """
-    Permission check that an internal admin can only access
-    the courses tagged as `internal`
-    """
-    def has_permission(self, request, view):
-        """
-        Implements the actual permission check
-        """
-        course_id = view.kwargs.get('course_id')
-
-        return not (request.user.is_internal_admin and not check_if_course_is_internal(course_id))
