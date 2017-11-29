@@ -126,3 +126,52 @@ In `~/lms.auth.json`, configure the LMS to integrate with Apros by adding the fo
 # Skipping the registration form
 
 To skip the registration form for certain trusted identity providers, configure the `SSO_AUTOPROVISION_PROVIDERS` and `SSO_AUTOPROVISION_CITY` Apros django settings [as described in settings.py](https://github.com/mckinseyacademy/mcka_apros/blob/8eb09f6510c12b1d90d1c470de4bd2c04f5c0117/mcka_apros/settings.py#L206-L214).
+
+# Troubleshooting
+
+## SSO works when initiated from LMS, but fails when initiated from Apros
+
+Error message in LMS console:
+
+    x509vfy.c:408(xmlSecOpenSSLX509StoreVerify) obj=x509-store msg=err=18;msg=self signed certificate errno=71"
+
+Root cause: the message says that LMS was unable to confirm authentication request signature.
+
+Solutions:
+
+1. Check that metadata registered with Identity Provider is up to date and redo the handshake and metadata exchange if needed.
+2. Make sure that `RESPECT_X_FORWARDED_HEADERS` Django setting is set to true ([explanation][x-forwarded])
+
+[x-forwarded]: https://github.com/edx-solutions/edx-platform/blob/e4c60fad4be5cd2ffaca73c1e735e888c07899af/common/djangoapps/third_party_auth/strategy.py#L65-L66
+
+## After SSO in Apros user is not logged in and redirected to main page
+
+Root cause: Apros session was not set properly.
+
+Solution: make sure 3rd party cookies are allowed for Apros, Identity Provider and LMS
+
+
+## Logging in via TestShib fails with "Something horrible happened - check the IdP error log".
+
+If the error log says 
+
+> WARN... Relying party '...' requested the response to be returned to endpoint with ACS URL 
+'http://lms.mcka.local/auth/complete/tpa-saml/'  and binding 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST' however 
+no endpoint, with that URL and using a supported binding,  can be found in the relying party's metadata 
+
+then the problem is that you downloaded the metadata from some domain like `localhost:8000` but you are testing SSO using the domain `lms.mcka.local`.
+
+To fix this, download the metadata from `http://lms.mcka.local/auth/saml/metadata.xml` (not any other URL), 
+and upload that to TestShib, then go to `http://lms.mcka.local/login` and try again.
+
+## Error at /auth/complete/tpa-saml/: failed to decrypt
+
+Something is wrong with the public/private key pair you created for the LMS. Generate a new one and install it, 
+then re-generate the metadata XML and re-upload it to TestShib (but use the same .xml file name).
+
+## SAML login failed: ['invalid_response'] (The response was received at `http://lms.mcka.local:8000/auth/complete/tpa-saml/` instead of `http://lms.mcka.local/auth/complete/tpa-saml/`)**
+
+You need to set `RESPECT_X_FORWARDED_HEADERS = True` in `lms/envs/private.py` (create that file if it doesn't exist).
+
+You also need `https://github.com/mckinseyacademy/mcka_apros/pull/1775` (make that 
+fix in `/etc/nginx/sites-enabled/mcka_apros`, then run `nginx -s reload`)
