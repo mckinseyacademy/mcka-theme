@@ -108,8 +108,8 @@ In `~/lms.auth.json`, configure the LMS to integrate with Apros by adding the fo
 "THIRD_PARTY_AUTH_CUSTOM_AUTH_FORMS": {
     "apros": {
         "secret_key": "1private_apros_key",
-        "url": "http://mcka.local/accounts/finalize/",
-        "error_url": "http://mcka.local/accounts/sso_error/",
+        "url": "http://apros.mcka.local/accounts/finalize/",
+        "error_url": "http://apros.mcka.local/accounts/sso_error/",
         "link_by_email": true
     }
 }
@@ -156,22 +156,19 @@ Solution: make sure 3rd party cookies are allowed for Apros, Identity Provider a
 If the error log says 
 
 > WARN... Relying party '...' requested the response to be returned to endpoint with ACS URL 
-'http://lms.mcka.local/auth/complete/tpa-saml/'  and binding 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST' however 
+'http://apros.mcka.local/auth/complete/tpa-saml/'  and binding 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST' however 
 no endpoint, with that URL and using a supported binding,  can be found in the relying party's metadata 
 
 then the problem is that you downloaded the metadata from some domain like `localhost:8000` but you are testing SSO using the domain `lms.mcka.local`.
 
-To fix this, download the metadata from `http://lms.mcka.local/auth/saml/metadata.xml` (not any other URL), 
-and upload that to TestShib, then go to `http://lms.mcka.local/login` and try again.
+To fix this, download the metadata from `http://apros.mcka.local/auth/saml/metadata.xml` (not any other URL), 
+and upload that to TestShib, then use the access key or Apros login form to try again.
 
 ## Error at /auth/complete/tpa-saml/: failed to decrypt
 
 Something is wrong with the public/private key pair you created for the LMS. Generate a new one and install it, 
 then re-generate the metadata XML and re-upload it to TestShib (but use the same .xml file name).
 
-## SAML login failed: ['invalid_response'] (The response was received at `http://lms.mcka.local:8000/auth/complete/tpa-saml/` instead of `http://lms.mcka.local/auth/complete/tpa-saml/`)**
+## SAML login failed: ['invalid_response'] (The response was received at `http://apros.mcka.local:8000/auth/complete/tpa-saml/` instead of `http://apros.mcka.local/auth/complete/tpa-saml/`)
 
 You need to set `RESPECT_X_FORWARDED_HEADERS = True` in `lms/envs/private.py` (create that file if it doesn't exist).
-
-You also need `https://github.com/mckinseyacademy/mcka_apros/pull/1775` (make that 
-fix in `/etc/nginx/sites-enabled/mcka_apros`, then run `nginx -s reload`)
