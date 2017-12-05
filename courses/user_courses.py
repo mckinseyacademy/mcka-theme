@@ -270,6 +270,7 @@ def standard_data(request):
     learner_dashboard_flag = False
     discover_flag = False
     programs = None
+    organization_id = None
 
     # have we already fetched this before and attached it to the current request?
     if hasattr(request, 'user_program_data'):
@@ -322,20 +323,21 @@ def standard_data(request):
 
         if organizations:
             organization = organizations[0]
+            organization_id = organization.id
             try:
-                client_customization = ClientCustomization.objects.get(client_id=organization.id)
+                client_customization = ClientCustomization.objects.get(client_id=organization_id)
             except ClientCustomization.DoesNotExist:
                 client_customization = None
 
             try:
                 if feature_flags and feature_flags.branding:
-                    branding = BrandingSettings.objects.get(client_id=organization.id)
+                    branding = BrandingSettings.objects.get(client_id=organization_id)
                 else:
                     branding = None
             except:
                 branding = None
 
-            client_nav_links = ClientNavLinks.objects.filter(client_id=organization.id)
+            client_nav_links = ClientNavLinks.objects.filter(client_id=organization_id)
             client_nav_links = dict((link.link_name, link) for link in client_nav_links)
             
         if course:
@@ -357,7 +359,8 @@ def standard_data(request):
         "client_nav_links": client_nav_links,
         "branding": branding,
         "learner_dashboard_flag": learner_dashboard_flag,
-        "discover_flag": discover_flag
+        "discover_flag": discover_flag,
+        "organization_id": organization_id
     }
 
     # point to this data from the request object, just in case we re-enter this method somewhere

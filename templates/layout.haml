@@ -106,9 +106,20 @@
         }
         
         - if track_mobile_login and request.user.is_authenticated
-          ga('send', 'event', 'Mobile Login', 'login', '{{track_mobile_login}}', {
+
+          var event_dict = {
             'username': '{{request.user.username}}',
-          });
+            'user_id': '{{request.user.id}}',
+          };
+
+          - if organization_id
+            event_dict['organization_id'] = '{{organization_id}}'
+
+          - if course_name
+            event_dict['course_name'] = '{{course_name}}'
+
+          ga('send', 'event', 'Mobile Login', 'login', '{{track_mobile_login}}',event_dict);
+
 
     /[if lt IE 9]
       %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}
