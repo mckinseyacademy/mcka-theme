@@ -6,6 +6,7 @@ import uuid
 import datetime
 from functools import wraps
 import ddt
+
 from lib.utils import DottableDict
 from mock import patch
 
@@ -15,10 +16,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.decorators import available_attrs
-
-from courses.tests import MockCourseAPI
 from courses.models import FeatureFlags
 from accounts.tests.utils import ApplyPatchMixin
+from courses.tests.test_controllers import MockCourseAPI
 
 from ..models import (
     UserCourseCertificate,
@@ -28,7 +28,6 @@ from ..models import (
     CertificateTemplate
 )
 from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm
-
 
 GENERATE_CERTIFICATES_TASK_DATA = [
     (True, datetime.datetime.now() + datetime.timedelta(days=4)),
@@ -65,12 +64,15 @@ def _fake_permission_group_required(*group_names):  # pylint: disable=unused-arg
     """
     Fake method for permission_group_required method
     """
+
     def decorator(view_fn):
         def _wrapped_view(request, *args, **kwargs):
             # faking request user
             request.user = _FAKE_USER_OBJ
             return view_fn(request, *args, **kwargs)
+
         return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
+
     return decorator
 
 
@@ -85,6 +87,7 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
     """
     Test the Course Certificate Views.
     """
+
     def setUp(self):
         """
         Setup course certificate model test
@@ -125,7 +128,7 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         self.template_post_data = {
             'name': 'test',
             'description': 'dummy',
-            'template':'<p>dummy template</p>',
+            'template': '<p>dummy template</p>',
             'course_id': self.courses[2][0]
         }
         for x in xrange(2):
@@ -186,13 +189,13 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
     @ddt.unpack
     def test_generate_course_certificates(
             self, certs_feature_flag, course_end_date
-        ):
+    ):
         """
         Test generate course certificates view
         """
         generate_certificate_url = reverse(
             'generate_course_certificates',
-            args=(self.courses[0][0], )
+            args=(self.courses[0][0],)
         )
         FeatureFlags.objects.create(
             course_id=self.courses[0][0],
