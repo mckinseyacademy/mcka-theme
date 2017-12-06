@@ -6,7 +6,8 @@
     %meta{charset: "utf-8"}
     %meta{'http-equiv': "X-UA-Compatible", content: "IE=edge"}
     %meta{name: "viewport", content: "width=device-width, maximum-scale=1, user-scalable=no"}
-    %meta{name: "apple-itunes-app", content: "app-id={{ios_app_id}}"}
+    - if user_ios_mobile_app_id
+      %meta{name: "apple-itunes-app", content: "app-id={{user_ios_mobile_app_id}}"}
     - block meta
     - block page_title
       %title= _("McKinsey Academy")
@@ -39,7 +40,8 @@
     %meta{name: "msapplication-TileColor", content: "#2b5797"}
     %meta{name: "msapplication-TileImage", content: "/static/favicons/mstile-144x144.png"}
     %meta{name: "msapplication-config", content: "/static/favicons/browserconfig.xml"}
-
+    - if user_android_mobile_app_id and request.user.is_authenticated
+      %link{rel:"manifest", href: "{% url 'android_manifest_json' request.user.id %}",}
     -# CSS
     - if not request.is_IE8
       %link{href: '//fonts.googleapis.com/css?family=Open+Sans:400,600,700', rel: 'stylesheet', type: 'text/css'}
@@ -261,4 +263,3 @@
     -# Init Foundation
     - block foundation_js_init
       %script $(document).foundation();
-

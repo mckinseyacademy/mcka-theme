@@ -49,6 +49,12 @@ COMPANIES_MOBILE_APPS_MAP = {
     }
 }
 
+MOBILE_APP_DEPLOYMENT_MECHANISMS = {
+    'public_store': 1,
+    'enterprise': 2,
+    'ota': 3,
+    'other': 4,
+    }
 
 class ActivationError(Exception):
     '''
@@ -539,18 +545,27 @@ def get_mobile_apps_id(organization):
     """
     ios_app_id = None
     android_app_id = None
+    org_name = None
     mobile_id = None
 
     try:
         mobile_id = mobileapp_api.get_mobile_apps({"organization_ids": organization.id})
     except ApiError:
         return {'ios_app_id': ios_app_id,
-                'android_app_id': android_app_id}
+                'android_app_id': android_app_id,
+                'org_name': org_name
+                }
 
     if mobile_id.get('results'):
+
         results = mobile_id['results'][0]
-        ios_app_id = results['ios_app_id']
-        android_app_id = results['android_app_id']
+        org_name = results['name']
+
+        if results['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
+            ios_app_id = results['ios_app_id']
+            android_app_id = results['android_app_id']
 
     return {'ios_app_id': ios_app_id,
-            'android_app_id': android_app_id}
+            'android_app_id': android_app_id,
+            'org_name':org_name
+            }
