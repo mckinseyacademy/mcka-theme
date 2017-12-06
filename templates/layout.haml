@@ -106,7 +106,7 @@
         }
         
         - if track_mobile_login and request.user.is_authenticated
-          var ga_event_params = 'Mobile: #{track_mobile_login}, UserID: #{request.user.id}, Username: #{request.user.username}'
+          var ga_event_params = 'UserID: #{request.user.id}, Username: #{request.user.username}'
 
           - if organization_id
             ga_event_params +=  ', OrgID: #{organization_id}'
@@ -114,7 +114,9 @@
           - if course_name
             ga_event_params +=  ', CourseName: #{course_name}'
 
-          ga('send', 'event', 'Mobile Login', 'login', ga_event_params)
+          var action_name = '#{track_mobile_login}' + ' login'
+
+          ga('send', 'event', 'Mobile Login', action_name, ga_event_params)
 
     /[if lt IE 9]
       %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}
