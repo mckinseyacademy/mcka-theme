@@ -83,6 +83,7 @@
 
         .front .name {
           font-size: rem-calc(17);
+          word-break: break-all;
         }
 
         .index { margin-bottom: 20px; }
