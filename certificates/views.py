@@ -16,12 +16,13 @@ from django.template import RequestContext, Template
 
 from api_client.group_api import PERMISSION_GROUPS
 from api_client import user_api, course_api
+from admin.controller import get_internal_courses_ids
+from admin.helpers.permissions_helpers import permission_denied
 
 from .controller import (
     get_course_certificates_status,
     get_certificate_template,
     get_template_asset_path,
-
 )
 from .models import (
     CertificateStatus,
@@ -33,6 +34,7 @@ from .models import (
 from .tasks import generate_course_certificates_task
 from .forms import CertificateTemplateAssetForm, CertificateTemplateForm
 
+
 @require_POST
 @permission_group_required(
     PERMISSION_GROUPS.MCKA_ADMIN,
@@ -43,6 +45,12 @@ def generate_course_certificates(request, course_id):
     """
     Generates certificates for the specified course
     """
+    # for internal admin restrict access to internal courses
+    if request.user.is_internal_admin:
+        internal_course_ids = get_internal_courses_ids()
+        if course_id and course_id not in internal_course_ids:
+            return permission_denied(request)
+
     course_end = request.POST.get("course_end", "")
     certificates_status = get_course_certificates_status(
         course_id,
@@ -126,6 +134,11 @@ def certificate_templates(request):
     """
     templates = CertificateTemplate.objects.all()
 
+    # for internal admin restrict templates to internal courses
+    if request.user.is_internal_admin:
+        internal_course_ids = get_internal_courses_ids()
+        templates = templates.filter(course_id__in=internal_course_ids)
+
     return render(request, 'certificates/certificate_templates.haml', {
         'certificate_templates': templates,
     })
@@ -141,13 +154,21 @@ def new_certificate_template(request):
     View for creating new certificate template
     """
     if request.method == 'POST':
-        form = CertificateTemplateForm(request.POST)
+        course_id = request.POST.get('course_id')
+
+        # for internal admin restrict access to internal courses
+        if request.user.is_internal_admin:
+            internal_course_ids = get_internal_courses_ids()
+            if course_id and course_id not in internal_course_ids:
+                return permission_denied(request)
+
+        form = CertificateTemplateForm(data=request.POST)
 
         if form.is_valid():
             form.save()
             return redirect(reverse('certificate_templates'))
     else:
-        form = CertificateTemplateForm()
+        form = CertificateTemplateForm(request=request)
 
     return render(request, 'certificates/new_certificate_template.haml', {
         'form': form,
@@ -164,17 +185,32 @@ def edit_certificate_template(request, template_id):
     View for editing certificate template
     """
     certificate_template = CertificateTemplate.objects.get(id=template_id)
+
+    # for internal admin restrict access to internal courses
+    if request.user.is_internal_admin:
+        internal_course_ids = get_internal_courses_ids()
+        if certificate_template.course_id not in internal_course_ids:
+            return permission_denied(request)
+
     if request.method == 'POST':
         form = CertificateTemplateForm(
             request.POST,
             instance=certificate_template
         )
 
+        course_id = request.POST.get('course_id')
+
+        # for internal admin restrict access to internal courses
+        if request.user.is_internal_admin:
+            internal_course_ids = get_internal_courses_ids()
+            if course_id and course_id not in internal_course_ids:
+                return permission_denied(request)
+
         if form.is_valid():
             form.save()
             return redirect(reverse('certificate_templates'))
     else:
-        form = CertificateTemplateForm(instance=certificate_template)
+        form = CertificateTemplateForm(request=request, instance=certificate_template)
 
     return render(request, 'certificates/new_certificate_template.haml', {
         'form': form,

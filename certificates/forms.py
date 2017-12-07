@@ -40,9 +40,12 @@ class CertificateTemplateForm(forms.ModelForm):
         """
         Initializer for certificate template form, adding course ids choice list
         """
+        request = kwargs.pop('request', None)
+        course_choices = get_courses_choice_list(request)
+
         super(CertificateTemplateForm, self).__init__(*args, **kwargs)
         self.fields['course_id'] = forms.ChoiceField(
-            choices=get_courses_choice_list()
+            choices=course_choices
         )
         self.fields['name'].validators.append(AlphanumericWithAccentedChars())
         self.fields['description'].validators.append(
