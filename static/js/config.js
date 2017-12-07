@@ -21,6 +21,9 @@ Apros.config.COMPANY_PROPERTIES_TO_CLEAN = [
     'organizations_custom_name',
 ];
 
+Apros.config.MOBILEAPP_PROPERTIES_TO_CLEAN = [
+    'name'
+];
 
 /**
 Add here any characters that should not be present in CSV exports

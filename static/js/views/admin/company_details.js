@@ -74,6 +74,20 @@
         colModel: _this.gridColumns
       });
       $(document).on('onClearSearchEvent', this.onClearSearchEvent);
+
+      $('#addAppPopupLink').hide();
+      $('.companyDetailsLinkedAppsButton').on('click', 'a', function(){
+        $('#additionalCompanyButtons a').hide();
+        $('#addAppPopupLink').show();
+        $('#companyDetailsNavigationButtonsContainer a').removeClass("activeTab");
+        $(this).addClass("activeTab");
+      });
+      $('#companyDetailsNavigationButtonsContainer').on('click', 'a[data-target!="companyLinkedApps"]', function(){
+        $('#additionalCompanyButtons a').show();
+        $('#addAppPopupLink').hide();
+        $('#companyDetailsNavigationButtonsContainer a').removeClass("activeTab");
+        $(this).addClass("activeTab");
+      });
     },
     onClearSearchEvent: function(){
       companyDetailsCoursesViewGrid.searchBar.onSearch({target: '#companyDetailsDataWrapper .bbGrid-pager'});
@@ -201,6 +215,7 @@
           var mainContainer = $("#companyDetailsTopDataWrapper");
           var newCompanyName = mainContainer.find('.companyDetailsInputName input').val().trim();
           mainContainer.find('.companyDetailsTextName').text(newCompanyName);
+
         }
         alert(data['message']);
         })

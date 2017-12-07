@@ -53,8 +53,8 @@
 		float: none !important;
 	    display: table;
 	    min-width: 60%;
-	    margin-left: auto;
-	    margin-right: auto;
+		max-width: 68.57143rem;
+		margin: 0 auto;
 
 	    .bbGrid-pager
 	    {
@@ -75,7 +75,7 @@
 	.bbGrid-container
 	{
 		max-height: 28.8em;
-		overflow-y: scroll;
+		overflow-y: auto;
 		min-width: 100%;
 	}
 
@@ -95,13 +95,30 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 100%;
+	padding: 0 10px;
+	.appDetailsAppName{
+		padding: 0 15px;
+		h4, .fa{
+			display: inline-block;
+		}
+		.appDetailsInputName{
+			input{
+				width: 285px !important;
+			}
+		}
+	}
+	.fa-check{
+		color: $mckinsey-status-active;
+	}
+	.fa-close{
+		color: $mckinsey-red;
+	}
 }
 
 #companyDetailsNavigation
 {
 	margin-left: auto;
 	margin-right: auto;
-	width: 70%;
 }
 
 #mainCompanyDetailsDataContainer
@@ -109,7 +126,6 @@
 	padding-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 60%;
 	position: relative;
 
 	.errorMessage
@@ -133,6 +149,7 @@
 	min-width: 760px;
 	max-width: 80%;
 	padding-bottom: 30px;
+	display: block;
 	
 	.editCompanyNameIcon{
 		font-size: initial;
@@ -146,12 +163,34 @@
 	.companyDetailsInputName{
 		display: inline-block;
 	}
+
+	> .row{
+		margin-left: 0;
+		margin-right: 0;
+		padding-right: 10px;
+		border-right: 1px solid #999;
+		padding-left: 10px;
+		display: inline-block;
+
+		&:last-child{
+			border-right: 0;
+		}
+
+		&:nth-child(1), &:nth-child(2){
+			padding-left: 0;
+		}
+		&:nth-child(1){
+			border-right: 0;
+		}
+	}
 }
+
 
 .companyDetailsCompanyName
 {
 	font-size: x-large;
 	padding-bottom: 20px;
+	display: block !important;
 }
 
 #companyDetailsNavigationButtonsContainer
@@ -160,12 +199,27 @@
 
 	.row
 	{
-		margin-left: 0px;
+		margin-left: 0;
+		> div{
+			&:first-child{
+				padding-left: 0;
+			}
+		}
 	}
 
 	hr
 	{
 		width: 100%;
+	}
+	a{
+		&:active{
+			color: $mckinsey-academy-blue-gray;
+		}
+	}
+	.hashPageButton{
+		&.activeTab{
+			color: $mckinsey-academy-blue-gray;
+		}
 	}
 }
 
@@ -186,8 +240,6 @@
 	{
 		float: none !important;
 		display: table;
-		margin-left: auto;
-		margin-right: auto;
 		min-width: 60%;
 
 		.bbGrid-pager
@@ -209,7 +261,7 @@
 		.bbGrid-container
 		{
 			max-height: 28.8em;
-			overflow-y: scroll;
+			overflow-y: auto;
 
 			.bbGrid-grid-nav
 			{
@@ -231,7 +283,6 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	width: 50%;
 }
 
 #companyInfoInvoicingDetails, #companyInfoContacts
@@ -271,7 +322,6 @@
 .companyCompanyInfo 
 {
 	min-width: 760px;
-	max-width: 80%;
 
 	.row 
 	{
@@ -405,6 +455,106 @@
 		.companyDashboardCompanyAllCourses
 		{
 			float: right;
+		}
+	}
+}
+
+.mobileAppLink{
+	.backLink{
+		margin-bottom: 30px;
+		display: block;
+	}
+	h4{
+		font-weight: bold;
+		font-size: 1.2rem;
+		margin: 10px 0 30px;
+		&.appName{
+			display: inline-block;
+		}
+	}
+	.fa{
+		display: inline-block;
+		font-size: 16px;
+		color: $mckinsey-academy-alt-blue;
+	}
+	.appDetails{
+		label{
+			font-weight: 600;
+			color: black;
+		}
+		.row{
+			margin-bottom: 20px;
+		}
+		h4{
+			margin: 5px 0 20px;
+			font-size: 1.1rem;
+		}
+	}
+
+	.bordered{
+		margin-left: 10px;
+	}
+}
+
+[id*="linkApp"]{
+	h4{
+		font-size: 1.3rem;
+		margin-bottom: 10px;
+		text-transform: capitalize;
+	}
+	p{
+		font-size: 0.9rem;
+		margin-bottom: 10px;
+		color: $mckinsey-dark-grey;
+		&.focused{
+			background-color: $mckinsey-academy-bright-gray;
+			padding: 7px 10px;
+			font-weight: 600;
+			margin-bottom: 15px;
+
+		}
+	}
+	b{
+		margin-bottom: 10px;
+		display: block;
+	}
+	.blank{
+		&:hover{
+			background-color: white;
+		}
+	}
+	input[type="text"]{
+		max-width: 300px;
+		margin-bottom: 30px;
+	}
+	.button{
+		&.close-reveal-modal{
+			position: relative;
+			top: auto;
+			left: auto;
+			font-size: .92857rem;
+			right: auto;
+			font-weight: 600;
+			line-height: normal;
+			background-color: transparent;
+			box-shadow: none;
+			color: $mckinsey-academy-alt-blue;
+			&:focus{
+				outline: none;
+			}
+		}
+	}
+}
+
+.bbGrid-grid{
+	th{
+		white-space: nowrap;
+	}
+	td{
+		white-space: normal;
+		word-break: break-all;
+		&:last-child{
+			text-align: center;
 		}
 	}
 }

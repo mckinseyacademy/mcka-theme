@@ -48,6 +48,8 @@ from api_client.organization_models import Organization
 from api_client.project_models import Project
 from api_client.workgroup_models import Submission
 from api_client.platform_api import get_course_advanced_settings
+from api_client import mobileapp_api
+
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
@@ -105,7 +107,7 @@ from util.csv_helpers import csv_file_response
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from courses.user_courses import load_course_progress
 import csv
 from django.utils import timezone
@@ -4656,6 +4658,127 @@ class company_courses_api(APIView):
             courses.append(course)
 
         return Response(courses)
+
+
+class MobileAppsApi(viewsets.ViewSet):
+    """
+    **Use Case**
+        Get mobile apps.
+    **Example Requests**
+        GET /admin/api/mobileapps
+        GET /admin/api/mobileapps/{app_id}
+        PUT /admin/api/mobileapps/{app_id}
+    """
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN)
+    def list(self, request):
+        """
+        Optionally restricts the returned mobile apps,
+        by filtering against a 'app name' or 'organization name' query parameter in the URL.
+        """
+        mobileapps = mobileapp_api.get_mobile_apps(request.GET)
+        return Response(mobileapps)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN)
+    def retrieve(self, request, pk=None):
+        """
+        Get details of mobile app based on app_id given in url
+        """
+        mobileapp = mobileapp_api.get_mobile_app_details(pk)
+        return Response(mobileapp)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN)
+    def put(self, request, pk=None):
+        """
+        Update mobile app name whose id is given in url
+
+        **PUT Parameters**
+            The body of put request must include name of the app
+
+        **Response Values**
+            If request is successful then response contains status "ok" otherwise status is "error"
+        """
+
+        app_details = mobileapp_api.get_mobile_app_details(pk)
+        new_app_name = request.DATA.get('name')
+
+        alphanum_validator = AlphanumericValidator()
+        try:
+            alphanum_validator(new_app_name)
+        except ValidationError:
+            return Response({'status': 'error', 'type': 'validation_error',
+                             'message': 'App name only contains alphanumeric characters'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        app_details['name'] = new_app_name
+        response = mobileapp_api.update_mobile_app(pk, app_details)
+        response = {'status': 'ok'} if response.get('id') else response
+
+        return Response(response)
+
+
+class CompanyLinkedAppsApi(APIView):
+    """
+    **Use Case**
+        Get mobile apps linked to an organizations.
+    **Example Requests**
+        GET /admin/api/companies/{company_id}/linkedapps
+        POST /admin/api/companies/{company_id}/linkedapps
+        DELETE /admin/api/companies/{company_id}/linkedapps
+    """
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN)
+    def get(self, request, company_id):
+        """
+        Returns the list of mobile apps associated with the company id given in URL
+        """
+        params = {'organization_ids': company_id}
+        mobileapps = mobileapp_api.get_mobile_apps(params)
+        return Response(mobileapps)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN)
+    def post(self, request, company_id):
+        """
+        Associate mobile app whoose id is given in request body with
+        company whose id is in URL
+        """
+        app_id = request.DATA['app_id']
+        params = {'organizations': [company_id]}
+        mobileapp_api.append_organization(app_id, params)
+        return Response({'status': "ok"}, status=status.HTTP_201_CREATED)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN)
+    def delete(self, request, company_id):
+        """
+        Dissociate mobile app whoose id is given in request body with
+        company whose id is in URL
+        """
+        app_id = request.DATA['app_id']
+        params = {'organizations': [company_id]}
+        mobileapp_api.remove_organization(app_id, params)
+        return Response({'status': "ok"})
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
+def company_linked_app_details(request, company_id, app_id):
+    """
+    Returns template of mobile app details which is associated
+    with the company whose id is given in URL
+    """
+    app_details = mobileapp_api.get_mobile_app_details(app_id)
+    if not company_id.isdigit() or int(company_id) not in app_details['organizations']:
+        return redirect('company_details', company_id=company_id)
+
+    company = organization_api.fetch_organization(company_id)
+    company_name = vars(company)['display_name']
+
+    template_attrs = {
+        'appDetails': app_details,
+        'companyId': company_id,
+        'companyName': company_name
+    }
+    return render(request, 'admin/mobile_apps/company_app_details.haml', template_attrs)
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_learner_dashboard_copy(request, course_id, learner_dashboard_id, copy_to_course_id):

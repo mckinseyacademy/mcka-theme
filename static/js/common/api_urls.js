@@ -31,5 +31,6 @@ var ApiUrls = {
   email: '/admin/api/email',
   company: '/admin/api/companies/',
   tags: '/admin/api/tags',
-  admin_bulk_task: '/admin/api/admin_bulk_task/'
+  admin_bulk_task: '/admin/api/admin_bulk_task/',
+  mobileapps: '/admin/api/mobileapps'
 }

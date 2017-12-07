@@ -1,11 +1,16 @@
 from django.conf.urls import patterns, url
+from rest_framework.routers import SimpleRouter
+
 from admin import views
 from admin import cache as cache_views
 from admin import s3 as s3views
 from certificates import views as certificate_views
 
+router = SimpleRouter()
+router.register(r'^api/mobileapps', views.MobileAppsApi, base_name='mobileapps_api')
 
-urlpatterns = patterns(
+urlpatterns = router.urls
+urlpatterns += patterns(
     'admin',
     url(r'^$', views.home, name='admin_home'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/(?P<user_id>[0-9]+)/unenroll$', views.client_admin_unenroll_participant, name='client_admin_unenroll'),
@@ -165,6 +170,7 @@ urlpatterns = patterns(
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
     url(r'^participants$', views.participants_list, name='participants_list'),
 
+    url(r'^api/companies/(?P<company_id>[0-9]+)/linkedapps$', views.CompanyLinkedAppsApi.as_view(), name='company_linked_apps_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/courses$', views.company_courses_api.as_view(), name='company_courses_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/export_info$', views.download_company_info, name='download_company_info'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/company_info$', views.company_info_api.as_view(), name='company_info_api'),
@@ -172,6 +178,7 @@ urlpatterns = patterns(
     url(r'^api/companies/new_company$', views.create_new_company_api.as_view(), name='create_new_company_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
 
+    url(r'^companies/(?P<company_id>[0-9]+)/linkedapps/(?P<app_id>[0-9]+)', views.company_linked_app_details, name='company_linked_app_details'),
     url(r'^companies/(?P<company_id>[0-9]+)/courses/(?P<course_id>.*)', views.company_course_details, name='company_course_details'),
     url(r'^companies/(?P<company_id>[0-9]+)/participants/(?P<user_id>[0-9]+)', views.company_participant_details_api.as_view(), name='company_participants_details'),
     url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),

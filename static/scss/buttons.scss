@@ -4,8 +4,23 @@
     padding-top: $top-bottom-padding;
     padding-bottom: $top-bottom-padding;
   }
+  &.bordered{
+    border: 1px solid $mckinsey-academy-alt-blue;
+    background-color: white;
+    color: $mckinsey-academy-alt-blue;
+  }
+  &.blank{
+    background-color: transparent;
+    color: $mckinsey-academy-alt-blue;
+    border: 0;
+    box-shadow: none;
+    &:hover{
+      background-color: transparent !important;
+    }
+  }
 }
 a.button{
   color: $pure-white;
   &:visited{ color: $pure-white; }
 }
+

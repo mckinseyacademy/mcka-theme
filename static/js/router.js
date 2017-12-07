@@ -32,7 +32,8 @@ var Router = Backbone.Router.extend({
     'admin/clients/*client_id/mass_student_enroll': 'mass_student_enroll',
     'admin/clients/*client_id': 'client_details_view',
     'admin/companies': 'companies_list',
-    'admin/companies/*company_id/courses/*course_id': 'admin_course_details_participants', 
+    'admin/companies/*company_id/linkedapps/*app_id': 'company_mobileapp_details',
+    'admin/companies/*company_id/courses/*course_id': 'admin_course_details_participants',
     'admin/companies/*company_id/participants/*id': 'initialize_participant_details',
     'admin/companies/*company_id/learner_dashboards': 'company_learner_dashboards',
     'admin/companies/*company_id': 'company_details_courses',
@@ -229,6 +230,11 @@ var Router = Backbone.Router.extend({
     var bulkActions = new Apros.views.CourseDetailsBulkActions({'courseId':courseId,'courses_details_view':courses_details_view, 'courseDetails':courseDetails});
     bulkActions.render(); 
   },
+  company_mobileapp_details: function(){
+    var company_mobileapp_view = new Apros.views.CompanyMobileappDetails();
+    company_mobileapp_view.render();
+
+  },
   company_details_courses: function(company_id){
     $('#companyDetailsDataWrapper').find('.contentNavigationContainer').each(function(index, value){
       val = $(value);
@@ -243,6 +249,22 @@ var Router = Backbone.Router.extend({
     var companyCourses = new Apros.collections.CompanyDetailsCourses({ url : url});
     var company_courses_view = new Apros.views.CompanyDetailsCoursesView({collection: companyCourses, el: '#companyDetailsCoursesViewGridBlock'});
     company_courses_view.render();
+  },
+  company_details_linked_apps: function(company_id){
+    $('#companyDetailsDataWrapper').find('.contentNavigationContainer').each(function(index, value){
+      val = $(value);
+      if (val.hasClass('companyLinkedApps'))
+        val.show();
+      else
+        val.hide();
+    });
+    var companyId = $('#mainCompanyDetailsDataContainer').attr('data-id');
+    Apros.Router.linked_views['companyLinkedApps']['drawn'] = true;
+    var url = ApiUrls.companies_list+'/'+companyId+'/linkedapps';
+    var companyLinkedApps = new Apros.collections.CompanyLinkedApps({ url : url});
+
+    var company_linked_apps_view = new Apros.views.CompanyLinkedAppsView({collection: companyLinkedApps, el: '#companyLinkedAppsViewGridBlock'});
+    company_linked_apps_view.render();
   },
 
   company_learner_dashboards: function(company_id){
@@ -373,7 +395,11 @@ Apros.Router.linked_views = {
   'companyCompanyInfo': {
     'function':Apros.Router.company_details_company_info,
     'drawn': false
-  }
+  },
+  'companyLinkedApps': {
+    'function':Apros.Router.company_details_linked_apps,
+    'drawn': false
+  },
 }
 
 Apros.Router.HashPageChanger = function(element) {
