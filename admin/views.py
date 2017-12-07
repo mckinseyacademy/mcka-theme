@@ -93,7 +93,7 @@ from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletio
 from .permissions import Permissions, PermissionSaveError
 from .helpers.permissions_helpers import (
     AccessChecker, InternalAdminCoursePermission, InternalAdminUserPermission,
-    CompanyAdminCompanyPermission, CompanyAdminUserPermission,
+    CompanyAdminCompanyPermission, CompanyAdminUserPermission, CompanyAdminCoursePermission,
     checked_user_access, checked_course_access, internal_admin_user_access, internal_admin_course_access,
     company_admin_user_access, company_admin_company_access, client_admin_access, checked_program_access,
     ta_course_access
@@ -795,11 +795,13 @@ def course_details(request, course_id):
 
 
 class course_details_stats_api(APIView):
-    permission_classes = (InternalAdminCoursePermission,)
+    permission_classes = (InternalAdminCoursePermission, CompanyAdminCoursePermission, )
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
+    )
     def get(self, request, course_id, format=None):
-
         company_id = request.GET.get('company_id', None)
 
         course_stats = get_course_social_engagement(course_id, company_id)
@@ -839,9 +841,12 @@ def download_course_stats(request, course_id):
 
 
 class course_details_engagement_api(APIView):
-    permission_classes = (InternalAdminCoursePermission,)
+    permission_classes = (InternalAdminCoursePermission, CompanyAdminCoursePermission, )
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
+    )
     def get(self, request, course_id, format=None):
         """
         Returns course engagement summary for the specified course
@@ -854,9 +859,12 @@ class course_details_engagement_api(APIView):
 
 
 class course_details_cohort_timeline_api(APIView):
-    permission_classes = (InternalAdminCoursePermission,)
+    permission_classes = (InternalAdminCoursePermission, CompanyAdminCoursePermission, )
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
+    )
     def get(self, request, course_id):
         """
         Returns participants progress details for the specified course
@@ -1195,13 +1203,21 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
         data
     )
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-@internal_admin_course_access
+
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def course_meta_content_course_item_new(request, restrict_to_courses_ids=None):
     error = None
+    if request.user.is_internal_admin:
+        # restrict to internal courses
+        restrict_to_courses_ids = get_internal_courses_ids()
+
     if request.method == "POST":
         form = CuratedContentItemForm(request.POST)
         course_id = form.data['course_id']
+        AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
         if form.is_valid():
             item = form.save()
             return redirect('/admin/course-meta-content/items/%s' % urlquote(course_id))

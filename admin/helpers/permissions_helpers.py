@@ -6,7 +6,7 @@ from django.http import Http404
 from django.template import loader, RequestContext
 from django.http import HttpResponseForbidden
 
-from api_client import user_api
+from api_client import user_api, organization_api
 from admin.controller import (
     check_if_course_is_internal, check_if_user_is_internal, get_internal_courses_ids,
     get_ta_accessible_course_ids
@@ -112,6 +112,37 @@ class CompanyAdminUserPermission(permissions.BasePermission):
             ]
 
             return set(user_organizations).intersection(admin_organizations)
+
+
+class CompanyAdminCoursePermission(permissions.BasePermission):
+    """
+    Permission check that a company admin is performing action
+    on a course who belongs to its companies
+
+    This class should only be used for ensuring this particular case it does
+    not check for any related permissions
+    """
+    def has_permission(self, request, view):
+        """
+        Implements the actual permission check
+        """
+        course_id = view.kwargs.get('course_id')
+        company_id = request.GET.get('company_id', None)
+
+        if request.user.is_company_admin:
+            if not company_id or int(company_id) not in [
+                user_org.id
+                for user_org in Permissions(request.user.id).get_all_user_organizations_with_permissions()
+                        .get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
+            ]:
+                return False
+
+            company_courses = organization_api.get_organizations_courses(company_id)
+
+            if course_id not in [course.get('id') for course in company_courses]:
+                return False
+
+        return True
 
 
 class AccessChecker(object):

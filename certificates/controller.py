@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 
 from courses.models import FeatureFlags
 from api_client import course_api
+from admin.controller import get_internal_courses_list
 
 from .models import (
     CourseCertificateStatus,
@@ -129,12 +130,22 @@ def get_certificate_template(course_id):
     return template
 
 
-def get_courses_choice_list():
+def get_courses_choice_list(request=None):
     """
     Returns list of all courses for course choices in certificate template
     """
-    courses = course_api.get_course_list()
-    return [(course.id, course.name) for course in courses]
+    if request and request.user.is_internal_admin:
+        course_choice_list = [
+            (course.course_id, course.display_name)
+            for course in get_internal_courses_list()
+        ]
+    else:
+        course_choice_list = [
+            (course.id, course.name)
+            for course in course_api.get_course_list()
+        ]
+
+    return course_choice_list
 
 
 def get_template_asset_path(asset_id, asset_name):

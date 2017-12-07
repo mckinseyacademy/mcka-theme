@@ -37,6 +37,14 @@ GENERATE_CERTIFICATES_TASK_DATA = [
     (True, datetime.datetime.now() - datetime.timedelta(days=4)),
 ]
 
+_FAKE_USER_OBJ = DottableDict({
+    "id": 2,
+    "email": "ecommerce_worker@fake.email",
+    "username": "ecommerce_worker",
+    "full_name": "Ecommerce worker",
+    "is_internal_admin": False,
+})
+
 
 def _get_course_certificate_status(course_id):
     """
@@ -59,6 +67,8 @@ def _fake_permission_group_required(*group_names):  # pylint: disable=unused-arg
     """
     def decorator(view_fn):
         def _wrapped_view(request, *args, **kwargs):
+            # faking request user
+            request.user = _FAKE_USER_OBJ
             return view_fn(request, *args, **kwargs)
         return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
     return decorator
