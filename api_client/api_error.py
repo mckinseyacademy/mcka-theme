@@ -93,7 +93,9 @@ def api_error_protect(func):
             call_context.update(kwargs)
             argument_names = inspect.getargspec(func).args
             for position, arg in enumerate(args):
-                call_context[argument_names[position]] = arg
+                if position < len(argument_names):
+                    call_context[argument_names[position]] = arg
+
             api_error = ApiError(
                 he,
                 func.__name__,
