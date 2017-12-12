@@ -686,7 +686,7 @@ def get_user_by_username(user_username):
 
 
 @api_error_protect
-def get_filtered_participants_list(qs_params= ''):
+def get_filtered_participants_list(qs_params=''):
 
     response = GET('{}/{}?{}'.format(
         settings.API_SERVER_ADDRESS,
