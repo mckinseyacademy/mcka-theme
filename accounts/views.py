@@ -226,6 +226,8 @@ def login(request):
     ''' handles requests for login form and their submission '''
     error = None
     request.session['ddt'] = False  # Django Debug Tool session key init.
+    # Get the query param if user is already activated
+    account_activate_check = request.GET.get('account_activate_check', None)
 
     # Redirect IE to home page, login not available
     if request.META.has_key('HTTP_USER_AGENT'):
@@ -305,6 +307,9 @@ def login(request):
         # set focus to username field
         form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
 
+    if account_activate_check:
+        data["activation_message"] = _("Your account has already been activated. Please enter credentials to login")
+
     data["user"] = None
     data["form"] = form or LoginForm()
     data["sso_login_form"] = sso_login_form or SSOLoginForm()
@@ -365,7 +370,7 @@ def activate(request, activation_code, registration=None):
             initial_data["company"] = company.display_name
 
     except:
-        return render(request, 'accounts/incorrect_activation_code.haml')
+        return HttpResponseRedirect('/accounts/login/?account_activate_check=True')
 
     if request.method == 'POST' and error is None:  # If the form has been submitted...
         user_data = request.POST.copy()

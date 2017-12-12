@@ -25,6 +25,8 @@
                 %span McKinsey & Co. users <a href="#">click here</a>.
             %form.normal-login{action: "/accounts/login/", method: "POST"}
               .error
+                - if activation_message
+                  = activation_message
                 - if error
                   = error
               - csrf_token
