@@ -1007,7 +1007,7 @@ def get_notifications_csv_data(task_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                           PERMISSION_GROUPS.MCKA_SUBADMIN)
+                           PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def download_task_generated_csv(request, task_id):
     """
     Returns CSV response generated from a background task
@@ -1018,6 +1018,9 @@ def download_task_generated_csv(request, task_id):
     # task_name is required to identify different csv implementations
     if not task_name:
         raise Http404
+
+    if request.user.is_company_admin and task_name != 'participants_stats':
+        return HttpResponseForbidden()
 
     if task_name == 'participants_stats':
         # get csv url from celery result backend
