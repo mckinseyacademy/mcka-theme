@@ -9,21 +9,18 @@
         %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
       %hr
-      - if user.is_internal_admin
-      - else
-        #participantsSearchWrapper
-          .row
-            .large-3.columns
-              %input{:placeholder => 'Company', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
-            .large-3.columns
-              %input{:placeholder => 'Course', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
-            .large-3.columns
-              %input{:placeholder => 'Name', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
-            .large-3.columns
-              %input{:placeholder => 'Email', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
-    - if user.is_internal_admin
-    - else
-      #participantsListViewGridBlock
+      #participantsSearchWrapper
+        .row
+          .large-3.columns
+            %input{:placeholder => 'Company', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => 'Course', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => 'Name', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => 'Email', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
+
+    #participantsListViewGridBlock
 
     #add_a_participant.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal

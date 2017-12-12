@@ -3375,20 +3375,22 @@ def workgroup_list(request, restrict_to_programs_ids=None):
     )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def participants_list(request):
     form = MassStudentListForm()
     form_enroll = MassParticipantsEnrollListForm()
-    internalAdminFlag = False
-    if request.user.is_internal_admin:
-        internalAdminFlag = True
+    internal_admin_flag = request.user.is_internal_admin
 
     data = {
         'form': form,
         'form_enroll': form_enroll,
-        'internalAdminFlag': internalAdminFlag
+        'internalAdminFlag': internal_admin_flag
     }
     return render( request, 'admin/participants/participants_list.haml', data)
+
 
 @permission_group_required(
     PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
@@ -3423,12 +3425,26 @@ def participant_mail_activation_link(request, user_id):
             messages.error(request, e.message)
     return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
-class participants_list_api(APIView):
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+class ParticipantsListApi(APIView):
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN
+    )
     def get(self, request, format=None):
+        query_params = request.GET.dict()
 
-        participants = user_api.get_filtered_participants_list(request.GET)
+        # restrict participants search to internal courses
+        if request.user.is_internal_admin:
+            internal_course_ids = get_internal_courses_ids()
+            query_params['courses'] = query_params.get('courses') or ','.join(internal_course_ids)
+            participants = user_api.get_filtered_participants_list(query_params)
+            participants['results'] = filter(
+                lambda participant: set(participant.get('courses_enrolled', [])).intersection(internal_course_ids),
+                participants['results']
+            )
+        else:
+            participants = user_api.get_filtered_participants_list(query_params)
 
         for participant in participants['results']:
             if len(participant['organizations'] ) == 0:
@@ -3448,11 +3464,15 @@ class participants_list_api(APIView):
                     participant['created_custom_date'] = '-'
             else:
                 participant['created_custom_date'] = '-'
-            participant['courses_enrolled'] = '{:010d}'.format(participant['courses_enrolled'])
+
+            participant['courses_enrolled'] = '{:010d}'.format(len(participant['courses_enrolled']))
 
         return Response(participants)
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN
+    )
     def post(self, request):
         post_data = json.loads(request.body)
         form = CreateNewParticipant(post_data.copy())
