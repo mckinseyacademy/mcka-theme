@@ -4,6 +4,7 @@ import collections
 import re
 import uuid
 import string
+import logging
 
 from dateutil.parser import parse as parsedate
 
@@ -63,6 +64,8 @@ from django.core.cache import cache
 MINIMAL_COURSE_DEPTH = 5
 # need to load one level more deep to get Group Project V2 stages as their close dates are needed for report
 GROUP_WORK_REPORT_DEPTH = 6
+
+_logger = logging.getLogger(__name__)
 
 
 class GroupProject(object):
@@ -2136,11 +2139,19 @@ class CourseParticipantStats(object):
         oauth2_session = oauth2_requests.get_oauth2_session()
         lesson_completions = {}
         for user in course_participants['results']:
-            lesson_completions[user['id']] = course_api.get_user_lesson_completion(
-                user['username'],
-                self.course_id,
-                oauth2_session
-            )
+            try:
+                lesson_completions[user['id']] = course_api.get_user_lesson_completion(
+                    user['username'],
+                    self.course_id,
+                    oauth2_session
+                )
+            except Exception as e:
+                _logger.error(
+                    'Lesson completion retrieval failed for participant `{}` with message: `{}`'
+                    .format(user['id'], e.message)
+                )
+                lesson_completions[user['id']] = None
+
         return lesson_completions
 
     def _get_lesson_mapping(self, user):
@@ -2258,12 +2269,13 @@ class CourseParticipantStats(object):
             if lesson_completions is not None:
                 course_participant['lesson_completions'] = {}
                 lesson_completion = lesson_completions[course_participant['id']]
-                for lesson in lesson_completion['chapter']:
-                    completion_percentage = round_to_int(float(lesson['completion']['ratio']) * 100)
-                    block_key = lesson['block_key']
-                    if block_key in lesson_mapping:
-                        lesson_number = lesson_mapping[block_key]
-                        course_participant['lesson_completions'][lesson_number] = completion_percentage
+                if lesson_completion:
+                    for lesson in lesson_completion['chapter']:
+                        completion_percentage = round_to_int(float(lesson['completion']['ratio']) * 100)
+                        block_key = lesson['block_key']
+                        if block_key in lesson_mapping:
+                            lesson_number = lesson_mapping[block_key]
+                            course_participant['lesson_completions'][lesson_number] = completion_percentage
         return participants
 
     def _participants_activation_urls(self, participants_data):

@@ -31,8 +31,8 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     """
     api_params = {
         'page': 1,
-        'per_page': 100,
-        'page_size': 100,
+        'per_page': 200,
+        'page_size': 200,
         'additional_fields': "grades,roles,organizations,lesson_completions",
     }
     task_log_msg = "Participants data retrieval task for course: {}".format(course_id)
@@ -162,7 +162,7 @@ def participants_notifications_data_task(course_id, company_id, task_id):
     """
     api_params = {
         'fields': 'id', 'page': 1,
-        'per_page': 100, 'page_size': 100,
+        'per_page': 200, 'page_size': 200,
     }
     task_log_msg = "Notifications data retrieval task for course: {}".format(course_id)
 
