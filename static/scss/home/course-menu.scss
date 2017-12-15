@@ -56,7 +56,7 @@
 
         a {
           display: block;
-          width: 140px;
+          width: 180px;
           height: 180px;
           @include mobile{
             width: 100%;
@@ -72,7 +72,7 @@
         }
 
         .front, .back {
-          width: 140px;
+          width: 180px;
           height: 180px;
           padding: 10px;
           @include drop-shadow($mckinsey-academy-black, 0.2, 0px, 3px, 4px, 0px);
@@ -82,7 +82,7 @@
         }
 
         .front .name {
-          font-size: rem-calc(17);
+          font-size: rem-calc(16);
           word-break: break-word;
         }
 
