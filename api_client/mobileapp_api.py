@@ -1,6 +1,8 @@
 """
 Api calls related to mobileapps
 """
+import json
+
 from django.conf import settings
 from urllib import urlencode
 
@@ -9,6 +11,7 @@ from .oauth2_requests import get_oauth2_session
 
 
 MOBILE_APP_API = getattr(settings, 'MOBILE_APP_API', 'api/server/mobileapps')
+JSON_HEADERS = {"Content-Type": "application/json"}
 
 
 @api_error_protect
@@ -50,7 +53,7 @@ def update_mobile_app(app_id, params):
         MOBILE_APP_API,
         app_id
     )
-    response = get_oauth2_session().put(url, data=params)
+    response = get_oauth2_session().put(url, data=json.dumps(params), headers=JSON_HEADERS)
     return response.json()
 
 
@@ -64,7 +67,7 @@ def append_organization(app_id, params):
         MOBILE_APP_API,
         app_id
     )
-    response = get_oauth2_session().post(url, params)
+    response = get_oauth2_session().post(url, data=json.dumps(params), headers=JSON_HEADERS)
     return response
 
 
@@ -78,5 +81,6 @@ def remove_organization(app_id, params):
         MOBILE_APP_API,
         app_id
     )
-    response = get_oauth2_session().delete(url, data=params)
+
+    response = get_oauth2_session().delete(url, data=json.dumps(params), headers=JSON_HEADERS)
     return response

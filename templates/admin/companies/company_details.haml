@@ -42,8 +42,11 @@
               %a.hashPageButton.activeTab{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}> COURSES
             .companyDetailsCompanyInfoButton.large-3.columns
               %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCompanyInfo', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COMPANY INFO
-            .companyDetailsLinkedAppsButton.large-3.columns
-              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLinkedApps', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> LINKED APPS
+
+            - if user.is_mcka_admin
+              .companyDetailsLinkedAppsButton.large-3.columns
+                %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLinkedApps', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> LINKED APPS
+
             .large-6.columns
           %hr
       #companyDetailsDataWrapper
