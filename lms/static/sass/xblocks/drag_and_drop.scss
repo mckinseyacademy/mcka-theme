@@ -11,6 +11,18 @@
 // Overrides that we want on Apros (desktop + mobile web) and native apps (webviews):
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .themed-xblock.xblock--drag-and-drop {
+    .drag-container, .target-img-wrapper, .actions-toolbar {
+        /* Disallow selection on mobile, which causes problematic menu popups during drag and drop*/
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+}
+
+.themed-xblock.xblock--drag-and-drop {
     // Hide the text at the top that says e.g. "1 point possible (ungraded)" (MCKIN-6169)
     .problem-progress {
         display: none;
@@ -22,6 +34,24 @@
     // Remove the grey background from disabled "reset" button
     .sidebar-buttons button:disabled {
         background-color: transparent;
+    }
+}
+
+/* Align the Reset button to the right on mobile (non-McKinsey version has it left on mobile, right on desktop) */
+.ltr .themed-xblock.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    float: right;
+    padding-right: -5px;
+    padding-top: 5px;
+}
+.rtl .themed-xblock.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    float: left;
+    padding-left: -5px;
+}
+
+@include dnd-mobile-only {
+    /* Don't display "Keyboard Help" on mobile devices that don't have keyboards anyways */
+    .themed-xblock.xblock--drag-and-drop .keyboard-help-button {
+        display: none;
     }
 }
 
