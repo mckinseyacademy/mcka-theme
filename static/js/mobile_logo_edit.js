@@ -28,7 +28,6 @@ $(function(){
   });
 
   $('#edit-client-mobile-logo-modal').on('change', '#id_mobile_app_logo', function(e){
-    console.log('dd');
     imageEditor.previewSelectedImage(e.target, '.user-uploaded-image')
     imageEditor.applyCropperToImage($(this), imageClass, modal);
   });

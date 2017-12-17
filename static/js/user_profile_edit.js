@@ -29,27 +29,23 @@ $(function(){
   });
 
   $('#edit-user-image-modal').on('change', '#id_profile_image', function(e){
-    ImageFileName = $(this).val();
-    if(ImageFileName.length > 27){
-      ImageFileName = (ImageFileName.split('\\').pop().substring(0, 27) + "...");
-    }
-    $('label[for="id_profile_image"]').text(ImageFileName);
-    imageEditor.DoFileUpload(e, $(this), imageClass, modal);
+    imageEditor.previewSelectedImage(e.target, '.user-uploaded-image')
+    imageEditor.applyCropperToImage($(this), imageClass, modal);
   });
 
   $('#edit-user-image-modal').on('submit', '#cropping-form', function(e){
     e.preventDefault();
     var form = $(this);
-    var modal = $('#edit-user-image-modal');
-    $.ajax({
-      method: 'POST',
-      url: form.attr('action'),
-      data: form.serialize()
-    }).done(function(data){
-        if(data){
-          $('#edit-user-image-modal').foundation('reveal', 'close');
-        }
-      });
-    });
+    var options = {
+      url     : form.attr('action'),
+      type    : 'POST',
+      contentType: false,
+      success:function(data) {
+        $('#edit-client-mobile-logo-modal').foundation('reveal', 'close');
+      }
+    }
+
+    form.ajaxSubmit(options);
+  });
 })
 
