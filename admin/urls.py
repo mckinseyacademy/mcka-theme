@@ -84,7 +84,7 @@ urlpatterns += patterns(
 
     url(r'^api/clients/(?P<client_id>[0-9]+)/download_student_list', views.download_student_list_api.as_view(), name='download_student_list_api'),
     url(r'^clients/client_new', views.client_new, name='client_new'),
-    url(r'^clients/(?P<client_id>[0-9]+)/edit', views.client_edit, name='client_edit'),
+    url(r'^clients/(?P<client_id>[0-9]+)/edit$', views.client_edit, name='client_edit'),
     url(r'^clients/(?P<client_id>[0-9]+)$', views.client_detail, name='client_detail'),
     url(r'^clients/(?P<client_id>[0-9]+)/upload_student_list/check/(?P<task_key>.*)$', views.upload_student_list_check, name='upload_student_list_check'),
     url(r'^clients/(?P<client_id>[0-9]+)/upload_student_list', views.upload_student_list, name='upload_student_list'),
@@ -105,6 +105,7 @@ urlpatterns += patterns(
     url(r'^clients/(?P<client_id>[0-9]+)/contact/(?P<user_id>[0-9]+)/remove', views.client_detail_remove_contact, name='client_detail_remove_contact'),
     url(r'^clients/(?P<client_id>[0-9]+)/contact', views.client_detail_contact, name='client_detail_contact'),
     url(r'^clients/(?P<client_id>[0-9]+)/navigation', views.client_detail_navigation, name='client_detail_navigation'),
+    url(r'^clients/(?P<client_id>[0-9]+)/edit_client_mobile_logo$', views.edit_client_mobile_logo, name='edit_client_mobile_logo'),
     url(r'^clients/(?P<client_id>[0-9]+)/nav_links', views.client_detail_nav_links, name='client_detail_nav_links'),
     url(r'^clients/(?P<client_id>[0-9]+)/customization', views.client_detail_customization, name='client_detail_customization'),
     url(r'^clients/(?P<client_id>[0-9]+)/access_keys/create', views.create_access_key, name='create_access_key'),

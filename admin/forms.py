@@ -8,7 +8,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
 from .models import (
-    Client, Program, AccessKey, DashboardAdminQuickFilter, 
+    Client, Program, AccessKey, DashboardAdminQuickFilter,
     BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile,
     LearnerDashboardBranding, CourseRun
 )

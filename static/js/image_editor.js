@@ -7,20 +7,16 @@ $.imageEditor = function(){
     var $image = modal.find(".img-container").find(imageClass),
     $dataX1 = modal.find(".x1-position"),
     $dataY1 = modal.find(".y1-position"),
-    $dataX2 = modal.find(".x2-position"),
-    $dataY2 = modal.find(".y2-position"),
     $dataHeight = modal.find(".height-position"),
     $dataWidth = modal.find(".width-position"),
     $profileImageUrl = modal.find(".upload-image-url");
     $image.cropper({
         aspectRatio: aspectRatio,
-        done: function(data) {
-                $dataX1.val(data.x1);
-                $dataY1.val(data.y1);
-                $dataX2.val(data.x2);
-                $dataY2.val(data.y2);
-                $dataHeight.val(data.height);
-                $dataWidth.val(data.width);
+        crop: function(e) {
+                $dataX1.val(e.x);
+                $dataY1.val(e.y);
+                $dataHeight.val(e.height);
+                $dataWidth.val(e.width);
                 $profileImageUrl.val($(imageClass).attr('src'));
             }
     });
@@ -63,6 +59,14 @@ $.imageEditor = function(){
       return false;
   }
 
+  function applyCropperToImage(that, imageClass, modal) {
+    var validate = FileTypeValidate(that.val(), modal.find('.error'));
+    ImageFileName = that.val().replace(/^.*\\/, "").length > 25 ? (that.val().replace(/^.*\\/, "").substr(0,25) + '...') : that.val().replace(/^.*\\/, "");
+
+    $('label[for="id_mobile_app_logo"]').text(ImageFileName);
+    reloadImages(imageClass, modal, aspectRatio);
+  }
+
   function DoFileUpload(e, that, imageClass, modal){
       var form = that.parents('form').first();
       modal.find('.error').html('');
@@ -91,9 +95,25 @@ $.imageEditor = function(){
     }
   }
 
+  function previewSelectedImage(input, preview_image_class) {
+    console.log('pp');
+    $(preview_image_class).cropper('destroy');
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $(preview_image_class).attr('src', e.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+
   return {
           reInitCropper : reInitCropper,
           reloadImages: reloadImages,
-          DoFileUpload: DoFileUpload
+          DoFileUpload: DoFileUpload,
+          applyCropperToImage: applyCropperToImage,
+          previewSelectedImage: previewSelectedImage
         }
 }

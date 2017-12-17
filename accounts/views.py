@@ -838,22 +838,15 @@ def user_profile(request):
 def user_profile_image_edit(request):
     if request.method == 'POST':
         user_id = request.user.id
-        heightPosition = request.POST.get('height-position')
-        widthPosition = request.POST.get('width-position')
-        x1Position = request.POST.get('x1-position')
-        x2Position = request.POST.get('x2-position')
-        y1Position = request.POST.get('y1-position')
-        y2Position = request.POST.get('y2-position')
+        left = int(float(request.POST.get('x1-position')))
+        top = int(float(request.POST.get('y1-position')))
+        right = int(float(request.POST.get('width-position'))) + left
+        bottom = int(float(request.POST.get('height-position'))) + top
         image_url = request.POST.get('upload-image-url')
 
         from PIL import Image
         from django.core.files.storage import default_storage
-        from django.core.files.base import ContentFile
 
-        left = int(x1Position)
-        top = int(y1Position)
-        right = int(x2Position)
-        bottom = int(y2Position)
         if settings.API_SERVER_ADDRESS in request.POST.get('upload-image-url'):
             response = http_request_methods.GET(image_url)
             image = StringIO.StringIO(response.content)
@@ -861,8 +854,8 @@ def user_profile_image_edit(request):
             image_url = urlparse.urlparse(image_url)[2]
             temp_image_url = _get_stored_image_url(request, image_url)
             image = default_storage.open(temp_image_url)
+
         original = Image.open(image)
-        width, height = original.size   # Get dimensions
         cropped_example = original.crop((left, top, right, bottom))
         avatar_image_io = StringIO.StringIO()
         cropped_example.convert('RGB').save(avatar_image_io, format='JPEG')

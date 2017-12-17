@@ -5,7 +5,9 @@ import re
 import uuid
 import string
 import logging
+import StringIO
 
+from PIL import Image
 from dateutil.parser import parse as parsedate
 
 from django.core.urlresolvers import reverse
@@ -16,6 +18,7 @@ from django.conf import settings
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from admin.models import Program
 from api_client.api_error import ApiError
+from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
 from api_client import (
     course_api,
     course_models,
@@ -2168,7 +2171,7 @@ class CourseParticipantStats(object):
         """
         Return an enrolled user with no special role, if one exists in the course.
 
-        Otherwise return any enrolled user.  If there are no enrolled users, 
+        Otherwise return any enrolled user.  If there are no enrolled users,
         return None.
         """
         users = participants['results']
@@ -2324,3 +2327,30 @@ def participant_csv_line_id_extractor(user_line):
             pass
         else:
             return user_id
+
+
+def upload_mobile_app_logo(request, client_id):
+    """
+    Crop and uploads mobile app logo image to platform
+    """
+    left = int(float(request.POST.get('x1-position')))
+    top = int(float(request.POST.get('y1-position')))
+    right = int(float(request.POST.get('width-position'))) + left
+    bottom = int(float(request.POST.get('height-position'))) + top
+    temp_image = request.FILES['mobile_app_logo']
+
+    image = Image.open(temp_image)
+    cropped_image = image.crop((left, top, right, bottom))
+    image_io = StringIO.StringIO()
+    cropped_image.convert('RGB').save(image_io, format='JPEG')
+    image_io.seek(0)
+    logo_image_file = {'logo_image': ('logo.jpg', image_io, 'image/jpeg')}
+    mobile_app_themes = get_mobile_app_themes(client_id)
+    if mobile_app_themes:
+        update_mobile_app_theme(
+            mobile_app_themes[0]['id'],
+            {'organization': client_id, 'active': True},
+            logo_image_file
+        )
+    else:
+        create_mobile_app_theme(client_id, {'active': True}, logo_image_file)
