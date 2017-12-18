@@ -39,7 +39,7 @@ $(function(){
       url     : form.attr('action'),
       type    : 'POST',
       contentType: false,
-      success:function(data) {
+      success: function(data) {
         $('#edit-client-mobile-logo-modal').foundation('reveal', 'close');
       }
     }

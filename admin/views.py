@@ -1567,9 +1567,12 @@ def client_detail_nav_links(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_detail_customization(request, client_id):
+    """
+    View to update client web and mobile branding
+    """
     if request.FILES and 'mobile_app_logo' in request.FILES:
         upload_mobile_app_logo(request, client_id)
-        return HttpResponse(status=201)
+        return HttpResponse('')
     else:
         (customization, created) = ClientCustomization.objects.get_or_create(
             client_id=client_id,
@@ -1608,6 +1611,9 @@ def client_detail_customization(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def edit_client_mobile_logo(request, client_id):
+    """
+    View to generate modal to crop client mobile logo
+    """
     client_mobile_logo = JsonObjectWithImage.default_image_url()
     mobile_app_themes = mobileapp_api.get_mobile_app_themes(client_id)
     if mobile_app_themes:
@@ -2587,12 +2593,10 @@ def change_company_image(request, client_id='new', template='change_company_imag
 @client_admin_access
 def company_image_edit(request, client_id="new"):
     if request.method == 'POST':
-        heightPosition = request.POST.get('height-position')
-        widthPosition = request.POST.get('width-position')
-        x1Position = request.POST.get('x1-position')
-        x2Position = request.POST.get('x2-position')
-        y1Position = request.POST.get('y1-position')
-        y2Position = request.POST.get('y2-position')
+        left = int(float(request.POST.get('x1-position')))
+        top = int(float(request.POST.get('y1-position')))
+        right = int(float(request.POST.get('width-position'))) + left
+        bottom = int(float(request.POST.get('height-position'))) + top
         CompanyImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2].split('?')[0]
 
         if client_id != 'new':
@@ -2617,11 +2621,6 @@ def company_image_edit(request, client_id="new"):
 
             original = Image.open(default_storage.open(image_url))
 
-            width, height = original.size   # Get dimensions
-            left = int(x1Position)
-            top = int(y1Position)
-            right = int(x2Position)
-            bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
             new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
             Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)

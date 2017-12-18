@@ -54,6 +54,34 @@ $.imageEditor = function(){
     return false;
   }
 
+  function DoFileUpload(e, that, imageClass, modal){
+    var form = that.parents('form').first();
+    modal.find('.error').html('');
+    var validate = FileTypeValidate(that.val(), modal.find('.error'));
+    ImageFileName = that.val().replace(/^.*\\/, "").length > 25 ? (that.val().replace(/^.*\\/, "").substr(0,25) + '...') : that.val().replace(/^.*\\/, "");
+    if(validate){
+      $('.spinner.upload-image').show();
+      $('label[for="id_profile_image"]').text(ImageFileName);
+      var options = {
+        url: form.attr('action'),
+        type: 'POST',
+        contentType: false,
+        success:function( data ) {
+          $('.spinner.upload-image').hide();
+          modal.html(data);
+          $('label[for="id_profile_image"]').text(ImageFileName);
+          reloadImages(imageClass, modal, aspectRatio);
+        },
+        error: function( data ){
+          $('.spinner.upload-image').hide();
+          modal.find('.error').append('<p class="warning">Please select file first.</p>');
+        }
+      }
+
+      form.ajaxSubmit(options);
+    }
+  }
+
   function applyCropperToImage(that, imageClass, modal) {
     var validate = FileTypeValidate(that.val(), modal.find('.error'));
     ImageFileName = that.val().replace(/^.*\\/, "").length > 25 ? (that.val().replace(/^.*\\/, "").substr(0,25) + '...') : that.val().replace(/^.*\\/, "");
@@ -78,6 +106,7 @@ $.imageEditor = function(){
   return {
           reInitCropper : reInitCropper,
           reloadImages: reloadImages,
+          DoFileUpload: DoFileUpload,
           applyCropperToImage: applyCropperToImage,
           previewSelectedImage: previewSelectedImage
         }
