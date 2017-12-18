@@ -140,6 +140,18 @@ Add the following two lines:
 
 These two settings are required to make profile images work in Apros. The age limit image checks must be disabled as Apros doesn't record age in user profiles.
 
+
+### Configure the Comprehensive Theme
+The McKinsey Academy comprehensive theme contains (S)CSS overrides used to make XBlocks match the desired appearance within Apros and/or the various native mobile apps.
+
+
+#### Configuration
+1. Clone the [mckinseyacademy/mcka-theme](https://github.com/mckinseyacademy/mcka-theme) repository into the local host machines "themes" directory located in the same directory as the Vagrantfile, and the edx-platform and mcka_apros directories.
+2. Set the following variables located in `lms.env.json` and `cms.env.json`
+    1. Set `"ENABLE_COMPREHENSIVE_THEMING": true,`
+    2. Set `"COMPREHENSIVE_THEME_DIRS": ["/edx/app/edxapp/themes"],`
+    3. Set `"DEFAULT_SITE_THEME": "mcka-theme",`
+
 ## Start the LMS and forum services
 
 These services need to be running for Apros to work. Start them and leave them
