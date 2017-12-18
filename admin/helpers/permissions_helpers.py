@@ -69,15 +69,16 @@ class CompanyAdminCompanyPermission(permissions.BasePermission):
         """
         Implements the actual permission check
         """
-        company_id = view.kwargs.get('company_id')
+        company_id = int(view.kwargs.get('company_id'))
 
-        return not (
-            request.user.is_authenticated() and request.user.is_company_admin and int(company_id) not in [
-                user_org.id
-                for user_org in Permissions(request.user.id).get_all_user_organizations_with_permissions()
-                .get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
-            ]
-        )
+        user_organization_permissions = Permissions(request.user.id).get_all_user_organizations_with_permissions()
+        user_administrated_organizations = user_organization_permissions.get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
+
+        is_current_company_admin = company_id in [user_org.id for user_org in user_administrated_organizations]
+        unauthorized_user = request.user.is_authenticated() and request.user.is_company_admin and\
+            not is_current_company_admin
+
+        return not unauthorized_user
 
 
 class CompanyAdminUserPermission(permissions.BasePermission):

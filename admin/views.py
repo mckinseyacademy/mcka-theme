@@ -4662,7 +4662,7 @@ def company_details(request, company_id):
     return render(request, 'admin/companies/company_details.haml', data)
 
 
-class company_courses_api(APIView):
+class CompanyCoursesApi(APIView):
     permission_classes = (CompanyAdminCompanyPermission, )
 
     @permission_group_required_api(
@@ -4670,6 +4670,11 @@ class company_courses_api(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
     )
     def get(self, request, company_id):
+        user_organizations = Permissions(request.user.id).get_all_user_organizations_with_permissions()
+        user_main_companies = [user_org.id for user_org in user_organizations["main_company"]]
+
+        is_main_company = int(company_id) in user_main_companies
+
         company_courses = organization_api.get_organizations_courses(company_id)
         courses = []
         for company_course in company_courses:
@@ -4678,9 +4683,12 @@ class company_courses_api(APIView):
             course['id'] = company_course['id']
             course['participants'] = len(company_course['enrolled_users'])
             course_roles = course_api.get_users_filtered_by_role(company_course['id'])
-            for user in company_course['enrolled_users']:
-                if any(role.id == user for role in course_roles):
-                    course['participants'] = course['participants'] - 1
+            for user_id in company_course['enrolled_users']:
+                not_active_user = any(role.id == user_id for role in course_roles)
+                admin_from_different_company = not is_main_company and user_id == request.user.id
+
+                if not_active_user or admin_from_different_company:
+                    course['participants'] -= 1
 
             #  Skip courses having no active participant
             if not course['participants']:
