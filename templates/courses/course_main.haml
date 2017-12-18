@@ -34,3 +34,11 @@
     %p As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks.
     .screencap
       %img{src: '/static/image/McKA_home_progress_v12.png'}
+
+
+
+  - include "marketing/app_link_popup.haml"
+
+- block js_snippets
+  %script{src: "{% static 'js/app_link_popup.js' %}"}
+

@@ -1,4 +1,5 @@
 - extends "layout.haml"
+- load staticfiles
 
 - block content
   #home-landing
@@ -24,6 +25,8 @@
           - if is_login_button_enabled
             %a.login-btn{:href => "/accounts/login"} Log in
 
+  - include "marketing/app_link_popup.haml"
+
 - block general_modal
   #generalModal.reveal-modal.small{'data-reveal': ''}
     %h2.title
@@ -34,3 +37,5 @@
     - if popup.title != ''
       %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
 
+- block js_snippets
+  %script{src: "{% static 'js/app_link_popup.js' %}"}

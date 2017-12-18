@@ -51,9 +51,10 @@ from .user_courses import check_user_course_access, standard_data, load_course_p
     check_company_admin_user_access, get_current_course_for_user,\
     set_current_course_for_user, get_current_program_for_user, check_course_shell_access
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-
-# Create your views here.
 from util.query_manager import get_object_or_none
+
+from accounts.controller import get_mobile_app_download_popup_data
+# Create your views here.
 
 _progress_bar_dictionary = {
     "normal": "#b1c2cc",
@@ -107,6 +108,11 @@ def course_landing_page(request, course_id):
         "average_progress": average_progress(course, request.user.id),
         "graded_items_count": graded_items_count,
     }
+
+    if 'username' in request.GET:
+        mobile_popup_data = get_mobile_app_download_popup_data(request)
+        data.update(mobile_popup_data)
+
     return render(request, 'courses/course_main.haml', data)
 
 def get_learner_dashboard(request, course_id):
@@ -1123,6 +1129,9 @@ def course_learner_dashboard(request, learner_dashboard_id):
             data['branding'] = learner_dashboard_branding
         except:
             pass
+    if 'username' in request.GET:
+        mobile_popup_data = get_mobile_app_download_popup_data(request)
+        data.update(mobile_popup_data)
 
     return render(request, 'courses/course_learner_dashboard.haml', data)
 

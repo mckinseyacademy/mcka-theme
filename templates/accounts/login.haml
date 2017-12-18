@@ -67,24 +67,6 @@
         - include 'registration/password_reset_failed.haml'
         %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
 
-  - if show_app_link_popup
-    #mobileAppLinkModal.reveal-modal.small{"data-reveal" => "true", :style => "background: url(#{company_mobile_app_map.background_image}) no-repeat center top"}
-      .mobile-container
-        .logo
-          %img{:alt => "", :src => "#{company_mobile_app_map.logo_image}.png", :srcset => "#{company_mobile_app_map.logo_image}.png 1x, #{company_mobile_app_map.logo_image}@2x.png 2x, #{company_mobile_app_map.logo_image}@3x.png 3x"}
-        %p.tagline
-          = company_mobile_app_map.tagline
-        .downlaods
-          .store.apple
-            %a#ios_download_link{:href => "#{company_mobile_app_map.ios}", 'data-username': "#{request.GET.username}"}
-              %img{:alt => "", :src => "/static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}.png", :srcset => "/static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}.png 1x, /static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}@2x.png 2x, /static/image/mobile_popup/#{company_mobile_app_map.download_banner_image}@3x.png 3x"}
-          %p.close-popup-tagline
-            %a.close-reveal-modal{"aria-label" => "Close"} Continue to web login
-        .mobile-screen
-          %img{:alt => "", :src => "#{company_mobile_app_map.mobile_image}.png", :srcset => "#{company_mobile_app_map.mobile_image}.png 1x, #{company_mobile_app_map.mobile_image}@2x.png 2x, #{company_mobile_app_map.mobile_image}@3x.png 3x"}
-
-      %a.close-reveal-modal{"aria-label" => "Close"} ×
-
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
@@ -99,11 +81,6 @@
       if($('#generalModal input.show-modal').length > 0){
         $('#generalModal').foundation('reveal', 'open');
       }
-
-      if($('#mobileAppLinkModal').length > 0){
-        $('#mobileAppLinkModal').foundation('reveal', 'open');
-      }
-
 
       function switchToMode(mode) {
         current_mode = mode;
@@ -135,30 +112,4 @@
 
       switchToMode(current_mode);
 
-      function trackAppDownloadLinkClick(link, username, platform) {
-        setTimeout(visitLink, 1000);
-
-        var link_visited = false;
-
-        function visitLink() {
-          if (!link_visited) {
-            link_visited = true;
-            window.location.href = link;
-          }
-        }
-
-        ga('send', 'event', 'Outbound Link', 'click', platform + ' App Download', {
-          'username': username,
-          hitCallback: visitLink
-        });
-
-      }
-      $("#ios_download_link").on('click', function(event) {
-        event.preventDefault();
-        trackAppDownloadLinkClick(this.href, $(this).data('username'), 'iOS' )
-      });
-      $("#android_download_link").on('click', function(event) {
-        event.preventDefault();
-        trackAppDownloadLinkClick(this.href, $(this).data('username'), 'Android' )
-      });
     });

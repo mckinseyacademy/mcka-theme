@@ -46,7 +46,7 @@ from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistr
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin, get_mobile_app_download_popup_data, append_user_mobile_app_id_cookie
+    send_warning_email_to_admin, append_user_mobile_app_id_cookie, get_mobile_app_download_popup_data
 )
 from util.user_agent_helpers import is_mobile_user_agent
 from .forms import (
@@ -154,7 +154,7 @@ def _get_redirect_to_current_course(request):
     return reverse('protected_home')
 
 
-def _process_authenticated_user(request, user):
+def _process_authenticated_user(request, user, activate_account=False):
     redirect_to = _get_redirect_to(request)
     _validate_path(redirect_to)
 
@@ -171,7 +171,8 @@ def _process_authenticated_user(request, user):
 
     if not redirect_to:
         redirect_to = _get_redirect_to_current_course(request)
-
+    if activate_account:
+        redirect_to += '?username={}'.format(user.username)
     response = HttpResponseRedirect(redirect_to)  # Redirect after POST
     if 'remote_session_key' in request.session:
         response.set_cookie(
@@ -286,17 +287,6 @@ def login(request):
         except ApiError as err:
             error = err.message
 
-    elif 'username' in request.GET:
-        # password fields get cleaned upon rendering the form, but we must
-        # provide something here, otherwise the error (password field is
-        # required) will appear
-        form = LoginForm(
-            {"username": request.GET['username'], "password": "fake_password"}
-        )
-        # set focus to password field
-        form.fields["password"].widget.attrs.update({'autofocus': 'autofocus'})
-        mobile_popup_data = get_mobile_app_download_popup_data(request)
-        data.update(mobile_popup_data)
     elif 'reset' in request.GET:
         form = LoginForm()
         # set focus to username field
@@ -342,7 +332,6 @@ def activate(request, activation_code, registration=None):
     user = None
     user_data = None
     initial_data = {}
-
     try:
         activation_record = UserActivation.objects.get(activation_key=activation_code)
         user = user_api.get_user(activation_record.user_id)
@@ -382,14 +371,20 @@ def activate(request, activation_code, registration=None):
         )
         if form.is_valid():  # All validation rules pass
             try:
+                login_mode = 'normal'
+
                 user_activation_with_data(user.id, form.cleaned_data, activation_record)
 
-                # Redirect after POST
-                return HttpResponseRedirect(
-                    '/accounts/login?username={}'.format(
-                        user_data["username"]
-                    )
+                user = auth.authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password']
                 )
+                if user:
+                    response = _process_authenticated_user(request, user, activate_account=True)
+                    _append_login_mode_cookie(response, login_mode)
+                    append_user_mobile_app_id_cookie(response, user.id)
+                    return response
+
             except ActivationError as activation_error:
                 error = activation_error.value
                 form.fields["company"].widget = HiddenInput()
@@ -810,6 +805,11 @@ def home(request):
             {'is_login_button_enabled': settings.LOGIN_BUTTON_FOR_MOBILE_ENABLED}
         )
     data.update({"user": request.user, "cells": cells})
+
+    if 'username' in request.GET:
+        mobile_popup_data = get_mobile_app_download_popup_data(request)
+        data.update(mobile_popup_data)
+
     return render(request, 'home/landing.haml', data)
 
 @login_required

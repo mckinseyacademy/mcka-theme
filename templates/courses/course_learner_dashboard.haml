@@ -67,6 +67,8 @@
                 %h5
                   %span.author-font{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
 
+  - include "marketing/app_link_popup.haml"
+
 - block footer
   - include 'footer_ld.haml'
 
@@ -74,3 +76,4 @@
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
   %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
   %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
+  %script{src: "{% static 'js/app_link_popup.js' %}"}
