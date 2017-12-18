@@ -1,0 +1,37 @@
+@import 'bourbon/bourbon';
+@import 'lms/static/sass/partials/base/variables';
+
+// McKinsey Academy main colours
+$mckinsey-blue: #002960;
+$mckinsey-light-blue: #2a90ee;
+$mckinsey-medium-gray: #d4d4d4;
+$mckinsey-bubble-gray: #a0a9b9;
+$mckinsey-blue-bar: #213752;
+$mckinsey-academy-alt-blue: #3384CA;
+$mckinsey-academy-black: #333333;
+$mckinsey-grey: #CCCCCC;
+$mckinsey-dark-grey: #868685;
+$mckinsey-academy-turquoise: #66A5B5;
+$mckinsey-orange: #E37222;
+$mckinsey-green: #629B2B;
+$mckinsey-status-partial: #b6d332;
+$mckinsey-red: #CD202C;
+$mckinsey-academy-blue-gray: #B1C2CC;
+$mckinsey-academy-warm-gray: #D3D1BA;
+$mckinsey-academy-bright-gray: #E5EBEE;
+$mckinsey-academy-light-gray: #E0E0E0;
+$mckinsey-academy-discussion-icon-gray: #b2b2b2;
+$mckinsey-academy-table-head: #f3f3f3;
+
+// McKinsey Academy Breakpoints
+$media-mcka-phone: 'only screen and (max-width: 540px)'; // Mobile phone; matches edx-platform '$bp-small' breakpoint
+$media-mcka-mobile: 'only screen and (max-width: 768px)'; // Phone or tablet; matches edx-platform '$bp-medium' breakpoint
+
+@mixin mcka-phone-only {
+    @media ($media-mcka-phone) {
+        @content;
+    }
+}
+
+// This is where to override standard Open edX LMS variables like $action-primary-bg and $link-color:
+
