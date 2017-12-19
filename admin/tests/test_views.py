@@ -1,8 +1,8 @@
 from ddt import ddt, data
 
+from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
 from django.test.client import Client
-from django.core.urlresolvers import reverse
 from rest_framework import status
 
 from lib.authorization import permission_groups_map
@@ -37,6 +37,7 @@ def _create_user():
     except ApiError:
         pass
 
+
 @override_settings(CELERY_ALWAYS_EAGER=True)
 def mocked_execute_task(task_runner):
     """
@@ -52,6 +53,7 @@ class TestBulkTaskAPI(TestCase, ApplyPatchMixin):
     """
     Tests bulk task API endpoints
     """
+
     def setUp(self):
         super(TestBulkTaskAPI, self).setUp()
 
@@ -109,3 +111,4 @@ class TestBulkTaskAPI(TestCase, ApplyPatchMixin):
         # test response for success case
         if state == 'SUCCESS':
             self.assertEqual(response_data.get('values', {}).get('progress'), '100')
+
