@@ -1,9 +1,9 @@
 from django.test import TestCase
-import controller
+from license import controller
+
 
 # Create your tests here.
 class TestLicenses(TestCase):
-
     def test_license_creation(self):
         # grant 1 license to course 1 on behalf of organisation 11
         controller.create_licenses(1, 11, 1)
@@ -52,7 +52,6 @@ class TestLicenses(TestCase):
         self.assertEqual(allocated, 1)
         self.assertEqual(assigned, 1)
 
-
     def test_many_licenses(self):
         controller.create_licenses(2, 12, 100)
 
@@ -63,7 +62,7 @@ class TestLicenses(TestCase):
         assigned_licenses = controller.assigned_licenses(2, 12)
         self.assertEqual(len(assigned_licenses), 0)
 
-        for x in range(1,101):
+        for x in range(1, 101):
             controller.assign_license(2, 12, x + 100)
             allocated, assigned = controller.licenses_report(2, 12)
             self.assertEqual(allocated, 100)
@@ -79,7 +78,7 @@ class TestLicenses(TestCase):
         self.assertEqual(allocated, 100)
         self.assertEqual(assigned, 100)
 
-        #revoke form somewhere in the middle of the pack
+        # revoke form somewhere in the middle of the pack
         controller.revoke_license(2, 12, 155)
 
         allocated, assigned = controller.licenses_report(2, 12)
