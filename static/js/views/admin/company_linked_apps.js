@@ -20,22 +20,22 @@
         { title: 'Deployment Mech', index: false, name: 'deployment_mechanism' },
         { title: 'iOS DL URL', index: false, name: 'ios_download_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['ios_download_url'] + '>' + attributes['ios_download_url'] + '</a>';
+            return '<a href=' + encodeURIComponent(attributes['ios_download_url']) + '>' + attributes['ios_download_url'] + '</a>';
           }
         },
         { title: 'Android DL URL', index: false, name: 'android_download_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['android_download_url'] + '>' + attributes['android_download_url'] + '</a>';
+            return '<a href=' + encodeURIComponent(attributes['android_download_url']) + '>' + attributes['android_download_url'] + '</a>';
           }
         },
         { title: 'Urban Airship URL', index: false, name: 'provider_dashboard_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['provider_dashboard_url'] + '>' + attributes['provider_dashboard_url'] + '</a>';
+            return '<a href=' + encodeURIComponent(attributes['provider_dashboard_url']) + '>' + attributes['provider_dashboard_url'] + '</a>';
           }
         },
         { title: 'Analytics URL', index: false, name: 'analytics_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['analytics_url'] + '>' + attributes['analytics_url'] + '</a>';
+            return '<a href=' + encodeURIComponent(attributes['analytics_url']) + '>' + attributes['analytics_url'] + '</a>';
           }
         },
         { title: 'Active', index: false, name: 'is_active',

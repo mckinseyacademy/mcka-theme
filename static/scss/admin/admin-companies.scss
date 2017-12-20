@@ -478,9 +478,13 @@
 		color: $mckinsey-academy-alt-blue;
 	}
 	.appDetails{
+		background-color: $pure-white;
 		label{
 			font-weight: 600;
 			color: black;
+		}
+		p{
+			word-break: break-word;
 		}
 		.row{
 			margin-bottom: 20px;
