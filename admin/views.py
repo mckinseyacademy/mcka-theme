@@ -1048,9 +1048,10 @@ class BulkTaskAPI(APIView):
         """
         Returns status of a task
         """
-        response = dict(total=0, progress=0, successful=0, completed=0, failed=0)
         task_id = request.GET.get('task_id')
         state, info = BulkTaskRunner.get_task_state(task_id=task_id)
+
+        response = dict(total=0, progress=0, successful=0, state=state)
 
         if state == 'PROGRESS':
             response.update({'progress': info.get('percentage')})
@@ -1061,11 +1062,7 @@ class BulkTaskAPI(APIView):
                     'successful': info.get('successful')
                 })
 
-            response.update({
-                'completed': 1, 'progress': '100'
-            })
-        elif state == 'FAILURE':
-            response.update({'failed': 1})
+            response.update({'progress': '100'})
 
         return Response({'values': response}, status=status.HTTP_200_OK)
 
