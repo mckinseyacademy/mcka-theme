@@ -14,7 +14,7 @@ function checkTaskStatus(taskId, progressElement, loadingImage, callback){
           if (xhr.status === 200)
           {
             $(progressElement).text('Progress: ' + data['values'].progress + '%');
-            if (data['values'].completed == 1)
+            if (data['values'].state == 'SUCCESS')
             {
               $(loadingImage).addClass('hidden');
               clearInterval(interval_id);
