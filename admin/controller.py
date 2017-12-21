@@ -2110,9 +2110,9 @@ class CourseParticipantStats(object):
         based on `request_params`
         """
         self.request_params = request_params
-        grades, participants, progress, lesson_completion = self._retrieve_api_data()
+        participants, lesson_completion = self._retrieve_api_data()
 
-        return self._process_results(participants, grades, progress, lesson_completion)
+        return self._process_results(participants, lesson_completion)
 
     @property
     def additional_fields(self):
@@ -2123,12 +2123,8 @@ class CourseParticipantStats(object):
         Calls course api to get the stats
         """
         course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
-        course_grades = course_api.get_course_details_metrics_grades_all_users(
-            self.course_id, self.request_params.get('count') or course_participants.get('count', 0)
-        )
-        course_progress = course_api.get_course_details_completions_all_users(course_id=self.course_id)
         lesson_completions = self._get_lesson_completions(course_participants)
-        return course_grades, course_participants, course_progress, lesson_completions
+        return course_participants, lesson_completions
 
     def _get_lesson_completions(self, course_participants):
         """
@@ -2173,12 +2169,13 @@ class CourseParticipantStats(object):
         """
         users = participants['results']
         for user in users:
-            if user['roles'] == []:
+            if not user['roles']:
                 return user
-        if len(users) > 0:
+
+        if users:
             return users[0]
 
-    def _process_results(self, participants, course_grades, course_progress, lesson_completions=None):
+    def _process_results(self, participants, lesson_completions=None):
         """
         Integrates and process results set
         """
@@ -2194,13 +2191,13 @@ class CourseParticipantStats(object):
             if course_participant.get('country'):
                 course_participant['country'] = get_complete_country_name(course_participant.get('country'))
 
-            if len(course_participant['organizations']) == 0:
+            if not course_participant['organizations']:
                 course_participant['organizations'] = [{'display_name': 'No company'}]
                 course_participant['organizations_display_name'] = 'No company'
             else:
                 course_participant['organizations_display_name'] = course_participant['organizations'][0][
                     'display_name']
-            if len(course_participant['roles']) != 0:
+            if course_participant['roles']:
                 if 'assistant' in course_participant['roles']:
                     course_participant['custom_user_status'] = self.permission_map['assistant']
                 elif 'observer' in course_participant['roles']:
@@ -2211,10 +2208,12 @@ class CourseParticipantStats(object):
                     course_participant['custom_user_status'] = self.permission_map['instructor']
             else:
                 course_participant['custom_user_status'] = 'Active'
+
             if course_participant['is_active']:
                 course_participant['custom_activated'] = 'Yes'
             else:
                 course_participant['custom_activated'] = 'No'
+
             if 'last_login' in course_participant:
                 if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
                     last_login = parsedate(course_participant['last_login'])
@@ -2225,32 +2224,24 @@ class CourseParticipantStats(object):
                     course_participant['custom_last_login'] = '-'
             else:
                 course_participant['custom_last_login'] = '-'
-            user = None
-            for progress in course_progress['leaders']:
-                if progress['id'] == course_participant['id']:
-                    user = progress
-                    course_progress['leaders'].remove(progress)
-                    break
-            if user:
-                course_participant['progress'] = '{:03d}'.format(round_to_int(user['completions']))
+
+            if course_participant.get('progress'):
+                progress = round_to_int(course_participant['progress'])
+                course_participant['progress'] = '{:03d}'.format(progress)
             else:
                 course_participant['progress'] = "000"
-            course_participant['proficiency'] = None
-            for grade in course_grades['leaders']:
-                if grade['id'] == course_participant['id']:
-                    course_participant['proficiency'] = float(grade['grade']) * 100
-                    course_grades['leaders'].remove(grade)
-                    break
-            if not course_participant['proficiency']:
-                course_participant['proficiency'] = "000"
+
+            if course_participant.get('grades', {}).get('grade'):
+                proficiency = round_to_int(course_participant['grades']['grade'] * 100)
+                course_participant['proficiency'] = '{:03d}'.format(proficiency)
             else:
-                course_participant['proficiency'] = '{:03d}'.format(round_to_int(course_participant['proficiency']))
+                course_participant['proficiency'] = "000"
 
             course_participant['number_of_assessments'] = 0
             course_participant['number_of_groupworks'] = 0
             course_participant['groupworks'] = []
             course_participant['assessments'] = []
-            if participants['count'] > 0:
+            if participants['count']:
                 if course_participant['grades']['section_breakdown']:
                     for user_grade in course_participant['grades']['section_breakdown']:
                         data = user_grade

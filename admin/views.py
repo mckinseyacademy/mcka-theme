@@ -1092,7 +1092,7 @@ class BulkTaskAPI(APIView):
         return Response({'data': data, 'task_id': task_id}, status=status.HTTP_201_CREATED)
 
 
-class course_details_api(APIView):
+class CourseDetailsApi(APIView):
     permission_classes = (InternalAdminCoursePermission,)
 
     @permission_group_required_api(
@@ -1104,19 +1104,20 @@ class course_details_api(APIView):
             organization_id = request.GET.get('organizations')
             # a company admin can't be without organizations param
             # and can only access their companies
-            if not organization_id or int(organization_id) not in [
-                user_org.id
-                for user_org in Permissions(request.user.id).get_all_user_organizations_with_permissions()
-                        .get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
-            ]:
+
+            user_organizations = Permissions(request.user.id).get_all_user_organizations_with_permissions()
+            user_administered_orgs = user_organizations.get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
+            user_administered_orgs_ids = [user_org.id for user_org in user_administered_orgs]
+
+            if not organization_id or int(organization_id) not in user_administered_orgs_ids:
                 raise PermissionDenied
 
         if course_id:
-            course_participants_stats = CourseParticipantStats(
-                course_id=course_id, base_url=request.build_absolute_uri()
-            )
-            allCourseParticipants = course_participants_stats.get_participants_data(request.GET)
-            return Response(allCourseParticipants)
+            course_participants_stats = CourseParticipantStats(course_id=course_id,
+                                                               base_url=request.build_absolute_uri())
+
+            course_participants = course_participants_stats.get_participants_data(request.GET)
+            return Response(course_participants)
         else:
             return Response({})
 

@@ -64,7 +64,7 @@ urlpatterns += patterns(
     url(r'^api/courses/(?P<course_id>.*)/performance/$', views.course_details_performance_api.as_view(), name='course_details_performance_api'),
     url(r'^api/courses/(?P<course_id>.*)/timeline/$', views.course_details_cohort_timeline_api.as_view(), name='course_details_cohort_timeline_api'),
     url(r'^api/courses/(?P<course_id>.*)/tags$', views.course_details_tags_api.as_view(), name='course_details_tags_api'),
-    url(r'^api/courses/(?P<course_id>.+)$', views.course_details_api.as_view(), name='course_details_api'),
+    url(r'^api/courses/(?P<course_id>.+)$', views.CourseDetailsApi.as_view(), name='course_details_api'),
     url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
     url(r'^courses/(?P<course_id>.*)/download_course_stats/$', views.download_course_stats, name='download_course_stats'),
     url(
