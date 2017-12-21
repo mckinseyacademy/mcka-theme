@@ -3,7 +3,7 @@ import functools
 import json
 import string
 import urlparse
-import re
+
 from dateutil.parser import parse as parsedate
 from datetime import datetime
 from urllib import quote as urlquote, urlencode
@@ -31,17 +31,16 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
 from django.core.validators import validate_email
-from django.core.cache import cache
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
-    load_group_projects_info_for_course
+    load_group_projects_info_for_course, upload_mobile_app_logo
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
+from api_client.json_object import JsonObjectWithImage
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from accounts.models import UserActivation, PublicRegistrationRequest
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, _set_number_of_enrolled_users
-from api_client import user_models
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, project_api
 from api_client.api_error import ApiError
 from api_client.organization_models import Organization
@@ -83,10 +82,11 @@ from certificates.controller import get_course_certificates_status
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm, MassParticipantsEnrollListForm,
-    EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm, LearnerDashboardTileForm,
-    CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm
-)
+    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm,
+    MassParticipantsEnrollListForm,
+    EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
+    LearnerDashboardTileForm,
+    CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm)
 from .bulk_task_runner import BulkTaskRunner
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -1565,37 +1565,69 @@ def client_detail_nav_links(request, client_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_detail_customization(request, client_id):
-    (customization, created) = ClientCustomization.objects.get_or_create(
-        client_id=client_id,
+    """
+    View to update client web and mobile branding
+    """
+    if request.FILES and 'mobile_app_logo' in request.FILES:
+        upload_mobile_app_logo(request, client_id)
+        return HttpResponse('')
+    else:
+        (customization, created) = ClientCustomization.objects.get_or_create(
+            client_id=client_id,
+        )
+        if request.FILES:
+            allowed_types = ["image/jpeg", "image/png", 'image/gif']
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            from PIL import Image
+
+            for upload in request.FILES:
+                temp_image = request.FILES[upload]
+                upload_mobile_app_logo(request, client_id)
+                if temp_image.content_type in allowed_types:
+                    extension = os.path.splitext(temp_image.name)[1]
+                    temp_url = 'images/{}-{}-{}{}'.format(upload, client_id, datetime.now().strftime("%s"), extension)
+                    if default_storage.exists(temp_url):
+                        default_storage.delete(temp_url)
+                    default_storage.save(temp_url, ContentFile(temp_image.read()))
+                    setattr(customization, upload, '/accounts/' + temp_url)
+
+        customization.client_background_css = request.POST['client_background_css']
+        customization.hex_notification = request.POST['hex_notification']
+        customization.hex_notification_text = request.POST['hex_notification_text']
+        customization.hex_background_bar = request.POST['hex_background_bar']
+        customization.hex_program_name = request.POST['hex_program_name']
+        customization.hex_navigation_icons = request.POST['hex_navigation_icons']
+        customization.hex_course_title = request.POST['hex_course_title']
+        customization.hex_page_background = request.POST['hex_page_background']
+        customization.hex_background_main_navigation = request.POST['hex_background_main_navigation']
+        customization.save()
+
+        return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@client_admin_access
+def edit_client_mobile_logo(request, client_id):
+    """
+    View to generate modal to crop client mobile logo
+    """
+    client_mobile_logo = JsonObjectWithImage.default_image_url()
+    mobile_app_themes = mobileapp_api.get_mobile_app_themes(client_id)
+    if mobile_app_themes:
+        client_mobile_logo = mobile_app_themes[0]['logo_image']['image_url_full']
+
+    data = {
+        "client_mobile_logo": client_mobile_logo,
+        "client_id":  client_id
+    }
+
+    return render(
+        request,
+        'admin/client/edit_mobile_app_logo.haml',
+        data
     )
-    if request.FILES:
-        allowed_types = ["image/jpeg", "image/png", 'image/gif']
-        from django.core.files.storage import default_storage
-        from django.core.files.base import ContentFile
-        from PIL import Image
 
-        for upload in request.FILES:
-            temp_image = request.FILES[upload]
-            if temp_image.content_type in allowed_types:
-                extension = os.path.splitext(temp_image.name)[1]
-                temp_url = 'images/{}-{}-{}{}'.format(upload, client_id, datetime.now().strftime("%s"), extension)
-                if default_storage.exists(temp_url):
-                    default_storage.delete(temp_url)
-                default_storage.save(temp_url, ContentFile(temp_image.read()))
-                setattr(customization, upload, '/accounts/' + temp_url)
-
-    customization.client_background_css = request.POST['client_background_css']
-    customization.hex_notification = request.POST['hex_notification']
-    customization.hex_notification_text = request.POST['hex_notification_text']
-    customization.hex_background_bar = request.POST['hex_background_bar']
-    customization.hex_program_name = request.POST['hex_program_name']
-    customization.hex_navigation_icons = request.POST['hex_navigation_icons']
-    customization.hex_course_title = request.POST['hex_course_title']
-    customization.hex_page_background = request.POST['hex_page_background']
-    customization.hex_background_main_navigation = request.POST['hex_background_main_navigation']
-    customization.save()
-
-    return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -2559,12 +2591,10 @@ def change_company_image(request, client_id='new', template='change_company_imag
 @client_admin_access
 def company_image_edit(request, client_id="new"):
     if request.method == 'POST':
-        heightPosition = request.POST.get('height-position')
-        widthPosition = request.POST.get('width-position')
-        x1Position = request.POST.get('x1-position')
-        x2Position = request.POST.get('x2-position')
-        y1Position = request.POST.get('y1-position')
-        y2Position = request.POST.get('y2-position')
+        left = int(float(request.POST.get('x1-position')))
+        top = int(float(request.POST.get('y1-position')))
+        right = int(float(request.POST.get('width-position'))) + left
+        bottom = int(float(request.POST.get('height-position'))) + top
         CompanyImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2].split('?')[0]
 
         if client_id != 'new':
@@ -2589,11 +2619,6 @@ def company_image_edit(request, client_id="new"):
 
             original = Image.open(default_storage.open(image_url))
 
-            width, height = original.size   # Get dimensions
-            left = int(x1Position)
-            top = int(y1Position)
-            right = int(x2Position)
-            bottom = int(y2Position)
             cropped_example = original.crop((left, top, right, bottom))
             new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
             Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)

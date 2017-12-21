@@ -11,7 +11,6 @@
     .browse-wrapper
       %button#browse-image.button.tiny.radius{'type': 'button'} Browse
       %label{'for': 'id_profile_image'} No file selected.
-      = form
     .spinner-image
       %svg.spinner.upload-image.svg-ie-image{'style': "text-align:center;"}
         %image{'xlink:href': "{% static 'image/loading-spin.gif' %}", 'src': "{% static 'image/loading-spin.gif' %}",  'width': "40", 'height': "40"}

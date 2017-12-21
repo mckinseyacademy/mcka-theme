@@ -838,31 +838,14 @@ def user_profile(request):
 def user_profile_image_edit(request):
     if request.method == 'POST':
         user_id = request.user.id
-        heightPosition = request.POST.get('height-position')
-        widthPosition = request.POST.get('width-position')
-        x1Position = request.POST.get('x1-position')
-        x2Position = request.POST.get('x2-position')
-        y1Position = request.POST.get('y1-position')
-        y2Position = request.POST.get('y2-position')
-        image_url = request.POST.get('upload-image-url')
+        left = int(float(request.POST.get('x1-position')))
+        top = int(float(request.POST.get('y1-position')))
+        right = int(float(request.POST.get('width-position'))) + left
+        bottom = int(float(request.POST.get('height-position'))) + top
+        temp_image = request.FILES['profile_image']
 
         from PIL import Image
-        from django.core.files.storage import default_storage
-        from django.core.files.base import ContentFile
-
-        left = int(x1Position)
-        top = int(y1Position)
-        right = int(x2Position)
-        bottom = int(y2Position)
-        if settings.API_SERVER_ADDRESS in request.POST.get('upload-image-url'):
-            response = http_request_methods.GET(image_url)
-            image = StringIO.StringIO(response.content)
-        else:
-            image_url = urlparse.urlparse(image_url)[2]
-            temp_image_url = _get_stored_image_url(request, image_url)
-            image = default_storage.open(temp_image_url)
-        original = Image.open(image)
-        width, height = original.size   # Get dimensions
+        original = Image.open(temp_image)
         cropped_example = original.crop((left, top, right, bottom))
         avatar_image_io = StringIO.StringIO()
         cropped_example.convert('RGB').save(avatar_image_io, format='JPEG')
@@ -874,12 +857,6 @@ def user_profile_image_edit(request):
         )
 
         RemoteUser.remove_from_cache(user_id)
-
-        # delete user profile images from TEMP_IMAGE_FOLDER
-        temp_folder_path = 'images/' + settings.TEMP_IMAGE_FOLDER
-        for filename in default_storage.listdir(temp_folder_path)[1]:
-            if 'profile_image-{}'.format(user_id) in filename:
-                default_storage.delete(temp_folder_path + filename)
 
         return change_profile_image(request, user_id, template='edit_profile_image')
 
@@ -912,49 +889,6 @@ def change_profile_image(request, user_id, template='change_profile_image', user
         data
     )
 
-@login_required
-def upload_profile_image(request, user_id):
-    ''' handles requests for login form and their submission '''
-    error = None
-    if request.method == 'POST':  # If the form has been submitted...
-        # A form bound to the POST data and FILE data
-        form = UploadProfileImageForm(request.POST, request.FILES)
-        if form.is_valid():  # All validation rules pass
-
-            from django.core.files.storage import default_storage
-            from django.core.files.base import ContentFile
-            from PIL import Image
-
-            temp_image = request.FILES['profile_image']
-            allowed_types = ["image/jpeg", "image/png", 'image/gif', ]
-            profile_image_url = request.user.image_url_full
-
-            if temp_image.content_type in allowed_types:
-                temp_image_url = settings.TEMP_IMAGE_FOLDER + 'profile_image-{}-{}.jpg'.format(user_id, datetime.datetime.now().strftime("%s"))
-                JsonObjectWithImage.save_profile_image(Image.open(temp_image), 'images/' + temp_image_url)
-                profile_image_url = '/accounts/images/' + temp_image_url
-            else:
-                error = "Error uploading file. Please try again and be sure to use an accepted file format."
-
-            return HttpResponse(change_profile_image(request, request.user.id, template='change_profile_image', user_profile_image=profile_image_url, error=error), content_type='text/html')
-        else:
-            error = "Error uploading file. Please try again and be sure to use an accepted file format."
-            return HttpResponse(change_profile_image(request, request.user.id, template='change_profile_image', error=error), content_type='text/html')
-    else:
-        ''' adds a new image '''
-        form = UploadProfileImageForm(request)  # An unbound form
-
-    data = {
-        "form": form,
-        "user_id": user_id,
-        "error": error,
-    }
-
-    return render(
-        request,
-        'accounts/upload_profile_image.haml',
-        data
-    )
 
 def load_profile_image(request, image_url):
     from django.core.files.storage import default_storage
