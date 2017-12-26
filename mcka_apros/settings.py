@@ -146,6 +146,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
@@ -557,3 +558,7 @@ OAUTH2_SAFE_URL_PREFIXES = [
     'http://127.0.0.1:',
     'http://127.0.0.1/'
 ]
+
+################################### Theme Settings###################################
+
+XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
