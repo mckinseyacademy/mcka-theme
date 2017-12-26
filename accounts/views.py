@@ -34,6 +34,7 @@ from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from api_client import platform_api
 from api_client import http_request_methods
+from mobile_apps.controller import get_mobile_app_download_popup_data
 
 from admin.models import Client, Program, LearnerDashboard, CourseRun
 from admin.controller import load_course
@@ -46,7 +47,7 @@ from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistr
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin, append_user_mobile_app_id_cookie, get_mobile_app_download_popup_data
+    send_warning_email_to_admin, append_user_mobile_app_id_cookie
 )
 from util.user_agent_helpers import is_mobile_user_agent
 from .forms import (

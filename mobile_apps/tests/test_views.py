@@ -1,5 +1,5 @@
 """
-Tests for mobile_app_associations django app
+Tests for mobile_apps django app
 """
 import os
 
@@ -8,7 +8,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 
 
-class AppAssociationViewTest(TestCase):
+class MobileAppViewTest(TestCase):
     """
     Test cases for app_associations app views
     """
@@ -16,7 +16,7 @@ class AppAssociationViewTest(TestCase):
         """
         Setup app_associations app views test
         """
-        super(AppAssociationViewTest, self).setUp()
+        super(MobileAppViewTest, self).setUp()
         self.client = Client()
         self.android_asset_links_file_name = 'assetlinks.json'
         self.ios_site_association_file_name = 'apple-app-site-association'

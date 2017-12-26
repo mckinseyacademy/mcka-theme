@@ -69,7 +69,7 @@ LOCAL_APPS = (
     'public_api',
     'rest_framework',
     'certificates',
-    'mobile_app_associations',
+    'mobile_apps',
     'api_data_manager',
 )
 
@@ -294,6 +294,7 @@ PROJECT_API = '/'.join([API_SERVER_PREFIX, 'projects'])
 AUTH_API = '/'.join([API_SERVER_PREFIX, 'sessions'])
 USER_API = '/'.join([API_SERVER_PREFIX, 'users'])
 WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
+MOBILE_APP_API = '/'.join([API_SERVER_PREFIX, 'mobileapps'])
 
 # set AWS querystring authentication to false
 AWS_QUERYSTRING_AUTH = False
