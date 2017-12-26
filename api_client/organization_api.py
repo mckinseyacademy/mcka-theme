@@ -312,7 +312,6 @@ def remove_users_from_organization_group(organization_id, group_id, user_ids):
         qs_params
     )
     return (response.code == 200)
-
 @api_error_protect
 def get_organizations_courses(organization_id):
 
