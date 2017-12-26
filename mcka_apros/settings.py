@@ -153,7 +153,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cache')
 MEDIA_ROOT = ''
 ASSETS_ROOT = 'static/'
-ASSETS_CACHE = 'static/gen/.webassets-cache'
+ASSETS_MANIFEST = False
+ASSETS_CACHE = False
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "static/gen"),
