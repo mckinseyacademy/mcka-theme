@@ -1,6 +1,6 @@
 # Setting up McKinsey Academy (Apros) with a local LMS Installation
 
-This document aims to guide a new developer to set up an Apros installation. While this guide is primarily aimed 
+This document aims to guide a new developer to set up an Apros installation. While this guide is primarily aimed
 toward developers, the instructions within could be modified to create a deployment instance.
 
 The steps we'll follow are as follows:
@@ -24,7 +24,7 @@ This document referes to `lms.env.json`, `lms.auth.json`, `cms.env.json` and `cm
 
 ## Step 1 - Set up the Solutions Devstack
 
-While it is possible to create a development environment on your machine, it is highly recommended to use a vagrant 
+While it is possible to create a development environment on your machine, it is highly recommended to use a vagrant
 instance. The instructions for the rest of this document assume you will do so.
 
 Follow the directions on the [Solutions wiki][solutions-wiki] to set up an *edx-solutions* devstack.
@@ -33,11 +33,11 @@ Follow the directions on the [Solutions wiki][solutions-wiki] to set up an *edx-
 
 ### Set up the Host System to Recognize the Hostnames
 
-* Add the following line to your host system's `/etc/hosts`. This will allow your host machine to know where the domain names 
+* Add the following line to your host system's `/etc/hosts`. This will allow your host machine to know where the domain names
 should point to. It will also work for the guest instance, since the guest instance trusts the host's name lookups.
-        
+
         192.168.33.10   apros.mcka.local lms.mcka.local cms.mcka.local
-        
+
 ### Clone the Apros repository
 
 Make sure you clone it **in the same directory as the Vagrantfile**. Run:
@@ -61,7 +61,7 @@ If you are using the recommended Vagrantfile (from the Solutions devstack instru
         ...
     }
     ```
-    
+
     and it should have an "apros" provisioner defined:
 
     ```ruby
@@ -84,8 +84,7 @@ The script will do the following:
 * Create databases required for Apros
 * Create `apros` user
 * Create virtualenv and setup python requirements
-* Install ruby 1.9.3, create ruby env
-* Update `apros` ~/.bashrc to automatically activate apros virtualenv and rubyenv and jump to mcka_apros folder
+* Update `apros` ~/.bashrc to automatically activate apros virtualenv and jump to mcka_apros folder
 
 If something goes wrong instructions to install everything manually are available at [Appendix E][appendix-e].
 
@@ -93,8 +92,8 @@ If something goes wrong instructions to install everything manually are availabl
 
 ### Override Specific Settings
 
-The McKinsey Academy application hosts it's `settings.py` file within the mcka_apros app folder (this is a subfolder 
-within the same-named `mcka_apros` repository root folder). Alongside this file, create a new file 
+The McKinsey Academy application hosts it's `settings.py` file within the mcka_apros app folder (this is a subfolder
+within the same-named `mcka_apros` repository root folder). Alongside this file, create a new file
 named `local_settings.py`.
 
 #### Configure the name to use for the LMS instance, like this:
@@ -110,7 +109,7 @@ Put the following into `mcka_apros/mcka_apros/local_settings.py`
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
     SESSION_TIMEOUT_SECONDS = 300000
 
-Details: 
+Details:
 * `API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
 * `LMS_BASE_DOMAIN` This is the base domain users will fetch LMS assets from.
 * `LMS_SUB_DOMAIN` is the subdomain for the LMS system that users will fetch assets from-- note that it's the same as apros because we use NginX's reverse proxying to do a bit of magic later in the configuration.
@@ -119,7 +118,7 @@ Details:
 
 ##### Configure the `EDX_API_KEY` in `lms.auth.json`
 
-Edit `/edx/app/edxapp/lms.auth.json` and change 
+Edit `/edx/app/edxapp/lms.auth.json` and change
 
     "EDX_API_KEY": "PUT_YOUR_API_KEY_HERE",
 
@@ -131,8 +130,8 @@ Explanation: `EDX_API_KEY` in `lms.auth.json` and `local_settings.py` must match
 
 ##### Configure the `MEDIA_ROOT` and Disable Parental Consent in `lms/envs/private.py`
 
-Create a new file `/edx/app/edxapp/edx-platform/lms/envs/private.py`.  
-This is a git-ignored file that can be used to override settings for a local instance.  
+Create a new file `/edx/app/edxapp/edx-platform/lms/envs/private.py`.
+This is a git-ignored file that can be used to override settings for a local instance.
 Add the following two lines:
 
     MEDIA_ROOT = "/edx/var/edxapp/media"
@@ -185,7 +184,7 @@ As the `vagrant` user:
 #### Configure the OAuth2 Client
 
 1. Log into http://lms.mcka.local/ as a user with superuser permissions.
-2. Visit http://lms.mcka.local/admin/oauth2_provider/application/ and select 
+2. Visit http://lms.mcka.local/admin/oauth2_provider/application/ and select
    "Add Application" from the upper right corner.
 3. Configure a new application with the following values:
    * Client id -- Leave as default, but take note of this value
@@ -196,7 +195,7 @@ As the `vagrant` user:
    * Client secret -- Leave as default, but take note of this value
    * Name -- Apros Client Credentials
 4. Hit save.
-5. Update `mcka_apros/local_settings.py with `OAUTH2_OPENEDX_CLIENT_ID` and 
+5. Update `mcka_apros/local_settings.py with `OAUTH2_OPENEDX_CLIENT_ID` and
    `OAUTH2_OPENEDX_CLIENT_SECRET` set to the Client id and Client secret values
    from the application configured in step 3.
 
@@ -223,7 +222,7 @@ Finally, collect all the static assets.
 At this point, everything should be in place, and you should be able to start Apros from the `apros` user's command line with:
 
     ./manage.py rundev 3000
-    
+
 **Make sure the LMS and the Forum/Comment services are running whenever you run Apros** as Apros relies on remote API calls to these.
 
 [load-seed-data]: https://github.com/mckinseyacademy/mcka_apros/blob/master/main/management/commands/load_seed_data.py#L36-L55
@@ -265,7 +264,7 @@ Try the following:
     * Make sure both LMS and Apros are running
     * Clear all cookies.
     * Restart LMS and Apros
-    
+
 Sessions are a bit persnickety in Apros due to the fact that they must be aligned between both the LMS and Apros.
 
 ### Apros not working on a Linux host
@@ -277,7 +276,7 @@ In case you have issues with the Apros website on Linux and LMS and the forum ar
 Deployments of Apros that are publicly accessible should differ in several respects. Chiefly:
 
 1. The database used should be MySQL instead of SQLite.
-2. A proper WSGI application server should serve Apros and the LMS, such as Gunicorn or uwsgi. See the edx-platform 
+2. A proper WSGI application server should serve Apros and the LMS, such as Gunicorn or uwsgi. See the edx-platform
    documentation for information of deploying edx-platform for production.
 3. You will need to generate and set API keys for use between the server and Apros, and turn off the DEBUG flag.
 
@@ -292,27 +291,27 @@ to improve page load time. To further reduce application server load, static fil
 
 Setting this up requires creating a new NginX configuration. For easier switching between configurations, consider [NginX Ensite][nginx_ensite]. To get yourself up and running with pipeline:
 
-* (First time only) Create another nginx config `mcka_apros_production_pipelined` using [example production-like 
-  config with pipelines][example-pipelined-apros-config]. This config is essentially equal to [the normal 
-  config][example-nginx-config], except `location @proxy_to_lms_nginx` points to virtual server set up in `lms_pipeline_assets`, 
+* (First time only) Create another nginx config `mcka_apros_production_pipelined` using [example production-like
+  config with pipelines][example-pipelined-apros-config]. This config is essentially equal to [the normal
+  config][example-nginx-config], except `location @proxy_to_lms_nginx` points to virtual server set up in `lms_pipeline_assets`,
   rather than to LMS application location, and `lms.mcka.local` section rewritten to properly serve pipelined static assets.
 * Enable pipelines: pipelines are governed by `FEATURES['USE_DJANGO_PIPELINE']` and disabled in development environment
   by default. To set it to true edit `[cl]ms.env.json` so that `FEATURES` block has `'USE_DJANGO_PIPELINE': true`.
 * Set `DEBUG` setting to `False` - there are some mechanisms in XBlock runtime system that rewrite urls starting with `/static/`
   to be served from course modulestore. There's a shortcut through that mechanism enabled by `DEBUG=True`,
-  so URLs that exist in filesystem are served from filesystem and yield significantly different URLs. This setting need to 
+  so URLs that exist in filesystem are served from filesystem and yield significantly different URLs. This setting need to
   be set in `[cl]ms/envs/devstack.py`. **Please make sure you don't accidentally commit it.**.
-* Setting `DEBUG` to `False` activates the edx api key mechanism; in case you haven't configured it yet you should not be 
-  able to log in into Apros. To solve this issue edit `lms/envs/devstack.py` so that `EDX_API_KEY` values both in 
+* Setting `DEBUG` to `False` activates the edx api key mechanism; in case you haven't configured it yet you should not be
+  able to log in into Apros. To solve this issue edit `lms/envs/devstack.py` so that `EDX_API_KEY` values both in
   `edx-platform/lms/envs/devstack.py` and `mcka_apros/mcka_apros/settings.py` match.
 * As `edxapp` user run `paver update_assets --settings=devstack` - this will place compiled assets to where `lms_pipeline_assets`
-  expects them to be. Note that `paver devstack lms` does not run `collectstatic` so it won't work here. 
+  expects them to be. Note that `paver devstack lms` does not run `collectstatic` so it won't work here.
 * Switch to `mcka_apros_production_pipelined`. This replaces `mcka_apros_production`, so `mcka_apros` and `mcka_apros_production`
   must be disabled.
 
-To make sure everything works as expected check what static assets are loaded. If you see something like 
+To make sure everything works as expected check what static assets are loaded. If you see something like
 `lms-style-app-extend1.[12 hex digits].css` pipelines are enabled properly.
-  
+
 To revert to production config with non-pipelined assets switch back to `mcka_apros_production` and undo all `[cl]ms/envs/devstack.py`
 modifications. It's fine to leave `USE_DJANGO_PIPELINE` set to true in `[cl]ms.env.json` as static url rewrites shortcut
 the actual rewriting if `DEBUG` is set to true.
@@ -355,11 +354,11 @@ Log into the vagrant instance with `vagrant ssh`. From the vagrant user's prompt
     # Needed for RVM.
     sudo apt-get install -y gawk libreadline6-dev libyaml-dev sqlite3 autoconf libgdbm-dev \
         libncurses5-dev automake libtool libffi-dev libsqlite3-dev bison
-        
-If this is your first time creating this VM (that is, you haven't already modified your vagrant file as specified 
+
+If this is your first time creating this VM (that is, you haven't already modified your vagrant file as specified
 in the next section), do the following:
 
-    sudo useradd apros --home /edx/app/apros --gid www-data --create-home --shell /bin/bash 
+    sudo useradd apros --home /edx/app/apros --gid www-data --create-home --shell /bin/bash
 
 Otherwise, do this:
 
@@ -372,22 +371,10 @@ Next, run:
     sudo su - apros # The prompt should now say you're logged in as apros@
     mkdir venvs
     virtualenv venvs/mcka_apros
-    # Standard warnings about curling to bash apply.
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-    bash <(curl -sSL https://get.rvm.io) stable
-    # This will automatically be sourced on the next login.
-    source /edx/app/apros/.rvm/scripts/rvm
-    # If this fails for some reason, it should give you a list of 
-    # things to install with apt.
-    rvm install ruby-1.9.3 --autolibs=read-fail
-    rvm use 1.9.3 --default
-    
 
 Edit the user's .bashrc file in your favorite editor. Add the lines:
 
     source ~/venvs/mcka_apros/bin/activate  # Use the Apros Python environment.
-    source ~/.rvm/scripts/rvm # Load RVM into a shell session *as a function*
-
 
 ...at the top, before anything else. After the line `[ -z "$PS1" ] && return` add:
 
@@ -403,22 +390,14 @@ After following the previous instructions, you should be able to jump right into
 
     vagrant ssh
     sudo su apros
-    
+
 We'll do Apros's configuration as this user.
 
 ### Install Python requirements
 Apros's requirements are handled in a requirements.txt file. To install the requirements, run:
- 
+
     pip install -r requirements.txt
 
-
-### Install Other requirements
-We require SASS to be used to build assets
-
-    gem install sass --version 3.3.14
-
-Notes:
-* Sass 3.4+ is not compatible - see https://github.com/zurb/foundation-rails/pull/96
 
 ### Creating default databases
 
@@ -434,8 +413,8 @@ As the `vagrant` user, run:
 
     sudo apt-get -y install nginx
 
-Create a file at `/etc/nginx/sites-available/mcka_apros` with [these contents][example-nginx-config]. 
-**Note these rules aren't *precisely* like production.** 
+Create a file at `/etc/nginx/sites-available/mcka_apros` with [these contents][example-nginx-config].
+**Note these rules aren't *precisely* like production.**
 If you need to precompile assets for pipelining, see [Appendix C][appendix-c].
 
 [example-nginx-config]: mcka_apros_production
@@ -444,7 +423,7 @@ Enable this new virtual host with:
 
     sudo ln -s /etc/nginx/sites-{available,enabled}/mcka_apros
     sudo service nginx restart
-    
+
 
 [example-config]: mcka_apros
 [appendix-c]: #appendix-c-complete-production-routing
