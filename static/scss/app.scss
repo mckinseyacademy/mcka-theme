@@ -14,3 +14,7 @@ $include-html-classes: false;
 @import "lesson-content/adventure";
 @import "lesson-content/chat";
 @import "lesson-content/drag_and_drop";
+
+img.user-uploaded-image {
+  max-width: 100%;
+}

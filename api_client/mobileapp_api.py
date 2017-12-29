@@ -84,3 +84,45 @@ def remove_organization(app_id, params):
 
     response = get_oauth2_session().delete(url, data=json.dumps(params), headers=JSON_HEADERS)
     return response
+
+
+@api_error_protect
+def create_mobile_app_theme(organization_id, data, mobile_logo_image):
+    """
+    Create new theme for mobile app for specific organization
+    """
+    url = '{}/{}/organization/{}/themes'.format(
+        settings.API_SERVER_ADDRESS,
+        MOBILE_APP_API,
+        organization_id
+    )
+    response = get_oauth2_session().post(url, data=data, files=mobile_logo_image)
+    return response
+
+
+@api_error_protect
+def get_mobile_app_themes(organization_id):
+    """
+    Returns list of active mobile app themes for specific organization
+    """
+    url = '{}/{}/organization/{}/themes'.format(
+        settings.API_SERVER_ADDRESS,
+        MOBILE_APP_API,
+        organization_id
+    )
+    response = get_oauth2_session().get(url)
+    return response.json()['results']
+
+
+@api_error_protect
+def update_mobile_app_theme(mobile_app_theme_id, data, mobile_logo_image):
+    """
+    Updates mobile app theme
+    """
+    url = '{}/{}/themes/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        MOBILE_APP_API,
+        mobile_app_theme_id
+    )
+    response = get_oauth2_session().patch(url, data=data, files=mobile_logo_image)
+    return response

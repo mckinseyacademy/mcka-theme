@@ -20,22 +20,22 @@
         { title: 'Deployment Mech', index: false, name: 'deployment_mechanism' },
         { title: 'iOS DL URL', index: false, name: 'ios_download_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['ios_download_url'] + '>' + attributes['ios_download_url'] + '</a>';
+            return getLinkTemplate(attributes['ios_download_url']);
           }
         },
         { title: 'Android DL URL', index: false, name: 'android_download_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['android_download_url'] + '>' + attributes['android_download_url'] + '</a>';
+            return getLinkTemplate(attributes['android_download_url']);
           }
         },
         { title: 'Urban Airship URL', index: false, name: 'provider_dashboard_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['provider_dashboard_url'] + '>' + attributes['provider_dashboard_url'] + '</a>';
+            return getLinkTemplate(attributes['provider_dashboard_url']);
           }
         },
         { title: 'Analytics URL', index: false, name: 'analytics_url',
           actions: function(id, attributes){
-            return '<a href=' + attributes['analytics_url'] + '>' + attributes['analytics_url'] + '</a>';
+            return getLinkTemplate(attributes['analytics_url']);
           }
         },
         { title: 'Active', index: false, name: 'is_active',
@@ -178,3 +178,7 @@
       });
     },
   });
+
+  function getLinkTemplate(link){
+    return '<a href=' + link + ' target="_blank">' + link + '</a>';
+}

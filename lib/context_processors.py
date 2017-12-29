@@ -86,6 +86,7 @@ def settings_data(request):
         "mapbox_token": settings.MAPBOX_API['public_token'],
         "mapbox_map_id": settings.MAPBOX_API['map_id'],
         "apros_features": settings.FEATURES,
+        "xblock_theme_css_path": settings.XBLOCK_THEME_CSS_PATH,
     }
 
     return data

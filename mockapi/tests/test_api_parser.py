@@ -3,8 +3,8 @@ from django.conf import settings
 
 import json
 
-from .models import MockHttpResponse
-from .api_parser import ApiParser
+from mockapi.models import MockHttpResponse
+from mockapi.api_parser import ApiParser
 
 # Create your tests here.
 

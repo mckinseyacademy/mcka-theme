@@ -6,7 +6,8 @@ from django.http import HttpResponseRedirect
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
 from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings, LearnerDashboard
-from api_client import user_api, course_api
+from api_client import user_api, course_api, mobileapp_api, organization_api
+from api_client.user_api import get_user_courses_progress
 from license import controller as license_controller
 from courses.models import FeatureFlags
 
@@ -369,15 +370,27 @@ def standard_data(request):
 
     return data
 
+
 def get_program_menu_list(request, current_course):
 
     programs = []
+    companion_app_courses = []
     current_program = None
+
     user_programs = Program.user_program_list(request.user.id)
     user_courses = user_api.get_user_courses(request.user.id)
+    companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})
+    companion_app_orgs = companion_app['results'][0]['organizations'] if companion_app.get('results') else []
+
+    # get all the courses of companion app
+    for org_id in companion_app_orgs:
+        org_companion_app_courses = organization_api.get_organizations_courses(org_id)
+        companion_app_courses.extend(org_companion_app_courses)
+
+    # get the mobile available courses of companion app
+    companion_app_courses_id = [course['id'] for course in companion_app_courses if course['mobile_available']]
 
     for program in user_programs:
-
         row = []
         program_courses = []
         program_course_ids = [course.course_id for course in program.fetch_courses()]
@@ -392,10 +405,9 @@ def get_program_menu_list(request, current_course):
         row.append(program)
         row.append(program_courses)
         programs.append(row)
-
         user_courses = [course for course in user_courses if course not in program_courses]
-
     if user_courses:
+        user_courses = [course for course in user_courses if course.id not in companion_app_courses_id]
         row = []
         row.append(Program.no_program())
         row.append(user_courses)

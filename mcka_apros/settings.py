@@ -69,7 +69,7 @@ LOCAL_APPS = (
     'public_api',
     'rest_framework',
     'certificates',
-    'mobile_app_associations',
+    'mobile_apps',
     'api_data_manager',
 )
 
@@ -146,6 +146,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
@@ -153,7 +154,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cache')
 MEDIA_ROOT = ''
 ASSETS_ROOT = 'static/'
-ASSETS_CACHE = 'static/gen/.webassets-cache'
+ASSETS_MANIFEST = False
+ASSETS_CACHE = False
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "static/gen"),
@@ -293,6 +295,7 @@ PROJECT_API = '/'.join([API_SERVER_PREFIX, 'projects'])
 AUTH_API = '/'.join([API_SERVER_PREFIX, 'sessions'])
 USER_API = '/'.join([API_SERVER_PREFIX, 'users'])
 WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
+MOBILE_APP_API = '/'.join([API_SERVER_PREFIX, 'mobileapps'])
 
 # set AWS querystring authentication to false
 AWS_QUERYSTRING_AUTH = False
@@ -555,3 +558,7 @@ OAUTH2_SAFE_URL_PREFIXES = [
     'http://127.0.0.1:',
     'http://127.0.0.1/'
 ]
+
+################################### Theme Settings###################################
+
+XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'

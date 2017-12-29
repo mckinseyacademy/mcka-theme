@@ -1,11 +1,11 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
 
-from .utils import PriorIdConvert
-from middleware.handle_prior_ids import PriorIdRequest
+from lib.utils import PriorIdConvert
+from lib.middleware.handle_prior_ids import PriorIdRequest
+
 
 class PriorIdsTest(TestCase):
-
     def test_new_from_prior_course(self):
         prior_format = "slashes:Me+MY101+2014_1"
         new_format = "Me/MY101/2014_1"
@@ -61,4 +61,3 @@ class PriorIdsTest(TestCase):
         prior_url = "/courses/C1/C1/C1/lessons/i4x://C1/C1/chapter/7b5635e674e621502708dbde4594f825/module/i4x://C1/C1/vertical/c65b10f90552e061807431380140b552"
         redirect_to_url = prior_url
         self._check_middleware_operation(prior_url, redirect_to_url)
-

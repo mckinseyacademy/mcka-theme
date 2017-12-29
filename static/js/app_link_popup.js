@@ -5,9 +5,9 @@ $(function(){
 
     function trackAppDownloadLinkClick(link, username, platform) {
         setTimeout(visitLink, 1000);
-
-        var link_visited = false;
-
+        
+        var link_visited = false;  
+      
         function visitLink() {
             if (!link_visited) {
                 link_visited = true;

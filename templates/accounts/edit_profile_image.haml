@@ -12,12 +12,11 @@
       .img-container
           %img.user-uploaded-image{'src': "#{profile_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
       .img-preview
-      %input.upload-image-url{'type': 'hidden', 'name': 'upload-image-url'}
+      .hide
+        = form
       %input.width-position{'type': 'hidden', 'name': 'width-position'}
       %input.height-position{'type': 'hidden', 'name': 'height-position'}
       %input.x1-position{'type': 'hidden', 'name': 'x1-position'}
-      %input.x2-position{'type': 'hidden', 'name': 'x2-position'}
       %input.y1-position{'type': 'hidden', 'name': 'y1-position'}
-      %input.y2-position{'type': 'hidden', 'name': 'y2-position'}
       %br
       %input.crop-save-image.button.small.radius.right{'type': 'submit', 'value': 'Crop & Save', 'disabled': 'disabled'}

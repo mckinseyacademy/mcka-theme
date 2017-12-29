@@ -55,13 +55,17 @@
       %fieldset
         %ul
           %li
-            %label.nav2.selected Upload client logo:
+            %label.nav2.selected Upload client logo for web:
             %a.button.radius.tiny.upload_logo Upload Logo
             %input{type: 'file', name: 'client_logo'}
           %li
             %label.nav2.selected Upload client background:
             %a.button.radius.tiny.upload_logo Upload Background
             %input{type: 'file', name: 'client_background'}
+          %li
+            %label.nav2.selected Upload client logo for mobile app:
+            %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/edit_client_mobile_logo"}
+              Upload Mobile Logo
           %li
             %label.nav2.selected Upload global client logo:
             %a.button.radius.tiny.upload_logo Upload Global Logo
@@ -96,3 +100,5 @@
       %div
         %input{type: 'reset', value: 'Cancel'}
         %input.button.radius.tiny{type: 'submit', value: 'Save Branding'}
+
+  #edit-client-mobile-logo-modal.reveal-modal.medium{'data-reveal': 'true'}

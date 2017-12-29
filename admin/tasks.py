@@ -23,7 +23,7 @@ logger = get_task_logger(__name__)
 
 
 @task(name='admin.course_participants_data_retrieval_task', max_retries=3)
-def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url):
+def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url, retry_params=None):
     """
     Retrieves course participants' data using API
 
@@ -33,7 +33,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         'page': 1,
         'per_page': 200,
         'page_size': 200,
-        'additional_fields': "grades,roles,organizations,lesson_completions",
+        'additional_fields': "grades,roles,organizations,lesson_completions,progress",
     }
     task_log_msg = "Participants data retrieval task for course: {}".format(course_id)
 
@@ -49,10 +49,29 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         course_id, base_url, CourseParticipantStats.participant_record_parser
     )
 
+    # resume and persist existing data in case of retry
+    if retry_params:
+        api_params = retry_params.get('api_params', api_params)
+        participants_data = retry_params.get('data', [])
+        fetched = len(participants_data)
+
     logger.info('Starting - {}'.format(task_log_msg))
 
     while True:
-        participants_stats = course_participants_stats.get_participants_data(api_params)
+        try:
+            participants_stats = course_participants_stats.get_participants_data(api_params)
+        except Exception as e:
+            course_participants_data_retrieval_task.update_state(
+                task_id=task_id, state=celery_states.RETRY,
+            )
+            logger.error('Failed retrieving data from Participants API - {}'.format(e.message))
+            raise course_participants_data_retrieval_task.retry(
+                exc=e, kwargs={
+                    'course_id': course_id, 'company_id': company_id, 'base_url': base_url,
+                    'retry_params': {'api_params': api_params, 'data': participants_data},
+                }
+            )
+
         participants_data.extend(participants_stats.get('results'))
 
         total = participants_stats.get('count')
@@ -145,7 +164,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         logger.error('Failed saving CSV to S3 - {}'.format(e.message))
         raise course_participants_data_retrieval_task.retry(exc=e)
     else:
-        logger.error('Saved CSV to S3 - {}'.format(task_log_msg))
+        logger.info('Saved CSV to S3 - {}'.format(task_log_msg))
 
         storage_url = default_storage.url(storage_path)
         temp_csv_file.close()
@@ -155,8 +174,8 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     return storage_url
 
 
-@task(name='admin.course_notifications_data_retrieval_task')
-def participants_notifications_data_task(course_id, company_id, task_id):
+@task(name='admin.course_notifications_data_retrieval_task', max_retries=3)
+def participants_notifications_data_task(course_id, company_id, task_id, retry_params=None):
     """
     Retrieves course participants' notifications data using API
     """
@@ -174,10 +193,25 @@ def participants_notifications_data_task(course_id, company_id, task_id):
     participants_data = []
     fetched = 0
 
+    # resume and persist existing data in case of retry
+    if retry_params:
+        api_params = retry_params.get('api_params', api_params)
+        participants_data = retry_params.get('data', [])
+        fetched = len(participants_data)
+
     logger.info('Starting - {}'.format(task_log_msg))
 
     while True:
-        course_participants = course_api.get_course_details_users(course_id, api_params)
+        try:
+            course_participants = course_api.get_course_details_users(course_id, api_params)
+        except Exception as e:
+            logger.error('Failed retrieving data from Course Participants API - {}'.format(e.message))
+            raise participants_notifications_data_task.retry(
+                exc=e, kwargs={
+                    'course_id': course_id, 'company_id': company_id,
+                    'retry_params': {'api_params': api_params, 'data': participants_data},
+                }
+            )
 
         participants_data.extend(course_participants.get('results'))
 

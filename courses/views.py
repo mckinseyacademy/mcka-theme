@@ -53,7 +53,7 @@ from .user_courses import check_user_course_access, standard_data, load_course_p
 from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.query_manager import get_object_or_none
 
-from accounts.controller import get_mobile_app_download_popup_data
+from mobile_apps.controller import get_mobile_app_download_popup_data
 # Create your views here.
 
 _progress_bar_dictionary = {
