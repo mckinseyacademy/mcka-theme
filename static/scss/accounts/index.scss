@@ -188,12 +188,12 @@
 
 // Mobile app download popup design
 #mobileAppLinkModal {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans";
   margin: 0 auto;
   overflow: hidden;
   min-height: 100vh;
   background-size: cover !important;
-  top: 0;
+  top: -48px;
   padding: 0 !important;
   max-height: 100vh;
 }
