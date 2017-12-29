@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = (
     'debug_toolbar',
     'django_assets',
     'djcelery',
+    'rest_framework',
     # additional release utilities to ease automation
     'release_util',
 )
@@ -67,7 +68,6 @@ LOCAL_APPS = (
     'license',
     'heartbeat',
     'public_api',
-    'rest_framework',
     'certificates',
     'mobile_apps',
     'api_data_manager',

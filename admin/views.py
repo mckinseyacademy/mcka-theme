@@ -3772,7 +3772,7 @@ class participant_details_api(APIView):
                 return Response({'status':'error', 'type': 'user_exist', 'message':'User with that username or email already exists!'})
             else:
                 data = form.cleaned_data
-                new_company_name = request.DATA.get('new_company_name', None)
+                new_company_name = request.data.get('new_company_name', None)
                 if new_company_name:
                     try:
                         new_organization = organization_api.create_organization(organization_name=new_company_name.lower().replace(" ", "_"), organization_data={"display_name": new_company_name})
@@ -3788,7 +3788,7 @@ class participant_details_api(APIView):
                         'course_ops': PERMISSION_GROUPS.MCKA_SUBADMIN
                     }
                     company = data.get('company', None)
-                    company_old = request.DATA.get('company_old', None)
+                    company_old = request.data.get('company_old', None)
                     permissions = None
 
                     if company != company_old:
@@ -3796,21 +3796,21 @@ class participant_details_api(APIView):
                         if int(company_old) > 0:
                             organization_api.remove_users_from_organization(company_old, user_id)
                     response = user_api.update_user_information(user_id,data)
-                    if request.DATA.get('company_permissions', None):
-                        if request.DATA['company_permissions'] in permissions_groups:
+                    if request.data.get('company_permissions', None):
+                        if request.data['company_permissions'] in permissions_groups:
                             if not permissions:
                                 permissions = Permissions(user_id)
-                            if request.DATA['company_permissions'] != request.DATA['company_permissions_old']:
-                                permissions.add_permission(permissions_groups[request.DATA['company_permissions']])
-                                if request.DATA['company_permissions_old'] != "none":
-                                    permissions.remove_permission(permissions_groups[request.DATA['company_permissions_old']])
-                        elif request.DATA['company_permissions'] == "none" and request.DATA['company_permissions'] != request.DATA['company_permissions_old']:
+                            if request.data['company_permissions'] != request.data['company_permissions_old']:
+                                permissions.add_permission(permissions_groups[request.data['company_permissions']])
+                                if request.data['company_permissions_old'] != "none":
+                                    permissions.remove_permission(permissions_groups[request.data['company_permissions_old']])
+                        elif request.data['company_permissions'] == "none" and request.data['company_permissions'] != request.data['company_permissions_old']:
                             if not permissions:
                                 permissions = Permissions(user_id)
-                            permissions.remove_permission(permissions_groups[request.DATA['company_permissions_old']])
+                            permissions.remove_permission(permissions_groups[request.data['company_permissions_old']])
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
-                return Response({'status':'ok', 'message':vars(response), 'company': company, 'company_permissions': request.DATA['company_permissions']})
+                return Response({'status':'ok', 'message':vars(response), 'company': company, 'company_permissions': request.data['company_permissions']})
         else:
             return Response({'status':'error', 'type': 'validation_failed', 'message':form.errors})
 
@@ -4450,9 +4450,9 @@ class email_templates_get_and_post_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, format=None):
-        title = request.DATA.get('title', None)
-        subject = request.DATA.get('subject', None)
-        body = request.DATA.get('body', None)
+        title = request.data.get('title', None)
+        subject = request.data.get('subject', None)
+        body = request.data.get('body', None)
         if title and subject and body:
             email_template = EmailTemplate.create(title=title, subject=subject, body=body)
             email_template.save()
@@ -4496,9 +4496,9 @@ class email_templates_put_and_delete_api(APIView):
             selected_template = EmailTemplate.objects.filter(pk=pk)
             if len(selected_template) > 0:
                 selected_template = selected_template[0]
-                title = request.DATA.get('title', None)
-                subject = request.DATA.get('subject', None)
-                body = request.DATA.get('body', None)
+                title = request.data.get('title', None)
+                subject = request.data.get('subject', None)
+                body = request.data.get('body', None)
                 if title:
                     selected_template.title = title
                 if subject:
@@ -4543,7 +4543,7 @@ class users_company_admin_get_post_put_delete_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, user_id, format=None):
-        company_ids = request.DATA.get('ids', None)
+        company_ids = request.data.get('ids', None)
         response_dict = {}
         response_dict["status"] = "error"
         if company_ids:
@@ -4630,7 +4630,7 @@ class create_new_company_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN,)
     def post(self, request):
-        company_display_name = request.DATA.get('company_display_name', None)
+        company_display_name = request.data.get('company_display_name', None)
 
         if company_display_name:
             company_name = company_display_name.lower().replace(" ", "_")
@@ -4820,7 +4820,7 @@ class MobileAppsApi(viewsets.ViewSet):
         """
 
         app_details = mobileapp_api.get_mobile_app_details(pk)
-        new_app_name = request.DATA.get('name')
+        new_app_name = request.data.get('name')
 
         alphanum_validator = AlphanumericValidator()
         try:
@@ -4862,7 +4862,7 @@ class CompanyLinkedAppsApi(APIView):
         Associate mobile app whoose id is given in request body with
         company whose id is in URL
         """
-        app_id = request.DATA['app_id']
+        app_id = request.data['app_id']
         params = {'organizations': [company_id]}
         mobileapp_api.append_organization(app_id, params)
         return Response({'status': "ok"}, status=status.HTTP_201_CREATED)
@@ -4873,7 +4873,7 @@ class CompanyLinkedAppsApi(APIView):
         Dissociate mobile app whoose id is given in request body with
         company whose id is in URL
         """
-        app_id = request.DATA['app_id']
+        app_id = request.data['app_id']
         params = {'organizations': [company_id]}
         mobileapp_api.remove_organization(app_id, params)
         return Response({'status': "ok"})
@@ -5298,7 +5298,7 @@ class company_edit_api(APIView):
     )
     def post(self, request, company_id):
         try:
-            client = Client.update_and_fetch(company_id, request.DATA)
+            client = Client.update_and_fetch(company_id, request.data)
         except ApiError as err:
             error = err.message
             return Response({"status":"error", "message": error})
@@ -5334,7 +5334,7 @@ class tags_list_api(APIView):
         """
         Post request handler for Tags
         """
-        tag_name = request.DATA.get('name', None)
+        tag_name = request.data.get('name', None)
         tag_data = {}
         if tag_name:
             try:
@@ -5395,7 +5395,7 @@ class course_details_tags_api(APIView):
         """
         Post request handler for Adding tags to courses
         """
-        tag_id = request.DATA.get('tag_id', None)
+        tag_id = request.data.get('tag_id', None)
         if tag_id:
             tag = Tag.fetch(tag_id)
             if tag.type == TAG_GROUPS.INTERNAL:

@@ -49,7 +49,7 @@ class BulkTaskRunner(object):
             task_id = _execute_notifications_data_task(course_id, company_id)
         elif self.task_name == 'user_program_association':
             task_id = _execute_users_program_association_task(
-                self.request.FILES.get('participants_file'),
+                self.request.files.get('participants_file'),
                 self.params.get('program_id')
             )
         else:

@@ -45,7 +45,7 @@ def push_file_to_s3(file, folder=None):
         last_dot_index = name.rfind(".")
         if last_dot_index >= 0:
             name = name[:last_dot_index] + "-" + str(uuid.uuid4()) + "." + name[last_dot_index+1:]
-            
+
         # create a key to keep track of our file in the storage
         k = Key(bucket)
         k.key = name
@@ -88,11 +88,11 @@ class s3file_api(APIView):
 
     def post(self, request):
         list_of_uploaded = []
-        for key, file in request.FILES.iteritems():
+        for key, file in request.files.iteritems():
             path = push_file_to_s3(file)
             if path:
                 list_of_uploaded.append(path)
-        if len(request.FILES) == len(list_of_uploaded):
+        if len(request.files) == len(list_of_uploaded):
             return Response({"status":"ok", "urls":list_of_uploaded})
         else:
             return Response({"status":"error", "message":"Some of the files aren't uploaded, Please upload again!", "urls":list_of_uploaded})

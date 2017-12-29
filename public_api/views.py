@@ -134,9 +134,9 @@ def reset_password(request):
     """
     Send reset password email instructions
     """
-    serializer = ResetPasswordSerializer(data=request.DATA)
+    serializer = ResetPasswordSerializer(data=request.data)
     if serializer.is_valid():
-        users = user_api.get_users(email=serializer.object['email'])
+        users = user_api.get_users(email=serializer.validated_data['email'])
         if len(users) < 1:
             return Response({'errors': 'No such email exist'}, status=422)
         send_password_reset_email(
