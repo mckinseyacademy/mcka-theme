@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-02 07:13+0000\n"
+"POT-Creation-Date: 2017-12-28 13:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,40 +19,19 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
-#: static/js/vendor/jquery-ui.min.js:10
-msgid "'"
-msgstr ""
-
-#: static/gen/packed.js:37887 static/gen/packed_ie8.js:1321
 #: static/js/views/admin/courses_list.js:13
 msgid "Course Name"
-msgstr ""
+msgstr "اسم الدورة التدريبية"
 
-#: static/gen/packed.js:37897 static/gen/packed_ie8.js:1322
 #: static/js/views/admin/courses_list.js:23
 msgid "Course ID"
-msgstr ""
+msgstr "اختصار المساق"
 
-#: static/gen/packed.js:37898 static/gen/packed_ie8.js:1322
 #: static/js/views/admin/courses_list.js:24
 msgid "Start"
-msgstr ""
+msgstr "ابدأ"
 
-#: static/gen/packed.js:37907 static/gen/packed_ie8.js:1323
 #: static/js/views/admin/courses_list.js:33
 msgid "End"
-msgstr ""
+msgstr "النهاية "
 
-#: static/gen/packed.js:40558 static/gen/packed_ie8.js:1841
-#: static/js/views/admin/navigation.js:6
-msgid "Are you sure you want to remove this ?"
-msgstr ""
-
-#: static/js/admin_learner_dashboard/self_registration_roles.js:9
-msgid "Add new role e.g CEO,CTO"
-msgstr ""
-
-#: static/js/admin_learner_dashboard/self_registration_roles.js:10
-msgid "Delete Role"
-msgstr ""

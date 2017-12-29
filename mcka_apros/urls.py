@@ -34,6 +34,7 @@ urlpatterns = patterns(
     url(r'^access/(?P<code>[^/]*)$', 'accounts.views.access_key', name="access_key"),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^registration/(?P<course_run_name>.+)/$', accountsviews.demo_registration, name='demo_registration'),
+    url(r'^manifest.json/(?P<user_id>\d+)/$', 'main.views.android_manifest_json', name='android_manifest_json'),
     url(r'^jsi18n/$', javascript_catalog, name='javascript-catalog'),
 )
 

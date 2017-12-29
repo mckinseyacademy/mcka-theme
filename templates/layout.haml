@@ -71,149 +71,183 @@
       %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
     {% endassets %}
 
-    {% assets "css_app" %}
+  /[if lt IE 9]
+    {% assets "css_ie8" %}
       %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
     {% endassets %}
 
-    - if '/admin' in request.path
-      {% assets "css_admin" %}
-        %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
-      {% endassets %}
+  -# Override if you need another version of modernizr; or comment out for now - we dont' need it yet
+  - block foundation_modernizer
+    -# %script{src: "{% static 'js/vendor/modernizr.js' %}"}
 
-    /[if lt IE 9]
-      {% assets "css_ie8" %}
-        %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
-      {% endassets %}
+  -# Custom head JS
+  - block head_js
 
-    -# Override if you need another version of modernizr; or comment out for now - we dont' need it yet
-    - block foundation_modernizer
-      -# %script{src: "{% static 'js/vendor/modernizr.js' %}"}
-
-    -# Custom head JS
-    - block head_js
-
-    - if ga_tracking_id
-      -if country_code != 'CN'
-        %script
-          if(window.location.href.indexOf("mckinseyacademy.com") > -1) {
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-              ga('create', '{{ ga_tracking_id }}', 'mckinseyacademy.com');
-              ga('send', 'pageview');
-          }
-          else{
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-              ga('create', '{{ ga_tracking_id }}', 'auto');
-              ga('send', 'pageview');
-          }
-
-          - if track_mobile_login and request.user.is_authenticated
-            var ga_event_params = 'UserID: #{request.user.id}, Username: #{request.user.username}'
-
-            - if organization_id
-              ga_event_params +=  ', OrgID: #{organization_id}'
-
-            - if course_name
-              ga_event_params +=  ', CourseName: #{course_name}'
-
-            var action_name = '#{track_mobile_login}' + ' login'
-
-            ga('send', 'event', 'Mobile Login', action_name, ga_event_params)
-
-    /[if lt IE 9]
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js"}
-      %script{src: "//s3.amazonaws.com/nwapi/nwmatcher/nwmatcher-1.2.5-min.js"}
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"}
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"}
-
-    -# Override if you need another version of jQuery
-    - block foundation_jquery
-      /[if lt IE 9]
-        %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
-      <!--[if (gte IE 9) | (!IE)]><!-->
-        %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
-      <!--<![endif]-->
+  - if ga_tracking_id
+    -if country_code != 'CN'
       %script
-        window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.js' %}"><\/script>')
+        if(window.location.href.indexOf("mckinseyacademy.com") > -1) {
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', '{{ ga_tracking_id }}', 'mckinseyacademy.com');
+            ga('send', 'pageview');
+        }
+        else{
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            ga('create', '{{ ga_tracking_id }}', 'auto');
+            ga('send', 'pageview');
+        }
 
-    -# edx-notifications script dependencies
-    - block edx_notifications
-      %script{src: "/static/js/vendor/underscore.js"}
-      %script{src: "/static/js/vendor/backbone.js"}
-      %script{src: "/static/js/vendor/date.js"}
-    -# custom js libs
-    - block custom_js
+        - if track_mobile_login and request.user.is_authenticated
+          var ga_event_params = 'UserID: #{request.user.id}, Username: #{request.user.username}'
 
-    -# custom css scripts
-    - block custom_css
+          - if organization_id
+            ga_event_params +=  ', OrgID: #{organization_id}'
 
+          - if course_name
+            ga_event_params +=  ', CourseName: #{course_name}'
 
-    -# Disable Log in button on mobile
+          var action_name = '#{track_mobile_login}' + ' login'
+
+          ga('send', 'event', 'Mobile Login', action_name, ga_event_params)
+
+  /[if lt IE 9]
+    %script{src: "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"}
+    %script{src: "//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js"}
+    %script{src: "//s3.amazonaws.com/nwapi/nwmatcher/nwmatcher-1.2.5-min.js"}
+    %script{src: "//cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"}
+    %script{src: "//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"}
+
+  -# Override if you need another version of jQuery
+  - block foundation_jquery
+    /[if lt IE 9]
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
+    <!--[if (gte IE 9) | (!IE)]><!-->
+      %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
+    <!--<![endif]-->
     %script
-      $(document).ready(function() {
-        $(".with-program .login-btn").attr("href", "javascript:void(0)");
-      });
-    
-  %body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "ltr {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"}
-    - block help_context
+      window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.js' %}"><\/script>')
 
-    -# Header
-    - block header
-      - include 'header.haml'
+  -# edx-notifications script dependencies
+  - block edx_notifications
+    %script{src: "/static/js/vendor/underscore.js"}
+    %script{src: "/static/js/vendor/backbone.js"}
+    %script{src: "/static/js/vendor/date.js"}
+  -# custom js libs
+  - block custom_js
 
-    -# Main content goes here
-    %main{role: "main"}
-      - block content
+  -# custom css scripts
+  - block custom_css
 
-    -# Footer
-    - block footer
-      - include 'footer.haml'
+  -# Disable Log in button on mobile
+  %script
+    $(document).ready(function() {
+      $(".with-program .login-btn").attr("href", "javascript:void(0)");
+    });
 
-    -# Video overlay
-    - block video_overlay
-      #mckinsey_video.reveal-modal.medium{'data-reveal': None}
-        .close-reveal-modal
-          %i.fa.fa-times-circle
-        .player-wrapper
+%body{id: "{% if '/admin' in request.path %}admin-body{% endif %}", class: "ltr {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %}", style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"}
+  - block help_context
 
-    -# Block for general purpouse modal dialog
-    - block general_modal
-      #generalModal.reveal-modal.small{'data-reveal': None}
+  -# Header
+  - block header
+    - include 'header.haml'
+
+  -# Main content goes here
+  %main{role: "main"}
+    - block content
+
+  -# Footer
+  - block footer
+    - include 'footer.haml'
+
+  -# Video overlay
+  - block video_overlay
+    #mckinsey_video.reveal-modal.medium{'data-reveal': None}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      .player-wrapper
+
+  -# Block for general purpouse modal dialog
+  - block general_modal
+    #generalModal.reveal-modal.small{'data-reveal': None}
+      %h2.title
+      %p{'class': "lead description"}
+      %a{'class': "close-reveal-modal fa fa-times-circle"}
+
+  - block messages_modal
+    - if messages
+      #messagesModal.reveal-modal.small{'data-reveal': ''}
         %h2.title
+          Notice
         %p{'class': "lead description"}
+          {% for message in messages %}
+          {{ message }}<br/>
+          {% endfor %}
         %a{'class': "close-reveal-modal fa fa-times-circle"}
+          %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
 
-    - block messages_modal
-      - if messages
-        #messagesModal.reveal-modal.small{'data-reveal': ''}
-          %h2.title
-            Notice
-          %p{'class': "lead description"}
-            {% for message in messages %}
-            {{ message }}<br/>
-            {% endfor %}
-          %a{'class': "close-reveal-modal fa fa-times-circle"}
-            %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+  - block change_profile_image
+    #edit-user-image-modal.reveal-modal.medium{'data-reveal': 'true'}
 
-    - block change_profile_image
-      #edit-user-image-modal.reveal-modal.medium{'data-reveal': 'true'}
+  -# Beta content overlay
+  - block beta_content
+    #beta_content.reveal-modal.small{'data-reveal': None}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      %p This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!
+      %p As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks.
 
-    -# Beta content overlay
-    - block beta_content
-      #beta_content.reveal-modal.small{'data-reveal': None}
-        .close-reveal-modal
+  #edit_field_modal.reveal-modal.small{data-reveal: None }
+
+  - if request.is_IE8
+    #unsupported_modal
+      .modal-bg
+      .reveal-modal.small.open
+        .close-box
           %i.fa.fa-times-circle
-        %p This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!
-        %p As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks.
+        %p We're sorry, McKinsey Academy is not compatible with your browser. Please update your browser to access course content. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
 
-    #edit_field_modal.reveal-modal.small{data-reveal: None }
+  - if request.user.is_authenticated
+    - ifequal request.session.learner_dashboard_id None
+      - if request.session.learner_dashboard_id
+        #intro_modal.reveal-modal.small{'data-reveal': None, 'data-options': "close_on_esc: false;"}
+          .close-reveal-modal
+            %i.fa.fa-times-circle
+          %h1 Welcome to McKinsey Academy
+          %p McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage. This video will walk you through our learner experience.
+          #mk-intro-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
+          %p.style-6 This product walkthrough can always be found in the page specific help <i class="fa fa-question-circle"></i>.
 
+  -# jQuery-cookie
+  - block jquery_cookie
+    %script{src: "{% static 'js/vendor/jquery.cookie.js' %}"}
+
+  -# i18n JS Catalog
+  - block i18n
+    %script{type: "text/javascript", src: "{% url 'javascript-catalog' %}"}
+
+  -# jQuery-xblock
+  - block jquery_xblock
+    %script{src: "{% static 'js/vendor/jquery.xblock-2.js' %}"}
+
+  -# Foundation JS
+  - block foundation_js
+    %script{src: "{% static 'js/foundation.min.js' %}"}
+
+  -# Ooyala Player JS
+  - block ooyala_player
+    %script{src: '//player.ooyala.com/v3/508480711cac43cfbc1931fe461c4d35?platform=html5-prority'}
+
+  - block jquery_ui
+    %script{src: "{% static 'js/vendor/jquery-ui.min.js' %}"}
+
+  -# Custom JS
+  - block body_js
     - if request.is_IE8
       #unsupported_modal
         .modal-bg
