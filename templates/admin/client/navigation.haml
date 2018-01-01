@@ -47,58 +47,63 @@
         %input.button.radius.tiny{type: 'submit', value: 'Save Links'}
   %hr
   #custom-branding
-    .sub-1 Custom Branding
-    %h2
-      %p You can change upload a logo and change the secondary navigation colors for the bar and icons across all courses for this client below. Please note that you will need to preview the custom branding to check for sizing and color before you have the opportunity to save changes. You can make edits after previewing if needed.
     %form{action: "/admin/clients/#{client.id}/customization", method: 'POST', enctype: "multipart/form-data" }
       - csrf_token
       %fieldset
+        .sub-1 Global Branding
         %ul
           %li
-            %label.nav2.selected Upload client logo for web:
+            %label.nav2.selected Upload Global Logo:
+            %a.button.radius.tiny.upload_logo Upload Logo
+            %input{type: 'file', name: 'global_client_logo'}
+          %li
+            %label.nav2.selected Top Navigation Background:
+            %input{type: 'text', name: 'hex_background_main_navigation', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_background_main_navigation}"}
+        %br
+        .sub-1 Desktop, Tablet and Mobile Web
+        %ul
+          %li
+            %label.nav2.selected Upload Logo:
             %a.button.radius.tiny.upload_logo Upload Logo
             %input{type: 'file', name: 'client_logo'}
           %li
-            %label.nav2.selected Upload client background:
-            %a.button.radius.tiny.upload_logo Upload Background
+            %label.nav2.selected Notification Circle Color:
+            %input{type: 'text', name: 'hex_notification', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_notification}"}
+          %li
+            %label.nav2.selected Second Navigation Background:
+            %input{type: 'text', name: 'hex_background_bar', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_background_bar}"}
+          %li
+            %label.nav2.selected Notification Text Color:
+            %input{type: 'text', name: 'hex_notification_text', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_notification_text}"}
+          %li
+            %label.nav2.selected Program Name Text Color:
+            %input{type: 'text', name: 'hex_program_name', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_program_name}"}
+          %li
+            %label.nav2.selected Page Background Color:
+            %input{type: 'text', name: 'hex_page_background', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_page_background}"}
+          %li
+            %label.nav2.selected Course Title Text Color:
+            %input{type: 'text', name: 'hex_course_title', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_course_title}"}
+          %li
+            %label.nav2.selected Page Background Image:
+            %a.button.radius.tiny.upload_logo Upload Image
             %input{type: 'file', name: 'client_background'}
           %li
-            %label.nav2.selected Upload client logo for mobile app:
+            %label.nav2.selected Navigation Icon Color:
+            %input{type: 'text', name: 'hex_navigation_icons', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_navigation_icons}"}
+          %li
+            %label.nav2.selected Page Background CSS:
+            %input{type: 'text', name: 'client_background_css', placeholder: 'Enter css', maxlength: "200", value: "#{customization.client_background_css}"}
+
+        %br
+        .sub-1 Native Mobile & Tablet Apps
+        %ul
+          %li
+            %label.nav2.selected Upload Mobile Logo:
             %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/edit_client_mobile_logo"}
-              Upload Mobile Logo
-          %li
-            %label.nav2.selected Upload global client logo:
-            %a.button.radius.tiny.upload_logo Upload Global Logo
-            %input{type: 'file', name: 'global_client_logo'}
-          %li
-            %label.nav2.selected Hex # for background main navigation:
-            %input{type: 'text', name: 'hex_background_main_navigation', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_background_main_navigation}"}
-          %li
-            %label.nav2.selected CSS for background image:
-            %input{type: 'text', name: 'client_background_css', placeholder: 'enter css', maxlength: "200", value: "#{customization.client_background_css}"}
-          %li
-            %label.nav2.selected Hex # for notification circle:
-            %input{type: 'text', name: 'hex_notification', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_notification}"}
-          %li
-            %label.nav2.selected Hex # for notification text:
-            %input{type: 'text', name: 'hex_notification_text', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_notification_text}"}
-          %li
-            %label.nav2.selected Hex # for background bar:
-            %input{type: 'text', name: 'hex_background_bar', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_background_bar}"}
-          %li
-            %label.nav2.selected Hex # for program name text:
-            %input{type: 'text', name: 'hex_program_name', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_program_name}"}
-          %li
-            %label.nav2.selected Hex # for navigation icons:
-            %input{type: 'text', name: 'hex_navigation_icons', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_navigation_icons}"}
-          %li
-            %label.nav2.selected Hex # for course title text:
-            %input{type: 'text', name: 'hex_course_title', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_course_title}"}
-          %li
-            %label.nav2.selected Hex # for page background:
-            %input{type: 'text', name: 'hex_page_background', placeholder: 'enter #', maxlength: "7", value: "#{customization.hex_page_background}"}
+              Upload Logo
       %div
         %input{type: 'reset', value: 'Cancel'}
-        %input.button.radius.tiny{type: 'submit', value: 'Save Branding'}
+        %input.button.radius.tiny{type: 'submit', value: 'Save'}
 
   #edit-client-mobile-logo-modal.reveal-modal.medium{'data-reveal': 'true'}
