@@ -75,10 +75,7 @@
       }
       var count = course_details_count_all_users;
       this.collection.updateCountQuerryParams(count);
-      this.collection.fetch({success:function(collection, response, options){
-          _this.updateColumns(_this.collection, _this.coursesListDetailsViewGrid);
-          cloneHeader('#courseDetailsParticipantsGrid');
-        }});
+      this.collection.fetch();
     },
     render: function(){
       var _this = this;
@@ -343,91 +340,6 @@
     onClearSearchEvent: function(event){
       var _this = event.data.extra;
       _this.coursesListDetailsViewGrid.searchBar.onSearch({target: '#courseDetailsMainContainer .bbGrid-pager'});
-    },
-    updateColumns: function(collection, coursesListDetailsViewGrid)
-    {
-      var assessment_template = { title: '', index: true, name: '', actions: function(id, attributes)
-        {
-          if (attributes['grade'] == '.')
-          {
-            return '<i class="fa fa-spinner fa-spin"></i>';
-          }
-          value = attributes['assessment_final']
-          if (value == '-')
-            return value;
-          return '' + parseInt(value) + '%';
-        }};
-      var modelsList = collection.models;
-      if (modelsList.length > 0)
-      {
-        for (var i=0; i < modelsList.length; i++)
-        {
-          if (modelsList[i].attributes.groupworks.length)
-          {
-            for (var groupworkIndex = 0; groupworkIndex < modelsList[i].attributes.groupworks.length; groupworkIndex++)
-            {
-              groupworkData = modelsList[i].attributes.groupworks[groupworkIndex];
-              groupwork = _.clone(assessment_template);
-              groupwork.title = 'Group Work: ' + groupworkData.label;
-              groupwork.name = 'groupworks.' + groupworkIndex + '.percent';
-              groupwork.actions = (function(groupworkIndex){ return function(id, attributes)
-              {
-                if (attributes.groupworks.length != attributes.number_of_groupworks)
-                {
-                  return '<i class="fa fa-exclamation-triangle"></i>'
-                }
-                if(attributes.groupworks.length == 0 || groupworkIndex >= attributes.groupworks.length){
-                  return '' + parseInt('000') + '%';
-                }
-                var value = attributes.groupworks[groupworkIndex].percent;
-                if (value == '.')
-                {
-                  return '<i class="fa fa-spinner fa-spin"></i>';
-                }
-                if (value == '-')
-                  return value;
-                return '' + parseInt(value) + '%';
-              }})(groupworkIndex);
-              this.generatedGridColumns.push(groupwork);
-            }
-            break;
-          }
-        }
-        for (var i=0; i < modelsList.length; i++)
-        {
-          if (modelsList[i].attributes.assessments.length)
-          {
-            for (var assessmentIndex = 0; assessmentIndex < modelsList[i].attributes.assessments.length; assessmentIndex++)
-            {
-              assessmentData = modelsList[i].attributes.assessments[assessmentIndex];
-              assessment = _.clone(assessment_template);
-              assessment.title = 'Assessment: ' + assessmentData.label;
-              assessment.name = 'assessments.' + assessmentIndex + '.percent';
-              assessment.actions = (function(assessmentIndex){ return function(id, attributes)
-              {
-                if (attributes.assessments.length != attributes.number_of_assessments)
-                {
-                  return '<i class="fa fa-exclamation-triangle"></i>'
-                }
-                if(attributes.assessments.length == 0 || assessmentIndex >= attributes.assessments.length){
-                  return '' + parseInt('000') + '%';
-                }
-                var value = attributes.assessments[assessmentIndex].percent;
-                if (value == '.')
-                {
-                  return '<i class="fa fa-spinner fa-spin"></i>';
-                }
-                if (value == '-')
-                  return value;
-                return '' + parseInt(value) + '%';
-              }})(assessmentIndex);
-              this.generatedGridColumns.push(assessment);
-            }
-            break;
-          }
-        }
-      }
-      coursesListDetailsViewGrid.render();
     },
     csvDownloadStatus: function functionName(url, status_element, task_id, _this, _data) {
       $(status_element).parent().find('.loadingIcon').removeClass('hidden');
