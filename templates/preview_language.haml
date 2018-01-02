@@ -1,0 +1,30 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  .row
+    %br
+    %h1
+      {% trans "Preview Language Setting" %}
+    %br
+    %div
+      %form{:action => "/update_language", :method => "post"}
+        .row
+          .large-12.columns
+            %label
+              {% trans "Language Code" %}
+              %input{:name => "preview_lang", :placeholder => "{% trans 'For example use en for English' %}", :type => "text"}/
+
+        .form-actions
+          %button.btn-brand.btn-base{:name => "set_language", :type => "submit", :value => "set_language"}
+            {% trans "Submit" %}
+          %button.btn-brand.btn-base{:name => "reset", :type => "submit", :value => "reset"}
+            {% trans "Reset" %}
+        %input{:name => "csrfmiddlewaretoken", :type => "hidden", :value => "#{csrf_token}"}
+
+      %br
+      - if message
+        .message= message
+        - if success
+          %p
+            {% trans "Please refresh the page to see the changes applied." %}

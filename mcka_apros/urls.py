@@ -38,6 +38,9 @@ urlpatterns = patterns(
     url(r'^jsi18n/$', javascript_catalog, name='javascript-catalog'),
 )
 
+if settings.DEBUG:
+    urlpatterns += (url(r'^update_language$', views.PreviewLanguageView.as_view(), name='preview_language'),)
+
 urlpatterns += patterns(
     '',
     url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)$', courseviews.course_learner_dashboard, name='course_learner_dashboard'),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-03 13:16+0000\n"
+"POT-Creation-Date: 2018-01-03 12:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: accounts/controller.py:118
 msgid ""
@@ -1563,15 +1561,15 @@ msgstr ""
 msgid "No Available licenses"
 msgstr ""
 
-#: main/views.py:94
+#: main/views.py:107
 msgid "Language code not provided"
 msgstr ""
 
-#: main/views.py:98
+#: main/views.py:111
 msgid "Language set to language code: {preview_language_code}"
 msgstr ""
 
-#: main/views.py:107
+#: main/views.py:120
 msgid "Language reset to default language"
 msgstr ""
 
@@ -1684,27 +1682,31 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: templates/preview_language.haml:8
+#: templates/header.haml:42
+msgid "McKA Admin"
+msgstr ""
+
+#: templates/preview_language.haml:6
 msgid "Preview Language Setting"
 msgstr ""
 
-#: templates/preview_language.haml:15
+#: templates/preview_language.haml:12
 msgid "Language Code"
 msgstr ""
 
-#: templates/preview_language.haml:16
+#: templates/preview_language.haml:13
 msgid "For example use en for English"
 msgstr ""
 
-#: templates/preview_language.haml:20
+#: templates/preview_language.haml:16
 msgid "Submit"
 msgstr ""
 
-#: templates/preview_language.haml:22
+#: templates/preview_language.haml:18
 msgid "Reset"
 msgstr ""
 
-#: templates/preview_language.haml:30
+#: templates/preview_language.haml:26
 msgid "Please refresh the page to see the changes applied."
 msgstr ""
 
