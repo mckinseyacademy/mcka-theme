@@ -40,8 +40,9 @@
     %meta{name: "msapplication-TileColor", content: "#2b5797"}
     %meta{name: "msapplication-TileImage", content: "/static/favicons/mstile-144x144.png"}
     %meta{name: "msapplication-config", content: "/static/favicons/browserconfig.xml"}
-    - if user_android_mobile_app_id and request.user.is_authenticated
-      %link{rel:"manifest", href: "{% url 'android_manifest_json' request.user.id %}",}
+    -# android smart app banner manifest json file
+    - if user_android_mobile_app_id
+      %link{rel:"manifest", href: "/static/android_app_banner_manifest_files/manifest{{user_organization_id}}.json"}
     -# CSS
     - if not request.is_IE8
       %link{href: '//fonts.googleapis.com/css?family=Open+Sans:400,600,700', rel: 'stylesheet', type: 'text/css'}

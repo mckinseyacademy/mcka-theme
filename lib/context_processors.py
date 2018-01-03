@@ -114,6 +114,7 @@ def set_mobile_app_id(request):
     data = dict()
     if is_mobile_user_agent(request):
         if is_android(request):
+            data['user_organization_id'] = request.COOKIES.get('user_organization_id')
             data['user_android_mobile_app_id'] = request.COOKIES.get('android_app_id')
         elif is_ios(request):
             data['user_ios_mobile_app_id'] = request.COOKIES.get('ios_app_id')

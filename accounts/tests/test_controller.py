@@ -14,6 +14,7 @@ from accounts.tests.utils import (ApplyPatchMixin, _make_company,
 from admin.models import AccessKey
 from api_client.api_error import ApiError
 from django.http.response import HttpResponseBase
+from lib.utils import DottableDict
 
 
 class TestProcessAccessKey(TestCase, ApplyPatchMixin):
@@ -162,14 +163,14 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         self.android_app_id = '5678'
         self.mobile_app_id = {'ios_app_id': self.ios_app_id, 'android_app_id': self.android_app_id}
         self.user_organizations = [
-            {
-                "url": "http://0.0.0.0:8000/api/server/organizations/1/",
-                "id": 1,
-                "name": "mckinsey_and_company",
-                "display_name": "McKinsey and Company",
-                "contact_name": "McKinsey and Company",
-                "contact_email": "company@mckinseyacademy.com",
-            }
+            DottableDict(
+                url="http://0.0.0.0:8000/api/server/organizations/1/",
+                id=17,
+                name="mckinsey_and_company",
+                display_name="McKinsey and Company",
+                contact_name="McKinsey and Company",
+                contact_email="company@mckinseyacademy.com",
+            )
         ]
 
         self.get_user_organizations = self.apply_patch(
@@ -191,6 +192,7 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         result = append_user_mobile_app_id_cookie(HttpResponseBase(), user_id)
         self.assertEqual(result.cookies.get('ios_app_id').value, self.ios_app_id)
         self.assertEqual(result.cookies.get('android_app_id').value, self.android_app_id)
+        self.assertEqual(result.cookies.get('user_organization_id').value, str(self.user_organizations[0].id))
 
     def test_has_not_mobile_apps_id(self):
         """

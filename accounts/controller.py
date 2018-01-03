@@ -461,6 +461,7 @@ def append_user_mobile_app_id_cookie(response, user_id):
     if len(organizations) > 0:
         # we will get ios and android id
         data = get_mobile_apps_id(organizations[0])
+        user_organization_id = organizations[0].id
 
         response.set_cookie(
             'ios_app_id',
@@ -474,6 +475,12 @@ def append_user_mobile_app_id_cookie(response, user_id):
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
 
+        response.set_cookie(
+            'user_organization_id',
+            user_organization_id,
+            domain=settings.LMS_SESSION_COOKIE_DOMAIN,
+        )
+
     return response
 
 
@@ -483,7 +490,7 @@ def get_mobile_apps_id(organization):
     """
     ios_app_id = None
     android_app_id = None
-    org_name = None
+    user_org = None
     mobile_id = None
 
     try:
@@ -491,13 +498,13 @@ def get_mobile_apps_id(organization):
     except ApiError:
         return {'ios_app_id': ios_app_id,
                 'android_app_id': android_app_id,
-                'org_name': org_name
+                'user_org': user_org
                 }
 
     if mobile_id.get('results'):
 
         results = mobile_id['results'][0]
-        org_name = results['name']
+        user_org = results['name']
 
         if results['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
             ios_app_id = results['ios_app_id']
@@ -505,5 +512,5 @@ def get_mobile_apps_id(organization):
 
     return {'ios_app_id': ios_app_id,
             'android_app_id': android_app_id,
-            'org_name':org_name
+            'user_org':user_org
             }

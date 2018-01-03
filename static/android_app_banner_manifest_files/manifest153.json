@@ -1,0 +1,12 @@
+{
+  "display": "browser",
+  "name": "RTS",
+  "short_name": "RTS",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.rtsacademy.android"
+    }
+  ]
+}
