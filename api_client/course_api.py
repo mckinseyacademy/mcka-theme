@@ -247,14 +247,15 @@ def get_course_shallow(course_id):
     '''
     Retrieves course structure information from the API for specified course
     '''
-    response = GET('{}/{}/{}'.format(
+    edx_oauth2_session = get_oauth2_session()
+    url = '{}/{}/{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id
-        )
     )
+    response = edx_oauth2_session.get(url)
 
-    return json.loads(response.read())
+    return response.json()
 
 @api_error_protect
 def get_courses(**kwargs):
