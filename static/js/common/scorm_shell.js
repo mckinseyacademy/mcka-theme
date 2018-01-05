@@ -66,11 +66,11 @@ function ParseReviewStep()
     {
         var main_xblock = $(".mentoring.themed-xblock");
         var review_xblock = $(".xblock-embedded_student_view-sb-review-score");
-        var assessment = review_xblock.find(".grade-result h2").first();
+        var assessment = review_xblock.find(".grade-result h4").first();
         var score = parseFloat(assessment.text().match(/\d+%?/g).join('.'));
         var attempts_text = main_xblock.find(".submit .attempts").text();
         var attempts_data = attempts_text.match(/\d+\D?/g);
-        var data = {"type":"data", "course_id":scorm_data.courseId,"assessment":{"lesson-id":scorm_data.lessonId, 
+        var data = {"type":"data", "course_id":scorm_data.courseId,"assessment":{"lesson-id":scorm_data.lessonId,
         "module-id":scorm_data.moduleId, "attempts-count":parseInt(attempts_data[0]),"attempts-max":parseInt(attempts_data[1]),
         "score":score}};
         return data;
@@ -187,4 +187,3 @@ function SendFullGradebookToScormShell()
         console.log(data)
     });
 }
-
