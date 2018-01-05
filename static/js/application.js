@@ -284,36 +284,25 @@ $(function(){
     }
   });
 
-  $.xblock.getRuntime().listenTo('navigation', function(event, data) {
-
-    if (data.state == "unlock")
-    {
-      var data = ParseReviewStep();
-      if (data)
-      {
-        SendMessageToSCORMShell(JSON.stringify(data));
-      }
-      setTimeout(function(){SendGradebookToScormShell();}, 300);
-    }
-  
-  });
-
   $.xblock.getRuntime().listenTo('xblock-rendered', function(event, rendered_xblock) {
     if (SCORM_SHELL)
     {
-      var timeout_waiting = false;
-      var waiting_review = setInterval(function(){
-        if (timeout_waiting)
-          clearInterval(waiting_review);
+      $(".submit .input-review").on('click', function(event, data){
+        var timeout_waiting = false;
+        var waiting_review = setInterval(function(){
+          if (timeout_waiting)
+            clearInterval(waiting_review);
 
-        var data = ParseReviewStep();
-        if (data)
-        {
-          clearInterval(waiting_review);
-          SendMessageToSCORMShell(JSON.stringify(data));
-        }
-      }, 300);
-      setTimeout(function(){timeout_waiting=true;}, 10000);
+          var data = ParseReviewStep();
+          if (data)
+          {
+            clearInterval(waiting_review);
+            SendMessageToSCORMShell(JSON.stringify(data));
+          }
+        }, 300);
+        setTimeout(function(){timeout_waiting=true;}, 10000);
+      });
+
       var counter = 0;
       var progress_tracker = setInterval(function()
         {
