@@ -1,10 +1,13 @@
 import os
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 
 import admin.controller as controller
+from accounts.tests.utils import ApplyPatchMixin
+from admin.controller import CourseParticipantStats
 from admin.tests.utils import BASE_DIR
+from api_client.json_object import JsonParser as JP
 
 
 class AdminControllerTests(TestCase):
@@ -67,3 +70,42 @@ class AdminControllerTests(TestCase):
         self.assertEqual(user_objects[3]["city"], "Cambridge")
         self.assertEqual(user_objects[3]["country"], "US")
 
+
+def MockEngagementScore(object):
+    data = {
+        'users':
+            {
+                '1':
+                    {
+                        'num_threads': 1,
+                        'num_comments': 1,
+                        'num_replies': 1,
+                        'num_upvotes': 1,
+                        'num_thread_followers': 1,
+                        'num_comments_generated': 1,
+                    },
+                '2':
+                    {
+                        'num_threads': 2,
+                        'num_comments': 1,
+                        'num_replies': 0,
+                        'num_upvotes': 0,
+                        'num_thread_followers': 0,
+                        'num_comments_generated': 0,
+                    }
+            }
+    }
+
+    return JP.from_dictionary(data)
+
+
+class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    def test_get_engagement_scores(self):
+        self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
+        test_object = CourseParticipantStats('1', 'base/url')
+        u_ids = ['1', '2']
+        engagement_scores = test_object._get_engagement_scores()
+        self.assertEqual(engagement_scores[u_ids[0]], 85)
+        self.assertEqual(engagement_scores[u_ids[1]], 35)

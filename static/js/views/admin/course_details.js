@@ -53,6 +53,13 @@
           return value;
         return '' + parseInt(value) + '%'; 
       }},
+      { title: 'Engagement', index: true, name: 'engagement', actions: function(id, attributes)
+      {
+        value = attributes['engagement'];
+        if (value == '-')
+          return value;
+        return '' + parseInt(value);
+      }},
       { title: 'Activation Link', index: true, name: 'activation_link', actions: function (id, attributes) {
         var value = attributes['activation_link'];
         

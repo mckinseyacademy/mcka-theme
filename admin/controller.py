@@ -1,24 +1,31 @@
-import tempfile
-import urllib
-import collections
-import re
-import uuid
-import string
-import logging
+import Queue
 import StringIO
+import atexit
+import collections
+import logging
+import re
+import string
+import tempfile
+import threading
+import urllib
+import uuid
+from datetime import datetime
 
 from PIL import Image
 from dateutil.parser import parse as parsedate
 
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
-from django.utils import timezone
 from django.conf import settings
+from django.core.cache import cache
+from django.core.urlresolvers import reverse
+from django.core.validators import validate_email, ValidationError
+from django.utils import timezone
+from django.utils.translation import ugettext as _
+from pytz import UTC
 
+from accounts.helpers import get_user_activation_links, get_complete_country_name
 from accounts.middleware.thread_local import set_course_context, get_course_context
+from accounts.models import UserActivation
 from admin.models import Program
-from api_client.api_error import ApiError
-from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
 from api_client import (
     course_api,
     course_models,
@@ -30,38 +37,23 @@ from api_client import (
     user_models,
     workgroup_api
 )
-from accounts.models import UserActivation
-from accounts.helpers import get_user_activation_links, get_complete_country_name
-from datetime import datetime
-from pytz import UTC
+from api_client.api_error import ApiError
+from api_client.group_api import TAG_GROUPS
+from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
 from api_client.project_models import Project
-
+from api_client.user_api import USER_ROLES
+from lib.mail import (
+    sendMultipleEmails, email_add_single_new_user, create_multiple_emails
+)
+from lib.utils import DottableDict
 from license import controller as license_controller
-
+from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.validators import validate_first_name, validate_last_name
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
-    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate, LearnerDashboardTileProgress,
-)
-
-from lib.mail import (
-    sendMultipleEmails, email_add_active_student, email_add_inactive_student,
-    email_add_single_new_user, create_multiple_emails
-    )
-from lib.utils import DottableDict
-
-from api_client.user_api import USER_ROLES
-from api_client.group_api import TAG_GROUPS, PERMISSION_GROUPS
+    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate, )
 from .permissions import Permissions, SlimAddingPermissions
-from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.validators import validate_first_name, validate_last_name
-
-import threading
-import Queue
-import atexit
-
-from django.core.validators import validate_email, ValidationError
-from django.core.cache import cache
 
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
 MINIMAL_COURSE_DEPTH = 5
@@ -72,7 +64,6 @@ _logger = logging.getLogger(__name__)
 
 
 class GroupProject(object):
-
     def _get_activity_link(self, course_id, activity_id):
         base_gw_url = reverse('user_course_group_work', kwargs={'course_id': course_id})
         query_string_key = 'activate_block_id' if self.is_v2 else 'seqid'
@@ -106,33 +97,39 @@ def _worker():
         try:
             func(*args, **kwargs)
         except:
-            pass # bork or ignore here; ignore for now
+            pass  # bork or ignore here; ignore for now
         finally:
-            _queue.task_done() # so we can join at exit
+            _queue.task_done()  # so we can join at exit
+
 
 def postpone(func):
     def decorator(*args, **kwargs):
         _queue.put((func, args, kwargs))
+
     return decorator
 
+
 def _cleanup():
-    _queue.join() # so we don't exit too soon
+    _queue.join()  # so we don't exit too soon
+
 
 _queue = Queue.Queue()
 atexit.register(_cleanup)
 
 
 def upload_student_list_threaded(student_list, client_id, absolute_uri, reg_status):
-    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-    _thread.daemon = True # so we can exit
+    _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
+    _thread.daemon = True  # so we can exit
     _thread.start()
     process_uploaded_student_list(student_list, client_id, absolute_uri, reg_status)
 
+
 def mass_student_enroll_threaded(student_list, client_id, program_id, course_id, request, reg_status):
-    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-    _thread.daemon = True # so we can exit
+    _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
+    _thread.daemon = True  # so we can exit
     _thread.start()
     process_mass_student_enroll_list(student_list, client_id, program_id, course_id, request, reg_status)
+
 
 def _find_group_project_v2_blocks_in_chapter(chapter):
     return (
@@ -143,10 +140,12 @@ def _find_group_project_v2_blocks_in_chapter(chapter):
         if xblock.category == GROUP_PROJECT_V2_CATEGORY
     )
 
+
 def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, user=None):
     '''
     Gets the course from the API, and performs any post-processing for Apros specific purposes
     '''
+
     def is_discussion_chapter(chapter):
         return chapter.name.startswith(settings.DISCUSSION_IDENTIFIER)
 
@@ -167,6 +166,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
         return (not is_discussion_chapter(chapter) and
                 not is_group_project_chapter(chapter) and
                 not is_group_project_v2_chapter(chapter))
+
     course = course_api_impl.get_course(course_id, depth, user=user)
 
     # Find group projects
@@ -223,7 +223,8 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
     if depth < MINIMAL_COURSE_DEPTH:
         depth = MINIMAL_COURSE_DEPTH
     course_context = get_course_context()
-    if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth", 0) >= depth:
+    if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth",
+                                                                                                    0) >= depth:
         return course_context["course_content"]
 
     user = request.user if request else None
@@ -245,7 +246,8 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
             age = datetime.now(UTC) - cached_time
 
             # don't let the cache entry age indefinately
-            if age.seconds < getattr(settings, 'SESSION_COURSEWARE_CACHING_EXPIRY_IN_SEC', 300) and depth <= fetch_depth:
+            if age.seconds < getattr(settings, 'SESSION_COURSEWARE_CACHING_EXPIRY_IN_SEC',
+                                     300) and depth <= fetch_depth:
                 course = cache_entry['course_data']
 
     if not course:
@@ -272,11 +274,13 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
 def generate_email_text_for_user_activation(activation_record, activation_link_head):
     email_text = (
         "",
-        _("An administrator has created an account on McKinsey Academy for your use. To activate your account, please copy and paste this address into your web browser's address bar:"),
+        _(
+            "An administrator has created an account on McKinsey Academy for your use. To activate your account, please copy and paste this address into your web browser's address bar:"),
         "{}/{}".format(activation_link_head, activation_record.activation_key),
     )
 
     return '\n'.join(email_text)
+
 
 def _process_line(user_line):
     try:
@@ -354,13 +358,13 @@ def _process_line_proposed(user_line):
         if len(fields) > 6:
             user_info["gender"] = fields[6]
 
-        # if len(fields) > 7:
-        #     # If password and username are included in the CSV,
-        #     # our intent is to register and activate the user
-        #     user_info["is_active"] = True
-        #     user_info["password"] = fields[7]
-        #     if fields[6]:
-        #         user_info["username"] = fields[6]
+            # if len(fields) > 7:
+            #     # If password and username are included in the CSV,
+            #     # our intent is to register and activate the user
+            #     user_info["is_active"] = True
+            #     user_info["password"] = fields[7]
+            #     if fields[6]:
+            #         user_info["username"] = fields[6]
 
     except Exception as e:
         user_info = {
@@ -435,9 +439,11 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             reg_status.succeded = reg_status.succeded + 1
             reg_status.save()
 
+
 def company_users_list(client_id):
     users = organization_api.get_users_by_enrolled(organization_id=client_id, user_object=user_models.UserResponse)
     return users
+
 
 def enroll_user_in_course(user_id, course_id):
     try:
@@ -446,6 +452,7 @@ def enroll_user_in_course(user_id, course_id):
         # Ignore 409 errors, because they indicate a user already added
         if e.code != 409:
             raise
+
 
 def _enroll_users_in_list(students, client_id, program_id, course_id, request, reg_status):
     client = Client.fetch(client_id)
@@ -558,6 +565,7 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head, 
     # 2) Register the users, and associate them with client
     _register_users_in_list(user_list, client_id, activation_link_head, reg_status)
 
+
 @postpone
 def process_mass_student_enroll_list(file_stream, client_id, program_id, course_id, request, reg_status=None):
     # 1) Build user list
@@ -587,6 +595,7 @@ def _formatted_user_string(user):
         user.activation_link,
     )
 
+
 def _formatted_user_array(user):
     return [
         user.email,
@@ -599,6 +608,7 @@ def _formatted_user_array(user):
         user.activation_link,
     ]
 
+
 def _formatted_user_string_group_list(user):
     # apply csv cleaning
     user_data = sanitize_data(data=user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
@@ -609,6 +619,7 @@ def _formatted_user_string_group_list(user):
         user_data.get('first_name', ''),
         user_data.get('last_name', ''),
     )
+
 
 def _formatted_group_string(group):
     group_string = "{} \n\n".format(
@@ -622,11 +633,13 @@ def _formatted_group_string(group):
 
     return group_string
 
-def get_student_list_as_file(client, activation_link = ''):
+
+def get_student_list_as_file(client, activation_link=''):
     user_list = client.fetch_students()
     user_strings = [_formatted_user_string(get_user_with_activation(user, activation_link)) for user in user_list]
 
     return '\n'.join(user_strings)
+
 
 def get_user_with_activation(user, activation_link):
     try:
@@ -640,21 +653,22 @@ def get_user_with_activation(user, activation_link):
 
     return user
 
-def get_group_list_as_file(group_projects, group_project_groups):
 
+def get_group_list_as_file(group_projects, group_project_groups):
     user_ids = []
     for group_project in group_projects:
         for group in group_project_groups[group_project.id]:
             user_ids.extend([str(u.id) for u in group.users])
-    additional_fields = ['first_name','last_name']
-    user_dict = {str(u.id) : u for u in user_api.get_users(ids=user_ids, fields=additional_fields)} if len(user_ids) > 0 else {}
+    additional_fields = ['first_name', 'last_name']
+    user_dict = {str(u.id): u for u in user_api.get_users(ids=user_ids, fields=additional_fields)} if len(
+        user_ids) > 0 else {}
 
     group_list_lines = []
     for group_project in group_projects:
         group_list_lines.append(u"{}: {}\n".format(
-                _("PROJECT"),
-                group_project.name.upper(),
-            )
+            _("PROJECT"),
+            group_project.name.upper(),
+        )
         )
         for group in group_project_groups[group_project.id]:
             group.students = [user_dict[str(u.id)] for u in group.users]
@@ -675,8 +689,8 @@ def fetch_clients_with_program(program_id):
 
     return clients
 
-def filter_groups_and_students(group_projects, students, restrict_to_users_ids=None):
 
+def filter_groups_and_students(group_projects, students, restrict_to_users_ids=None):
     group_project_groups = {}
     groupedStudents = []
 
@@ -709,13 +723,15 @@ def filter_groups_and_students(group_projects, students, restrict_to_users_ids=N
 
     return group_project_groups, students
 
+
 def getStudentsWithCompanies(course, restrict_to_users_ids=None):
-    students = course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,email,username,organizations'})
+    students = course_api.get_course_details_users(course.id,
+                                                   {'page_size': 0, 'fields': 'id,email,username,organizations'})
 
     companies = {}
     students_dot = []
     for student in students:
-        student_data = DottableDict({"id": student['id'],"email":student['email'],"username":student['username']})
+        student_data = DottableDict({"id": student['id'], "email": student['email'], "username": student['username']})
         studentCompanies = student["organizations"]
         if len(studentCompanies) > 0:
             company = DottableDict(studentCompanies[0])
@@ -727,25 +743,26 @@ def getStudentsWithCompanies(course, restrict_to_users_ids=None):
 
 
 def parse_studentslist_from_post(postValues):
-
     students = []
     i = 0
     project_id = None
     try:
         project_id = postValues['project_id']
-        while(postValues['students[{}]'.format(i)]):
+        while (postValues['students[{}]'.format(i)]):
             students.append({'id': postValues['students[{}]'.format(i)],
-                            'company_id': postValues['students[{}][data_field]'.format(i)]})
+                             'company_id': postValues['students[{}][data_field]'.format(i)]})
             i = i + 1
     except:
         pass
 
     return students, project_id
 
+
 def is_group_activity(activity):
     if activity.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY:
         return True
     return len(activity.pages) > 0 and GROUP_PROJECT_CATEGORY in activity.pages[0].child_category_list()
+
 
 def get_group_activity_xblock(activity):
     if activity.category == GROUP_PROJECT_V2_ACTIVITY_CATEGORY:
@@ -754,7 +771,6 @@ def get_group_activity_xblock(activity):
 
 
 def generate_course_report(client_id, course_id, url_prefix, students):
-
     output_lines = []
 
     client = Client.fetch(client_id)
@@ -777,15 +793,16 @@ def generate_course_report(client_id, course_id, url_prefix, students):
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    activity_names_row = ["Client Name","","Course ID",""]
+    activity_names_row = ["Client Name", "", "Course ID", ""]
     output_line(activity_names_row)
 
-    group_header_row = [client.name,"", course_id]
+    group_header_row = [client.name, "", course_id]
     output_line(group_header_row)
 
     output_line("--------")
 
-    activity_names_row = ["Full Name","Username","Title","Email", "Progress %", "Engagement", "Proficiency", "Course Completed"]
+    activity_names_row = ["Full Name", "Username", "Title", "Email", "Progress %", "Engagement", "Proficiency",
+                          "Course Completed"]
     output_line(activity_names_row)
 
     for student in students:
@@ -822,11 +839,16 @@ def get_course_metrics_for_organization(course_id, client_id):
         metrics.percent_completed = int(float(metrics.users_grade_complete_count) / int(metrics.users_enrolled) * 100)
     return metrics
 
+
 def get_course_analytics_progress_data(course, course_modules, client_id=None):
     if client_id:
-        users_count = len({u['id']:u['username'] for u in course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,username', 'organizations': client_id})})
+        users_count = len({u['id']: u['username'] for u in course_api.get_course_details_users(course.id,
+                                                                                               {'page_size': 0,
+                                                                                                'fields': 'id,username',
+                                                                                                'organizations': client_id})})
     else:
-        users_count = len({u['id']:u['username'] for u in course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,username'})})
+        users_count = len({u['id']: u['username'] for u in
+                           course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,username'})})
     total = users_count * len(course_modules)
     start_date = course.start
     end_date = datetime.now()
@@ -837,7 +859,7 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
         metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, organization=client_id)
     else:
         metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date)
-    metricsJson = [[0,0]]
+    metricsJson = [[0, 0]]
     day = 1
     mod_completed = 0
     for i, metric in enumerate(metrics.modules_completed):
@@ -847,8 +869,8 @@ def get_course_analytics_progress_data(course, course_modules, client_id=None):
 
     return metricsJson
 
-def get_course_details_progress_data(course, course_modules, users, company_id):
 
+def get_course_details_progress_data(course, course_modules, users, company_id):
     start_date = course.start
     end_date = datetime.now()
     if course.end is not None:
@@ -856,7 +878,8 @@ def get_course_details_progress_data(course, course_modules, users, company_id):
             end_date = course.end
     delta = end_date - start_date
     if company_id:
-        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days', organization=company_id)
+        metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days',
+                                                            organization=company_id)
     else:
         metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days')
 
@@ -875,8 +898,8 @@ def get_course_details_progress_data(course, course_modules, users, company_id):
 
     engaged_total = engaged_total * len(course_modules)
 
-    metricsJsonAll = [[0,0]]
-    metricsJsonEng = [[0,0]]
+    metricsJsonAll = [[0, 0]]
+    metricsJsonEng = [[0, 0]]
 
     day = 1
     mod_completed = 0
@@ -894,6 +917,7 @@ def get_course_details_progress_data(course, course_modules, users, company_id):
 
     return metricsJsonAll, metricsJsonEng
 
+
 def get_contacts_for_client(client_id):
     groups = Client.fetch_contact_groups(client_id)
 
@@ -909,8 +933,8 @@ def get_contacts_for_client(client_id):
 
     return contacts
 
-def get_admin_users(organizations, org_id, ADMINISTRATIVE):
 
+def get_admin_users(organizations, org_id, ADMINISTRATIVE):
     users = []
     additional_fields = ["organizations"]
 
@@ -923,7 +947,7 @@ def get_admin_users(organizations, org_id, ADMINISTRATIVE):
         admin_users = []
         if admin_company and admin_company.users:
             ids = [str(id) for id in admin_company.users]
-            admin_users = user_api.get_users(ids=ids,fields=additional_fields)
+            admin_users = user_api.get_users(ids=ids, fields=additional_fields)
 
         users.extend(admin_users)
 
@@ -934,6 +958,7 @@ def get_admin_users(organizations, org_id, ADMINISTRATIVE):
             users = user_api.get_users(ids=ids, fields=additional_fields)
 
     return users
+
 
 def get_program_data_for_report(client_id, program_id=None):
     programs = Client.fetch(client_id).fetch_programs()
@@ -973,7 +998,7 @@ def get_accessible_programs(user, restrict_to_programs_ids):
         programs = [
             program for program in programs
             if program.id in restrict_to_programs_ids
-    ]
+        ]
 
     if not any([user.is_mcka_admin, user.is_client_admin, user.is_internal_admin, user.is_mcka_subadmin]):
         # User is a TA. They'll need to be scoped only to the courses they're a TA on, not just enrolled in.
@@ -1032,8 +1057,8 @@ def get_accessible_courses_from_program(user, program_id, restrict_to_courses_id
         courses = [
             course for course in courses if USER_ROLES.TA in [
                 role.role for role in roles if role.course_id == course.course_id
-                ]
             ]
+        ]
 
     if restrict_to_courses_ids:
         courses = [course for course in courses if course.course_id in restrict_to_courses_ids]
@@ -1088,8 +1113,8 @@ _QuickLinkWithRelatedObjs = collections.namedtuple(
     "_QuickLinkWithRelatedObjs", ['quick_link', 'program', 'course', 'group_work', 'client']
 )
 
-def _get_quick_link_related_objects(quick_link):
 
+def _get_quick_link_related_objects(quick_link):
     """
     Queries API for object relatred with this quick link
 
@@ -1121,11 +1146,11 @@ def _get_quick_link_related_objects(quick_link):
         # If group project can't be found we'll return quick link without
         # the group project
         if len(group_projects) > 0:
-             group_work = group_projects[0]
+            group_work = group_projects[0]
 
     if quick_link.company_id is not None:
         client = Client.fetch(quick_link.company_id)
-        client  = client
+        client = client
 
     return _QuickLinkWithRelatedObjs(
         quick_link=quick_link, course=course, program=program,
@@ -1185,9 +1210,9 @@ def round_to_int_bump_zero(value):
 
 
 def get_course_social_engagement(course_id, company_id):
-
     if company_id:
-        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id', 'organizations': company_id})
+        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id',
+                                                                              'organizations': company_id})
     else:
         course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id'})
     course_users_ids = [str(user['id']) for user in course_users_simple]
@@ -1209,31 +1234,35 @@ def get_course_social_engagement(course_id, company_id):
         if str(user) in course_users_ids:
             user_data = course_metrics_social['users'][str(user)]
             number_of_participants_posting += 1
-            number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data['num_comments']
+            number_of_posts_per_participant = user_data['num_threads'] + user_data['num_replies'] + user_data[
+                'num_comments']
             number_of_posts += number_of_posts_per_participant
 
     if number_of_users:
-        participants_posting = str(round_to_int_bump_zero(float(number_of_participants_posting)*100/number_of_users)) + '%'
-        avg_posts = round(float(number_of_posts)/number_of_users, 1)
+        participants_posting = str(
+            round_to_int_bump_zero(float(number_of_participants_posting) * 100 / number_of_users)) + '%'
+        avg_posts = round(float(number_of_posts) / number_of_users, 1)
     else:
         participants_posting = 0
         avg_posts = 0
 
     course_stats = [
-        { 'name': '# of posts', 'value': number_of_posts},
-        { 'name': '% participants posting', 'value': participants_posting},
-        { 'name': 'Avg posts per participant', 'value': avg_posts}
+        {'name': '# of posts', 'value': number_of_posts},
+        {'name': '% participants posting', 'value': participants_posting},
+        {'name': 'Avg posts per participant', 'value': avg_posts}
     ]
 
     return course_stats
 
 
 def get_course_engagement_summary(course_id, company_id):
-
     if company_id:
-        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active,last_login', 'organizations': company_id})
+        course_users_simple = course_api.get_course_details_users(course_id,
+                                                                  {'page_size': 0, 'fields': 'id,is_active,last_login',
+                                                                   'organizations': company_id})
     else:
-        course_users_simple = course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,is_active,last_login'})
+        course_users_simple = course_api.get_course_details_users(course_id,
+                                                                  {'page_size': 0, 'fields': 'id,is_active,last_login'})
 
     course_users_ids = [str(user['id']) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
@@ -1266,7 +1295,7 @@ def get_course_engagement_summary(course_id, company_id):
         if course_user['is_active'] is True:
             active_users += 1
         if course_user['last_login'] and \
-                parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
+                        parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
             login_users += 1
             for leader in course_metrics['leaders']:
                 if leader['id'] == course_user['id']:
@@ -1274,19 +1303,24 @@ def get_course_engagement_summary(course_id, company_id):
         if str(course_user['id']) in course_leaders_ids:
             engaged_users += 1
 
-    course_progress = round_to_int_bump_zero(float(engaged_progress_sum)/len(course_users)) if len(course_users) > 0 else 0
-    activated = round_to_int_bump_zero((float(active_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
-    engaged = round_to_int_bump_zero((float(engaged_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
-    active_progress = round_to_int_bump_zero(float(engaged_progress_sum)/active_users) if active_users > 0 else 0
-    engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum)/engaged_users) if engaged_users > 0 else 0
-    logined_users = round_to_int_bump_zero((float(login_users)/len(course_users)) * 100) if len(course_users) > 0 else 0
-    login_progress = round_to_int_bump_zero((float(login_users_progress)/login_users)) if login_users > 0 else 0
+    course_progress = round_to_int_bump_zero(float(engaged_progress_sum) / len(course_users)) if len(
+        course_users) > 0 else 0
+    activated = round_to_int_bump_zero((float(active_users) / len(course_users)) * 100) if len(course_users) > 0 else 0
+    engaged = round_to_int_bump_zero((float(engaged_users) / len(course_users)) * 100) if len(course_users) > 0 else 0
+    active_progress = round_to_int_bump_zero(float(engaged_progress_sum) / active_users) if active_users > 0 else 0
+    engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum) / engaged_users) if engaged_users > 0 else 0
+    logined_users = round_to_int_bump_zero((float(login_users) / len(course_users)) * 100) if len(
+        course_users) > 0 else 0
+    login_progress = round_to_int_bump_zero((float(login_users_progress) / login_users)) if login_users > 0 else 0
 
     course_stats = [
-         { 'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
-         { 'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
-         { 'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
-         { 'name': 'Logged in over last 7 days', 'people': login_users, 'invited': str(logined_users) + '%', 'progress': str(login_progress) + '%'}
+        {'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
+        {'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%',
+         'progress': str(active_progress) + '%'},
+        {'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%',
+         'progress': str(engaged_progress) + '%'},
+        {'name': 'Logged in over last 7 days', 'people': login_users, 'invited': str(logined_users) + '%',
+         'progress': str(login_progress) + '%'}
     ]
 
     return course_stats
@@ -1294,8 +1328,8 @@ def get_course_engagement_summary(course_id, company_id):
 
 def course_bulk_actions(course_id, data, batch_status, request):
     batch_status.clean_old()
-    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-    _thread.daemon = True # so we can exit
+    _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
+    _thread.daemon = True  # so we can exit
     _thread.start()
     course_bulk_action(course_id, data, batch_status, request)
 
@@ -1308,12 +1342,13 @@ def course_bulk_action(course_id, data, batch_status, request):
             batch_status.save()
         for status_item in data['list_of_items']:
             status = change_user_status(course_id, data['new_status'], status_item)
-            if (status['status']=='error'):
+            if (status['status'] == 'error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()
-                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
-            elif (status['status']=='success'):
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key,
+                                                user_id=int(status_item['id']))
+            elif (status['status'] == 'success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
                     batch_status.save()
@@ -1323,12 +1358,13 @@ def course_bulk_action(course_id, data, batch_status, request):
             batch_status.save()
         for status_item in data['list_of_items']:
             status = unenroll_participant(course_id, status_item)
-            if (status['status']=='error'):
+            if (status['status'] == 'error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()
-                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
-            elif (status['status']=='success'):
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key,
+                                                user_id=int(status_item['id']))
+            elif (status['status'] == 'success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
                     batch_status.save()
@@ -1338,12 +1374,13 @@ def course_bulk_action(course_id, data, batch_status, request):
             batch_status.save()
         for status_item in data['list_of_items']:
             status = _enroll_participant_with_status(data['course_id'], status_item['id'], data['new_status'])
-            if (status['status']=='error'):
+            if (status['status'] == 'error'):
                 if batch_status is not None:
                     batch_status.failed = batch_status.failed + 1
                     batch_status.save()
-                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key, user_id=int(status_item['id']))
-            elif (status['status']=='success'):
+                    BatchOperationErrors.create(error=status["message"], task_key=batch_status.task_key,
+                                                user_id=int(status_item['id']))
+            elif (status['status'] == 'success'):
                 if batch_status is not None:
                     batch_status.succeded = batch_status.succeded + 1
                     batch_status.save()
@@ -1363,33 +1400,33 @@ def _enroll_participant_with_status(course_id, user_id, status):
             "message": e.message
         }
     if failure:
-        return {'status':'error', 'message':e.message}
+        return {'status': 'error', 'message': e.message}
     try:
         permissions = Permissions(user_id)
-        if status != 'Active' :
-            permissions.update_course_role(course_id,permissonsMap[status])
+        if status != 'Active':
+            permissions.update_course_role(course_id, permissonsMap[status])
     except ApiError as e:
         failure = {
             "status": 'error',
             "message": e.message
         }
     if failure:
-        return {'status':'error', 'message':e.message}
+        return {'status': 'error', 'message': e.message}
 
-    return {'status':'success'}
+    return {'status': 'success'}
 
 
 def unenroll_participant(course_id, user_id):
     try:
         permissions = Permissions(user_id)
         permissions.remove_all_course_roles(course_id)
-        user_groups = user_api.get_user_workgroups(user_id,course_id)
+        user_groups = user_api.get_user_workgroups(user_id, course_id)
         for group in user_groups:
             workgroup_api.remove_user_from_workgroup(vars(group)['id'], user_id)
         user_api.unenroll_user_from_course(user_id, course_id)
     except ApiError as e:
-        return {'status':'error', 'message':e.message}
-    return {'status':'success'}
+        return {'status': 'error', 'message': e.message}
+    return {'status': 'success'}
 
 
 def change_user_status(course_id, new_status, status_item):
@@ -1399,15 +1436,15 @@ def change_user_status(course_id, new_status, status_item):
     }
     try:
         permissions = Permissions(status_item['id'])
-        permissions.update_course_role(course_id,permissonsMap.get(new_status, ""))
+        permissions.update_course_role(course_id, permissonsMap.get(new_status, ""))
     except ApiError as e:
-        return {'status':'error', 'message':e.message}
-    return {'status':'success'}
+        return {'status': 'error', 'message': e.message}
+    return {'status': 'success'}
 
 
 def get_course_users_roles(course_id, permissions_filter_list):
     course_roles_users = course_api.get_users_filtered_by_role(course_id)
-    user_roles_list = {'ids':[],'data':[]}
+    user_roles_list = {'ids': [], 'data': []}
     for course_role in course_roles_users:
         roleData = vars(course_role)
         if permissions_filter_list:
@@ -1423,7 +1460,6 @@ def get_course_users_roles(course_id, permissions_filter_list):
 
 
 def get_user_courses_helper(user_id, request):
-
     user_courses = []
     allCourses = user_api.get_courses_from_user(user_id)
 
@@ -1434,8 +1470,8 @@ def get_user_courses_helper(user_id, request):
         user_course['program'] = '-'
         user_course['progress'] = "."
         user_course['proficiency'] = "."
-        user_course['completed'] ='N/A'
-        user_course['grade'] ='N/A'
+        user_course['completed'] = 'N/A'
+        user_course['grade'] = 'N/A'
         user_course['status'] = 'Active'
         user_course['unenroll'] = 'Unenroll'
         user_course['start'] = course['start']
@@ -1454,8 +1490,8 @@ def get_user_courses_helper(user_id, request):
             user_course['program'] = '-'
             user_course['progress'] = "."
             user_course['proficiency'] = "."
-            user_course['completed'] ='N/A'
-            user_course['grade'] ='N/A'
+            user_course['completed'] = 'N/A'
+            user_course['grade'] = 'N/A'
             user_course['start'] = course['start']
             if course['end'] is not None:
                 user_course['end'] = course['end']
@@ -1468,7 +1504,8 @@ def get_user_courses_helper(user_id, request):
             user_course['unenroll'] = 'Unenroll'
             user_courses.append(user_course)
         else:
-            user_course = (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id']).next()
+            user_course = (user_course for user_course in user_courses if
+                           user_course["id"] == vars(role)['course_id']).next()
             if user_course['status'] != 'TA':
                 if vars(role)['role'] == 'observer':
                     user_course['status'] = 'Observer'
@@ -1499,6 +1536,7 @@ def get_user_courses_helper(user_id, request):
 
     return active_courses, course_history
 
+
 def get_course_progress(course_id, exclude_users, company_id=None):
     '''
     Helper method for calculating user pogress on course.
@@ -1523,14 +1561,15 @@ def get_course_progress(course_id, exclude_users, company_id=None):
 
 
 def import_participants_threaded(student_list, request, reg_status):
-    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-    _thread.daemon = True # so we can exit
+    _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
+    _thread.daemon = True  # so we can exit
     _thread.start()
     process_import_participants_list(student_list, request, reg_status)
 
+
 def enroll_participants_threaded(student_list, request, reg_status):
-    _thread = threading.Thread(target = _worker) # one is enough; it's postponed after all
-    _thread.daemon = True # so we can exit
+    _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
+    _thread.daemon = True  # so we can exit
     _thread.start()
     process_enroll_participants_list(student_list, request, reg_status)
 
@@ -1624,7 +1663,6 @@ def _process_line_enroll_participants_csv(user_line):
 
 
 def _enroll_participants(participants, request, reg_status):
-
     permissonsMap = {
         'ta': USER_ROLES.TA,
         'observer': USER_ROLES.OBSERVER
@@ -1650,14 +1688,15 @@ def _enroll_participants(participants, request, reg_status):
         email = user_dict.get('email', '')
 
         try:
-            #Check for empty fields
-            for key,value in user_dict.items():
+            # Check for empty fields
+            for key, value in user_dict.items():
                 if str(value).strip() == '':
                     if key == 'email':
                         email = "No email"
                     if key != 'username':
-                        check_errors.append({'reason': 'Empty field: {}'.format(key), 'activity': 'Processing Participant'})
-            #Check if email is valid
+                        check_errors.append(
+                            {'reason': 'Empty field: {}'.format(key), 'activity': 'Processing Participant'})
+            # Check if email is valid
             try:
                 validate_email(user_email)
             except ValidationError:
@@ -1670,34 +1709,39 @@ def _enroll_participants(participants, request, reg_status):
                 if check_user_email['count'] == 1:
                     check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
                 else:
-                    #Check if username already exist
+                    # Check if username already exist
                     check_user_username = user_api.get_user_by_username(username)
                     if check_user_username['count'] == 1:
                         check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
-            #Check if client exist
+            # Check if client exist
             try:
                 client = Client.fetch(client_id)
             except ApiError as e:
                 if e.message == 'NOT FOUND':
-                    check_errors.append({'reason': "Company doesn't exist", 'activity': 'Enrolling Participant in Company'})
+                    check_errors.append(
+                        {'reason': "Company doesn't exist", 'activity': 'Enrolling Participant in Company'})
                 else:
-                    check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Company'})
-            #Check if course exist
+                    check_errors.append(
+                        {'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Company'})
+            # Check if course exist
             try:
                 course = course_api.get_course_details(course_id)
             except ApiError as e:
                 if e.message == 'NOT FOUND':
-                    check_errors.append({'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
+                    check_errors.append(
+                        {'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
                 else:
-                    check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
-            #For Internal Admin Check if Course Is Internal
+                    check_errors.append(
+                        {'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
+            # For Internal Admin Check if Course Is Internal
             if internalAdminFlag:
                 if not check_if_course_is_internal(course_id):
-                    check_errors.append({'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
-            #Check if status exist
+                    check_errors.append(
+                        {'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
+            # Check if status exist
             if status not in status_check:
                 check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
-            #If errors exist add them, else continue
+            # If errors exist add them, else continue
             if check_errors:
                 for error in check_errors:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
@@ -1707,31 +1751,32 @@ def _enroll_participants(participants, request, reg_status):
                     ))
             else:
                 try:
-                    #Register Participant
+                    # Register Participant
                     try:
                         user = user_api.register_user(user_dict)
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), 'Registering Participant')
-                    #Enroll Participant in Client
+                    # Enroll Participant in Client
                     try:
                         client.add_user(user.id)
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), 'Enrolling Participant in Company')
-                    #Create Activation Record for Participant
+                    # Create Activation Record for Participant
                     if not user.is_active:
-                        activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key, client_id)
+                        activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key,
+                                                                                       client_id)
                     if not activation_record:
                         raise ValueError('Activation record error', 'Registering Participant')
-                    #Enroll Participant in Course
+                    # Enroll Participant in Course
                     try:
                         user_api.enroll_user_in_course(user.id, course_id)
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
-                    #Set Participant Status on Course
+                    # Set Participant Status on Course
                     try:
                         permissions = SlimAddingPermissions(user.id)
-                        if status != 'active' :
-                            permissions.add_course_role(course_id,permissonsMap[status])
+                        if status != 'active':
+                            permissions.add_course_role(course_id, permissonsMap[status])
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), "Setting Participant's Status")
                 except ValueError as e:
@@ -1758,7 +1803,6 @@ def _enroll_participants(participants, request, reg_status):
 
 
 def _just_enroll_participants(participants, request, reg_status):
-
     permissonsMap = {
         'ta': USER_ROLES.TA,
         'observer': USER_ROLES.OBSERVER
@@ -1778,37 +1822,41 @@ def _just_enroll_participants(participants, request, reg_status):
         user_email = user_dict.get('email', '').strip()
         email = user_dict.get('email', '').strip()
         try:
-            #Check for empty fields
-            for key,value in user_dict.items():
+            # Check for empty fields
+            for key, value in user_dict.items():
                 if str(value).strip() == '':
                     if key == 'email':
                         email = "No email"
                     check_errors.append({'reason': 'Empty field: {}'.format(key), 'activity': 'Processing Participant'})
-            #Check if email is valid
+            # Check if email is valid
             try:
                 validate_email(user_email)
             except ValidationError:
-                check_errors.append({'reason': 'Valid e-mail is required: '+user_email, 'activity': 'Processing Participant'})
-            #Check if user already exist
+                check_errors.append(
+                    {'reason': 'Valid e-mail is required: ' + user_email, 'activity': 'Processing Participant'})
+            # Check if user already exist
             user_data = user_api.get_user_by_email(user_email)
             if user_data['count'] == 0:
                 check_errors.append({'reason': "User doesn't exist", 'activity': 'Processing Participant'})
-            #Check if course exist
+            # Check if course exist
             try:
                 course = course_api.get_course_details(course_id)
             except ApiError as e:
                 if e.message == 'NOT FOUND':
-                    check_errors.append({'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
+                    check_errors.append(
+                        {'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
                 else:
-                    check_errors.append({'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
-            #For Internal Admin Check if Course Is Internal
+                    check_errors.append(
+                        {'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
+            # For Internal Admin Check if Course Is Internal
             if internalAdminFlag:
                 if not check_if_course_is_internal(course_id):
-                    check_errors.append({'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
-            #Check if status exist
+                    check_errors.append(
+                        {'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
+            # Check if status exist
             if status not in status_check:
                 check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
-            #If errors exist add them, else continue
+            # If errors exist add them, else continue
             if check_errors:
                 for error in check_errors:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
@@ -1818,16 +1866,16 @@ def _just_enroll_participants(participants, request, reg_status):
                     ))
             else:
                 try:
-                    #Enroll Participant in Course
+                    # Enroll Participant in Course
                     try:
                         user_api.enroll_user_in_course(user_data["results"][0]["id"], course_id)
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
-                    #Set Participant Status on Course
+                    # Set Participant Status on Course
                     try:
                         permissions = Permissions(user_data["results"][0]["id"])
-                        if status != 'active' :
-                            permissions.add_course_role(course_id,permissonsMap[status])
+                        if status != 'active':
+                            permissions.add_course_role(course_id, permissonsMap[status])
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), "Setting Participant's Status")
                 except ValueError as e:
@@ -1859,9 +1907,10 @@ def _send_activation_email_to_single_new_user(activation_record, user, absolute_
     return result
 
 
-def _send_multiple_emails(from_email = None, to_email_list = None, subject = None, email_body = None, template_id = None, optional_data = None):
+def _send_multiple_emails(from_email=None, to_email_list=None, subject=None, email_body=None, template_id=None,
+                          optional_data=None):
     if template_id:
-        template = EmailTemplate.objects.get(pk = template_id)
+        template = EmailTemplate.objects.get(pk=template_id)
         subject = template.subject
         email_body = template.body
 
@@ -1881,50 +1930,52 @@ def _send_multiple_emails(from_email = None, to_email_list = None, subject = Non
 
 
 def _parse_email_text_template(text_body, optional_data=None):
-
     parsed = {"parsable": False}
     parsed["proccessed_email_data"] = []
     if text_body and optional_data:
         list_of_keywords = ["FIRST_NAME", "LAST_NAME", "PROGRESS", "PROFICIENCY", "SOCIAL_ENGAGEMENT", "COMPANY"]
-        list_of_found = [False,False,False,False,False,False]
-        set_of_delimiter = [["&lt;&lt;","&gt;&gt;"], ["<<",">>"]]
+        list_of_found = [False, False, False, False, False, False]
+        set_of_delimiter = [["&lt;&lt;", "&gt;&gt;"], ["<<", ">>"]]
         use_delimiter = 0
         for keyword in list_of_keywords:
             for delimiter in set_of_delimiter:
-                delimiter_construct = delimiter[0]+"{}"+delimiter[1]
+                delimiter_construct = delimiter[0] + "{}" + delimiter[1]
                 if text_body.find(delimiter_construct.format(keyword)) > -1:
                     parsed["parsable"] = True
                     list_of_found[list_of_keywords.index(keyword)] = True
                     use_delimiter = set_of_delimiter.index(delimiter)
         if parsed["parsable"]:
             delimiter = set_of_delimiter[use_delimiter]
-            delimiter_construct = delimiter[0]+"{}"+delimiter[1]
+            delimiter_construct = delimiter[0] + "{}" + delimiter[1]
             temp_text_parsed = text_body
             for keyword in list_of_keywords:
-                temp_text_parsed = temp_text_parsed.replace(delimiter_construct.format(keyword), "{{"+keyword.lower()+"}}")
+                temp_text_parsed = temp_text_parsed.replace(delimiter_construct.format(keyword),
+                                                            "{{" + keyword.lower() + "}}")
             string_template = CustomTemplate(temp_text_parsed)
-            for user in optional_data.get("user_list",[]):
+            for user in optional_data.get("user_list", []):
                 temp_text = text_body
                 constructed_vars = {}
                 for keyword in list_of_keywords:
                     if list_of_found[list_of_keywords.index(keyword)]:
                         if keyword == "FIRST_NAME":
                             constructed_vars[keyword.lower()] = user["first_name"]
-                        elif  keyword == "LAST_NAME":
+                        elif keyword == "LAST_NAME":
                             constructed_vars[keyword.lower()] = user["last_name"]
-                        elif  keyword == "PROGRESS":
-                            constructed_vars[keyword.lower()] = str(int(user.get("progress",0)))+"%"
-                        elif  keyword == "PROFICIENCY":
-                            constructed_vars[keyword.lower()] = str(int(user.get("proficiency",0)))+"%"
-                        elif  keyword == "SOCIAL_ENGAGEMENT":
-                            social_engagement_data = user_api.get_course_social_metrics(user["id"], optional_data["course_id"])
+                        elif keyword == "PROGRESS":
+                            constructed_vars[keyword.lower()] = str(int(user.get("progress", 0))) + "%"
+                        elif keyword == "PROFICIENCY":
+                            constructed_vars[keyword.lower()] = str(int(user.get("proficiency", 0))) + "%"
+                        elif keyword == "SOCIAL_ENGAGEMENT":
+                            social_engagement_data = user_api.get_course_social_metrics(user["id"],
+                                                                                        optional_data["course_id"])
                             if social_engagement_data:
-                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(social_engagement_data.num_threads,
+                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(
+                                    social_engagement_data.num_threads,
                                     social_engagement_data.num_comments, social_engagement_data.num_replies)
-                        elif  keyword == "COMPANY":
+                        elif keyword == "COMPANY":
                             constructed_vars[keyword.lower()] = user["organization_name"]
                 temp_text = string_template.safe_substitute(constructed_vars)
-                parsed["proccessed_email_data"].append({"email_body":temp_text, "email": user["email"]})
+                parsed["proccessed_email_data"].append({"email_body": temp_text, "email": user["email"]})
         return parsed
 
 
@@ -1937,7 +1988,6 @@ def send_activation_emails_by_task_key(request, task_key):
 
 
 def get_company_active_courses(company_courses):
-
     active_courses = []
     for company_course in company_courses:
         if timezone.now() >= parsedate(company_course['start']):
@@ -1950,12 +2000,11 @@ def get_company_active_courses(company_courses):
 
 
 def validate_company_display_name(company_display_name):
-
     company = organization_api.get_organization_by_display_name(urllib.quote_plus(company_display_name))
     if company['count'] != 0:
         return {'status': 'error', 'message': 'This company already exists!'}
 
-    return {'status': 'ok', 'message':'Company Validation Success!'}
+    return {'status': 'ok', 'message': 'Company Validation Success!'}
 
 
 def get_internal_courses_ids():
@@ -1978,7 +2027,6 @@ def get_internal_courses_list():
 
 
 def check_if_course_is_internal(course_id):
-
     internal_ids = get_internal_courses_ids()
     if str(course_id) in internal_ids:
         return True
@@ -1986,7 +2034,6 @@ def check_if_course_is_internal(course_id):
 
 
 def check_if_user_is_internal(user_id):
-
     user_courses = user_api.get_courses_from_user(user_id)
     internal_ids = get_internal_courses_ids()
     for course in user_courses:
@@ -2005,12 +2052,13 @@ class CustomTemplate(string.Template):
     (?P<invalid>)
     )'''
 
+
 def student_list_chunks_tracker(data, client_id, activation_link):
     default_chunk_size = 100
     respone_data = {}
 
     if data.get("task_id", None):
-        cached_student_progress = cache.get('student-list-'+data["task_id"], None)
+        cached_student_progress = cache.get('student-list-' + data["task_id"], None)
 
         if cached_student_progress:
             chunk_count = int(cached_student_progress.get("chunk_count", 0))
@@ -2022,12 +2070,15 @@ def student_list_chunks_tracker(data, client_id, activation_link):
                 if users_ids == []:
                     user_list = []
                 else:
-                    additional_fields = ["title","city","country","first_name","last_name"]
-                    user_list = user_api.get_users(ids=users_ids,fields=additional_fields)
-                user_strings = [_formatted_user_array(get_user_with_activation(user, activation_link)) for user in user_list]
-                return {"task_id": data["task_id"], "chunk_count": chunk_count, "chunk_request": chunk_request+1,
-                        "chunk_size": cached_student_progress.get("chunk_size", default_chunk_size), "file_name": cached_student_progress.get("file_name", "download.csv"),
-                        "element_count": cached_student_progress.get("element_count", 0), "data": user_strings, "status": "csv_chunk_sent"}
+                    additional_fields = ["title", "city", "country", "first_name", "last_name"]
+                    user_list = user_api.get_users(ids=users_ids, fields=additional_fields)
+                user_strings = [_formatted_user_array(get_user_with_activation(user, activation_link)) for user in
+                                user_list]
+                return {"task_id": data["task_id"], "chunk_count": chunk_count, "chunk_request": chunk_request + 1,
+                        "chunk_size": cached_student_progress.get("chunk_size", default_chunk_size),
+                        "file_name": cached_student_progress.get("file_name", "download.csv"),
+                        "element_count": cached_student_progress.get("element_count", 0), "data": user_strings,
+                        "status": "csv_chunk_sent"}
             else:
                 return {"status": "error", "message": "You have sent incorrect chunk number!"}
         else:
@@ -2044,24 +2095,26 @@ def student_list_chunks_tracker(data, client_id, activation_link):
             client = Client.fetch(client_id)
             file_name = unicode("Student List for {} on {}.csv".format(client.display_name, datetime.now().isoformat()))
 
-            user_list_chunked = [user_list[i:i+chunk_size] for i in xrange(0, len(user_list), chunk_size)]
+            user_list_chunked = [user_list[i:i + chunk_size] for i in xrange(0, len(user_list), chunk_size)]
             cached_data["chunk_count"] = len(user_list_chunked);
             cached_data["list_chunked"] = user_list_chunked
             cached_data["element_count"] = len(user_list)
             cached_data["chunk_size"] = chunk_size
             cached_data["file_name"] = file_name
-            cache.set('student-list-'+unique_id, cached_data)
+            cache.set('student-list-' + unique_id, cached_data)
         else:
             return {"status": "error", "message": "There are no users in organization!"}
 
-        return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size, "element_count": len(user_list), "status": "csv_task_created",
-                "file_name":file_name}
+        return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size,
+                "element_count": len(user_list), "status": "csv_task_created",
+                "file_name": file_name}
 
 
 def construct_users_list(enrolled_users, registration_requests):
     '''
     Returns users list of dictionaries with activation and enrollment status
     '''
+
     def check_user_status(registration_request):
         for user in enrolled_users:
             if user['email'] == registration_request.company_email:
@@ -2113,9 +2166,9 @@ class CourseParticipantStats(object):
         based on `request_params`
         """
         self.request_params = request_params
-        participants, lesson_completion = self._retrieve_api_data()
+        participants, lesson_completion, participants_engagement_lookup = self._retrieve_api_data()
 
-        return self._process_results(participants, lesson_completion)
+        return self._process_results(participants, lesson_completion, participants_engagement_lookup)
 
     @property
     def additional_fields(self):
@@ -2127,7 +2180,23 @@ class CourseParticipantStats(object):
         """
         course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
         lesson_completions = self._get_lesson_completions(course_participants)
-        return course_participants, lesson_completions
+        participants_engagement_lookup = self._get_engagement_scores()
+        return course_participants, lesson_completions, participants_engagement_lookup
+
+    def _get_engagement_scores(self):
+        """
+        Returns engagement score for all participants in the course.
+        """
+        course_social_metrics = course_api.get_course_social_metrics(self.course_id)
+        participants_engagement_lookup = {}
+        users_social_metrics = vars(course_social_metrics.users)
+        for u_id, user_metrics in users_social_metrics.iteritems():
+            engagement_score = 0
+            for metric, metric_points in settings.SOCIAL_METRIC_POINTS.iteritems():
+                engagement_score += getattr(user_metrics, metric, 0) * metric_points
+            participants_engagement_lookup[str(u_id)] = engagement_score
+
+        return participants_engagement_lookup
 
     def _get_lesson_completions(self, course_participants):
         """
@@ -2147,7 +2216,7 @@ class CourseParticipantStats(object):
             except Exception as e:
                 _logger.error(
                     'Lesson completion retrieval failed for participant `{}` with message: `{}`'
-                    .format(user['id'], e.message)
+                        .format(user['id'], e.message)
                 )
                 lesson_completions[user['id']] = None
 
@@ -2178,7 +2247,7 @@ class CourseParticipantStats(object):
         if users:
             return users[0]
 
-    def _process_results(self, participants, lesson_completions=None):
+    def _process_results(self, participants, lesson_completions=None, participants_engagement_lookup=None):
         """
         Integrates and process results set
         """
@@ -2233,6 +2302,8 @@ class CourseParticipantStats(object):
                 course_participant['progress'] = '{:03d}'.format(progress)
             else:
                 course_participant['progress'] = "000"
+
+            course_participant['engagement'] = participants_engagement_lookup.get(str(course_participant['id']), 0)
 
             if course_participant.get('grades', {}).get('grade'):
                 proficiency = round_to_int(course_participant['grades']['grade'] * 100)
