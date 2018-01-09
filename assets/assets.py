@@ -30,7 +30,7 @@ js_ie8_files.extend([
     'js/vendor/underscore.js',
     'js/vendor/backbone.js',
     'js/vendor/Backbone.CrossDomain.js',
-    'js/vendor/backbone.paginator.js', 
+    'js/vendor/backbone.paginator.js',
     #'js/vendor/d3.v3.js',
     #'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
@@ -159,3 +159,34 @@ CSS_IE8 = Bundle(
     output='gen/packed_ie8.css'
 )
 register('css_ie8', CSS_IE8)
+
+# Internationalization CSS
+SCSS_RTL = Bundle(
+    'scss/rtl.scss',
+    filters='libsass',
+    output='gen/rtl.css',
+    depends=('scss/**/*.scss')
+)
+register('scss_rtl', SCSS_RTL)
+
+CSS_RTL = Bundle(
+    SCSS_RTL,
+    filters='cssmin',
+    output='gen/packed_rtl.css'
+)
+register('css_rtl', CSS_CORE)
+
+SCSS_LTR = Bundle(
+    'scss/ltr.scss',
+    filters='libsass',
+    output='gen/ltr.css',
+    depends=('scss/**/*.scss')
+)
+register('scss_ltr', SCSS_LTR)
+
+CSS_LTR = Bundle(
+    SCSS_LTR,
+    filters='cssmin',
+    output='gen/packed_ltr.css'
+)
+register('css_ltr', CSS_LTR)
