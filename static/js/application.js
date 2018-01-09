@@ -284,25 +284,26 @@ $(function(){
     }
   });
 
+  $.xblock.getRuntime().listenTo("xblock.interaction", function(event, data) {
+    if (SCORM_SHELL) {
+      var interaction_data = {
+          "type": "data",
+          "course_id": scorm_data.courseId,
+          "assessment": {
+              "lesson-id": scorm_data.lessonId,
+              "module-id": scorm_data.moduleId,
+              "attempts-count": data.attempts_count,
+              "attempts-max": data.attempts_max,
+              "score": data.score
+          }
+      };
+      SendMessageToSCORMShell(JSON.stringify(interaction_data));
+    }
+  });
+
   $.xblock.getRuntime().listenTo('xblock-rendered', function(event, rendered_xblock) {
     if (SCORM_SHELL)
     {
-      $(".submit .input-review").on('click', function(event, data){
-        var timeout_waiting = false;
-        var waiting_review = setInterval(function(){
-          if (timeout_waiting)
-            clearInterval(waiting_review);
-
-          var data = ParseReviewStep();
-          if (data)
-          {
-            clearInterval(waiting_review);
-            SendMessageToSCORMShell(JSON.stringify(data));
-          }
-        }, 300);
-        setTimeout(function(){timeout_waiting=true;}, 10000);
-      });
-
       var counter = 0;
       var progress_tracker = setInterval(function()
         {
