@@ -4,7 +4,7 @@
 ''' forms for login and activation '''
 import datetime, re
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.core.validators import validate_email, RegexValidator
 from django.core.exceptions import ValidationError
@@ -298,12 +298,12 @@ READ_ONLY_IF_DATA_FIELDS = ["company", "full_name"]
 DISABLED_IF_DATA_FIELDS = []
 
 CURRENT_ROLE = (
-        (u'Senior Executive', u'Senior Executive (e.g. SVP+)'),
-        (u'Seasoned Leader/Senior Manager', u'Seasoned Leader/Senior Manager (e.g. Director, VP)'),
-        (u'Mid-Level Manager', u'Mid-Level Manager (e.g. Manager, Senior Manager)'),
-        (u'Early Career Professional', u'Early Career Professional (e.g. Analyst/Associate)'),
-        (u'Other', u'Other (please describe below)'),
-    )
+    (u'Senior Executive', _('Senior Executive (e.g., CXO, SVP)')),
+    (u'Seasoned Leader/Senior Manager', _('Seasoned Leader/Senior Manager (e.g., VP, Director)')),
+    (u'Mid-Level Manager', _('Mid-Level Manager (e.g., Manager)')),
+    (u'Early Career Professional', _('Early Career Professional (e.g., Associate, Analyst)')),
+    (u'Other', _('Other (please describe below)')),
+)
 
 
 class UserNameInput(forms.TextInput):
@@ -513,8 +513,8 @@ class ActivationFormV2(BaseRegistrationFormV2):
         super(ActivationFormV2, self).__init__(*args, **kwargs)
         self.fields['username'].widget = UserNameInput(attrs={'required': True})  # Custom widget with no default value
 
-class PublicRegistrationForm(forms.ModelForm):
 
+class PublicRegistrationForm(forms.ModelForm):
     current_role = forms.ChoiceField(widget=forms.RadioSelect, choices=CURRENT_ROLE)
     current_role_other = forms.CharField(widget=forms.TextInput, label='', required=False)
     company_email = forms.CharField(max_length=70)
