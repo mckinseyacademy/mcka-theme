@@ -30,7 +30,7 @@ $.imageEditor = function(){
         $('.crop-save-image').attr('disabled', false);
         reInitCropper(imageClass, modal);
       }
-    }).attr('src', modal.find(".img-container").find(imageClass).attr('src') + '&' + now);
+    }).attr('src', modal.find(".img-container").find(imageClass).attr('src') + '?timestamp=' + now);
   }
 
   function FileTypeValidate(fileUpload, errorBlock) {

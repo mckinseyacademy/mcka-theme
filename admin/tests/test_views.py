@@ -1,15 +1,55 @@
-from ddt import ddt, data
+from functools import wraps
 
+from ddt import ddt, data
 from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
 from django.test.client import Client
+from django.utils.decorators import available_attrs
+from mock import patch
 from rest_framework import status
 
-from lib.authorization import permission_groups_map
+from api_client.group_api import PERMISSION_GROUPS
+from lib.authorization import permission_groups_map, permission_group_required
 from accounts.tests.utils import ApplyPatchMixin
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
+from lib.utils import DottableDict
 from .test_task_runner import mocked_task
+
+
+_FAKE_USER_OBJ = DottableDict({
+    "id": '1',
+    "username": 'mcka_admin_test_user',
+    "first_name": 'mcka_admin',
+    "last_name": 'Tester',
+    "email": "mcka_admin_test_user@mckinseyacademy.com",
+    "password": "PassworD12!@",
+    'is_mcka_admin': True
+})
+
+
+def _fake_permission_group_required(*group_names):  # pylint: disable=unused-argument
+    """
+    Fake method for permission_group_required method
+    """
+
+    def decorator(view_fn):
+        def _wrapped_view(request, *args, **kwargs):
+            # faking request user
+            request.user = _FAKE_USER_OBJ
+            return view_fn(request, *args, **kwargs)
+
+        return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
+
+    return decorator
+
+
+permission_patcher = patch(
+    'lib.authorization.permission_group_required',
+    _fake_permission_group_required
+).start()
+
+
 
 def _create_user():
     """
@@ -46,6 +86,54 @@ def mocked_execute_task(task_runner):
     task_id = mocked_task.delay().task_id
 
     return task_id
+
+
+class AdminViewTest(TestCase, ApplyPatchMixin):
+    """ Tests related to admin.views """
+    def setUp(self):
+        """ Setup admin views test """
+        super(AdminViewTest, self).setUp()
+        self.client = Client()
+        self.user = DottableDict({
+            "id": '1',
+            "username": 'mcka_admin_test_user',
+            "first_name": 'mcka_admin',
+            "last_name": 'Tester',
+            "email": "mcka_admin_test_user@mckinseyacademy.com",
+            "password": "PassworD12!@",
+            'is_mcka_admin': True
+        })
+        self.url_name = 'edit_client_mobile_image'
+        self.parameters = {
+            'client_id': 1,
+        }
+        mobile_api = self.apply_patch('api_client.mobileapp_api')
+        mobile_api.get_mobile_app_themes.return_value = []
+
+
+    def test_edit_client_mobile_image_logo(self):
+        """ test edit mobile logo page """
+
+        self.parameters['img_type'] = 'logo'
+        edit_client_mobile_image_url_logo = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_logo)
+        self.assertEqual(respose.status_code, status.HTTP_200_OK)
+
+    def test_edit_client_mobile_image_header(self):
+        """ test edit mobile header page """
+
+        self.parameters['img_type'] = 'header'
+        edit_client_mobile_image_url_header = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_header)
+        self.assertEqual(respose.status_code, status.HTTP_200_OK)
+
+    def test_edit_client_mobile_image_invalid(self):
+        """ test edit mobile logo/header page for invalid request """
+
+        self.parameters['img_type'] = 'invalid'
+        edit_client_mobile_image_url_invalid = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_invalid)
+        self.assertEqual(respose.status_code, status.HTTP_404_NOT_FOUND)
 
 
 @ddt

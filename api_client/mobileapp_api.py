@@ -115,7 +115,7 @@ def get_mobile_app_themes(organization_id):
 
 
 @api_error_protect
-def update_mobile_app_theme(mobile_app_theme_id, data, mobile_logo_image):
+def update_mobile_app_theme(mobile_app_theme_id, data, mobile_image_upload=None):
     """
     Updates mobile app theme
     """
@@ -124,5 +124,5 @@ def update_mobile_app_theme(mobile_app_theme_id, data, mobile_logo_image):
         MOBILE_APP_API,
         mobile_app_theme_id
     )
-    response = get_oauth2_session().patch(url, data=data, files=mobile_logo_image)
+    response = get_oauth2_session().patch(url, data=data, files=mobile_image_upload)
     return response

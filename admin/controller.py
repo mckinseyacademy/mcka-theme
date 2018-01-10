@@ -2391,28 +2391,64 @@ def participant_csv_line_id_extractor(user_line):
             return user_id
 
 
-def upload_mobile_app_logo(request, client_id):
+def crop_image(request, img_name):
     """
-    Crop and uploads mobile app logo image to platform
+    Crop the given image using parameters from request
     """
     left = int(float(request.POST.get('x1-position')))
     top = int(float(request.POST.get('y1-position')))
     right = int(float(request.POST.get('width-position'))) + left
     bottom = int(float(request.POST.get('height-position'))) + top
-    temp_image = request.FILES['mobile_app_logo']
-
-    image = Image.open(temp_image)
+    image = Image.open(img_name)
     cropped_image = image.crop((left, top, right, bottom))
     image_io = StringIO.StringIO()
-    cropped_image.convert('RGB').save(image_io, format='JPEG')
+    cropped_image.convert('RGBA').save(image_io, format='PNG')
     image_io.seek(0)
-    logo_image_file = {'logo_image': ('logo.jpg', image_io, 'image/jpeg')}
+
+    return image_io
+
+
+def upload_mobile_branding_image(request, client_id):
+    """
+    uploads mobile app logo or mobile header background image which depends on
+    request to platform
+    """
+    if 'mobile_app_logo' in request.FILES:
+        image_io = crop_image(request, request.FILES['mobile_app_logo'])
+        image_file = {'logo_image': ('logo.png', image_io, 'image/png')}
+    else:
+        image_io = crop_image(request, request.FILES['mobile_app_header_background'])
+        image_file = {'header_bg_image': ('header_backgroung.png', image_io, 'image/png')}
+
     mobile_app_themes = get_mobile_app_themes(client_id)
+
     if mobile_app_themes:
         update_mobile_app_theme(
             mobile_app_themes[0]['id'],
             {'organization': client_id, 'active': True},
-            logo_image_file
+            image_file
         )
     else:
-        create_mobile_app_theme(client_id, {'active': True}, logo_image_file)
+        create_mobile_app_theme(client_id, {'active': True}, image_file)
+
+
+def update_mobile_client_detail_customization(request, client_id):
+    """
+    Update mobile clients theme attributes
+    """
+    mobile_branding_data = {
+        'organization': client_id,
+        'active': True
+    }
+
+    mobile_branding_data['completed_course_tint'] = request.POST['client_mobile_course_tint']
+    mobile_branding_data['header_background_color'] = request.POST['client_mobile_header_background']
+    mobile_branding_data['lesson_navigation_color'] = request.POST['client_mobile_lesson_nav']
+    mobile_branding_data['navigation_text_color'] = request.POST['client_mobile_nav_text']
+    mobile_branding_data['navigation_icon_color'] = request.POST['client_mobile_nav_icon']
+
+    mobile_app_themes = get_mobile_app_themes(client_id)
+    if mobile_app_themes:
+        update_mobile_app_theme(mobile_app_themes[0]['id'], mobile_branding_data)
+    else:
+        create_mobile_app_theme(client_id, mobile_branding_data)

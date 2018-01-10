@@ -1,109 +1,145 @@
 - extends 'admin/client/detail.haml'
+- load i18n
 - load staticfiles
 - block admin_detail
   %h1
-    %span= _("Client: ")
+    %span {% trans "Client: " %}
     %span= client.display_name
   %hr
   %section
-  .sub-1 Custom Navigation Links
+  .sub-1 {% trans "Custom Navigation Links" %}
   %h2
-    %p You can change the global navigation links for this client across all courses for this client's participants. Please note that you will need to preview the navigation to check for spacing, spelling, and link behavior before you have the opportunity to save these links. You can make edits after previewing if needed.
+    %p {% trans "You can change the global navigation links for this client across all courses for this client's participants. Please note that you will need to preview the navigation to check for spacing, spelling, and link behavior before you have the opportunity to save these links. You can make edits after previewing if needed." %}
   %br
   #nav-links
     %header
-      .sub-2 Label:
-      .sub-2 Link:
+      .sub-2 {% trans "Label:" %}
+      .sub-2 {% trans "Link:" %}
+      {% trans "Enter label" as label_text %}
+      {% trans "Enter link" as link_text %}
     %form{action: "/admin/clients/#{client.id}/nav_links", method: 'POST'}
       - csrf_token
       %fieldset
         %ol
           %li
             %input{type: 'hidden', name: 'name_1', value: 'about'}
-            %input{type: 'text', name: 'label_1', placeholder: 'enter label', maxlength: "15", value: "#{nav_links.about.link_label}"}
-            %input{type: 'url', name: 'link_1', placeholder: 'enter link', value: "#{nav_links.about.link_url}"}
+            %input{type: 'text', name: 'label_1', placeholder: "#{label_text}", maxlength: "15", value: "#{nav_links.about.link_label}"}
+            %input{type: 'url', name: 'link_1', placeholder: "#{link_text}", value: "#{nav_links.about.link_url}"}
           %li
             %input{type: 'hidden', name: 'name_2', value: 'programs'}
-            %input{type: 'text', name: 'label_2', placeholder: 'enter label', maxlength: "15", value: "#{nav_links.programs.link_label}"}
-            %input{type: 'url', name: 'link_2', placeholder: 'enter link', value: "#{nav_links.programs.link_url}"}
+            %input{type: 'text', name: 'label_2', placeholder: "#{label_text}", maxlength: "15", value: "#{nav_links.programs.link_label}"}
+            %input{type: 'url', name: 'link_2', placeholder: "#{link_text}", value: "#{nav_links.programs.link_url}"}
           %li
             %input{type: 'hidden', name: 'name_3', value: 'experience'}
-            %input{type: 'text', name: 'label_3', placeholder: 'enter label', maxlength: "15", value: "#{nav_links.experience.link_label}"}
-            %input{type: 'url', name: 'link_3', placeholder: 'enter link', value: "#{nav_links.experience.link_url}"}
+            %input{type: 'text', name: 'label_3', placeholder: "#{label_text}", maxlength: "15", value: "#{nav_links.experience.link_label}"}
+            %input{type: 'url', name: 'link_3', placeholder: "#{link_text}", value: "#{nav_links.experience.link_url}"}
           %li
             %input{type: 'hidden', name: 'name_4', value: 'contact'}
-            %input{type: 'text', name: 'label_4', placeholder: 'enter label', maxlength: "15", value: "#{nav_links.contact.link_label}"}
-            %input{type: 'url', name: 'link_4', placeholder: 'enter link', value: "#{nav_links.contact.link_url}"}
+            %input{type: 'text', name: 'label_4', placeholder: "#{label_text}", maxlength: "15", value: "#{nav_links.contact.link_label}"}
+            %input{type: 'url', name: 'link_4', placeholder: "#{link_text}", value: "#{nav_links.contact.link_url}"}
           %li
             %input{type: 'hidden', name: 'name_5', value: 'navlink5'}
-            %input{type: 'text', name: 'label_5', placeholder: 'enter label', maxlength: "15", value: "#{nav_links.navlink5.link_label}"}
-            %input{type: 'url', name: 'link_5', placeholder: 'enter link', value: "#{nav_links.navlink5.link_url}"}
+            %input{type: 'text', name: 'label_5', placeholder: "#{label_text}", maxlength: "15", value: "#{nav_links.navlink5.link_label}"}
+            %input{type: 'url', name: 'link_5', placeholder: "#{link_text}", value: "#{nav_links.navlink5.link_url}"}
           %li
             %input{type: 'hidden', name: 'name_6', value: 'navlink6'}
-            %input{type: 'text', name: 'label_6', placeholder: 'enter label', maxlength: "15", value: "#{nav_links.navlink6.link_label}"}
-            %input{type: 'url', name: 'link_6', placeholder: 'enter link', value: "#{nav_links.navlink6.link_url}"}
+            %input{type: 'text', name: 'label_6', placeholder: "#{label_text}", maxlength: "15", value: "#{nav_links.navlink6.link_label}"}
+            %input{type: 'url', name: 'link_6', placeholder: "#{link_text}", value: "#{nav_links.navlink6.link_url}"}
       %div
-        %input{type: 'reset', value: 'Cancel'}
-        %input.button.radius.tiny{type: 'submit', value: 'Save Links'}
+        {% trans "Save Links" as save_links_text %}
+        {% trans "Cancel" as cancel_links_text %}
+        %input{type: 'reset', value: "#{cancel_links_text}"}
+        %input.button.radius.tiny{type: 'submit', value: "#{save_links_text}"}
   %hr
   #custom-branding
     %form{action: "/admin/clients/#{client.id}/customization", method: 'POST', enctype: "multipart/form-data" }
       - csrf_token
       %fieldset
-        .sub-1 Global Branding
+        .sub-1 {% trans "Global Branding" %}
+        {% trans "Enter hex#" as hex_text %}
+        {% trans "Enter css" as css_text %}
         %ul
           %li
-            %label.nav2.selected Upload Global Logo:
-            %a.button.radius.tiny.upload_logo Upload Logo
+            %label.nav2.selected {% trans "Upload Global Logo:" %}
+            %a.button.radius.tiny.upload_logo {% trans "Upload Logo" %}
             %input{type: 'file', name: 'global_client_logo'}
           %li
-            %label.nav2.selected Top Navigation Background:
-            %input{type: 'text', name: 'hex_background_main_navigation', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_background_main_navigation}"}
+            %label.nav2.selected {% trans "Top Navigation Background:" %}
+            %input{type: 'text', name: 'hex_background_main_navigation', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_background_main_navigation}"}
         %br
-        .sub-1 Desktop, Tablet and Mobile Web
+        .sub-1 {% trans "Desktop, Tablet and Mobile Web" %}
         %ul
           %li
-            %label.nav2.selected Upload Logo:
-            %a.button.radius.tiny.upload_logo Upload Logo
+            %label.nav2.selected {% trans "Upload Logo:" %}
+            %a.button.radius.tiny.upload_logo {% trans "Upload Logo" %}
             %input{type: 'file', name: 'client_logo'}
           %li
-            %label.nav2.selected Notification Circle Color:
-            %input{type: 'text', name: 'hex_notification', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_notification}"}
+            %label.nav2.selected {% trans "Notification Circle Color:" %}
+            %input{type: 'text', name: 'hex_notification', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_notification}"}
           %li
-            %label.nav2.selected Second Navigation Background:
-            %input{type: 'text', name: 'hex_background_bar', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_background_bar}"}
+            %label.nav2.selected {% trans "Second Navigation Background:" %}
+            %input{type: 'text', name: 'hex_background_bar', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_background_bar}"}
           %li
-            %label.nav2.selected Notification Text Color:
-            %input{type: 'text', name: 'hex_notification_text', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_notification_text}"}
+            %label.nav2.selected {% trans "Notification Text Color:" %}
+            %input{type: 'text', name: 'hex_notification_text', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_notification_text}"}
           %li
-            %label.nav2.selected Program Name Text Color:
-            %input{type: 'text', name: 'hex_program_name', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_program_name}"}
+            %label.nav2.selected {% trans "Program Name Text Color:" %}
+            %input{type: 'text', name: 'hex_program_name', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_program_name}"}
           %li
-            %label.nav2.selected Page Background Color:
-            %input{type: 'text', name: 'hex_page_background', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_page_background}"}
+            %label.nav2.selected {% trans "Page Background Color:" %}
+            %input{type: 'text', name: 'hex_page_background', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_page_background}"}
           %li
-            %label.nav2.selected Course Title Text Color:
-            %input{type: 'text', name: 'hex_course_title', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_course_title}"}
+            %label.nav2.selected {% trans "Course Title Text Color:" %}
+            %input{type: 'text', name: 'hex_course_title', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_course_title}"}
           %li
-            %label.nav2.selected Page Background Image:
-            %a.button.radius.tiny.upload_logo Upload Image
+            %label.nav2.selected {% trans "Page Background Image:" %}
+            %a.button.radius.tiny.upload_logo {% trans "Upload Image" %}
             %input{type: 'file', name: 'client_background'}
           %li
-            %label.nav2.selected Navigation Icon Color:
-            %input{type: 'text', name: 'hex_navigation_icons', placeholder: 'Enter hex #', maxlength: "7", value: "#{customization.hex_navigation_icons}"}
+            %label.nav2.selected {% trans "Navigation Icon Color:" %}
+            %input{type: 'text', name: 'hex_navigation_icons', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_navigation_icons}"}
           %li
-            %label.nav2.selected Page Background CSS:
-            %input{type: 'text', name: 'client_background_css', placeholder: 'Enter css', maxlength: "200", value: "#{customization.client_background_css}"}
+            %label.nav2.selected {% trans "Page Background CSS:" %}
+            %input{type: 'text', name: 'client_background_css', placeholder: "#{css_text}", maxlength: "200", value: "#{customization.client_background_css}"}
 
         %br
-        .sub-1 Native Mobile & Tablet Apps
+        .sub-1 {% trans "Native Mobile & Tablet Apps" %}
+
         %ul
           %li
-            %label.nav2.selected Upload Mobile Logo:
-            %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/edit_client_mobile_logo"}
-              Upload Logo
+            %label.nav2.selected {% trans "Upload Mobile Logo:" %}
+            %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/logo/edit_client_mobile_image"}
+              {% trans "Upload Logo" %}
+
+          %li
+            %label.nav2.selected {% trans "Completed Course Tint:" %}
+            %input{type: 'text', name: 'client_mobile_course_tint', placeholder: "#{hex_text}", maxlength: "6", value: "#{completed_course_tint}"}
+          %li
+            %label.nav2.selected {% trans "Header Background Color:" %}
+            %input{type: 'text', name: 'client_mobile_header_background', placeholder: "#{hex_text}", maxlength: "6", value: "#{header_background_color}"}
+          %li
+            %label.nav2.selected {% trans "Lesson Navigation Color:" %}
+            %input{type: 'text', name: 'client_mobile_lesson_nav', placeholder: "#{hex_text}", maxlength: "6" ,value: "#{lesson_navigation_color}"}
+
+          %li
+            %label.nav2.selected {% trans "Header Background Image:" %}
+            %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/header/edit_client_mobile_image"}
+              {% trans "Upload Image" %}
+
+
+          %li
+            %label.nav2.selected {% trans "Navigation Text Color:" %}
+            %input{type: 'text', name: 'client_mobile_nav_text', placeholder: "#{hex_text}", maxlength: "6" , value: "#{navigation_text_color}"}
+
+          %li
+            %label.nav2.selected {% trans "Navigation Icon Color:" %}
+            %input{type: 'text', name: 'client_mobile_nav_icon', placeholder: "#{hex_text}", maxlength: "6" , value: "#{navigation_icon_color}"}
+
       %div
-        %input{type: 'reset', value: 'Cancel'}
-        %input.button.radius.tiny{type: 'submit', value: 'Save'}
+        {% trans "Cancel" as cancel_text %}
+        %input{type: 'reset', value: "#{cancel_text}"}
+
+        {% trans "Save" as save_text %}
+        %input.button.radius.tiny{type: 'submit', value: "#{save_text}"}
 
   #edit-client-mobile-logo-modal.reveal-modal.medium{'data-reveal': 'true'}

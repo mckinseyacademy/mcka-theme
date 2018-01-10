@@ -33,9 +33,11 @@ from django.views.generic.base import View
 from django.core.validators import validate_email
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
-    load_group_projects_info_for_course, upload_mobile_app_logo
+    load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image
+
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
+from api_client.mobileapp_api import get_mobile_app_themes
 from api_client.user_api import USER_ROLES
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
@@ -1534,6 +1536,20 @@ def client_detail_navigation(request, client_id):
         'selected_client_tab': 'navigation',
     }
 
+    mobile_app_themes = get_mobile_app_themes(client_id)
+    if mobile_app_themes:
+        mobile_theme = mobile_app_themes[0]
+        data['completed_course_tint'] = mobile_theme['completed_course_tint'] if mobile_theme[
+            'completed_course_tint'] else ''
+        data['header_background_color'] = mobile_theme['header_background_color'] if mobile_theme[
+            'header_background_color'] else ''
+        data['navigation_text_color'] = mobile_theme['navigation_text_color'] if mobile_theme[
+            'navigation_text_color'] else ''
+        data['navigation_icon_color'] = mobile_theme['navigation_icon_color'] if mobile_theme[
+            'navigation_icon_color'] else ''
+        data['lesson_navigation_color'] = mobile_theme['lesson_navigation_color'] if mobile_theme[
+            'lesson_navigation_color'] else ''
+
     return render(
         request,
         'admin/client/navigation.haml',
@@ -1568,8 +1584,8 @@ def client_detail_customization(request, client_id):
     """
     View to update client web and mobile branding
     """
-    if request.FILES and 'mobile_app_logo' in request.FILES:
-        upload_mobile_app_logo(request, client_id)
+    if request.FILES and ('mobile_app_logo' in request.FILES or 'mobile_app_header_background' in request.FILES):
+        upload_mobile_branding_image(request, client_id)
         return HttpResponse('')
     else:
         (customization, created) = ClientCustomization.objects.get_or_create(
@@ -1602,28 +1618,41 @@ def client_detail_customization(request, client_id):
         customization.hex_background_main_navigation = request.POST['hex_background_main_navigation']
         customization.save()
 
+        update_mobile_client_detail_customization(request, client_id)
+
         return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
-def edit_client_mobile_logo(request, client_id):
+def edit_client_mobile_image(request, client_id, img_type):
     """
     View to generate modal to crop client mobile logo
     """
-    client_mobile_logo = JsonObjectWithImage.default_image_url()
+    data = {
+        'client_id': client_id
+    }
+    client_mobile_image = JsonObjectWithImage.default_image_url()
     mobile_app_themes = mobileapp_api.get_mobile_app_themes(client_id)
     if mobile_app_themes:
-        client_mobile_logo = mobile_app_themes[0]['logo_image']['image_url_full']
+        mobile_theme = mobile_app_themes[0]
+        if mobile_theme['logo_image']['has_image'] and img_type == 'logo':
+            client_mobile_image = mobile_theme['logo_image']['image_url_full']
+        elif mobile_theme['header_bg_image']['has_image'] and img_type == 'header':
+            client_mobile_image = mobile_theme['header_bg_image']['image_url_xxxhdpi']
 
-    data = {
-        "client_mobile_logo": client_mobile_logo,
-        "client_id":  client_id
-    }
+    data['client_mobile_image'] = client_mobile_image
+
+    if img_type == 'logo':
+        data['img_type'] = 'mobile_app_logo'
+    elif img_type == 'header':
+        data['img_type'] = 'mobile_app_header_background'
+    else:
+        raise Http404()
 
     return render(
         request,
-        'admin/client/edit_mobile_app_logo.haml',
+        'admin/client/edit_mobile_app_image.haml',
         data
     )
 

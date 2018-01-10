@@ -1,7 +1,8 @@
--load staticfiles
+- load i18n
+- load staticfiles
 .set_profile_image_wrapper
   %h1.title
-    Mobile App Logo Image
+    {% trans "Mobile App Image" %}
   .close-reveal-modal
     %i.fa.fa-times-circle
   %br
@@ -9,12 +10,14 @@
   .upload-profile-image
     %label.label-10
       %span.label-5
-        STEP 1:
-      SELECT NEW MOBILE APP LOGO IMAGE
+        {% trans "STEP 1:" %}
+      {% trans "SELECT NEW MOBILE APP IMAGE" %}
     %hr
     .browse-wrapper
-      %button#browse-image.button.tiny.radius{'type': 'button'} Browse
-      %label{'for': 'id_mobile_app_logo'} No file selected.
+      %button#browse-image.button.tiny.radius{'type': 'button'}
+        {% trans "Browse" %}
+      %label{'for': 'id_mobile_app_img'}
+        {% trans "No file selected." %}
 
     .spinner-image
       %svg.spinner.upload-image.svg-ie-image{'style': "text-align:center;"}
@@ -27,24 +30,25 @@
     %form#cropping-form{'action': '/admin/clients/#{client_id}/customization', 'method': 'POST', enctype: "multipart/form-data"}
       %label.label-10
         %span.label-5
-          STEP 2:
-        CROP & SAVE
+          {% trans 'STEP 2:'%}
+        {% trans "CROP & SAVE" %}
       %hr
       - csrf_token
       %p
-        Drag and adjust cropping tool to edit you profile image.
+        {% trans "Drag and adjust cropping tool to edit you image." %}
       .img-container
-          %img.user-uploaded-image{'src': "#{client_mobile_logo}", 'onload': "this.parentNode.style.visibility = \"visible\""}
+          %img.user-uploaded-image{'src': "#{client_mobile_image}"}
       .img-preview
-      %input#id_mobile_app_logo.hide{:name => "mobile_app_logo", :type => "file"}
+      %input#id_mobile_app_img.hide{:name => "#{img_type}", :type => "file"}
       %input.width-position{'type': 'hidden', 'name': 'width-position'}
       %input.height-position{'type': 'hidden', 'name': 'height-position'}
       %input.x1-position{'type': 'hidden', 'name': 'x1-position'}
       %input.y1-position{'type': 'hidden', 'name': 'y1-position'}
       %br
-      %input.crop-save-image.button.small.radius.right{'type': 'submit', 'value': 'Crop & Save', 'disabled': 'disabled'}
+      {% trans "Crop & Save" as submit_text %}
+      %input.crop-save-image.button.small.radius.right{'type': 'submit', 'value': "#{submit_text}", 'disabled': 'disabled'}
 
 %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
 %script{src: "{% static 'js/vendor/jquery.form.js' %}"}
 %script{src: "{% static 'js/image_editor.js' %}"}
-%script{src: "{% static 'js/mobile_logo_edit.js' %}"}
+%script{src: "{% static 'js/mobile_image_edit.js' %}"}
