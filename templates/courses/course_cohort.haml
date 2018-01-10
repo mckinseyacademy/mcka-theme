@@ -1,53 +1,56 @@
 - extends "courses/course_navigation.haml"
 - load staticfiles
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Cohort | Courses | McKinsey Academy")
+    {% trans "| Cohort | Courses | McKinsey Academy" %}
 
 - block help_context
   #mckinsey_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    .sub-1 Cohort
-    %p Below are helpful tips to interact with the cohort map and leaderboards. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
-    .help-line Access the cohort using the <i class="fa fa-globe"></i> icon in the main navigation bar.
-    .help-line COHORT MAP displays your group members, your McKinsey TA, and the number of cohort participants from various cities. The details on the number of participants in your company and the total number of cohort participants are displayed under the map.
-    .help-line You can email your McKinsey TA who is displayed on the map
-    .help-line LEADERBOARDS display the top participants across proficiency, progress, and engagement, as well as your own ranking compared to the cohort average
-    .help-line This video walks you through the learner experience:
+    .sub-1 {% trans Cohort %}
+    %p {% blocktrans %} Below are helpful tips to interact with the cohort map and leaderboards. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+    .help-line {% blocktrans %} Access the cohort using the <i class="fa fa-globe"></i> icon in the main navigation bar. {% endblocktrans %}
+    .help-line {% trans "COHORT MAP displays your group members, your McKinsey TA, and the number of cohort participants from various cities. The details on the number of participants in your company and the total number of cohort participants are displayed under the map." %}
+    .help-line {% trans "You can email your McKinsey TA who is displayed on the map" %}
+    .help-line {% trans "LEADERBOARDS display the top participants across proficiency, progress, and engagement, as well as your own ranking compared to the cohort average" %}
+    .help-line {% trans "This video walks you through the learner experience:" %}
     #mk-help-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
 
 - block current_content
   #course-cohort
-    %h1 Cohort
+    %h1 {% trans "Cohort" %}
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     #map-cohort
     .student-data
       %ul.students
-        %li.label-2 # of participants:
-        %li.label-4 #{metrics.users_enrolled} in your cohort
-        %li.label-4 #{metrics.group_enrolled} group work team members
-      %a.hide-team{href: '#'} Hide team profiles
-      %a.hide-team.hide{href: '#'} Show team profiles
+        %li.label-2 # {% trans "of participants:" %}
+        %li.label-4 #{metrics.users_enrolled} {% trans "in your cohort" %}
+        %li.label-4 #{metrics.group_enrolled} {% trans "group work team members" %}
+      %a.hide-team{href: '#'}
+        {% trans "Hide team profiles" %}
+      %a.hide-team.hide{href: '#'}
+        {% trans "Show team profiles" %}
     %hr
     .leaderboard-header
-      %h1 Leaderboards
+      %h1 {% trans "Leaderboards" %}
     .leaderboards
       %ul.leaderboards-list
         - if proficiency
           %li
             .header
-              .label-5 Proficiency:
+              .label-5 {% trans "Proficiency:" %}
               .label-4 cohort average = ={proficiency.course_average_display}
-              - if is_observer
-                .rank As an Observer you will not appear on the proficiency leaderboard
+              - if user_role
+                .rank {% blocktrans %} As #{user_role} user you will not appear on the proficiency leaderboard {% endblocktrans %}
               - elif proficiency.user_position and proficiency.user_grade_value
-                .rank your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span>
+                .rank {% blocktrans %} your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span> {% endblocktrans %}
               - else
-                .rank your proficiency position <br> will be displayed here
+                .rank {% trans "your proficiency position <br> will be displayed here" %}
 
             - if proficiency.has_leaders and  proficiency.leaders.0
               .user
@@ -102,14 +105,14 @@
 
         %li
           .header
-            .label-5 Progress:
+            .label-5 {% trans "Progress:" %}
             .label-4 cohort average = ={completions.course_average_display}%
-            - if is_observer
-              .rank As an Observer you will not appear on the progress leaderboard
+            - if user_role
+              .rank {% blocktrans %} As #{user_role} user you will not appear on the progress leaderboard {% endblocktrans %}
             - elif completions.position and completions.user_progress_value
-              .rank your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span>
+              .rank {% blocktrans %} your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span> {% endblocktrans %}
             - else
-              .rank your progress position <br> will be displayed here
+              .rank {% trans "your progress position <br> will be displayed here" %}
 
           - if completions.has_leaders and completions.leaders.0
             .user
@@ -165,14 +168,14 @@
         - if social
           %li
             .header
-              .label-5 Engagement:
-              .label-4 cohort average = ={social.course_avg} points
-              - if is_observer
-               .rank As an Observer you will not appear on the engagement leaderboard
+              .label-5 {% trans "Engagement:" %}
+              .label-4 {% blocktrans %} cohort average = ={social.course_avg} points {% endblocktrans %}
+              - if user_role
+               .rank {% blocktrans %} As #{user_role} user you will not appear on the engagement leaderboard {% endblocktrans %}
               - elif social.position
-                .rank your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>
+                .rank {% trans "your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>" %}
               - else
-                .rank your engagement position <br> will be displayed here
+                .rank {% trans "your engagement position <br> will be displayed here" %}
 
             - if social.leaders and social.leaders.0
               .user
@@ -228,8 +231,8 @@
     %hr.hidden
     .user-content.hidden
       %section
-        %h1 Discussions
-        %blockquote Even if we cannot directly shape an outcome, a model’s prediction may be communicated in a way that alters behavior and indirectly shapes it.
+        %h1 {% trans "Discussions" %}
+        %blockquote {% trans "Even if we cannot directly shape an outcome, a model’s prediction may be communicated in a way that alters behavior and indirectly shapes it." %}
         .attribution
           %img{src: 'http://dummyimage.com/50/000/fff&text=User'}
           .person
@@ -237,12 +240,13 @@
             .person-title Media Buyer
             %time.label-2{datetime: '2014-07-07T04:00:00.000Z'} JUL 07, 2014 | 3:52PM
       %section.recommendations
-        %h1 Recommendations
+        %h1 {% trans "Recommendations" %}
         .link
-          %a{href: '#'} Scientists Without Borders
-        %p.style-4 A worldwide community of changemakers collaborating to accelerate solutions to urgent development challenges.
+          %a{href: '#'}
+            {% trans "Scientists Without Borders" %}
+        %p.style-4 {% trans "A worldwide community of changemakers collaborating to accelerate solutions to urgent development challenges." %}
         .person-name janejohnson <span class='person-title'>COO</span>
-        %a.button.radius.tiny Suggest a Link
+        %a.button.radius.tiny {% trans "Suggest a Link" %}
 
   - include "courses/contact_ta.haml"
 
