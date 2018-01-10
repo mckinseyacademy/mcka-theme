@@ -64,6 +64,7 @@
             lmsPort: null,       // Port that LMS API is running on
             lmsSecureURL: false, // Is the LMS on HTTPS?
             useCurrentHost: false, // set to true to load xblock using the current location.hostnam
+            viewUrl: null,       // Url of the FragmentView to render
             disableGlobalOptions: false, // set to true to disable the global_options behavior.
             data: {},             // additional data to send to student_view. send as GET parameters
             jumpLinkRewriter: function (jumpToLink) {}, // Function to rewrite jump links if needed for your target platform.
@@ -93,11 +94,17 @@
                 }
 
                 value = resources[index];
-                hash = value[0];
-                resource = value[1];
+                if ($.isArray(value)) {
+                    hash = value[0];
+                    resource = value[1];
+                }
+                else{
+                    hash = encodeURIComponent(value.data);
+                    resource = value
+                }
                 $this.loadResource(hash, resource, options, root).done(function() {
                     applyResource(index + 1);
-                }).fail(function() {
+                }).fail(function(jqxhr, settings, exception) {
                     deferred.reject();
                 });
             };
@@ -117,32 +124,49 @@
                 return deferred;
             }
 
-            if (resource[0] === 'url') {
-                resourceURL = resource[1]; // By default, the resource url contains the SITENAME
-
-                if (!resource[1].match(/^\/\//) && !resource[1].match(/^(http|https):\/\//)) {
-                    resourceURL = this.getLmsBaseURL(options) + resource[1];
+            function getValByIndexOrName(obj, idx, propertyName){
+                var val = undefined;
+                if (typeof obj !== "undefined" && typeof propertyName !== "undefined") {
+                    if ($.isArray(obj)) {
+                        val = obj[idx];
+                    }
+                    else{
+                        val = $(obj).prop(propertyName);
+                    }
                 }
+                return val
+            }
 
-                if (resource[2] === 'text/css') {
+            var resourceKind = getValByIndexOrName(resource, 0, 'kind');
+            var resourceData = getValByIndexOrName(resource, 1, 'data');
+            var resourceMimetype = getValByIndexOrName(resource, 2, 'mimetype');
+
+            if (resourceKind === 'url') {
+                if (!resourceData.match(/^\/\//) && !resourceData.match(/^(http|https):\/\//)) {
+                    resourceURL = this.getLmsBaseURL(options) + resourceData;
+                }
+                else{
+                    resourceURL = resourceData;
+                }
+                if (resourceMimetype  === 'text/css') {
                     $('head').append('<link href="' + resourceURL + '" rel="stylesheet" />')
-                } else if (resource[2] === 'application/javascript') {
+                } else if (resourceMimetype === 'application/javascript') {
                     deferred = $.getScript(resourceURL);
                 } else {
-                    console.log('Unknown XBlock resource mimetype', resource[2]);
+                    console.log('Unknown XBlock resource mimetype', resourceMimetype);
                 }
-            } else if (resource[0] === 'text') {
-                if (resource[2] === 'text/css') {
-                    $('head').append('<style type="text/css">' + resource[1] + '</style>');
-                } else if (resource[2] === 'application/javascript') {
-                    $.globalEval(resource[1]);
-                } else if (resource[2] === 'text/html') {
-                    $('head').append(resource[1]);
+            } else if (resourceKind === 'text') {
+                if (resourceMimetype === 'text/css') {
+                    $('head').append('<style type="text/css">' + resourceData + '</style>');
+                } else if (resourceMimetype === 'application/javascript') {
+                    $.globalEval(resourceData);
+                } else if (resourceMimetype === 'text/html') {
+                    $('head').append(resourceData);
                 } else {
-                    console.log('Unknown XBlock resource mimetype', resource[2]);
+                    console.log('Unknown XBlock resource mimetype', resourceMimetype);
                 }
             } else {
-                console.log('Unknown XBlock resource kind', resource[0]);
+                console.log('Unknown XBlock resource kind', resourceKind);
             }
             return deferred;
         },
@@ -298,8 +322,13 @@
         },
 
         getViewUrl: function(viewName, options) {
-            return (this.getLmsBaseURL(options) + '/courses/' + options.courseId +
-                    '/xblock/' + options.usageId + '/view/' + viewName);
+            if (options.viewUrl){
+                return (this.getLmsBaseURL(options) + options.viewUrl);
+            }
+            else {
+                return (this.getLmsBaseURL(options) + '/courses/' + options.courseId +
+                '/xblock/' + options.usageId + '/view/' + viewName);
+            }
         },
 
         getCookieOptions: function(options) {
@@ -346,7 +375,12 @@
                     withCredentials: true
                 }
             }).done(function(response) {
-                root.html(response.html);
+                if(response.hasOwnProperty('content')) {
+                    root.html(response.content);
+                }
+                else {
+                    root.html(response.html);
+                }
 
                 $this.loadResources(response.resources, options, root).done(function() {
                     console.log('All XBlock resources successfully loaded');

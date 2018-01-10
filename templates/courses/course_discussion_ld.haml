@@ -21,14 +21,10 @@
   %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
   - include 'courses/course_learner_dashboard_branding.haml'
   #course-discussion
-    - if not has_course_discussion
-      .row
-        .error {% trans "No Discussion has been configured for this course" %}
-    - else
-      .row
-        .large-12.medium-12.columns
-          .discussion-content
-      - include "courses/contact_ta.haml"
+    .row
+      .large-12.medium-12.columns
+        .discussion-content
+    - include "courses/contact_ta.haml"
 
 - block footer
   - include 'footer_ld.haml'
@@ -41,8 +37,8 @@
     window.onload = (function(){
       var discussion_content = $('#course-discussion .discussion-content');
       var discussion_data = {
-        courseId: '{{ legacy_course_id }}',
-        usageId: '{{ vertical_usage_id }}',
+        courseId: '{{ course_id }}',
+        viewUrl: '{{ view_url }}',
         sessionId: '{{ remote_session_key }}',
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',

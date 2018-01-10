@@ -385,21 +385,10 @@ def workgroup_course_group_work(request, course_id, workgroup_id, learner_dashbo
 
     return _render_group_work(request, course, project_group, group_project, learner_dashboard_id, branding_flag)
 
-def _course_discussion_data(request, course_id):
+def _course_discussion_data(request, course_id, discussion_id=None,thread_id=None):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.discussions:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
-
-    course = load_course(course_id, request=request)
-    has_course_discussion = False
-    vertical_usage_id = None
-
-    # Locate the first chapter page
-    if course.discussion and \
-       course.discussion.sequentials and \
-       course.discussion.sequentials[0].pages:
-        has_course_discussion = True
-        vertical_usage_id = course.discussion.sequentials[0].pages[0].vertical_usage_id()
 
     remote_session_key = request.session.get("remote_session_key")
     lms_base_domain = settings.LMS_BASE_DOMAIN
@@ -408,12 +397,15 @@ def _course_discussion_data(request, course_id):
 
     mcka_ta = choose_random_ta(course_id)
 
+    base_view_url = '/courses/{}/discussion/forum'.format(course_id)
+    if discussion_id and thread_id:
+        base_view_url = "{}/{}/threads/{}".format(base_view_url, discussion_id, thread_id)
+    base_view_url += '/discussion_board_fragment_view?format=json'
+
     return {
-        "vertical_usage_id": vertical_usage_id,
         "remote_session_key": remote_session_key,
-        "has_course_discussion": has_course_discussion,
         "course_id": course_id,
-        "legacy_course_id": course_id,
+        "view_url": base_view_url,
         "lms_base_domain": lms_base_domain,
         "lms_sub_domain": lms_sub_domain,
         "lms_port": lms_port,
@@ -451,8 +443,8 @@ def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id
 
 @login_required
 @check_user_course_access
-def course_discussion(request, course_id):
-    data = _course_discussion_data(request, course_id)
+def course_discussion(request, course_id, discussion_id=None, thread_id=None):
+    data = _course_discussion_data(request, course_id, discussion_id, thread_id)
     return render(request, 'courses/course_discussion.haml', data)
 
 @login_required
