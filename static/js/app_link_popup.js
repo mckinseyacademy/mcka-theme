@@ -30,3 +30,12 @@
     trackAppDownloadLinkClick(this.href, $(this).data('username'), 'Android' )
   });
 });
+
+// Diable scrollbar on popup show
+
+$(document).on('open', '#mobileAppLinkModal', function () {
+    $('body').css("overflow", "hidden");
+});
+$(document).on('close', '#mobileAppLinkModal', function () {
+    $('body').css("overflow", "auto");
+});
