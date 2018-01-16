@@ -560,7 +560,7 @@ OAUTH2_SAFE_URL_PREFIXES = [
 ]
 
 # Ooyala CDN url of Video Player V4
-OOYALA_PLAYER_V4_SCRIPT_FILE = '//player.ooyala.com/core/10efd95b66124001b415aa2a4bee29c8'
+OOYALA_PLAYER_V4_SCRIPT_FILE = '//player.ooyala.com/core/10efd95b66124001b415aa2a4bee29c8?plugins=main,bm'
 
 ################################### Theme Settings###################################
 

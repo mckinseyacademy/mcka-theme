@@ -697,7 +697,7 @@ def course_progress_v2(request, course_id):
 @cache_page(60 * 10)
 def course_resources(request, course_id):
     resources = load_static_tabs(course_id, name="resources")
-    resources_content = fix_resource_page_video_scripts(resources.content)
+    resources_content = fix_resource_page_video_scripts(getattr(resources, 'content', ''))
 
     data = {
         "resources_content": resources_content,
@@ -721,7 +721,7 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
 
     resources = load_static_tabs(course_id, name="resources")
-    resources_content = fix_resource_page_video_scripts(resources.content)
+    resources_content = fix_resource_page_video_scripts(getattr(resources, 'content', ''))
 
     data = {
         "resources_content": resources_content,

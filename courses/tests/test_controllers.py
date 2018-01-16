@@ -518,14 +518,3 @@ class ResourcePageScriptsFixTest(TestCase):
         first_element_src = resource_page_soup.contents[0].attrs.get('src', '')
 
         self.assertEqual(first_element_src, settings.OOYALA_PLAYER_V4_SCRIPT_FILE)
-
-    def test_no_v3_script(self):
-        """
-        Tests that same html is returned when no v3 script is in html
-        """
-        processed_html = controller.fix_resource_page_video_scripts(self.resource_page_without_v3)
-
-        processed_page_soup = BeautifulSoup(processed_html, "html.parser")
-        unprocessed_page_soup = BeautifulSoup(self.resource_page_without_v3, "html.parser")
-
-        self.assertItemsEqual(processed_page_soup.contents, unprocessed_page_soup.contents)
