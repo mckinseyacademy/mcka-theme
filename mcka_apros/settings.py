@@ -559,6 +559,9 @@ OAUTH2_SAFE_URL_PREFIXES = [
     'http://127.0.0.1/'
 ]
 
+# Ooyala CDN url of Video Player V4
+OOYALA_PLAYER_V4_SCRIPT_FILE = '//player.ooyala.com/core/10efd95b66124001b415aa2a4bee29c8'
+
 ################################### Theme Settings###################################
 
 XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'

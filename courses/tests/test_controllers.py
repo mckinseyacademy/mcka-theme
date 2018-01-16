@@ -1,4 +1,8 @@
+from bs4 import BeautifulSoup
+
 from django.test import TestCase
+from django.conf import settings
+
 from api_client import course_models, user_models
 from courses import controller
 
@@ -454,3 +458,74 @@ class CoursesAPITest(TestCase):
         self.assertEqual(_get_chapter("0", "150"), (None, None, None))
         self.assertEqual(_get_chapter("0", "I'm page"), (None, None, None))
         self.assertEqual(_get_chapter("0", "I'm page too"), (None, None, None))
+
+
+class ResourcePageScriptsFixTest(TestCase):
+    def setUp(self):
+        self.resource_page_html_with_v3 = '''
+        <p></p>
+        <h4>Lesson 2: The three-part approach</h4>
+        <p></p>
+        <p>Senior leaders discuss their approaches to challenging conversations.
+        <script src="//player.ooyala.com/v3/635104fd644c4170ae227af2de27deab"></script>
+        </p>
+        <div id="ooyalaplayer4" style="width: 320px; height: 180px;"></div>
+        <p>
+        <script>// <![CDATA[
+        OO.ready(function() { OO.Player.create('ooyalaplayer4', 'g3bnh0dDq9XsY8MZ-dK_lfcokwM8oXcZ'); });
+        // ]]></script>
+        <noscript><div>Please enable Javascript to watch this video</div></noscript></p>
+        '''
+
+        self.resource_page_without_v3 = '''
+        <p></p>
+        <table style="border: none;">
+        <tbody>
+        <tr>
+        <td width="120"><img src="/static/endoflessonicons_resources.png" /></td>
+        <td width="600">
+        <div id="iguide" class="label-5">Jump to section:</div>
+        <h2><a href="#iguide"><i class="fa fa-fw"></i><i class="fa fa-level-down"></i> Informational guides</a></h2>
+        <h2><a href="#takeaways"><i class="fa fa-fw"></i><i class="fa fa-level-down"></i> Key takeaways, frameworks,
+         and additional practice</a></h2>
+        <h2><a href="#scontent"><i class="fa fa-fw"></i><i class="fa fa-level-down"></i> Supplementary content</a></h2>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+        <p></p>
+        '''
+
+    def test_v3_scripts_removal(self):
+        """
+        Tests that v3 scripts are removed from page html
+        """
+        processed_html = controller.fix_resource_page_video_scripts(self.resource_page_html_with_v3)
+
+        resource_page_soup = BeautifulSoup(processed_html, "html.parser")
+
+        for script_tag in resource_page_soup.find_all('script'):
+            self.assertNotIn('player.ooyala.com/v3/', script_tag.attrs.get('src', ''))
+
+    def test_v4_script_inclusion(self):
+        """
+        Tests that v4 script is being added in page
+        """
+        processed_html = controller.fix_resource_page_video_scripts(self.resource_page_html_with_v3)
+
+        resource_page_soup = BeautifulSoup(processed_html, "html.parser")
+
+        first_element_src = resource_page_soup.contents[0].attrs.get('src', '')
+
+        self.assertEqual(first_element_src, settings.OOYALA_PLAYER_V4_SCRIPT_FILE)
+
+    def test_no_v3_script(self):
+        """
+        Tests that same html is returned when no v3 script is in html
+        """
+        processed_html = controller.fix_resource_page_video_scripts(self.resource_page_without_v3)
+
+        processed_page_soup = BeautifulSoup(processed_html, "html.parser")
+        unprocessed_page_soup = BeautifulSoup(self.resource_page_without_v3, "html.parser")
+
+        self.assertItemsEqual(processed_page_soup.contents, unprocessed_page_soup.contents)

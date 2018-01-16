@@ -8,6 +8,8 @@ import re
 import json
 import logging
 
+from bs4 import BeautifulSoup
+
 from django.conf import settings
 from django.core.cache import cache
 
@@ -898,3 +900,24 @@ def compare_graders(a, b):
         return True
     else:
         return False
+
+
+def fix_resource_page_video_scripts(resources_page_html):
+    """
+    Removes Ooyala Player V3 script occurrences and include
+    V4 script file in resources page HTML
+    """
+    resource_page_soup = BeautifulSoup(resources_page_html, "html.parser")
+    v4_script = resource_page_soup.new_tag("script", src=settings.OOYALA_PLAYER_V4_SCRIPT_FILE)
+    has_v3_scripts = False
+
+    for script_tag in resource_page_soup.find_all('script'):
+        if 'player.ooyala.com/v3/' in script_tag.attrs.get('src', ''):
+            script_tag.decompose()
+            has_v3_scripts = True
+
+    # include v4 script at the top of the page
+    if resource_page_soup.contents and has_v3_scripts:
+        resource_page_soup.contents[0].insert_before(v4_script)
+
+    return str(resource_page_soup)

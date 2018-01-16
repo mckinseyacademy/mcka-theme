@@ -31,6 +31,7 @@ pytz==2015.2
 djangorestframework==2.3.14
 django-upload-validator
 requests_oauthlib==0.8.0
+beautifulsoup4==4.6.0
 
 # pylint plugins for django and celery
 pylint-celery==0.3

@@ -99,9 +99,13 @@ $(function(){
         var ooyala = null;
         if (typeof OO === 'undefined') return;
         if ($('body').hasClass('ie8')) {
-          ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '740px', height: '425px'});
+          OO.ready(function() {
+            ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '740px', height: '425px'});
+          });
         } else {
-          ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '100%', height: '100%'});
+          OO.ready(function() {
+            ooyala = OO.Player.create('ooyala_mckinsey', video, {width: '100%', height: '100%'});
+          });
         }
         modal.data('ooyala', ooyala);
 
@@ -224,8 +228,10 @@ $(function(){
 
   var help_video = $('#mk-help-video');
   if (help_video.length && typeof OO !== 'undefined') {
-    var player = OO.Player.create('mk-help-video', help_video.data('video-id'), {width: '100%', height: '300px'});
-    $('#mckinsey_help').data('ooyala_player', player);
+    OO.ready(function() {
+      var player = OO.Player.create('mk-help-video', help_video.data('video-id'), {width: '100%', height: '300px'});
+      $('#mckinsey_help').data('ooyala_player', player);
+    });
   }
 
   var intro_modal_selector = $('#intro_modal');
@@ -262,9 +268,11 @@ $(function(){
     var modal = $(this),
         video = $('[data-video-id]', modal);
     if (video.length && typeof OO !== 'undefined') {
-      var width = $('body').hasClass('ie8') ? '460px' : '100%',
-          player = OO.Player.create(video.attr('id'), video.data('video-id'), {width: width, height: '260px'});
-      modal.data('ooyala_player', player);
+      var width = $('body').hasClass('ie8') ? '460px' : '100%';
+      OO.ready(function() {
+        var player = OO.Player.create(video.attr('id'), video.data('video-id'), {width: width, height: '260px'});
+        modal.data('ooyala_player', player);
+      });
     }
   });
 

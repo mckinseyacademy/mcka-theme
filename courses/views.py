@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
-
+from django.views.decorators.cache import cache_page
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
@@ -46,6 +46,7 @@ from .controller import (
     _remove_duplicate_grader,
     get_user_social_metrics,
     get_social_leaders,
+    fix_resource_page_video_scripts,
 )
 from .user_courses import check_user_course_access, standard_data, load_course_progress,\
     check_company_admin_user_access, get_current_course_for_user,\
@@ -690,15 +691,23 @@ def course_user_progress_v2(request, user_id, course_id):
 def course_progress_v2(request, course_id):
     return _course_progress_for_user_v2(request, course_id, request.user.id)
 
+
 @login_required
 @check_user_course_access
+@cache_page(60 * 10)
 def course_resources(request, course_id):
+    resources = load_static_tabs(course_id, name="resources")
+    resources_content = fix_resource_page_video_scripts(resources.content)
+
     data = {
-        "resources": load_static_tabs(course_id, name="resources")
+        "resources_content": resources_content,
+        "do_not_load_ooyala": True  # to avoid conflicts don't include ooyala scripts in layout.haml
     }
     return render(request, 'courses/course_resources.haml', data)
 
+
 @login_required
+@cache_page(60 * 10)
 def course_resources_learner_dashboard(request, learner_dashboard_id, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.resources:
@@ -711,11 +720,15 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
 
+    resources = load_static_tabs(course_id, name="resources")
+    resources_content = fix_resource_page_video_scripts(resources.content)
+
     data = {
-        "resources": load_static_tabs(course_id, name="resources"),
+        "resources_content": resources_content,
         "course_id": course_id,
         "calendar_enabled": True if calendar_items else False,
         "learner_dashboard": learner_dashboard,
+        "do_not_load_ooyala": True  # to avoid conflicts don't include ooyala scripts in layout.haml
     }
 
     if learner_dashboard.course_id == course_id:
